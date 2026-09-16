@@ -24,8 +24,8 @@ const LANG_LOADERS = {
 
 export type ShikiLanguage = keyof typeof LANG_LOADERS
 
-// Shiki registers a grammar's aliases along with it, so loading per fence
-// language means resolving them here instead.
+// Routing table for the lazy import: which grammar chunk a fence language
+// needs. Shiki still registers its own aliases once that chunk has loaded.
 const LANG_ALIASES: Record<string, ShikiLanguage> = {
     yml: "yaml",
     py: "python",
@@ -78,12 +78,26 @@ function loadLanguage(highlighter: HighlighterCore, lang: string) {
     }
     let pending = langPromises.get(resolved)
     if (!pending) {
-        pending = LANG_LOADERS[resolved]().then((module) =>
-            highlighter.loadLanguage(module.default),
-        )
+        pending = LANG_LOADERS[resolved]()
+            .then((module) => highlighter.loadLanguage(module.default))
+            .catch((error) => {
+                // Drop the rejected promise so the next fence can retry.
+                langPromises.delete(resolved)
+                throw error
+            })
         langPromises.set(resolved, pending)
     }
     return pending
+}
+
+function coreOnce() {
+    // Caching the promise, not the highlighter, dedupes concurrent callers —
+    // but a rejected one must not stick, or one blip disables the page.
+    corePromise ??= createCore().catch((error) => {
+        corePromise = undefined
+        throw error
+    })
+    return corePromise
 }
 
 /** Shared highlighter with `langs` registered; unknown ones are skipped, so
@@ -91,10 +105,15 @@ function loadLanguage(highlighter: HighlighterCore, lang: string) {
 export async function getHighlighterCore(
     langs: Iterable<string> = ALL_LANGUAGES,
 ): Promise<HighlighterCore> {
-    corePromise ??= createCore()
-    const highlighter = await corePromise
+    const highlighter = await coreOnce()
+    // A grammar that fails to load is best-effort: check getLoadedLanguages()
+    // and render that fence as plain text instead of failing the whole parse.
     await Promise.all(
-        [...langs].map((lang) => loadLanguage(highlighter, lang)),
+        [...langs].map((lang) =>
+            loadLanguage(highlighter, lang).catch((error) => {
+                console.error(`Shiki failed to load the ${lang} grammar:`, error)
+            }),
+        ),
     )
     return highlighter
 }
@@ -102,5 +121,7 @@ export async function getHighlighterCore(
 /** Starts the core (and optionally some grammars) loading without waiting, so
  * the chunks land while the caller is still hydrating. */
 export function warmHighlighterCore(langs: Iterable<string> = []) {
-    void getHighlighterCore(langs).catch(() => {})
+    void getHighlighterCore(langs).catch((error) => {
+        console.error("Shiki failed to preload:", error)
+    })
 }

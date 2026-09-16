@@ -30,8 +30,12 @@ export function getMarked() {
                 const highlighter = await getHighlighterCore(
                     resolved ? [resolved] : [],
                 )
+                // Re-check rather than trust `resolved`: the grammar's chunk
+                // can fail to load, and codeToHtml throws on an unloaded lang.
+                const loaded =
+                    resolved && highlighter.getLoadedLanguages().includes(resolved)
                 const html = highlighter.codeToHtml(code, {
-                    lang: resolved ?? "text",
+                    lang: loaded ? resolved : "text",
                     themes: { light: LIGHT_THEME, dark: DARK_THEME },
                 })
                 // Strip Shiki's outer `<pre><code>`; marked-highlight adds its own.
@@ -64,5 +68,7 @@ export function getPlainMarked() {
 export function warmHighlighter(langs?: Iterable<string>) {
     void import("~/components/plugins/schema/shikiToolset")
         .then((toolset) => toolset.warmHighlighterCore(langs))
-        .catch(() => {})
+        .catch((error) => {
+            console.error("Shiki toolset failed to preload:", error)
+        })
 }

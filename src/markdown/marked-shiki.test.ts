@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { getMarked, getPlainMarked } from "./marked-shiki"
+import { injectCopyButtons } from "~/utils/code-copy"
 import {
     ALL_LANGUAGES,
     getHighlighterCore,
@@ -81,5 +82,19 @@ describe("shikiToolset", () => {
             "github-dark-default",
             "github-light-default",
         ])
+    })
+})
+
+describe("injectCopyButtons", () => {
+    it("reaches the fallback block too, so the button isn't held back by Shiki", () => {
+        const fallback = getPlainMarked().parse(YAML_FENCE, { async: false })
+        expect(injectCopyButtons(fallback)).toContain(
+            '<pre class="shiki-fallback"><button class="code-copy"',
+        )
+    })
+
+    it("still reaches the upgraded block", async () => {
+        const upgraded = await getMarked().parse(YAML_FENCE)
+        expect(injectCopyButtons(upgraded)).toContain('<pre><button class="code-copy"')
     })
 })
