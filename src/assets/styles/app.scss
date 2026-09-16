@@ -801,12 +801,3 @@ html.no-animation {
 .mermaid {
     margin-bottom: 1.5rem;
 }
-
-// Bootstrap link and primary tokens mapped to the theme. Last global rule so it wins over
-// bootstrap/scss/root, as the per-component copies of the old prelude used to.
-:root {
-    --bs-link-color: var(--ks-content-link);
-    --bs-link-hover-color: var(--ks-content-color-highlight);
-    --bs-primary: var(--ks-content-color-highlight);
-    --bs-link-color-rgb: var(--ks-content-color-highlight);
-}
