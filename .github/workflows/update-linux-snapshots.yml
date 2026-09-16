@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 75
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -104,7 +105,7 @@ jobs:
           fi
 
       - name: Commit and push updated Linux snapshots
-        if: steps.snapshot_changes.outputs.has_changes == 'true'
+        if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name != 'main'
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
@@ -119,3 +120,20 @@ jobs:
             git pull --rebase origin "${BRANCH_NAME}"
           done
           git push origin "HEAD:${BRANCH_NAME}"
+
+      # main is protected and GITHUB_TOKEN is not on its bypass list, so the
+      # nightly proposes its snapshots instead of pushing them.
+      - name: Create PR with updated Linux snapshots
+        if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name == 'main'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/update-linux-snapshots-${{ github.run_id }}
+          base: main
+          commit-message: "test(visual): refresh linux snapshots"
+          title: "test(visual): refresh linux snapshots"
+          body: |
+            Automated update of Linux visual regression snapshots.
+
+            Only baselines that drifted past maxDiffPixelRatio are included.
+          add-paths: |
+            tests/visual-regression.spec.ts-snapshots
