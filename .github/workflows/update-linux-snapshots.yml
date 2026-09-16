@@ -121,12 +121,23 @@ jobs:
           done
           git push origin "HEAD:${BRANCH_NAME}"
 
-      # main is protected and GITHUB_TOKEN is not on its bypass list, so the
-      # nightly proposes its snapshots instead of pushing them.
+      # A GITHUB_TOKEN push creates no events, so a PR opened with it never gets
+      # CI. The app is the identity that can branch, commit and open a real one.
+      - name: Generate a bot token
+        id: bot-token
+        if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name == 'main'
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.GH_BOT_APP_ID }}
+          private-key: ${{ secrets.GH_BOT_PRIVATE_KEY }}
+          owner: kestra-io
+          repositories: docs
+
       - name: Create PR with updated Linux snapshots
         if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name == 'main'
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ steps.bot-token.outputs.token }}
           branch: chore/update-linux-snapshots-${{ github.run_id }}
           base: main
           commit-message: "test(visual): refresh linux snapshots"
