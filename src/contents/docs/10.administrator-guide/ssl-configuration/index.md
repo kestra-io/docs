@@ -286,20 +286,26 @@ The following example shows the full service configuration with `JAVA_OPTS` set:
             - "8443:8443"
 ```
 
-## Enabling CSRF protection
+## CSRF protection
 
-Cross-site request forgery (CSRF) is an attack where a malicious website or email tricks a user's browser into performing unwanted actions on a trusted site while authenticated.
+Cross-site request forgery (CSRF) is an attack where a malicious website tricks a signed-in user's browser into sending requests to Kestra.
 
-CSRF protection requires TLS/SSL to be enabled on your instance. Once TLS is configured, add the following to your configuration file:
+Kestra 2.0 ships CSRF protection enabled by default. It uses a double-submit token: the webserver sets a `csrfToken` cookie and injects the same value into the UI, which sends it back in the `X-CSRF-TOKEN` header on every state-changing request. The token is validated only when the request is authenticated by a session cookie (`BASIC_AUTH` or `JWT`). API and SDK clients that authenticate with an `Authorization` header are not affected, and `GET`, `HEAD`, and `OPTIONS` requests are never checked.
+
+CSRF protection does not require TLS. The `Secure` flag on the token cookie follows the request scheme, so plain-HTTP deployments keep working. The token is signed with `kestra.encryption.secret-key` when one is configured.
+
+To disable it, for example while debugging a reverse proxy setup, set:
 
 ```yaml
 micronaut:
   security:
     csrf:
-      enabled: true
+      enabled: false
 ```
 
-This setting enables CSRF protection on all endpoints that reach `/api/.*`.
+:::alert{type="warning"}
+Leave CSRF protection enabled on any instance reachable from a browser. A token left by a previous Kestra instance on the same host is detected and renewed on page load, so it does not need to be cleared by hand.
+:::
 
 ## Configuring SSL with Kubernetes
 
