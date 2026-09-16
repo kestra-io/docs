@@ -55,11 +55,17 @@
         } catch {}
 
         try {
-            const { codeToHtml } = await import("shiki")
+            // The shared core toolset, not the full `shiki` bundle: that one
+            // ships every grammar, several megabytes, for one `lang`.
+            const { getHighlighterCore, resolveLanguage } = await import(
+                "~/components/plugins/schema/shikiToolset"
+            )
+            const lang = resolveLanguage(props.lang)
+            const highlighter = await getHighlighterCore(lang ? [lang] : [])
             const map: Record<string, string> = {}
             for (const tab of props.tabs) {
-                map[tab.label] = await codeToHtml(tab.code, {
-                    lang: props.lang,
+                map[tab.label] = highlighter.codeToHtml(tab.code, {
+                    lang: lang ?? "text",
                     themes: {
                         light: "github-light-default",
                         dark: "github-dark-default",

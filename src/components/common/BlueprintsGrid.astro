@@ -71,6 +71,10 @@ const displayBlueprints = blueprints?.slice(0, 20) ?? []
 </section>
 
 <style lang="scss">
+    .blueprints-carousel:not(:has(.card-wrapper)) {
+        display: none;
+    }
+
     .blueprints-carousel {
         width: 100%;
         padding: 3rem 0;
