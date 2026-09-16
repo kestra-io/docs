@@ -4,7 +4,7 @@ info:
   license:
     name: Apache 2.0
     url: https://raw.githubusercontent.com/kestra-io/kestra/master/LICENSE
-  version: 2.0.1
+  version: 2.0.2
 tags:
 - name: Flows
   description: Flows API
@@ -595,7 +595,7 @@ paths:
             image/svg+xml:
               schema:
                 type: string
-                format: byte
+                format: binary
         '401':
           description: Authentication required
           content:
@@ -1100,6 +1100,7 @@ paths:
         description: The file path
         required: true
         schema:
+          pattern: .*
           type: string
       responses:
         '200':
@@ -1241,7 +1242,9 @@ paths:
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/Event_Object_'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event_Object_'
         '401':
           description: Authentication required
           content:
@@ -1289,7 +1292,9 @@ paths:
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/Event_Object_'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event_Object_'
         '401':
           description: Authentication required
           content:
@@ -5474,7 +5479,9 @@ paths:
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/Event_Execution_'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event_Execution_'
         '401':
           description: Authentication required
           content:
@@ -5534,7 +5541,9 @@ paths:
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/Event_ExecutionStatusEvent_'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event_ExecutionStatusEvent_'
         '401':
           description: Authentication required
           content:
@@ -6363,7 +6372,7 @@ paths:
             application/octet-stream:
               schema:
                 type: string
-                format: byte
+                format: binary
         '401':
           description: Authentication required
           content:
@@ -6410,7 +6419,7 @@ paths:
             application/octet-stream:
               schema:
                 type: string
-                format: byte
+                format: binary
         '401':
           description: Authentication required
           content:
@@ -8077,7 +8086,9 @@ paths:
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/Event_FollowLogEvent_'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event_FollowLogEvent_'
         '401':
           description: Authentication required
           content:
@@ -11528,7 +11539,6 @@ components:
           - $ref: '#/components/schemas/Map_Object.Object_'
         variables:
           type: object
-          additionalProperties: false
         workerSelector:
           description: Routing requirements (tags + fallback) for this flow.
           allOf:
@@ -13178,7 +13188,6 @@ components:
               $ref: '#/components/schemas/Task'
           variables:
             type: object
-            additionalProperties: false
           tasks:
             minItems: 1
             type: array
@@ -13300,7 +13309,6 @@ components:
             - $ref: '#/components/schemas/Map_Object.Object_'
           variables:
             type: object
-            additionalProperties: false
           workerSelector:
             description: Routing requirements (tags + fallback) for this flow.
             allOf:
@@ -13682,7 +13690,6 @@ components:
             type: boolean
           variables:
             type: object
-            additionalProperties: false
           concurrency:
             title: Concurrency
             description: Limits the number of concurrent executions of the flow.
@@ -14133,6 +14140,8 @@ components:
         commitDate:
           type: string
           format: date-time
+        versionUpgrade:
+          $ref: '#/components/schemas/VersionService.VersionUpgrade'
         isCustomDashboardsEnabled:
           type: boolean
         isAnonymousUsageEnabled:
@@ -15863,6 +15872,16 @@ components:
           type: array
           items:
             type: string
+    VersionService.VersionUpgrade:
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+        at:
+          type: string
+          format: date-time
     WebhookResponse:
       type: object
       properties:
