@@ -99,7 +99,7 @@ While standard metrics like CPU and network I/O are useful, they don't always re
 
 ### Implementing rolling deployments of EC2 instances
 
-Auto Scaling groups are invaluable for achieving zero-downtime application updates. By integrating your ASG with a CI/CD pipeline, you can perform rolling deployments. This involves creating a new launch template with your updated application version and gradually replacing old instances with new ones, ensuring the application remains available throughout the update process. This is a key pattern in modern [CI/CD pipelines](https://kestra.io/docs/version-control-cicd/cicd) and can be orchestrated alongside other deployment tasks, like running a [Docker container](https://kestra.io/plugins/plugin-docker/io.kestra.plugin.docker.run).
+Auto Scaling groups are invaluable for achieving zero-downtime application updates. By integrating your ASG with a CI/CD pipeline, you can perform rolling deployments. This involves creating a new launch template with your updated application version and gradually replacing old instances with new ones, ensuring the application remains available throughout the update process. This is a key pattern in modern [CI/CD pipelines](https://kestra.io/docs/version-control-cicd/cicd) and can be orchestrated alongside other deployment tasks, like running a [Docker container](https://kestra.io/plugins/plugin-docker/docker-cli/io.kestra.plugin.docker.cli.run).
 
 ### Understanding scaling policies for robust automation
 

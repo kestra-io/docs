@@ -80,7 +80,7 @@ At small scale, Airflow's trade-offs are manageable. As workflows and teams mult
 | Orchestration coupled with execution | DAG files are executable programs, not declarations. The orchestration plan doesn't exist until the scheduler runs your code. | You can't see what was supposed to run, only what did. Visibility drops as workflows multiply; teams build custom tooling to compensate. |
 | Non-linear operational complexity | Every DAG adds scheduler load, parse time, and database contention. Problems don't stay contained to individual workflows. | What worked fine with 50 DAGs breaks at 500. Teams hit a ceiling where adding workflows becomes prohibitively expensive. |
 
-These constraints aren't hypothetical. Apple's ML team of 200 engineers evaluated Prefect and Dagster before [choosing Kestra as their Airflow alternative](/customers/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra), citing scalability, language-agnostic YAML, robust error handling, and cost:
+These constraints aren't hypothetical. Apple's ML team of 200 engineers evaluated Prefect and Dagster before [choosing Kestra as their Airflow alternative](/customers/apple), citing scalability, language-agnostic YAML, robust error handling, and cost:
 
 > "Apache Airflow is complex and has been challenging to manage, with significant operational overhead." — Senior Engineering Manager, Apple
 
@@ -219,7 +219,7 @@ AI-assisted translation acts as a force multiplier here. Airflow DAGs are struct
 
 Leroy Merlin, a global home-improvement retailer with over 24,000 employees, initially attempted to use Airflow for its Google Cloud migration. The platform team hit three walls: unstable architecture under simple benchmark tests, heavy infrastructure overhead (managed services proved too limited, forcing complex Kubernetes clusters that burned CPU even when idle), and total dependence on code — a single poorly written DAG could stall the platform.
 
-They [pivoted to Kestra](/customers/datamesh-at-scale-increased-its-data-production-by-900percent) using exactly the incremental path described above: new cloud projects started on Kestra first, legacy systems ran in parallel, then event-driven flows took over the processing load. The results:
+They [pivoted to Kestra](/customers/leroy-merlin-france) using exactly the incremental path described above: new cloud projects started on Kestra first, legacy systems ran in parallel, then event-driven flows took over the processing load. The results:
 
 - **900% growth** in production data workflows over two years.
 - **500+ data practitioners** (including 80+ data engineers and scientists) collaborating without specialized SDK mastery.

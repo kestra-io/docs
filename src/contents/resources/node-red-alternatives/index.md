@@ -82,7 +82,7 @@ tasks:
       // Further processing logic here
 ```
 
-Companies like [Víssimo](/customers/vissimo) chose Kestra over alternatives including n8n, Airflow, and Prefect for its ability to handle mission-critical e-commerce and BI workflows with reliability and scale.
+Companies like [Víssimo](/customers/vissimo-group) chose Kestra over alternatives including n8n, Airflow, and Prefect for its ability to handle mission-critical e-commerce and BI workflows with reliability and scale.
 
 **Best for:** Engineering and platform teams seeking a unified, declarative, and scalable [orchestration control plane](/infra-automation) to manage complex workflows across the entire organization. Learn more about [Why Kestra](/docs/why-kestra) is built for these challenges.
 

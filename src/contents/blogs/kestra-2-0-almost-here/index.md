@@ -35,7 +35,7 @@ Every release candidate undergoes our QA across the full deployment matrix, and 
 
 What we cannot reproduce in any test lab is your stack. Your flows, plugins, deployment, and edge cases. That is the part only you can bring, and it is exactly the feedback that shapes what GA looks like.
 
-Found something? Open an issue on [the public repo](https://github.com/kestra-io/kestra/issues). Kestra 2.0 issues go where yours go, and the community can see what we are fixing and why. If you want to go further, the door to [contributions](/docs/getting-started/contributing) is open too. Docs, plugins, bug fixes: there is plenty of surface to help with.
+Found something? Open an issue on [the public repo](https://github.com/kestra-io/kestra/issues). Kestra 2.0 issues go where yours go, and the community can see what we are fixing and why. If you want to go further, the door to [contributions](/docs/contribute-to-kestra) is open too. Docs, plugins, bug fixes: there is plenty of surface to help with.
 
 ## Want your fingerprints on the release? Join the Early Adopter Program
 
