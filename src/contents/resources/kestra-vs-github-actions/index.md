@@ -35,6 +35,7 @@ Key characteristics include:
 *   **Focus on the Software Development Lifecycle:** Its design is optimized for tasks related to code compilation, testing, packaging, and deployment.
 *   **Marketplace Ecosystem:** A vast marketplace offers thousands of pre-built "actions" that can be dropped into a workflow to perform common tasks, such as logging into a cloud provider, building a Docker container, or sending a Slack notification.
 *   **YAML Definition:** Workflows are declarative, version-controlled, and managed as code alongside the application they support.
+*   **Repository Scope:** Actions is built around a single repository, so orchestration spanning data, infrastructure, and AI usually needs a second layer — see [CI/CD tools alternatives](/resources/infrastructure/ci-cd-tools-alternatives).
 
 While powerful, this focus on the code delivery pipeline also defines its boundaries. For a broader perspective on [what orchestration is](/blogs/orchestration-differences), it's important to differentiate between software delivery and enterprise-wide process automation. Many teams use GitHub Actions to [validate and deploy their Kestra flows](/docs/how-to-guides/github-actions), highlighting its role as a specialized CI/CD tool within a larger orchestration landscape.
 

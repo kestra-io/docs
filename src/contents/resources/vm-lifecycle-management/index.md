@@ -76,7 +76,7 @@ By codifying your VM deployment workflows, you can turn a complex manual process
 
 - **Infrastructure as Code (IaC)**: Use tools like [Terraform](https://kestra.io/orchestration/terraform) and [Ansible](https://kestra.io/orchestration/ansible) to define your VMs and their configurations in code. This allows you to version, test, and review infrastructure changes just like application code.
 - **GitOps for VM Configurations**: Store your IaC definitions in a Git repository. A [GitOps](https://kestra.io/resources/infrastructure/gitops) approach uses the Git repository as the single source of truth, with an orchestration engine automatically applying changes to your environment.
-- **Self-Service Portals**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
+- **[Self-Service](/resources/infrastructure/self-service-infrastructure) Portals**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
 
 ### Tools and strategies for efficient VM operations
 

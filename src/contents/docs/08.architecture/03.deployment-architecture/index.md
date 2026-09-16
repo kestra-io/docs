@@ -32,6 +32,8 @@ Use distributed when:
 - Workers must run in isolated or remote networks
 - High availability is required
 
+See [High Availability](../../10.administrator-guide/high-availability/index.md) for replica counts, liveness configuration, and load balancer setup.
+
 When components run on separate hosts, use a shared [internal storage](../data-components/index.md#internal-storage) implementation such as [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md), [AWS S3](../../02.installation/08.aws-ec2/index.md), or [Azure Blob Storage](../../02.installation/10.azure-vm/index.md).
 
 ## Queue backend

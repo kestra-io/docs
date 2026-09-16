@@ -70,7 +70,7 @@ Choosing the right SSIS replacement depends on your organization's technical sta
 
 ### Microsoft's cloud evolution: Azure Data Factory and Fabric
 
-For teams committed to the Microsoft ecosystem, Azure Data Factory (ADF) is the logical successor to SSIS. As Microsoft's flagship cloud ETL service, ADF provides a hybrid data integration platform with a familiar visual interface, a rich set of connectors, and serverless data flow capabilities. It's designed to be the central data integration hub within Azure. More recently, Microsoft has integrated data factory capabilities into Microsoft Fabric, its all-in-one analytics platform. While powerful within the Azure cloud, this approach can reinforce vendor lock-in, a key reason many seek [Microsoft Fabric alternatives](/resources/data/microsoft-fabric-alternatives).
+For teams committed to the Microsoft ecosystem, Azure Data Factory (ADF) is the logical successor to SSIS. As Microsoft's flagship cloud ETL service, ADF provides a hybrid data integration platform with a familiar visual interface, a rich set of connectors, and serverless data flow capabilities. It's designed to be the central data integration hub within Azure. More recently, Microsoft has integrated data factory capabilities into Microsoft Fabric, its all-in-one analytics platform. While powerful within the Azure cloud, this approach can reinforce vendor lock-in, a key reason many seek [Microsoft Fabric alternatives](/resources/data/microsoft-fabric-alternatives). For how the service itself models activities, datasets, linked services, and triggers, see [ADF pipelines explained](/resources/data/adf-pipeline-explained).
 
 ### AWS Glue and the serverless ETL paradigm
 

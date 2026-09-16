@@ -473,6 +473,158 @@ kestra:
 
 If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
 
+## Redis, AMQP, and GCP Pub/Sub queue backends
+
+Redis, AMQP (RabbitMQ), and GCP Pub/Sub are Enterprise Edition queue backends, alongside Kafka which is covered above. All three use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All three require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+
+### Queue prefix and message protection
+
+These properties apply to all queue backends:
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.queue.prefix` | Name prefix added to every queue. Use this when multiple Kestra clusters share one backend to prevent stream collisions. | — |
+| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `false` |
+| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | — |
+
+```yaml
+kestra:
+  queue:
+    prefix: prod
+    message-protection:
+      enabled: true
+      limit: 1048576   # 1 MiB
+```
+
+Set `prefix` when multiple Kestra clusters share one backend (for example, staging and production on the same Redis instance). Each cluster's queues are namespaced independently.
+
+### Redis
+
+Set `kestra.queue.type: redis` and configure the client connection under `kestra.redis.client`.
+
+Minimal configuration:
+
+```yaml
+kestra:
+  queue:
+    type: redis
+  redis:
+    client:
+      url: redis://localhost:6379
+```
+
+With authentication:
+
+```yaml
+kestra:
+  queue:
+    type: redis
+  redis:
+    client:
+      url: redis://localhost:6379
+      username: kestra
+      password: "${REDIS_PASSWORD}"
+```
+
+#### Configuration reference
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.redis.client.url` | Redis connection URI (`redis://` or `rediss://` for TLS). Required. | — |
+| `kestra.redis.client.username` | Redis username. | — |
+| `kestra.redis.client.password` | Redis password. | — |
+| `kestra.redis.client.pool.size` | Maximum connection pool size. | `32` |
+| `kestra.redis.client.pool.min-idle` | Minimum idle connections in the pool. | — |
+| `kestra.redis.client.pool.max-idle` | Maximum idle connections in the pool. | `32` |
+| `kestra.redis.client.pool.connection-acquire-timeout` | Maximum wait time to acquire a connection from the pool. | `PT5S` |
+
+Use a `rediss://` scheme in the URL for TLS-secured connections.
+
+### AMQP (RabbitMQ)
+
+Set `kestra.queue.type: amqp` and configure the client under `kestra.amqp.client`. RabbitMQ is the supported broker.
+
+Minimal configuration:
+
+```yaml
+kestra:
+  queue:
+    type: amqp
+  amqp:
+    client:
+      url: amqp://kestra:password@localhost:5672/kestra
+```
+
+Kestra creates the virtual host at startup if it does not already exist, using the RabbitMQ management API. The management API is expected on port `15672` (or `15671` for TLS) at the same host as the broker unless overridden.
+
+#### Configuration reference
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.amqp.client.url` | AMQP broker URI. Required. | — |
+| `kestra.amqp.client.connection-timeout` | TCP connection timeout. | `PT60S` |
+| `kestra.amqp.client.handshake-timeout` | AMQP protocol handshake timeout. | `PT10S` |
+| `kestra.amqp.client.shutdown-timeout` | Socket close timeout on connection shutdown. | `PT10S` |
+| `kestra.amqp.client.channel-rpc-timeout` | Timeout for synchronous channel RPC operations. | `PT10M` |
+| `kestra.amqp.client.requested-heartbeat` | Heartbeat interval requested from the broker. | `PT60S` |
+| `kestra.amqp.client.requested-channel-max` | Maximum channels per connection. | `2047` |
+| `kestra.amqp.client.requested-frame-max` | Maximum AMQP frame size in bytes. `0` means negotiated (typically ~131 KB). | `0` |
+| `kestra.amqp.client.automatic-recovery-enabled` | Automatically reconnect after network failure. | `true` |
+| `kestra.amqp.client.topology-recovery-enabled` | Re-declare exchanges, queues, and bindings after recovery. | `true` |
+| `kestra.amqp.client.network-recovery-interval` | Delay between automatic recovery attempts. | `PT5S` |
+| `kestra.amqp.client.publish-confirm-timeout` | Maximum wait for broker publish confirms before failing a publish. | `PT30S` |
+| `kestra.amqp.client.publish-channel-cache-size` | Number of idle publisher channels cached for reuse. `0` disables caching. | `32` |
+| `kestra.amqp.client.batch-size` | Per-consumer prefetch count and maximum messages processed per batch. | `100` |
+| `kestra.amqp.client.management.port` | HTTP port of the RabbitMQ management API. | `15672` |
+| `kestra.amqp.client.management.tls-port` | HTTPS port of the management API (used when the URL scheme is `amqps://`). | `15671` |
+| `kestra.amqp.client.management.connect-timeout` | HTTP connect timeout for management API calls. | `PT5S` |
+| `kestra.amqp.client.management.request-timeout` | HTTP request timeout for management API calls. | `PT10S` |
+
+For TLS-secured brokers, use `amqps://` in the URL. The management API port automatically switches to `management.tls-port` when the scheme is `amqps://`.
+
+### GCP Pub/Sub
+
+Set `kestra.queue.type: gcp-pubsub` and configure the client under `kestra.gcp-pubsub.client`.
+
+Minimal configuration:
+
+```yaml
+kestra:
+  queue:
+    type: gcp-pubsub
+  gcp-pubsub:
+    client:
+      project-id: my-gcp-project
+```
+
+Without a `service-account`, Kestra uses [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials): Workload Identity on GKE, the GCE metadata server, or `GOOGLE_APPLICATION_CREDENTIALS` in the environment.
+
+With an explicit service account key:
+
+```yaml
+kestra:
+  queue:
+    type: gcp-pubsub
+  gcp-pubsub:
+    client:
+      project-id: my-gcp-project
+      service-account: |
+        { "type": "service_account", ... }
+```
+
+#### Configuration reference
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.gcp-pubsub.client.project-id` | GCP project ID. Required. | — |
+| `kestra.gcp-pubsub.client.service-account` | Service account JSON key. Falls back to ADC when omitted. | — |
+| `kestra.gcp-pubsub.client.ack-deadline` | Acknowledgment deadline per message. | `PT10S` |
+| `kestra.gcp-pubsub.client.compression-enabled` | Enable gRPC message compression for Pub/Sub calls. | `true` |
+| `kestra.gcp-pubsub.client.compression-bytes-threshold` | Minimum message size in bytes before compression applies. | `10` |
+| `kestra.gcp-pubsub.client.exactly-once-delivery` | Enable exactly-once delivery on subscriptions. | `true` |
+| `kestra.gcp-pubsub.client.message-ordering` | Enable message ordering on subscriptions. | `true` |
+| `kestra.gcp-pubsub.client.message-retention-duration` | How long Pub/Sub retains unacknowledged messages. Leave unset to use the Pub/Sub subscription default. | — |
+
 ## MCP server cache
 
 Each webserver node caches MCP server configuration in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
@@ -523,7 +675,7 @@ kestra:
         type: gemini
         configuration:
           api-key: YOUR_GEMINI_API_KEY
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.5-flash-lite
       - id: openai-gpt
         display-name: OpenAI GPT
         type: openai
@@ -546,6 +698,20 @@ kestra:
 | `system-prompt.ask` | ❌ | Custom system prompt for Ask mode. |
 | `system-prompt.plan` | ❌ | Custom system prompt for Plan mode. |
 | `system-prompt.edit` | ❌ | Custom system prompt for Edit mode. |
+
+
+For OSS users, only Gemini is currently available; you can provide your Gemini API key to use the AI Copilot.
+
+```yaml
+kestra:
+  ai:
+    - id: gemini
+      display-name: Gemini
+      type: gemini
+      configuration:
+        api-key: YOUR_GEMINI_API_KEY
+        model-name: gemini-3.5-flash-lite
+```
 
 #### Configuration property reference
 

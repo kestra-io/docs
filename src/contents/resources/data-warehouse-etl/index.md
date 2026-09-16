@@ -83,7 +83,7 @@ In the final phase, the transformed data is loaded into the target data warehous
 
 *   **Full Refresh (or Overwrite)**: The existing data in the target table is completely replaced with the new data. This is simple but can be slow and disruptive for large tables.
 *   **Incremental Load (Append)**: New records are added to the target table without altering existing records. This is suitable for time-series data or logs.
-*   **Upsert (Update/Insert)**: New records are inserted, and existing records are updated based on a key. This is common for synchronizing dimension tables.
+*   **[Upsert](/resources/data/upsert) (Update/Insert)**: New records are inserted, and existing records are updated based on a key. This is common for synchronizing dimension tables.
 
 A well-designed [data warehouse integration strategy](https://kestra.io/blogs/2024-03-06-guide-integration-ingestion) will often combine these methods.
 
@@ -101,7 +101,7 @@ An efficient ETL process provides a solid foundation for data analytics. Key ben
 
 ### How ETL Supports Business Intelligence and Analytics
 
-The ultimate goal of a data warehouse is to support BI and analytics. ETL is the critical enabler of this goal. By transforming data into a structured, query-optimized format (like a star schema), ETL makes it easier and faster for BI tools like Tableau or Power BI to generate reports and dashboards. This structured approach also simplifies complex analytical queries, allowing data analysts and scientists to focus on uncovering insights rather than wrangling data. Effective [data observability](https://kestra.io/resources/data/data-observability) over ETL pipelines is key to trusting these downstream analytics.
+The ultimate goal of a data warehouse is to support BI and analytics. ETL is the critical enabler of this goal. By transforming data into a structured, query-optimized format (like a [star schema](/resources/data/star-schema)), ETL makes it easier and faster for BI tools like Tableau or Power BI to generate reports and dashboards. This structured approach also simplifies complex analytical queries, allowing data analysts and scientists to focus on uncovering insights rather than wrangling data. Effective [data observability](https://kestra.io/resources/data/data-observability) over ETL pipelines is key to trusting these downstream analytics.
 
 ## ETL vs. ELT: Understanding the Differences
 

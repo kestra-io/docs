@@ -1,14 +1,14 @@
 ---
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import GradientCard from "~/components/card/GradientCard.vue"
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 import { type PluginMetadata } from "~/utils/plugins/plugin"
 import TaskIcon from "./TaskIcon.astro"
 import { randomSortFunction } from "~/utils/random"
 
 const totalPlugins = await fetchTotalPluginsCount()
 const pluginMetadata =
-    await $fetchApiCached<PluginMetadata[]>("/plugins/metadata")
+    (await $fetchApiCachedOptional<PluginMetadata[]>("/plugins/metadata")) ?? []
 
 const filteredPlugins = pluginMetadata
     .filter(

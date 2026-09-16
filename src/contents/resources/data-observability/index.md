@@ -122,6 +122,7 @@ Understanding data dependencies is critical for effective incident management. K
 -   **End-to-end mapping:** Visualizing how data flows from source systems, through tables and pipelines, to BI dashboards and downstream applications.
 -   **Column-level lineage:** Tracing the journey of individual data fields to understand their origin and transformations.
 -   **Impact analysis:** When an issue is detected in an upstream table, the platform can immediately identify all downstream assets and stakeholders that will be affected.
+-   **Catalog integration:** Lineage is most actionable when it sits next to the schemas and ownership metadata already held in the catalog, as described in [data catalog lineage](/resources/data/data-catalog-lineage).
 
 ### Tracking Data Freshness, Volume, and Schema Changes
 
@@ -163,7 +164,7 @@ While concepts like the **5 C's of data** (Consent, Clarity, Consistency, Contro
 A data observability platform cannot exist in a vacuum. It must integrate deeply with the existing data stack. This includes connecting to:
 
 -   **Data warehouses and lakes:** Snowflake, BigQuery, Redshift, Databricks.
--   **ETL/ELT tools:** dbt, Fivetran, Airbyte.
+-   **ETL/ELT tools:** dbt, [Fivetran](/resources/data/fivetran-dbt-merger-fusion-engine), Airbyte.
 -   **BI platforms:** Tableau, Looker, Power BI.
 -   **Orchestration platforms:** Kestra, Airflow.
 
@@ -213,6 +214,7 @@ Kestra provides a centralized view of all your data operations, making it a natu
 -   **Custom Dashboards:** You can build dashboards within Kestra to visualize key data health metrics over time. For more advanced visualization, you can [configure monitoring with Grafana and Prometheus](https://kestra.io/docs/how-to-guides/monitoring).
 -   **Log Shipping:** The Enterprise Edition allows you to [centralize logs](https://kestra.io/docs/enterprise/governance/logshipper) by shipping them to platforms like Datadog, Splunk, or cloud storage, integrating Kestra's operational data into your broader observability strategy.
 -   **Rich Plugin Ecosystem:** With hundreds of [core plugins](https://kestra.io/plugins/core) and integrations for tools like [Google Cloud Monitoring](https://kestra.io/plugins/plugin-gcp/cloud-monitoring-observability), you can pull in observability data from across your stack.
+-   **Beyond Kestra:** For a broader survey of the category, including standalone options and what to look for in each, see our guide to [workflow monitoring tools](/resources/infrastructure/workflow-monitoring-tools).
 
 ### Case Study: Automating Remediation with Kestra for Data Anomalies
 

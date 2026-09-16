@@ -85,6 +85,7 @@ When evaluating solutions, consider these core pillars:
 *   **Scalability:** Can the scheduler handle your current and future workload? Look for an architecture that supports horizontal scaling, high concurrency, and efficient resource management. Check the platform's [hardware and software requirements](/docs/administrator-guide/requirements) to ensure it can grow with you.
 *   **Reliability:** How does the platform ensure that jobs run successfully? Key features include high availability to prevent single points of failure, robust error handling, automatic retries, and disaster recovery options.
 *   **Security:** A scheduler often has access to sensitive systems and data. Strong security is non-negotiable. Look for features like [Role-Based Access Control (RBAC)](/resources/infrastructure/rbac), integration with SSO providers, and comprehensive audit logs to track all activities.
+*   **Enterprise Scope:** Scale changes the requirements rather than just the volume — cross-platform dependencies, SLA-driven batch windows, and audit trails spanning business units. See [enterprise job scheduler](/resources/infrastructure/enterprise-job-scheduler) for what that tier demands.
 
 ### Integration with your existing tech stack
 

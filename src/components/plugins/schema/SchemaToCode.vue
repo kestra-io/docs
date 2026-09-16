@@ -45,7 +45,7 @@
             filename: null,
             highlights: () => [],
             meta: null,
-            theme: "github-dark"
+            theme: "github-dark-default"
         })
 
     const isHoveringCode = ref(false)
@@ -54,10 +54,16 @@
     const copyButton = ref<HTMLButtonElement>()
     const copyTooltip = ref<HTMLDivElement>()
 
-    const codeData = computed(() => props.highlighter.codeToHtml(props.code, {
-        lang: props.language,
-        theme: props.theme,
-    }))
+    // Grammars load on demand, so one the highlighter doesn't carry yet
+    // renders as plain text instead of throwing out of the computed.
+    const codeData = computed(() => {
+        const lang = (props.language ?? "text").trim().toLowerCase()
+        const loaded = props.highlighter.getLoadedLanguages().includes(lang)
+        return props.highlighter.codeToHtml(props.code, {
+            lang: loaded ? lang : "text",
+            theme: props.theme,
+        })
+    })
 
     function hoverCode(){
         isHoveringCode.value = true;

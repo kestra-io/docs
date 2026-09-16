@@ -110,7 +110,7 @@ Implementing a fuzzy search solution involves more than just choosing an algorit
 
 ### Automating the lifecycle of search indexes (creation, updates, re-indexing)
 
-Fuzzy search engines like [Elasticsearch](/plugins/plugin-elasticsearch) or [Meilisearch](/plugins/plugin-meilisearch) rely on indexes to provide fast responses. These indexes need to be created, populated, and updated whenever the source data changes. Kestra can automate this entire lifecycle. You can create a workflow that triggers on a schedule or an event (like a database update), extracts new data, transforms it, and pushes it to the search index. This ensures that your search results are always fresh and accurate.
+Fuzzy search engines like [Elasticsearch](/plugins/plugin-elasticsearch) or [Meilisearch](/plugins/plugin-meilisearch) rely on indexes to provide fast responses. These indexes need to be created, populated, and updated whenever the source data changes. Kestra can automate this entire lifecycle. You can create a workflow that triggers on a schedule or an event (like a database update), extracts new data, transforms it, and pushes it to the search index. This ensures that your search results are always fresh and accurate. If you are still choosing an engine, our guide to [Elasticsearch alternatives](/resources/data/elastic-search-alternatives) compares the trade-offs between managed and self-hosted options.
 
 ### Integrating fuzzy search capabilities into data pipelines
 

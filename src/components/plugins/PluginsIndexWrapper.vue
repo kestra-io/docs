@@ -5,7 +5,7 @@
     import { type Plugin, type PluginMetadata } from "~/utils/plugins/plugin"
     import PluginIndex from "~/components/plugins/PluginIndex.vue"
 
-    import MDCParserAndRendererSSR from "../MDCParserAndRendererSSR.vue"
+    import MarkdownRendererSSR from "../MarkdownRendererSSR.vue"
 
     const activeId = ref("")
 
@@ -73,7 +73,7 @@
             @navigate="navigate"
         >
             <template #markdown="{ content }">
-                <MDCParserAndRendererSSR :content />
+                <MarkdownRendererSSR :content />
             </template>
         </PluginIndex>
     </Suspense>

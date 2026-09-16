@@ -1,7 +1,5 @@
 ---
-import { $fetchApiCached } from "~/utils/fetch"
-import { calculateTotalPlugins } from "~/composables/usePluginsCount"
-import type { Plugin } from "~/utils/plugins/plugin"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 interface Props {
     content: {
@@ -30,8 +28,7 @@ const PLUGINS = [
     { src: "/icons/io.kestra.plugin.github-white.svg", alt: "GitHub" },
 ]
 
-const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
-const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+const totalPlugins = await fetchTotalPluginsCount()
 const displayDescription = content.description.replace(
     "{count}",
     `${totalPlugins}+`,

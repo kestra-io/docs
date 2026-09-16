@@ -321,6 +321,7 @@
             width: 100%;
         }
 
+
         $alert-types: (
             "danger": (
                 "color": "alert-danger",
@@ -418,15 +419,18 @@
 
     // Child-page card grid (versioned docs only — the latest docs' equivalent,
     // GuidesChildCard.vue's .card-grid/.card, is Vue-scoped so these values are
-    // duplicated here rather than shared)
-    .ks-card-grid {
+    // duplicated here rather than shared). Namespaced `ks-child-card-*` on
+    // purpose: this mixin is global on every docs page, and the latest docs'
+    // ChildCard.astro owns `.ks-card-*` — sharing those names boxed and
+    // misaligned its chevron (kestra-io/docs#5558).
+    .ks-child-card-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 0.5rem;
         margin-bottom: 2rem;
     }
 
-    .ks-card {
+    .ks-child-card {
         display: flex;
         flex-direction: column;
         padding: 1rem;
@@ -437,7 +441,7 @@
         color: var(--ks-content-link);
     }
 
-    .ks-card-icon {
+    .ks-child-card-icon {
         width: 48px;
         height: 48px;
         padding: 0.5rem;
@@ -447,7 +451,7 @@
         object-fit: fill;
     }
 
-    .ks-card-title {
+    .ks-child-card-title {
         font-size: $font-size-base;
         line-height: calc($font-size-base * 1.5);
         font-weight: 600;
@@ -455,7 +459,7 @@
         color: var(--ks-content-primary);
     }
 
-    .ks-card-text {
+    .ks-child-card-text {
         font-size: $font-size-base;
         color: var(--ks-content-primary);
         margin: 0;

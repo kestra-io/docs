@@ -134,7 +134,7 @@ Its strength lies in its simplicity and serverless nature, making it ideal for A
 
 Apache Airflow has long been the dominant open-source platform for data pipeline orchestration. Workflows, or DAGs (Directed Acyclic Graphs), are defined as Python code, giving data engineers immense flexibility. Its massive community has produced a vast ecosystem of operators for nearly every data tool.
 
-Most cloud providers offer managed Airflow services, such as Amazon MWAA and [Google Cloud Composer](/resources/data/cloud-composer-alternatives), which handle the operational burden of running the complex underlying infrastructure.
+Most cloud providers offer managed Airflow services, such as [Amazon MWAA](/resources/data/amazon-mwaa-alternatives) and [Google Cloud Composer](/resources/data/cloud-composer-alternatives), which handle the operational burden of running the complex underlying infrastructure.
 
 - **Best for**: Python-heavy data engineering teams with existing investment in the Airflow ecosystem, often leveraging managed services in the cloud for operational ease.
 - **Honest limitation**: The "everything as Python code" paradigm can be restrictive for polyglot teams or non-data workflows. Self-hosting Airflow also comes with significant operational overhead.

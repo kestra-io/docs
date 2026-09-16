@@ -60,6 +60,7 @@ Key drivers for adoption include:
 *   **Cutting Operational Costs:** Automation reduces the human hours required for routine tasks and minimizes the cost of errors. A Fortune 500 industrial company replaced VMware Aria Automation with Kestra, cutting costs while securing hybrid cloud automation across IT and OT environments.
 *   **Ensuring Compliance and Governance:** Centralized orchestration provides a complete, auditable record of every action taken. This is vital for regulated industries, from [financial services](/use-cases/financial-services) to the [public sector](/use-cases/public-services), where every change must be tracked.
 *   **Enhancing Experience:** Faster, more consistent service delivery improves satisfaction for both employees and customers. A frictionless onboarding process or a rapidly resolved support ticket builds trust and loyalty.
+*   **Connecting the Systems:** Most service workflows are a chain of API calls across separate products, which is why [API orchestration](/resources/infrastructure/api-orchestration) sits underneath them.
 
 ## Orchestrate Service Automation with Kestra: Incident Triage Example
 

@@ -128,6 +128,7 @@ A robust AI agent requires several key components to function effectively:
 - **Tool Access:** A secure and reliable way for the agent to use external tools and APIs.
 - **Memory Management:** A system for storing and retrieving information from past interactions.
 - **Orchestration Layer:** A control plane to define, execute, and monitor the agent's lifecycle and its interactions with other systems.
+- **Domain Grounding:** The same components behave very differently once pointed at a specific function — see [sales AI agents](/resources/ai/sales-ai-agent) for a worked example.
 
 Kestra provides a comprehensive suite of [AI tools](/docs/ai-tools) to build and manage these components declaratively.
 

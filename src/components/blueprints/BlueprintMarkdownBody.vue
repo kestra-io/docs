@@ -3,7 +3,7 @@
         <div class="container-xxl">
             <div class="bd-markdown">
                 <div
-                    class="mdc-renderer"
+                    class="markdown-renderer"
                     v-html="htmlContent"
                     @click="handleCopyClick"
                 />
@@ -60,6 +60,14 @@
     </section>
 </template>
 
+<script lang="ts">
+    import { warmHighlighter } from "~/markdown/marked-shiki"
+
+    // Module scope, not setup: starts the Shiki fetch when this island's
+    // chunk is evaluated, so its round trips overlap hydration.
+    warmHighlighter()
+</script>
+
 <script setup lang="ts">
     import { computed, ref } from "vue"
     import { getMarked } from "~/markdown/marked-shiki"
@@ -103,17 +111,17 @@
     // HTML instead of appearing only after client-side hydration. The
     // top-level await makes this an async component: BlueprintMarkdown.vue
     // provides the required <Suspense> boundary directly above it (the same
-    // shape as PluginsMDCRender > SchemaToHtml on the plugin pages).
+    // shape as PluginsMarkdownRender > SchemaToHtml on the plugin pages).
     if (props.description) {
         htmlContent.value = await getMarked().parse(props.description)
     }
 </script>
 
 <style scoped lang="scss">
-    @use "/src/assets/styles/mdc-renderer" as mdc;
+    @use "/src/assets/styles/markdown-renderer" as markdown;
 
-    .mdc-renderer {
-        @include mdc.mdc-renderer;
+    .markdown-renderer {
+        @include markdown.markdown-renderer;
     }
 
     .markdown {

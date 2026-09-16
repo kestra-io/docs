@@ -59,7 +59,7 @@ For analytical queries, Parquet offers significant performance gains:
 
 1.  **Reduced I/O:** By reading only the necessary columns, query engines minimize the amount of data read from disk or cloud storage. This is a game-changer for wide tables with hundreds of columns.
 2.  **Higher Compression Ratios:** Columnar data homogeneity leads to better compression, reducing storage footprint and costs, especially in cloud environments where storage is a recurring expense.
-3.  **Vectorized Execution:** Modern query engines like DuckDB, Polars, and those in Spark or Snowflake can leverage columnar data to perform operations on entire columns at once (vectorized processing), which is much faster than row-by-row iteration.
+3.  **Vectorized Execution:** Modern query engines like [DuckDB](/resources/data/duckdb-alternatives), Polars, and those in Spark or Snowflake can leverage columnar data to perform operations on entire columns at once (vectorized processing), which is much faster than row-by-row iteration.
 
 ### Common Use Cases for Parquet
 
@@ -69,6 +69,7 @@ Parquet is the de facto standard in many big data scenarios:
 *   **ETL/ELT Pipelines:** In a typical [data pipeline](/resources/data/data-pipeline), raw data might be ingested as JSON or CSV, then transformed and stored as Parquet for efficient downstream processing and analytics. This is a core pattern in modern [ETL workflows](/resources/data/etl-workflow).
 *   **Machine Learning:** ML training jobs often require reading specific features (columns) from massive datasets. Parquet allows for efficient loading of just these features.
 *   **Data Archiving:** Its high compression ratio makes it a cost-effective choice for long-term data storage. Kestra's internal [data storage](/docs/concepts/storage) system leverages similar principles for efficient data handling between tasks.
+*   **Streaming Ingestion:** Parquet is a columnar format written in batches, so the raw landing layer of a streaming pipeline is usually a row-oriented format such as [NDJSON](/resources/data/ndjson), converted to Parquet once records accumulate.
 
 ## Parquet vs. Other Data Formats: Choosing the Right Tool
 
