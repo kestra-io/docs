@@ -15,7 +15,7 @@ jobs:
   update-linux-snapshots:
     name: Update Linux Snapshots
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 75
     permissions:
       contents: write
 
