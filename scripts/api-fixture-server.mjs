@@ -183,11 +183,47 @@ async function fetchUpstream(path) {
     }
 }
 
+/**
+ * The page under test is served from another port, so every browser-side call
+ * here is cross-origin and credentialed: it needs the exact origin, not `*`.
+ *
+ * @param {import("node:http").IncomingMessage} req
+ * @param {Record<string, string>} headers
+ * @returns {Record<string, string>}
+ */
+function withCors(req, headers) {
+    const origin = req.headers.origin
+    if (!origin) {
+        return headers
+    }
+
+    return {
+        ...headers,
+        "access-control-allow-origin": origin,
+        "access-control-allow-credentials": "true",
+        vary: "origin",
+    }
+}
+
 const server = createServer(async (req, res) => {
     const path = req.url ?? "/"
 
+    if (req.method === "OPTIONS") {
+        res.writeHead(
+            204,
+            withCors(req, {
+                "access-control-allow-methods": "GET, OPTIONS",
+                "access-control-allow-headers":
+                    req.headers["access-control-request-headers"] ?? "*",
+                "access-control-max-age": "86400",
+            }),
+        )
+        res.end()
+        return
+    }
+
     if (path === "/__fixtures/stats") {
-        res.writeHead(200, { "content-type": "application/json" })
+        res.writeHead(200, withCors(req, { "content-type": "application/json" }))
         res.end(JSON.stringify(stats))
         return
     }
@@ -198,10 +234,13 @@ const server = createServer(async (req, res) => {
         const fixture = readFixture(path)
         if (fixture) {
             stats.hits++
-            res.writeHead(fixture.status, {
-                "content-type": fixture.contentType,
-                "cache-control": "no-store",
-            })
+            res.writeHead(
+                fixture.status,
+                withCors(req, {
+                    "content-type": fixture.contentType,
+                    "cache-control": "no-store",
+                }),
+            )
             res.end(fixture.body)
             return
         }
@@ -226,17 +265,20 @@ const server = createServer(async (req, res) => {
             stats.passthrough++
         }
 
-        res.writeHead(response.status, {
-            "content-type": response.contentType,
-            "cache-control": "no-store",
-        })
+        res.writeHead(
+            response.status,
+            withCors(req, {
+                "content-type": response.contentType,
+                "cache-control": "no-store",
+            }),
+        )
         res.end(response.body)
     } catch (err) {
         stats.errors++
         const message = err instanceof Error ? err.message : String(err)
         console.log(`  upstream failed for ${path}: ${message}`)
         // The detail stays in the log: the body reaches the page under test.
-        res.writeHead(502, { "content-type": "application/json" })
+        res.writeHead(502, withCors(req, { "content-type": "application/json" }))
         res.end(JSON.stringify({ error: "upstream fetch failed" }))
     }
 })
