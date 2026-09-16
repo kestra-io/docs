@@ -304,7 +304,7 @@ micronaut:
 ```
 
 :::alert{type="warning"}
-Leave CSRF protection enabled on any instance reachable from a browser. A `403` on the setup page after replacing an instance on the same host is usually a stale `csrfToken` cookie from the previous instance; clear it or reload the page.
+Leave CSRF protection enabled on any instance reachable from a browser. A token left by a previous Kestra instance on the same host is detected and renewed on page load, so it does not need to be cleared by hand.
 :::
 
 ## Configuring SSL with Kubernetes

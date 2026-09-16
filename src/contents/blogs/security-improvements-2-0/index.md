@@ -26,14 +26,14 @@ In 2.0, [workers never open a database connection](/docs/administrator-guide/sec
 A few consequences:
 
 - **Secrets are decrypted on read.** In 1.x, secret values could appear in plaintext in the persisted execution and on the wire to the worker. In 2.0, secrets stay encrypted on the job queue and on the wire, the worker decrypts them at the moment of use, and the plaintext is never written into the Execution. Masking is applied longest-first so a secret that is a prefix of another cannot leak through the shorter match.
-- **The channel can be encrypted and authenticated.** Worker-to-controller gRPC is plaintext by default. [TLS and mutual TLS are available on Enterprise Edition](/docs/administrator-guide/security-hardening#transport-security). With mTLS, a worker without a valid certificate is refused at the handshake. Enterprise also adds JWT-based worker authentication (`kestra.ee.worker.auth.enabled`, off by default) with registration tokens; setup is in the [gRPC TLS/mTLS configuration](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
+- **The channel can be encrypted and authenticated.** Whatever the edition, the stream carries no database credentials and secrets stay encrypted on it. The transport itself is plaintext by default. [TLS and mutual TLS are available on Enterprise Edition](/docs/administrator-guide/security-hardening#transport-security). With mTLS, a worker without a valid certificate is refused at the handshake. Enterprise also adds JWT-based worker authentication (`kestra.ee.worker.auth.enabled`, off by default) with registration tokens; setup is in the [gRPC TLS/mTLS configuration](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
 - **Worker calls are internal calls.** Worker gRPC traffic is flagged as internal, so IAM does not treat it as a user API call.
 
 In practice, this is what lets you run a worker in a restricted network, an air-gapped site or another region. If that worker is compromised, the attacker has the jobs it was given, not your database.
 
 ## Authentication
 
-**Password hashing.** The BasicAuth password was stored as salted SHA-512, which is fast to compute and therefore fast to brute-force offline. It is now bcrypt with cost 12. Existing hashes are wrapped at startup by migration `2.0.10-basic-auth-password`. This migration is irreversible and prevents rolling back to 1.x basic auth, so plan the upgrade accordingly; see [database migrations in the migration guide](/docs/migration-guide/v2.0.0/database-migrations).
+**Password hashing.** The BasicAuth password was stored as salted SHA-512, which is fast to compute and therefore fast to brute-force offline. It is now bcrypt with cost 12, which makes each guess cost a few hundred milliseconds instead of nanoseconds. Existing hashes are wrapped at startup by migration `2.0.10-basic-auth-password`. This migration is irreversible and prevents rolling back to 1.x basic auth, so plan the upgrade accordingly; see [database migrations in the migration guide](/docs/migration-guide/v2.0.0/database-migrations).
 
 More generally, no secret is stored in plaintext anymore. Non-recoverable secrets, passwords and tokens, use bcrypt. Recoverable secrets are encrypted with AES/GCM under `kestra.encryption.secret-key` ([encryption configuration](/docs/configuration/security-and-secrets#encryption)).
 
@@ -42,8 +42,6 @@ More generally, no secret is stored in plaintext anymore. Non-recoverable secret
 **Rate limiting.** All authentication endpoints are rate-limited to mitigate brute force. The login lockout is configurable under `kestra.security.login.failed-attempts` (defaults: 10 attempts, 5-minute window, 30-minute lock); see the [security and secrets configuration](/docs/enterprise/auth/rbac#user-lockout).
 
 **Access control fixes.** A namespace named `webhook` matched the anonymous open-URL prefix, which let anyone execute any flow in that namespace and read its outputs. [Open-URL matching now requires the actual webhook route](/docs/configuration/security-and-secrets#security-settings), and `/api/v1/basicAuthValidationErrors` was removed from the default open URLs. In clusters with several webservers, a changed password is rejected on every node immediately, and changing credentials now requires the current password. The pre-authentication guard fails closed to the login page. Soft-deleted flow revisions can no longer be executed.
-
-**Setup page.** On a fresh installation with no `basic-auth` configured, the Setup page is publicly reachable and the first person to reach it sets the credentials. Configure `kestra.server.basic-auth` in the application configuration before starting Kestra in production, as described in [credential initialization](/docs/administrator-guide/security-hardening#credential-initialization).
 
 ## Information disclosure
 
@@ -72,7 +70,7 @@ This is a breaking change, documented in [management endpoint hardening](/docs/m
 
 Kestra had no CSRF protection for browser sessions authenticated by cookie. 2.0 adds [a double-submit token](/docs/administrator-guide/ssl-configuration#csrf-protection), enforced when a session cookie is present and transparent to API and SDK clients that authenticate with headers.
 
-It took a few follow-ups to get right: the `Secure` flag follows the request scheme so plain-HTTP deployments keep working; the cookie name works over HTTP behind proxies; the token is stable across tabs and reloads and forwarded by the generated OpenAPI client; and a stale token left by a previous instance on the same host is replaced instead of blocking the setup page with a 403. If you hit that 403 after replacing an OSS instance with EE on the same host, this was the cause.
+It took a few follow-ups to get right: the `Secure` flag follows the request scheme so plain-HTTP deployments keep working; the cookie name works over HTTP behind proxies; the token is stable across tabs and reloads and forwarded by the generated OpenAPI client; and a stale token left by a previous instance on the same host is replaced instead of blocking the setup page with a 403.
 
 ## XSS
 
@@ -139,13 +137,13 @@ It is disabled by default and both limits are required when enabled. Set them fr
 
 ## Secrets masking in logs
 
-Masking existed in 1.x, with gaps. `SECRET` flow outputs and trigger outputs are masked like inputs. Exception messages and stack traces in execution logs are masked, not only the log statement, and the same applies to `logToFile` output. `kv()` is masked on read-only render paths such as `eval`, like `secret()`, and namespace ancestry uses a dot boundary so `dev` is no longer treated as the parent of `development`. The inputs wizard no longer persists `SECRET` values to browser storage. Plugin authors can mark a property as `secret = true` so it is masked without the platform knowing what it contains.
+2.0 closes the gaps in masking. `SECRET` flow outputs and trigger outputs are masked like inputs. Exception messages and stack traces in execution logs are masked, not only the log statement, and the same applies to `logToFile` output. `kv()` is masked on read-only render paths such as `eval`, like `secret()`, and namespace ancestry uses a dot boundary so `dev` is no longer treated as the parent of `development`. The inputs wizard no longer persists `SECRET` values to browser storage. Plugin authors can mark a property as `secret = true` so it is masked without the platform knowing what it contains.
 
 ## What to configure
 
 Most of the above is on by default. These are not, and are worth doing before the instance is used in production:
 
-1. Set `kestra.server.basic-auth` before the first start, or use OIDC, LDAP or SAML on Enterprise.
+1. Set `kestra.server.basic-auth` before the first start, or use OIDC, LDAP or SAML on Enterprise. On a fresh installation with no `basic-auth` configured, the Setup page is publicly reachable and the first person to reach it sets the credentials; see [credential initialization](/docs/administrator-guide/security-hardening#credential-initialization).
 2. Enable TLS, preferably mTLS, on the worker channel before a worker runs outside your trusted network.
 3. Configure the HTTP deny list with link-local and loopback ranges, and an allow list if your flows only call known hosts.
 4. Enable ZIP-bomb protection with limits that fit your imports.
