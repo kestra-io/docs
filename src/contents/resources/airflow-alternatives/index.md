@@ -27,7 +27,7 @@ This article explores the top alternatives to Airflow in 2026, offering a compar
 
 ## Why look for an alternative to Airflow?
 
-While Airflow is powerful, its architecture, born in a different era of data engineering, presents several challenges for modern teams. The [Airflow 2 End of Life](https://kestra.io/blogs/2026-04-06-airflow-2-end-of-life) and the subsequent migration to Airflow 3 have become a natural point for teams to re-evaluate whether it's the right long-term solution.
+While Airflow is powerful, its architecture, born in a different era of data engineering, presents several challenges for modern teams. The [Airflow 2 End of Life](https://kestra.io/blogs/2026-04-06-airflow-2-end-of-life) and the subsequent migration to Airflow 3 have become a natural point for teams to re-evaluate whether it's the right long-term solution — our [Airflow 2 end-of-life decision guide](/resources/airflow-2-eol-whitepaper) breaks down the upgrade-or-replace question in depth.
 
 Common pain points include:
 - **Operational Overhead and Complexity:** Managing Airflow's distributed components—scheduler, webserver, worker nodes, and metadata database—requires significant operational expertise. Debugging DAGs written in Python can be cumbersome, and dependency conflicts within the Python environment are a frequent source of friction.
