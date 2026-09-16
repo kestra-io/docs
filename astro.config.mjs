@@ -18,12 +18,12 @@ import expressiveCode from "astro-expressive-code"
 import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
+import { resolveRelativeDocLink } from "./src/markdown/remark/resolve-doc-link.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
@@ -86,39 +86,7 @@ export default defineConfig({
                          * @returns
                          */
                         replacer(url, file) {
-                            if (url.startsWith(".")) {
-                                // Extract hash fragment before processing relative URLs
-                                let hash = ""
-                                if (url.includes("#")) {
-                                    const hashIndex = url.indexOf("#")
-                                    hash = url.slice(hashIndex)
-                                    url = url.slice(0, hashIndex)
-                                }
-
-                                // if the file basename starts with index.
-                                if (
-                                    file.basename &&
-                                    file.basename.startsWith("index.")
-                                ) {
-                                    // if the url start with ./
-                                    if (url.startsWith("./") && file.dirname) {
-                                        // we preprend to the path the last part of the dirname
-                                        url = path.join(
-                                            path.basename(file.dirname),
-                                            url.slice(2),
-                                        )
-                                    }
-
-                                    // if the url starts with ../
-                                    if (url.startsWith("../")) {
-                                        // we replace ../ by ./
-                                        url = "./" + url.slice(3)
-                                    }
-                                }
-
-                                return generateId({ entry: url }) + hash
-                            }
-                            return url
+                            return resolveRelativeDocLink(url, file)
                         },
                     },
                 ],
