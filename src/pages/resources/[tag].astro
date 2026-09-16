@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro"
 import Layout from "~/components/layout.astro"
 import Mesh from "~/components/layout/Mesh.vue"
+import HeroGridPreload from "~/components/common/HeroGridPreload.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Link from "~/components/common/Link.astro"
 import ResourceList from "~/components/resources/ResourceList.astro"
@@ -32,6 +33,7 @@ const section = getResourceSection(tag)
     title={section.metaTitle}
     description={section.metaDescription}
 >
+    <HeroGridPreload slot="head" />
     <Mesh>
         <ResourceSearchHero
             heading={section.heading}
