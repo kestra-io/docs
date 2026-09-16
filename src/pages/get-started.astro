@@ -10,11 +10,15 @@ import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
 import GoFurther from "~/components/get-started/GoFurther.astro"
 import Testimonial from "~/components/home/Testimonial.astro"
 
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
 
-const { results: blueprints } = await $fetchApiCached(`/blueprints/versions/latest?page=1&size=6`)
-const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
+const { results: blueprints = [] } =
+    (await $fetchApiCachedOptional(
+        `/blueprints/versions/latest?page=1&size=6`,
+    )) ?? {}
+const tags =
+    (await $fetchApiCachedOptional(`/blueprints/versions/latest/tags`)) ?? []
 const totalBlueprints = await fetchTotalBlueprintsCount()
 
 const title = "Get Started with Kestra"
