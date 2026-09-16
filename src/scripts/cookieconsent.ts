@@ -16,6 +16,22 @@ let analyticsEnabled = false
 let marketingEnabled = false
 let consentInitialized = false
 
+// Injected at runtime, not imported from vendor.scss: only EU visitors ever see
+// the consent UI, so its stylesheet never blocks anyone's first render.
+const loadConsentStyles = async () => {
+    const { default: href } = await import(
+        "~/assets/styles/cookieconsent.scss?url"
+    )
+    const link = document.createElement("link")
+    link.rel = "stylesheet"
+    link.href = href
+    await new Promise((resolve) => {
+        link.addEventListener("load", resolve, { once: true })
+        link.addEventListener("error", resolve, { once: true })
+        document.head.appendChild(link)
+    })
+}
+
 const pushPageView = () => {
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({
@@ -107,7 +123,7 @@ const enabledMarketing = () => {
 // astro:page-load fires on the initial load *and* after every client-side
 // navigation, so GTM/PostHog bootstrap on whichever page the visitor lands on
 // first, and every subsequent page reports a page-view.
-document.addEventListener("astro:page-load", () => {
+document.addEventListener("astro:page-load", async () => {
     if (!isEurope) {
         enabledAnalytics()
         enabledMarketing()
@@ -126,6 +142,8 @@ document.addEventListener("astro:page-load", () => {
 
     consentInitialized = true
     document.documentElement.classList.add("cc--darkmode")
+
+    await loadConsentStyles()
 
     runCookieConsent({
         mode: isEurope ? "opt-in" : "opt-out",

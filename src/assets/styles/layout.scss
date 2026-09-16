@@ -2,9 +2,14 @@ $bd-gutter-x: 3rem;
 @import "variable";
 @import "markdown";
 
-.bd-content {
+// One grouped selector, not two calls: the mixin emits ~16 KB of rules, and
+// including it twice shipped that twice in the render-blocking bundle.
+.bd-content,
+.bd-markdown {
     @include markdown-styles;
+}
 
+.bd-content {
     a[target="_blank"]::after,
     a[href^="https://"]::after,
     a[href^="http://"]::after {
@@ -13,11 +18,8 @@ $bd-gutter-x: 3rem;
     }
 }
 
-.bd-markdown {
-    @include markdown-styles;
-    h1 {
-        display: none;
-    }
+.bd-markdown h1 {
+    display: none;
 }
 
 .bd-gutter {
