@@ -18,7 +18,8 @@ jobs:
     name: Build site
     if: startsWith(github.repository, 'kestra-io/')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # ~12k sharp transforms on a cold cache, on top of the ~6 min build.
+    timeout-minutes: 40
     permissions:
       contents: read
 
@@ -52,7 +53,10 @@ jobs:
       - name: Build site
         run: npm run build
         env:
-          NO_IMAGE_OPTIM: "true"
+          # Resize with sharp at build time. The preview deploys stay on
+          # NO_IMAGE_OPTIM, whose untransformed originals put /blogs at LCP
+          # 3.4 s on a 4.9 MB card image that is 17 KB in production.
+          IMAGE_OPTIM_AT_BUILD: "true"
           # Inlined into the server and client bundles, so both the build and
           # the SSR pages read the API through the fixture server.
           API_URL: http://127.0.0.1:9001/v1
