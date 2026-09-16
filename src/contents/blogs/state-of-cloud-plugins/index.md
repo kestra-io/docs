@@ -125,9 +125,9 @@ Three cloud providers are tracked as open issues today, and two of them are Euro
 
 [`kestra-io/plugin-scaleway#2`](https://github.com/kestra-io/plugin-scaleway/issues/2) is planned to cover Object Storage (S3-compatible), Compute Instances, Serverless Functions and Containers, Managed Databases, VPC and networking, Queues and Topics (SQS and SNS-compatible), Kubernetes Kapsule, and Generative APIs.
 
-Another issue (not yet published) covers OVHcloud compute: Public Cloud instances, bare metal servers, and Managed Kubernetes.
+[`kestra-io/plugin-ovhcloud#2`](https://github.com/kestra-io/plugin-ovhcloud/issues/2) covers OVHcloud compute: Public Cloud instances, bare metal servers, and Managed Kubernetes.
 
-Finally, a third issue scopes a full Oracle Cloud Infrastructure suite. OCI comes up most often from teams already running Oracle databases who want the surrounding infrastructure orchestrated from the same place.
+[`kestra-io/plugin-oci#2`](https://github.com/kestra-io/plugin-oci/issues/2) scopes a full Oracle Cloud Infrastructure suite. OCI comes up most often from teams already running Oracle databases who want the surrounding infrastructure orchestrated from the same place.
 
 If your provider is on none of those lists, the fastest way to change that is open [an issue on GitHub](https://github.com/kestra-io/kestra/issues/new/choose) or contact us via our Slack.
 
