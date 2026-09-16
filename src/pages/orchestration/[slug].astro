@@ -51,6 +51,7 @@ import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
 import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
 import WestBendLogo from "~/components/orchestrate/assets/west-bend.svg?raw"
 import Fortune500Logo from "~/components/enterprise/assets/fortune500.svg?raw"
+import { buildTaskUrls } from "~/utils/plugins/taskUrls"
 
 const versusLogoModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -207,13 +208,18 @@ try {
     console.warn(`Could not fetch plugin icon for ${tool.pluginClass}`, e)
 }
 
+// Resolve the plugin group page from the catalog: guessing `plugin-<segment>`
+// from the class name yields `/plugins/plugin-jdbc` for `io.kestra.plugin.jdbc.duckdb.Query`,
+// a page that only 301s to the /plugins index (the artifact is `plugin-jdbc-duckdb`).
+const canonicalTaskUrl = (await buildTaskUrls([tool.pluginClass]))[tool.pluginClass]
 const pluginParts = tool.pluginClass.split(".")
-const pluginDocsUrl =
-    pluginParts.length > 4 && pluginParts[3] === "ee"
-        ? `/plugins/plugin-ee-${pluginParts[4]}`
-        : pluginParts.length > 3
-          ? `/plugins/plugin-${pluginParts[3]}`
-          : null
+const pluginDocsUrl = canonicalTaskUrl?.startsWith("/plugins/")
+    ? canonicalTaskUrl.split("/").slice(0, 3).join("/")
+    : pluginParts.length > 4 && pluginParts[3] === "ee"
+      ? `/plugins/plugin-ee-${pluginParts[4]}`
+      : pluginParts.length > 3
+        ? `/plugins/plugin-${pluginParts[3]}`
+        : null
 
 const toolKeyword = tool.name.toLowerCase().split(" ")[0]
 const allBlogs = await getCollection("blogs")
