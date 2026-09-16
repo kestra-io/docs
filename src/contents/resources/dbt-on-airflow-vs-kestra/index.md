@@ -65,7 +65,7 @@ Despite its popularity, orchestrating dbt with Airflow introduces significant op
 *   **Python Boilerplate:** Every dbt task must be wrapped in Python code, leading to verbose and often repetitive DAG files. This makes simple dbt runs more complex than they need to be.
 *   **Environment Isolation:** Managing Python virtual environments to avoid dependency conflicts between different DAGs and tasks is a persistent struggle.
 *   **Debugging:** When a dbt model fails, debugging requires tracing the error from dbt's logs back through the Airflow operator and the underlying Python environment, complicating root cause analysis.
-*   **Operational Overhead:** Running Airflow in production requires managing a complex architecture of schedulers, workers, and a metadata database, which can be a full-time job. Even with the updates in [Airflow 3 vs Airflow 2](/blogs/airflow-3-vs-airflow-2), this core complexity remains, leading many to seek [enterprise Airflow alternatives](/blogs/enterprise-airflow-alternatives).
+*   **Operational Overhead:** Running Airflow in production requires managing a complex architecture of schedulers, workers, and a metadata database, which can be a full-time job. Even with the updates in [Airflow 3 vs Airflow 2](/blogs/airflow-3-vs-airflow-2), this core complexity remains, leading many to seek [enterprise Airflow alternatives](/blogs/enterprise-airflow-alternatives). With [Airflow 2 now end-of-life](/resources/airflow-2-eol-whitepaper), that re-evaluation has a deadline attached.
 
 ## Kestra for dbt Orchestration: Declarative and Unified
 
