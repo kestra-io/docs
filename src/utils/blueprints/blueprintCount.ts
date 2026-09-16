@@ -1,9 +1,9 @@
-import { $fetchApiCachedWithRetry } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 
 // Un-memoized: for per-request (prerender = false) pages, where the memo
 // below freezes the count for the Worker isolate's lifetime.
 export async function loadTotalBlueprintsCount(): Promise<string> {
-    const { total } = await $fetchApiCachedWithRetry<{ total?: number }>(
+    const { total } = await $fetchApiCached<{ total?: number }>(
         "/blueprints/versions/latest?size=1&page=1",
     )
     const rounded = Math.floor((total ?? 0) / 10) * 10

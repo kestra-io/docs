@@ -1,4 +1,4 @@
-import { $fetchApiCachedWithRetry } from "~/utils/fetch";
+import { $fetchApiCached } from "~/utils/fetch";
 import { isEntryAPluginElementPredicate, type Plugin, type PluginElement } from "./plugin";
 
 // Distinct task/trigger/... classes across all plugin groups. A class listed in
@@ -24,7 +24,7 @@ export function formatPluginCount(count: number): string {
 }
 
 async function loadTotalPluginsCount(): Promise<string> {
-    const pluginGroups = await $fetchApiCachedWithRetry<Plugin[]>("/plugins/subgroups");
+    const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups");
     const count = calculateTotalPlugins(pluginGroups);
     const formatted = formatPluginCount(count);
     // A 200 carrying an empty or unexpected payload is as wrong as a failed

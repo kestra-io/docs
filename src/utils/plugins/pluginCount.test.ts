@@ -7,7 +7,7 @@ import {
 
 // ~/utils/fetch imports astro:env/client, which only exists inside an Astro
 // build; mock that virtual module and stub global fetch so the real
-// $fetchApiCachedWithRetry path (including its backoff) is what runs here.
+// internalFetch path (including its retry backoff) is what runs here.
 vi.mock("astro:env/client", () => ({ API_URL: "https://api.test" }))
 const fetchMock = vi.fn()
 vi.stubGlobal("fetch", fetchMock)
@@ -250,13 +250,13 @@ describe("fetchTotalPluginsCount", () => {
 
             await vi.advanceTimersByTimeAsync(0)
             expect(fetchMock).toHaveBeenCalledTimes(1)
-            // Second attempt only after the first 500ms backoff...
-            await vi.advanceTimersByTimeAsync(499)
+            // Second attempt only after the first 250ms backoff...
+            await vi.advanceTimersByTimeAsync(249)
             expect(fetchMock).toHaveBeenCalledTimes(1)
             await vi.advanceTimersByTimeAsync(1)
             expect(fetchMock).toHaveBeenCalledTimes(2)
-            // ...and the third after a longer 1000ms backoff.
-            await vi.advanceTimersByTimeAsync(1000)
+            // ...and the third after a doubled 500ms backoff.
+            await vi.advanceTimersByTimeAsync(500)
             expect(fetchMock).toHaveBeenCalledTimes(3)
 
             await expect(promise).rejects.toThrow("API down")
