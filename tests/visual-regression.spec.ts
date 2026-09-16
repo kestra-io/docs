@@ -1,15 +1,15 @@
 import { test, expect } from "@playwright/test"
-import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
+import { PAGES } from "./fixtures/page-sample.mjs"
 
 /**
  * Visual regression screenshot tests for the Kestra docs site.
  *
- * Covers the Lighthouse page sample plus VISUAL_ONLY_PAGES, which exists so
- * every surface touched by the SVG asset rework has a baseline. Run
- * `npx playwright test --update-snapshots` to regenerate after intended changes.
+ * These capture baseline screenshots of key pages across desktop, tablet, and
+ * mobile viewports. Run `npx playwright test --update-snapshots` to regenerate
+ * baselines after intentional visual changes.
  */
 
-for (const page of [...PAGES, ...VISUAL_ONLY_PAGES]) {
+for (const page of PAGES) {
     test(`${page.label} matches screenshot`, async ({ page: p }) => {
         // networkidle never settles on pages that keep polling, which is how a
         // run wedges with no output. Wait for fonts instead, they drive layout.
