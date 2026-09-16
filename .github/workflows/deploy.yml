@@ -88,7 +88,7 @@ jobs:
       # Restore only: the save is an explicit step below, so the prune can follow it.
       - name: Restore Astro build cache
         id: astro-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           # A matched directory is archived whole, so the passthrough image cache is
           # removed by the last step below rather than excluded by pattern.
@@ -163,7 +163,7 @@ jobs:
       # Saved here, on success, so the prune below runs after it: a failed save then
       # leaves the ref its previous entry instead of none. A re-run's key already exists.
       - name: Save Astro build cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: node_modules/.astro
           key: ${{ steps.astro-cache.outputs.cache-primary-key }}
