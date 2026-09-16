@@ -59,7 +59,7 @@ kestra:
     http:
       allowed-list:
         - https://api.example.com
-        - https://data.partner.io
+        - https://*.data.partner.io   # matches foo.data.partner.io, bar.data.partner.io, etc.
       denied-list:
         - http://169.254.169.254
         - http://localhost
@@ -68,16 +68,26 @@ kestra:
 
 | Property | Default | Description |
 |---|---|---|
-| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
-| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must match at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
 
 Both lists are empty by default — no filtering is applied unless you configure them.
 
 When both lists are set, the allowed-list is checked first. A URI that matches an allowed-list entry but also matches a denied-list entry is still blocked.
 
-**Matching is prefix-based**, not glob or CIDR. Each entry is a literal string prefix, so:
-- `http://169.254.169.254` blocks `http://169.254.169.254/latest/meta-data/...`
-- `http://10.` blocks `http://10.0.0.1/admin` but not `https://10.0.0.1/admin` because the scheme differs
+### Matching rules
+
+Host matching is **exact** by default. The scheme and port must also match. The path is prefix-matched.
+
+- `https://api.example.com` matches `https://api.example.com/v1/data` but not `https://sub.api.example.com/v1/data`.
+- `http://169.254.169.254` blocks `http://169.254.169.254/latest/meta-data/...`.
+
+**Wildcard subdomain matching**: prefix an entry with `*.` to match all subdomains of a host. A wildcard entry matches subdomains only — not the host itself.
+
+- `*.example.com` (or `https://*.example.com`) matches `foo.example.com` and `bar.example.com` but not `example.com`.
+- To match both a domain and all its subdomains, add two entries: `example.com` and `*.example.com`.
+
+Matching is not CIDR or glob-based. IP ranges cannot be expressed as a single entry; list each address explicitly.
 
 When a URI is blocked, the task fails with an error that identifies the matching config key:
 
