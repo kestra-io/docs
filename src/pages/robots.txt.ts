@@ -29,6 +29,10 @@ Disallow: /*?q=
 Disallow: /*?search=
 Disallow: /*?ref=
 Disallow: /*?utm_
+Disallow: /*?clid=
+Disallow: /*&clid=
+Disallow: /*?__hs
+Disallow: /*&__hs
 `}${disabled ? "" : "Sitemap: https://kestra.io/sitemap/index.xml"}`
 
     return new Response(result, {
