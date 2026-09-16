@@ -5,6 +5,7 @@ import { $fetchApiCached } from "~/utils/fetch"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import KestraIcon from "~/components/icons/KestraIcon.vue"
 import { randomSortFunction } from "~/utils/random"
+import { fetchDeprecatedOnlyPlugins } from "~/utils/plugins/deprecatedOnlyPlugins"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
@@ -22,8 +23,16 @@ try {
         await $fetchApiCached<{ artifactId: string; group: string; name: string }[]>(
             "/plugins/metadata",
         )
+    // Metadata keeps listing plugins whose elements are all deprecated; their
+    // group page 301s to /plugins, so linking a logo there is a redirected link.
+    const deprecatedOnly = await fetchDeprecatedOnlyPlugins()
     plugins = metadata
-        .filter((p) => p.artifactId && !excluded.test(p.artifactId))
+        .filter(
+            (p) =>
+                p.artifactId &&
+                !excluded.test(p.artifactId) &&
+                !deprecatedOnly.has(p.artifactId.toLowerCase()),
+        )
         .map((p) => ({
             ...p,
             // Link logos to the plugin group page (always 200) to avoid the
