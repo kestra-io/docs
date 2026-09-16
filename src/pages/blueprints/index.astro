@@ -13,7 +13,10 @@ import TokenSearch from "~/components/blueprints/TokenSearch.vue"
 import { visibleTags } from "~/utils/blueprints/visibleTags"
 import { splitTagsByAxis, PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import { categoryTileMetaFor } from "~/utils/blueprints/categoryMeta"
-import { loadTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
+import {
+    loadTotalBlueprintsCount,
+    BLUEPRINT_COUNT_FLOOR,
+} from "~/utils/blueprints/blueprintCount"
 import { fetchFullCatalog } from "~/utils/blueprints/catalog"
 import {
     blueprintHasSubtag,
@@ -98,7 +101,7 @@ const [
     fetchFullCatalog(),
     // Per-request page: fetched fresh, not through the build-time memo, and it
     // degrades like the rest of the page instead of 500ing on an API failure.
-    loadTotalBlueprintsCount().catch(() => "0"),
+    loadTotalBlueprintsCount().catch(() => `${BLUEPRINT_COUNT_FLOOR}`),
     Promise.all(categoryTags.map((tag) => fetchTagCount(tag.id))),
     Promise.all(patternTags.map((tag) => fetchTagCount(tag.id))),
 ])

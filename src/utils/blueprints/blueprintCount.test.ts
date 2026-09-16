@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
+import { BLUEPRINT_COUNT_FLOOR } from "~/utils/blueprints/blueprintCount"
 
 // ~/utils/fetch imports astro:env/client, which only exists inside an Astro
 // build; mock that virtual module and stub global fetch so the real
@@ -47,23 +48,23 @@ describe("fetchTotalBlueprintsCount", () => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
     })
 
-    it("throws rather than shipping 0 when the response carries no usable total", async () => {
+    it("falls back to the floor rather than shipping 0 when the response carries no usable total", async () => {
         fetchMock.mockResolvedValue(jsonResponse({}))
         const fetchTotalBlueprintsCount = await freshFetchTotalBlueprintsCount()
 
-        await expect(fetchTotalBlueprintsCount()).rejects.toThrow(
-            "no usable total",
+        await expect(fetchTotalBlueprintsCount()).resolves.toBe(
+            `${BLUEPRINT_COUNT_FLOOR}`,
         )
         // The request itself succeeded, so it is not retried.
         expect(fetchMock).toHaveBeenCalledTimes(1)
     })
 
-    it("throws when the total rounds down to zero", async () => {
+    it("falls back to the floor when the total rounds down to zero", async () => {
         fetchMock.mockResolvedValue(jsonResponse({ total: 4 }))
         const fetchTotalBlueprintsCount = await freshFetchTotalBlueprintsCount()
 
-        await expect(fetchTotalBlueprintsCount()).rejects.toThrow(
-            "no usable total",
+        await expect(fetchTotalBlueprintsCount()).resolves.toBe(
+            `${BLUEPRINT_COUNT_FLOOR}`,
         )
     })
 
@@ -119,14 +120,13 @@ describe("fetchTotalBlueprintsCount", () => {
         }
     })
 
-    it("backs off between attempts and throws once all attempts fail", async () => {
+    it("backs off between attempts and falls back to the floor once all attempts fail", async () => {
         vi.useFakeTimers()
         try {
             fetchMock.mockRejectedValue(new Error("API down"))
             const fetchTotalBlueprintsCount = await freshFetchTotalBlueprintsCount()
 
             const promise = fetchTotalBlueprintsCount()
-            promise.catch(() => {}) // observed below; avoid an unhandled rejection
 
             await vi.advanceTimersByTimeAsync(0)
             expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -139,13 +139,13 @@ describe("fetchTotalBlueprintsCount", () => {
             await vi.advanceTimersByTimeAsync(500)
             expect(fetchMock).toHaveBeenCalledTimes(3)
 
-            await expect(promise).rejects.toThrow("API down")
+            await expect(promise).resolves.toBe(`${BLUEPRINT_COUNT_FLOOR}`)
         } finally {
             vi.useRealTimers()
         }
     })
 
-    it("does not memoize an exhausted failure: the next call starts fresh and can succeed", async () => {
+    it("does not memoize a floored failure: the next call starts fresh and can succeed", async () => {
         vi.useFakeTimers()
         try {
             fetchMock
@@ -156,9 +156,8 @@ describe("fetchTotalBlueprintsCount", () => {
             const fetchTotalBlueprintsCount = await freshFetchTotalBlueprintsCount()
 
             const failing = fetchTotalBlueprintsCount()
-            failing.catch(() => {})
             await vi.runAllTimersAsync()
-            await expect(failing).rejects.toThrow("API down")
+            await expect(failing).resolves.toBe(`${BLUEPRINT_COUNT_FLOOR}`)
             expect(fetchMock).toHaveBeenCalledTimes(3)
 
             const retried = fetchTotalBlueprintsCount()

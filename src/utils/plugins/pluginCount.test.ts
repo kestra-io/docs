@@ -3,6 +3,7 @@ import {
     calculateTotalPlugins,
     formatPluginCount,
     replaceTotalPluginsPlaceholder,
+    PLUGIN_COUNT_FLOOR,
 } from "~/utils/plugins/pluginCount"
 
 // ~/utils/fetch imports astro:env/client, which only exists inside an Astro
@@ -149,23 +150,23 @@ describe("fetchTotalPluginsCount", () => {
         expect(await fetchTotalPluginsCount()).toBe("1,900")
     })
 
-    it("throws rather than shipping 0 when the payload yields no plugin classes", async () => {
+    it("falls back to the floor rather than shipping 0 when the payload yields no plugin classes", async () => {
         fetchMock.mockResolvedValue(jsonResponse([]))
         const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
 
-        await expect(fetchTotalPluginsCount()).rejects.toThrow(
-            "no usable plugin classes",
+        await expect(fetchTotalPluginsCount()).resolves.toBe(
+            formatPluginCount(PLUGIN_COUNT_FLOOR),
         )
         // The request itself succeeded, so it is not retried.
         expect(fetchMock).toHaveBeenCalledTimes(1)
     })
 
-    it("throws when the class count rounds down to zero", async () => {
+    it("falls back to the floor when the class count rounds down to zero", async () => {
         fetchMock.mockResolvedValue(subgroupsWith(42))
         const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
 
-        await expect(fetchTotalPluginsCount()).rejects.toThrow(
-            "no usable plugin classes",
+        await expect(fetchTotalPluginsCount()).resolves.toBe(
+            formatPluginCount(PLUGIN_COUNT_FLOOR),
         )
     })
 
@@ -239,14 +240,13 @@ describe("fetchTotalPluginsCount", () => {
         }
     })
 
-    it("backs off between attempts and throws once all attempts fail", async () => {
+    it("backs off between attempts and falls back to the floor once all attempts fail", async () => {
         vi.useFakeTimers()
         try {
             fetchMock.mockRejectedValue(new Error("API down"))
             const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
 
             const promise = fetchTotalPluginsCount()
-            promise.catch(() => {}) // observed below; avoid an unhandled rejection
 
             await vi.advanceTimersByTimeAsync(0)
             expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -259,13 +259,15 @@ describe("fetchTotalPluginsCount", () => {
             await vi.advanceTimersByTimeAsync(500)
             expect(fetchMock).toHaveBeenCalledTimes(3)
 
-            await expect(promise).rejects.toThrow("API down")
+            await expect(promise).resolves.toBe(
+                formatPluginCount(PLUGIN_COUNT_FLOOR),
+            )
         } finally {
             vi.useRealTimers()
         }
     })
 
-    it("does not memoize an exhausted failure: the next call starts fresh and can succeed", async () => {
+    it("does not memoize a floored failure: the next call starts fresh and can succeed", async () => {
         vi.useFakeTimers()
         try {
             fetchMock
@@ -276,9 +278,10 @@ describe("fetchTotalPluginsCount", () => {
             const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
 
             const failing = fetchTotalPluginsCount()
-            failing.catch(() => {})
             await vi.runAllTimersAsync()
-            await expect(failing).rejects.toThrow("API down")
+            await expect(failing).resolves.toBe(
+                formatPluginCount(PLUGIN_COUNT_FLOOR),
+            )
             expect(fetchMock).toHaveBeenCalledTimes(3)
 
             const retried = fetchTotalPluginsCount()

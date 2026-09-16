@@ -28,7 +28,7 @@ async function loadTotalPluginsCount(): Promise<string> {
     const count = calculateTotalPlugins(pluginGroups);
     const formatted = formatPluginCount(count);
     // A 200 carrying an empty or unexpected payload is as wrong as a failed
-    // request, so it fails the same way rather than shipping "0+ plugins".
+    // request, so it takes the same fallback rather than shipping "0+ plugins".
     if (formatted === "0") {
         throw new Error(
             `Plugins subgroups endpoint returned no usable plugin classes (counted ${count})`,
@@ -37,18 +37,28 @@ async function loadTotalPluginsCount(): Promise<string> {
     return formatted;
 }
 
+// Shown only when the request and both of internalFetch's retries have failed.
+// Deliberately a round number at or below the real total: it must never read as
+// a precise-but-stale figure, and it must never be "0+ plugins".
+export const PLUGIN_COUNT_FLOOR = 2000;
+
 let totalPluginsCountPromise: Promise<string> | undefined;
 
 // Build-time plugin total, floored to the hundred and formatted for display
-// without the trailing "+" (e.g. "1,900"); callers append it.
-// Memoized so every page shares one request; a failure is not cached and
-// propagates rather than degrading to "0", so a build fails loudly instead.
+// without the trailing "+" (e.g. "2,000"); callers append it.
+// Memoized so every page shares one request. A failure is not cached: it falls
+// back to PLUGIN_COUNT_FLOOR for this caller and the next one tries again, so a
+// blip cannot freeze the floor across a whole build, and cannot abort one
+// either — every page showing this number is prerendered.
 export function fetchTotalPluginsCount(): Promise<string> {
     if (!totalPluginsCountPromise) {
         totalPluginsCountPromise = loadTotalPluginsCount().catch((e) => {
             totalPluginsCountPromise = undefined;
-            console.error("Failed to fetch plugins count:", e);
-            throw e;
+            console.error(
+                `Failed to fetch plugins count, falling back to ${PLUGIN_COUNT_FLOOR}:`,
+                e,
+            );
+            return formatPluginCount(PLUGIN_COUNT_FLOOR);
         });
     }
     return totalPluginsCountPromise;
