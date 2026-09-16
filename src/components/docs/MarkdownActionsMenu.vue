@@ -1,5 +1,5 @@
 <template>
-    <div v-if="markdownBody" class="markdown-actions dropdown">
+    <div v-if="markdownBody || lazyMarkdown" class="markdown-actions dropdown">
         <button
             class="markdown-actions-trigger"
             type="button"
@@ -38,20 +38,26 @@
     import { useMarkdownActions } from "~/composables/useMarkdownActions"
     import type { MarkdownActionDefinition, MarkdownActionId } from "~/utils/markdown-actions"
 
-    const props = defineProps<{
-        markdownBody: string
-        pagePath: string
-        pageTitle?: string
-        pageUrl?: string
-        editUrl?: string
-        stem?: string
-        extension?: string
-        /** Action ids to omit from the menu (e.g. "edit" when there's no repo file to link to). */
-        excludeActions?: MarkdownActionId[]
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            markdownBody?: string
+            pagePath: string
+            pageTitle?: string
+            pageUrl?: string
+            editUrl?: string
+            stem?: string
+            extension?: string
+            /** Action ids to omit from the menu (e.g. "edit" when there's no repo file to link to). */
+            excludeActions?: MarkdownActionId[]
+            /** Fetch the markdown on copy instead of passing it in `markdownBody`. */
+            lazyMarkdown?: boolean
+        }>(),
+        { markdownBody: "" },
+    )
 
     const context = computed(() => ({
         markdownBody: props.markdownBody,
+        lazyMarkdown: props.lazyMarkdown,
         pagePath: props.pagePath,
         pageTitle: props.pageTitle,
         pageUrl: props.pageUrl,
