@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest"
 import {
+    canonicalPayload,
     collectionContentDigest,
     collectionMetadataDigest,
     entryCacheKey,
@@ -146,6 +147,39 @@ describe("apiPayloadDigest", () => {
     it("returns undefined when a payload can't be read", async () => {
         fetchMock.mockRejectedValue(new Error("503"))
         expect(await digest("/plugins/subgroups")).toBeUndefined()
+    })
+
+    // /plugins/subgroups returns the same plugins in a different order per request.
+    it("ignores the order a payload lists its entries in", async () => {
+        fetchMock.mockResolvedValue({ plugins: [{ name: "a" }, { name: "b" }] })
+        const base = await digest("/plugins/subgroups")
+        fetchMock.mockResolvedValue({ plugins: [{ name: "b" }, { name: "a" }] })
+        expect(await digest("/plugins/subgroups")).toBe(base)
+    })
+})
+
+describe("canonicalPayload", () => {
+    it("orders object keys and array elements", () => {
+        expect(JSON.stringify(canonicalPayload({ b: 1, a: [3, 1, 2] }))).toBe(
+            JSON.stringify({ a: [1, 2, 3], b: 1 }),
+        )
+    })
+
+    it("orders nested arrays of objects", () => {
+        const one = canonicalPayload([{ x: 2 }, { x: 1 }])
+        const other = canonicalPayload([{ x: 1 }, { x: 2 }])
+        expect(JSON.stringify(one)).toBe(JSON.stringify(other))
+    })
+
+    it("still separates different content", () => {
+        expect(JSON.stringify(canonicalPayload([1, 2]))).not.toBe(
+            JSON.stringify(canonicalPayload([1, 3])),
+        )
+    })
+
+    it("leaves scalars and strings alone", () => {
+        expect(canonicalPayload("<svg />")).toBe("<svg />")
+        expect(canonicalPayload(null)).toBe(null)
     })
 })
 

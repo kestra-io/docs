@@ -89,13 +89,12 @@ const LOGO_MAP: Record<string, string> = {
 export async function getStaticPaths() {
     // Astro tree-shakes the rest of the frontmatter out of the getStaticPaths
     // module, so anything this needs has to be defined inside it.
+    // The graph is derived from the flow source, and the API regenerates its
+    // node ids and edge order per request, so the source stands in for both.
     const blueprintPayloads = (data: OrchestrationData) => [
         ...data.blueprints.items.flatMap((item) =>
             item.blueprintId
-                ? [
-                      `/blueprints/${item.blueprintId}/versions/latest`,
-                      `/blueprints/${item.blueprintId}/versions/latest/graph`,
-                  ]
+                ? [`/blueprints/${item.blueprintId}/versions/latest`]
                 : [],
         ),
         `/blueprints/versions/latest?q=${encodeURIComponent(data.tool.name)}&size=1`,

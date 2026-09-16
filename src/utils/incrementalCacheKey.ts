@@ -81,6 +81,30 @@ export function entryCacheKey(
         : [entry.digest, ...scope].join("|")
 }
 
+/** Canonical form of a payload, with object keys and array elements ordered, so
+ * a digest tracks content rather than the order the API happened to return. */
+export function canonicalPayload(value: unknown): unknown {
+    if (Array.isArray(value)) {
+        // One stringify per element, rather than one per comparison.
+        return value
+            .map((item) => {
+                const canonical = canonicalPayload(item)
+                return [JSON.stringify(canonical), canonical] as const
+            })
+            .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+            .map(([, canonical]) => canonical)
+    }
+    if (value && typeof value === "object") {
+        const source = value as Record<string, unknown>
+        return Object.fromEntries(
+            Object.keys(source)
+                .sort()
+                .map((key) => [key, canonicalPayload(source[key])]),
+        )
+    }
+    return value
+}
+
 /** Digest of a set of remote payloads, or undefined when any of them can't be
  * read, which leaves the page uncached instead of keying it on a failure. */
 async function remoteDigest(
@@ -92,7 +116,9 @@ async function remoteDigest(
         const payloads = await Promise.all(
             [...new Set(keys)]
                 .sort()
-                .map(async (key) => JSON.stringify([key, await load(key)])),
+                .map(async (key) =>
+                    JSON.stringify([key, canonicalPayload(await load(key))]),
+                ),
         )
         return hashString(payloads.join("\n"))
     } catch (error) {
