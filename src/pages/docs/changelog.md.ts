@@ -26,10 +26,14 @@ export const GET: APIRoute = async () => {
 
     const markdown = buildChangelogMarkdown(buildChangelogEntries(releases))
 
+    // Lets browsers and the AI-tool fetchers reuse the 261 KB document for an
+    // hour, the same window $fetchCached gives the upstream GitHub call. The
+    // Worker itself only edge-caches plugin and blueprint pages (worker.ts).
     return new Response(markdown, {
         status: 200,
         headers: {
             "Content-Type": "text/markdown; charset=utf-8",
+            "Cache-Control": "public, max-age=3600",
         },
     })
 }
