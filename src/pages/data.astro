@@ -11,13 +11,15 @@ import DataPlugins from "~/components/data/DataPlugins.astro"
 import ComparisonGrid from "~/components/data/ComparisonGrid.astro"
 import DataTestimonial from "~/components/data/DataTestimonial.astro"
 import BlueprintsGrid from "~/components/common/BlueprintsGrid.astro"
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 
-const { results: blueprints } = await $fetchApiCached(
-    `/blueprints/versions/latest?tags=data&page=1&size=20`,
-)
+const { results: blueprints = [] } =
+    (await $fetchApiCachedOptional(
+        `/blueprints/versions/latest?tags=data&page=1&size=20`,
+    )) ?? {}
 
-const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
+const tags =
+    (await $fetchApiCachedOptional(`/blueprints/versions/latest/tags`)) ?? []
 
 const title = "Declarative Orchestration for Modern Data Engineers"
 const description =

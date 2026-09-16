@@ -88,7 +88,7 @@ const competitorImg = getImgSvg(imgFilename)
 const totalPlugins = await fetchTotalPluginsCount()
 const seeHowBodyText = (seeHowBody ?? "").replace(
     "{totalPlugins}",
-    totalPlugins,
+    `${totalPlugins}`,
 )
 ---
 

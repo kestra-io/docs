@@ -8,6 +8,8 @@ const json = (body: unknown) =>
         status: 200,
         headers: { "content-type": "application/json" },
     })
+const failure = (status: number, headers: Record<string, string> = {}) =>
+    new Response("upstream down", { status, headers })
 
 beforeEach(() => {
     fetchMock.mockReset()
@@ -67,12 +69,140 @@ describe("$fetchApiCached during a production build", () => {
 
     it("retries after a failure instead of replaying it", async () => {
         fetchMock
-            .mockImplementationOnce(() => Promise.reject(new Error("down")))
+            .mockImplementationOnce(() => Promise.resolve(failure(404)))
             .mockImplementation(() => Promise.resolve(json({ ok: true })))
         const { $fetchApiCached } = await load()
 
-        await expect($fetchApiCached("/flaky")).rejects.toThrow("down")
+        await expect($fetchApiCached("/flaky")).rejects.toThrow("404")
         expect(await $fetchApiCached("/flaky")).toEqual({ ok: true })
+        expect(fetchMock).toHaveBeenCalledTimes(2)
+    })
+})
+
+describe("transient failures", () => {
+    // The retry backoff sleeps, so every case here drives the clock by hand.
+    beforeEach(() => vi.useFakeTimers())
+    afterEach(() => vi.useRealTimers())
+
+    const settle = async <T,>(promise: Promise<T>) => {
+        const outcome = promise.then(
+            (value) => ({ value }),
+            (error) => ({ error }),
+        )
+        await vi.runAllTimersAsync()
+        return await outcome
+    }
+
+    it("retries a 504 and resolves once the upstream recovers", async () => {
+        fetchMock
+            .mockImplementationOnce(() => Promise.resolve(failure(504)))
+            .mockImplementationOnce(() => Promise.resolve(failure(502)))
+            .mockImplementation(() => Promise.resolve(json({ ok: true })))
+        const { $fetchCached } = await load()
+
+        const outcome = await settle(
+            $fetchCached("https://api.github.com/repos/kestra-io/kestra"),
+        )
+
+        expect(outcome).toEqual({ value: { ok: true } })
+        expect(fetchMock).toHaveBeenCalledTimes(3)
+    })
+
+    it("retries a network error", async () => {
+        fetchMock
+            .mockImplementationOnce(() => Promise.reject(new Error("ECONNRESET")))
+            .mockImplementation(() => Promise.resolve(json({ ok: true })))
+        const { $fetchApiCached } = await load()
+
+        expect(await settle($fetchApiCached("/flaky"))).toEqual({
+            value: { ok: true },
+        })
+        expect(fetchMock).toHaveBeenCalledTimes(2)
+    })
+
+    it("gives up after two retries and throws the last error", async () => {
+        fetchMock.mockImplementation(() => Promise.resolve(failure(503)))
+        const { $fetchApiCached } = await load()
+
+        const outcome = (await settle($fetchApiCached("/down"))) as {
+            error: Error
+        }
+
+        expect(outcome.error.message).toContain("Fetch error: 503")
+        expect(fetchMock).toHaveBeenCalledTimes(3)
+    })
+
+    it("does not retry a 4xx the upstream will keep returning", async () => {
+        fetchMock.mockImplementation(() => Promise.resolve(failure(404)))
+        const { $fetchApiCached } = await load()
+
+        await settle($fetchApiCached("/missing"))
+
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it("does not replay a POST", async () => {
+        fetchMock.mockImplementation(() => Promise.resolve(failure(503)))
+        const { $fetchApiCached } = await load()
+
+        await settle($fetchApiCached("/search", { method: "POST", body: "{}" }))
+
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it("waits out a Retry-After sent as an HTTP-date", async () => {
+        vi.setSystemTime(new Date("2026-01-01T00:00:00Z"))
+        fetchMock
+            .mockImplementationOnce(() =>
+                Promise.resolve(
+                    failure(503, {
+                        "retry-after": "Thu, 01 Jan 2026 00:00:02 GMT",
+                    }),
+                ),
+            )
+            .mockImplementation(() => Promise.resolve(json({ ok: true })))
+        const { $fetchApiCached } = await load()
+
+        const pending = $fetchApiCached("/dated")
+        await vi.advanceTimersByTimeAsync(1_999)
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+
+        await vi.advanceTimersByTimeAsync(1)
+        expect(await pending).toEqual({ ok: true })
+    })
+
+    it("falls back to backoff when Retry-After is in the past", async () => {
+        fetchMock
+            .mockImplementationOnce(() =>
+                Promise.resolve(
+                    failure(503, { "retry-after": "Thu, 01 Jan 1970 00:00:00 GMT" }),
+                ),
+            )
+            .mockImplementation(() => Promise.resolve(json({ ok: true })))
+        const { $fetchApiCached } = await load()
+
+        const pending = $fetchApiCached("/past")
+        await vi.advanceTimersByTimeAsync(249)
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+
+        await vi.advanceTimersByTimeAsync(1)
+        expect(await pending).toEqual({ ok: true })
+    })
+
+    it("waits out a Retry-After header before the next attempt", async () => {
+        fetchMock
+            .mockImplementationOnce(() =>
+                Promise.resolve(failure(429, { "retry-after": "2" })),
+            )
+            .mockImplementation(() => Promise.resolve(json({ ok: true })))
+        const { $fetchApiCached } = await load()
+
+        const pending = $fetchApiCached("/rate-limited")
+        await vi.advanceTimersByTimeAsync(1_999)
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+
+        await vi.advanceTimersByTimeAsync(1)
+        expect(await pending).toEqual({ ok: true })
         expect(fetchMock).toHaveBeenCalledTimes(2)
     })
 })

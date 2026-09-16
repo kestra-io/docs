@@ -1,5 +1,5 @@
 ---
-title: "Security Upgrades in Kestra 2.0"
+title: "We Audited Every Endpoint in Kestra. Here Is What We Fixed."
 description: "What we fixed and hardened in the 2.0 cycle: authentication, information disclosure, CSRF and XSS, SSRF filtering, upload protection, secrets masking, and why workers no longer touch the database."
 date: 2026-09-16T13:00:00
 category: Solutions

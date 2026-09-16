@@ -17,6 +17,13 @@
         }
     }
 
+    // Plain fences shown before Shiki's chunk lands. The upgraded markup has
+    // no background of its own (marked-shiki strips Shiki's outer <pre>), so
+    // only the wrapping Shiki puts on its per-line spans needs matching here.
+    & :deep(pre.shiki-fallback) code {
+        white-space: pre-wrap;
+    }
+
     :deep(h3) {
         padding: 0;
     }

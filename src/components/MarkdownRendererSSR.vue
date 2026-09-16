@@ -7,6 +7,14 @@
     />
 </template>
 
+<script lang="ts">
+    import { warmHighlighter } from "~/markdown/marked-shiki"
+
+    // Module scope, not setup: starts the Shiki fetch when this island's
+    // chunk is evaluated, so its round trips overlap hydration.
+    warmHighlighter()
+</script>
+
 <script lang="ts" setup>
     import { ref, watch } from "vue"
     import { getMarked } from "~/markdown/marked-shiki"

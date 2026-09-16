@@ -52,20 +52,29 @@ export async function getValues() {
         )
     }
 
-    return await $fetchCached("https://api.github.com/repos/kestra-io/kestra", {
-        headers: { "User-Agent": "request" },
-    }).then((value) => {
-        return {
-            stargazers: value.stargazers_count,
-            watchers: value.watchers_count,
-            issues: value.open_issues_count,
-            forks: value.forks,
-            network: value.network_count,
-            subscribers: value.subscribers_count,
-            size: value.size,
-            contributors,
-        }
-    })
+    // This route is prerendered, so an unguarded throw here aborts the whole
+    // build for a decorative star counter. Degrade instead.
+    let repo: any
+    try {
+        repo = await $fetchCached(
+            "https://api.github.com/repos/kestra-io/kestra",
+            { headers: { "User-Agent": "request" } },
+        )
+    } catch (error) {
+        console.error("Error fetching repository metadata:", error)
+        return { ...defaultValues, contributors }
+    }
+
+    return {
+        stargazers: repo.stargazers_count,
+        watchers: repo.watchers_count,
+        issues: repo.open_issues_count,
+        forks: repo.forks,
+        network: repo.network_count,
+        subscribers: repo.subscribers_count,
+        size: repo.size,
+        contributors,
+    }
 }
 
 export async function GET() {
