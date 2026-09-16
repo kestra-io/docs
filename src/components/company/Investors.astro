@@ -150,11 +150,8 @@ const investorsProfiles = [
 
     <div class="profiles" data-usal="fade-u delay-600">
         {
-            investorsProfiles.map((profile, index) => (
-                <div
-                    class="profile"
-                    data-usal={`fade-u delay-${300 + index * 50}`}
-                >
+            investorsProfiles.map((profile) => (
+                <div class="profile">
                     <Image
                         src={profile.image}
                         alt={profile.name}

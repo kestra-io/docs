@@ -61,11 +61,8 @@ const lifeCards = [
 
         <div class="grid" data-usal="fade-u">
             {
-                lifeCards.map((card, index) => (
-                    <article
-                        class={`card ${card.type} ${card.variant || ""}`}
-                        data-usal={`zoomin delay-${index * 100} ease-in-out`}
-                    >
+                lifeCards.map((card) => (
+                    <article class={`card ${card.type} ${card.variant || ""}`}>
                         {card.type === "image-card" && card.image ? (
                             <Image
                                 src={card.image}
