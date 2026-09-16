@@ -27,7 +27,17 @@ export default (app: App) => {
         }),
     )
 
-    if (typeof document === "undefined" || !document.documentElement.classList.contains("no-animation")) {
+    // app.scss neutralises every [data-usal] animation under 768px. Installing
+    // USAL there only builds fill: forwards animations the guard must override.
+    const belowBreakpoint =
+        typeof window !== "undefined" &&
+        window.matchMedia("(max-width: 768px)").matches
+
+    if (
+        typeof document === "undefined" ||
+        (!document.documentElement.classList.contains("no-animation") &&
+            !belowBreakpoint)
+    ) {
         app.use(USALPlugin, {
             defaults: {
                 duration: 200,
