@@ -18,14 +18,26 @@ export function useMarkdownActions(context: MaybeRefOrGetter<MarkdownActionConte
         return resolveMarkdownUrls(ctx.pagePath, ctx.pageUrl, origin)
     })
 
+    const loadMarkdown = async (): Promise<string> => {
+        try {
+            const response = await fetch(urls.value.markdownUrl)
+            return response.ok ? await response.text() : ""
+        } catch {
+            return ""
+        }
+    }
+
     const executeAction = async (actionId: MarkdownActionId) => {
         const ctx = toValue(context)
 
         if (actionId === "copy") {
-            if (!ctx.markdownBody) {
+            const body =
+                ctx.markdownBody?.trim() ||
+                (ctx.lazyMarkdown ? (await loadMarkdown()).trim() : "")
+            if (!body) {
                 return
             }
-            await copy(ctx.markdownBody.trim())
+            await copy(body)
             return
         }
 
