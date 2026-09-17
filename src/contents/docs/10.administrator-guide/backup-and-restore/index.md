@@ -6,9 +6,9 @@ icon: /src/contents/docs/icons/admin.svg
 description: Learn how to perform full or metadata-only backups and restores of your Kestra instance for disaster recovery and migration.
 ---
 
-Back up and restore your Kestra instance.
+Kestra provides a built-in metadata backup feature in Enterprise Edition. For full disaster recovery, you can also back up the underlying database and internal storage directly using backend tools.
 
-Kestra provides a backup feature for **metadata**. In addition, you can back up and restore the underlying database and internal storage if a metadata-only backup is not sufficient.
+Backup and restore are CLI-only operations — there is no REST API, no UI, and no built-in scheduler. Wire the CLI commands into your own cron, CI/CD, or disaster-recovery tooling.
 
 :::alert{type="info"}
 The commands in the next section assume Kestra runs locally on the host. If you run Kestra in Docker, see the [container example](#example-backup-and-restore-inside-docker) below.
@@ -71,10 +71,13 @@ To restore an instance from a metadata backup, run the following command using t
 kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 ```
 
-You can use the following command line parameters:
+`LOG` and `METRIC` records do not carry stable identifiers and are always inserted rather than upserted. Re-running a restore that includes these types will add duplicate log and metric entries. Use `--resources` to exclude them from a re-run if the instance already contains data from a previous restore attempt.
 
-- `--encryption-key`: use it to specify a custom encryption key instead of the Kestra embedded one.
-- `--to-tenant`: restore the backup into a different tenant.
+**Restore options:**
+
+- `--encryption-key`: decryption key. Falls back to the instance key if omitted; fails if neither is available.
+- `--to-tenant`: restore a tenant backup into a different tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive.
+- `--resources`: restore only specific resource types (same names as `create`).
 
 Starting the restore process from the command line will display the following logs which include backup information and a restore summary.
 
@@ -106,53 +109,63 @@ docker exec your_container bash -c "./kestra backups restore kestra:///backups/f
 
 ## Full backup and restore with backend tools
 
-### Backup & Restore with the JDBC Backend
+### Backup and restore with the JDBC backend
 
-With the JDBC backend, Kestra can be backed up and restored using the database's native backup tools.
+Use the database's native backup tools to back up and restore Kestra when running the JDBC backend.
 
-#### Backup & Restore for PostgreSQL
+#### PostgreSQL
 
-First, stop Kestra to ensure the database is in a stable state. Although `pg_dump` allows you to back up a running PostgreSQL database, it's always better to perform backups offline when possible.
-
-Next, run the following command:
+Stop Kestra first to ensure the database is in a stable state.
 
 ```bash
 pg_dump -h localhost -p 5432 -U <username> -d <database> -F tar -f kestra.tar
 ```
 
-To restore the backup to a new database, use `pg_restore`:
+To restore:
 
 ```bash
 pg_restore -h localhost -p 5432 -U <username> -d <database> kestra.tar
 ```
 
-Finally, restart Kestra.
+Restart Kestra after the restore completes.
 
-#### Backup & Restore for MySQL
+#### MySQL
 
-First, stop Kestra to ensure the database is in a stable state. Although MySQL's `mysqldump` allows you to back up a running MySQL database, it's always better to perform backups offline when possible.
-
-Next, run the following command to back up the database:
+Stop Kestra first.
 
 ```bash
 mysqldump -h localhost -P 3306 -u <username> -p'<password>' <database> > kestra.sql
 ```
 
-To restore the backup to a new database, use the following command:
+To restore:
 
 ```bash
 mysql -h localhost -P 3306 -u <username> -p'<password>' <database> < kestra.sql
 ```
 
-The `< kestra.sql` part tells MySQL to read and execute the SQL statements contained in the `kestra.sql` backup file as input.
+Restart Kestra after the restore completes.
 
-Finally, restart Kestra.
+#### SQL Server
 
-### Backup & Restore with the Elasticsearch and Kafka Backend
+Stop Kestra first, then create a backup using SQL Server Management Studio or `sqlcmd`:
 
-With the Elasticsearch and Kafka backend, Kestra can be backed up and restored using Elasticsearch snapshots. Kafka will be reinitialized with the information from Elasticsearch.
+```sql
+BACKUP DATABASE [kestra] TO DISK = '/var/opt/mssql/backup/kestra.bak' WITH INIT;
+```
 
-This guide assumes you have already configured a snapshot repository in Elasticsearch named `my_snapshot_repository`. Elasticsearch provides several [backup options](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html). Use basic snapshot and restore operations via the Elasticsearch API.
+To restore:
+
+```sql
+RESTORE DATABASE [kestra] FROM DISK = '/var/opt/mssql/backup/kestra.bak' WITH REPLACE;
+```
+
+Restart Kestra after the restore completes.
+
+### Backup and restore with the Elasticsearch and Kafka backend
+
+With the Elasticsearch or OpenSearch backend, back up and restore using Elasticsearch snapshots. Kafka is reinitialized from Elasticsearch after the restore.
+
+This guide assumes you have configured a snapshot repository named `my_snapshot_repository`. See the [Elasticsearch snapshot documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html) for setup options.
 
 First, create an Elasticsearch snapshot named `kestra`:
 
