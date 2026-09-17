@@ -94,7 +94,7 @@
                 "Worker Groups",
                 "Task Runners on Containers or VMs",
                 "High Availability & Throughput",
-                "Queue: Postgres, MySQL, Kafka, Redis, AMQP",
+                "Queue on Postgres, Kafka, Redis or AMQP",
                 "Log Shipper & External Log Data Store",
                 "Enterprise Plugins, Versioning & Hot Reload",
             ],
@@ -240,7 +240,8 @@
         }
 
         .bottom-title {
-            flex: 0 0 288px;
+            flex: 0 0 auto;
+            padding-right: 2rem;
 
             @include media-breakpoint-down(xl) {
                 flex: none;
@@ -264,21 +265,29 @@
                 margin: 0;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 font-size: $font-size-xs;
                 color: var(--ks-content-primary);
 
                 @include media-breakpoint-down(xl) {
+                    display: flex;
                     flex-direction: column;
+                    padding: 0;
                 }
 
                 li {
-                    flex: 1;
+                    flex: 1 1 auto;
                     text-align: center;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     white-space: nowrap;
-                    padding: 0 12px;
+                    padding: 0 10px;
+                    border-right: 1px solid var(--ks-border-primary);
+
+                    &:last-child {
+                        border-right: none;
+                    }
 
                     @include media-breakpoint-down(xl) {
                         width: 100%;
@@ -288,10 +297,6 @@
                         &:not(:last-child) {
                             border-bottom: 1px solid var(--ks-border-primary);
                         }
-                    }
-
-                    &:not(:last-child) {
-                        border-right: 1px solid var(--ks-border-primary);
                     }
                 }
             }
