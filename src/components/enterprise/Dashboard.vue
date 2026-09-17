@@ -80,23 +80,23 @@
         {
             title: "Governance & Productivity",
             features: [
-                "Multi Tenancy",
-                "Role Based Access Control (RBAC)",
-                "Namespaces Management",
-                "Assets Lineage",
-                "Enterprise Plugins, Versioning & Hot Reload",
-                "Kestra Apps (custom UIs for workflows)",
+                "Multi-Tenant",
+                "Role-Based Access Control",
+                "Policies & Promote",
+                "Cases",
+                "Assets & Lineage",
+                "Apps (custom UIs for workflows)",
             ],
         },
         {
             title: "Scalability",
             features: [
                 "Worker Groups",
-                "Task Runners",
+                "Task Runners on Containers or VMs",
                 "High Availability & Throughput",
-                "Fault Tolerant",
-                "Log Shipper, Cluster Monitoring",
-                "Dedicated storage & Tenant Isolation",
+                "Queue: Postgres, MySQL, Kafka, Redis, AMQP",
+                "Log Shipper & External Log Data Store",
+                "Enterprise Plugins, Versioning & Hot Reload",
             ],
         },
     ];
@@ -105,7 +105,8 @@
         "Declarative Workflow",
         `${props.totalPlugins}+ Plugins`,
         "Event Driven & Scheduling",
-        "Everything From the UI",
+        "Code & No-Code Editors",
+        "MCP Server for AI Agents",
         "Business Logic In Any Language",
     ]);
 </script>
