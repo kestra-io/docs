@@ -8,7 +8,7 @@ heroImage: ./hero.png
 featured: false
 featuredImage: ./hero.png
 logo: ./logo.png
-logoDark: ./logo-dark.svg
+logoDark: ./logo-dark.webp
 logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.dbt.cli.DbtCLI
