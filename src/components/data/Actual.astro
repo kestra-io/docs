@@ -2,6 +2,7 @@
 import CardGrid from "~/components/card/CardGrid.astro"
 import SectionCard from "~/components/layout/SectionCard.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
 
 import execution1 from "./assets/execution-1.webp"
 import execution2 from "./assets/execution-2.webp"
@@ -11,6 +12,7 @@ import execution5 from "./assets/execution-5.webp"
 import execution6 from "./assets/execution-6.webp"
 
 const totalPlugins = await fetchTotalPluginsCount()
+const totalBlueprints = await fetchTotalBlueprintsCount()
 
 const title = `Cut Orchestration Costs By <span class='highlight'>80%</span> *`
 
@@ -45,7 +47,7 @@ const ACTUALS = [
     {
         title: "Start From Blueprints, Ship in Minutes",
         description:
-            "Pick from <strong>200+ production-ready blueprints</strong> for dbt, Airbyte, Spark, and ML. Customize in a live YAML editor with real-time DAG preview. Ship your first pipeline in minutes.",
+            `Pick from <strong>${totalBlueprints}+ production-ready blueprints</strong> for dbt, Airbyte, Spark, and ML. Customize in a live YAML editor with real-time DAG preview. Ship your first pipeline in minutes.`,
         image: execution2,
         reverse: true,
     },
