@@ -26,15 +26,38 @@ type AstroComponent = (props: Record<string, unknown>) => unknown
 // Every component an archived doc can embed, resolved by file name instead of a
 // case in the renderer: a component added under these directories works on
 // archived versions with no change here. Lazy, so only the ones a page actually
-// references are pulled into this SSR route — which is also why the glob stays
-// off components/common, 30-odd components wide and embedded by exactly one doc
-// page. Anything it doesn't resolve is logged as unknown below.
-const componentLoaders = import.meta.glob<{ default: AstroComponent }>(
-    "/src/components/{content,docs}/*.astro",
-)
+// references are pulled into this SSR route. Anything it doesn't resolve is
+// logged as unknown below.
+// Vue components render server-side with no client directive, exactly as the
+// current docs embed them (`<CardLogos/>`); the .astro wrapper wins the name
+// when both exist, since that's the one carrying the client directive — the
+// .vue it wraps is still bundled, which is why rapidoc shows up in this route.
+// The exclusions are components that read the current content collection:
+// globbing them pulls Astro's content data layer (50 MB) into this worker and
+// blows Cloudflare's 64 MB limit. They must not render on an archived page
+// anyway — they'd list the current docs tree — so the renderer overrides them
+// or skips them outright.
+// The negative patterns are repeated literally in both calls on purpose: Vite
+// only reads statically analysable patterns here, and silently keeps the
+// positive one when handed anything else. The glob test pins them to the files
+// that actually import astro:content.
+const vueLoaders = import.meta.glob<{ default: AstroComponent }>([
+    "/src/components/{content,docs,common}/*.vue",
+    "!/src/components/docs/ChildCard.astro",
+    "!/src/components/docs/GuidesChildCard.astro",
+    "!/src/components/content/ChildTableOfContents.astro",
+    "!/src/components/common/WhatsNew.astro",
+])
+const astroLoaders = import.meta.glob<{ default: AstroComponent }>([
+    "/src/components/{content,docs,common}/*.astro",
+    "!/src/components/docs/ChildCard.astro",
+    "!/src/components/docs/GuidesChildCard.astro",
+    "!/src/components/content/ChildTableOfContents.astro",
+    "!/src/components/common/WhatsNew.astro",
+])
 const componentsByName = new Map(
-    Object.entries(componentLoaders).map(([file, load]) => [
-        componentKey(file.slice(file.lastIndexOf("/") + 1).replace(/\.astro$/, "")),
+    [...Object.entries(vueLoaders), ...Object.entries(astroLoaders)].map(([file, load]) => [
+        componentKey(file.slice(file.lastIndexOf("/") + 1).replace(/\.(astro|vue)$/, "")),
         load,
     ]),
 )
