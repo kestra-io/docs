@@ -18,8 +18,9 @@ jobs:
     name: Build site
     if: startsWith(github.repository, 'kestra-io/')
     runs-on: ubuntu-latest
-    # ~12k sharp transforms on a cold cache, on top of the ~6 min build.
-    timeout-minutes: 40
+    # 14 min measured: ~12k sharp transforms on a cold cache plus the build.
+    # Headroom for a slow runner, still short enough that a wedged build fails.
+    timeout-minutes: 25
     permissions:
       contents: read
 
