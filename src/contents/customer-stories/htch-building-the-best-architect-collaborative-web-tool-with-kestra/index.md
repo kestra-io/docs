@@ -8,8 +8,8 @@ metaDescription: This is the Story of HTCH a collaborative web platform for
   architects. They rely on Kestra to manage their data landscape.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
-logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logo: ./logo.webp
+logoDark: ./logo-dark.webp
 tasks:
   - io.kestra.plugin.kafka.Produce
   - io.kestra.plugin.notifications.discord.DiscordExecution

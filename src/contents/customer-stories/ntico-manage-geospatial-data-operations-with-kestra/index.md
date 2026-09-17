@@ -10,9 +10,9 @@ metaDescription: This is the story of how Ntico leveraged Kestra to power
   insights into territories and residents through satellite imagery.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
-logo: ./logo.svg
-logoDark: ./logo-dark.svg
-logoIcon: ./icon.svg
+logo: ./logo.webp
+logoDark: ./logo-dark.webp
+logoIcon: ./icon.webp
 tasks:
   - io.kestra.plugin.aws.athena.Query
   - io.kestra.plugin.aws.s3.CreateBucket
