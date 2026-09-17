@@ -18,6 +18,8 @@
     "workers:deploy-dryrun": "wrangler deploy --dry-run",
     "workers:build-deploy": "npm run workers:build && npm run workers:deploy",
     "cf-typegen": "wrangler types",
+    "svgo": "node scripts/svgo-batch.mjs",
+    "svgo:check": "node scripts/svgo-batch.mjs --check",
     "lint": "oxlint --fix",
     "format": "oxfmt . --write && prettier --write **/*.astro",
     "test:visual": "playwright test",
