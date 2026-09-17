@@ -3,6 +3,7 @@ import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import Cta from "./Cta.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import heroScreen from "./assets/hero-screen.webp"
 import squares from "./assets/hero-squares.webp?url"
 
@@ -96,8 +97,10 @@ const COMETS = COMET_LAYOUT.map((comet) => ({
     y: SKY.oy + SKY_SIN * comet.u + SKY_COS * comet.v,
 }))
 
+const totalPlugins = await fetchTotalPluginsCount()
+
 const KEY_NUMBERS = [
-    { value: "2,000+", label: "Plugins, installed at runtime" },
+    { value: `${totalPlugins}+`, label: "Plugins, installed at runtime" },
     { value: "LTS", label: "One year of fixes, no forced upgrade" },
     { value: "Apache 2.0", label: "Engine, UI, editor and plugins" },
 ]
