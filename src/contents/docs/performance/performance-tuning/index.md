@@ -75,6 +75,27 @@ kestra:
 
 By default, it's 0, which means the number of available CPUs. Two thread pools are started, effectively using 2 times the number of available CPUs by default.
 
+## MySQL-specific tuning
+
+If you run the JDBC backend on MySQL, you may see meaningfully lower executor throughput than on PostgreSQL on comparable hardware, even after tuning the JDBC queue settings above. This comes from a MySQL server default, not from the JDBC queue itself.
+
+Kestra's JDBC queue is commit-heavy. A busy instance can produce thousands of commits per second. By default, MySQL synchronously flushes the binary log to disk on every commit (`sync_binlog=1`), on top of its own redo log flush. PostgreSQL does not perform this second fsync. That extra flush is what dominates at this commit rate.
+
+`sync_binlog` controls how often the binary log is flushed. Setting it above `1` flushes only every Nth commit, applied server-wide. Values around 25 significantly reduce the throughput gap to PostgreSQL while keeping the binary log exposure window small:
+
+```ini
+[mysqld]
+sync_binlog=25
+```
+
+You can also apply this without a server restart:
+
+```sql
+SET GLOBAL sync_binlog = 25;
+```
+
+This setting does not affect `mysqld` crash safety or data durability — `innodb_flush_log_at_trx_commit` is untouched. Only the binary log is affected: up to N-1 transactions can be lost from the binary log on an OS-level crash, which impacts replication and point-in-time recovery only. The exposure is limited to the binary log and has no impact on data visible to Kestra. Pick N based on your acceptable replication lag.
+
 ## The Kafka backend
 
 First, we set the Kafka partition count to 16 with a replication factor of 1 by default. Because Kafka is not the primary storage, increasing the replication factor is optional; all data can be re-created from the database if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, etc.) would not provide any benefits. If you plan to exceed this, increase the partition count.

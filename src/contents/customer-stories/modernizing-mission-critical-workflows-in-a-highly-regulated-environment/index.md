@@ -9,7 +9,7 @@ metaDescription: How a leading pharmacy retailer replaced a 30+ year legacy
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logoDark: ./logo-dark.webp
 logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.kafka.Trigger
