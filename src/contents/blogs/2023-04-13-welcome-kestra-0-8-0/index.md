@@ -34,7 +34,7 @@ To limit context switching, we added a contextual panel in the flow editor displ
 [EachSequential](/plugins/core/flow) and [EachParallel](/plugins/core/flow) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
 
 :::alert{type="info"}
-Now use [ForEach](/plugins/core/flow) or [ForEachItem](/plugins/core/flow).
+Now use [ForEach](/plugins/core/v1.3.38/flow/io.kestra.plugin.core.flow.foreach) or [ForEachItem](/plugins/core/v1.3.38/flow/io.kestra.plugin.core.flow.foreachitem).
 :::
 
 ## Task metrics
