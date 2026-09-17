@@ -192,6 +192,12 @@ export async function $fetchApiCached<T = any>(
     )
 }
 
+// internalFetch attaches the HTTP status to the error it throws; a network
+// failure has none.
+function errorStatus(error: unknown): number | undefined {
+    return (error as { response?: { status?: number } })?.response?.status
+}
+
 // Same as $fetchApiCached but resolves to undefined when the API fails, for
 // decorative data that must not take the whole page down.
 export async function $fetchApiCachedOptional<T = any>(
@@ -201,8 +207,7 @@ export async function $fetchApiCachedOptional<T = any>(
     try {
         return await $fetchApiCached<T>(url, init)
     } catch (error) {
-        const status = (error as { response?: { status?: number } })?.response
-            ?.status
+        const status = errorStatus(error)
         console.warn(
             `Optional API fetch failed (${status ?? "network"}): ${url}`,
         )
