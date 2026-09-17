@@ -137,7 +137,7 @@ Rule of thumb: warehouse sync and analytics want the batch trigger (fewer, large
 
 ## Where CDC pays off
 
-- **Warehouse synchronization** — replace nightly full loads with minute-level freshness (this page's flow; see also [blueprint #194](https://kestra.io/blueprints/194-use-debezium-to-trigger-a-flow-whenever-new-entries-hit-a-postgres-database-then-send-notification-to-slack-and-process-data-in-python): Debezium → Slack notification → Python processing).
+- **Warehouse synchronization** — replace nightly full loads with minute-level freshness (this page's flow; see also [this Debezium blueprint](/blueprints/listen-debezium): Debezium → Slack notification → Python processing).
 - **Event-driven architectures** — turn database changes into triggers for downstream [workflows](/resources/infrastructure/event-driven-orchestration) without touching application code.
 - **Audit trails & compliance** — an immutable stream of every change, with metadata, for free.
 - **Cache and search-index invalidation** — update Redis or Elasticsearch the moment a row changes, via the same pattern with a different final task.

@@ -276,12 +276,12 @@ const teamMembers = [
         <div class="team-grid" data-usal="fade-u delay-200">
             {
                 teamMembers.map((member) => (
-                    <div class="team-card" data-usal="zoomin">
+                    <div class="team-card">
                         <Image
                             src={member.image}
                             alt={member.name.replace(/<br\s*\/?>/gi, " ")}
-                            width={164.8}
-                            height={164.8}
+                            width={165}
+                            height={165}
                         />
                         <div class="team-info">
                             <p class="team-name mb-0" set:html={member.name} />
