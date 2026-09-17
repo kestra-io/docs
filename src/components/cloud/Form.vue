@@ -58,6 +58,19 @@
                 </div>
 
                 <div class="col-12 mb-2">
+                    <label for="jobtitle"
+                        >Job title <span class="required">*</span></label
+                    >
+                    <input
+                        name="jobtitle"
+                        type="text"
+                        class="form-control"
+                        id="jobtitle"
+                        required
+                    />
+                </div>
+
+                <div class="col-12 mb-2">
                     <label for="employees"
                         >Number of employees
                         <span class="required">*</span></label
@@ -204,6 +217,7 @@
             const lastname = formDataObj.get("lastname") as string
             const useCase = formDataObj.get("use_case_context") as string
             const employees = formDataObj.get("employees") as string
+            const jobtitle = formDataObj.get("jobtitle") as string
             const kuid = localStorage.getItem("KUID") || ""
 
             const hsq = ((window as any)._hsq = (window as any)._hsq || [])
@@ -218,6 +232,7 @@
                     { name: "firstname", value: firstname },
                     { name: "lastname", value: lastname },
                     { name: "email", value: email },
+                    { name: "jobtitle", value: jobtitle },
                     { name: "use_case_context", value: useCase },
                     {
                         objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
