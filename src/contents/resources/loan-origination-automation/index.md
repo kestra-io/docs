@@ -78,30 +78,33 @@ tasks:
       type: exponential
       maxAttempts: 3
       interval: PT1M
+      maxInterval: PT10M
 
   - id: make-decision
     type: io.kestra.plugin.scripts.python.Script
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: python:3.11-slim
+    dependencies:
+      - kestra
     script: |
-      import json
-      
-      credit_data = {{ outputs['get-credit-score'].body | jq('.creditScore') }}
-      decision = "APPROVED" if int(credit_data) >= 700 else "REVIEW_REQUIRED"
-      
-      print(json.dumps({"decision": decision, "score": credit_data}))
+      from kestra import Kestra
+
+      score = int("{{ outputs['get-credit-score'].body | jq('.creditScore') | first }}")
+      decision = "APPROVED" if score >= 700 else "REVIEW_REQUIRED"
+
+      Kestra.outputs({"decision": decision, "score": score})
 
   - id: process-decision
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs['make-decision'].output.decision == 'APPROVED' }}"
+    condition: "{{ outputs['make-decision'].vars.decision == 'APPROVED' }}"
     then:
       - id: notify-approved
         type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         payload: |
           {
-            "text": "Loan Application {{ trigger.body.applicationId }} automatically APPROVED. Credit Score: {{ outputs['make-decision'].output.score }}."
+            "text": "Loan Application {{ trigger.body.applicationId }} automatically APPROVED. Credit Score: {{ outputs['make-decision'].vars.score }}."
           }
       - id: update-los-approved
         type: io.kestra.plugin.core.http.Request
@@ -115,11 +118,11 @@ tasks:
     else:
       - id: human-review-required
         type: io.kestra.plugin.ee.flow.HumanTask
-        description: "Please review loan application {{ trigger.body.applicationId }} for {{ trigger.body.applicantName }}. Credit score is {{ outputs['make-decision'].output.score }}."
+        description: "Please review loan application {{ trigger.body.applicationId }} for {{ trigger.body.applicantName }}. Credit score is {{ outputs['make-decision'].vars.score }}."
 
   - id: final-log
     type: io.kestra.plugin.core.log.Log
-    message: "Finished processing application {{ trigger.body.applicationId }}. Decision: {{ outputs['make-decision'].output.decision }}"
+    message: "Finished processing application {{ trigger.body.applicationId }}. Decision: {{ outputs['make-decision'].vars.decision }}"
 ```
 
 Here are a few things worth noticing in this workflow:
