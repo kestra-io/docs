@@ -9,7 +9,7 @@ icon: /src/contents/docs/icons/dev.svg
 Automate the validation and deployment of your Kestra flows using CI/CD pipelines.
 
 :::alert{type="info"}
-If you are on Kestra Enterprise and want to move flows between environments without building a pipeline, see [Promote](../06.promote/index.md) — a UI-first alternative that requires no Git or automation setup.
+If you are on Kestra Enterprise and want to move flows between environments without building a pipeline, see [Promote](../../07.enterprise/02.governance/promote/index.md) — a UI-first alternative that requires no Git or automation setup.
 :::
 
 ## Automate validation and deployment with CI/CD
