@@ -132,7 +132,7 @@ It provides a seamless scaling path for DuckDB users who love the local experien
 | **SQLite** | Public Domain | Embedded | Simple, transactional embedded storage | Low (for writes) | SQL | GBs | [JDBC Plugin](/plugins/plugin-jdbc-sqlite) |
 | **Cloud DWs** | Commercial | Cloud-Native | Managed enterprise data warehousing | Very High | SQL | PB+ | Native Plugins |
 | **Apache Spark** | Apache 2.0 | Distributed Cluster | Massive-scale distributed ETL & ML | Very High | Python, Scala, SQL, R | PB+ | [Spark Plugin](/plugins/plugin-spark) |
-| **Polars** | MIT | Embedded Library | High-performance in-memory dataframes | Single-process | Python, Rust | GBs-TBs | [Python Plugin](/plugins/plugin-scripts-python) |
+| **Polars** | MIT | Embedded Library | High-performance in-memory dataframes | Single-process | Python, Rust | GBs-TBs | [Python Plugin](/plugins/plugin-script-python) |
 | **MotherDuck** | Commercial | Cloud (Hybrid) | Scaling and sharing DuckDB analytics | Moderate | SQL | TBs | [DuckDB Plugin](/plugins/plugin-jdbc-duckdb) |
 
 ## Choosing the Right DuckDB Alternative for Your Project

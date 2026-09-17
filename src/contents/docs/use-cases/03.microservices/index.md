@@ -114,7 +114,7 @@ tasks:
 - [Explore plugins](https://kestra.io/plugins) for databases, message brokers or custom scripts in any language.
 - [Explore blueprints](/blueprints) for common microservice orchestration patterns.
 - [Explore How-to Guides](../../15.how-to-guides/index.mdx) for detailed examples on using Kestra to orchestrate microservices written in Python, R, Node.js, Rust, Ruby, Go, Shell, Powershell or any other language.
-- [Explore Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) for scaling custom code and containerized services.
+- [Explore Task Runners](../../task-runners/index.mdx) for scaling custom code and containerized services.
 - [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.
 - [Join Slack](https://kestra.io/slack) to share flow examples or ask questions.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your microservices.
