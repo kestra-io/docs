@@ -57,7 +57,7 @@ export const getSections = (totalPlugins: string): Section[] => [
                 feature: `${totalPlugins}+ Plugins`,
                 values: ["check", "check"],
                 description: {
-                    text: `Most of Kestra's ${totalPlugins}+ plugins are available in both editions`,
+                    text: `Kestra${totalPlugins}+ plugins`,
                     link: "/plugins",
                 },
             },
