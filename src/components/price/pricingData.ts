@@ -41,13 +41,17 @@ export const PLANS: Plan[] = [
 ]
 
 export const SHARED_FEATURES = [
-    "Workflow design & execution",
-    "Scheduling & event triggers",
+    "Workflow design and execution",
+    "Scheduling and event triggers",
     "Real-time processing",
-    "Embedded code editor",
-    "Git integration & versioning",
-    "Multi-cloud & air-gapped deployment",
+    "Code and no-code editors",
+    "MCP server for AI agents",
+    "Git integration and versioning",
+    "Multi-cloud and air-gapped deployment",
 ]
+
+const BOTH: CellValue[] = ["check", "check"]
+const ENTERPRISE: CellValue[] = ["cross", "check"]
 
 export const getSections = (totalPlugins: string): Section[] => [
     {
@@ -55,34 +59,66 @@ export const getSections = (totalPlugins: string): Section[] => [
         rows: [
             {
                 feature: `${totalPlugins}+ Plugins`,
-                values: ["check", "check"],
+                values: BOTH,
                 description: {
-                    text: `Most of Kestra's ${totalPlugins}+ plugins are available in both editions`,
+                    text: `Most of the ${totalPlugins}+ plugins are available in both editions`,
                     link: "/plugins",
                 },
             },
             {
                 feature: "Unlimited Flows & Executions",
-                values: ["check", "check"],
+                values: BOTH,
                 description: {
-                    text: "No artificial limits on the number of workflows or executions",
+                    text: "No limit on the number of workflows or executions",
                     link: "/docs/workflow-components",
                 },
             },
             {
-                feature: "AI Agents",
-                values: ["check", "check"],
+                feature: "PostgreSQL or MySQL Queue",
+                values: BOTH,
                 description: {
-                    text: "Launch autonomous processes with an LLM, memory, and tools",
-                    link: "/docs/ai-tools/ai-agents",
+                    text: "Run the queue and repository on PostgreSQL or MySQL, with nothing else to operate",
+                    link: "/docs/architecture/main-components#queue",
+                },
+            },
+            {
+                feature: "Code & No-Code Editors",
+                values: BOTH,
+                description: {
+                    text: "Write YAML or use the guided form editor; both stay in sync",
+                    link: "/docs/ui/flows",
+                },
+            },
+            {
+                feature: "Draft Revisions",
+                values: BOTH,
+                description: {
+                    text: "Save work in progress without affecting the flow that triggers run",
+                    link: "/docs/concepts/revision",
                 },
             },
             {
                 feature: "AI Copilot (Gemini)",
-                values: ["check", "check"],
+                values: BOTH,
                 description: {
-                    text: "AI-Copilot generating workflow code based on a natural language prompt using Gemini models",
+                    text: "Generate and edit flows from a natural language prompt with Gemini",
                     link: "/docs/ai-tools/ai-copilot",
+                },
+            },
+            {
+                feature: "AI Agents",
+                values: BOTH,
+                description: {
+                    text: "Run autonomous tasks with an LLM, memory, tools, and guardrails",
+                    link: "/docs/ai-tools/ai-agents",
+                },
+            },
+            {
+                feature: "MCP Server & Tool Trigger",
+                values: BOTH,
+                description: {
+                    text: "Expose any flow as a tool for AI agents, and drive Kestra from any MCP client",
+                    link: "/docs/ai-tools/mcp-server",
                 },
             },
         ],
@@ -92,42 +128,58 @@ export const getSections = (totalPlugins: string): Section[] => [
         rows: [
             {
                 feature: "Enterprise Plugins",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Access enterprise-grade integrations and features designed for secure, compliant, and large-scale orchestration across your stack.",
+                    text: "Integrations for infrastructure, security, and governance at scale",
                     link: "/plugins",
                 },
             },
             {
                 feature: "Task Runners",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Offload compute-intensive tasks to remote environments",
+                    text: "Run tasks on Kubernetes, cloud batch services, or dedicated VMs on AWS, Azure, Google Cloud, and Huawei Cloud",
                     link: "/docs/task-runners",
                 },
             },
             {
-                feature: "AI Copilot (Any LLM Cloud or Self-Hosted)",
-                values: ["cross", "check"],
+                feature: "Agentic AI Copilot (Any LLM)",
+                values: ENTERPRISE,
                 description: {
-                    text: "AI-Copilot with support for any LLM provider",
+                    text: "Edit, Plan, and Ask modes with memory and a confirmation step, on any cloud or self-hosted LLM",
                     link: "/docs/ai-tools/ai-copilot",
                 },
             },
             {
                 feature: "Apps",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Build custom UIs for your workflows with forms, approvals, and dashboards",
+                    text: "Build forms, approvals, and dashboards on top of your workflows",
                     link: "/docs/enterprise/scalability/apps",
                 },
             },
             {
                 feature: "Human-in-the-Loop Approvals",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Pause and resume workflow executions with custom inputs",
+                    text: "Pause an execution until someone approves it, with custom inputs",
                     link: "/docs/use-cases/approval-processes#humantask-assign-specific-users-for-approval",
+                },
+            },
+            {
+                feature: "Quotas",
+                values: ENTERPRISE,
+                description: {
+                    text: "Cap how many executions a flow, namespace, or tenant can start in a time window",
+                    link: "/docs/workflow-components/quotas",
+                },
+            },
+            {
+                feature: "Reusable Inputs",
+                values: ENTERPRISE,
+                description: {
+                    text: "Define an input group once per namespace and reuse it across flows",
+                    link: "/docs/workflow-components/reusable-inputs",
                 },
             },
         ],
@@ -136,51 +188,59 @@ export const getSections = (totalPlugins: string): Section[] => [
         title: "Authentication & Access",
         rows: [
             {
-                feature: "User Management & Invitations",
-                values: ["cross", "check"],
-                description: {
-                    text: "Create, manage, and invite users directly from the Kestra UI",
-                    link: "/docs/enterprise/auth/rbac",
-                },
-            },
-            {
-                feature: "Role-Based Access Control (RBAC)",
-                values: ["cross", "check"],
-                description: {
-                    text: "Manage access with roles, fine-grained permissions, and namespace-level controls for users, groups, and service accounts",
-                    link: "/docs/enterprise/auth/rbac",
-                },
-            },
-            {
                 feature: "SSO (OIDC)",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Access multiple applications with one set of login credentials",
+                    text: "Sign in with your identity provider",
                     link: "/docs/enterprise/auth/sso",
                 },
             },
             {
                 feature: "LDAP",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Enable LDAP authentication in Kestra to streamline access using existing LDAP credentials",
+                    text: "Authenticate with existing LDAP credentials and sync groups",
                     link: "/docs/enterprise/auth/sso/ldap",
                 },
             },
             {
                 feature: "SCIM",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Sync users and groups from your Identity Provider to Kestra",
+                    text: "Provision users and groups from your identity provider automatically",
                     link: "/docs/enterprise/auth/scim",
                 },
             },
             {
-                feature: "Service Accounts & API Access",
-                values: ["cross", "check"],
+                feature: "Role-Based Access Control",
+                values: ENTERPRISE,
                 description: {
-                    text: "Programmatic access with service accounts, API tokens, and server-to-server credentials (OAuth2, JWT)",
+                    text: "Grant actions on resources per namespace, for users, groups, and service accounts",
+                    link: "/docs/enterprise/auth/rbac",
+                },
+            },
+            {
+                feature: "User Management & Invitations",
+                values: ENTERPRISE,
+                description: {
+                    text: "Create, invite, and manage users from the UI",
+                    link: "/docs/enterprise/auth/rbac",
+                },
+            },
+            {
+                feature: "Service Accounts & API Tokens",
+                values: ENTERPRISE,
+                description: {
+                    text: "Programmatic access with service accounts, API tokens, OAuth2, and JWT",
                     link: "/docs/enterprise/auth/service-accounts",
+                },
+            },
+            {
+                feature: "IAM from the CLI",
+                values: ENTERPRISE,
+                description: {
+                    text: "Manage users, groups, roles, and service accounts with kestractl",
+                    link: "/docs/kestra-cli/kestractl",
                 },
             },
         ],
@@ -189,26 +249,26 @@ export const getSections = (totalPlugins: string): Section[] => [
         title: "Secrets & Security",
         rows: [
             {
-                feature: "Secrets Manager (Internal, External & Read-Only)",
-                values: ["cross", "check"],
+                feature: "Secrets Manager",
+                values: ENTERPRISE,
                 description: {
-                    text: "Manage secrets with built-in storage, external providers like Vault and AWS Secrets Manager, or read-only immutable backends for enhanced security compliance",
+                    text: "Store secrets in Kestra, or read them from Vault, AWS, Azure, Google Cloud, and other backends",
                     link: "/docs/enterprise/governance/secrets-manager",
                 },
             },
             {
-                feature: "Namespace & Tenant-Level Secrets",
-                values: ["cross", "check"],
+                feature: "Namespace & Tenant Secrets",
+                values: ENTERPRISE,
                 description: {
-                    text: "Scope secrets, plugin defaults, and variables to specific namespaces or tenants",
+                    text: "Scope secrets and variables to a namespace or tenant",
                     link: "/docs/enterprise/governance/namespace-management#namespace-level-features",
                 },
             },
             {
                 feature: "Storage Isolation",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Add extra security measures to your Kestra instance to isolate access",
+                    text: "Give each namespace or tenant its own internal storage",
                     link: "/docs/enterprise/governance/worker-isolation",
                 },
             },
@@ -218,16 +278,40 @@ export const getSections = (totalPlugins: string): Section[] => [
         title: "Governance & Observability",
         rows: [
             {
-                feature: "Namespaces, Variables",
-                values: ["cross", "check"],
+                feature: "Policies",
+                values: ENTERPRISE,
                 description: {
-                    text: "Govern secrets, variables, and plugin defaults on a namespace level.",
+                    text: "Rules per namespace that set, check, or block task configuration in every flow",
+                    link: "/docs/enterprise/governance/policies",
+                },
+            },
+            {
+                feature: "Promote",
+                values: ENTERPRISE,
+                description: {
+                    text: "Move flows from dev to prod from the UI, with a diff and a review step",
+                    link: "/docs/enterprise/governance/promote",
+                },
+            },
+            {
+                feature: "Cases",
+                values: ENTERPRISE,
+                description: {
+                    text: "Track incidents next to the executions that caused them, from creation to resolution",
+                    link: "/docs/enterprise/governance/cases",
+                },
+            },
+            {
+                feature: "Namespace Management",
+                values: ENTERPRISE,
+                description: {
+                    text: "Govern secrets, variables, and files per namespace",
                     link: "/docs/enterprise/governance/namespace-management",
                 },
             },
             {
                 feature: "Allowed & Restricted Plugins",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
                     text: "Control which plugins can be used with allowlists and blocklists",
                     link: "/docs/enterprise/governance/allowed-plugins",
@@ -235,33 +319,41 @@ export const getSections = (totalPlugins: string): Section[] => [
             },
             {
                 feature: "Assets & Lineage",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Assets keeps a live inventory of resources that your workflows interact with",
+                    text: "A live inventory of the tables, files, and systems your workflows touch",
                     link: "/docs/enterprise/governance/assets",
                 },
             },
             {
                 feature: "Audit Logs",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Record all activities made by all users on the resources created inside Kestra",
+                    text: "Record every action by every user on every resource",
                     link: "/docs/enterprise/governance/audit-logs",
                 },
             },
             {
-                feature: "External Log Aggregators",
-                values: ["cross", "check"],
+                feature: "Log Shipper",
+                values: ENTERPRISE,
                 description: {
-                    text: "Manage and distribute logs across your entire infrastructure",
+                    text: "Send logs and audit logs to Datadog, Splunk, Elasticsearch, your SIEM, and more",
                     link: "/docs/enterprise/governance/logshipper",
                 },
             },
             {
-                feature: "System Announcements",
-                values: ["cross", "check"],
+                feature: "External Log Data Store",
+                values: ENTERPRISE,
                 description: {
-                    text: "Communicate planned maintenance or incidents with in-app banners",
+                    text: "Keep execution logs in a separate database or Elasticsearch to keep the main one lean",
+                    link: "/docs/administrator-guide/log-data-store",
+                },
+            },
+            {
+                feature: "System Announcements",
+                values: ENTERPRISE,
+                description: {
+                    text: "Announce maintenance or incidents with an in-app banner",
                     link: "/docs/enterprise/instance/announcements",
                 },
             },
@@ -271,35 +363,35 @@ export const getSections = (totalPlugins: string): Section[] => [
         title: "Development & Customization",
         rows: [
             {
-                feature: "Plugin Versioning",
-                values: ["cross", "check"],
+                feature: "Unit Tests",
+                values: ENTERPRISE,
                 description: {
-                    text: "Use multiple versions of a plugin depending on your instance requirements and upgrade path",
+                    text: "Test flows in isolation with fixtures and assertions, including expected failures",
+                    link: "/docs/enterprise/governance/unit-tests",
+                },
+            },
+            {
+                feature: "Plugin Versioning",
+                values: ENTERPRISE,
+                description: {
+                    text: "Run several versions of the same plugin side by side and upgrade at your own pace",
                     link: "/docs/enterprise/instance/versioned-plugins",
                 },
             },
             {
-                feature: "Unit Tests",
-                values: ["cross", "check"],
-                description: {
-                    text: "Automated, isolated tests for your Kestra flows with fixtures and assertions to avoid regressions in production",
-                    link: "/blogs/introducing-unit-tests",
-                },
-            },
-            {
-                feature: "App & Workflow Catalog",
-                values: ["cross", "check"],
-                description: {
-                    text: "Browse and manage custom applications built with Kestra",
-                    link: "/docs/enterprise/scalability/apps#app-catalog",
-                },
-            },
-            {
                 feature: "Custom Blueprints",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Your private internal App store of ready to use Kestra workflows",
+                    text: "A private catalog of ready-to-use flows, versioned in Git",
                     link: "/docs/enterprise/governance/custom-blueprints",
+                },
+            },
+            {
+                feature: "App Catalog",
+                values: ENTERPRISE,
+                description: {
+                    text: "Browse and manage the apps built on your workflows",
+                    link: "/docs/enterprise/scalability/apps#app-catalog",
                 },
             },
         ],
@@ -308,40 +400,48 @@ export const getSections = (totalPlugins: string): Section[] => [
         title: "Infrastructure & Scalability",
         rows: [
             {
-                feature: "Backup & Restore",
-                values: ["cross", "check"],
-                description: {
-                    text: "Automated backup and restore for disaster recovery",
-                    link: "/docs/administrator-guide/backup-and-restore",
-                },
-            },
-            {
-                feature: "Multi-Tenant",
-                values: ["cross", "check"],
-                description: {
-                    text: "Isolate multiple environments within a single Kestra instance",
-                    link: "/docs/enterprise/governance/tenants",
-                },
-            },
-            {
                 feature: "Worker Groups",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "A set of workers that can be explicitly targeted for task execution or polling trigger evaluation",
+                    text: "Route tasks to dedicated workers by tag and reserve capacity for critical work",
                     link: "/docs/enterprise/scalability/worker-group",
                 },
             },
             {
-                feature: "Cluster Health Monitoring",
-                values: ["cross", "check"],
+                feature: "Queue on Kafka, Redis, or AMQP",
+                values: ENTERPRISE,
                 description: {
-                    text: "Monitor cluster health and performance. Support for plugging in your own storage backend",
+                    text: "Move the queue off PostgreSQL or MySQL when your scale calls for it",
+                    link: "/docs/architecture/main-components#queue",
+                },
+            },
+            {
+                feature: "Multi-Tenant",
+                values: ENTERPRISE,
+                description: {
+                    text: "Isolate teams or environments inside one Kestra instance",
+                    link: "/docs/enterprise/governance/tenants",
+                },
+            },
+            {
+                feature: "Backup & Restore",
+                values: ENTERPRISE,
+                description: {
+                    text: "Automated backups and restores for disaster recovery",
+                    link: "/docs/administrator-guide/backup-and-restore",
+                },
+            },
+            {
+                feature: "Cluster Health Monitoring",
+                values: ENTERPRISE,
+                description: {
+                    text: "See the health and load of every server component",
                     link: "/docs/administrator-guide/monitoring",
                 },
             },
             {
                 feature: "Maintenance Mode",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
                     text: "Pause the platform for safe upgrades and migrations",
                     link: "/docs/enterprise/instance/maintenance-mode",
@@ -349,9 +449,9 @@ export const getSections = (totalPlugins: string): Section[] => [
             },
             {
                 feature: "Kill Switch",
-                values: ["cross", "check"],
+                values: ENTERPRISE,
                 description: {
-                    text: "Instantly stop problematic executions by scope to prevent cascading failures",
+                    text: "Stop every execution in a flow, namespace, or tenant at once",
                     link: "/docs/enterprise/instance/kill-switch",
                 },
             },
