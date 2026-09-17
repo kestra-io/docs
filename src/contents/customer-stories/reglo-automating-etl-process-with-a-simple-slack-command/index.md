@@ -10,7 +10,7 @@ metaDescription: This is the story of Reglo, a company that struggled with
   for an effective solution, they discovered Kestra
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
-logo: ./logo.svg
+logo: ./logo.webp
 tasks:
   - io.kestra.plugin.airbyte.cloud.jobs.Sync
   - io.kestra.plugin.singer.taps.Shopify
