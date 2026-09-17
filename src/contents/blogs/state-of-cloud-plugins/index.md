@@ -1,7 +1,8 @@
 ---
 title: "State of Cloud Plugins in Kestra"
-description: "Kestra's cloud catalog used to mean three providers. In 2026 it stopped meaning that. Where every cloud plugin stands today, how deep each one goes into the orchestrator itself, and what is still missing."
-date: 2026-09-06T10:00:00
+metaTitle: "State of Cloud Plugins in Kestra (2026)"
+description: "Kestra's cloud catalog used to mean three providers. In 2026 it stopped meaning that. Where every cloud plugin stands today and what is still missing."
+date: 2026-09-17T10:00:00
 category: Solutions
 authors:
   - name: "Jérémy Maire"
@@ -27,7 +28,7 @@ schema:
       name: "Can Kestra store its internal data on a cloud provider?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "Yes. Kestra's internal storage backend can be Amazon S3, Google Cloud Storage, Azure Blob Storage, Huawei OBS, Cloudflare R2, MinIO, or SeaweedFS. In the Enterprise Edition, secrets can also be read from AWS Secrets Manager, Azure Key Vault, or Google Secret Manager."
+        text: "Yes. Kestra's internal storage backend can be Amazon S3, Google Cloud Storage, Azure Blob Storage, Huawei OBS, MinIO, or SeaweedFS. In the Enterprise Edition, secrets can also be read from AWS Secrets Manager, Azure Key Vault, or Google Secret Manager."
     - "@type": "Question"
       name: "Does Kestra have a Scaleway, OVHcloud, or Oracle Cloud plugin?"
       acceptedAnswer:
@@ -35,15 +36,15 @@ schema:
         text: "Not yet. All three are tracked as open issues: a Scaleway plugin covering Object Storage, Compute Instances, Serverless, Managed Databases, networking, Queues and Topics, Kubernetes Kapsule, and Generative APIs; an OVHcloud compute plugin covering Public Cloud instances, bare metal servers, and Managed Kubernetes; and an Oracle Cloud Infrastructure plugin suite."
 ---
 
-For most of Kestra's life, "cloud plugin" meant one of three things. [`plugin-gcp`](/plugins/plugin-gcp) landed in January 2020, [`plugin-aws`](/plugins/plugin-aws) five months later, [`plugin-azure`](/plugins/plugin-azure) in 2022. Then nothing else for a long time.
+For most of Kestra's life, "cloud plugin" meant one of three things: [`plugin-gcp`](/plugins/plugin-gcp), which landed in January 2020, [`plugin-aws`](/plugins/plugin-aws) five months later, and [`plugin-azure`](/plugins/plugin-azure) in 2022. Nothing else followed for four years.
 
-That changed this year. Since February the catalog has picked up Cloudflare, Huawei Cloud, Clever Cloud, and DigitalOcean, which is more new cloud providers in seven months than in the previous six years combined. Two things drove it: our user base stopped being predominantly American, and sovereignty requirements went from a procurement checkbox to a hard constraint on where workloads can run.
+Since March the catalog has picked up Cloudflare, Huawei Cloud, Clever Cloud, and DigitalOcean, more new cloud providers in six months than in the previous six years combined. The work ran in parallel with the 2.0 cycle, so the catalog described here is the one 2.0 ships with. Two things drove it. Our user base stopped being predominantly American, and sovereignty requirements became a hard constraint on where workloads can run instead of a procurement checkbox.
 
-This is a status report on all of it. What ships today, how deep each plugin goes, and where the gaps still are.
+This post is a status report: what ships today, how deep each plugin goes, and where the gaps still are.
 
 ## What a cloud plugin actually plugs into
 
-Worth settling first, because it is the part people underestimate. A cloud plugin in Kestra can hook into four separate layers of the orchestrator, and how many of those it covers tells you far more about its maturity than its task count does.
+A cloud plugin in Kestra can hook into four separate layers of the orchestrator. How many of those it covers says more about its maturity than its task count does.
 
 | Layer | What it does | Example |
 |-------|--------------|---------|
@@ -52,19 +53,19 @@ Worth settling first, because it is the part people underestimate. A cloud plugi
 | Internal storage | Kestra's own object store lives on the provider | `storage-s3`, `storage-gcs`, `storage-obs` |
 | Secret manager (EE) | Kestra reads secrets from the provider's vault | AWS Secrets Manager, Azure Key Vault |
 
-The first layer is the obvious one. The other three are what make a plugin feel like Kestra running natively on a provider rather than an API wrapper pointed at it. Task runners in particular reverse the direction of the relationship: your flow stops reaching out to the cloud, and the cloud starts running your workload and reporting back.
+The first layer is the obvious one. The other three make Kestra run natively on the provider instead of calling its APIs from the outside. Task runners reverse the direction of the relationship: your flow stops reaching out to the cloud, and the cloud runs your workload and reports back.
 
-Every section below is really answering the same question, which is how far up that stack a given provider goes.
+Each section below answers the same question for one provider: how far up that stack it goes.
 
 ## The big three
 
-No surprises. Google Cloud, AWS, and Azure are the only providers covering all four layers, and the numbers reflect it.
+Google Cloud, AWS, and Azure are the only providers covering all four layers, and the numbers reflect it.
 
 | Plugin | Tasks | Triggers | Task runners (EE) | Storage | Secrets (EE) |
 |--------|-------|----------|-------------------|---------|--------------|
 | [`plugin-gcp`](/plugins/plugin-gcp) | 74 | 8 | 3 | GCS | Google Secret Manager |
 | [`plugin-aws`](/plugins/plugin-aws) | 61 | 8 | 2 | S3 | AWS Secrets Manager |
-| [`plugin-azure`](/plugins/plugin-azure) | 58 | 10 | 2 | Blob Storage | Azure Key Vault |
+| [`plugin-azure`](/plugins/plugin-azure) | 71 | 11 | 2 | Blob Storage | Azure Key Vault |
 
 The task runners deserve a closer look, because each provider converged on the same pair: one container-based runner, and one that runs directly on a machine.
 
@@ -72,13 +73,15 @@ On AWS that is `Batch` (backed by ECS on Fargate or EC2, or by EKS) and `Ec2`, w
 
 Google Cloud gets three, because Google has three plausible answers to "where should this container run": `Batch`, `CloudRun`, and `ComputeEngine`.
 
-The Cloud Run runner carries the most instructive piece of hard-won detail in the catalog. Cloud Run logs come back through Cloud Logging, whose read API is capped at 60 requests per minute per project, and Google does not raise that quota. In practice you get a handful of concurrent Cloud Run tasks before log lines, and therefore task outputs, start going missing without any error to explain it. So the runner grew a `useBucketForLog` option that writes stdout and stderr into the staging GCS bucket instead, since Cloud Storage meters reads per bucket rather than per project. Nobody designs that in up front. It is the sort of thing six years of production use buys you.
+### The Cloud Run logging quota
+
+The Cloud Run runner has the most instructive detail in the catalog. Cloud Run logs come back through Cloud Logging, whose read API is capped at 60 requests per minute per project, and Google does not raise that quota. In practice you get a handful of concurrent Cloud Run tasks before log lines, and therefore task outputs, start going missing without any error to explain it. So the runner gained a `useBucketForLog` option that writes stdout and stderr into the staging GCS bucket instead, since Cloud Storage meters reads per bucket, not per project. That option exists because someone hit the quota in production, and that is where most of the detail in these plugins comes from.
 
 ## The 2026 arrivals
 
 ### Huawei Cloud
 
-[`plugin-huawei`](/plugins/plugin-huawei) shipped in May and is by some distance the most complete newcomer: 37 tasks, 8 triggers, an EE counterpart with a task runner and a log exporter, and `storage-obs` as an internal storage backend. Three of the four layers inside four months.
+[`plugin-huawei`](/plugins/plugin-huawei) shipped in June and is by some distance the most complete newcomer: 37 tasks, 8 triggers, an EE counterpart with a task runner and a log exporter, and `storage-obs` as an internal storage backend, which is three of the four layers inside three months.
 
 It was deliberately built as a service-by-service mirror of the AWS plugin, and almost every task names its AWS counterpart in its own documentation.
 
@@ -95,28 +98,56 @@ It was deliberately built as a service-by-service mirror of the AWS plugin, and 
 | RFS | `Create`, `Delete` | CloudFormation |
 | GeminiDB | `GetItem`, `PutItem`, `Query`, `Scan` | DynamoDB |
 
-If you already run AWS flows, porting them is mostly swapping `type:` lines. For anything without a dedicated task there is `koocli.KooCLI`, which runs `hcloud` commands in a container with credentials injected from the plugin's connection properties, including on the EU sovereign region `eu-west-101`.
+If you already run AWS flows, porting them is mostly swapping `type:` lines. The S3 upload below becomes an OBS upload by changing the type, the region, and the name of one credential property; `from`, `bucket`, and `key` stay as they were.
+
+```yaml
+id: upload_export
+namespace: company.team
+
+inputs:
+  - id: export
+    type: FILE
+
+tasks:
+  - id: to_s3
+    type: io.kestra.plugin.aws.s3.Upload
+    region: eu-west-1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+    from: "{{ inputs.export }}"
+    bucket: exports
+    key: daily/export.csv
+
+  - id: to_obs
+    type: io.kestra.plugin.huawei.obs.Upload
+    region: eu-west-101
+    accessKeyId: "{{ secret('HUAWEI_AK') }}"
+    secretAccessKey: "{{ secret('HUAWEI_SK') }}"
+    from: "{{ inputs.export }}"
+    bucket: exports
+    key: daily/export.csv
+```
+
+For anything without a dedicated task there is `koocli.KooCLI`, which runs `hcloud` commands in a container with credentials injected from the plugin's connection properties, including on the EU sovereign region `eu-west-101`.
 
 
 ### DigitalOcean
 
-[`plugin-digitalocean`](/plugins/plugin-digitalocean) arrived in July with 39 tasks, following the [DigitalOcean partnership](/blogs/digitalocean-partnership). Coverage tracks what people actually run there: `droplet`, `volume`, `database`, `kubernetes`, `loadbalancer`, `firewall`, and `domain`.
+[`plugin-digitalocean`](/plugins/plugin-digitalocean) arrived in August with 39 tasks, following the [DigitalOcean partnership](/blogs/digitalocean-partnership). Coverage tracks what people actually run there: `droplet`, `volume`, `database`, `kubernetes`, `loadbalancer`, `firewall`, and `domain`.
 
-It is a provisioning and lifecycle plugin far more than a data plugin. Plenty of teams are spinning droplets up and down on a schedule and would rather do it next to everything else they orchestrate.
+It is a provisioning and lifecycle plugin more than a data plugin. Plenty of teams spin droplets up and down on a schedule and would rather do it next to everything else they orchestrate.
 
 ### Cloudflare
 
-[`plugin-cloudflare`](/plugins/plugin-cloudflare) is the odd one in the set, and the more interesting for it: 29 tasks across `zones`, `dns`, `cache`, `waf`, `workers`, `d1`, `compute`, and `models`, plus `storage-cloudflare` for putting Kestra's internal storage on R2.
+[`plugin-cloudflare`](/plugins/plugin-cloudflare) does not follow the IaaS pattern of the others: 29 tasks across `zones`, `dns`, `cache`, `waf`, `workers`, `d1`, `compute`, and `models`.
 
-Cloudflare is not an IaaS and the plugin does not pretend otherwise. Purging a cache, updating a WAF rule, querying D1, deploying a Worker: these are edge operations, and in practice they show up as the last step of a deployment pipeline rather than the first step of a data pipeline. The `models` package covering Workers AI is the part I would watch, since inference at the edge is one of the few genuinely new shapes in this area.
+Purging a cache, updating a WAF rule, querying D1, deploying a Worker: these are edge operations, and in practice they show up as the last step of a deployment pipeline. The `models` package, which covers Workers AI, is the one to watch, because it puts inference at the edge inside a flow.
 
 ## Sovereignty, and the European question
 
-We get asked about this constantly now.
+We get asked about European hosting more than about any other topic in this area. What ships today is [`plugin-clevercloud`](/plugins/plugin-clevercloud), released in July: 29 tasks and 4 triggers against the French PaaS. The plugin's shape follows the platform's shape, so instead of buckets and queues you get `applications` (create, scale, redeploy, restart, stop, environment variables), `addons` (provision a managed database, link it to an app, read back its connection credentials), `deployments` (including a `WaitForState` that polls until a deploy lands on `OK`, `FAIL`, or `CANCELLED`), `logs` (fetch a historical window, stream live, manage drains), and `organisations` for membership.
 
-What ships today is [`plugin-clevercloud`](/plugins/plugin-clevercloud), added in May: 29 tasks and 4 triggers against the French PaaS. The plugin's shape follows the platform's shape, so instead of buckets and queues you get `applications` (create, scale, redeploy, restart, stop, environment variables), `addons` (provision a managed database, link it to an app, read back its connection credentials), `deployments` (including a `WaitForState` that polls until a deploy lands on `OK`, `FAIL`, or `CANCELLED`), `logs` (fetch a historical window, stream live, manage drains), and `organisations` for membership.
-
-The triggers are the part worth building on. `deployments.Trigger` fires when a deploy reaches a target state and deliberately ignores `UNDEPLOY` records, so scaling events do not masquerade as releases. `logs.LogPatternTrigger` fires on a regex match in application logs and returns every matching line from that poll rather than only the first, which matters when an incident produces a burst rather than a single line. Between them you can run a deploy-and-verify loop on a European platform without your telemetry leaving it.
+The triggers are what make the plugin useful for operations. `deployments.Trigger` fires when a deploy reaches a target state and deliberately ignores `UNDEPLOY` records, so scaling events do not masquerade as releases. `logs.LogPatternTrigger` fires on a regex match in application logs and returns every matching line from that poll rather than only the first, which matters when an incident produces a burst rather than a single line. Between them you can run a deploy-and-verify loop on a European platform without your telemetry leaving it.
 
 
 ## What is next
@@ -129,10 +160,12 @@ Three cloud providers are tracked as open issues today, and two of them are Euro
 
 [`kestra-io/plugin-oci#2`](https://github.com/kestra-io/plugin-oci/issues/2) scopes a full Oracle Cloud Infrastructure suite. OCI comes up most often from teams already running Oracle databases who want the surrounding infrastructure orchestrated from the same place.
 
-If your provider is on none of those lists, the fastest way to change that is open [an issue on GitHub](https://github.com/kestra-io/kestra/issues/new/choose) or contact us via our Slack.
+If your provider is on none of those lists, the fastest way to change that is to open [an issue on GitHub](https://github.com/kestra-io/kestra/issues/new/choose) or tell us on [Slack](/slack).
 
 :::alert{type="info"}
-Every plugin mentioned here is browsable on the [Plugins page](https://kestra.io/plugins?category=CLOUD) under the CLOUD category, with the full task list and property reference for each.
+Every plugin mentioned here is browsable on the [Plugins page](/plugins?category=CLOUD) under the CLOUD category, with the full task list and property reference for each.
+
+If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
 :::
 
 
