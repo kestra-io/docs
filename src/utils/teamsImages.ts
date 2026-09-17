@@ -1,4 +1,4 @@
-const TeamImagesModules = import.meta.glob<ImageMetadata>("~/assets/teams/*.{png,svg,webp,jpg,gif,jpeg}", {
+const TeamImagesModules = import.meta.glob<ImageMetadata>("~/assets/teams/*.{png,svg,jpg,gif,jpeg}", {
     eager: true,
     import: "default",
 })

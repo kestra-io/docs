@@ -86,7 +86,7 @@
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
     import Versions from "./Versions.vue"
     import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
-    import kestraIcon from "../assets/kestra.webp"
+    import kestraIcon from "../assets/kestra.svg"
 
     const props = withDefaults(
         defineProps<{

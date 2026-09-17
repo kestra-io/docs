@@ -11,7 +11,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
-logoIcon: ./icon.webp
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.terraform.cli.TerraformCLI
   - io.kestra.plugin.scripts.shell.Script

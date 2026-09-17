@@ -12,7 +12,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
-logoIcon: ./icon.webp
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.aws.athena.Query
   - io.kestra.plugin.aws.s3.CreateBucket

@@ -10,9 +10,9 @@ metaDescription: This is the story of Sopht’s partnership with DataFlooder to
   orchestration and customer-level automation for their Green ITOps platform.
 heroImage: ./hero.png
 featuredImage: ./hero.png
-logo: ./logo.webp
+logo: ./logo.svg
 logoDark: ./logo-dark.svg
-logoIcon: ./icon.webp
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.terraform.cli.TerraformCLI
   - io.kestra.plugin.docker.Build
