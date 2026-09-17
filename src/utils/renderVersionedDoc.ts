@@ -13,6 +13,7 @@ import {
     resolveRelativeAssetRef,
     resolveVersionedDocLink,
     versionedAssetUrl,
+    versionedSpecHref,
     type DocChildren,
     type HomePageButton,
 } from "~/utils/versionedDocs"
@@ -124,6 +125,8 @@ const PROPS_TRANSFORMS: Record<
     string,
     (props: Record<string, unknown>, ctx: RenderCtx) => Record<string, unknown>
 > = {
+    "api-doc": (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "oss") }),
+    "api-doc-ee": (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "ee") }),
     "home-page-buttons": ({ ":buttons": bound, buttons, ...rest }, ctx) => ({
         ...rest,
         buttons: parseButtons(bound ?? buttons).map((b) =>
