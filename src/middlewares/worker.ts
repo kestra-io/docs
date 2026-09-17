@@ -1,5 +1,5 @@
 import { handle } from '@astrojs/cloudflare/handler';
-import contentSecurityPolicyConfig from "../../content-security-policy.config"
+import { buildContentSecurityPolicy } from "./contentSecurityPolicy";
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
 import { VERSIONED_DOCS_PATH } from "../utils/versionedDocs";
@@ -13,38 +13,8 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     const nextResponse = await next()
     const response = new Response(nextResponse.body, nextResponse)
 
-    // wrangler dev serves the production build, so import.meta.env.DEV is false
-    // there: key these off the request scheme, which is what actually matters.
     const isInsecureOrigin = url.protocol === "http:"
-
-    const localhost: string[] = []
-    if (isInsecureOrigin) {
-        localhost.push(url.protocol + "//" + url.host)
-    }
-
-    const contentSecurityPolicy: string = Object.entries(
-        contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
-    )
-        // upgrade-insecure-requests over http rewrites every subresource to https
-        // and nothing serves TLS on localhost, so the whole page stalls.
-        .filter(
-            ([key]) =>
-                !isInsecureOrigin || key !== "upgrade-insecure-requests",
-        )
-        .map(([key, value]) => {
-            let line = key
-
-            if (typeof value !== "boolean") {
-                if (value.length === 1 && value[0] === "'none'") {
-                    line += " " + value.join(" ")
-                } else {
-                    line += " " + localhost.concat(value).join(" ")
-                }
-            }
-
-            return line
-        })
-        .join("; ")
+    const contentSecurityPolicy = buildContentSecurityPolicy(url)
 
     response.headers.set(
         "x-frame-options",

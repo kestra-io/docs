@@ -1,57 +1,127 @@
-import {type HighlighterCore, createHighlighterCore as shikiCreateHighlighterCore} from "shiki/core"
-import {createJavaScriptRegexEngine} from "shiki/engine/javascript"
-import githubLight from "shiki/themes/github-light.mjs"
-import githubDark from "shiki/themes/github-dark.mjs"
-import githubLightDefault from "shiki/themes/github-light-default.mjs"
-import githubDarkDefault from "shiki/themes/github-dark-default.mjs"
-import yaml from "shiki/langs/yaml.mjs"
-import python from "shiki/langs/python.mjs"
-import javascript from "shiki/langs/javascript.mjs"
-import bash from "shiki/langs/bash.mjs"
-import json from "shiki/langs/json.mjs"
-// Languages that show up in API-sourced markdown (plugin docs, blueprint
-// descriptions): SQL for the JDBC plugins, Groovy/Java for script tasks,
-// HCL for Terraform, plus common config/output formats. Each grammar is
-// 4-32 KB raw; TypeScript (~190 KB) is deliberately left out — fences in an
-// unregistered language render as plain text rather than breaking.
-import sql from "shiki/langs/sql.mjs"
-import java from "shiki/langs/java.mjs"
-import groovy from "shiki/langs/groovy.mjs"
-import hcl from "shiki/langs/hcl.mjs"
-import dockerfile from "shiki/langs/dockerfile.mjs"
-import properties from "shiki/langs/properties.mjs"
-import ini from "shiki/langs/ini.mjs"
-import xml from "shiki/langs/xml.mjs"
-import shellsession from "shiki/langs/shellsession.mjs"
-import terraform from "shiki/langs/terraform.mjs"
+import type {HighlighterCore} from "shiki/core"
 
-let highlighterCoreCache: HighlighterCore | null = null
+// Everything Shiki is behind `import()`: a static import here puts the core,
+// the themes and every grammar in the static closure of each importing route.
+const LANG_LOADERS = {
+    yaml: () => import("shiki/langs/yaml.mjs"),
+    python: () => import("shiki/langs/python.mjs"),
+    javascript: () => import("shiki/langs/javascript.mjs"),
+    bash: () => import("shiki/langs/bash.mjs"),
+    json: () => import("shiki/langs/json.mjs"),
+    // Rest of what API-sourced markdown uses (plugin docs, blueprint
+    // descriptions). TypeScript (~190 KB) is deliberately left out.
+    sql: () => import("shiki/langs/sql.mjs"),
+    java: () => import("shiki/langs/java.mjs"),
+    groovy: () => import("shiki/langs/groovy.mjs"),
+    hcl: () => import("shiki/langs/hcl.mjs"),
+    dockerfile: () => import("shiki/langs/dockerfile.mjs"),
+    properties: () => import("shiki/langs/properties.mjs"),
+    ini: () => import("shiki/langs/ini.mjs"),
+    xml: () => import("shiki/langs/xml.mjs"),
+    shellsession: () => import("shiki/langs/shellsession.mjs"),
+    terraform: () => import("shiki/langs/terraform.mjs"),
+} as const
 
-export const getHighlighterCore = async () => {
-    if (highlighterCoreCache) {
-        return highlighterCoreCache
-    }
-    const highlighterCore = await shikiCreateHighlighterCore({
-        themes: [githubDark, githubLight, githubDarkDefault, githubLightDefault],
-        langs: [
-            yaml,
-            python,
-            javascript,
-            bash,
-            json,
-            sql,
-            java,
-            groovy,
-            hcl,
-            dockerfile,
-            properties,
-            ini,
-            xml,
-            shellsession,
-            terraform,
-        ],
-        engine: createJavaScriptRegexEngine(),
+export type ShikiLanguage = keyof typeof LANG_LOADERS
+
+// Routing table for the lazy import: which grammar chunk a fence language
+// needs. Shiki still registers its own aliases once that chunk has loaded.
+const LANG_ALIASES: Record<string, ShikiLanguage> = {
+    yml: "yaml",
+    py: "python",
+    js: "javascript",
+    sh: "bash",
+    shell: "bash",
+    zsh: "bash",
+    console: "shellsession",
+    docker: "dockerfile",
+    tf: "terraform",
+    tfvars: "terraform",
+}
+
+export const ALL_LANGUAGES = Object.keys(LANG_LOADERS) as ShikiLanguage[]
+
+/** Fence language to a grammar this toolset can load, or undefined for plain text. */
+export function resolveLanguage(lang?: string | null): ShikiLanguage | undefined {
+    const normalized = (lang ?? "").trim().toLowerCase()
+    const resolved = Object.hasOwn(LANG_ALIASES, normalized)
+        ? LANG_ALIASES[normalized]!
+        : normalized
+    return Object.hasOwn(LANG_LOADERS, resolved)
+        ? (resolved as ShikiLanguage)
+        : undefined
+}
+
+let corePromise: Promise<HighlighterCore> | undefined
+const langPromises = new Map<ShikiLanguage, Promise<unknown>>()
+
+async function createCore() {
+    const [core, engine, light, dark] = await Promise.all([
+        import("shiki/core"),
+        import("shiki/engine/javascript"),
+        import("shiki/themes/github-light-default.mjs"),
+        import("shiki/themes/github-dark-default.mjs"),
+    ])
+    // The JavaScript regex engine, not the default Oniguruma WASM one, which
+    // workerd refuses to compile ("Wasm code generation disallowed by embedder").
+    return core.createHighlighterCore({
+        themes: [light.default, dark.default],
+        langs: [],
+        engine: engine.createJavaScriptRegexEngine(),
     })
-    highlighterCoreCache = highlighterCore
-    return highlighterCore
+}
+
+function loadLanguage(highlighter: HighlighterCore, lang: string) {
+    const resolved = resolveLanguage(lang)
+    if (!resolved) {
+        return Promise.resolve()
+    }
+    let pending = langPromises.get(resolved)
+    if (!pending) {
+        pending = LANG_LOADERS[resolved]()
+            .then((module) => highlighter.loadLanguage(module.default))
+            .catch((error) => {
+                // Drop the rejected promise so the next fence can retry.
+                langPromises.delete(resolved)
+                throw error
+            })
+        langPromises.set(resolved, pending)
+    }
+    return pending
+}
+
+function coreOnce() {
+    // Caching the promise, not the highlighter, dedupes concurrent callers —
+    // but a rejected one must not stick, or one blip disables the page.
+    corePromise ??= createCore().catch((error) => {
+        corePromise = undefined
+        throw error
+    })
+    return corePromise
+}
+
+/** Shared highlighter with `langs` registered; unknown ones are skipped, so
+ * callers fall back to plain text rather than throwing. */
+export async function getHighlighterCore(
+    langs: Iterable<string> = ALL_LANGUAGES,
+): Promise<HighlighterCore> {
+    const highlighter = await coreOnce()
+    // A grammar that fails to load is best-effort: check getLoadedLanguages()
+    // and render that fence as plain text instead of failing the whole parse.
+    await Promise.all(
+        [...langs].map((lang) =>
+            loadLanguage(highlighter, lang).catch((error) => {
+                console.error(`Shiki failed to load the ${lang} grammar:`, error)
+            }),
+        ),
+    )
+    return highlighter
+}
+
+/** Starts the core (and optionally some grammars) loading without waiting, so
+ * the chunks land while the caller is still hydrating. */
+export function warmHighlighterCore(langs: Iterable<string> = []) {
+    void getHighlighterCore(langs).catch((error) => {
+        console.error("Shiki failed to preload:", error)
+    })
 }
