@@ -6,6 +6,9 @@
  * sees assets imported through astro:assets, so nothing optimises them at build
  * time. This does.
  *
+ * Only files at or above MIN_BYTES (5 KB) are considered, so --check cannot
+ * catch drift in a smaller one.
+ *
  * Precision is per file rather than global. Three decimals is right almost
  * everywhere, but the generated dot-grid <pattern> tiles carry a pitch of
  * 15.018797 by 15.025961, and rounding that drifts the field by up to 123/255

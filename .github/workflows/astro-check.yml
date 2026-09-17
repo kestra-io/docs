@@ -112,3 +112,9 @@ jobs:
       - name: Run unit tests
         if: ${{ !cancelled() }}
         run: npm run test:unit
+
+      # Files under public/ never reach Astro's svgOptimizer, so without this
+      # nothing notices an SVG landing unoptimised.
+      - name: Check SVG optimisation
+        if: ${{ !cancelled() }}
+        run: npm run svgo:check
