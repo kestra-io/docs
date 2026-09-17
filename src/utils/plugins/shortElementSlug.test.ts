@@ -6,6 +6,8 @@ const pages = [
     "/plugins/plugin-ai/tool",
     "/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.stdiomcpclient",
     "/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.skill",
+    "/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.a2aclient",
+    "/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.a2aclient",
     "/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.upload",
 ]
 
@@ -18,6 +20,33 @@ describe("resolveShortElementSlug", () => {
                 pages,
             ),
         ).toBe("/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.stdiomcpclient")
+    })
+
+    it("prefers the requested subgroup when the bare name is not unique in the plugin", () => {
+        expect(
+            resolveShortElementSlug(
+                ["plugin-ai", "tool", "a2aclient"],
+                "/plugins/plugin-ai/tool/a2aclient",
+                pages,
+            ),
+        ).toBe("/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.a2aclient")
+        expect(
+            resolveShortElementSlug(
+                ["plugin-ai", "agent", "a2aclient"],
+                "/plugins/plugin-ai/agent/a2aclient",
+                pages,
+            ),
+        ).toBe("/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.a2aclient")
+    })
+
+    it("falls back to the rest of the plugin when the subgroup has no such element", () => {
+        expect(
+            resolveShortElementSlug(
+                ["plugin-ai", "agent", "skill"],
+                "/plugins/plugin-ai/agent/skill",
+                pages,
+            ),
+        ).toBe("/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.skill")
     })
 
     it("falls back to the subgroup page when no element matches", () => {

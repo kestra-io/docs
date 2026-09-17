@@ -22,13 +22,21 @@ export function resolveShortElementSlug(
     const pages = pageList ?? []
     if (pages.some((page) => page.toLowerCase() === lower)) return null
 
-    const [pluginName] = splitRouteSlug
-    const prefix = `/plugins/${pluginName}/`.toLowerCase()
     const suffix = `.${last}`.toLowerCase()
-    const element = pages.find(
-        (page) => page.toLowerCase().startsWith(prefix) && page.toLowerCase().endsWith(suffix),
-    )
+    const findUnder = (prefix: string) => {
+        const lowerPrefix = prefix.toLowerCase()
+        return pages.find(
+            (page) =>
+                page.toLowerCase().startsWith(lowerPrefix) && page.toLowerCase().endsWith(suffix),
+        )
+    }
+
+    // Look under the requested subgroup first: bare names are not unique within a plugin
+    // (io.kestra.plugin.ai.tool.A2aClient and io.kestra.plugin.ai.agent.A2aClient are two
+    // different pages), so a plugin-wide search would 301 to the wrong element.
+    const subgroupPath = `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`
+    const element = findUnder(`${subgroupPath}/`) ?? findUnder(`/plugins/${splitRouteSlug[0]}/`)
     if (element) return element
 
-    return `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`
+    return subgroupPath
 }
