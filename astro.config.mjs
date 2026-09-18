@@ -225,6 +225,13 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            // ISO date. Set only by the visual-snapshot workflow so dated
+            // content added after it never moves a screenshot baseline.
+            SNAPSHOT_CUTOFF: envField.string({
+                context: "server",
+                access: "public",
+                optional: true,
+            }),
         },
     },
     // require for "/t" url
