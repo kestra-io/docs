@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest"
 import {
+    canonicalPayload,
     collectionContentDigest,
     collectionMetadataDigest,
     entryCacheKey,
@@ -8,12 +9,20 @@ import {
 } from "~/utils/incrementalCacheKey"
 import { DOCS_LATEST_OVERRIDE } from "~/utils/versionedDocs"
 
-const { fetchMock } = vi.hoisted(() => ({ fetchMock: vi.fn() }))
-vi.mock("~/utils/fetch", () => ({ $fetchApiCached: fetchMock }))
+const { fetchMock, textFetchMock } = vi.hoisted(() => ({
+    fetchMock: vi.fn(),
+    textFetchMock: vi.fn(),
+}))
+vi.mock("~/utils/fetch", () => ({
+    $fetchApiCached: fetchMock,
+    $fetchApiTextCached: textFetchMock,
+}))
 
 beforeEach(() => {
     fetchMock.mockReset()
     fetchMock.mockResolvedValue({ version: "2.9.0" })
+    textFetchMock.mockReset()
+    textFetchMock.mockResolvedValue("<svg />")
     vi.resetModules()
 })
 
@@ -110,5 +119,91 @@ describe("entryCacheKey", () => {
 
     it("returns undefined without a digest, leaving the page uncached", () => {
         expect(entryCacheKey({ id: "a", data: {} }, "scope")).toBeUndefined()
+    })
+
+    it("returns undefined when a scope part is missing, rather than keying without it", () => {
+        expect(entryCacheKey(collection[0], "scope", undefined)).toBeUndefined()
+    })
+})
+
+describe("apiPayloadDigest", () => {
+    const digest = async (...paths: string[]) => {
+        const { apiPayloadDigest } = await import("./incrementalCacheKey")
+        return apiPayloadDigest(...paths)
+    }
+
+    it("ignores the order the endpoints are listed in, and repeats", async () => {
+        fetchMock.mockImplementation(async (path: string) => ({ path }))
+        expect(await digest("/a", "/b")).toBe(await digest("/b", "/a", "/a"))
+    })
+
+    it("changes when a payload changes", async () => {
+        fetchMock.mockResolvedValue({ total: 1 })
+        const base = await digest("/plugins/subgroups")
+        fetchMock.mockResolvedValue({ total: 2 })
+        expect(await digest("/plugins/subgroups")).not.toBe(base)
+    })
+
+    it("returns undefined when a payload can't be read", async () => {
+        fetchMock.mockRejectedValue(new Error("503"))
+        expect(await digest("/plugins/subgroups")).toBeUndefined()
+    })
+
+    // /plugins/subgroups returns the same plugins in a different order per request.
+    it("ignores the order a payload lists its entries in", async () => {
+        fetchMock.mockResolvedValue({ plugins: [{ name: "a" }, { name: "b" }] })
+        const base = await digest("/plugins/subgroups")
+        fetchMock.mockResolvedValue({ plugins: [{ name: "b" }, { name: "a" }] })
+        expect(await digest("/plugins/subgroups")).toBe(base)
+    })
+})
+
+describe("canonicalPayload", () => {
+    it("orders object keys and array elements", () => {
+        expect(JSON.stringify(canonicalPayload({ b: 1, a: [3, 1, 2] }))).toBe(
+            JSON.stringify({ a: [1, 2, 3], b: 1 }),
+        )
+    })
+
+    it("orders nested arrays of objects", () => {
+        const one = canonicalPayload([{ x: 2 }, { x: 1 }])
+        const other = canonicalPayload([{ x: 1 }, { x: 2 }])
+        expect(JSON.stringify(one)).toBe(JSON.stringify(other))
+    })
+
+    it("still separates different content", () => {
+        expect(JSON.stringify(canonicalPayload([1, 2]))).not.toBe(
+            JSON.stringify(canonicalPayload([1, 3])),
+        )
+    })
+
+    it("leaves scalars and strings alone", () => {
+        expect(canonicalPayload("<svg />")).toBe("<svg />")
+        expect(canonicalPayload(null)).toBe(null)
+    })
+})
+
+describe("pluginIconDigest", () => {
+    const digest = async (...classes: string[]) => {
+        const { pluginIconDigest } = await import("./incrementalCacheKey")
+        return pluginIconDigest(...classes)
+    }
+
+    it("changes when an icon is redrawn", async () => {
+        const base = await digest("io.kestra.plugin.core.log.Log")
+        textFetchMock.mockResolvedValue("<svg><path /></svg>")
+        expect(await digest("io.kestra.plugin.core.log.Log")).not.toBe(base)
+    })
+
+    it("reads each class from its own icon endpoint", async () => {
+        await digest("io.kestra.plugin.core.log.Log")
+        expect(textFetchMock).toHaveBeenCalledWith(
+            "/plugins/icons/io.kestra.plugin.core.log.Log",
+        )
+    })
+
+    it("returns undefined when an icon can't be read", async () => {
+        textFetchMock.mockRejectedValue(new Error("404"))
+        expect(await digest("io.kestra.plugin.core.log.Log")).toBeUndefined()
     })
 })
