@@ -27,7 +27,7 @@ jobs:
     env:
       # Midnight UTC cut: content dated after it never reaches a baseline, so a
       # new post stops repainting /blogs. Bump it with the refresh PR it makes.
-      SNAPSHOT_CUTOFF: "2026-09-01"
+      SNAPSHOT_CUTOFF: "2026-09-17"
       # What the sampled SSR pages and the community metrics read from
       # tests/fixtures/api, so a plugin release cannot move a baseline.
       FIXTURE_PATHS: >-
