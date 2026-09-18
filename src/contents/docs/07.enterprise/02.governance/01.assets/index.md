@@ -45,6 +45,44 @@ Every asset includes these fields:
 | `description` | markdown-supported documentation |
 | `metadata` | map of key-value for adding custom metadata to the given asset |
 
+### Lifecycle fields
+
+Kestra defines three top-level lifecycle fields on assets. Set them directly on the asset declaration (not in the `metadata` map, which is for arbitrary custom key-value pairs):
+
+| Field | Description |
+| --- | --- |
+| `status` | Lifecycle state of the resource. Any string value; defaults to `active` when absent. |
+| `ttl` | Lease expiry as a UTC instant with milliseconds: `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`. An empty value means no expiry. Any other format is rejected. |
+| `owner` | Who the resource belongs to. Conventionally `user:<id>` or `group:<id>`. |
+
+Kestra stores these internally as `system.status`, `system.ttl`, and `system.owner` — those are the keys used in dashboard queries and filter expressions. These fields apply to all asset types, not just infrastructure-specific ones.
+
+### Emission failure behavior
+
+When asset emission fails (for example, a lock conflict or a persistence error), `assets.assetFailureBehavior` controls what happens to the task's execution state:
+
+| Value | Behavior |
+| --- | --- |
+| `WARN` | Escalates the task to `WARNING` state if it would otherwise succeed. **This is the default.** |
+| `FAIL` | Always escalates the task to `FAILED` state. |
+| `IGNORE` | Leaves the task state unchanged. Asset emission failures are logged but not surfaced. |
+
+```yaml
+assets:
+  assetFailureBehavior: WARN   # WARN (default) | FAIL | IGNORE
+  outputs:
+    - id: my-table
+      type: io.kestra.plugin.ee.assets.Table
+```
+
+If multiple assets are declared, Kestra attempts to emit each one before applying the failure behavior. A single failed asset does not prevent the others from being recorded.
+
+The value supports Pebble expressions. Namespace and tenant admins can also enforce a value across all tasks via a [Policy](../policies/index.md), without modifying individual flows.
+
+:::alert{type="info"}
+If tasks that declare assets show unexpected `WARNING` states, asset emission was failing silently before this property was introduced. Set `assetFailureBehavior: IGNORE` to restore the prior silent behavior, or investigate the underlying emission error.
+:::
+
 ## Asset identifier
 
 An asset is uniquely identified by its `id` and the tenant (`tenantId`) where you create it - the `id` must be unique per tenant. Neither the namespace nor the type is part of that identity: two assets with the same `id` and different namespaces or types cannot exist in the same tenant. Creating an asset with an `id` that is already taken is rejected.
