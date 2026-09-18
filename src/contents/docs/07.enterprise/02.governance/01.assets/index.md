@@ -20,11 +20,7 @@ For an end-to-end architecture walkthrough with diagrams, see [Assets for infras
   <iframe src="https://www.youtube.com/embed/XhICXP_GXic?si=jUBFcCv7vqSqqvKn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Declare and capture assets
-
-Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`; you can also add them manually from the **Assets** tab. Once created, you can view asset details, check which workflow runs created or modified them, and see how assets connect to each other across your workflows.
-
-Assets enable:
+Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`. You can also add them manually from the **Assets** tab. Assets enable:
 
 - Shipping metadata to lineage providers (e.g., OpenLineage).
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
@@ -213,6 +209,8 @@ Assets also support lifecycle management, event-driven triggers, and freshness m
 - Scope triggers by asset ID, namespace, type, and metadata filters.
 - Trigger context variables (`event`, `eventTime`, `lastUpdated`, `staleDuration`, `checkTime`) available for routing, alerting, and recovery logic.
 
+Freshness states for each asset are visible in the [dependencies graph](#explore-the-dependencies-graph).
+
 ### Trigger use mapping
 
 | Trigger | Primary use |
@@ -372,6 +370,53 @@ tasks:
 ```
 
 :::
+
+## Explore the dependencies graph
+
+The dependencies graph shows how assets relate to each other across your workflows. Open it from the **Graph** tab.
+
+### Tree and DAG layouts
+
+Two layout modes are available via the toggle in the graph toolbar:
+
+- **DAG** (directed acyclic graph): a deterministic ranked layout. Assets are ordered left-to-right by longest path, so the graph looks identical on every reload. Use this for a stable, presentation-ready view.
+- **Tree**: a force-directed layout that distributes nodes more evenly across the canvas. Use this for dense graphs where the DAG layout produces overlaps.
+
+Both modes show the same nodes and edges.
+
+### Freshness
+
+Each node displays the freshness state of that asset based on the most recent execution that produced it:
+
+| State | Meaning |
+| --- | --- |
+| `fresh` | The asset was produced successfully within the expected cadence. |
+| `stale` | The asset has not been updated within the expected cadence. |
+| `failed` | The most recent producing execution failed. |
+| `unknown` | No producing execution has been recorded for this asset. |
+
+A summary bar above the graph shows the count of each state; the legend shows only states present in the graph.
+
+The expected cadence is derived from the `Schedule` trigger of the producing flow. To launch remediation flows when an asset becomes stale, use [`FreshnessTrigger`](#operational-automation).
+
+### Group by
+
+Use the **Group by** selector to cluster nodes into labeled buckets:
+
+- **dataset**: groups assets by the `dataset` field in the asset's schema metadata.
+- **producer**: groups assets by the plugin artifact: the fourth segment of the producing task type's FQCN (e.g., `jdbc`, `dbt`, `aws`).
+
+Selected groups appear as chips in a row below the toolbar. Hovering a chip fades unrelated nodes; clicking pins the group so it stays highlighted. Click the chip again or click an empty area of the canvas to release it. Flow nodes appear in their own bucket and are not merged into asset groups.
+
+### Node details panel
+
+Click a node to open the details panel on the right side of the graph. The panel shows:
+
+- The asset's full identifier and type.
+- Its current status and metadata.
+- Recent runs, each linked to its execution page.
+
+Double-click a node to navigate to that asset's detail page. Clicking an empty area of the canvas closes the panel and releases any pinned group.
 
 ## Locking assets
 
