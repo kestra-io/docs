@@ -2,12 +2,12 @@
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import type { NoGapGridItem } from "~/components/common/NoGapGrid.vue"
 import SectionTitle from "./SectionTitle.astro"
-import CertificateOutline from "vue-material-design-icons/CertificateOutline.vue"
-import RayStartArrow from "vue-material-design-icons/RayStartArrow.vue"
-import ShapeOutline from "vue-material-design-icons/ShapeOutline.vue"
-import ChatOutline from "vue-material-design-icons/ChatOutline.vue"
-import ForumOutline from "vue-material-design-icons/ForumOutline.vue"
-import FileDocumentMultipleOutline from "vue-material-design-icons/FileDocumentMultipleOutline.vue"
+import License from "./icons/License.vue"
+import LineStartCircle from "./icons/LineStartCircle.vue"
+import CategorySearch from "./icons/CategorySearch.vue"
+import Chat from "./icons/Chat.vue"
+import Communication from "./icons/Communication.vue"
+import Docs from "./icons/Docs.vue"
 
 interface Props {
     goodFirstIssuesUrl: string
@@ -18,7 +18,7 @@ const { goodFirstIssuesUrl, discordUrl } = Astro.props
 
 const RESOURCES: NoGapGridItem[] = [
     {
-        icon: CertificateOutline,
+        icon: License,
         title: "Kestra Academy",
         description:
             "Free certification. Start with fundamentals, then take the data, AI or infrastructure automation track.",
@@ -29,21 +29,21 @@ const RESOURCES: NoGapGridItem[] = [
         },
     },
     {
-        icon: RayStartArrow,
+        icon: LineStartCircle,
         title: "Good-first-issue backlog",
         description:
             "Curated, scoped and labelled across the core and plugin repositories.",
         link: { text: "View issues", href: goodFirstIssuesUrl, external: true },
     },
     {
-        icon: ShapeOutline,
+        icon: CategorySearch,
         title: "Blueprints gallery",
         description:
             "Browse what already exists so your submission adds something new.",
         link: { text: "Browse blueprints", href: "/blueprints" },
     },
     {
-        icon: ChatOutline,
+        icon: Chat,
         title: "Community Slack",
         description:
             "Around 6,000 members, with Kestra engineers on hand through October to unblock you.",
@@ -54,14 +54,14 @@ const RESOURCES: NoGapGridItem[] = [
         },
     },
     {
-        icon: ForumOutline,
+        icon: Communication,
         title: "John's Discord",
         description:
             "The Coding Challenges community channel for this hackathon — find teammates and compare notes.",
         link: { text: "Join the channel", href: discordUrl, external: true },
     },
     {
-        icon: FileDocumentMultipleOutline,
+        icon: Docs,
         title: "Kestra docs",
         description:
             "Flows, tasks, plugins, triggers, and how to structure a blueprint that passes the bar.",

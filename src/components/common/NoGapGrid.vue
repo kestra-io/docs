@@ -107,6 +107,13 @@
             --grid-icon: var(--ks-content-color-highlight);
             --grid-title: var(--ks-content-primary);
             --grid-desc: var(--ks-content-secondary);
+
+            gap: 1px;
+            background: var(--grid-border);
+
+            .feature-card {
+                box-shadow: none;
+            }
         }
 
         @include media-breakpoint-down(lg) {
