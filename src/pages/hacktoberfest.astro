@@ -61,6 +61,22 @@ const DISCORD_URL = "https://discord.com/invite/DRFYztKRf4"
             }
         }
 
+        // Cards that sit on the primary surface (Prizes, Contribution Rules).
+        // Light: white on white with the primary border, as in Figma. Dark:
+        // Figma drops them onto the darker secondary fill with a softer
+        // outline, so the card reads as a panel rather than an outlined box.
+        --hf-card-background: var(--ks-background-primary);
+        --hf-card-border: var(--ks-border-primary);
+
+        :global(html.dark) & {
+            --hf-card-background: var(--ks-background-secondary);
+            --hf-card-border: color-mix(
+                in srgb,
+                var(--ks-border-primary) 70%,
+                var(--ks-background-secondary)
+            );
+        }
+
         --hf-background-dark: #{$base-grey-800};
         --hf-background-dark-soft: #{$base-grey-700};
         --hf-border-dark: #{$base-grey-600};
