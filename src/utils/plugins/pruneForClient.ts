@@ -25,13 +25,17 @@ export function prunePluginsForCards(
     plugins: Plugin[],
     pluginsData: Record<string, any>,
     urlIndex?: Pick<PluginUrlIndex, "multiSubGroupPlugins">,
+    rootGroups: Set<string> = new Set(),
 ): CardPlugin[] {
     return plugins.map(p => {
         const key = p.subGroup ?? p.group ?? p.name
 
-        /** A foreign-package subgroup (e.g. plugin-ee-git's io.kestra.plugin.git) collides with another
-         *  plugin's group key, so fall back to the plugin's own group info. */
-        const isForeignSubgroup = p.subGroup !== undefined && !p.subGroup.startsWith(p.group)
+        /** A subgroup only collides with another plugin's own info when its value IS that other
+         *  plugin's root group (e.g. plugin-ee-git's subGroup is literally "io.kestra.plugin.git",
+         *  plugin-git's own group) — fall back to this plugin's own group info in that case.
+         *  A subgroup that merely lives in a different package tree from its own group (e.g. core's
+         *  "io.kestra.plugin.ee.assets" subgroup) is not a collision: it owns its pluginsData entry. */
+        const isForeignSubgroup = p.subGroup !== undefined && p.subGroup !== p.group && rootGroups.has(p.subGroup)
         const info = (isForeignSubgroup ? pluginsData[p.group] : pluginsData[key]) ?? {}
 
         const groupInfo = pluginsData[p.group]
