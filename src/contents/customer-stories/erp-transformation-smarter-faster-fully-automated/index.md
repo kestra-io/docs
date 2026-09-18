@@ -8,9 +8,9 @@ metaTitle: "Fila & Kestra: ERP Transformation Smarter, Faster, Fully Automated"
 metaDescription: This is the story of how FILA, a global leader in sportswear,
   orchestrates complex ERP and supply chain workflows across continents using
   Kestra.
-heroImage: ./hero.png
+heroImage: ./hero.jpeg
 featured: true
-featuredImage: ./hero.png
+featuredImage: ./hero.jpeg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
 tasks:

@@ -1,545 +1,579 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
-import KpiRotator from "~/components/stories/KpiRotator.vue"
+    import { ref, onMounted, onUnmounted } from "vue"
+    import TaskIcon from "~/components/common/TaskIcon.vue"
 
-interface Kpi {
-    value: string
-    label: string
-}
+    const MAX_TASKS = 5
+    const DRIFT_SPEED = 30
+    const HOVER_SPEED = 8
+    const DRAG_THRESHOLD = 6
+    const STEP_DURATION = 450
 
-interface StorySlide {
-    slug: string
-    heroImage: string
-    logo?: string
-    logoDark?: string
-    logoIcon?: string
-    companyName: string
-    tagline?: string
-    industry: string
-    useCase?: string
-    quote: string
-    quotePerson: string
-    quotePersonTitle?: string
-    kpis: Kpi[]
-    tasks: string[]
-}
+    const props = defineProps<{ stories: Story[] }>()
 
-const props = defineProps<{ stories: StorySlide[] }>()
+    const trackRef = ref<HTMLElement | null>(null)
+    const railRef = ref<HTMLElement | null>(null)
+    // Repeated sets of cards so the rail wraps without a seam. Only the
+    // EXPOSED copy is in the tab order and the accessibility tree; it is the
+    // one the rail rests on, so Tab lands on a visible card.
+    const copies = ref(3)
+    const EXPOSED = 2
+    const dragging = ref(false)
 
-const trackRef = ref<HTMLElement | null>(null)
-const currentIdx = ref(0)
-const maxIdx = ref(props.stories.length - 1)
+    let offset = 0 
+    let base = 0 
+    let loopWidth = 0 
+    let stepWidth = 0 
+    let bleed = 0 
+    let frame = 0
+    let stepFrame = 0
+    let lastTime = 0
+    let speed = DRIFT_SPEED
+    let targetSpeed = DRIFT_SPEED
+    let interacting = false
+    let inView = true
+    let reducedMotion = false
 
-const GAP = 16
+    function setOffset(x: number) {
+        if (!railRef.value || !loopWidth) return
+        offset = base + ((((x - base) % loopWidth) + loopWidth) % loopWidth)
+        railRef.value.style.transform = `translate3d(${-offset}px, 0, 0)`
+    }
 
-function cardWidth(): number {
-    const el = trackRef.value?.querySelector(".fc-card") as HTMLElement | null
-    return el?.offsetWidth ?? 0
-}
+    function measure() {
+        const track = trackRef.value
+        const rail = railRef.value
+        const card = rail?.querySelector<HTMLElement>(".fc-card")
+        if (!track || !rail || !card || !props.stories.length) return
+        const gap = parseFloat(getComputedStyle(rail).columnGap) || 0
+        const previousLoop = loopWidth
+        const previousBase = base
+        stepWidth = card.offsetWidth + gap
+        loopWidth = props.stories.length * stepWidth
+        copies.value = Math.max(3, Math.ceil(track.clientWidth / loopWidth) + 2)
+        bleed = track.parentElement!.getBoundingClientRect().left - track.getBoundingClientRect().left
+        base = (EXPOSED - 1) * loopWidth - bleed
+        // Later measures (resize, orientation change) keep the reader's place.
+        const progress = previousLoop ? (offset - previousBase) / previousLoop : 0
+        setOffset(base + progress * loopWidth)
+    }
 
-// Last index where the final card sits flush at the right edge — stops the
-// nav from scrolling into empty space past the end (and "phantom" presses).
-function computeMaxIdx() {
-    const track = trackRef.value
-    const w = cardWidth()
-    if (!track || w === 0) { maxIdx.value = Math.max(0, props.stories.length - 1); return }
-    // Derive the last index from the real scroll range so it lands exactly at
-    // the end — avoids two indices mapping to the same (clamped) max scroll.
-    const maxScroll = track.scrollWidth - track.clientWidth
-    maxIdx.value = Math.max(0, Math.round(maxScroll / (w + GAP)))
-}
+    function tick(now: number) {
+        const dt = Math.min((now - lastTime) / 1000, 0.1)
+        lastTime = now
+        speed += (targetSpeed - speed) * Math.min(1, dt * 6)
+        setOffset(offset + speed * dt)
+        frame = requestAnimationFrame(tick)
+    }
+    function startDrift() {
+        if (frame || stepFrame || interacting || dragging.value || !inView) return
+        if (reducedMotion || document.hidden) return
+        lastTime = performance.now()
+        frame = requestAnimationFrame(tick)
+    }
+    function stopDrift() {
+        if (frame) {
+            cancelAnimationFrame(frame)
+            frame = 0
+        }
+    }
+    function slow() {
+        targetSpeed = HOVER_SPEED
+    }
+    function restore() {
+        targetSpeed = DRIFT_SPEED
+    }
+    function pause() {
+        interacting = true
+        stopDrift()
+    }
+    function resume() {
+        interacting = false
+        startDrift()
+    }
+    function onVisibility() {
+        if (document.hidden) stopDrift()
+        else startDrift()
+    }
 
-function goTo(i: number) {
-    if (!trackRef.value) return
-    const clamped = Math.min(Math.max(0, i), maxIdx.value)
-    trackRef.value.scrollTo({ left: clamped * (cardWidth() + GAP), behavior: "smooth" })
-    currentIdx.value = clamped
-}
+    function cancelStep() {
+        if (stepFrame) {
+            cancelAnimationFrame(stepFrame)
+            stepFrame = 0
+        }
+    }
+    /** Glide the rail one card forward (1) or back (-1). */
+    function step(direction: 1 | -1) {
+        if (!stepWidth) return
+        cancelStep()
+        stopDrift()
+        const from = offset
+        const delta = direction * stepWidth
+        if (reducedMotion) {
+            setOffset(from + delta)
+            startDrift()
+            return
+        }
+        const start = performance.now()
+        const run = (now: number) => {
+            const t = Math.min(1, (now - start) / STEP_DURATION)
+            const eased = 1 - Math.pow(1 - t, 3)
+            setOffset(from + delta * eased)
+            if (t < 1) {
+                stepFrame = requestAnimationFrame(run)
+            } else {
+                stepFrame = 0
+                startDrift()
+            }
+        }
+        stepFrame = requestAnimationFrame(run)
+    }
+    function onKeydown(e: KeyboardEvent) {
+        if (e.key === "ArrowRight") {
+            e.preventDefault()
+            step(1)
+        } else if (e.key === "ArrowLeft") {
+            e.preventDefault()
+            step(-1)
+        }
+    }
+    // Focus holds the rail still and, for a keyboard user, brings a card the
+    // loop has carried out of view back to the content edge.
+    function onFocusIn(e: FocusEvent) {
+        pause()
+        cancelStep()
+        const card = (e.target as HTMLElement).closest<HTMLElement>(".fc-card")
+        if (!card || !trackRef.value || !loopWidth || !card.matches(":focus-visible")) return
+        const r = card.getBoundingClientRect()
+        const t = trackRef.value.getBoundingClientRect()
+        const visible = r.left >= t.left + bleed - 1 && r.right <= t.right - bleed + 1
+        if (!visible) setOffset(card.offsetLeft - bleed)
+    }
 
-function prev() { goTo(currentIdx.value - 1) }
-// at the end, loop naturally back to the first slide
-function next() { goTo(currentIdx.value >= maxIdx.value ? 0 : currentIdx.value + 1) }
+    let pointerId: number | null = null
+    let startX = 0
+    let startOffset = 0
+    let moved = false
 
-function onScroll() {
-    const w = cardWidth()
-    if (!trackRef.value || w === 0) return
-    currentIdx.value = Math.min(maxIdx.value, Math.round(trackRef.value.scrollLeft / (w + GAP)))
-}
+    function onPointerDown(e: PointerEvent) {
+        if (e.pointerType === "mouse" && e.button !== 0) return
+        pointerId = e.pointerId
+        startX = e.clientX
+        startOffset = offset
+        moved = false
+        cancelStep()
+        stopDrift()
+    }
+    function onPointerMove(e: PointerEvent) {
+        if (e.pointerId !== pointerId) return
+        const dx = e.clientX - startX
+        if (!moved && Math.abs(dx) < DRAG_THRESHOLD) return
+        if (!moved) {
+            moved = true
+            dragging.value = true
+            trackRef.value?.setPointerCapture(e.pointerId)
+        }
+        setOffset(startOffset - dx)
+    }
+    function onPointerUp(e: PointerEvent) {
+        if (e.pointerId !== pointerId) return
+        pointerId = null
+        dragging.value = false
+        startDrift()
+    }
+    // A drag must not also follow the card link it started on.
+    function onClickCapture(e: MouseEvent) {
+        if (!moved) return
+        e.preventDefault()
+        e.stopPropagation()
+        moved = false
+    }
 
-let autoTimer: ReturnType<typeof setInterval> | null = null
-
-function startAuto() {
-    if (autoTimer) return
-    autoTimer = setInterval(() => {
-        goTo(currentIdx.value >= maxIdx.value ? 0 : currentIdx.value + 1)
-    }, 12000)
-}
-
-function stopAuto() {
-    if (autoTimer) { clearInterval(autoTimer); autoTimer = null }
-}
-
-let ro: ResizeObserver
-onMounted(() => {
-    trackRef.value?.addEventListener("scroll", onScroll, { passive: true })
-    computeMaxIdx()
-    ro = new ResizeObserver(() => {
-        computeMaxIdx()
-        if (trackRef.value) trackRef.value.scrollLeft = 0
-        currentIdx.value = 0
+    let ro: ResizeObserver
+    let io: IntersectionObserver
+    onMounted(() => {
+        const track = trackRef.value
+        if (!track) return
+        reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        measure()
+        ro = new ResizeObserver(measure)
+        ro.observe(track)
+        io = new IntersectionObserver(([entry]) => {
+            inView = entry.isIntersecting
+            if (inView) startDrift()
+            else stopDrift()
+        })
+        io.observe(track)
+        document.addEventListener("visibilitychange", onVisibility)
+        startDrift()
     })
-    if (trackRef.value) ro.observe(trackRef.value)
-})
-onUnmounted(() => {
-    trackRef.value?.removeEventListener("scroll", onScroll)
-    ro?.disconnect()
-})
+    onUnmounted(() => {
+        document.removeEventListener("visibilitychange", onVisibility)
+        ro?.disconnect()
+        io?.disconnect()
+        cancelStep()
+        stopDrift()
+    })
 </script>
 
 <template>
-    <div class="fc-root">
-        <div class="fc-carousel-row">
-        <button
-            class="fc-arrow"
-            @click="prev"
-            :disabled="currentIdx === 0"
-            aria-label="Previous story"
+    <section
+        class="fc-root"
+        aria-roledescription="carousel"
+        aria-label="Featured customer stories"
+        @mouseenter="slow"
+        @mouseleave="restore"
+        @focusin="onFocusIn"
+        @focusout="resume"
+        @keydown="onKeydown"
+    >
+        <div
+            class="fc-track"
+            ref="trackRef"
+            :class="{ 'is-dragging': dragging }"
+            @pointerdown="onPointerDown"
+            @pointermove="onPointerMove"
+            @pointerup="onPointerUp"
+            @pointercancel="onPointerUp"
+            @click.capture="onClickCapture"
+            @dragstart.prevent
         >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6" />
-            </svg>
-        </button>
+            <div class="fc-rail" ref="railRef">
+                <template v-for="copy in copies" :key="copy">
+                    <a
+                        v-for="story in stories"
+                        :key="`${copy}-${story.slug}`"
+                        :href="`/customers/${story.slug}`"
+                        class="fc-card"
+                        :aria-hidden="copy !== EXPOSED || undefined"
+                        :tabindex="copy !== EXPOSED ? -1 : undefined"
+                    >
+                        <img
+                            class="fc-bg"
+                            :src="story.heroImage"
+                            alt=""
+                            :loading="copy === EXPOSED ? 'eager' : 'lazy'"
+                            decoding="async"
+                        />
 
-        <div class="fc-track" ref="trackRef">
-            <a
-                v-for="story in stories"
-                :key="story.slug"
-                :href="`/customers/${story.slug}`"
-                class="fc-card"
-            >
-                <div class="fc-card-image">
-                    <img :src="story.heroImage" :alt="story.companyName" loading="eager" />
-                    <span class="fc-industry">{{ story.industry }}</span>
-                    <div class="fc-header">
-                        <div class="fc-logo">
-                            <img
-                                v-if="story.logoIcon || story.logo"
-                                :src="story.logoIcon ?? story.logo"
-                                :alt="story.companyName"
-                                loading="eager"
-                            />
-                            <span v-else class="fc-initial">
-                                {{ story.companyName.charAt(0).toUpperCase() }}
-                            </span>
-                        </div>
-                        <div class="fc-info">
-                            <span class="fc-company">{{ story.companyName }}</span>
-                            <p v-if="story.tagline" class="fc-tagline">{{ story.tagline }}</p>
-                        </div>
-                    </div>
-                </div>
+                        <div class="fc-body">
+                            <div class="fc-top">
+                                <div class="fc-wordmark">
+                                    <img
+                                        v-if="story.logo || story.logoIcon"
+                                        :src="story.logo ?? story.logoIcon"
+                                        :alt="story.companyName"
+                                        :loading="copy === EXPOSED ? 'eager' : 'lazy'"
+                                    />
+                                    <span v-else class="fc-initial">
+                                        {{ story.companyName.charAt(0).toUpperCase() }}
+                                    </span>
+                                </div>
+                                <span class="fc-industry">{{ story.industry }}</span>
+                            </div>
 
-                <div class="fc-card-body">
-                    <blockquote class="fc-quote">
-                        <p>{{ story.quote }}</p>
-                        <cite>{{ story.quotePerson }}<span v-if="story.quotePersonTitle">, {{ story.quotePersonTitle }}</span></cite>
-                    </blockquote>
+                            <div class="fc-bottom">
+                                <div class="fc-quote-block">
+                                    <p class="fc-quote">
+                                        <span class="fc-quote-mark">“</span>{{ story.quote
+                                        }}<span class="fc-quote-mark">”</span>
+                                    </p>
+                                    <p class="fc-cite">
+                                        <strong>{{ story.quotePerson }}</strong>
+                                        <span v-if="story.quotePersonTitle"
+                                            >, {{ story.quotePersonTitle }}</span
+                                        >
+                                    </p>
+                                </div>
 
-                    <p v-if="story.useCase" class="fc-use-case">
-                        <span class="fc-use-case-label">→</span> {{ story.useCase }}
-                    </p>
-
-                    <KpiRotator :kpis="story.kpis" />
-
-                    <div v-if="story.tasks && story.tasks.length" class="fc-footer">
-                        <span class="fc-plugins-label">Plugins Used :</span>
-                        <div class="fc-tasks">
-                            <div
-                                v-for="task in story.tasks.slice(0, 4)"
-                                :key="task"
-                                class="fc-task-icon-wrap"
-                            >
-                                <TaskIcon :cls="task" />
+                                <div v-if="story.tasks && story.tasks.length" class="fc-tasks">
+                                    <div
+                                        v-for="task in story.tasks.slice(0, MAX_TASKS)"
+                                        :key="task"
+                                        class="fc-task"
+                                    >
+                                        <TaskIcon :cls="task" theme="dark" />
+                                    </div>
+                                    <div
+                                        v-if="story.tasks.length > MAX_TASKS"
+                                        class="fc-task fc-task-more"
+                                    >
+                                        +{{ story.tasks.length - MAX_TASKS }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <button
-            class="fc-arrow"
-            @click="next"
-            aria-label="Next story"
-        >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6" />
-            </svg>
-        </button>
-        </div>
-
-        <div class="fc-nav">
-            <div class="fc-dots">
-                <button
-                    v-for="(_, i) in stories"
-                    :key="i"
-                    class="fc-dot"
-                    :class="{ active: i === currentIdx }"
-                    @click="goTo(i)"
-                    :aria-label="`Go to story ${i + 1}`"
-                />
+                    </a>
+                </template>
             </div>
         </div>
-    </div>
+
+        <div class="fc-controls">
+            <button type="button" class="fc-arrow" aria-label="Previous story" @click="step(-1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6" />
+                </svg>
+            </button>
+            <button type="button" class="fc-arrow" aria-label="Next story" @click="step(1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </button>
+        </div>
+    </section>
 </template>
 
-<style scoped>
-/* ── track ── */
-/* desktop: arrows flank the track, dots centered below.
-   mobile: track full-width, arrows drop to the bottom row flanking the dots. */
-.fc-root {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    grid-template-areas:
-        "prev track next"
-        "nav  nav   nav";
-    align-items: center;
-    column-gap: 0.75rem;
-    row-gap: 1.25rem;
-}
+<style scoped lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
 
-/* promote the row's children (arrows + track) into the .fc-root grid */
-.fc-carousel-row {
-    display: contents;
-}
-
-.fc-carousel-row > .fc-arrow:first-child { grid-area: prev; }
-.fc-carousel-row > .fc-arrow:last-child  { grid-area: next; }
-
-@media (max-width: 767px) {
     .fc-root {
-        grid-template-areas:
-            "track track track"
-            "prev  nav   next";
-        column-gap: 0.5rem;
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
+        container-type: inline-size;
     }
-}
 
-.fc-track {
-    grid-area: track;
-    min-width: 0;
-}
+    /* Full-viewport strip; 100cqw is .fc-root's width, so the bleed is the
+       container's side margin. `clip` trims the overflow without making the
+       track scrollable, so focusing an off-screen card cannot scroll it out
+       of sync with the transform. */
+    .fc-track {
+        --fc-bleed: calc((100vw - 100cqw) / 2);
+        margin-inline: calc(-1 * var(--fc-bleed));
+        padding-block: 1.5rem 3rem;
+        margin-block: -1.5rem -3rem;
+        overflow: clip;
+        cursor: grab;
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-user-select: none;
+    }
 
-.fc-track {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    gap: 1rem;
-}
+    .fc-track.is-dragging {
+        cursor: grabbing;
+    }
 
-.fc-track::-webkit-scrollbar {
-    display: none;
-}
+    .fc-rail {
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        gap: 1rem;
+        will-change: transform;
+    }
 
-/* desktop: 3 cards visible */
-.fc-card {
-    flex: 0 0 calc((100% - 2rem) / 3);
-    scroll-snap-align: start;
-}
-
-/* tablet: 2 cards visible */
-@media (max-width: 991px) {
     .fc-card {
-        flex: 0 0 calc(50% - 0.5rem);
+        flex: 0 0 min(420px, calc(100vw - 3rem));
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-height: 29rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background: $base-grey-800;
+        text-decoration: none;
+        color: $base-grey-white;
+        transition:
+            transform 300ms ease-out,
+            box-shadow 300ms ease-out;
     }
-}
 
-/* mobile: 1 card visible */
-@media (max-width: 767px) {
-    .fc-card {
-        flex: 0 0 100%;
+    .fc-card:hover {
+        transform: translateY(-16px);
+        box-shadow: 0 24px 40px -12px rgba($black, 0.65);
     }
-}
 
-/* ── card shell ── */
-.fc-card {
-    display: flex;
-    flex-direction: column;
-    border-radius: 1rem;
-    border: 1px solid var(--ks-border-secondary);
-    overflow: hidden;
-    background: var(--ks-background-secondary);
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s;
-}
+    .fc-card:focus-visible {
+        outline: 2px solid $base-primary-300;
+        outline-offset: 4px;
+    }
 
-.fc-card:hover {
-    border-color: #a78bfa;
-}
+    .fc-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
 
-/* ── image ── */
-.fc-card-image {
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    position: relative;
-}
+    .fc-card:hover .fc-bg {
+        transform: scale(1.03);
+    }
 
-.fc-card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+    .fc-body {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2rem;
+        padding: 1rem 1.5rem 1.5rem;
+        background: linear-gradient(
+            to top,
+            $base-grey-800 22%,
+            rgba($base-grey-800, 0.9) 48%,
+            rgba($base-grey-800, 0.35) 100%
+        );
+    }
 
-/* ── industry badge ── */
-.fc-industry {
-    position: absolute;
-    top: 0.625rem;
-    right: 0.625rem;
-    font-size: 0.625rem;
-    font-weight: 600;
-    color: #8405ff;
-    background: #ece7f8;
-    border: 1px solid rgba(99, 27, 255, 0.15);
-    border-radius: 999px;
-    padding: 0.2rem 0.625rem;
-    white-space: nowrap;
-    line-height: 1.5;
-}
+    .fc-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
 
-/* ── header overlay ── */
-.fc-header {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    backdrop-filter: blur(1px);
-    background: rgba(0, 0, 0, 0.8);
-    padding: 0.75rem 1rem;
-}
+    .fc-wordmark {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        width: 13.125rem;
+        height: 6.25rem;
+    }
 
-.fc-logo {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 0.875rem;
-    background: #0d0d0d;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
+    .fc-wordmark img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: left center;
+    }
 
-.fc-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 8px;
-}
+    .fc-initial {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.5rem;
+        background: rgba($base-grey-white, 0.12);
+        font-size: 1.375rem;
+        font-weight: 700;
+        color: $base-grey-white;
+    }
 
-.fc-initial {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #8b5cf6;
-    line-height: 1;
-}
+    .fc-industry {
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1rem;
+        color: $base-grey-800;
+        background: $base-grey-white;
+        border-radius: 2.5rem;
+        padding: 0.125rem 0.5rem 0.1875rem;
+        white-space: nowrap;
+    }
 
-.fc-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-    justify-content: center;
-    min-width: 0;
-    margin-top: 0.25rem;
-}
+    .fc-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
-.fc-company {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.25;
-}
+    .fc-quote-block {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
 
-.fc-tagline {
-    font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.5;
-    margin: 0;
-}
+    .fc-quote {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        color: $base-grey-white;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 
-/* ── body ── */
-.fc-card-body {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    flex: 1;
-}
+    .fc-quote-mark {
+        color: $base-primary-300;
+    }
 
-/* ── use-case ── */
-.fc-use-case {
-    font-size: 0.8125rem;
-    line-height: 1.5;
-    color: var(--ks-content-secondary);
-    border-top: 1px solid var(--ks-border-secondary);
-    margin: 0;
-    padding: 1rem 0;
-    min-height: calc(0.8125rem * 1.5 * 3 + 2rem);
-}
+    .fc-cite {
+        margin: 0;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: $base-grey-300;
+    }
 
-.fc-use-case-label {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: var(--ks-content-tertiary);
-    white-space: nowrap;
-}
+    .fc-cite strong {
+        font-weight: 700;
+    }
 
-/* ── quote ── */
-.fc-quote {
-    margin: 0 0 1.25rem;
-    padding: 0;
-    flex: 1;
-    position: relative;
-}
+    .fc-tasks {
+        display: flex;
+        gap: 0.8125rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
-.fc-quote p {
-    font-size: 1rem;
-    font-weight: 500;
-    font-style: italic;
-    color: var(--ks-content-primary);
-    line-height: 1.6;
-    margin: 0 0 0.625rem;
-}
+    .fc-task {
+        width: 2.125rem;
+        height: 2.125rem;
+        border-radius: 0.25rem;
+        border: 1px solid $base-grey-600;
+        background: $base-grey-Black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.3125rem;
+    }
 
-.fc-quote p::before {
-    content: "\201C";
-    display: inline;
-    font-size: 3rem;
-    line-height: 0;
-    vertical-align: -0.6rem;
-    color: #a78bfa;
-    margin-right: 0.1rem;
-    font-style: normal;
-}
+    .fc-task-more {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        color: $base-grey-400;
+        padding: 0;
+    }
 
-.fc-quote cite {
-    display: block;
-    text-align: right;
-    font-size: 0.8125rem;
-    color: var(--ks-content-tertiary);
-    font-style: normal;
-}
+    .fc-task :deep(.icon-wrapper),
+    .fc-task :deep(.icon) {
+        width: 100%;
+        height: 100%;
+    }
 
-/* ── plugins footer ── */
-.fc-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0.75rem;
-    gap: 0.5rem;
-}
+    .fc-task :deep(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
 
-.fc-plugins-label {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: var(--ks-content-tertiary);
-    white-space: nowrap;
-}
+    .fc-controls {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
 
-.fc-tasks {
-    display: flex;
-    gap: 0.3rem;
-    align-items: center;
-}
+    .fc-arrow {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: 1px solid rgba($base-grey-white, 0.2);
+        background: rgba($base-grey-white, 0.06);
+        color: rgba($base-grey-white, 0.75);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+            color 0.15s,
+            border-color 0.15s,
+            background-color 0.15s;
 
-.fc-task-icon-wrap {
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid var(--ks-border-secondary);
-    background: var(--ks-background-body);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.2rem;
-}
+        svg {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
 
-.fc-task-icon-wrap :deep(.icon-wrapper),
-.fc-task-icon-wrap :deep(.icon) {
-    width: 100%;
-    height: 100%;
-    background-size: contain !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-}
+        &:hover {
+            color: $base-grey-white;
+            border-color: $base-primary-300;
+            background: rgba($base-primary-300, 0.12);
+        }
 
-.fc-task-icon-wrap :deep(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-/* ── nav ── */
-.fc-nav {
-    grid-area: nav;
-    display: flex;
-    justify-content: center;
-}
-
-.fc-arrow {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.375rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
-    flex-shrink: 0;
-}
-
-.fc-arrow:hover:not(:disabled) {
-    color: #fff;
-    border-color: #a78bfa;
-    background: rgba(167, 139, 250, 0.1);
-}
-
-.fc-arrow:disabled {
-    opacity: 0.4;
-    cursor: default;
-}
-
-.fc-dots {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.fc-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 999px;
-    background: var(--ks-border-secondary);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s, width 0.2s;
-}
-
-.fc-dot.active {
-    width: 1.5rem;
-    background: var(--ks-content-link);
-}
+        &:focus-visible {
+            outline: 2px solid $base-primary-300;
+            outline-offset: 2px;
+        }
+    }
 </style>

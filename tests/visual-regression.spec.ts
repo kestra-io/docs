@@ -11,6 +11,7 @@ import { PAGES } from "./fixtures/page-sample.mjs"
 
 for (const page of PAGES) {
     test(`${page.label} matches screenshot`, async ({ page: p }) => {
+        if (page.reducedMotion) await p.emulateMedia({ reducedMotion: "reduce" })
         // networkidle never settles on pages that keep polling, which is how a
         // run wedges with no output. Wait for fonts instead, they drive layout.
         await p.goto(page.path, { waitUntil: "load" })
