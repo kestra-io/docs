@@ -10,7 +10,9 @@ export default defineConfig({
     retries: process.env.CI ? 1 : 0,
     workers: process.env.CI ? 2 : undefined,
     timeout: 90_000,
-    globalTimeout: 20 * 60_000,
+    // 60 routes x 3 projects at 2 workers. Workers stay at 2: CPU contention
+    // during capture bakes load artifacts into the baselines it writes.
+    globalTimeout: 45 * 60_000,
 
     reporter: process.env.CI
         ? [["github"], ["html", { open: "never" }]]
