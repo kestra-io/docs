@@ -509,9 +509,8 @@ const SECURITY_ROWS: Row[] = [
      * switcher.
      */
     .twozero-page {
-        /* The global `main > div { overflow-x: hidden }` would force
-         * `overflow-y: auto` and clip the hero where it runs up under the
-         * fixed header. `clip` keeps the horizontal guard without that. */
+        /* Redundant since `main > div` moved to `clip`, kept as the explicit
+         * horizontal guard for the hero running under the fixed header. */
         overflow-x: clip;
         --ks-content-primary: #131316;
         --ks-content-secondary: #3b3a41;
