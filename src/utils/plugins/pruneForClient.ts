@@ -57,7 +57,7 @@ export function prunePluginsForCards(
             className: info.className,
             elementCounts: info.elementCounts,
             blueprints: info.blueprints,
-            isEnterprise: p.group?.includes('.ee.') ?? false,
+            isEnterprise: (p.subGroup ?? p.group)?.includes('.ee.') ?? false,
             classes,
             lastReleasedAt: info.lastReleasedAt as string | undefined,
             usageCount: info.usageCount as number | undefined,
