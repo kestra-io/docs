@@ -15,8 +15,8 @@ const similarPlugins = filterPluginsWithoutDeprecated(allPlugins ?? [])
     })
     .slice(0, MAX_SIMILAR)
 
-const rootGroups = new Set(
-    (allPlugins ?? []).filter((p: Plugin) => !p.subGroup).map((p: Plugin) => p.group),
+const rootGroups = new Set<string>(
+    (allPlugins ?? []).flatMap((p: Plugin) => (!p.subGroup && p.group ? [p.group] : [])),
 )
 const cardPlugins = prunePluginsForCards(similarPlugins, pluginsData ?? {}, undefined, rootGroups)
 ---
