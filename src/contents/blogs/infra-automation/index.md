@@ -16,7 +16,7 @@ Platform and infrastructure teams are juggling hardware fleets, VM environments,
 
 With our [latest release](https://kestra.io/blogs/release-1-3), we have shipped a lot of new plugins, and a point of view: **orchestration is the missing layer** in your infrastructure landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
 
-Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery [(Argo CD)](https://kestra.io/plugins/plugin-argocd), edge/DNS [(Cloudflare)](https://kestra.io/plugins/plugin-cloudflare), bare metal [(MAAS)](https://kestra.io/plugins/plugin-ee-canonical/maas/io.kestra.plugin.ee.canonical.maas.commissionmachine), virtualization [(KVM/libvirt)](https://kestra.io/plugins/plugin-kvm/io.kestra.plugin.kvm.createvm), source-of-truth workflows [(NetBox)](https://kestra.io/plugins/plugin-ee-netbox), and hyperconverged day‑2/recovery automation [(Nutanix AHV + snapshots)](https://kestra.io/plugins/plugin-ee-nutanix).
+Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery [(Argo CD)](https://kestra.io/plugins/plugin-argocd), edge/DNS [(Cloudflare)](https://kestra.io/plugins/plugin-cloudflare), bare metal [(MAAS)](https://kestra.io/plugins/plugin-ee-canonical/io.kestra.plugin.ee.canonical.maas.commissionmachine), virtualization [(KVM/libvirt)](https://kestra.io/plugins/plugin-kvm/io.kestra.plugin.kvm.createvm), source-of-truth workflows [(NetBox)](https://kestra.io/plugins/plugin-ee-netbox), and hyperconverged day‑2/recovery automation [(Nutanix AHV + snapshots)](https://kestra.io/plugins/plugin-ee-nutanix).
 
 ## Your problems are the handoffs between your tools
 

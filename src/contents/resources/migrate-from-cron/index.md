@@ -150,7 +150,7 @@ This is where you start realizing the major benefits of an orchestrator. For eac
 
 Cron jobs often run with broad permissions and may have secrets hardcoded in scripts, posing a security risk. Kestra provides robust tools to address this.
 
-*   **Secrets Management:** Store database passwords, API keys, and other sensitive data in Kestra's [secrets backend](/docs/enterprise/governance/secrets) instead of plain text files.
+*   **Secrets Management:** Store database passwords, API keys, and other sensitive data in Kestra's [secrets backend](/docs/enterprise/governance/secrets-manager) instead of plain text files.
 *   **Permissions:** Use Kestra's Role-Based Access Control (RBAC) to define who can view, edit, or execute specific workflows. This is a crucial conversation to have with your DevOps and platform teams to ensure proper [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security).
 *   **Timezones:** Define a `timezone` property on your Schedule trigger to ensure jobs run at the correct local time, regardless of where the Kestra server or workers are located. This eliminates a massive source of confusion with DST and distributed teams.
 
