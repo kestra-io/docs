@@ -53,6 +53,14 @@ const DISCORD_URL = "https://discord.com/invite/DRFYztKRf4"
     .hacktoberfest {
         overflow-x: clip;
 
+        // The site caps .container at 1140px from xl up, which leaves the
+        // tracks and rules cards narrow on wide screens. Let them breathe.
+        :global(.container) {
+            @include media-breakpoint-up(xxl) {
+                max-width: 1320px;
+            }
+        }
+
         --hf-background-dark: #{$base-grey-800};
         --hf-background-dark-soft: #{$base-grey-700};
         --hf-border-dark: #{$base-grey-600};
