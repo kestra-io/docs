@@ -28,6 +28,16 @@ export function kebabCaseTag(tag: string): string {
     return tag.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
 }
 
+/**
+ * Identity of a component across the forms its name takes — the MDC tag, the
+ * JSX tag and the file name. Separator- and case-insensitive because those
+ * disagree in practice: `ApiDocee.astro` is imported as `<ApiDocEE/>`, which
+ * kebab-cases to `api-doc-ee` but would file-name-match only as `api-docee`.
+ */
+export function componentKey(name: string): string {
+    return name.replace(/[-_]/g, "").toLowerCase()
+}
+
 const NAMED_ENTITIES: Record<string, string> = {
     amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ",
     hellip: "…", mdash: "—", ndash: "–", rsquo: "’",
