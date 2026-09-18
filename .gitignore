@@ -42,6 +42,7 @@ dist
 test-results/
 playwright-report/
 blob-report/
+visual-diff-report/
 
 ## mkcert
 localhost.pem

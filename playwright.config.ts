@@ -18,11 +18,8 @@ export default defineConfig({
         ? [["github"], ["html", { open: "never" }]]
         : "html",
 
-    expect: {
-        toHaveScreenshot: {
-            maxDiffPixelRatio: 0.01, // Allow up to 1% pixel difference for minor rendering variations
-        },
-    },
+    // No expect.toHaveScreenshot block: the suite uses toHaveScreenshotOdiff,
+    // a custom matcher, so its tolerances live at the call site instead.
 
     use: {
         baseURL: "http://localhost:8787",
