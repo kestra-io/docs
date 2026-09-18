@@ -1,7 +1,8 @@
 // Pages sampled by the visual-regression suite and the Lighthouse benchmark.
 // `runs` is how many times the benchmark measures a page before taking the
 // median, for the ones whose score swings between runners; `ssr` marks the
-// prerender = false pages, which the benchmark measures first.
+// prerender = false pages, which the benchmark measures first. `styles` is a
+// stylesheet under snapshot-styles/ injected before the screenshot is taken.
 export const PAGES = [
     { path: "/", label: "Home", runs: 5 },
     { path: "/get-started", label: "Get Started" },
@@ -9,7 +10,12 @@ export const PAGES = [
     { path: "/enterprise", label: "Enterprise" },
     { path: "/cloud", label: "Cloud" },
     { path: "/about-us", label: "About Us", runs: 3 },
-    { path: "/docs", label: "Docs Landing", runs: 5 },
+    {
+        path: "/docs",
+        label: "Docs Landing",
+        runs: 5,
+        styles: "docs-landing.css",
+    },
     {
         path: "/docs/contribute-to-kestra",
         label: "Contribute to Kestra (simple docs)",

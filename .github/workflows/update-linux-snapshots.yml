@@ -2,6 +2,11 @@ name: Update Linux Visual Snapshots
 
 on:
   workflow_dispatch:
+    inputs:
+      refresh_api_fixtures:
+        description: "Re-record tests/fixtures/api (also resets what Lighthouse replays)"
+        type: boolean
+        default: false
   # 01:00 CET / 02:00 CEST: GitHub cron is UTC only, so the French wall clock
   # shifts by an hour across DST. Scheduled runs only ever fire on main.
   schedule:
@@ -19,6 +24,17 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    env:
+      # Midnight UTC cut: content dated after it never reaches a baseline, so a
+      # new post stops repainting /blogs. Bump it with the refresh PR it makes.
+      SNAPSHOT_CUTOFF: "2026-09-01"
+      # What the sampled SSR pages and the community metrics read from
+      # tests/fixtures/api, so a plugin release cannot move a baseline.
+      FIXTURE_PATHS: >-
+        /v1/blueprints*,/v1/plugins,/v1/plugins/subgroups,
+        /v1/plugins/definitions/*,/v1/plugins/metadata*,
+        /v1/plugins/pluginsInformation*,/v1/plugins/artifacts/*,
+        /v1/plugins/*/versions,/v1/versions,/v1/communities/github/*
 
     steps:
       - name: Checkout
@@ -61,6 +77,24 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
+      - name: Discard the recorded API responses
+        if: inputs.refresh_api_fixtures
+        run: rm -f tests/fixtures/api/*.json
+
+      # Replays what is committed and records what is not, so a newly sampled
+      # route fixes itself on one run and is frozen from the next.
+      - name: Start the API fixture server
+        run: node scripts/api-fixture-server.mjs &
+
+      - name: Wait for the fixture server
+        run: |
+          for _ in $(seq 1 10); do
+            curl -sf http://127.0.0.1:9001/__fixtures/stats > /dev/null && exit 0
+            sleep 1
+          done
+          echo "::error::Fixture server did not come up on port 9001."
+          exit 1
+
       - name: Build the site
         run: npm run build
         env:
@@ -69,6 +103,9 @@ jobs:
           DISABLE_GITHUB: "true"
           PREVIEW: "true"
           NO_RANDOM_ORDER: "true"
+          # Inlined into both bundles, so the build, the SSR routes under
+          # wrangler and the browser-side calls all read the fixture server.
+          API_URL: http://127.0.0.1:9001/v1
 
       # --update-snapshots=changed rewrites a baseline only when the comparison
       # fails, so anything within maxDiffPixelRatio is left untouched on disk.
@@ -91,10 +128,14 @@ jobs:
           path: playwright-report/
           retention-days: 14
 
+      - name: Report the fixture server counters
+        if: always()
+        run: curl -s http://127.0.0.1:9001/__fixtures/stats || true
+
       - name: Check for Linux snapshot changes
         id: snapshot_changes
         run: |
-          SNAPSHOT_CHANGES="$(git status --porcelain --untracked-files=all -- tests/visual-regression.spec.ts-snapshots)"
+          SNAPSHOT_CHANGES="$(git status --porcelain --untracked-files=all -- tests/visual-regression.spec.ts-snapshots tests/fixtures/api)"
           if [[ -n "$SNAPSHOT_CHANGES" ]]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
             echo "Detected Linux snapshot changes:"
@@ -111,7 +152,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add tests/visual-regression.spec.ts-snapshots
+          git add tests/visual-regression.spec.ts-snapshots tests/fixtures/api
           git commit -m "test(visual): refresh linux snapshots"
           # The branch can move during the ~20 min run; rebase the single
           # snapshot commit rather than failing the job on a stale ref.
@@ -146,5 +187,9 @@ jobs:
             Automated update of Linux visual regression snapshots.
 
             Only baselines that drifted past maxDiffPixelRatio are included.
+            Content dated after ${{ env.SNAPSHOT_CUTOFF }} was excluded from
+            the build, and the sampled API responses were replayed from
+            tests/fixtures/api.
           add-paths: |
             tests/visual-regression.spec.ts-snapshots
+            tests/fixtures/api
