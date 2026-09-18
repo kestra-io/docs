@@ -1,0 +1,14 @@
+// Loaded on demand by src/scripts/cookieconsent.ts, so the 27 KB of consent UI
+// stays out of the render-blocking bundle. The overrides follow the vendor CSS.
+@import "variable";
+@import "vanilla-cookieconsent/dist/cookieconsent.css";
+
+#cc-main {
+    --cc-font-family: var(--bs-body-font-family);
+    --cc-btn-primary-color: #{$white};
+
+    --cc-btn-primary-bg: var(--ks-background-button-primary);
+    --cc-btn-primary-hover-bg: var(--ks-background-button-primary-hover);
+    --cc-btn-primary-hover-color: #{$white};
+    --cc-btn-primary-border-color: var(--ks-background-button-primary);
+}

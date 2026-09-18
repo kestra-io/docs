@@ -1,0 +1,7 @@
+---
+// The hero grid is a CSS background, so the preload scanner cannot see it: the
+// LCP element would otherwise wait for the whole stylesheet to load and parse.
+import headerGrid from "~/assets/header-grid.svg?url"
+---
+
+<link rel="preload" as="image" href={headerGrid} fetchpriority="high" />

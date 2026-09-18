@@ -11,6 +11,7 @@ import BlogMobileHeader from "~/components/blogs/BlogMobileHeader.vue"
 import TeamsImages from "~/utils/teamsImages"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Mesh from "~/components/layout/Mesh.vue"
+import HeroGridPreload from "~/components/common/HeroGridPreload.astro"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 
 export async function getStaticPaths() {
@@ -109,6 +110,7 @@ const jsonLinkedData = {
 <Layout title={metaTitle} breadcrumbTitle={title} description={description} image={staticImage?.src} canonical={page.canonical}>
     <section>
         <Fragment slot="head">
+            <HeroGridPreload />
             <meta property="og:type" content="article" />
             <meta
                 property="article:published_time"

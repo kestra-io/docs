@@ -5,6 +5,7 @@ import TutorialsGrid from "~/components/videos/TutorialsGrid.vue"
 import { getCollection } from "astro:content"
 import Tabs from "~/components/common/Tabs.vue"
 import Mesh from "~/components/layout/Mesh.vue"
+import HeroGridPreload from "~/components/common/HeroGridPreload.astro"
 import Subscribe from "~/components/layout/Subscribe.vue"
 import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
 import { categories } from "~/components/videos/categories"
@@ -46,6 +47,7 @@ const description = `Watch the latest videos from Kestra`
 ---
 
 <Layout title={title} description={description}>
+    <HeroGridPreload slot="head" />
     <Mesh>
         <div>
             <h1>Videos</h1>

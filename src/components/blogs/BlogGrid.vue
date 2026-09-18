@@ -9,11 +9,10 @@
 
         <div class="grid mb-5">
             <BlogCard
-                v-for="(blog, index) in filteredBlogs"
+                v-for="(blog, index) in visibleBlogs"
                 :key="blog.path"
                 :blog="blog"
                 :eager="index === 0"
-                :class="{ hidden: index >= visibleCount }"
             />
         </div>
 
@@ -36,8 +35,7 @@
             path: string
             title: string
             category: string
-            description: string
-            publicationDate: string
+            date: string
         }[]
         slug: string
     }>()
@@ -58,6 +56,10 @@
         }
         return normalizedBlogs.value.filter(blog => blog.normalizedCategory === allBlogCategories.get(activeCategory.value))
     })
+
+    // Cap what is rendered: hiding the overflow with CSS instead still ships
+    // ~200 card subtrees in the HTML, for Vue to hydrate on first paint.
+    const visibleBlogs = computed(() => filteredBlogs.value.slice(0, visibleCount.value))
 
     watch(() => props.slug, (newSlug) => {
         activeCategory.value = newSlug || ALL_NEWS
@@ -87,10 +89,6 @@
 
         @include media-breakpoint-up(md) {
             grid-template-columns: repeat(2, 1fr);
-        }
-
-        .hidden {
-            display: none;
         }
     }
 </style>
