@@ -7,8 +7,8 @@ metaDescription: Víssimo consolidated Digibee iPaaS and AWS Lambdas onto Kestra
 heroImage: ./hero.png
 featured: false
 featuredImage: ./hero.png
-logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logo: ./logo.webp
+logoDark: ./logo-dark.webp
 tasks:
   - io.kestra.plugin.core.trigger.Webhook
   - io.kestra.plugin.core.http.Request

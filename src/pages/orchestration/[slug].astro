@@ -27,6 +27,10 @@ import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import { optimizeSvgIcon } from "~/utils/svgo"
 import { $fetchApiCached } from "~/utils/fetch"
+import {
+    fetchTotalPluginsCount,
+    replaceTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
 import GraviteeLogo from "~/contents/customer-stories/when-your-api-writes-its-own-docs-with-kestra/logo.svg?raw"
@@ -85,10 +89,12 @@ const LOGO_MAP: Record<string, string> = {
 
 export async function getStaticPaths() {
     const entries = await getCollection("orchestration")
-    // The page also renders the blog list, so blog metadata is part of its key.
+    // The page also renders the blog list, so blog metadata is part of its key,
+    // as is the live plugin count substituted into the entry.
     const scope = [
         collectionMetadataDigest(await getCollection("blogs")),
         await layoutDigest(),
+        `p${await fetchTotalPluginsCount()}`,
     ]
     return entries.map((entry) => ({
         params: { slug: entry.id },
@@ -98,6 +104,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
+const totalPlugins = await fetchTotalPluginsCount()
 const {
     title,
     description,
@@ -113,7 +120,7 @@ const {
     faq,
     seeHow,
     resources,
-} = entry.data
+} = replaceTotalPluginsPlaceholder(entry.data, totalPlugins)
 
 const blueprintItems = await Promise.all(
     blueprints.items.map(async (item) => {

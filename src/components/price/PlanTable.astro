@@ -1,6 +1,6 @@
 ---
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { PLANS, getSections, SHARED_FEATURES, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
 
 const totalPlugins = await fetchTotalPluginsCount()

@@ -1,0 +1,100 @@
+---
+import { getImage } from "astro:assets"
+import Layout from "~/components/layout.astro"
+import Hero from "~/components/hacktoberfest/Hero.astro"
+import Hosts from "~/components/hacktoberfest/Hosts.astro"
+import Prizes from "~/components/hacktoberfest/Prizes.astro"
+import Tracks from "~/components/hacktoberfest/Tracks.astro"
+import Guidelines from "~/components/hacktoberfest/Guidelines.astro"
+import Schedule from "~/components/hacktoberfest/Schedule.astro"
+import Resources from "~/components/hacktoberfest/Resources.astro"
+import ClosingCta from "~/components/hacktoberfest/ClosingCta.astro"
+import ogCard from "~/components/hacktoberfest/assets/og-image.png"
+
+const ogImage = await getImage({ src: ogCard, format: "png" })
+
+const title = "Hacktoberfest 2026: Put your PRs into Kestra"
+const description =
+    "Two tracks, two podiums, and Kestra merch and goodies for everyone who lands a merge. Registration is open, submissions run October 1 to 31."
+
+const REGISTER_URL =
+    "https://docs.google.com/forms/d/e/1FAIpQLSfHgC4RsK9NK51gLUxBYwpUQwLB45SJQB365G0MAIrKLlnnSg/viewform"
+const RULES_HREF = "#how-to-enter"
+const GOOD_FIRST_ISSUES_URL =
+    "https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues"
+const CONTRIBUTING_URL = "/docs/contribute-to-kestra/contributing"
+const CODE_OF_CONDUCT_URL =
+    "https://github.com/kestra-io/kestra/blob/develop/.github/CODE_OF_CONDUCT.md"
+const DISCORD_URL = "https://discord.com/invite/DRFYztKRf4"
+---
+
+<Layout {title} {description} image={ogImage.src} headerTheme="lightText">
+    <div class="hacktoberfest">
+        <Hero registerUrl={REGISTER_URL} rulesHref={RULES_HREF} />
+        <Hosts />
+        <Prizes />
+        <Tracks id="how-to-enter" goodFirstIssuesUrl={GOOD_FIRST_ISSUES_URL} />
+        <Guidelines
+            contributingUrl={CONTRIBUTING_URL}
+            codeOfConductUrl={CODE_OF_CONDUCT_URL}
+        />
+        <Schedule />
+        <Resources
+            goodFirstIssuesUrl={GOOD_FIRST_ISSUES_URL}
+            discordUrl={DISCORD_URL}
+        />
+        <ClosingCta registerUrl={REGISTER_URL} />
+    </div>
+</Layout>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .hacktoberfest {
+        overflow-x: clip;
+
+        // The site caps .container at 1140px from xl up, which leaves the
+        // tracks and rules cards narrow on wide screens. Let them breathe.
+        :global(.container) {
+            @include media-breakpoint-up(xxl) {
+                max-width: 1320px;
+            }
+        }
+
+        // Cards that sit on the primary surface (Prizes, Contribution Rules).
+        // Light: white on white with the primary border, as in Figma. Dark:
+        // Figma drops them onto the darker secondary fill with a softer
+        // outline, so the card reads as a panel rather than an outlined box.
+        --hf-card-background: var(--ks-background-primary);
+        --hf-card-border: var(--ks-border-primary);
+
+        :global(html.dark) & {
+            --hf-card-background: var(--ks-background-secondary);
+            --hf-card-border: color-mix(
+                in srgb,
+                var(--ks-border-primary) 70%,
+                var(--ks-background-secondary)
+            );
+        }
+
+        --hf-background-dark: #{$base-grey-800};
+        --hf-background-dark-soft: #{$base-grey-700};
+        --hf-border-dark: #{$base-grey-600};
+        --hf-content-dark: #{$base-grey-white};
+        --hf-content-dark-secondary: #{$base-grey-200};
+        --hf-content-dark-tertiary: #{$base-grey-500};
+        --hf-content-dark-muted: #{$base-grey-400};
+
+        --hf-pixel-purple: #c37aff;
+        --hf-pixel-lilac: #e9c1ff;
+        --hf-pixel-violet: #a950ff;
+        --hf-pixel-mauve: #cd88ff;
+        --hf-pixel-pink: #f62e76;
+        --hf-pixel-magenta: #fe0071;
+        --hf-pixel-ink: #1d1240;
+        --hf-pixel-smoke: #{rgba($base-grey-500, 0.3)};
+        --hf-pixel-haze: #{rgba($base-grey-400, 0.12)};
+        --hf-pixel-haze-light: #{rgba($base-grey-200, 0.16)};
+        --hf-pixel-shadow: #{rgba($base-primary-600, 0.2)};
+    }
+</style>

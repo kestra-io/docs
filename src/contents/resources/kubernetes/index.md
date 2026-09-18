@@ -156,7 +156,7 @@ Kestra simplifies Kubernetes operations by allowing you to define and manage com
 
 A key feature is the **[Kubernetes Task Runner](/docs/task-runners/types/kubernetes-task-runner)**, which allows any Kestra task—be it Python, SQL, or a shell script—to be executed as a dedicated Kubernetes pod. This provides ultimate isolation, resource management, and scalability for your workflows.
 
-Furthermore, the **[Kestra Kubernetes Operator](/docs/version-control-cicd/cicd/kubernetes-operator)** brings GitOps to your workflows. You can manage your Kestra flows, templates, and namespace files as Kubernetes Custom Resources, allowing you to version-control your entire orchestration layer alongside your application and infrastructure code.
+Furthermore, the **[Kestra Kubernetes Operator](/docs/version-control-cicd/cicd/terraform)** brings GitOps to your workflows. You can manage your Kestra flows, templates, and namespace files as Kubernetes Custom Resources, allowing you to version-control your entire orchestration layer alongside your application and infrastructure code.
 
 Here is a simple example of a Kestra flow that uses the `PodCreate` task from the [Kubernetes plugin](/plugins/plugin-kubernetes) to launch an Nginx pod:
 

@@ -252,7 +252,7 @@ While many tools specialize in one part of the ETL process, the real challenge l
 
 Kestra is not just another ETL tool; it's a universal orchestration [platform](https://kestra.io/) that acts as the control plane for your entire data stack. Here’s [why Kestra](https://kestra.io/docs/why-kestra) is different:
 
-*   **Declarative YAML Interface:** Define your entire ETL [flow](https://kestra.io/docs/concepts/flow) as a simple, human-readable YAML file. This makes workflows easy to version, review, and manage with GitOps principles.
+*   **Declarative YAML Interface:** Define your entire ETL [flow](https://kestra.io/docs/workflow-components/flow) as a simple, human-readable YAML file. This makes workflows easy to version, review, and manage with GitOps principles.
 *   **Language-Agnostic:** Kestra can run tasks in any language—Python, SQL, R, shell, Node.js—in isolated environments. You are not locked into a single language ecosystem.
 *   **Event-Driven Architecture:** Build reactive pipelines that trigger on file arrivals, API calls, database changes, or messages from a queue, enabling both real-time and batch processing.
 *   **Extensive Plugin Library:** With over 1,400 [plugins](https://kestra.io/plugins), Kestra integrates natively with the tools you already use, from Airbyte and dbt to Snowflake and Databricks.
