@@ -110,3 +110,34 @@ describe("prunePluginsForCards subgroup info lookup", () => {
         expect(result.elementCounts).toBe(2)
     })
 })
+
+describe("prunePluginsForCards isEnterprise", () => {
+    // An EE subgroup shipped by an OSS-grouped plugin (core's io.kestra.plugin.ee.core.log,
+    // plugin-kestra's io.kestra.plugin.kestra.ee.iam.roles) must still be flagged Enterprise:
+    // the card strips the "(EE)" title suffix and relies on this flag for the badge.
+    it("flags a subgroup as enterprise from its own package, not only the parent group", () => {
+        const eeLog = {
+            name: "core",
+            title: "Log (EE)",
+            group: "io.kestra.plugin.core",
+            subGroup: "io.kestra.plugin.ee.core.log",
+        } as unknown as Plugin
+
+        expect(prunePluginsForCards([eeLog], {})[0].isEnterprise).toBe(true)
+    })
+
+    it("keeps an OSS subgroup of an OSS plugin non-enterprise", () => {
+        expect(prunePluginsForCards([gcpPubSub as unknown as Plugin], {})[0].isEnterprise).toBe(false)
+    })
+
+    it("flags every subgroup of an EE-grouped plugin", () => {
+        const eeAzureBlob = {
+            name: "plugin-ee-azure",
+            title: "Azure Blob Storage",
+            group: "io.kestra.plugin.ee.azure",
+            subGroup: "io.kestra.plugin.ee.azure.storage.blob",
+        } as unknown as Plugin
+
+        expect(prunePluginsForCards([eeAzureBlob], {})[0].isEnterprise).toBe(true)
+    })
+})
