@@ -61,8 +61,9 @@
     import Plus from 'vue-material-design-icons/PlusThick.vue';
     import CheckBold from 'vue-material-design-icons/CheckBold.vue';
 
-    import { usePluginsCount } from '~/composables/usePluginsCount';
-    const { totalPlugins } = usePluginsCount();
+    const props = defineProps<{
+        totalPlugins: string
+    }>();
 
     const COLUMNS = [
         {
@@ -79,32 +80,33 @@
         {
             title: "Governance & Productivity",
             features: [
-                "Multi Tenancy",
-                "Role Based Access Control (RBAC)",
-                "Namespaces Management",
-                "Assets Lineage",
-                "Enterprise Plugins, Versioning & Hot Reload",
-                "Kestra Apps (custom UIs for workflows)",
+                "Multi-Tenant",
+                "Role-Based Access Control",
+                "Policies & Promote",
+                "Cases",
+                "Assets & Lineage",
+                "Apps (custom UIs for workflows)",
             ],
         },
         {
             title: "Scalability",
             features: [
                 "Worker Groups",
-                "Task Runners",
+                "Task Runners on Containers or VMs",
                 "High Availability & Throughput",
-                "Fault Tolerant",
-                "Log Shipper, Cluster Monitoring",
-                "Dedicated storage & Tenant Isolation",
+                "Queue on Postgres, Kafka, Redis or AMQP",
+                "Log Shipper & External Log Data Store",
+                "Enterprise Plugins, Versioning & Hot Reload",
             ],
         },
     ];
 
     const BOTTOM_FEATURES = computed(() => [
         "Declarative Workflow",
-        `${totalPlugins.value} Plugins`,
+        `${props.totalPlugins}+ Plugins`,
         "Event Driven & Scheduling",
-        "Everything From the UI",
+        "Code & No-Code Editors",
+        "MCP Server for AI Agents",
         "Business Logic In Any Language",
     ]);
 </script>
@@ -238,7 +240,8 @@
         }
 
         .bottom-title {
-            flex: 0 0 288px;
+            flex: 0 0 auto;
+            padding-right: 2rem;
 
             @include media-breakpoint-down(xl) {
                 flex: none;
@@ -262,21 +265,29 @@
                 margin: 0;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 font-size: $font-size-xs;
                 color: var(--ks-content-primary);
 
                 @include media-breakpoint-down(xl) {
+                    display: flex;
                     flex-direction: column;
+                    padding: 0;
                 }
 
                 li {
-                    flex: 1;
+                    flex: 1 1 auto;
                     text-align: center;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     white-space: nowrap;
-                    padding: 0 12px;
+                    padding: 0 10px;
+                    border-right: 1px solid var(--ks-border-primary);
+
+                    &:last-child {
+                        border-right: none;
+                    }
 
                     @include media-breakpoint-down(xl) {
                         width: 100%;
@@ -286,10 +297,6 @@
                         &:not(:last-child) {
                             border-bottom: 1px solid var(--ks-border-primary);
                         }
-                    }
-
-                    &:not(:last-child) {
-                        border-right: 1px solid var(--ks-border-primary);
                     }
                 }
             }

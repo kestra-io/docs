@@ -676,7 +676,7 @@ AI Copilot configuration lives under `kestra.ai` and controls which LLM provider
 
 #### Enabling and disabling
 
-`kestra.ai.enabled` (default: `true`) controls whether AI Copilot is active. Set it to `false` to disable the feature entirely, including the built-in fallback to `api.kestra.io`.
+`kestra.ai.enabled` (default: `true`) controls whether AI Copilot is active. Set it to `false` to disable the feature entirely.
 
 #### Providers
 

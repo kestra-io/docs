@@ -105,7 +105,9 @@ main {
     padding-top: 67px;
 
     > div {
-        overflow-x: hidden;
+        // `clip`, not `hidden`: a lone `overflow-x` computes the other axis to
+        // `auto` (CSS Overflow 3 §3), making every page wrapper a scroll container.
+        overflow-x: clip;
     }
 }
 

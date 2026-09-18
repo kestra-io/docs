@@ -19,7 +19,7 @@ By design, Kestra allows arbitrary HTTP calls and script execution. To prevent m
 Running workflows in isolated environments reduces the impact of potentially malicious flows:
 
 - Container sandboxes: launch each flow execution in its own container (for example, Docker or Kubernetes Pod) with minimal privileges.
-- Ephemeral compute: use Kestra's native [Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
+- Ephemeral compute: use Kestra's native [Task Runners](../../task-runners/index.mdx) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
 - Minimum host permissions: grant only the OS-level rights required for the runtime; avoid mounting cloud credential files or granting host-level IAM roles directly.
 
 ## Worker isolation

@@ -125,7 +125,7 @@ Security is a primary responsibility in a self-hosted model. Implement strong [a
 
 ### Troubleshooting common issues in self-hosted setups
 
-Effective [troubleshooting](https://kestra.io/docs/administrator-guide/troubleshooting) starts with good observability. Centralize your application [logs](https://kestra.io/docs/ui/logs) and set up dashboards to monitor key health metrics like task success rates, execution latency, and resource utilization. Most issues in self-hosted setups relate to infrastructure (disk space, memory, network connectivity) or misconfiguration. A systematic approach using the platform's built-in debugging tools is essential.
+Effective [troubleshooting](https://kestra.io/docs/administrator-guide/troubleshooting) starts with good observability. Centralize your application [logs](https://kestra.io/docs/ui/executions) and set up dashboards to monitor key health metrics like task success rates, execution latency, and resource utilization. Most issues in self-hosted setups relate to infrastructure (disk space, memory, network connectivity) or misconfiguration. A systematic approach using the platform's built-in debugging tools is essential.
 
 ## Future Trends in Self-Hosted Workflow Orchestration
 

@@ -76,7 +76,7 @@ With Kestra, you can [orchestrate Kubernetes resources](https://kestra.io/orches
 Key features that set Kestra apart on Kubernetes include:
 - **Polyglot Execution**: Run tasks in any language—Python, Shell, SQL, Go, R—as first-class citizens. You are not forced to wrap every script in a Docker container or Python operator.
 - **Native Kubernetes Integration**: Use the [Kubernetes Task Runner](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks) to execute tasks in isolated pods, inheriting the scalability and resilience of Kubernetes.
-- **Declarative and Low-Code**: Define all workflows in YAML. Kestra's UI provides a [visual flow editor](https://kestra.io/docs/no-code/no-code-flow-building) that simplifies development without abstracting away the power of code.
+- **Declarative and Low-Code**: Define all workflows in YAML. Kestra's UI provides a [visual flow editor](https://kestra.io/docs/ui/flows) that simplifies development without abstracting away the power of code.
 - **Event-Driven Architecture**: Use [triggers](https://kestra.io/docs/workflow-components/triggers) to start workflows based on Kubernetes events, API calls, messages, or schedules, enabling reactive and real-time automation.
 
 Here is an example of a Kestra task that runs a command inside a dedicated Kubernetes pod:

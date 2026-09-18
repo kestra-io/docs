@@ -140,7 +140,7 @@ The ``continue`` task won't be blocked by the failure of the ``fail`` task.
 
 Based on a community request, this release [introduces](https://github.com/kestra-io/kestra/issues/2629) a new scheduling condition to allow executing your flows:
 1. Only during public holidays in your country
-2. Only during working days in your country — excluding [weekends](/plugins/core/condition/io.kestra.plugin.core.condition.weekend) and [public holidays](/plugins/core/condition/io.kestra.plugin.core.condition.publicholiday).
+2. Only during working days in your country — excluding [weekends](/plugins/core) and [public holidays](/plugins/core).
 
 The example below shows the latter use case i.e. executing the workflow only during weekdays:
 
@@ -181,7 +181,7 @@ Tenants can now be assigned a default [worker group](../../docs/07.enterprise/04
 
 The `Flow` task got renamed to `Subflow` for clarity. We've also added [a dedicated page for Subflows](../../docs/05.workflow-components/10.subflows/index.md) in the docs.
 
-Also, the `FlowCondition` got [deprecated](https://github.com/kestra-io/kestra/issues/2327) in favor of [`ExecutionFlow`](/plugins/core/condition/io.kestra.plugin.core.condition.executionflow) condition.
+Also, the `FlowCondition` got [deprecated](https://github.com/kestra-io/kestra/issues/2327) in favor of [`ExecutionFlow`](/plugins/core) condition.
 
 
 ## Plugins

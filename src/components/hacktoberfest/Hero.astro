@@ -1,0 +1,401 @@
+---
+import Wordmark from "./assets/hacktoberfest-wordmark.svg"
+import PixelSquares from "./PixelSquares.astro"
+
+interface Props {
+    registerUrl: string
+    rulesHref: string
+}
+
+const { registerUrl, rulesHref } = Astro.props
+
+const KEY_FACTS = [
+    { value: "2", label: "participation tracks" },
+    { value: "31", label: "days to contribute" },
+    { value: "3+1", label: "prize tiers per track" },
+]
+
+const MARK_CELLS: [number, number, string][] = [
+    [2, 0, "var(--hf-pixel-lilac)"],
+    [1, 1, "var(--hf-pixel-mauve)"],
+    [3, 1, "var(--hf-pixel-mauve)"],
+    [0, 2, "var(--hf-pixel-violet)"],
+    [2, 2, "var(--hf-pixel-violet)"],
+    [4, 2, "var(--hf-pixel-violet)"],
+    [2, 3, "var(--hf-pixel-ink)"],
+    [2, 4, "var(--hf-pixel-pink)"],
+]
+
+const SQUARES = [
+    { x: 1441.7, y: 786.9, w: 48.5, h: 48.5, color: "var(--hf-pixel-purple)" },
+    { x: 1490.3, y: 737.7, w: 48.5, h: 48.5, color: "var(--hf-pixel-purple)" },
+    { x: 1350.5, y: 526.9, w: 48.5, h: 48.5, color: "var(--hf-pixel-violet)" },
+    { x: 1587.3, y: 640.6, w: 48.5, h: 48.5, color: "var(--hf-pixel-purple)" },
+    { x: 1597, y: 754.2, w: 21.8, h: 114.9, color: "var(--hf-pixel-pink)" },
+    { x: 1695.8, y: 592.1, w: 48.5, h: 48.5, color: "var(--hf-pixel-purple)" },
+    { x: 1662.5, y: 640.6, w: 21.8, h: 114.9, color: "var(--hf-pixel-violet)" },
+    { x: 1640.7, y: 755.5, w: 21.8, h: 114.9, color: "var(--hf-pixel-violet)" },
+    { x: 1684.4, y: 755.5, w: 21.8, h: 114.9, color: "var(--hf-pixel-violet)" },
+    { x: 1556.5, y: 381, w: 48.5, h: 48.5, color: "var(--hf-pixel-purple)" },
+    { x: 225.1, y: 546, w: 48.5, h: 48.5, color: "var(--hf-pixel-violet)" },
+    { x: 465.1, y: 145.9, w: 48.5, h: 48.5, color: "var(--hf-pixel-violet)" },
+    { x: 1705.8, y: 640.6, w: 21.8, h: 114.9, color: "var(--hf-pixel-violet)" },
+    {
+        x: 1755.8,
+        y: 210.6,
+        w: 21.8,
+        h: 114.9,
+        color: "var(--hf-pixel-magenta)",
+    },
+    { x: 283.5, y: 632, w: 27.1, h: 93.6, color: "var(--hf-pixel-lilac)" },
+    { x: 229.7, y: 685.6, w: 27.1, h: 93.6, color: "var(--hf-pixel-lilac)" },
+    { x: 562.1, y: 725.6, w: 27.1, h: 93.6, color: "var(--hf-pixel-lilac)" },
+    { x: 1361.9, y: 628.4, w: 27.1, h: 93.6, color: "var(--hf-pixel-lilac)" },
+    { x: 202.9, y: 685.6, w: 27.1, h: 93.6, color: "var(--hf-pixel-purple)" },
+    { x: 421.5, y: 532, w: 27.1, h: 93.6, color: "var(--hf-pixel-purple)" },
+    { x: 1458.2, y: 162, w: 27.1, h: 93.6, color: "var(--hf-pixel-lilac)" },
+    { x: 1362.8, y: 8, w: 34.5, h: 181.3, color: "var(--hf-pixel-smoke)" },
+    { x: 1542.8, y: 328, w: 34.5, h: 181.3, color: "var(--hf-pixel-smoke)" },
+    { x: 535.3, y: 725.6, w: 27.1, h: 93.6, color: "var(--hf-pixel-purple)" },
+    { x: 1335.1, y: 628.4, w: 27.1, h: 93.6, color: "var(--hf-pixel-purple)" },
+    { x: 1599.4, y: 593.3, w: 21.8, h: 114.9, color: "var(--hf-pixel-violet)" },
+    { x: 180.5, y: 208.6, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 257, y: 285.1, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 1558.8, y: 185, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 283.8, y: 21.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-pink)" },
+    { x: 373.8, y: 291.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-smoke)" },
+    { x: 1635.3, y: 351.5, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 30.4, y: 410.4, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 1846.1, y: 170.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 1876.1, y: 170.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-purple)" },
+    { x: 1933.2, y: 30.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 64.9, y: 229.1, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: -4, y: 229.1, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 103.3, y: 438.6, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 1712.5, y: 428.5, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: -37.9, y: 410.4, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: -72.3, y: 229.1, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+]
+
+const MOBILE_SQUARES = [
+    { x: -0.9, y: 192, w: 12.3, h: 40.6, color: "var(--hf-pixel-pink)" },
+    { x: 16, y: 159.1, w: 4, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { right: 50.1, y: 122, w: 3.9, h: 40.6, color: "var(--hf-pixel-pink)" },
+    {
+        right: 3.6,
+        y: 139.1,
+        w: 34.5,
+        h: 181.3,
+        color: "var(--hf-pixel-violet)",
+    },
+    {
+        right: -15.3,
+        y: 211.3,
+        w: 34.5,
+        h: 181.3,
+        color: "var(--hf-pixel-smoke)",
+    },
+    {
+        x: -59.5,
+        bottom: 39,
+        w: 76.5,
+        h: 76.5,
+        color: "var(--hf-pixel-purple)",
+        opacity: 0.4,
+    },
+    {
+        x: 17,
+        bottom: -37.6,
+        w: 76.5,
+        h: 76.5,
+        color: "var(--hf-pixel-purple)",
+        opacity: 0.2,
+    },
+    {
+        x: 103.3,
+        bottom: -56.1,
+        w: 76.5,
+        h: 76.5,
+        color: "var(--hf-pixel-purple)",
+    },
+    {
+        right: 63,
+        bottom: -40.2,
+        w: 27.1,
+        h: 93.6,
+        color: "var(--hf-pixel-purple)",
+    },
+    {
+        right: 36.2,
+        bottom: -40.2,
+        w: 27.1,
+        h: 93.6,
+        color: "var(--hf-pixel-lilac)",
+        opacity: 0.2,
+    },
+    {
+        right: -17.6,
+        bottom: 13.4,
+        w: 27.1,
+        h: 93.6,
+        color: "var(--hf-pixel-lilac)",
+    },
+    {
+        right: -0.6,
+        bottom: -44.5,
+        w: 48.5,
+        h: 48.5,
+        color: "var(--hf-pixel-violet)",
+    },
+]
+---
+
+<section class="hf-hero" aria-labelledby="hf-hero-title">
+    <PixelSquares squares={SQUARES} mobile={MOBILE_SQUARES} />
+    <div class="content">
+        <p class="lockup" data-usal="fade-u delay-0 duration-500 ease-out">
+            <span class="visually-hidden">Kestra × Hacktoberfest 26</span>
+            <svg class="pixel-mark" viewBox="0 0 5 5" aria-hidden="true">
+                {
+                    MARK_CELLS.map(([x, y, fill]) => (
+                        <rect {x} {y} width="1" height="1" {fill} />
+                    ))
+                }
+            </svg>
+            <span class="times" aria-hidden="true">x</span>
+            <Wordmark class="wordmark" aria-hidden="true" />
+        </p>
+
+        <h1
+            id="hf-hero-title"
+            data-usal="fade-u delay-50 duration-500 ease-out"
+        >
+            Put your October pull requests into Kestra<span class="dot">.</span>
+        </h1>
+
+        <p
+            class="standfirst"
+            data-usal="fade-u delay-100 duration-500 ease-out"
+        >
+            Two tracks, two podiums, and Kestra merch and goodies for everyone
+            who lands a merge. Registration is open, submissions run{" "}
+            <strong>October 1 to 31.</strong>
+        </p>
+
+        <dl
+            class="facts"
+            aria-label="The hackathon at a glance"
+            data-usal="fade-u delay-150 duration-500 ease-out"
+        >
+            {
+                KEY_FACTS.map((fact) => (
+                    <div>
+                        <dt>{fact.value}</dt>
+                        <dd>{fact.label}</dd>
+                    </div>
+                ))
+            }
+        </dl>
+
+        <div class="buttons" data-usal="fade-u delay-200 duration-500 ease-out">
+            <a
+                href={registerUrl}
+                class="btn btn-lg btn-primary"
+                target="_blank"
+                rel="noopener">Register now</a
+            >
+            <a href={rulesHref} class="btn btn-lg btn-secondary">How to enter</a
+            >
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+
+    .hf-hero {
+        --header-h: var(--top-bar-height, 67px);
+
+        position: relative;
+        isolation: isolate;
+        margin-top: calc(-1 * var(--header-h));
+        padding: calc(var(--header-h) + 4rem) 1rem 3.125rem;
+        overflow: clip;
+        background: var(--hf-background-dark);
+        color: var(--hf-content-dark);
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--header-h) + 2.1875rem) 2rem 7.75rem;
+            text-align: left;
+        }
+
+        :global(.pixel-squares) {
+            clip-path: inset(var(--header-h) 0 0 0);
+        }
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.125rem;
+        max-width: 1200px;
+        margin-inline: auto;
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
+
+    .lockup {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        margin: 0 0 4px;
+
+        .pixel-mark {
+            width: 23px;
+            height: 23px;
+        }
+
+        .times {
+            color: var(--hf-content-dark-tertiary);
+            font-size: $font-size-sm;
+            line-height: 20px;
+        }
+
+        .wordmark {
+            width: 191px;
+            height: 19px;
+            color: var(--hf-content-dark);
+        }
+    }
+
+    h1 {
+        max-width: 1100px; 
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 600;
+        font-feature-settings: "ss01", "ss06", "ss07";
+        letter-spacing: -0.02em;
+        line-height: 0.94;
+        color: var(--hf-content-dark);
+        text-wrap: balance;
+
+        .dot {
+            color: var(--hf-pixel-magenta);
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-top: 0.5rem;
+            font-size: 2.125rem;
+            line-height: 39px;
+            text-wrap: wrap;
+        }
+    }
+
+    .standfirst {
+        max-width: 780px;
+        margin: 0;
+        color: var(--hf-content-dark-secondary);
+        font-size: 1.25rem;
+        line-height: 1.2;
+
+        strong {
+            font-weight: 700;
+        }
+
+        @include media-breakpoint-down(md) {
+            margin-top: 1.5rem;
+            font-size: $font-size-sm;
+            line-height: 24px;
+        }
+    }
+
+    .facts {
+        display: flex;
+        width: 100%;
+        max-width: 672px;
+        margin: 0;
+        padding: 10px 30px;
+        border: 1px solid var(--hf-border-dark);
+        border-radius: 4px;
+        background: linear-gradient(
+            180deg,
+            rgba($white, 0.04),
+            rgba($white, 0)
+        );
+
+        > div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+
+            + div {
+                border-left: 1px solid var(--hf-border-dark);
+            }
+        }
+
+        dt {
+            font-size: 1.75rem;
+            font-weight: 600;
+            line-height: 2rem;
+            color: var(--hf-content-dark);
+        }
+
+        dd {
+            margin: 0;
+            color: var(--hf-content-dark-muted);
+            font-size: $font-size-xs;
+            line-height: 18px;
+        }
+
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+            padding-inline: 0.5rem;
+            text-align: center;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.125rem;
+        width: 100%;
+        margin-top: 1.875rem;
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+            min-height: 56px;
+            border-radius: 8px;
+            font-size: $font-size-lg;
+        }
+
+        .btn-secondary {
+            @include btn-secondary-light-surface;
+            --ks-border-button-secondary: var(--hf-content-dark-tertiary);
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+
+            .btn {
+                width: 100%;
+                min-height: 50px;
+                font-size: $font-size-md;
+            }
+        }
+    }
+</style>

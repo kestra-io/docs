@@ -7,7 +7,8 @@ import SeeHow from "~/components/common/SeeHow.astro"
 import StickySteps from "~/components/layout/StickySteps.vue"
 import FeatureSections from "~/components/overview/FeatureSections.astro"
 
-const totalPlugins = `${await fetchTotalPluginsCount()}+`
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = "Kestra Platform Overview"
 const description =
@@ -29,7 +30,7 @@ const WORKFLOW_STEPS = [
         id: "connect",
         label: "Connect",
         title: "Plug to Any Tool",
-        description: `Integrate with ${totalPlugins} plugins covering databases, APIs, cloud services, file systems, and more. No custom wrappers needed.`,
+        description: `Integrate with ${totalPlugins}+ plugins covering databases, APIs, cloud services, file systems, and more. No custom wrappers needed.`,
         image: "/landing/overview/connect.png",
         alt: "Connect to tools",
         color: "#ff694b",

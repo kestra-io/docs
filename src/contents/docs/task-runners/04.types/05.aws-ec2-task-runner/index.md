@@ -312,4 +312,4 @@ tasks:
 | `instanceReadyTimeout` | No | `PT5M` | Maximum time to wait for the instance and SSM Agent to become ready. |
 | `resume` | No | `true` | Reattach to an existing instance and command if the Kestra Worker restarts. |
 
-For the full property reference, see the [plugin documentation](/plugins/plugin-ee-aws/runner/io.kestra.plugin.ee.aws.runner.ec2).
+For the full property reference, see the [plugin documentation](/plugins/plugin-ee-aws/aws-task-runners/io.kestra.plugin.ee.aws.runner.ec2).

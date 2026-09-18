@@ -160,7 +160,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
-- [Promote (EE)](https://kestra.io/docs/version-control-cicd/promote.md): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
+- [Promote (EE)](https://kestra.io/docs/enterprise/governance/promote): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
 - [VS Code extension](https://kestra.io/docs/version-control-cicd/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
 - [No Code editor](https://kestra.io/docs/ui/flows.md): Build flows visually using the No Code canvas — drag-and-drop editing that stays in three-way sync with the YAML editor and AI Copilot in real time
 

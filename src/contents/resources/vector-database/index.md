@@ -133,7 +133,7 @@ Embedding, indexing and refresh jobs are pipelines like any other. Running them 
 
 ### Declarative Management of Embedding Pipelines
 
-Vector databases don't exist in a vacuum. They require robust pipelines to ingest data, generate embeddings, and keep the index up-to-date. Kestra excels at this by allowing you to define the entire end-to-end process as a [declarative YAML flow](https://kestra.io/docs/concepts/flow). This approach brings version control, reproducibility, and clarity to your AI [data orchestration](/resources/data/data-orchestration) pipelines, making them as manageable as infrastructure-as-code. With [declarative orchestration](https://kestra.io/features/declarative-data-orchestration), you can reliably manage the lifecycle of your vector data.
+Vector databases don't exist in a vacuum. They require robust pipelines to ingest data, generate embeddings, and keep the index up-to-date. Kestra excels at this by allowing you to define the entire end-to-end process as a [declarative YAML flow](https://kestra.io/docs/workflow-components/flow). This approach brings version control, reproducibility, and clarity to your AI [data orchestration](/resources/data/data-orchestration) pipelines, making them as manageable as infrastructure-as-code. With [declarative orchestration](https://kestra.io/features/declarative-data-orchestration), you can reliably manage the lifecycle of your vector data.
 
 ### Polyglot Support for AI and Data Tasks
 
