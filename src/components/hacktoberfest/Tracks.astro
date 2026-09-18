@@ -33,20 +33,19 @@ const TRACKS: {
         tab: "Track 01",
         label: "Good-first-issue pull requests",
         title: "Fix something real in the codebase",
-        body: "Every eligible issue carries the good-first-issue label and has been scoped by a Kestra engineer, across the core repository and the plugin repositories. Comment within the issue in order to be assigned to it before you start working on it.",
+        body: "Every eligible issue carries the good-first-issue label and has been scoped by a Kestra engineer, across the core repository and the plugin repositories.",
         rules: [
             {
-                text: "The pull request must close a labelled",
-                pill: "good first issue",
+                text: "Find a good-first-issue (a non good-first-issue can be worked on, but you would need to be assigned to the issue before starting your PR!).",
             },
             {
-                text: "Include a before and after screenshot where the change is visible",
+                text: "Comment on the issue thread to let people know you're working on it, as part of Hacktoberfest",
             },
             {
-                text: "It must be merged to count — open and draft PRs score nothing",
+                text: "Submit your PR and include a before and after screenshot where the change is visible",
             },
             {
-                text: "Typo-only, whitespace and auto-generated changes are closed as invalid",
+                text: "Create a social media post (LinkedIn or X or Reddit) that talks about the issue, and tag it #KestraHacktoberfest",
             },
         ],
         link: {
@@ -89,6 +88,7 @@ const TRACKS: {
         <div class="intro">
             <SectionTitle
                 id="hf-tracks-title"
+                align="center"
                 title="How to enter"
                 subtitle="Two tracks, judged and rewarded independently. Enter either, or both. A contribution only counts once it is merged."
             />
@@ -222,37 +222,23 @@ const TRACKS: {
 
     .container {
         display: flex;
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: stretch;
         gap: 2rem;
-
-        @include media-breakpoint-down(xl) {
-            flex-direction: column;
-        }
     }
 
     .intro {
-        flex: 0 0 306px;
-        padding-block: 1.875rem;
-
-        @include media-breakpoint-down(xl) {
-            flex: none;
-            width: 100%;
-            padding-block: 0;
-        }
+        width: 100%;
     }
 
     .panel {
-        flex: 1;
+        width: 100%;
         min-width: 0;
         display: flex;
         border-radius: 8px;
         background: var(--ks-background-primary);
         box-shadow: 0 2px 4px var(--ks-shadows-light);
         overflow: hidden;
-
-        @include media-breakpoint-down(xl) {
-            width: 100%;
-        }
 
         @include media-breakpoint-down(md) {
             flex-direction: column;
@@ -361,7 +347,7 @@ const TRACKS: {
 
             li {
                 display: flex;
-                align-items: center;
+                align-items: flex-start;
                 gap: 0.5rem;
                 color: var(--ks-content-secondary);
                 font-size: $font-size-md;
@@ -371,6 +357,7 @@ const TRACKS: {
                     flex: none;
                     width: 20px;
                     height: 20px;
+                    margin-top: 2px;
                     color: var(--ks-content-color-highlight);
                 }
 

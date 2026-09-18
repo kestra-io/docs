@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components"
 import Link from "~/components/common/Link.astro"
 import SectionTitle from "./SectionTitle.astro"
 import Pill from "./Pill.astro"
+import PointScan from "./assets/point-scan.svg"
 
 interface Props {
     contributingUrl: string
@@ -14,11 +15,24 @@ const { contributingUrl, codeOfConductUrl } = Astro.props
 const securityAdvisoryUrl =
     "https://github.com/kestra-io/kestra/security/advisories/new"
 
-const RULES = [
+interface Rule {
+    badge: string
+    title: string
+    text?: string
+    items?: string[]
+}
+
+const RULES: Rule[] = [
     {
         badge: "Before you write code",
-        title: "Get the issue assigned to you",
-        text: "Comment on the issue you want and wait until it is assigned to you before you start. Multiple participants can be assigned to the same issue. Pull requests will be merged on a first-come, first-served basis. Pull requests on unassigned issues are welcome but take longer to review, and may be closed in favour of work already underway.",
+        title: "Follow the rules to ensure your submission qualifies",
+        items: [
+            "Only 2 PRs per participant can be open at any given time",
+            "The same issue can have PRs submitted by multiple participants. The PRs will be merged on a first-come, first-served basis.",
+            "PRs for good-first-issues must include a before and after screenshot where the change is visible",
+            "Must publish a minimum of one social media post that mentions your participation in Kestra's Hacktoberfest and what you have worked on",
+            "Typo-only, whitespace and auto-generated changes are closed as invalid PRs",
+        ],
     },
     {
         badge: "Legal notice",
@@ -39,7 +53,8 @@ const NEEDS = [
     <div class="container">
         <SectionTitle
             id="hf-guidelines-title"
-            title="Contribution guidelines"
+            align="center"
+            title="Contribution Rules"
         />
 
         <div class="body">
@@ -52,7 +67,17 @@ const NEEDS = [
                         >
                             <Pill tone="info">{rule.badge}</Pill>
                             <h3>{rule.title}</h3>
-                            <p>{rule.text}</p>
+                            {rule.text && <p>{rule.text}</p>}
+                            {rule.items && (
+                                <ul class="rule-items">
+                                    {rule.items.map((item) => (
+                                        <li>
+                                            <PointScan />
+                                            <span>{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </article>
                     ))
                 }
@@ -191,6 +216,32 @@ const NEEDS = [
             margin: 0;
             font-size: $font-size-md;
             line-height: 24px;
+        }
+
+        .rule-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.5rem;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-md;
+                line-height: 24px;
+
+                svg {
+                    flex: none;
+                    width: 20px;
+                    height: 20px;
+                    margin-top: 2px;
+                    color: var(--ks-content-color-highlight);
+                }
+            }
         }
     }
 
