@@ -68,7 +68,7 @@
     "oxlint": "^1.82.0",
     "posthog-js": "^1.428.4",
     "prettier": "^3.9.6",
-    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro": "^1.0.0",
     "prettier-plugin-vue": "^1.1.6",
     "rapidoc": "^9.3.8",
     "rehype-autolink-headings": "^7.1.0",
