@@ -42,7 +42,7 @@ You can contribute an article about how you use Kestra to our [blog](/blogs). Em
 ### Requirements
 
 The following dependencies are required to build Kestra locally:
-- JDK 25 (runtime) with source/target set to Java 21
+- JDK 25
 - Node 14+ and npm
 - Docker & Docker Compose
 - an IDE (Intellij IDEA, Eclipse or VS Code)
@@ -64,18 +64,65 @@ Open the cloned repository in your favorite IDE. In many IDEs, Gradle build will
 
 You can also build it from a terminal using `./gradlew build`. The Gradle wrapper will automatically download the correct Gradle version to use.
 
-- Set your IDE language level to **Java 21** while using the **JDK 25** toolchain; builds are compiled with `--release 21`.
+- Set your IDE language level and project SDK to **Java 25**. Every Gradle toolchain in the build is `JavaLanguageVersion.of(25)`, and the build sets no separate source or target compatibility.
 - You may need to enable Java annotation processors since we use it a lot.
-- The main class is `io.kestra.cli.App` from module `kestra.cli.main`.
+- The main class is `io.kestra.cli.Kestra` from module `kestra.cli.main`. It was named `io.kestra.cli.App` before 2.0, so older guides and screenshots may still show that name.
 - Pass as program arguments the server you want to develop, for example `server standalone` starts a standalone Kestra server.
-- The Intellij Idea configuration can be found in screenshot below:
-![Intellij Idea Configuration ](./standalone.png)
-  - `MICRONAUT_ENVIRONMENTS`: can be set as any string and will load a custom configuration file in `cli/src/main/resources/application-{env}.yml`
-  - `KESTRA_PLUGINS_PATH`: is the path where you save plugins as Jar and is loaded during the startup process
-- If you encounter **JavaScript memory heap out** error during startup, configure `NODE_OPTIONS` environment variable with some large value.
-    - Example `NODE_OPTIONS: --max-old-space-size=4096` or `NODE_OPTIONS: --max-old-space-size=8192` ![Intellij IDEA Configuration ](./node_option_env_var.png)
-- You can also use the gradle task `./gradlew runLocal` that runs a standalone server with `MICRONAUT_ENVIRONMENTS=override` and plugins path `local/plugins`
-- The server start by default on port 8080 and is reachable on `http://localhost:8080`.
+- The server starts by default on port 8080 and is reachable on `http://localhost:8080`.
+
+#### Run configuration
+
+To start a standalone server from your IDE, create an **Application** run configuration with the following values:
+
+| Field | Value |
+|-------|-------|
+| SDK | Java 25 |
+| Module classpath | `kestra.cli.main` |
+| Main class | `io.kestra.cli.Kestra` |
+| Program arguments | `server standalone` |
+| Working directory | the repository root |
+
+Then add the environment variables you need:
+
+- `MICRONAUT_ENVIRONMENTS`: can be set as any string and will load a custom configuration file in `cli/src/main/resources/application-{env}.yml`. Those files are gitignored, so create the one you need first, for example `cli/src/main/resources/application-override.yml` for `MICRONAUT_ENVIRONMENTS=override`.
+- `KESTRA_PLUGINS_PATH`: is the path where you save plugins as Jar and is loaded during the startup process.
+- `NODE_OPTIONS`: only needed if you hit a **JavaScript memory heap out** error during startup, for example `--max-old-space-size=4096` or `--max-old-space-size=8192`.
+
+![Intellij IDEA Configuration ](./node_option_env_var.png)
+
+#### Start a server from the command line
+
+Two Gradle tasks start a server without any IDE configuration. Both set `MICRONAUT_ENVIRONMENTS=override` and load plugins from `local/plugins`.
+
+The local development server, which is the quickest way to get a running instance:
+
+```shell
+./gradlew runLocal
+```
+
+The standalone all-in-one server:
+
+```shell
+./gradlew runStandalone
+```
+
+`runStandalone` takes a different plugin directory through `-PstandalonePlugins=/path/to/plugins` or the `KESTRA_PLUGINS_PATH` environment variable.
+
+#### Test a change without rebuilding everything
+
+You do not need to rebuild the Docker image to try a change out. For backend work, run the tests of the module you touched:
+
+```shell
+./gradlew :core:unitTest
+```
+
+`unitTest` skips the tests tagged as flaky or integration, and `--tests` narrows the run down to a single class or method:
+
+```shell
+./gradlew :core:unitTest --tests "*.MyTest"
+```
+
+For anything that has to be seen in a running server, start one with `./gradlew runLocal` instead. If the change is in the UI, run the frontend dev server against it as described in [Frontend development](#frontend-development) below, so you get hot reload instead of a full build.
 
 If you want to launch all tests, you need Python and some packages installed on your machine. On Ubuntu, you can install them with the following command:
 
