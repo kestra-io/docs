@@ -43,7 +43,7 @@ You can contribute an article about how you use Kestra to our [blog](/blogs). Em
 
 The following dependencies are required to build Kestra locally:
 - JDK 25
-- Node 14+ and npm
+- Node 24 and npm 11.7.0 or later (see `ui/.nvmrc`)
 - Docker & Docker Compose
 - an IDE (Intellij IDEA, Eclipse or VS Code)
 
@@ -133,16 +133,16 @@ python3 -m pip install virtualenv
 
 ### Frontend development
 
-All frontend code is located in the `/ui` folder.
+All frontend code is located in the `/ui` folder, and every command below runs from there.
 
 The front-end uses [Vue.js](https://vuejs.org/). Deep knowledge of Vue.js is not required to contribute.
-To run Kestra's frontend in development mode, you will need Node.js version `22.12.0`.
-The repository has a `.nvmrc` file.
+To run Kestra's frontend in development mode, you will need the Node.js version pinned in `ui/.nvmrc`, currently `24`, and npm `11.7.0` or later.
+`ui/.npmrc` sets `engine-strict=true`, so an older Node or npm fails the install with `EBADENGINE` rather than producing a broken tree.
 
 #### Initial setup
 
 ```shell
-npm install
+cd ui && npm install
 ```
 
 #### Run the frontend
@@ -169,20 +169,56 @@ You can also run all tests in the command line without opening a browser:
 npm run test:unit
 ```
 
-Even better, you can run one `test` file or `stories` file in isolation by specifying part of its name or path in the command
+Even better, you can run one test file in isolation by specifying part of its name or path in the command
 
 ```shell
 npm run test:unit BarChart
 ```
 
+Story files are a separate Vitest project, so they run with their own command:
+
+```shell
+npm run test:storybook
+```
+
+#### Checks run on every pull request
+
+Run these before pushing, so the first CI run is not the one that tells you about a type error or a missing translation key:
+
+```shell
+npm run check:types
+```
+
+```shell
+npm run test:lint
+```
+
+```shell
+npm run translations:check
+```
+
+End-to-end tests are also part of the pipeline, and they build and start a backend themselves:
+
+```shell
+npm run test:e2e
+```
 
 ### Set up the configuration to connect to the backend
 
 Now that you can run the frontend, if opened, you will see a loading screen running forever.
 It waits for a backend to answer.
-To set it up:
 
-- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) YAML definition:
+Start one from the repository root with the Gradle task:
+
+```shell
+./gradlew runLocal
+```
+
+This will start a local server on port 8080, accessible at `http://localhost:8080`. The task already sets `MICRONAUT_ENVIRONMENTS=override` and the plugins path, so it takes no further arguments.
+
+The Vite dev server proxies `/api` and `/swagger` to `http://localhost:8080`, so the frontend's calls are same-origin and no further configuration is needed.
+
+This changes if you point the frontend at a backend directly by setting `VITE_APP_API_URL`, since the calls then bypass that proxy and the backend has to allow the `http://localhost:5173` origin. Create `cli/src/main/resources/application-override.yml`, which is gitignored and therefore absent from a fresh clone, and add the following to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) YAML definition:
 
 ```yaml
 micronaut:
@@ -194,15 +230,6 @@ micronaut:
           allowedOrigins:
             - http://localhost:5173
 ```
-
-Then, you can run the backend by running the gradle task.
-
-```shell
-MICRONAUT_ENVIRONMENTS=override ./gradlew runLocal server standalone
-```
-
-This will start a local server on port 8080, accessible at `http://localhost:8080`.
-
 
 ### Set up Kestra frontend without building the backend from the source code
 
@@ -218,7 +245,7 @@ docker compose up
 
 This starts Kestra running with PostgreSQL as the database. You can change the port or other configurations by updating the `docker-compose.yml` file.
 
-Finally, install the dependencies with `npm install`, and serve the UI with hot reload at http://localhost:5173 using the command: `npm run dev`.
+Finally, install the dependencies with `npm install` from the `ui` folder, and serve the UI with hot reload at http://localhost:5173 using the command: `npm run dev`.
 
 ## Kestra devcontainer
 
