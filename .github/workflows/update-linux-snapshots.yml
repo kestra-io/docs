@@ -104,6 +104,21 @@ jobs:
             echo "No Linux snapshot changes to commit."
           fi
 
+      # odiff compares each rewritten baseline against its committed version, so
+      # this has to run before the commit step moves HEAD onto the new snapshots.
+      - name: Build visual diff report
+        id: diff_report
+        if: steps.snapshot_changes.outputs.has_changes == 'true'
+        run: npm run test:visual:report
+
+      - name: Upload visual diff report
+        if: steps.snapshot_changes.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diff-report
+          path: visual-diff-report/
+          retention-days: 14
+
       - name: Commit and push updated Linux snapshots
         if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name != 'main'
         env:
@@ -146,5 +161,12 @@ jobs:
             Automated update of Linux visual regression snapshots.
 
             Only baselines that drifted past maxDiffPixelRatio are included.
+
+            ${{ steps.diff_report.outputs.report_total }} snapshot(s) changed,
+            ${{ steps.diff_report.outputs.report_diff_pixels }} differing pixels.
+
+            Download the `visual-diff-report` artifact from
+            [this run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            and open `index.html` for a side-by-side, slider and highlighted diff of every change.
           add-paths: |
             tests/visual-regression.spec.ts-snapshots
