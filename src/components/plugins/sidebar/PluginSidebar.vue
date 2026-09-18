@@ -2,8 +2,7 @@
     <nav v-if="pluginWrapper || pluginsWithoutDeprecated.length > 0" class="plugin-sidebar">
         <div
             class="search"
-            data-bs-toggle="modal"
-            data-bs-target="#search-modal"
+            data-modal-target="#search-modal"
             title="Search"
         >
             <div class="input-group">

@@ -1,0 +1,36 @@
+// Replaces bootstrap/scss/root. Bootstrap emitted ~120 custom properties for
+// its full palette, theme colours, RGB triplets and per-component defaults;
+// these are the ones this repo's CSS actually reads. The `--ks-content-*`
+// tokens in ks-theme-{light,dark} are the real theme; this block is the
+// element baseline _reboot.scss builds on.
+:root {
+    --ks-body-font-family: #{$font-family-sans-serif};
+    --ks-body-font-size: #{$font-size-base};
+    --ks-body-font-weight: 400;
+    --ks-body-line-height: 1.5;
+    --ks-body-color: #212529;
+    --ks-body-bg: #{$white};
+    --ks-font-monospace: #{$font-family-monospace};
+    --ks-font-size-sm: #{$font-size-sm};
+    --ks-font-size-lg: #{$font-size-lg};
+    --ks-heading-color: inherit;
+    --ks-code-color: #d63384;
+    --ks-highlight-color: #212529;
+    --ks-highlight-bg: #fff3cd;
+    --ks-secondary-color: rgba(33, 37, 41, 0.75);
+    --ks-border-width: 1px;
+    --ks-border-style: solid;
+    --ks-border-color: #dee2e6;
+    --ks-border-radius: #{$border-radius};
+    --ks-border-radius-lg: #{$border-radius-lg};
+    --ks-gray-300: #dee2e6;
+    --ks-gray-400: #ced4da;
+    --ks-gray-600: #6c757d;
+    --ks-secondary: #6c757d;
+    --ks-pink: #d63384;
+    --ks-primary: var(--ks-content-color-highlight);
+    --ks-link-color: var(--ks-content-link);
+    --ks-link-hover-color: var(--ks-content-color-highlight);
+    --ks-link-color-rgb: var(--ks-content-link);
+    --ks-link-hover-color-rgb: var(--ks-content-color-highlight);
+}

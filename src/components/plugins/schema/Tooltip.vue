@@ -1,8 +1,15 @@
 <template>
-    <span ref="$tooltip" v-bind="$attrs">
+    <span
+        ref="trigger"
+        v-bind="$attrs"
+        @mouseenter="show"
+        @mouseleave="hide"
+        @focusin="show"
+        @focusout="hide"
+    >
         <slot name="default" />
     </span>
-    <span class="d-none" ref="$tooltipContent">
+    <span v-show="visible" ref="content" class="ks-tooltip" role="tooltip">
         <slot name="content">
             {{ title }}
         </slot>
@@ -10,52 +17,58 @@
 </template>
 
 <script lang="ts" setup>
-    import {onBeforeUnmount, onMounted, ref, nextTick} from "vue";
-    import type * as Bootstrap from "bootstrap"
+    import { nextTick, onBeforeUnmount, ref, useTemplateRef } from "vue"
+    import { createPopper, type Instance } from "@popperjs/core"
 
-    // conditional import is required for website not to crash due to
-    // bootstrap launching some init upon import that is incompatible with SSR
-    let bootstrap: Promise<typeof Bootstrap>;
-    if (typeof document !== "undefined") {
-        bootstrap = import("bootstrap");
+    const props = withDefaults(
+        defineProps<{
+            title?: string
+            placement?: "top" | "right" | "bottom" | "left"
+        }>(),
+        {
+            title: undefined,
+            placement: "top",
+        },
+    )
+
+    const trigger = useTemplateRef<HTMLElement>("trigger")
+    const content = useTemplateRef<HTMLElement>("content")
+    const visible = ref(false)
+
+    // Built on first hover: schema pages render hundreds of these, and an
+    // unopened tooltip should cost nothing.
+    let popper: Instance | undefined
+
+    const show = async () => {
+        visible.value = true
+        await nextTick()
+        if (!trigger.value || !content.value) return
+        popper ??= createPopper(trigger.value, content.value, {
+            placement: props.placement,
+            modifiers: [{ name: "offset", options: { offset: [0, 6] } }],
+        })
+        popper.update()
     }
 
-    const props = withDefaults(defineProps<{
-        title?: string;
-        placement?: "top" | "right" | "bottom" | "left"
-    }>(), {
-        title: undefined,
-        placement: "top"
-    })
+    const hide = () => {
+        visible.value = false
+    }
 
-    const tooltip = ref()
-    const $tooltip = ref()
-    const $tooltipContent = ref()
-
-    onMounted(async () => {
-        nextTick(async () => {
-            const Bootstrap = await bootstrap
-            if (typeof document !== "undefined" && $tooltip.value && $tooltipContent.value) {
-                tooltip.value = new Bootstrap.Tooltip($tooltip.value, {
-                    trigger: "hover",
-                    html: true,
-                    placement: props.placement,
-                    title: $tooltipContent.value.innerHTML,
-                    customClass: "tooltip-custom"
-                })
-            }
-        })
-    })
-
-    onBeforeUnmount(async () => {
-        tooltip.value?.dispose();
-    })
+    onBeforeUnmount(() => popper?.destroy())
 </script>
 
 <style lang="scss">
-    .tooltip-custom {
-        .tooltip-inner {
-            max-width: none;
-        }
+    .ks-tooltip {
+        z-index: 1080;
+        max-width: none;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        background: var(--ks-background-body);
+        color: var(--ks-content-primary);
+        font-size: $font-size-xs;
+        text-align: left;
+        word-wrap: break-word;
+        pointer-events: none;
     }
 </style>
