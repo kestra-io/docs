@@ -8,9 +8,10 @@ const { id = "host-switcher" } = Astro.props as { id?: string };
 </div>
 
 <script>
-    document.addEventListener("astro:page-load", () => {
+    const wireHostSwitcher = () => {
         const switcher = document.getElementById("host-switcher");
-        if (!switcher) return;
+        if (!switcher || switcher.dataset.wired) return;
+        switcher.dataset.wired = "true";
 
         const buttons = switcher.querySelectorAll("button");
         buttons.forEach((btn) => {
@@ -23,7 +24,14 @@ const { id = "host-switcher" } = Astro.props as { id?: string };
                 });
             });
         });
-    });
+    };
+
+    document.addEventListener("astro:page-load", wireHostSwitcher);
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wireHostSwitcher);
+    } else {
+        wireHostSwitcher();
+    }
 </script>
 
 <style lang="scss">

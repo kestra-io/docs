@@ -141,7 +141,7 @@ errors:
 
 This workflow demonstrates a complete, automated evaluation loop. Here are a few things worth noticing:
 *   **Declarative & Reproducible:** The entire evaluation logic is defined in a single YAML file, making it easy to version, review, and reproduce.
-*   **Polyglot Execution:** Kestra seamlessly orchestrates the [AI Agent task](/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.AIAgent) with a Python evaluation script running in a Docker container via the [Shell Commands plugin](/plugins/plugin-scripts-shell/commands). You can use any language or tool for your evaluation logic.
+*   **Polyglot Execution:** Kestra seamlessly orchestrates the [AI Agent task](/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.aiagent) with a Python evaluation script running in a Docker container via the [Shell Commands plugin](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands). You can use any language or tool for your evaluation logic.
 *   **Data Flow:** The output from the agent task (`run_agent`) is passed directly as an environment variable to the evaluation task (`evaluate_output`), creating a clean data dependency.
 *   **Built-in Error Handling:** The `errors` block automatically catches any failure in the `evaluate_output` task (e.g., a failed pytest assertion) and triggers a Slack notification, providing immediate feedback.
 

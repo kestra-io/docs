@@ -137,7 +137,7 @@ Power Automate empowers "citizen developers" to build automations within the Mic
 
 Temporal is a workflow-as-code platform designed for application developers. It provides SDKs in multiple languages (Go, Java, Python, TypeScript) to build durable, stateful, long-running application workflows directly within your codebase. It excels at handling complex business logic like user sign-ups, payment processing, and multi-step transactions.
 
-The key distinction is its focus: Temporal is for orchestrating logic *inside* an application, whereas Kestra orchestrates workflows *across* systems and applications. It is a powerful tool for microservices orchestration, but not the natural choice for data pipelines or infrastructure operations. Kestra offers a [Temporal plugin](/plugins/plugin-temporal/temporal-workflow) to integrate with existing Temporal workflows.
+The key distinction is its focus: Temporal is for orchestrating logic *inside* an application, whereas Kestra orchestrates workflows *across* systems and applications. It is a powerful tool for microservices orchestration, but not the natural choice for data pipelines or infrastructure operations. Kestra offers a [Temporal plugin](/plugins/plugin-temporal) to integrate with existing Temporal workflows.
 
 ### Argo Workflows: Kubernetes-native container orchestration
 

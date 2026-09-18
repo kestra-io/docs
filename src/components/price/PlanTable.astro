@@ -1,6 +1,6 @@
 ---
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { PLANS, getSections, SHARED_FEATURES, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
 
 const totalPlugins = await fetchTotalPluginsCount()
@@ -361,6 +361,27 @@ const SECTIONS = getSections(totalPlugins)
             color: var(--ks-content-link);
             &:hover {
                 text-decoration: underline;
+            }
+        }
+    }
+
+    // Below xxl the wrapper scrolls horizontally, which clips vertically too, so
+    // the bottom rows open upward: a 76px tooltip needs two 57px rows of room.
+    @include media-breakpoint-down(xxl) {
+        .plan-table tbody tr:nth-last-child(-n + 2) .tooltip-content {
+            top: auto;
+            bottom: calc(100% + 10px);
+
+            &::before {
+                top: auto;
+                bottom: -15px;
+            }
+
+            &::after {
+                bottom: auto;
+                top: 100%;
+                border-bottom-color: transparent;
+                border-top-color: var(--ks-border-primary);
             }
         }
     }

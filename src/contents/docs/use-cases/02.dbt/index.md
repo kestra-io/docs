@@ -15,7 +15,7 @@ Data teams use dbt to transform data in warehouses. While dbt simplifies SQL tra
 Orchestration platforms like Kestra automate the execution of dbt models while managing dependencies, environments, and deployments. With Kestra, you can:
 - **Version control models** – Store dbt projects in Git and sync with Kestra's namespace files
 - **Test changes safely** – Run modified models in isolated containers before production
-- **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using [task runners](../../07.enterprise/04.scalability/task-runners/index.md) (AWS/GCP/Azure Batch)
+- **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using [task runners](../../task-runners/index.mdx) (AWS/GCP/Azure Batch)
 - **Integrate with your data stack** – Chain dbt runs with ingestion tools, quality checks, and alerts.
 
 ---
@@ -283,7 +283,7 @@ If needed, you can orchestrate multiple dbt projects from a single flow:
 
 ### Scale dbt Workflows in the Cloud
 
-Add a `taskRunner` property to the dbt task to run it on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes, leveraging [Kestra's task runners](../../07.enterprise/04.scalability/task-runners/index.md):
+Add a `taskRunner` property to the dbt task to run it on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes, leveraging [Kestra's task runners](../../task-runners/index.mdx):
 
 ```yaml
 - id: dbt

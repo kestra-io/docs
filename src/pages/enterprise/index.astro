@@ -12,6 +12,9 @@ import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import Capabilities from "~/components/enterprise/Capabilities.vue"
 import StatsHeader from "~/components/enterprise/StatsHeader.astro"
 import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = "Get More Out of Your Data With the Enterprise Edition"
 const description =
@@ -43,7 +46,7 @@ const STATS = [
 const items = [
     {
         question: "What does the Enterprise Edition add over open-source Kestra?",
-        answer: "Everything in the open-source edition, plus enterprise governance and security: RBAC, SSO/SCIM, audit logs, multi-tenancy, secrets management, worker isolation, and high availability. <a href='/pricing'>Compare editions →</a>",
+        answer: "Everything in the open-source edition, plus enterprise governance and security: action-based RBAC, SSO/SCIM, policies, promote, cases, audit logs, multi-tenancy, secrets management, worker isolation, and high availability. <a href='/pricing'>Compare editions →</a>",
     },
     {
         question: "Can Kestra Enterprise be self-hosted?",
@@ -55,7 +58,7 @@ const items = [
     },
     {
         question: "How does Enterprise scale for large teams?",
-        answer: "Horizontal scalability across workers, multi-tenancy to isolate teams and environments, and high availability for production-critical orchestration. Teams replace vRO, Rundeck, Cron, and Jenkins with a single platform.",
+        answer: "Worker groups route tasks by tags with reserved capacity, task runners execute on containers or dedicated VMs, multi-tenancy isolates teams and environments, and high availability covers production-critical orchestration. Teams replace vRO, Rundeck, Cron, and Jenkins with a single platform.",
     },
     {
         question: "What support comes with the Enterprise Edition?",
@@ -79,7 +82,7 @@ const items = [
         />
         <SchemaFAQ items={items} />
     </Fragment>
-    <Hero client:load />
+    <Hero {totalPlugins} client:load />
     <div class="enterprise">
         <ScrollSpy client:load />
     </div>

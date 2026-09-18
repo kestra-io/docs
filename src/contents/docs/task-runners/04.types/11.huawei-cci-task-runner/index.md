@@ -30,7 +30,7 @@ All tasks require `region`, `namespace`, and credentials. Three options are avai
 
 When both AK/SK and `securityToken` are set, `securityToken` is treated as an STS session token folded into the AK/SK signature, not as a bearer token.
 
-Store credentials in [Kestra secrets](../../concepts/secret) and apply connection properties globally with [plugin defaults](../../workflow-components/plugin-defaults).
+Store credentials in [Kestra secrets](../../../06.concepts/04.secret/index.md) and apply connection properties globally with [Policies](../../../07.enterprise/02.governance/policies/index.md).
 
 ## Minimal example
 

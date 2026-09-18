@@ -1,7 +1,8 @@
 name: Lint & Astro Check
 
 # Runs the vitest unit tests, `astro check` (TypeScript / Astro diagnostics),
-# oxlint, and the SSR collection-import check on every pull request, reporting
+# oxlint, the SSR collection-import check, and the SVG optimisation check on
+# every pull request, reporting
 # lint/check findings as inline review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
 # and [imported content]. The job fails if any tool reports anything, keeping
 # the tree clean.
@@ -112,3 +113,9 @@ jobs:
       - name: Run unit tests
         if: ${{ !cancelled() }}
         run: npm run test:unit
+
+      # Files under public/ never reach Astro's svgOptimizer, so without this
+      # nothing notices an SVG landing unoptimised.
+      - name: Check SVG optimisation
+        if: ${{ !cancelled() }}
+        run: npm run svgo:check
