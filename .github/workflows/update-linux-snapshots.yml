@@ -2,6 +2,10 @@ name: Update Linux Visual Snapshots
 
 on:
   workflow_dispatch:
+  # 01:00 CET / 02:00 CEST: GitHub cron is UTC only, so the French wall clock
+  # shifts by an hour across DST. Scheduled runs only ever fire on main.
+  schedule:
+    - cron: "0 0 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -11,7 +15,7 @@ jobs:
   update-linux-snapshots:
     name: Update Linux Snapshots
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 75
     permissions:
       contents: write
       pull-requests: write
@@ -66,6 +70,8 @@ jobs:
           PREVIEW: "true"
           NO_RANDOM_ORDER: "true"
 
+      # --update-snapshots=changed rewrites a baseline only when the comparison
+      # fails, so anything within maxDiffPixelRatio is left untouched on disk.
       - name: Regenerate Linux snapshots
         run: npm run test:visual:update
 
@@ -107,17 +113,38 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add tests/visual-regression.spec.ts-snapshots
           git commit -m "test(visual): refresh linux snapshots"
+          # The branch can move during the ~20 min run; rebase the single
+          # snapshot commit rather than failing the job on a stale ref.
+          for _ in 1 2 3; do
+            git push origin "HEAD:${BRANCH_NAME}" && exit 0
+            git pull --rebase origin "${BRANCH_NAME}"
+          done
           git push origin "HEAD:${BRANCH_NAME}"
+
+      # A GITHUB_TOKEN push creates no events, so a PR opened with it never gets
+      # CI. The app is the identity that can branch, commit and open a real one.
+      - name: Generate a bot token
+        id: bot-token
+        if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name == 'main'
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.GH_BOT_APP_ID }}
+          private-key: ${{ secrets.GH_BOT_PRIVATE_KEY }}
+          owner: kestra-io
+          repositories: docs
 
       - name: Create PR with updated Linux snapshots
         if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name == 'main'
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ steps.bot-token.outputs.token }}
           branch: chore/update-linux-snapshots-${{ github.run_id }}
           base: main
           commit-message: "test(visual): refresh linux snapshots"
           title: "test(visual): refresh linux snapshots"
           body: |
             Automated update of Linux visual regression snapshots.
+
+            Only baselines that drifted past maxDiffPixelRatio are included.
           add-paths: |
             tests/visual-regression.spec.ts-snapshots
