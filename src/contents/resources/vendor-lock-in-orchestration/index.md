@@ -82,28 +82,35 @@ id: portable-data-processing
 namespace: dev.agnostic
 
 tasks:
-  - id: extract_data
-    type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
-    commands:
-      - echo "Extracting data from a generic source..."
-      - echo '{"id": 1, "value": "data1"}\n{"id": 2, "value": "data2"}' > data.json
+  - id: pipeline
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: extract_data
+        type: io.kestra.plugin.scripts.shell.Commands
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        commands:
+          - echo "Extracting data from a generic source..."
+          - |
+            printf '%s\n' '{"id": 1, "value": "data1"}' '{"id": 2, "value": "data2"}' > data.json
 
-  - id: transform_data
-    type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
-    commands:
-      - echo "Applying a simple transformation..."
-      - "cat data.json | jq -c '.value' > transformed_data.txt"
+      - id: transform_data
+        type: io.kestra.plugin.scripts.shell.Commands
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        commands:
+          - echo "Applying a simple transformation..."
+          - jq -c '.value' data.json > transformed_data.txt
 
-  - id: load_data
-    type: io.kestra.plugin.scripts.shell.Commands
-    runner: PROCESS
-    commands:
-      - echo "Loading data to a generic destination..."
-      - |
-        echo "Transformed data:"
-        cat transformed_data.txt
+      - id: load_data
+        type: io.kestra.plugin.scripts.shell.Commands
+        taskRunner:
+          type: io.kestra.plugin.core.runner.Process
+        commands:
+          - echo "Loading data to a generic destination..."
+          - |
+            echo "Transformed data:"
+            cat transformed_data.txt
 
   - id: log_summary
     type: io.kestra.plugin.core.log.Log
@@ -117,6 +124,7 @@ triggers:
 
 A few things are worth noticing in this flow:
 *   **Consistent Structure:** The YAML structure (`id`, `type`, `tasks`) remains the same regardless of the underlying tools. This is the foundation of portability.
+*   **Shared Working Directory:** The three script tasks sit inside a `WorkingDirectory` task so they share one filesystem. Without it, each task runs in its own directory and `transform_data` would not find the file that `extract_data` wrote.
 *   **Easy Swapping:** To adapt this for a specific cloud, you could replace the `extract_data` task with `io.kestra.plugin.aws.s3.Download` to [orchestrate AWS](/orchestration/aws), `io.kestra.plugin.gcp.gcs.Download` for [GCS](/orchestration/gcs), or `io.kestra.plugin.azure.storage.blob.Download` to [orchestrate Azure](/orchestration/azure). The rest of the workflow logic remains intact.
 *   **Universal Tooling:** The use of `io.kestra.plugin.scripts.shell.Commands` with standard tools like `jq` and `cat` ensures the workflow can run anywhere a shell is available, from a local machine to a Kubernetes pod.
 *   **Built-in Resilience:** Kestra adds resilience around these simple commands. You can add retries, timeouts, and error handling tasks to this workflow without modifying the core shell scripts.
