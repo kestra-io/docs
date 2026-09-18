@@ -146,6 +146,8 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
     $card-radius: 0.5rem;
     $card-height: 19.625rem;
 
@@ -187,7 +189,7 @@
 
             .card-face-stats {
                 border-color: var(--ks-border-active);
-                box-shadow: 0 8px 28px rgba(99, 27, 255, 0.12);
+                box-shadow: 0 8px 28px rgba($base-primary-500, 0.12);
             }
         }
 
@@ -212,6 +214,13 @@
         &:hover .card-flip,
         &:focus-visible .card-flip {
             transform: rotateY(180deg);
+        }
+
+        // Touch cannot hover to flip: show the stats face outright.
+        @media (hover: none) {
+            .card-flip {
+                transform: rotateY(180deg);
+            }
         }
 
         .card-face {
@@ -250,7 +259,7 @@
         padding: 1rem 1.5rem 1.5rem;
         background: var(--ks-background-primary);
         border: 1px solid var(--ks-border-secondary);
-        box-shadow: 2px 3px 16px rgba(57, 82, 242, 0.1);
+        box-shadow: 2px 3px 16px rgba($base-primary-500, 0.1);
         color: var(--ks-content-primary);
 
         .card-industry {
@@ -269,7 +278,7 @@
         width: 5rem;
         height: 5rem;
         border-radius: $card-radius;
-        background: #080a0c;
+        background: $base-grey-800;
         border: 1px solid var(--ks-border-secondary);
         flex-shrink: 0;
         display: flex;
@@ -288,7 +297,7 @@
     .card-initial {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #8b5cf6;
+        color: $base-primary-400;
         line-height: 1;
     }
 
@@ -408,12 +417,12 @@
     }
 
     .card-face-quote {
-        background: #111115;
-        color: #fff;
+        background: $base-grey-Black;
+        color: $base-grey-white;
 
         .card-industry {
-            color: #08090a;
-            background: #fff;
+            color: $base-grey-800;
+            background: $base-grey-white;
             padding-bottom: 0.1875rem;
         }
     }
@@ -436,7 +445,7 @@
         height: 100%;
         gap: 1rem;
         padding: 1rem 1.5rem 1.5rem;
-        background: linear-gradient(to top, rgba(14, 14, 16, 0.3) 17.6%, rgba(14, 14, 16, 0) 100%);
+        background: linear-gradient(to top, rgba($base-grey-800, 0.3) 17.6%, rgba($base-grey-800, 0) 100%);
     }
 
     .quote-top {
@@ -473,10 +482,10 @@
         width: 2.75rem;
         height: 2.75rem;
         border-radius: $card-radius;
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba($base-grey-white, 0.12);
         font-size: 1.25rem;
         font-weight: 700;
-        color: #fff;
+        color: $base-grey-white;
     }
 
     .quote-bottom {
@@ -488,7 +497,7 @@
     .quote-text {
         font-size: 1.125rem;
         line-height: 1.75rem;
-        color: #fff;
+        color: $base-grey-white;
         margin: 0;
         display: -webkit-box;
         -webkit-line-clamp: 4;
@@ -497,14 +506,14 @@
     }
 
     .quote-mark {
-        color: #a796ff;
+        color: $base-primary-300;
     }
 
     .quote-cite {
         margin: 0;
         font-size: 0.875rem;
         line-height: 1.25rem;
-        color: #adadbf;
+        color: $base-grey-300;
 
         strong {
             font-weight: 700;

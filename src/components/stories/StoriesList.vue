@@ -236,6 +236,12 @@
         &:hover {
             color: var(--ks-content-link);
         }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
+            border-radius: 0.25rem;
+        }
     }
 
     .stories-grid {
