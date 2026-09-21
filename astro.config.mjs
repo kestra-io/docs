@@ -303,9 +303,9 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    // silence invasive bootstrap warnings
+                    // `@import` and the global built-ins are still used by our own
+                    // stylesheets; `if-function` comes from NavToc's `if()` calls.
                     silenceDeprecations: [
-                        "color-functions",
                         "global-builtin",
                         "import",
                         "if-function",
