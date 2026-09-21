@@ -61,7 +61,10 @@ $ks-utilities: (
         property: order,
         prefix: "order",
         values: (0: 0, 1: 1, last: 6),
-        responsive: (lg xl),
+        // `md` carries `Alternation.astro`, which reverses every other feature
+        // row with `order-md-0`/`order-md-1`. Without it the rows fall back to
+        // the base order and every section renders image-first.
+        responsive: (md lg xl),
     ),
     "gap": (
         property: gap,
@@ -110,7 +113,7 @@ $ks-utilities: (
         property: margin-left,
         prefix: "ms",
         values: (1: 0.25rem, 2: 0.5rem, 3: 1rem, auto: auto),
-        responsive: (xl),
+        responsive: (sm xl),
     ),
     "padding": (
         property: padding,

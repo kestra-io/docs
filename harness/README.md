@@ -43,3 +43,22 @@ Drives the interactions that replaced bootstrap's JS: the `<dialog>` modals
   Without them `--ks-body-font-family` is empty and every text measurement
   shifts, which hides real regressions behind noise.
 - Set `PLAYWRIGHT_CHROMIUM` if chromium lives outside playwright's own cache.
+
+## coverage.mjs
+
+Diffs every bootstrap-shaped class the markup uses against the CSS this repo
+generates. The utilities map decides what exists, and a class it does not cover
+silently does not apply, so this is the only thing that catches a trim going
+one class too far.
+
+```sh
+npx sass --load-path=node_modules --load-path=src/assets/styles \
+  src/assets/styles/vendor.scss /tmp/vendor.css --no-source-map
+npx sass --load-path=node_modules --load-path=src/assets/styles \
+  src/assets/styles/app.scss /tmp/app.css --no-source-map
+node harness/coverage.mjs /tmp/vendor.css /tmp/app.css
+```
+
+Exits non-zero on anything undefined. Classes bootstrap 5 never shipped (v4
+leftovers like `form-group`, out-of-range `col-md-13`) are listed separately
+and ignored: they were inert before this repo owned its CSS.
