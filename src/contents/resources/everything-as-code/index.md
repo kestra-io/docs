@@ -189,7 +189,7 @@ Kestra is an open-source platform designed from the ground up to support and ext
 
 ### Declarative YAML for all workflows
 
-At the heart of Kestra is a simple, declarative YAML interface for defining workflows. Whether you are orchestrating a data pipeline, an infrastructure provisioning process, or an AI model training job, the entire logic is defined in a human-readable YAML [flow file](https://kestra.io/docs/concepts/flow). This aligns perfectly with EaC, making every workflow a version-controllable, reviewable artifact. This [declarative-first philosophy](https://kestra.io/blogs/declarative-from-day-one) ensures that your orchestration is as robust and manageable as your code.
+At the heart of Kestra is a simple, declarative YAML interface for defining workflows. Whether you are orchestrating a data pipeline, an infrastructure provisioning process, or an AI model training job, the entire logic is defined in a human-readable YAML [flow file](https://kestra.io/docs/workflow-components/flow). This aligns perfectly with EaC, making every workflow a version-controllable, reviewable artifact. This [declarative-first philosophy](https://kestra.io/blogs/declarative-from-day-one) ensures that your orchestration is as robust and manageable as your code.
 
 ### Polyglot execution and extensive plugin ecosystem
 

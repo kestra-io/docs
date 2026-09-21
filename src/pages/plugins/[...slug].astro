@@ -28,6 +28,7 @@ import {
     fetchVersionedSubgroups,
 } from "~/utils/plugins/fetchPluginPageData"
 import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
+import { resolveShortElementSlug } from "~/utils/plugins/shortElementSlug"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
 import pluginGridUrl from "~/components/plugins/assets/plugin-grid.svg?url"
@@ -118,6 +119,15 @@ const navigation = generateNavigationFromSubgroups(allPlugins)
 const aliasMapping = getAliasMapping(allPlugins)
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
+
+// `/plugins/<plugin>/<subgroup>/<bareName>` is not a page; rendering the subgroup
+// there produced a self-canonical duplicate whose element links all 301.
+if (!versionState.version) {
+    const shortSlugTarget = resolveShortElementSlug(splitRouteSlug, pathname, pageList)
+    if (shortSlugTarget) {
+        return Astro.redirect(shortSlugTarget, 301)
+    }
+}
 
 if (versionState.version) {
     const fqcnSegment = rawSplitRouteSlug[rawSplitRouteSlug.length - 1]

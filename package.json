@@ -18,10 +18,12 @@
     "workers:deploy-dryrun": "wrangler deploy --dry-run",
     "workers:build-deploy": "npm run workers:build && npm run workers:deploy",
     "cf-typegen": "wrangler types",
+    "svgo": "node scripts/svgo-batch.mjs",
+    "svgo:check": "node scripts/svgo-batch.mjs --check",
     "lint": "oxlint --fix",
     "format": "oxfmt . --write && prettier --write **/*.astro",
     "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots",
+    "test:visual:update": "playwright test --update-snapshots=changed",
     "test:unit": "vitest run"
   },
   "dependencies": {
@@ -78,7 +80,7 @@
     "shiki": "^4.4.3",
     "slugify": "^1.6.9",
     "strip-indent": "^4.1.1",
-    "svgo": "^4.1.0",
+    "svgo": "4.1.0",
     "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
     "vanilla-cookieconsent": "^3.1.0",

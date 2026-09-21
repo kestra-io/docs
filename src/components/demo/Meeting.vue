@@ -58,6 +58,7 @@
         const ln = form["last-name"].value
         const em = form["email"].value
         const emp = form["employees"].value
+        const jobtitle = form["job-title"].value
         const clickId = getStoredClickId()
 
         hsq.push([
@@ -78,6 +79,7 @@
                 { objectTypeId: "0-1", name: "email", value: em },
                 { objectTypeId: "0-1", name: "firstname", value: fn },
                 { objectTypeId: "0-1", name: "lastname", value: ln },
+                { objectTypeId: "0-1", name: "jobtitle", value: jobtitle },
                 {
                     objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
                     name: COMPANY_SIZE_PROPERTY,
@@ -280,6 +282,21 @@
                         type="email"
                         class="form-control"
                         placeholder="Company email *"
+                        required
+                    />
+                </div>
+
+                <div class="col-12">
+                    <label :for="`${uid}-job-title`" class="form-label mb-0">
+                        Job title
+                    </label>
+                    <input
+                        :id="`${uid}-job-title`"
+                        name="job-title"
+                        autocomplete="organization-title"
+                        type="text"
+                        class="form-control"
+                        placeholder="Job title *"
                         required
                     />
                 </div>

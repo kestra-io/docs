@@ -11,7 +11,7 @@ metaDescription: Faced with the challenge of expanding their data operations and
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logoDark: ./logo-dark.webp
 logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.dbt.cloud.TriggerRun

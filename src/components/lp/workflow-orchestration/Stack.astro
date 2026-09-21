@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 /* mdi glyphs with the design's vertical gradient baked in — a paint server in
  * a separate <svg> does not resolve through astro-icon's <symbol>/<use> pair,
@@ -10,6 +11,8 @@ import DataPipelinesIcon from "./assets/stack-data-pipelines.svg"
 import InfraPlatformIcon from "./assets/stack-infra-platform.svg"
 import AppMicroservicesIcon from "./assets/stack-app-microservices.svg"
 import BusinessProcessesIcon from "./assets/stack-business-processes.svg"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const columns = [
     {
@@ -59,8 +62,8 @@ const columns = [
     <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
         <h2>Unified Orchestration Across Your Stack</h2>
         <p>
-            API-first, with 1,800+ plugins for your databases, clouds, and
-            internal systems
+            API-first, with {totalPlugins}+ plugins for your databases, clouds,
+            and internal systems
         </p>
     </div>
 

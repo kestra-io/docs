@@ -1,0 +1,87 @@
+---
+interface Props {
+    title: string
+    subtitle?: string
+    align?: "left" | "center"
+    id?: string
+}
+
+const { title, subtitle, align = "left", id } = Astro.props
+---
+
+<div class:list={["section-title", align]}>
+    <span class="pixels" aria-hidden="true"></span>
+    <h2
+        {id}
+        set:html={title}
+        data-usal="fade-u delay-50 duration-500 ease-out"
+    />
+    {
+        subtitle && (
+            <p
+                set:html={subtitle}
+                data-usal="fade-u delay-100 duration-500 ease-out"
+            />
+        )
+    }
+</div>
+
+<style lang="scss">
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
+
+        &.center {
+            align-items: center;
+            text-align: center;
+        }
+
+        .pixels {
+            display: block;
+            width: 46px;
+            height: 11.5px;
+            background: linear-gradient(
+                90deg,
+                var(--hf-pixel-purple) 0 25%,
+                var(--hf-pixel-lilac) 25% 50%,
+                var(--hf-pixel-violet) 50% 75%,
+                var(--hf-pixel-pink) 75%
+            );
+        }
+
+        h2 {
+            margin: 0;
+            color: var(--section-title-color, var(--ks-content-primary));
+            font-size: 3rem;
+            font-weight: 600;
+            line-height: 50px;
+            letter-spacing: -0.72px;
+
+            @include media-breakpoint-down(lg) {
+                font-size: $font-size-3xl;
+                line-height: 1.15;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--section-subtitle-color, var(--ks-content-primary));
+            font-size: $font-size-lg;
+            line-height: 28px;
+
+            @include media-breakpoint-down(lg) {
+                font-size: $font-size-md;
+                line-height: 24px;
+            }
+        }
+
+        &.center p {
+            color: var(--section-subtitle-color, var(--ks-content-secondary));
+            font-size: $font-size-md;
+            line-height: 24px;
+        }
+    }
+</style>

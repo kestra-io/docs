@@ -9,9 +9,9 @@ metaDescription: >
   across regulated zones—without slowing delivery.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
-logo: ./logo.svg
-logoDark: ./logo-dark.svg
-logoIcon: ./icon.svg
+logo: ./logo.webp
+logoDark: ./logo-dark.webp
+logoIcon: ./icon.webp
 tasks:
   - io.kestra.plugin.terraform.cli.TerraformCLI
   - io.kestra.plugin.scripts.shell.Script
