@@ -60,7 +60,7 @@
                 :class="{ open: menuExpanded }"
                 id="docs-menu"
             >
-                <div class="bd-menu-collapse-inner">
+                <div class="bd-menu-collapse-inner" :inert="collapsed">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <ul class="list-unstyled mb-0">
                         <RecursiveNavSidebar
@@ -82,6 +82,7 @@
 
 <script lang="ts" setup>
     import { computed, onMounted, provide, ref, type PropType } from "vue"
+    import { useMediaQuery } from "@vueuse/core"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Keyboard from "vue-material-design-icons/Keyboard.vue"
     import Menu from "vue-material-design-icons/Menu.vue"
@@ -157,6 +158,14 @@
 
     const menuExpanded = ref(false)
 
+    // `overflow: hidden` on the 0fr grid clips the panel but leaves its links
+    // focusable, where bootstrap's `.collapse` was `display: none`. Above lg
+    // the panel is always shown and `menuExpanded` stays false, so the
+    // viewport has to be part of the condition or the desktop sidebar goes
+    // inert.
+    const belowLg = useMediaQuery("(max-width: 991.98px)")
+    const collapsed = computed(() => belowLg.value && !menuExpanded.value)
+
     const closeSidebar = () => {
         if (window.innerWidth < 992) menuExpanded.value = false
     }
@@ -229,17 +238,17 @@
                 }
             }
             @include media-breakpoint-up(lg) {
-            // Above the breakpoint the panel is always open and never
-            // animates, so the grid wrapper and its inner div drop out of
-            // the box model entirely. Leaving them as boxes shifts the
-            // sidebar ~8px (grid suppresses the margin collapse main relied
-            // on) and changes where its max-height clips.
-            display: contents;
-
-            .bd-menu-collapse-inner {
+                // Above the breakpoint the panel is always open and never
+                // animates, so the grid wrapper and its inner div drop out of
+                // the box model entirely. Leaving them as boxes shifts the
+                // sidebar ~8px (grid suppresses the margin collapse main
+                // relied on) and changes where its max-height clips.
                 display: contents;
+
+                .bd-menu-collapse-inner {
+                    display: contents;
+                }
             }
-        }
         }
         .search,
         .ai-button-wrapper {

@@ -37,7 +37,7 @@
                     :class="{ open: tableOfContentsExpanded }"
                     id="tocContents"
                 >
-                    <div class="bd-toc-collapse-inner">
+                    <div class="bd-toc-collapse-inner" :inert="collapsed">
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
@@ -93,8 +93,8 @@
 </template>
 
 <script setup lang="ts">
-    import { nextTick, ref, onUnmounted } from "vue"
-    import { useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
+    import { computed, nextTick, ref, onUnmounted } from "vue"
+    import { useEventListener, useMediaQuery, useScroll, useThrottleFn } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
@@ -129,6 +129,12 @@
 
     const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined)
     const tableOfContentsExpanded = ref(false)
+
+    // `overflow: hidden` on the 0fr grid clips the panel but leaves its links
+    // focusable. Above lg the panel is always shown while the flag stays
+    // false, so the viewport is part of the condition.
+    const belowLg = useMediaQuery("(max-width: 991.98px)")
+    const collapsed = computed(() => belowLg.value && !tableOfContentsExpanded.value)
     const activeLinkId = ref("")
     const isManualScrolling = ref(false)
     let manualScrollTimer: ReturnType<typeof setTimeout> | undefined

@@ -18,16 +18,30 @@ await p.waitForTimeout(800)
 
 const h = (sel) => p.evaluate((s) => document.querySelector(s)?.getBoundingClientRect().height ?? -1, sel)
 
+// A clipped panel is not a hidden one: `overflow: hidden` on the 0fr grid
+// leaves its links tabbable unless the inner wrapper is inert. Counting
+// focusable descendants catches what a height check cannot.
+const focusables = (sel) => p.evaluate((s) => {
+    const panel = document.querySelector(s)
+    if (!panel) return -1
+    const candidates = panel.querySelectorAll("a[href], button, input, select, textarea, [tabindex]")
+    return [...candidates].filter((el) => !el.closest("[inert]")).length
+}, sel)
+
 for (const [name, btn, panel] of [
     ["docs menu", 'button[aria-controls="docs-menu"]', "#docs-menu"],
     ["toc", ".toc-toggle", "#tocContents"],
 ]) {
     const closed = await h(panel)
     check(`${name} starts collapsed`, closed >= 0 && closed < 5, `h=${closed}`)
+    const closedFocus = await focusables(panel)
+    check(`${name} collapsed is not tabbable`, closedFocus === 0, `focusable=${closedFocus}`)
     await p.click(btn)
     await p.waitForTimeout(600)
     const open = await h(panel)
     check(`${name} expands`, open > 50, `h=${open}`)
+    const openFocus = await focusables(panel)
+    check(`${name} expanded is tabbable`, openFocus > 0, `focusable=${openFocus}`)
     const aria = await p.evaluate((s) => document.querySelector(s)?.getAttribute("aria-expanded"), btn)
     check(`${name} aria-expanded true`, aria === "true", `aria=${aria}`)
     await p.click(btn)

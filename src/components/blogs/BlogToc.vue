@@ -20,7 +20,7 @@
             :class="{ open: tableOfContentsExpanded }"
             id="tocContents"
         >
-            <div class="bd-toc-collapse-inner">
+            <div class="bd-toc-collapse-inner" :inert="collapsed">
                 <h6 class="title d-none d-lg-block">Table of contents</h6>
                 <nav id="nav-toc">
                 <ul class="list">
@@ -46,11 +46,18 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, onUnmounted } from "vue"
+    import { computed, ref, onMounted, onUnmounted } from "vue"
+    import { useMediaQuery } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 
     const tableOfContentsExpanded = ref(false)
+
+    // `overflow: hidden` on the 0fr grid clips the panel but leaves its links
+    // focusable. Above lg the panel is always shown while the flag stays
+    // false, so the viewport is part of the condition.
+    const belowLg = useMediaQuery("(max-width: 991.98px)")
+    const collapsed = computed(() => belowLg.value && !tableOfContentsExpanded.value)
 
     interface Heading {
         text: string

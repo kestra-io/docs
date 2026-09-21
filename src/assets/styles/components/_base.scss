@@ -146,12 +146,7 @@ mark {
 }
 
 a {
-  color: rgba(var(--ks-link-color-rgb), var(--ks-link-opacity, 1));
   text-decoration: none;
-}
-
-a:hover {
-  --ks-link-color-rgb: var(--ks-link-hover-color-rgb);
 }
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {

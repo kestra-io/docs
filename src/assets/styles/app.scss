@@ -52,7 +52,6 @@ body {
 
 :root {
     --spacer: #{$spacer};
-    --ks-link-color-rgb: var(--ks-content-link);
 }
 
 @each $breakpoint, $container-max-width in $container-max-widths {
