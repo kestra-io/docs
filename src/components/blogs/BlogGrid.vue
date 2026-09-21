@@ -37,14 +37,10 @@
     import Tabs from '~/components/common/Tabs.vue'
     import BlogCard from './BlogCard.vue'
     import { allBlogCategories, ALL_NEWS, categoryMap } from "~/components/blogs/categories"
+    import type { BlogCardEntry } from "~/components/blogs/types"
 
     const props = defineProps<{
-        blogs: {
-            path: string
-            title: string
-            category: string
-            date: string
-        }[]
+        blogs: BlogCardEntry[]
         slug: string
     }>()
 
