@@ -16,11 +16,19 @@
             />
         </div>
 
-        <div v-if="filteredBlogs.length > visibleCount" class="text-center my-5">
+        <div v-if="overflowBlogs.length" class="text-center my-5">
             <button @click="showMore" class="btn btn-secondary">
                 Show more
             </button>
         </div>
+
+        <!-- The cards stop at visibleCount, so these keep every post one hop
+             from /blogs for crawlers without shipping 200 card subtrees. -->
+        <ul v-if="overflowBlogs.length" class="overflow-links" aria-hidden="true">
+            <li v-for="blog in overflowBlogs" :key="blog.path">
+                <a :href="blog.path" tabindex="-1">{{ blog.title }}</a>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -60,6 +68,7 @@
     // Cap what is rendered: hiding the overflow with CSS instead still ships
     // ~200 card subtrees in the HTML, for Vue to hydrate on first paint.
     const visibleBlogs = computed(() => filteredBlogs.value.slice(0, visibleCount.value))
+    const overflowBlogs = computed(() => filteredBlogs.value.slice(visibleCount.value))
 
     watch(() => props.slug, (newSlug) => {
         activeCategory.value = newSlug || ALL_NEWS
@@ -90,5 +99,11 @@
         @include media-breakpoint-up(md) {
             grid-template-columns: repeat(2, 1fr);
         }
+    }
+
+    // Crawlable, not rendered: `display: none` costs no layout, and the same
+    // posts become real cards as soon as "Show more" is pressed.
+    .overflow-links {
+        display: none;
     }
 </style>
