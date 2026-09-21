@@ -12,19 +12,21 @@ Start from the slim Kestra image and add only the plugins you need.
 
 Kestra ships two flavors of its Docker image:
 
-- The **default image** (`kestra-ee`), which bundles all plugins.
-- The **slim image** (`kestra-ee:...-slim`), which ships without plugins for a smaller footprint and faster startup.
+- The **default image** (`kestra/kestra` for OSS, `kestra-ee` for Enterprise), which bundles all plugins.
+- The **slim image** (with the `-slim` suffix), which ships without plugins for a smaller footprint and faster startup.
 
-If you want a lean image but still need a handful of plugins, start from the slim image and layer in only the plugins your workflows use. This guide shows how to do that for both open source and Enterprise plugins using [`kestractl`](../../kestra-cli/kestractl/index.md#plugin-management).
+If you want a lean image but still need a handful of plugins, start from the slim image and layer in only what your workflows use. This guide covers both open source and Enterprise plugins using [`kestractl`](../../kestra-cli/kestractl/index.md#plugin-management).
 
-The workflow is the same in every case:
+The steps are the same in every case:
 
 1. Download the plugins you need into a local `plugins/` directory with `kestractl`.
 2. Copy that directory into a custom image built `FROM` the slim base image.
-3. Push the image to your registry and verify the plugins are present.
+3. Verify the plugins are present by running the image locally.
+4. Push the verified image to your registry.
 
 ## Prerequisites
 
+- Replace `<version>` with your Kestra version number (e.g., `2.0.2`) in all commands below.
 - Docker installed and authenticated to your registry.
 - For the Enterprise base image, log in to the Kestra registry with your license credentials:
 
@@ -40,16 +42,16 @@ The workflow is the same in every case:
   curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
   ```
 
-## 1. Download the plugins
+## Download the plugins
 
-Use `kestractl plugins download` to fetch the plugins compatible with your Kestra version into a local `./plugins` directory.
+Use `kestractl plugins download` to fetch plugins into a local `./plugins` directory. The `--compatible-for` flag resolves the correct plugin version for your Kestra release automatically.
 
 ### Open source plugins
 
 Open source plugins are published to Maven Central, so no authentication is required:
 
 ```bash
-kestractl plugins download --compatible-for 2.0.2 \
+kestractl plugins download --compatible-for <version> \
   --plugins io.kestra.storage:storage-s3 \
   --plugins-dir ./plugins
 ```
@@ -59,7 +61,7 @@ kestractl plugins download --compatible-for 2.0.2 \
 Enterprise plugins (and external backends such as secret managers) are served from the Kestra plugin registry, which requires your license credentials:
 
 ```bash
-kestractl plugins download --compatible-for 2.0.2 \
+kestractl plugins download --compatible-for <version> \
   --plugins io.kestra.plugin.ee:plugin-ee-salesforce \
   --plugins-dir ./plugins \
   --maven-repository https://registry.kestra.io/maven \
@@ -69,36 +71,53 @@ kestractl plugins download --compatible-for 2.0.2 \
 
 You can repeat `--plugins` to download several plugins in one command.
 
-## 2. Build a custom image
+## Build the image
 
-Create a `Dockerfile` next to your `plugins/` directory:
+Create a `Dockerfile` next to your `plugins/` directory. Use the base image for your edition:
 
 ```dockerfile
-FROM registry.kestra.io/docker/kestra-ee:v2.0.2-slim
+# Enterprise Edition
+FROM registry.kestra.io/docker/kestra-ee:v<version>-slim
+
+# Open Source
+# FROM kestra/kestra:v<version>-slim
 
 COPY --chown=kestra:kestra plugins/ /app/plugins/
 ```
 
-Build and push it to your registry:
+Build the image locally:
 
 ```bash
-docker build -t my-registry.example.com/kestra-ee:2.0.2-s3 .
-docker push my-registry.example.com/kestra-ee:2.0.2-s3
+docker build -t kestra:custom-<version> .
 ```
 
-## 3. Verify the plugins
+:::alert{type="warning"}
+The version in the base image tag and the version you pass to `--compatible-for` must match. Mismatched versions cause plugin loading failures at runtime.
+:::
 
-Confirm the plugins made it into the image:
+## Verify the plugins
+
+Confirm the plugins are present before pushing:
 
 ```bash
-docker run --rm my-registry.example.com/kestra-ee:2.0.2-s3 \
+docker run --rm kestra:custom-<version> \
   plugins list --plugins /app/plugins
 ```
 
-You should see the plugins you downloaded listed in the output.
+This invokes the Kestra embedded CLI inside the container. For each plugin JAR found in `/app/plugins`, a line like the following appears in the output:
 
-Make sure the slim base image tag (`v2.0.2-slim`) and the version you pass to `--compatible-for` always match — pull plugins compatible with the exact Kestra version you deploy.
+```
+Found plugin on path: file:/app/plugins/io_kestra_storage__storage-s3__1_4_6.jar [Storages: io.kestra.storage.s3.S3FilesStorage, io.kestra.storage.s3.S3Storage]
+```
+
+Once verified, tag and push to your registry:
+
+```bash
+docker tag kestra:custom-<version> my-registry.example.com/kestra:custom-<version>
+docker push my-registry.example.com/kestra:custom-<version>
+```
 
 ## See also
 
 - [Install Only Selected Plugins in Kestra OSS](../selected-plugin-installation/index.md)
+- [Docker image tags and slim image options](../../02.installation/02.docker/index.md#docker-image-tags)
