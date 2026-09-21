@@ -49,7 +49,7 @@ Use `kestractl plugins download` to fetch the plugins compatible with your Kestr
 Open source plugins are published to Maven Central, so no authentication is required:
 
 ```bash
-kestractl plugins download 2.0.2 \
+kestractl plugins download --compatible-for 2.0.2 \
   --plugins io.kestra.storage:storage-s3 \
   --plugins-dir ./plugins
 ```
@@ -59,7 +59,7 @@ kestractl plugins download 2.0.2 \
 Enterprise plugins (and external backends such as secret managers) are served from the Kestra plugin registry, which requires your license credentials:
 
 ```bash
-kestractl plugins download 2.0.2 \
+kestractl plugins download --compatible-for 2.0.2 \
   --plugins io.kestra.plugin.ee:plugin-ee-salesforce \
   --plugins-dir ./plugins \
   --maven-repository https://registry.kestra.io/maven \
@@ -68,8 +68,6 @@ kestractl plugins download 2.0.2 \
 ```
 
 You can repeat `--plugins` to download several plugins in one command.
-
-> **TODO / verify:** The commands shared by the team used `--compatible-for 2.0.2`, but the current `kestractl` reference documents the version as a **positional argument** (`kestractl plugins download 2.0.2`). Confirm which form is correct for the target `kestractl` version before publishing.
 
 ## 2. Build a custom image
 
@@ -99,9 +97,8 @@ docker run --rm my-registry.example.com/kestra-ee:2.0.2-s3 \
 
 You should see the plugins you downloaded listed in the output.
 
-## Notes / open questions
+Make sure the slim base image tag (`v2.0.2-slim`) and the version you pass to `--compatible-for` always match — pull plugins compatible with the exact Kestra version you deploy.
 
-- The base image tag (`v2.0.2-slim`) and the `kestractl` version argument (`2.0.2`) must match — always pull plugins compatible with the exact Kestra version you deploy.
-- Confirm the exact slim image path (`registry.kestra.io/docker/kestra-ee:v2.0.2-slim`) and whether an OSS slim equivalent (`kestra/kestra:...-slim`) exists / should be documented too.
-- Related issue: kestra-io/kestra-ee#11206.
-- See also: [Install Only Selected Plugins in Kestra OSS](../selected-plugin-installation/index.md).
+## See also
+
+- [Install Only Selected Plugins in Kestra OSS](../selected-plugin-installation/index.md)
