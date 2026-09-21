@@ -84,6 +84,8 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
     .sidebar {
         display: flex;
         flex-direction: column;
@@ -99,7 +101,7 @@
         height: 6.25rem;
         border-radius: 0.5rem;
         border: 1px solid var(--ks-border-secondary);
-        background: #000;
+        background: $black;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -118,7 +120,7 @@
     .sidebar-initial {
         font-size: 2rem;
         font-weight: 700;
-        color: #fff;
+        color: $base-grey-white;
     }
 
     .sidebar-company-name {

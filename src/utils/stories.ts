@@ -13,6 +13,8 @@ const FEATURED_ORDER = [
     "orchestrating-cybersecurity-for-100-users-and-billions-of-rows",
 ]
 
+// Editorial grid order. Ids missing here sort after the ordered ones by
+// `rank`, then id, so a new story lands at the end until it is added.
 const GRID_ORDER = [
     "amdocs-delivers-integration-environments-as-a-service-with-kestra",
     "apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra",

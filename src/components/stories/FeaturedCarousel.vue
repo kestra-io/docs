@@ -19,11 +19,11 @@
     const EXPOSED = 2
     const dragging = ref(false)
 
-    let offset = 0 
-    let base = 0 
-    let loopWidth = 0 
-    let stepWidth = 0 
-    let bleed = 0 
+    let offset = 0
+    let base = 0
+    let loopWidth = 0
+    let stepWidth = 0
+    let bleed = 0
     let frame = 0
     let stepFrame = 0
     let lastTime = 0

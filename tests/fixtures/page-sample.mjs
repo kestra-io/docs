@@ -1,7 +1,20 @@
 // Pages sampled by the visual-regression suite and the Lighthouse benchmark.
 // `runs` is how many times the benchmark measures a page before taking the
 // median, for the ones whose score swings between runners; `ssr` marks the
-// prerender = false pages, which the benchmark measures first.
+// prerender = false pages, which the benchmark measures first; `reducedMotion`
+// freezes pages whose auto-playing motion would otherwise make the visual
+// baseline non-deterministic.
+
+/**
+ * @typedef {object} SamplePage
+ * @property {string} path
+ * @property {string} label
+ * @property {number} [runs]
+ * @property {boolean} [ssr]
+ * @property {boolean} [reducedMotion]
+ */
+
+/** @type {SamplePage[]} */
 export const PAGES = [
     { path: "/", label: "Home", runs: 5 },
     { path: "/get-started", label: "Get Started" },
@@ -53,6 +66,7 @@ export const PAGES = [
 // PAGES is the perf sample and stays small on purpose; this list exists so the
 // SVG asset rework (dot-grid backgrounds to CSS, base64 PNG wrappers to WebP,
 // SVGO passes) has a screenshot baseline on every surface it touches.
+/** @type {SamplePage[]} */
 export const VISUAL_ONLY_PAGES = [
     // Use-case detail pages: each renders one of the ~5.6 MB dot-grid
     // backgrounds under public/landing/usecases/, the highest-risk conversion.
