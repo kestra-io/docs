@@ -82,7 +82,9 @@ export function entryCacheKey(
 }
 
 /** Canonical form of a payload, with object keys and array elements ordered, so
- * a digest tracks content rather than the order the API happened to return. */
+ * a digest tracks content rather than the order the API happened to return.
+ * Lossy: reordering alone hashes the same, so don't key a page on an ordered
+ * list through this. */
 export function canonicalPayload(value: unknown): unknown {
     if (Array.isArray(value)) {
         // One stringify per element, rather than one per comparison.

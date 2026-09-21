@@ -181,6 +181,14 @@ describe("canonicalPayload", () => {
         expect(canonicalPayload("<svg />")).toBe("<svg />")
         expect(canonicalPayload(null)).toBe(null)
     })
+
+    // Documented limitation: a caller keying a page on an ordered list would
+    // miss a reorder, so it has to digest that list some other way.
+    it("is lossy about order, which reordering alone cannot be detected through", () => {
+        expect(JSON.stringify(canonicalPayload(["b", "a"]))).toBe(
+            JSON.stringify(canonicalPayload(["a", "b"])),
+        )
+    })
 })
 
 describe("pluginIconDigest", () => {
