@@ -89,6 +89,23 @@ kestra:
 
 The old multi-tenancy and default-tenant configuration is no longer supported.
 
+## Tenant example seeding (kestra.ee.tenant-examples)
+
+When a tenant of a type that ships an example bundle (`INFRASTRUCTURE`) is created, Kestra seeds it with a namespace, flows, apps, a dashboard, and a bootstrap execution. This behavior is enabled by default and controlled with:
+
+```yaml
+kestra:
+  ee:
+    tenant-examples:
+      enabled: false   # set to false to disable example seeding globally
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.ee.tenant-examples.enabled` | `true` | When `true`, creating a tenant of a seeded type provisions the example bundle. Set to `false` to skip seeding entirely. |
+
+The example bundle ships inside the JAR — no network access is required at tenant creation time.
+
 ## Worker topology bootstrap (kestra.ee.setup)
 
 `kestra.ee.setup` lets you declare worker queues, worker groups, subscriptions, and registration tokens in configuration so the full topology is provisioned at startup without any runtime API calls.
