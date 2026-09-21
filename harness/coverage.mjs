@@ -46,9 +46,9 @@ const missing = new Map()
 for (const f of files) {
     const src = fs.readFileSync(f, "utf8")
     for (const m of src.matchAll(
-        /(?:\bclass(?::list)?(?:Name)?\s*=\s*)(?:"([^"]*)"|'([^']*)'|\{([^}]*)\})/g,
+        /(?:\bclass(?::list)?(?:Name)?\s*=\s*)(?:"([^"]*)"|'([^']*)'|\{([^}]*)\})|classList\.(?:add|remove|toggle|replace)\(([^)]*)\)/g,
     )) {
-        for (const raw of (m[1] ?? m[2] ?? m[3] ?? "").split(/[\s"'`,[\]{}]+/)) {
+        for (const raw of (m[1] ?? m[2] ?? m[3] ?? m[4] ?? "").split(/[\s"'`,[\]{}]+/)) {
             const name = raw.trim()
             if (!name || !/^[a-z][a-z0-9-]*$/.test(name)) continue
             if (!SHAPE.test(name) || defined.has(name)) continue

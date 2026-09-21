@@ -895,7 +895,7 @@
         }
 
         document.querySelectorAll(".header-menu-card-section").forEach((el) => {
-            el.classList.remove("opacity-100", "z-1")
+            el.classList.remove("opacity-100")
         })
 
         showMenu.value = true
@@ -915,7 +915,7 @@
         const maxLeft = window.innerWidth - menuWidth - 16
         headerMenuTranslateX.value = `${Math.max(16, Math.min(left - offset, maxLeft))}px`
 
-        menu.classList.add("z-1", "opacity-100")
+        menu.classList.add("opacity-100")
     }
 
     function mouseOut(id: string) {
@@ -1755,9 +1755,14 @@
                             top: 0;
                             bottom: 0;
                             padding: 20px $rem-1;
+                            // Sections are stacked: only the open one takes
+                            // the cursor, the rest stay behind and inert.
+                            pointer-events: none;
 
                             &.opacity-100 {
                                 transition: opacity 700ms ease;
+                                z-index: 1;
+                                pointer-events: inherit;
                             }
 
                             .header-menu-content {
