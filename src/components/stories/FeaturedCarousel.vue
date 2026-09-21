@@ -3,7 +3,7 @@
     import TaskIcon from "~/components/common/TaskIcon.vue"
 
     const MAX_TASKS = 5
-    const DRIFT_SPEED = 300
+    const DRIFT_SPEED = 30
     const HOVER_SPEED = 8
     const DRAG_THRESHOLD = 6
     const STEP_DURATION = 450
