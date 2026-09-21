@@ -8,6 +8,7 @@ export const PAGES = [
     { path: "/pricing", label: "Pricing" },
     { path: "/enterprise", label: "Enterprise" },
     { path: "/cloud", label: "Cloud" },
+    { path: "/features", label: "Features" },
     { path: "/about-us", label: "About Us", runs: 3 },
     { path: "/docs", label: "Docs Landing", runs: 5 },
     {
