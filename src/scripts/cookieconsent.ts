@@ -89,6 +89,12 @@ export const pushPageView = () => {
 export const enabledAnalytics = async () => {
     // Push a page-view on every navigation (including client-side transitions).
     if (analyticsEnabled) {
+        // Re-granting after a withdrawal: opt back in explicitly, since
+        // opt_out_capturing() persists and would otherwise outlive consent.
+        if (posthog.has_opted_out_capturing()) {
+            posthog.opt_in_capturing({ captureEventName: false })
+            posthog.startSessionRecording()
+        }
         pushPageView()
         return
     }
@@ -154,6 +160,19 @@ export const enabledMarketing = () => {
     })
 }
 
+// Withdrawing consent has to stop PostHog too, not just flip the gtag signals:
+// analytics.js captures a $pageview on every astro:page-load independently of
+// this module, and soft navigation means there may never be a hard reload to
+// pick the change up. opt_out_capturing() persists, so it also covers the
+// visitor's later visits until they opt back in.
+export const disableAnalytics = () => {
+    if (!analyticsEnabled) {
+        return
+    }
+    posthog.stopSessionRecording()
+    posthog.opt_out_capturing()
+}
+
 // Fires on initial load and every client-side navigation, so bootstrap runs
 // once and every page after that just reports a page-view.
 document.addEventListener("astro:page-load", async () => {
@@ -186,5 +205,5 @@ document.addEventListener("astro:page-load", async () => {
     // EU-only banner code, split into its own chunk so non-EU visitors
     // never fetch it. Reuses the promise kicked off above.
     const { initBanner } = await bannerModule!
-    initBanner()
+    await initBanner()
 })

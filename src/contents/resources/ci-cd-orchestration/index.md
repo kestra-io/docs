@@ -2,7 +2,7 @@
 title: "CI/CD Orchestration: Unifying Software Delivery Workflows"
 description: "Explore CI/CD orchestration, how it extends continuous integration and delivery, and how a declarative platform like Kestra unifies your entire software delivery lifecycle."
 metaTitle: "CI/CD Orchestration: Unifying Software Delivery Workflows"
-metaDescription: "Unify your CI/CD pipelines with comprehensive orchestration. Learn how declarative, event-driven platforms streamline software delivery, enhance reliability, and integrate diverse tools across your DevOps stack."
+metaDescription: "CI/CD orchestration coordinates builds, tests, and deployments across separate DevOps tools. See where it fits next to a native CI runner, and when you need it."
 tag: "infrastructure"
 date: 2026-06-20
 slug: "ci-cd-orchestration"
@@ -101,7 +101,7 @@ Kubernetes is the de-facto standard for container orchestration. Its role in CI/
 
 ### Beyond CI/CD Platforms: The Role of Universal Orchestrators
 
-While CI/CD platforms like GitLab CI, GitHub Actions, and Jenkins are powerful, they are often centered around the software build and deploy lifecycle. A universal orchestrator, on the other hand, provides a control plane that can manage any type of workflow across any tool. This is a critical distinction when [comparing Kestra to popular CI/CD tools](/blogs/2024-10-17-cd-cd-kestra-comparison). For example, a release might require not just a code deployment but also a database migration, an update to a feature flag system, and a notification to the marketing team. A universal orchestrator handles this entire process seamlessly. Tools like [Argo Workflows are strong alternatives](/resources/infrastructure/argo-workflows-alternatives) for Kubernetes-native workflows, but a universal platform offers broader applicability across hybrid and multi-cloud environments.
+While CI/CD platforms like GitLab CI, GitHub Actions, and Jenkins are powerful, they are often centered around the software build and deploy lifecycle. A universal orchestrator, on the other hand, provides a control plane that can manage any type of workflow across any tool. This is a critical distinction when [comparing Kestra to popular CI/CD tools](/blogs/2024-10-17-cd-cd-kestra-comparison). For example, a release might require not just a code deployment but also a database migration, an update to a feature flag system, and a notification to the marketing team. A universal orchestrator handles this entire process seamlessly. Tools like [Argo Workflows are strong alternatives](/resources/infrastructure/argo-workflows-alternatives) for Kubernetes-native workflows, but a universal platform offers broader applicability across hybrid and multi-cloud environments. For a side-by-side view of the platforms in this category, see [CI/CD tools alternatives](/resources/infrastructure/ci-cd-tools-alternatives).
 
 ## Advanced Strategies for Modern CI/CD Orchestration
 
@@ -141,32 +141,39 @@ tasks:
 
   - id: build-and-test
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: DOCKER
-    docker:
-      image: maven:3.8-jdk-11
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: maven:3.8-jdk-11
     commands:
       - mvn clean install
 
   - id: build-image
-    type: io.kestra.plugin.docker.Build
+    type: io.kestra.plugin.docker.cli.Build
     dockerfile: "{{ workingDir }}/Dockerfile"
-    imageTags:
-      - your-repo/your-app:{{ flow.revision }}
+    tags:
+      - "your-repo/your-app:{{ flow.revision }}"
 
   - id: deploy
-    type: io.kestra.plugin.kubernetes.Apply
-    manifest: |
+    type: io.kestra.plugin.kubernetes.kubectl.Apply
+    namespace: default
+    spec: |
       apiVersion: apps/v1
       kind: Deployment
       metadata:
         name: your-app-deployment
       spec:
         replicas: 3
+        selector:
+          matchLabels:
+            app: your-app
         template:
+          metadata:
+            labels:
+              app: your-app
           spec:
             containers:
-            - name: your-app
-              image: your-repo/your-app:{{ flow.revision }}
+              - name: your-app
+                image: your-repo/your-app:{{ flow.revision }}
 ```
 
 ### Event-Driven Automation Across Any Environment

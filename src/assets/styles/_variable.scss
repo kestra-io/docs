@@ -1,3 +1,5 @@
+// Prelude for every SCSS block (vite.css.preprocessorOptions.scss.additionalData) and the
+// global sheets. Project values only.
 $white: #fff;
 $black: #000;
 
@@ -23,13 +25,6 @@ $h5-font-size: $font-size-lg;
 $h6-font-size: $font-size-md;
 
 $link-decoration: none;
-
-:root {
-    --bs-link-color: var(--ks-content-link);
-    --bs-link-hover-color: var(--ks-content-color-highlight);
-    --bs-primary: var(--ks-content-color-highlight);
-    --bs-link-color-rgb: var(--ks-content-color-highlight);
-}
 
 // grid
 $grid-gutter-width: 1.75rem;
@@ -70,10 +65,22 @@ $rem-8: 8rem;
 $rem-9: 9rem;
 $rem-10: 10rem;
 
-// bootstrap
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
+// Values components read that used to come from bootstrap/scss/_variables.scss,
+// pinned to what it resolved them to. This file is prepended to every
+// `lang="scss"` block by astro.config.mjs, so what it costs to evaluate is
+// paid ~370 times per build: keeping it to plain values and four mixins is
+// the point of it.
+$spacer: 1rem;
+$line-height-base: 1.5;
+$input-padding-x: 0.75rem;
+
+$purple: #6f42c1;
+$pink: #d63384;
+$primary: #0d6efd;
+$gray-500: #adb5bd;
+
+$zindex-fixed: 1030;
+$zindex-modal: 1055;
 
 $grid-breakpoints: (
     xs: 0,
@@ -92,30 +99,25 @@ $container-max-widths: (
     xxl: 1520px
 );
 
-$container-padding-x: $grid-gutter-width * 0.5;
-$grid-row-columns: 6;
-
-$spacers: map-merge(
-    $spacers,
-    (
-        6: (
-            $spacer * 2,
-        ),
-        7: (
-            $spacer * 0.625,
-        ),
-    )
+$spacers: (
+    0: 0,
+    1: $spacer * 0.25,
+    2: $spacer * 0.5,
+    3: $spacer,
+    4: $spacer * 1.5,
+    5: $spacer * 3,
+    6: $spacer * 2,
+    7: $spacer * 0.625,
 );
 
-$font-sizes: map-merge(
-    $font-sizes,
-    (
-        7: (
-            $font-size-xs,
-        ),
-    )
+// Grid gutters, bootstrap's `$gutters: $spacers` without the two extras.
+$gutters: (
+    0: 0,
+    1: $spacer * 0.25,
+    2: $spacer * 0.5,
+    3: $spacer,
+    4: $spacer * 1.5,
+    5: $spacer * 3,
 );
 
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+@import "breakpoints";

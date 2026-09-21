@@ -125,7 +125,7 @@ With a focus on self-service analytics and BI, Dremio empowers analysts to explo
 
 ### 8. MotherDuck: Serverless Analytics with DuckDB
 
-MotherDuck is a serverless analytics platform built on top of the popular open-source in-process OLAP database, DuckDB. It targets a different scale than Databricks, focusing on providing a fast, simple, and cost-effective SQL analytics experience for datasets that don't necessarily require a massive distributed cluster.
+MotherDuck is a serverless analytics platform built on top of the popular open-source in-process OLAP database, [DuckDB](/resources/data/duckdb-alternatives). It targets a different scale than Databricks, focusing on providing a fast, simple, and cost-effective SQL analytics experience for datasets that don't necessarily require a massive distributed cluster.
 
 The unique value proposition of MotherDuck is its hybrid execution model, allowing users to run queries locally on their laptop using DuckDB and seamlessly scale out to the cloud for larger datasets or collaborative work. It's an excellent choice for developers and analysts who need fast, interactive SQL without the complexity of managing a large data platform.
 

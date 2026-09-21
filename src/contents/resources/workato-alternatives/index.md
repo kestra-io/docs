@@ -105,7 +105,7 @@ Boomi is a direct and long-standing competitor to Workato in the enterprise iPaa
 
 ### 3. Zapier: User-Friendly SaaS Automation
 
-Zapier is arguably the most well-known automation tool, famous for its simplicity and vast library of over 6,000 SaaS application connectors. Its point-and-click interface makes it incredibly easy for non-technical users to create simple "Zaps" (workflows) that connect two or more apps. While it lacks the complex logic, error handling, and governance features of enterprise platforms like Workato or Kestra, it is an unbeatable choice for straightforward, task-based automations. For a deeper look at similar tools, explore these [Zapier alternatives](/resources/ai/zapier-alternatives).
+Zapier is arguably the most well-known automation tool, famous for its simplicity and vast library of over 6,000 SaaS application connectors. Its point-and-click interface makes it incredibly easy for non-technical users to create simple "Zaps" (workflows) that connect two or more apps. While it lacks the complex logic, error handling, and governance features of enterprise platforms like Workato or Kestra, it is an unbeatable choice for straightforward, task-based automations. For a deeper look at similar tools, explore these [Zapier alternatives](/resources/ai/zapier-alternatives). For the enterprise end of that spectrum, where governance and API-first design weigh more than ease of use, see [Tray.ai alternatives](/resources/ai/tray-ai-alternatives).
 
 *   **Best for:** Small to medium businesses and individual users for simple, app-to-app automations.
 

@@ -66,7 +66,7 @@ Its hybrid execution model, where the orchestration logic is managed by Prefect 
 
 ### 4. Dagster: Asset-Centric Data Orchestration
 
-Dagster takes a unique, asset-centric approach to orchestration. Instead of focusing on tasks, Dagster models workflows as a graph of data assets—tables, files, or machine learning models. This paradigm provides exceptional data lineage and observability out of the box, making it easier to understand how data flows through the system and to debug issues when they arise.
+Dagster takes a unique, asset-centric approach to orchestration. Instead of focusing on tasks, Dagster models workflows as a graph of data assets—tables, files, or machine learning models. This paradigm provides exceptional data lineage and observability out of the box, making it easier to understand how data flows through the system and to debug issues when they arise. Teams comparing this asset-centric model against lighter integration-focused platforms will find the trade-offs laid out in our guide to [Orchestra alternatives](/resources/data/orchestra-alternatives).
 
 It promotes software engineering best practices for data, including strong typing, testability, and a structured development environment. Its integration with tools like dbt is particularly strong, allowing teams to manage their entire analytics engineering lifecycle within a single framework. The learning curve can be steeper than task-based orchestrators due to its asset-based concepts, but for teams that prioritize data quality and lineage, the investment can pay off significantly.
 

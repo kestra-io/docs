@@ -1,0 +1,232 @@
+---
+import SectionTitle from "./SectionTitle.astro"
+import PointScan from "./assets/point-scan.svg"
+
+const EVENTS = [
+    {
+        date: "2026-09-21",
+        label: "Sep 21",
+        title: "Launch and registration opens",
+        text: "The announcement goes live across Kestra, Arsh's channels and John's on the same day. Rules, the issue backlog and the sign-up form are all live from this point.",
+    },
+    {
+        date: "2026-09-23",
+        label: "Sep 23",
+        title: "More Kestra Academy courses open",
+        text: "Free certification covering Kestra data, AI and infrastructure automation, in addition to Kestra fundamentals already available. The fastest way to get ready before submissions open.",
+    },
+    {
+        date: "2026-09-28",
+        label: "Sep 28",
+        title: "Pre-launch livestream with Arsh Goyal",
+        text: "A YouTube Live with Kestra engineers: what Kestra is, how to approach the hackathon, and open Q&A. Built for anyone new to the platform.",
+    },
+    {
+        date: "2026-10-01",
+        label: "Oct 1",
+        title: "Submissions open — kickoff livestream",
+        text: "Co-hosted with John Crickett. A walkthrough of both tracks, a live demo of finding a good-first-issue and opening a pull request, then Q&A. 16:00 UK, 11:00 US Eastern, 08:00 US Pacific.",
+    },
+    {
+        date: "2026-10-15",
+        label: "Oct 15",
+        title: "Midpoint Q&A",
+        text: "Live with Kestra maintainers. Get unstuck on a pull request, ask about blueprint design, hear what the judges are weighing.",
+    },
+    {
+        date: "2026-10-31",
+        label: "Oct 31",
+        title: "Final deadline",
+        text: "Last day for a pull request to be opened and count toward either track. Closes 23:59 UTC.",
+    },
+    {
+        date: "2026-11-10",
+        label: "Nov 10",
+        title: "Winners livestream",
+        text: "Judging wraps and both podiums are announced live, with a first look at the winning blueprints.",
+        highlight: true,
+    },
+]
+---
+
+<section class="hf-schedule" aria-labelledby="hf-schedule-title">
+    <div class="container">
+        <SectionTitle
+            id="hf-schedule-title"
+            align="center"
+            title="Event schedule"
+        />
+
+        <ol class="timeline">
+            {
+                EVENTS.map((event, index) => (
+                    <li
+                        class:list={["event", { highlight: event.highlight }]}
+                        data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                    >
+                        <div class="when">
+                            <time datetime={event.date}>{event.label}</time>
+                            <PointScan />
+                        </div>
+                        <div class="event-card">
+                            <h3>{event.title}</h3>
+                            <p>{event.text}</p>
+                        </div>
+                    </li>
+                ))
+            }
+        </ol>
+    </div>
+</section>
+
+<style lang="scss">
+    .hf-schedule {
+        padding: 7.5rem 1rem;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-secondary)
+            url("~/assets/header-grid.svg") no-repeat top center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 3.5rem;
+        }
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .event {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding-block: 1rem;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 126px;
+            border-left: 1px dashed var(--ks-content-color-highlight);
+        }
+
+        &:first-child::before {
+            top: 50%;
+        }
+
+        &:last-child::before {
+            bottom: 50%;
+        }
+    }
+
+    .when {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding-right: 19px;
+
+        time {
+            display: block;
+            width: 100px;
+            padding-inline: 10px;
+            background: var(--ks-background-purple-light);
+            color: var(--ks-content-color-highlight);
+            font-size: $font-size-md;
+            font-weight: 600;
+            line-height: 24px;
+            text-align: right;
+            text-transform: uppercase;
+        }
+
+        svg {
+            position: relative;
+            z-index: 1;
+            width: 20px;
+            height: 20px;
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
+    .event-card {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 4rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 1px 2px var(--ks-shadows-light);
+
+        h3 {
+            margin: 0;
+            color: var(--ks-content-primary);
+            font-size: $font-size-lg;
+            font-weight: 600;
+            line-height: 28px;
+        }
+
+        p {
+            margin: 0;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-sm;
+            line-height: 20px;
+        }
+
+        @include media-breakpoint-down(xl) {
+            padding-inline: 2rem;
+        }
+    }
+
+    .highlight .event-card {
+        padding-block: 2rem;
+        border-color: var(--ks-border-active);
+
+        h3 {
+            font-size: 1.25rem;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .event {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+            padding-block: 0.75rem;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        .when {
+            padding-right: 0;
+
+            time {
+                width: auto;
+                text-align: left;
+            }
+
+            svg {
+                display: none;
+            }
+        }
+
+        .event-card {
+            padding: 1rem 1.25rem;
+        }
+    }
+</style>

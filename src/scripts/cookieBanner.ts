@@ -1,5 +1,12 @@
 import { run as runCookieConsent } from "vanilla-cookieconsent"
-import { gtag, enabledAnalytics, enabledMarketing, pushPageView, gpcSignaled } from "./cookieconsent"
+import {
+    gtag,
+    enabledAnalytics,
+    disableAnalytics,
+    enabledMarketing,
+    pushPageView,
+    gpcSignaled,
+} from "./cookieconsent"
 
 // GPC is a ceiling the banner can't relax — accepting "marketing" here
 // never grants ad signals (or fires enable_marketing) once GPC opted out.
@@ -17,8 +24,29 @@ const updateConsentSignals = (categories: string[]) => {
     })
 }
 
-export const initBanner = () => {
+// Injected at runtime, not imported from vendor.scss: only EU visitors ever see
+// the consent UI, so its stylesheet never blocks anyone's first render. Lives
+// in this EU-only chunk, so the 27 KB of consent CSS is never even referenced
+// from the bundle the rest of the world downloads.
+const loadConsentStyles = async () => {
+    const { default: href } = await import(
+        "~/assets/styles/cookieconsent.scss?url"
+    )
+    const link = document.createElement("link")
+    link.rel = "stylesheet"
+    link.href = href
+    await new Promise((resolve) => {
+        link.addEventListener("load", resolve, { once: true })
+        link.addEventListener("error", resolve, { once: true })
+        document.head.appendChild(link)
+    })
+}
+
+export const initBanner = async () => {
     document.documentElement.classList.add("cc--darkmode")
+
+    // Styles first, so the modal never paints unstyled.
+    await loadConsentStyles()
 
     runCookieConsent({
         mode: "opt-in",
@@ -55,6 +83,8 @@ export const initBanner = () => {
 
             if (consentCategories.includes("analytics")) {
                 enabledAnalytics()
+            } else {
+                disableAnalytics()
             }
 
             if (marketingGranted(consentCategories)) {

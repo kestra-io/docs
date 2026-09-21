@@ -1,21 +1,26 @@
 <template>
-    <div v-if="markdownBody" class="markdown-actions dropdown">
+    <div
+        v-if="markdownBody || lazyMarkdown"
+        class="markdown-actions"
+        ref="root"
+        :class="{ open }"
+    >
         <button
             class="markdown-actions-trigger"
             type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
+            :aria-expanded="open"
             aria-label="Markdown actions"
+            @click="toggle"
         >
             <component :is="triggerIcon" class="action-icon" />
             <span class="action-text">{{ triggerLabel }}</span>
             <ChevronDown class="chevron-icon" />
         </button>
 
-        <ul class="dropdown-menu markdown-actions-menu">
+        <ul class="markdown-actions-menu" v-show="open">
             <li v-for="action in visibleActions" :key="action.id">
                 <button
-                    class="dropdown-item markdown-actions-item"
+                    class="markdown-actions-item"
                     type="button"
                     @click="handleAction(action.id)"
                 >
@@ -28,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-    import { computed } from "vue"
+    import { computed, useTemplateRef } from "vue"
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import Check from "vue-material-design-icons/Check.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
@@ -36,22 +41,29 @@
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
     import Github from "vue-material-design-icons/Github.vue"
     import { useMarkdownActions } from "~/composables/useMarkdownActions"
+    import { useDropdown } from "~/composables/useDropdown"
     import type { MarkdownActionDefinition, MarkdownActionId } from "~/utils/markdown-actions"
 
-    const props = defineProps<{
-        markdownBody: string
-        pagePath: string
-        pageTitle?: string
-        pageUrl?: string
-        editUrl?: string
-        stem?: string
-        extension?: string
-        /** Action ids to omit from the menu (e.g. "edit" when there's no repo file to link to). */
-        excludeActions?: MarkdownActionId[]
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            markdownBody?: string
+            pagePath: string
+            pageTitle?: string
+            pageUrl?: string
+            editUrl?: string
+            stem?: string
+            extension?: string
+            /** Action ids to omit from the menu (e.g. "edit" when there's no repo file to link to). */
+            excludeActions?: MarkdownActionId[]
+            /** Fetch the markdown on copy instead of passing it in `markdownBody`. */
+            lazyMarkdown?: boolean
+        }>(),
+        { markdownBody: "" },
+    )
 
     const context = computed(() => ({
         markdownBody: props.markdownBody,
+        lazyMarkdown: props.lazyMarkdown,
         pagePath: props.pagePath,
         pageTitle: props.pageTitle,
         pageUrl: props.pageUrl,
@@ -86,14 +98,19 @@
         return action.label
     }
 
+    const root = useTemplateRef<HTMLElement>("root")
+    const { open, close, toggle } = useDropdown(root)
+
     const handleAction = async (actionId: MarkdownActionId) => {
         await executeAction(actionId)
+        close()
     }
 </script>
 
 <style lang="scss" scoped>
     .markdown-actions {
         display: flex;
+        position: relative;
         padding: 1.25rem 0;
         @include media-breakpoint-up(lg) {
             padding: 1.25rem;
@@ -141,11 +158,17 @@
         }
     }
 
-  .show .markdown-actions-trigger {
+    .markdown-actions.open .markdown-actions-trigger {
         color: var(--ks-content-link);
     }
 
     .markdown-actions-menu {
+        position: absolute;
+        inset-block-start: calc(100% - 1.25rem);
+        inset-inline-end: 0;
+        z-index: 1000;
+        margin-block-start: 0.125rem;
+        list-style: none;
         background-color: var(--ks-background-input);
         border: $block-border;
         border-radius: 0.25rem;
@@ -200,7 +223,7 @@
         }
     }
 
-    .show .chevron-icon :deep(svg) {
+    .markdown-actions.open .chevron-icon :deep(svg) {
         transform: rotate(180deg);
     }
 

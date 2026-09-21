@@ -1,8 +1,12 @@
 ---
+import { getEntry, render } from "astro:content"
 import Layout from "~/components/layout.astro"
 import CardGrid from "~/components/card/CardGrid.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Quotes from "~/components/common/Quotes.vue"
+import Faq from "~/components/common/Faq.vue"
+import BlogToc from "~/components/blogs/BlogToc.vue"
+import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Hero from "~/components/airflow-2-eol-whitepaper/Hero.astro"
 import WhoThisIsFor from "~/components/airflow-2-eol-whitepaper/WhoThisIsFor.astro"
 import VsTable from "~/components/airflow-2-eol-whitepaper/VsTable.astro"
@@ -11,10 +15,54 @@ import Link from "~/components/common/Link.astro"
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 import AppleLogo from "~/assets/teams/apple.svg?raw"
 
-const title =
-    "Airflow 2 is No Longer Maintained — Reaffirm or Rethink Your Orchestration"
-const description =
-    "Airflow 2 reaches end-of-life on April 22, 2026. Download the free guide to help you decide whether to upgrade to Airflow 3 or rethink your orchestration stack."
+const post = await getEntry("resources", "airflow-2-eol-whitepaper")
+if (!post) throw new Error("resources/airflow-2-eol-whitepaper entry missing")
+const { Content, headings } = await render(post)
+const page = post.data
+
+const title = page.metaTitle ?? page.title
+const description = page.metaDescription ?? page.description
+
+const tocLinks = headings.map((h) => ({
+    text: h.text,
+    id: h.slug,
+    depth: h.depth,
+}))
+
+const jsonLinkedData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": Astro.url.href,
+    },
+    headline: page.title,
+    image: [`${Astro.url.origin}/og-image.png`],
+    author: { "@id": "https://kestra.io/#organization" },
+    ...(page.date ? { datePublished: page.date } : {}),
+    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
+    publisher: {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description,
+}
+
+const faqItems = page.faq ?? []
+const faqSchema =
+    faqItems.length > 0
+        ? {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: faqItems.map((item) => ({
+                  "@type": "Question",
+                  name: item.question,
+                  acceptedAnswer: { "@type": "Answer", text: item.answer },
+              })),
+          }
+        : null
 
 const COME_AWAY_ITEMS = [
     {
@@ -39,8 +87,7 @@ const COME_AWAY_ITEMS = [
 
 const quotes = [
     {
-        quote:
-            "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+        quote: "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
         author: "Senior Engineering Manager @ <strong>Apple</strong> (ML Team)",
         smallLogoSvg: AppleLogo,
         kpis: [
@@ -53,17 +100,90 @@ const quotes = [
 ---
 
 <Layout {title} {description}>
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        {
+            page.date && (
+                <meta
+                    property="article:published_time"
+                    content={new Date(page.date).toISOString()}
+                />
+            )
+        }
+        {
+            page.lastUpdated && (
+                <meta
+                    property="article:modified_time"
+                    content={new Date(page.lastUpdated).toISOString()}
+                />
+            )
+        }
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        {
+            faqSchema && (
+                <script
+                    is:inline
+                    type="application/ld+json"
+                    set:html={JSON.stringify(faqSchema)}
+                />
+            )
+        }
+    </Fragment>
     <Hero />
     <CardGrid title="What you'll come away with" items={COME_AWAY_ITEMS} />
     <WhoThisIsFor />
+    <section class="whitepaper-content">
+        <TwoColumnStickyLayout client:load>
+            <div slot="sidebar" class="whitepaper-sidebar">
+                <BlogToc client:load links={tocLinks} />
+            </div>
+            <div class="bd-content">
+                <Content />
+            </div>
+        </TwoColumnStickyLayout>
+    </section>
     <VsTable />
     <Quotes quotes={quotes} client:visible />
+    {
+        faqItems.length > 0 && (
+            <div class="whitepaper-faq">
+                <Faq
+                    title="Frequently asked questions"
+                    items={faqItems}
+                    client:visible
+                />
+            </div>
+        )
+    }
     <SeeHow imgSrc={shapesImage} cta={{ text: "Book a Demo", href: "/demo" }}>
         <Fragment slot="title">Ready to explore your options?</Fragment>
-        Talk to our team about what migration looks like, or start building with
-        Kestra for free.
+        Talk to our team about what migration looks like, or start building with Kestra
+        for free.
         <Fragment slot="footer">
             <Link href="/docs" class="btn btn-secondary">Read the Docs</Link>
         </Fragment>
     </SeeHow>
 </Layout>
+
+<style lang="scss">
+    .whitepaper-content {
+        padding: 3rem 0;
+    }
+
+    .whitepaper-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @include media-breakpoint-down(lg) {
+            gap: 1rem;
+        }
+    }
+
+    .whitepaper-faq :global(section.faq) {
+        background: var(--ks-background-secondary);
+    }
+</style>

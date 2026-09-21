@@ -34,7 +34,7 @@ Upsert, a blend of "update" and "insert," is a database operation that modifies 
 This atomicity is critical for building reliable [data pipelines](/resources/data/data-pipeline). It prevents race conditions where two processes might check for the same record simultaneously, leading to duplicate entries or failed updates. The primary benefits of using upsert include:
 
 -   **Data Synchronization:** Keeps data consistent between different systems by ensuring records are always current.
--   **Idempotency:** Allows an operation to be repeated multiple times without changing the result beyond the initial application. This is essential for fault-tolerant data ingestion.
+-   **[Idempotency](/resources/infrastructure/idempotency):** Allows an operation to be repeated multiple times without changing the result beyond the initial application. This is essential for fault-tolerant data ingestion.
 -   **Conflict Resolution:** Simplifies handling scenarios where incoming data might already exist, preventing duplicate key errors.
 -   **Performance:** Reduces network latency by combining two potential database calls into one.
 

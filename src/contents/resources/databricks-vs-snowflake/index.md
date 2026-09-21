@@ -35,7 +35,7 @@ Understanding the architectural foundations of Databricks and Snowflake is the f
 
 ### Databricks: The Unified Lakehouse for Data, Analytics, and AI
 
-Databricks champions the "lakehouse" architecture, a hybrid model that combines the flexibility and low cost of a data lake with the performance and reliability of a data warehouse. At its core is Delta Lake, an open-source storage layer that brings ACID transactions, schema enforcement, and time travel capabilities to data stored in cloud object storage (like S3, GCS, or Azure Blob Storage).
+Databricks champions the "lakehouse" architecture, a hybrid model that combines the flexibility and low cost of a data lake with the performance and reliability of a data warehouse. At its core is [Delta Lake](/resources/data/delta-lake), an open-source storage layer that brings ACID transactions, schema enforcement, and time travel capabilities to data stored in cloud object storage (like S3, GCS, or Azure Blob Storage).
 
 This architecture allows Databricks to handle structured, semi-structured, and unstructured data in a single system. It's built around Apache Spark, providing a powerful, distributed engine for large-scale data processing and machine learning. This makes Databricks a strong choice for data engineering and data science teams who need granular control over their environment and want to work with open data formats like Parquet.
 

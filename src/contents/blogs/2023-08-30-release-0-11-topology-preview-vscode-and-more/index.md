@@ -20,7 +20,7 @@ This release also makes Kestra easier to use for Command Line enthusiasts. We've
 
 The [Databricks](/plugins/plugin-databricks) and [AWS Athena](/plugins/plugin-aws#athena) integrations help orchestrate and manage **data lake(house)s**, and the script plugin now also supports **[Julia](/plugins/plugin-script-julia)**.
 
-This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins) and [Microsoft SQL Server](/plugins), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
+This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins) and [Microsoft SQL Server](/plugins), and [GCP tasks](/plugins/plugin-gcp#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
 
 Lastly, we've introduced several performance, documentation, and usability enhancements.
 
@@ -399,7 +399,7 @@ Databricks is a unified data analytics platform that provides a collaborative wo
 
 ## AI and ML
 
-We've added two new tasks to integrate Kestra with [Vertex AI APIs](/plugins/plugin-gcp/#vertex-ai) using Google's PaLM 2 Large Language Models.
+We've added two new tasks to integrate Kestra with [Vertex AI APIs](/plugins/plugin-gcp#vertex-ai) using Google's PaLM 2 Large Language Models.
 1. The [PaLM TextCompletion API](/plugins/plugin-gcp/google-cloud-vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
 2. The [PaLM ChatCompletion API](/plugins/plugin-gcp/google-cloud-vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
 

@@ -1,0 +1,287 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import SectionTitle from "./SectionTitle.astro"
+import PixelSquares from "./PixelSquares.astro"
+import Pill from "./Pill.astro"
+import Trophy from "./assets/trophy.svg"
+import ipad from "./assets/prize-ipad.webp"
+import macbook from "./assets/prize-macbook.webp"
+import amazon from "./assets/prize-amazon.webp"
+
+interface Prize {
+    place: string
+    tone: "warning" | "pending" | "neutral"
+    name: string
+    detail: string
+    image: ImageMetadata
+    alt: string
+    width: number
+    featured?: boolean
+}
+
+const PRIZES: Prize[] = [
+    {
+        place: "2nd place",
+        tone: "warning",
+        name: "Apple iPad",
+        detail: "10th generation",
+        image: ipad,
+        alt: "An Apple iPad showing colourful shapes on its screen",
+        width: 373,
+    },
+    {
+        place: "1st Place",
+        tone: "pending",
+        name: "MacBook Neo",
+        detail: "13-inch screen",
+        image: macbook,
+        alt: "A MacBook Neo showing the Kestra isometric cubes",
+        width: 542,
+        featured: true,
+    },
+    {
+        place: "3rd place",
+        tone: "neutral",
+        name: "$150 gift card",
+        detail: "Amazon",
+        image: amazon,
+        alt: "A $150 Amazon gift card",
+        width: 373,
+    },
+]
+
+const SQUARES = [
+    { x: 1275.1, y: 307.5, w: 48.5, h: 48.5, color: "var(--hf-pixel-haze)" },
+    {
+        x: 1362,
+        y: 355.8,
+        w: 60.5,
+        h: 60.5,
+        color: "var(--hf-pixel-haze-light)",
+    },
+    {
+        x: 1516,
+        y: 288.7,
+        w: 76.5,
+        h: 76.5,
+        color: "var(--hf-pixel-haze-light)",
+    },
+    {
+        x: 1383.5,
+        y: 272.9,
+        w: 23.9,
+        h: 23.9,
+        color: "var(--hf-pixel-haze-light)",
+    },
+    { x: 363.6, y: 218.7, w: 48.5, h: 48.5, color: "var(--hf-pixel-haze)" },
+    { x: 540.3, y: 296.8, w: 48.5, h: 48.5, color: "var(--hf-pixel-haze)" },
+    {
+        x: 303.3,
+        y: 305.5,
+        w: 60.5,
+        h: 60.5,
+        color: "var(--hf-pixel-haze-light)",
+    },
+    {
+        x: 422.8,
+        y: 327.1,
+        w: 23.9,
+        h: 23.9,
+        color: "var(--hf-pixel-haze-light)",
+    },
+    { x: 1453.6, y: 150.5, w: 16.2, h: 181.3, color: "var(--hf-pixel-haze)" },
+    { x: 500.1, y: 146, w: 16, h: 181.3, color: "var(--hf-pixel-haze)" },
+]
+---
+
+<section class="hf-prizes" aria-labelledby="hf-prizes-title">
+    <PixelSquares squares={SQUARES} />
+    <div class="container">
+        <div class="intro">
+            <Trophy
+                class="trophy"
+                aria-hidden="true"
+                data-usal="zoomin duration-500 ease-out"
+            />
+            <SectionTitle
+                id="hf-prizes-title"
+                align="center"
+                title="What's up for grabs"
+                subtitle="Placement is based on merged, accepted pull requests only. The same three prizes are awarded independently to each track, so there are two full podiums."
+            />
+        </div>
+
+        <ul class="prizes">
+            {
+                PRIZES.map((prize, index) => (
+                    <li
+                        class:list={["prize", { featured: prize.featured }]}
+                        data-usal={`fade-u duration-400 delay-${100 + index * 50} ease-out`}
+                    >
+                        <Image
+                            src={prize.image}
+                            alt={prize.alt}
+                            width={prize.width}
+                            densities={[1, 2]}
+                            class="visual"
+                        />
+                        <div class="label">
+                            <Pill tone={prize.tone} size="lg">
+                                {prize.place}
+                            </Pill>
+                            <h3>{prize.name}</h3>
+                            <p>{prize.detail}</p>
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <p class="merch" data-usal="fade-u duration-400 delay-100 ease-out">
+            <Icon name="mdi:gift-outline" />
+            <span>
+                Podium or not, <strong
+                    >every contributor with a merged pull request gets Kestra
+                    merch and goodies</strong
+                >, shipped worldwide once the winners are announced. In addition
+                to the top three prize winners, we want to thank everyone for
+                their contributions to Kestra.
+            </span>
+        </p>
+    </div>
+</section>
+
+<style lang="scss">
+    .hf-prizes {
+        position: relative;
+        padding: 5.625rem 1rem;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-primary);
+        overflow: clip;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 3.5rem;
+        }
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0; // the title's pixel strip sits flush under the cup, as in Figma
+        max-width: 710px;
+        padding-bottom: 2rem;
+
+        .trophy {
+            width: 124px;
+            height: auto;
+        }
+    }
+
+    .prizes {
+        display: grid;
+        grid-template-columns: 1fr 1.45fr 1fr;
+        gap: 1rem;
+        align-items: end;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            max-width: 542px;
+            margin-inline: auto;
+        }
+    }
+
+    .prize {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding-bottom: 2rem;
+        border: 1px solid var(--hf-card-border, var(--ks-border-primary));
+        border-radius: 8px;
+        background: var(--hf-card-background, var(--ks-background-primary));
+        box-shadow: 0 2px 8px var(--ks-shadows-light);
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) {
+            &.featured {
+                order: -1;
+            }
+        }
+    }
+
+    .visual {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding-inline: 1rem;
+        text-align: center;
+
+        h3 {
+            margin: 0;
+            color: var(--ks-content-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 28px;
+        }
+
+        p {
+            margin: 0;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-sm;
+            line-height: 20px;
+        }
+    }
+
+    .merch {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        margin: 0;
+        padding: 2rem 4rem;
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        color: var(--ks-content-primary);
+        font-size: $font-size-lg;
+        font-weight: 500;
+        line-height: 24px;
+
+        svg {
+            flex: none;
+            width: 48px;
+            height: 48px;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+    }
+</style>

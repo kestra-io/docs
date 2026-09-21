@@ -58,6 +58,41 @@
                 </div>
 
                 <div class="col-12 mb-2">
+                    <label for="jobtitle"
+                        >Job title <span class="required">*</span></label
+                    >
+                    <input
+                        name="jobtitle"
+                        type="text"
+                        class="form-control"
+                        id="jobtitle"
+                        required
+                    />
+                </div>
+
+                <div class="col-12 mb-2">
+                    <label for="employees"
+                        >Number of employees
+                        <span class="required">*</span></label
+                    >
+                    <select
+                        name="employees"
+                        class="form-control"
+                        id="employees"
+                        required
+                    >
+                        <option value="" disabled selected>
+                            Select a range
+                        </option>
+                        <option value="below 100">below 100</option>
+                        <option value="between 100 and 999">
+                            between 100 and 999
+                        </option>
+                        <option value="1000+">1000+</option>
+                    </select>
+                </div>
+
+                <div class="col-12 mb-2">
                     <label for="use_case_context"
                         >What are you planning to orchestrate?
                         <span class="required">*</span></label
@@ -113,6 +148,8 @@
     import {
         CONNOR_CLOUD_MEETING_LINK,
         ensureMeetingsScriptLoaded,
+        getGeoMeetingUrl,
+        tierFromEmployees,
     } from "~/composables/useMeeting"
 
     const gtm = useGtm()
@@ -124,6 +161,44 @@
     const submitting = ref(false)
 
     const HUBSPOT_FORM_ID = "d9c2b4db-0b35-409d-a69e-8e4186867b03"
+
+    const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
+    const COMPANY_SIZE_PROPERTY = "number_of_employees"
+
+    const cloudMeetingUrl = (employees: string) =>
+        tierFromEmployees(employees) === "T1"
+            ? getGeoMeetingUrl()
+            : CONNOR_CLOUD_MEETING_LINK
+
+    function withContactParams(
+        base: string,
+        {
+            firstname,
+            lastname,
+            email,
+        }: {
+            firstname?: string | null
+            lastname?: string | null
+            email?: string | null
+        } = {},
+    ) {
+        try {
+            const url = new URL(base, window.location.origin)
+            if (firstname)
+                url.searchParams.set("firstname", String(firstname).trim())
+            if (lastname)
+                url.searchParams.set("lastname", String(lastname).trim())
+            if (email) url.searchParams.set("email", String(email).trim())
+            return url.toString()
+        } catch {
+            const sep = base.includes("?") ? "&" : "?"
+            const qp = new URLSearchParams()
+            if (firstname) qp.set("firstname", String(firstname).trim())
+            if (lastname) qp.set("lastname", String(lastname).trim())
+            if (email) qp.set("email", String(email).trim())
+            return `${base}${sep}${qp.toString()}`
+        }
+    }
 
     const onSubmit = async () => {
         const form = formRef.value
@@ -141,6 +216,8 @@
             const firstname = formDataObj.get("firstname") as string
             const lastname = formDataObj.get("lastname") as string
             const useCase = formDataObj.get("use_case_context") as string
+            const employees = formDataObj.get("employees") as string
+            const jobtitle = formDataObj.get("jobtitle") as string
             const kuid = localStorage.getItem("KUID") || ""
 
             const hsq = ((window as any)._hsq = (window as any)._hsq || [])
@@ -155,7 +232,13 @@
                     { name: "firstname", value: firstname },
                     { name: "lastname", value: lastname },
                     { name: "email", value: email },
+                    { name: "jobtitle", value: jobtitle },
                     { name: "use_case_context", value: useCase },
+                    {
+                        objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
+                        name: COMPANY_SIZE_PROPERTY,
+                        value: employees,
+                    },
                     {
                         name: "form_submission_identifier",
                         value: "Contact for Cloud Edition",
@@ -173,7 +256,11 @@
             await submitHubspotForm(HUBSPOT_FORM_ID, payload)
 
             valid.value = true
-            meetingUrl.value = CONNOR_CLOUD_MEETING_LINK
+            meetingUrl.value = withContactParams(cloudMeetingUrl(employees), {
+                firstname,
+                lastname,
+                email,
+            })
 
             try {
                 posthog.capture("cloud_form")
@@ -260,6 +347,11 @@
             .alert-danger {
                 color: var(--ks-content-alert-danger);
                 font-weight: 700;
+            }
+
+            select.form-control {
+                appearance: auto;
+                width: 100%;
             }
 
             .form-control {

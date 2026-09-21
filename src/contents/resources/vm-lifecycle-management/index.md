@@ -76,7 +76,7 @@ By codifying your VM deployment workflows, you can turn a complex manual process
 
 - **Infrastructure as Code (IaC)**: Use tools like [Terraform](https://kestra.io/orchestration/terraform) and [Ansible](https://kestra.io/orchestration/ansible) to define your VMs and their configurations in code. This allows you to version, test, and review infrastructure changes just like application code.
 - **GitOps for VM Configurations**: Store your IaC definitions in a Git repository. A [GitOps](https://kestra.io/resources/infrastructure/gitops) approach uses the Git repository as the single source of truth, with an orchestration engine automatically applying changes to your environment.
-- **Self-Service Portals**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
+- **[Self-Service](/resources/infrastructure/self-service-infrastructure) Portals**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
 
 ### Tools and strategies for efficient VM operations
 
@@ -91,7 +91,7 @@ Effective automation relies on a combination of the right tools and strategic im
 Kestra provides a unified control plane to automate and govern the entire VM lifecycle across diverse and hybrid environments. By combining declarative workflows with powerful integrations, Kestra brings the principles of DevOps and GitOps to infrastructure management.
 
 - **Declarative YAML for Everything**: With Kestra, you define the entire VM lifecycle—from creation and updates to decommissioning—as code in simple YAML files. This declarative approach makes workflows easy to read, version, and audit.
-- **Unified Control Plane**: Kestra orchestrates across any virtualization platform, including [VMware vCenter](https://kestra.io/plugins/plugin-ee-vmware/vmware-vcenter) and [Nutanix AHV](https://kestra.io/plugins/plugin-ee-nutanix/ahv), as well as cloud providers. This eliminates the need for multiple, siloed automation tools.
+- **Unified Control Plane**: Kestra orchestrates across any virtualization platform, including [VMware vCenter](https://kestra.io/plugins/plugin-ee-vmware) and [Nutanix AHV](https://kestra.io/plugins/plugin-ee-nutanix/ahv), as well as cloud providers. This eliminates the need for multiple, siloed automation tools.
 - **Event-Driven Automation**: Kestra can react to events from your infrastructure, such as vCenter alerts or power state changes, to trigger dynamic workflows. This enables truly responsive, hands-off [infrastructure automation](https://kestra.io/blogs/infra-automation).
 - **Integration with IaC & ITSM**: Kestra seamlessly combines your favorite IaC tools like Terraform and Ansible with ITSM platforms like ServiceNow. You can build end-to-end workflows that provision infrastructure, configure applications, and update service tickets in a single, auditable process.
 - **Governance and Auditability**: Kestra's built-in audit logs, role-based access control, and asset tracking provide complete visibility and governance. You can use [Kestra's Assets](https://kestra.io/blogs/assets-for-infra-automation) to manage VMs, IPs, and snapshots as a live, governed infrastructure catalog.

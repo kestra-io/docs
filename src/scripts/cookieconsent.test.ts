@@ -9,6 +9,11 @@ vi.mock("vanilla-cookieconsent", () => ({
 }))
 
 const posthogInit = vi.fn()
+const posthogOptOut = vi.fn()
+const posthogOptIn = vi.fn()
+const posthogStopRecording = vi.fn()
+const posthogStartRecording = vi.fn()
+let posthogOptedOut = false
 vi.mock("posthog-js", () => ({
     default: {
         init: (...args: unknown[]) => posthogInit(...args),
@@ -16,8 +21,22 @@ vi.mock("posthog-js", () => ({
         get_property: vi.fn(() => undefined),
         alias: vi.fn(),
         capture: vi.fn(),
+        opt_out_capturing: (...args: unknown[]) => {
+            posthogOptedOut = true
+            posthogOptOut(...args)
+        },
+        opt_in_capturing: (...args: unknown[]) => {
+            posthogOptedOut = false
+            posthogOptIn(...args)
+        },
+        has_opted_out_capturing: () => posthogOptedOut,
+        stopSessionRecording: (...args: unknown[]) => posthogStopRecording(...args),
+        startSessionRecording: (...args: unknown[]) => posthogStartRecording(...args),
     },
 }))
+
+// The consent stylesheet is loaded on demand from the EU-only banner chunk.
+vi.mock("~/assets/styles/cookieconsent.scss?url", () => ({ default: "/consent.css" }))
 
 vi.mock("~/utils/identify", () => ({ default: vi.fn() }))
 
@@ -31,8 +50,12 @@ const SIGNALS = ["ad_storage", "ad_user_data", "ad_personalization", "analytics_
 // The module only touches a small DOM surface, so a hand-rolled fake avoids
 // pulling in a jsdom/happy-dom dependency just for this one test file.
 type FakeScript = { async: boolean; src: string }
+// <link rel=stylesheet> for the on-demand consent stylesheet: loadConsentStyles
+// awaits its load event, so the fake has to be able to fire one.
+type FakeLink = { rel: string; href: string; addEventListener: (type: string, cb: () => void) => void }
+type FakeElement = FakeScript | FakeLink
 let listeners: Record<string, ((e: Event) => void)[]>
-let headChildren: FakeScript[]
+let headChildren: FakeElement[]
 let htmlAttrs: Record<string, string>
 
 const installFakeDom = () => {
@@ -56,12 +79,24 @@ const installFakeDom = () => {
             },
         },
         createElement: (tag: string) => {
+            if (tag === "link") {
+                const link: FakeLink = {
+                    rel: "",
+                    href: "",
+                    // Resolve on the next microtask, so appendChild has run by
+                    // the time the load handler fires (as in a real browser).
+                    addEventListener: (type: string, cb: () => void) => {
+                        if (type === "load") queueMicrotask(cb)
+                    },
+                }
+                return link
+            }
             if (tag !== "script") throw new Error(`unexpected createElement(${tag})`)
             const script: FakeScript = { async: false, src: "" }
             return script
         },
         head: {
-            appendChild: (el: FakeScript) => headChildren.push(el),
+            appendChild: (el: FakeElement) => headChildren.push(el),
         },
     }
 
@@ -72,7 +107,10 @@ const installFakeDom = () => {
     globalThis.location = { pathname: "/", search: "" } as Location
 }
 
-const gtmScriptTags = () => headChildren.filter((s) => s.src.includes("googletagmanager.com/gtm.js"))
+const gtmScriptTags = () =>
+    headChildren.filter((el): el is FakeScript => "src" in el && el.src.includes("googletagmanager.com/gtm.js"))
+
+const consentStylesheets = () => headChildren.filter((el): el is FakeLink => "href" in el)
 
 const consentEntries = () =>
     (window.dataLayer as unknown as { 0: string; 1: string; 2: Record<string, string> }[]).filter(
@@ -114,6 +152,11 @@ beforeEach(() => {
     window.astroClientConfig = { slug: "home" }
     runCookieConsent.mockClear()
     posthogInit.mockClear()
+    posthogOptOut.mockClear()
+    posthogOptIn.mockClear()
+    posthogStopRecording.mockClear()
+    posthogStartRecording.mockClear()
+    posthogOptedOut = false
     fetchApi.mockClear()
 })
 
@@ -194,6 +237,48 @@ describe("cookieconsent — Europe", () => {
         expect(allSignalsAre(upd?.[2], "denied")).toBe(true)
     })
 
+    // The gtag signals going denied is not enough: analytics.js captures a
+    // $pageview on every astro:page-load independently of this module, so a
+    // visitor who withdraws consent would keep sending identified pageviews
+    // and session recordings for the rest of the visit.
+    it("stops PostHog capture and session recording when consent is revoked (onChange)", async () => {
+        const { onConsent, onChange } = runCookieConsent.mock.calls[0][0]
+        await onConsent({ cookie: { categories: ["analytics", "marketing"] } })
+        expect(posthogInit).toHaveBeenCalled()
+
+        await onChange({ cookie: { categories: [] } })
+        expect(posthogStopRecording).toHaveBeenCalled()
+        expect(posthogOptOut).toHaveBeenCalled()
+    })
+
+    // opt_out_capturing() persists, so re-granting has to opt back in
+    // explicitly or PostHog stays silent for the rest of the visit and beyond.
+    it("opts PostHog back in when consent is re-granted after a revoke", async () => {
+        const { onConsent, onChange } = runCookieConsent.mock.calls[0][0]
+        await onConsent({ cookie: { categories: ["analytics"] } })
+        await onChange({ cookie: { categories: [] } })
+        await onChange({ cookie: { categories: ["analytics"] } })
+
+        expect(posthogOptIn).toHaveBeenCalledWith({ captureEventName: false })
+        expect(posthogStartRecording).toHaveBeenCalled()
+    })
+
+    it("never touches PostHog on revoke if analytics was never granted", async () => {
+        const { onConsent, onChange } = runCookieConsent.mock.calls[0][0]
+        await onConsent({ cookie: { categories: [] } })
+        await onChange({ cookie: { categories: [] } })
+        expect(posthogOptOut).not.toHaveBeenCalled()
+        expect(posthogStopRecording).not.toHaveBeenCalled()
+    })
+
+    // #5672 took the 27 KB of consent CSS out of the render-blocking bundle;
+    // it must stay on-demand, and EU-only.
+    it("loads the consent stylesheet on demand, once, before the banner runs", () => {
+        expect(consentStylesheets()).toHaveLength(1)
+        expect(consentStylesheets()[0].href).toBe("/consent.css")
+        expect(runCookieConsent).toHaveBeenCalled()
+    })
+
     it("only loads GTM once across repeated astro:page-load events (soft navigation)", async () => {
         const before = gtmScriptTags().length
         await firePageLoad()
@@ -219,6 +304,12 @@ describe("cookieconsent — non-Europe", () => {
 
     it("does not show the consent banner", () => {
         expect(runCookieConsent).not.toHaveBeenCalled()
+    })
+
+    // The banner chunk is never imported here, so its stylesheet is never
+    // fetched either — the whole point of keeping both EU-only.
+    it("never fetches the consent stylesheet", () => {
+        expect(consentStylesheets()).toHaveLength(0)
     })
 
     it("fires analytics and marketing immediately", () => {

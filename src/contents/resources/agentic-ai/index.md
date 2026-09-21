@@ -37,7 +37,7 @@ Several characteristics distinguish an agentic AI system. At its core, an agent 
 - **Autonomy:** the system operates independently, without constant human supervision, to reach its goals.
 - **Goal-orientation:** it is driven by a high-level objective and breaks it down into smaller, executable tasks.
 - **Memory:** it keeps internal state, remembering past actions and observations to inform future decisions. This covers both short-term context and long-term knowledge.
-- **Learning:** the agent improves its performance over time by learning from the outcomes of its actions.
+- **Learning:** the agent improves its performance over time by learning from the outcomes of its actions. Applied to end-to-end business processes, these properties define [agentic business process automation](/resources/business/agentic-business-process-automation).
 
 These traits let an agent act as a persistent, autonomous entity rather than a one-shot tool. For a deeper dive into the specifics, explore the definition of [AI agents](/resources/ai/ai-agent).
 

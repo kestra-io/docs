@@ -19,17 +19,33 @@ By design, Kestra allows arbitrary HTTP calls and script execution. To prevent m
 Running workflows in isolated environments reduces the impact of potentially malicious flows:
 
 - Container sandboxes: launch each flow execution in its own container (for example, Docker or Kubernetes Pod) with minimal privileges.
-- Ephemeral compute: use Kestra's native [Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
+- Ephemeral compute: use Kestra's native [Task Runners](../../task-runners/index.mdx) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
 - Minimum host permissions: grant only the OS-level rights required for the runtime; avoid mounting cloud credential files or granting host-level IAM roles directly.
 
-## Transport security (EE only)
+## Worker isolation
 
-In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default this channel is plaintext. Enterprise Edition supports TLS encryption and mutual TLS (mTLS) to authenticate both sides of the connection:
+In Kestra 2.0, workers do not connect to the database. A worker opens an outbound gRPC stream to a Worker Controller, receives jobs on that stream, and sends results, logs, and metrics back on it. The database repositories are not on the worker classpath, so there is no worker-side setting that can re-enable direct database access. See [worker communication](../../08.architecture/index.mdx#worker-communication) for how the stream works.
+
+This changes what a compromised worker can reach:
+
+- A worker holds no database credentials. An attacker who takes over a worker host gets the jobs that worker was given, not the tables holding every execution and flow.
+- Secrets travel encrypted on the job queue and on the gRPC stream. The worker decrypts a secret at the moment a task uses it, and the plaintext is never written back into the execution.
+- Worker gRPC traffic is flagged as internal, so IAM does not treat it as a user API call.
+
+Because the worker only needs an outbound route to the controller, you can run it in a restricted subnet, a separate region, or an air-gapped site. Give it network access to the controller port and to the systems its tasks call, and nothing else. Do not give worker hosts database credentials or cloud IAM roles that the tasks themselves do not need.
+
+The gRPC channel is plaintext by default. Before a worker runs outside the network you trust, secure the channel as described in the next section.
+
+## Transport security
+
+In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default this channel is plaintext. TLS, mTLS, and JWT-based worker authentication are Enterprise Edition features; the open-source edition always uses a plaintext channel, so keep controller and workers on a trusted network.
 
 - **One-way TLS** — the controller presents a certificate; workers verify it. Encrypts the channel without requiring worker certificates.
 - **Mutual TLS (mTLS)** — both controller and worker present certificates. Use this when you need strong identity verification between components, not just encryption.
 
-See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference.
+See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference. With mTLS (`kestra.grpc.tls.client-auth: REQUIRE`), a worker without a certificate signed by the controller's trusted CA is refused at the handshake.
+
+On top of transport security, Enterprise Edition workers can be required to present a JWT obtained with a per-group registration token (`kestra.ee.worker.auth.enabled`, off by default). See [worker authentication](../../07.enterprise/04.scalability/worker-group/index.md#worker-authentication).
 
 ## HTTP task URL filtering
 
@@ -43,7 +59,7 @@ kestra:
     http:
       allowed-list:
         - https://api.example.com
-        - https://data.partner.io
+        - https://*.data.partner.io   # matches foo.data.partner.io, bar.data.partner.io, etc.
       denied-list:
         - http://169.254.169.254
         - http://localhost
@@ -52,16 +68,26 @@ kestra:
 
 | Property | Default | Description |
 |---|---|---|
-| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
-| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must match at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
 
 Both lists are empty by default — no filtering is applied unless you configure them.
 
 When both lists are set, the allowed-list is checked first. A URI that matches an allowed-list entry but also matches a denied-list entry is still blocked.
 
-**Matching is prefix-based**, not glob or CIDR. Each entry is a literal string prefix, so:
-- `http://169.254.169.254` blocks `http://169.254.169.254/latest/meta-data/...`
-- `http://10.` blocks `http://10.0.0.1/admin` but not `https://10.0.0.1/admin` because the scheme differs
+### Matching rules
+
+Host matching is **exact** by default. The scheme and port must also match. The path is prefix-matched.
+
+- `https://api.example.com` matches `https://api.example.com/v1/data` but not `https://sub.api.example.com/v1/data`.
+- `http://169.254.169.254` blocks `http://169.254.169.254/latest/meta-data/...`.
+
+**Wildcard subdomain matching**: prefix an entry with `*.` to match all subdomains of a host. A wildcard entry matches subdomains only — not the host itself.
+
+- `*.example.com` (or `https://*.example.com`) matches `foo.example.com` and `bar.example.com` but not `example.com`.
+- To match both a domain and all its subdomains, add two entries: `example.com` and `*.example.com`.
+
+Matching is not CIDR or glob-based. IP ranges cannot be expressed as a single entry; list each address explicitly.
 
 When a URI is blocked, the task fails with an error that identifies the matching config key:
 
@@ -70,18 +96,41 @@ The URI http://169.254.169.254/... is in the configured denied list (kestra.task
 ```
 
 :::alert{type="info"}
-This filter applies to HTTP plugin tasks only. The `http()` Pebble expression function makes independent server-side HTTP calls and is not covered by this configuration.
+This filter applies to HTTP plugin tasks and the `http()` Pebble expression function.
 :::
+
+## Encryption key
+
+Configure an encryption key so that `SECRET` inputs and outputs can be stored safely at rest. Without it, any flow that uses `SECRET`-typed inputs or outputs fails at runtime.
+
+```yaml
+kestra:
+  encryption:
+    secret-key: BASE64_ENCODED_STRING_OF_32_CHARACTERS
+```
+
+Generate a key with:
+
+```bash
+openssl rand -base64 32
+```
+
+See [Encryption configuration](../../configuration/05.security-and-secrets/index.md#encryption) for full details.
+
+## Plugin restrictions (EE)
+
+Restrict which task runners and plugins flow authors can use. At minimum, restrict access to the Process task runner in multi-tenant or untrusted environments — the Process runner executes directly on the worker host with no container isolation.
+
+Configure plugin restrictions and worker isolation under [Worker Isolation](../../07.enterprise/02.governance/worker-isolation/index.md). For finer-grained policy enforcement across namespaces and tenants, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject, validate, or reject plugin and flow configuration at save or execution time.
 
 ## Plugin and code validation
 
 - Plugin configuration: use Kestra’s plugin architecture, including [Plugin Versioning](../../07.enterprise/05.instance/versioned-plugins/index.md), to control which plugins are allowed and [which should be prohibited](../../07.enterprise/02.governance/worker-isolation/index.md).
 - CI/CD validation: add a [Flow Validation step in your CI/CD pipeline](../../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
-- Java Security (EE): Enterprise Edition users can define security policies to restrict access to untrusted files, plugins, or network resources.
 
 ## Credential initialization
 
-On Enterprise Edition, use [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials.
+On Enterprise Edition, use [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials. [One-Time-Password (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) is also supported, though it provides less protection than SSO with MFA.
 
 If you use Basic Authentication on OSS or EE:
 
@@ -142,7 +191,8 @@ The protection applies only to user-uploaded ZIPs (flow import and namespace fil
 :::
 
 
-## Documentation and audit
+## Related configuration
 
-- User guidance: update onboarding materials and runbooks to highlight metadata-blocking best practices when deploying a new Kestra environment.
-- Periodic review: include network and host configuration checks in your security audit cycle to verify link-local ranges remain blocked.
+- [Encryption and secrets configuration](../../configuration/05.security-and-secrets/index.md) — encryption key setup, secret backend configuration, and auth security settings.
+- [External Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) — integrate with AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault, and others to avoid storing credentials in Kestra directly.
+- [Policies](../../07.enterprise/02.governance/policies/index.md) — enforce governance rules that inject, validate, or reject plugin and flow configuration across namespaces and tenants.

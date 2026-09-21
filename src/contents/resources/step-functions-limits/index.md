@@ -119,7 +119,7 @@ Go beyond basic quota monitoring. Use CloudWatch Logs Insights to query your exe
 ### When Step Functions Might Not Be the Optimal Choice
 
 Step Functions are a versatile tool, but they aren't the right fit for every problem. It's important to recognize scenarios where another approach might be better:
-*   **High-Volume Streaming**: For real-time data processing with very low latency requirements, services like Amazon Kinesis or Apache Kafka are often more suitable.
+*   **High-Volume Streaming**: For real-time data processing with very low latency requirements, services like Amazon [Kinesis](/resources/data/kinesis-vs-kafka) or Apache Kafka are often more suitable.
 *   **Complex Custom Logic**: If your workflow is dominated by complex, custom code rather than service coordination, it might be simpler to manage that logic within a single application or container.
 *   **Multi-Cloud or Hybrid Orchestration**: By design, Step Functions are tightly integrated with the AWS ecosystem. If your workflows need to span multiple clouds or on-premise systems, a vendor-agnostic orchestrator may be a better choice. For a comparison, see these [AWS Step Functions alternatives](/resources/infrastructure/aws-step-functions-alternatives).
 *   **Simple Scheduled Tasks**: For basic scheduling needs, a modern [cron replacement](/resources/infrastructure/cron-replacement) might be a more straightforward solution.

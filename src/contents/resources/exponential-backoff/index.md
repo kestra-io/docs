@@ -25,7 +25,7 @@ faq:
 
 Distributed systems are complex. Services can be temporarily unavailable, APIs might rate-limit, and network glitches are inevitable. When a task fails due to a transient issue, simply retrying immediately can often worsen the problem, overwhelming the struggling service or creating a "thundering herd" effect.
 
-This is where exponential backoff comes in. It's a fundamental strategy for building resilient systems, allowing your applications and workflows to gracefully recover from temporary failures without causing further strain. This article will explain how exponential backoff works, why it's superior to simpler retry methods, and how Kestra can help you implement it for robust, self-healing operations.
+This is where exponential backoff comes in. It's a fundamental strategy for building resilient systems, allowing your applications and workflows to gracefully recover from temporary failures without causing further strain. This article will explain how exponential backoff works, why it's superior to simpler retry methods, and how Kestra can help you implement it for robust, [self-healing](/resources/infrastructure/self-healing-infrastructure) operations.
 
 ## How Exponential Backoff Enhances System Resilience
 
@@ -111,7 +111,7 @@ This workflow demonstrates several key benefits of orchestrated retries:
 *   **Integrated Error Handling:** The `errors` block provides a clean, built-in way to trigger notifications or other remediation tasks only after all retries have been exhausted.
 *   **Contextual:** The notification payload can include rich context about the flow, execution, and task, making debugging faster. You can explore more patterns in our [blueprints for retries](/blueprints/retries).
 
-Many plugins, like the [Cloudflare D1 Import task](/plugins/plugin-cloudflare/cloudflare-d1/io.kestra.plugin.cloudflare.d1.Import), have built-in exponential backoff for their internal polling mechanisms, providing resilience by default. For a deeper dive into configuring different strategies, refer to the [documentation on retry strategies](/docs/workflow-components/retries).
+Many plugins, like the [Cloudflare D1 Import task](/plugins/plugin-cloudflare/cloudflare-d1/io.kestra.plugin.cloudflare.d1.import), have built-in exponential backoff for their internal polling mechanisms, providing resilience by default. For a deeper dive into configuring different strategies, refer to the [documentation on retry strategies](/docs/workflow-components/retries).
 
 ### Beyond Exponential: Fibonacci Backoff
 

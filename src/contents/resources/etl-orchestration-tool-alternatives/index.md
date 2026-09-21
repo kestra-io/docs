@@ -38,7 +38,7 @@ An ETL orchestration tool, therefore, is a platform that sits on top of your ETL
 
 ### The Symbiotic Relationship Between ETL and Orchestration
 
-ETL tools are excellent at their specific functions: Airbyte for extraction, dbt for transformation, and so on. However, they don't typically manage the end-to-end flow. For example, an orchestration tool can trigger an Airbyte sync, wait for it to complete, run a dbt transformation on the new data, perform a data quality check, and then notify a Slack channel of the outcome.
+ETL tools are excellent at their specific functions: Airbyte for extraction, dbt for transformation, and so on. However, they don't typically manage the end-to-end flow. For example, an orchestration tool can trigger an Airbyte sync, wait for it to complete, run a dbt transformation on the new data, perform a data quality check, and then notify a Slack channel of the outcome. That specific pattern is covered in more depth in our guide to [Airbyte orchestration](/resources/data/airbyte-orchestration).
 
 This separation of concerns is powerful. It allows you to use the best tool for each part of your [ETL workflow](/resources/data/etl-workflow) while a central orchestrator provides a single pane of glass for management and monitoring. This is the fundamental [difference between various types of orchestration](/blogs/orchestration-differences) and the specific tasks they manage.
 

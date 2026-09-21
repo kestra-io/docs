@@ -83,7 +83,7 @@ const navigation = [
             excludeActions={["edit"]}
         />
     </Fragment>
-    <div class="mdc-renderer" set:html={body.html} />
+    <div class="markdown-renderer" set:html={body.html} />
     {body.guidesChildCard && (
         <GuidesChildCardRender
             navigation={body.guidesChildCard}
@@ -121,7 +121,7 @@ const navigation = [
 </script>
 
 <script>
-    // Delegated on `document`, not `.mdc-renderer`: the PROD-only ClientRouter
+    // Delegated on `document`, not `.markdown-renderer`: the PROD-only ClientRouter
     // swaps the page's elements without re-running this module (killing an
     // element-bound handler), while dev never fires astro:page-load — document
     // delegation survives both. `.astro-code` scopes it to this renderer's
@@ -156,7 +156,7 @@ const navigation = [
 
     // Screenshots arrive at native size through set:html. Cap them here so the
     // column holds whether or not medium-zoom's own reset has bound yet.
-    .mdc-renderer :global(img) {
+    .markdown-renderer :global(img) {
         max-width: 100%;
         height: auto;
     }

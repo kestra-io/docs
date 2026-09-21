@@ -66,42 +66,42 @@ const investorsProfiles = [
     {
         name: "Nicolas Dessaigne",
         title: "Founder at Algolia & partner Y Combinator",
-        image: TeamsImages["nico-algolia.svg"],
+        image: TeamsImages["nico-algolia.webp"],
     },
     {
         name: "Olivier Pomel",
         title: "Founder & CEO at Datadog",
-        image: TeamsImages["olivier-datadog.svg"],
+        image: TeamsImages["olivier-datadog.webp"],
     },
     {
         name: "Tristan Handy",
         title: "Founder & CEO at dbt Labs",
-        image: TeamsImages["tristian-dbt.svg"],
+        image: TeamsImages["tristian-dbt.webp"],
     },
     {
         name: "Michel Tricot",
         title: "Founder & CEO at Airbyte",
-        image: TeamsImages["michel-airbyte.svg"],
+        image: TeamsImages["michel-airbyte.webp"],
     },
     {
         name: "Frédéric Plais",
         title: "Founder & CEO at Platform.sh",
-        image: TeamsImages["fred-invest.svg"],
+        image: TeamsImages["fred-invest.webp"],
     },
     {
         name: "Clément Delangue",
         title: "Founder & CEO at Hugging Face",
-        image: TeamsImages["clement-hugface.svg"],
+        image: TeamsImages["clement-hugface.webp"],
     },
     {
         name: "Bertrand Diard",
         title: "Co-Founder & former CEO at Talend",
-        image: TeamsImages["bert-syroco.svg"],
+        image: TeamsImages["bert-syroco.webp"],
     },
     {
         name: "Pierre Burgy",
         title: "Founder & CEO at Strapi",
-        image: TeamsImages["pierre-strapi.svg"],
+        image: TeamsImages["pierre-strapi.webp"],
     },
     {
         name: "Stijn Christiaens",
@@ -120,9 +120,9 @@ const investorsProfiles = [
             investors and founders from leading technology companies.
             <br class="d-none d-lg-block" />
             <br />
-            These investments fuel Kestra's mission to redefine enterprise orchestration,
-            helping organizations orchestrate complex workflows across data, infrastructure,
-            AI, and applications.
+            These investments fuel Kestra's mission to redefine enterprise orchestration:
+            one platform for data pipelines, infrastructure, business applications
+            and AI agents, in any environment.
         </p>
     </div>
 
@@ -150,11 +150,8 @@ const investorsProfiles = [
 
     <div class="profiles" data-usal="fade-u delay-600">
         {
-            investorsProfiles.map((profile, index) => (
-                <div
-                    class="profile"
-                    data-usal={`fade-u delay-${300 + index * 50}`}
-                >
+            investorsProfiles.map((profile) => (
+                <div class="profile">
                     <Image
                         src={profile.image}
                         alt={profile.name}

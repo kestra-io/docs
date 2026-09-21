@@ -33,14 +33,14 @@
         <!-- Suspense so the async SSR markdown renderer can resolve during
              server rendering instead of leaving a skeleton in the HTML. -->
         <Suspense>
-            <MDCParserAndRendererSSR v-if="content" :content="content" class="bd-markdown" />
+            <MarkdownRendererSSR v-if="content" :content="content" class="bd-markdown" />
         </Suspense>
     </div>
 </template>
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import MDCParserAndRendererSSR from "~/components/MDCParserAndRendererSSR.vue"
+    import MarkdownRendererSSR from "~/components/MarkdownRendererSSR.vue"
 
     const props = defineProps<{
         story: Story

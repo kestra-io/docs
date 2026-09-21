@@ -59,13 +59,24 @@ Edit mode is available anywhere you build in Kestra — Flows, Apps, Unit tests,
 
 ## Usage limits
 
-When no custom provider is configured, Kestra uses a built-in AI service with a daily generation limit per instance. The UI shows how many generations you have left, and the limit resets daily at midnight UTC.
-
-To remove the limit, configure your own LLM provider in the `kestra.ai.providers` block. See [Configuration](#configuration) below.
+AI Copilot requires a configured LLM provider. Without one, the feature is inactive. Configure a provider in the `kestra.ai.providers` block — see [Configuration](#configuration) below.
 
 ## Configuration
 
-To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). The `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):
+To add Copilot to your flow editor, add one of the following to your configuration. For OSS users, you can provide your Gemini API key to use the AI Copilot.
+
+```yaml
+kestra:
+  ai:
+    - id: gemini
+      display-name: Gemini
+      type: gemini
+      configuration:
+        api-key: YOUR_GEMINI_API_KEY
+        model-name: gemini-3.5-flash-lite
+```
+
+For Enterprise, the `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):
 
 ```yaml
 kestra:
@@ -87,13 +98,15 @@ kestra:
           api-key: YOUR_OPENAI_API_KEY
 ```
 
+For more information on provider configuration, check the [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). 
+
 :::alert{type="info"}
 Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`is-default: true`).
 :::
 
 ### Disabling AI Copilot
 
-To fully disable the AI Copilot — including the built-in fallback to the `api.kestra.io` service — set `kestra.ai.enabled` to `false`:
+To disable AI Copilot, set `kestra.ai.enabled` to `false`:
 
 ```yaml
 kestra:
@@ -101,7 +114,11 @@ kestra:
     enabled: false
 ```
 
-When disabled, the Copilot UI will not appear and all AI endpoints will be deactivated. The property defaults to `true`.
+The property defaults to `true`.
+
+:::alert{type="warning"}
+**Known issue (Kestra 2.0.0):** `kestra.ai.enabled: false` does not fully disable AI Copilot in the current release. The Copilot UI button remains visible and the feature continues to respond. This is being tracked and will be resolved in an upcoming release.
+:::
 
 ### Multiple providers
 

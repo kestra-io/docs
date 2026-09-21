@@ -1,5 +1,5 @@
 import { handle } from '@astrojs/cloudflare/handler';
-import contentSecurityPolicyConfig from "../../content-security-policy.config"
+import { buildContentSecurityPolicy } from "./contentSecurityPolicy";
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
 import { withConsentRegion } from "./consentRegion";
@@ -14,36 +14,12 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     const nextResponse = await next()
     const response = new Response(nextResponse.body, nextResponse)
 
-    const localhost: string[] = []
-    if (import.meta.env.DEV) {
-        localhost.push(url.protocol + "//" + url.host)
-    }
-
-    const contentSecurityPolicy: string = Object.entries(
-        contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
-    )
-        .filter(
-            ([key]) =>
-                !import.meta.env.DEV || key !== "upgrade-insecure-requests",
-        )
-        .map(([key, value]) => {
-            let line = key
-
-            if (typeof value !== "boolean") {
-                if (value.length === 1 && value[0] === "'none'") {
-                    line += " " + value.join(" ")
-                } else {
-                    line += " " + localhost.concat(value).join(" ")
-                }
-            }
-
-            return line
-        })
-        .join("; ")
+    const isInsecureOrigin = url.protocol === "http:"
+    const contentSecurityPolicy = buildContentSecurityPolicy(url)
 
     response.headers.set(
         "x-frame-options",
-        import.meta.env.DEV ? "SAMEORIGIN" : "DENY",
+        isInsecureOrigin ? "SAMEORIGIN" : "DENY",
     )
     response.headers.set("x-content-type-options", "nosniff")
     response.headers.set("x-download-options", "nosniff")
@@ -61,7 +37,8 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     response.headers.set("x-permitted-cross-domain-policies", "none")
     response.headers.set("content-security-policy", contentSecurityPolicy)
 
-    if (!import.meta.env.DEV) {
+    // HSTS is ignored over http anyway, so do not claim it there.
+    if (!isInsecureOrigin) {
         response.headers.set("strict-transport-security", "max-age=31536000")
     }
 

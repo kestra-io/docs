@@ -1,0 +1,150 @@
+// Replaces bootstrap/scss/modal. The overlay itself is a native <dialog>
+// (see src/scripts/modal.ts), so there is no `.modal-backdrop`, no `.fade`
+// and no JS-managed `.show`: the dialog covers the viewport and paints its
+// own scrim, and clicks in the gap around `.modal-content` reach it, which is
+// what closes it. `.modal-dialog` and friends stay as layout hooks because
+// the hand-rolled overlays use the same markup.
+dialog.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    background: rgba(0, 0, 0, 0.5);
+    color: inherit;
+    opacity: 0;
+    transition:
+        opacity 0.15s linear,
+        overlay 0.15s allow-discrete,
+        display 0.15s allow-discrete;
+
+    &[open] {
+        display: block;
+        opacity: 1;
+    }
+
+    @starting-style {
+        &[open] {
+            opacity: 0;
+        }
+    }
+}
+
+body:has(dialog.modal[open]) {
+    overflow: hidden;
+}
+
+// Same scoping trap as the dropdown and the card: these properties are
+// declared on `.modal` and read with no fallback. VideoDialog.astro,
+// TutorialsGrid.vue and common/Modal.vue all use `.modal-header` /
+// `.modal-body` / `.modal-content` with no `.modal` ancestor, where bootstrap
+// resolved them to nothing and every declaration fell back to its initial
+// value. Giving them fallbacks paints 1rem of padding and a border onto those
+// three overlays.
+.modal {
+    --ks-modal-width: 500px;
+    --ks-modal-padding: 1rem;
+    --ks-modal-margin: 0.5rem;
+    --ks-modal-color: var(--ks-content-primary);
+    --ks-modal-bg: var(--ks-background-body);
+    --ks-modal-border-width: 1px;
+    --ks-modal-border-color: var(--ks-border-primary);
+    --ks-modal-border-radius: #{$border-radius-lg};
+    --ks-modal-inner-border-radius: calc(#{$border-radius-lg} - 1px);
+    --ks-modal-header-padding: 1rem;
+    --ks-modal-header-padding-x: 1rem;
+    --ks-modal-header-padding-y: 1rem;
+    --ks-modal-header-border-color: var(--ks-border-primary);
+    --ks-modal-title-line-height: 1.5;
+    --ks-modal-footer-gap: 0.5rem;
+    --ks-modal-footer-border-color: var(--ks-border-primary);
+
+    @include media-breakpoint-up(sm) {
+        --ks-modal-margin: 1.75rem;
+    }
+}
+
+.modal-xl {
+    @include media-breakpoint-up(xl) {
+        --ks-modal-width: 1140px;
+    }
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: var(--ks-modal-margin);
+    pointer-events: none;
+
+    @include media-breakpoint-up(sm) {
+        max-width: var(--ks-modal-width);
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: var(--ks-modal-color);
+    pointer-events: auto;
+    background-color: var(--ks-modal-bg);
+    background-clip: padding-box;
+    border: var(--ks-modal-border-width) solid var(--ks-modal-border-color);
+    border-radius: var(--ks-modal-border-radius);
+    outline: 0;
+}
+
+.modal-header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: var(--ks-modal-header-padding);
+    border-bottom: var(--ks-modal-border-width) solid var(--ks-modal-header-border-color);
+    border-top-left-radius: var(--ks-modal-inner-border-radius);
+    border-top-right-radius: var(--ks-modal-inner-border-radius);
+
+    .btn-close {
+        padding: calc(var(--ks-modal-header-padding-y) * 0.5) calc(var(--ks-modal-header-padding-x) * 0.5);
+        margin-top: calc(-0.5 * var(--ks-modal-header-padding-y));
+        margin-right: calc(-0.5 * var(--ks-modal-header-padding-x));
+        margin-bottom: calc(-0.5 * var(--ks-modal-header-padding-y));
+        margin-left: auto;
+    }
+}
+
+.modal-title {
+    margin-bottom: 0;
+    line-height: var(--ks-modal-title-line-height);
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: var(--ks-modal-padding);
+}
+
+.modal-footer {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    padding: calc(var(--ks-modal-padding) - var(--ks-modal-footer-gap) * 0.5);
+    border-top: var(--ks-modal-border-width) solid var(--ks-modal-footer-border-color);
+    border-bottom-right-radius: var(--ks-modal-inner-border-radius);
+    border-bottom-left-radius: var(--ks-modal-inner-border-radius);
+
+    > * {
+        margin: calc(var(--ks-modal-footer-gap) * 0.5);
+    }
+}

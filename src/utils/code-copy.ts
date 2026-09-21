@@ -9,7 +9,9 @@ const icon = (name: keyof typeof ICONS): string =>
 const COPY_BUTTON = `<button class="code-copy" type="button" title="Copy to clipboard" aria-label="Copy code to clipboard">${icon("copy")}${icon("check")}</button>`
 
 export function injectCopyButtons(html: string): string {
-    return html.replaceAll("<pre>", `<pre>${COPY_BUTTON}`)
+    // Matches attributes too: pre-Shiki fences carry `class="shiki-fallback"`,
+    // and a literal "<pre>" would leave those without a copy button.
+    return html.replace(/<pre\b[^>]*>/g, (tag) => `${tag}${COPY_BUTTON}`)
 }
 
 // How long the copied state stays visible. Matches Copy.vue and

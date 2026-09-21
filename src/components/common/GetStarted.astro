@@ -2,7 +2,7 @@
 import { Image } from "astro:assets"
 import WithLogo from "~/components/layout/WithLogo.astro"
 import CORE_IMAGE from "~/assets/layout/started/core.svg"
-import CLOUD_IMAGE from "~/assets/layout/started/cloud.svg"
+import CLOUD_IMAGE from "~/assets/layout/started/cloud.webp"
 import ENTERPRISE_IMAGE from "~/assets/layout/started/enterprise-logo.png"
 
 const PLANS = [
@@ -263,11 +263,6 @@ const PLANS = [
             display: block;
         }
 
-        html.light & .btn-secondary {
-            background-color: transparent;
-            color: $white !important;
-            border-color: $white !important;
-        }
     }
 
     .compare {

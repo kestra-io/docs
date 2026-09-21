@@ -23,7 +23,7 @@ faq:
     answer: "Yes, modern SFTP automation solutions, especially those built on orchestration platforms, are designed to integrate seamlessly with a wide array of other systems. This includes cloud storage, databases, APIs, message queues, and enterprise applications. This allows SFTP transfers to be part of larger, more complex end-to-end workflows."
 ---
 
-> **TL;DR** — **SFTP automation** refers to the process of streamlining and scheduling secure file transfers between systems without manual intervention. It leverages the SSH File Transfer Protocol to ensure data is exchanged efficiently, securely, and with robust error handling, often as part of larger automated workflows.
+> **TL;DR** — **SFTP automation** refers to the process of streamlining and scheduling secure [file transfers](/resources/infrastructure/file-transfer-automation) between systems without manual intervention. It leverages the SSH File Transfer Protocol to ensure data is exchanged efficiently, securely, and with robust error handling, often as part of larger automated workflows.
 
 Manual SFTP transfers are a bottleneck in many organizations, consuming valuable time and introducing security risks. Whether you're exchanging critical financial data, sensitive healthcare records, or daily retail inventory, relying on manual processes for secure file transfers can lead to errors, delays, and compliance headaches.
 
@@ -48,7 +48,7 @@ While a simple cron job running a shell script can automate a basic SFTP transfe
 - **Auditability and Compliance**: For regulated industries, proving that a file was sent or received is non-negotiable. Orchestration provides detailed audit logs for every execution, tracking who did what, when, and whether it succeeded or failed.
 - **Dependency Management**: An SFTP download might be the first step in a long chain of tasks, such as loading data into a warehouse, running a dbt model, and then updating a BI dashboard. Orchestration ensures these dependent tasks run in the correct order.
 - **Scalability and Concurrency**: Handling a high volume of transfers or running multiple transfers in parallel requires a system designed for concurrency, which is beyond the scope of simple scripts.
-- **Secure Credential Management**: An orchestration platform provides a centralized and secure way to manage credentials, keys, and other secrets, preventing them from being hardcoded in scripts. You can learn more about [workflow secret management](/resources/infrastructure/workflow-secret-management) to enhance your security.
+- **Secure Credential Management**: An orchestration platform provides a centralized and secure way to manage credentials, keys, and other secrets, preventing them from being hardcoded in scripts. You can learn more about [workflow secret management](/resources/infrastructure/workflow-secret-management) to enhance your security. Teams that would rather buy this capability than build it can compare packaged options in our guide to [managed file transfer software](/resources/infrastructure/best-managed-file-transfer-software).
 
 ## Orchestrate SFTP Transfers with Kestra: An Automated Retail Supplier Ingestion Flow
 

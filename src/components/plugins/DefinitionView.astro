@@ -1,5 +1,5 @@
 ---
-import PluginsMDCRender from "./PluginsMDCRender.vue"
+import PluginsMarkdownRender from "./PluginsMarkdownRender.vue"
 import PluginDocsFrame from "./PluginDocsFrame.astro"
 
 interface Props {
@@ -11,7 +11,7 @@ const { schema, pluginType } = Astro.props
 ---
 
 <PluginDocsFrame>
-    <PluginsMDCRender
+    <PluginsMarkdownRender
         {schema}
         {pluginType}
         client:idle

@@ -23,7 +23,6 @@ interface Blueprint {
 interface Window {
     dataLayer: Array<any>
     astroClientConfig: { slug: string }
-    $bootstrap: { Modal: any; Collapse: any; Tooltip: any }
     __hsUserToken: string
     _hsq: Array<any>
 }

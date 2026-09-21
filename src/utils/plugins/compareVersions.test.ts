@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import { compareVersionsDesc } from "~/utils/plugins/compareVersions"
+import { compareVersionsDesc, isStableVersion } from "~/utils/plugins/compareVersions"
 
 describe("compareVersionsDesc", () => {
     it("sorts descending by numeric semver, not lexically", () => {
@@ -19,5 +19,23 @@ describe("compareVersionsDesc", () => {
 
     it("returns 0 for equal versions", () => {
         expect(compareVersionsDesc("2.6.0", "2.6.0")).toBe(0)
+    })
+})
+
+describe("isStableVersion", () => {
+    it("rejects pre-releases", () => {
+        expect(isStableVersion("2.0.0-rc9")).toBe(false)
+        expect(isStableVersion("0.5.0-BETA")).toBe(false)
+    })
+
+    it("accepts releases", () => {
+        expect(isStableVersion("2.0.0")).toBe(true)
+    })
+
+    it("keeps an RC from tying with its release and stealing the latest slot", () => {
+        // 2.0.0-rc9 parses as [2,0,0], so a stable sort left it ahead of 2.0.0 and marked 2.0.0 archived
+        expect(compareVersionsDesc("2.0.0-rc9", "2.0.0")).toBe(0)
+        const sorted = ["2.0.0-rc9", "2.0.0", "1.3.38"].filter(isStableVersion).toSorted(compareVersionsDesc)
+        expect(sorted).toEqual(["2.0.0", "1.3.38"])
     })
 })

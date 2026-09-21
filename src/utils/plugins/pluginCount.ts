@@ -1,15 +1,89 @@
 import { $fetchApiCached } from "~/utils/fetch";
-import type { Plugin } from "./plugin";
-import { calculateTotalPlugins } from "~/composables/usePluginsCount";
+import { isEntryAPluginElementPredicate, type Plugin, type PluginElement } from "./plugin";
 
-export async function fetchTotalPluginsCount(): Promise<string> {
-    try {
-        const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups");
-        const count = calculateTotalPlugins(pluginGroups);
-        const rounded = Math.floor(count / 100) * 100;
-        return `${rounded}`;
-    } catch (e) {
-        console.error("Failed to fetch plugins count:", e);
-        return "0";
+// Distinct task/trigger/... classes across all plugin groups. A class listed in
+// several groups counts once.
+export function calculateTotalPlugins(plugins: Plugin[]): number {
+    const classes = new Set<string>();
+    plugins.forEach((plugin) => {
+        Object.entries(plugin).forEach(([key, elements]) => {
+            if (isEntryAPluginElementPredicate(key, elements)) {
+                elements.forEach((el: PluginElement) => classes.add(el.cls));
+            }
+        });
+    });
+    return classes.size;
+}
+
+const pluginCountFormatter = new Intl.NumberFormat("en-US");
+
+// The one rounding/format rule for the marketing plugin total: floored to the
+// hundred with a thousands separator and no trailing "+" (1949 -> "1,900").
+export function formatPluginCount(count: number): string {
+    return pluginCountFormatter.format(Math.floor(count / 100) * 100);
+}
+
+async function loadTotalPluginsCount(): Promise<string> {
+    const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups");
+    const count = calculateTotalPlugins(pluginGroups);
+    const formatted = formatPluginCount(count);
+    // A 200 carrying an empty or unexpected payload is as wrong as a failed
+    // request, so it takes the same fallback rather than shipping "0+ plugins".
+    if (formatted === "0") {
+        throw new Error(
+            `Plugins subgroups endpoint returned no usable plugin classes (counted ${count})`,
+        );
     }
+    return formatted;
+}
+
+// Shown only when the request and both of internalFetch's retries have failed.
+// Deliberately a round number at or below the real total: it must never read as
+// a precise-but-stale figure, and it must never be "0+ plugins".
+export const PLUGIN_COUNT_FLOOR = 2000;
+
+let totalPluginsCountPromise: Promise<string> | undefined;
+
+// Build-time plugin total, floored to the hundred and formatted for display
+// without the trailing "+" (e.g. "2,000"); callers append it.
+// Memoized so every page shares one request. A failure is not cached: it falls
+// back to PLUGIN_COUNT_FLOOR for this caller and the next one tries again, so a
+// blip cannot freeze the floor across a whole build, and cannot abort one
+// either — every page showing this number is prerendered.
+export function fetchTotalPluginsCount(): Promise<string> {
+    if (!totalPluginsCountPromise) {
+        totalPluginsCountPromise = loadTotalPluginsCount().catch((e) => {
+            totalPluginsCountPromise = undefined;
+            console.error(
+                `Failed to fetch plugins count, falling back to ${PLUGIN_COUNT_FLOOR}:`,
+                e,
+            );
+            return formatPluginCount(PLUGIN_COUNT_FLOOR);
+        });
+    }
+    return totalPluginsCountPromise;
+}
+
+const TOTAL_PLUGINS_PLACEHOLDER = "{totalPlugins}";
+
+// Deep-replaces the {totalPlugins} placeholder in content data (e.g. the vs
+// collection YAML) so authored copy always reflects the live plugin count.
+export function replaceTotalPluginsPlaceholder<T>(value: T, totalPlugins: string): T {
+    if (typeof value === "string") {
+        return value.replaceAll(TOTAL_PLUGINS_PLACEHOLDER, totalPlugins) as T;
+    }
+    if (Array.isArray(value)) {
+        return value.map((item) => replaceTotalPluginsPlaceholder(item, totalPlugins)) as T;
+    }
+    // Only plain objects are walked: a Date or other class instance has no
+    // enumerable entries and would otherwise silently collapse to {}.
+    if (value !== null && typeof value === "object" && Object.getPrototypeOf(value) === Object.prototype) {
+        return Object.fromEntries(
+            Object.entries(value).map(([key, entry]) => [
+                key,
+                replaceTotalPluginsPlaceholder(entry, totalPlugins),
+            ]),
+        ) as T;
+    }
+    return value;
 }

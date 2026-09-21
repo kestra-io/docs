@@ -45,7 +45,7 @@ This is where an orchestration layer becomes crucial. A platform like Kestra can
 
 Certain workloads are simply better suited to other technologies. These include:
 *   **Petabyte-scale processing:** While DuckDB can handle datasets larger than memory, truly massive analytics at the petabyte scale require distributed systems like Apache Spark or cloud data warehouses.
-*   **Low-latency streaming analytics:** Tools like ClickHouse are specifically designed for real-time analytical queries on high-velocity data streams.
+*   **Low-latency streaming analytics:** Tools like [ClickHouse](/resources/data/postgres-vs-clickhouse) are specifically designed for real-time analytical queries on high-velocity data streams.
 *   **Complex data governance:** Organizations with strict regulatory and compliance requirements often need the sophisticated data governance and lineage capabilities found in enterprise data platforms.
 
 Effective [data orchestration](/resources/data/data-orchestration) involves selecting the right tool for each job and ensuring they work together seamlessly.
@@ -132,7 +132,7 @@ It provides a seamless scaling path for DuckDB users who love the local experien
 | **SQLite** | Public Domain | Embedded | Simple, transactional embedded storage | Low (for writes) | SQL | GBs | [JDBC Plugin](/plugins/plugin-jdbc-sqlite) |
 | **Cloud DWs** | Commercial | Cloud-Native | Managed enterprise data warehousing | Very High | SQL | PB+ | Native Plugins |
 | **Apache Spark** | Apache 2.0 | Distributed Cluster | Massive-scale distributed ETL & ML | Very High | Python, Scala, SQL, R | PB+ | [Spark Plugin](/plugins/plugin-spark) |
-| **Polars** | MIT | Embedded Library | High-performance in-memory dataframes | Single-process | Python, Rust | GBs-TBs | [Python Plugin](/plugins/plugin-scripts-python) |
+| **Polars** | MIT | Embedded Library | High-performance in-memory dataframes | Single-process | Python, Rust | GBs-TBs | [Python Plugin](/plugins/plugin-script-python) |
 | **MotherDuck** | Commercial | Cloud (Hybrid) | Scaling and sharing DuckDB analytics | Moderate | SQL | TBs | [DuckDB Plugin](/plugins/plugin-jdbc-duckdb) |
 
 ## Choosing the Right DuckDB Alternative for Your Project

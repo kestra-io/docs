@@ -1,0 +1,80 @@
+---
+export interface Square {
+    x?: number
+    right?: number
+    y?: number
+    bottom?: number
+    w: number
+    h: number
+    color: string
+    opacity?: number
+}
+
+interface Props {
+    squares: Square[]
+    mobile?: Square[]
+}
+
+const { squares, mobile } = Astro.props
+
+const place = (s: Square) =>
+    [
+        s.right === undefined ? `left:${s.x}px` : `right:${s.right}px`,
+        s.bottom === undefined ? `top:${s.y}px` : `bottom:${s.bottom}px`,
+        `width:${s.w}px`,
+        `height:${s.h}px`,
+        `background:${s.color}`,
+        s.opacity === undefined ? null : `opacity:${s.opacity}`,
+    ]
+        .filter(Boolean)
+        .join(";")
+---
+
+<div class="pixel-squares desktop" aria-hidden="true">
+    {squares.map((s) => <span style={place(s)} />)}
+</div>
+{
+    mobile && (
+        <div class="pixel-squares mobile" aria-hidden="true">
+            {mobile.map((s) => (
+                <span style={place(s)} />
+            ))}
+        </div>
+    )
+}
+
+<style lang="scss">
+    .pixel-squares {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+
+        span {
+            position: absolute;
+            display: block;
+            box-shadow: inset 0 1px 10px var(--hf-pixel-shadow);
+        }
+    }
+
+    .desktop {
+        left: 50%;
+        width: 1900px;
+        translate: -50% 0;
+
+        @include media-breakpoint-down(xl) {
+            display: none;
+        }
+    }
+
+    .mobile {
+        display: none;
+        left: 0;
+        width: 100%;
+
+        @include media-breakpoint-down(xl) {
+            display: block;
+        }
+    }
+</style>

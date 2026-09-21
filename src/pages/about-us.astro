@@ -8,9 +8,9 @@ import Life from "~/components/company/Life.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import assets from "~/assets/landing/assets.webp"
 
-const title = "About Us"
+const title = "About Us: Our Team, Values and Investors"
 const description =
-    "Discover the team and values behind our mission to empower data-driven organizations worldwide"
+    "Meet the team, values and investors behind Kestra: the Open Source Declarative orchestration platform for data, infrastructure, applications and AI agents."
 ---
 
 <Layout {title} {description} headerTheme="lightText">
@@ -39,7 +39,9 @@ const description =
     .about-us {
         position: relative;
         min-height: 100vh;
-        overflow-y: hidden;
+        // clip, not hidden: hidden on one axis computes the other to auto,
+        // making this a ~15000px scroll container WebKit fails to repaint.
+        overflow-x: clip;
 
         &::after {
             content: "";

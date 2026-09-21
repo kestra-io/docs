@@ -54,6 +54,7 @@ Many teams are moving away from legacy ETL platforms or even first-generation op
 *   **Rigid Architectures:** Some solutions are tightly coupled to a specific paradigm, such as Python-based DAGs, which can be restrictive for polyglot teams or for tasks better handled by SQL or shell scripts.
 *   **Lack of Unified Orchestration:** Data teams often use a collection of specialized tools for ingestion, transformation, and scheduling. This fragmentation creates visibility gaps, complicates dependency management, and makes troubleshooting difficult. The distinction between [ETL vs ELT](/resources/data/etl-vs-elt) further complicates the tool choice, as different architectures require different capabilities.
 *   **High Costs and Vendor Lock-in:** Proprietary tools can be expensive, with pricing models that don't scale well. They can also lock you into a specific ecosystem, making it difficult to adopt new technologies.
+*   **Desktop-Bound Tooling:** Analytics teams often hit the same wall from the opposite direction, with data preparation locked inside a licensed desktop application. See [Alteryx alternatives](/resources/data/alteryx-alternatives) for that migration path.
 
 ## Our Evaluation Criteria for Open-Source ETL Tools
 

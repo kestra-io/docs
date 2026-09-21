@@ -345,7 +345,7 @@ tasks:
     delete: false
     logExporters:
       - id: elasticsearch
-        type: io.kestra.plugin.elasticsearch.LogExporter
+        type: io.kestra.plugin.ee.elasticsearch.LogExporter
         indexName: kestra-logs
         connection:
           basicAuth:
@@ -667,7 +667,7 @@ tasks:
         apiKey: "{{ secret('DATADOG_API_KEY') }}"
 
       - id: elasticsearch
-        type: io.kestra.plugin.elasticsearch.LogExporter
+        type: io.kestra.plugin.ee.elasticsearch.LogExporter
         indexName: kestra-logs
         connection:
           basicAuth:

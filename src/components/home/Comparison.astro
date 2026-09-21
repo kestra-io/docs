@@ -2,9 +2,13 @@
 import { Image } from "astro:assets"
 import SixtySeconds from "./SixtySeconds.astro"
 import dataVisual from "./assets/comparison/tab-data.svg"
+import dataVisualDark from "./assets/comparison/tab-data-dark.svg"
 import infrastructureVisual from "./assets/comparison/tab-infrastructure.svg"
+import infrastructureVisualDark from "./assets/comparison/tab-infrastructure-dark.svg"
 import aiAgentsVisual from "./assets/comparison/tab-ai-agents.svg"
+import aiAgentsVisualDark from "./assets/comparison/tab-ai-agents-dark.svg"
 import businessAppVisual from "./assets/comparison/tab-business-app.svg"
+import businessAppVisualDark from "./assets/comparison/tab-business-app-dark.svg"
 
 const TABS = [
     {
@@ -12,6 +16,7 @@ const TABS = [
         label: "Data",
         title: "Cross-Cloud ETL That Starts Itself",
         image: dataVisual,
+        imageDark: dataVisualDark,
         alt: "Kestra flow editor showing an Azure Blob to BigQuery flow with its topology",
     },
     {
@@ -19,6 +24,7 @@ const TABS = [
         label: "Infrastructure",
         title: "Every VM Configured, Every Run Traceable",
         image: infrastructureVisual,
+        imageDark: infrastructureVisualDark,
         alt: "Kestra execution logs of an Ansible playbook run against a NetBox dynamic inventory",
     },
     {
@@ -26,6 +32,7 @@ const TABS = [
         label: "AI Agents",
         title: "Triage every issue from GitHub with AI, start each day with a plan",
         image: aiAgentsVisual,
+        imageDark: aiAgentsVisualDark,
         alt: "Kestra execution outputs of an AI daily repo brief, with the expression debugger preview",
     },
     {
@@ -33,6 +40,7 @@ const TABS = [
         label: "Business Apps",
         title: "Self-service Business automation, fully recorded",
         image: businessAppVisual,
+        imageDark: businessAppVisualDark,
         alt: "Kestra app editor showing a Weekly recap form next to its YAML definition",
     },
 ]
@@ -70,12 +78,23 @@ const TABS = [
                 data-tab-content={tab.id}
             >
                 <h3>{tab.title}</h3>
+                {/* Light/dark mockups are swapped by CSS on html.dark (same
+                    pattern as the header logo). The dark one is always lazy so
+                    a hidden image is never downloaded: only the visible first
+                    visual is eager, as before. */}
                 <Image
                     src={tab.image}
                     alt={tab.alt}
                     layout="none"
                     loading={idx === 0 ? "eager" : "lazy"}
-                    class="visual"
+                    class="visual visual-light"
+                />
+                <Image
+                    src={tab.imageDark}
+                    alt={tab.alt}
+                    layout="none"
+                    loading="lazy"
+                    class="visual visual-dark"
                 />
             </div>
         ))
@@ -158,8 +177,8 @@ const TABS = [
         flex-direction: column;
         align-items: center;
         padding: 2.5rem 1rem 5rem;
-        background-color: #ffffff;
-        color: var(--hp-content-primary);
+        background-color: var(--ks-background-secondary);
+        color: var(--ks-content-primary);
         text-align: center;
         overflow: clip;
     }
@@ -168,28 +187,21 @@ const TABS = [
         position: absolute;
         inset: 0;
         z-index: 0;
+        /* The Figma grid asset (shared by both themes) is white lines masked
+         * over a blurred #b987ff glow, so only glow-tinted lines are visible:
+         * pale on the light surface, deep on the dark one. Same colour here. */
         background:
-            radial-gradient(
-                640px 527px at 108% 24%,
-                rgba(185, 135, 255, 0.45),
-                transparent 65%
-            ),
             linear-gradient(
                 to right,
-                color-mix(in srgb, var(--hp-border-secondary) 40%, transparent)
-                    1px,
+                rgba(185, 135, 255, 0.15) 1px,
                 transparent 1px
             ),
             linear-gradient(
                 to bottom,
-                color-mix(in srgb, var(--hp-border-secondary) 40%, transparent)
-                    1px,
+                rgba(185, 135, 255, 0.15) 1px,
                 transparent 1px
             );
-        background-size:
-            100% 100%,
-            var(--hp-grid-size) var(--hp-grid-size),
-            var(--hp-grid-size) var(--hp-grid-size);
+        background-size: var(--hp-grid-size) var(--hp-grid-size);
         -webkit-mask: radial-gradient(
             ellipse 75% 90% at 95% 5%,
             #000 25%,
@@ -236,10 +248,10 @@ const TABS = [
     .tab {
         flex: 1 1 calc(50% - 0.625rem);
         padding: 0.5rem 1rem;
-        border: 1px solid var(--hp-border-secondary);
+        border: 1px solid var(--ks-border-secondary);
         border-radius: 6px;
-        background: #ffffff;
-        color: var(--hp-content-secondary);
+        background: var(--ks-background-button-secondary);
+        color: var(--ks-content-secondary);
         font-size: 1rem;
         font-weight: 600;
         line-height: 1.75rem;
@@ -250,19 +262,19 @@ const TABS = [
             box-shadow 0.2s ease-in-out;
 
         &:hover {
-            background: var(--hp-background-secondary);
+            background: var(--ks-background-tertiary);
         }
 
         &:focus-visible {
-            outline: 2px solid var(--hp-content-color-highlight);
+            outline: 2px solid var(--ks-border-active);
             outline-offset: 2px;
         }
 
         &.active {
-            background: var(--hp-background-secondary);
-            border-color: var(--hp-content-primary);
-            color: var(--hp-content-primary);
-            box-shadow: 2px 3px 16px 0 rgba(57, 82, 242, 0.1);
+            background: var(--ks-background-button-secondary-active);
+            border-color: var(--ks-border-active);
+            color: var(--ks-content-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
         }
 
         @include media-breakpoint-up(md) {
@@ -282,9 +294,9 @@ const TABS = [
         border-radius: 16px;
         background: linear-gradient(
             180deg,
-            rgba(255, 255, 255, 0) 18.5%,
-            #fdfcfe 36.3%,
-            #ebeeef 91.6%
+            var(--ks-background-secondary) 18.5%,
+            var(--ks-background-secondary) 36.3%,
+            var(--ks-background-tertiary) 91.6%
         );
 
         &.active {
@@ -293,7 +305,7 @@ const TABS = [
 
         h3 {
             margin: 0;
-            color: var(--hp-content-primary);
+            color: var(--ks-content-primary);
             font-size: 1.5rem;
             font-weight: 600;
             line-height: 1.75rem;
@@ -315,9 +327,21 @@ const TABS = [
         display: block;
         width: 100%;
         height: auto;
-        border: 2px solid #bfbfe7;
+        border: 2px solid var(--ks-background-purple-light);
         border-radius: 16px;
         overflow: clip;
+
+        &.visual-dark {
+            display: none;
+        }
+
+        :global(html.dark) &.visual-light {
+            display: none;
+        }
+
+        :global(html.dark) &.visual-dark {
+            display: block;
+        }
 
         @include media-breakpoint-down(md) {
             border-radius: 8px;

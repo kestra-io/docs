@@ -153,4 +153,6 @@ The **MCP server and the MCP Tool Trigger are open source**. Exposing your flows
 
 Join the Kestra 2.0 launch webinar on September 8th, 2026 at 15:00 UTC. [Register here](https://luma.com/194wtite).
 
-For the architecture underneath, read [what changed in the engine](https://kestra.io/blogs/2026-09-01-kestra20-rebuild-engine) and how to choose your backend. Setup is in the [MCP server docs](https://kestra.io/docs/ai-tools), the [AI Copilot docs](https://kestra.io/docs/ai-tools/ai-copilot), and the [Agent Skills repository](https://github.com/kestra-io/agent-skills).
+For the architecture underneath, read [what changed in the engine](/blogs/2026-09-01-kestra20-rebuild-engine) and [how to choose your backend](/blogs/kestra-2-0-backend-choice). Setup is in the [MCP server docs](/docs/ai-tools/mcp-server), the [AI Copilot docs](/docs/ai-tools/ai-copilot), and the [Agent Skills repository](https://github.com/kestra-io/agent-skills).
+
+Every tool call is an execution, so the [2.0 throughput and latency numbers](/blogs/performance-improvements-2-0) apply to agent traffic too, and the upgrade path is in the [2.0 migration guide](/docs/migration-guide/v2.0.0).

@@ -1,20 +1,12 @@
-import { API_URL } from "astro:env/client"
+import { $fetchApiTextCached } from "~/utils/fetch"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
+export const pluginIconPath = (group: string) => `/plugins/icons/${group}`
+
 export async function fetchPluginIcon(group: string): Promise<string> {
-    const url = `${API_URL}/plugins/icons/${group}`
-
-    const iconResponse = await fetch(url)
-
-    if (!iconResponse.ok) {
-        throw new Error("Failed to fetch icon", {
-            cause: iconResponse.statusText,
-        })
-    }
-
-    const icon = optimizeSvgIcon(await iconResponse.text(), group)
-
-    return icon
+    // Memoized per build: ~86 icons are fetched across the orchestration pages,
+    // and their cache keys digest the same payloads.
+    return optimizeSvgIcon(await $fetchApiTextCached(pluginIconPath(group)), group)
 }
 
 const CACHE_TTL = 60 * 60 * 24 // 24 hours

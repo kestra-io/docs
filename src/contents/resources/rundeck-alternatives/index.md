@@ -27,7 +27,7 @@ This article will guide you through the leading alternatives to Rundeck in 2026,
 ## Understanding the need for Rundeck alternatives
 
 ### What is Rundeck and its primary use cases?
-Rundeck, now part of PagerDuty Process Automation, is an open-source tool designed for runbook automation. Its primary strength lies in providing a secure, web-based interface for operations teams and service desk agents to execute predefined jobs (scripts, commands, workflows) on remote nodes. This enables self-service operations, reduces the need for direct server access, and provides an audit trail for actions taken. Common use cases include incident response, routine maintenance, software deployments, and diagnostic checks.
+Rundeck, now part of [PagerDuty](/resources/infrastructure/pagerduty-alternatives) Process Automation, is an open-source tool designed for runbook automation. Its primary strength lies in providing a secure, web-based interface for operations teams and service desk agents to execute predefined jobs (scripts, commands, workflows) on remote nodes. This enables self-service operations, reduces the need for direct server access, and provides an audit trail for actions taken. Common use cases include incident response, routine maintenance, software deployments, and diagnostic checks.
 
 ### Common reasons to seek alternatives to Rundeck
 While effective for its core purpose, teams often look for alternatives when they hit certain limitations:

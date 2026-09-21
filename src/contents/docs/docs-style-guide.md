@@ -147,7 +147,7 @@ Use alerts sparingly. Reserve them for content that would cause failure or confu
 ## Links and media
 
 **Links:**
-- Use descriptive link text. "See [Policies](./policies)" not "click [here](./policies)."
+- Use descriptive link text. "See [Policies](07.enterprise/02.governance/policies/index.md)" not "click [here](07.enterprise/02.governance/policies/index.md)."
 - Link to the source of truth rather than duplicating content across pages.
 - Use relative links between docs pages.
 

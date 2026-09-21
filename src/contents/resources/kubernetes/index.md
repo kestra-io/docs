@@ -110,7 +110,7 @@ Kubernetes is powerful, but its complexity means it's not always the right tool 
 
 *   **Single Host / Local Development**: For running a few containers on a single machine, Docker Compose is often a simpler and more efficient choice.
 *   **Simple Multi-Host Orchestration**: Docker Swarm offers a less complex alternative to Kubernetes for basic container orchestration across multiple hosts.
-*   **Serverless Containers**: For workloads where you don't want to manage the underlying cluster infrastructure, services like AWS Fargate, Google Cloud Run, or Azure Container Instances are excellent options. They allow you to run containers without provisioning or managing servers.
+*   **Serverless Containers**: For workloads where you don't want to manage the underlying cluster infrastructure, services like AWS [Fargate](/resources/infrastructure/ecs-vs-fargate), Google Cloud Run, or Azure Container Instances are excellent options. They allow you to run containers without provisioning or managing servers.
 
 The decision often comes down to scale and complexity. If you are managing a microservices architecture with dozens or hundreds of services that need to scale independently and communicate reliably, Kubernetes is the industry standard. For simpler applications, the overhead of managing a Kubernetes cluster might not be justified. Kestra's architecture reflects this flexibility, offering various [task runner types](/docs/task-runners/types) that can execute tasks on Docker, in local processes, or as Kubernetes pods.
 
@@ -156,7 +156,7 @@ Kestra simplifies Kubernetes operations by allowing you to define and manage com
 
 A key feature is the **[Kubernetes Task Runner](/docs/task-runners/types/kubernetes-task-runner)**, which allows any Kestra task—be it Python, SQL, or a shell script—to be executed as a dedicated Kubernetes pod. This provides ultimate isolation, resource management, and scalability for your workflows.
 
-Furthermore, the **[Kestra Kubernetes Operator](/docs/version-control-cicd/cicd/kubernetes-operator)** brings GitOps to your workflows. You can manage your Kestra flows, templates, and namespace files as Kubernetes Custom Resources, allowing you to version-control your entire orchestration layer alongside your application and infrastructure code.
+Furthermore, the **[Kestra Kubernetes Operator](/docs/version-control-cicd/cicd/terraform)** brings GitOps to your workflows. You can manage your Kestra flows, templates, and namespace files as Kubernetes Custom Resources, allowing you to version-control your entire orchestration layer alongside your application and infrastructure code.
 
 Here is a simple example of a Kestra flow that uses the `PodCreate` task from the [Kubernetes plugin](/plugins/plugin-kubernetes) to launch an Nginx pod:
 
