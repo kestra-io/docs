@@ -3,7 +3,7 @@
     import TaskIcon from "~/components/common/TaskIcon.vue"
 
     const MAX_TASKS = 5
-    const DRIFT_SPEED = 30
+    const DRIFT_SPEED = 300
     const HOVER_SPEED = 8
     const DRAG_THRESHOLD = 6
     const STEP_DURATION = 450
@@ -18,6 +18,8 @@
     const copies = ref(3)
     const EXPOSED = 2
     const dragging = ref(false)
+    /** Index of the story resting at the content edge; drives the stepper. */
+    const current = ref(0)
 
     let offset = 0
     let base = 0
@@ -37,6 +39,9 @@
         if (!railRef.value || !loopWidth) return
         offset = base + ((((x - base) % loopWidth) + loopWidth) % loopWidth)
         railRef.value.style.transform = `translate3d(${-offset}px, 0, 0)`
+        if (stepWidth) {
+            current.value = Math.round((offset - base) / stepWidth) % props.stories.length
+        }
     }
 
     function measure() {
@@ -101,13 +106,11 @@
             stepFrame = 0
         }
     }
-    /** Glide the rail one card forward (1) or back (-1). */
-    function step(direction: 1 | -1) {
-        if (!stepWidth) return
+    /** Glide the rail by `delta` px, then let it drift again. */
+    function glide(delta: number) {
         cancelStep()
         stopDrift()
         const from = offset
-        const delta = direction * stepWidth
         if (reducedMotion) {
             setOffset(from + delta)
             startDrift()
@@ -126,6 +129,18 @@
             }
         }
         stepFrame = requestAnimationFrame(run)
+    }
+    /** One card forward (1) or back (-1). */
+    function step(direction: 1 | -1) {
+        if (stepWidth) glide(direction * stepWidth)
+    }
+    /** Bring story `index` to the content edge, the short way round the loop. */
+    function goTo(index: number) {
+        if (!stepWidth || !loopWidth) return
+        let delta = base + index * stepWidth - offset
+        delta = ((delta % loopWidth) + loopWidth) % loopWidth
+        if (delta > loopWidth / 2) delta -= loopWidth
+        glide(delta)
     }
     function onKeydown(e: KeyboardEvent) {
         if (e.key === "ArrowRight") {
@@ -307,17 +322,17 @@
             </div>
         </div>
 
-        <div class="fc-controls">
-            <button type="button" class="fc-arrow" aria-label="Previous story" @click="step(-1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>
-            </button>
-            <button type="button" class="fc-arrow" aria-label="Next story" @click="step(1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="9 18 15 12 9 6" />
-                </svg>
-            </button>
+        <div class="fc-stepper" role="group" aria-label="Choose a featured story">
+            <button
+                v-for="(story, i) in stories"
+                :key="story.slug"
+                type="button"
+                class="fc-dot"
+                :class="{ 'is-active': i === current }"
+                :aria-label="`Go to story ${i + 1}: ${story.companyName}`"
+                :aria-current="i === current || undefined"
+                @click="goTo(i)"
+            />
         </div>
     </section>
 </template>
@@ -537,43 +552,45 @@
         object-fit: contain;
     }
 
-    .fc-controls {
+    /* Figma "Stepper": 10px dots, the active one stretches into a 64px
+       primary gradient pill, 8px apart, centred 32px under the cards. */
+    .fc-stepper {
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
+        align-items: center;
         gap: 0.5rem;
-        margin-top: 1.5rem;
+        margin-top: 2rem;
     }
 
-    .fc-arrow {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        border: 1px solid rgba($base-grey-white, 0.2);
-        background: rgba($base-grey-white, 0.06);
-        color: rgba($base-grey-white, 0.75);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+    .fc-dot {
+        width: 0.625rem;
+        height: 0.625rem;
+        padding: 0;
+        border: 0;
+        border-radius: 0.625rem;
+        // Figma's #444459 is off-palette; this is the same tint built from it.
+        background: rgba($base-primary-200, 0.28);
         cursor: pointer;
         transition:
-            color 0.15s,
-            border-color 0.15s,
-            background-color 0.15s;
-
-        svg {
-            width: 1.125rem;
-            height: 1.125rem;
-        }
+            width 0.3s ease,
+            background-color 0.3s ease;
 
         &:hover {
-            color: $base-grey-white;
-            border-color: $base-primary-300;
-            background: rgba($base-primary-300, 0.12);
+            background: rgba($base-primary-200, 0.5);
+        }
+
+        &.is-active {
+            width: 4rem;
+            background: linear-gradient(90deg, $base-primary-500, $base-primary-200);
         }
 
         &:focus-visible {
             outline: 2px solid $base-primary-300;
-            outline-offset: 2px;
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
         }
     }
 </style>
