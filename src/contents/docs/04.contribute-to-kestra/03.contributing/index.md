@@ -42,8 +42,8 @@ You can contribute an article about how you use Kestra to our [blog](/blogs). Em
 ### Requirements
 
 The following dependencies are required to build Kestra locally:
-- JDK 25 (runtime) with source/target set to Java 21
-- Node 14+ and npm
+- JDK 25
+- Node 24 and npm 11.7.0 or later (see `ui/.nvmrc`)
 - Docker & Docker Compose
 - an IDE (Intellij IDEA, Eclipse or VS Code)
 
@@ -64,18 +64,65 @@ Open the cloned repository in your favorite IDE. In many IDEs, Gradle build will
 
 You can also build it from a terminal using `./gradlew build`. The Gradle wrapper will automatically download the correct Gradle version to use.
 
-- Set your IDE language level to **Java 21** while using the **JDK 25** toolchain; builds are compiled with `--release 21`.
+- Set your IDE language level and project SDK to **Java 25**. Every Gradle toolchain in the build is `JavaLanguageVersion.of(25)`, and the build sets no separate source or target compatibility.
 - You may need to enable Java annotation processors since we use it a lot.
-- The main class is `io.kestra.cli.App` from module `kestra.cli.main`.
+- The main class is `io.kestra.cli.Kestra` from module `kestra.cli.main`. It was named `io.kestra.cli.App` before 2.0, so older guides and screenshots may still show that name.
 - Pass as program arguments the server you want to develop, for example `server standalone` starts a standalone Kestra server.
-- The Intellij Idea configuration can be found in screenshot below:
-![Intellij Idea Configuration ](./standalone.png)
-  - `MICRONAUT_ENVIRONMENTS`: can be set as any string and will load a custom configuration file in `cli/src/main/resources/application-{env}.yml`
-  - `KESTRA_PLUGINS_PATH`: is the path where you save plugins as Jar and is loaded during the startup process
-- If you encounter **JavaScript memory heap out** error during startup, configure `NODE_OPTIONS` environment variable with some large value.
-    - Example `NODE_OPTIONS: --max-old-space-size=4096` or `NODE_OPTIONS: --max-old-space-size=8192` ![Intellij IDEA Configuration ](./node_option_env_var.png)
-- You can also use the gradle task `./gradlew runLocal` that runs a standalone server with `MICRONAUT_ENVIRONMENTS=override` and plugins path `local/plugins`
-- The server start by default on port 8080 and is reachable on `http://localhost:8080`.
+- The server starts by default on port 8080 and is reachable on `http://localhost:8080`.
+
+#### Run configuration
+
+To start a standalone server from your IDE, create an **Application** run configuration with the following values:
+
+| Field | Value |
+|-------|-------|
+| SDK | Java 25 |
+| Module classpath | `kestra.cli.main` |
+| Main class | `io.kestra.cli.Kestra` |
+| Program arguments | `server standalone` |
+| Working directory | the repository root |
+
+Then add the environment variables you need:
+
+- `MICRONAUT_ENVIRONMENTS`: can be set as any string and will load a custom configuration file in `cli/src/main/resources/application-{env}.yml`. Those files are gitignored, so create the one you need first, for example `cli/src/main/resources/application-override.yml` for `MICRONAUT_ENVIRONMENTS=override`.
+- `KESTRA_PLUGINS_PATH`: is the path where you save plugins as Jar and is loaded during the startup process.
+- `NODE_OPTIONS`: only needed if you hit a **JavaScript memory heap out** error during startup, for example `--max-old-space-size=4096` or `--max-old-space-size=8192`.
+
+![Intellij IDEA Configuration ](./node_option_env_var.png)
+
+#### Start a server from the command line
+
+Two Gradle tasks start a server without any IDE configuration. Both set `MICRONAUT_ENVIRONMENTS=override` and load plugins from `local/plugins`.
+
+The local development server, which is the quickest way to get a running instance:
+
+```shell
+./gradlew runLocal
+```
+
+The standalone all-in-one server:
+
+```shell
+./gradlew runStandalone
+```
+
+`runStandalone` takes a different plugin directory through `-PstandalonePlugins=/path/to/plugins` or the `KESTRA_PLUGINS_PATH` environment variable.
+
+#### Test a change without rebuilding everything
+
+You do not need to rebuild the Docker image to try a change out. For backend work, run the tests of the module you touched:
+
+```shell
+./gradlew :core:unitTest
+```
+
+`unitTest` skips the tests tagged as flaky or integration, and `--tests` narrows the run down to a single class or method:
+
+```shell
+./gradlew :core:unitTest --tests "*.MyTest"
+```
+
+For anything that has to be seen in a running server, start one with `./gradlew runLocal` instead. If the change is in the UI, run the frontend dev server against it as described in [Frontend development](#frontend-development) below, so you get hot reload instead of a full build.
 
 If you want to launch all tests, you need Python and some packages installed on your machine. On Ubuntu, you can install them with the following command:
 
@@ -86,16 +133,16 @@ python3 -m pip install virtualenv
 
 ### Frontend development
 
-All frontend code is located in the `/ui` folder.
+All frontend code is located in the `/ui` folder, and every command below runs from there.
 
 The front-end uses [Vue.js](https://vuejs.org/). Deep knowledge of Vue.js is not required to contribute.
-To run Kestra's frontend in development mode, you will need Node.js version `22.12.0`.
-The repository has a `.nvmrc` file.
+To run Kestra's frontend in development mode, you will need the Node.js version pinned in `ui/.nvmrc`, currently `24`, and npm `11.7.0` or later.
+`ui/.npmrc` sets `engine-strict=true`, so an older Node or npm fails the install with `EBADENGINE` rather than producing a broken tree.
 
 #### Initial setup
 
 ```shell
-npm install
+cd ui && npm install
 ```
 
 #### Run the frontend
@@ -122,20 +169,56 @@ You can also run all tests in the command line without opening a browser:
 npm run test:unit
 ```
 
-Even better, you can run one `test` file or `stories` file in isolation by specifying part of its name or path in the command
+Even better, you can run one test file in isolation by specifying part of its name or path in the command
 
 ```shell
 npm run test:unit BarChart
 ```
 
+Story files are a separate Vitest project, so they run with their own command:
+
+```shell
+npm run test:storybook
+```
+
+#### Checks run on every pull request
+
+Run these before pushing, so the first CI run is not the one that tells you about a type error or a missing translation key:
+
+```shell
+npm run check:types
+```
+
+```shell
+npm run test:lint
+```
+
+```shell
+npm run translations:check
+```
+
+End-to-end tests are also part of the pipeline, and they build and start a backend themselves:
+
+```shell
+npm run test:e2e
+```
 
 ### Set up the configuration to connect to the backend
 
 Now that you can run the frontend, if opened, you will see a loading screen running forever.
 It waits for a backend to answer.
-To set it up:
 
-- To avoid CORS restrictions when using the local development npm server, you need to configure the backend to allow the http://localhost:5173 origin in `cli/src/main/resources/application-override.yml` using the following addition to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) YAML definition:
+Start one from the repository root with the Gradle task:
+
+```shell
+./gradlew runLocal
+```
+
+This will start a local server on port 8080, accessible at `http://localhost:8080`. The task already sets `MICRONAUT_ENVIRONMENTS=override` and the plugins path, so it takes no further arguments.
+
+The Vite dev server proxies `/api` and `/swagger` to `http://localhost:8080`, so the frontend's calls are same-origin and no further configuration is needed.
+
+This changes if you point the frontend at a backend directly by setting `VITE_APP_API_URL`, since the calls then bypass that proxy and the backend has to allow the `http://localhost:5173` origin. Create `cli/src/main/resources/application-override.yml`, which is gitignored and therefore absent from a fresh clone, and add the following to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) YAML definition:
 
 ```yaml
 micronaut:
@@ -147,15 +230,6 @@ micronaut:
           allowedOrigins:
             - http://localhost:5173
 ```
-
-Then, you can run the backend by running the gradle task.
-
-```shell
-MICRONAUT_ENVIRONMENTS=override ./gradlew runLocal server standalone
-```
-
-This will start a local server on port 8080, accessible at `http://localhost:8080`.
-
 
 ### Set up Kestra frontend without building the backend from the source code
 
@@ -171,7 +245,7 @@ docker compose up
 
 This starts Kestra running with PostgreSQL as the database. You can change the port or other configurations by updating the `docker-compose.yml` file.
 
-Finally, install the dependencies with `npm install`, and serve the UI with hot reload at http://localhost:5173 using the command: `npm run dev`.
+Finally, install the dependencies with `npm install` from the `ui` folder, and serve the UI with hot reload at http://localhost:5173 using the command: `npm run dev`.
 
 ## Kestra devcontainer
 

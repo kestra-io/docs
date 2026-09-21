@@ -29,10 +29,14 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
 // Rendered per request, so the count is derived from the groups fetched above
 // rather than the build-time memo in fetchTotalPluginsCount.
 const totalPluginCount = `${formatPluginCount(calculateTotalPlugins(rawPlugins))}+`
+const rootGroups = new Set(
+    nonDeprecatedPlugins.filter((p) => !p.subGroup).map((p) => p.group),
+)
 const cardPlugins = prunePluginsForCards(
     filteredPlugins,
     rawPluginsData.byPlugin,
     buildPluginUrlIndex(rawPlugins),
+    rootGroups,
 )
 const categories = [
     ...new Set(cardPlugins.flatMap((p) => p.categories ?? [])),
