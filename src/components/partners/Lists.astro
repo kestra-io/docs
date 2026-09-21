@@ -195,14 +195,8 @@ const PARTNERS = [
                                     }
                                 >
                                     <h6 class="mb-0">
-                                        {isExternal ? (
-                                            <>
-                                                Visit {partner.name} website
-                                                <Icon name="mdi:open-in-new" />
-                                            </>
-                                        ) : (
-                                            `Visit ${partner.name} page`
-                                        )}
+                                        Visit {partner.name} page
+                                        {isExternal && <Icon name="mdi:open-in-new" />}
                                     </h6>
                                 </a>
                             </div>
