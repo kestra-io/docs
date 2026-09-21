@@ -10,7 +10,6 @@ metaDescription: >
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.webp
-logoDark: ./logo-dark.webp
 logoIcon: ./icon.webp
 tasks:
   - io.kestra.plugin.terraform.cli.TerraformCLI
