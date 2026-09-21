@@ -1,0 +1,63 @@
+// Replaces bootstrap/scss/pagination. Colours and spacing are set by
+// common/Pagination.vue; this is the structure it builds on.
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    font-size: $font-size-base;
+    color: var(--ks-content-link);
+    background-color: var(--ks-background-secondary);
+    border: 1px solid var(--ks-border-primary);
+    transition:
+        color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
+
+    &:hover {
+        z-index: 2;
+        color: var(--ks-content-color-highlight);
+    }
+
+    &:focus {
+        z-index: 3;
+        color: var(--ks-content-color-highlight);
+        outline: 0;
+    }
+
+    .active > & {
+        z-index: 3;
+        color: $white;
+        background-color: var(--ks-background-button-primary);
+        border-color: var(--ks-background-button-primary);
+    }
+
+    .disabled > & {
+        color: var(--ks-content-tertiary);
+        pointer-events: none;
+        background-color: var(--ks-background-secondary);
+        border-color: var(--ks-border-primary);
+    }
+}
+
+.page-item {
+    &:not(:first-child) .page-link {
+        margin-left: -1px;
+    }
+
+    &:first-child .page-link {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+    }
+
+    &:last-child .page-link {
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+    }
+}

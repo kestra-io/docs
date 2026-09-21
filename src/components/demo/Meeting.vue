@@ -433,7 +433,7 @@
                 background-size: 1.25rem 1.25rem;
 
                 &:invalid {
-                    color: var(--bs-secondary-color);
+                    color: var(--ks-secondary-color);
                 }
             }
         }
@@ -601,7 +601,7 @@
                     opacity: 0;
                 }
                 select.form-control:invalid {
-                    color: var(--bs-secondary-color);
+                    color: var(--ks-secondary-color);
                 }
             }
             @include media-breakpoint-down(md) {
