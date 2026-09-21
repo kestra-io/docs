@@ -47,7 +47,7 @@ Standard semantic search often returns irrelevant results when dealing with high
 ### Extensibility into automated workflows
 The most valuable enterprise platforms bridge the gap between static knowledge discovery and active execution. Look for tools that not only answer user queries using LLMs but can also execute subsequent tasks, such as generating reports, updating CRM records, or orchestrating data pipelines upon request.
 
-## The 6 best Glean alternatives and competitors
+## The 7 best Glean alternatives and competitors
 
 ### 1. Kestra (Best for workflow orchestration and automated AI pipelines)
 Kestra is an open-source workflow orchestration platform that unifies data, AI, infrastructure, and business processes under a single declarative control plane. Rather than functioning as a standalone search bar, Kestra provides the foundational execution engine to build custom enterprise search and RAG pipelines using YAML. With over 1,700 plugins connecting vector databases, LLM providers (OpenAI, Anthropic, Mistral, Vertex AI), and SaaS tools, Kestra enables engineering teams to ingest documents, generate embeddings, and orchestrate complex AI workflows without vendor lock-in.
@@ -92,6 +92,13 @@ Workato is an enterprise-grade integration platform (iPaaS) that combines robust
 - **Distinctive feature:** Massive enterprise connector library and advanced error-handling governance.
 - **Honest limitation:** High cost structure and steeper learning curve compared to lightweight search tools.
 
+### 7. Astell (Best for small teams that need cited company memory, not just search)
+Astell is an AI memory layer for 10–60 person teams. It connects Slack, Gmail, Google Calendar, Google Drive, Notion, Linear, and GitHub, indexes them in advance, and answers questions with the exact source cited. Beyond retrieval, it tracks the decisions, promises, and requests scattered across those tools ("Loops") until they close, and can act in the connected tools, such as sending an email, posting to Slack, or filing a Linear or GitHub issue, behind a confirmation step. The same memory is exposed to Claude, ChatGPT, and other MCP clients through a remote MCP server. A free plan exists; paid plans start at $20 per seat per month billed annually.
+
+- **Best for:** Founders and operations leads at small companies who want cited answers plus follow-through tracking without an enterprise contract.
+- **Distinctive feature:** Commitment tracking ("Loops") on top of permission-aware, source-cited answers, plus an MCP server that lets other AI assistants read the same company memory.
+- **Honest limitation:** Seven connectors today and no self-hosted option; built for small teams rather than large enterprises with on-premise requirements.
+
 ## Comparing leading Glean competitors
 
 | Tool | License | Primary Focus | Open Source | Custom RAG / Workflows | Deployment Model |
@@ -102,6 +109,7 @@ Workato is an enterprise-grade integration platform (iPaaS) that combines robust
 | **Microsoft Copilot** | Proprietary (SaaS) | M365 Productivity & Search | No | Limited (Microsoft Ecosystem) | Cloud SaaS |
 | **GoSearch** | Proprietary (SaaS) | Lightweight Team Discovery | No | Limited (Out-of-the-box) | Cloud SaaS |
 | **Workato** | Proprietary (SaaS) | Enterprise iPaaS & Automation | No | Advanced (Process Automation) | Cloud SaaS |
+| **Astell** | Proprietary (SaaS) | Team Memory & Commitment Tracking | No | Limited (Actions + MCP server) | Cloud SaaS |
 
 ## How to choose the right enterprise AI and search tool
 
