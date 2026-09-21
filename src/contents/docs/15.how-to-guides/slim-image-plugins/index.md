@@ -93,6 +93,8 @@ docker build -t kestra:custom-<version> .
 
 :::alert{type="warning"}
 The version in the base image tag and the version you pass to `--compatible-for` must match. Mismatched versions cause plugin loading failures at runtime.
+
+In a distributed deployment, every Kestra component — Executor, Webserver, and Workers — must run the exact same Docker image. Build one custom image and use it across all components.
 :::
 
 ## Verify the plugins
