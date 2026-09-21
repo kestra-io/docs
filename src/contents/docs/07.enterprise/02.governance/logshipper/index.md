@@ -393,18 +393,18 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@daily"
 
-  tasks:
-    - id: log_export
-      type: io.kestra.plugin.ee.core.log.LogShipper
-      logLevelFilter: INFO
-      lookbackPeriod: P1D
-      offsetKey: logShipperOffset
-      delete: false
-      logExporters:
-        - id: SplunkLogExporter
-          type: io.kestra.plugin.ee.splunk.LogExporter
-          host: https://example.splunkcloud.com:8088
-          token: "{{ secret('SPLUNK_API_KEY') }}"
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    delete: false
+    logExporters:
+      - id: SplunkLogExporter
+        type: io.kestra.plugin.ee.splunk.LogExporter
+        host: https://example.splunkcloud.com:8088
+        token: "{{ secret('SPLUNK_API_KEY') }}"
 ```
 
 ### OpenSearch
@@ -469,7 +469,7 @@ tasks:
 This example exports logs to [Graylog](https://graylog.org/). The following example flow triggers a daily batch and sends logs to Graylog using a GELF HTTP input. Refer to the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for more property details.
 
 ```yaml
- id: log_shipper
+id: log_shipper
 namespace: system
 
 triggers:
