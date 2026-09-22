@@ -7,9 +7,12 @@ import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
 import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
 import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
 import { findFamilySiblings } from "~/utils/plugins/pluginFamily"
+import { slugify } from "~/utils/slugify"
 
 import Layout from "~/components/layout.astro"
-import PluginsLists from "~/components/plugins/PluginsLists.vue"
+import PluginLayout from "~/components/plugins/PluginLayout.astro"
+import OneHeader from "~/components/plugins/OneHeader.astro"
+import PluginCard from "~/components/plugins/PluginCard.vue"
 
 // Multi-artifact plugin groups (Debezium, JDBC, Scripts, ...) ship one
 // unrelated top-level plugin per sub-technology instead of a single plugin
@@ -39,19 +42,82 @@ const cardPlugins = prunePluginsForCards(
     siblings,
     rawPluginsData.byPlugin,
     buildPluginUrlIndex(rawPlugins),
-)
-const categories = [...new Set(cardPlugins.flatMap((p) => p.categories ?? []))].sort()
+).map((p) => ({
+    ...p,
+    slug: slugify(p.title),
+    elementCounts: p.elementCounts ?? 0,
+    blueprints: p.blueprints ?? 0,
+}))
 
 const title = `${displayName} plugins`
 const description = `Browse all ${siblings.length} ${displayName} plugins available in Kestra.`
 ---
 
 <Layout {title} {description}>
-    <PluginsLists
-        client:idle
-        plugins={cardPlugins}
-        {categories}
-        totalPluginCount={String(siblings.length)}
-        fullPath={Astro.request.url}
-    />
+    <PluginLayout>
+        <nav slot="sidebar" class="family-nav" aria-label={`${displayName} plugins`}>
+            <p class="family-nav__label">Plugins</p>
+            <ul>
+                {
+                    cardPlugins.map((p) => (
+                        <li>
+                            <a href={`#${p.slug}`}>{p.title}</a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+        <OneHeader headingTitle={title} headingDescription={description} />
+        <div class="family-grid">
+            {
+                cardPlugins.map((p) => (
+                    <div id={p.slug} class="family-grid__item">
+                        <PluginCard plugin={p} />
+                    </div>
+                ))
+            }
+        </div>
+    </PluginLayout>
 </Layout>
+
+<style lang="scss">
+    .family-nav {
+        font-size: $font-size-sm;
+
+        &__label {
+            font-weight: 700;
+            color: var(--ks-content-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        a {
+            display: block;
+            padding: 0.25rem 0;
+            color: var(--ks-content-secondary);
+
+            &:hover {
+                color: var(--ks-content-link);
+            }
+        }
+    }
+
+    .family-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+
+        &__item {
+            scroll-margin-top: 6rem;
+        }
+    }
+</style>
