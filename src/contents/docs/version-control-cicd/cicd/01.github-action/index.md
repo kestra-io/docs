@@ -35,9 +35,9 @@ labels:
 
 Kestra provides these three Actions for CI/CD pipelines:
 
-- [`kestra-io/github-actions/validate-flows`](https://github.com/kestra-io/github-actions/tree/main/validate-flows): Validate a folder of flows before deployment.
-- [`kestra-io/github-actions/deploy-flows`](https://github.com/kestra-io/github-actions/tree/main/deploy-flows): Deploy a folder of flows to your Kestra server.
-- [`kestra-io/github-actions/deploy-namespace-files`](https://github.com/kestra-io/github-actions/tree/main/deploy-namespace-files): Deploy namespace files to your Kestra server.
+- [`kestra-io/validate-flows-action-v2`](https://github.com/kestra-io/validate-flows-action-v2): Validate a folder of flows before deployment.
+- [`kestra-io/deploy-flows-action-v2`](https://github.com/kestra-io/deploy-flows-action-v2): Deploy a folder of flows to your Kestra server.
+- [`kestra-io/deploy-namespace-files-action`](https://github.com/kestra-io/deploy-namespace-files-action): Deploy namespace files to your Kestra server.
 
 ---
 
@@ -54,7 +54,7 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `password`  | ❌       | —        | Basic auth password. |
 | `tenant`    | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
 
-[(See action.yml)](https://github.com/kestra-io/github-actions/blob/main/validate-flows/action.yml)
+[(See action.yml)](https://github.com/kestra-io/validate-flows-action-v2/blob/main/action.yml)
 
 ---
 
@@ -71,7 +71,7 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `password`  | ❌       | —        | Basic auth password. |
 | `tenant`    | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
 
-[(See action.yml)](https://github.com/kestra-io/github-actions/blob/main/deploy-flows/action.yml)
+[(See action.yml)](https://github.com/kestra-io/deploy-flows-action-v2/blob/main/action.yml)
 
 ---
 
@@ -89,7 +89,7 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `password`     | ❌       | —        | Basic auth password. |
 | `tenant`       | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
 
-[(See action.yml)](https://github.com/kestra-io/github-actions/blob/main/deploy-namespace-files/action.yml)
+[(See action.yml)](https://github.com/kestra-io/deploy-namespace-files-action/blob/main/action.yml)
 
 ---
 
@@ -108,7 +108,7 @@ jobs:
       - name: Checkout repository content
         uses: actions/checkout@v4
       - name: Validate flows
-        uses: kestra-io/github-actions/validate-flows@main
+        uses: kestra-io/validate-flows-action-v2@main
         with:
           directory: ./kestra/flows
           server: ${{ secrets.KESTRA_HOSTNAME }}
@@ -122,13 +122,13 @@ jobs:
       - name: Checkout repository content
         uses: actions/checkout@v4
       - name: Deploy product flows
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           directory: ./kestra/flows/product
           namespace: product
           server: ${{ secrets.KESTRA_HOSTNAME }}
       - name: Deploy engineering flows
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           directory: ./kestra/flows/engineering
           namespace: engineering
@@ -141,7 +141,7 @@ jobs:
       - name: Checkout repository content
         uses: actions/checkout@v4
       - name: Upload config YAML to engineering namespace
-        uses: kestra-io/github-actions/deploy-namespace-files@main
+        uses: kestra-io/deploy-namespace-files-action@main
         with:
           localPath: ./config/eng.yaml
           namespace: engineering
@@ -188,7 +188,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/deploy-flows@main
+      - uses: kestra-io/deploy-flows-action-v2@main
         with:
           server: https://kafka-ee.preview.dev.kestra.io
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -200,7 +200,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/deploy-flows@main
+      - uses: kestra-io/deploy-flows-action-v2@main
         with:
           server: https://kafka-ee.preview.dev.kestra.io
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -222,7 +222,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/validate-flows@main
+      - uses: kestra-io/validate-flows-action-v2@main
         with:
           server: ${{ secrets.KESTRA_HOSTNAME }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -233,7 +233,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/validate-flows@main
+      - uses: kestra-io/validate-flows-action-v2@main
         with:
           server: ${{ secrets.KESTRA_HOSTNAME }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -249,7 +249,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/deploy-flows@main
+      - uses: kestra-io/deploy-flows-action-v2@main
         with:
           server: ${{ secrets.KESTRA_HOSTNAME }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -261,7 +261,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/deploy-flows@main
+      - uses: kestra-io/deploy-flows-action-v2@main
         with:
           server: ${{ secrets.KESTRA_HOSTNAME }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -279,7 +279,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/deploy-namespace-files@main
+      - uses: kestra-io/deploy-namespace-files-action@main
         with:
           server: ${{ secrets.KESTRA_HOSTNAME }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -293,7 +293,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/deploy-namespace-files@main
+      - uses: kestra-io/deploy-namespace-files-action@main
         with:
           server: ${{ secrets.KESTRA_HOSTNAME }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -307,7 +307,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: kestra-io/github-actions/deploy-namespace-files@main
+      - uses: kestra-io/deploy-namespace-files-action@main
         with:
           server: ${{ secrets.KESTRA_HOSTNAME }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}
@@ -323,6 +323,6 @@ jobs:
 ## Additional resources
 
 - [How-to Guide: GitHub Actions CI/CD](../../../15.how-to-guides/github-actions/index.md) — More examples and advanced workflows.
-- [Kestra Validate Flows Action](https://github.com/kestra-io/github-actions/tree/main/validate-flows)
-- [Kestra Deploy Flows Action](https://github.com/kestra-io/github-actions/tree/main/deploy-flows)
-- [Kestra Deploy Namespace Files Action](https://github.com/kestra-io/github-actions/tree/main/deploy-namespace-files)
+- [Kestra Validate Flows Action](https://github.com/kestra-io/validate-flows-action-v2)
+- [Kestra Deploy Flows Action](https://github.com/kestra-io/deploy-flows-action-v2)
+- [Kestra Deploy Namespace Files Action](https://github.com/kestra-io/deploy-namespace-files-action)

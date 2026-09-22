@@ -1,0 +1,153 @@
+---
+import { Image } from "astro:assets"
+import portrait from "~/assets/teams/kwaehner-round.png"
+import { AUTHOR } from "./author"
+---
+
+<section class="author">
+    <div class="container">
+        <div class="card">
+            <Image
+                src={portrait}
+                alt={`Portrait of ${AUTHOR.name}`}
+                widths={[120, 240]}
+                sizes="120px"
+                loading="lazy"
+                class="portrait"
+            />
+            <div class="body">
+                <p class="kicker">About the author</p>
+                <h2 class="name">{AUTHOR.name}</h2>
+                <p class="role">{AUTHOR.role}</p>
+                <p class="bio">{AUTHOR.bio}</p>
+                <ul class="links">
+                    {
+                        AUTHOR.links.map((link) => (
+                            <li>
+                                <a
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .author {
+        background-color: var(--ks-background-body);
+        padding-bottom: 3rem;
+
+        @include media-breakpoint-up(md) {
+            padding-bottom: 4rem;
+        }
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.75rem;
+        border-radius: 12px;
+        background-color: #{$base-primary-100};
+        border: 1px solid #{$base-primary-200};
+
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 2rem;
+            padding: 2.25rem;
+        }
+
+        :global(html.dark) & {
+            background-color: #{rgba($base-primary-500, 0.12)};
+            border-color: #{rgba($base-primary-500, 0.45)};
+        }
+    }
+
+    .portrait {
+        flex: none;
+        width: 88px;
+        height: 88px;
+        border-radius: 12px;
+        object-fit: cover;
+
+        @include media-breakpoint-up(md) {
+            width: 120px;
+            height: 120px;
+        }
+    }
+
+    .body {
+        min-width: 0;
+    }
+
+    .kicker {
+        font-size: $font-size-sm;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #{$base-primary-600};
+        margin: 0 0 0.5rem;
+
+        :global(html.dark) & {
+            color: #{$base-primary-200};
+        }
+    }
+
+    .name {
+        font-size: 1.375rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--ks-content-primary);
+    }
+
+    .role {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-secondary);
+        margin: 0.125rem 0 1rem;
+    }
+
+    .bio {
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: var(--ks-content-secondary);
+        margin: 0 0 1.25rem;
+    }
+
+    .links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 1rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li + li::before {
+            content: "·";
+            margin-right: 1rem;
+            color: var(--ks-content-tertiary);
+        }
+
+        a {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-link);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+</style>
