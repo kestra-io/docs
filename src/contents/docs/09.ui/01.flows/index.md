@@ -7,9 +7,9 @@ docId: flowEditor
 icon: /src/contents/docs/icons/ui.svg
 ---
 
-Manage your flows in one place.
+The **Flows** page is the primary interface for authoring and running flows.
 
-The **Flows** page lists all flows. Click a flow ID to open it, or create a new flow from the top-right corner.
+The **Flows** page lists all flows. Flow IDs open to the individual flow page; new flows are created from the top-right corner.
 
 ![Kestra User Interface Flows Page](./04-Flows.png)
 
@@ -52,13 +52,13 @@ The **No Code** view is a canvas-based flow editor. The canvas displays each flo
 
 ![No Code canvas showing a schedule trigger selected with its configuration form open](./no-code-canvas.png)
 
-Click any block to open its form. The form has two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). You can switch to **Source** to write or paste YAML directly — the flow YAML editor on the left stays in sync instantly.
+Selecting a block opens its configuration form in a third panel alongside the canvas. The form has two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). Switching to **Source** allows YAML to be written or pasted directly — the flow YAML editor on the left stays in sync instantly.
 
 ![Errors block with two tasks, notify_failure selected and its YAML open in the Source tab](./no-code-errors.png)
 
-To add a block, click **+ Add task** or **+ Add trigger** in the relevant section, or press `/` anywhere on the canvas to search and insert a block at the cursor position. Use the keyboard shortcuts shown in the bottom bar to navigate (`↑ ↓`), open a selected block (`⇧`), or insert after the current selection.
+Blocks are added via **+ Add task** or **+ Add trigger** in the relevant section, or by pressing `/` anywhere on the canvas to search and insert at the cursor position. The keyboard shortcuts shown in the bottom bar support navigation (`↑ ↓`), opening a selected block (`⇧`), and insertion after the current selection.
 
-Click **Configure** at the top of the canvas to edit flow-level properties (namespace, description, inputs, outputs, variables, and more).
+**Configure** at the top of the canvas opens flow-level properties: namespace, description, inputs, outputs, variables, and more.
 
 #### Focused view
 
@@ -69,9 +69,9 @@ Opening a block expands it into a focused modal by default. The modal has two pa
 
 ![Focused modal for a Python Script task, showing upstream outputs and execution context on the left and the task form on the right](./no-code-task-modal.png)
 
-Tasks open as a modal by default. To open blocks as tabs in the editor instead, change the default in **Settings**.
+Tasks open as a modal by default; this can be changed to tabs in **Settings**.
 
-You can open multiple panels simultaneously — for example, keep **Docs** open alongside the canvas to reference plugin documentation while configuring a task. Use the **Actions** menu to export or copy the flow at any time.
+Multiple panels can be open simultaneously — for example, **Docs** alongside the canvas for plugin documentation while configuring a task. The **Actions** menu provides export and copy options at any time.
 
 :::alert{type="info"}
 Flow Code, No-code, and [AI Copilot](../../ai-tools/01.ai-copilot/index.md) all stay in sync. Start in any mode — write YAML, describe your flow to the Copilot, or build visually on the canvas — and switch freely at any point. Every change is reflected across all three views instantly.
@@ -105,9 +105,9 @@ The **Context** panel gives you direct access to namespace Variables, KV pairs, 
 
 ## Revisions
 
-You can view the history of your flow code changes under the **Revisions** tab. For more details, see [Revisions](../../06.concepts/03.revision/index.md).
+The **Revisions** tab shows the history of flow code changes. For more details, see [Revisions](../../06.concepts/03.revision/index.md).
 
 ## Dependencies
 
-The **Dependencies** tab shows the relationship between this flow and other flows, and lets you navigate between them. The **Dependencies View** on the **Namespaces** page shows all flows in the namespace and how they relate to one another — the flow-level Dependencies view is scoped to the selected flow only.
+The **Dependencies** tab shows the relationship between this flow and other flows, with navigation between them. The **Dependencies View** on the **Namespaces** page shows all flows in the namespace and how they relate to one another — the flow-level Dependencies view is scoped to the selected flow only.
 

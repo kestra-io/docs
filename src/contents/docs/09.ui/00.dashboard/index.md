@@ -15,7 +15,7 @@ The **Dashboards** page displays the default dashboard and any custom dashboards
 
 Custom dashboards let you define queries and charts to visualize execution, log, and metric data. Edit each chart individually using the pencil icon in the dashboard view.
 
-Build dashboards using the **No Code editor** (no YAML required) or by **writing YAML directly**. Both produce the same schema-validated output.
+Dashboards can be built with the **No Code editor** (no YAML required) or by **writing YAML directly**. Both produce the same schema-validated output.
 
 ### No Code editor
 
@@ -288,7 +288,7 @@ charts:
 
 ## Dashboard as code
 
-The **+ Create new dashboard** button opens the editor. Select the YAML view to define the dashboard layout and charts directly as code.
+The **+ Create new dashboard** button opens the editor. The YAML view accepts dashboard layout and chart definitions directly as code.
 
 The top-level dashboard properties are:
 
@@ -423,7 +423,7 @@ More dashboard examples are available in the [Enterprise Edition Examples](https
 
 ## Exporting data
 
-Export table data as CSV using the download icon in the top-right corner of a table chart — no pagination required.
+Table data can be exported as CSV via the download icon in the top-right corner of a table chart — no pagination required.
 
 ![Dashboard Table Export](./dashboard-table-export-2-0.png)
 
