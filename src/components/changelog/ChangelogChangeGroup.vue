@@ -206,7 +206,7 @@
 
     .change-scope {
         color: var(--ks-content-link);
-        font-family: var(--bs-font-monospace);
+        font-family: var(--ks-font-monospace);
         font-size: 0.8125rem;
         overflow-wrap: anywhere;
     }
@@ -217,7 +217,7 @@
         border-radius: $border-radius;
         background: var(--ks-background-tag-category);
         color: var(--ks-content-tag-category);
-        font-family: var(--bs-font-monospace);
+        font-family: var(--ks-font-monospace);
         font-size: 0.75rem;
         text-decoration: none;
 

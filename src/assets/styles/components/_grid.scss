@@ -1,0 +1,105 @@
+// Replaces bootstrap/scss/grid and bootstrap/scss/containers.
+//
+// Unlike the utilities, this keeps the full 12-column range at every
+// breakpoint rather than only the columns in use: `col-md-3` is the kind of
+// class a page adds without thinking, and a grid with holes in it is a trap.
+// The offsets and `row-cols-auto`, which nothing uses, are the only omissions.
+//
+// Flexbox percentages, exactly as bootstrap computed them, so nothing reflows.
+$ks-grid-columns: 12;
+
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+    --ks-gutter-x: #{$grid-gutter-width * 0.5};
+    --ks-gutter-y: 0;
+    width: 100%;
+    padding-right: calc(var(--ks-gutter-x) * 0.5);
+    padding-left: calc(var(--ks-gutter-x) * 0.5);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@each $breakpoint, $max-width in $container-max-widths {
+    @include media-breakpoint-up($breakpoint) {
+        // Every container at or below this breakpoint caps here, matching
+        // bootstrap's cascading `.container-sm, .container` selector lists.
+        %ks-container-#{$breakpoint} {
+            max-width: $max-width;
+        }
+
+        .container {
+            @extend %ks-container-#{$breakpoint};
+        }
+
+        @each $name in (sm, md, lg, xl, xxl) {
+            @if index((sm, md, lg, xl, xxl), $name) <= index((sm, md, lg, xl, xxl), $breakpoint) {
+                .container-#{$name} {
+                    @extend %ks-container-#{$breakpoint};
+                }
+            }
+        }
+    }
+}
+
+.row {
+    --ks-gutter-x: #{$grid-gutter-width};
+    --ks-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--ks-gutter-y));
+    margin-right: calc(-0.5 * var(--ks-gutter-x));
+    margin-left: calc(-0.5 * var(--ks-gutter-x));
+
+    > * {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: calc(var(--ks-gutter-x) * 0.5);
+        padding-left: calc(var(--ks-gutter-x) * 0.5);
+        margin-top: var(--ks-gutter-y);
+    }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: if($breakpoint == xs, "", "-#{$breakpoint}");
+
+    @include media-breakpoint-up($breakpoint) {
+        .col#{$infix} {
+            flex: 1 0 0;
+        }
+
+        .col#{$infix}-auto {
+            flex: 0 0 auto;
+            width: auto;
+        }
+
+        @for $i from 1 through $ks-grid-columns {
+            .col#{$infix}-#{$i} {
+                flex: 0 0 auto;
+                width: percentage(calc($i / $ks-grid-columns));
+            }
+
+            .row-cols#{$infix}-#{$i} > * {
+                flex: 0 0 auto;
+                width: percentage(calc(1 / $i));
+            }
+        }
+
+        @each $key, $value in $gutters {
+            .g#{$infix}-#{$key},
+            .gx#{$infix}-#{$key} {
+                --ks-gutter-x: #{$value};
+            }
+
+            .g#{$infix}-#{$key},
+            .gy#{$infix}-#{$key} {
+                --ks-gutter-y: #{$value};
+            }
+        }
+    }
+}

@@ -10,8 +10,6 @@
 @import "variable";
 
 @mixin markdown-styles {
-    #{--bs-heading-color}: var(--ks-content-primary);
-    #{--bs-badge-color}: var(--ks-content-primary);
     color: var(--ks-content-primary);
 
     p {
@@ -114,7 +112,7 @@
     // Code
     code:not(pre code) {
         border: none;
-        border-radius: var(--bs-border-radius);
+        border-radius: var(--ks-border-radius);
         color: var(--ks-content-secondary);
         padding: 0 0.25rem;
         background-color: var(--ks-background-function);
@@ -135,7 +133,7 @@
         background-color: var(--ks-background-secondary);
         border: $block-border;
         padding: 1.25rem 1.5rem;
-        border-radius: var(--bs-border-radius-lg);
+        border-radius: var(--ks-border-radius-lg);
         color: var(--ks-content-primary);
         position: relative;
         margin-bottom: 1em;
@@ -586,7 +584,6 @@
 
     // Table Dark
     .table-dark {
-        --bs-table-bg: var(--ks-background-secondary) !important;
         color: transparent !important;
         outline: none;
         width: 100%;

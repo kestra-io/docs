@@ -23,9 +23,13 @@ interface Blueprint {
 interface Window {
     dataLayer: Array<any>
     astroClientConfig: { slug: string }
-    $bootstrap: { Modal: any; Collapse: any; Tooltip: any }
     __hsUserToken: string
     _hsq: Array<any>
+}
+
+interface Navigator {
+    // Global Privacy Control (not in lib.dom.d.ts) — CPRA opt-out signal.
+    globalPrivacyControl?: boolean
 }
 
 interface Story {
