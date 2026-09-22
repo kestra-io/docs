@@ -38,7 +38,10 @@ const hub = (await getCollection("resources")).find(
 ---
 
 {hub ? (
-    <ResourceArticle post={hub} hubResources={resources} />
+    <ResourceArticle
+        post={hub}
+        hubResources={resources.filter((r) => r.id !== hub.id)}
+    />
 ) : (
 
 <Layout
