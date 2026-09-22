@@ -1,7 +1,4 @@
 ---
-import { Icon } from "astro-icon/components"
-import heroBg from "~/components/airflow-2-eol-whitepaper/assets/hero-bg.jpg"
-
 interface Props {
     pdfHref: string
     readHref: string
@@ -19,53 +16,35 @@ const INSIDE = [
 
 <section class="hero">
     <div class="hero-grid" aria-hidden="true"></div>
-    <div class="hero-split">
-        <div class="hero-left">
-            <div class="hero-left-content">
-                <p class="eyebrow" data-usal="fade-r">
-                    Whitepaper · By Kai Waehner, Global Field CTO
-                </p>
-                <h1 data-usal="fade-r">
-                    Unified Orchestration and Agentic AI: <span
-                        class="highlight">One Control Plane</span
-                    > for Enterprise-Grade Automation
-                </h1>
-                <p class="subtitle" data-usal="fade-r">
-                    Enterprise automation is fragmented across four domains:
-                    data, infrastructure, applications, and business processes.
-                    AI agents now act across all four. This paper defines what
-                    it takes to govern them on a single control plane.
-                </p>
+    <div class="container hero-inner">
+        <p class="eyebrow" data-usal="fade-r">
+            Whitepaper · By Kai Waehner, Global Field CTO
+        </p>
+        <h1 data-usal="fade-r">
+            Unified Orchestration and Agentic AI: <span class="highlight"
+                >One Control Plane</span
+            > for Enterprise-Grade Automation
+        </h1>
+        <p class="subtitle" data-usal="fade-r">
+            Enterprise automation is fragmented across four domains: data,
+            infrastructure, applications, and business processes. AI agents now
+            act across all four. This paper defines what it takes to govern them
+            on a single control plane.
+        </p>
 
-                <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
-                <ul class="inside-list" data-usal="fade-l">
-                    {INSIDE.map((item) => <li>{item}</li>)}
-                </ul>
-            </div>
-        </div>
+        <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
+        <ul class="inside-list" data-usal="fade-l">
+            {INSIDE.map((item) => <li>{item}</li>)}
+        </ul>
+    </div>
+</section>
 
-        <div class="hero-right" style={`background-image: url(${heroBg.src})`}>
-            <div class="hero-right-content">
-                <div class="download-card" data-usal="fade-l">
-                    <p class="download-eyebrow">
-                        <Icon name="mdi:check-circle-outline" class="tick" />
-                        No form. No email. Just the PDF.
-                    </p>
-                    <h2 class="download-title">Get the whitepaper</h2>
-                    <ul class="download-meta">
-                        <li>PDF, 18 pages</li>
-                        <li>Full text also published on this page</li>
-                    </ul>
-                    <div class="download-actions">
-                        <a href={pdfHref} class="btn btn-primary" download>
-                            Download the PDF
-                        </a>
-                        <a href={readHref} class="btn btn-ghost">
-                            Read it online
-                        </a>
-                    </div>
-                </div>
-            </div>
+<section class="cta-band">
+    <div class="container cta-inner">
+        <h2 class="cta-title" data-usal="fade-r">Get the PDF whitepaper</h2>
+        <div class="cta-actions" data-usal="fade-l">
+            <a href={pdfHref} class="btn btn-primary" download>Download</a>
+            <a href={readHref} class="btn btn-secondary">Read it online</a>
         </div>
     </div>
 </section>
@@ -99,36 +78,15 @@ const INSIDE = [
         background-repeat: repeat;
     }
 
-    .hero-split {
+    .hero-inner {
         position: relative;
         z-index: 1;
-        display: flex;
-        flex-direction: column;
+        padding-top: 4rem;
+        padding-bottom: 3rem;
 
         @include media-breakpoint-up(lg) {
-            flex-direction: row;
-            min-height: 600px;
-        }
-    }
-
-    .hero-left {
-        display: flex;
-        align-items: center;
-        padding: 4rem 1.5rem 3rem;
-
-        @include media-breakpoint-up(lg) {
-            width: 66.6667%;
-            flex: 0 0 66.6667%;
-            padding: 5rem 4rem 6rem;
-            justify-content: flex-end;
-        }
-    }
-
-    .hero-left-content {
-        width: 100%;
-
-        @include media-breakpoint-up(lg) {
-            max-width: 760px;
+            padding-top: 5rem;
+            padding-bottom: 4rem;
         }
     }
 
@@ -144,6 +102,7 @@ const INSIDE = [
         font-weight: 600;
         line-height: 1.15;
         margin: 0 0 1.25rem;
+        max-width: 22ch;
 
         @include media-breakpoint-up(md) {
             font-size: 2.375rem;
@@ -159,10 +118,11 @@ const INSIDE = [
     }
 
     .subtitle {
-        font-size: 0.9375rem;
+        font-size: 1rem;
         line-height: 1.6;
         color: var(--ks-content-secondary);
-        margin: 0 0 2rem;
+        margin: 0 0 2.5rem;
+        max-width: 68ch;
     }
 
     .inside-title {
@@ -170,7 +130,7 @@ const INSIDE = [
         font-weight: 700;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        margin: 0 0 0.875rem;
+        margin: 0 0 1rem;
         color: var(--ks-content-primary);
         opacity: 0.6;
     }
@@ -180,6 +140,14 @@ const INSIDE = [
         padding: 0;
         margin: 0;
 
+        // The hero runs full width now, so the four points read as a grid
+        // rather than one long column.
+        @include media-breakpoint-up(md) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem 2.5rem;
+        }
+
         li {
             position: relative;
             padding-left: 1.75rem;
@@ -187,6 +155,10 @@ const INSIDE = [
             font-size: 0.9375rem;
             line-height: 1.5;
             color: var(--ks-content-secondary);
+
+            @include media-breakpoint-up(md) {
+                margin-bottom: 0;
+            }
 
             &::before {
                 content: "";
@@ -202,104 +174,45 @@ const INSIDE = [
         }
     }
 
-    .hero-right {
-        position: relative;
-        background-color: #0d0520;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-
-        @include media-breakpoint-up(lg) {
-            width: 33.3333%;
-            flex: 0 0 33.3333%;
-        }
+    .cta-band {
+        background-color: var(--ks-background-secondary);
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
     }
 
-    .hero-right-content {
-        position: relative;
-        z-index: 1;
+    .cta-inner {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2.5rem 1.5rem;
+        align-items: flex-start;
+        gap: 1.25rem;
+        padding-top: 1.75rem;
+        padding-bottom: 1.75rem;
 
-        @include media-breakpoint-up(lg) {
-            min-height: 100%;
-            padding: 4rem 2rem;
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
         }
     }
 
-    .download-card {
-        width: 100%;
-        max-width: 440px;
-        padding: 1.5rem;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(13, 5, 32, 0.72);
-        backdrop-filter: blur(8px);
-        color: #fff;
-    }
-
-    .download-eyebrow {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: $font-size-sm;
+    .cta-title {
+        font-size: 1.25rem;
         font-weight: 600;
-        color: #c9b6ff;
-        margin: 0 0 0.5rem;
-
-        .tick {
-            font-size: 1rem;
-            flex: none;
-        }
+        margin: 0;
+        color: var(--ks-content-primary);
     }
 
-    .download-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0 0 0.75rem;
-        color: #fff;
-    }
-
-    .download-meta {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-
-        li {
-            font-size: $font-size-sm;
-            color: rgba(255, 255, 255, 0.72);
-        }
-    }
-
-    .download-actions {
+    .cta-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 0.75rem;
 
         .btn {
-            flex: 1 1 auto;
-            text-align: center;
-            white-space: nowrap;
             font-weight: 700;
             border-radius: 8px;
-            padding: 0.625rem 1.25rem;
-        }
-
-        .btn-ghost {
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            background: transparent;
-
-            &:hover {
-                background: rgba(255, 255, 255, 0.08);
-                color: #fff;
-            }
+            padding: 0.625rem 1.5rem;
+            white-space: nowrap;
         }
     }
 </style>
