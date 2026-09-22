@@ -1,50 +1,82 @@
 ---
-// Simplified, hero-sized version of the "four domains, four orchestrators,
-// four audit trails" figure: four separate engines, four separate audit
-// trails, handoffs that break in between, and an agent layer reaching across
-// all of it with nothing governing it.
-// Each domain gets its own shape as well as its own colour: the point of the
-// figure is that these are four different tools, not four instances of one.
+// "Four domains, four orchestrators" — the figure the paper opens on: each
+// domain runs its own engine, the handoffs between them break, and the agent
+// layer reaches into all four with nothing governing it. The per-domain audit
+// trail is made in the prose, not here: a second chip per card cost more room
+// than the point was worth at this size.
+//
+// Drawn to the conventions of the hand-made Kestra figures (see
+// src/components/twozero/assets/gov-*.svg): tinted canvas, white cards with a
+// bold title and monospace chips for the technical detail, tinted-and-bordered
+// containers for a group, dashed connectors, and a pill for the takeaway.
+// Those figures do NOT use the UI grey ramp ($base-grey-*) — they use a
+// violet-tinted neutral ramp of their own, reproduced in --dg-* below.
+//
+// Categories, not vendors: the paper argues about the shape of the problem,
+// and naming four competitors in the opening figure picks a fight it does not
+// need to pick.
+import KestraMonogram from "~/components/ai-automation/assets/monogram.svg"
+
 const DOMAINS = [
-    { label: "Data", hue: "var(--d-data)", shape: "square" },
-    { label: "Infra", hue: "var(--d-infra)", shape: "circle" },
-    { label: "Apps", hue: "var(--d-apps)", shape: "diamond" },
-    { label: "Business", hue: "var(--d-business)", shape: "pill" },
+    { label: "Data", kind: "ETL" },
+    { label: "Infra", kind: "IaC" },
+    { label: "Apps", kind: "APIs" },
+    { label: "Business", kind: "BPM" },
 ] as const
 
-const COL_W = 105
+// Geometry is tuned so the monospace chips stay legible at the width the hero
+// actually renders this at. Chip widths are computed from the string, at the
+// 6.6px advance of JetBrains Mono 11px, so every chip keeps 8px of padding.
+const PAD = 16
+const CARD_W = 97
+const CARD_H = 70
 const GAP = 20
-const COL_Y = 74
-const COL_H = 150
-const x = (i: number) => i * (COL_W + GAP)
+const CARD_Y = 84
+const cardX = (i: number) => PAD + i * (CARD_W + GAP)
+const mid = (i: number) => cardX(i) + CARD_W / 2
+const chipW = (s: string) => s.length * 6.6 + 16
+
+// Kestra mark, bottom right, 16px in from the canvas edges. The monogram is
+// imported as a nested <svg>: Astro's svg integration drops its width/height,
+// and a nested <svg> without them defaults to 100% of the viewport, so both
+// have to be passed explicitly or the mark blows up to fill the figure.
+const MARK = 24
+const MARK_X = 480 - 16 - MARK
+const MARK_Y = 210 - 16 - MARK
 ---
 
 <figure class="diagram">
     <svg
-        viewBox="0 0 480 262"
+        viewBox="0 0 480 210"
         role="img"
         aria-labelledby="frag-title frag-desc"
         xmlns="http://www.w3.org/2000/svg"
     >
-        <title id="frag-title">Four domains, four orchestrators, four audit trails</title>
+        <title id="frag-title">Four domains, four orchestrators</title>
         <desc id="frag-desc">
-            Data, infrastructure, applications and business processes each run
-            their own orchestrator and keep their own audit trail. The handoffs
-            between them break, and an agent layer reaches across all four with
-            no single layer governing the actions.
+            Data, infrastructure, applications and business processes each
+            run their own orchestrator. The handoffs between them break, and an
+            agent layer reaches across all four with no single layer governing
+            the actions.
         </desc>
 
-        <!-- agent layer, reaching across all four -->
-        <rect x="0" y="0" width="480" height="40" rx="10" class="agent-band" />
-        <text x="240" y="25" class="agent-label">
+        <rect x="0" y="0" width="480" height="210" rx="12" class="canvas" />
+
+        {/* the agent layer, drawn as a group container spanning all four */}
+        <rect
+            x={PAD}
+            y="26"
+            width={480 - PAD * 2}
+            height="30"
+            rx="8"
+            class="agent-band"
+        />
+        <text x="240" y="45" class="agent-label">
             Agentic AI reaches across all four
         </text>
         {
             DOMAINS.map((_, i) => (
-                <path
-                    d={`M ${x(i) + COL_W / 2} 44 L ${x(i) + COL_W / 2} 68`}
-                    class="agent-arrow"
-                />
+                <path d={`M ${mid(i)} 56 L ${mid(i)} ${CARD_Y}`} class="reach" />
             ))
         }
 
@@ -52,69 +84,29 @@ const x = (i: number) => i * (COL_W + GAP)
             DOMAINS.map((d, i) => (
                 <g>
                     <rect
-                        x={x(i)}
-                        y={COL_Y}
-                        width={COL_W}
-                        height={COL_H}
+                        x={cardX(i)}
+                        y={CARD_Y}
+                        width={CARD_W}
+                        height={CARD_H}
                         rx="10"
-                        class="col"
+                        class="card"
                     />
-                    <text x={x(i) + COL_W / 2} y={COL_Y + 28} class="col-label">
+                    <text x={mid(i)} y={CARD_Y + 27} class="card-title">
                         {d.label}
                     </text>
 
-                    {/* its own engine, its own shape */}
-                    {d.shape === "square" && (
-                        <rect
-                            x={x(i) + COL_W / 2 - 17}
-                            y={COL_Y + 46}
-                            width="34"
-                            height="34"
-                            rx="9"
-                            fill={d.hue}
-                        />
-                    )}
-                    {d.shape === "circle" && (
-                        <circle
-                            cx={x(i) + COL_W / 2}
-                            cy={COL_Y + 63}
-                            r="18"
-                            fill={d.hue}
-                        />
-                    )}
-                    {d.shape === "diamond" && (
-                        <rect
-                            x={x(i) + COL_W / 2 - 15}
-                            y={COL_Y + 48}
-                            width="30"
-                            height="30"
-                            rx="6"
-                            fill={d.hue}
-                            transform={`rotate(45 ${x(i) + COL_W / 2} ${COL_Y + 63})`}
-                        />
-                    )}
-                    {d.shape === "pill" && (
-                        <rect
-                            x={x(i) + COL_W / 2 - 22}
-                            y={COL_Y + 52}
-                            width="44"
-                            height="22"
-                            rx="11"
-                            fill={d.hue}
-                        />
-                    )}
-
-                    {/* its own audit trail */}
-                    {[0, 1, 2].map((n) => (
-                        <rect
-                            x={x(i) + 20}
-                            y={COL_Y + 100 + n * 14}
-                            width={[65, 50, 58][n]}
-                            height="6"
-                            rx="3"
-                            class="trail"
-                        />
-                    ))}
+                    {/* its own engine */}
+                    <rect
+                        x={mid(i) - chipW(d.kind) / 2}
+                        y={CARD_Y + 40}
+                        width={chipW(d.kind)}
+                        height="20"
+                        rx="5"
+                        class="chip"
+                    />
+                    <text x={mid(i)} y={CARD_Y + 54} class="chip-text">
+                        {d.kind}
+                    </text>
                 </g>
             ))
         }
@@ -124,49 +116,54 @@ const x = (i: number) => i * (COL_W + GAP)
             the cost is the boundary, not the tools on either side of it. */}
         {
             [0, 1, 2].map((i) => {
-                const cx = x(i) + COL_W + GAP / 2
-                const cy = COL_Y + 63
+                const from = cardX(i) + CARD_W
+                const y = CARD_Y + 35
                 return (
                     <g class="cut">
-                        <path d={`M ${cx - 24} ${cy} L ${cx - 6} ${cy}`} />
-                        <path d={`M ${cx + 6} ${cy} L ${cx + 24} ${cy}`} />
+                        <path d={`M ${from + 1} ${y} L ${from + 7} ${y}`} />
+                        <path
+                            d={`M ${from + GAP - 7} ${y} L ${from + GAP - 1} ${y}`}
+                        />
                     </g>
                 )
             })
         }
 
-        <rect x="0" y="234" width="480" height="28" rx="8" class="caption-bar" />
-        <text x="240" y="253" class="caption-label">
+        <rect x="108" y="168" width="264" height="28" rx="14" class="takeaway" />
+        <text x="240" y="186" class="takeaway-text">
             The work breaks at the boundaries
         </text>
+
+        <KestraMonogram
+            x={MARK_X}
+            y={MARK_Y}
+            width={MARK}
+            height={MARK}
+            class="mark"
+        />
     </svg>
 </figure>
 
 <style lang="scss">
     @use "/src/assets/styles/color-palette" as *;
 
-    // Colours come from the Kestra palette (src/assets/styles/_color-palette.scss,
-    // generated from Figma). The four domains use the primary ramp so they read
-    // as four distinct engines while staying inside the brand; the agent band
-    // uses the orange family, which is what the design system already uses for
-    // "unattended / needs attention".
     .diagram {
-        --d-surface: var(--ks-background-secondary);
-        --d-border: var(--ks-border-secondary);
-        --d-text: var(--ks-content-primary);
-        --d-trail: var(--ks-border-secondary);
-        --d-agent: var(--ks-background-orange-light);
-        --d-agent-line: var(--orange-300);
-        --d-agent-text: var(--orange-500);
-        --d-cut: var(--ks-content-tertiary);
-        // The conclusion bar is Kestra primary; the four domains sit on
-        // either side of it in the same ramp, so no domain collides with it.
-        --d-caption: #{$base-primary-base};
-        --d-caption-text: #{$base-grey-white};
-        --d-apps: #{$base-primary-200};
-        --d-data: #{$base-primary-300};
-        --d-infra: #{$base-primary-400};
-        --d-business: #{$base-primary-600};
+        // Diagram neutrals, taken from the hand-made Kestra figures. They are
+        // deliberately violet-tinted and are not the $base-grey-* UI ramp.
+        --dg-canvas: #f4f4fb;
+        --dg-card: #ffffff;
+        --dg-border: #e9e9ee;
+        --dg-title: #08090a;
+        --dg-chip: #eeeef3;
+        --dg-chip-text: #5f5f7c;
+        --dg-cut: #adadbf;
+
+        --dg-agent-fill: #{$base-primary-100};
+        --dg-agent-border: #{$base-primary-200};
+        --dg-agent-text: #{$base-primary-600};
+        --dg-reach: #{$base-primary-300};
+        --dg-takeaway: #{$base-primary-base};
+        --dg-takeaway-text: #{$base-grey-white};
 
         margin: 0;
         width: 100%;
@@ -175,72 +172,94 @@ const x = (i: number) => i * (COL_W + GAP)
             display: block;
             width: 100%;
             height: auto;
-            overflow: visible;
-            font-family: $font-family-sans-serif;
         }
     }
 
     :global(html.dark) .diagram {
-        --d-agent: #{rgba(#dd5f00, 0.18)}; // orange/400 at low opacity
-        --d-agent-line: var(--orange-300);
-        --d-agent-text: var(--orange-200);
-        // On a near-black surface the ramp has to shift up a step, otherwise
-        // the darkest domains disappear into the column behind them.
-        --d-apps: #{$base-primary-100};
-        --d-data: #{$base-primary-200};
-        --d-infra: #{$base-primary-300};
-        --d-business: #{$base-primary-400};
+        --dg-canvas: #{$base-grey-800};
+        --dg-card: #{$base-grey-700};
+        --dg-border: #{$base-grey-600};
+        --dg-title: #{$base-grey-white};
+        --dg-chip: #{$base-grey-600};
+        --dg-chip-text: #{$base-grey-200};
+        --dg-cut: #{$base-grey-400};
+
+        --dg-agent-fill: #{rgba($base-primary-500, 0.18)};
+        --dg-agent-border: #{$base-primary-500};
+        --dg-agent-text: #{$base-primary-200};
+        --dg-reach: #{$base-primary-400};
+    }
+
+    .canvas {
+        fill: var(--dg-canvas);
+    }
+
+    // the monogram carries its own brand colours in both themes
+    .mark {
+        pointer-events: none;
     }
 
     .agent-band {
-        fill: var(--d-agent);
+        fill: var(--dg-agent-fill);
+        stroke: var(--dg-agent-border);
+        stroke-width: 1;
     }
 
     .agent-label {
-        fill: var(--d-agent-text);
+        fill: var(--dg-agent-text);
+        font-family: $font-family-sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        text-anchor: middle;
+    }
+
+    .reach {
+        stroke: var(--dg-reach);
+        stroke-width: 1.5;
+        stroke-dasharray: 4 4;
+        stroke-linecap: round;
+    }
+
+    .card {
+        fill: var(--dg-card);
+        stroke: var(--dg-border);
+        stroke-width: 1;
+    }
+
+    .card-title {
+        fill: var(--dg-title);
+        font-family: $font-family-sans-serif;
         font-size: 14px;
         font-weight: 700;
         text-anchor: middle;
     }
 
-    .agent-arrow {
-        stroke: var(--d-agent-line);
-        stroke-width: 2.5;
-        stroke-dasharray: 5 4;
-        stroke-linecap: round;
+    .chip {
+        fill: var(--dg-chip);
     }
 
-    .col {
-        fill: var(--d-surface);
-        stroke: var(--d-border);
-        stroke-width: 1;
-    }
-
-    .col-label {
-        fill: var(--d-text);
-        font-size: 15px;
-        font-weight: 700;
+    .chip-text {
+        fill: var(--dg-chip-text);
+        font-family: $font-family-monospace;
+        font-size: 11px;
         text-anchor: middle;
     }
 
-    .trail {
-        fill: var(--d-trail);
-    }
-
     .cut path {
-        stroke: var(--d-cut);
-        stroke-width: 2.5;
+        stroke: var(--dg-cut);
+        stroke-width: 2;
         stroke-linecap: round;
     }
 
-    .caption-bar {
-        fill: var(--d-caption);
+    .takeaway {
+        fill: var(--dg-takeaway);
     }
 
-    .caption-label {
-        fill: var(--d-caption-text);
+    .takeaway-text {
+        fill: var(--dg-takeaway-text);
+        font-family: $font-family-sans-serif;
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 600;
         text-anchor: middle;
     }
 </style>
