@@ -75,7 +75,7 @@ Each orchestration domain developed its own specialized tools, creating a fragme
 
 When a data pipeline needs to trigger an infrastructure change, or an AI agent's action requires a formal business approval, the handoffs between these siloed orchestrators are often brittle, manual, and lack visibility. Industry analysts have recognized this problem, with terms like Gartner's SOAP (Service Orchestration and Automation Platforms) and BOAT (Business Orchestration and Automation Technologies) or Forrester's Adaptive Process Orchestration pointing towards a need for convergence.
 
-The solution is a single, unified control plane that can manage workflows across all domains. A unified platform provides a consistent way to define, monitor, and govern processes, regardless of whether they involve data, infrastructure, AI, or business logic. This approach eliminates glue code, reduces operational overhead, and provides end-to-end visibility.
+The solution is a single, unified control plane that can manage workflows across all domains. A unified platform provides a consistent way to define, monitor, and govern processes, regardless of whether they involve data, infrastructure, AI, or business logic. This approach eliminates glue code, reduces operational overhead, and provides end-to-end visibility. That convergence has a name and a testable definition: [unified orchestration](/resources/orchestration/unified-orchestration). The [unified orchestration whitepaper](/resources/whitepapers/unified-orchestration) sets out the seven requirements such a platform has to meet, and why agentic AI is a layer governed across all four domains rather than a fifth one.
 
 ## Choosing an orchestration platform: key requirements
 
@@ -170,7 +170,7 @@ This demonstrates the power of a unified platform to manage diverse tasks within
 
 ## Explore Kestra's orchestration resources
 
-Orchestration is a vast topic. To learn more, explore our dedicated [resource hubs](https://www.kestra.io/resources) for each domain:
+Orchestration is a vast topic. Start with the definition of the converged category, [unified orchestration](/resources/orchestration/unified-orchestration), then explore our dedicated [resource hubs](/resources) for each domain:
 *   [Data Engineering Resources](https://www.kestra.io/resources/data)
 *   [Infrastructure Automation Resources](https://www.kestra.io/resources/infrastructure)
 *   [AI Orchestration Resources](https://www.kestra.io/resources/ai)
