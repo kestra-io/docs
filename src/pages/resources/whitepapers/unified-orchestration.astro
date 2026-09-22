@@ -17,8 +17,8 @@ import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes
 const PDF_HREF = "/unified-orchestration-whitepaper.pdf"
 const READ_HREF = "#executive-summary"
 
-const post = await getEntry("resources", "unified-orchestration")
-if (!post) throw new Error("resources/unified-orchestration entry missing")
+const post = await getEntry("resources", "unified-orchestration-whitepaper")
+if (!post) throw new Error("resources/unified-orchestration-whitepaper entry missing")
 const { Content, headings } = await render(post)
 const page = post.data
 

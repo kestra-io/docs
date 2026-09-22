@@ -8,31 +8,22 @@ author: Kai Waehner
 date: 2026-09-22
 href: /resources/whitepapers/unified-orchestration
 faq:
-  - question: "What is unified orchestration?"
-    answer: "Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane. It is defined by seven requirements: language and domain neutrality, event-driven and scheduled triggering, declarative version-controlled definitions, deep governance, sovereignty and deployment flexibility, extensibility over the existing stack, and governed nondeterministic steps."
   - question: "Is agentic AI a fifth orchestration domain?"
     answer: "No. Orchestration fragmented into four domains: data, infrastructure, applications, and business processes. Agents act across all four within a single process and are themselves a workload the control plane has to govern. Agentic AI is the cross-cutting layer, not a fifth silo."
   - question: "What is the difference between agentic orchestration and orchestrating agents?"
     answer: "Orchestrating agents means coordinating agents with one another, which agent frameworks such as LangGraph and CrewAI do at the application layer. Agentic orchestration means running agentic steps inside governed end-to-end workflows, on the same control plane as every other step. The first is a feature of an agent framework; the second is a property of an orchestration platform. An enterprise needs both."
-  - question: "Does unified orchestration replace Airflow, Control-M, Camunda or Temporal?"
-    answer: "Not by design. Each remains strong in its home domain. Unified orchestration coordinates across domains and provides a consolidation path at the customer's pace, sitting above the tools already in place rather than ripping them out."
-  - question: "Is unified orchestration a Gartner or Forrester category?"
-    answer: "Not yet as a single category. Gartner's Service Orchestration and Automation Platforms (SOAP) and Business Orchestration and Automation Technologies (BOAT), and Forrester's Adaptive Process Orchestration each name part of the convergence. Together they validate the emergence of the market without establishing any single vendor's leadership."
   - question: "Does unified orchestration replace data integration or streaming platforms?"
     answer: "No. Orchestration decides what happens next; moving the data is a different job. Unified orchestration sits in the middle layer above integration and streaming (Kafka, Flink, ETL/ELT, APIs), consumes from all of them, and coordinates the tools around them."
 schema:
   "@context": "https://schema.org"
   "@graph":
-    - "@type": "DefinedTerm"
-      "@id": "https://kestra.io/resources/whitepapers/unified-orchestration#unified-orchestration"
-      name: "Unified orchestration"
-      description: "Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane."
-      url: "https://kestra.io/resources/whitepapers/unified-orchestration"
     - "@type": "DigitalDocument"
       name: "Unified Orchestration and Agentic AI: One Control Plane for Enterprise-Grade Automation"
       url: "https://kestra.io/unified-orchestration-whitepaper.pdf"
       encodingFormat: "application/pdf"
       isAccessibleForFree: true
+      about:
+        "@id": "https://kestra.io/resources/orchestration/unified-orchestration#unified-orchestration"
       author:
         "@type": "Person"
         name: "Kai Waehner"
@@ -48,7 +39,7 @@ schema:
 
 **Definition.** Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane.
 
-→ Read the full definition and how the four domains fit together: [What is orchestration?](/resources/orchestration)
+→ Read the full definition and the seven requirements: [What is unified orchestration?](/resources/orchestration/unified-orchestration) · How the four domains fit together: [What is orchestration?](/resources/orchestration)
 
 ## Executive summary
 
