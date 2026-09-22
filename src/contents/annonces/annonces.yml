@@ -1,5 +1,5 @@
 - id: 1
-  tag: "Kestra 2.0 is out"
-  linkText: "Discover Kestra 2.0:"
-  tail: "what has changed and what you get"
-  href: "/two-zero"
+  tag: "Hacktoberfest 2026"
+  linkText: "Put your PRs into Kestra:"
+  tail: "registration is open, submissions run October 1 to 31"
+  href: "/hacktoberfest"
