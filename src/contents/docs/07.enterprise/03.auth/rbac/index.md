@@ -31,7 +31,23 @@ The image below shows the relationship between Users, Groups, Service Accounts, 
 
 A role is a collection of permissions that can be assigned to users, service accounts, or groups. Each permission is a combination of a **resource** (e.g., `FLOW`, `EXECUTION`, `SECRET`) and one or more **actions** (e.g., `EXECUTE`, `VIEW`, `DELETE`). A role alone grants nothing — it must be attached to a user, service account, or group via a **binding** on the **IAM** page.
 
-Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). Use [Impersonate](#impersonate) to verify a user's effective permissions after assigning roles.
+Users, service accounts, and groups can hold any number of roles simultaneously. You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). Use [Impersonate](#impersonate) to verify a user's effective permissions after assigning roles.
+
+### How permissions are evaluated
+
+Access is granted when the identity has access to the tenant, and at least one of its bindings — direct or inherited through a group — carries a role containing the requested action on the requested resource, at a scope that covers the target location.
+
+Three consequences follow from this:
+
+1. **Tenant access is a prerequisite.** Without it, no binding is evaluated.
+2. **Permissions add up.** The effective set is the union of all bindings. There is no deny mechanism: adding a narrower role never removes a right already granted by another binding.
+3. **A tenant-wide grant covers every namespace**, including namespaces created later.
+
+### Namespace scope
+
+Bindings can be scoped to a specific namespace. A namespace-scoped binding covers that namespace and its entire subtree, matched by dot-separated prefix. A binding on `io.acme.data` covers `io.acme.data.etl` but not `io.acme.finance` or `io.acme.datax` — the match requires a complete segment boundary, not just a string prefix.
+
+A tenant-wide binding always covers every namespace, so it also satisfies any namespace check.
 
 ## Impersonate
 
@@ -41,11 +57,11 @@ After assigning permissions to a user, Instance Owners can impersonate users to 
 
 ![Stop Impersonating User](./stop-impersonate-user.png)
 
-### Resources
+## Resources
 
-A resource is a category of product entity or capability that can be controlled through RBAC. Each resource has its own set of allowed actions.
+A resource is a category of product entity or capability that can be controlled through RBAC. Resources fall into three scope classes that determine how a binding's namespace restriction is applied.
 
-**Core resources** (namespace-scoped — bindings can restrict access to specific namespaces):
+**Namespace-scopable** — a binding scoped to a namespace restricts these resources to that namespace and its subtree. A tenant-wide binding covers everything.
 
 | Resource | Description |
 |---|---|
@@ -55,36 +71,37 @@ A resource is a category of product entity or capability that can be controlled 
 | `NAMESPACE` | Namespaces and their files |
 | `KVSTORE` | Key-value store entries |
 | `SECRET` | Secrets stored in the namespace |
-| `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
-
-**Apps and features** (tenant-scoped):
-
-| Resource | Description |
-|---|---|
-| `DASHBOARD` | Custom dashboards |
-| `BLUEPRINT` | Custom blueprints |
+| `CREDENTIAL` | Credentials for external integrations |
+| `REUSABLE_INPUTS` | Reusable input definitions |
 | `APP` | Apps and their executions |
-| `TESTSUITE` | Unit tests |
+| `TESTSUITE` | Test suites and their runs |
 | `ASSET` | Data assets and lineage |
-| `MCP_SERVER` | MCP servers exposing flows as AI tools |
-| `COPILOT` | AI Copilot flow generation |
+| `CASE` | Cases |
+| `POLICY` | Governance policies controlling flow and task behavior |
+| `BINDING` | Role-to-entity bindings (a namespace-scoped binding on `BINDING` delegates access management for that subtree) |
 
-**Administration** (tenant-scoped):
+**Tenant-wide** — these resources have no namespace dimension. Scoping a binding to a namespace does not restrict them: the permission applies across the whole tenant regardless of the binding's scope.
 
 | Resource | Description |
 |---|---|
 | `USER` | Users in the tenant |
 | `GROUP` | Groups and their members |
 | `ROLE` | RBAC roles |
-| `BINDING` | Role-to-entity bindings |
 | `SERVICE_ACCOUNT` | Service accounts |
 | `INVITATION` | User invitations |
+| `DASHBOARD` | Custom dashboards |
 | `AUDITLOG` | Audit log entries |
-| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
+| `COPILOT` | AI Copilot flow generation |
 | `SYSTEM_SETTINGS` | Instance-level settings |
 | `TENANT_SETTINGS` | Tenant-level settings |
 
-### Actions
+**Global-only** — `BLUEPRINT`, `MCP_SERVER`, `PROMOTION_TARGET`, and `SUPPORT`. Only a tenant-scoped binding counts for these. A namespace-scoped binding carrying any of them grants nothing at all.
+
+:::alert{type="warning"}
+A custom role that mixes namespace-scopable and tenant-wide (or global-only) resources behaves differently than it appears. When you scope that binding to a namespace, the namespace-scopable resources are correctly restricted, but the tenant-wide resources are granted across the whole tenant regardless, and any global-only resources are silently not granted at all. Roles should not mix scope classes unless that behavior is intentional.
+:::
+
+## Actions
 
 Each resource defines its own set of allowed actions. Not every action applies to every resource.
 
@@ -122,7 +139,7 @@ For a complete resource-to-endpoint mapping, see the [Permissions reference](./p
 If you are upgrading from Kestra 1.x, see the [RBAC action model migration guide](../../../11.migration-guide/v2.0.0/rbac-action-model/index.md) for how old CRUD permissions map to the new actions and what was dropped.
 :::
 
-### MCP server permissions
+## MCP server permissions
 
 `MCP_SERVER` is a first-class RBAC resource that controls access to [Kestra MCP servers](../../../ai-tools/03.mcp-server/index.md). Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
 
@@ -137,7 +154,7 @@ Default role assignments:
 
 In addition to these permissions, access to a **private** MCP server is also flow-scoped: a user can connect to a private server only if they have `FLOW: EXECUTE` on at least one namespace that contains a flow with an `McpToolTrigger` pointing at that server.
 
-### Managed roles
+## Managed roles
 
 Kestra ships five managed roles. Each role's full permission set is visible under **IAM → Roles**. Instance Owners can create additional custom roles on top of these. Users can hold multiple roles.
 
@@ -170,9 +187,15 @@ Key differences between Admin and Instance Owner:
 
 ## Instance Owner
 
-Instance Owner is a powerful user type with instance-wide privileges. Use it sparingly — only for tasks that require it, such as creating tenants, troubleshooting, or helping a user.
+Instance Owner is a flag on a user or service account, not a role. It cannot be assigned through a binding.
 
-Unlike tenant-scoped roles, Instance Owner operates across all tenants and does not require any Role or Binding. Instance Owners access instance-wide controls through the [Instance Owner console](../../05.instance/00.instance-owner/index.md), which covers tenant management, instance IAM, infrastructure, and governance.
+Instance Owner unlocks instance-level functions — tenant management, worker groups and queues, versioned plugins, the kill switch, and instance settings. These resources carry no RBAC actions, so no role can grant access to them.
+
+For workload resources (flows, executions, triggers, secrets, credentials, namespaces, and apps), the Instance Owner flag grants nothing. An Instance Owner is evaluated like any other user on those resources and still needs tenant access plus a binding to act on them. The bootstrap account configured at startup is given both tenant access and an Admin binding explicitly.
+
+Instance Owners have access to every tenant without holding explicit tenant access there. As a result, they appear in every tenant's user list even when they hold no groups or bindings in that tenant. This is by design: the list shows who can act in the tenant, not just who was formally added to it.
+
+Instance Owners access instance-wide controls through the [Instance Owner console](../../05.instance/00.instance-owner/index.md), which covers tenant management, instance IAM, infrastructure, and governance.
 
 For how to create Instance Owner users and manage the privilege, see [Instance Owner](../../05.instance/00.instance-owner/index.md).
 
@@ -274,4 +297,14 @@ This prevents accidental changes to existing permissions.
 :::collapse{title="What happens if you delete a Group?"}
 
 All users and service accounts in that group lose the permissions granted by bindings attached to it. The users and service accounts themselves still exist.
+:::
+
+:::collapse{title="Why are some flows missing from a user's list?"}
+
+Resource lists are filtered at the API boundary to the caller's allowed namespaces. Out-of-scope resources do not appear — there is no 403, no greyed-out row. A user with no binding covering a namespace sees an empty list for it, not an error. "Some of my flows are missing" almost always means a binding is missing or scoped to the wrong namespace.
+:::
+
+:::collapse{title="Why does an Instance Owner appear in a tenant they were never added to?"}
+
+Instance Owners can act in every tenant regardless of explicit tenant access. The tenant user list shows who can operate in that tenant, so Instance Owners always appear there. Their row typically shows no groups and no roles, which distinguishes them from users with formal tenant access.
 :::

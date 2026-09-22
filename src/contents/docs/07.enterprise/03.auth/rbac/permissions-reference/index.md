@@ -442,7 +442,7 @@ DELETE
 ---
 
 :::collapse{title="BLUEPRINT"}
-**Scope:** Tenant
+**Scope:** Global-only — only a tenant-scoped binding counts. A namespace-scoped binding carrying `BLUEPRINT` grants nothing.
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view or browse custom blueprints.
@@ -476,7 +476,7 @@ Notes
 ---
 
 :::collapse{title="APP"}
-**Scope:** Tenant (with namespace checks when the app definition references a namespace)
+**Scope:** Namespace (list and catalog operations check any tenant-level access first; individual operations are checked against the app's own namespace)
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view app source, search, and catalog.
@@ -532,7 +532,7 @@ Notes
 ---
 
 :::collapse{title="TESTSUITE"}
-**Scope:** Tenant
+**Scope:** Namespace
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view tests and test results.
@@ -571,7 +571,7 @@ EXECUTE
 ---
 
 :::collapse{title="ASSET"}
-**Scope:** Tenant (with namespace checks when the asset has a namespace)
+**Scope:** Namespace (search and top-level view use a tenant-level gate; lock, unlock, and delete are checked against the asset's own namespace)
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view assets and their dependency or usage graphs.
@@ -606,7 +606,7 @@ UNLOCK
 ---
 
 :::collapse{title="MCP_SERVER"}
-**Scope:** Tenant
+**Scope:** Global-only — only a tenant-scoped binding counts. A namespace-scoped binding carrying `MCP_SERVER` grants nothing.
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view MCP server configuration and registered tools.
@@ -766,7 +766,7 @@ DELETE
 ---
 
 :::collapse{title="BINDING"}
-**Scope:** Tenant
+**Scope:** Namespace or Tenant — creating or deleting a namespace-scoped binding requires `BINDING` permission at that namespace level; creating or deleting a tenant-wide binding requires a tenant-level grant. This is the mechanism for delegating binding management to a namespace subtree without giving tenant-wide IAM access.
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view bindings.
@@ -903,6 +903,130 @@ VALIDATE (any `POLICY` VIEW action — no dedicated check)
 
 Notes
 - Instance-scope policy endpoints (`/api/v1/instance/policies/...`) manage read-only static policies declared in server configuration and are instance-owner-only; they are not governed by `POLICY` RBAC permissions.
+:::
+
+---
+
+:::collapse{title="REUSABLE_INPUTS"}
+**Scope:** Namespace — all operations are checked against the target namespace. Listing inherits from parent namespaces; the caller must hold LIST on the namespace they query from.
+
+**Actions and their meaning**
+- `VIEW`: read a reusable input definition, including inherited ones and their revisions.
+- `LIST`: search or browse reusable input definitions visible from a namespace.
+- `CREATE`: create a new definition.
+- `UPDATE`: update an existing definition.
+- `DELETE`: delete a definition.
+
+**Endpoints**
+
+VIEW
+- `GET /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}/revisions`
+
+LIST
+- `GET /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs`
+- `GET /api/v1/{tenant}/reusable-inputs/namespaces` (namespaces that define at least one block, filtered by caller's LIST access)
+
+CREATE / UPDATE
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}` (creates if id does not exist, updates if it does)
+
+DELETE
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}`
+:::
+
+---
+
+:::collapse{title="CASE"}
+**Scope:** Namespace — all individual operations are checked against the case's own namespace. Search and count endpoints require any `CASE` action at the tenant level; results are filtered to the caller's allowed namespaces.
+
+**Actions and their meaning**
+- `VIEW`: read a case and its timeline.
+- `LIST`: search, count, and browse cases.
+- `CREATE`: create a case.
+- `UPDATE`: update a case, change its status, acknowledge, resolve, cancel, assign, watch, or comment on it.
+- `DELETE`: delete a case.
+- `FOLLOW`: follow or unfollow a case (add or remove the caller as a watcher).
+- `TEMPLATE`: manage case templates (via the `CaseTemplatesController`).
+
+**Endpoints**
+
+LIST
+- `GET /api/v1/{tenant}/cases/search`
+- `GET /api/v1/{tenant}/cases/counts`
+- `GET /api/v1/{tenant}/cases/assignees`
+
+VIEW
+- `GET /api/v1/{tenant}/cases/{id}`
+- `GET /api/v1/{tenant}/cases/{id}/events`
+
+CREATE
+- `POST /api/v1/{tenant}/cases`
+- `POST /api/v1/{tenant}/cases/from-task`
+
+UPDATE
+- `PUT /api/v1/{tenant}/cases/{id}`
+- `POST /api/v1/{tenant}/cases/{id}/acknowledge`
+- `POST /api/v1/{tenant}/cases/{id}/resolve`
+- `POST /api/v1/{tenant}/cases/{id}/cancel`
+- `POST /api/v1/{tenant}/cases/{id}/status`
+- `POST /api/v1/{tenant}/cases/{id}/assign`
+- `POST /api/v1/{tenant}/cases/{id}/comments`
+- `POST /api/v1/{tenant}/cases/by-ids/acknowledge`
+
+DELETE
+- `DELETE /api/v1/{tenant}/cases/{id}`
+- `POST /api/v1/{tenant}/cases/by-ids/delete`
+- `DELETE /api/v1/{tenant}/cases/by-query`
+
+FOLLOW
+- `POST /api/v1/{tenant}/cases/{id}/follow`
+- `POST /api/v1/{tenant}/cases/{id}/unfollow`
+:::
+
+---
+
+:::collapse{title="PROMOTION_TARGET"}
+**Scope:** Global-only — only a tenant-scoped binding counts. A namespace-scoped binding carrying `PROMOTION_TARGET` grants nothing.
+
+**Actions and their meaning**
+- `VIEW` / `LIST`: view promotion targets and their flow sources.
+- `CREATE`: create a promotion target.
+- `UPDATE`: update a promotion target.
+- `DELETE`: delete a promotion target.
+
+**Endpoints**
+
+VIEW / LIST
+- `GET /api/v1/{tenant}/promotion-targets`
+- `GET /api/v1/{tenant}/promotion-targets/{id}`
+- `GET /api/v1/{tenant}/promotion-targets/{id}/flow-source`
+
+CREATE
+- `POST /api/v1/{tenant}/promotion-targets`
+- `POST /api/v1/{tenant}/promotion-targets/test`
+- `POST /api/v1/{tenant}/promotion-targets/{id}/test`
+- `POST /api/v1/{tenant}/promotion-targets/{id}/flow-hashes`
+
+UPDATE
+- `PUT /api/v1/{tenant}/promotion-targets/{id}`
+
+DELETE
+- `DELETE /api/v1/{tenant}/promotion-targets/{id}`
+:::
+
+---
+
+:::collapse{title="SUPPORT"}
+**Scope:** Global-only — only a tenant-scoped binding counts. A namespace-scoped binding carrying `SUPPORT` grants nothing.
+
+**Actions and their meaning**
+- `CREATE`: the only valid action — gates access to support tooling endpoints.
+
+**Endpoints**
+
+CREATE
+- `GET /api/v1/{tenant}/support/debug-info` (download instance debug bundle)
+- `POST /api/v1/{tenant}/support/forward` (forward a support ticket)
 :::
 
 ---
