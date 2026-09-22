@@ -11,6 +11,8 @@ import infraDesktop from "~/assets/landing/infrastructure/desk-bkg-infra.webp"
 import infraGlow from "~/assets/landing/infrastructure/glow.svg"
 import businessMobile from "~/assets/landing/business/mob-bkg-business.webp"
 import businessDesktop from "~/assets/landing/business/desk-bkg-business.webp"
+import orchestrationMobile from "~/assets/landing/orchestration/mob-bkg-orchestration.webp"
+import orchestrationDesktop from "~/assets/landing/orchestration/desk-bkg-orchestration.webp"
 
 interface Props {
     tag: ResourceTag
@@ -31,6 +33,11 @@ const bgByTag: Partial<Record<ResourceTag, { mobile: string; desktop: string; gl
     business: {
         mobile: businessMobile.src,
         desktop: businessDesktop.src,
+        glow: null,
+    },
+    orchestration: {
+        mobile: orchestrationMobile.src,
+        desktop: orchestrationDesktop.src,
         glow: null,
     },
 }
