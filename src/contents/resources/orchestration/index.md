@@ -113,12 +113,13 @@ A unified orchestrator allows you to build workflows that seamlessly cross domai
 
 ```yaml
 id: cross-domain-healthcheck
-namespace: company.team.production
+namespace: kestra.seo
 
 tasks:
   - id: check-disk-space
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: DOCKER
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: debian:stable-slim
     commands:
       - |
@@ -128,7 +129,7 @@ tasks:
 
   - id: process-data-if-safe
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs['check-disk-space'].exitCode == 0 and outputs['check-disk-space'].outputFiles['disk_usage.txt']|first|int < 90 }}"
+    condition: "{{ read(outputs['check-disk-space'].outputFiles['disk_usage.txt']) | trim | number < 90 }}"
     then:
       - id: transform-data
         type: io.kestra.plugin.scripts.python.Script
@@ -136,9 +137,9 @@ tasks:
           # Your data processing logic here
           print("Disk space OK. Processing data.")
           # ...
-        
+
       - id: notify-success
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         payload: |
           {
@@ -146,7 +147,7 @@ tasks:
           }
     else:
       - id: alert-disk-full
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         payload: |
           {
