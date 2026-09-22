@@ -162,11 +162,11 @@ https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook
 
 ### Deploy flows with GitHub Actions
 
-Kestra provides [official GitHub Actions](https://github.com/kestra-io/github-actions) to validate and deploy flows:
+Kestra provides [official GitHub Actions](https://github.com/kestra-io/kestra-actions) to validate and deploy flows:
 
-- [`validate-flows`](https://github.com/kestra-io/github-actions/tree/main/validate-flows) — validate flows in a directory against a Kestra server
-- [`deploy-flows`](https://github.com/kestra-io/github-actions/tree/main/deploy-flows) — create or update flows from a directory
-- [`deploy-namespace-files`](https://github.com/kestra-io/github-actions/tree/main/deploy-namespace-files) — deploy namespace files from a local path
+- [`validate-flows`](https://github.com/kestra-io/validate-flows-action-v2) — validate flows in a directory against a Kestra server
+- [`deploy-flows`](https://github.com/kestra-io/deploy-flows-action-v2) — create or update flows from a directory
+- [`deploy-namespace-files`](https://github.com/kestra-io/deploy-namespace-files-action) — deploy namespace files from a local path
 
 #### Example GitHub Actions workflow
 
@@ -182,14 +182,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Validate flows
-        uses: kestra-io/github-actions/validate-flows@main
+        uses: kestra-io/validate-flows-action-v2@main
         with:
           directory: ./flows/prod
           server: ${{secrets.KESTRA_HOSTNAME}}
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
       - name: Deploy prod
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           namespace: prod
           directory: ./flows/prod
@@ -197,7 +197,7 @@ jobs:
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
       - name: Deploy prod-marketing
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           namespace: prod.marketing
           directory: ./flows/prod.marketing
