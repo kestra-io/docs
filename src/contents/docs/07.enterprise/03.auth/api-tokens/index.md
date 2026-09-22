@@ -18,7 +18,7 @@ API tokens grant programmatic access to the Kestra API for users and [service ac
 
 Pass a token as a `Bearer` header to authenticate any Kestra API call — from a CI/CD pipeline, a custom application, or any of the following:
 
-- [GitHub Actions](https://github.com/kestra-io/github-actions)
+- [GitHub Actions](https://github.com/kestra-io/kestra-actions)
 - [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
 - [Kestra Server CLI](../../../kestra-cli/kestra-server/index.md)
 - [kestractl](../../../kestra-cli/kestractl/index.md)
