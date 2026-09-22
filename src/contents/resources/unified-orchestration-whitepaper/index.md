@@ -19,7 +19,7 @@ schema:
   "@graph":
     - "@type": "DigitalDocument"
       name: "Unified Orchestration and Agentic AI: One Control Plane for Enterprise-Grade Automation"
-      url: "https://kestra.io/unified-orchestration-whitepaper.pdf"
+      url: "https://kestra.io/unified-orchestration-whitepaper-kestra.pdf"
       encodingFormat: "application/pdf"
       isAccessibleForFree: true
       about:
@@ -137,7 +137,7 @@ These requirements sort onto two axes. One is workload heterogeneity, from narro
 
 ![Matrix plotting breadth of workloads against governance and control depth: data orchestrators and agent frameworks sit low, durable execution, BPM and SOAP incumbents sit narrow, and only the top-right target zone combines broad workloads with an enterprise control plane](./workload-heterogeneity-governance-matrix.png)
 
-**Get the whitepaper as a PDF.** The full argument, figures, and the seven-requirement checklist in a format you can share with your team and your architecture board. [Download the PDF](/unified-orchestration-whitepaper.pdf)
+**Get the whitepaper as a PDF.** The full argument, figures, and the seven-requirement checklist in a format you can share with your team and your architecture board. [Download the PDF](/unified-orchestration-whitepaper-kestra.pdf)
 
 ## What changes with one platform across four domains?
 
