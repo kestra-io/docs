@@ -1,0 +1,216 @@
+// Replaces bootstrap/scss/forms, trimmed to the controls the markup uses:
+// no form-check, form-switch, form-range, floating labels, file inputs,
+// validation feedback or the lg/sm input-group sizes.
+//
+// Colours stay on bootstrap's light defaults, which app.scss re-points for
+// `.form-select`; retheming the rest is a follow-up, not part of this move.
+.form-label {
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    --ks-form-bg: #{$white};
+    --ks-form-color: #212529;
+    --ks-form-border-color: #dee2e6;
+
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: $font-size-base;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--ks-form-color);
+    appearance: none;
+    background-color: var(--ks-form-bg);
+    background-clip: padding-box;
+    border: 1px solid var(--ks-form-border-color);
+    border-radius: $border-radius;
+    transition:
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
+
+    &:focus {
+        color: var(--ks-form-color);
+        background-color: var(--ks-form-bg);
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    &::placeholder {
+        color: rgba(33, 37, 41, 0.75);
+        opacity: 1;
+    }
+
+    &:disabled {
+        background-color: #e9ecef;
+        opacity: 1;
+    }
+}
+
+.form-control-lg {
+    min-height: calc(1.5em + 1rem + 2px);
+    padding: 0.5rem 1rem;
+    font-size: $font-size-lg;
+    border-radius: $border-radius-lg;
+}
+
+.form-select {
+    --ks-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    --ks-form-bg: #{$white};
+    --ks-form-color: #212529;
+    --ks-form-border-color: #dee2e6;
+
+    display: block;
+    width: 100%;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    font-size: $font-size-base;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--ks-form-color);
+    appearance: none;
+    background-color: var(--ks-form-bg);
+    background-image: var(--ks-form-select-bg-img), var(--ks-form-select-bg-icon, none);
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    border: 1px solid var(--ks-form-border-color);
+    border-radius: $border-radius;
+    transition:
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
+
+    &:focus {
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    &[multiple],
+    &[size]:not([size="1"]) {
+        padding-right: 0.75rem;
+        background-image: none;
+    }
+
+    &:disabled {
+        background-color: #e9ecef;
+    }
+}
+
+// Validation. Only the `.is-invalid` half is kept: nothing sets `.is-valid`
+// or `.was-validated`, and three of the four forms using `.is-invalid` style
+// it themselves — contact/Header.vue is the one that does not.
+$ks-invalid: #dc3545;
+$ks-invalid-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+
+.form-control.is-invalid {
+    border-color: $ks-invalid;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: $ks-invalid-icon;
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+
+    &:focus {
+        border-color: $ks-invalid;
+        box-shadow: 0 0 0 0.25rem rgba($ks-invalid, 0.25);
+    }
+}
+
+textarea.form-control.is-invalid {
+    background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
+}
+
+.form-select.is-invalid {
+    border-color: $ks-invalid;
+
+    &:not([multiple]):not([size]),
+    &:not([multiple])[size="1"] {
+        --ks-form-select-bg-icon: #{$ks-invalid-icon};
+        padding-right: 4.125rem;
+        background-position:
+            right 0.75rem center,
+            center right 2.25rem;
+        background-size:
+            16px 12px,
+            calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    &:focus {
+        border-color: $ks-invalid;
+        box-shadow: 0 0 0 0.25rem rgba($ks-invalid, 0.25);
+    }
+}
+
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: $ks-invalid;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+
+    > .form-control,
+    > .form-select {
+        position: relative;
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0;
+
+        &:focus {
+            z-index: 5;
+        }
+
+        &:not(:focus).is-invalid {
+            z-index: 4;
+        }
+    }
+
+    .btn {
+        position: relative;
+        z-index: 2;
+
+        &:focus {
+            z-index: 5;
+        }
+    }
+
+    // Seam between adjacent controls: square the touching corners and pull
+    // them together by one border width.
+    > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    > :not(:first-child):not(.dropdown-menu) {
+        margin-left: -1px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}
+
+.input-group-text {
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    font-size: $font-size-base;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: $border-radius;
+}

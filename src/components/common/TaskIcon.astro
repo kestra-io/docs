@@ -80,6 +80,8 @@ const { cls, class: className, ...rest } = Astro.props
         })
     }
     updateThemeIcons()
+    // the ClientRouter swaps in fresh icons without re-running this module
+    document.addEventListener("astro:page-load", updateThemeIcons)
 
     // when classes change on the html element, update the icons
     const observer = new MutationObserver((mutations) => {

@@ -29,21 +29,31 @@ const totalPlugins = await fetchTotalPluginsCount()
 </section>
 
 <script>
-    const section = document.querySelector(".prompt")
-    if (section) {
-        const observer = new IntersectionObserver(
+    let observer: IntersectionObserver | null = null
+
+    // re-wired on every page load: the ClientRouter swaps the DOM without
+    // re-running this module, so the section would stay paused for good
+    function wirePrompt() {
+        observer?.disconnect()
+        const section = document.querySelector(".prompt")
+        if (!section) return
+
+        observer = new IntersectionObserver(
             (entries) => {
                 for (const entry of entries) {
-                    if (entry.isIntersecting) {
-                        section.classList.remove("paused")
-                    } else {
-                        section.classList.add("paused")
-                    }
+                    section.classList.toggle("paused", !entry.isIntersecting)
                 }
             },
             { threshold: 0.1 },
         )
         observer.observe(section)
+    }
+
+    document.addEventListener("astro:page-load", wirePrompt)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wirePrompt)
+    } else {
+        wirePrompt()
     }
 </script>
 

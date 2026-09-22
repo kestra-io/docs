@@ -365,6 +365,27 @@ const SECTIONS = getSections(totalPlugins)
         }
     }
 
+    // Below xxl the wrapper scrolls horizontally, which clips vertically too, so
+    // the bottom rows open upward: a 76px tooltip needs two 57px rows of room.
+    @include media-breakpoint-down(xxl) {
+        .plan-table tbody tr:nth-last-child(-n + 2) .tooltip-content {
+            top: auto;
+            bottom: calc(100% + 10px);
+
+            &::before {
+                top: auto;
+                bottom: -15px;
+            }
+
+            &::after {
+                bottom: auto;
+                top: 100%;
+                border-bottom-color: transparent;
+                border-top-color: var(--ks-border-primary);
+            }
+        }
+    }
+
     .support-plans-header {
         margin-top: 4rem;
         h2 {

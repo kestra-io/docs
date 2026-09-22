@@ -8,8 +8,7 @@
             <button
                 class="search-btn"
                 title="Search Documentation"
-                data-bs-toggle="modal"
-                data-bs-target="#search-modal"
+                data-modal-target="#search-modal"
                 @click="$emit('openSearch')"
             >
                 <Magnify />
