@@ -41,8 +41,6 @@ It is the person who decides what the model is allowed to do to your systems, an
 
 ## What a frontier engineer actually does
 
-Strip the title and the week looks like this.
-
 **Mapping a process into agentic and fixed steps.** Take incident response. Reading logs, correlating three dashboards, and proposing a root cause is a good job for an agent: it is research, it is tolerant of a wrong first guess, and a human reviews the output. Restarting a production service is not: it must happen once, in order, with a rollback, and someone accountable. The frontier engineer draws that line for every process the team owns. A useful test for each step: *if this is wrong, who notices, how fast, and what does it cost to undo?* Cheap to notice and cheap to undo means the step can be agentic. Expensive on either count means it stays fixed, or gets a human in front of it.
 
 **Building the connection between the two.** The agent's output has to become an input to something deterministic. That means a contract (what the agent must return, in what shape: one runbook id from a known list, not free text), a gate (who approves, with what SLA, and what happens if nobody does), and a fallback (what happens if the agent times out, returns something outside the contract, or the provider is down). The contract is where most production incidents with agents are prevented, and it is the part pilots skip.
@@ -57,7 +55,7 @@ Microsoft's report reduces this to three questions every organisation deploying 
 
 ## Why the work is orchestration
 
-Look at the list above again. Sequencing steps, passing outputs to inputs, gating on human approval, retries and fallbacks, tool permissions, observability, version control, promotion to production. None of that is new. It is what a workflow orchestrator has done for data pipelines and infrastructure automation for years.
+Sequencing steps, passing outputs to inputs, gating on human approval, retries and fallbacks, tool permissions, observability, version control, promotion to production. None of that is new. It is what a workflow orchestrator has done for data pipelines and infrastructure automation for years.
 
 Agent frameworks handle the orchestration *inside* an agent: which tool to call next, when to loop, when to hand off to a sub-agent. They do not handle the orchestration *around* it: the deterministic steps before and after, the humans, the other systems, the audit trail. That outer layer is where the frontier engineer spends their time, and it is where a general-purpose orchestrator belongs.
 
@@ -110,13 +108,13 @@ errors:
 ```
 
 ![The incident_triage flow in the Kestra topology view: a triage AI agent task running on GoogleGemini, an approve Pause, a remediate subflow, and an open_case branch on failure](./02-incident-triage-flow.png)
+*The agent is one task. Its tools are governed flows and a read-only MCP server. The decision goes through a Pause. The remediation is a versioned subflow with its own rollback.*
 
 ![The same flow in plain terms: something happens, the agent proposes, a human decides, the runbook runs, and any failure opens one case instead of ten alerts](./03-flow-simple.png)
-*The agent is one task. Its tools are governed flows and a read-only MCP server. The decision goes through a Pause. The remediation is a versioned subflow with its own rollback.*
+*The same four steps without the YAML, and the one case that opens if any of them fails.*
 
 The agent is one task. Its tools are other Kestra flows and an MCP server, so it can only do what those flows allow, with their permissions. The decision goes to a human through [`Pause`](/docs/how-to-guides/pause-resume), with a name and a reason recorded on the execution; in the Enterprise edition the same gate can be surfaced to approvers as a form through [Apps](/docs/enterprise/scalability/apps), so they never open the Kestra UI. The remediation is a versioned subflow with its own `errors` block. If anything fails, one [Case](/docs/enterprise/governance/cases) is opened instead of ten alerts.
 
-The three questions have plain answers here.
 
 **Reviewing agent performance is reviewing an execution.** The details panel of an [`AIAgent`](/docs/ai-tools/ai-agents) task shows the model and provider, the system prompt, the tools it had, and after the run the full tool-call timeline with arguments and results, token usage and estimated cost, the reasoning chain, and why the model stopped, including guardrail triggers. Counters (`ai.agent.tool.calls`, `ai.provider.calls`) go to Prometheus or OpenTelemetry like any other metric.
 
@@ -126,7 +124,7 @@ The three questions have plain answers here.
 
 ## Where to start
 
-If you want to try the pattern here is the shortest path.
+Here is to get started in less than 10 minutes:
 
 1. **Run Kestra locally.** The [quickstart](/docs/quickstart) is one Docker command; [Docker Compose](/docs/installation/docker-compose) with Postgres if you want something that survives a restart.
 2. **Wire one agent task.** The [AI Agents](/docs/ai-tools/ai-agents) page has a working flow; swap the provider for yours and store the key as a [secret](/docs/concepts/secret). Give it one `KestraFlow` tool pointing at a flow you already have.
@@ -134,8 +132,6 @@ If you want to try the pattern here is the shortest path.
 4. **Read the execution.** Open the agent task in the topology view and look at the tool-call timeline, the token count and the finish reason. That panel is what you will show your security team.
 5. **Expose a flow to your coding agent.** Point Claude Code or Cursor at the [MCP server](/docs/ai-tools/mcp-server) and add an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) to one flow. You now have an agent outside Kestra calling a governed operation inside it.
 6. **Start from a blueprint.** The [AI blueprints](/blueprints?tags=AI) cover summarisation, classification, RAG and agent-with-tools patterns; most infra and data flows in the library can be handed to an agent as a tool without changes.
-
-Nothing above needs the Enterprise edition. Apps, Policies, RBAC, Cases and the audit log do, and they are the pieces that turn a working pattern into something a regulated team can sign off. The [OSS vs Enterprise](/docs/oss-vs-paid) page has the exact line.
 
 ## Do you need one?
 
