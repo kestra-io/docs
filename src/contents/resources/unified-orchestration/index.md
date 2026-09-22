@@ -54,9 +54,11 @@ schema:
 - Orchestration fragmented into four tool categories that evolved independently. Agentic AI is not a fifth category: agents act across all four and must be governed across all four.
 - Gartner (SOAP, BOAT) and Forrester (Adaptive Process Orchestration) each named part of the convergence. None yet covers the whole of it.
 - Unified orchestration has seven concrete, testable requirements, written so any serious vendor would agree with them.
-- *Orchestrating agents* (coordinating agents with each other) is not *agentic orchestration* (running agentic steps inside governed end-to-end workflows). An enterprise needs both.
+- *Orchestrating agents* (coordinating agents with each other) is not [*agentic orchestration*](/resources/ai/agentic-orchestration-vs-orchestrating-agents) (running agentic steps inside governed end-to-end workflows). An enterprise needs both.
 
 **Definition.** Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane.
+
+→ Read the full definition and how the four domains fit together: [What is orchestration?](/resources/orchestration)
 
 ## Executive summary
 
@@ -67,8 +69,6 @@ Often, a pipeline finishes, but the downstream job never starts. A deployment su
 This is not one vendor's observation. Gartner created two categories for the shift and gave each a Magic Quadrant: Service Orchestration and Automation Platforms, and Business Orchestration and Automation Technologies. Forrester named a third, Adaptive Process Orchestration, for platforms that pair deterministic control flows with AI agents. They approach the problem from different markets, but all three point to the same demand: coordination across silos that once operated independently.
 
 This paper asserts that orchestration has fragmented into four tool categories, each of which has evolved independently. Agentic AI is not a fifth category. Agents act across all four, and they need to be governed across all four. Unified orchestration demands a defined and measurable set of capabilities that few platforms provide in full. Kestra addresses this challenge from a differentiated foundation with a declarative, language-agnostic, open, event-driven engine designed to orchestrate the existing technology stack and govern how agents operate across it.
-
-![Additive feature versus architectural scope: bolting an agent step onto an existing engine keeps it inside its home domain, while spanning data, infrastructure, applications and business processes under one engine with agentic AI across all four changes the foundation](./additive-feature-vs-architectural-scope.png)
 
 ## Why is enterprise orchestration fragmented across four silos?
 
@@ -106,6 +106,8 @@ Gartner also named a category for the business side: Business Orchestration and 
 
 Collectively, these categories validate the emergence of unified orchestration as a distinct market, but they do not establish the leadership of any individual vendor. Kestra does not appear in the SOAP Magic Quadrant, which is populated by workload automation incumbents such as BMC, Redwood, and Stonebranch. This absence reflects Kestra's distinct starting point: a declarative, event-driven engine designed to orchestrate the existing technology stack, rather than a batch scheduler subsequently adapted to serve that role.
 
+**Related:** [SOAP, BOAT and Adaptive Process Orchestration explained](/resources/orchestration/gartner-soap-boat-forrester-apo)
+
 ## Where does unified orchestration sit in the enterprise architecture stack?
 
 Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane. It is easy to confuse it with the layers above and below it. Separating them decides what a platform replaces and what it coordinates.
@@ -134,11 +136,13 @@ Agent frameworks such as LangGraph and CrewAI build agent logic at the applicati
 
 This is why agentic AI is the cross-cutting top layer in this paper, rather than a fifth silo alongside the other four. Agents act across data, infrastructure, applications, and business processes. They need a layer that spans all four and governs them. That layer is unified orchestration.
 
-**Go deeper:** [What is agentic orchestration?](/resources/ai/agentic-orchestration)
+![Additive feature versus architectural scope: bolting an agent step onto an existing engine keeps it inside its home domain, while spanning data, infrastructure, applications and business processes under one engine with agentic AI across all four changes the foundation](./additive-feature-vs-architectural-scope.png)
+
+**Go deeper:** [Agentic Orchestration vs Orchestrating Agents: What's the Difference?](/resources/ai/agentic-orchestration-vs-orchestrating-agents)
 
 ## What does unified orchestration actually require?
 
-A platform earns the word unified only if it meets a specific set of requirements. The list below is written so that any serious vendor would agree with it. It is the neutral test.
+A platform earns the word unified only if it meets a specific set of requirements. The list below is written so that any serious vendor would agree with it. It is the neutral test. For the concept itself and the four domains it spans, start with [what orchestration is](/resources/orchestration).
 
 1. **Language and domain neutrality.** Runs any language and coordinates any workload, not one language or one domain.
 2. **Event-driven and scheduled triggering.** One engine for cron, events, webhooks, and messages.
@@ -210,7 +214,7 @@ This is also the expansion path inside an account. A team that starts in one dom
 
 Enterprise automation grew up in silos, and demand for coordination across them continues to rise. Gartner and Forrester named categories for it, arriving from workload automation, from business process, and from agentic AI.
 
-The requirements for real unification are concrete and testable. Kestra meets them with a declarative, language-agnostic, open, [event-driven engine](/blogs/2026-09-01-kestra20-rebuild-engine) that coordinates the existing stack and governs agents on top of it. The path from four silos to one platform starts with a single workflow.
+The requirements for real unification are concrete and testable, and they sit on top of [one concept spanning four domains](/resources/orchestration). Kestra meets them with a declarative, language-agnostic, open, [event-driven engine](/blogs/2026-09-01-kestra20-rebuild-engine) that coordinates the existing stack and governs agents on top of it. The path from four silos to one platform starts with a single workflow.
 
 ## How does Kestra differentiate from incumbent solutions?
 
