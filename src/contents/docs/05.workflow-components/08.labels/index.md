@@ -6,7 +6,7 @@ sidebarTitle: Labels
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Labels are key-value pairs attached to [flows](../01.flow/index.md) and [executions](../03.execution/index.md). Unlike namespaces, which form a fixed hierarchy, labels let you slice execution data across any dimension — team, project, environment, priority — and combine them freely.
+Labels are key-value pairs attached to [flows](../01.flow/index.md) and [executions](../03.execution/index.md). Unlike namespaces, which form a fixed hierarchy, labels let you slice execution data across any dimension (team, project, environment, priority) and combine them freely.
 
 A label can be set on the flow definition, on individual execution instances, or both, making it possible to group across flows or distinguish between runs of the same flow.
 
@@ -32,28 +32,6 @@ tasks:
 
 When you execute this flow, executions inherit both `team: finance` and `priority: HIGH` labels. You can also define additional labels at execution launch.
 
-## Benefits of labels
-
-Labels let you organize and filter flows and their executions. Key benefits include:
-
-- **Observability**: Track execution status, monitor errors, and rerun only a subset of executions.
-
-- **Filtering**: Quickly find executions, mark test runs, track ML experiments, or label runs by runtime inputs.
-
-- **Organization**: Manage workflows at scale by grouping executions by team, project, maintainer, or environment.
-
-You can also build custom dashboards using labels to filter executions by any label value.
-
-### Common scenarios
-
-To group flows related to the same project across [Kestra namespaces](../02.namespace/index.md), you can use a common flow label, such as `project: XYZ-123`.
-
-When running the `process_invoice_flow`, you can add execution labels (e.g., `currency`) to capture attributes of the processed invoice. This allows you to filter executions by specific values, like `currency: USD`.
-
-You can also label executions related to a pre-production run — for example, `purpose: pre-prod` — so you can safely delete only those executions when the pre-production phase is complete.
-
-In multi-team environments, labels help you separate executions by team, for example `support: EMEA` and `support: APAC`, when the same flow handles data from different regions.
-
 ## Execution labels propagated from flow labels
 
 When you execute a flow with labels, those labels are automatically applied to its executions.
@@ -64,27 +42,21 @@ When you execute a flow with labels, those labels are automatically applied to i
 
 ## Set execution labels manually
 
-When executing a flow manually, expand **Advanced configuration** to override or define labels at start:
+Labels can be set or overridden at execution launch via **Advanced configuration** in the Execute modal, or after execution via **Set labels** on the **Overview** tab.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/XwOQtqdZGZE?si=2jA71fRTDBkBF76P" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
-You can also set labels after an execution completes — useful for collaboration and troubleshooting.
-
-For example, you can add a label to a failed execution to indicate its status, such as whether it has been acknowledged, is being investigated, or has been resolved.
-
-Go to the **Overview** tab of an execution and click **Set labels** to add one or more labels.
-
 ![Set labels dialog open on an execution's Overview tab](./set-labels-dialog.png)
 
-You can also set labels for multiple executions at once — useful for bulk operations such as acknowledging multiple failed executions after an outage.
+Labels can also be set on multiple executions at once.
 
 ![Bulk action menu with Set labels available after selecting multiple executions](./bulk-set-labels.png)
 
 ## Set labels based on flow inputs and task outputs
 
-Use the [Labels task](/plugins/core/execution/io.kestra.plugin.core.execution.labels) to set execution labels based on flow inputs, task outputs, or other runtime data. There are two ways to set labels in this task:
+The [Labels task](/plugins/core/execution/io.kestra.plugin.core.execution.labels) sets execution labels from flow inputs, task outputs, or other runtime values. It accepts either a map or a list of key-value pair objects:
 
 1. **Using a map (key-value pairs)**: ideal when the key is static and the value is dynamic. In the example below, `update_labels` overrides the default label `song` with the output of the `get` task and adds a new label `artist`.
 
@@ -141,7 +113,7 @@ tasks:
 
 ### Overriding flow labels at runtime
 
-You can set default labels at the flow level and override them during execution based on task results.
+Default labels set at the flow level can be overridden during execution based on task results.
 
 The example below shows how to override the default label `song` with the output of the `get` task:
 
@@ -169,7 +141,7 @@ In this example, the default label `song` is overridden by the output of the `ge
 
 ## Dynamic labels in trigger-started executions
 
-When a trigger starts an execution, the trigger's `labels` values accept Pebble expressions. This lets you embed runtime context — such as the current date or a trigger variable — directly in labels at the moment execution begins, without needing a separate `Labels` task.
+When a trigger starts an execution, the trigger's `labels` values accept Pebble expressions, embedding runtime context (such as the current date or a trigger variable) directly in labels at the moment execution begins.
 
 **Using a Pebble function:**
 
@@ -213,4 +185,4 @@ tasks:
 
 `trigger.previous` holds the date of the previous scheduled run. Labelling executions with this value helps identify late or catch-up runs.
 
-Static values and expressions can be mixed in the same `labels` block. Available trigger variables differ by trigger type — see the [Schedule trigger](../07.triggers/01.schedule-trigger/index.md), [Realtime trigger](../07.triggers/05.realtime-trigger/index.md), and other trigger reference pages for the full list.
+Static values and expressions can be mixed in the same `labels` block. Available trigger variables differ by trigger type; see the [Schedule trigger](../07.triggers/01.schedule-trigger/index.md), [Realtime trigger](../07.triggers/05.realtime-trigger/index.md), and other trigger reference pages for the full list.

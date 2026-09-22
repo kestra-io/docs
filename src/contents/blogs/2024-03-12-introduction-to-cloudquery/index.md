@@ -207,7 +207,7 @@ triggers:
 
 Orchestrating CloudQuery syncs in Kestra is simple — you configure your source(s) and destination(s) in a list, and the sync will ensure that each source is ingested into the desired destinations.
 
-In this example, we're also using Kestra's [secret management](../../docs/06.concepts/04.secret/index.md) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](../../docs/06.concepts/06.pebble/index.md) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](../../docs/06.concepts/08.backfill/index.md) make it easy to catch up on missed syncs.
+In this example, we're also using Kestra's [secret management](../../docs/06.concepts/04.secret/index.md) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](../../docs/06.concepts/06.pebble/index.md) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](../../docs/05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill) make it easy to catch up on missed syncs.
 
 ## Next steps
 

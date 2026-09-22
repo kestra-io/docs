@@ -6,13 +6,13 @@ sidebarTitle: Flowable Tasks
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Flowable tasks control orchestration logic — branching, looping, and parallelizing work — without performing heavy computation themselves.
+Flowable tasks control orchestration logic: branching, looping, and parallelizing work, without performing heavy computation.
 
 Flowable tasks use [expressions](../../../expressions/index.mdx) from the execution context to determine which tasks run next.
 
 ### Sequential
 
-`Sequential` runs child tasks one after another, with optional `errors` and `finally` hooks. It is useful for grouping related steps into a named block, particularly when mixing sequential and parallel constructs.
+`Sequential` runs child tasks one after another, with optional `errors` and `finally` hooks.
 
 Tasks inside a `Sequential` block can reference sibling task outputs using `{{ outputs.sibling_id.value }}`.
 
@@ -41,9 +41,9 @@ For more details, check out the [Sequential Task documentation](/plugins/core/fl
 
 ### Parallel
 
-`Parallel` starts all child tasks concurrently, reducing total elapsed time when tasks are independent. Because branches run simultaneously, you cannot access the output of a sibling task from within the same `Parallel` block — outputs are only available to tasks that run after the `Parallel` task completes.
+`Parallel` starts all child tasks concurrently, reducing total elapsed time when tasks are independent. Because branches run simultaneously, you cannot access the output of a sibling task from within the same `Parallel` block; outputs are only available to tasks that run after the `Parallel` task completes.
 
-Use the `concurrent` property to cap how many branches run at once (`0` = no limit, the default).
+The `concurrent` property caps how many branches run at once (`0` = no limit, the default).
 
 ```yaml
 id: parallel
@@ -67,8 +67,9 @@ tasks:
     format: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-Nest `Sequential` inside `Parallel` branches to run multi-step sequences concurrently:
+`Sequential` nested inside `Parallel` branches runs multi-step sequences concurrently:
 
+```yaml
   - id: parallel
     type: io.kestra.plugin.core.flow.Parallel
     tasks:
@@ -125,7 +126,7 @@ For more plugin details, refer to the [Switch Task documentation](/plugins/core/
 
 ### If
 
-`If` runs one branch of tasks when a condition is true and an optional `else` branch when it is false. The condition must evaluate to a boolean — `0`, `-0`, `null`, and `''` evaluate to `false`; all other values evaluate to `true`.
+`If` runs one branch of tasks when a condition is true and an optional `else` branch when it is false. The condition must evaluate to a boolean: `0`, `-0`, `null`, and `''` evaluate to `false`; all other values evaluate to `true`.
 
 ```yaml
 id: if_condition
@@ -186,7 +187,7 @@ For more details on `item`, see [loop iteration context](../../../expressions/01
 
 #### Iterating over objects
 
-When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields — `item.value.field` does not work.
+When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields; `item.value.field` does not work.
 
 ```yaml
 id: parallel_tasks_example
@@ -260,7 +261,7 @@ tasks:
 
 #### Error handling per iteration
 
-Use `errors:` to run tasks when an iteration fails, and `finally:` to run a block once after all iterations complete regardless of outcome. `errors:` runs within the failing iteration regardless of `transmitFailed` — with `transmitFailed: true` (default), the loop stops after the failing iteration completes; with `transmitFailed: false`, the loop continues to subsequent iterations. `finally:` always runs regardless.
+Use `errors:` to run tasks when an iteration fails, and `finally:` to run a block once after all iterations complete regardless of outcome. `errors:` runs within the failing iteration regardless of `transmitFailed`: with `transmitFailed: true` (default), the loop stops after the failing iteration completes; with `transmitFailed: false`, the loop continues to subsequent iterations. `finally:` always runs regardless.
 
 ```yaml
 tasks:
@@ -355,7 +356,7 @@ The `fetchType` property controls how iteration outputs are collected: `FETCH` r
 
 #### Processing large files
 
-When `values` is a list of URIs from a [`Split`](/plugins/core/storage/io.kestra.plugin.core.storage.split) task, each iteration receives one chunk URI as `item.value`. Combine `Split`, `Loop`, and `Concat` to implement a map-reduce pattern: split a large file into chunks, process each chunk in parallel, then merge the per-chunk outputs into a single result.
+When `values` is a list of URIs from a [`Split`](/plugins/core/storage/io.kestra.plugin.core.storage.split) task, each iteration receives one chunk URI as `item.value`. The following example splits a large file into chunks, processes each in parallel, and merges the results:
 
 Passing `values: "{{ outputs.split.uris }}"` where `outputs.split.uris` is a **list** is different from passing a single file URI. When `values` is a list, each `item.value` is one element of that list. When `values` is a single URI string, Kestra iterates line-by-line through the file.
 
@@ -419,7 +420,7 @@ tasks:
         type: DECIMAL
 ```
 
-Use `fetchType: FETCH` to collect per-iteration output URIs inline, then pass them to `Concat` via `loopOutputs(outputs.per_chunk.outputs, 'data')`.
+`fetchType: FETCH` collects per-iteration output URIs inline; pass them to `Concat` via `loopOutputs(outputs.per_chunk.outputs, 'data')`.
 
 #### Accessing loop outputs in a script task
 
@@ -469,7 +470,7 @@ tasks:
       Kestra.outputs({"total": sum(squared_values)})
 ```
 
-`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results — each entry contains an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. To access the first iteration's output in an expression, use `outputs.process_items.outputs[0].outputs.squared`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`.
+`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results: each entry contains an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. To access the first iteration's output in an expression, use `outputs.process_items.outputs[0].outputs.squared`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`.
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
 
@@ -478,16 +479,15 @@ For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra
 
 `LoopUntil` runs a group of tasks repeatedly until a boolean condition evaluates to `true`. After each iteration, the task evaluates the `condition` expression; if it evaluates to `false`, the block is executed again after the configured interval.
 
-Typical use cases include polling an external API, waiting for a long-running job to transition to a terminal state, or checking for the presence of downstream resources.
 
 Key properties:
 
-- `condition` — expression evaluated after each iteration; has access to the child task outputs from the most recent run (e.g. `{{ outputs.checkStatus.code }}`).
-- `tasks` — the list of child tasks to run before re-evaluating the condition.
-- `checkFrequency` — optional guardrails that define `interval`, `maxIterations`, and/or `maxDuration` between repeats. (See the [LoopUntil migration note](../../../11.migration-guide/v0.23.0/loop-until-defaults/index.md) for default values.)
-- `failOnMaxReached` — if `true`, the task fails when `maxIterations` or `maxDuration` is reached without the condition becoming true. Default: `false` (the task succeeds when limits are reached).
+- `condition`: expression evaluated after each iteration; has access to the child task outputs from the most recent run (e.g. `{{ outputs.checkStatus.code }}`).
+- `tasks`: the list of child tasks to run before re-evaluating the condition.
+- `checkFrequency`: optional guardrails that define `interval`, `maxIterations`, and/or `maxDuration` between repeats. (See the [LoopUntil migration note](../../../11.migration-guide/v0.23.0/loop-until-defaults/index.md) for default values.)
+- `failOnMaxReached`: if `true`, the task fails when `maxIterations` or `maxDuration` is reached without the condition becoming true. Default: `false` (the task succeeds when limits are reached).
 
-After the loop completes, `outputs.<task_id>.iterationCount` holds the total number of iterations (1-based). Use this in downstream tasks to report how many attempts were needed.
+After the loop completes, `outputs.<task_id>.iterationCount` holds the total number of iterations (1-based).
 
 Example: poll an API until it returns HTTP 200, checking every 30 seconds and stopping after 50 attempts if it never succeeds.
 
@@ -548,7 +548,7 @@ For more details, refer to the [AllowFailure Task documentation](/plugins/core/f
 
 ### Fail
 
-`Fail` explicitly fails the execution, optionally guarded by a `condition` expression. Without a condition, it is useful inside a `Switch` branch to reject invalid cases.
+`Fail` explicitly fails the execution, optionally guarded by a `condition` expression. Without a `condition`, `Fail` always fails unconditionally.
 
 ```yaml
 id: fail_on_switch
@@ -610,15 +610,15 @@ For more information, refer to the [Fail Task documentation](/plugins/core/execu
 
 `Subflow` starts a child execution of another flow, letting you decompose complex workflows, share reusable logic across namespaces, and monitor each execution independently.
 
-Required properties are `namespace` and `flowId`. Pass values to the subflow via `inputs` — those inputs must be declared in the subflow's definition.
+Required properties are `namespace` and `flowId`. Pass values to the subflow via `inputs`; those inputs must be declared in the subflow's definition.
 
 By default (`wait: true`), the parent execution waits for the subflow to finish before continuing. Set `wait: false` to fire-and-forget; the parent moves on immediately without tracking the child's result.
 
 When `wait: true`, the parent captures the subflow's final state and outputs:
 
-- `{{ outputs.subflow_task.executionId }}` — the child execution ID
-- `{{ outputs.subflow_task.state }}` — the child's final state (`SUCCESS`, `FAILED`, etc.)
-- `{{ outputs.subflow_task.outputs.some_key }}` — a value from the subflow's declared outputs
+- `{{ outputs.subflow_task.executionId }}`: the child execution ID
+- `{{ outputs.subflow_task.state }}`: the child's final state (`SUCCESS`, `FAILED`, etc.)
+- `{{ outputs.subflow_task.outputs.some_key }}`: a value from the subflow's declared outputs
 
 `transmitFailed: true` (the default when `wait: true`) causes the parent to fail if the subflow fails. Set it to `false` to continue the parent regardless of the child's outcome.
 
@@ -641,13 +641,13 @@ tasks:
     message: "Subflow returned: {{ outputs.call_subflow.outputs.result }}"
 ```
 
-Use `revision` to pin the subflow to a specific version. Use `inheritLabels: true` to forward the parent's execution labels to the child. Use `scheduleDate` to defer the child execution to a future time instead of starting it immediately.
+`revision` pins the subflow to a specific version. `inheritLabels: true` forwards the parent's execution labels to the child. `scheduleDate` defers the child execution to a future time.
 
 For more details, refer to the [Subflow Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.subflow).
 
 ### WorkingDirectory
 
-`WorkingDirectory` runs all nested tasks sequentially in the same directory on the same worker, so downstream tasks can read files written by earlier ones. It is useful for compute-intensive file system operations.
+`WorkingDirectory` runs all nested tasks sequentially in the same directory on the same worker, so downstream tasks can read files written by earlier ones.
 
 :::alert{type="warning"}
 Only runnable tasks are accepted as children of a `WorkingDirectory`. Nesting a flowable task such as `Parallel` or `Loop` inside a `WorkingDirectory` is rejected at save time.
@@ -728,7 +728,7 @@ For more details, refer to the [WorkingDirectory Task documentation](/plugins/co
 
 `Pause` halts the execution until it is manually resumed or a timeout expires. Tasks declared after the `Pause` in the flow run once the execution resumes.
 
-To resume manually, open the **Gantt** tab on the execution, click the Pause task, select **Change status**, and choose **Mark as RUNNING**. You can also resume via the API: `POST /api/v1/executions/{executionId}/resume`.
+A paused execution can be resumed manually from the **Gantt** tab on the execution page, or via the API at `POST /api/v1/executions/{executionId}/resume`.
 
 ```yaml
 id: pause_for_approval
@@ -747,7 +747,7 @@ tasks:
     message: "Approved — continuing execution"
 ```
 
-Use `pauseDuration` to resume automatically after a fixed interval (ISO 8601 duration format). The `behavior` property controls what happens when that duration expires without a manual resume: `RESUME` continues (the default), `WARN` continues with a warning, `CANCEL` cancels the execution, or `FAIL` fails the task.
+`pauseDuration` resumes the execution automatically after a fixed interval (ISO 8601 duration format). The `behavior` property controls what happens when that duration expires without a manual resume: `RESUME` continues (the default), `WARN` continues with a warning, `CANCEL` cancels the execution, or `FAIL` fails the task.
 
 ```yaml
 tasks:
@@ -757,7 +757,7 @@ tasks:
     behavior: WARN
 ```
 
-Use `onResume` to collect structured input from the person approving the pause. Downstream tasks access those values via `{{ outputs.<pause_task_id>.onResume.<input_id> }}`.
+`onResume` accepts structured input from the person approving the pause. Downstream tasks access those values via `{{ outputs.<pause_task_id>.onResume.<input_id> }}`.
 
 ```yaml
 tasks:
@@ -781,11 +781,11 @@ For more details, refer to the [Pause Task documentation](/plugins/core/flow/io.
 
 ### DAG
 
-`DAG` lets you declare tasks and their `dependsOn` links; Kestra derives execution order and runs tasks in parallel as their dependencies are satisfied. Use it when your dependency graph cannot be expressed as a flat sequence or a single `Parallel` block — for example, when task C depends on both A and B, but A and B are independent.
+`DAG` lets you declare tasks and their `dependsOn` links; Kestra derives execution order and runs tasks in parallel as their dependencies are satisfied.
 
 Tasks with no `dependsOn` start immediately. The `concurrent` property caps how many tasks run at once (`0` = no limit, the default).
 
-Note: UI no-code forms are not available for DAG tasks — configure them in YAML or the code editor.
+Note: UI no-code forms are not available for DAG tasks; configure them in YAML or the code editor.
 
 ```yaml
 id: dag_flow

@@ -6,7 +6,7 @@ sidebarTitle: Disabled flag
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-The `disabled` property is a boolean that skips a flow, task, or trigger without removing it — useful for debugging without deleting YAML.
+The `disabled` property is a boolean that skips a flow, task, or trigger without removing it, useful for debugging without deleting YAML.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FcDsU1YIToI?si=xc5fuRlIDaWNUjWn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -14,7 +14,7 @@ The `disabled` property is a boolean that skips a flow, task, or trigger without
 
 ## Disabled flow
 
-A disabled flow will not execute and its triggers are automatically ignored — you do not need to disable each trigger separately.
+A disabled flow will not execute and its triggers are automatically ignored; you do not need to disable each trigger separately.
 
 ```yaml
 id: disabled_flow
@@ -52,7 +52,7 @@ The parent flow immediately fails with the error: `Cannot execute a flow which i
 
 ![Gantt view of a failed execution showing the error Cannot execute a flow which is disabled](./disabled-subflow-error.png)
 
-The same error occurs when triggering via API — the execution is created then immediately marked as failed:
+The same error occurs when triggering via API: the execution is created then immediately marked as failed:
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/main/executions/trigger/company.team/parent_runs_disabled_flow
@@ -82,7 +82,7 @@ No scheduled executions are created while the trigger is disabled. To re-enable 
 
 ## Disabled task
 
-You can disable a single task to skip it without deleting it — useful when isolating a failure during debugging:
+You can disable a single task to skip it without deleting it, useful when isolating a failure during debugging:
 
 ```yaml
 id: myflow

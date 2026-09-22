@@ -21,7 +21,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 ## B
 
 <span id="backfill"></span>
-- [Backfill](#backfill) - replays of missed schedule intervals between a defined start and end date. All missed schedules are automatically recovered by default if the Kestra server is down. Learn how to manage and configure [backfills](../06.concepts/08.backfill/index.md).
+- [Backfill](#backfill) - replays of missed schedule intervals between a defined start and end date. All missed schedules are automatically recovered by default if the Kestra server is down. Learn how to manage and configure [backfills](../05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill).
 <span id="blueprints"></span>
 - [Blueprints](#blueprints) - ready-to-use examples with code and documentation designed to kickstart your worflow. [Blueprints](../06.concepts/07.blueprints/index.md) typically include multiple plugins.
 
@@ -102,7 +102,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 ## R
 
 <span id="replay"></span>
-- [Replay](#replay) - re-run a workflow execution from any chosen task, useful for iterative developer and reprocessing data. Learn more about [replay](../06.concepts/10.replay/index.md).
+- [Replay](#replay) - re-run a workflow execution from any chosen task, useful for iterative developer and reprocessing data. Learn more about [replay](../15.how-to-guides/replay/index.md).
 <span id="revision"></span>
 - [Revision](#revision) - any changes to a flow create a new version of that flow, otherwise known as a [revision](../06.concepts/03.revision/index.md).
 <span id="runnable-tasks"></span>

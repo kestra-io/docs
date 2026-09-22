@@ -28,9 +28,9 @@ If several checks fail, the most restrictive behavior wins in this priority orde
 
 ## Evaluation behavior
 
-Keep these rules in mind when writing `when` expressions:
+The following rules govern `when` expression evaluation:
 
-- **The condition must evaluate to a boolean `true`.** Only a real boolean passes — not the string `"true"`, `"yes"`, a number, or any other truthy value. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
+- **The condition must evaluate to a boolean `true`.** Only a real boolean passes; not the string `"true"`, `"yes"`, a number, or any other truthy value. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
 - **An unevaluatable condition always blocks.** If the condition cannot be evaluated (for example, an undefined variable or a syntax error), the check fails safe: the execution is hard-blocked with `BLOCK_EXECUTION` and an `ERROR` style, regardless of the `behavior` and `style` you declared. Fix the expression and reference only variables that exist at validation time to restore your declared behavior.
 
 ## Examples
@@ -102,11 +102,3 @@ tasks:
     message: "Run {{ execution.id }} in {{ inputs.environment }} with file {{ outputs.fetch.uri }}"
 ```
 
-## When to use checks
-
-- Prevent invalid or risky executions based on user inputs.
-- Prevent runs when resources are exhausted (e.g., too many VMs provisioned).
-- Offer guardrails with warnings while still allowing runs to proceed.
-- Enforce “only one path” scenarios by failing early instead of deep in the task sequence.
-
-Checks run before tasks start, so they are a low-cost way to validate inputs and intentions upfront.

@@ -6,13 +6,15 @@ sidebarTitle: Replay
 icon: /src/contents/docs/icons/dev.svg
 ---
 
-Replay re-runs a workflow execution from any chosen task — skipping tasks that already completed successfully. Use it to recover from failures without reprocessing upstream work, or to iterate on a specific task without re-running the full flow.
+Replay re-runs a workflow execution from any chosen task, skipping tasks that already completed successfully. Use it to recover from failures without reprocessing upstream work, or to iterate on a specific task without re-running the full flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/RvNc3gLXMEs?si=sBuEo3yPfJvi4K48" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 To replay from a specific task, open the **Gantt** or **Logs** tab of any execution and use the three-dot menu on the task run. You can also replay a single execution or bulk-replay from the **Executions** page, with the option to use the latest flow revision.
+
+To replay all missed schedule intervals in a time window instead, see [Backfill](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill).
 
 ## Example: fixing a failed task and replaying
 
@@ -38,9 +40,9 @@ tasks:
     message: Validation passed, data is ready for processing.
 ```
 
-Run the flow once with `8 == 5` as the condition — `download` succeeds, then `validate` fails because the assertion is always false.
+Run the flow once with `8 == 5` as the condition. `download` succeeds, then `validate` fails because the assertion is always false.
 
-Open the failed execution and go to the **Gantt** tab. Use the three-dot menu on `validate` to select **Fix with AI** or correct the condition yourself — change `8 == 5` to `8 >= 5` and save as a new revision. Then select **Replay** from the same menu.
+Open the failed execution and go to the **Gantt** tab. Use the three-dot menu on `validate` to select **Fix with AI**, or correct the condition yourself: change `8 == 5` to `8 >= 5` and save as a new revision. Then select **Replay** from the same menu.
 
 ![Gantt tab of a failed execution showing the three-dot menu on validate with Fix with AI and Replay options](./replay-task.png)
 
@@ -48,7 +50,7 @@ In the confirmation dialog, select **Latest flow revision** to use the revision 
 
 ![Replay execution dialog showing revision options: Original flow revision, Latest flow revision, and Specific flow revision](./latest-revision.png)
 
-The `download` task is skipped — Kestra reuses its output from the original execution. Only `validate` and `notify` run again. The **Attempt 2/2** label on `validate` confirms this is the replayed run.
+The `download` task is skipped; Kestra reuses its output from the original execution. Only `validate` and `notify` run again. The **Attempt 2/2** label on `validate` confirms this is the replayed run.
 
 ![Gantt view of the replayed execution showing download skipped, validate with Attempt 2/2 succeeding, and notify running](./task-count.png)
 

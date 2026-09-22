@@ -18,7 +18,7 @@ How secrets are stored depends on your edition. Enterprise Edition connects to a
 
 Secrets are the right choice for static sensitive values: API keys, passwords, webhook URLs, certificates, and long-lived tokens. For reusable server-to-server authentication — where Kestra needs to mint or refresh short-lived tokens at runtime — use [Credentials](../../07.enterprise/03.auth/credentials/index.md) instead. Credentials can reference secrets for sensitive inputs such as client secrets and private keys.
 
-Secrets are available under **Namespaces → [namespace] → Secrets** or under **Tenant → Secrets** in the sidebar. Click **New secret**, set a key name such as `MY_SECRET`, and optionally add a description and tags. From the same tab you can edit, delete, or copy a secret as a Pebble expression — for example, `"{{ secret('API_TOKEN') }}"` — ready to paste into a flow.
+Secrets are available under **Namespaces → [namespace] → Secrets** or under **Tenant → Secrets** in the sidebar. Each secret has a key name, optional description, and tags. From the same tab, edit, delete, or copy a secret as a Pebble expression — for example, `"{{ secret('API_TOKEN') }}"` — ready to paste into a flow.
 
 For available backends, see the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page. For best practices, see [Secrets management](../../14.best-practices/9.secrets-management/index.md) and [Choosing where to store sensitive and shared values](../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
 

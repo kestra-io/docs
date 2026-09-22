@@ -51,7 +51,6 @@ triggers:
     mcpServer: default
 ```
 
-When deployed, an MCP client connected to the `default` server will discover a tool named `hello_world`. It will accept a `user` parameter (typed as `string` from the flow input) and return a `greeting` string in the tool response.
 
 <div style="position: relative; padding-bottom: calc(49.0084% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/T50B5gunEbBXP5caS8yl?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flow as an MCP Tool in Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -61,7 +60,7 @@ When deployed, an MCP client connected to the `default` server will discover a t
 |---|---|---|---|
 | `toolName` | Yes | — | Tool identifier shown to the AI agent. Must contain only alphanumeric characters, hyphens, underscores, or dots, and must start and end with an alphanumeric character. Maximum 64 characters. |
 | `title` | Yes | — | Human-readable name shown to the AI agent. |
-| `toolDescription` | Yes | — | Description of the tool shown to the AI agent, used to decide when to invoke it. A well-written description significantly improves tool-selection accuracy. |
+| `toolDescription` | Yes | — | Description of the tool shown to the AI agent, used to decide when to invoke it. Describe when and why to invoke the tool rather than just what it does; this significantly improves tool-selection accuracy. |
 | `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [MCP server](../../../ai-tools/03.mcp-server/index.md). |
 | `annotations.readOnly` | No | `false` | Hint that this tool does not modify its environment. |
 | `annotations.destructive` | No | `true` | Hint that this tool may perform destructive updates. Only meaningful when `readOnly` is `false`. |
@@ -72,16 +71,6 @@ When deployed, an MCP client connected to the `default` server will discover a t
 Annotations are informational hints for MCP clients. They do not affect execution behavior.
 
 A flow can be registered on exactly one MCP server at a time via the `mcpServer` property. Multiple flows can share the same server, each appearing as a separate tool.
-
-### Writing effective tool descriptions
-
-The `toolDescription` is what the AI agent reads to decide whether to call your tool. Describe *when* and *why* to invoke the flow, not just what it does. For example:
-
-```yaml
-toolDescription: >
-  Returns a personalised greeting for a named user.
-  Call this tool whenever the user asks to be greeted or wants a welcome message.
-```
 
 ## Common trigger properties
 

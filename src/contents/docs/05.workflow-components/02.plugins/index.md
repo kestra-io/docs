@@ -6,7 +6,7 @@ sidebarTitle: Plugins
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Plugins are the integrations that let flows connect to databases, APIs, file systems, queues, and runtime environments — every task and trigger in Kestra is provided by a plugin. Browse the full catalog at [kestra.io/plugins](/plugins).
+Plugins are the integrations that let flows connect to databases, APIs, file systems, queues, and runtime environments. Every task and trigger in Kestra is provided by a plugin. Browse the full catalog at [kestra.io/plugins](/plugins).
 
 ## Plugin categories
 
@@ -25,7 +25,7 @@ The [Kestra MCP server](../../ai-tools/02.kestra-mcp-resources/index.md) gives A
 Kestra can host multiple versions of the same plugin:
 
 - Pin a version on an individual task or trigger with `version: "1.0.0"`.
-- Omit `version` to use the instance-wide default (often `LATEST`).
+- When `version` is omitted, the instance-wide default applies (often `LATEST`).
 - In Enterprise Edition, install and manage versions centrally under **Instance → Versioned Plugins** (see [Versioned Plugins](../../07.enterprise/05.instance/versioned-plugins/index.md)).
 
 ```yaml
@@ -47,7 +47,7 @@ tasks:
 
 ### Handling outputs: fetch vs. store
 
-The `fetchType` property controls how task outputs are returned. For large datasets, use `STORE` — it writes results to internal storage and returns only a URI, preventing large payloads from bloating the execution context.
+The `fetchType` property controls how task outputs are returned.
 
 | Setting | Use when you need | Stored in context | Pebble access |
 |---|---|---|---|
@@ -64,7 +64,7 @@ For guidance on large outputs, see [Managing output data volume](../../14.best-p
 
 ### Secrets
 
-Use secrets for connection strings, URLs, usernames, tokens, and passwords. Any value written directly in a flow definition is stored in its [revision history](../../06.concepts/03.revision/index.md) and visible to anyone with access to the flow.
+Secrets store connection strings, URLs, usernames, tokens, and passwords. Any value written directly in a flow definition is stored in its [revision history](../../06.concepts/03.revision/index.md) and visible to anyone with access to the flow.
 
 ```yaml
 username: "{{ secret('POSTGRES_USERNAME') }}"
@@ -75,12 +75,12 @@ See [Secrets in Open Source](../../15.how-to-guides/secrets/index.md) or [Secret
 
 ## Installing plugins
 
-- **OSS**: the standard Kestra Docker image ships with plugins pre-installed. For a minimal build, use the `-no-plugins` image and install selectively via `kestra plugins install <artifact>` or by mounting plugin JARs to `/app/plugins/`.
+- **OSS**: the standard Kestra Docker image ships with plugins pre-installed.
 - **UI (Enterprise Edition)**: install, upgrade, and pin versions under **Instance → Versioned Plugins**.
 
 See [Selected Plugin Installation](../../15.how-to-guides/selected-plugin-installation/index.md) for full setup options including Docker Compose automation.
 
 ## Building or requesting plugins
 
-- **Build**: follow the [Plugin Developer Guide](../../plugin-developer-guide/index.mdx) to scaffold, test, and publish.
+- **Build**: see the [Plugin Developer Guide](../../plugin-developer-guide/index.mdx).
 - **Request**: open an issue in the [Kestra repository](https://github.com/kestra-io/kestra/issues) or ask in the [Kestra Slack community](https://kestra.io/slack).

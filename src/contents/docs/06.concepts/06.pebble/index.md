@@ -14,7 +14,7 @@ Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/)
 
 ## Reading inputs
 
-Access input values in tasks using the `inputs` variable:
+Input values are available in tasks via the `inputs` variable:
 
 ```yaml
 id: input_string
@@ -56,7 +56,7 @@ tasks:
 
 ## Dynamically render a task with `TemplatedTask`
 
-`TemplatedTask` lets you fully template all task properties using Pebble — including properties that are not natively dynamic. This example uses [TemplatedTask](/plugins/core/templating/io.kestra.plugin.core.templating.templatedtask) to create a Databricks job with inputs controlling the cluster, task key, and wait time:
+`TemplatedTask` supports full templating of all task properties using Pebble — including properties that are not natively dynamic. This example uses [TemplatedTask](/plugins/core/templating/io.kestra.plugin.core.templating.templatedtask) to create a Databricks job with inputs controlling the cluster, task key, and wait time:
 
 ```yaml
 id: templated_databricks_job
@@ -104,7 +104,7 @@ tasks:
 
 ## Date formatting
 
-Use the `date` filter to format date values inline: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
+The `date` filter formats date values inline: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 
 ## Coalesce operator to conditionally use trigger or execution date
 
@@ -127,7 +127,7 @@ triggers:
 
 ## Parsing objects and lists using jq
 
-Use the `jq` filter to slice, filter, and transform nested objects or lists returned by task outputs — similar to how `sed`, `awk`, and `grep` work on strings.
+The `jq` filter slices, filters, and transforms nested objects or lists returned by task outputs — similar to how `sed`, `awk`, and `grep` work on strings.
 
 ```yaml
 id: object_example
@@ -152,12 +152,12 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` returns `2`.
 
 `{{ inputs | jq(".data.value[1]") | first }}` also works — jq can parse any object in the Kestra context.
 
-Use the **Debug Expression** button in the **Outputs** tab of an execution to troubleshoot complex expressions and validate how objects will be parsed.
+The **Debug Expression** button in the **Outputs** tab of an execution helps troubleshoot complex expressions and validates how objects will be parsed.
 
 
 ## Using conditions in Pebble
 
-Tasks like `If` and `Switch` accept Pebble expressions as conditions, letting you branch on inputs or previous task outputs:
+Tasks like `If` and `Switch` accept Pebble expressions as conditions, branching on inputs or previous task outputs:
 
 ```yaml
 id: test-object

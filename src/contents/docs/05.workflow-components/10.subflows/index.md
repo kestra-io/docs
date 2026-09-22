@@ -6,33 +6,25 @@ sidebarTitle: Subflows
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Subflows let you build modular and reusable workflow components.
-
-They work like function calls: executing a subflow creates a new flow run from within another flow.
+Subflows let you build modular and reusable workflow components. Executing a subflow creates a new flow execution from within another flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/ZIwgNNtUf64?si=pCPFFFEgmuo77Zy8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Why use a subflow?
+## Declaring a subflow
 
-For example, you might define a subflow that handles error alerts by posting to Slack and email. Any flow that needs error notifications calls this subflow rather than duplicating those tasks.
-
-## How to declare a subflow
-
-Use the `io.kestra.plugin.core.flow.Subflow` task and specify the `flowId` and `namespace` of the flow to execute. Pass custom `inputs` the same way you would pass arguments to a function.
+The `io.kestra.plugin.core.flow.Subflow` task accepts `flowId` and `namespace` as required properties. Custom `inputs` for the subflow are declared under the `inputs` property.
 
 The `wait` and `transmitFailed` properties control execution behavior. If `wait` is `false`, the parent flow continues without waiting for the subflow to finish. `transmitFailed` determines whether a failure in the subflow causes the parent flow to fail.
 
 :::alert{type="warning"}
-Recursive flows are not supported. A flow cannot call itself directly or indirectly — any cycle makes the flow invalid and risks infinite loops and unbounded fan-out.
+Recursive flows are not supported. A flow cannot call itself directly or indirectly; any cycle makes the flow invalid and risks infinite loops and unbounded fan-out.
 
 **Do instead:** Use **[Loop](/plugins/core/flow/io.kestra.plugin.core.flow.loop)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
 :::
 
 ## Practical example
-
-A subflow can encapsulate business logic that is reusable across flows and easy to test in isolation:
 
 ```yaml
 id: critical_service
@@ -54,8 +46,6 @@ outputs:
     value: "{{ outputs.return_data.uri }}"
 ```
 
-Here, `return_data` outputs the URI of the stored query result — a reference to its location in Kestra's internal storage. The parent flow can pass this URI to downstream tasks for further processing.
-
 ```yaml
 id: parent_service
 namespace: company.team
@@ -75,8 +65,6 @@ tasks:
     commands:
       - cat "{{ outputs.subflow_call.outputs.some_output }}"
 ```
-
-The `outputs` map task IDs to their results. Here, the parent flow accesses the `some_output` value from the `subflow_call` task.
 
 ## Subflow properties
 
@@ -218,7 +206,7 @@ tasks:
     transmitFailed: true
 ```
 
-To provide type validation to extracted JSON fields, you can use [nested inputs](../05.inputs/index.md#nested-inputs) in the subflow definition:
+[Nested inputs](../05.inputs/index.md#nested-inputs) in the subflow definition add type validation to extracted JSON fields:
 
 ```yaml
 id: subflow

@@ -12,13 +12,13 @@ Polling triggers repeatedly check an external system at a fixed interval. When n
 
 Kestra provides polling triggers for a wide variety of systems, including databases, message queues, cloud storage, and FTP servers.
 
-Polling triggers are not limited to external connectors. Some plugins also provide script-based polling triggers, allowing you to run code on an interval and emit only when a condition matches. The script plugins for [Python](../../../15.how-to-guides/python/index.md#run-python-code-as-a-polling-trigger), [Shell](../../../15.how-to-guides/shell/index.md#automate-shell-with-triggers), and [JavaScript](../../../15.how-to-guides/javascript/index.md#automate-javascript-with-triggers) each provide `ScriptTrigger` and `CommandsTrigger` variants for polling with code or commands.
+Polling triggers are not limited to external connectors. Some plugins also provide script-based polling triggers that run code on an interval and emit only when a condition matches. The script plugins for [Python](../../../15.how-to-guides/python/index.md#run-python-code-as-a-polling-trigger), [Shell](../../../15.how-to-guides/shell/index.md#automate-shell-with-triggers), and [JavaScript](../../../15.how-to-guides/javascript/index.md#automate-javascript-with-triggers) each provide `ScriptTrigger` and `CommandsTrigger` variants for polling with code or commands.
 
 The polling frequency is controlled by the `interval` property. When triggered, the flow has access to the polling results through the `trigger` variable, making the retrieved data immediately available for downstream tasks.
 
 ## Example
 
-For example, the following flow polls a PostgreSQL table every 5 minutes. When new rows are available, it deletes them (to prevent duplicate processing) and logs the retrieved values.
+PostgreSQL polling trigger with a 5-minute interval:
 
 ```yaml
 id: jdbc-trigger
@@ -46,7 +46,7 @@ triggers:
     sql: "SELECT * FROM my_table"
 ```
 
-Like all triggers, polling triggers support a `when` Pebble expression. When set, the trigger only creates an execution if `when` evaluates to `true` after new data is detected — useful for filtering results before the flow runs.
+Like all triggers, polling triggers support a `when` Pebble expression. When set, the trigger only creates an execution if `when` evaluates to `true` after new data is detected, useful for filtering results before the flow runs.
 
 In [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md), you can assign polling triggers to a specific [Worker Queue](../../../07.enterprise/04.scalability/worker-group/index.md) using `workerSelector.tags`. This controls which workers execute the polling.
 
@@ -54,7 +54,7 @@ Browse the [plugin catalog](/plugins) and filter by **Trigger** to see all avail
 
 ## Enterprise example
 
-In Enterprise Edition, the `Salesforce Trigger` enables flows to start automatically when new records are created in Salesforce. For example, the flow below sends a Slack notification whenever a new contact is added.
+Enterprise polling trigger (Salesforce):
 
 ```yaml
 id: salesforce_contact_trigger

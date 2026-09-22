@@ -16,7 +16,7 @@ Retries automatically rerun failed tasks. Each retry creates a new task run atte
 
 ### Example
 
-This task retries up to 5 times with a 15-minute interval between attempts:
+Constant retry, 5 attempts, 15-minute interval:
 
 ```yaml
 - id: retry_sample
@@ -29,7 +29,7 @@ This task retries up to 5 times with a 15-minute interval between attempts:
     interval: PT15M
 ```
 
-In this example, the flow retries 4 times every 0.25 seconds. It succeeds on the 5th attempt, using `{{ taskrun.attemptsCount }}` to track retries:
+Constant retry, 4 attempts, 0.25-second interval — uses `{{ taskrun.attemptsCount }}` to conditionally exit:
 
 ```yaml
 id: retry
@@ -135,11 +135,9 @@ kestra:
             interval: PT30S
 ```
 
-This applies a constant retry policy with up to 3 attempts every 30 seconds.
-
 ## Flow-level retries
 
-You can retry at the flow level, restarting either the entire execution or just failed tasks. Options:
+Flow-level retries restart either the entire execution or only failed tasks, controlled by the `behavior` property:
 
 1. `CREATE_NEW_EXECUTION`: Start a new execution.
 2. `RETRY_FAILED_TASK`: Retry only the failed task.
@@ -180,8 +178,8 @@ Flow-level retries also restart Subflows as new executions.
 | Restart | Flow level | Manual | No |
 | Replay | Flow or task level | Manual | Yes |
 
-**Restart** reruns only the failed tasks within the same execution, keeping the same execution ID. Use the **Restart** button at the top of the Execution overview page.
+**Restart** reruns only the failed tasks within the same execution, keeping the same execution ID. Restart is available from the Execution overview page.
 
-**Replay** starts a new execution from any task — successful or failed — and assigns it a new execution ID. Previous task outputs are reused from cache when available. Trigger a replay from the **Actions** menu at the top of the Execution overview page, or directly from a task node in the **Topology**, **Gantt**, or **Logs** view. See the [Replay documentation](../../06.concepts/10.replay/index.md).
+**Replay** starts a new execution from any task (successful or failed) and assigns it a new execution ID. Previous task outputs are reused from cache when available. Replay is available from the **Actions** menu on the Execution overview page and from task nodes in the **Topology**, **Gantt**, or **Logs** view. See the [Replay documentation](../../15.how-to-guides/replay/index.md).
 
 After a replay, the new execution's Overview tab shows an **Original Execution** field linking back to the source run.

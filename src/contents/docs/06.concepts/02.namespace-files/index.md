@@ -12,17 +12,11 @@ Namespace Files are files tied to a namespace — scripts, queries, configs, and
   <iframe src="https://www.youtube.com/embed/BeQNI2XRddA?si=nvoIqA1SIrMaKyYs" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Namespace Files are files tied to a given namespace. You can think of Namespace Files as the equivalent of a project in your local IDE or a copy of your Git repository.
+A namespace holds Python files, R or Node.js scripts, SQL queries, dbt or Terraform projects, and more: equivalent to a project directory in your IDE or a Git repository clone. Any file in a namespace is referenceable from any flow in that namespace via the `read()` function.
 
-Namespace Files can hold Python files, R or Node.js scripts, SQL queries, dbt or Terraform projects, and much more.
+For example, a SQL query at `queries/my_query.sql` in the `company.team` namespace is accessible as `{{ read('queries/my_query.sql') }}` in any `Query` task or JDBC trigger.
 
-You can synchronize your Git repository with a specific namespace to orchestrate dbt, Terraform or Ansible, or any other project that contains code and configuration files.
-
-Once you add any file to a namespace, you can reference it inside your flows using the `read()` function in EVERY task or trigger from the same namespace.
-
-For instance, if you add a SQL query called `my_query.sql` to the `queries` directory in the `company.team` namespace, you can reference it in any `Query` task or any JDBC Trigger like so: `{{ read('queries/my_query.sql') }}`.
-
-Here is an example showing how you can use the `read()` function in a [ClickHouse Trigger](/plugins/plugin-jdbc-clickhouse/io.kestra.plugin.jdbc.clickhouse.trigger) to read a SQL query stored as a Namespace File:
+The [ClickHouse Trigger](/plugins/plugin-jdbc-clickhouse/io.kestra.plugin.jdbc.clickhouse.trigger) below reads a SQL query stored as a namespace file:
 
 ```yaml
 id: jdbc_trigger
@@ -52,28 +46,19 @@ triggers:
 The `namespaceFiles.enabled: true` property is not required here — it is only needed to inject an entire directory of namespace files into the working directory of a script task. If you only need to read a file’s contents, use `read()` without mounting; mounting is for when the task needs files on disk.
 :::
 
-## Why use Namespace Files
-
-Namespace Files let you store scripts, queries, and configs directly in Kestra rather than cloning a Git repository at runtime. Files live in Kestra's internal storage backend and are shared across all flows in the namespace, so you maintain one copy instead of duplicating code between flows.
-
-Common use cases:
-- Centralize SQL queries, Python scripts, or config files used by multiple flows
-- Sync a full Git project (dbt, Terraform, Ansible) to a namespace and orchestrate it without per-flow cloning
-- Share code across teams whose files live in different repositories or Git providers
-
-## How to add Namespace Files
+## Adding namespace files
 
 ### Embedded code editor
 
 Access Namespace Files from the **Files** tab while creating or editing a flow. From there you can write, import, or paste scripts, queries, and configuration files directly.
 
-To try it, create a folder named `scripts` and a file called `hello.py`:
+Example: a folder named `scripts` with a file called `hello.py`:
 
 ```python
 print("Hello from the Editor!")
 ```
 
-Once you added a file, you can use it in your flow:
+The flow below references that file:
 
 ```yaml
 id: editor
@@ -88,7 +73,7 @@ tasks:
       - python scripts/hello.py
 ```
 
-The **Execute** button allows you to run your flow directly from the Code Editor. Click **Execute** to run the flow. The **Logs** tab shows a friendly message ``Hello from the Editor!``.
+The **Execute** button runs the flow directly from the Code Editor. The **Logs** tab shows `Hello from the Editor!`.
 
 ### Namespace Files Revision History
 
@@ -98,21 +83,21 @@ Namespace Files include revision history just like flows, so you can inspect or 
 - Each subsequent upload keeps `queries/my_query.sql` as the latest version while adding suffixed revisions such as `queries/my_query.sql.v1`, `queries/my_query.sql.v2`, and so on.
 - Older revisions remain available under their suffixed filenames, letting you compare and restore as needed.
 
-To access a file's revision history, right-click on the file.
+Right-clicking on a file opens its revision history.
 
 ![Namespace file revision history](./namespace-file-revision-history-2-0.png)
 
-From the history, view, compare, and restore prior versions.
+The history view allows comparing and restoring prior versions.
 
 ![Restore a namespace file to a prior revision](./namespace-file-restore-2-0.png)
 
-From the **Revisions** list, you can delete a given revision or all revisions older than the selected one. You will be prompted to confirm this choice, as there is no possible way to restore a revision once is has been deleted. 
+The **Revisions** list supports deleting a given revision or all revisions older than a selected one. Deleted revisions cannot be restored.
 
-To keep your version history clean, you can purge "N" number of Namespace File revisions or revisions older than a certain date. Refer to the [Purge documentation](../../10.administrator-guide/purge/index.md#purge-namespace-files).
+Revisions can also be purged by count or by date. See the [Purge documentation](../../10.administrator-guide/purge/index.md#purge-namespace-files).
 
 ### PushNamespaceFiles and SyncNamespaceFiles tasks
 
-There are two tasks to help you automatically manage your namespace files with Git. This allows you to sync the latest changes from a Git repository.
+Two tasks automate namespace file management with Git, syncing the latest changes from a repository.
 
 This example pushes Namespace Files you already have in Kestra to a Git repository for you:
 
@@ -153,13 +138,13 @@ tasks:
     dryRun: true
 ```
 
-Check out the dedicated guides for more information:
+Dedicated guides:
 - [PushNamespaceFiles](../../15.how-to-guides/pushnamespacefiles/index.md)
 - [SyncNamespaceFiles](../../15.how-to-guides/syncnamespacefiles/index.md)
 
 ### GitHub Actions CI/CD
 
-Use the official Kestra [GitHub Actions](../../version-control-cicd/cicd/01.github-action/index.md) to upload namespace files directly from your repository. This is ideal for promoting configuration, scripts, or other assets that live alongside your code.
+The official Kestra [GitHub Actions](../../version-control-cicd/cicd/01.github-action/index.md) upload namespace files directly from a repository, suited to configuration, scripts, or other assets that live alongside code.
 
 Example workflow deploying the `scripts/` folder to the `prod` namespace using the `deploy-namespace-files` action:
 
@@ -192,9 +177,9 @@ jobs:
 
 ### Terraform provider
 
-You can use the `kestra_namespace_file` resource from the official [Kestra Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) to deploy all your custom script files from a specific directory to a given Kestra namespace.
+The `kestra_namespace_file` resource from the official [Kestra Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) deploys script files from a local directory to a given namespace.
 
-Below is a simple example showing how you can synchronize an entire directory of scripts from the directory `src` with the `company.team` namespace using Terraform:
+This example synchronizes an entire directory of scripts from `src` to the `company.team` namespace:
 
 ```hcl
 resource "kestra_namespace_file" "prod_scripts" {
@@ -207,7 +192,7 @@ resource "kestra_namespace_file" "prod_scripts" {
 
 ### Deploy namespace files via kestractl
 
-You can upload namespace files from the command line using [kestractl](../../kestra-cli/kestractl/index.md). The following example synchronizes an entire local directory with the `prod` namespace:
+[kestractl](../../kestra-cli/kestractl/index.md) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
 
 ```bash
 kestractl nsfiles upload prod ./scripts --override
@@ -224,9 +209,9 @@ The `--override` flag replaces existing files; `--fail-fast` stops on the first 
 `kestractl nsfiles` also supports `list`, `get`, and `delete` for inspecting and removing individual files. Run `kestractl nsfiles --help` for the full reference.
 
 
-## How to use Namespace Files in your flows
+## Using namespace files in flows
 
-There are multiple ways to use Namespace Files in your flows. You can use the `read()` function to read the content of a file as a string, point to the file path in the supported tasks, or use a dedicated task to retrieve it as an output.
+Namespace files are accessible via the `read()` function (returns content as a string), by pointing to the file path in supported tasks, or via a dedicated namespace task that retrieves the file as an output.
 
 :::alert{type="info"}
 Kestra 0.24 introduced a universal file protocol that simplifies accessing files — local or namespace — in your flow. For more details, refer to the [File Access documentation page](../file-access/index.md).
@@ -238,7 +223,7 @@ You can also use the `io.kestra.plugin.core.flow.WorkingDirectory` task to read 
 
 ### The `read()` function
 
-`read()` returns the **contents** of a namespace file as a string. Use it in tasks that accept string input — `io.kestra.plugin.scripts.python.Script`, `io.kestra.plugin.scripts.node.Script`, SQL query properties, and similar — not in `Commands` tasks that expect a file path on disk. The path must point to a file in the same namespace as the flow.
+`read()` returns the **contents** of a namespace file as a string, accepted by tasks like `io.kestra.plugin.scripts.python.Script`, `io.kestra.plugin.scripts.node.Script`, and SQL query properties. It is not for `Commands` tasks that expect a file path on disk. The path must point to a file in the same namespace as the flow.
 
 This example logs the contents of `example.txt`:
 
@@ -254,7 +239,7 @@ tasks:
 
 ### `namespaceFiles.enabled` on supported tasks
 
-With supported tasks, such as the `io.kestra.plugin.scripts` group, we can access files using their path and enabling the task to read namespace files.
+Supported tasks in the `io.kestra.plugin.scripts` group accept namespace files by path when `namespaceFiles.enabled` is set to `true`.
 
 Below is a simple `weather.py` script that reads a secret to talk to a Weather Data API:
 
@@ -370,7 +355,7 @@ tasks:
 
 ### Namespace tasks
 
-Use the Namespace Tasks to upload, download, and delete files in Kestra.
+Namespace Tasks upload, download, and delete files in Kestra.
 
 In the example below, we have a namespace file called `example.ion` that we want to convert to a `.csv` file. We can use the `DownloadFiles` task to generate an output that contains the file so we can easily pass it dynamically to the `IonToCsv` task.
 
@@ -396,9 +381,9 @@ Read more about the tasks below:
 
 ## Include / exclude namespace files
 
-You can selectively include or exclude namespace files.
+Namespace files are selectively included or excluded via the `namespaceFiles` property.
 
-Let's say that you have multiple namespace files present: file1.txt, file2.txt, file3.json, file4.yml. You can selectively include multiple files using the `include` attribute under `namespaceFiles` as shown below:
+Given namespace files: `file1.txt`, `file2.txt`, `file3.json`, `file4.yml` — the `include` attribute under `namespaceFiles` restricts which files are mounted:
 
 ```yaml
 id: include_namespace_files
@@ -416,9 +401,9 @@ tasks:
       - ls
 ```
 
-The `include_files` task lists all the included files. In the example above, these are `file1.txt` and `file3.json` as only those were included from the namespace through `include`.
+The `include_files` task lists only `file1.txt` and `file3.json`, the files matched by `include`.
 
-The `exclude` attribute, alternatively, includes all the namespace files except those specified under `exclude`.
+The `exclude` attribute mounts all namespace files except those listed.
 
 ```yaml
 id: exclude_namespace_files
