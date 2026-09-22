@@ -211,6 +211,21 @@ const WHO_ITEMS = [
         }
     }
 
+    // The article opens on the definition of unified orchestration. It is set
+    // larger than body copy so it reads as the statement it is, without
+    // becoming a heading and landing in the table of contents.
+    .whitepaper-content :global(.bd-content > p:first-child) {
+        font-size: 1.25rem;
+        line-height: 1.55;
+        font-weight: 500;
+        color: var(--ks-content-primary);
+        margin-bottom: 2rem;
+
+        @include media-breakpoint-up(md) {
+            font-size: 1.375rem;
+        }
+    }
+
     .whitepaper-faq :global(section.faq) {
         background: var(--ks-background-secondary);
     }
