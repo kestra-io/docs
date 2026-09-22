@@ -28,6 +28,7 @@ import {
     fetchVersionedSubgroups,
 } from "~/utils/plugins/fetchPluginPageData"
 import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
+import { findFamilySiblings } from "~/utils/plugins/pluginFamily"
 import { resolveShortElementSlug } from "~/utils/plugins/shortElementSlug"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
@@ -259,6 +260,18 @@ if (
     !pluginsWithoutDeprecated.some(p => matchesSubGroup(p, effectiveSubGroup))
 ) {
     if (!versionState.version) {
+        // Bare "/plugins/<name>" with no matching plugin may still be a multi-artifact
+        // family prefix (plugin-debezium, plugin-jdbc, plugin-scripts, ...): each
+        // sub-technology ships as its own unrelated top-level plugin, so there is no
+        // single plugin named e.g. "plugin-debezium" to render here.
+        if (
+            splitRouteSlug.length === 1 &&
+            pluginName &&
+            findFamilySiblings(allPlugins, pluginName).length > 0
+        ) {
+            return Astro.rewrite(`/plugins/family/${pluginName}`)
+        }
+
         console.warn("Redirecting due to no content")
         // With a single slug segment the parent is the index: build "/plugins", not
         // "/plugins/", which the trailing-slash rule would bounce a second time.
