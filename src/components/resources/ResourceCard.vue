@@ -22,6 +22,7 @@
     import aiBg from "~/assets/landing/ai/desk-bkg-AI.webp?url"
     import infraBg from "~/assets/landing/infrastructure/desk-bkg-infra.webp?url"
     import businessBg from "~/assets/landing/business/desk-bkg-business.webp?url"
+    import orchestrationBg from "~/assets/landing/orchestration/desk-bkg-orchestration.webp?url"
 
     const props = defineProps<{
         resource: {
@@ -39,6 +40,7 @@
         ai: aiBg,
         infrastructure: infraBg,
         business: businessBg,
+        orchestration: orchestrationBg,
     }
 
     const tagName = computed(() => tagLabel[props.resource.tag])

@@ -105,18 +105,21 @@ The orchestration market is diverse, with tools tailored to specific domains. He
 
 For a deeper comparison, explore our guides on [Airflow alternatives](https://www.kestra.io/resources/data/airflow-alternatives), [n8n alternatives](https://www.kestra.io/resources/infrastructure/n8n-alternatives), and [Flyte alternatives](https://www.kestra.io/resources/ai/flyte-alternatives).
 
+![Kestra topology of a cross-domain flow: a daily schedule trigger, a Docker disk-space check, then an If task branching to a Python transform and a Slack success notification, or a Slack disk-full alert](./cross-domain-healthcheck-flow.png)
+
 ## Real-world orchestration examples with Kestra
 
 A unified orchestrator allows you to build workflows that seamlessly cross domain boundaries. Here is an example of a single Kestra flow that combines infrastructure, data, and business tasks. It runs on a daily schedule, checks a system's disk space, processes a data file if space is sufficient, and notifies a Slack channel.
 
 ```yaml
 id: cross-domain-healthcheck
-namespace: company.team.production
+namespace: kestra.seo
 
 tasks:
   - id: check-disk-space
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: DOCKER
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: debian:stable-slim
     commands:
       - |
@@ -126,7 +129,7 @@ tasks:
 
   - id: process-data-if-safe
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ outputs['check-disk-space'].exitCode == 0 and outputs['check-disk-space'].outputFiles['disk_usage.txt']|first|int < 90 }}"
+    condition: "{{ read(outputs['check-disk-space'].outputFiles['disk_usage.txt']) | trim | number < 90 }}"
     then:
       - id: transform-data
         type: io.kestra.plugin.scripts.python.Script
@@ -134,9 +137,9 @@ tasks:
           # Your data processing logic here
           print("Disk space OK. Processing data.")
           # ...
-        
+
       - id: notify-success
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         payload: |
           {
@@ -144,7 +147,7 @@ tasks:
           }
     else:
       - id: alert-disk-full
-        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
         url: "{{ secret('SLACK_WEBHOOK_URL') }}"
         payload: |
           {
