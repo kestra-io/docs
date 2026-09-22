@@ -1,6 +1,6 @@
 ---
 title: "Airflow 2 End of Life: What It Means for Your Team"
-description: "Apache Airflow 2 reaches end of life in April 2026. For teams still running it, this is a forced decision point, and a rare window to evaluate options before committing for another decade."
+description: "Apache Airflow 2 reached end of life in April 2026. For teams still running it, this is a forced decision point, and a rare window to evaluate options before committing for another decade."
 date: 2026-04-06T09:00:00
 category: Solutions
 author:
@@ -13,10 +13,10 @@ schema:
   "@type": "FAQPage"
   mainEntity:
     - "@type": "Question"
-      name: "When does Airflow 2 reach end of life?"
+      name: "When did Airflow 2 reach end of life?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "Apache Airflow 2 reaches end of life on April 22, 2026. After this date, no security patches, bug fixes, or provider updates will be released for the 2.x line."
+        text: "Apache Airflow 2 reached end of life on April 22, 2026. Since then, no security patches, bug fixes, or provider updates are released for the 2.x line."
     - "@type": "Question"
       name: "Is it safe to keep running Airflow 2 after EOL?"
       acceptedAnswer:
@@ -39,11 +39,11 @@ schema:
         text: "Both upgrading to Airflow 3 and migrating to an alternative typically take 4 to 8 weeks for a mid-size deployment (50-200 DAGs), depending on the number of custom operators, undocumented workarounds, and integration complexity."
 ---
 
-Apache Airflow 2 reaches end of life in April 2026. For most teams, the default response is to upgrade to Airflow 3 and move on. Airflow's own [open issue tracker](https://github.com/apache/airflow/issues?q=is%3Aissue+is%3Aopen+airflow+3+upgrade) hints at a different outcome: DAGs not deactivating after migration, auth failures on fresh installs, broken task dependencies from changed behavior. The upgrade that looks straightforward on paper has already produced real friction in practice.
+Apache Airflow 2 reached end of life on April 22, 2026. For most teams, the default response is to upgrade to Airflow 3 and move on. Airflow's own [open issue tracker](https://github.com/apache/airflow/issues?q=is%3Aissue+is%3Aopen+airflow+3+upgrade) hints at a different outcome: DAGs not deactivating after migration, auth failures on fresh installs, broken task dependencies from changed behavior. The upgrade that looks straightforward on paper has already produced real friction in practice.
 
 That challenge gets amplified for teams with years of accumulated DAGs that have their own workarounds and undocumented assumptions. No official migration guide will account for any of that. 
 
-That's the situation EOL will drop you into. I'll cover what it actually means, then explain why the upgrade-by-default is worth pausing on before you commit several engineering weeks, or more likely months, to it.
+That's the situation EOL drops you into. I'll cover what it actually means, then explain why the upgrade-by-default is worth pausing on before you commit several engineering weeks, or more likely months, to it.
 
 ## End of life after April 22, 2026
 
@@ -114,8 +114,8 @@ If your data engineering manager needs to see the architectural tradeoffs and a 
 
 ## Frequently asked questions
 
-### When does Airflow 2 reach end of life?
-Apache Airflow 2 reaches end of life on **April 22, 2026**. After this date, no security patches, bug fixes, or provider updates will be released for the 2.x line.
+### When did Airflow 2 reach end of life?
+Apache Airflow 2 reached end of life on **April 22, 2026**. Since then, no security patches, bug fixes, or provider updates are released for the 2.x line.
 
 ### Is it safe to keep running Airflow 2 after EOL?
 Running unsupported software in production introduces security and compliance risks. Any CVEs discovered in Airflow 2 or its dependencies after EOL won't receive patches. Organizations with compliance requirements — SOC 2, HIPAA, PCI-DSS — will likely need to migrate to a supported version or platform to maintain their certification.

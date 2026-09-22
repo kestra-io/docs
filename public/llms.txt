@@ -100,6 +100,7 @@ Use this section to find working code for a specific tool or integration, unders
 - [How-to guides](https://kestra.io/docs/how-to-guides.md): Task-focused, example-driven guides for specific tools, languages, and integration patterns — the fastest way to produce working flow code for a given scenario
 - [Use cases](https://kestra.io/docs/use-cases.md): End-to-end solutions for data pipelines, dbt, microservices, infrastructure automation, approval workflows, and Python — useful for understanding what Kestra is built for and how teams use it in practice
 - [Blueprints](https://kestra.io/blueprints): Curated, ready-to-use flow templates searchable by tag, plugin, and use case
+- [Airflow 2 end-of-life: upgrade or replace](https://kestra.io/resources/airflow-2-eol-whitepaper.md): Decision guide for teams on Airflow 2 (EOL April 22, 2026) — what the Airflow 3 upgrade involves, when a declarative model fits better, and how to migrate incrementally with the Strangler Fig pattern
 
 ## APIs, CLI, and IaC
 
@@ -158,7 +159,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
-- [Promote (EE)](https://kestra.io/docs/version-control-cicd/promote.md): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
+- [Promote (EE)](https://kestra.io/docs/enterprise/governance/promote): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
 - [VS Code extension](https://kestra.io/docs/version-control-cicd/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
 - [No Code editor](https://kestra.io/docs/ui/flows.md): Build flows visually using the No Code canvas — drag-and-drop editing that stays in three-way sync with the YAML editor and AI Copilot in real time
 
@@ -398,6 +399,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
 - [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
+- [Add Plugins to a Slim Kestra Docker Image](https://kestra.io/docs/how-to-guides/slim-image-plugins.md)
 - [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
 - [Use SQLMesh to Run dbt Projects](https://kestra.io/docs/how-to-guides/sqlmesh.md)
 - [Subflow Retries, Restarts, and Replays in Kestra](https://kestra.io/docs/how-to-guides/subflow-executions.md)

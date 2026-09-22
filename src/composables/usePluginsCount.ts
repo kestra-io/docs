@@ -1,22 +1,10 @@
-import type { Plugin, PluginElement } from "~/utils/plugins/plugin"
-import { isEntryAPluginElementPredicate } from "~/utils/plugins/plugin"
+import type { Plugin } from "~/utils/plugins/plugin"
 import { computed, ref, type Ref } from "vue"
 import { $fetchApiCached } from "~/utils/fetch.ts"
+import { calculateTotalPlugins, formatPluginCount } from "~/utils/plugins/pluginCount"
 
-export function calculateTotalPlugins(plugins: Plugin[]): number {
-    const classes = new Set<string>()
-
-    plugins.forEach((plugin) => {
-        Object.entries(plugin).forEach(([key, elements]) => {
-            if (isEntryAPluginElementPredicate(key, elements)) {
-                elements.forEach((el: PluginElement) => classes.add(el.cls))
-            }
-        })
-    })
-
-    return classes.size
-}
-
+// Client-side counterpart of fetchTotalPluginsCount: same counting and format
+// rule, but returns the value *with* the trailing "+" and starts at "0+" until loaded.
 export function usePluginsCount(pluginsRef?: Ref<Plugin[]>) {
     let plugins = pluginsRef
     if (!plugins) {
@@ -31,9 +19,7 @@ export function usePluginsCount(pluginsRef?: Ref<Plugin[]>) {
 
     const totalPlugins = computed(() => {
         if (!plugins.value) return "0+"
-        const count = calculateTotalPlugins(plugins.value)
-        const rounded = Math.floor(count / 100) * 100
-        return `${rounded}+`
+        return `${formatPluginCount(calculateTotalPlugins(plugins.value))}+`
     })
 
     return { totalPlugins, plugins }

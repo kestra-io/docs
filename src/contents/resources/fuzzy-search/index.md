@@ -82,7 +82,7 @@ Sometimes, similarity is based on sound rather than spelling. Phonetic algorithm
     *   **Metaphone and Double Metaphone:** These are more advanced phonetic algorithms that produce more accurate phonetic encodings for a wider range of English words and other languages.
 *   **N-gram Comparison:** This technique breaks down strings into a sequence of *n* characters. For example, the 2-grams (or bigrams) for "kestra" are "ke", "es", "st", "ra". The similarity between two strings can then be calculated by comparing their sets of N-grams. This approach is resilient to character reordering and is language-agnostic.
 
-These different techniques can be combined to create a sophisticated search experience. Orchestrating the data processing needed for these methods is a key part of building a robust search system, often involving multiple Kestra [Flows](/docs/concepts/flow) to prepare and index the data correctly.
+These different techniques can be combined to create a sophisticated search experience. Orchestrating the data processing needed for these methods is a key part of building a robust search system, often involving multiple Kestra [Flows](/docs/workflow-components/flow) to prepare and index the data correctly.
 
 ## Practical applications: Where fuzzy search shines in real-world scenarios
 

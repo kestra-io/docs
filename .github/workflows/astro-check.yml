@@ -1,7 +1,8 @@
 name: Lint & Astro Check
 
 # Runs the vitest unit tests, `astro check` (TypeScript / Astro diagnostics),
-# oxlint, and the SSR collection-import check on every pull request, reporting
+# oxlint, the SSR collection-import check, and the SVG optimisation check on
+# every pull request, reporting
 # lint/check findings as inline review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
 # and [imported content]. The job fails if any tool reports anything, keeping
 # the tree clean.
@@ -27,7 +28,13 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Install dependencies
-        run: npm install
+        uses: ./.github/actions/node-modules
+
+      # request.cf (Cloudflare's per-request geo/runtime properties) only
+      # type-checks via this generated file — it's never committed, so it
+      # must be regenerated here before `astro check` runs.
+      - name: Generate Cloudflare Worker types
+        run: npm run cf-typegen
 
       - name: Run unit tests
         run: npm run test:unit
@@ -112,3 +119,9 @@ jobs:
       - name: Run unit tests
         if: ${{ !cancelled() }}
         run: npm run test:unit
+
+      # Files under public/ never reach Astro's svgOptimizer, so without this
+      # nothing notices an SVG landing unoptimised.
+      - name: Check SVG optimisation
+        if: ${{ !cancelled() }}
+        run: npm run svgo:check

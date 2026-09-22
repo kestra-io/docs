@@ -2,7 +2,7 @@
 title: "CI/CD Orchestration: Unifying Software Delivery Workflows"
 description: "Explore CI/CD orchestration, how it extends continuous integration and delivery, and how a declarative platform like Kestra unifies your entire software delivery lifecycle."
 metaTitle: "CI/CD Orchestration: Unifying Software Delivery Workflows"
-metaDescription: "Unify your CI/CD pipelines with comprehensive orchestration. Learn how declarative, event-driven platforms streamline software delivery, enhance reliability, and integrate diverse tools across your DevOps stack."
+metaDescription: "CI/CD orchestration coordinates builds, tests, and deployments across separate DevOps tools. See where it fits next to a native CI runner, and when you need it."
 tag: "infrastructure"
 date: 2026-06-20
 slug: "ci-cd-orchestration"
@@ -141,32 +141,39 @@ tasks:
 
   - id: build-and-test
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: DOCKER
-    docker:
-      image: maven:3.8-jdk-11
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: maven:3.8-jdk-11
     commands:
       - mvn clean install
 
   - id: build-image
-    type: io.kestra.plugin.docker.Build
+    type: io.kestra.plugin.docker.cli.Build
     dockerfile: "{{ workingDir }}/Dockerfile"
-    imageTags:
-      - your-repo/your-app:{{ flow.revision }}
+    tags:
+      - "your-repo/your-app:{{ flow.revision }}"
 
   - id: deploy
-    type: io.kestra.plugin.kubernetes.Apply
-    manifest: |
+    type: io.kestra.plugin.kubernetes.kubectl.Apply
+    namespace: default
+    spec: |
       apiVersion: apps/v1
       kind: Deployment
       metadata:
         name: your-app-deployment
       spec:
         replicas: 3
+        selector:
+          matchLabels:
+            app: your-app
         template:
+          metadata:
+            labels:
+              app: your-app
           spec:
             containers:
-            - name: your-app
-              image: your-repo/your-app:{{ flow.revision }}
+              - name: your-app
+                image: your-repo/your-app:{{ flow.revision }}
 ```
 
 ### Event-Driven Automation Across Any Environment

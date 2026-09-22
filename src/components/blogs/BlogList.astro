@@ -3,6 +3,16 @@ import BlogCard from "~/components/blogs/BlogCard.vue"
 import Link from "~/components/common/Link.astro"
 import LatestVideos from "~/components/blogs/LatestVideos.vue"
 import BlogGrid from "~/components/blogs/BlogGrid.vue"
+import type { BlogCardEntry } from "~/components/blogs/types"
+
+// Typed so that dropping a field from [category].astro's mapping fails the
+// build here, instead of reaching BlogCard, which takes `any`.
+interface Props {
+    blogs: BlogCardEntry[]
+    externalNews: any[]
+    videos: any[]
+    category: string
+}
 
 const { blogs, externalNews, videos, category } = Astro.props
 ---

@@ -33,7 +33,7 @@ Use this rule of thumb:
 
 | If you want to remove... | Prefer | Why |
 | --- | --- | --- |
-| Old execution records | [`PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) | It permanently deletes execution metadata and related execution data |
+| Old execution records | [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions) | It permanently deletes execution metadata and related execution data |
 | Old execution logs, trigger logs, or both | [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs) | Use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently, or leave both `true` (default) to purge all logs |
 | Expired runtime state in the KV Store | [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv) or automatic KV expiration purge | It removes stale KV entries without treating them as static configuration |
 | Old Namespace file versions | [`PurgeFiles`](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) | It applies retention rules to Namespace files and their versions |

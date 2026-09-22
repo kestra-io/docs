@@ -21,8 +21,6 @@
                     class="btn toc-toggle d-lg-none"
                     :class="{ collapsed: !tableOfContentsExpanded }"
                     type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#tocContents"
                     :aria-expanded="tableOfContentsExpanded"
                     aria-controls="tocContents"
                     @click="tableOfContentsExpanded = !tableOfContentsExpanded"
@@ -34,7 +32,12 @@
                     </span>
                 </button>
 
-                <div class="collapse bd-toc-collapse" id="tocContents">
+                <div
+                    class="bd-toc-collapse"
+                    :class="{ open: tableOfContentsExpanded }"
+                    id="tocContents"
+                >
+                    <div class="bd-toc-collapse-inner" :inert="collapsed">
                     <slot name="header"></slot>
                     <strong class="d-none d-lg-block h6 mb-2">Table of Contents</strong>
                     <nav id="nav-toc">
@@ -78,6 +81,7 @@
                             </ul>
                         </ul>
                     </nav>
+                    </div>
                 </div>
             </template>
 
@@ -89,8 +93,8 @@
 </template>
 
 <script setup lang="ts">
-    import { nextTick, ref, onUnmounted } from "vue"
-    import { useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
+    import { computed, nextTick, ref, onUnmounted } from "vue"
+    import { useEventListener, useMediaQuery, useScroll, useThrottleFn } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
@@ -125,6 +129,12 @@
 
     const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined)
     const tableOfContentsExpanded = ref(false)
+
+    // `overflow: hidden` on the 0fr grid clips the panel but leaves its links
+    // focusable. Above lg the panel is always shown while the flag stays
+    // false, so the viewport is part of the condition.
+    const belowLg = useMediaQuery("(max-width: 991.98px)")
+    const collapsed = computed(() => belowLg.value && !tableOfContentsExpanded.value)
     const activeLinkId = ref("")
     const isManualScrolling = ref(false)
     let manualScrollTimer: ReturnType<typeof setTimeout> | undefined
@@ -198,7 +208,6 @@
 
     const closeToc = () => {
         tableOfContentsExpanded.value = false
-        document.getElementById("tocContents")?.classList.remove("show")
     }
 
     const handleScroll = useThrottleFn(() => {
@@ -261,7 +270,7 @@
             }
         }
         nav {
-            @include font-size(0.875rem);
+            font-size: 0.875rem;
             padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--ks-border-primary);
             position: relative;
@@ -355,7 +364,7 @@
         }
 
         hr {
-            border-color: var(--bs-gray-600);
+            border-color: var(--ks-gray-600);
         }
     }
 
@@ -392,25 +401,45 @@
         border-radius: 8px 8px 0 0;
     }
 
+    // Height transition without JS: 0fr to 1fr on a single-row grid. The mobile
+    // border hangs off `.open` so a closed panel draws no hairline.
     .bd-toc-collapse {
-        border-radius: var(--bs-border-radius, 8px);
-        overflow: hidden;
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.25s ease;
+        border-radius: 8px;
         strong {
             margin-left: 1.5rem;
         }
+        .bd-toc-collapse-inner {
+            overflow: hidden;
+            min-height: 0;
+        }
         @include media-breakpoint-down(lg) {
-            border-top-width: 0 !important;
-            border: 1px solid var(--ks-border-secondary);
-            border-radius: 0 0 8px 8px;
+            &.open .bd-toc-collapse-inner {
+                border: 1px solid var(--ks-border-secondary);
+                border-top-width: 0;
+                border-radius: 0 0 8px 8px;
+            }
             nav {
                 padding-bottom: $spacer;
                 border-radius: inherit;
             }
         }
         @include media-breakpoint-up(lg) {
-            display: block !important;
+            // Above the breakpoint the panel is always open and never
+            // animates, so the grid wrapper and its inner div drop out of
+            // the box model entirely. Leaving them as boxes shifts the
+            // sidebar ~8px (grid suppresses the margin collapse main relied
+            // on) and changes where its max-height clips.
+            display: contents;
+
+            .bd-toc-collapse-inner {
+                display: contents;
+            }
         }
-        &.show {
+        &.open {
+            grid-template-rows: 1fr;
             border-radius: 0 0 8px 8px;
         }
     }

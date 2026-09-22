@@ -141,7 +141,7 @@ An orchestration platform sits at the heart of the lifecycle, acting as the cont
 *   Handle errors gracefully with retries and alerting.
 *   Provide end-to-end monitoring and logging for full visibility.
 
-Choosing the [right data orchestrator](/blogs/2023-05-22-data-orchestration-choosing-the-right-tool) is one of the most critical decisions a data team can make, as it directly impacts the reliability and scalability of the entire data engineering lifecycle.
+Choosing the [right data orchestrator](/resources/data/data-orchestration) is one of the most critical decisions a data team can make, as it directly impacts the reliability and scalability of the entire data engineering lifecycle.
 
 ## Foundational Elements of Modern Data Engineering
 

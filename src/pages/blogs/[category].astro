@@ -80,9 +80,15 @@ const externalNews = await Promise.all(
         }),
 )
 
+// Only the fields BlogCard renders: the rest of the frontmatter (description,
+// JSON-LD schema, faq, author profiles) would ship in the island's props too.
 const internalBlogs = sortedBlogs.map((blog) => ({
-    ...blog.data,
-    slug: blog.id,
+    title: blog.data.title,
+    category: blog.data.category,
+    date: blog.data.date,
+    image: blog.data.image,
+    author: blog.data.author && { name: blog.data.author.name },
+    authors: blog.data.authors?.map((author) => ({ name: author.name })),
     path: `/blogs/${blog.id}`,
 }))
 

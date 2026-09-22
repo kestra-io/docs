@@ -217,8 +217,8 @@ tasks:
 
 Custom Blueprints can be version-controlled with Git using two dedicated tasks from the `plugin-ee-git` plugin:
 
-- [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.PushBlueprints) commits and pushes blueprints from Kestra to a Git repository.
-- [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.SyncBlueprints) syncs blueprints from a Git repository into Kestra, treating Git as the single source of truth.
+- [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.pushblueprints) commits and pushes blueprints from Kestra to a Git repository.
+- [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncblueprints) syncs blueprints from a Git repository into Kestra, treating Git as the single source of truth.
 
 These tasks mirror the [PushFlows and SyncFlows patterns](../../../version-control-cicd/04.git/index.md) used for flows, applied to Custom Blueprints.
 

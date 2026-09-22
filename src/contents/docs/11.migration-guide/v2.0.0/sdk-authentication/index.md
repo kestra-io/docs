@@ -85,4 +85,4 @@ If a task fails with a 401 error after upgrading, adding credentials is the fix.
 
 1. Identify which flows use git sync or other tasks that call the Kestra API.
 2. Choose the credential method that fits your setup — namespace/tenant defaults require the fewest per-flow changes.
-3. For inline `auth`, store the token or password as a [secret](../../../07.enterprise/02.governance/05.secrets/index.md) and reference it with `{{ secret('...') }}`.
+3. For inline `auth`, store the token or password as a [secret](../../../07.enterprise/02.governance/secrets-manager/index.md) and reference it with `{{ secret('...') }}`.

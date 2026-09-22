@@ -10,8 +10,7 @@ metaDescription: This is the story of Valorissimo's partnership with Hanalytics
   and sales efficiency in the real estate investment sector.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
-logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logo: ./logo.webp
 tasks:
   - io.kestra.plugin.gcp.bigquery.Load
   - io.kestra.plugin.hightouch.Sync

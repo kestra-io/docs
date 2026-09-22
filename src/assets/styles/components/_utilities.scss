@@ -1,0 +1,305 @@
+// Replaces bootstrap/scss/utilities + utilities/api.
+//
+// Bootstrap generated 1570 utility classes; the markup uses 144. The map below
+// lists those 144 and nothing else, which is the whole point: it is the one
+// place to look, and the one place to edit. Adding a class means adding its
+// value to `values` (and its breakpoint to `responsive`) here — a utility that
+// is not listed does not exist, and will simply not apply.
+//
+// `responsive: (md lg)` emits `<prefix>-md-<key>` and `<prefix>-lg-<key>` in
+// those breakpoints' min-width blocks, mirroring bootstrap's infix order so
+// the cascade is unchanged.
+
+$ks-utilities: (
+    "display": (
+        property: display,
+        prefix: "d",
+        values: (
+            none: none,
+            block: block,
+            flex: flex,
+            inline: inline,
+            inline-block: inline-block,
+            inline-flex: inline-flex,
+        ),
+        responsive: (sm md lg xl xxl),
+    ),
+    "flex-direction": (
+        property: flex-direction,
+        prefix: "flex",
+        values: (column: column, row: row),
+        responsive: (sm md lg xl),
+    ),
+    "flex-wrap": (
+        property: flex-wrap,
+        prefix: "flex",
+        values: (wrap: wrap, nowrap: nowrap),
+    ),
+    "flex-grow": (
+        property: flex-grow,
+        prefix: "flex-grow",
+        values: (1: 1),
+    ),
+    "justify-content": (
+        property: justify-content,
+        prefix: "justify-content",
+        values: (center: center, end: flex-end, between: space-between),
+    ),
+    "align-items": (
+        property: align-items,
+        prefix: "align-items",
+        values: (start: flex-start, center: center, baseline: baseline),
+        responsive: (md),
+    ),
+    "align-self": (
+        property: align-self,
+        prefix: "align-self",
+        values: (start: flex-start, center: center, end: flex-end),
+        responsive: (lg),
+    ),
+    "order": (
+        property: order,
+        prefix: "order",
+        values: (0: 0, 1: 1, last: 6),
+        // `md` carries `Alternation.astro`, which reverses every other feature
+        // row with `order-md-0`/`order-md-1`. Without it the rows fall back to
+        // the base order and every section renders image-first.
+        responsive: (md lg xl),
+    ),
+    "gap": (
+        property: gap,
+        prefix: "gap",
+        values: (1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 3rem, 6: 2rem, 7: 0.625rem),
+    ),
+    "row-gap": (
+        property: row-gap,
+        prefix: "row-gap",
+        values: (4: 1.5rem),
+    ),
+    "margin": (
+        property: margin,
+        prefix: "m",
+        values: (0: 0),
+    ),
+    "margin-x": (
+        property: (margin-right, margin-left),
+        prefix: "mx",
+        values: (2: 0.5rem, auto: auto),
+    ),
+    "margin-y": (
+        property: (margin-top, margin-bottom),
+        prefix: "my",
+        values: (0: 0, 2: 0.5rem, 4: 1.5rem, 5: 3rem, 6: 2rem),
+        responsive: (md),
+    ),
+    "margin-top": (
+        property: margin-top,
+        prefix: "mt",
+        values: (1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 3rem),
+    ),
+    "margin-end": (
+        property: margin-right,
+        prefix: "me",
+        values: (2: 0.5rem, 3: 1rem, auto: auto),
+        responsive: (sm),
+    ),
+    "margin-bottom": (
+        property: margin-bottom,
+        prefix: "mb",
+        values: (0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 3rem),
+        responsive: (xl),
+    ),
+    "margin-start": (
+        property: margin-left,
+        prefix: "ms",
+        values: (1: 0.25rem, 2: 0.5rem, 3: 1rem, auto: auto),
+        responsive: (sm xl),
+    ),
+    "padding": (
+        property: padding,
+        prefix: "p",
+        values: (0: 0, 1: 0.25rem, 3: 1rem, 4: 1.5rem),
+    ),
+    "padding-x": (
+        property: (padding-right, padding-left),
+        prefix: "px",
+        values: (2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 3rem, 6: 2rem),
+        responsive: (md),
+    ),
+    "padding-y": (
+        property: (padding-top, padding-bottom),
+        prefix: "py",
+        values: (0: 0, 1: 0.25rem, 3: 1rem, 4: 1.5rem, 5: 3rem),
+        responsive: (md),
+    ),
+    "padding-top": (
+        property: padding-top,
+        prefix: "pt",
+        values: (2: 0.5rem, 5: 3rem),
+    ),
+    "padding-bottom": (
+        property: padding-bottom,
+        prefix: "pb",
+        values: (2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 3rem),
+    ),
+    "width": (
+        property: width,
+        prefix: "w",
+        values: (100: 100%),
+    ),
+    "height": (
+        property: height,
+        prefix: "h",
+        values: (100: 100%),
+    ),
+    "max-height": (
+        property: max-height,
+        prefix: "mh",
+        values: (100: 100%),
+    ),
+    "float": (
+        property: float,
+        prefix: "float",
+        values: (end: right),
+    ),
+    "object-fit": (
+        property: object-fit,
+        prefix: "object-fit",
+        values: (cover: cover),
+    ),
+    "opacity": (
+        property: opacity,
+        prefix: "opacity",
+        values: (100: 1),
+    ),
+    "overflow": (
+        property: overflow,
+        prefix: "overflow",
+        values: (hidden: hidden, visible: visible),
+    ),
+    "overflow-x": (
+        property: overflow-x,
+        prefix: "overflow-x",
+        values: (auto: auto),
+    ),
+    "overflow-y": (
+        property: overflow-y,
+        prefix: "overflow-y",
+        values: (hidden: hidden),
+    ),
+    "visibility": (
+        property: visibility,
+        prefix: "",
+        values: (visible: visible),
+    ),
+    "z-index": (
+        property: z-index,
+        prefix: "z",
+        values: (2: 2),
+    ),
+    "font-size": (
+        property: font-size,
+        prefix: "fs",
+        values: (5: $font-size-lg, 7: $font-size-xs),
+    ),
+    "font-weight": (
+        property: font-weight,
+        prefix: "fw",
+        values: (normal: 400, bold: 700),
+    ),
+    "text-align": (
+        property: text-align,
+        prefix: "text",
+        values: (start: left, end: right, center: center),
+    ),
+    "text-decoration": (
+        property: text-decoration,
+        prefix: "text-decoration",
+        values: (none: none),
+    ),
+    "text-transform": (
+        property: text-transform,
+        prefix: "text",
+        values: (capitalize: capitalize),
+    ),
+    "white-space": (
+        property: white-space,
+        prefix: "text",
+        values: (nowrap: nowrap),
+    ),
+    "color": (
+        property: color,
+        prefix: "text",
+        values: (
+            primary: #0d6efd,
+            secondary: #6c757d,
+            success: #198754,
+            info: #0dcaf0,
+            warning: #ffc107,
+            danger: #dc3545,
+            white: $white,
+            muted: rgba(33, 37, 41, 0.75),
+            reset: inherit,
+        ),
+    ),
+    "background-color": (
+        property: background-color,
+        prefix: "bg",
+        values: (light: #f8f9fa, white: $white, transparent: transparent),
+    ),
+    "border": (
+        property: border,
+        prefix: "",
+        values: (border: 1px solid #dee2e6),
+    ),
+    "border-radius": (
+        property: border-radius,
+        prefix: "rounded",
+        values: (0: 0, 3: $border-radius-lg, circle: 50%),
+    ),
+    "border-radius-bottom": (
+        property: (border-bottom-right-radius, border-bottom-left-radius),
+        prefix: "rounded-bottom",
+        values: (3: $border-radius-lg),
+    ),
+);
+
+@mixin ks-utility-rule($config, $key, $value, $infix: "") {
+    $prefix: map-get($config, prefix);
+    $name: if($prefix == "", "#{$key}", "#{$prefix}#{$infix}-#{$key}");
+
+    .#{$name} {
+        @each $property in ks-utility-properties($config) {
+            #{$property}: $value !important;
+        }
+    }
+}
+
+@function ks-utility-properties($config) {
+    $property: map-get($config, property);
+    @return if(type-of($property) == list, $property, ($property,));
+}
+
+// `.rounded` with no value key, kept out of the map's `-#{$key}` shape.
+.rounded {
+    border-radius: $border-radius !important;
+}
+
+@each $name, $config in $ks-utilities {
+    @each $key, $value in map-get($config, values) {
+        @include ks-utility-rule($config, $key, $value);
+    }
+}
+
+@each $breakpoint in (sm, md, lg, xl, xxl) {
+    @include media-breakpoint-up($breakpoint) {
+        @each $name, $config in $ks-utilities {
+            $responsive: map-get($config, responsive);
+            @if $responsive and index($responsive, $breakpoint) {
+                @each $key, $value in map-get($config, values) {
+                    @include ks-utility-rule($config, $key, $value, "-#{$breakpoint}");
+                }
+            }
+        }
+    }
+}

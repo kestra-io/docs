@@ -14,7 +14,7 @@ Workflow orchestration shows up everywhere: data pipelines that ETL across a doz
 
 Most engineers arrive at this coordination layer in pieces. A tutorial here, a Stack Overflow answer there, a few days of trial and error. That's enough to ship. It's not enough to reason: to know why a flow is shaped the way it is, when to reach for a [subflow](../../docs/05.workflow-components/10.subflows/index.md) instead of inline tasks, or how to turn a scheduled job into an event-driven one without rewriting it.
 
-The [Kestra Fundamentals course](https://academy.kestra.io/kestra-fundamentals) closes that gap. It's a self-led course across four modules (introduction, core concepts, plugins and blueprints, and a quiz), with hands-on examples throughout. Pass the quiz and you earn a certificate that lives on your LinkedIn profile.
+The [Kestra Fundamentals course](https://academy.kestra.io/course/kestra-fundamentals) closes that gap. It's a self-led course across four modules (introduction, core concepts, plugins and blueprints, and a quiz), with hands-on examples throughout. Pass the quiz and you earn a certificate that lives on your LinkedIn profile.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/EjNvS69nUVE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -64,4 +64,4 @@ Orchestration is one of those skills most engineers pick up informally, which ma
 
 That's why we added a certification exam that you have to pass to get a credential you can add to your LinkedIn profile. The certificate signals something specific: that you understand what an [execution](../../docs/05.workflow-components/03.execution/index.md) is, how data flows between [tasks](../../docs/05.workflow-components/01.tasks/index.mdx), when to use a [subflow](../../docs/05.workflow-components/10.subflows/index.md), and how to make a workflow [event-driven](../../docs/05.workflow-components/07.triggers/index.mdx).
 
-Set aside an afternoon and [take the Kestra Fundamentals course](https://academy.kestra.io/kestra-fundamentals). When you earn your certificate, share it with us. We'd love to see it and hear from you. 
+Set aside an afternoon and [take the Kestra Fundamentals course](https://academy.kestra.io/course/kestra-fundamentals). When you earn your certificate, share it with us. We'd love to see it and hear from you. 
