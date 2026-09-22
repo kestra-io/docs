@@ -101,6 +101,7 @@ Use this section to find working code for a specific tool or integration, unders
 - [Use cases](https://kestra.io/docs/use-cases.md): End-to-end solutions for data pipelines, dbt, microservices, infrastructure automation, approval workflows, and Python — useful for understanding what Kestra is built for and how teams use it in practice
 - [Blueprints](https://kestra.io/blueprints): Curated, ready-to-use flow templates searchable by tag, plugin, and use case
 - [Airflow 2 end-of-life: upgrade or replace](https://kestra.io/resources/airflow-2-eol-whitepaper.md): Decision guide for teams on Airflow 2 (EOL April 22, 2026) — what the Airflow 3 upgrade involves, when a declarative model fits better, and how to migrate incrementally with the Strangler Fig pattern
+- [Unified orchestration and agentic AI](https://kestra.io/resources/whitepapers/unified-orchestration.md): Defines unified orchestration as the coordination of data, infrastructure, application and business workflows including governed agentic AI steps on a single control plane, with its seven requirements and why agentic AI is a cross-cutting layer rather than a fifth domain
 
 ## APIs, CLI, and IaC
 
