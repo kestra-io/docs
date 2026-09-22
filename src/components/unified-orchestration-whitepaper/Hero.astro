@@ -1,4 +1,6 @@
 ---
+import FragmentationDiagram from "./FragmentationDiagram.astro"
+
 interface Props {
     pdfHref: string
     readHref: string
@@ -17,6 +19,7 @@ const INSIDE = [
 <section class="hero">
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="container hero-inner">
+      <div class="hero-copy">
         <p class="eyebrow" data-usal="fade-r">
             Whitepaper · By Kai Waehner, Global Field CTO
         </p>
@@ -36,6 +39,11 @@ const INSIDE = [
         <ul class="inside-list" data-usal="fade-l">
             {INSIDE.map((item) => <li>{item}</li>)}
         </ul>
+      </div>
+
+      <div class="hero-figure" data-usal="zoomin">
+          <FragmentationDiagram />
+      </div>
     </div>
 </section>
 
@@ -81,12 +89,33 @@ const INSIDE = [
     .hero-inner {
         position: relative;
         z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
         padding-top: 4rem;
         padding-bottom: 3rem;
 
         @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            gap: 3rem;
             padding-top: 5rem;
             padding-bottom: 4rem;
+        }
+    }
+
+    .hero-copy {
+        min-width: 0;
+
+        @include media-breakpoint-up(lg) {
+            flex: 1 1 auto;
+        }
+    }
+
+    .hero-figure {
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 420px;
+            max-width: 420px;
         }
     }
 
@@ -140,14 +169,6 @@ const INSIDE = [
         padding: 0;
         margin: 0;
 
-        // The hero runs full width now, so the four points read as a grid
-        // rather than one long column.
-        @include media-breakpoint-up(md) {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.75rem 2.5rem;
-        }
-
         li {
             position: relative;
             padding-left: 1.75rem;
@@ -155,10 +176,6 @@ const INSIDE = [
             font-size: 0.9375rem;
             line-height: 1.5;
             color: var(--ks-content-secondary);
-
-            @include media-breakpoint-up(md) {
-                margin-bottom: 0;
-            }
 
             &::before {
                 content: "";
