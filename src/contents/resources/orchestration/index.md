@@ -105,6 +105,8 @@ The orchestration market is diverse, with tools tailored to specific domains. He
 
 For a deeper comparison, explore our guides on [Airflow alternatives](https://www.kestra.io/resources/data/airflow-alternatives), [n8n alternatives](https://www.kestra.io/resources/infrastructure/n8n-alternatives), and [Flyte alternatives](https://www.kestra.io/resources/ai/flyte-alternatives).
 
+![Kestra topology of a cross-domain flow: a daily schedule trigger, a Docker disk-space check, then an If task branching to a Python transform and a Slack success notification, or a Slack disk-full alert](./cross-domain-healthcheck-flow.png)
+
 ## Real-world orchestration examples with Kestra
 
 A unified orchestrator allows you to build workflows that seamlessly cross domain boundaries. Here is an example of a single Kestra flow that combines infrastructure, data, and business tasks. It runs on a daily schedule, checks a system's disk space, processes a data file if space is sufficient, and notifies a Slack channel.
