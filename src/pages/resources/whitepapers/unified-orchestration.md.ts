@@ -10,7 +10,7 @@ export const GET: APIRoute = async () => {
     const { title, author, description } = post.data
     const byline = author ? `**Whitepaper · By ${author}**\n\n` : ""
     const intro = description ? `${description}\n\n` : ""
-    return new Response(`# ${title}\n\n${byline}${intro}${post.body}`, {
+    return new Response(`# ${title}\n\n${byline}${intro}${post.body ?? ""}`, {
         status: 200,
         headers: { "Content-Type": "text/markdown; charset=utf-8" },
     })
