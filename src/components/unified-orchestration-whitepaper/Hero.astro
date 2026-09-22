@@ -1,0 +1,339 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import heroBg from "~/components/airflow-2-eol-whitepaper/assets/hero-bg.jpg"
+import previewFigure from "~/contents/resources/unified-orchestration/one-control-plane-across-four-domains.png"
+
+interface Props {
+    pdfHref: string
+    readHref: string
+}
+
+const { pdfHref, readHref } = Astro.props
+
+const INSIDE = [
+    "Why orchestration fragmented into four tool categories, and why agentic AI is not a fifth one",
+    "What Gartner's SOAP and BOAT and Forrester's Adaptive Process Orchestration each got right about the convergence",
+    "The seven requirements a platform has to meet before it earns the word unified",
+    "The difference between orchestrating agents and agentic orchestration, and why an enterprise needs both",
+]
+---
+
+<section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-split">
+        <div class="hero-left">
+            <div class="hero-left-content">
+                <p class="eyebrow" data-usal="fade-r">
+                    Whitepaper · By Kai Waehner, Global Field CTO
+                </p>
+                <h1 data-usal="fade-r">
+                    Unified Orchestration and Agentic AI: <span
+                        class="highlight">One Control Plane</span
+                    > for Enterprise-Grade Automation
+                </h1>
+                <p class="subtitle" data-usal="fade-r">
+                    Enterprise automation is fragmented across four domains:
+                    data, infrastructure, applications, and business processes.
+                    AI agents now act across all four. This paper defines what
+                    it takes to govern them on a single control plane.
+                </p>
+
+                <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
+                <ul class="inside-list" data-usal="fade-l">
+                    {INSIDE.map((item) => <li>{item}</li>)}
+                </ul>
+            </div>
+        </div>
+
+        <div class="hero-right" style={`background-image: url(${heroBg.src})`}>
+            <div class="hero-right-content">
+                <div class="preview" aria-hidden="true" data-usal="zoomin">
+                    <Image
+                        src={previewFigure}
+                        alt=""
+                        loading="eager"
+                        widths={[520, 900]}
+                        sizes="(min-width: 992px) 440px, 90vw"
+                        class="preview-img"
+                    />
+                </div>
+
+                <div class="download-card" data-usal="fade-l">
+                    <p class="download-eyebrow">
+                        <Icon name="mdi:check-circle-outline" class="tick" />
+                        No form. No email. Just the PDF.
+                    </p>
+                    <h2 class="download-title">Get the whitepaper</h2>
+                    <ul class="download-meta">
+                        <li>PDF, 18 pages</li>
+                        <li>Full text also published on this page</li>
+                    </ul>
+                    <div class="download-actions">
+                        <a href={pdfHref} class="btn btn-primary" download>
+                            Download the PDF
+                        </a>
+                        <a href={readHref} class="btn btn-ghost">
+                            Read it online
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+        color: var(--ks-content-primary);
+        background-color: var(--ks-background-body);
+    }
+
+    .hero-grid {
+        --grid-cell: 72px;
+        --grid-line: var(--ks-border-primary);
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(
+                to right,
+                transparent calc(var(--grid-cell) / 2 - 1px),
+                var(--grid-line) calc(var(--grid-cell) / 2 - 1px),
+                var(--grid-line) calc(var(--grid-cell) / 2),
+                transparent 1px
+            ),
+            linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+        background-size: var(--grid-cell) var(--grid-cell);
+        background-repeat: repeat;
+    }
+
+    .hero-split {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            min-height: 680px;
+        }
+    }
+
+    .hero-left {
+        display: flex;
+        align-items: center;
+        padding: 4rem 1.5rem 3rem;
+
+        @include media-breakpoint-up(lg) {
+            width: 50%;
+            flex: 0 0 50%;
+            padding: 5rem 4rem 6rem;
+            justify-content: flex-end;
+        }
+    }
+
+    .hero-left-content {
+        width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            max-width: 540px;
+        }
+    }
+
+    .eyebrow {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-color-highlight);
+        margin: 0 0 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 1.15;
+        margin: 0 0 1.25rem;
+
+        @include media-breakpoint-up(md) {
+            font-size: 2.375rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            font-size: 2.625rem;
+        }
+
+        .highlight {
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
+    .subtitle {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+        margin: 0 0 2rem;
+    }
+
+    .inside-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin: 0 0 0.875rem;
+        color: var(--ks-content-primary);
+        opacity: 0.6;
+    }
+
+    .inside-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.4em;
+                width: 1.125rem;
+                height: 1.125rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Ccircle cx='10' cy='10' r='9' stroke='%239F4FED' stroke-width='1.5'/%3E%3Cpath d='M6 10l2.5 2.5L14 7.5' stroke='%239F4FED' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-size: contain;
+            }
+        }
+    }
+
+    .hero-right {
+        position: relative;
+        background-color: #0d0520;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+
+        @include media-breakpoint-up(lg) {
+            width: 50%;
+            flex: 0 0 50%;
+        }
+    }
+
+    .hero-right-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding: 2.5rem 1.5rem;
+
+        @include media-breakpoint-up(lg) {
+            min-height: 100%;
+            padding: 4rem 3rem;
+        }
+    }
+
+    .preview {
+        width: 100%;
+        max-width: 440px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow:
+            0 28px 48px rgba(0, 0, 0, 0.55),
+            -10px 12px 24px rgba(88, 31, 211, 0.3);
+
+        .preview-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .download-card {
+        width: 100%;
+        max-width: 440px;
+        padding: 1.75rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(13, 5, 32, 0.72);
+        backdrop-filter: blur(8px);
+        color: #fff;
+    }
+
+    .download-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: #c9b6ff;
+        margin: 0 0 0.5rem;
+
+        .tick {
+            font-size: 1rem;
+            flex: none;
+        }
+    }
+
+    .download-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 0.75rem;
+        color: #fff;
+    }
+
+    .download-meta {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 1rem;
+
+        li {
+            font-size: $font-size-sm;
+            color: rgba(255, 255, 255, 0.72);
+
+            & + li::before {
+                content: "·";
+                margin-right: 1rem;
+                color: rgba(255, 255, 255, 0.4);
+            }
+        }
+    }
+
+    .download-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+
+        .btn {
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 0.625rem 1.5rem;
+        }
+
+        .btn-ghost {
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: transparent;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.08);
+                color: #fff;
+            }
+        }
+    }
+</style>

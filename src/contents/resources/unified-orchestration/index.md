@@ -6,6 +6,7 @@ metaDescription: "Enterprise automation is fragmented across four domains, and A
 tag: whitepapers
 author: Kai Waehner
 date: 2026-09-22
+href: /resources/whitepapers/unified-orchestration
 faq:
   - question: "What is unified orchestration?"
     answer: "Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane. It is defined by seven requirements: language and domain neutrality, event-driven and scheduled triggering, declarative version-controlled definitions, deep governance, sovereignty and deployment flexibility, extensibility over the existing stack, and governed nondeterministic steps."
@@ -44,17 +45,6 @@ schema:
       publisher:
         "@id": "https://kestra.io/#organization"
 ---
-
-**Whitepaper · By Kai Waehner, Global Field CTO**
-
-[Download the whitepaper as a PDF](/unified-orchestration-whitepaper.pdf) — the full argument and the seven-requirement checklist, in a format you can share with your team and your architecture board.
-
-**Key takeaways**
-
-- Orchestration fragmented into four tool categories that evolved independently. Agentic AI is not a fifth category: agents act across all four and must be governed across all four.
-- Gartner (SOAP, BOAT) and Forrester (Adaptive Process Orchestration) each named part of the convergence. None yet covers the whole of it.
-- Unified orchestration has seven concrete, testable requirements, written so any serious vendor would agree with them.
-- *Orchestrating agents* (coordinating agents with each other) is not [*agentic orchestration*](/resources/ai/agentic-orchestration-vs-orchestrating-agents) (running agentic steps inside governed end-to-end workflows). An enterprise needs both.
 
 **Definition.** Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane.
 
@@ -126,7 +116,7 @@ Deciding what happens next is orchestration. Moving the data is a different job.
 
 ## Why is orchestrating agents not agentic orchestration?
 
-Two different ideas share the term "agentic," and conflating them is the source of most confusion in the market. **Orchestrating agents** means coordinating agents with one another, which is what agent frameworks do at the application layer. **Agentic orchestration** means running agentic steps inside governed end-to-end workflows, on the same control plane as every other step. The first is a feature of an agent framework. The second is a property of an orchestration platform.
+Two different ideas share the term "agentic," and conflating them is the source of most confusion in the market. **Orchestrating agents** means coordinating agents with one another, which is what agent frameworks do at the application layer. [**Agentic orchestration**](/resources/ai/agentic-orchestration-vs-orchestrating-agents) means running agentic steps inside governed end-to-end workflows, on the same control plane as every other step. The first is a feature of an agent framework. The second is a property of an orchestration platform.
 
 ![Orchestrating agents versus agentic orchestration: on one side the agent decides its next step at runtime and chooses between paths, on the other the platform runs a governed flow with RBAC, audit and approvals in which a nondeterministic agent step sits between deterministic steps](./orchestrating-agents-vs-agentic-orchestration.png)
 
@@ -227,10 +217,6 @@ The core is [open source under the Apache 2.0 license](https://github.com/kestra
 [Kestra Enterprise](/enterprise) adds the governance, security, and scale that unified orchestration needs across the enterprise: fine-grained RBAC, multi-tenancy, audit logs, SSO and SCIM, a bring-your-own secret manager, and an enterprise SLA. [Worker Groups](/docs/enterprise/scalability/worker-group) govern where execution occurs: sensitive workloads stay isolated in secure environments, critical tasks are assigned dedicated workers to meet their SLAs, and heavy AI and ML jobs are routed to the compute resources built for them. Assets give full lineage and traceability across flows. Apps let teams across the enterprise run governed workflows on their own. All of it runs self-managed on the customer's own infrastructure: in a data center, in a cloud VPC, or air-gapped, and a growing set of plugins is available only in Kestra Enterprise. [Kestra Cloud](/pricing), the fully managed SaaS edition, is planned for general availability in Q4 2026, with consumption-based pricing for teams that want to start small and scale elastically.
 
 The adoption motion follows from the same foundation. Developers adopt the open source edition because it works in production. Teams standardize on it as projects multiply. Coordinating them across domains soon matters more than any single workflow. The moment work turns mission-critical, even a single flow, it needs the governance, scale, and support of a commercial edition. Scaling across the organization is the second path: a platform team or center of excellence consolidates silos across domains and governs the result under a single model.
-
-**Download the whitepaper** — the full paper as a PDF, with all figures. [Download the PDF](/unified-orchestration-whitepaper.pdf)
-
-**Start with one workflow** — [get started](/docs/quickstart) with the [open source edition](https://github.com/kestra-io/kestra), or [talk to the Kestra team](/demo) about Kestra Enterprise.
 
 ## About the author
 
