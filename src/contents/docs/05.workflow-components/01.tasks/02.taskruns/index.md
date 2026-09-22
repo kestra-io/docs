@@ -35,7 +35,7 @@ For a detailed overview of how task runs transition through states, see the [Sta
 
 ## Expression
 
-You can access information about the current task run using the `{{ taskrun }}` expression.
+The `{{ taskrun }}` expression provides access to information about the current task run.
 
 The following example outputs task run details using `{{ taskrun }}`:
 
@@ -61,7 +61,7 @@ The logs show the following:
 
 ## Loop iteration context
 
-Inside a [Loop](../00.flowable-tasks/index.md#loop) task, each iteration runs as an isolated sub-execution. Use `{{ item.value }}` and `{{ item.index }}` to access the current iteration value and zero-based index from any task inside that sub-execution, including tasks nested inside `If`, `Parallel`, or other flowable tasks.
+Inside a [Loop](../00.flowable-tasks/index.md#loop) task, each iteration runs as an isolated sub-execution. `{{ item.value }}` is the current iteration value; `{{ item.index }}` is the zero-based index. Both are accessible from any task inside that sub-execution, including tasks nested inside `If`, `Parallel`, or other flowable tasks.
 
 ```yaml
 id: loop

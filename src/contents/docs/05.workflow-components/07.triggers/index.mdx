@@ -25,12 +25,12 @@ A trigger starts a flow automatically, either on a schedule or in response to an
 
 Kestra supports six core trigger types:
 
-- [Schedule trigger](./01.schedule-trigger/index.md) — runs a flow on a cron schedule with optional calendar conditions.
-- [Flow trigger](./02.flow-trigger/index.md) — runs a flow when one or more upstream flows complete in a matching state.
-- [Webhook trigger](./03.webhook-trigger/index.md) — runs a flow in response to an inbound HTTP request.
-- [Polling trigger](./04.polling-trigger/index.md) — runs a flow when new data is detected in an external system.
-- [Realtime trigger](./05.realtime-trigger/index.md) — runs a flow with millisecond latency when an event arrives from a streaming source.
-- [MCP Tool trigger](./06.mcp-tool-trigger/index.md) — exposes a flow as a named tool on a Kestra MCP server, callable by AI agents such as Claude Desktop, Claude Code, and Cursor.
+- [Schedule trigger](./01.schedule-trigger/index.md): runs a flow on a cron schedule with optional calendar conditions.
+- [Flow trigger](./02.flow-trigger/index.md): runs a flow when one or more upstream flows complete in a matching state.
+- [Webhook trigger](./03.webhook-trigger/index.md): runs a flow in response to an inbound HTTP request.
+- [Polling trigger](./04.polling-trigger/index.md): runs a flow when new data is detected in an external system.
+- [Realtime trigger](./05.realtime-trigger/index.md): runs a flow with millisecond latency when an event arrives from a streaming source.
+- [MCP Tool trigger](./06.mcp-tool-trigger/index.md): exposes a flow as a named tool on a Kestra MCP server, callable by AI agents such as Claude Desktop, Claude Code, and Cursor.
 
 Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/aws-sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/io.kestra.plugin.kafka.trigger).
 
@@ -55,7 +55,7 @@ Triggers expose metadata through expressions. For example:
 - `{{ trigger.date }}` returns the current date for the [Schedule trigger](./01.schedule-trigger/index.md)
 - `{{ trigger.uri }}` returns the file or message for file detection or message arrival events
 - `{{ trigger.rows }}` provides query results for triggers like the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger
-- `{{ trigger._context.id }}` and `{{ trigger._context.type }}` return the ID and fully-qualified type of the trigger that started the execution — available for every trigger type
+- `{{ trigger._context.id }}` and `{{ trigger._context.type }}` return the ID and fully-qualified type of the trigger that started the execution, available for every trigger type
 
 This example logs the date when the trigger executes the flow:
 
@@ -118,7 +118,7 @@ triggers:
 
 ### Concurrency
 
-By default, each trigger allows only one active execution at a time. If an execution is still running when the next trigger fires, the new execution is queued rather than started immediately. Manual executions from the UI or API are not subject to this limit — they always start regardless of trigger state.
+By default, each trigger allows only one active execution at a time. If an execution is still running when the next trigger fires, the new execution is queued rather than started immediately. Manual executions from the UI or API are not subject to this limit; they always start regardless of trigger state.
 
 To allow multiple concurrent executions from the same trigger, set `allowConcurrent: true` on the trigger.
 
@@ -126,7 +126,7 @@ To allow multiple concurrent executions from the same trigger, set `allowConcurr
 
 Kestra 2.0 replaces the old `conditions` list on triggers with two composable properties:
 
-### `when` — Pebble expression (all triggers)
+### `when`: Pebble expression (all triggers)
 
 Every trigger type supports a `when` property. It accepts a [Pebble expression](../../expressions/index.mdx) that is evaluated at trigger time. If the expression evaluates to a falsy value (`false`, `0`, empty string), the trigger does not fire.
 
@@ -150,7 +150,7 @@ triggers:
 
 For calendar-based scheduling, helper functions like `isWeekend()`, `isPublicHoliday()`, `isDayWeekInMonth()`, and `dayOfWeek()` are available. See [date and calendar helpers](../../expressions/04.functions/06.dates/index.mdx) in the expressions reference.
 
-### `dependsOn` — upstream flow dependencies (Flow trigger only)
+### `dependsOn`: upstream flow dependencies (Flow trigger only)
 
 The [Flow trigger](./02.flow-trigger/index.md) replaces both `conditions` and `preconditions` with a `dependsOn` list. Each entry declares one upstream flow that must complete in a matching state. All entries must be satisfied before the trigger fires.
 
@@ -202,12 +202,9 @@ To avoid a source code change, use the **Enabled** toggle in the UI instead.
 
 ### Disabling a trigger from the UI
 
-To disable or re-enable a trigger:
+Triggers are enabled or disabled from the **Triggers** tab of the flow editor. See [Disabled](../../16.disabled/index.md) for details.
 
-1. Open the flow and go to the **Triggers** tab.
-2. Toggle **Enabled** next to the trigger. Toggle again to re-enable.
-
-If your trigger is locked due to an execution in progress, click **Unlock trigger** in the Triggers tab. Manually unlocking a trigger may result in duplicate executions — use it with caution.
+If a trigger is locked due to an execution in progress, the **Unlock trigger** button is available in the Triggers tab. Manually unlocking a trigger may result in duplicate executions.
 
 :::alert{type="info"}
 Only scheduler-based triggers are visible in the Triggers tab and API. Flow Triggers (handled by the Executor) and Webhook triggers (handled by the Webserver) do not appear there.
@@ -217,9 +214,9 @@ Only scheduler-based triggers are visible in the Triggers tab and API. Flow Trig
 
 From **Tenant → Triggers** you can bulk manage trigger state:
 
-- **Toggle** — enable or disable one or more triggers without editing the flow code.
-- **Unlock** — clear the “locked” state if a trigger is stuck waiting on a long-running execution (use carefully, as this may create duplicate executions).
-- **Delete trigger** — remove the trigger definition so it behaves as if newly created. This is useful when you need to reset trigger state or force a fresh evaluation window.
+- **Toggle**: enable or disable one or more triggers without editing the flow code.
+- **Unlock**: clear the “locked” state if a trigger is stuck waiting on a long-running execution (use carefully, as this may create duplicate executions).
+- **Delete trigger**: remove the trigger definition so it behaves as if newly created. This is useful when you need to reset trigger state or force a fresh evaluation window.
 
 ![triggers_administration](./triggers-administration.png)
 
@@ -227,9 +224,9 @@ Deleting a trigger is different from deleting a backfill: removing a backfill on
 
 ## Troubleshooting a trigger from the UI
 
-If you misconfigured a trigger, and as a result, no Executions are created, take the following actions to troubleshoot.
+When a trigger is misconfigured, no executions are created. Trigger logs are accessible from the **Triggers** tab on the flow's page; click the trigger row to expand its logs.
 
-The example flow below illustrates this scenario — the `http_poll` trigger points to a non-existent host:
+The example flow below has a misconfigured `http_poll` trigger pointing to a non-existent host:
 
 ```yaml
 id: misconfigured_trigger
@@ -247,7 +244,7 @@ triggers:
     interval: PT10S
 ```
 
-When you save the flow, no executions are created. To troubleshoot, go to the **Triggers** tab on the flow's page and click the trigger row to expand its logs. A detailed error message identifies the problem:
+The Triggers tab shows a detailed error message identifying the problem:
 
 ![invalid_trigger_configuration](./invalid_trigger_configuration.png)
 
@@ -263,7 +260,7 @@ Kestra does not automatically re-enable a trigger after it has been disabled by 
 
 ### Pause a schedule after failure
 
-This flow runs daily at 9 AM. If it fails, the schedule pauses until you re-enable it manually — preventing repeated failures on a broken pipeline:
+Schedule trigger with `stopAfter: [FAILED]`:
 
 ```yaml
 id: business_critical_flow
@@ -284,7 +281,7 @@ triggers:
 
 ### Disable the HTTP trigger after first success
 
-This flow polls an API every 30 seconds and sends a Slack alert when the price drops below $110. `stopAfter: [SUCCESS]` disables the trigger after one alert fires, preventing repeated notifications for the same condition.
+HTTP trigger with `stopAfter: [SUCCESS]`:
 
 ```yaml
 id: http
@@ -309,9 +306,7 @@ triggers:
 
 ## Passing inputs to triggers
 
-Use the `inputs` property on any trigger to set input values before execution:
-
-In this example, the `user` input is set to "John Smith" by the `schedule` trigger:
+The `inputs` property on any trigger sets input values before execution. Schedule trigger setting the `user` input:
 
 ```yaml
 id: myflow

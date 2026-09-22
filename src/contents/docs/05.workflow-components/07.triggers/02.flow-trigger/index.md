@@ -62,7 +62,7 @@ triggers:
 | Property    | Type                  | Description                                                                                                          |
 |-------------|-----------------------|----------------------------------------------------------------------------------------------------------------------|
 | `flowId`    | `String`              | The ID of the upstream flow to match. Omit to match any flow (combine with `when` to narrow the scope).             |
-| `namespace` | `String`              | The namespace of the upstream flow. Exact match only — use `when` for prefix or pattern matching.                    |
+| `namespace` | `String`              | The namespace of the upstream flow. Exact match only; use `when` for prefix or pattern matching.                    |
 | `states`    | `List<State>`         | States that satisfy this entry. Defaults to all terminal states and `PAUSED` when omitted.                           |
 | `labels`    | `Map<String, String>` | Key-value pairs that must all be present on the upstream execution's labels.                                         |
 | `when`      | `String`              | A Pebble expression evaluated against the upstream execution. The entry is satisfied only when this evaluates to true.|
@@ -93,7 +93,7 @@ triggers:
         states: [SUCCESS]
 ```
 
-Use `mode: AT_LEAST` with `minSatisfied` for N-of-M logic — fire when 2 out of 3 upstream flows succeed:
+Use `mode: AT_LEAST` with `minSatisfied` for N-of-M logic: fire when 2 out of 3 upstream flows succeed:
 
 ```yaml
 triggers:
@@ -130,7 +130,7 @@ triggers:
 
 ## Conditional guard with `when`
 
-Like all triggers, the Flow trigger supports a top-level `when` Pebble expression. It is evaluated before `dependsOn` — if it returns a falsy value, the trigger does not fire regardless of upstream state:
+Like all triggers, the Flow trigger supports a top-level `when` Pebble expression. It is evaluated before `dependsOn`: if it returns a falsy value, the trigger does not fire regardless of upstream state:
 
 ```yaml
 triggers:
@@ -303,9 +303,7 @@ triggers:
         when: "{{ hasRetryAttempt == true }}"
 ```
 
-## Example: data pipeline with SLA deadline
-
-This example triggers the `silver_layer` flow once the `bronze_layer` flow finishes successfully by 9 AM:
+## SLA deadline window
 
 ```yaml
 id: silver_layer
@@ -327,9 +325,7 @@ triggers:
       deadline: "09:00:00"
 ```
 
-## Example: alerting on failure
-
-This example creates a system flow that sends a Slack alert on any failure or warning state within the `company` namespace:
+## Failure alerting pattern
 
 ```yaml
 id: alert
@@ -350,9 +346,7 @@ triggers:
         when: "{{ namespace | startsWith('company') }}"
 ```
 
-## Example: mixed success and failure triggers
-
-You can define multiple Flow triggers on the same flow to react differently to upstream success vs. failure:
+## Multiple triggers on the same flow
 
 ```yaml
 triggers:
@@ -370,9 +364,9 @@ triggers:
         states: [FAILED]
 ```
 
-## Example: passing upstream outputs downstream
+## Passing upstream outputs to a child flow
 
-Reference upstream outputs using the scoped path `trigger.outputs.<flowId>.<key>`:
+Upstream outputs are accessible via `trigger.outputs.<flowId>.<key>`:
 
 ```yaml
 id: flow_b
@@ -404,7 +398,7 @@ triggers:
 
 ## Input rendering failures create FAILED executions
 
-If an `inputs` expression on a Flow trigger fails to render — for example, because an upstream output key does not exist — Kestra creates a `FAILED` execution instead of silently dropping the event. This makes failures visible in the UI and actionable via alerting.
+If an `inputs` expression on a Flow trigger fails to render (for example, because an upstream output key does not exist), Kestra creates a `FAILED` execution instead of silently dropping the event. This makes failures visible in the UI and actionable via alerting.
 
 ## Removed: `preconditions` and `conditions`
 

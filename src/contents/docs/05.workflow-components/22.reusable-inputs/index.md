@@ -11,7 +11,7 @@ Reusable inputs let you define a named group of typed inputs once at the namespa
 
 ## Define a reusable input set
 
-Open the namespace where you want the reusable input set to live, select the **Reusable Inputs** tab, and click **Create**. Give the set an `id`, an optional description, and declare the inputs the same way you would in a flow.
+A reusable input set is defined at the namespace level with an `id`, an optional description, and an `inputs` list structured the same as flow inputs.
 
 ```yaml
 id: ad_credentials
@@ -42,7 +42,7 @@ Each time you save, Kestra stores a new revision.
 
 ## Reference a set in a flow
 
-Add an input of `type: REUSABLE_INPUTS` to any flow and set `ref` to the set's `id`. Kestra inlines each child input before the execution starts, prefixing its id with the reference id (`<refId>.<childId>`).
+The `REUSABLE_INPUTS` input type accepts a `ref` property naming the set to include. Kestra expands the set's inputs inline before execution starts, prefixing each child input id with the reference id (`<refId>.<childId>`).
 
 ```yaml
 id: provision_ad_account
@@ -65,7 +65,7 @@ tasks:
       Domain: {{ inputs.ad.domain }}
 ```
 
-The set expands into three inputs — `ad.username`, `ad.domain`, and `ad.password` — available alongside `environment` in the execution form.
+The set expands into three inputs (`ad.username`, `ad.domain`, and `ad.password`) available alongside `environment` in the execution form.
 
 ### Access input values
 
@@ -82,12 +82,12 @@ Reference each child input as `{{ inputs.<refId>.<childId> }}`, where `refId` is
 | Property | Required | Description |
 | --- | --- | --- |
 | `ref` | Yes | The `id` of the reusable input set to include. |
-| `namespace` | No | Namespace where the set is defined. Defaults to the flow's own namespace. Resolution walks the hierarchy — a set in a parent namespace is available to child namespaces. |
+| `namespace` | No | Namespace where the set is defined. Defaults to the flow's own namespace. Resolution walks the hierarchy; a set in a parent namespace is available to child namespaces. |
 | `revision` | No | Integer revision to pin. Omit to use the latest revision at execution time. |
 
 ### Pin a specific revision
 
-To lock a flow to a particular version of a set — for example, to avoid pulling in a breaking change before your team has reviewed it — set `revision`:
+The `revision` property pins the set to a specific saved version. When omitted, the latest revision is used at execution time.
 
 ```yaml
 inputs:
@@ -112,7 +112,7 @@ inputs:
 
 ## RBAC
 
-The `REUSABLE_INPUTS` resource controls who can manage reusable input sets. Flows that reference a set require only normal flow-execution permissions — the expansion happens server-side before the execution form is rendered.
+The `REUSABLE_INPUTS` resource controls who can manage reusable input sets. Flows that reference a set require only normal flow-execution permissions; the expansion happens server-side before the execution form is rendered.
 
 | Role | Permissions |
 | --- | --- |
@@ -123,6 +123,6 @@ The `REUSABLE_INPUTS` resource controls who can manage reusable input sets. Flow
 
 ## Validation
 
-Kestra does not check whether a referenced set exists at flow save time — the existence check runs at execution creation. If the set is missing, execution creation fails with an error naming the missing set and the namespace hierarchy that was searched.
+Kestra does not check whether a referenced set exists at flow save time; the existence check runs at execution creation. If the set is missing, execution creation fails with an error naming the missing set and the namespace hierarchy that was searched.
 
 A reusable input set's inputs are expanded in a single pass. If a set's inputs list contains a `REUSABLE_INPUTS` entry, that nested reference is not recursively expanded and the execution form will fail to render it correctly. Keep set definitions flat.

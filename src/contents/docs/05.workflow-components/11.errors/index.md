@@ -12,11 +12,24 @@ Kestra provides multiple ways to handle errors, helping you both identify issues
   <iframe src="https://www.youtube.com/embed/VdVNqrL5aPI?si=4U749DR14cUV12P6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## `errors` Component
+## Error handling mechanisms
+
+Three mechanisms control flow behavior when tasks fail: `errors`, `allowFailure`/`allowWarning`, and `afterExecution`.
+
+| Mechanism | Behavior |
+| --- | --- |
+| `errors` | Tasks in this list run when a task or the flow fails; executes sequentially after the failure |
+| `allowFailure` | Marks a failed task's outcome as a warning instead of propagating the failure; downstream tasks continue |
+| `allowWarning` | Marks a warned task's outcome as success; downstream tasks continue |
+| `afterExecution` | Runs after the execution reaches a terminal state; receives the final execution state via `runIf` |
+
+For post-run actions based on the final execution state, see [`afterExecution`](../20.afterexecution/index.md).
+
+## `errors` component
 
 `errors` is a list of tasks executed at the flow level when an error occurs. Tasks run sequentially.
 
-The following flow fails immediately and sends an alert via Slack:
+Flow-level error handler with Slack notification:
 
 ```yaml
 id: errors
@@ -35,25 +48,10 @@ errors:
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
 ```
 
-## `errors` vs `afterExecution`
-
-Both `errors` and `afterExecution` can be used for post-run actions, but they solve different problems.
-
-Use `errors` when you want failure handling to happen as part of the execution lifecycle when a task or flow errors. Use `afterExecution` when you want to react to the final execution state once the run has already finished.
-
-For post-run actions based on the final execution state, see the [`afterExecution` documentation](../20.afterexecution/index.md).
-
-| Use case | Prefer |
-| --- | --- |
-| Send an alert only when the flow fails | `errors` |
-| Handle errors only inside one flowable task and its children | `errors` |
-| Run different tasks for `SUCCESS`, `FAILED`, or `WARNING` | `afterExecution` |
-| Run reports or notifications that depend on the final execution state | `afterExecution` |
-
 
 ## Global error handler
 
-The first task fails immediately, triggering the handler, which logs the ID of the failed task using the `tasksWithState()` function:
+Global error handler using `tasksWithState()` to log the failed task ID:
 
 ```yaml
 id: errors
@@ -72,7 +70,7 @@ errors:
 
 ## Local error handler
 
-A local error handler applies only to the children of the flowable task it is defined on — `t2` in this example. Errors from `t1` are not caught here, making it useful for targeted cleanup within a specific subtree:
+A local error handler applies only to the children of the flowable task it is defined on (`t2` in this example). Errors from `t1` are not caught here:
 
 ```yaml
 id: errors
@@ -102,7 +100,7 @@ tasks:
   <iframe src="https://www.youtube.com/embed/WY6G_AONU_E?si=rEFrP-ButAkc9Ndf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-By default, a failed task stops all downstream tasks. Adding `allowFailure: true` lets downstream tasks continue despite the error — the execution finishes in a `WARNING` state.
+By default, a failed task stops all downstream tasks. Adding `allowFailure: true` lets downstream tasks continue despite the error; the execution finishes in a `WARNING` state.
 
 ```yaml
 id: allow_failure
@@ -149,9 +147,3 @@ tasks:
       logger.warning("WARNING signals something unexpected.")
 ```
 
-## Best practices for error handling
-
-- Use **global handlers** for alerts and monitoring across the whole flow.
-- Use **local handlers** for targeted cleanup or retries.
-- Add `allowFailure` for **non-critical tasks** that shouldn’t block execution.
-- Use `allowWarning` when warnings should not mark the execution as failed.

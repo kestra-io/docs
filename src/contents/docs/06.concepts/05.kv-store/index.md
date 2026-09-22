@@ -8,13 +8,15 @@ version: ">= 0.18.0"
 docId: kv
 ---
 
-The KV Store lets you persist and share key-value data across executions and flows — beyond what task outputs alone can carry.
+The KV Store lets you persist and share key-value data across executions and flows, beyond what task outputs alone can carry.
+
+For values scoped to a single flow execution, use [Variables](../../05.workflow-components/04.variables/index.md) instead. For sensitive values such as API keys or passwords, use [Secrets](../../06.concepts/04.secret/index.md). For a full comparison, see [Choosing where to store sensitive and shared values](../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=69b0O0fxKESDnQs7" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Kestra's execution model is stateless by design — task runs are isolated and data moves between tasks via explicit outputs. The KV Store extends this with a namespace-scoped key-value layer for cases where you need to persist state across executions or share values between flows. Values are stored in Kestra's internal storage (your private cloud bucket); the database holds only metadata such as the key, TTL, and timestamps.
+Kestra's execution model is stateless by design: task runs are isolated and data moves between tasks via explicit outputs. The KV Store extends this with a namespace-scoped key-value layer for cases where you need to persist state across executions or share values between flows. Values are stored in Kestra's internal storage (your private cloud bucket); the database holds only metadata such as the key, TTL, and timestamps.
 
 ## Keys and values
 
@@ -52,7 +54,7 @@ KV pairs can be managed from the UI, in flows via tasks, through the REST API, v
 
 ### Create a KV pair from the UI
 
-Open the **KV Store** tab and click **New Key-Value**. Enter a key name, select a type (string, number, boolean, datetime, date, duration, or JSON), and enter the value. Optionally set a TTL — choose a standard duration from the dropdown or select **Custom duration** to enter an ISO 8601 duration string. Click **Save**.
+Open the **KV Store** tab and click **New Key-Value**. Enter a key name, select a type (string, number, boolean, datetime, date, duration, or JSON), and enter the value. Optionally set a TTL: choose a standard duration from the dropdown or select **Custom duration** to enter an ISO 8601 duration string. Click **Save**.
 
 ### Update, delete, and copy KV pairs
 
@@ -148,7 +150,7 @@ tasks:
 
 ### Read KV pairs with the `Get` task
 
-The `Get` task produces a `value` output you can reference in downstream tasks — useful when you need to pass the same KV value to multiple steps:
+The `Get` task produces a `value` output you can reference in downstream tasks, which is useful when you need to pass the same KV value to multiple steps:
 
 ```yaml
 id: get_kv_pair

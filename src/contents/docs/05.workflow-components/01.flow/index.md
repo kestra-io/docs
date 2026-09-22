@@ -17,7 +17,7 @@ A flow is a container for tasks and their orchestration logic.
 
 A flow organizes tasks, their inputs and outputs, error handling, and orchestration logic. It specifies **what** tasks run, **when** they run, and **how** they interact (sequentially, in parallel, or conditionally).
 
-You can define a flow declaratively in YAML or build it using the [No Code editor](../../09.ui/01.flows/index.md).
+Flows are defined declaratively in YAML or built using the [No Code editor](../../09.ui/01.flows/index.md).
 
 A flow must have:
 
@@ -27,23 +27,23 @@ A flow must have:
 
 Optionally, a flow can also have:
 
-- [inputs](../05.inputs/index.md) — typed parameters passed at execution time
-- [outputs](../06.outputs/index.md) — values or files a flow produces for downstream use
-- [variables](../04.variables/index.md) — reusable key/value pairs scoped to the flow
-- [triggers](../07.triggers/index.mdx) — schedule or event conditions that start executions automatically
-- [labels](../08.labels/index.md) — key/value metadata for filtering and grouping executions
-- [errors](../11.errors/index.md) — tasks that run when a flow or task fails
-- [finally](../19.finally/index.md) — tasks that always run at the end, regardless of execution outcome
-- [retries](../12.retries/index.md) — automatic retry policy on task failure
-- [sla](../18.sla/index.md) — time-based constraints that fail or alert when exceeded
-- [concurrency](../14.concurrency/index.md) — limits on how many executions of this flow can run simultaneously
-- [descriptions](../15.descriptions/index.md) — Markdown documentation attached to flows and tasks
-- [disabled](../16.disabled/index.md) — prevent a flow from executing without deleting it
-- [checks](../07.checks/index.md) — assertions that must pass before an execution is created
+- [inputs](../05.inputs/index.md): typed parameters passed at execution time
+- [outputs](../06.outputs/index.md): values or files a flow produces for downstream use
+- [variables](../04.variables/index.md): reusable key/value pairs scoped to the flow
+- [triggers](../07.triggers/index.mdx): schedule or event conditions that start executions automatically
+- [labels](../08.labels/index.md): key/value metadata for filtering and grouping executions
+- [errors](../11.errors/index.md): tasks that run when a flow or task fails
+- [finally](../19.finally/index.md): tasks that always run at the end, regardless of execution outcome
+- [retries](../12.retries/index.md): automatic retry policy on task failure
+- [sla](../18.sla/index.md): time-based constraints that fail or alert when exceeded
+- [concurrency](../14.concurrency/index.md): limits on how many executions of this flow can run simultaneously
+- [descriptions](../15.descriptions/index.md): Markdown documentation attached to flows and tasks
+- [disabled](../16.disabled/index.md): prevent a flow from executing without deleting it
+- [checks](../07.checks/index.md): assertions that must pass before an execution is created
 
 ## Flow sample
 
-The example below uses several of the optional components listed above — refer to each component's documentation for full configuration details.
+The example below uses several of the optional components listed above; refer to each component's documentation for full configuration details.
 
 ```yaml
 id: hello-world
@@ -91,7 +91,7 @@ triggers:
 
 Every change to a flow creates a new revision. Kestra automatically manages revisions, similar to version control, and you can view them in the **Revisions** tab.
 
-Use **Save as draft** to stage changes without affecting running executions. Draft revisions are not executed — any trigger or manual run falls back to the last published revision until you publish the draft. See [Draft revisions](../../06.concepts/03.revision/index.md#draft-revisions) for details.
+**Save as draft** stages changes without affecting running executions. Draft revisions are not executed: any trigger or manual run falls back to the last published revision until you publish the draft. See [Draft revisions](../../06.concepts/03.revision/index.md#draft-revisions) for details.
 
 ## Flow variable expressions
 
@@ -102,24 +102,9 @@ Use **Save as draft** to stage changes without affecting running executions. Dra
 | `{{ flow.tenantId }}` | The identifier of the tenant (EE and Cloud only). |
 | `{{ flow.revision }}` | The revision of the flow. |
 
-## FAQ
+## See also
 
-### Where does Kestra store flows?
-
-Flows are stored in a serialized format directly in the Kestra backend database.
-
-The easiest way to add new flows is from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to deploy flows automatically after a pull request is merged. On Kestra Enterprise, [Promote](../../07.enterprise/02.governance/promote/index.md) lets you move a flow between environments (dev, staging, production) directly from the UI without a pipeline.
-
-To see how flows are represented in a file structure, use the `_flows` directory in the [Namespace Files](../../06.concepts/02.namespace-files/index.md) editor.
-
-### How to load flows at server startup?
-
-To pre-load flows from a directory when Kestra starts, use the `-f` or `--flow-path` flag:
-
-```bash
-./kestra server standalone --flow-path /path/to/flows
-```
-
-### Can I sync a local flows directory into Kestra?
-
-Yes. See [Synchronize Local Flows](../../15.how-to-guides/local-flow-sync/index.md) for syncing a local directory, or [Sync Flows from a Git Repository](../../15.how-to-guides/syncflows/index.md) for Git-based workflows.
+- [Synchronize Local Flows](../../15.how-to-guides/local-flow-sync/index.md)
+- [Sync Flows from a Git Repository](../../15.how-to-guides/syncflows/index.md)
+- [Draft revisions](../../06.concepts/03.revision/index.md#draft-revisions)
+- [Namespace Files](../../06.concepts/02.namespace-files/index.md)
