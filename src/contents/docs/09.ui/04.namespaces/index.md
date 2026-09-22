@@ -6,7 +6,7 @@ sidebarTitle: Namespaces
 icon: /src/contents/docs/icons/ui.svg
 ---
 
-Manage all resources associated with a Namespace in one place.
+The **Namespaces** page organizes all resources associated with each namespace.
 
 The **Namespaces** page lists all namespaces in your Kestra instance.
 
@@ -34,7 +34,7 @@ This view is similar to the **Dependencies** page in the Flow Editor but focuses
 
 ## KV store
 
-The **KV Store** tab lets you manage key-value pairs scoped to the namespace. For more information, see the [KV Store concept guide](../../06.concepts/05.kv-store/index.md).
+The **KV Store** tab displays key-value pairs scoped to the namespace. For more information, see the [KV Store concept guide](../../06.concepts/05.kv-store/index.md).
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=llG-CMXRBG9PG3nF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -42,7 +42,7 @@ The **KV Store** tab lets you manage key-value pairs scoped to the namespace. Fo
 
 ## Files
 
-The **Files** tab lets you create, edit, and manage Namespace Files used in your flows — from custom Python scripts to images. Learn more in [Namespace Files](../../06.concepts/02.namespace-files/index.md).
+The **Files** tab provides access to Namespace Files used in flows — from custom Python scripts to images. Learn more in [Namespace Files](../../06.concepts/02.namespace-files/index.md).
 
 ## Additional tabs
 

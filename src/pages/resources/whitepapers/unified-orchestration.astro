@@ -10,6 +10,7 @@ import ResourceDetails from "~/components/resources/ResourceDetails.vue"
 import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Hero from "~/components/unified-orchestration-whitepaper/Hero.astro"
+import AuthorCard from "~/components/unified-orchestration-whitepaper/AuthorCard.astro"
 import Link from "~/components/common/Link.astro"
 
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
@@ -155,6 +156,8 @@ const WHO_ITEMS = [
             </div>
         </TwoColumnStickyLayout>
     </section>
+
+    <AuthorCard />
 
     {
         faqItems.length > 0 && (

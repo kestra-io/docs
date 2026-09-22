@@ -3,10 +3,10 @@ export const prerender = false
 
 import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "~/utils/plugins/plugin"
-import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
 import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
 import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
 import { findFamilySiblings } from "~/utils/plugins/pluginFamily"
+import { formatPluginName } from "~/utils/plugins/pluginUtils"
 import { slugify } from "~/utils/slugify"
 
 import Layout from "~/components/layout.astro"
@@ -17,26 +17,22 @@ import PluginCard from "~/components/plugins/PluginCard.vue"
 // Multi-artifact plugin groups (Debezium, JDBC, Scripts, ...) ship one
 // unrelated top-level plugin per sub-technology instead of a single plugin
 // with subgroups, so there is no natural "/plugins/plugin-debezium" page for
-// them. This route synthesizes one by grouping siblings on the shared
-// `plugin-<family>-` name prefix. See https://github.com/kestra-io/kestra-ee/issues/1923
+// them. This route (reached only via an internal Astro.rewrite from
+// [...slug].astro, never a real URL) synthesizes one by grouping siblings on
+// the shared artifact-name prefix from pluginFamily.ts's allowlist.
+// See https://github.com/kestra-io/kestra-ee/issues/1923
 const familyName = Astro.params.name ?? ""
 
 const rawPlugins = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const rawPluginsData = await $fetchApiCached("/plugins/pluginsInformation")
 
-const siblings = findFamilySiblings(filterPluginsWithoutDeprecated(rawPlugins), familyName)
+const siblings = findFamilySiblings(rawPlugins, familyName)
 
 if (siblings.length === 0) {
     return new Response(null, { status: 404, statusText: "Not found" })
 }
 
-// "plugin-jdbc" -> "JDBC", "plugin-debezium" -> "Debezium"
-const ACRONYMS: Record<string, string> = { jdbc: "JDBC" }
-const displayName = familyName
-    .replace(/^plugin-/, "")
-    .split("-")
-    .map((part) => ACRONYMS[part] ?? part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ")
+const displayName = formatPluginName(familyName)
 
 const cardPlugins = prunePluginsForCards(
     siblings,
@@ -53,7 +49,7 @@ const title = `${displayName} plugins`
 const description = `Browse all ${siblings.length} ${displayName} plugins available in Kestra.`
 ---
 
-<Layout {title} {description}>
+<Layout {title} {description} canonical={`/plugins/${familyName}`}>
     <PluginLayout>
         <nav slot="sidebar" class="family-nav" aria-label={`${displayName} plugins`}>
             <p class="family-nav__label">Plugins</p>

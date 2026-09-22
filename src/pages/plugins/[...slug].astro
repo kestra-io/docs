@@ -269,7 +269,7 @@ if (
             pluginName &&
             findFamilySiblings(allPlugins, pluginName).length > 0
         ) {
-            return Astro.rewrite(`/plugins/family/${pluginName}`)
+            return Astro.rewrite(`/plugins/$family/${pluginName}`)
         }
 
         console.warn("Redirecting due to no content")
