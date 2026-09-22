@@ -18,6 +18,7 @@ interface Rule {
 }
 
 const BLUEPRINTS_REPO_URL = "https://github.com/kestra-io/blueprints"
+const KESTRA_REPO_URL = "https://github.com/kestra-io/kestra"
 
 const TRACKS: {
     id: string
@@ -37,6 +38,10 @@ const TRACKS: {
         rules: [
             {
                 text: "Find a good-first-issue (a non good-first-issue can be worked on, but you would need to be assigned to the issue before starting your PR!).",
+            },
+            {
+                text: "Show your support - Give us a star on GitHub",
+                html: `Show your support - <a href="${KESTRA_REPO_URL}" target="_blank" rel="noopener">Give us a star on GitHub</a>`
             },
             {
                 text: "Comment on the issue thread to let people know you're working on it, as part of Hacktoberfest",
@@ -73,6 +78,10 @@ const TRACKS: {
             {
                 text: "Submitted as a pull request to kestra-io/blueprints, and merged",
                 html: `Submitted as a pull request to <a href="${BLUEPRINTS_REPO_URL}" target="_blank" rel="noopener"><code>kestra-io/blueprints</code></a>, and merged`,
+            },
+            {
+                text: "Show your support - Give us a star on GitHub",
+                html: `Show your support - <a href="${KESTRA_REPO_URL}" target="_blank" rel="noopener">Give us a star on GitHub</a>`,
             },
         ],
         link: {
