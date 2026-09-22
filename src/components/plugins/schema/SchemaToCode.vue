@@ -95,7 +95,7 @@
 <style lang="scss" scoped>
     .code-block {
         padding: 1.25rem;
-        border-radius: var(--bs-border-radius-lg);
+        border-radius: var(--ks-border-radius-lg);
         position: relative;
 
         .language {

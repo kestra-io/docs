@@ -111,7 +111,7 @@ This workflow demonstrates several key benefits of orchestrated retries:
 *   **Integrated Error Handling:** The `errors` block provides a clean, built-in way to trigger notifications or other remediation tasks only after all retries have been exhausted.
 *   **Contextual:** The notification payload can include rich context about the flow, execution, and task, making debugging faster. You can explore more patterns in our [blueprints for retries](/blueprints/retries).
 
-Many plugins, like the [Cloudflare D1 Import task](/plugins/plugin-cloudflare/cloudflare-d1/io.kestra.plugin.cloudflare.d1.Import), have built-in exponential backoff for their internal polling mechanisms, providing resilience by default. For a deeper dive into configuring different strategies, refer to the [documentation on retry strategies](/docs/workflow-components/retries).
+Many plugins, like the [Cloudflare D1 Import task](/plugins/plugin-cloudflare/cloudflare-d1/io.kestra.plugin.cloudflare.d1.import), have built-in exponential backoff for their internal polling mechanisms, providing resilience by default. For a deeper dive into configuring different strategies, refer to the [documentation on retry strategies](/docs/workflow-components/retries).
 
 ### Beyond Exponential: Fibonacci Backoff
 

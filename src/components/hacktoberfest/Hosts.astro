@@ -1,0 +1,181 @@
+---
+import { Image } from "astro:assets"
+import SectionTitle from "./SectionTitle.astro"
+import arshGoyal from "./assets/arsh-goyal.webp"
+import johnCrickett from "./assets/john-crickett.webp"
+import codingChallenges from "./assets/coding-challenges.webp"
+
+const HOSTS = [
+    {
+        name: "Arsh Goyal",
+        company: "AI and Engineering Creator",
+        photo: arshGoyal,
+        bio: "Senior Software Engineer and an Engineering Creator. Arsh is an Engineering creator who creates content around Data and AI and has helped more than 50K+ engineers upskill. He is a university Gold Medalist, and has over 1.5M+ followers across social media.",
+    },
+    {
+        name: "John Crickett",
+        company: "Coding Challenges",
+        photo: johnCrickett,
+        logo: codingChallenges,
+        bio: "Software engineering leader and creator of Coding Challenges, a community focused on helping developers become better engineers by building real software. John has led and scaled engineering teams across startups and global enterprises, while also having worked as a principal-level engineer on complex systems spanning AI, network optimisation, and low-latency finance. Today, John shares practical software engineering and AI-assisted development insights with a community of more than 200,000 developers.",
+    },
+]
+---
+
+<section class="hf-hosts" aria-labelledby="hf-hosts-title">
+    <div class="container">
+        <SectionTitle
+            id="hf-hosts-title"
+            align="center"
+            title="Running it with us"
+            subtitle="Two creators from the developer community are hosting the livestreams and taking your questions alongside our engineers."
+        />
+        <ul class="hosts">
+            {
+                HOSTS.map((host, index) => (
+                    <li
+                        class="host"
+                        data-usal={`fade-u duration-400 delay-${100 + index * 50} ease-out`}
+                    >
+                        <div class:list={["head", { "has-logo": host.logo }]}>
+                            <Image
+                                src={host.photo}
+                                alt={host.name}
+                                width={87}
+                                height={87}
+                                densities={[1, 2]}
+                                class="photo"
+                            />
+                            <div class="who">
+                                <h3>{host.name}</h3>
+                                <p>{host.company}</p>
+                            </div>
+                        </div>
+                        {host.logo && (
+                            <Image
+                                src={host.logo}
+                                alt={`${host.company} logo`}
+                                width={62}
+                                height={62}
+                                densities={[1, 2]}
+                                class="logo"
+                            />
+                        )}
+                        <p class="bio">{host.bio}</p>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    .hf-hosts {
+        padding: 5.625rem 1rem;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-secondary)
+            url("~/assets/header-grid.svg") no-repeat top center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 3.5rem;
+        }
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .hosts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .host {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 8px 12px var(--ks-shadows-light);
+        color: var(--ks-content-secondary);
+    }
+
+    .head {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        &.has-logo {
+            padding-right: 78px;
+        }
+    }
+
+    .photo {
+        flex: none;
+        width: 87px;
+        height: 87px;
+        border-radius: 4px;
+        object-fit: cover;
+    }
+
+    .who {
+        h3 {
+            margin: 0;
+            color: inherit;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            line-height: 28px;
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 20px;
+        }
+    }
+
+    .logo {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        width: 62px;
+        height: 62px;
+        border-radius: 4px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        .host {
+            padding: 1.5rem;
+        }
+
+        .head.has-logo {
+            padding-right: 56px;
+        }
+
+        .logo {
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    .bio {
+        margin: 0;
+        font-size: $font-size-sm;
+        line-height: 20px;
+    }
+</style>

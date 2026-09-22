@@ -1,5 +1,6 @@
 ---
 import Layout from "~/components/layout.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import Hero from "~/components/twozero/Hero.astro"
 import FeatureSection from "~/components/twozero/FeatureSection.astro"
 import type { Row } from "~/components/twozero/FeatureSection.astro"
@@ -32,6 +33,8 @@ import runDayTwo from "~/components/twozero/assets/run-day-two.png"
 import runSlim from "~/components/twozero/assets/run-slim.png"
 import securityWorkers from "~/components/twozero/assets/security-workers.png"
 import securitySiem from "~/components/twozero/assets/security-siem.png"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = "Kestra 2.0: Orchestration Rebuilt for the AI Era"
 const description =
@@ -387,7 +390,7 @@ const RUN_ANYWHERE_ROWS: Row[] = [
                 title: "Day-Two Operations for Your Infrastructure",
                 body: '<a href="/plugins">NetApp ONTAP, Veeam, Pure Storage</a>, Dell PowerStore, Ceph, Huawei Cloud, F5, and SolarWinds IPAM join VMware, Nutanix, Proxmox, Infoblox, and Netbox. <strong>Snapshot before patching, clone volumes for dev/test, provision and register infrastructure in a single flow.</strong>',
                 link: {
-                    text: "Browse 2,000+ plugins",
+                    text: `Browse ${totalPlugins}+ plugins`,
                     href: "/plugins",
                 },
                 image: runDayTwo,
@@ -506,9 +509,8 @@ const SECURITY_ROWS: Row[] = [
      * switcher.
      */
     .twozero-page {
-        /* The global `main > div { overflow-x: hidden }` would force
-         * `overflow-y: auto` and clip the hero where it runs up under the
-         * fixed header. `clip` keeps the horizontal guard without that. */
+        /* Redundant since `main > div` moved to `clip`, kept as the explicit
+         * horizontal guard for the hero running under the fixed header. */
         overflow-x: clip;
         --ks-content-primary: #131316;
         --ks-content-secondary: #3b3a41;

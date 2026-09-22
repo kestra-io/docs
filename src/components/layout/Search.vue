@@ -1,15 +1,12 @@
 <template>
-    <div
-        v-on="{
-            'shown.bs.modal': focusSearch,
-            'hidden.bs.modal': onHiddenSearch,
-        }"
-        class="modal modal-xl fade"
+    <dialog
+        class="modal modal-xl"
         id="search-modal"
-        tabindex="-1"
         ref="modal"
-        aria-labelledby="search-modal"
-        aria-hidden="true"
+        aria-label="Search"
+        @modalshown="focusSearch"
+        @close="onHiddenSearch"
+        @click.self="close"
     >
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
@@ -37,8 +34,7 @@
                                 <button
                                     class="btn btn-sm btn-primary"
                                     title="Ask Kestra AI"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#search-ai-modal"
+                                    data-modal-target="#search-ai-modal"
                                 >
                                     <img
                                         :src="KSAIImg.src"
@@ -214,19 +210,15 @@
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 
-    <div
-        v-on="{
-            'shown.bs.modal': focusSearchAi,
-            'hidden.bs.modal': onHiddenAi,
-        }"
-        class="modal modal-xl fade"
+    <dialog
+        class="modal modal-xl"
         id="search-ai-modal"
-        tabindex="-2"
         ref="ai-modal"
-        aria-labelledby="search-ai-modal"
-        aria-hidden="true"
+        aria-label="Ask Kestra AI"
+        @modalshown="focusSearchAi"
+        @click.self="closeAi"
     >
         <div class="modal-dialog d-flex w-100 mx-auto">
             <div class="modal-content">
@@ -242,7 +234,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 </template>
 
 <script setup>
@@ -262,6 +254,7 @@
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
     import { searchResultHref, searchScope } from "~/utils/versionedDocs"
+    import { openModal } from "~/utils/modal"
 
     export default {
         props: {
@@ -323,15 +316,12 @@
                 this.selectedIndex = null
                 this.selectedItem = null
             },
-            focusSearchAi(event) {
-                const openedFromSearch =
-                    event?.relatedTarget?.closest("#search-modal")
-                const prefill = openedFromSearch
+            focusSearchAi() {
+                const prefill = this.$refs.modal?.open
                     ? this.searchValue?.trim() || ""
                     : ""
                 this.$refs.aiChatDialog?.setUserInput(prefill)
             },
-            onHiddenAi() {},
             search(value) {
                 // https://developer.mozilla.org/en-US/docs/Web/API/AbortController
                 if (this.abortController) {
@@ -549,14 +539,10 @@
                 }
             },
             close() {
-                if (this.$refs.modal) {
-                    const modal = window.$bootstrap.Modal.getInstance(
-                        this.$refs.modal,
-                    )
-                    if (modal) {
-                        modal.hide()
-                    }
-                }
+                this.$refs.modal?.close()
+            },
+            closeAi() {
+                this.$refs["ai-modal"]?.close()
             },
             openDialog() {
                 this.close()
@@ -567,13 +553,8 @@
             },
             backToSearch() {
                 this.showAiDialog = false
-
-                if (this.$refs.modal) {
-                    const searchModal = new window.$bootstrap.Modal(
-                        this.$refs.modal,
-                    )
-                    searchModal.show()
-                }
+                this.closeAi()
+                openModal("#search-modal")
             },
         },
     }
@@ -638,7 +619,7 @@
         .badge {
             font-weight: normal;
             &.bg-light {
-                background: var(--bs-gray-400) !important;
+                background: var(--ks-gray-400) !important;
             }
         }
         .icon-wrapper {
@@ -727,7 +708,7 @@
                 text-overflow: ellipsis;
                 width: 100%;
                 font-size: $font-size-xs;
-                color: var(--bs-gray-600);
+                color: var(--ks-gray-600);
                 margin-bottom: calc($spacer / 3);
                 span {
                     color: var(--ks-content-tertiary);
@@ -776,7 +757,7 @@
         .search-detail {
             .extract {
                 margin-top: 1rem;
-                font-family: var(--bs-font-monospace);
+                font-family: var(--ks-font-monospace);
                 font-size: 80%;
                 max-width: 100%;
                 color: var(--ks-content-primary);

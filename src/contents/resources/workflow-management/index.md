@@ -30,7 +30,7 @@ Workflow management is the practice of identifying, organizing, automating, and 
 
 At its heart, workflow management answers the question: "Who does what, when, and in what order?" To understand it fully, let's break down the key terms:
 
-- **Workflow**: A workflow is a repeatable series of steps or tasks required to achieve a specific outcome. Each step can be manual or automated. In Kestra, this is called a [Flow](https://kestra.io/docs/concepts/flow), a fundamental unit that defines a set of tasks and their execution logic.
+- **Workflow**: A workflow is a repeatable series of steps or tasks required to achieve a specific outcome. Each step can be manual or automated. In Kestra, this is called a [Flow](https://kestra.io/docs/workflow-components/flow), a fundamental unit that defines a set of tasks and their execution logic.
 - **Workflow Management**: This is the overarching discipline of coordinating and supervising workflows. It involves designing the process, executing it, monitoring its performance, and continuously improving it.
 - **Workflow Management System (WFMS)**: This is the software that enables workflow management. A WFMS provides the tools to model, run, and monitor workflows, acting as the engine that automates and orchestrates the process.
 

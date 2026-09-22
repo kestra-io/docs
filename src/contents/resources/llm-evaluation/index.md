@@ -145,7 +145,7 @@ Evaluation is only meaningful when it runs on every change, which makes it a sch
 
 An evaluation pipeline is an automated workflow that executes a series of steps to assess an LLM. By orchestrating this process, you ensure consistency and scalability.
 
-A typical evaluation [flow](https://kestra.io/docs/concepts/flow) in Kestra might look like this:
+A typical evaluation [flow](https://kestra.io/docs/workflow-components/flow) in Kestra might look like this:
 1.  **Trigger**: The pipeline can be triggered on a schedule, on a new Git commit to the prompt repository, or manually via an API call.
 2.  **Fetch Data**: The first task pulls the "golden dataset" of prompts and reference answers from a version-controlled source like S3 or a Git repository.
 3.  **Run Model**: In parallel, tasks send each prompt to the LLM API(s) being evaluated and store the generated responses.

@@ -399,6 +399,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
 - [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
+- [Add Plugins to a Slim Kestra Docker Image](https://kestra.io/docs/how-to-guides/slim-image-plugins.md)
 - [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
 - [Use SQLMesh to Run dbt Projects](https://kestra.io/docs/how-to-guides/sqlmesh.md)
 - [Subflow Retries, Restarts, and Replays in Kestra](https://kestra.io/docs/how-to-guides/subflow-executions.md)

@@ -139,7 +139,7 @@ tasks:
 
 ## Next Steps
 - [Explore plugins](https://kestra.io/plugins) for Docker, Terraform, OpenTofu, Terragrunt, Ansible, Script tasks (Python, Go, Shell, Powershell, Ruby and more), and cloud providers.
-- [Explore Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) for scaling custom scripts and containers.
+- [Explore Task Runners](../../task-runners/index.mdx) for scaling custom scripts and containers.
 - [Read how-to guides](../../15.how-to-guides/index.mdx) on how to integrate with Grafana, Prometheus, and other monitoring tools.
 - [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.
 - [Join Slack](https://kestra.io/slack) to ask questions or contribute bug reports and feature requests.

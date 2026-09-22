@@ -1,0 +1,26 @@
+// Replaces bootstrap/scss/breadcrumb. Colours come from the consumers
+// (layout/Breadcrumb.vue, layout/Search.vue), so only the layout lives here.
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin-bottom: var(--ks-breadcrumb-margin-bottom, 1rem);
+    list-style: none;
+}
+
+.breadcrumb-item {
+    + .breadcrumb-item {
+        padding-left: 0.5rem;
+
+        &::before {
+            float: left;
+            padding-right: 0.5rem;
+            color: var(--ks-content-tertiary);
+            content: var(--ks-breadcrumb-divider, "/");
+        }
+    }
+
+    &.active {
+        color: var(--ks-content-tertiary);
+    }
+}

@@ -69,7 +69,7 @@ A modern application deployment pipeline on Kubernetes typically follows GitOps 
 2.  **Continuous Deployment (CD):** A change to the deployment configuration in Git (e.g., updating an image tag in a manifest file) triggers the deployment process.
 3.  **Deployment Strategy:** The Kubernetes cluster applies the change using a strategy like a rolling update (gradually replacing old pods with new ones) or a blue/green deployment (running two versions simultaneously and switching traffic).
 
-Tools like the [Kestra Kubernetes Operator](https://kestra.io/docs/version-control-cicd/cicd/kubernetes-operator) can automate this entire process, ensuring that your cluster state always reflects what's defined in Git. This approach provides a clear audit trail and simplifies rollbacks.
+Tools like the [Kestra Kubernetes Operator](https://kestra.io/docs/version-control-cicd/cicd/terraform) can automate this entire process, ensuring that your cluster state always reflects what's defined in Git. This approach provides a clear audit trail and simplifies rollbacks.
 
 ### Using Kestra to deploy and manage Kubernetes
 

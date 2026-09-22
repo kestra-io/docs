@@ -10,11 +10,11 @@ description: Download a file over HTTP and deliver it as a Slack file attachment
 
 Extract a file from any HTTP source and deliver it straight to your team, either as a Slack attachment or as an email attachment.
 
-A common pattern is to download a report or export from an external system and forward it to stakeholders without storing it anywhere in between. This guide shows both delivery options starting from the same [`Download`](https://kestra.io/plugins/tasks/http/io.kestra.plugin.core.http.download) task.
+A common pattern is to download a report or export from an external system and forward it to stakeholders without storing it anywhere in between. This guide shows both delivery options starting from the same [`Download`](https://kestra.io/plugins/core/http/io.kestra.plugin.core.http.download) task.
 
 ## Download the file over HTTP
 
-The [`io.kestra.plugin.core.http.Download`](https://kestra.io/plugins/tasks/http/io.kestra.plugin.core.http.download) task fetches the file and stores it in Kestra's internal storage. Every following task references it via `{{ outputs.download.uri }}`.
+The [`io.kestra.plugin.core.http.Download`](https://kestra.io/plugins/core/http/io.kestra.plugin.core.http.download) task fetches the file and stores it in Kestra's internal storage. Every following task references it via `{{ outputs.download.uri }}`.
 
 ```yaml
 id: download_orders_csv
@@ -42,7 +42,7 @@ tasks:
 
 ### Upload the file to a channel
 
-Use the [`io.kestra.plugin.slack.app.files.Upload`](https://kestra.io/plugins/plugin-slack/io.kestra.plugin.slack.app.files.upload) task, with `initialComment` to attach a message to the file in the same call:
+Use the [`io.kestra.plugin.slack.app.files.Upload`](https://kestra.io/plugins/plugin-slack/slack-files/io.kestra.plugin.slack.app.files.upload) task, with `initialComment` to attach a message to the file in the same call:
 
 ```yaml
 id: send_report_to_slack
@@ -64,7 +64,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-`initialComment` requires a recent version of the Slack plugin. On older versions, post a message with [`io.kestra.plugin.slack.app.chats.Post`](https://kestra.io/plugins/plugin-slack/io.kestra.plugin.slack.app.chats.post) to the same channel before running `Upload` instead.
+`initialComment` requires a recent version of the Slack plugin. On older versions, post a message with [`io.kestra.plugin.slack.app.chats.Post`](https://kestra.io/plugins/plugin-slack/slack-chats/io.kestra.plugin.slack.app.chats.post) to the same channel before running `Upload` instead.
 :::
 
 ## Option 2: send the file as an email attachment via Gmail

@@ -181,7 +181,7 @@ triggers:
 ```
 
 Key points to notice in this Kestra flow:
-- **Declarative YAML**: The entire pipeline is defined in a clear, version-controlled YAML file, making it easy to understand and manage. See how Kestra's [declarative flows](/docs/concepts/flow) simplify pipeline creation.
+- **Declarative YAML**: The entire pipeline is defined in a clear, version-controlled YAML file, making it easy to understand and manage. See how Kestra's [declarative flows](/docs/workflow-components/flow) simplify pipeline creation.
 - **Polyglot Execution**: The flow seamlessly combines Python for data manipulation and shell commands for a quick quality check, all within isolated Docker containers for consistency.
 - **Built-in Error Handling**: The `onError` property on the quality check task automatically triggers a Slack notification if the check fails, ensuring immediate visibility into issues.
 - **Automated Scheduling**: The `Schedule` trigger ensures this pipeline runs automatically every day, but it could just as easily be triggered by an event, such as a file landing in S3.

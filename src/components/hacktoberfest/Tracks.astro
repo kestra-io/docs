@@ -1,0 +1,402 @@
+---
+import Link from "~/components/common/Link.astro"
+import SectionTitle from "./SectionTitle.astro"
+import PointScan from "./assets/point-scan.svg"
+import Pill from "./Pill.astro"
+
+interface Props {
+    id: string
+    goodFirstIssuesUrl: string
+}
+
+const { id, goodFirstIssuesUrl } = Astro.props
+
+interface Rule {
+    text: string
+    pill?: string
+    html?: string
+}
+
+const BLUEPRINTS_REPO_URL = "https://github.com/kestra-io/blueprints"
+const KESTRA_REPO_URL = "https://github.com/kestra-io/kestra"
+
+const TRACKS: {
+    id: string
+    tab: string
+    label: string
+    title: string
+    body: string
+    rules: Rule[]
+    link: { text: string; href: string; external?: boolean }
+}[] = [
+    {
+        id: "good-first-issue",
+        tab: "Track 01",
+        label: "Good-first-issue pull requests",
+        title: "Fix something real in the codebase",
+        body: "Every eligible issue carries the good-first-issue label and has been scoped by a Kestra engineer, across the core repository and the plugin repositories.",
+        rules: [
+            {
+                text: "Find a good-first-issue (a non good-first-issue can be worked on, but you would need to be assigned to the issue before starting your PR!).",
+            },
+            {
+                text: "Show your support - Give us a star on GitHub",
+                html: `Show your support - <a href="${KESTRA_REPO_URL}" target="_blank" rel="noopener">Give us a star on GitHub</a>`
+            },
+            {
+                text: "Comment on the issue thread to let people know you're working on it, as part of Hacktoberfest",
+            },
+            {
+                text: "Submit your PR and include a before and after screenshot where the change is visible",
+            },
+            {
+                text: "Create a social media post (LinkedIn or X or Reddit) that talks about the issue, and tag it #KestraHacktoberfest",
+            },
+        ],
+        link: {
+            text: "Browse the good-first-issue backlog",
+            href: goodFirstIssuesUrl,
+            external: true,
+        },
+    },
+    {
+        id: "blueprint",
+        tab: "Track 02",
+        label: "Blueprint creation",
+        title: "Build a flow other people will reuse",
+        body: "A blueprint is a ready-to-use flow template. Build something you would actually run — connected to AI, a database, a warehouse, whatever you work with. Forking an existing blueprint and changing a word does not qualify.",
+        rules: [
+            { text: "Minimum 3 runnable tasks" },
+            {
+                text: "At least 1 flow task — parallel, If, or a loop",
+                html: "At least 1 flow task — parallel, <code>If</code>, or a loop",
+            },
+            {
+                text: "At least 1 trigger; event-based triggers are a nice to have",
+            },
+            { text: "At least 1 non-core plugin" },
+            {
+                text: "Submitted as a pull request to kestra-io/blueprints, and merged",
+                html: `Submitted as a pull request to <a href="${BLUEPRINTS_REPO_URL}" target="_blank" rel="noopener"><code>kestra-io/blueprints</code></a>, and merged`,
+            },
+            {
+                text: "Show your support - Give us a star on GitHub",
+                html: `Show your support - <a href="${KESTRA_REPO_URL}" target="_blank" rel="noopener">Give us a star on GitHub</a>`,
+            },
+        ],
+        link: {
+            text: "Browse the blueprints gallery for inspiration",
+            href: "/blueprints",
+        },
+    },
+]
+---
+
+<section class="hf-tracks" {id} aria-labelledby="hf-tracks-title">
+    <div class="container">
+        <div class="intro">
+            <SectionTitle
+                id="hf-tracks-title"
+                align="center"
+                title="How to enter"
+                subtitle="Two tracks, judged and rewarded independently. Enter either, or both. A contribution only counts once it is merged."
+            />
+        </div>
+
+        <div class="panel" data-usal="fade-u duration-400 delay-100 ease-out">
+            <div class="tabs" role="tablist" aria-label="Participation tracks">
+                {
+                    TRACKS.map((track, index) => (
+                        <button
+                            type="button"
+                            role="tab"
+                            id={`hf-tab-${track.id}`}
+                            class="tab"
+                            aria-selected={index === 0 ? "true" : "false"}
+                            aria-controls={`hf-panel-${track.id}`}
+                            tabindex={index === 0 ? 0 : -1}
+                        >
+                            <Pill>{track.tab}</Pill>
+                            <span class="tab-label">{track.label}</span>
+                        </button>
+                    ))
+                }
+            </div>
+
+            {
+                TRACKS.map((track, index) => (
+                    <div
+                        role="tabpanel"
+                        id={`hf-panel-${track.id}`}
+                        class="track"
+                        aria-labelledby={`hf-tab-${track.id}`}
+                        hidden={index !== 0}
+                    >
+                        <h3>{track.title}</h3>
+                        <p>{track.body}</p>
+                        <ul class="rules">
+                            {track.rules.map((rule) => (
+                                <li>
+                                    <PointScan />
+                                    <span>
+                                        {rule.html ? (
+                                            <Fragment set:html={rule.html} />
+                                        ) : (
+                                            rule.text
+                                        )}
+                                        {rule.pill && (
+                                            <>
+                                                {" "}
+                                                <Pill tone="info">
+                                                    {rule.pill}
+                                                </Pill>
+                                            </>
+                                        )}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                        <Link
+                            href={track.link.href}
+                            text={track.link.text}
+                            target={track.link.external ? "_blank" : undefined}
+                            rel={track.link.external ? "noopener" : undefined}
+                        />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    const TAB = ".hf-tracks [role='tab']"
+
+    function select(tab: HTMLElement) {
+        const list = tab.closest("[role='tablist']")
+        const panel = list?.parentElement
+        if (!list || !panel) return
+
+        list.querySelectorAll<HTMLElement>("[role='tab']").forEach((other) => {
+            const selected = other === tab
+            other.setAttribute("aria-selected", String(selected))
+            other.tabIndex = selected ? 0 : -1
+            const target = document.getElementById(
+                other.getAttribute("aria-controls") ?? "",
+            )
+            if (target) target.hidden = !selected
+        })
+        tab.focus()
+    }
+
+    document.addEventListener("click", (event) => {
+        const tab = (event.target as Element).closest<HTMLElement>(TAB)
+        if (tab) select(tab)
+    })
+
+    document.addEventListener("keydown", (event) => {
+        const tab = (event.target as Element).closest<HTMLElement>(TAB)
+        if (!tab) return
+        const tabs = Array.from(
+            tab
+                .closest("[role='tablist']")!
+                .querySelectorAll<HTMLElement>("[role='tab']"),
+        )
+        const index = tabs.indexOf(tab)
+        const next = {
+            ArrowDown: index + 1,
+            ArrowRight: index + 1,
+            ArrowUp: index - 1,
+            ArrowLeft: index - 1,
+            Home: 0,
+            End: tabs.length - 1,
+        }[event.key]
+        if (next === undefined) return
+        event.preventDefault()
+        select(tabs[(next + tabs.length) % tabs.length])
+    })
+</script>
+
+<style lang="scss">
+    .hf-tracks {
+        padding: 5.625rem 1rem;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-secondary)
+            url("~/assets/header-grid.svg") no-repeat top center;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 3.5rem;
+        }
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2rem;
+    }
+
+    .intro {
+        width: 100%;
+    }
+
+    .panel {
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 2px 4px var(--ks-shadows-light);
+        overflow: hidden;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+        }
+    }
+
+    .tabs {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 2.75rem 1rem 2rem 2rem;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding: 1.5rem 1.5rem 0;
+        }
+    }
+
+    .tab {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 294px;
+        padding: 1rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 1px 2px var(--ks-shadows-light);
+        color: var(--ks-content-primary);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition:
+            border-color 0.2s ease-in-out,
+            box-shadow 0.2s ease-in-out;
+
+        &:hover {
+            border-color: var(--ks-border-secondary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
+        }
+
+        &[aria-selected="true"] {
+            border-color: var(--ks-border-active);
+            background: var(--ks-background-secondary);
+            box-shadow: 0 8px 24px var(--ks-shadows-light);
+        }
+
+        .tab-label {
+            font-size: $font-size-md;
+            font-weight: 600;
+            line-height: 24px;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex: 1 1 200px;
+            width: auto;
+        }
+    }
+
+    .track {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 2.75rem 1rem 4rem;
+        color: var(--ks-content-primary);
+
+        &[hidden] {
+            display: none;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: $font-size-2xl;
+            font-weight: 600;
+            line-height: 38px;
+
+            @include media-breakpoint-down(md) {
+                font-size: $font-size-xl;
+                line-height: 1.3;
+            }
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-md;
+            line-height: 24px;
+        }
+
+        .rules {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.5rem;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-md;
+                line-height: 24px;
+
+                svg {
+                    flex: none;
+                    width: 20px;
+                    height: 20px;
+                    margin-top: 2px;
+                    color: var(--ks-content-color-highlight);
+                }
+
+                code {
+                    color: var(--ks-content-primary);
+                    font-family: $font-family-monospace;
+                    font-size: $font-size-sm;
+                }
+
+                a {
+                    color: var(--ks-content-link);
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+
+                    code {
+                        color: inherit;
+                    }
+                }
+            }
+        }
+
+        :global(.link) {
+            margin-top: 1rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 1.5rem;
+        }
+    }
+</style>

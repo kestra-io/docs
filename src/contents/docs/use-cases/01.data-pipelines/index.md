@@ -124,7 +124,7 @@ tasks:
 - [Explore plugins](https://kestra.io/plugins) for databases, data ingestion and transformation tools or custom scripts in any language.
 - [Explore blueprints](/blueprints) for common data workflows and data orchestration patterns.
 - [Explore How-to Guides](../../15.how-to-guides/index.mdx) for detailed examples on [using Kestra for ETL](../../15.how-to-guides/etl-pipelines/index.md), [ELT](../../15.how-to-guides/dbt/index.md), ML, and more.
-- [Explore Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) for scaling custom scripts and containers.
+- [Explore Task Runners](../../task-runners/index.mdx) for scaling custom scripts and containers.
 - [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.
 - [Join Slack](https://kestra.io/slack) to share flow examples or ask questions.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your data workflows.

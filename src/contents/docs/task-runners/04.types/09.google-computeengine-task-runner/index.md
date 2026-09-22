@@ -257,5 +257,5 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a complete list of properties, see the [plugin documentation](/plugins/plugin-ee-gcp/task-runners/io.kestra.plugin.ee.gcp.runner.computeengine) or explore the configuration in the built-in Code Editor.
+For a complete list of properties, see the [plugin documentation](/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.computeengine) or explore the configuration in the built-in Code Editor.
 :::

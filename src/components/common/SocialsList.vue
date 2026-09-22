@@ -62,7 +62,7 @@
     }
 
     nav {
-        @include font-size($font-size-xs);
+        font-size: $font-size-xs;
         line-height: 1.188rem;
         ul {
             padding-left: 0;
