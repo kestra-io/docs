@@ -1,5 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro"
+import { getCollection } from "astro:content"
+import ResourceArticle from "~/components/resources/ResourceArticle.astro"
 import Layout from "~/components/layout.astro"
 import Mesh from "~/components/layout/Mesh.vue"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -25,7 +27,19 @@ const resources = items.map((r) => ({
 }))
 
 const section = getResourceSection(tag)
+
+// Hub page: a resources entry whose `href` is exactly `/resources/<tag>`
+// is the parent page of that folder (same `href` mechanism as the
+// whitepaper page). It renders as an article, followed by the folder
+// listing, instead of the bare listing.
+const hub = (await getCollection("resources")).find(
+    (entry) => entry.data.href === `/resources/${tag}`,
+)
 ---
+
+{hub ? (
+    <ResourceArticle post={hub} hubResources={resources} />
+) : (
 
 <Layout
     canonical={tag === ALL_RESOURCES ? "/resources" : undefined}
@@ -49,3 +63,4 @@ const section = getResourceSection(tag)
         </Link>
     </SeeHow>
 </Layout>
+)}

@@ -10,12 +10,20 @@ import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Faq from "~/components/common/Faq.vue"
 import ResourceCtaPair from "~/components/resources/ResourceCtaPair.vue"
+import ResourceList from "~/components/resources/ResourceList.astro"
+import type { ResourceListItem } from "~/components/resources/getResources"
 
 interface Props {
     post: CollectionEntry<"resources">
+    /**
+     * Hub mode: the entry is the parent page of a /resources/<tag>/ folder
+     * (its `href` is `/resources/<tag>`). The folder listing, pre-filtered
+     * on the tag, replaces the similar-resources block.
+     */
+    hubResources?: (Omit<ResourceListItem, "date"> & { date?: string })[]
 }
 
-const { post } = Astro.props
+const { post, hubResources } = Astro.props
 const { Content, headings } = await render(post)
 const page = post.data
 
@@ -158,7 +166,11 @@ const faqSchema =
                 />
             </div>
         </TwoColumnStickyLayout>
-        <SimilarResources currentId={post.id} tag={page.tag} />
+        {hubResources ? (
+            <ResourceList resources={hubResources} tag={page.tag} />
+        ) : (
+            <SimilarResources currentId={post.id} tag={page.tag} />
+        )}
         {faqItems.length > 0 && (
             <div class="resource-faq">
                 <Faq
