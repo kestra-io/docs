@@ -67,7 +67,7 @@ Because `cache/pip` lives inside the working directory (not inside the container
 
 ### Node.js example
 
-This flow installs the `colors` package and caches `node_modules` for one hour. Use a `PROCESS` runner when caching `node_modules` directly.
+This flow installs the `colors` package and caches `node_modules` for one hour. Caching `node_modules` directly requires the `PROCESS` runner.
 
 ```yaml
 id: node_cached_dependencies
@@ -119,7 +119,7 @@ tasks:
       ttl: PT24H
 ```
 
-### How to invalidate the cache
+### Cache invalidation
 
 - After the first run, files are cached.
 - On subsequent runs, if the `ttl` has not elapsed, the cached files are restored. If it has elapsed, the cache is cleared and `beforeCommands` (e.g. `npm install`) runs in full.

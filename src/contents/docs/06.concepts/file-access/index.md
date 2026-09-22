@@ -9,7 +9,7 @@ version: ">= 0.24.0"
 
 Kestra supports a universal file protocol for referencing local and [namespace files](../02.namespace-files/index.md) in your flows using consistent URI schemes.
 
-You can reference files inline in YAML, or use `nsfile:///` and `file:///` URIs to point to namespace files or files on the host machine. The flow below demonstrates all three approaches:
+Files are referenced inline in YAML, or via `nsfile:///` and `file:///` URIs for namespace files or files on the host machine. The flow below demonstrates all three approaches:
 
 ```yaml
 id: protocol
@@ -41,7 +41,7 @@ tasks:
 
 ## Allowed paths
 
-To use the `file:///` scheme, bind-mount the host directory into the Kestra container and set the `kestra.local-files.allowed-paths` configuration property. For example, to allow access to a `scripts` folder:
+The `file:///` scheme requires the host directory to be bind-mounted into the Kestra container with `kestra.local-files.allowed-paths` configured. For example, to allow access to a `scripts` folder:
 
 ```yaml
   kestra:
@@ -78,7 +78,7 @@ This means the allowed paths are not configured correctly. Confirm that the host
 
 ## Usage with `read()`
 
-Use `read()` in tasks that expect file content rather than a path — for example, to load a SQL query from a namespace file:
+`read()` is for tasks that expect file content rather than a path — for example, loading a SQL query from a namespace file:
 
 ```yaml
 id: query

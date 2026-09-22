@@ -38,7 +38,7 @@ Each KV pair can have a Time to Live (TTL) to automatically expire data that is 
 
 KV pairs are scoped to a namespace. Access them under **Namespaces → [namespace] → KV Store** or under **Tenant → KV Store** in the sidebar for a tenant-wide view.
 
-You can create and read KV pairs across namespaces as long as those namespaces are [allowed](../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces).
+KV pairs are readable across namespaces when those namespaces are [allowed](../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces).
 
 ## Managing KV pairs
 
@@ -54,17 +54,17 @@ KV pairs can be managed from the UI, in flows via tasks, through the REST API, v
 
 ### Create a KV pair from the UI
 
-Open the **KV Store** tab and click **New Key-Value**. Enter a key name, select a type (string, number, boolean, datetime, date, duration, or JSON), and enter the value. Optionally set a TTL: choose a standard duration from the dropdown or select **Custom duration** to enter an ISO 8601 duration string. Click **Save**.
+The **KV Store** tab provides a **New Key-Value** form. Each pair requires a key name and a type (string, number, boolean, datetime, date, duration, or JSON). An optional TTL accepts a standard duration or a custom ISO 8601 duration string.
 
 ### Update, delete, and copy KV pairs
 
-Edit, delete, or copy any KV pair using the action buttons on the right. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (`{{ kv('YOUR_KEY') }}`) ready to paste into a flow.
+Action buttons on each row edit, delete, or copy the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (`{{ kv('YOUR_KEY') }}`) ready to paste into a flow.
 
 ## KV tasks in flows
 
 ### Create a KV pair with the `Set` task
 
-Use `io.kestra.plugin.core.kv.Set` to create or update a KV pair from a flow:
+`io.kestra.plugin.core.kv.Set` creates or updates a KV pair from a flow:
 
 ```yaml
 id: add_kv_pair
@@ -109,7 +109,7 @@ Set `overwrite: false` to fail instead of silently replacing an existing value. 
 
 ### Read KV pairs with Pebble
 
-Use `{{ kv('YOUR_KEY') }}` to retrieve a value inline. The full signature is:
+`{{ kv('YOUR_KEY') }}` retrieves a value inline. The full signature is:
 
 ```
 {{ kv(key='your_key_name', namespace='your_namespace_name', errorOnMissing=false) }}
@@ -137,7 +137,7 @@ tasks:
     message: "{{ kv('my_key', 'kestra.engineering.myproject') }}"
 ```
 
-By default, referencing a missing key causes the task to fail. Set `errorOnMissing=false` to return `null` instead:
+By default, referencing a missing key causes the task to fail. `errorOnMissing=false` returns `null` instead:
 
 ```yaml
 id: read_non_existing_kv_pair
@@ -150,7 +150,7 @@ tasks:
 
 ### Read KV pairs with the `Get` task
 
-The `Get` task produces a `value` output you can reference in downstream tasks, which is useful when you need to pass the same KV value to multiple steps:
+The `Get` task produces a `value` output referenceable in downstream tasks — suited to passing the same KV value to multiple steps:
 
 ```yaml
 id: get_kv_pair
@@ -170,7 +170,7 @@ tasks:
 
 ### Read and parse JSON-type values from KV pairs
 
-To parse JSON values in Kestra's templated expressions, wrap the `kv()` call in the `fromJson()` function: `"{{ fromJson(kv('your_json_key')).json_property }}"`.
+JSON values are parsed by wrapping the `kv()` call in `fromJson()`: `"{{ fromJson(kv('your_json_key')).json_property }}"`.
 
 This example sets a JSON KV pair and reads individual fields using `fromJson()`:
 ```yaml
@@ -211,7 +211,7 @@ tasks:
 
 ### Read keys by prefix with the `GetKeys` task
 
-Search for keys matching a prefix with `GetKeys`:
+`GetKeys` returns all keys matching a given prefix:
 
 ```yaml
 id: get_keys_by_prefix
@@ -256,7 +256,7 @@ tasks:
 
 ### Create a KV pair
 
-Use a `PUT` request to set a KV pair:
+A `PUT` request sets a KV pair:
 
 ```bash
 curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key -d '"Hello World"'
@@ -297,7 +297,7 @@ Returns `true` if the key existed and was deleted, `false` if it did not exist.
 
 ## Terraform
 
-Use the `kestra_kv` resource to create or update a KV pair:
+The `kestra_kv` resource creates or updates a KV pair:
 
 ```hcl
 resource "kestra_kv" "my_key" {
@@ -308,7 +308,7 @@ resource "kestra_kv" "my_key" {
 }
 ```
 
-Use the `kestra_kv` data source to read a KV pair:
+The `kestra_kv` data source reads a KV pair:
 
 ```hcl
 data "kestra_kv" "new" {
@@ -317,4 +317,4 @@ data "kestra_kv" "new" {
 }
 ```
 
-Run `terraform apply` to create, update, or delete KV pairs from your Terraform state.
+`terraform apply` creates, updates, or deletes KV pairs from your Terraform state.

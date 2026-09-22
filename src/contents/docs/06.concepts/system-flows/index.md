@@ -42,7 +42,7 @@ The **Blueprints** tab inside the system namespace provides ready-to-use templat
 System Flows are not restricted to System Blueprints — any valid Kestra flow added to the `system` namespace becomes a System Flow.
 :::
 
-System flow executions appear across the Dashboard, Flows, and Executions pages. Use the **Scope** filter to view user and system executions separately or together.
+System flow executions appear across the Dashboard, Flows, and Executions pages. The **Scope** filter shows user and system executions separately or together.
 
 ![Dashboard Scope filter with User executions and System executions options](./system-filters.png)
 
