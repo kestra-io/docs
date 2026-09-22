@@ -37,9 +37,7 @@ schema:
         "@id": "https://kestra.io/#organization"
 ---
 
-**Definition.** Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane.
-
-→ Read the full definition and the seven requirements: [What is unified orchestration?](/resources/orchestration/unified-orchestration) · How the four domains fit together: [What is orchestration?](/resources/orchestration)
+Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane.
 
 ## Executive summary
 

@@ -113,9 +113,11 @@ const INSIDE = [
     }
 
     .hero-figure {
+        // 480px is the figure's own viewBox width: below it the monospace
+        // chips scale down past the point where they are readable.
         @include media-breakpoint-up(lg) {
-            flex: 0 0 420px;
-            max-width: 420px;
+            flex: 0 0 480px;
+            max-width: 480px;
         }
     }
 
