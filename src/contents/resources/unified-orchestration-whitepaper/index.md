@@ -51,6 +51,8 @@ This is not one vendor's observation. Gartner created two categories for the shi
 
 This paper asserts that orchestration has fragmented into four tool categories, each of which has evolved independently. Agentic AI is not a fifth category. Agents act across all four, and they need to be governed across all four. Unified orchestration demands a defined and measurable set of capabilities that few platforms provide in full. Kestra addresses this challenge from a differentiated foundation with a declarative, language-agnostic, open, event-driven engine designed to orchestrate the existing technology stack and govern how agents operate across it.
 
+![Four domains, four orchestrators, four audit trails: data runs on Airflow, Dagster or Prefect, infrastructure on Control-M, VMware Aria or Rundeck, applications on Temporal, iPaaS or glue code, and business processes on Camunda, Pega or UiPath — with agents acting across every domain and no single layer governing the actions](./four-domains-four-orchestrators.png)
+
 ## Why is enterprise orchestration fragmented across four silos?
 
 Orchestration is the software layer that decides what runs, in what sequence, and what happens when a step fails. For years, however, each part of an enterprise has developed these capabilities as independent silos.
@@ -68,8 +70,6 @@ The result is a fragmentation tax that lands on the three major issues that IT d
 **Higher operational risk.** Business-critical logic often remains embedded in individual scripts, with limited documentation and no end-to-end audit trail. This concentration of knowledge makes failures harder to diagnose, changes more difficult to govern, and regulatory compliance more challenging to demonstrate.
 
 The pattern is clearest at the edge, where physical operations meet the cloud. When data arrives, something has to trigger the maintenance workflow, roll back the failed deployment, replicate the dataset, or open the ticket. Architectures that move the data and improvise everything above it scatter automation logic across broker plugins, cron jobs, and cloud functions. This recreates the integration spaghetti the whole discipline set out to remove.
-
-![Four domains, four orchestrators, four audit trails: data runs on Airflow, Dagster or Prefect, infrastructure on Control-M, VMware Aria or Rundeck, applications on Temporal, iPaaS or glue code, and business processes on Camunda, Pega or UiPath — with agents acting across every domain and no single layer governing the actions](./four-domains-four-orchestrators.png)
 
 **Related:** [Unified Orchestration in Manufacturing: From Shop Floor to Cloud](https://www.kai-waehner.de/blog/2026/08/28/unified-orchestration-in-manufacturing-from-shop-floor-to-cloud/) (kai-waehner.de)
 

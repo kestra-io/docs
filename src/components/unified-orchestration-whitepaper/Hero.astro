@@ -1,8 +1,6 @@
 ---
-import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import heroBg from "~/components/airflow-2-eol-whitepaper/assets/hero-bg.jpg"
-import previewFigure from "~/contents/resources/unified-orchestration-whitepaper/one-control-plane-across-four-domains.png"
 
 interface Props {
     pdfHref: string
@@ -48,17 +46,6 @@ const INSIDE = [
 
         <div class="hero-right" style={`background-image: url(${heroBg.src})`}>
             <div class="hero-right-content">
-                <div class="preview" aria-hidden="true" data-usal="zoomin">
-                    <Image
-                        src={previewFigure}
-                        alt=""
-                        loading="eager"
-                        widths={[520, 900]}
-                        sizes="(min-width: 992px) 440px, 90vw"
-                        class="preview-img"
-                    />
-                </div>
-
                 <div class="download-card" data-usal="fade-l">
                     <p class="download-eyebrow">
                         <Icon name="mdi:check-circle-outline" class="tick" />
@@ -120,7 +107,7 @@ const INSIDE = [
 
         @include media-breakpoint-up(lg) {
             flex-direction: row;
-            min-height: 680px;
+            min-height: 600px;
         }
     }
 
@@ -130,8 +117,8 @@ const INSIDE = [
         padding: 4rem 1.5rem 3rem;
 
         @include media-breakpoint-up(lg) {
-            width: 50%;
-            flex: 0 0 50%;
+            width: 62%;
+            flex: 0 0 62%;
             padding: 5rem 4rem 6rem;
             justify-content: flex-end;
         }
@@ -141,7 +128,7 @@ const INSIDE = [
         width: 100%;
 
         @include media-breakpoint-up(lg) {
-            max-width: 540px;
+            max-width: 680px;
         }
     }
 
@@ -223,8 +210,8 @@ const INSIDE = [
         background-repeat: no-repeat;
 
         @include media-breakpoint-up(lg) {
-            width: 50%;
-            flex: 0 0 50%;
+            width: 38%;
+            flex: 0 0 38%;
         }
     }
 
@@ -235,36 +222,18 @@ const INSIDE = [
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 2rem;
         padding: 2.5rem 1.5rem;
 
         @include media-breakpoint-up(lg) {
             min-height: 100%;
-            padding: 4rem 3rem;
-        }
-    }
-
-    .preview {
-        width: 100%;
-        max-width: 440px;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow:
-            0 28px 48px rgba(0, 0, 0, 0.55),
-            -10px 12px 24px rgba(88, 31, 211, 0.3);
-
-        .preview-img {
-            display: block;
-            width: 100%;
-            height: auto;
+            padding: 4rem 2.5rem;
         }
     }
 
     .download-card {
         width: 100%;
         max-width: 440px;
-        padding: 1.75rem;
+        padding: 1.5rem;
         border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.14);
         background: rgba(13, 5, 32, 0.72);
@@ -299,18 +268,12 @@ const INSIDE = [
         padding: 0;
         margin: 0 0 1.5rem;
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem 1rem;
+        flex-direction: column;
+        gap: 0.25rem;
 
         li {
             font-size: $font-size-sm;
             color: rgba(255, 255, 255, 0.72);
-
-            & + li::before {
-                content: "·";
-                margin-right: 1rem;
-                color: rgba(255, 255, 255, 0.4);
-            }
         }
     }
 
@@ -322,7 +285,7 @@ const INSIDE = [
         .btn {
             font-weight: 700;
             border-radius: 8px;
-            padding: 0.625rem 1.5rem;
+            padding: 0.625rem 1.25rem;
         }
 
         .btn-ghost {
