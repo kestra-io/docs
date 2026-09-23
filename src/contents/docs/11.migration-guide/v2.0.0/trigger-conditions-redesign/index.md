@@ -27,7 +27,7 @@ The variables available in a `when` expression depend on the trigger type:
 
 | Trigger type | Available variables |
 |---|---|
-| Schedule | `trigger.date`, `trigger.timestamp` |
+| Schedule | `trigger.date` |
 | Webhook | `trigger.body`, `trigger.headers` |
 | Flow | `namespace`, `flowId`, `state`, `labels`, `outputs`, `hasRetryAttempt` |
 
