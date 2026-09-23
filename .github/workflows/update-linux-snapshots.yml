@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       refresh_api_fixtures:
-        description: "Re-record tests/fixtures/api (also resets what Lighthouse replays)"
+        description: "Re-record tests/fixtures/api. Also drops the ~300 blueprint detail responses only Lighthouse reads: do not tick unless you will commit its api-fixtures artifact afterwards"
         type: boolean
         default: false
   # 01:00 CET / 02:00 CEST: GitHub cron is UTC only, so the French wall clock
@@ -77,6 +77,8 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
+      # Clears the whole set, Lighthouse's blueprint detail responses included,
+      # since the two jobs share the directory. See the input's description.
       - name: Discard the recorded API responses
         if: inputs.refresh_api_fixtures
         run: rm -f tests/fixtures/api/*.json
