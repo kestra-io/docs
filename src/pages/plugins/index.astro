@@ -32,18 +32,15 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
 })
 
 // Multi-artifact plugin groups (Debezium, JDBC, Scripts, ...) ship one unrelated top-level
-// plugin per sub-technology (plugin-jdbc-oracle, plugin-jdbc-postgres, ...), so without this
-// they'd each get their own Hub card instead of surfacing the "/plugins/<family>" overview page.
+// plugin per sub-technology (plugin-jdbc-oracle, plugin-jdbc-postgres, ...). Each still gets
+// its own Hub card as usual; this just also adds one "/plugins/<family>" overview card per
+// family, so the family page is reachable from the Hub like any other plugin.
 const familyMembers: Record<string, Plugin[]> = {}
-const nonFamilyPlugins = filteredPlugins.filter((p) => {
-    // A family member that ever ships its own subgroup would need to keep both its
-    // family card AND its own card; none does today, so this guard just excludes it
-    // from collapsing rather than handling that (currently nonexistent) case.
-    const family = p.subGroup ? undefined : familyNameForPlugin(p.name, familyIndex)
-    if (!family) return true
-    ;(familyMembers[family] ??= []).push(p)
-    return false
-})
+for (const p of filteredPlugins) {
+    if (p.subGroup) continue
+    const family = familyNameForPlugin(p.name, familyIndex)
+    if (family) (familyMembers[family] ??= []).push(p)
+}
 
 // Rendered per request, so the count is derived from the groups fetched above
 // rather than the build-time memo in fetchTotalPluginsCount.
@@ -61,12 +58,6 @@ const familyCards: CardPlugin[] = Object.entries(familyMembers).map(([family, me
         group: family,
         description: `${members.length} ${title} plugins`,
         categories: [...new Set(memberCards.flatMap((m) => m.categories ?? []))],
-        // Folds every member's own searchable text in, so e.g. searching "oracle" or
-        // "python" still surfaces the family card even though its own members no
-        // longer have their own cards (SEARCHABLE_FIELDS in PluginsLists.vue).
-        classes: memberCards
-            .flatMap((m) => [m.name, m.title, m.classes ?? ""])
-            .join(" "),
         // No className: none of these families have a real dedicated icon (the
         // API's own fallback for an unmatched className is a generic blank-file
         // glyph, worse than PluginCard's own /icon.svg fallback used below).
@@ -76,7 +67,7 @@ const familyCards: CardPlugin[] = Object.entries(familyMembers).map(([family, me
     }
 })
 const cardPlugins = [
-    ...prunePluginsForCards(nonFamilyPlugins, rawPluginsData.byPlugin, urlIndex, rootGroups),
+    ...prunePluginsForCards(filteredPlugins, rawPluginsData.byPlugin, urlIndex, rootGroups),
     ...familyCards,
 ]
 const categories = [
