@@ -41,6 +41,16 @@ for (const page of pages) {
         await p.evaluate(async () => {
             await document.fonts.ready
         })
+        // Astro drops `ssr` once an island hydrates; client:visible ones below
+        // the fold never do, so only eager islands gate the capture.
+        await p.waitForFunction(
+            () =>
+                !document.querySelector(
+                    "astro-island[ssr]:is([client=load],[client=idle],[client=only])",
+                ),
+            undefined,
+            { timeout: 15_000 },
+        )
         await p.waitForTimeout(500)
 
         await expect(p).toHaveScreenshot(`${page.label}.png`, {
