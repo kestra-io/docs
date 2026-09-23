@@ -583,7 +583,7 @@ tasks:
 `skipCertVerification: true` disables certificate validation. Use it only in lab environments with self-signed certificates, never in production.
 :::
 
-To ship [Audit Logs](../06.audit-logs/index.md) to your SIEM, use the same exporter with `AuditLogShipper` — replace `logLevelFilter` with `resources`.
+[Audit Logs](../06.audit-logs/index.md) are shipped with `AuditLogShipper` using the same exporter configuration; `resources` replaces `logLevelFilter`.
 
 ### Dash0
 

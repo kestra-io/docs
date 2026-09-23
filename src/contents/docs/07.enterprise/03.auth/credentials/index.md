@@ -24,9 +24,9 @@ Credentials can be accessed and created at:
 
 During setup, Kestra lets you **test token retrieval** from the UI to ensure your configuration is correct.
 
-## Use a credential in a flow
+## The credential() function
 
-Use the `credential()` Pebble function to retrieve the **current access token** for a credential key.
+The `credential()` Pebble function retrieves the current access token for a credential key.
 
 ```yaml
 id: api_call
@@ -61,35 +61,15 @@ Credentials can reference sensitive inputs via existing [Secrets](../../../06.co
 
 The following example shows how to use a Google Cloud service account with an OAuth2 JWT Bearer credential in Kestra.
 
-### 1. Create a service account in Google Cloud
+### Google Cloud service account
 
-In Google Cloud:
+Create a Google Cloud service account and download a JSON key file. The credential requires `client_email`, `private_key`, `private_key_id`, and `token_uri` from that file. See the [Google service account guide](https://cloud.google.com/iam/docs/service-account-overview).
 
-1. Go to **IAM & Admin → Service Accounts**.
-2. Create a new service account and grant it only the roles required for your use case.
-3. Open the service account, go to **Keys**, and create a new **JSON** key.
-4. Download the JSON key file.
+Store the private key as a Kestra secret (for example, `GCP_PRIVATE_KEY`). The secret can be managed from the Kestra UI or an external [Secrets Manager](../../02.governance/secrets-manager/index.md).
 
-From that JSON file, you will use:
+### Credential configuration
 
-- `client_email`
-- `private_key`
-- `private_key_id`
-- `token_uri`
-
-For more information, see the [Google service account guide](https://cloud.google.com/iam/docs/service-account-overview).
-
-### 2. Create a secret for the private key
-
-Store the private key from the downloaded JSON in a Kestra secret rather than embedding it directly in the credential.
-
-For example, create a secret named `GCP_PRIVATE_KEY` with the value of the `private_key` field from the JSON file.
-
-You can manage that secret from the Kestra UI or by using an external [Secrets Manager](../../02.governance/secrets-manager/index.md).
-
-### 3. Create the credential in Kestra
-
-In the Credentials UI, create a new credential with the following values:
+Create a new credential in the Credentials UI with the following values:
 
 - **Credential Type:** `OAUTH2`
 - **Auth Config Type:** `JWT_BEARER`
@@ -108,14 +88,12 @@ https://www.googleapis.com/auth/cloud-platform.read-only https://www.googleapis.
 ```
 
 :::alert{type="info"}
-Use the **Test connection** action in the Credentials UI to confirm that Kestra can mint an access token before using the credential in a flow.
+The **Test connection** action in the Credentials UI confirms that Kestra can mint an access token before using the credential in a flow.
 :::
 
-### 4. Use the credential in a flow
+### Flow usage
 
-Once the credential is saved, you can use it in a flow with the `credential()` Pebble function.
-
-The example below calls the Google Cloud Resource Manager API and sends the access token as a Bearer token in the request header:
+The `credential()` Pebble function references the saved credential. The example below calls the Google Cloud Resource Manager API with the access token as a Bearer token:
 
 ```yaml
 id: google_api_with_credential
@@ -155,8 +133,4 @@ If the service account has the required permissions on the target project, the r
 Avoid storing long-lived secrets directly in flow YAML. Prefer credentials + secrets so Kestra can handle token minting/refresh and reduce exposure risk.
 :::
 
-## Credential hygiene
-
-- Scope credentials to the smallest set of permissions required.
-- Prefer short-lived tokens where possible; rotate long-lived keys.
-- Don’t print tokens or derived values to logs — see [Best Practices for Secrets](../../../14.best-practices/9.secrets-management/index.md).
+See [Best Practices for Secrets](../../../14.best-practices/9.secrets-management/index.md) for guidance on token exposure and key rotation.
