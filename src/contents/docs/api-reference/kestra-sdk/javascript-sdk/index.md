@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/api.svg
 release: 1.2.0
 ---
 
-Use the Kestra JavaScript SDK to interact with the Kestra API from Node.js applications.
+Use the Kestra JavaScript SDK to interact with the Kestra API from JavaScript or TypeScript. The SDK is built on the standard `fetch` API, so it runs in Node.js and in the browser.
 
 ## Install the JavaScript SDK
 
@@ -34,7 +34,7 @@ import { configureClient } from "@kestra-io/kestra-sdk";
 import { setSelectedTenant } from "@kestra-io/kestra-sdk/shared";
 
 configureClient({
-  baseURL: process.env.KESTRA_BASE_URL ?? "http://localhost:8080",
+  baseUrl: process.env.KESTRA_BASE_URL ?? "http://localhost:8080",
   auth: () => `${process.env.KESTRA_USERNAME}:${process.env.KESTRA_PASSWORD}`,
 });
 
@@ -42,7 +42,16 @@ setSelectedTenant("main");
 ```
 
 :::alert{type="info"}
-For bearer token authentication, set `auth: () => process.env.KESTRA_TOKEN` and pass the token directly.
+The `auth` callback is called once per security scheme (`bearer`, then `basic`), and the last non-empty value sets the `Authorization` header. A `username:password` string is sent as HTTP Basic auth. To authenticate with an API token instead, return the token only for the bearer scheme:
+
+```javascript
+configureClient({
+  baseUrl: process.env.KESTRA_BASE_URL ?? "http://localhost:8080",
+  auth: (a) => (a.scheme === "bearer" ? process.env.KESTRA_TOKEN : undefined),
+});
+```
+
+Returning the token for every scheme (for example, `auth: () => process.env.KESTRA_TOKEN`) sends it as Basic credentials, and authentication fails.
 :::
 
 Each API group is a separate subpath module. Import only what you need:
@@ -143,7 +152,7 @@ async function deleteExecution() {
 
 ## Follow an execution
 
-Stream live execution state updates. `followExecution` returns a `{ stream }` object where `stream` is an async iterable of execution events:
+Stream live execution state updates. `followExecution` returns a `{ stream }` object where `stream` is an async iterable of execution events. The server closes the stream once the execution reaches a terminal state, so the loop ends on its own:
 
 ```javascript
 import * as Executions from "@kestra-io/kestra-sdk/executions";
@@ -154,15 +163,15 @@ async function followExecution() {
   });
 
   for await (const evt of stream) {
-    if (!evt.state) continue; // skip keepalive frames
+    if (!evt.state) continue; // skip the initial event, which carries only the execution ID
     console.log(`Status: ${evt.state.current}`);
-    if (evt.state.current === "SUCCESS" || evt.state.current === "FAILED") break;
   }
+  console.log("Execution finished");
 }
 ```
 
 :::alert{type="info"}
-The server emits an initial keepalive event with no `state` — skip it before processing updates.
+The first event only identifies the execution and has no `state`. Skip it before processing updates. To stop following early, pass an `AbortSignal` as the second argument: `Executions.followExecution({ executionId }, { signal })`.
 :::
 
 ---
@@ -189,7 +198,7 @@ To filter by minimum log level, pass a `filters` array:
 ```javascript
 const logs = await Logs.listLogsFromExecution({
   executionId: "your-execution-id",
-  filters: [{ field: "LEVEL", operation: "GREATER_THAN_OR_EQUAL_TO", value: "INFO" }],
+  filters: [{ field: "level", operation: "GREATER_THAN_OR_EQUAL_TO", value: "INFO" }],
 });
 ```
 
@@ -214,11 +223,13 @@ The KV Store lets you read and write key-value pairs scoped to a namespace.
 
 ### Set a value
 
+The server infers the value type from `body`. Wrap strings in JSON quotes to store them as `STRING`. Unquoted values such as `42`, `true`, `2025-10-13`, or `PT15M` are stored as `NUMBER`, `BOOLEAN`, `DATE`, or `DURATION`.
+
 ```javascript
 import * as Kv from "@kestra-io/kestra-sdk/kv";
 
 async function setKvValue() {
-  await Kv.setKeyValue({ namespace: "my_namespace", key: "my_key", body: "my_value" });
+  await Kv.setKeyValue({ namespace: "my_namespace", key: "my_key", body: '"my_value"' });
   console.log("Key set");
 }
 ```
@@ -230,7 +241,7 @@ import * as Kv from "@kestra-io/kestra-sdk/kv";
 
 async function getKvValue() {
   const result = await Kv.keyValue({ namespace: "my_namespace", key: "my_key" });
-  console.log("Value:", result?.value);
+  console.log(`Value (${result.type}):`, result.value); // Value (STRING): my_value
 }
 ```
 
@@ -256,8 +267,9 @@ import * as Triggers from "@kestra-io/kestra-sdk/triggers";
 
 async function searchTriggers() {
   const result = await Triggers.searchTriggers({ page: 1, size: 50 });
-  result.results?.forEach(t => {
-    console.log(`${t.triggerContext?.triggerId}: disabled=${t.triggerContext?.disabled}`);
+  // Each result pairs the trigger definition (`trigger`) with its runtime state (`state`)
+  result.results.forEach(t => {
+    console.log(`${t.state.triggerId}: disabled=${t.state.disabled ?? false}`);
   });
 }
 ```
@@ -320,6 +332,11 @@ import * as Dashboards from "@kestra-io/kestra-sdk/dashboards";
 async function createDashboard() {
   const body = `id: my_dashboard
 title: My Dashboard
+description: Dashboard created with the JavaScript SDK
+timeWindow:
+  default: P30D
+  max: P365D
+charts: []
 `;
   const dashboard = await Dashboards.createDashboard({ body });
   console.log("Dashboard created:", dashboard.id);
@@ -332,7 +349,7 @@ title: My Dashboard
 import * as Dashboards from "@kestra-io/kestra-sdk/dashboards";
 
 async function searchDashboards() {
-  const result = await Dashboards.searchDashboards({});
+  const result = await Dashboards.searchDashboards({ page: 1, size: 50 });
   result.results?.forEach(d => console.log(d.id));
 }
 ```
@@ -404,7 +421,7 @@ async function deleteFile() {
 Test suites require Kestra Enterprise Edition.
 :::
 
-Create, run, and fetch results for unit test suites.
+Create, run, and fetch results for unit test suites. The example below assumes `my_flow` declares an `inputA` input and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
 
 ### Create a test suite
 
@@ -414,8 +431,16 @@ import * as TestSuites from "@kestra-io/kestra-sdk/test-suites";
 async function createTestSuite() {
   const body = `id: my_tests
 namespace: my_namespace
-flows:
-  - flowId: my_flow
+flowId: my_flow
+testCases:
+  - id: returns_input
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      inputs:
+        inputA: "Hi there"
+    assertions:
+      - value: "{{ outputs.return.value }}"
+        equalTo: "Hi there"
 `;
   const suite = await TestSuites.createTestSuite({ body });
   console.log("Test suite created:", suite.id);
@@ -432,7 +457,7 @@ async function runTestSuite() {
     namespace: "my_namespace",
     id: "my_tests",
   });
-  console.log("State:", result.state);
+  console.log(`Run ${result.id}: ${result.state}`);
 }
 ```
 
@@ -442,7 +467,7 @@ async function runTestSuite() {
 import * as TestSuites from "@kestra-io/kestra-sdk/test-suites";
 
 async function getTestResult() {
-  const result = await TestSuites.testResult({ id: "run-id" });
+  const result = await TestSuites.testResult({ id: "your-test-run-id" }); // `id` returned by runTestSuite
   console.log("State:", result.state);
 }
 ```
@@ -455,7 +480,7 @@ async function getTestResult() {
 Apps require Kestra Enterprise Edition.
 :::
 
-Create, enable, disable, and delete apps.
+Create, enable, disable, and delete apps. An app is bound to an existing flow through `namespace` and `flowId`.
 
 ### Create an app
 
@@ -464,7 +489,23 @@ import * as Apps from "@kestra-io/kestra-sdk/apps";
 
 async function createApp() {
   const body = `id: my_app
-title: My App
+type: io.kestra.plugin.ee.apps.Execution
+namespace: my_namespace
+flowId: my_flow
+displayName: My App
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "# My App"
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "Running..."
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "Done!"
 `;
   const app = await Apps.createApp({ body });
   console.log("App created:", app.uid);
@@ -504,5 +545,5 @@ async function deleteApp() {
 
 - **Configure once:** call `configureClient` and `setSelectedTenant` once at startup and reuse them globally.
 - **Externalize config:** keep URL and auth in environment variables.
-- **Validate YAML:** invalid flow YAML returns `422` responses.
+- **Validate YAML:** invalid flow YAML returns `422` responses. Failed calls throw an error that carries the HTTP status as `err.status`.
 - **Use labels** for governance, search, and routing across executions.

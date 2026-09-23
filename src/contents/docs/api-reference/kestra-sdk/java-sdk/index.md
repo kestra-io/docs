@@ -11,7 +11,7 @@ Use the Kestra Java SDK to interact with the Kestra API from Java applications.
 
 ## Install the Java SDK
 
-Choose the installation method that matches your build tool.
+The SDK requires Java 25 or later. Choose the installation method that matches your build tool.
 
 ### Maven
 
@@ -21,7 +21,7 @@ Add this dependency to your `pom.xml`:
 <dependency>
   <groupId>io.kestra</groupId>
   <artifactId>kestra-api-client</artifactId>
-  <version>1.0.0</version>
+  <version>2.0.1</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -31,7 +31,7 @@ Add this dependency to your `pom.xml`:
 Add this dependency to your `build.gradle`:
 
 ```groovy
-implementation "io.kestra:kestra-api-client:1.0.0"
+implementation "io.kestra:kestra-api-client:2.0.1"
 ```
 
 ---
@@ -122,8 +122,8 @@ Send the full YAML — including the same `id` and `namespace` — to replace an
 ```java
 public class FlowsExamples {
     public static void updateFlow() {
-        String id = "my_flow";
         String namespace = "my_namespace";
+        String id = "my_flow";
         String tenant = "main";
 
         String body = """
@@ -136,7 +136,7 @@ public class FlowsExamples {
             message: Updated message!
         """;
 
-        KestraClients.INSTANCE.flows().updateFlow(id, namespace, tenant, body);
+        KestraClients.INSTANCE.flows().updateFlow(namespace, id, tenant, body);
         System.out.println("Flow updated: my_namespace/my_flow");
     }
 }
@@ -174,37 +174,34 @@ Trigger an execution and optionally pass labels or scheduling parameters.
 ```java
 import java.util.List;
 import java.time.OffsetDateTime;
-import io.kestra.sdk.ApiException;
+import io.kestra.sdk.model.ExecutionControllerExecutionResponse;
 import io.kestra.sdk.model.ExecutionKind;
 
 public class ExecutionsExamples {
     public static void createExecution() {
+        String tenant = "main";
         String namespace = "my_namespace";
         String id = "my_flow";
-        String tenant = "main";
         Boolean wait = false;
 
-        try {
-            KestraClients.INSTANCE.executions()
-                .createExecution(
-                    namespace, id, wait, tenant,
-                    List.of("team:platform"),  // labels
-                    null,                      // revision (null = latest)
-                    (OffsetDateTime) null,     // scheduleDate
-                    null,                      // breakpoint task ID
-                    ExecutionKind.NORMAL
-                );
-        } catch (ApiException e) {
-            if (e.getCode() != 0) throw e; // code 0 = deserialization-only; execution ran normally
-        }
+        ExecutionControllerExecutionResponse execution = KestraClients.INSTANCE.executions()
+            .createExecution(
+                tenant, namespace, id,
+                List.of("team:platform"),  // labels
+                wait,
+                null,                      // revision (null = latest)
+                (OffsetDateTime) null,     // scheduleDate
+                null,                      // breakpoints
+                ExecutionKind.NORMAL
+            );
 
-        System.out.println("Execution triggered");
+        System.out.println("Execution triggered: " + execution.getId());
     }
 }
 ```
 
-:::alert{type="warning"}
-In SDK 1.0.0, `createExecution` successfully triggers the execution but throws a deserialization exception when reading the response — the server returns a single JSON object while the SDK expects an array. The execution runs normally. The `try/catch` above suppresses this by re-throwing only on a non-zero status code.
+:::alert{type="info"}
+The SDK throws `io.kestra.sdk.internal.ApiException` (an unchecked `RuntimeException`) when the API returns an error. Use `getCode()` to read the HTTP status and `getResponseBody()` for the error payload.
 :::
 
 ---
@@ -220,7 +217,11 @@ public class ExecutionsExamples {
         String tenant = "main";
 
         KestraClients.INSTANCE.executions()
-            .deleteExecution(executionId, true, true, true, tenant);
+            .deleteExecution(executionId, tenant,
+                true,   // deleteLogs
+                true,   // deleteMetrics
+                true    // deleteStorage
+            );
         System.out.println("Execution deleted");
     }
 }
@@ -262,7 +263,8 @@ public class KVExamples {
         String namespace = "my_namespace";
         String tenant = "main";
 
-        var keys = KestraClients.INSTANCE.kv().listKeys(namespace, tenant);
+        // includes keys inherited from parent namespaces
+        var keys = KestraClients.INSTANCE.kv().listKeysWithInheritance(namespace, tenant);
         keys.forEach(entry -> System.out.println("Key: " + entry.getKey()));
     }
 }
@@ -277,7 +279,7 @@ public class KVExamples {
         String tenant = "main";
 
         var result = KestraClients.INSTANCE.kv()
-            .getKeyValue(namespace, "my_key", tenant);
+            .keyValue(namespace, "my_key", tenant);
         System.out.println("Value: " + result.getValue());
     }
 }
@@ -374,25 +376,36 @@ Search, enable or disable, unlock, and restart triggers for flows.
 
 ### Search triggers
 
+Filter the search with a list of `QueryFilter` objects, for example by namespace:
+
 ```java
+import java.util.List;
+import io.kestra.sdk.model.QueryFilter;
+import io.kestra.sdk.model.QueryFilterField;
+import io.kestra.sdk.model.QueryFilterOp;
+
 public class TriggersExamples {
     public static void searchTriggers() {
         String tenant = "main";
 
+        List<QueryFilter> filters = List.of(new QueryFilter()
+            .field(QueryFilterField.NAMESPACE)
+            .operation(QueryFilterOp.EQUALS)
+            .value("my_namespace"));
+
         var result = KestraClients.INSTANCE.triggers()
-            .searchTriggers(1, 50, tenant,
-                null,           // sort
-                null,           // filters
-                null,           // query string
-                "my_namespace", // namespace filter
-                null,           // workerId
-                null            // flowId
+            .searchTriggers(tenant,
+                1,       // page
+                50,      // size
+                null,    // sort
+                filters, // filters
+                null     // dateFilter
             );
 
         result.getResults().forEach(t -> {
-            var ctx = t.getTriggerContext();
+            var state = t.getState();
             System.out.printf("%s: disabled=%s%n",
-                ctx.getTriggerId(), ctx.getDisabled());
+                state.getTriggerId(), state.getDisabled());
         });
     }
 }
@@ -402,14 +415,14 @@ public class TriggersExamples {
 
 ```java
 import io.kestra.sdk.model.TriggerControllerSetDisabledRequest;
-import io.kestra.sdk.model.Trigger;
+import io.kestra.sdk.model.TriggerControllerApiTriggerId;
 
 public class TriggersExamples {
     public static void disableTrigger() {
         String tenant = "main";
 
         var request = new TriggerControllerSetDisabledRequest()
-            .addTriggersItem(new Trigger()
+            .addTriggersItem(new TriggerControllerApiTriggerId()
                 .namespace("my_namespace")
                 .flowId("my_flow")
                 .triggerId("my_schedule"))
@@ -432,7 +445,7 @@ public class TriggersExamples {
         String tenant = "main";
 
         KestraClients.INSTANCE.triggers()
-            .unlockTrigger("my_namespace", "my_flow", "my_schedule", tenant);
+            .unlockTrigger(tenant, "my_namespace", "my_flow", "my_schedule");
         System.out.println("Trigger unlocked");
     }
 }
@@ -446,7 +459,7 @@ public class TriggersExamples {
         String tenant = "main";
 
         KestraClients.INSTANCE.triggers()
-            .restartTrigger("my_namespace", "my_flow", "my_schedule", tenant);
+            .restartTrigger(tenant, "my_namespace", "my_flow", "my_schedule");
         System.out.println("Trigger restarted");
     }
 }
@@ -467,6 +480,7 @@ public class DashboardsExamples {
         String body = """
             id: my_dashboard
             title: My Dashboard
+            charts: []
             """;
         var dashboard = KestraClients.INSTANCE.dashboards().createDashboard(tenant, body);
         System.out.println("Dashboard created: " + dashboard.getId());
@@ -563,8 +577,15 @@ public class TestSuitesExamples {
         String body = """
             id: my_tests
             namespace: my_namespace
-            flows:
-              - flowId: my_flow
+            flowId: my_flow
+            testCases:
+              - id: hello_logs
+                type: io.kestra.core.test.flow.UnitTest
+                description: The hello task produces output
+                assertions:
+                  - taskId: hello
+                    value: "{{ outputs.hello }}"
+                    isNotNull: true
             """;
         var suite = KestraClients.INSTANCE.testSuites().createTestSuite(tenant, body);
         System.out.println("Test suite created: " + suite.getId());
@@ -615,7 +636,19 @@ public class AppsExamples {
         String tenant = "main";
         String body = """
             id: my_app
-            title: My App
+            type: io.kestra.plugin.ee.apps.Execution
+            namespace: my_namespace
+            flowId: my_flow
+            displayName: My App
+            layout:
+              - on: OPEN
+                blocks:
+                  - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+                    content: "# My App"
+              - on: SUCCESS
+                blocks:
+                  - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+                    content: "Done!"
             """;
         var app = KestraClients.INSTANCE.apps().createApp(tenant, body);
         System.out.println("App created: " + app.getUid());

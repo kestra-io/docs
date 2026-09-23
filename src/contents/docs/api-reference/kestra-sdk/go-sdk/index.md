@@ -7,35 +7,35 @@ release: 1.0.0
 description: Integrate Kestra with Go using the official SDK. Learn to set up the client, configure authentication, and programmatically create and execute workflows.
 ---
 
-Use the Kestra Go SDK to interact with the Kestra API from Go applications.
+Use the Kestra Go SDK to interact with the Kestra API from Go applications. The SDK is hand-written: `kestra.NewClient` returns a `KestraClient` that groups operations by resource, such as `client.Flows()`, `client.Executions()`, and `client.Kv()`.
 
 ## Install the Go SDK
 
 Install the Go module:
 
 ```shell
-go get github.com/kestra-io/client-sdk/go-sdk
+go get github.com/kestra-io/client-sdk/go-sdk/v2@latest
 ```
 
 Import the package in your code:
 
 ```go
-import openapiclient "github.com/kestra-io/client-sdk/go-sdk"
+import kestra "github.com/kestra-io/client-sdk/go-sdk/v2/kestra_api_client"
 ```
 
 ---
 
 ## Configure the client
 
-Define two helpers — `newClient()` to build the `APIClient` and `newContext()` to attach credentials — then reuse them across your application. Read configuration from environment variables.
+Define a `newClient()` helper that builds a `KestraClient` with `kestra.NewClient`, then reuse it across your application. Read configuration from environment variables.
 
 ```go
 package main
 
 import (
-    "context"
     "os"
-    openapiclient "github.com/kestra-io/client-sdk/go-sdk"
+
+    kestra "github.com/kestra-io/client-sdk/go-sdk/v2/kestra_api_client"
 )
 
 func getenv(key, fallback string) string {
@@ -45,28 +45,19 @@ func getenv(key, fallback string) string {
     return fallback
 }
 
-func newClient() *openapiclient.APIClient {
-    cfg := openapiclient.NewConfiguration()
-    cfg.Servers = openapiclient.ServerConfigurations{
-        {URL: getenv("KESTRA_URL", "http://localhost:8080")},
-    }
-    return openapiclient.NewAPIClient(cfg)
-}
-
-func newContext() context.Context {
-    return context.WithValue(
-        context.Background(),
-        openapiclient.ContextBasicAuth,
-        openapiclient.BasicAuth{
-            UserName: getenv("KESTRA_USER", "root@root.com"),
-            Password: getenv("KESTRA_PASS", "Root!1234"),
-        },
+func newClient() *kestra.KestraClient {
+    return kestra.NewClient(
+        getenv("KESTRA_URL", "http://localhost:8080"),
+        kestra.WithBasicAuth(
+            getenv("KESTRA_USER", "root@root.com"),
+            getenv("KESTRA_PASS", "Root!1234"),
+        ),
     )
 }
 ```
 
 :::alert{type="info"}
-To use bearer token authentication instead, pass `openapiclient.ContextAccessToken` with your token string as the context value. The examples below receive `ctx` and `apiClient` from `newContext()` and `newClient()` above.
+To authenticate with a service account API token instead, pass `kestra.WithTokenAuth("<api-token>")` in place of `kestra.WithBasicAuth(...)`. The examples below receive a `ctx` (for example `context.Background()`) and the `client` returned by `newClient()`. The examples also use the `context` and `fmt` packages, and the timeout example uses `time`; add them to your imports. The package also still exports the older `APIClient` (`NewAPIClient`) for backward compatibility with code written against earlier SDK versions; use `NewClient` for new code.
 :::
 
 ---
@@ -76,7 +67,7 @@ To use bearer token authentication instead, pass `openapiclient.ContextAccessTok
 Send the flow definition as a YAML string.
 
 ```go
-func createFlow(ctx context.Context, apiClient *openapiclient.APIClient) {
+func createFlow(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
     body := `id: my_flow
 namespace: my_namespace
@@ -85,7 +76,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: Hello World!
 `
-    flow, _, err := apiClient.FlowsAPI.CreateFlow(ctx, tenant).Body(body).Execute()
+    flow, err := client.Flows().CreateFlow(ctx, tenant, body)
     if err != nil {
         fmt.Printf("Error creating flow: %v\n", err)
         return
@@ -102,10 +93,10 @@ tasks:
 
 ## Update a flow
 
-Send the full YAML — including the same `id` and `namespace` — to replace an existing flow.
+Send the full YAML — including the same `id` and `namespace` — to replace an existing flow. `UpdateFlow` takes `(ctx, namespace, id, tenant, body)`.
 
 ```go
-func updateFlow(ctx context.Context, apiClient *openapiclient.APIClient) {
+func updateFlow(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
     namespace := "my_namespace"
     id := "my_flow"
@@ -116,7 +107,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: Updated message!
 `
-    updated, _, err := apiClient.FlowsAPI.UpdateFlow(ctx, tenant, namespace, id).Body(body).Execute()
+    updated, err := client.Flows().UpdateFlow(ctx, namespace, id, tenant, body)
     if err != nil {
         fmt.Printf("Error updating flow: %v\n", err)
         return
@@ -132,12 +123,12 @@ tasks:
 Remove a flow by its `namespace`, `id`, and `tenant`.
 
 ```go
-func deleteFlow(ctx context.Context, apiClient *openapiclient.APIClient) {
+func deleteFlow(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
     namespace := "my_namespace"
     id := "my_flow"
 
-    _, err := apiClient.FlowsAPI.DeleteFlow(ctx, namespace, id, tenant).Execute()
+    err := client.Flows().DeleteFlow(ctx, namespace, id, tenant)
     if err != nil {
         fmt.Printf("Error deleting flow: %v\n", err)
         return
@@ -157,28 +148,28 @@ Deleting a flow removes its definition. Execution history is retained unless you
 Trigger an execution and optionally wait for it to complete.
 
 ```go
-func createExecution(ctx context.Context, apiClient *openapiclient.APIClient) {
+func createExecution(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
     namespace := "my_namespace"
     id := "my_flow"
-    wait := true
 
-    execs, _, err := apiClient.ExecutionsAPI.
-        CreateExecution(ctx, namespace, id, tenant).
-        Wait(wait).
-        Execute()
+    execution, err := client.Executions().CreateExecution(
+        ctx, tenant, namespace, id,
+        nil,                  // labels, e.g. []string{"team:platform"}
+        kestra.PtrBool(true), // wait for the execution to finish
+        nil, nil, nil, nil,   // revision, scheduleDate, breakpoints, kind
+    )
     if err != nil {
         fmt.Printf("Error creating execution: %v\n", err)
         return
     }
-    if len(execs) > 0 {
-        fmt.Println("Execution started:", execs[0].GetId())
-    }
+    state := execution.GetState()
+    fmt.Println("Execution", execution.GetId(), "finished in state", state.GetCurrent())
 }
 ```
 
 :::alert{type="info"}
-`Wait(true)` blocks until the execution finishes. Use `Wait(false)` for non-blocking calls. Pass `.Labels([]string{"team:platform"})` to attach labels to the execution. `CreateExecution` returns a slice — the SDK wraps the single execution in an array. Always check `len(execs) > 0` before accessing `execs[0]`.
+`kestra.PtrBool(true)` blocks until the execution finishes. Pass `kestra.PtrBool(false)` (or `nil`) for a non-blocking call. Pass labels as `[]string{"team:platform"}` to attach them to the execution. `CreateExecution` returns a single `*ExecutionControllerExecutionResponse`.
 :::
 
 ---
@@ -190,14 +181,17 @@ The KV Store lets you read and write key-value pairs scoped to a namespace.
 ### List keys
 
 ```go
-func listKVKeys(ctx context.Context, apiClient *openapiclient.APIClient) {
+func listKVKeys(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    keys, _, err := apiClient.KVAPI.ListKeys(ctx, "my_namespace", tenant).Execute()
+    filters := []kestra.SearchFilter{
+        {Field: kestra.FilterNamespace, Operation: kestra.OpEquals, Value: "my_namespace"},
+    }
+    page, err := client.Kv().ListAllKeys(ctx, tenant, kestra.PtrInt(1), kestra.PtrInt(100), nil, filters)
     if err != nil {
         fmt.Printf("Error listing keys: %v\n", err)
         return
     }
-    for _, entry := range keys {
+    for _, entry := range page.GetResults() {
         fmt.Println("Key:", entry.GetKey())
     }
 }
@@ -206,28 +200,25 @@ func listKVKeys(ctx context.Context, apiClient *openapiclient.APIClient) {
 ### Get a value
 
 ```go
-func getKVValue(ctx context.Context, apiClient *openapiclient.APIClient) {
+func getKVValue(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    result, _, err := apiClient.KVAPI.
-        GetKeyValue(ctx, "my_namespace", "my_key", tenant).
-        Execute()
+    result, err := client.Kv().KeyValue(ctx, "my_namespace", "my_key", tenant)
     if err != nil {
         fmt.Printf("Error getting key: %v\n", err)
         return
     }
-    fmt.Println("Value:", result.GetValue())
+    fmt.Println("Type:", result.GetType(), "Value:", result.GetValue())
 }
 ```
+
+`GetValue()` returns an `interface{}` holding the decoded value (`string`, `bool`, number, and so on); use `GetType()` to check its KV type.
 
 ### Set a value
 
 ```go
-func setKVValue(ctx context.Context, apiClient *openapiclient.APIClient) {
+func setKVValue(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    _, _, err := apiClient.KVAPI.
-        SetKeyValue(ctx, "my_namespace", "my_key", tenant).
-        Body("my_value").
-        Execute()
+    err := client.Kv().SetKeyValue(ctx, "my_namespace", "my_key", tenant, `"my_value"`)
     if err != nil {
         fmt.Printf("Error setting key: %v\n", err)
         return
@@ -236,14 +227,16 @@ func setKVValue(ctx context.Context, apiClient *openapiclient.APIClient) {
 }
 ```
 
+:::alert{type="info"}
+The value is parsed by type: quote strings (`"my_value"`), and pass `true` or `42` unquoted to store a boolean or a number. To set an expiration, use `SetKeyValueWithTTL` with an ISO 8601 duration such as `kestra.PtrString("PT1H")`.
+:::
+
 ### Delete a key
 
 ```go
-func deleteKVKey(ctx context.Context, apiClient *openapiclient.APIClient) {
+func deleteKVKey(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    _, _, err := apiClient.KVAPI.
-        DeleteKeyValue(ctx, "my_namespace", "my_key", tenant).
-        Execute()
+    _, err := client.Kv().DeleteKeyValue(ctx, "my_namespace", "my_key", tenant)
     if err != nil {
         fmt.Printf("Error deleting key: %v\n", err)
         return
@@ -256,20 +249,10 @@ func deleteKVKey(ctx context.Context, apiClient *openapiclient.APIClient) {
 
 ## Read execution logs
 
-Fetch all log entries for a completed execution. Log operations use `KestraClient` from the same package — not the generated `APIClient`.
+Fetch all log entries for a completed execution.
 
 ```go
-import (
-    "context"
-    "fmt"
-    kestra "github.com/kestra-io/client-sdk/go-sdk/kestra_api_client"
-)
-
-func listLogs() {
-    ctx := context.Background()
-    client := kestra.NewClient("http://localhost:8080",
-        kestra.WithBasicAuth("root@root.com", "Root!1234"))
-
+func listLogs(ctx context.Context, client *kestra.KestraClient) {
     logs, err := client.Logs().ListLogsFromExecution(ctx, "your-execution-id", "main", nil, nil, nil, nil)
     if err != nil {
         fmt.Printf("Error fetching logs: %v\n", err)
@@ -290,12 +273,9 @@ Pass a minimum log level to filter results — for example `kestra.PtrString("IN
 Stream logs from a running execution in real time. `FollowLogsFromExecution` opens an SSE connection and returns a `<-chan *LogEntry`. Entries arrive as the execution produces them. The channel closes when the execution ends or the context is cancelled.
 
 ```go
-func followLogs() {
+func followLogs(client *kestra.KestraClient) {
     ctx, cancel := context.WithCancel(context.Background())
     defer cancel()
-
-    client := kestra.NewClient("http://localhost:8080",
-        kestra.WithBasicAuth("root@root.com", "Root!1234"))
 
     ch, err := client.Logs().FollowLogsFromExecution(ctx, "your-execution-id", "main", nil)
     if err != nil {
@@ -343,41 +323,43 @@ Search, enable or disable, unlock, and restart triggers for flows.
 
 ### Search triggers
 
+Filter results with a slice of `kestra.SearchFilter`, built from the `Filter*` field and `Op*` operation constants.
+
 ```go
-func searchTriggers(ctx context.Context, apiClient *openapiclient.APIClient) {
+func searchTriggers(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    result, _, err := apiClient.TriggersAPI.
-        SearchTriggers(ctx, tenant).
-        Namespace("my_namespace").
-        Execute()
+    filters := []kestra.SearchFilter{
+        {Field: kestra.FilterNamespace, Operation: kestra.OpEquals, Value: "my_namespace"},
+    }
+    result, err := client.Triggers().SearchTriggers(ctx, tenant, kestra.PtrInt(1), kestra.PtrInt(10), nil, filters, nil)
     if err != nil {
         fmt.Printf("Error searching triggers: %v\n", err)
         return
     }
     for _, t := range result.GetResults() {
-        fmt.Printf("%s: disabled=%v\n", t.GetTriggerId(), t.GetDisabled())
+        state := t.GetState()
+        fmt.Printf("%s: disabled=%v\n", state.GetTriggerId(), state.GetDisabled())
     }
 }
 ```
 
 ### Disable or enable a trigger
 
-Add `"time"` to your import block for `time.Time{}`.
+Identify each trigger by its namespace, flow ID, and trigger ID.
 
 ```go
-func disableTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
+func disableTrigger(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    trigger := openapiclient.NewTrigger("my_namespace", "my_flow", "my_schedule", time.Time{})
+    request := kestra.TriggerControllerSetDisabledRequest{
+        Triggers: []kestra.TriggerControllerApiTriggerId{{
+            Namespace: kestra.PtrString("my_namespace"),
+            FlowId:    kestra.PtrString("my_flow"),
+            TriggerId: kestra.PtrString("my_schedule"),
+        }},
+        Disabled: true, // pass false to re-enable
+    }
 
-    request := openapiclient.NewTriggerControllerSetDisabledRequest(
-        []openapiclient.Trigger{*trigger},
-        true, // disabled=true; pass false to re-enable
-    )
-
-    _, _, err := apiClient.TriggersAPI.
-        DisabledTriggersByIds(ctx, tenant).
-        TriggerControllerSetDisabledRequest(*request).
-        Execute()
+    _, err := client.Triggers().DisabledTriggersByIds(ctx, tenant, request)
     if err != nil {
         fmt.Printf("Error disabling trigger: %v\n", err)
         return
@@ -388,12 +370,12 @@ func disableTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
 
 ### Unlock a trigger
 
+`UnlockTrigger` and `RestartTrigger` take the tenant first: `(ctx, tenant, namespace, flowId, triggerId)`.
+
 ```go
-func unlockTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
+func unlockTrigger(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    _, _, err := apiClient.TriggersAPI.
-        UnlockTrigger(ctx, "my_namespace", "my_flow", "my_schedule", tenant).
-        Execute()
+    _, err := client.Triggers().UnlockTrigger(ctx, tenant, "my_namespace", "my_flow", "my_schedule")
     if err != nil {
         fmt.Printf("Error unlocking trigger: %v\n", err)
         return
@@ -405,11 +387,9 @@ func unlockTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
 ### Restart a trigger
 
 ```go
-func restartTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
+func restartTrigger(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    _, _, err := apiClient.TriggersAPI.
-        RestartTrigger(ctx, "my_namespace", "my_flow", "my_schedule", tenant).
-        Execute()
+    _, err := client.Triggers().RestartTrigger(ctx, tenant, "my_namespace", "my_flow", "my_schedule")
     if err != nil {
         fmt.Printf("Error restarting trigger: %v\n", err)
         return
@@ -422,30 +402,21 @@ func restartTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
 
 ## Dashboards
 
-The following examples use `NewClient`, which provides a higher-level client for APIs not available in the generated client.
-
-```go
-func newKestraClient() *openapiclient.KestraClient {
-    return openapiclient.NewClient(
-        getenv("KESTRA_URL", "http://localhost:8080"),
-        openapiclient.WithBasicAuth(
-            getenv("KESTRA_USER", "root@root.com"),
-            getenv("KESTRA_PASS", "Root!1234"),
-        ),
-    )
-}
-```
+Create, search, and delete dashboards.
 
 ### Create a dashboard
 
 ```go
-func createDashboard(ctx context.Context) {
+func createDashboard(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
     body := `id: my_dashboard
 title: My Dashboard
+timeWindow:
+  default: P30D
+  max: P365D
+charts: []
 `
-    kestraClient := newKestraClient()
-    dashboard, err := kestraClient.Dashboards().CreateDashboard(ctx, tenant, body)
+    dashboard, err := client.Dashboards().CreateDashboard(ctx, tenant, body)
     if err != nil {
         fmt.Printf("Error creating dashboard: %v\n", err)
         return
@@ -457,10 +428,9 @@ title: My Dashboard
 ### Search dashboards
 
 ```go
-func searchDashboards(ctx context.Context) {
+func searchDashboards(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    result, err := kestraClient.Dashboards().SearchDashboards(ctx, tenant, nil, nil, nil, nil)
+    result, err := client.Dashboards().SearchDashboards(ctx, tenant, nil, nil, nil, nil)
     if err != nil {
         fmt.Printf("Error searching dashboards: %v\n", err)
         return
@@ -474,10 +444,9 @@ func searchDashboards(ctx context.Context) {
 ### Delete a dashboard
 
 ```go
-func deleteDashboard(ctx context.Context) {
+func deleteDashboard(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    err := kestraClient.Dashboards().DeleteDashboard(ctx, "my_dashboard_id", tenant)
+    err := client.Dashboards().DeleteDashboard(ctx, "my_dashboard", tenant)
     if err != nil {
         fmt.Printf("Error deleting dashboard: %v\n", err)
         return
@@ -495,11 +464,9 @@ List, read, and delete files stored in a namespace.
 ### List files
 
 ```go
-func listFiles(ctx context.Context) {
+func listFiles(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    path := "/"
-    files, err := kestraClient.Files().ListNamespaceDirectoryFiles(ctx, "my_namespace", tenant, &path)
+    files, err := client.Files().ListNamespaceDirectoryFiles(ctx, "my_namespace", tenant, kestra.PtrString("/"))
     if err != nil {
         fmt.Printf("Error listing files: %v\n", err)
         return
@@ -512,11 +479,12 @@ func listFiles(ctx context.Context) {
 
 ### Read file content
 
+`FileContent` downloads the file to a temporary `*os.File` and returns it.
+
 ```go
-func readFile(ctx context.Context) {
+func readFile(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    content, err := kestraClient.Files().FileContent(ctx, "my_namespace", tenant, "/scripts/main.py", nil)
+    content, err := client.Files().FileContent(ctx, "my_namespace", tenant, "/scripts/main.py", nil)
     if err != nil {
         fmt.Printf("Error reading file: %v\n", err)
         return
@@ -529,10 +497,9 @@ func readFile(ctx context.Context) {
 ### Delete a file
 
 ```go
-func deleteFile(ctx context.Context) {
+func deleteFile(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    err := kestraClient.Files().DeleteFileDirectory(ctx, "my_namespace", tenant, "/scripts/main.py")
+    err := client.Files().DeleteFileDirectory(ctx, "my_namespace", tenant, "/scripts/main.py")
     if err != nil {
         fmt.Printf("Error deleting file: %v\n", err)
         return
@@ -553,16 +520,25 @@ Create, run, and fetch results for unit test suites.
 
 ### Create a test suite
 
+A test suite targets one flow (`flowId`) and lists its `testCases`. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
+
 ```go
-func createTestSuite(ctx context.Context) {
+func createTestSuite(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
     body := `id: my_tests
 namespace: my_namespace
-flows:
-  - flowId: my_flow
+flowId: my_flow
+testCases:
+  - id: returns_input
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      inputs:
+        inputA: "Hi there"
+    assertions:
+      - value: "{{ outputs.return.value }}"
+        equalTo: "Hi there"
 `
-    kestraClient := newKestraClient()
-    suite, err := kestraClient.TestSuites().CreateTestSuite(ctx, tenant, body)
+    suite, err := client.TestSuites().CreateTestSuite(ctx, tenant, body)
     if err != nil {
         fmt.Printf("Error creating test suite: %v\n", err)
         return
@@ -574,25 +550,25 @@ flows:
 ### Run a test suite
 
 ```go
-func runTestSuite(ctx context.Context) {
+func runTestSuite(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    result, err := kestraClient.TestSuites().RunTestSuite(ctx, "my_namespace", "my_tests", tenant, nil)
+    result, err := client.TestSuites().RunTestSuite(ctx, "my_namespace", "my_tests", tenant, nil)
     if err != nil {
         fmt.Printf("Error running test suite: %v\n", err)
         return
     }
-    fmt.Println("State:", result.GetState())
+    fmt.Println("Run:", result.GetId(), "State:", result.GetState())
 }
 ```
 
 ### Get test results
 
+Pass the run ID returned by `RunTestSuite`.
+
 ```go
-func getTestResult(ctx context.Context) {
+func getTestResult(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    result, err := kestraClient.TestSuites().TestResult(ctx, "run-id", tenant)
+    result, err := client.TestSuites().TestResult(ctx, "run-id", tenant)
     if err != nil {
         fmt.Printf("Error fetching test result: %v\n", err)
         return
@@ -613,14 +589,27 @@ Create, enable, disable, and delete apps.
 
 ### Create an app
 
+An app needs a `type`, the `namespace` and `flowId` of the flow it runs, a `displayName`, and a `layout`.
+
 ```go
-func createApp(ctx context.Context) {
+func createApp(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
     body := `id: my_app
-title: My App
+type: io.kestra.plugin.ee.apps.Execution
+namespace: my_namespace
+flowId: my_flow
+displayName: My App
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "# My App"
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "Done!"
 `
-    kestraClient := newKestraClient()
-    app, err := kestraClient.Apps().CreateApp(ctx, tenant, body)
+    app, err := client.Apps().CreateApp(ctx, tenant, body)
     if err != nil {
         fmt.Printf("Error creating app: %v\n", err)
         return
@@ -632,10 +621,9 @@ title: My App
 ### Enable or disable an app
 
 ```go
-func enableApp(ctx context.Context) {
+func enableApp(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    _, err := kestraClient.Apps().EnableApp(ctx, "app-uid", tenant)
+    _, err := client.Apps().EnableApp(ctx, "app-uid", tenant)
     if err != nil {
         fmt.Printf("Error enabling app: %v\n", err)
         return
@@ -643,10 +631,9 @@ func enableApp(ctx context.Context) {
     fmt.Println("App enabled")
 }
 
-func disableApp(ctx context.Context) {
+func disableApp(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    _, err := kestraClient.Apps().DisableApp(ctx, "app-uid", tenant)
+    _, err := client.Apps().DisableApp(ctx, "app-uid", tenant)
     if err != nil {
         fmt.Printf("Error disabling app: %v\n", err)
         return
@@ -658,10 +645,9 @@ func disableApp(ctx context.Context) {
 ### Delete an app
 
 ```go
-func deleteApp(ctx context.Context) {
+func deleteApp(ctx context.Context, client *kestra.KestraClient) {
     tenant := "main"
-    kestraClient := newKestraClient()
-    err := kestraClient.Apps().DeleteApp(ctx, "app-uid", tenant)
+    err := client.Apps().DeleteApp(ctx, "app-uid", tenant)
     if err != nil {
         fmt.Printf("Error deleting app: %v\n", err)
         return
@@ -674,7 +660,7 @@ func deleteApp(ctx context.Context) {
 
 ## Best practices
 
-- **Reuse your client:** construct one `APIClient` at startup and share it via dependency injection or a package-level variable.
+- **Reuse your client:** construct one `KestraClient` at startup and share it via dependency injection or a package-level variable.
 - **Externalize credentials:** read URL and auth from environment variables.
 - **Handle errors explicitly:** all SDK methods return an error value — always check it.
 - **Use context for timeouts:** pass a `context.WithTimeout` to control request deadlines.

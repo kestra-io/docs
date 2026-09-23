@@ -19,33 +19,50 @@ KESTRA_USERNAME=root@root.com
 KESTRA_PASSWORD=Root!1234
 ```
 
-Create a virtual environment and install the [Kestra Python SDK](https://github.com/kestra-io/client-sdk/blob/main/README_PYTHON_SDK.md).
+Create a virtual environment and install the [Kestra Python SDK](https://github.com/kestra-io/client-sdk/blob/main/python/python-sdk/README.md). The SDK requires Python 3.9 or later.
 
 ```shell
 uv venv
 source .venv/bin/activate
 uv pip install kestrapy
-uv pip install python-dotenv  # optional: loads .env automatically
+uv pip install python-dotenv  # optional: loads the .env file into environment variables
 ```
+
+If you don't use `uv`, `pip install kestrapy` works the same way.
 
 ## Configure the client
 
 Import and initialize the client with your Kestra credentials. Construct `KestraClient` once and reuse it throughout your application.
 
+The SDK does not read environment variables on its own. Load the `.env` file with `python-dotenv` and pass the values explicitly:
+
 ```python
+import os
+
+from dotenv import load_dotenv
 from kestrapy import Configuration, KestraClient
 
+load_dotenv()
+
 configuration = Configuration(
-    host="http://localhost:8080",
-    username="root@root.com",
-    password="Root!1234"
+    host=os.environ["KESTRA_HOST"],
+    username=os.environ["KESTRA_USERNAME"],
+    password=os.environ["KESTRA_PASSWORD"]
 )
 
 kestra_client = KestraClient(configuration)
 ```
 
+To authenticate with an API token instead of a username and password, pass `host` and `token` as keyword arguments. The client sends the token as a `Bearer` authorization header:
+
+```python
+from kestrapy import KestraClient
+
+kestra_client = KestraClient(host="http://localhost:8080", token="your-api-token")
+```
+
 :::alert{type="info"}
-Use environment variables rather than hardcoding credentials. You can also use token-based authentication by setting `access_token` on the `Configuration` object instead of `username`/`password`.
+Use environment variables rather than hardcoding credentials. `KestraClient` only reads `host`, `username`, `password`, and `api_key["Authorization"]` from a `Configuration` object — other `Configuration` fields such as `access_token` are ignored. Use the `token` keyword argument for token-based authentication.
 :::
 
 ---
@@ -82,7 +99,7 @@ The `timeout` value is forwarded directly to [`requests`](https://docs.python-re
 
 ## Create a flow
 
-Pass the flow definition as a YAML string to [`create_flow`](https://github.com/kestra-io/client-sdk/blob/main/python-sdk/docs/FlowsApi.md#create_flow).
+Pass the flow definition as a YAML string to [`create_flow`](https://github.com/kestra-io/client-sdk/blob/main/python/python-sdk/docs/FlowsApi.md#create_flow).
 
 ```python
 def create_flow():
@@ -156,9 +173,9 @@ Deleting a flow removes its definition. Execution history is retained unless you
 
 ## Execute a flow
 
-Trigger an execution using [`create_execution`](https://github.com/kestra-io/client-sdk/blob/main/python-sdk/docs/ExecutionsApi.md#create_execution).
+Trigger an execution using [`create_execution`](https://github.com/kestra-io/client-sdk/blob/main/python/python-sdk/docs/ExecutionsApi.md#create_execution).
 
-The first three positional arguments are `namespace`, `id` (the flow ID), and `wait`.
+The first three positional arguments are `tenant`, `namespace`, and `id` (the flow ID). All other parameters, such as `wait`, `labels`, and `inputs`, are optional; pass them as keyword arguments.
 
 ```python
 def create_execution():
@@ -172,7 +189,7 @@ def create_execution():
     print(f"Execution started: {execution.id}")
 ```
 
-To pass inputs, use `additional_form_datas` with a dictionary keyed by input ID:
+To pass inputs, use `inputs` with a dictionary keyed by input ID. String values are sent as-is, `bytes` values (or a `(filename, content)` tuple) are sent as files for `FILE` inputs, and other values such as numbers, booleans, lists, and dictionaries are JSON-encoded:
 
 ```python
 def create_execution_with_inputs():
@@ -182,13 +199,13 @@ def create_execution_with_inputs():
         id="my_flow",
         wait=True,
         tenant=tenant,
-        additional_form_datas={"input_id": "value"}
+        inputs={"input_id": "value"}
     )
     print(f"Execution started: {execution.id}")
 ```
 
 :::alert{type="info"}
-`wait=True` blocks until the execution completes. Use `wait=False` for non-blocking calls. The `additional_form_datas` keys must match the flow's defined input IDs.
+`wait=True` blocks until the execution completes. Use `wait=False` for non-blocking calls. The `inputs` keys must match the flow's defined input IDs.
 :::
 
 ---
@@ -330,7 +347,7 @@ Search, enable or disable, unlock, and restart triggers for flows.
 
 ### Search triggers
 
-`search_triggers` is paginated and requires `page` and `size`:
+`search_triggers` is paginated; `page` and `size` are optional. It returns the raw JSON response as a dictionary: `results` holds one entry per trigger, each with a `trigger` (the trigger definition) and a `state` (its runtime state), and `total` holds the total count:
 
 ```python
 def search_triggers():
@@ -340,32 +357,31 @@ def search_triggers():
         size=50,
         tenant=tenant
     )
-    for t in result.results:
-        print(f"{t.trigger_context.trigger_id}: disabled={t.trigger_context.disabled}")
+    for t in result["results"]:
+        state = t["state"]
+        print(f"{state['triggerId']}: disabled={state.get('disabled')}")
 ```
 
 ### Disable or enable a trigger
 
 ```python
-import datetime
-from kestrapy.models import TriggerControllerSetDisabledRequest, Trigger
+from kestrapy.models import TriggerControllerApiTriggerId, TriggerControllerSetDisabledRequest
 
 def disable_trigger():
     tenant = "main"
     request = TriggerControllerSetDisabledRequest(
         triggers=[
-            Trigger(
+            TriggerControllerApiTriggerId(
                 namespace="my_namespace",
                 flow_id="my_flow",
-                trigger_id="my_schedule",
-                var_date=datetime.datetime.now(datetime.timezone.utc)
+                trigger_id="my_schedule"
             )
         ],
         disabled=True  # pass False to re-enable
     )
     kestra_client.triggers.disabled_triggers_by_ids(
         tenant=tenant,
-        trigger_controller_set_disabled_request=request
+        request=request
     )
     print("Trigger disabled")
 ```
@@ -414,6 +430,11 @@ def create_dashboard():
     body = """
     id: my_dashboard
     title: My Dashboard
+    description: Dashboard created from the Python SDK
+    timeWindow:
+      default: P30D
+      max: P365D
+    charts: []
     """
     dashboard = kestra_client.dashboards.create_dashboard(tenant=tenant, yaml_body=body)
     print(f"Dashboard created: {dashboard.get('id')}")
@@ -497,14 +518,23 @@ Create, run, and fetch results for unit test suites.
 
 ### Create a test suite
 
+A test suite targets one flow through `flowId` and must define at least one entry in `testCases`. The flow must already exist.
+
 ```python
 def create_test_suite():
     tenant = "main"
     body = """
     id: my_tests
     namespace: my_namespace
-    flows:
-      - flowId: my_flow
+    flowId: my_flow
+    testCases:
+      - id: hello_runs
+        type: io.kestra.core.test.flow.UnitTest
+        description: The hello task produces outputs
+        assertions:
+          - taskId: hello
+            value: "{{ outputs.hello }}"
+            isNotNull: true
     """
     suite = kestra_client.test_suites.create_test_suite(tenant=tenant, yaml_body=body)
     print(f"Test suite created: {suite.id}")
@@ -544,12 +574,30 @@ Create, enable, disable, and delete apps.
 
 ### Create an app
 
+An `Execution` app runs the flow referenced by `namespace` and `flowId`, which must already exist, and renders a layout for each execution stage.
+
 ```python
 def create_app():
     tenant = "main"
     body = """
     id: my_app
-    title: My App
+    type: io.kestra.plugin.ee.apps.Execution
+    namespace: my_namespace
+    flowId: my_flow
+    displayName: My App
+    layout:
+      - on: OPEN
+        blocks:
+          - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+            content: "# My App"
+      - on: RUNNING
+        blocks:
+          - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+            content: "Running..."
+      - on: SUCCESS
+        blocks:
+          - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+            content: "Done!"
     """
     app = kestra_client.apps.create_app(tenant=tenant, yaml_body=body)
     print(f"App created: {app.uid}")
@@ -576,6 +624,24 @@ def delete_app():
     tenant = "main"
     kestra_client.apps.delete_app(uid="app-uid", tenant=tenant)
     print("App deleted")
+```
+
+---
+
+## Handle errors
+
+When the server responds with an HTTP error status, the SDK raises an `ApiException` (or a subclass such as `NotFoundException` for `404` or `UnprocessableEntityException` for `422`). The exception exposes the HTTP `status`, `reason`, and response `body`:
+
+```python
+from kestrapy import ApiException
+
+def get_flow_safely():
+    tenant = "main"
+    try:
+        flow = kestra_client.flows.flow(namespace="my_namespace", id="my_flow", tenant=tenant)
+        print(f"Found flow: {flow.id}")
+    except ApiException as e:
+        print(f"Request failed: {e.status} {e.reason}")
 ```
 
 ---
