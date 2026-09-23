@@ -6,17 +6,7 @@ icon: /src/contents/docs/icons/padlock.svg
 description: Configure SSL/TLS encryption for Kestra to secure the UI and API access using self-signed or CA-signed certificates.
 ---
 
-Configure secure access to the Kestra UI via HTTPS. The right approach depends on your deployment type:
-
-## Why use SSL/TLS encryption
-
-Adding TLS encryption to your environment provides the following benefits:
-
-- Data is encrypted in transit, preventing sensitive data from being intercepted in "man-in-the-middle" attacks.
-
-- TLS adds a layer of trust by ensuring users know the URL they access is genuine (e.g., `https://mycompany.kestra.com/ui` is verified as an internal site).
-
-For further details, see [Why use HTTPS?](https://www.cloudflare.com/en-gb/learning/ssl/why-use-https/) on the Cloudflare documentation.
+Configure secure access to the Kestra UI via HTTPS. The right approach depends on your deployment type.
 
 ## Using Caddy as a reverse proxy
 
@@ -309,11 +299,11 @@ Leave CSRF protection enabled on any instance reachable from a browser. A token 
 
 ## Configuring SSL with Kubernetes
 
-For Kubernetes deployments, you can enable HTTPS either by configuring TLS at the Ingress level or by using self-signed certificates at the application level.
+Kubernetes deployments support HTTPS via ingress-level TLS termination or via self-signed certificates at the application level.
 
 ### Using ingress with TLS termination (recommended for production)
 
-Most cloud providers expect TLS termination at the ingress controller. Here's how to configure HTTPS using Let's Encrypt certificates:
+Most cloud providers expect TLS termination at the ingress controller. The following steps configure HTTPS using Let's Encrypt certificates:
 
 1. **Install cert-manager**. To use a different version, see [available releases on GitHub](https://github.com/cert-manager/cert-manager/releases):
    ```bash
@@ -433,7 +423,7 @@ Production deployments on cloud platforms such as Azure AKS typically require va
 
 ### Verifying the configuration
 
-Check certificate validity with:
+Certificate validity can be checked with:
 
 ```bash
 kubectl get certificate kestra-tls -w

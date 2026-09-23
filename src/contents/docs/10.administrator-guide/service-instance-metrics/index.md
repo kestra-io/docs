@@ -5,7 +5,7 @@ sidebarTitle: Service Instance Metrics
 icon: /src/contents/docs/icons/admin.svg
 ---
 
-Configure which service instance metrics the webserver collects and re-exposes through its monitoring endpoint.
+The `kestra.metrics.sharedServiceInstanceMetrics` configuration determines which service instance metrics the webserver collects and re-exposes through its monitoring endpoint.
 
 ## Service instance metrics – expose via the webserver
 
@@ -21,9 +21,9 @@ Metric tags are preserved, so you can still filter by dimensions such as `worker
 
 When a service instance is no longer active, its contribution is set to zero at the next poll cycle.
 
-## How to configure `sharedServiceInstanceMetrics`
+## Configuration
 
-Set `kestra.metrics.sharedServiceInstanceMetrics` in your [configuration file](../../configuration/03.observability-and-networking/index.md). The value is a map where each key is a service type and each value is a list of fully-qualified metric names to collect from instances of that type. Kestra ships with the following defaults:
+`kestra.metrics.sharedServiceInstanceMetrics` is set in your [configuration file](../../configuration/03.observability-and-networking/index.md). The value is a map where each key is a service type and each value is a list of fully-qualified metric names to collect from instances of that type. Kestra ships with the following defaults:
 
 ```yaml
 kestra:
@@ -50,7 +50,7 @@ Metric names must include the prefix (e.g. `kestra.`) as configured in `kestra.m
 | Key | `ServiceType` | One of `EXECUTOR`, `INDEXER`, `SCHEDULER`, `WEBSERVER`, `WORKER` |
 | Value | List of `String` | Fully-qualified metric names to collect from instances of that type, including the configured prefix |
 
-## Next steps
+## Related
 
 - [Prometheus Metrics](../prometheus-metrics/index.md) — scrape Kestra metrics using Prometheus
 - [OpenTelemetry](../open-telemetry/index.md) — export Kestra metrics using OpenTelemetry
