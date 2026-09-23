@@ -63,11 +63,11 @@ As applications shifted from monoliths to distributed microservices, a new need 
 
 ### Business process orchestration: streamlining enterprise workflows
 
-Business Process Management (BPM) tools orchestrate workflows that involve both human tasks and system integrations to model end-to-end business operations. This includes processes like customer onboarding, loan approvals, and insurance claims processing. These platforms often use visual designers and low-code interfaces, with tools like Camunda and Pega being common examples. Discover more about [Agentic Business Process Automation](https://www.kestra.io/resources/business/agentic-business-process-automation).
+Business Process Management (BPM) tools orchestrate workflows that involve both human tasks and system integrations to model end-to-end business operations. This includes processes like customer onboarding, loan approvals, and insurance claims processing. These platforms often use visual designers and low-code interfaces, with tools like Camunda and Pega being common examples. Discover more about [Agentic Business Process Automation](/resources/business/agentic-business-process-automation).
 
 ### Agentic AI orchestration: the layer across all four domains
 
-Agentic AI orchestration is a transverse layer that governs the behavior of autonomous AI agents. It's not a separate silo but a control plane that provides memory, tool access, and human-in-the-loop oversight to AI systems. This ensures that AI-driven actions are auditable, reliable, and aligned with business rules, distinguishing between simply orchestrating agent tasks and enabling true [agentic orchestration](https://www.kestra.io/resources/ai/agentic-orchestration).
+Agentic AI orchestration is a transverse layer that governs the behavior of autonomous AI agents. It's not a separate silo but a control plane that provides memory, tool access, and human-in-the-loop oversight to AI systems. This ensures that AI-driven actions are auditable, reliable, and aligned with business rules. That is the line between [orchestrating agents](/resources/ai/agentic-orchestration-vs-orchestrating-agents) inside an AI application and true [agentic orchestration](/resources/ai/agentic-orchestration) across the enterprise.
 
 ## Why orchestration is converging: from silos to a unified control plane
 
