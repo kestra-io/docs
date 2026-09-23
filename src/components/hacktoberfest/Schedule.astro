@@ -2,7 +2,17 @@
 import SectionTitle from "./SectionTitle.astro"
 import PointScan from "./assets/point-scan.svg"
 
+const KESTRA_REPO_URL = "https://github.com/kestra-io/kestra"
+const KESTRA_ACADEMY = "https://academy.kestra.io/"
+
 const EVENTS = [
+    {
+        date: "2026-09-20",
+        label: "Sep 20",
+        title: "Star us and start learning",
+        text: "Support open source: star Kestra on GitHub. And get started with Kestra Fundamentals",
+        html: `Support open source: <a href="${KESTRA_REPO_URL}" target="_blank" rel="noopener">star Kestra on GitHub</a>. And get started with <a href="${KESTRA_ACADEMY}" target="_blank" rel="noopener">Kestra Fundamentals</a>.`
+    },
     {
         date: "2026-09-21",
         label: "Sep 21",
