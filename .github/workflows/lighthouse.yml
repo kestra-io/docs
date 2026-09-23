@@ -205,12 +205,13 @@ jobs:
 
       # The results are named per shard: the report job merges every shard
       # artifact into one directory, so equal filenames would overwrite.
+      # Transport only, the report job keeps the merged lighthouse-results.json.
       - name: Upload shard results
         uses: actions/upload-artifact@v7
         with:
           name: lighthouse-results-shard-${{ matrix.shard }}
           path: lighthouse-results-shard-${{ matrix.shard }}.json
-          retention-days: 30
+          retention-days: 1
 
       # Per-page LHR JSONs — view any at https://googlechrome.github.io/lighthouse/viewer/.
       - name: Upload LHR reports artifact
@@ -368,15 +369,27 @@ jobs:
           title: 🔦 Lighthouse Benchmark
           template: ${{ steps.report.outputs.content }}
 
-      # The 1.1 GB build tarball only feeds the shards. Kept when a shard failed,
-      # so "Re-run failed jobs" still finds it. Fork PR tokens cannot delete.
-      - name: Delete the build artifact
+      # One artifact to browse instead of four: nobody knows which shard measured
+      # a page. Missing when every shard failed, which the report already shows.
+      - name: Merge LHR reports into one artifact
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact/merge@v7
+        with:
+          name: lhr-reports
+          pattern: lhr-reports-shard-*
+          delete-merged: true
+          retention-days: 30
+
+      # The build tarball and shard results only feed this run. Kept when a shard
+      # failed, so "Re-run failed jobs" still finds them. Fork PR tokens cannot delete.
+      - name: Delete the transport artifacts
         if: ${{ always() && needs.lighthouse.result == 'success' }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          ids=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=lighthouse-dist" \
-            --jq '.artifacts[].id')
+          ids=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+            --jq '.artifacts[] | select(.name == "lighthouse-dist" or (.name | startswith("lighthouse-results-shard-"))) | .id')
           printf '%s\n' $ids | xargs -r -I{} gh api -X DELETE "repos/$GITHUB_REPOSITORY/actions/artifacts/{}"
-          echo "deleted $(printf '%s\n' $ids | grep -c .) lighthouse-dist artifact(s)"
+          echo "deleted $(printf '%s\n' $ids | grep -c .) transport artifact(s)"
