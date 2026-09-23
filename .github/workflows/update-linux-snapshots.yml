@@ -26,7 +26,7 @@ jobs:
       pull-requests: write
     env:
       # Midnight UTC cut: content dated after it never reaches a baseline, so a
-      # new post stops repainting /blogs. Bump it with the refresh PR it makes.
+      # new post stops repainting /blogs. The last step nags once it ages.
       SNAPSHOT_CUTOFF: "2026-09-17"
       # What the sampled SSR pages and the community metrics read from
       # tests/fixtures/api, so a plugin release cannot move a baseline.
@@ -195,3 +195,25 @@ jobs:
           add-paths: |
             tests/visual-regression.spec.ts-snapshots
             tests/fixtures/api
+
+      # Last, so a neglected cutoff still gets its refresh committed before the
+      # run goes red. Nothing moves the date on its own, so the run says so.
+      - name: Check the cutoff has not gone stale
+        if: ${{ !cancelled() }}
+        env:
+          WARN_DAYS: "90"
+          FAIL_DAYS: "180"
+        run: |
+          if ! CUTOFF_EPOCH=$(date -u -d "$SNAPSHOT_CUTOFF" +%s 2>/dev/null); then
+            echo "::error::SNAPSHOT_CUTOFF ($SNAPSHOT_CUTOFF) is not a date this workflow can read."
+            exit 1
+          fi
+          AGE=$(( ( $(date -u +%s) - CUTOFF_EPOCH ) / 86400 ))
+          echo "SNAPSHOT_CUTOFF is $SNAPSHOT_CUTOFF, $AGE days old (warn at $WARN_DAYS, fail at $FAIL_DAYS)." >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$AGE" -gt "$FAIL_DAYS" ]]; then
+            echo "::error::SNAPSHOT_CUTOFF ($SNAPSHOT_CUTOFF) is $AGE days old, past the $FAIL_DAYS day limit. The sample no longer resembles the live site. Bump it in this workflow; the next run refreshes the baselines."
+            exit 1
+          fi
+          if [[ "$AGE" -gt "$WARN_DAYS" ]]; then
+            echo "::warning::SNAPSHOT_CUTOFF ($SNAPSHOT_CUTOFF) is $AGE days old. Bump it with the next refresh PR."
+          fi
