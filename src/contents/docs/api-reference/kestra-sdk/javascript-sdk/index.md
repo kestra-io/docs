@@ -14,9 +14,10 @@ Use the Kestra JavaScript SDK to interact with the Kestra API from JavaScript or
 Store credentials in environment variables:
 
 ```bash
-KESTRA_BASE_URL=http://localhost:8080
-KESTRA_USERNAME=root@root.com
-KESTRA_PASSWORD=Root!1234
+export KESTRA_BASE_URL=http://localhost:8080
+export KESTRA_USERNAME=root@root.com
+export KESTRA_PASSWORD='Root!1234'
+# export KESTRA_TOKEN='<your-api-token>'  # for bearer authentication
 ```
 
 Install the SDK:
@@ -223,7 +224,7 @@ The KV Store lets you read and write key-value pairs scoped to a namespace.
 
 ### Set a value
 
-The server infers the value type from `body`. Wrap strings in JSON quotes to store them as `STRING`. Unquoted values such as `42`, `true`, `2025-10-13`, or `PT15M` are stored as `NUMBER`, `BOOLEAN`, `DATE`, or `DURATION`.
+The server infers the value type from `body`. Wrap strings in JSON quotes so that values such as `"42"` or `"true"` are stored as `STRING`. Unquoted values such as `42`, `true`, `2025-10-13`, or `PT15M` are stored as `NUMBER`, `BOOLEAN`, `DATE`, or `DURATION`.
 
 ```javascript
 import * as Kv from "@kestra-io/kestra-sdk/kv";
@@ -280,11 +281,12 @@ async function searchTriggers() {
 import * as Triggers from "@kestra-io/kestra-sdk/triggers";
 
 async function disableTrigger() {
+  const disabled = true; // pass false to re-enable
   await Triggers.disabledTriggersByIds({
     triggers: [{ namespace: "my_namespace", flowId: "my_flow", triggerId: "my_schedule" }],
-    disabled: true,  // pass false to re-enable
+    disabled,
   });
-  console.log("Trigger disabled");
+  console.log(`Trigger disabled: ${disabled}`);
 }
 ```
 
@@ -304,6 +306,8 @@ async function restartTrigger() {
 ```
 
 ### Unlock a trigger
+
+Unlock a trigger that is stuck in a locked state. If the trigger is not locked, the call throws an error with `status` `409`.
 
 ```javascript
 import * as Triggers from "@kestra-io/kestra-sdk/triggers";

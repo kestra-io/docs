@@ -14,7 +14,7 @@ Use the Kestra Go SDK to interact with the Kestra API from Go applications. `kes
 Install the Go module:
 
 ```shell
-go get github.com/kestra-io/client-sdk/go-sdk/v2@latest
+go get github.com/kestra-io/client-sdk/go-sdk/v2/kestra_api_client@latest
 ```
 
 Import the package in your code:
@@ -57,7 +57,7 @@ func newClient() *kestra.KestraClient {
 ```
 
 :::alert{type="info"}
-To authenticate with a service account API token instead, pass `kestra.WithTokenAuth("<api-token>")` in place of `kestra.WithBasicAuth(...)`. The examples below receive a `ctx` (for example `context.Background()`) and the `client` returned by `newClient()`. The examples also use the `context` and `fmt` packages, and the timeout example uses `time`; add them to your imports.
+To authenticate with a service account API token instead, pass `kestra.WithTokenAuth("<api-token>")` in place of `kestra.WithBasicAuth(...)`. The examples below receive a `ctx` (for example `context.Background()`) and the `client` returned by `newClient()`. The examples also use the `context` and `fmt` packages, and the log streaming examples use `time`; add them to your imports.
 :::
 
 ---
@@ -155,7 +155,7 @@ func createExecution(ctx context.Context, client *kestra.KestraClient) {
 
     execution, err := client.Executions().CreateExecution(
         ctx, tenant, namespace, id,
-        nil,                  // labels, e.g. []string{"team:platform"}
+        nil,                  // labels
         kestra.PtrBool(true), // wait for the execution to finish
         nil, nil, nil, nil,   // revision, scheduleDate, breakpoints, kind
     )
@@ -169,7 +169,7 @@ func createExecution(ctx context.Context, client *kestra.KestraClient) {
 ```
 
 :::alert{type="info"}
-`kestra.PtrBool(true)` blocks until the execution finishes. Pass `kestra.PtrBool(false)` (or `nil`) for a non-blocking call. Pass labels as `[]string{"team:platform"}` to attach them to the execution. `CreateExecution` returns a single `*ExecutionControllerExecutionResponse`.
+`kestra.PtrBool(true)` blocks until the execution finishes. Pass `kestra.PtrBool(false)` (or `nil`) for a non-blocking call. `CreateExecution` returns a single `*ExecutionControllerExecutionResponse`.
 :::
 
 ---
@@ -270,18 +270,34 @@ Pass a minimum log level to filter results — for example `kestra.PtrString("IN
 
 ## Stream execution logs (SSE)
 
-Stream logs from a running execution in real time. `FollowLogsFromExecution` opens an SSE connection and returns a `<-chan *LogEntry`. Entries arrive as the execution produces them. The channel closes when the execution ends or the context is cancelled.
+Stream logs from a running execution in real time. `FollowLogsFromExecution` opens an SSE connection and returns a `<-chan *LogEntry`. Entries arrive as the execution produces them.
+
+The server keeps the log stream open after the execution ends, so the channel closes only when the context is cancelled. This example cancels it once `FollowExecution`, whose stream ends when the execution reaches a final state, is done:
 
 ```go
 func followLogs(client *kestra.KestraClient) {
     ctx, cancel := context.WithCancel(context.Background())
     defer cancel()
+    executionID := "your-execution-id"
 
-    ch, err := client.Logs().FollowLogsFromExecution(ctx, "your-execution-id", "main", nil)
+    ch, err := client.Logs().FollowLogsFromExecution(ctx, executionID, "main", nil)
     if err != nil {
         fmt.Printf("Error starting log stream: %v\n", err)
         return
     }
+
+    executions, err := client.Executions().FollowExecution(ctx, executionID, "main")
+    if err != nil {
+        fmt.Printf("Error following execution: %v\n", err)
+        return
+    }
+    go func() {
+        for range executions {
+            // drain updates; the channel closes when the execution ends
+        }
+        time.Sleep(time.Second) // let the last log entries arrive
+        cancel()
+    }()
 
     for entry := range ch {
         if entry.GetExecutionId() == "" {
@@ -292,7 +308,7 @@ func followLogs(client *kestra.KestraClient) {
 }
 ```
 
-To stop streaming early, cancel the context. The server-side SSE connection closes and the channel drains within milliseconds:
+To stop streaming after a fixed time instead, use a context with a timeout. The server-side SSE connection closes and the channel drains when the deadline passes:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -364,13 +380,13 @@ func disableTrigger(ctx context.Context, client *kestra.KestraClient) {
         fmt.Printf("Error disabling trigger: %v\n", err)
         return
     }
-    fmt.Println("Trigger disabled")
+    fmt.Println("Trigger disabled:", request.Disabled)
 }
 ```
 
 ### Unlock a trigger
 
-`UnlockTrigger` and `RestartTrigger` take the tenant first: `(ctx, tenant, namespace, flowId, triggerId)`.
+`UnlockTrigger` and `RestartTrigger` take the tenant first: `(ctx, tenant, namespace, flowId, triggerId)`. If the trigger is not locked, `UnlockTrigger` returns a `409` error.
 
 ```go
 func unlockTrigger(ctx context.Context, client *kestra.KestraClient) {

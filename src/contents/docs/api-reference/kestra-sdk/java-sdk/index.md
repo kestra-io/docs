@@ -24,6 +24,12 @@ Add this dependency to your `pom.xml`:
   <version>2.0.1</version>
   <scope>compile</scope>
 </dependency>
+<!-- required at compile time by followExecution and followLogsFromExecution -->
+<dependency>
+  <groupId>io.projectreactor</groupId>
+  <artifactId>reactor-core</artifactId>
+  <version>3.7.12</version>
+</dependency>
 ```
 
 ### Gradle
@@ -32,7 +38,13 @@ Add this dependency to your `build.gradle`:
 
 ```groovy
 implementation "io.kestra:kestra-api-client:2.0.1"
+// required at compile time by followExecution and followLogsFromExecution
+implementation "io.projectreactor:reactor-core:3.7.12"
 ```
+
+:::alert{type="info"}
+The streaming methods `followExecution` and `followLogsFromExecution` return a Reactor `Flux`, but the SDK declares `reactor-core` as a runtime-only dependency. Add `reactor-core` explicitly, as shown above, to compile code that uses them.
+:::
 
 ---
 
@@ -257,18 +269,32 @@ The KV Store lets you read and write key-value pairs scoped to a namespace.
 
 ### List keys
 
+Filter the keys by namespace with a `QueryFilter`:
+
 ```java
+import java.util.List;
+import io.kestra.sdk.model.QueryFilter;
+import io.kestra.sdk.model.QueryFilterField;
+import io.kestra.sdk.model.QueryFilterOp;
+
 public class KVExamples {
     public static void listKeys() {
         String namespace = "my_namespace";
         String tenant = "main";
 
-        // includes keys inherited from parent namespaces
-        var keys = KestraClients.INSTANCE.kv().listKeysWithInheritance(namespace, tenant);
-        keys.forEach(entry -> System.out.println("Key: " + entry.getKey()));
+        var keys = KestraClients.INSTANCE.kv().listAllKeys(tenant, 1, 50, null,
+            List.of(new QueryFilter()
+                .field(QueryFilterField.NAMESPACE)
+                .operation(QueryFilterOp.EQUALS)
+                .value(namespace)));
+        keys.getResults().forEach(entry -> System.out.println("Key: " + entry.getKey()));
     }
 }
 ```
+
+:::alert{type="info"}
+`listKeysWithInheritance(namespace, tenant)` returns only the keys inherited from parent namespaces, not the keys defined in `namespace` itself.
+:::
 
 ### Get a value
 
@@ -323,8 +349,6 @@ Fetch or stream logs for an execution.
 ### List logs
 
 ```java
-import io.kestra.sdk.model.Level;
-
 public class LogsExamples {
     public static void listLogs() {
         String executionId = "your-execution-id";
@@ -332,7 +356,7 @@ public class LogsExamples {
 
         var logs = KestraClients.INSTANCE.logs()
             .listLogsFromExecution(executionId, tenant,
-                null,  // minLevel (null = all levels)
+                null,  // minLevel
                 null,  // taskRunId
                 null,  // taskId
                 null   // attempt
@@ -344,9 +368,15 @@ public class LogsExamples {
 }
 ```
 
+:::alert{type="info"}
+The Kestra 2.x server does not apply the `minLevel`, `taskRunId`, `taskId`, and `attempt` arguments of `listLogsFromExecution`: it always returns every log entry of the execution. Filter on `log.getLevel()` or `log.getTaskId()` in your code if needed.
+:::
+
 ### Stream logs live
 
 `followLogsFromExecution` returns a reactive `Flux<FollowLogEvent>`. Each `FollowLogEvent` carries the same fields as `LogEntry` (plus `tenantId`). The server sends an initial keepalive frame with all fields `null` — filter it out before processing.
+
+The server keeps the log stream open after the execution ends, so stop it yourself. This example completes the log stream when `followExecution` completes, which happens when the execution reaches a final state.
 
 ```java
 public class LogsExamples {
@@ -357,9 +387,11 @@ public class LogsExamples {
         KestraClients.INSTANCE.logs()
             .followLogsFromExecution(executionId, tenant, null) // null = no filters
             .filter(event -> event.getExecutionId() != null)    // skip keepalive frames
+            .takeUntilOther(KestraClients.INSTANCE.executions()
+                .followExecution(executionId, tenant).then())    // stop when the execution ends
             .doOnNext(event -> System.out.printf("[%s] %s%n",
                 event.getLevel(), event.getMessage()))
-            .blockLast(); // blocks until the stream ends
+            .blockLast();
     }
 }
 ```
@@ -430,14 +462,14 @@ public class TriggersExamples {
 
         KestraClients.INSTANCE.triggers()
             .disabledTriggersByIds(tenant, request);
-        System.out.println("Trigger disabled");
+        System.out.println("Trigger disabled: " + request.getDisabled());
     }
 }
 ```
 
 ### Unlock a trigger
 
-Use `unlockTrigger` to unlock a trigger that is stuck in a locked state.
+Use `unlockTrigger` to unlock a trigger that is stuck in a locked state. If the trigger is not locked, the call throws an `ApiException` with status `409`.
 
 ```java
 public class TriggersExamples {
@@ -570,6 +602,8 @@ Create, run, and fetch results for unit test suites.
 
 ### Create a test suite
 
+A test suite targets one flow (`flowId`) and lists its `testCases`. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
+
 ```java
 public class TestSuitesExamples {
     public static void createTestSuite() {
@@ -579,13 +613,14 @@ public class TestSuitesExamples {
             namespace: my_namespace
             flowId: my_flow
             testCases:
-              - id: hello_logs
-                type: io.kestra.core.test.flow.UnitTest
-                description: The hello task produces output
+              - id: returns_input
+                type: io.kestra.core.tests.flow.UnitTest
+                fixtures:
+                  inputs:
+                    inputA: "Hi there"
                 assertions:
-                  - taskId: hello
-                    value: "{{ outputs.hello }}"
-                    isNotNull: true
+                  - value: "{{ outputs.return.value }}"
+                    equalTo: "Hi there"
             """;
         var suite = KestraClients.INSTANCE.testSuites().createTestSuite(tenant, body);
         System.out.println("Test suite created: " + suite.getId());
@@ -601,12 +636,14 @@ public class TestSuitesExamples {
         String tenant = "main";
         var result = KestraClients.INSTANCE.testSuites()
             .runTestSuite("my_namespace", "my_tests", tenant, null);
-        System.out.println("State: " + result.getState());
+        System.out.println("Run: " + result.getId() + " State: " + result.getState());
     }
 }
 ```
 
 ### Get test results
+
+Pass the run ID returned by `runTestSuite`.
 
 ```java
 public class TestSuitesExamples {

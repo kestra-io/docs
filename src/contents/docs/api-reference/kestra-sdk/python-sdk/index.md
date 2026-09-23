@@ -16,7 +16,7 @@ Before starting, make sure your Kestra instance is running. Store credentials in
 ```bash
 KESTRA_HOST=http://localhost:8080
 KESTRA_USERNAME=root@root.com
-KESTRA_PASSWORD=Root!1234
+KESTRA_PASSWORD='Root!1234'
 ```
 
 Create a virtual environment and install the [Kestra Python SDK](https://github.com/kestra-io/client-sdk/blob/main/python/python-sdk/README.md). The SDK requires Python 3.9 or later.
@@ -24,11 +24,15 @@ Create a virtual environment and install the [Kestra Python SDK](https://github.
 ```shell
 uv venv
 source .venv/bin/activate
-uv pip install kestrapy
+uv pip install kestrapy regex
 uv pip install python-dotenv  # optional: loads the .env file into environment variables
 ```
 
-If you don't use `uv`, `pip install kestrapy` works the same way.
+If you don't use `uv`, `pip install kestrapy regex` works the same way.
+
+:::alert{type="info"}
+`kestrapy` 2.0.1 imports the `regex` package but does not declare it as a dependency, so install `regex` alongside it. Without it, `import kestrapy` fails with `ModuleNotFoundError: No module named 'regex'`.
+:::
 
 ## Configure the client
 
@@ -228,13 +232,13 @@ def follow_execution():
         execution_id=execution.id,
         tenant=tenant
     ):
-        if event.state is None:
-            continue  # keepalive frame
+        if getattr(event, "state", None) is None:
+            continue  # initial "start" event, without a state
         print(event.state.current)
 ```
 
 :::alert{type="info"}
-The first SSE payload is an empty keepalive — skip it before processing subsequent events. Use `follow_execution` for CI/CD pipelines or real-time dashboards.
+The first SSE event is a partial execution without a `state` attribute — skip it before processing subsequent events. The stream ends when the execution reaches a final state. Use `follow_execution` for CI/CD pipelines or real-time dashboards.
 :::
 
 ---
@@ -251,7 +255,6 @@ def list_logs():
     logs = kestra_client.logs.list_logs_from_execution(
         execution_id="your-execution-id",
         tenant=tenant,
-        min_level="INFO",  # optional; filters to INFO and above
     )
     for entry in logs:
         print(f"[{entry.level}] {entry.message}")
@@ -261,20 +264,35 @@ def list_logs():
 
 `follow_logs_from_execution` yields `LogEntry` items as the execution produces them. The server sends an initial keepalive frame with all fields `None` — skip entries where `execution_id` is `None`.
 
+The server keeps the log stream open after the execution ends, so the loop never exits on its own. This example reads the stream in a background thread and returns once `follow_execution` reports that the execution has finished:
+
 ```python
+import threading
+import time
+
 def follow_logs():
     tenant = "main"
-    for entry in kestra_client.logs.follow_logs_from_execution(
-        execution_id="your-execution-id",
-        tenant=tenant,
-    ):
-        if entry.execution_id is None:
-            continue  # keepalive frame
-        print(f"[{entry.level}] {entry.message}")
+    execution_id = "your-execution-id"
+
+    def print_logs():
+        for entry in kestra_client.logs.follow_logs_from_execution(
+            execution_id=execution_id,
+            tenant=tenant,
+        ):
+            if entry.execution_id is None:
+                continue  # keepalive frame
+            print(f"[{entry.level}] {entry.message}")
+
+    threading.Thread(target=print_logs, daemon=True).start()
+
+    # follow_execution ends when the execution reaches a final state
+    for _ in kestra_client.executions.follow_execution(execution_id=execution_id, tenant=tenant):
+        pass
+    time.sleep(1)  # let the last log entries arrive
 ```
 
 :::alert{type="info"}
-The `min_level` parameter on `follow_logs_from_execution` is not applied by the Kestra 2.0 server — pass no filter and handle level filtering in the consumer loop if needed.
+The `min_level` parameter on `list_logs_from_execution` and `follow_logs_from_execution` is not applied by the Kestra 2.x server — pass no filter and filter on `entry.level` in your code if needed.
 :::
 
 ---
@@ -383,12 +401,12 @@ def disable_trigger():
         tenant=tenant,
         request=request
     )
-    print("Trigger disabled")
+    print(f"Trigger disabled: {request.disabled}")
 ```
 
 ### Unlock a trigger
 
-Use `unlock_trigger` to unlock a trigger that is stuck in a locked state:
+Use `unlock_trigger` to unlock a trigger that is stuck in a locked state. If the trigger is not locked, the call raises a `ConflictException` (`409`):
 
 ```python
 def unlock_trigger():
@@ -518,7 +536,7 @@ Create, run, and fetch results for unit test suites.
 
 ### Create a test suite
 
-A test suite targets one flow through `flowId` and must define at least one entry in `testCases`. The flow must already exist.
+A test suite targets one flow through `flowId` and must define at least one entry in `testCases`. The flow must already exist. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
 
 ```python
 def create_test_suite():
@@ -528,13 +546,14 @@ def create_test_suite():
     namespace: my_namespace
     flowId: my_flow
     testCases:
-      - id: hello_runs
-        type: io.kestra.core.test.flow.UnitTest
-        description: The hello task produces outputs
+      - id: returns_input
+        type: io.kestra.core.tests.flow.UnitTest
+        fixtures:
+          inputs:
+            inputA: "Hi there"
         assertions:
-          - taskId: hello
-            value: "{{ outputs.hello }}"
-            isNotNull: true
+          - value: "{{ outputs.return.value }}"
+            equalTo: "Hi there"
     """
     suite = kestra_client.test_suites.create_test_suite(tenant=tenant, yaml_body=body)
     print(f"Test suite created: {suite.id}")
@@ -550,10 +569,12 @@ def run_test_suite():
         id="my_tests",
         tenant=tenant
     )
-    print(f"State: {result.state}")
+    print(f"Run: {result.id} State: {result.state}")
 ```
 
 ### Get test results
+
+Pass the run ID returned by `run_test_suite`.
 
 ```python
 def get_test_result():
@@ -630,7 +651,7 @@ def delete_app():
 
 ## Handle errors
 
-When the server responds with an HTTP error status, the SDK raises an `ApiException` (or a subclass such as `NotFoundException` for `404` or `UnprocessableEntityException` for `422`). The exception exposes the HTTP `status`, `reason`, and response `body`:
+When the server responds with an HTTP error status, the SDK raises an `ApiException` (or a subclass such as `NotFoundException` for `404`, `ConflictException` for `409`, or `UnprocessableEntityException` for `422`, all importable from `kestrapy.exceptions`). The exception exposes the HTTP `status`, `reason`, and response `body`:
 
 ```python
 from kestrapy import ApiException
