@@ -167,14 +167,28 @@ triggers:
     when: "{{ trigger.body.hello == 'world' }}"
 ```
 
-You can combine multiple criteria in a single expression using `and` / `or`:
+### Filtering on headers
+
+`trigger.headers` maps each header name to a **list** of values, so use `contains` rather than `==` when filtering:
 
 ```yaml
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
     key: "{{ secret('WEBHOOK_KEY') }}"
-    when: "{{ trigger.body.event == 'push' and trigger.headers['x-github-event'] == 'push' }}"
+    when: "{{ trigger.headers['X-GitHub-Event'] contains 'push' }}"
+```
+
+Header names are matched by the exact casing the sender used. HTTP/2 clients and many proxies canonicalize headers to lowercase, so `trigger.headers['X-GitHub-Event']` finds nothing when the client sends `x-github-event`. Check your client's behavior and match the case accordingly.
+
+You can combine body and header criteria in a single expression using `and` / `or`:
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    when: "{{ trigger.body.event == 'push' and trigger.headers['X-GitHub-Event'] contains 'push' }}"
 ```
 
 ## Webhook response
