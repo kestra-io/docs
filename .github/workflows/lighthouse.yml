@@ -265,6 +265,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
+      actions: write
       contents: write
       pull-requests: write
 
@@ -366,3 +367,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: 🔦 Lighthouse Benchmark
           template: ${{ steps.report.outputs.content }}
+
+      # The 1.1 GB build tarball only feeds the shards. Kept when a shard failed,
+      # so "Re-run failed jobs" still finds it. Fork PR tokens cannot delete.
+      - name: Delete the build artifact
+        if: ${{ always() && needs.lighthouse.result == 'success' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ids=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=lighthouse-dist" \
+            --jq '.artifacts[].id')
+          printf '%s\n' $ids | xargs -r -I{} gh api -X DELETE "repos/$GITHUB_REPOSITORY/actions/artifacts/{}"
+          echo "deleted $(printf '%s\n' $ids | grep -c .) lighthouse-dist artifact(s)"
