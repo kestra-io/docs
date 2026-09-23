@@ -78,7 +78,6 @@ You can also sync namespace files with the example below:
 id: sync_from_git
 namespace: company.ops
 
-
 tasks:
   - id: git
     type: io.kestra.plugin.git.SyncNamespaceFiles
@@ -89,6 +88,8 @@ tasks:
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
 ```
+
+On Enterprise Edition, if the target `namespace` does not exist, `SyncNamespaceFiles` creates it automatically before writing any files. The task needs credentials to do this: configure task-level `auth` or instance-level `kestra.tasks.sdk.authentication.*` (see [SDK authentication](../../11.migration-guide/v2.0.0/sdk-authentication/index.md)). Without credentials, the task logs a warning and continues, but the namespace will not appear in the UI until it is created manually. On OSS, namespaces have no create API and this behavior is not available.
 
 You can also trigger this flow with a [GitHub webhook](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) whenever changes land in Git:
 
@@ -206,7 +207,9 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
   - The flow running this task does not need to live in the namespace being synced — a flow in `company.ops` can sync `company.team`.
   - **Namespace creation**: When `sourceOfTruth: GIT`, the target namespace is created automatically if it does not exist — in both OSS and Enterprise Edition. When `sourceOfTruth: KESTRA`, the namespace must already exist.
 
-Both plugins support:
+- **`SyncNamespaceFiles`** – syncs namespace files only (not flows, apps, or tests). Unlike `NamespaceSync`, it does not require `kestraUrl` or `auth` for the sync itself, but namespace creation on EE requires credentials. Set task-level `auth` or instance-level `kestra.tasks.sdk.authentication.*`. Without credentials, a missing namespace is not created and files remain invisible in the UI. On OSS, namespace creation is not available; files still sync to storage.
+
+`TenantSync` and `NamespaceSync` both support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
 - An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
