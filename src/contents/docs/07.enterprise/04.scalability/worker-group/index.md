@@ -14,15 +14,7 @@ Worker Groups are an Enterprise Edition feature. In the open-source edition, all
 
 ## Getting started
 
-To set up Worker Groups end-to-end:
-
-1. [Create a Worker Queue](#worker-queues) — define a routing lane with tags
-2. [Create a Worker Group](#creating-and-managing-worker-groups) — create a pool and subscribe it to queues
-3. [Generate a registration token](#generating-a-registration-token) — authenticate workers to the group
-4. [Start a worker](#starting-a-worker-for-a-group) — connect with the token and controller endpoint
-5. [Route tasks](#using-workerselector-in-tasks) — add `workerSelector` to any task
-
-For IaC and Helm deployments, see [Declarative configuration](#declarative-configuration) to provision the full topology at startup without runtime API calls.
+The setup sequence is: create a Worker Queue, create a Worker Group and subscribe it to the queue, generate a registration token, start a worker with the token and controller endpoint, then add `workerSelector` to any task. For IaC and Helm deployments, see [Declarative configuration](#declarative-configuration) to provision the full topology at startup without runtime API calls.
 
 ## How Worker Groups work
 
@@ -41,9 +33,9 @@ The routing path flows from task requirements down to infrastructure:
 3. Kestra checks which Worker Groups subscribe to that queue
 4. A worker from one of those groups picks up the task
 
-**Developer perspective**: declare what a task needs using tags. No machine names, no group names.
+**Developer view**: tasks declare requirements via tags. No machine names, no group names.
 
-**Operator perspective**: create queues with meaningful tags, subscribe groups to those queues, and set capacity guarantees per subscription.
+**Operator view**: operators create queues with matching tags, subscribe worker groups, and set capacity guarantees per subscription.
 
 ## Using workerSelector in tasks
 
@@ -108,11 +100,9 @@ workerSelector:
 
 Every task in that namespace (and its child namespaces, unless overridden closer) inherits this selector automatically. Any selector closer to the task — on the task itself or the flow — wins over the namespace or tenant default.
 
-This is the recommended approach when an entire namespace or team should always run on a specific fleet — it keeps flow YAML clean and makes routing changes a single admin update rather than a find-and-replace across all flows.
-
 ### Applying workerSelector with Policies
 
-Use a [Policy](../../02.governance/policies/index.md) to route all tasks of a given plugin type to a specific Worker Queue without modifying each task individually:
+A [Policy](../../02.governance/policies/index.md) routes all tasks of a given plugin type to a specific Worker Queue without per-task configuration:
 
 ```yaml
 id: gpu-worker-routing
@@ -161,7 +151,7 @@ Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and 
 
 ### Creating Worker Queues
 
-Navigate to **Instance Owner → Infrastructure → Worker Queues** and click **Create**. You can also create Worker Queues via the API or Terraform.
+Worker Queues are managed under **Instance Owner → Infrastructure → Worker Queues**. Creation is also available via the API and Terraform.
 
 **Tenant scoping**: a Worker Queue can restrict which tenants may route tasks through it. An empty tenant list means unrestricted.
 
@@ -171,7 +161,7 @@ A Worker Group is identified by a stable id (RFC 1123 label), has a display name
 
 ### Creating a Worker Group
 
-Navigate to **Instance Owner → Infrastructure → Worker Groups** and click **Add Worker Group**. Set an id, display name, and optional description. You can add queue subscriptions and generate registration tokens immediately, or configure them after creation.
+Worker Groups are managed under **Instance Owner → Infrastructure → Worker Groups**. Each group requires an id, display name, and optional description; queue subscriptions and registration tokens are configurable at creation or after.
 
 Worker Group ids must follow RFC 1123 label format.
 
@@ -317,7 +307,7 @@ Workers do not connect to the database. Any `datasources` or `kestra.repository.
 
 ## Declarative configuration
 
-You can declare the entire worker topology — queues, groups, subscriptions, and registration tokens — in `application.yml` under `kestra.ee.setup`. Kestra applies this configuration at startup, which enables a fully automated single-pass deployment with no runtime API calls.
+The entire worker topology — queues, groups, subscriptions, and registration tokens — is declarable in `application.yml` under `kestra.ee.setup`. Kestra applies this configuration at startup, which enables a fully automated single-pass deployment with no runtime API calls.
 
 ```yaml
 kestra:

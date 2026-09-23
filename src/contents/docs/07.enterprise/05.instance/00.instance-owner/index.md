@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-The Instance Owner console provides instance-wide administration for tenants, IAM, infrastructure, and governance — separate from the tenant workspace you work in day to day.
+The Instance Owner console provides instance-wide administration for tenants, IAM, infrastructure, and governance, separate from the tenant workspace you work in day to day.
 
 :::alert{type="warning"}
 Instance Owner operations are instance-wide. Changes to tenants, users, worker groups, and instance-level policies affect the entire Kestra instance, not just the tenant you are currently logged into.
@@ -15,7 +15,7 @@ Instance Owner operations are instance-wide. Changes to tenants, users, worker g
 
 ## Entering Instance Owner
 
-In the sidebar, click **Instance Owner**. The entry is only visible to users with the Instance Owner privilege.
+**Instance Owner** appears in the sidebar for users with that privilege.
 
 The UI switches to the Instance Owner console and shows a banner confirming you are administering the whole instance. Your regular tenant workspace is unaffected — you can return to it at any time.
 
@@ -89,7 +89,7 @@ You must be an Instance Owner yourself to grant or revoke the privilege.
 
 ### Through the UI
 
-Open the user's detail page and toggle the Instance Owner switch:
+The user's detail page includes an Instance Owner toggle:
 
 ![Instance Owner toggle in the user edit page](./superadmin_switch.png)
 
