@@ -6,7 +6,7 @@ import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
 import { prunePluginsForCards, type CardPlugin } from "~/utils/plugins/pruneForClient"
 import { calculateTotalPlugins, formatPluginCount } from "~/utils/plugins/pluginCount"
 import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
-import { familyNameForPlugin } from "~/utils/plugins/pluginFamily"
+import { buildFamilyIndex, familyNameForPlugin, type ArtifactsResponse } from "~/utils/plugins/pluginFamily"
 import { formatPluginName } from "~/utils/plugins/pluginUtils"
 
 import Layout from "~/components/layout.astro"
@@ -15,6 +15,9 @@ import PluginsLists from "~/components/plugins/PluginsLists.vue"
 
 const rawPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
 const rawPluginsData = await $fetchApiCached(`/plugins/pluginsInformation`)
+const familyIndex = buildFamilyIndex(
+    await $fetchApiCached<ArtifactsResponse>(`/plugins/artifacts`),
+)
 
 const nonDeprecatedPlugins = filterPluginsWithoutDeprecated(rawPlugins)
 const pluginsByName = nonDeprecatedPlugins.reduce(
@@ -33,7 +36,7 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
 // they'd each get their own Hub card instead of surfacing the "/plugins/<family>" overview page.
 const familyMembers: Record<string, Plugin[]> = {}
 const nonFamilyPlugins = filteredPlugins.filter((p) => {
-    const family = p.subGroup ? undefined : familyNameForPlugin(p.name)
+    const family = p.subGroup ? undefined : familyNameForPlugin(p.name, familyIndex)
     if (!family) return true
     ;(familyMembers[family] ??= []).push(p)
     return false
