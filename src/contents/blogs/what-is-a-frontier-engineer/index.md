@@ -12,7 +12,7 @@ image: ./main.png
 
 A new job title started appearing on job boards this year: frontier engineer. Consulting firms are hiring for it, Microsoft's Work Trend Index measures how many people already work this way, and OpenAI named its enterprise agent platform after the same word.
 
-If you run automation, data, or platform teams, you are going to be asked what it means and whether you need one. This post explains what the role is, what it is not, what a frontier engineer does in a normal week, where the work actually happens, and how to start.
+If you run automation, data, or platform teams, you are going to be asked what it means and whether you need one. I will show you also how much of this new job role is related to orchestration.
 
 ## Definition
 
@@ -25,8 +25,6 @@ The word "frontier" refers to the boundary between what a model can do and what 
 
 ## Frontier engineer vs. the roles you already have
 
-The role is easier to understand by contrast.
-
 | Role | Owns | Does not own |
 |---|---|---|
 | **ML engineer** | Models: training, evaluation, serving, RAG pipelines | The business process the model sits in |
@@ -35,21 +33,53 @@ The role is easier to understand by contrast.
 | **Prompt engineer** | The instructions given to a model | Anything after the model answers |
 | **Frontier engineer** | The end-to-end process: where agents act, where humans decide, how it is governed and observed | The model itself |
 
-Five responsibilities for the frontier engineer; one is about models (RAG, vector stores) and four are about the system around them: orchestrate multi-agent systems, integrate agent outputs into production, deploy and monitor agents with guardrails, build workflows with automation tools. Microsoft's research calls the same people "Frontier Professionals" and defines them by three behaviours: using agents for multi-step work, routinely redesigning workflows, and creating shared standards for how their team works with AI. About 16% of AI users qualify.
+The role breaks into five responsibilities. One is about models: RAG and vector stores. The others are about the system around them: orchestrating multi-agent systems, integrating agent outputs into production, deploying and monitoring agents with guardrails, and building workflows with automation tools.
 
-It is the person who decides what the model is allowed to do to your systems, and builds the machinery that enforces it.
+Microsoft calls the same people "Frontier Professionals" and defines them by three behaviours: using agents for multi-step work, routinely redesigning workflows, and creating shared standards for how their team works with AI.
 
 ## What a frontier engineer actually does
 
-**Mapping a process into agentic and fixed steps.** Take incident response. Reading logs, correlating three dashboards, and proposing a root cause is a good job for an agent: it is research, it is tolerant of a wrong first guess, and a human reviews the output. Restarting a production service is not: it must happen once, in order, with a rollback, and someone accountable. The frontier engineer draws that line for every process the team owns. A useful test for each step: *if this is wrong, who notices, how fast, and what does it cost to undo?* Cheap to notice and cheap to undo means the step can be agentic. Expensive on either count means it stays fixed, or gets a human in front of it.
+### Mapping a process into agentic and fixed steps
 
-**Building the connection between the two.** The agent's output has to become an input to something deterministic. That means a contract (what the agent must return, in what shape: one runbook id from a known list, not free text), a gate (who approves, with what SLA, and what happens if nobody does), and a fallback (what happens if the agent times out, returns something outside the contract, or the provider is down). The contract is where most production incidents with agents are prevented, and it is the part pilots skip.
+I'm going to take an incident response use case. An alert fires, someone reads the logs, correlates them with the last deployments, picks a likely root cause, chooses a runbook, runs it, checks the service is healthy, and records what happened.
 
-**Giving agents tools, not access.** An agent that can call any API is a liability. An agent that can call five reviewed, versioned, permissioned operations is a colleague. Most of the frontier engineer's design work is deciding what those operations are, and making sure the agent's only path to production goes through them.
+The first four steps are research. If the agent picks the wrong root cause, a human reads a wrong proposal and rejects it. Nothing in production has changed. Those steps can go to an agent.
 
-**Making it observable.** Which model, which prompt, which tools were called with which arguments, how many tokens, why it stopped. Without this, nobody can review agent performance and nobody will sign off on more autonomy. Observability is also how autonomy grows: once a gate has been approved without edits a few hundred times, the data exists to argue for removing it.
+Running the runbook is different. A restart that fires twice, or on the wrong host, is a second incident. That step has to run exactly once, in order, with a rollback if the health check fails, and someone has to own the decision to run it. It stays deterministic, with a human in front of it.
 
-**Putting it under change control.** Who can change the workflow the agent runs. Who can change the tools it has. How a change gets from a laptop to production. This is the second part most agent pilots skip, and the reason most agent pilots stay pilots.
+The test for every step is the same: if this is wrong, who notices, how fast, and what does it cost to undo? Cheap to notice and cheap to undo, the step can be agentic. Expensive on either count, it stays fixed or gets an approval in front of it.
+
+### Building the connection between the two
+
+The agent's proposal has to become the input to the runbook step, and free text cannot be that input. So you need to build few steps to make the handover safe.
+
+The agent returns a structured answer: a JSON object with a runbook id, and the id has to be one of the runbooks that exist. Anything else fails validation before it reaches the next step.
+
+The approval is a real step, it records who said yes and why, and the remediation does not start until it has.
+
+Every failure has a defined outcome, an agent timeout, a provider outage and an unknown runbook id are three different failures, and each one should end in a single incident record with the run attached.
+
+Most incidents involving agents in production come down to a missing piece of that handover.
+
+### Giving agents tools, with the right access
+
+In the incident example the agent gets two tools: one that fetches deploy history and recent logs, and read-only access to the observability stack. It cannot restart anything. It holds no cloud credential. Whatever secrets those tools need are resolved by the platform at runtime, so the model never sees them.
+
+The agent gets a short list of operations that someone wrote, reviewed and versioned, each with its own permissions. If the agent needs to do something new, you write the operation, review it, and add it to the list. The system prompt says never execute anything yourself, and the agent will mostly comply, but the reason it cannot restart production is that nothing in its tool list restarts production.
+
+### Making it observable
+
+Every run should leave a record of the model and provider, the prompt as it was sent, every tool call with its arguments and result, the token count and cost, and why the model stopped. The approval step should record who approved and the reason they gave. The remediation should link to whatever it ran.
+
+One run, one page, so when you ask what the agent can reach and what it did you get a full record in a single view.
+
+The same record tells you when to loosen the gate. If the approval has been waved through without changes a few hundred times in a row, the human is no longer adding anything at that step.
+
+### Shipping it like the rest of your code
+
+The workflow definition lives in a repository. Changing what the agent does, its prompt, its tools, the runbooks it may choose from, lives in CI/CD. Someone reviews it, it merges, and a pipeline promotes it from dev to prod with a diff and a recorded approval.
+
+Most agent never get here. The prompt lives in a notebook, the API key in an environment variable, and one person can change either.
 
 Microsoft's report reduces this to three questions every organisation deploying agents has to answer: who reviews agent performance, who has the authority to update the workflows agents run, and how a local win gets captured and scaled. Those three questions are the frontier engineer's job description.
 
@@ -72,7 +102,7 @@ inputs:
 tasks:
   - id: triage
     type: io.kestra.plugin.ai.agent.AIAgent
-    # provider injected by a namespace Policy — or add it inline, see /docs/ai-tools/ai-agents
+    # provider injected by a namespace Policy, or add it inline: see /docs/ai-tools/ai-agents
     systemMessage: |
       You are an SRE assistant. Correlate the alert with recent deployments and logs,
       identify the most likely root cause, and propose exactly one remediation from
@@ -108,36 +138,41 @@ errors:
 ```
 
 ![The incident_triage flow in the Kestra topology view: a triage AI agent task running on GoogleGemini, an approve Pause, a remediate subflow, and an open_case branch on failure](./02-incident-triage-flow.png)
-*The agent is one task. Its tools are governed flows and a read-only MCP server. The decision goes through a Pause. The remediation is a versioned subflow with its own rollback.*
+*The flow in the Kestra topology view: the agent task, the approval Pause, the remediation subflow, and the error branch that opens a case.*
 
 ![The same flow in plain terms: something happens, the agent proposes, a human decides, the runbook runs, and any failure opens one case instead of ten alerts](./03-flow-simple.png)
 *The same four steps without the YAML, and the one case that opens if any of them fails.*
 
 The agent is one task. Its tools are other Kestra flows and an MCP server, so it can only do what those flows allow, with their permissions. The decision goes to a human through [`Pause`](/docs/how-to-guides/pause-resume), with a name and a reason recorded on the execution; in the Enterprise edition the same gate can be surfaced to approvers as a form through [Apps](/docs/enterprise/scalability/apps), so they never open the Kestra UI. The remediation is a versioned subflow with its own `errors` block. If anything fails, one [Case](/docs/enterprise/governance/cases) is opened instead of ten alerts.
 
+### Reviewing agent performance is reviewing an execution
 
-**Reviewing agent performance is reviewing an execution.** The details panel of an [`AIAgent`](/docs/ai-tools/ai-agents) task shows the model and provider, the system prompt, the tools it had, and after the run the full tool-call timeline with arguments and results, token usage and estimated cost, the reasoning chain, and why the model stopped, including guardrail triggers. Counters (`ai.agent.tool.calls`, `ai.provider.calls`) go to Prometheus or OpenTelemetry like any other metric.
+The details panel of an [`AIAgent`](/docs/ai-tools/ai-agents) task shows the model and provider, the system prompt, the tools it had, and after the run the full tool-call timeline with arguments and results, token usage and estimated cost, the reasoning chain, and why the model stopped, including guardrail triggers. Counters (`ai.agent.tool.calls`, `ai.provider.calls`) go to Prometheus or OpenTelemetry like any other metric.
 
-**Changing what agents run is a Git commit.** Flows are code; they reach production through CI and a promotion with a diff and a recorded approval. Action-level [RBAC](/docs/enterprise/auth/rbac) decides who can edit `ops.runbooks` and who can only resume a Pause. A [Policy](/docs/enterprise/governance/policies) injects the LLM provider and its guardrails into every agent task in a namespace, so no author can point an agent at an unapproved model or strip the system message. Every change lands in the [audit log](/docs/enterprise/governance/audit-logs).
+### Changing what agents run is a Git commit
 
-**Scaling a win is copying a flow.** A flow that works for one team goes into another namespace, gets parameterised with inputs, and is published as a [blueprint](/docs/concepts/blueprints). Agents call flows as tools with [`KestraFlow`](/plugins/plugin-ai/tool/kestraflow); external agents (Claude, Cursor, your own) call Kestra flows through the [MCP server](/docs/ai-tools/mcp-server), where any flow with an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) becomes a named, permissioned tool.
+Flows are code; they reach production through CI and a promotion with a diff and a recorded approval. Action-level [RBAC](/docs/enterprise/auth/rbac) decides who can edit `ops.runbooks` and who can only resume a Pause. A [Policy](/docs/enterprise/governance/policies) injects the LLM provider and its guardrails into every agent task in a namespace, so no author can point an agent at an unapproved model or strip the system message. Every change lands in the [audit log](/docs/enterprise/governance/audit-logs).
+
+### Scaling a win is copying a flow
+
+A flow that works for one team goes into another namespace, gets parameterised with inputs, and is published as a [blueprint](/docs/concepts/blueprints). Agents call flows as tools with [`KestraFlow`](/plugins/plugin-ai/tool/kestraflow); external agents (Claude, Cursor, your own) call Kestra flows through the [MCP server](/docs/ai-tools/mcp-server), where any flow with an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) becomes a named, permissioned tool.
 
 ## Where to start
 
-Here is to get started in less than 10 minutes:
+Here is the shortest path.
 
-1. **Run Kestra locally.** The [quickstart](/docs/quickstart) is one Docker command; [Docker Compose](/docs/installation/docker-compose) with Postgres if you want something that survives a restart.
-2. **Wire one agent task.** The [AI Agents](/docs/ai-tools/ai-agents) page has a working flow; swap the provider for yours and store the key as a [secret](/docs/concepts/secret). Give it one `KestraFlow` tool pointing at a flow you already have.
-3. **Put a gate after it.** Add a `Pause` with `onResume` inputs ([how-to](/docs/how-to-guides/pause-resume)) and a deterministic task that only runs when `approved` is true.
-4. **Read the execution.** Open the agent task in the topology view and look at the tool-call timeline, the token count and the finish reason. That panel is what you will show your security team.
-5. **Expose a flow to your coding agent.** Point Claude Code or Cursor at the [MCP server](/docs/ai-tools/mcp-server) and add an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) to one flow. You now have an agent outside Kestra calling a governed operation inside it.
-6. **Start from a blueprint.** The [AI blueprints](/blueprints?tags=AI) cover summarisation, classification, RAG and agent-with-tools patterns; most infra and data flows in the library can be handed to an agent as a tool without changes.
+1. Run Kestra locally. The [quickstart](/docs/quickstart) is one Docker command; [Docker Compose](/docs/installation/docker-compose) with Postgres if you want something that survives a restart.
+2. Wire one agent task. The [AI Agents](/docs/ai-tools/ai-agents) page has a working flow; swap the provider for yours and store the key as a [secret](/docs/concepts/secret). Give it one `KestraFlow` tool pointing at a flow you already have.
+3. Put a gate after it. Add a `Pause` with `onResume` inputs ([how-to](/docs/how-to-guides/pause-resume)) and a deterministic task that only runs when `approved` is true.
+4. Read the execution. Open the agent task in the topology view and look at the tool-call timeline, the token count and the finish reason. That panel is what you will show your security team.
+5. Expose a flow to your coding agent. Point Claude Code or Cursor at the [MCP server](/docs/ai-tools/mcp-server) and add an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) to one flow. You now have an agent outside Kestra calling a governed operation inside it.
+6. Start from a blueprint. The [AI blueprints](/blueprints?tags=AI) cover summarisation, classification, RAG and agent-with-tools patterns; most infra and data flows in the library can be handed to an agent as a tool without changes.
 
 ## Do you need one?
 
 If your team has more than a couple of agents in production, someone is already doing this job without the title. The useful question is whether they have the tooling for it, or whether the approvals live in Slack, the tool permissions live in an environment variable, and the audit trail is the agent's own logs.
 
-Titles come and go. The work of deciding where agents act and where humans decide, and building the system that enforces that decision, is not going anywhere. It is orchestration, and it is now the most important orchestration in the company.
+Titles come and go. Deciding where agents act and where humans decide, and building the system that enforces it, does not. That work is orchestration.
 
 ---
 
