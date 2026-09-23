@@ -19,21 +19,6 @@ const familyIndex = buildFamilyIndex(
     await $fetchApiCached<ArtifactsResponse>(`/plugins/artifacts`),
 )
 
-// Longest package-name prefix all of a family's members share, e.g. "io.kestra.plugin.jdbc"
-// for plugin-jdbc-oracle/-postgres/-... — the real, existing icon key for the family as a
-// whole, rather than a guess derived from the family/repo name string.
-function commonGroupPrefix(groups: string[]): string | undefined {
-    const segmentsList = groups.map((g) => g.split("."))
-    let end = segmentsList[0]?.length ?? 0
-    for (const segments of segmentsList.slice(1)) {
-        let i = 0
-        while (i < end && segments[i] === segmentsList[0][i]) i++
-        end = i
-    }
-    // "io.kestra.plugin" alone is too generic to be a real icon key.
-    return end >= 4 ? segmentsList[0].slice(0, end).join(".") : undefined
-}
-
 const nonDeprecatedPlugins = filterPluginsWithoutDeprecated(rawPlugins)
 const pluginsByName = nonDeprecatedPlugins.reduce(
     (acc, p) => ((acc[p.name] ??= []).push(p), acc),
@@ -82,7 +67,9 @@ const familyCards: CardPlugin[] = Object.entries(familyMembers).map(([family, me
         classes: memberCards
             .flatMap((m) => [m.name, m.title, m.classes ?? ""])
             .join(" "),
-        className: commonGroupPrefix(members.map((m) => m.group)),
+        // No className: none of these families have a real dedicated icon (the
+        // API's own fallback for an unmatched className is a generic blank-file
+        // glyph, worse than PluginCard's own /icon.svg fallback used below).
         elementCounts: memberCards.reduce((sum, m) => sum + (m.elementCounts ?? 0), 0),
         blueprints: memberCards.reduce((sum, m) => sum + (m.blueprints ?? 0), 0),
         href: `/plugins/${family}`,
