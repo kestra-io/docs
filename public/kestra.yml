@@ -4,7 +4,7 @@ info:
   license:
     name: Apache 2.0
     url: https://raw.githubusercontent.com/kestra-io/kestra/master/LICENSE
-  version: 2.0.2
+  version: 2.0.3
 tags:
 - name: Flows
   description: Flows API
@@ -12157,6 +12157,8 @@ components:
             $ref: '#/components/schemas/State.Type'
         disabled:
           type: boolean
+        sourceDisabled:
+          type: boolean
         locked:
           type: boolean
         workerId:
@@ -12175,6 +12177,10 @@ components:
         Excludes internal scheduler fields (`tenantId`, `vnode`, `lastEventId`). The
         scheduler's `type` is exposed as `kind` to not clash with the trigger definition's
         `type` (the plugin class) when both are merged by API consumers.
+
+
+        `disabled` is the runtime disable alone; a consumer deciding whether a trigger will fire has
+        to read `sourceDisabled` as well, which mirrors the flow definition's own flag.
     ArtefactDraft:
       type: object
       properties:
@@ -12242,11 +12248,17 @@ components:
       type: object
       properties:
         enableAuto:
-          $ref: '#/components/schemas/Property_Boolean_'
+          description: Whether to auto-register assets referenced dynamically at runtime that are not statically declared in inputs or outputs.
+          allOf:
+          - $ref: '#/components/schemas/Property_Boolean_'
         inputs:
-          $ref: '#/components/schemas/Property_List_AssetIdentifier__'
+          description: The assets consumed as inputs.
+          allOf:
+          - $ref: '#/components/schemas/Property_List_AssetIdentifier__'
         outputs:
-          $ref: '#/components/schemas/Property_List_Asset__'
+          description: The assets produced as outputs.
+          allOf:
+          - $ref: '#/components/schemas/Property_List_Asset__'
         assetFailureBehavior:
           title: Asset failure behavior
           description: 'Behavior applied to the task state when a declared asset fails to render, emit, or be persisted (e.g. a lock conflict): FAIL escalates it to FAILED, WARN (default) warns it if it would otherwise succeed, IGNORE leaves the state untouched.'
@@ -15587,6 +15599,7 @@ components:
         taskCache:
           $ref: '#/components/schemas/Cache'
         assets:
+          description: Assets this task consumes as inputs or produces as outputs, for lineage tracking and the asset graph (Enterprise Edition). A flow declaring this property on a task is rejected in the open-source edition.
           nullable: true
           allOf:
           - $ref: '#/components/schemas/AssetsDeclaration'
