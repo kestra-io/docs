@@ -52,8 +52,4 @@ Kestra validates the license on startup and logs the validation result.
 
 ## When should I use Secrets vs Credentials?
 
-Use [Secrets](../../06.concepts/04.secret/index.md) when you need to store and reference sensitive values such as API keys, passwords, webhook URLs, or tokens in your flows and configuration. Secrets are the right choice when you want to inject a protected value with the `secret()` function or manage sensitive data centrally.
-
-Use [Credentials](../03.auth/credentials/index.md) when a supported integration or plugin expects a reusable authentication object managed through the UI. Credentials are better suited to connection-level authentication that you want to define once and reuse across multiple flows.
-
-In short: use **Secrets** for protected values, and use **Credentials** for managed authentication objects supported by Kestra integrations.
+[Secrets](../../06.concepts/04.secret/index.md) store and reference sensitive values — API keys, passwords, webhook URLs, tokens — via the `secret()` function. [Credentials](../03.auth/credentials/index.md) are reusable authentication objects for supported integrations, defined once and referenced across multiple flows via `credential()`.

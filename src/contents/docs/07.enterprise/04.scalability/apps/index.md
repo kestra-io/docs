@@ -17,7 +17,7 @@ Build custom UIs to interact with Kestra from the outside world.
 
 ## What are Apps
 
-Apps let you wrap any Kestra flow in a custom UI — forms for data entry, output displays, approval buttons, progress indicators, and markdown blocks — without writing any frontend code. Building and serving a frontend, connecting it to Kestra's API, validating user inputs, handling responses, managing workflow outputs, and handling authentication and authorization — Apps take care of all of that.
+Apps let you wrap any Kestra flow in a custom UI — forms for data entry, output displays, approval buttons, progress indicators, and markdown blocks — without writing any frontend code. Building and serving a frontend, connecting it to Kestra's API, validating user inputs, handling responses, managing workflow outputs, and handling authentication and authorization: Apps take care of all of that.
 
 Flows act as the backend, processing data and executing tasks. Apps act as the frontend, giving anyone — including business users without Kestra access — a clean interface to trigger executions, submit approvals, and view results.
 
@@ -27,7 +27,7 @@ Apps work well for external-facing forms and for internal workflows such as appr
 
 ## Common App patterns
 
-Start with one of these patterns when designing your own App:
+The following patterns illustrate typical App designs:
 
 - **FTP upload portal**: give users a simple upload form while Kestra handles the backend credentials and transfer logic. See the [business user Apps blog example](../../../../blogs/use-case-apps/index.md#requests--review).
 - **Self-serve analytics request**: let users choose a dimension and time range, run a query and chart generation flow, and return the generated output on `SUCCESS`. See the [dynamic self-serve example](../../../../blogs/use-case-apps/index.md#dynamic-self-serve).
@@ -35,7 +35,7 @@ Start with one of these patterns when designing your own App:
 - **VM or infrastructure request**: collect the requested environment, size, region, and justification on `OPEN`, show validation progress on `RUNNING`, pause for approval on `PAUSE`, then display the created VM details on `SUCCESS`. This pattern also fits the infrastructure workflows described in the [infrastructure automation blog](../../../../blogs/infra-automation/index.md).
 - **Human-in-the-loop review**: display task outputs, logs, or model results, then let an approver accept or reject the execution from the same screen.
 
-Start by mapping the user journey:
+Mapping the user journey determines which blocks to use for each stage:
 
 1. What should the user submit?
 2. What should they see while the flow is running?
@@ -459,7 +459,7 @@ access:
 
 ### Hiding an app from the catalog
 
-Setting `catalog: false` removes the app from the browseable catalog while keeping its direct URL fully functional. Use this when you want to share an app with a specific audience via URL without surfacing it to everyone who can browse the catalog.
+Setting `catalog: false` removes the app from the browseable catalog while keeping its direct URL functional — suited to apps shared with a specific audience via URL.
 
 ```yaml
 access:
