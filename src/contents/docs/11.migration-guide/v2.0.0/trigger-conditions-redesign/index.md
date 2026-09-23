@@ -27,7 +27,7 @@ The variables available in a `when` expression depend on the trigger type:
 
 | Trigger type | Available variables |
 |---|---|
-| Schedule | `trigger.date`, `trigger.timestamp` |
+| Schedule | `trigger.date` |
 | Webhook | `trigger.body`, `trigger.headers` |
 | Flow | `namespace`, `flowId`, `state`, `labels`, `outputs`, `hasRetryAttempt` |
 
@@ -50,7 +50,7 @@ These functions are introduced specifically for `when` expressions to replace ve
 | `dayOfMonth` | `dayOfMonth(date)` | Returns the day of the month as an integer (1–31). |
 | `monthOfYear` | `monthOfYear(date)` | Returns the month as an integer (1–12). |
 
-Existing Pebble filters (`startsWith`, `endsWith`, `date`) and operators (`and`, `or`, `not`, `==`, `!=`, `>`, `<`, `>=`, `<=`) cover the remaining use cases.
+Existing Pebble filters (`startsWith`, `endsWith`, `date`, `timestamp`) and operators (`and`, `or`, `not`, `==`, `!=`, `>`, `<`, `>=`, `<=`) cover the remaining use cases.
 
 ### Schedule: specific day of week
 
@@ -250,8 +250,16 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/5 * * * *"
-    when: "{{ trigger.date > '2025-12-31T23:59:59Z' and trigger.date < '2026-06-30T23:59:59Z' }}"
+    when: "{{ (trigger.date | timestamp()) > ('2025-12-31T23:59:59Z' | timestamp()) and (trigger.date | timestamp()) < ('2026-06-30T23:59:59Z' | timestamp()) }}"
 ```
+
+:::alert{type="info"}
+Inside a `when` expression `trigger.date` is a `ZonedDateTime`, not a string. Comparing it
+directly against a string literal raises `Could not perform greater than comparison`, and the
+scheduler emits a FAILED execution on every scheduled date. Convert both sides with
+`| timestamp()`, and always give the literal an explicit offset (`Z` or `±HH:MM`) — a literal
+without one is resolved in the server's default timezone.
+:::
 
 ### Schedule: specific hours only
 
@@ -370,13 +378,13 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 | `PublicHoliday` (country: FR) | `{{ isPublicHoliday(trigger.date, 'FR') }}` |
 | `Not` > `PublicHoliday` + `Weekend` (workdays) | `{{ not isWeekend(trigger.date) and not isPublicHoliday(trigger.date, 'FR') }}` |
 | `DayWeekInMonth` (MONDAY, FIRST) | `{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}` |
-| `DateTimeBetween` (after/before) | `{{ trigger.date > '2025-12-31T23:59:59Z' and trigger.date < '2026-06-30T23:59:59Z' }}` |
+| `DateTimeBetween` (after/before) | `{{ (trigger.date \| timestamp()) > ('2025-12-31T23:59:59Z' \| timestamp()) and (trigger.date \| timestamp()) < ('2026-06-30T23:59:59Z' \| timestamp()) }}` |
 | `TimeBetween` (08:00-17:00) | `{{ hourOfDay(trigger.date) >= 8 and hourOfDay(trigger.date) < 17 }}` |
 | `Expression` (custom Pebble) | Direct `when` expression, no wrapper needed |
 | `Expression` on webhook body/headers | `{{ trigger.body.field == 'value' }}` or `{{ trigger.headers['X-Key'] == 'value' }}` |
 | Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
 
-For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference.
+For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference. The `timestamp` filter used above is documented with the [date filters](../../../expressions/03.filters/04.dates/index.mdx).
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers
 

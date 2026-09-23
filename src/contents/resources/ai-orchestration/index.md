@@ -191,7 +191,7 @@ Kestra's approach is to provide a flexible, language-agnostic control plane that
 
 The field of AI is evolving rapidly, and orchestration platforms must evolve with it. The rise of [autonomous AI agents](/blogs/introducing-ai-agents) and complex LLM-powered applications is placing new demands on orchestration. The future will require platforms that can manage dynamic, decision-driven workflows and provide robust governance for increasingly autonomous systems.
 
-Two directions are worth following closely: [agentic workflows](/resources/ai/agentic-workflows) as the execution model, and [multi-agent systems](/resources/ai/multi-agent-system) as the coordination problem that follows from it.
+Two directions are worth following closely: [agentic workflows](/resources/ai/agentic-workflows) as the execution model, and [multi-agent systems](/resources/ai/multi-agent-system) as the coordination problem that follows from it. The [unified orchestration whitepaper](/resources/whitepapers/unified-orchestration) sets out the seven requirements a platform has to meet to govern them alongside data, infrastructure and business workflows.
 
 Orchestration is no longer just about scheduling static tasks; it's about providing the guardrails, observability, and human oversight for intelligent systems. Platforms that embrace this new reality by integrating features like AI Copilots for workflow generation and native support for agentic patterns will be essential for building the next generation of AI applications.
 
