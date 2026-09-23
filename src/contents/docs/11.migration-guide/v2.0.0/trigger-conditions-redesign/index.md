@@ -29,7 +29,7 @@ The variables available in a `when` expression depend on the trigger type. For S
 |---|---|
 | Schedule | `trigger.date` |
 | Webhook | `trigger.body`, `trigger.headers` |
-| Flow (`dependsOn.when`) | `flow.namespace`, `flow.id`, `execution.outputs` |
+| Flow (`dependsOn.when`) | `flow.namespace`, `flow.id`, `labels`, `execution.outputs` |
 
 `flow` refers to the upstream flow (the one that just completed). `execution.outputs` holds the upstream flow's declared outputs. `outputs` is also available but holds task outputs, not flow-level outputs — use `execution.outputs.<key>` to filter on flow outputs.
 

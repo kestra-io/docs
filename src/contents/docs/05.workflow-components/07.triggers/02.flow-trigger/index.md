@@ -65,7 +65,7 @@ triggers:
 | `namespace` | `String`              | The namespace of the upstream flow. Exact match only — use `when` for prefix or pattern matching.                    |
 | `states`    | `List<State>`         | States that satisfy this entry. Defaults to all terminal states and `PAUSED` when omitted.                           |
 | `labels`    | `Map<String, String>` | Key-value pairs that must all be present on the upstream execution's labels.                                         |
-| `when`      | `String`              | A Pebble expression evaluated against the upstream execution. Available variables: `flow.namespace`, `flow.id`, `execution.outputs`. The entry is satisfied only when this evaluates to true.|
+| `when`      | `String`              | A Pebble expression evaluated against the upstream execution. Available variables: `flow.namespace`, `flow.id`, `labels`, `execution.outputs`. The entry is satisfied only when this evaluates to true.|
 
 ### Satisfaction mode
 
@@ -276,7 +276,7 @@ triggers:
 
 ## Filtering with `when` expressions
 
-Use `when` on a `dependsOn` entry to apply Pebble conditions against the upstream execution. The available variables are `flow.namespace`, `flow.id`, and `execution.outputs` — where `flow` is the upstream flow. `state` and `labels` are not available in `when`; use the `states` list and the `labels` map on the `dependsOn` entry instead.
+Use `when` on a `dependsOn` entry to apply Pebble conditions against the upstream execution. The available variables are `flow.namespace`, `flow.id`, `labels`, and `execution.outputs` — where `flow` is the upstream flow. `state` is not available in `when`; use the `states` list on the `dependsOn` entry instead.
 
 Filter on a flow-level output value using `execution.outputs.<key>`:
 
