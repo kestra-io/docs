@@ -423,7 +423,7 @@ Each node displays the freshness state of that asset based on the most recent ex
 
 A summary bar above the graph shows the count of each state; the legend shows only states present in the graph.
 
-The expected cadence is derived from the `Schedule` trigger of the producing flow. To launch remediation flows when an asset becomes stale, use [`FreshnessTrigger`](#operational-automation).
+The expected cadence is derived from the [Schedule](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule) trigger of the producing flow. To launch remediation flows when an asset becomes stale, use [`FreshnessTrigger`](#operational-automation).
 
 ### Group by
 

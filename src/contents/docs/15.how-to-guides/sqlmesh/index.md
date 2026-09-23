@@ -25,7 +25,7 @@ Our Flow will do the following steps:
 2. Create the table in BigQuery.
 3. Upload the data from the csv file into the BigQuery table.
 4. Create a dbt project which will create the BigQuery view from the BigQuery table.
-5. Create SQLMeshCLI task that will run the dbt project.
+5. Create [SQLMeshCLI](/plugins/plugin-sqlmesh/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) task that will run the dbt project.
 
 SQLMesh supports integration with a variety of tools like Airflow, dbt, dlt, etc. One of the common use-cases of SQLMesh is to run dbt projects.
 

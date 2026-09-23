@@ -20,7 +20,7 @@ For example, you might define a subflow that handles error alerts by posting to 
 
 ## How to declare a subflow
 
-Use the `io.kestra.plugin.core.flow.Subflow` task and specify the `flowId` and `namespace` of the flow to execute. Pass custom `inputs` the same way you would pass arguments to a function.
+Use the [io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task and specify the `flowId` and `namespace` of the flow to execute. Pass custom `inputs` the same way you would pass arguments to a function.
 
 The `wait` and `transmitFailed` properties control execution behavior. If `wait` is `false`, the parent flow continues without waiting for the subflow to finish. `transmitFailed` determines whether a failure in the subflow causes the parent flow to fail.
 
@@ -80,7 +80,7 @@ The `outputs` map task IDs to their results. Here, the parent flow accesses the 
 
 ## Subflow properties
 
-`io.kestra.plugin.core.flow.Subflow` task properties:
+[io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task properties:
 
 | Field                  | Description                                                                 |
 |------------------------|-----------------------------------------------------------------------------|
