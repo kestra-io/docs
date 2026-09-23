@@ -14,13 +14,13 @@
             </div>
         </div>
 
-        <div
+        <dialog
             ref="modalRef"
-            class="modal fade"
+            class="modal"
             id="feedbackModal"
-            tabindex="-1"
             aria-labelledby="feedbackModalLabel"
-            aria-hidden="true"
+            @close="onClosed"
+            @click.self="closeModal"
         >
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -70,12 +70,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </dialog>
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted } from "vue"
+    import { ref } from "vue"
     import posthog from "posthog-js"
     import Close from "vue-material-design-icons/Close.vue"
     import ThumbUpOutline from "vue-material-design-icons/ThumbUpOutline.vue"
@@ -87,18 +87,11 @@
     const isSubmitted = ref(false)
     const currentRating = ref(null)
 
-    let bootstrapModal = null
-
-    onMounted(() => {
-        if (modalRef.value && window.$bootstrap?.Modal) {
-            bootstrapModal = new window.$bootstrap.Modal(modalRef.value)
-            modalRef.value.addEventListener("hidden.bs.modal", () => {
-                comment.value = ""
-                currentRating.value = null
-                isSubmitted.value = false
-            })
-        }
-    })
+    const onClosed = () => {
+        comment.value = ""
+        currentRating.value = null
+        isSubmitted.value = false
+    }
 
     const openModal = (isHelpful) => {
         currentRating.value = isHelpful
@@ -108,11 +101,11 @@
         comment.value = ""
         isSubmitted.value = false
         posthog.capture("helpful", { positive: currentRating.value })
-        bootstrapModal?.show()
+        modalRef.value?.showModal()
     }
 
     const closeModal = () => {
-        bootstrapModal?.hide()
+        modalRef.value?.close()
     }
 
     const submitFeedback = () => {

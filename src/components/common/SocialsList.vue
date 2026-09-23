@@ -19,6 +19,7 @@
     import Youtube from "vue-material-design-icons/Youtube.vue"
     import Github from "vue-material-design-icons/Github.vue"
     import Linkedin from "vue-material-design-icons/Linkedin.vue"
+    import Reddit from "vue-material-design-icons/Reddit.vue"
     import Twitter from "~/components/icons/TwitterXIcon.vue"
     import BlueSky from "~/components/icons/BlueSkyIcon.vue"
 
@@ -44,6 +45,11 @@
             text: "LinkedIn",
         },
         {
+            href: "https://www.reddit.com/r/kestra_io/",
+            icon: Reddit,
+            text: "Reddit",
+        },
+        {
             href: "https://twitter.com/kestra_io",
             icon: Twitter,
             text: "Twitter",
@@ -62,7 +68,7 @@
     }
 
     nav {
-        @include font-size($font-size-xs);
+        font-size: $font-size-xs;
         line-height: 1.188rem;
         ul {
             padding-left: 0;

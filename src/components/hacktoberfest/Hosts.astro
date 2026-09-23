@@ -3,15 +3,13 @@ import { Image } from "astro:assets"
 import SectionTitle from "./SectionTitle.astro"
 import arshGoyal from "./assets/arsh-goyal.webp"
 import johnCrickett from "./assets/john-crickett.webp"
-import thoughtspot from "./assets/thoughtspot.webp"
 import codingChallenges from "./assets/coding-challenges.webp"
 
 const HOSTS = [
     {
         name: "Arsh Goyal",
-        company: "ThoughtSpot",
+        company: "AI and Engineering Creator",
         photo: arshGoyal,
-        logo: thoughtspot,
         bio: "Senior Software Engineer and an Engineering Creator. Arsh is an Engineering creator who creates content around Data and AI and has helped more than 50K+ engineers upskill. He is a university Gold Medalist, and has over 1.5M+ followers across social media.",
     },
     {
@@ -39,7 +37,7 @@ const HOSTS = [
                         class="host"
                         data-usal={`fade-u duration-400 delay-${100 + index * 50} ease-out`}
                     >
-                        <div class="head">
+                        <div class:list={["head", { "has-logo": host.logo }]}>
                             <Image
                                 src={host.photo}
                                 alt={host.name}
@@ -53,14 +51,16 @@ const HOSTS = [
                                 <p>{host.company}</p>
                             </div>
                         </div>
-                        <Image
-                            src={host.logo}
-                            alt={`${host.company} logo`}
-                            width={62}
-                            height={62}
-                            densities={[1, 2]}
-                            class="logo"
-                        />
+                        {host.logo && (
+                            <Image
+                                src={host.logo}
+                                alt={`${host.company} logo`}
+                                width={62}
+                                height={62}
+                                densities={[1, 2]}
+                                class="logo"
+                            />
+                        )}
                         <p class="bio">{host.bio}</p>
                     </li>
                 ))
@@ -117,7 +117,10 @@ const HOSTS = [
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding-right: 78px;
+
+        &.has-logo {
+            padding-right: 78px;
+        }
     }
 
     .photo {
@@ -158,7 +161,7 @@ const HOSTS = [
             padding: 1.5rem;
         }
 
-        .head {
+        .head.has-logo {
             padding-right: 56px;
         }
 

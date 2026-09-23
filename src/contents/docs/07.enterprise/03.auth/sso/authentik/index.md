@@ -17,7 +17,7 @@ authentik provides a simple docker-compose installer for testing purposes. Follo
 
 ## Create application and SSO provider in authentik
 
-On the left-hand side, select **Applications → Applications**. For simplicity, we’ll use the **Create with Wizard** button, as this will create both an application and a provider.
+On the left-hand side, select **Applications → Applications**. Click **Create with Wizard** to create both an application and a provider in one step.
 
 ![scim-for-authentik-2](./authentik2.png)
 

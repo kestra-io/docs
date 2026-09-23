@@ -116,7 +116,7 @@ Full autonomy is not always desirable, especially in critical enterprise process
 
 ## Benefits of Orchestrating AI Agents with a Unified Platform
 
-Using a dedicated orchestration platform like Kestra for your agentic workflows provides significant advantages over ad-hoc scripts or embedded framework logic. The benefits extend beyond simple task execution to encompass reliability, scalability, and governance.
+Using a dedicated orchestration platform like Kestra for your agentic workflows provides significant advantages over ad-hoc scripts or embedded framework logic. The benefits extend beyond simple task execution to encompass reliability, scalability, and governance. Agents rarely stay inside one domain, which is why the [unified orchestration whitepaper](/resources/whitepapers/unified-orchestration) treats agentic AI as a layer governed across data, infrastructure, applications and business processes rather than a silo of its own.
 
 ### Enhanced Reliability and Error Handling
 

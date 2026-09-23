@@ -18,7 +18,7 @@
   },
   "overrides": [
       {
-          "files": ["scripts/*.mjs", "src/middleware.ts"],
+          "files": ["scripts/*.mjs", "harness/*.mjs", "src/middleware.ts"],
           "rules": {
               "no-console": "off",
           },

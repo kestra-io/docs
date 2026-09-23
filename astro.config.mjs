@@ -37,6 +37,20 @@ const __dirname = path.dirname(
 // sharp) and Cloudflare only for the build.
 const isDev = process.argv.includes("dev")
 
+// Cloudflare's image service only runs on Cloudflare. `NO_IMAGE_OPTIM` serves
+// the originals instead, which is fast but leaves multi-MB images in the page.
+const imageService = () => {
+    // The Lighthouse benchmark measures what images cost, so it pays ~10 min of
+    // sharp at build time rather than benchmarking untransformed originals.
+    if (process.env.IMAGE_OPTIM_AT_BUILD === "true") {
+        return /** @type {const} */ ({
+            build: "compile",
+            runtime: "passthrough",
+        })
+    }
+    return process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare"
+}
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
@@ -45,11 +59,7 @@ export default defineConfig({
         : cloudflare({
               sessionKVBindingName: "docs-session",
               prerenderEnvironment: "node",
-              // only use cloudflare images in production
-              imageService:
-                  process.env.NO_IMAGE_OPTIM === "true"
-                      ? "passthrough"
-                      : "cloudflare",
+              imageService: imageService(),
           }),
     trailingSlash: "never",
     integrations: [
@@ -225,6 +235,13 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            // ISO date. Set only by the visual-snapshot workflow so dated
+            // content added after it never moves a screenshot baseline.
+            SNAPSHOT_CUTOFF: envField.string({
+                context: "server",
+                access: "public",
+                optional: true,
+            }),
         },
     },
     // require for "/t" url
@@ -303,9 +320,9 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    // silence invasive bootstrap warnings
+                    // `@import` and the global built-ins are still used by our own
+                    // stylesheets; `if-function` comes from NavToc's `if()` calls.
                     silenceDeprecations: [
-                        "color-functions",
                         "global-builtin",
                         "import",
                         "if-function",

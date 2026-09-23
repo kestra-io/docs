@@ -173,7 +173,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Upload scripts folder to prod
-        uses: kestra-io/github-actions/deploy-namespace-files@main
+        uses: kestra-io/deploy-namespace-files-action@main
         with:
           localPath: ./scripts           # folder in the repo
           namespacePath: scripts         # destination path in the namespace

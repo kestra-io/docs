@@ -1,9 +1,13 @@
 ---
 import { getCollection } from "astro:content"
+import type { OrchestrationData } from "~/schemas/orchestration"
+import { beforeCutoff } from "~/utils/snapshotCutoff"
 import {
+    apiPayloadDigest,
     collectionMetadataDigest,
     entryCacheKey,
     layoutDigest,
+    pluginIconDigest,
 } from "~/utils/incrementalCacheKey"
 
 import Layout from "~/components/layout.astro"
@@ -88,6 +92,37 @@ const LOGO_MAP: Record<string, string> = {
 }
 
 export async function getStaticPaths() {
+    // Astro tree-shakes the rest of the frontmatter out of the getStaticPaths
+    // module, so anything this needs has to be defined inside it.
+    // The graph is derived from the flow source, and the API regenerates its
+    // node ids and edge order per request, so the source stands in for both.
+    const blueprintPayloads = (data: OrchestrationData) => [
+        ...data.blueprints.items.flatMap((item) =>
+            item.blueprintId
+                ? [`/blueprints/${item.blueprintId}/versions/latest`]
+                : [],
+        ),
+    ]
+    // Only the total reaches the page, so it keys them rather than the search
+    // payload it is read from, which carries a result the page never renders.
+    const blueprintCount = async (data: OrchestrationData) => {
+        try {
+            const search = await $fetchApiCached<{ total: number }>(
+                `/blueprints/versions/latest?q=${encodeURIComponent(data.tool.name)}&size=1`,
+            )
+            return `b${search?.total ?? 0}`
+        } catch {
+            // Matches the page's own fallback, so the key tracks what renders.
+            return "b0"
+        }
+    }
+    const iconClasses = (data: OrchestrationData) => [
+        data.tool.pluginClass,
+        ...data.comparison.competitors.flatMap((c) =>
+            c.pluginClass ? [c.pluginClass] : [],
+        ),
+    ]
+
     const entries = await getCollection("orchestration")
     // The page also renders the blog list, so blog metadata is part of its key,
     // as is the live plugin count substituted into the entry.
@@ -96,11 +131,21 @@ export async function getStaticPaths() {
         await layoutDigest(),
         `p${await fetchTotalPluginsCount()}`,
     ]
-    return entries.map((entry) => ({
-        params: { slug: entry.id },
-        props: { entry },
-        cacheKey: entryCacheKey(entry, ...scope),
-    }))
+    return await Promise.all(
+        entries.map(async (entry) => ({
+            params: { slug: entry.id },
+            props: { entry },
+            // Blueprint sources, counts and plugin icons are fetched per entry,
+            // so each one keys its own page.
+            cacheKey: entryCacheKey(
+                entry,
+                ...scope,
+                await apiPayloadDigest(...blueprintPayloads(entry.data)),
+                await blueprintCount(entry.data),
+                await pluginIconDigest(...iconClasses(entry.data)),
+            ),
+        })),
+    )
 }
 
 const { entry } = Astro.props
@@ -172,7 +217,7 @@ const pluginDocsUrl =
 
 const toolKeyword = tool.name.toLowerCase().split(" ")[0]
 const allBlogs = await getCollection("blogs")
-const relatedBlogs = allBlogs
+const relatedBlogs = beforeCutoff(allBlogs, (b) => b.data.date)
     .filter(
         (b) =>
             b.id.toLowerCase().includes(toolKeyword) ||
