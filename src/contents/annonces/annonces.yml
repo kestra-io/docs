@@ -1,5 +1,5 @@
 - id: 1
-  tag: "Hacktoberfest 2026"
-  linkText: "Put your PRs into Kestra:"
-  tail: "registration is open, submissions run October 1 to 31"
-  href: "/hacktoberfest"
+  tag: "Kestra Academy"
+  linkText: "Become Kestra Certified:"
+  tail: "Infrastructure Automation, AI Workflows and Data Pipelines courses"
+  href: "https://academy.kestra.io/"
