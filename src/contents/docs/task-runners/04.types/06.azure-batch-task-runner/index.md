@@ -235,7 +235,7 @@ Now that you’ve created your Batch account, storage account, pool, and contain
 
 ### Creating your flow
 
-Below is an example flow that runs a Python file called `main.py` on an Azure Batch task runner. At the top of the `io.kestra.plugin.scripts.python.Commands` task, you’ll define the task runner properties:
+Below is an example flow that runs a Python file called `main.py` on an Azure Batch task runner. At the top of the [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands) task, you’ll define the task runner properties:
 
 ```yaml
 containerImage: ghcr.io/kestra-io/pydata:latest

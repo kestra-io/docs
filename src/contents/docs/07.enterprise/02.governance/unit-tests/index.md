@@ -412,7 +412,7 @@ This approach allows you to test the complete flow logic while avoiding the over
 
 ## Assert expected failure state
 
-Some flows are designed to fail when conditions are not met — for example, a validation guard that uses `io.kestra.plugin.core.execution.Fail` to reject invalid inputs. The `expectedState` property on a test case lets you assert that a flow ends in a specific terminal state. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state.
+Some flows are designed to fail when conditions are not met — for example, a validation guard that uses [io.kestra.plugin.core.execution.Fail](/plugins/core/execution/io.kestra.plugin.core.execution.fail) to reject invalid inputs. The `expectedState` property on a test case lets you assert that a flow ends in a specific terminal state. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state.
 
 The following flow fails when the supplied quantity is not positive:
 

@@ -167,22 +167,22 @@ Like `serviceAccounts.Set`, `groups.Set` upserts by name and outputs the group `
 
 | Task | Purpose |
 | --- | --- |
-| `io.kestra.plugin.kestra.ee.iam.invitations.Create` | Invite a user; optionally assign to groups |
-| `io.kestra.plugin.kestra.ee.iam.invitations.List` | List pending invitations |
-| `io.kestra.plugin.kestra.ee.iam.invitations.Delete` | Cancel a pending invitation |
-| `io.kestra.plugin.kestra.ee.iam.groups.Set` | Create or update a group (upsert by name) |
-| `io.kestra.plugin.kestra.ee.iam.groups.List` | List groups |
-| `io.kestra.plugin.kestra.ee.iam.groups.Delete` | Delete a group by ID |
-| `io.kestra.plugin.kestra.ee.iam.groups.AddMember` | Add a user to a group |
-| `io.kestra.plugin.kestra.ee.iam.groups.RemoveMember` | Remove a user from a group |
-| `io.kestra.plugin.kestra.ee.iam.roles.Set` | Create or update a role (upsert by name) |
-| `io.kestra.plugin.kestra.ee.iam.roles.List` | List roles |
-| `io.kestra.plugin.kestra.ee.iam.roles.Delete` | Delete a role by ID |
-| `io.kestra.plugin.kestra.ee.iam.bindings.Set` | Attach a role to a user or group (use `USER` for service accounts) |
-| `io.kestra.plugin.kestra.ee.iam.serviceAccounts.Set` | Create or update a service account (upsert by name) |
-| `io.kestra.plugin.kestra.ee.iam.serviceAccounts.List` | List service accounts |
-| `io.kestra.plugin.kestra.ee.iam.serviceAccounts.Delete` | Delete a service account by ID |
-| `io.kestra.plugin.kestra.ee.iam.tenantAccess.Set` | Grant a user access to the tenant by email |
-| `io.kestra.plugin.kestra.ee.iam.tenantAccess.Delete` | Revoke a user's tenant access by user ID |
+| [io.kestra.plugin.kestra.ee.iam.invitations.Create](/plugins/plugin-kestra/kestra-iam-invitations/io.kestra.plugin.kestra.ee.iam.invitations.create) | Invite a user; optionally assign to groups |
+| [io.kestra.plugin.kestra.ee.iam.invitations.List](/plugins/plugin-kestra/kestra-iam-invitations/io.kestra.plugin.kestra.ee.iam.invitations.list) | List pending invitations |
+| [io.kestra.plugin.kestra.ee.iam.invitations.Delete](/plugins/plugin-kestra/kestra-iam-invitations/io.kestra.plugin.kestra.ee.iam.invitations.delete) | Cancel a pending invitation |
+| [io.kestra.plugin.kestra.ee.iam.groups.Set](/plugins/plugin-kestra/kestra-iam-groups/io.kestra.plugin.kestra.ee.iam.groups.set) | Create or update a group (upsert by name) |
+| [io.kestra.plugin.kestra.ee.iam.groups.List](/plugins/plugin-kestra/kestra-iam-groups/io.kestra.plugin.kestra.ee.iam.groups.list) | List groups |
+| [io.kestra.plugin.kestra.ee.iam.groups.Delete](/plugins/plugin-kestra/kestra-iam-groups/io.kestra.plugin.kestra.ee.iam.groups.delete) | Delete a group by ID |
+| [io.kestra.plugin.kestra.ee.iam.groups.AddMember](/plugins/plugin-kestra/kestra-iam-groups/io.kestra.plugin.kestra.ee.iam.groups.addmember) | Add a user to a group |
+| [io.kestra.plugin.kestra.ee.iam.groups.RemoveMember](/plugins/plugin-kestra/kestra-iam-groups/io.kestra.plugin.kestra.ee.iam.groups.removemember) | Remove a user from a group |
+| [io.kestra.plugin.kestra.ee.iam.roles.Set](/plugins/plugin-kestra/kestra-iam-roles/io.kestra.plugin.kestra.ee.iam.roles.set) | Create or update a role (upsert by name) |
+| [io.kestra.plugin.kestra.ee.iam.roles.List](/plugins/plugin-kestra/kestra-iam-roles/io.kestra.plugin.kestra.ee.iam.roles.list) | List roles |
+| [io.kestra.plugin.kestra.ee.iam.roles.Delete](/plugins/plugin-kestra/kestra-iam-roles/io.kestra.plugin.kestra.ee.iam.roles.delete) | Delete a role by ID |
+| [io.kestra.plugin.kestra.ee.iam.bindings.Set](/plugins/plugin-kestra/kestra-iam-bindings/io.kestra.plugin.kestra.ee.iam.bindings.set) | Attach a role to a user or group (use `USER` for service accounts) |
+| [io.kestra.plugin.kestra.ee.iam.serviceAccounts.Set](/plugins/plugin-kestra/kestra-iam-service-accounts/io.kestra.plugin.kestra.ee.iam.serviceaccounts.set) | Create or update a service account (upsert by name) |
+| [io.kestra.plugin.kestra.ee.iam.serviceAccounts.List](/plugins/plugin-kestra/kestra-iam-service-accounts/io.kestra.plugin.kestra.ee.iam.serviceaccounts.list) | List service accounts |
+| [io.kestra.plugin.kestra.ee.iam.serviceAccounts.Delete](/plugins/plugin-kestra/kestra-iam-service-accounts/io.kestra.plugin.kestra.ee.iam.serviceaccounts.delete) | Delete a service account by ID |
+| [io.kestra.plugin.kestra.ee.iam.tenantAccess.Set](/plugins/plugin-kestra/kestra-iam-tenant-access/io.kestra.plugin.kestra.ee.iam.tenantaccess.set) | Grant a user access to the tenant by email |
+| [io.kestra.plugin.kestra.ee.iam.tenantAccess.Delete](/plugins/plugin-kestra/kestra-iam-tenant-access/io.kestra.plugin.kestra.ee.iam.tenantaccess.delete) | Revoke a user's tenant access by user ID |
 
 For full property reference, see the [plugin-kestra documentation](/plugins/plugin-kestra).
