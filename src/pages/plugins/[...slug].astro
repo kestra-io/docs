@@ -29,7 +29,10 @@ import {
 } from "~/utils/plugins/fetchPluginPageData"
 import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
 import { findFamilySiblings } from "~/utils/plugins/pluginFamily"
-import { resolveShortElementSlug } from "~/utils/plugins/shortElementSlug"
+import {
+    resolveShortElementSlug,
+    resolveVersionedShortElementSlug,
+} from "~/utils/plugins/shortElementSlug"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
 import pluginGridUrl from "~/components/plugins/assets/plugin-grid.svg?url"
@@ -122,12 +125,18 @@ const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
 
 // `/plugins/<plugin>/<subgroup>/<bareName>` is not a page; rendering the subgroup
-// there produced a self-canonical duplicate whose element links all 301.
-if (!versionState.version) {
-    const shortSlugTarget = resolveShortElementSlug(splitRouteSlug, pathname, pageList)
-    if (shortSlugTarget) {
-        return Astro.redirect(shortSlugTarget, 301)
-    }
+// there produced a self-canonical duplicate whose element links all 301. `pageList` is
+// unversioned, so the versioned shape matches on canonicalPathname and gets the version back.
+const shortSlugTarget = versionState.version
+    ? resolveVersionedShortElementSlug(
+          splitRouteSlug,
+          canonicalPathname,
+          pageList,
+          versionState.version,
+      )
+    : resolveShortElementSlug(splitRouteSlug, pathname, pageList)
+if (shortSlugTarget) {
+    return Astro.redirect(shortSlugTarget, 301)
 }
 
 if (versionState.version) {
