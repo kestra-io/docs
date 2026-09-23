@@ -109,6 +109,11 @@ Some plugins support automatic asset generation when `assets.enableAuto: true` i
 - **JDBC Query**: detects `CREATE TABLE` statements and emits a single `io.kestra.plugin.ee.assets.Table` output; JDBC URL populates `system` and `database`.
 - **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.core.models.assets.External`, marking the infrastructure targets the playbook runs against.
 - **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
+- **Helm**: `Upgrade`, `Rollback`, `Status`, and `Uninstall` emit a `io.kestra.plugin.ee.assets.HelmRelease` output for the release plus one `io.kestra.plugin.ee.assets.KubernetesResource` output per managed resource (`Deployment`, `Service`, `Ingress`, etc.); the chart reference and any `valuesFrom` files are declared as inputs.
+
+:::alert{type="warning"}
+`assets.enableAuto` is the single switch that controls whether a task's emitted assets are captured at all — for plugins that call the asset emission API programmatically (JDBC Query, dbt CLI, Helm), setting `assets.enableAuto: true` is what makes emission take effect, not only what enables auto-*detection* of dynamically-referenced assets. Without it, the plugin can still log that it emitted assets while nothing is actually recorded, since the emission is silently discarded.
+:::
 
 :::collapse{title="JDBC Query auto-generated assets"}
 
@@ -196,6 +201,27 @@ tasks:
             target: dev
         assets:
           enableAuto: true
+```
+
+:::
+
+:::collapse{title="Helm auto-generated assets"}
+
+```yaml
+id: helm_upgrade_release
+namespace: company.team
+
+tasks:
+  - id: upgrade
+    type: io.kestra.plugin.helm.Upgrade
+    releaseName: nginx
+    namespace: web
+    chart:
+      repository: https://kubernetes.github.io/ingress-nginx
+      name: ingress-nginx
+      version: 4.11.3
+    assets:
+      enableAuto: true
 ```
 
 :::
