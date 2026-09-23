@@ -40,6 +40,7 @@ const LHR_DIR = process.env.LHR_DIR ?? "lhr-reports"
 // pulls the worker and the shared layout assets without touching the sample.
 const WARMUP_PATH = process.env.WARMUP_PATH ?? "/privacy-policy"
 const WARMUP_REQUESTS = 3
+const CHROME_FLAGS = ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage"]
 
 // Overrides the `runs` counts carried by the page sample when set above 0.
 const MULTI_RUN_COUNT = Math.max(
@@ -201,6 +202,38 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
 }
 
 /**
+ * Launches Chrome, retrying a failed start. One refused DevTools port took out
+ * a whole shard before this, and it is the runner failing, not the flags.
+ *
+ * killAll between attempts because chrome-launcher registers an instance
+ * before it starts it, so a throw leaves a process nobody holds a handle to.
+ *
+ * @param {{ launch: (opts: object) => Promise<any>; killAll: () => unknown[] }} chromeLauncher
+ * @param {number} [maxRetries=2]
+ */
+async function launchChromeWithRetry(chromeLauncher, maxRetries = 2) {
+    let lastError = /** @type {unknown} */ (null)
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            return await chromeLauncher.launch({
+                chromeFlags: CHROME_FLAGS,
+            })
+        } catch (err) {
+            lastError = err
+            chromeLauncher.killAll()
+            const message = err instanceof Error ? err.message : String(err)
+            if (attempt < maxRetries) {
+                console.log(
+                    `  Chrome launch ${attempt + 1} failed (${message}), retrying in 3 s…`,
+                )
+                await new Promise((r) => setTimeout(r, 3000))
+            }
+        }
+    }
+    throw lastError
+}
+
+/**
  * Requests a page a few times, discarding every response, so the work its
  * first hit does stays out of the measured traces.
  *
@@ -331,13 +364,7 @@ async function main() {
     )
 
     // Launch Chrome once and reuse for all pages.
-    const chrome = await chromeLauncher.launch({
-        chromeFlags: [
-            "--headless=new",
-            "--no-sandbox",
-            "--disable-dev-shm-usage",
-        ],
-    })
+    const chrome = await launchChromeWithRetry(chromeLauncher)
 
     console.log(`Chrome launched on port ${chrome.port}\n`)
 
