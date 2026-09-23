@@ -13,7 +13,7 @@ Kestra supports three authentication methods: Basic Auth (enabled by default), O
   <iframe src="https://www.youtube.com/embed/MNXewBufBw0?si=CGjEVa-KEDN5N5ii" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Configure JWT signing keys to secure session tokens. These keys must be the same across all Webserver instances.
+JWT signing keys secure session tokens and must be identical across all Webserver instances.
 
 ```yaml
 micronaut:
@@ -35,7 +35,7 @@ You can change the JWT cookie behavior using [Micronaut Cookie Token Reader](htt
 
 ## Basic authentication
 
-The default installation comes with no users defined. To create an administrator account, use the following CLI command:
+The default installation comes with no users defined. An administrator account is created with the CLI:
 
 ```bash
 ./kestra auths users create --admin --username=<admin-username> --password=<admin-password> --tenant=<tenant-id>
@@ -47,7 +47,7 @@ When using `--admin`, `--tenant` is required to specify which tenant the admin r
 
 Single Sign-On (SSO) is an authentication process that allows users to access multiple applications with one set of login credentials (e.g., Sign in with Google). Kestra supports SSO using the OpenID Connect (OIDC) protocol, which is a simple identity layer built on top of the OAuth 2.0 protocol.
 
-Enable OIDC in your Micronaut configuration:
+OIDC is enabled in the Micronaut configuration:
 
 ```yaml
 micronaut:
@@ -70,7 +70,7 @@ Passwordless login lets users sign in without a password. When a user enters the
 
 OTP requires a mail service to deliver codes. Configure the mail service before enabling OTP — see [Enterprise and Advanced configuration](../../../configuration/06.enterprise-and-advanced/index.md#mail-service) for the full property reference.
 
-Enable OTP and optionally tune its defaults:
+OTP is enabled via the following configuration:
 
 ```yaml
 kestra:
@@ -85,5 +85,5 @@ kestra:
 ```
 
 :::alert{type="info"}
-OTP is more convenient than Basic Auth but less secure than SSO with MFA. Prefer [OIDC/SSO](../sso/index.md) with MFA enabled at the identity provider when security is the priority.
+OTP is more convenient than Basic Auth but less secure than SSO with MFA. [OIDC/SSO](../sso/index.md) with MFA enabled at the identity provider provides the strongest security posture.
 :::

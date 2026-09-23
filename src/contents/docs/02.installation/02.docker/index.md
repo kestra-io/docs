@@ -237,6 +237,8 @@ RUN /app/kestra plugins install \
   io.kestra.plugin:plugin-gcp:LATEST
 ```
 
+To pre-download plugins with `kestractl` before building — including Enterprise plugins from a private registry — see [Add Plugins to a Slim Kestra Docker Image](../../15.how-to-guides/slim-image-plugins/index.md).
+
 ### Add custom plugins to a Docker image
 
 The above `Dockerfile` installs plugins that have already been published to [Maven Central](https://central.sonatype.com/). If you are developing a custom plugin, make sure to build it following our [plugin developer guide](../../plugin-developer-guide/index.mdx). Once the `shadowJar` is built, add it to the plugins directory:

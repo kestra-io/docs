@@ -19,6 +19,7 @@
     import Youtube from "vue-material-design-icons/Youtube.vue"
     import Github from "vue-material-design-icons/Github.vue"
     import Linkedin from "vue-material-design-icons/Linkedin.vue"
+    import Reddit from "vue-material-design-icons/Reddit.vue"
     import Twitter from "~/components/icons/TwitterXIcon.vue"
     import BlueSky from "~/components/icons/BlueSkyIcon.vue"
 
@@ -42,6 +43,11 @@
             href: "https://www.linkedin.com/company/kestra",
             icon: Linkedin,
             text: "LinkedIn",
+        },
+        {
+            href: "https://www.reddit.com/r/kestra_io/",
+            icon: Reddit,
+            text: "Reddit",
         },
         {
             href: "https://twitter.com/kestra_io",
