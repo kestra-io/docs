@@ -10,7 +10,7 @@
  *   BASE_URL        – Root URL to benchmark, no trailing slash (required)
  *   OUTPUT_FILE     – Path for JSON output  (default: lighthouse-results.json)
  *   LHR_DIR         – Directory for per-page LHR JSON dumps (default: lhr-reports)
- *   MULTI_RUN_COUNT – Overrides the `runs` counts in the page sample
+ *   MULTI_RUN_COUNT – Runs per page, overriding the sample and its default
  *   SHARD_INDEX     – 0-based shard to measure (default: 0)
  *   SHARD_TOTAL     – Number of shards the sample is split across (default: 1)
  *   WARMUP_PATH     – Page warmed before measuring (default: /privacy-policy);
@@ -41,7 +41,8 @@ const LHR_DIR = process.env.LHR_DIR ?? "lhr-reports"
 const WARMUP_PATH = process.env.WARMUP_PATH ?? "/privacy-policy"
 const WARMUP_REQUESTS = 3
 
-// Overrides the `runs` counts carried by the page sample when set above 0.
+// Replaces every page's count, the DEFAULT_RUNS ones included, when set
+// above 0. MULTI_RUN_COUNT=1 is the fast local pass.
 const MULTI_RUN_COUNT = Math.max(
     0,
     Math.trunc(Number(process.env.MULTI_RUN_COUNT ?? 0)) || 0,

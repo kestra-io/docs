@@ -109,16 +109,22 @@ export function median(values) {
     return sorted[Math.floor((sorted.length - 1) / 2)]
 }
 
+// Runs for a page that names no count of its own. A single pass swings by up
+// to 20 points between CI runs; a median of 3 holds inside 4 (see #5707).
+export const DEFAULT_RUNS = 3
+
 /**
- * Runs to measure for a page: what the sample asks for, 1 by default.
+ * Runs to measure for a page: what the sample asks for, DEFAULT_RUNS otherwise.
+ * An explicit `runs: 1` still opts a page out of the median.
  *
  * @param {typeof PAGES[number]} page
  * @param {number} [override] Replaces every count above 1 when set.
  * @returns {number}
  */
 export function runsFor(page, override = 0) {
-    if (!page.runs || page.runs < 2) return 1
-    return override || page.runs
+    const runs = page.runs ?? DEFAULT_RUNS
+    if (runs < 2) return 1
+    return override || runs
 }
 
 /**
