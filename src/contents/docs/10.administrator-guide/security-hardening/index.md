@@ -61,7 +61,7 @@ kestra:
         - https://api.example.com
         - https://*.data.partner.io   # matches foo.data.partner.io, bar.data.partner.io, etc.
       denied-list:
-        - http://169.254.169.254
+        - 169.254.0.0/16              # link-local range (AWS/GCP/Azure IMDS), all schemes
         - http://localhost
         - http://127.0.0.1
 ```
@@ -71,29 +71,43 @@ kestra:
 | `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must match at least one entry or the task fails. |
 | `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
 
-Both lists are empty by default — no filtering is applied unless you configure them.
+Both lists are empty by default. No filtering is applied unless you configure them.
 
 When both lists are set, the allowed-list is checked first. A URI that matches an allowed-list entry but also matches a denied-list entry is still blocked.
 
+:::alert{type="warning"}
+**`allowed-list` is the enforcement boundary; `denied-list` is best-effort.** A hostname in the denied-list can be made to resolve to an IP that is not blocked, bypassing the check. The allowed-list cannot be bypassed this way: only entries that explicitly match are permitted. For strong SSRF protection, prefer an `allowed-list` over a `denied-list`.
+:::
+
 ### Matching rules
 
-Host matching is **exact** by default. The scheme and port must also match. The path is prefix-matched.
+Host matching is exact by default. The scheme and port must also match when specified. The path is prefix-matched.
 
 - `https://api.example.com` matches `https://api.example.com/v1/data` but not `https://sub.api.example.com/v1/data`.
 - `http://169.254.169.254` blocks `http://169.254.169.254/latest/meta-data/...`.
 
-**Wildcard subdomain matching**: prefix an entry with `*.` to match all subdomains of a host. A wildcard entry matches subdomains only — not the host itself.
+**Wildcard subdomain matching**: prefix an entry with `*.` to match all subdomains of a hostname. Wildcards do not apply to IP addresses.
 
 - `*.example.com` (or `https://*.example.com`) matches `foo.example.com` and `bar.example.com` but not `example.com`.
 - To match both a domain and all its subdomains, add two entries: `example.com` and `*.example.com`.
 
-Matching is not CIDR or glob-based. IP ranges cannot be expressed as a single entry; list each address explicitly.
+**CIDR range matching**: write an entry as `network/prefixLength` to match every IP address in a range.
+
+- `169.254.0.0/16` blocks any address in the link-local range, regardless of scheme.
+- `http://10.0.0.0/8` blocks HTTP requests to any RFC-1918 `10.x.x.x` address.
+- A CIDR entry matches only IP literals, never hostnames.
+
+**IP canonicalization**: all textual representations of the same address match the same entry. `2852039166`, `169.254.43518`, and `169.254.169.254` are equivalent. No DNS lookup is performed during matching.
+
+**Underscore hostnames**: hosts containing underscores (e.g. `kestra_internal_db`) are matched correctly.
 
 When a URI is blocked, the task fails with an error that identifies the matching config key:
 
 ```
 The URI http://169.254.169.254/... is in the configured denied list (kestra.tasks.http.denied-list).
 ```
+
+When a list is configured but the URI has no parseable host, the request is rejected rather than passing through silently.
 
 :::alert{type="info"}
 This filter applies to HTTP plugin tasks and the `http()` Pebble expression function.
