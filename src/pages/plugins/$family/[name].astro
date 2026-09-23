@@ -89,6 +89,17 @@ const description = `Browse all ${siblings.length} ${displayName} plugins availa
 </Layout>
 
 <style lang="scss">
+    // DocsLayout.astro's own ".bd-title" rule is scoped to that component and never
+    // reaches this page, so this page needs its own copy of the same spacing.
+    .bd-title {
+        @include media-breakpoint-up(lg) {
+            margin-top: 4rem;
+        }
+        @include media-breakpoint-down(md) {
+            margin-top: 2rem;
+        }
+    }
+
     .family-nav {
         font-size: $font-size-sm;
 

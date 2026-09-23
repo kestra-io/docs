@@ -377,29 +377,24 @@ const pluginSchema = pluginType
       }
 
 // plugin-jdbc-oracle etc. ship as unrelated top-level plugins (see pluginFamily.ts), so the
-// nav tree has no "JDBC" ancestor to derive from the URL alone: insert it into the breadcrumb
-// built from the real page hierarchy instead of the synthesized family URL.
+// nav tree has no "JDBC" ancestor to derive from the URL alone: insert it into both the
+// visible breadcrumb and its JSON-LD twin via their shared `prependItems` mechanism.
 const pluginFamilyName = pluginName ? familyNameForPlugin(pluginName, familyIndex) : undefined
-const familyBreadcrumbItems = pluginFamilyName
-    ? (() => {
-          const segments = [...new Set(canonicalPathname.split("/").filter(Boolean))]
-          const crumbs = segments.map((segment, index, arr) => {
-              const href = "/" + arr.slice(0, index + 1).join("/")
-              return {
-                  label: pageNamesHeading?.[href] ?? segment,
-                  href: index === 0 || pageList.includes(href) ? href : "",
-              }
-          })
-          return [
-              crumbs[0],
-              { label: formatPluginName(pluginFamilyName), href: `/plugins/${pluginFamilyName}` },
-              ...crumbs.slice(1),
-          ]
-      })()
+const familyDisplayName = pluginFamilyName ? formatPluginName(pluginFamilyName) : undefined
+const familyPrependItems = pluginFamilyName
+    ? [{ label: familyDisplayName!, href: `/plugins/${pluginFamilyName}` }]
+    : undefined
+const familyBreadcrumbListItems = pluginFamilyName
+    ? [{ name: familyDisplayName!, url: `https://kestra.io/plugins/${pluginFamilyName}` }]
     : undefined
 ---
 
-<Layout title={headingTitle} description={headingDescription} image={ogImage}>
+<Layout
+    title={headingTitle}
+    description={headingDescription}
+    image={ogImage}
+    breadcrumbPrependItems={familyBreadcrumbListItems}
+>
     <Fragment slot="head">
         {/* This decorative background on .plugin-details is the page's LCP
             image, but as a CSS background it is only discovered once the
@@ -441,17 +436,12 @@ const familyBreadcrumbItems = pluginFamilyName
                 )
             }
             <div class="bd-title">
-                {
-                    familyBreadcrumbItems ? (
-                        <Breadcrumb items={familyBreadcrumbItems} />
-                    ) : (
-                        <Breadcrumb
-                            slug={canonicalPathname}
-                            pageList={pageList}
-                            pageNames={pageNamesHeading}
-                        />
-                    )
-                }
+                <Breadcrumb
+                    slug={canonicalPathname}
+                    pageList={pageList}
+                    pageNames={pageNamesHeading}
+                    prependItems={familyPrependItems}
+                />
                 {
                     page && (
                         <OneHeader

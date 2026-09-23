@@ -19,6 +19,21 @@ const familyIndex = buildFamilyIndex(
     await $fetchApiCached<ArtifactsResponse>(`/plugins/artifacts`),
 )
 
+// Longest package-name prefix all of a family's members share, e.g. "io.kestra.plugin.jdbc"
+// for plugin-jdbc-oracle/-postgres/-... — the real, existing icon key for the family as a
+// whole, rather than a guess derived from the family/repo name string.
+function commonGroupPrefix(groups: string[]): string | undefined {
+    const segmentsList = groups.map((g) => g.split("."))
+    let end = segmentsList[0]?.length ?? 0
+    for (const segments of segmentsList.slice(1)) {
+        let i = 0
+        while (i < end && segments[i] === segmentsList[0][i]) i++
+        end = i
+    }
+    // "io.kestra.plugin" alone is too generic to be a real icon key.
+    return end >= 4 ? segmentsList[0].slice(0, end).join(".") : undefined
+}
+
 const nonDeprecatedPlugins = filterPluginsWithoutDeprecated(rawPlugins)
 const pluginsByName = nonDeprecatedPlugins.reduce(
     (acc, p) => ((acc[p.name] ??= []).push(p), acc),
@@ -36,6 +51,9 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
 // they'd each get their own Hub card instead of surfacing the "/plugins/<family>" overview page.
 const familyMembers: Record<string, Plugin[]> = {}
 const nonFamilyPlugins = filteredPlugins.filter((p) => {
+    // A family member that ever ships its own subgroup would need to keep both its
+    // family card AND its own card; none does today, so this guard just excludes it
+    // from collapsing rather than handling that (currently nonexistent) case.
     const family = p.subGroup ? undefined : familyNameForPlugin(p.name, familyIndex)
     if (!family) return true
     ;(familyMembers[family] ??= []).push(p)
@@ -48,27 +66,30 @@ const totalPluginCount = `${formatPluginCount(calculateTotalPlugins(rawPlugins))
 const rootGroups = new Set(
     nonDeprecatedPlugins.filter((p) => !p.subGroup).map((p) => p.group),
 )
+const urlIndex = buildPluginUrlIndex(rawPlugins)
 const familyCards: CardPlugin[] = Object.entries(familyMembers).map(([family, members]) => {
     const title = formatPluginName(family)
+    const memberCards = prunePluginsForCards(members, rawPluginsData.byPlugin, urlIndex, rootGroups)
     return {
         name: family,
         title,
         group: family,
         description: `${members.length} ${title} plugins`,
-        elementCounts: members.reduce(
-            (sum, m) => sum + (rawPluginsData.byPlugin[m.group]?.elementCounts ?? 0),
-            0,
-        ),
+        categories: [...new Set(memberCards.flatMap((m) => m.categories ?? []))],
+        // Folds every member's own searchable text in, so e.g. searching "oracle" or
+        // "python" still surfaces the family card even though its own members no
+        // longer have their own cards (SEARCHABLE_FIELDS in PluginsLists.vue).
+        classes: memberCards
+            .flatMap((m) => [m.name, m.title, m.classes ?? ""])
+            .join(" "),
+        className: commonGroupPrefix(members.map((m) => m.group)),
+        elementCounts: memberCards.reduce((sum, m) => sum + (m.elementCounts ?? 0), 0),
+        blueprints: memberCards.reduce((sum, m) => sum + (m.blueprints ?? 0), 0),
         href: `/plugins/${family}`,
     }
 })
 const cardPlugins = [
-    ...prunePluginsForCards(
-        nonFamilyPlugins,
-        rawPluginsData.byPlugin,
-        buildPluginUrlIndex(rawPlugins),
-        rootGroups,
-    ),
+    ...prunePluginsForCards(nonFamilyPlugins, rawPluginsData.byPlugin, urlIndex, rootGroups),
     ...familyCards,
 ]
 const categories = [
