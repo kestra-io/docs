@@ -47,6 +47,11 @@ export function resolveShortElementSlug(
  * `pageList` holds unversioned paths, so the match runs on the version-stripped path and the
  * version segment is put back into the target — reusing the resolver as-is would 301 to a URL
  * with the version dropped.
+ *
+ * The target is only as good as `pageList`: the caller builds it from the requested version's
+ * own elements, but falls back to the latest catalog when `fetchVersionedSubgroups` degrades to
+ * `pending`/`unavailable`. A bare name can then 301 to an element page that did not exist at
+ * that version — still preferable to serving the self-canonical duplicate.
  */
 export function resolveVersionedShortElementSlug(
     splitRouteSlug: string[],
