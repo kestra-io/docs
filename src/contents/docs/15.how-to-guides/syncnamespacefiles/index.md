@@ -88,6 +88,30 @@ A full list is also available in the Outputs tab:
 
 ![git3](./git3.png)
 
+## Scoping sync to a namespace subdirectory
+
+Use `namespaceDirectory` to control where files land inside the namespace, independently of `gitDirectory` (which controls which folder in the repo to read from). The default `/` keeps existing behavior unchanged.
+
+```yaml
+id: sync_files_from_git
+namespace: company.ops
+
+tasks:
+  - id: sync_files
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    url: https://github.com/git_username/scripts
+    branch: main
+    namespace: git
+    gitDirectory: scripts
+    namespaceDirectory: /shared-scripts
+```
+
+This reads from the `scripts/` folder in the repository and writes into the `shared-scripts` folder of the `git` namespace. A file at `scripts/helpers/parse.py` in Git lands at `/shared-scripts/helpers/parse.py` in the namespace.
+
+When `delete: true` is set, only files under `namespaceDirectory` are eligible for deletion. Files elsewhere in the namespace are not touched, even if they are absent from Git. The `dryRun` diff output reflects the prefix in the `kestraPath` column.
+
 ## Set up a schedule
 
 A common use case for this task is to set up a routine schedule to keep Kestra in sync with the Git repository. Add a [Schedule trigger](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md). This example has a cron expression to execute once every hour:

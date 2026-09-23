@@ -91,6 +91,8 @@ tasks:
 
 On Enterprise Edition, if the target `namespace` does not exist, `SyncNamespaceFiles` creates it automatically before writing any files. The task needs credentials to do this: configure task-level `auth` or instance-level `kestra.tasks.sdk.authentication.*` (see [SDK authentication](../../11.migration-guide/v2.0.0/sdk-authentication/index.md)). Without credentials, the task logs a warning and continues, but the namespace will not appear in the UI until it is created manually. On OSS, namespaces have no create API and this behavior is not available.
 
+Use `namespaceDirectory` to control where files land inside the namespace independently of `gitDirectory`. For example, `gitDirectory: scripts` paired with `namespaceDirectory: /shared-scripts` reads from the `scripts/` folder in the repo and writes into the `shared-scripts` folder in the namespace. When `delete: true` is set, only files under the `namespaceDirectory` prefix are eligible for deletion; files elsewhere in the namespace are not touched. `PushNamespaceFiles` accepts the same property and strips the prefix from the Git path, so a sync-then-push round-trip produces an empty diff.
+
 You can also trigger this flow with a [GitHub webhook](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) whenever changes land in Git:
 
 ```yaml
