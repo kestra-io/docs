@@ -120,7 +120,7 @@ Approve multiple paused workflows simultaneously:
 
 ### Audit Trails
 
-Audit Logs capture who approved or rejected each request, and the Pause task's outputs contain the user's decision:
+Audit Logs capture who approved or rejected each request, and the [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task's outputs contain the user's decision:
 ```json
 {
   "approved": true,
@@ -227,7 +227,7 @@ Long approvals can take days or weeks. Kestra persists execution state (includin
 
 ### Keep downstream logic in the same flow (simplest and most common pattern)
 
-The simplest pattern is to keep the entire downstream logic in the same flow after the Pause task:
+The simplest pattern is to keep the entire downstream logic in the same flow after the [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task:
 
 ```yaml
 id: pause_demo

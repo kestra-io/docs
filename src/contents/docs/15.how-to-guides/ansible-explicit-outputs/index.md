@@ -7,7 +7,7 @@ version: ">= 2.0.0"
 description: Use the bundled kestra Ansible module and outputsMode EXPLICIT to declare only the outputs you need, keeping sensitive per-host data out of Kestra's output store.
 ---
 
-By default, the AnsibleCLI task captures the full result payload from every Ansible module on every host, including `module_args` and raw return values. If your playbooks handle credentials, connection strings, or host-specific secrets, that raw output lands in Kestra's internal storage where it is visible to anyone with execution access.
+By default, the [AnsibleCLI](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli) task captures the full result payload from every Ansible module on every host, including `module_args` and raw return values. If your playbooks handle credentials, connection strings, or host-specific secrets, that raw output lands in Kestra's internal storage where it is visible to anyone with execution access.
 
 Setting `outputsMode: EXPLICIT` changes this behavior. Only the values you declare with the bundled `kestra` Ansible module appear in `vars.outputs`. Everything else in `vars.playbooks` is reduced to a status flag (`changed: true/false`), preserving play-level observability without leaking host data.
 

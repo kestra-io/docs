@@ -42,7 +42,7 @@ The `repositories.Search` task exposes a `fetchType` property that controls how 
 | `STORE` (default) | `uri` — an Ion file written to Kestra internal storage | Large result sets, auditing, or when you need to persist the raw data |
 | `NONE` | _(empty)_ | Triggering a side-effect without needing results |
 
-Use `FETCH` when you want to feed results directly into a Loop task with a simple Pebble expression. Use `STORE` when the result set may be large, when you want the raw file persisted in internal storage for inspection or reuse, or when downstream tasks need to read the data multiple times.
+Use `FETCH` when you want to feed results directly into a [Loop](/plugins/core/flow/io.kestra.plugin.core.flow.loop) task with a simple Pebble expression. Use `STORE` when the result set may be large, when you want the raw file persisted in internal storage for inspection or reuse, or when downstream tasks need to read the data multiple times.
 
 ---
 
