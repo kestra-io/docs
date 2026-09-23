@@ -23,13 +23,13 @@ All trigger types gain a top-level `when` property containing a Pebble expressio
 
 ### `when` expression context
 
-The variables available in a `when` expression depend on the trigger type:
+The variables available in a `when` expression depend on the trigger type. For Schedule and Webhook triggers, `when` is a single top-level expression. Flow triggers have two `when` locations: the top-level trigger `when` (evaluated before `dependsOn`) and `when` on each `dependsOn` entry (evaluated against the upstream execution). The table below describes the `dependsOn` entry context:
 
 | Trigger type | Available variables |
 |---|---|
 | Schedule | `trigger.date` |
 | Webhook | `trigger.body`, `trigger.headers` |
-| Flow | `flow.namespace`, `flow.id`, `state`, `labels`, `execution.outputs` |
+| Flow (`dependsOn.when`) | `flow.namespace`, `flow.id`, `execution.outputs` |
 
 `flow` refers to the upstream flow (the one that just completed). `execution.outputs` holds the upstream flow's declared outputs. `outputs` is also available but holds task outputs, not flow-level outputs — use `execution.outputs.<key>` to filter on flow outputs.
 
@@ -668,7 +668,7 @@ triggers:
 ```
 
 :::alert{type="warning"}
-`HasRetryAttempt` has no working replacement in the current Kestra 2.0 release. `hasRetryAttempt` is not yet available in the `when` expression context. Support is planned for a 2.0.x patch. Until then, this condition cannot be migrated.
+`HasRetryAttempt` has no working replacement. `hasRetryAttempt` is not available yet in the `when` expression context. Until it is, this condition cannot be migrated.
 :::
 
 ### Negation: trigger on any state except SUCCESS
@@ -686,7 +686,7 @@ triggers:
             in: [SUCCESS]
 ```
 
-**After (option 1: explicit states)**
+**After**
 
 ```yaml
 triggers:
@@ -698,17 +698,9 @@ triggers:
         states: [FAILED, WARNING, KILLED, CANCELLED]
 ```
 
-**After (option 2: `when` expression)**
-
-```yaml
-triggers:
-  - id: on_non_success
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: extract
-        namespace: company.team
-        when: "{{ state != 'SUCCESS' }}"
-```
+:::alert{type="warning"}
+`state` is not available in the `when` context. Use an explicit `states` list (option 1) to filter by execution state.
+:::
 
 ### Mixed triggers: success and failure on the same upstream flow
 
@@ -945,8 +937,8 @@ triggers:
 | `ExecutionNamespace` (`comparison: PREFIX`) | `when: "{{ flow.namespace \| startsWith('...') }}"` on the entry |
 | `ExecutionLabels` (`labels: {k: v}`) | `labels: {k: v}` on the `dependsOn` entry |
 | `ExecutionOutputs` (`expression`) | `when` with `execution.outputs.<key>` on the entry (flow-level outputs) |
-| `HasRetryAttempt` | no working replacement in the current 2.0 release; planned for a 2.0.x patch |
-| `Not` > `ExecutionStatus` | Explicit `states` list or `when: "{{ state != 'SUCCESS' }}"` |
+| `HasRetryAttempt` | no working replacement — `hasRetryAttempt` is not available yet in the `when` context |
+| `Not` > `ExecutionStatus` | Explicit `states` list only — `state` is not available in the `when` context |
 | Multiple triggers for OR logic | `mode: ANY` with `dependsOn` entries |
 | `preconditions.resetOnSuccess: true` | remove it, this is the only behavior in 2.0 |
 | `timeWindow.type: DAILY_TIME_DEADLINE` | `window.deadline` |
