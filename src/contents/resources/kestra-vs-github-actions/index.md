@@ -116,7 +116,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy Kestra Flows
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           server: ${{ secrets.KESTRA_SERVER_URL }}
           apiToken: ${{ secrets.KESTRA_API_TOKEN }}

@@ -20,11 +20,7 @@ For an end-to-end architecture walkthrough with diagrams, see [Assets for infras
   <iframe src="https://www.youtube.com/embed/XhICXP_GXic?si=jUBFcCv7vqSqqvKn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Declare and capture assets
-
-Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`; you can also add them manually from the **Assets** tab. Once created, you can view asset details, check which workflow runs created or modified them, and see how assets connect to each other across your workflows.
-
-Assets enable:
+Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`. You can also add them manually from the **Assets** tab. Assets enable:
 
 - Shipping metadata to lineage providers (e.g., OpenLineage).
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
@@ -213,6 +209,8 @@ Assets also support lifecycle management, event-driven triggers, and freshness m
 - Scope triggers by asset ID, namespace, type, and metadata filters.
 - Trigger context variables (`event`, `eventTime`, `lastUpdated`, `staleDuration`, `checkTime`) available for routing, alerting, and recovery logic.
 
+Freshness states for each asset are visible in the [dependencies graph](#explore-the-dependencies-graph).
+
 ### Trigger use mapping
 
 | Trigger | Primary use |
@@ -373,6 +371,53 @@ tasks:
 
 :::
 
+## Explore the dependencies graph
+
+The dependencies graph shows how assets relate to each other across your workflows. Open it from the **Graph** tab.
+
+### Tree and DAG layouts
+
+Two layout modes are available via the toggle in the graph toolbar:
+
+- **DAG** (directed acyclic graph): a deterministic ranked layout. Assets are ordered left-to-right by longest path, so the graph looks identical on every reload. Use this for a stable, presentation-ready view.
+- **Tree**: a force-directed layout that distributes nodes more evenly across the canvas. Use this for dense graphs where the DAG layout produces overlaps.
+
+Both modes show the same nodes and edges.
+
+### Freshness
+
+Each node displays the freshness state of that asset based on the most recent execution that produced it:
+
+| State | Meaning |
+| --- | --- |
+| `fresh` | The asset was produced successfully within the expected cadence. |
+| `stale` | The asset has not been updated within the expected cadence. |
+| `failed` | The most recent producing execution failed. |
+| `unknown` | No producing execution has been recorded for this asset. |
+
+A summary bar above the graph shows the count of each state; the legend shows only states present in the graph.
+
+The expected cadence is derived from the `Schedule` trigger of the producing flow. To launch remediation flows when an asset becomes stale, use [`FreshnessTrigger`](#operational-automation).
+
+### Group by
+
+Use the **Group by** selector to cluster nodes into labeled buckets:
+
+- **dataset**: groups assets by the `dataset` field in the asset's schema metadata.
+- **producer**: groups assets by the plugin artifact: the fourth segment of the producing task type's FQCN (e.g., `jdbc`, `dbt`, `aws`).
+
+Selected groups appear as chips in a row below the toolbar. Hovering a chip fades unrelated nodes; clicking pins the group so it stays highlighted. Click the chip again or click an empty area of the canvas to release it. Flow nodes appear in their own bucket and are not merged into asset groups.
+
+### Node details panel
+
+Click a node to open the details panel on the right side of the graph. The panel shows:
+
+- The asset's full identifier and type.
+- Its current status and metadata.
+- Recent runs, each linked to its execution page.
+
+Double-click a node to navigate to that asset's detail page. Clicking an empty area of the canvas closes the panel and releases any pinned group.
+
 ## Locking assets
 
 A lock prevents concurrent writes to a shared asset while a flow operates on it. Locks are TTL-bounded: they expire automatically when their duration elapses and can also be released explicitly. Reads are always open — only writes (edit, delete) are blocked while a lock is held.
@@ -442,8 +487,6 @@ Assets are essential for tracking data lineage in analytics and data engineering
 
 ### Example 1: Simple table creation
 
-**Scenario**: You're creating a new database table from scratch. This is a foundational asset with no upstream dependencies.
-
 ```yaml
 id: pipeline_with_assets
 namespace: company.team
@@ -475,14 +518,9 @@ tasks:
             table: trips
 ```
 
-**Key points**:
-- There are no `inputs` assets as this is a source table with no dependencies
-- The `trips` table is registered as an output asset that downstream workflows can reference
-- Metadata captures the database type and table name for easier discovery
-
 ### Example 2: Multi-layer data pipeline
 
-**Scenario**: You're building a modern data stack with staging and mart layers. The staging layer reads from an external source, and the mart layer creates aggregated analytics tables.
+The staging layer reads from an external source; the mart layer creates aggregated analytics tables.
 
 ```yaml
 id: data_pipeline_assets
@@ -528,37 +566,11 @@ tasks:
                   model_layer: mart
 ```
 
-**What's happening in this pipeline**:
-
-1. **External Source Tracking**: The `create_staging_layer_asset` task references `sample_data.nyc.taxi` as an input asset, even though it's managed outside this workflow. This establishes lineage to external data sources.
-
-2. **Staging Layer**: The `trips` table is created and registered with `model_layer: staging` metadata. This becomes an intermediate asset that mart layers will consume.
-
-3. **Dynamic Mart Creation**: The `Loop` task generates two mart tables:
-   - `avg_passenger_count`
-   - `avg_trip_distance`
-
-   Both declare `trips` as an input, creating a clear dependency chain.
-
-4. **Complete Lineage Graph**: Kestra automatically builds the dependency graph.
-
-**Benefits of this approach**:
-- **Impact Analysis**: If `sample_data.nyc.taxi` changes, you can instantly see that it affects 3 downstream assets
-- **Layer Organization**: Filter assets by `model_layer` to view only staging or mart tables
-- **Dependency Tracking**: Know exactly which tables depend on others before making schema changes
-- **Audit Trail**: Track which workflows created each table and when
-
-
 :::
 
 ## Infrastructure use case: team bucket provisioning
 
 :::collapse{title="Advanced: infrastructure provisioning"}
-
-Assets are particularly valuable for infrastructure management scenarios. This example demonstrates how a DevOps team can provision cloud resources and track their usage across different teams.
-
-**Scenario**: Your DevOps team needs to create dedicated S3 buckets for multiple teams (Business, Data, Finance, Product). By registering these buckets as assets during provisioning, you establish a clear lineage of which workflows and executions interact with each infrastructure component.
-
 
 The following flow creates S3 buckets for selected teams and registers them as assets:
 
@@ -597,9 +609,7 @@ tasks:
                 address: s3://kestra-{{ item.value | slugify }}-bucket
 ```
 
-This flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata.
-
-Once the infrastructure is provisioned, teams can reference these assets in their workflows. Here's how the Data team uses their bucket:
+The flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata. Teams reference these assets in downstream workflows:
 
 ```yaml
 id: upload_file
@@ -628,23 +638,12 @@ tasks:
             owner: data
 ```
 
-In this workflow:
-- The `aws_upload` task declares `kestra-data-bucket` as an **input asset**, linking it to the infrastructure provisioned earlier
-- It also creates an **output asset** (`raw_customer`) representing the uploaded file
-- This establishes a complete lineage chain: infrastructure creation → data upload → file asset
-
-**Benefits**: With this approach, you can easily answer questions like:
-- Which teams are using which buckets?
-- What files have been uploaded to each bucket?
-- Which workflows and executions have interacted with a specific infrastructure component?
-- When was this infrastructure resource created and by which flow?
-
 :::
 
 
 ## Populate dropdowns and app inputs
 
-Use the `assets()` Pebble function to query assets at runtime — for example, to populate dropdown inputs or select resources based on type, namespace, or metadata.
+The `assets()` Pebble function queries assets at runtime, for example to populate dropdown inputs or select resources based on type, namespace, or metadata.
 
 ### Function signature
 
@@ -744,7 +743,7 @@ tasks:
 
 ## Export assets with AssetShipper
 
-Use the `AssetShipper` task to export asset metadata to external systems for lineage tracking, monitoring, or integration with data catalogs. Supported destinations include files and OpenLineage-compatible providers.
+The `AssetShipper` task exports asset metadata to external systems for lineage tracking, monitoring, or integration with data catalogs. Supported destinations include files and OpenLineage-compatible providers.
 
 ### Export assets to file
 
@@ -789,7 +788,7 @@ The `mappings` property defines how Kestra asset metadata fields map to OpenLine
 
 ## Purge assets and lineage data
 
-Use the `io.kestra.plugin.ee.assets.PurgeAssets` task to enforce asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
+The `io.kestra.plugin.ee.assets.PurgeAssets` task enforces asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
 
 **Filters:**
 
@@ -832,6 +831,6 @@ tasks:
 
 ## Visualizing assets in dashboards
 
-Use the `io.kestra.plugin.ee.dashboard.data.Assets` data source to build charts over your asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range — they always reflect the current state of your inventory.
+The `io.kestra.plugin.ee.dashboard.data.Assets` data source builds charts over the asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range; they always reflect the current state of your inventory.
 
 See [Assets (EE and Cloud only)](../../../09.ui/00.dashboard/index.md#assets-ee-and-cloud-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.

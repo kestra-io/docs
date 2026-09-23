@@ -16,9 +16,9 @@ Unit tests verify that flows behave as expected without running every task or pr
 
 ## Flow unit tests
 
-Each test runs a single flow and checks its outcomes against your **assertions**, helping you avoid regressions when you change the flow later. Each **test case** creates a new transient execution, making it easy to run multiple tests in parallel, and each test case will not affect the others. Use **fixtures** to mock specific tasks or inputs by returning predefined outputs and states without executing the tasks.
+Each test runs a single flow and checks its outcomes against your **assertions**, helping you avoid regressions when you change the flow later. Each **test case** creates a new transient execution, making it easy to run multiple tests in parallel, and each test case will not affect the others. **Fixtures** mock specific tasks or inputs by returning predefined outputs and states without executing the tasks.
 
-Unit tests are configured for and connected to their respective flows. To create a new Unit Test, access them either through the **Tests** tab on the left-hand side panel of the Kestra UI or via the **Tests** tab of a flow. When creating tests, you can open the YAML for both the test and its flow side by side.
+Unit tests are configured for and connected to their respective flows. They are accessible through the **Tests** tab on the left-hand side panel of the Kestra UI or via the **Tests** tab of a flow. When creating tests, the YAML for both the test and its flow can be viewed side by side.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -142,7 +142,7 @@ Execution details are not stored in the Executions page like normally run flows 
 
 You can also simulate flows with namespace files that contain scripts, test data, or any other file content. In the previous example, you can add a namespace file that contains sample data from the production API endpoint so you do not need to make any API calls during testing. This avoids extra cost and unnecessary calls to external services.
 
-Use the following flow:
+The following flow:
 
 ```yaml
 id: etl_download_file

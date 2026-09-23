@@ -56,7 +56,7 @@ A Policy has no `type` field of its own — each rule has a `type` that selects 
 | `DISABLED` | The Policy is inactive. Rules are not checked. |
 | `REFERENCE` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. Use reference policies for opt-in configuration injection (`Add` rules); validate rules are not enforced. |
 
-Start new validate policies in `EVALUATE` mode to see which flows already violate the rule before blocking saves. Once violation counts are acceptable, switch to `ACTIVE`.
+New validate policies are typically started in `EVALUATE` mode to assess existing compliance before activating enforcement. Once violation counts are acceptable, switching to `ACTIVE` begins blocking.
 
 ```yaml
 id: label-audit

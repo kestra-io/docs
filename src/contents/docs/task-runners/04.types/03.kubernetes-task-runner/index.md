@@ -357,6 +357,20 @@ taskRunner:
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
 ```
 
+### Pod-side deadline (`activeDeadlineSeconds`)
+
+From `waitUntilRunning` and `waitUntilCompletion` (or the task `timeout`, if set), the runner also derives a pod-side `activeDeadlineSeconds` — a native Kubernetes deadline the kubelet enforces on its own, with no dependency on the Worker still being alive. This protects against a pod outliving the Worker that launched it (for example, if the Worker crashes before the pod finishes its input-file handshake): instead of the pod running forever and holding its CPU/memory reservation, the kubelet terminates it once `waitUntilRunning + waitUntilCompletion (or timeout) + a grace period` has elapsed.
+
+Under normal operation this deadline is strictly looser than the Worker's own timeouts, so it never fires before them — a task that succeeds today keeps succeeding. If it does fire, the task fails with an error naming the deadline and pointing at which property to raise:
+
+```text
+Pod '...' was terminated by Kubernetes for exceeding its active deadline of <N>s. This deadline is derived from
+'waitUntilRunning' + 'waitUntilCompletion' (or the task 'timeout') plus a grace period; increase whichever of
+those is too short for this task, or set 'podSpec.activeDeadlineSeconds' explicitly to override the computed value.
+```
+
+To set an explicit deadline instead of the derived one, use `podSpec.activeDeadlineSeconds` — see [Pod and container customization](#podspec---overlay-the-full-pod-spec) below. In Job mode, each pod attempt gets its own fresh deadline.
+
 ## Connection and concurrency settings
 
 At high concurrency, each task opens multiple WebSocket connections against the API server — one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and slow API server responses, compounding timeout issues.
@@ -459,7 +473,7 @@ The Kubernetes task runner exposes several properties for customizing the pod sp
 
 ### `podSpec` — overlay the full pod spec
 
-`podSpec` accepts a freeform YAML map that is merged into the generated pod's spec. Use it for anything not covered by a first-class property: tolerations, affinity, priority classes, additional volumes, or user-defined sidecar containers.
+`podSpec` accepts a freeform YAML map that is merged into the generated pod's spec. Use it for anything not covered by a first-class property: tolerations, affinity, priority classes, additional volumes, or user-defined sidecar containers. It's also where you set `podSpec.activeDeadlineSeconds` to override the deadline the runner otherwise derives from `waitUntilRunning`/`waitUntilCompletion` — see [Timeout configuration](#timeout-configuration) above.
 
 Any container listed under `podSpec.containers` whose name is **not** `"main"` is added as a user-defined sidecar alongside the Kestra main container. A container named `"main"` has its fields (such as `ports` and `env`) merged as defaults into the Kestra-built main container, with Kestra-injected values taking precedence on collision.
 
