@@ -51,6 +51,16 @@ const FIXTURE_PATHS = (
 const RECORD = process.env.RECORD !== "false"
 const UPSTREAM_TIMEOUT_MS = 30000
 
+// Snapshot-only responses whose base64 icons are ~15 MB of the set. Lighthouse
+// never reads them, so a placeholder only changes what the baselines show.
+const ICONLESS_PATHS = [
+    "/v1/plugins/pluginsInformation",
+    "/v1/plugins/metadata",
+]
+const PLACEHOLDER_ICON = Buffer.from(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#9ca3af"/></svg>',
+).toString("base64")
+
 const stats = { hits: 0, records: 0, passthrough: 0, errors: 0 }
 
 // Serialised responses by request path. Without it every hit re-parses and
@@ -154,6 +164,25 @@ function readFixture(path) {
 }
 
 /**
+ * Swaps every `icon` string for the placeholder, in place.
+ *
+ * @param {unknown} node
+ */
+function stripIcons(node) {
+    if (Array.isArray(node)) {
+        node.forEach(stripIcons)
+    } else if (node && typeof node === "object") {
+        for (const [key, value] of Object.entries(node)) {
+            if (key === "icon" && typeof value === "string") {
+                /** @type {Record<string, unknown>} */ (node)[key] = PLACEHOLDER_ICON
+            } else {
+                stripIcons(value)
+            }
+        }
+    }
+}
+
+/**
  * Writes a response to disk, compact: the set runs to hundreds of machine-read
  * files, so pretty-printing only adds whitespace nobody looks at.
  *
@@ -171,6 +200,7 @@ function writeFixture(path, response) {
             // Not valid JSON despite the header, keep the raw text.
         }
     }
+    if (ICONLESS_PATHS.includes(path.split("?")[0])) stripIcons(body)
 
     const file = fixtureFile(path)
     const fixture = {

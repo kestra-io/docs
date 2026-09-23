@@ -21,6 +21,10 @@ build and the screenshot run ask for, and commits the result with the refreshed
 baselines. That also drops the blueprint detail responses only Lighthouse reads,
 which its next run re-records into an `api-fixtures` artifact to commit.
 
+`/v1/plugins/pluginsInformation` and `/v1/plugins/metadata` are recorded with
+every `icon` swapped for one grey placeholder: the icons were ~15 MB and
+Lighthouse never reads these two, so only the baselines show the difference.
+
 Stale fixtures freeze the page content: a layout change that only shows up at
 today's blueprint count will not appear in the scores or the baselines until
 they are refreshed.
