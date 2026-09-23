@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content"
 import type { OrchestrationData } from "~/schemas/orchestration"
+import { beforeCutoff } from "~/utils/snapshotCutoff"
 import {
     apiPayloadDigest,
     collectionMetadataDigest,
@@ -216,7 +217,7 @@ const pluginDocsUrl =
 
 const toolKeyword = tool.name.toLowerCase().split(" ")[0]
 const allBlogs = await getCollection("blogs")
-const relatedBlogs = allBlogs
+const relatedBlogs = beforeCutoff(allBlogs, (b) => b.data.date)
     .filter(
         (b) =>
             b.id.toLowerCase().includes(toolKeyword) ||
