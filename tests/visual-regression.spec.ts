@@ -18,8 +18,23 @@ const styleSheet = (name: string) =>
 
 const pages: SamplePage[] = [...PAGES, ...VISUAL_ONLY_PAGES]
 
+// Keep in step with PLACEHOLDER_ICON in scripts/api-fixture-server.mjs.
+const PLACEHOLDER_ICON =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#9ca3af"/></svg>'
+
 for (const page of pages) {
     test(`${page.label} matches screenshot`, async ({ page: p }) => {
+        // Each plugin icon is a live API round trip through the worker; stub
+        // them with the same placeholder the plugin fixtures carry.
+        await p.route(
+            (url) => url.pathname.startsWith("/icons/"),
+            (route) =>
+                route.fulfill({
+                    contentType: "image/svg+xml",
+                    body: PLACEHOLDER_ICON,
+                }),
+        )
+
         // networkidle never settles on pages that keep polling, which is how a
         // run wedges with no output. Wait for fonts instead, they drive layout.
         await p.goto(page.path, { waitUntil: "load" })
