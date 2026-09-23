@@ -117,7 +117,7 @@ triggers:
 
 ### Prefix and pattern matching
 
-When `namespace` is set, Kestra matches it exactly. To match a range of namespaces or flows, omit `namespace` and use `when` with a Pebble expression:
+When `namespace` is set, Kestra matches it exactly. To match a range of namespaces or flows, omit `namespace` and use `when` with a Pebble expression. In `when`, `flow.namespace` and `flow.id` refer to the upstream flow (the one that just completed):
 
 ```yaml
 triggers:
@@ -125,7 +125,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - states: [FAILED, WARNING]
-        when: "{{ namespace | startsWith('company') }}"
+        when: "{{ flow.namespace | startsWith('company') }}"
 ```
 
 ## Conditional guard with `when`
@@ -276,9 +276,9 @@ triggers:
 
 ## Filtering with `when` expressions
 
-Use `when` on a `dependsOn` entry to apply arbitrary Pebble conditions against the upstream execution context.
+Use `when` on a `dependsOn` entry to apply arbitrary Pebble conditions against the upstream execution context. In `when`, `flow.namespace` and `flow.id` refer to the upstream flow.
 
-Filter on an output value:
+Filter on a flow-level output value using `execution.outputs.<key>`:
 
 ```yaml
 triggers:
@@ -287,21 +287,18 @@ triggers:
     dependsOn:
       - flowId: extract
         namespace: company.team
-        when: "{{ outputs.row_count > 0 }}"
+        when: "{{ execution.outputs.row_count > 0 }}"
 ```
+
+:::alert{type="warning"}
+`execution.outputs.<key>` accesses the upstream flow's declared **flow-level outputs**. `outputs` is also available in `when` but holds **task outputs** — use `execution.outputs` to filter on flow outputs.
+:::
 
 Filter on retry attempts:
 
-```yaml
-triggers:
-  - id: after_flaky
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: flaky_pipeline
-        namespace: company.team
-        states: [SUCCESS]
-        when: "{{ hasRetryAttempt == true }}"
-```
+:::alert{type="warning"}
+`hasRetryAttempt` is not yet available in the `when` expression context in the current 2.0 release. Support is planned for a 2.0.x patch.
+:::
 
 ## Example: data pipeline with SLA deadline
 
@@ -347,7 +344,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - states: [FAILED, WARNING]
-        when: "{{ namespace | startsWith('company') }}"
+        when: "{{ flow.namespace | startsWith('company') }}"
 ```
 
 ## Example: mixed success and failure triggers

@@ -29,7 +29,9 @@ The variables available in a `when` expression depend on the trigger type:
 |---|---|
 | Schedule | `trigger.date` |
 | Webhook | `trigger.body`, `trigger.headers` |
-| Flow | `namespace`, `flowId`, `state`, `labels`, `outputs`, `hasRetryAttempt` |
+| Flow | `flow.namespace`, `flow.id`, `state`, `labels`, `execution.outputs` |
+
+`flow` refers to the upstream flow (the one that just completed). `execution.outputs` holds the upstream flow's declared outputs. `outputs` is also available but holds task outputs, not flow-level outputs — use `execution.outputs.<key>` to filter on flow outputs.
 
 :::alert{type="info"}
 **Schedule date skipping:** When a Schedule trigger has a `when` expression, the scheduler evaluates it against each candidate date. If `when` evaluates to `false`, the scheduler skips that date and advances to the next cron-matching date. This is the same behavior as the previous `conditions` on Schedule triggers; `when` controls which scheduled dates fire, not just whether a single date fires.
@@ -554,10 +556,10 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - states: [FAILED, WARNING]
-        when: "{{ namespace | startsWith('company') }}"
+        when: "{{ flow.namespace | startsWith('company') }}"
 ```
 
-`namespace` in `dependsOn` is an exact match. Use `when` with `startsWith` for prefix matching.
+`namespace` on a `dependsOn` entry is an exact match. Use `flow.namespace` in `when` with `startsWith` for prefix matching. `flow` refers to the upstream flow.
 
 ### Label-based filtering
 
@@ -616,7 +618,7 @@ triggers:
   - id: after_extract
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
-      - when: "{{ namespace | startsWith('io.kestra.tests') }}"
+      - when: "{{ flow.namespace | startsWith('io.kestra.tests') }}"
         states: [SUCCESS]
         labels:
           some: label
@@ -646,8 +648,12 @@ triggers:
     dependsOn:
       - flowId: extract
         namespace: company.team
-        when: "{{ outputs.row_count > 0 }}"
+        when: "{{ execution.outputs.row_count > 0 }}"
 ```
+
+:::alert{type="warning"}
+In `when`, `execution.outputs.<key>` accesses the upstream flow's declared **flow-level outputs**. `outputs` is also available but holds **task outputs** — `{{ outputs.row_count > 0 }}` will not resolve a flow output named `row_count`.
+:::
 
 ### Filtering on retry attempts
 
@@ -661,18 +667,9 @@ triggers:
       - type: io.kestra.plugin.core.condition.HasRetryAttempt
 ```
 
-**After**
-
-```yaml
-triggers:
-  - id: after_flaky
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: flaky_pipeline
-        namespace: company.team
-        states: [SUCCESS]
-        when: "{{ hasRetryAttempt == true }}"
-```
+:::alert{type="warning"}
+`HasRetryAttempt` has no working replacement in the current Kestra 2.0 release. `hasRetryAttempt` is not yet available in the `when` expression context. Support is planned for a 2.0.x patch. Until then, this condition cannot be migrated.
+:::
 
 ### Negation: trigger on any state except SUCCESS
 
@@ -945,10 +942,10 @@ triggers:
 | `ExecutionStatus` (`in: [SUCCESS]`) | `states: [SUCCESS]` on the `dependsOn` entry |
 | `ExecutionFlow` (`flowId`, `namespace`) | `flowId` + `namespace` on the `dependsOn` entry |
 | `ExecutionNamespace` (exact) | `namespace` on the `dependsOn` entry |
-| `ExecutionNamespace` (`comparison: PREFIX`) | `when: "{{ namespace \| startsWith('...') }}"` on the entry |
+| `ExecutionNamespace` (`comparison: PREFIX`) | `when: "{{ flow.namespace \| startsWith('...') }}"` on the entry |
 | `ExecutionLabels` (`labels: {k: v}`) | `labels: {k: v}` on the `dependsOn` entry |
-| `ExecutionOutputs` (`expression`) | `when` with `outputs.<key>` on the entry |
-| `HasRetryAttempt` | `when: "{{ hasRetryAttempt == true }}"` on the entry |
+| `ExecutionOutputs` (`expression`) | `when` with `execution.outputs.<key>` on the entry (flow-level outputs) |
+| `HasRetryAttempt` | no working replacement in the current 2.0 release; planned for a 2.0.x patch |
 | `Not` > `ExecutionStatus` | Explicit `states` list or `when: "{{ state != 'SUCCESS' }}"` |
 | Multiple triggers for OR logic | `mode: ANY` with `dependsOn` entries |
 | `preconditions.resetOnSuccess: true` | remove it, this is the only behavior in 2.0 |
