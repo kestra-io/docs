@@ -3,9 +3,11 @@ export const prerender = false
 import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "~/utils/plugins/plugin"
 import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
-import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
+import { prunePluginsForCards, type CardPlugin } from "~/utils/plugins/pruneForClient"
 import { calculateTotalPlugins, formatPluginCount } from "~/utils/plugins/pluginCount"
 import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
+import { familyNameForPlugin } from "~/utils/plugins/pluginFamily"
+import { formatPluginName } from "~/utils/plugins/pluginUtils"
 
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
@@ -26,18 +28,46 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
     return subgroups.length === 1 && parent ? subgroups : group
 })
 
+// Multi-artifact plugin groups (Debezium, JDBC, Scripts, ...) ship one unrelated top-level
+// plugin per sub-technology (plugin-jdbc-oracle, plugin-jdbc-postgres, ...), so without this
+// they'd each get their own Hub card instead of surfacing the "/plugins/<family>" overview page.
+const familyMembers: Record<string, Plugin[]> = {}
+const nonFamilyPlugins = filteredPlugins.filter((p) => {
+    const family = p.subGroup ? undefined : familyNameForPlugin(p.name)
+    if (!family) return true
+    ;(familyMembers[family] ??= []).push(p)
+    return false
+})
+
 // Rendered per request, so the count is derived from the groups fetched above
 // rather than the build-time memo in fetchTotalPluginsCount.
 const totalPluginCount = `${formatPluginCount(calculateTotalPlugins(rawPlugins))}+`
 const rootGroups = new Set(
     nonDeprecatedPlugins.filter((p) => !p.subGroup).map((p) => p.group),
 )
-const cardPlugins = prunePluginsForCards(
-    filteredPlugins,
-    rawPluginsData.byPlugin,
-    buildPluginUrlIndex(rawPlugins),
-    rootGroups,
-)
+const familyCards: CardPlugin[] = Object.entries(familyMembers).map(([family, members]) => {
+    const title = formatPluginName(family)
+    return {
+        name: family,
+        title,
+        group: family,
+        description: `${members.length} ${title} plugins`,
+        elementCounts: members.reduce(
+            (sum, m) => sum + (rawPluginsData.byPlugin[m.group]?.elementCounts ?? 0),
+            0,
+        ),
+        href: `/plugins/${family}`,
+    }
+})
+const cardPlugins = [
+    ...prunePluginsForCards(
+        nonFamilyPlugins,
+        rawPluginsData.byPlugin,
+        buildPluginUrlIndex(rawPlugins),
+        rootGroups,
+    ),
+    ...familyCards,
+]
 const categories = [
     ...new Set(cardPlugins.flatMap((p) => p.categories ?? [])),
 ].sort()

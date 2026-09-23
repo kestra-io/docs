@@ -18,6 +18,13 @@ export function familyArtifactPrefix(familyName: string): string | undefined {
     return FAMILY_ARTIFACT_PREFIX[familyName]
 }
 
+/** The family (e.g. "plugin-jdbc") a top-level plugin (e.g. "plugin-jdbc-oracle") belongs to, if any. */
+export function familyNameForPlugin(pluginName: string): string | undefined {
+    return Object.entries(FAMILY_ARTIFACT_PREFIX).find(
+        ([familyName, prefix]) => pluginName !== familyName && pluginName.startsWith(`${prefix}-`),
+    )?.[0]
+}
+
 export function findFamilySiblings(plugins: Plugin[], familyName: string): Plugin[] {
     const prefix = familyArtifactPrefix(familyName)
     if (!prefix) return []

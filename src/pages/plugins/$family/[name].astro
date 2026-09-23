@@ -10,6 +10,7 @@ import { formatPluginName } from "~/utils/plugins/pluginUtils"
 import { slugify } from "~/utils/slugify"
 
 import Layout from "~/components/layout.astro"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import PluginLayout from "~/components/plugins/PluginLayout.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
 import PluginCard from "~/components/plugins/PluginCard.vue"
@@ -63,7 +64,15 @@ const description = `Browse all ${siblings.length} ${displayName} plugins availa
                 }
             </ul>
         </nav>
-        <OneHeader headingTitle={title} headingDescription={description} />
+        <div class="bd-title">
+            <Breadcrumb
+                items={[
+                    { label: "Plugins", href: "/plugins" },
+                    { label: displayName, href: "" },
+                ]}
+            />
+            <OneHeader headingTitle={title} headingDescription={description} />
+        </div>
         <div class="family-grid">
             {
                 cardPlugins.map((p) => (
