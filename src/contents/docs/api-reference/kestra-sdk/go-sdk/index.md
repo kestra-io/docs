@@ -7,7 +7,7 @@ release: 1.0.0
 description: Integrate Kestra with Go using the official SDK. Learn to set up the client, configure authentication, and programmatically create and execute workflows.
 ---
 
-Use the Kestra Go SDK to interact with the Kestra API from Go applications. The SDK is hand-written: `kestra.NewClient` returns a `KestraClient` that groups operations by resource, such as `client.Flows()`, `client.Executions()`, and `client.Kv()`.
+Use the Kestra Go SDK to interact with the Kestra API from Go applications. `kestra.NewClient` returns a `KestraClient` that groups operations by resource, such as `client.Flows()`, `client.Executions()`, and `client.Kv()`.
 
 ## Install the Go SDK
 
@@ -57,7 +57,7 @@ func newClient() *kestra.KestraClient {
 ```
 
 :::alert{type="info"}
-To authenticate with a service account API token instead, pass `kestra.WithTokenAuth("<api-token>")` in place of `kestra.WithBasicAuth(...)`. The examples below receive a `ctx` (for example `context.Background()`) and the `client` returned by `newClient()`. The examples also use the `context` and `fmt` packages, and the timeout example uses `time`; add them to your imports. The package also still exports the older `APIClient` (`NewAPIClient`) for backward compatibility with code written against earlier SDK versions; use `NewClient` for new code.
+To authenticate with a service account API token instead, pass `kestra.WithTokenAuth("<api-token>")` in place of `kestra.WithBasicAuth(...)`. The examples below receive a `ctx` (for example `context.Background()`) and the `client` returned by `newClient()`. The examples also use the `context` and `fmt` packages, and the timeout example uses `time`; add them to your imports.
 :::
 
 ---
