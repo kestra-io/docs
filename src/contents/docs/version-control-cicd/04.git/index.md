@@ -198,7 +198,7 @@ The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a
 
 Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [Git NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) give you full control over synchronizing Kestra objects with your Git repository.
 
-- **`TenantSync`** – synchronizes **all namespaces** in a tenant, including flows, files, apps, tests, dashboards, and custom blueprints.
+- **`TenantSync`** – synchronizes **all namespaces** in a tenant. Always syncs flows and namespace files. In Enterprise Edition, also syncs apps, unit tests, custom blueprints, and dashboards.
   - Requires `kestraUrl` and `auth` so the task can call Kestra's API with tenant-wide RBAC.
   - Useful when you need to back up the entire tenant to Git and promote environments through pull requests.
   - When `sourceOfTruth: GIT`, namespaces discovered in Git that have content are created automatically.
@@ -214,7 +214,7 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
 `TenantSync` and `NamespaceSync` both support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
-- An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
+- An **opinionated folder structure** for flows and files, plus EE-only resources (apps, unit tests, custom blueprints, dashboards), with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
 - `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted when `sourceOfTruth` is `GIT`.
 - Validation rules requiring explicit Git `branch` and optional `gitDirectory`.
 - Options like `dryRun` and `onInvalidSyntax` for safe rollouts and error handling.
@@ -266,10 +266,10 @@ Both `TenantSync` and `NamespaceSync` expect a specific folder structure inside 
 | --- | --- |
 | Flows | `<namespace>/flows/<flowId>.yaml` |
 | Namespace files | `<namespace>/files/<path>` |
-| Apps | `<namespace>/apps/<appId>.yaml` |
-| Unit tests | `<namespace>/tests/<testId>.yaml` |
-| Dashboards | `_global/dashboards/<dashboardId>.yaml` |
-| Custom blueprints | `_global/blueprints/<blueprintId>.yaml` |
+| Apps (EE only) | `<namespace>/apps/<appId>.yaml` |
+| Unit tests (EE only) | `<namespace>/tests/<testId>.yaml` |
+| Dashboards (EE only) | `_global/dashboards/<dashboardId>.yaml` |
+| Custom blueprints (EE only) | `_global/blueprints/<blueprintId>.yaml` |
 
 | `gitDirectory` | Namespace | Expected Git path |
 | --- | --- | --- |
