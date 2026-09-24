@@ -80,7 +80,7 @@ Agentic AI is not a fifth silo; it's a powerful capability that acts across all 
 3. Calls an external API to enrich information (application).
 4. Requests human approval for a remediation action (business).
 
-A unified orchestration platform is essential for managing this new paradigm. It must not only orchestrate the agents but also govern the agentic process itself. This means providing audit trails for AI-driven actions, managing credentials securely, and enabling human-in-the-loop oversight. This is the core difference between simply orchestrating agents and building a true [agentic business process automation](/resources/business/agentic-business-process-automation) system. The platform provides the tools, like an [MCP server for agent communication](/docs/ai-tools/mcp-server), and the governance framework to make [AI-native orchestration](/resources/ai/ai-native-orchestration-platform) safe and scalable.
+A unified orchestration platform is essential for managing this new paradigm. It must not only orchestrate the agents but also govern the agentic process itself. This means providing audit trails for AI-driven actions, managing credentials securely, and enabling human-in-the-loop oversight. This is the core difference between simply [orchestrating agents](/resources/ai/agentic-orchestration-vs-orchestrating-agents) and building a true [agentic business process automation](/resources/business/agentic-business-process-automation) system. The platform provides the tools, like an [MCP server for agent communication](/docs/ai-tools/mcp-server), and the governance framework to make [AI-native orchestration](/resources/ai/ai-native-orchestration-platform) safe and scalable.
 
 ## The seven requirements of a unified orchestration platform
 
