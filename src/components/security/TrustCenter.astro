@@ -1,0 +1,103 @@
+---
+import SectionTitle from "./SectionTitle.astro"
+import { TRUST_LINKS } from "./securityData"
+
+const isExternal = (href: string) =>
+    href.startsWith("http") || href === "/trust"
+---
+
+<section class="security-section trust" aria-labelledby="trust-title">
+    <div class="container">
+        <SectionTitle id="trust-title" title="Trust center" />
+
+        <div class="columns">
+            {
+                TRUST_LINKS.map((column) => (
+                    <dl data-usal="fade-u">
+                        {column.map((link) => (
+                            <div>
+                                <dt>{link.label}</dt>
+                                <dd>
+                                    <a
+                                        href={link.href}
+                                        {...(isExternal(link.href)
+                                            ? {
+                                                  target: "_blank",
+                                                  rel: "noopener",
+                                              }
+                                            : {})}
+                                    >
+                                        {link.text}
+                                    </a>
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4rem;
+        align-items: start;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+        }
+    }
+
+    dl {
+        margin: 0;
+
+        > div {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding-block: 1.25rem;
+            border-bottom: 1px solid var(--ks-border-primary);
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+        }
+    }
+
+    dt {
+        flex: 1;
+        color: var(--ks-content-primary);
+        font-size: $font-size-lg;
+        font-weight: 700;
+        line-height: 28px;
+    }
+
+    dd {
+        flex: 1;
+        margin: 0;
+        text-align: right;
+        line-height: 24px;
+
+        @include media-breakpoint-down(md) {
+            text-align: left;
+        }
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+            overflow-wrap: anywhere;
+        }
+    }
+</style>
