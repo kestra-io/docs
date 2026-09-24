@@ -7,7 +7,12 @@ import { DEPLOYMENTS } from "./securityData"
     class="security-section deployments"
     aria-labelledby="deployments-title"
 >
-    <img src="/hero-grid.svg" alt="" class="grid" aria-hidden="true" />
+    <img
+        src="/hero-grid.svg"
+        alt=""
+        class="security-grid-bg"
+        aria-hidden="true"
+    />
     <div class="container">
         <SectionTitle
             id="deployments-title"
@@ -54,20 +59,6 @@ import { DEPLOYMENTS } from "./securityData"
         --section-background: var(--ks-background-secondary);
 
         overflow: clip;
-    }
-
-    .grid {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        z-index: -1;
-        width: 100%;
-        max-width: 1720px;
-        height: 100%;
-        transform: translateX(-50%);
-        object-fit: cover;
-        object-position: center top;
-        pointer-events: none;
     }
 
     .container {

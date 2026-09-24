@@ -82,6 +82,46 @@ const description =
             }
         }
 
+        :global(.security-grid-bg) {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            z-index: -1;
+            width: 100%;
+            max-width: 1720px;
+            height: 100%;
+            transform: translateX(-50%);
+            object-fit: cover;
+            object-position: center top;
+            pointer-events: none;
+        }
+
+        // Two-up card grid shared by the build and vulnerability sections.
+        :global(.security-cards) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            :global(.security-card) {
+                padding: 2rem;
+
+                @include media-breakpoint-down(md) {
+                    padding: 1.5rem;
+                }
+            }
+
+            :global(h3) {
+                margin: 0 0 0.5rem;
+                color: var(--ks-content-primary);
+                font-size: $font-size-2xl;
+                line-height: 38px;
+            }
+        }
+
         :global(.security-card) {
             border: 1px solid var(--ks-border-primary);
             border-radius: 8px;

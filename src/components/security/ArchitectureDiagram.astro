@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets"
-import KestraMonogram from "./assets/kestra-monogram.svg"
 import texture from "./assets/illustration-texture.webp"
 import { Icon } from "astro-icon/components"
 
@@ -20,7 +19,13 @@ const WORKERS = [
     <div class="plane control">
         <span class="plane-label">Control Plane</span>
         <div class="box platform">
-            <KestraMonogram class="monogram" aria-hidden="true" />
+            <img
+                src="/landing/usecases/stories/monograme-kestra.svg"
+                alt=""
+                width="36"
+                height="36"
+                class="monogram"
+            />
             <span class="box-title">Platform</span>
             <div class="item">
                 <span class="item-name"
@@ -157,7 +162,7 @@ const WORKERS = [
     }
 
     .monogram {
-        width: 35px;
+        width: 36px;
         height: 36px;
     }
 

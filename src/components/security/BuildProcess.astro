@@ -19,7 +19,7 @@ import { BUILD_PRACTICES, HARDENING_GUIDE_URL } from "./securityData"
             }
         </ul>
 
-        <div class="cards">
+        <div class="security-cards">
             <article class="security-card" data-usal="fade-u">
                 <h3>Supported versions</h3>
                 <p>
@@ -99,30 +99,7 @@ import { BUILD_PRACTICES, HARDENING_GUIDE_URL } from "./securityData"
         }
     }
 
-    .cards {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1rem;
-
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: minmax(0, 1fr);
-        }
-
-        .security-card {
-            padding: 2rem;
-
-            @include media-breakpoint-down(md) {
-                padding: 1.5rem;
-            }
-        }
-
-        h3 {
-            margin: 0 0 0.5rem;
-            color: var(--ks-content-primary);
-            font-size: $font-size-2xl;
-            line-height: 38px;
-        }
-
+    .security-cards {
         p {
             margin: 0;
             color: var(--ks-content-secondary);
