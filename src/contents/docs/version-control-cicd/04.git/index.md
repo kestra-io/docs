@@ -213,10 +213,10 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
 
 `TenantSync` and `NamespaceSync` both support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
-- `sourceOfTruthOverrides` to override the sync direction per resource kind. In OSS, exposes `flows` and `namespaceFiles`. In Enterprise Edition, also exposes `apps`, `unitTests`, `blueprints`, and `dashboards`. Any field left unset falls back to `sourceOfTruth`.
+- `sourceOfTruthOverrides` to override the sync direction per resource kind. In OSS, exposes `flows` and `namespaceFiles`. In Enterprise Edition, `NamespaceSync` also exposes `apps` and `unitTests`; `TenantSync` additionally exposes `blueprints` and `dashboards` (which have no namespace and can only be synced at the tenant level). Any field left unset falls back to `sourceOfTruth`.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
 - An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
-- `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted when `sourceOfTruth` is `GIT`.
+- `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted, regardless of which direction `sourceOfTruth` is set.
 - Validation rules requiring explicit Git `branch` and optional `gitDirectory`.
 - Options like `dryRun` and `onInvalidSyntax` for safe rollouts and error handling.
 
