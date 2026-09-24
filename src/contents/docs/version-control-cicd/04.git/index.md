@@ -213,11 +213,31 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
 
 `TenantSync` and `NamespaceSync` both support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
+- `sourceOfTruthOverrides` to override the sync direction per resource kind. Currently exposes `flows` and `namespaceFiles`. Any field left unset falls back to `sourceOfTruth`.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
 - An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
 - `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted when `sourceOfTruth` is `GIT`.
 - Validation rules requiring explicit Git `branch` and optional `gitDirectory`.
 - Options like `dryRun` and `onInvalidSyntax` for safe rollouts and error handling.
+
+### Mixed source of truth
+
+Use `sourceOfTruthOverrides` when flows and namespace files have different owners. A common pattern is to treat Kestra as the source of truth for flows (authored in the UI) while treating Git as the source of truth for namespace files (code checked into the repo):
+
+```yaml
+tasks:
+  - id: sync
+    type: io.kestra.plugin.git.NamespaceSync
+    namespace: company.team
+    sourceOfTruth: KESTRA          # flows: Kestra -> Git
+    sourceOfTruthOverrides:
+      namespaceFiles: GIT          # namespace files: Git -> Kestra
+    whenMissingInSource: KEEP
+    url: https://github.com/org/repo
+    branch: main
+```
+
+`whenMissingInSource` remains a single global setting but its effect flips per kind with the resolved source. In the example above, a namespace file present in Kestra but absent from Git is deleted from Kestra (Git is the source for files), while a flow present in Git but absent from Kestra is deleted from Git (Kestra is the source for flows). `protectedNamespaces` still guards every deletion regardless of direction.
 
 Example usage of the `TenantSync` task:
 
