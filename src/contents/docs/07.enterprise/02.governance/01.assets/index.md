@@ -35,7 +35,7 @@ Every asset includes these fields:
 | Field | Description |
 | --- | --- |
 | `id` | unique within a tenant |
-| `namespace` | associates the asset with a namespace for filtering and RBAC management. Set to null to create a **Global** asset visible to all namespace-scoped grants within the tenant. |
+| `namespace` | associates the asset with a namespace for filtering and RBAC management. Set to null to create a **Global** asset visible to all namespaces in a tenant. |
 | `type` | use predefined Kestra types like `io.kestra.plugin.ee.assets.Table` or any custom string value |
 | `displayName` | optional human-readable name |
 | `description` | markdown-supported documentation |
