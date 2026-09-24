@@ -45,30 +45,27 @@ import dots from "./assets/hero-dots.svg"
         height: 574px;
         transform: translateX(-50%);
 
-        // Below the design width the lock would slide under the copy, so pin
-        // the stage to the right edge instead of centring it.
         @media (max-width: 1399.98px) {
-            right: -300px;
+            top: 40px;
+            right: -198px;
             left: auto;
-            transform: none;
-        }
-
-        @include media-breakpoint-down(lg) {
-            right: -380px;
-            opacity: 0.55;
             transform: scale(0.8);
             transform-origin: right top;
         }
 
-        // Phones: a smaller lock tucked into the bottom-right corner, beside
-        // the CTA, rather than behind the copy.
-        @include media-breakpoint-down(md) {
+        @include media-breakpoint-down(lg) {
             top: auto;
+            right: -179px;
+            bottom: -50px;
+            opacity: 0.6;
+            transform: scale(0.65);
+            transform-origin: right bottom;
+        }
+
+        @include media-breakpoint-down(md) {
             right: -150px;
             bottom: -44px;
-            opacity: 0.6;
             transform: scale(0.55);
-            transform-origin: right bottom;
         }
     }
 
