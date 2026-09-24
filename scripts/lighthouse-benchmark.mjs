@@ -76,7 +76,8 @@ function orderedPages() {
 }
 
 /**
- * Runs to measure for a page: what the sample asks for, 1 by default.
+ * Runs to measure for a page: what the sample asks for, DEFAULT_RUNS otherwise,
+ * or MULTI_RUN_COUNT when it is set.
  *
  * @param {typeof PAGES[number]} page
  * @returns {number}
@@ -352,16 +353,16 @@ async function main() {
     const chromeLauncher = await import("chrome-launcher")
 
     const shardRuns = SHARD_PAGES.reduce((sum, page) => sum + runsFor(page), 0)
-    const runPlan = SHARD_PAGES.filter((page) => runsFor(page) > 1)
-        .map((page) => `${page.path} x${runsFor(page)}`)
-        .join(", ")
+    const runPlan = SHARD_PAGES.map(
+        (page) => `${page.path} x${runsFor(page)}`,
+    ).join(", ")
 
     console.log(`\nLighthouse Benchmark`)
     console.log(`Base URL : ${BASE_URL}`)
     console.log(`Shard    : ${SHARD_INDEX + 1} of ${SHARD_TOTAL}`)
     console.log(`Pages    : ${SHARD_PAGES.length} of ${PAGES.length}`)
     console.log(
-        `Runs     : ${shardRuns}, 1 per page except ${runPlan || "none"}\n`,
+        `Runs     : ${shardRuns} across ${SHARD_PAGES.length} pages: ${runPlan}\n`,
     )
 
     // Launch Chrome once and reuse for all pages.
