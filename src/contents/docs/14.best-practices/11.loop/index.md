@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/best-practices.svg
 description: Best practices for using the Loop task in Kestra — output collection, concurrency, map-reduce patterns, error handling, large-file processing, and subflow isolation.
 ---
 
-Use `Loop` for all iteration needs in Kestra.
+Use [Loop](/plugins/core/flow/io.kestra.plugin.core.flow.loop) for all iteration needs in Kestra.
 
 ## Choose the right iteration pattern
 
@@ -295,14 +295,14 @@ tasks:
 
 | Task | Role | When to reach for it |
 |---|---|---|
-| `io.kestra.plugin.core.storage.Split` | Batching | Split a single file into chunk URIs by `rows`, `bytes`, `partitions`, or `separator`. Feeds `Loop.values` for map-reduce. |
-| `io.kestra.plugin.core.storage.Concat` | Stitching | Concatenate per-iteration output files into one before a reduce step. |
-| `io.kestra.plugin.transform.Aggregate` | Reduce | Group records by one or more keys with `count()`, `sum()`, `max()`, and more. The reduce side of map-reduce. |
-| `io.kestra.plugin.transform.Filter` | Predicate | Keep only rows where a boolean expression holds. |
-| `io.kestra.plugin.transform.Map` | Project | Per-record rename, drop, or compute fields — SQL `SELECT`-style. |
-| `io.kestra.plugin.transform.Unnest` | Explode | Flatten an array field into one row per element, carrying sibling fields through. |
-| `io.kestra.plugin.core.flow.Subflow` | Isolate | Spawn a separate execution per iteration — own retries, own logs, own failure state. |
-| `io.kestra.plugin.core.flow.Parallel` | Fan-out | Run independent task groups concurrently inside a single iteration. |
+| [io.kestra.plugin.core.storage.Split](/plugins/core/storage/io.kestra.plugin.core.storage.split) | Batching | Split a single file into chunk URIs by `rows`, `bytes`, `partitions`, or `separator`. Feeds `Loop.values` for map-reduce. |
+| [io.kestra.plugin.core.storage.Concat](/plugins/core/storage/io.kestra.plugin.core.storage.concat) | Stitching | Concatenate per-iteration output files into one before a reduce step. |
+| [io.kestra.plugin.transform.Aggregate](/plugins/plugin-transform-records/io.kestra.plugin.transform.aggregate) | Reduce | Group records by one or more keys with `count()`, `sum()`, `max()`, and more. The reduce side of map-reduce. |
+| [io.kestra.plugin.transform.Filter](/plugins/plugin-transform-records/io.kestra.plugin.transform.filter) | Predicate | Keep only rows where a boolean expression holds. |
+| [io.kestra.plugin.transform.Map](/plugins/plugin-transform-records/io.kestra.plugin.transform.map) | Project | Per-record rename, drop, or compute fields — SQL `SELECT`-style. |
+| [io.kestra.plugin.transform.Unnest](/plugins/plugin-transform-records/io.kestra.plugin.transform.unnest) | Explode | Flatten an array field into one row per element, carrying sibling fields through. |
+| [io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) | Isolate | Spawn a separate execution per iteration — own retries, own logs, own failure state. |
+| [io.kestra.plugin.core.flow.Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) | Fan-out | Run independent task groups concurrently inside a single iteration. |
 
 ## Common mistakes to avoid
 

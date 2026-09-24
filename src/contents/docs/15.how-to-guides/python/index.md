@@ -29,7 +29,7 @@ For more information, see the [dedicated guide](../python-dependencies/index.md)
 
 ## Script Task
 
-If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly in your flow configuration. This allows you to keep everything in one place.
+If you want to write a short amount of Python to perform a task, you can use the [io.kestra.plugin.scripts.python.Script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) type to write it directly in your flow configuration. This allows you to keep everything in one place.
 
 ```yaml
 id: python_scripts
@@ -98,7 +98,7 @@ tasks:
 
 ## Commands Task
 
-If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.python.Commands` type:
+If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands) type:
 
 ```yaml
 id: python_commands
@@ -193,7 +193,7 @@ tasks:
     message: "Number of downloads: {{ outputs.outputs_metrics.vars.downloads }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both [io.kestra.plugin.scripts.python.Script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) and [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands)._
 
 ### File Output
 
@@ -242,7 +242,7 @@ tasks:
       - cat {{ outputs.outputs_metrics.outputFiles['downloads.txt'] }}
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both [io.kestra.plugin.scripts.python.Script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) and [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands)._
 
 ## Capture Logs
 

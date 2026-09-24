@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url"
 import { test, expect } from "@playwright/test"
 import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
 
@@ -9,7 +10,15 @@ import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
  * `npx playwright test --update-snapshots` to regenerate after intended changes.
  */
 
-for (const page of [...PAGES, ...VISUAL_ONLY_PAGES]) {
+// The sample is plain JS, so the optional fields are declared here.
+type SamplePage = { path: string; label: string; styles?: string }
+
+const styleSheet = (name: string) =>
+    fileURLToPath(new URL(`./fixtures/snapshot-styles/${name}`, import.meta.url))
+
+const pages: SamplePage[] = [...PAGES, ...VISUAL_ONLY_PAGES]
+
+for (const page of pages) {
     test(`${page.label} matches screenshot`, async ({ page: p }) => {
         // networkidle never settles on pages that keep polling, which is how a
         // run wedges with no output. Wait for fonts instead, they drive layout.
@@ -23,6 +32,9 @@ for (const page of [...PAGES, ...VISUAL_ONLY_PAGES]) {
             fullPage: true,
             animations: "disabled",
             timeout: 15_000,
+            // Neutralises the content a page only renders incidentally, so the
+            // baseline it owns is the one that moves.
+            ...(page.styles ? { stylePath: styleSheet(page.styles) } : {}),
         })
     })
 }

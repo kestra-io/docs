@@ -16,7 +16,7 @@ Custom Blueprints are private, reusable workflow templates that extend the publi
 
 Custom Blueprints help centralize orchestration patterns, document best practices, and streamline collaboration across your organization.
 
-### How to create a new custom blueprint
+### Creating a custom blueprint
 
 From the left navigation menu, go to **Blueprints**, select the **Custom Blueprints** tab, and click **Create**. Add a title, description, and the flow YAML, then click **Create**.
 
@@ -224,7 +224,7 @@ These tasks mirror the [PushFlows and SyncFlows patterns](../../../version-contr
 
 ### Push blueprints to Git
 
-Use `PushBlueprints` to export your blueprints from Kestra into a Git repository. This is useful for creating backups, reviewing changes via pull requests, or promoting blueprints across environments.
+`PushBlueprints` exports blueprints from Kestra into a Git repository. This is suited to creating backups, reviewing changes via pull requests, or promoting blueprints across environments.
 
 Each blueprint is written as a YAML file to the target `gitDirectory` (default: `_blueprints`). Use the `blueprints` property with glob patterns to push only a subset of blueprints.
 
@@ -251,7 +251,7 @@ The task outputs a `commitId`, a `commitURL`, and a `blueprints` URI pointing to
 
 ### Sync blueprints from Git
 
-Use `SyncBlueprints` to pull blueprints from Git into Kestra. This is the recommended pattern when Git is your single source of truth, for example when platform teams manage approved blueprint libraries centrally and deploy them across multiple Kestra instances.
+`SyncBlueprints` pulls blueprints from Git into Kestra, treating Git as the single source of truth. This pattern is suited to platform teams managing approved blueprint libraries centrally and deploying them across multiple Kestra instances.
 
 By default, `SyncBlueprints` only adds and updates blueprints. Set `delete: true` to also remove any blueprints present in Kestra but absent in Git.
 

@@ -165,7 +165,7 @@ This is where an orchestrator like Kestra provides immense value. Instead of rep
 
 ## The Future of ETL: AI, Automation, and Unified Orchestration
 
-The ETL landscape is being reshaped by two major trends: the rise of AI and the move towards unified orchestration.
+The ETL landscape is being reshaped by two major trends: the rise of AI and the move towards [unified orchestration](/resources/orchestration/unified-orchestration).
 *   **AI's Role in Enhancing ETL:** AI is not replacing ETL but augmenting it. Tools like Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) can generate workflow code from natural language prompts, while [AI agents](/resources/ai/ai-agent) can be used within an [AI pipeline](/resources/ai/ai-pipeline) to perform intelligent data validation or enrichment.
 *   **Unified Orchestration:** The most effective data teams are breaking down silos between data, operations, and application development. The future lies in platforms that can orchestrate workflows across all these domains. A single control plane that can manage a data ingestion job, trigger an infrastructure update with Terraform, and run a machine learning model deployment creates a more efficient and reliable system.
 

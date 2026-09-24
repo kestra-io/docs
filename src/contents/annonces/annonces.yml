@@ -1,5 +1,5 @@
 - id: 1
-  tag: "Kestra 2.0 is out"
-  linkText: "Discover Kestra 2.0:"
-  tail: "what has changed and what you get"
-  href: "/two-zero"
+  tag: "Kestra Academy"
+  linkText: "Become Kestra Certified:"
+  tail: "Infrastructure Automation, AI Workflows and Data Pipelines courses"
+  href: "https://academy.kestra.io/"

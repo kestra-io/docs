@@ -29,11 +29,11 @@ Each target uses one of two connection modes that control how the promote action
 
 **SERVER mode**: the Kestra backend holds an encrypted API token for the remote instance. When a user promotes a flow, the source Kestra server makes the API call to the target on their behalf. Users never see or handle the token.
 
-Use SERVER mode when you want to centralize credential management and prevent users from needing direct access to the target instance.
+SERVER mode centralizes credential management; users need no direct access to the target instance.
 
 **CLIENT mode**: no token is stored on the source instance. When a user promotes a flow, they supply their own API token for the target at promote time. The browser calls the target instance directly, then reports the result back to the source for history and audit purposes. Tokens are stored in the user's browser for convenience and are never sent to the source server.
 
-Use CLIENT mode when users already have personal API tokens on the target, or when you want each promotion to be attributable to the individual user's identity on the target.
+CLIENT mode is suited to teams where users already hold personal API tokens on the target, or where each promotion should be attributable to the individual user's identity on the target.
 
 ![Create promotion target form showing Server and Client connection modes](./promote-target-form.png)
 
@@ -41,7 +41,7 @@ Use CLIENT mode when users already have personal API tokens on the target, or wh
 
 Each target can optionally require explicit confirmation before any promotion runs. When **Require a confirmation gate before promoting** is enabled on a target, the UI presents the diff and requires the user to acknowledge before the flow is copied to the target. If a promote request is submitted to a gated target without confirmation, no promotion is attempted and nothing is recorded. The user must confirm and resubmit.
 
-Use gated targets for production environments where you want a deliberate review step before deployment.
+Gated targets add a deliberate review step before deployment, suited to production environments.
 
 ![Gate confirmation dialog requiring the user to acknowledge the diff before the promotion proceeds](./promote-gate-confirmation.png)
 
