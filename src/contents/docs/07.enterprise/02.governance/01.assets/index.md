@@ -114,7 +114,7 @@ Some plugins support automatic asset generation when `assets.enableAuto: true` i
 - **Hex `projects.Run`**: emits a `Custom` asset typed `io.kestra.plugin.ee.assets.Dataset` (with `system: hex`) for the Hex project that ran, so Hex appears as the terminal consumer in a Fivetran → dbt → Hex lineage chain. The asset id is the `projectId`. Hex's API reports no upstream tables, so declare `assets.inputs` manually using the same `database.schema.table` ids that plugin-dbt and plugin-fivetran emit.
 
 :::alert{type="warning"}
-`assets.enableAuto` is the single switch that controls whether a task's emitted assets are captured at all — for plugins that call the asset emission API programmatically (JDBC Query, dbt CLI, Helm), setting `assets.enableAuto: true` is what makes emission take effect, not only what enables auto-*detection* of dynamically-referenced assets. Without it, the plugin can still log that it emitted assets while nothing is actually recorded, since the emission is silently discarded.
+`assets.enableAuto` is the single switch that controls whether a task's emitted assets are captured at all — for plugins that call the asset emission API programmatically (JDBC Query, dbt CLI, Helm, Qlik Cloud, Hex), setting `assets.enableAuto: true` is what makes emission take effect, not only what enables auto-*detection* of dynamically-referenced assets. Without it, the plugin can still log that it emitted assets while nothing is actually recorded, since the emission is silently discarded.
 :::
 
 :::collapse{title="JDBC Query auto-generated assets"}
