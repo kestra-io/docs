@@ -1,0 +1,167 @@
+---
+import SectionTitle from "./SectionTitle.astro"
+import { DEPLOYMENTS } from "./securityData"
+---
+
+<section
+    class="security-section deployments"
+    aria-labelledby="deployments-title"
+>
+    <img src="/hero-grid.svg" alt="" class="grid" aria-hidden="true" />
+    <div class="container">
+        <SectionTitle
+            id="deployments-title"
+            title="Choose your deployment"
+            align="center"
+        >
+            Where Kestra runs decides who holds the data and who holds the
+            operational burden.
+        </SectionTitle>
+
+        <div class="cards">
+            {
+                DEPLOYMENTS.map((deployment) => (
+                    <article class="card" data-usal="fade-u">
+                        <header>
+                            <h3>{deployment.name}</h3>
+                            <p class="mode">{deployment.mode}</p>
+                        </header>
+                        <dl>
+                            {deployment.facts.map((fact) => (
+                                <div>
+                                    <dt>{fact.label}</dt>
+                                    <dd>{fact.value}</dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </article>
+                ))
+            }
+        </div>
+
+        <p class="note" data-usal="fade-u">
+            Multi-tenant deployments are supported through Kestra’s native
+            multi-tenancy model, which enforces tenant and namespace isolation
+            at the data and access layer.
+        </p>
+    </div>
+</section>
+
+<style lang="scss">
+    .deployments {
+        position: relative;
+        isolation: isolate;
+        --section-background: var(--ks-background-secondary);
+
+        overflow: clip;
+    }
+
+    .grid {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        z-index: -1;
+        width: 100%;
+        max-width: 1720px;
+        height: 100%;
+        transform: translateX(-50%);
+        object-fit: cover;
+        object-position: center top;
+        pointer-events: none;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    // Narrower than the page's 1320px column, as in Figma. Doubled class to
+    // outrank the page-level .container override.
+    .deployments .container.container {
+        @include media-breakpoint-up(xxl) {
+            max-width: 1140px;
+        }
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        width: 100%;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem 2rem 2rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 1px 4px 0 var(--security-shadow-element);
+    }
+
+    header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        h3 {
+            margin: 0;
+            color: var(--ks-content-primary);
+            font-size: $font-size-xl;
+            line-height: 28px;
+            letter-spacing: -0.12px;
+        }
+
+        .mode {
+            margin: 0;
+            color: var(--ks-content-link);
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            line-height: 16px;
+        }
+    }
+
+    dl {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 0;
+        font-size: $font-size-sm;
+        line-height: 20px;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+
+    dt {
+        color: var(--ks-content-tertiary);
+        font-weight: 600;
+    }
+
+    dd {
+        margin: 0;
+        color: var(--ks-content-primary);
+    }
+
+    .note {
+        max-width: 790px;
+        margin: 0;
+        color: var(--ks-content-secondary);
+        font-size: $font-size-lg;
+        line-height: 28px;
+        text-align: center;
+    }
+</style>

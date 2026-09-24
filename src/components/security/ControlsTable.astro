@@ -1,0 +1,158 @@
+---
+import { Icon } from "astro-icon/components"
+import SectionTitle from "./SectionTitle.astro"
+import { EDITIONS, SECURITY_CONTROLS } from "./securityData"
+---
+
+<section class="security-section controls" aria-labelledby="controls-title">
+    <div class="container">
+        <SectionTitle id="controls-title" title="Security controls" />
+
+        <div class="table-wrapper" data-usal="fade-u">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col" class="col-control">Control</th>
+                        <th scope="col" class="col-description">Description</th>
+                        {
+                            EDITIONS.map((edition) => (
+                                <th scope="col">{edition}</th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        SECURITY_CONTROLS.map((control) => (
+                            <tr>
+                                <th scope="row" class="col-control">
+                                    {control.name}
+                                </th>
+                                <td class="col-description">
+                                    {control.description}
+                                </td>
+                                {control.availability.map(
+                                    (available, index) => (
+                                        <td class="col-edition">
+                                            <Icon
+                                                name={
+                                                    available
+                                                        ? "mdi:check-bold"
+                                                        : "mdi:close"
+                                                }
+                                                class={
+                                                    available
+                                                        ? "icon-check"
+                                                        : "icon-cross"
+                                                }
+                                            />
+                                            <span class="visually-hidden">
+                                                {available
+                                                    ? `Available in ${EDITIONS[index]}`
+                                                    : `Not available in ${EDITIONS[index]}`}
+                                            </span>
+                                        </td>
+                                    ),
+                                )}
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .table-wrapper {
+        // Containing block for the absolutely positioned .visually-hidden
+        // labels, so they scroll with the table instead of widening the page.
+        position: relative;
+        overflow-x: auto;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 2px 8px 0 var(--security-shadow-surface);
+    }
+
+    table {
+        width: 100%;
+        min-width: 860px;
+        border-collapse: collapse;
+        color: var(--ks-content-primary);
+    }
+
+    tr:not(:last-child) {
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    th,
+    td {
+        height: 80px;
+        padding: 1rem 1.25rem;
+        vertical-align: middle;
+    }
+
+    thead th {
+        padding-block: 1.25rem;
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 24px;
+        text-align: center;
+
+        &.col-control {
+            font-size: $font-size-sm;
+            line-height: 20px;
+        }
+
+        &.col-control,
+        &.col-description {
+            text-align: left;
+        }
+    }
+
+    .col-control {
+        width: 300px;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: left;
+    }
+
+    .col-description {
+        padding-inline: 1.5rem;
+        font-size: $font-size-sm;
+        line-height: 20px;
+        text-align: left;
+    }
+
+    thead .col-description {
+        font-size: $font-size-md;
+        line-height: 24px;
+    }
+
+    .col-edition {
+        width: 15.4%;
+        text-align: center;
+
+        :global(svg) {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+        }
+
+        :global(.icon-check) {
+            color: var(--ks-content-link);
+        }
+
+        :global(.icon-cross) {
+            color: var(--ks-content-tertiary);
+        }
+    }
+</style>
