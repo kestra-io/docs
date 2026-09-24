@@ -213,7 +213,7 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
 
 `TenantSync` and `NamespaceSync` both support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
-- `sourceOfTruthOverrides` to override the sync direction per resource kind. Currently exposes `flows` and `namespaceFiles`. Any field left unset falls back to `sourceOfTruth`.
+- `sourceOfTruthOverrides` to override the sync direction per resource kind. In OSS, exposes `flows` and `namespaceFiles`. In Enterprise Edition, also exposes `apps`, `unitTests`, `blueprints`, and `dashboards`. Any field left unset falls back to `sourceOfTruth`.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
 - An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
 - `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted when `sourceOfTruth` is `GIT`.
@@ -237,7 +237,14 @@ tasks:
     branch: main
 ```
 
-`whenMissingInSource` remains a single global setting but its effect flips per kind with the resolved source. In the example above, a namespace file present in Kestra but absent from Git is deleted from Kestra (Git is the source for files), while a flow present in Git but absent from Kestra is deleted from Git (Kestra is the source for flows). `protectedNamespaces` still guards every deletion regardless of direction.
+`whenMissingInSource` is a single global setting, but "missing in source" means different things depending on which direction each kind syncs:
+
+| Resource kind | Source of truth | `KEEP` holds... |
+|---|---|---|
+| Namespace files | Git | Files in Kestra that are absent from Git |
+| Flows | Kestra | Flows in Git that are absent from Kestra |
+
+`protectedNamespaces` still guards every deletion regardless of direction.
 
 Example usage of the `TenantSync` task:
 
