@@ -46,8 +46,8 @@ import { DEPLOYMENTS } from "./securityData"
 
         <p class="note" data-usal="fade-u">
             Multi-tenant deployments are supported through Kestra’s native
-            multi-tenancy model, which enforces tenant and namespace isolation
-            at the data and access layer.
+            <a href="/docs/architecture/multi-tenancy">multi-tenancy</a> model, which
+            enforces tenant and namespace isolation at the data and access layer.
         </p>
     </div>
 </section>
@@ -154,5 +154,10 @@ import { DEPLOYMENTS } from "./securityData"
         font-size: $font-size-lg;
         line-height: 28px;
         text-align: center;
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+        }
     }
 </style>

@@ -20,8 +20,8 @@ export const TRUST_CENTER_POLICIES = [
     "Data Retention",
     "Asset Management",
     "Business Continuity Plan",
-    "Code of Conduct",
     "Software Development Life Cycle",
+    "Code of Conduct",
 ]
 
 export interface Deployment {
@@ -209,8 +209,8 @@ export const SECURITY_CONTROLS: SecurityControl[] = [
 export const BUILD_PRACTICES = [
     "Source code in version control with a documented code review process, covered by our SOC 2 Type 2 audit.",
     "Vulnerability scanning across code and container images with GitHub Security, SonarCloud and Trivy.",
-    `A documented vulnerability management policy that defines how vulnerabilities are identified from external sources, risk-ranked, and resolved. Downloadable from the <a href="${TRUST_CENTER_URL}" target="_blank" rel="noopener">trust center</a>.`,
-    "Continuous control monitoring through Drata, with live status published on the trust center.",
+    `A documented vulnerability management policy that defines how vulnerabilities are identified from external sources, risk-ranked, and resolved. Downloadable from the <a href="${TRUST_CENTER_URL}" target="_blank" rel="noopener">Trust Center</a>.`,
+    "Continuous control monitoring through Drata, with live status published on the Trust Center.",
 ]
 
 export interface TrustLink {
@@ -221,7 +221,7 @@ export interface TrustLink {
 
 export const TRUST_LINKS: TrustLink[][] = [
     [
-        { label: "Trust center", text: "kestra.io/trust", href: TRUST_CENTER_URL },
+        { label: "Trust Center", text: "kestra.io/trust", href: TRUST_CENTER_URL },
         {
             label: "Security hardening guide",
             text: "kestra.io/docs/administrator-guide/security-hardening",
@@ -267,10 +267,11 @@ export const TRUST_LINKS: TrustLink[][] = [
     ],
 ]
 
+// Answers from the approved Notion draft "Security Page Draft: kestra.io/security".
 export const FAQ_ITEMS = [
     {
         question: "Is Kestra SOC 2 certified, and what is in scope?",
-        answer: `Yes. Kestra holds a SOC 2 Type 2 report covering the Security, Availability and Confidentiality trust services criteria. It examines Kestra Technologies and our managed service: how we build the software and how we operate as a vendor. Self-hosted deployments run in your infrastructure and stay under your control; the <a href="${HARDENING_GUIDE_URL}">hardening guide</a> covers that side.`,
+        answer: `Yes. Kestra Technologies holds a SOC 2 Type 2 report covering the Security, Availability and Confidentiality trust services criteria, together with GDPR Article 5. The audit examines how we build the software and how we operate our managed service. If you self-host, your own deployment is outside the audit scope and under your control. Request the report from the <a href="${TRUST_CENTER_URL}" target="_blank" rel="noopener">Trust Center</a>.`,
     },
     {
         question: "Does Kestra store my workflow data?",
@@ -278,30 +279,30 @@ export const FAQ_ITEMS = [
     },
     {
         question: "Can Kestra run air-gapped, with no outbound internet access?",
-        answer: "Yes. Enterprise Edition runs entirely inside your infrastructure. Workers can run inside air-gapped zones, and where policy requires it the control plane can run there too, installed from a private registry with the configuration mode that removes external dependencies from the UI.",
+        answer: "Yes. Enterprise Edition installs offline from a private registry, and an air-gapped configuration mode removes external dependencies from the UI. The Enterprise license is validated locally at startup and does not call out to a license server. Anonymous usage reporting, in-product documentation and hosted blueprints are the only components that reach the internet by default, and air-gapped mode disables them.",
     },
     {
         question: "Can I get a copy of your SOC 2 report?",
-        answer: `Yes. Request it from the <a href="${TRUST_CENTER_URL}" target="_blank" rel="noopener">trust center</a>. Each copy is issued to the requester.`,
+        answer: `Yes. Request it from the <a href="${TRUST_CENTER_URL}" target="_blank" rel="noopener">Trust Center</a>. Each copy is issued to the requester.`,
     },
     {
         question: "Is Kestra GDPR compliant, and do you offer a DPA?",
-        answer: `Yes. Article 5 requirements are audited alongside SOC 2, and a DPA is available on request through the <a href="${TRUST_CENTER_URL}" target="_blank" rel="noopener">trust center</a>.`,
+        answer: "Yes. GDPR Article 5 requirements are audited within the same report as our SOC 2. A Data Processing Agreement is available on request.",
     },
     {
         question: "Does Kestra support SSO and SCIM?",
-        answer: "Yes. SSO supports OIDC with Google, Microsoft Entra ID, Okta, Keycloak and authentik, plus LDAP, in Enterprise Edition and Kestra Cloud. SCIM 2.0 provisioning, deprovisioning and group sync are available in Enterprise Edition.",
+        answer: "Yes, on Enterprise Edition. SSO runs over OIDC with Google, Microsoft Entra ID, Okta, Keycloak and authentik, and LDAP is also supported. SCIM 2.0 handles provisioning, deprovisioning and group sync from Okta, Entra ID, Keycloak and authentik.",
     },
     {
         question: "Which secrets managers does Kestra support?",
-        answer: "Enterprise Edition integrates with HashiCorp Vault, CyberArk, Delinea, BeyondTrust, AWS Secrets Manager, AWS SSM Parameter Store, Azure Key Vault, Google Secret Manager, 1Password, Bitwarden and Doppler, with optional read-only access so your vault stays the source of truth. Built-in secrets management is available in every edition.",
+        answer: "Enterprise Edition connects to HashiCorp Vault, CyberArk, Delinea Secret Server, BeyondTrust, AWS Secrets Manager, AWS SSM Parameter Store, Azure Key Vault, Google Secret Manager, 1Password, Bitwarden and Doppler. Read-only mode keeps your vault as the source of truth, so Kestra can read secrets but cannot create, edit or delete them. Kestra also has a built-in secrets manager available in all editions.",
     },
     {
         question: "Which Kestra versions receive security fixes?",
-        answer: "Security fixes ship to the <code>latest</code> release and to all active LTS versions. We release a new LTS every six months and support each for one year, with at most two active at any time. Pin production to <code>kestra/kestra:latest-lts</code> to stay on the latest stable release.",
+        answer: "The <code>latest</code> release and all active LTS versions. A new LTS ships every six months and is supported for one year, with at most two active at any time. Fixes for known CVEs are backported to all active LTS versions.",
     },
     {
         question: "How do I report a security vulnerability?",
-        answer: `Report it privately to <a href="mailto:${SECURITY_EMAIL}">${SECURITY_EMAIL}</a>. We acknowledge reports within two business days, notify you when the issue is fixed, and credit you in the release notes unless you prefer to stay anonymous.`,
+        answer: `Email <a href="mailto:${SECURITY_EMAIL}">${SECURITY_EMAIL}</a>. See the <a href="#report-title">Reporting a vulnerability</a> section above for what to include and what happens next.`,
     },
 ]
