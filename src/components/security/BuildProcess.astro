@@ -26,7 +26,7 @@ import { BUILD_PRACTICES, HARDENING_GUIDE_URL } from "./securityData"
                     Security fixes ship to the <code>latest</code> release and to
                     all active LTS versions. We release a new LTS every six months
                     and support each for one year, with at most two active at any
-                    time. Pin production to
+                    time. Pin production to{" "}
                     <code>kestra/kestra:latest-lts</code> to stay on the latest stable
                     release without tracking version numbers.
                 </p>
@@ -45,8 +45,10 @@ import { BUILD_PRACTICES, HARDENING_GUIDE_URL } from "./securityData"
                     for link-local metadata services, container sandboxes and
                     ephemeral task runners, minimum host permissions, plugin
                     restriction, upload protections and CI/CD flow validation.
-                    See the <a href={HARDENING_GUIDE_URL}
-                        >security hardening guide</a
+                    See the <a
+                        href={HARDENING_GUIDE_URL}
+                        target="_blank"
+                        rel="noopener">security hardening guide</a
                     >.
                 </p>
             </article>

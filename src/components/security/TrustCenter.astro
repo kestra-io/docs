@@ -2,13 +2,14 @@
 import SectionTitle from "./SectionTitle.astro"
 import { TRUST_LINKS } from "./securityData"
 
-const isExternal = (href: string) =>
-    href.startsWith("http") || href === "/trust"
+// Everything except the mailto opens in a new tab, so reviewers keep this
+// page open while they check the linked docs and policies.
+const opensNewTab = (href: string) => !href.startsWith("mailto:")
 ---
 
 <section class="security-section trust" aria-labelledby="trust-title">
     <div class="container">
-        <SectionTitle id="trust-title" title="Trust Center" />
+        <SectionTitle id="trust-title" title="Resources" />
 
         <div class="columns">
             {
@@ -20,7 +21,7 @@ const isExternal = (href: string) =>
                                 <dd>
                                     <a
                                         href={link.href}
-                                        {...(isExternal(link.href)
+                                        {...(opensNewTab(link.href)
                                             ? {
                                                   target: "_blank",
                                                   rel: "noopener",
