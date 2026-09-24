@@ -139,7 +139,7 @@ Batch processing, the bread and butter of SSIS, is no longer sufficient for many
 
 ### Unified orchestration across domains
 
-The most forward-looking organizations are breaking down the walls between data, software, and infrastructure. A unified orchestration platform allows a single, consistent approach to managing workflows across all these domains. This means your data pipeline can be part of a larger workflow that also provisions the necessary infrastructure via Terraform and triggers a downstream business process. This holistic approach to [infrastructure automation](/infra-automation) is a core tenet of modern platform engineering.
+The most forward-looking organizations are breaking down the walls between data, software, and infrastructure. A [unified orchestration](/resources/orchestration/unified-orchestration) platform allows a single, consistent approach to managing workflows across all these domains. This means your data pipeline can be part of a larger workflow that also provisions the necessary infrastructure via Terraform and triggers a downstream business process. This holistic approach to [infrastructure automation](/infra-automation) is a core tenet of modern platform engineering.
 
 ## Kestra: The declarative control plane for modern data
 

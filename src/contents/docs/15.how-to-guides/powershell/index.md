@@ -18,7 +18,7 @@ You can execute PowerShell code in a flow by either writing your PowerShell code
 
 ## Scripts
 
-If you want to write a short amount of PowerShell code to perform a task, you can use the `io.kestra.plugin.scripts.powershell.Script` type to write it directly inside your flow. This allows you to keep everything in one place.
+If you want to write a short amount of PowerShell code to perform a task, you can use the [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script) type to write it directly inside your flow. This allows you to keep everything in one place.
 
 ```yaml
 id: powershell_script
@@ -44,7 +44,7 @@ You can read more about the Scripts type in the [Plugin documentation](/plugins/
 
 ## Commands
 
-If you would prefer to put your PowerShell code in a `.ps1` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.powershell.Commands` type:
+If you would prefer to put your PowerShell code in a `.ps1` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands) type:
 
 ```yaml
 id: powershell_commands
@@ -134,7 +134,7 @@ tasks:
     format: '{{ outputs.powershell_outputs_task.vars.test }}'
 ```
 
-_This example works for both `io.kestra.plugin.scripts.powershell.Script` and `io.kestra.plugin.scripts.powershell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script) and [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands)._
 
 ### File Output
 
@@ -160,7 +160,7 @@ tasks:
     message: "{{ read(outputs.powershell_outputs_task.outputFiles['output.txt']) }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.powershell.Script` and `io.kestra.plugin.scripts.powershell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script) and [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands)._
 
 ## Handling Metrics
 

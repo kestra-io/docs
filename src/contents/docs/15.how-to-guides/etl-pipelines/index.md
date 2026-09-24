@@ -20,7 +20,7 @@ We have used AWS access key and secret key in the example workflows below. To kn
 
 DuckDB transforms data directly using SQL queries.
 
-In the example below, we fetch CSV files, perform the join transformation using DuckDB Query task, store the result, upload the detailed orders onto S3, perform another transformation on the stored result, and finally upload the file as CSV onto S3.
+In the example below, we fetch CSV files, perform the join transformation using [DuckDB Query](/plugins/plugin-jdbc-duckdb/io.kestra.plugin.jdbc.duckdb.query) task, store the result, upload the detailed orders onto S3, perform another transformation on the stored result, and finally upload the file as CSV onto S3.
 
 ```yaml
 id: etl_using_duckdb
