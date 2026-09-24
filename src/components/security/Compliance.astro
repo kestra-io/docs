@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
+import Link from "~/components/common/Link.astro"
 import soc2Img from "~/components/layout/assets/soc2.png"
 import gdprImg from "~/components/layout/assets/gdpr.svg"
 import SectionTitle from "./SectionTitle.astro"
@@ -51,15 +52,12 @@ const REPORTS = [
                         <div class="body">
                             <h3>{report.name}</h3>
                             <p>{report.description}</p>
-                            <a
+                            <Link
                                 href={TRUST_CENTER_URL}
-                                class="link"
+                                text="Download from the trust center"
                                 target="_blank"
                                 rel="noopener"
-                            >
-                                Download from the trust center
-                                <Icon name="mdi:arrow-right" />
-                            </a>
+                            />
                         </div>
                         <span class="status">
                             <Icon name="mdi:check-circle-outline" />
@@ -162,20 +160,6 @@ const REPORTS = [
             color: var(--ks-content-secondary);
             font-size: $font-size-sm;
             line-height: 20px;
-        }
-
-        .link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--ks-content-link);
-            font-weight: 600;
-            line-height: 24px;
-
-            :global(svg) {
-                width: 16px;
-                height: 16px;
-            }
         }
     }
 
