@@ -381,6 +381,30 @@ jobs:
           delete-merged: true
           retention-days: 30
 
+      # Fixtures upload only when a job recorded calls not committed yet, so most
+      # runs have none and merge throws on an empty match.
+      - name: Find recorded API fixtures
+        id: fixtures
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          COUNT=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+            --jq '[.artifacts[] | select(.name | startswith("api-fixtures-"))] | length' \
+            | jq -s 'add // 0')
+          echo "count=${COUNT:-0}" >> "$GITHUB_OUTPUT"
+          echo "api-fixtures artifacts to merge: ${COUNT:-0}"
+
+      # Filenames hash the request, so a call recorded by two jobs lands on one file.
+      - name: Merge API fixtures into one artifact
+        if: ${{ !cancelled() && steps.fixtures.outputs.count != '0' }}
+        uses: actions/upload-artifact/merge@v7
+        with:
+          name: api-fixtures
+          pattern: api-fixtures-*
+          delete-merged: true
+          retention-days: 30
+
       # The build tarball and shard results only feed this run. Kept when a shard
       # failed, so "Re-run failed jobs" still finds them. Fork PR tokens cannot delete.
       - name: Delete the transport artifacts
