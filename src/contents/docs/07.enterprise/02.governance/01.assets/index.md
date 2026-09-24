@@ -109,6 +109,11 @@ Some plugins support automatic asset generation when `assets.enableAuto: true` i
 - **JDBC Query**: detects `CREATE TABLE` statements and emits a single `io.kestra.plugin.ee.assets.Table` output; JDBC URL populates `system` and `database`.
 - **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.core.models.assets.External`, marking the infrastructure targets the playbook runs against.
 - **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
+- **Helm**: `Upgrade`, `Rollback`, `Status`, and `Uninstall` emit a `Custom` output typed `io.kestra.plugin.ee.assets.HelmRelease` for the release plus one `Custom` output typed `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource (`Deployment`, `Service`, `Ingress`, etc.) — these aren't typed asset classes yet, but the type strings are chosen to match what they'd become if `core-ee` adds them later, so nothing in the catalog needs to change on that swap; the chart reference and any `valuesFrom` files are declared as inputs.
+
+:::alert{type="warning"}
+`assets.enableAuto` is the single switch that controls whether a task's emitted assets are captured at all — for plugins that call the asset emission API programmatically (JDBC Query, dbt CLI, Helm), setting `assets.enableAuto: true` is what makes emission take effect, not only what enables auto-*detection* of dynamically-referenced assets. Without it, the plugin can still log that it emitted assets while nothing is actually recorded, since the emission is silently discarded.
+:::
 
 :::collapse{title="JDBC Query auto-generated assets"}
 
@@ -196,6 +201,27 @@ tasks:
             target: dev
         assets:
           enableAuto: true
+```
+
+:::
+
+:::collapse{title="Helm auto-generated assets"}
+
+```yaml
+id: helm_upgrade_release
+namespace: company.team
+
+tasks:
+  - id: upgrade
+    type: io.kestra.plugin.helm.Upgrade
+    releaseName: nginx
+    namespace: web
+    chart:
+      repository: https://kubernetes.github.io/ingress-nginx
+      name: ingress-nginx
+      version: 4.11.3
+    assets:
+      enableAuto: true
 ```
 
 :::
@@ -397,7 +423,7 @@ Each node displays the freshness state of that asset based on the most recent ex
 
 A summary bar above the graph shows the count of each state; the legend shows only states present in the graph.
 
-The expected cadence is derived from the `Schedule` trigger of the producing flow. To launch remediation flows when an asset becomes stale, use [`FreshnessTrigger`](#operational-automation).
+The expected cadence is derived from the [Schedule](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule) trigger of the producing flow. To launch remediation flows when an asset becomes stale, use [`FreshnessTrigger`](#operational-automation).
 
 ### Group by
 
@@ -487,8 +513,6 @@ Assets are essential for tracking data lineage in analytics and data engineering
 
 ### Example 1: Simple table creation
 
-**Scenario**: You're creating a new database table from scratch. This is a foundational asset with no upstream dependencies.
-
 ```yaml
 id: pipeline_with_assets
 namespace: company.team
@@ -520,14 +544,9 @@ tasks:
             table: trips
 ```
 
-**Key points**:
-- There are no `inputs` assets as this is a source table with no dependencies
-- The `trips` table is registered as an output asset that downstream workflows can reference
-- Metadata captures the database type and table name for easier discovery
-
 ### Example 2: Multi-layer data pipeline
 
-**Scenario**: You're building a modern data stack with staging and mart layers. The staging layer reads from an external source, and the mart layer creates aggregated analytics tables.
+The staging layer reads from an external source; the mart layer creates aggregated analytics tables.
 
 ```yaml
 id: data_pipeline_assets
@@ -573,37 +592,11 @@ tasks:
                   model_layer: mart
 ```
 
-**What's happening in this pipeline**:
-
-1. **External Source Tracking**: The `create_staging_layer_asset` task references `sample_data.nyc.taxi` as an input asset, even though it's managed outside this workflow. This establishes lineage to external data sources.
-
-2. **Staging Layer**: The `trips` table is created and registered with `model_layer: staging` metadata. This becomes an intermediate asset that mart layers will consume.
-
-3. **Dynamic Mart Creation**: The `Loop` task generates two mart tables:
-   - `avg_passenger_count`
-   - `avg_trip_distance`
-
-   Both declare `trips` as an input, creating a clear dependency chain.
-
-4. **Complete Lineage Graph**: Kestra automatically builds the dependency graph.
-
-**Benefits of this approach**:
-- **Impact Analysis**: If `sample_data.nyc.taxi` changes, you can instantly see that it affects 3 downstream assets
-- **Layer Organization**: Filter assets by `model_layer` to view only staging or mart tables
-- **Dependency Tracking**: Know exactly which tables depend on others before making schema changes
-- **Audit Trail**: Track which workflows created each table and when
-
-
 :::
 
 ## Infrastructure use case: team bucket provisioning
 
 :::collapse{title="Advanced: infrastructure provisioning"}
-
-Assets are particularly valuable for infrastructure management scenarios. This example demonstrates how a DevOps team can provision cloud resources and track their usage across different teams.
-
-**Scenario**: Your DevOps team needs to create dedicated S3 buckets for multiple teams (Business, Data, Finance, Product). By registering these buckets as assets during provisioning, you establish a clear lineage of which workflows and executions interact with each infrastructure component.
-
 
 The following flow creates S3 buckets for selected teams and registers them as assets:
 
@@ -642,9 +635,7 @@ tasks:
                 address: s3://kestra-{{ item.value | slugify }}-bucket
 ```
 
-This flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata.
-
-Once the infrastructure is provisioned, teams can reference these assets in their workflows. Here's how the Data team uses their bucket:
+The flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata. Teams reference these assets in downstream workflows:
 
 ```yaml
 id: upload_file
@@ -673,23 +664,12 @@ tasks:
             owner: data
 ```
 
-In this workflow:
-- The `aws_upload` task declares `kestra-data-bucket` as an **input asset**, linking it to the infrastructure provisioned earlier
-- It also creates an **output asset** (`raw_customer`) representing the uploaded file
-- This establishes a complete lineage chain: infrastructure creation → data upload → file asset
-
-**Benefits**: With this approach, you can easily answer questions like:
-- Which teams are using which buckets?
-- What files have been uploaded to each bucket?
-- Which workflows and executions have interacted with a specific infrastructure component?
-- When was this infrastructure resource created and by which flow?
-
 :::
 
 
 ## Populate dropdowns and app inputs
 
-Use the `assets()` Pebble function to query assets at runtime — for example, to populate dropdown inputs or select resources based on type, namespace, or metadata.
+The `assets()` Pebble function queries assets at runtime, for example to populate dropdown inputs or select resources based on type, namespace, or metadata.
 
 ### Function signature
 
@@ -789,7 +769,7 @@ tasks:
 
 ## Export assets with AssetShipper
 
-Use the `AssetShipper` task to export asset metadata to external systems for lineage tracking, monitoring, or integration with data catalogs. Supported destinations include files and OpenLineage-compatible providers.
+The `AssetShipper` task exports asset metadata to external systems for lineage tracking, monitoring, or integration with data catalogs. Supported destinations include files and OpenLineage-compatible providers.
 
 ### Export assets to file
 
@@ -834,7 +814,7 @@ The `mappings` property defines how Kestra asset metadata fields map to OpenLine
 
 ## Purge assets and lineage data
 
-Use the `io.kestra.plugin.ee.assets.PurgeAssets` task to enforce asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
+The `io.kestra.plugin.ee.assets.PurgeAssets` task enforces asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
 
 **Filters:**
 
@@ -877,6 +857,6 @@ tasks:
 
 ## Visualizing assets in dashboards
 
-Use the `io.kestra.plugin.ee.dashboard.data.Assets` data source to build charts over your asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range — they always reflect the current state of your inventory.
+The `io.kestra.plugin.ee.dashboard.data.Assets` data source builds charts over the asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range; they always reflect the current state of your inventory.
 
 See [Assets (EE and Cloud only)](../../../09.ui/00.dashboard/index.md#assets-ee-and-cloud-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.

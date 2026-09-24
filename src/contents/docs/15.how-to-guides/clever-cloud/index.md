@@ -184,7 +184,7 @@ Available trigger outputs:
 
 When multiple lines match in the same poll, only the most recent fires the trigger.
 
-Replace the `notify` task with your preferred alerting method — a Slack message, a PagerDuty call, or an email via `io.kestra.plugin.notifications.slack.SlackIncomingWebhook`.
+Replace the `notify` task with your preferred alerting method — a Slack message, a PagerDuty call, or an email via [io.kestra.plugin.notifications.slack.SlackIncomingWebhook](/plugins/plugin-notifications/io.kestra.plugin.notifications.slack.slackincomingwebhook).
 
 ## Manage organisation members
 

@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Instance-owner-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Instance-owner-only are not tenant-scoped.
-  version: 2.0.2
+  version: 2.0.3
 tags:
 - name: Flows
   description: Flows api
@@ -9461,7 +9461,7 @@ paths:
       tags:
       - Assets
       summary: Update an existing asset
-      description: The asset must already exist. The namespace of an existing asset cannot be changed; its type can.
+      description: The asset must already exist. Any field can be changed, including the namespace and the type.
       operationId: updateAsset
       parameters:
       - name: id
@@ -33965,6 +33965,8 @@ components:
             $ref: '#/components/schemas/State.Type'
         disabled:
           type: boolean
+        sourceDisabled:
+          type: boolean
         locked:
           type: boolean
         workerId:
@@ -34542,11 +34544,17 @@ components:
       type: object
       properties:
         enableAuto:
-          $ref: '#/components/schemas/Property_Boolean_'
+          description: Whether to auto-register assets referenced dynamically at runtime that are not statically declared in inputs or outputs.
+          allOf:
+          - $ref: '#/components/schemas/Property_Boolean_'
         inputs:
-          $ref: '#/components/schemas/Property_List_AssetIdentifier__'
+          description: The assets consumed as inputs.
+          allOf:
+          - $ref: '#/components/schemas/Property_List_AssetIdentifier__'
         outputs:
-          $ref: '#/components/schemas/Property_List_Asset__'
+          description: The assets produced as outputs.
+          allOf:
+          - $ref: '#/components/schemas/Property_List_Asset__'
         assetFailureBehavior:
           title: Asset failure behavior
           description: 'Behavior applied to the task state when a declared asset fails to render, emit, or be persisted (e.g. a lock conflict): FAIL escalates it to FAILED, WARN (default) warns it if it would otherwise succeed, IGNORE leaves the state untouched.'
@@ -42068,6 +42076,7 @@ components:
         taskCache:
           $ref: '#/components/schemas/Cache'
         assets:
+          description: Assets this task consumes as inputs or produces as outputs, for lineage tracking and the asset graph (Enterprise Edition). A flow declaring this property on a task is rejected in the open-source edition.
           nullable: true
           allOf:
           - $ref: '#/components/schemas/AssetsDeclaration'

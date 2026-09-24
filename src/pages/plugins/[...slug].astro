@@ -3,6 +3,8 @@ export const prerender = false
 
 import { API_URL } from "astro:env/client"
 
+import { $fetchApiCached } from "~/utils/fetch"
+
 import Layout from "~/components/layout.astro"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import OneHeader from "~/components/plugins/OneHeader.astro"
@@ -28,6 +30,13 @@ import {
     fetchVersionedSubgroups,
 } from "~/utils/plugins/fetchPluginPageData"
 import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
+import {
+    buildFamilyIndex,
+    findFamilySiblings,
+    familyNameForPlugin,
+    type ArtifactsResponse,
+} from "~/utils/plugins/pluginFamily"
+import { formatPluginName } from "~/utils/plugins/pluginUtils"
 import { resolveShortElementSlug } from "~/utils/plugins/shortElementSlug"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
@@ -62,6 +71,10 @@ let { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
         githubReleaseRepo,
         isEePlugin,
     )
+
+const familyIndex = buildFamilyIndex(
+    await $fetchApiCached<ArtifactsResponse>("/plugins/artifacts"),
+)
 
 const versionState = resolveVersionState(
     requestedVersion,
@@ -259,6 +272,18 @@ if (
     !pluginsWithoutDeprecated.some(p => matchesSubGroup(p, effectiveSubGroup))
 ) {
     if (!versionState.version) {
+        // Bare "/plugins/<name>" with no matching plugin may still be a multi-artifact
+        // family prefix (plugin-debezium, plugin-jdbc, plugin-scripts, ...): each
+        // sub-technology ships as its own unrelated top-level plugin, so there is no
+        // single plugin named e.g. "plugin-debezium" to render here.
+        if (
+            splitRouteSlug.length === 1 &&
+            pluginName &&
+            findFamilySiblings(allPlugins, pluginName, familyIndex).length > 0
+        ) {
+            return Astro.rewrite(`/plugins/$family/${pluginName}`)
+        }
+
         console.warn("Redirecting due to no content")
         // With a single slug segment the parent is the index: build "/plugins", not
         // "/plugins/", which the trailing-slash rule would bounce a second time.
@@ -350,9 +375,26 @@ const pluginSchema = pluginType
           },
           author: { "@id": "https://kestra.io/#organization" },
       }
+
+// plugin-jdbc-oracle etc. ship as unrelated top-level plugins (see pluginFamily.ts), so the
+// nav tree has no "JDBC" ancestor to derive from the URL alone: insert it into both the
+// visible breadcrumb and its JSON-LD twin via their shared `prependItems` mechanism.
+const pluginFamilyName = pluginName ? familyNameForPlugin(pluginName, familyIndex) : undefined
+const familyDisplayName = pluginFamilyName ? formatPluginName(pluginFamilyName) : undefined
+const familyPrependItems = pluginFamilyName
+    ? [{ label: familyDisplayName!, href: `/plugins/${pluginFamilyName}` }]
+    : undefined
+const familyBreadcrumbListItems = pluginFamilyName
+    ? [{ name: familyDisplayName!, url: `https://kestra.io/plugins/${pluginFamilyName}` }]
+    : undefined
 ---
 
-<Layout title={headingTitle} description={headingDescription} image={ogImage}>
+<Layout
+    title={headingTitle}
+    description={headingDescription}
+    image={ogImage}
+    breadcrumbPrependItems={familyBreadcrumbListItems}
+>
     <Fragment slot="head">
         {/* This decorative background on .plugin-details is the page's LCP
             image, but as a CSS background it is only discovered once the
@@ -396,8 +438,9 @@ const pluginSchema = pluginType
             <div class="bd-title">
                 <Breadcrumb
                     slug={canonicalPathname}
-                    {pageList}
+                    pageList={pageList}
                     pageNames={pageNamesHeading}
+                    prependItems={familyPrependItems}
                 />
                 {
                     page && (

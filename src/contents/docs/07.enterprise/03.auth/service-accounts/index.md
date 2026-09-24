@@ -20,11 +20,7 @@ Service accounts have no password and no access to the Kestra UI — they authen
 
 ## Creating a service account
 
-To create a new service account, go to **IAM** in the sidebar, open the **Service Accounts** tab, and click **Create**. Fill in the name and optional description, then click **Save**.
-
-Once the service account is created, switch to the **Access** tab, click **Add**, and select the role to assign.
-
-To generate an API token, click **Create API Token** in the service account details. You can configure the token to expire after a set period or never expire. The **Extended** toggle (disabled by default) automatically resets the expiry each time the token is used. Click **Generate**, then copy the token immediately — it is shown only once.
+Service accounts are created under **IAM → Service Accounts**. Each has a name, optional description, optional group assignment, and roles that grant access to specific resources. API tokens are generated from the service account's details view and are shown only at creation.
 
 ## Users, service accounts, and API tokens
 
@@ -34,20 +30,18 @@ The key difference: a service account has no password or personal information an
 
 ## Allocating service accounts to groups
 
-Each service account can be attached to one or more groups, such as a “Bots” group that centrally governs programmatic access for CI/CD across multiple projects with a single role. This simplifies managing Terraform, GitHub Actions, or other external application access in one place.
+Each service account can be attached to one or more groups, such as a “Bots” group that centrally governs programmatic access for CI/CD across multiple projects with a single role.
 
-## CLI authentication
+## CLI token usage
 
-When using the Kestra CLI, you can authenticate with either an API token or a username and password:
-
-1. Use `--api-token` to authenticate with a service account token:
+The Kestra CLI accepts an API token via `--api-token`:
 
 ```bash
 ./kestra namespace files update prod scripts . \
 --server=https://demo.kestra.io --api-token yourtoken
 ```
 
-2. Use `--user` to authenticate with Basic Auth credentials:
+Basic Auth credentials are passed via `--user`:
 
 ```bash
 ./kestra namespace files update prod scripts . \

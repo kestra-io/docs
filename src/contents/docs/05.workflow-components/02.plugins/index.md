@@ -14,7 +14,7 @@ Plugins come in three categories:
 
 - **Tasks** perform work (HTTP, JDBC, Python, Spark, Script, etc.).
 - **Triggers** start executions ([Schedule](../07.triggers/01.schedule-trigger/index.md), [Webhook](../07.triggers/03.webhook-trigger/index.md), [Kafka](../07.triggers/05.realtime-trigger/index.md), Pub/Sub).
-- **Conditions** control when triggers fire or which branch of a `Switch` runs.
+- **Conditions** control when triggers fire or which branch of a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) runs.
 
 :::alert{type="info"}
 The [Kestra MCP server](../../ai-tools/02.kestra-mcp-resources/index.md) gives AI coding agents like Claude Code and Cursor live access to plugin task schemas, properties, and version history. Add it to your agent for accurate plugin reference while writing flows.
