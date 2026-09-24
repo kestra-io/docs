@@ -1,0 +1,105 @@
+---
+import HeroVisual from "./HeroVisual.astro"
+import { TRUST_CENTER_URL } from "./securityData"
+---
+
+<section class="security-hero" aria-labelledby="security-hero-title">
+    <HeroVisual />
+    <div class="container">
+        <div class="content">
+            <h1
+                id="security-hero-title"
+                data-usal="fade-u delay-0 duration-500 ease-out"
+            >
+                Security and<br /> compliance at Kestra
+            </h1>
+            <p data-usal="fade-u delay-50 duration-500 ease-out">
+                Kestra runs on your infrastructure, under your rules. <strong
+                    >For self-hosted deployments, your workflows and data stay
+                    in your infrastructure, under your control.</strong
+                > This page covers our compliance posture as a company, the controls
+                available in each edition, and what your security team needs to review
+                us.
+            </p>
+            <a
+                href={TRUST_CENTER_URL}
+                class="btn btn-lg btn-primary"
+                target="_blank"
+                rel="noopener"
+                data-usal="fade-u delay-100 duration-500 ease-out"
+            >
+                Visit the trust center
+            </a>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .security-hero {
+        --header-h: var(--top-bar-height, 67px);
+
+        position: relative;
+        isolation: isolate;
+        margin-top: calc(-1 * var(--header-h));
+        padding: calc(var(--header-h) + 5.75rem) 1rem 4rem;
+        overflow: clip;
+        background: $black;
+        color: $white;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--header-h) + 2.5rem) 1rem 3rem;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        max-width: 680px;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 4rem;
+        font-feature-settings: "ss01", "ss06", "ss07";
+        line-height: 60px;
+        letter-spacing: -1.28px;
+        color: $white;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2.5rem;
+            line-height: 1.1;
+        }
+    }
+
+    p {
+        margin: 0;
+        color: $white;
+        font-size: $font-size-lg;
+        line-height: 28px;
+
+        strong {
+            font-weight: 700;
+        }
+
+        @include media-breakpoint-down(md) {
+            font-size: $font-size-md;
+            line-height: 24px;
+        }
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 180px;
+        min-height: 56px;
+        margin-top: 1rem;
+        border: 1px solid $white;
+        border-radius: 8px;
+        box-shadow: inset 0 0 16px 0 #be62ff;
+        font-size: $font-size-lg;
+        font-weight: 700;
+    }
+</style>
