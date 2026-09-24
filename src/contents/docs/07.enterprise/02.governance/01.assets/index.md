@@ -47,7 +47,7 @@ An asset is uniquely identified by its `id` and the tenant (`tenantId`) where yo
 
 You can attach a namespace to an asset to improve filtering and to restrict visibility so only users or groups with the appropriate RBAC can access the asset. The namespace field is editable; you can change it from the UI or by updating the `namespace` field in a flow's `assets.outputs` declaration.
 
-A **Global** asset has a null namespace. Global assets are not guarded by namespace-level ACL: any user or group with a namespace-scoped grant can see and interact with them, not only those with a global grant. Use Global assets for shared resources that every namespace in the tenant should be able to reference, such as a central data catalog entry or a shared infrastructure asset.
+An asset that doesn't have any namespace set (i.e., the namespace field is empty) can be considered a global asset. Global assets are not guarded by namespace-level ACL: any user or group with a namespace-scoped grant can see and interact with them. Use them for shared resources that every namespace in the tenant should be able to reference, such as a central data catalog entry or a shared infrastructure asset.
 
 To create a Global asset from a flow, omit the `namespace` field on the `assets.outputs` entry entirely. A flow has no way to pass an explicit `null` through YAML, so omitting the field on a new asset is the only way to produce a null-namespace (Global) asset from a flow definition. When updating an existing asset, omitting `namespace` preserves the asset's current namespace rather than clearing it.
 
