@@ -45,7 +45,7 @@ import dots from "./assets/hero-dots.svg"
         height: 574px;
         transform: translateX(-50%);
 
-        @media (max-width: 1399.98px) {
+        @include media-breakpoint-down(xxl) {
             top: 40px;
             right: -198px;
             left: auto;
@@ -83,8 +83,8 @@ import dots from "./assets/hero-dots.svg"
         height: 720px;
         background: radial-gradient(
             closest-side,
-            rgba(#1c6ad6, 0.85),
-            rgba(#0d3a78, 0.55) 55%,
+            var(--security-hero-horizon),
+            var(--security-hero-horizon-deep) 55%,
             transparent
         );
         filter: blur(20px);
@@ -97,8 +97,8 @@ import dots from "./assets/hero-dots.svg"
         height: 240px;
         background: radial-gradient(
             closest-side,
-            #2a3dff,
-            rgba(#1d4bff, 0.6) 60%,
+            var(--security-hero-orb-blue),
+            var(--security-hero-orb-blue-soft) 60%,
             transparent
         );
         animation: drift 14s ease-in-out infinite alternate;
@@ -111,8 +111,8 @@ import dots from "./assets/hero-dots.svg"
         height: 260px;
         background: radial-gradient(
             closest-side,
-            #3dfff4,
-            rgba(#1fd6f0, 0.55) 60%,
+            var(--security-hero-orb-cyan),
+            var(--security-hero-orb-cyan-soft) 60%,
             transparent
         );
         animation: drift 18s ease-in-out -6s infinite alternate-reverse;
@@ -125,7 +125,7 @@ import dots from "./assets/hero-dots.svg"
         height: 170px;
         background: radial-gradient(
             closest-side,
-            rgba(#29e6f2, 0.8),
+            var(--security-hero-orb-teal),
             transparent
         );
         animation: drift 16s ease-in-out -3s infinite alternate;
@@ -138,7 +138,7 @@ import dots from "./assets/hero-dots.svg"
         height: 380px;
         background: radial-gradient(
             closest-side,
-            rgba(#8c4dff, 0.45),
+            var(--security-hero-halo),
             transparent
         );
         filter: blur(30px);
@@ -196,7 +196,7 @@ import dots from "./assets/hero-dots.svg"
             display: block;
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 0 20px rgba(#5e6ed4, 0.35));
+            filter: drop-shadow(0 0 20px var(--security-hero-lock-glow));
         }
     }
 
