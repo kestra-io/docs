@@ -9,7 +9,7 @@ import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
  * Covers the Lighthouse page sample plus VISUAL_ONLY_PAGES, which exists so
  * every surface touched by the SVG asset rework has a baseline. Run
  * `npx playwright test --update-snapshots` to regenerate after intended changes.
- * Comparison runs through odiff, which reads options from the call site only.
+ * Comparison runs through odiff; tolerances come from playwright.config.ts.
  */
 
 // The sample is plain JS, so the optional fields are declared here.
@@ -34,7 +34,6 @@ for (const page of pages) {
             fullPage: true,
             animations: "disabled",
             timeout: 15_000,
-            maxDiffPixelRatio: 0.01,
             // Neutralises the content a page only renders incidentally, so the
             // baseline it owns is the one that moves.
             ...(page.styles ? { stylePath: styleSheet(page.styles) } : {}),

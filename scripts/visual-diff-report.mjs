@@ -3,6 +3,11 @@ import { execFileSync } from "node:child_process"
 import { mkdirSync, copyFileSync, writeFileSync, rmSync } from "node:fs"
 import { basename, join } from "node:path"
 import { ODiffServer } from "odiff-bin"
+import { PAGES, VISUAL_ONLY_PAGES } from "../tests/fixtures/page-sample.mjs"
+import {
+    SCREENSHOT_COMPARE,
+    compareSummary,
+} from "../tests/fixtures/screenshot-options.mjs"
 
 const SNAPSHOT_DIR = "tests/visual-regression.spec.ts-snapshots"
 const DEFAULT_OUT = "visual-diff-report"
@@ -11,7 +16,7 @@ const DIFF_COLOR = "#ff0055"
 const args = process.argv.slice(2)
 const flag = (name, fallback) => {
     const i = args.indexOf(`--${name}`)
-    return i === -1 ? fallback : args[i + 1]
+    return i === -1 || args[i + 1] === undefined ? fallback : args[i + 1]
 }
 
 const snapshotDir = flag("dir", SNAPSHOT_DIR)
@@ -45,13 +50,28 @@ function changedSnapshots() {
     return entries.sort((a, b) => a.path.localeCompare(b.path))
 }
 
+// Playwright slugs a label by replacing each non-word run with "-", so the
+// slug alone cannot say which hyphens were in the label ("Use Case CI-CD").
+const BY_SLUG = new Map(
+    [...PAGES, ...VISUAL_ONLY_PAGES].map((page) => [
+        page.label.replace(/[^\w]+/g, "-"),
+        page,
+    ]),
+)
+
 /** Snapshots are named `<Label>-<project>-<platform>.png` by Playwright. */
 function describe(path) {
     const file = basename(path, ".png")
     const m = /^(.*)-(desktop|tablet|mobile)-(.+)$/.exec(file)
-    return m
-        ? { label: m[1].replace(/-/g, " ").trim(), project: m[2], platform: m[3] }
-        : { label: file, project: "unknown", platform: "unknown" }
+    if (!m) return { label: file, project: "unknown", platform: "unknown" }
+
+    const known = BY_SLUG.get(m[1])
+    return {
+        label: known?.label ?? m[1].replace(/-/g, " ").trim(),
+        page: known?.path,
+        project: m[2],
+        platform: m[3],
+    }
 }
 
 function writeBaseline(path, dest) {
@@ -218,6 +238,7 @@ function renderHtml(entries, summary) {
       <div><dt>Removed</dt><dd>${summary.removed}</dd></div>
       <div><dt>Diff pixels</dt><dd>${summary.diffPixels.toLocaleString("en-US")}</dd></div>
       <div><dt>Baseline</dt><dd>${esc(summary.baseRef)}</dd></div>
+      <div><dt>Compared at</dt><dd>${esc(summary.compare)}</dd></div>
       <div><dt>Generated</dt><dd>${esc(summary.generatedAt.slice(0, 16).replace("T", " "))} UTC</dd></div>
     </dl>
   </header>
@@ -271,8 +292,8 @@ async function main() {
                     join(outDir, "images/current", file),
                     diffPath,
                     {
-                        threshold: 0,
-                        antialiasing: false,
+                        threshold: SCREENSHOT_COMPARE.threshold,
+                        antialiasing: SCREENSHOT_COMPARE.antialiasing,
                         diffColor: DIFF_COLOR,
                         diffOverlay: true,
                         failOnLayoutDiff: false,
@@ -305,6 +326,7 @@ async function main() {
 
     const summary = {
         baseRef: `${baseRef} ${git("rev-parse", "--short", baseRef).trim()}`,
+        compare: compareSummary(),
         generatedAt: new Date().toISOString(),
         total: entries.length,
         changed: entries.filter((e) => e.status === "changed").length,
@@ -323,9 +345,19 @@ async function main() {
     console.log(`Report written to ${outDir}/index.html`)
 
     if (process.env.GITHUB_OUTPUT) {
+        // Pre-composed: has_changes also covers tests/fixtures/api, so this
+        // runs on API-only drift, where a bare count would read "0 changed".
+        const line = summary.total
+            ? `${summary.total} snapshot(s) changed, ` +
+              `${diffPixels.toLocaleString("en-US")} differing pixels. ` +
+              `Download the \`visual-diff-report\` artifact from this run and ` +
+              `open \`index.html\` for a side-by-side, slider and highlighted diff.`
+            : ""
         writeFileSync(
             process.env.GITHUB_OUTPUT,
-            `report_total=${summary.total}\nreport_diff_pixels=${diffPixels}\n`,
+            `report_total=${summary.total}\n` +
+                `report_diff_pixels=${diffPixels}\n` +
+                `report_summary=${line}\n`,
             { flag: "a" },
         )
     }
