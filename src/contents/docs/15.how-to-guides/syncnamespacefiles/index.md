@@ -27,6 +27,18 @@ Before you start using the `SyncNamespaceFiles` task, ensure the following prere
 2. A Personal Access Token (PAT) for Git authentication.
 3. A running Kestra instance in a version 0.17.0 or later with the PAT stored as a [secret](../../06.concepts/04.secret/index.md) within the Kestra instance.
 
+## Namespace creation (EE)
+
+If the target `namespace` does not exist, `SyncNamespaceFiles` creates it automatically before writing any files. The task needs credentials to reach the Kestra API: configure task-level `auth` or instance-level `kestra.tasks.sdk.authentication.*`. See [SDK authentication](../../11.migration-guide/v2.0.0/sdk-authentication/index.md) for all three credential options.
+
+Without credentials, the task logs a warning and continues. Files are written to internal storage, but the namespace does not appear in the Namespaces UI until it is created manually.
+
+:::alert{type="info"}
+Namespace creation requires Enterprise Edition. On OSS, namespaces are implicit and have no create API. Files still sync to storage, but the namespace will not appear in the UI.
+:::
+
+When `dryRun: true`, namespace creation is skipped.
+
 ## Using the `dryRun` property
 
 Here is a sync flow that will sync the `git` namespace with files from the repository in the `_files` directory.
@@ -75,6 +87,30 @@ You should see the same files from the earlier log now in Kestra:
 A full list is also available in the Outputs tab:
 
 ![git3](./git3.png)
+
+## Scoping sync to a namespace subdirectory
+
+Use `namespaceDirectory` to control where files land inside the namespace, independently of `gitDirectory` (which controls which folder in the repo to read from). The default `/` keeps existing behavior unchanged.
+
+```yaml
+id: sync_files_from_git
+namespace: company.ops
+
+tasks:
+  - id: sync_files
+    type: io.kestra.plugin.git.SyncNamespaceFiles
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    url: https://github.com/git_username/scripts
+    branch: main
+    namespace: git
+    gitDirectory: scripts
+    namespaceDirectory: /shared-scripts
+```
+
+This reads from the `scripts/` folder in the repository and writes into the `shared-scripts` folder of the `git` namespace. A file at `scripts/helpers/parse.py` in Git lands at `/shared-scripts/helpers/parse.py` in the namespace.
+
+When `delete: true` is set, only files under `namespaceDirectory` are eligible for deletion. Files elsewhere in the namespace are not touched, even if they are absent from Git. The `dryRun` diff output reflects the prefix in the `kestraPath` column.
 
 ## Set up a schedule
 
