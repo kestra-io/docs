@@ -57,7 +57,9 @@ import dots from "./assets/hero-dots.svg"
             top: auto;
             right: -179px;
             bottom: -50px;
-            opacity: 0.6;
+            // Low enough that the white copy overlapping the lock stays above
+            // 4.5:1 contrast (about 6.6:1 over the lock's lightest fill).
+            opacity: 0.45;
             transform: scale(0.65);
             transform-origin: right bottom;
         }

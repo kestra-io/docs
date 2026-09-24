@@ -16,7 +16,9 @@ import { EDITIONS, SECURITY_CONTROLS } from "./securityData"
                         <th scope="col" class="col-description">Description</th>
                         {
                             EDITIONS.map((edition) => (
-                                <th scope="col">{edition}</th>
+                                <th scope="col" class="col-edition">
+                                    {edition}
+                                </th>
                             ))
                         }
                     </tr>
@@ -27,13 +29,19 @@ import { EDITIONS, SECURITY_CONTROLS } from "./securityData"
                             <tr>
                                 <th scope="row" class="col-control">
                                     {control.name}
+                                    <span class="control-description">
+                                        {control.description}
+                                    </span>
                                 </th>
                                 <td class="col-description">
                                     {control.description}
                                 </td>
                                 {control.availability.map(
                                     (available, index) => (
-                                        <td class="col-edition">
+                                        <td
+                                            class="col-edition"
+                                            data-edition={EDITIONS[index]}
+                                        >
                                             <Icon
                                                 name={
                                                     available
@@ -153,6 +161,69 @@ import { EDITIONS, SECURITY_CONTROLS } from "./securityData"
 
         :global(.icon-cross) {
             color: var(--ks-content-tertiary);
+        }
+    }
+
+    .control-description {
+        display: none;
+    }
+
+    @include media-breakpoint-down(lg) {
+        table,
+        tbody {
+            display: block;
+            min-width: 0;
+        }
+
+        thead,
+        .col-description {
+            display: none;
+        }
+
+        tr {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem 0.5rem;
+            padding: 1rem 1.25rem;
+        }
+
+        th,
+        td {
+            height: auto;
+            padding: 0;
+        }
+
+        .col-control {
+            grid-column: 1 / -1;
+            width: auto;
+        }
+
+        .control-description {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--ks-content-secondary);
+            font-weight: 400;
+        }
+
+        .col-edition {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            width: auto;
+            text-align: left;
+
+            &::before {
+                content: attr(data-edition) / "";
+                color: var(--ks-content-secondary);
+                font-size: $font-size-xs;
+                font-weight: 600;
+                line-height: 16px;
+            }
+
+            :global(svg) {
+                width: 20px;
+                height: 20px;
+            }
         }
     }
 </style>
