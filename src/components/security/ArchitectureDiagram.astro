@@ -1,0 +1,336 @@
+---
+import { Image } from "astro:assets"
+import KestraMonogram from "./assets/kestra-monogram.svg"
+import texture from "./assets/illustration-texture.webp"
+import { Icon } from "astro-icon/components"
+
+const WORKERS = [
+    { name: "eu-west", tags: ["gpu", "a100"] },
+    { name: "on-prem VPC", tags: ["pci", "restricted"] },
+    { name: "air-gapped site", note: "no database route" },
+]
+---
+
+<figure
+    class="diagram"
+    aria-label="Control plane connecting to data plane workers over HTTPS with TLS or mTLS"
+>
+    <Image src={texture} alt="" class="texture" aria-hidden="true" />
+
+    <div class="plane control">
+        <span class="plane-label">Control Plane</span>
+        <div class="box platform">
+            <KestraMonogram class="monogram" aria-hidden="true" />
+            <span class="box-title">Platform</span>
+            <div class="item">
+                <span class="item-name"
+                    >Executor<br />Scheduler<br />Webserver</span
+                >
+                <span class="dot dot-platform"></span>
+            </div>
+            <div class="item">
+                <span>
+                    <span class="item-name">Database</span>
+                    <span class="item-note"
+                        >reachable only from the platform</span
+                    >
+                </span>
+                <span class="dot dot-platform"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="link">
+        <span class="protocol">HTTPS</span>
+        <span class="line" aria-hidden="true"></span>
+        <span class="tls">TLS - mTLS</span>
+    </div>
+
+    <div class="plane data">
+        <span class="plane-label">Data Planes</span>
+        <div class="box workers">
+            <Icon name="mdi:account-hard-hat-outline" class="workers-icon" />
+            <span class="box-title">Workers</span>
+            {
+                WORKERS.map((worker) => (
+                    <div class="item">
+                        <span class="worker">
+                            <span class="item-name">{worker.name}</span>
+                            {worker.tags && (
+                                <span class="tags">
+                                    {worker.tags.map((tag) => (
+                                        <span class="tag">{tag}</span>
+                                    ))}
+                                </span>
+                            )}
+                            {worker.note && (
+                                <span class="item-note">{worker.note}</span>
+                            )}
+                        </span>
+                        <span class="dot dot-worker" />
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</figure>
+
+<style lang="scss">
+    .diagram {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 654px;
+        max-width: 100%;
+        min-height: 410px;
+        margin: 0;
+        padding: 2.5rem 2.375rem;
+        overflow: clip;
+        border-radius: 16px;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            gap: 1.5rem;
+            min-height: 0;
+            padding: 1rem 0;
+        }
+    }
+
+    .texture {
+        position: absolute;
+        top: 157px;
+        right: 152px;
+        z-index: -1;
+        width: 376px;
+        height: auto;
+        opacity: 0.09;
+        transform: scaleX(-1);
+        pointer-events: none;
+    }
+
+    .plane {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 204px;
+    }
+
+    .plane-label {
+        color: var(--ks-content-tertiary);
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+    .box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 1rem 10px;
+        border: 1px solid;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px 0 var(--security-shadow-elevated);
+    }
+
+    .platform {
+        border-color: var(--security-platform-border);
+        background: var(--security-platform-background);
+
+        .box-title {
+            color: var(--security-platform-content);
+        }
+    }
+
+    .workers {
+        border-color: var(--security-workers-border);
+        background: var(--security-workers-background);
+
+        .box-title {
+            color: var(--security-workers-content);
+        }
+    }
+
+    .monogram {
+        width: 35px;
+        height: 36px;
+    }
+
+    .workers-icon {
+        width: 28px;
+        height: 28px;
+        color: var(--security-workers-content);
+    }
+
+    .box-title {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 2px 4px var(--security-shadow-surface);
+        text-align: left;
+    }
+
+    .item-name {
+        display: block;
+        color: var(--ks-content-primary);
+        font-size: $font-size-xs;
+        font-weight: 600;
+        line-height: 18px;
+    }
+
+    .item-note {
+        display: block;
+        color: var(--ks-content-secondary);
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        line-height: 18px;
+    }
+
+    .worker {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .tags {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .tag {
+        padding: 0 6px;
+        border-radius: 4px;
+        background: var(--ks-background-tertiary);
+        color: var(--ks-content-primary);
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        line-height: 16px;
+    }
+
+    .dot {
+        flex-shrink: 0;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .dot-platform {
+        border: 1px solid var(--green-600);
+        background: var(--green-500);
+    }
+
+    .dot-worker {
+        background: var(--security-worker-dot);
+    }
+
+    .link {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 2.25rem;
+        padding-inline: 0.5rem;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 0;
+        }
+    }
+
+    .protocol {
+        color: var(--ks-content-primary);
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+    .line {
+        position: relative;
+        width: 100%;
+        max-width: 121px;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            var(--security-link-start),
+            var(--blue-400)
+        );
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 10.67px;
+            height: 10.67px;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        &::before {
+            left: -5.33px;
+            background: var(--security-link-start);
+        }
+
+        &::after {
+            right: -5.33px;
+            background: var(--blue-400);
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 1px;
+            height: 48px;
+            background: linear-gradient(
+                180deg,
+                var(--security-link-start),
+                var(--blue-400)
+            );
+
+            &::before,
+            &::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            &::before {
+                top: -5.33px;
+            }
+
+            &::after {
+                top: auto;
+                right: auto;
+                bottom: -5.33px;
+            }
+        }
+    }
+
+    .tls {
+        padding: 3px 8px;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 8px;
+        background: var(--ks-background-primary);
+        box-shadow: 0 2px 4px var(--security-shadow-surface);
+        color: var(--ks-content-primary);
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        line-height: 18px;
+        white-space: nowrap;
+    }
+</style>
