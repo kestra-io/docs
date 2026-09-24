@@ -1,0 +1,92 @@
+---
+import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Faq from "~/components/common/Faq.vue"
+import Hero from "~/components/security/Hero.astro"
+import Compliance from "~/components/security/Compliance.astro"
+import Deployments from "~/components/security/Deployments.astro"
+import ControlsTable from "~/components/security/ControlsTable.astro"
+import AirGapped from "~/components/security/AirGapped.astro"
+import BuildProcess from "~/components/security/BuildProcess.astro"
+import ReportVulnerability from "~/components/security/ReportVulnerability.astro"
+import TrustCenter from "~/components/security/TrustCenter.astro"
+import { FAQ_ITEMS } from "~/components/security/securityData"
+
+const title = "Security and Compliance at Kestra"
+const description =
+    "SOC 2 Type 2 and GDPR compliance, the security controls in each Kestra edition, air-gapped deployments, and how to report a vulnerability."
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <Fragment slot="head">
+        <SchemaFAQ items={FAQ_ITEMS} />
+    </Fragment>
+    <div class="security">
+        <Hero />
+        <Compliance />
+        <Deployments />
+        <ControlsTable />
+        <AirGapped />
+        <BuildProcess />
+        <ReportVulnerability />
+        <TrustCenter />
+        <Faq title="Frequently Asked Questions" items={FAQ_ITEMS} client:load />
+    </div>
+</Layout>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .security {
+        overflow-x: clip;
+
+        // Figma lays this page out on a 1320px column, wider than the 1140px
+        // the site caps .container at from xl up.
+        :global(.container) {
+            @include media-breakpoint-up(xxl) {
+                max-width: 1320px;
+            }
+        }
+
+        --security-shadow-element: #{rgba($base-primary-700, 0.04)};
+        --security-shadow-surface: #{rgba($base-primary-700, 0.05)};
+        --security-shadow-elevated: #{rgba($base-primary-700, 0.08)};
+
+        --security-platform-background: var(--ks-background-purple-light);
+        --security-platform-border: #{$base-primary-400};
+        --security-platform-content: #{$base-primary-700};
+        --security-workers-background: #{rgba(#96c5ff, 0.2)};
+        --security-workers-border: #1da9ee;
+        --security-workers-content: var(--blue-400);
+        --security-worker-dot: #cd88ff;
+        --security-link-start: #b9aaf3;
+
+        :global(html.dark) & {
+            --security-shadow-element: transparent;
+            --security-shadow-surface: transparent;
+            --security-shadow-elevated: #{rgba($black, 0.3)};
+            --security-platform-content: #{$base-primary-200};
+            --security-workers-content: var(--blue-200);
+        }
+
+        // Sections tweak these through custom properties rather than competing
+        // declarations, so the result never depends on stylesheet order.
+        :global(.security-section) {
+            padding: var(--section-padding-top, 5.625rem) 1rem
+                var(--section-padding-bottom, 5.625rem);
+            border-bottom: 1px solid var(--ks-border-primary);
+            background: var(--section-background, var(--ks-background-primary));
+
+            @include media-breakpoint-down(md) {
+                padding-block: 3.5rem;
+            }
+        }
+
+        :global(.security-card) {
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 8px;
+            background: var(--ks-background-primary);
+            filter: drop-shadow(0 8px 12px var(--security-shadow-elevated));
+        }
+    }
+</style>
