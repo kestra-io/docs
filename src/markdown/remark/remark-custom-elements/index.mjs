@@ -3,6 +3,7 @@ import { alert } from "./alert.mjs"
 import { collapse } from "./collapse.mjs"
 import { badge } from "./badge.mjs"
 import { NextLink } from "./next-link.mjs"
+import { cta } from "./cta.mjs"
 
 // Also the registry the versioned-docs renderer dispatches through, so a
 // directive registered here works on archived versions with no extra wiring.
@@ -11,6 +12,7 @@ export const componentMap = {
     collapse,
     badge,
     "next-link": NextLink,
+    cta,
 }
 
 export default function () {
