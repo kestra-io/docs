@@ -1,7 +1,13 @@
 ---
 import { Icon } from "astro-icon/components"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-import { PLANS, getSections, SHARED_FEATURES, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
+import {
+    PLANS,
+    getSections,
+    SHARED_FEATURES,
+    SUPPORT_PLANS,
+    SUPPORT_ROWS,
+} from "./pricingData"
 
 const totalPlugins = await fetchTotalPluginsCount()
 const SECTIONS = getSections(totalPlugins)
@@ -26,7 +32,9 @@ const SECTIONS = getSections(totalPlugins)
                                     class="col-plan"
                                     data-usal={`zoomin delay-${index * 10}`}
                                 >
-                                    <span class="version-name">{plan.version}</span>
+                                    <span class="version-name">
+                                        {plan.version}
+                                    </span>
                                     {plan.button && (
                                         <a
                                             href={plan.button.href}
@@ -214,8 +222,8 @@ const SECTIONS = getSections(totalPlugins)
             background: var(--ks-background-primary);
 
             th {
-                vertical-align: bottom;
-                padding: 2rem 0.75rem 1.25rem;
+                vertical-align: top;
+                padding: 1rem 0.75rem 1.25rem;
                 text-align: center;
             }
 
