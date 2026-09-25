@@ -110,9 +110,11 @@ Some plugins support automatic asset generation when `assets.enableAuto: true` i
 - **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.core.models.assets.External`, marking the infrastructure targets the playbook runs against.
 - **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
 - **Helm**: `Upgrade`, `Rollback`, `Status`, and `Uninstall` emit a `Custom` output typed `io.kestra.plugin.ee.assets.HelmRelease` for the release plus one `Custom` output typed `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource (`Deployment`, `Service`, `Ingress`, etc.) — these aren't typed asset classes yet, but the type strings are chosen to match what they'd become if `core-ee` adds them later, so nothing in the catalog needs to change on that swap; the chart reference and any `valuesFrom` files are declared as inputs.
+- **Qlik Cloud `apps.Reload`**: emits a `Custom` asset typed `io.kestra.plugin.qlikcloud.assets.App` for the reloaded app, carrying the app's freshness. The asset id is the Qlik app id. Declare `assets.inputs` manually to connect upstream dbt or Fivetran assets to this node.
+- **Hex `projects.Run`**: emits a `Custom` asset typed `io.kestra.plugin.ee.assets.Dataset` (with `system: hex`) for the Hex project that ran, so Hex appears as the terminal consumer in a Fivetran → dbt → Hex lineage chain. The asset id is the `projectId`. Hex's API reports no upstream tables, so declare `assets.inputs` manually using the same `database.schema.table` ids that plugin-dbt and plugin-fivetran emit.
 
 :::alert{type="warning"}
-`assets.enableAuto` is the single switch that controls whether a task's emitted assets are captured at all — for plugins that call the asset emission API programmatically (JDBC Query, dbt CLI, Helm), setting `assets.enableAuto: true` is what makes emission take effect, not only what enables auto-*detection* of dynamically-referenced assets. Without it, the plugin can still log that it emitted assets while nothing is actually recorded, since the emission is silently discarded.
+`assets.enableAuto` is the single switch that controls whether a task's emitted assets are captured at all — for plugins that call the asset emission API programmatically (JDBC Query, dbt CLI, Helm, Qlik Cloud, Hex), setting `assets.enableAuto: true` is what makes emission take effect, not only what enables auto-*detection* of dynamically-referenced assets. Without it, the plugin can still log that it emitted assets while nothing is actually recorded, since the emission is silently discarded.
 :::
 
 :::collapse{title="JDBC Query auto-generated assets"}
@@ -222,6 +224,47 @@ tasks:
       version: 4.11.3
     assets:
       enableAuto: true
+```
+
+:::
+
+:::collapse{title="Qlik Cloud app reload auto-generated assets"}
+
+```yaml
+id: qlik_reload
+namespace: company.team
+
+tasks:
+  - id: reload
+    type: io.kestra.plugin.qlikcloud.apps.Reload
+    tenantUrl: https://mytenant.eu.qlikcloud.com
+    apiKey: "{{ secret('QLIK_API_KEY') }}"
+    appId: 60f2e3b1a1b2c3d4e5f6a7b8
+    assets:
+      enableAuto: true
+      inputs:
+        - id: analytics.marts.fct_orders
+          type: io.kestra.plugin.ee.assets.Table
+```
+
+:::
+
+:::collapse{title="Hex project run auto-generated assets"}
+
+```yaml
+id: hex_run_project
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.hex.projects.Run
+    apiKey: "{{ secret('HEX_API_KEY') }}"
+    projectId: 60f2e3b1-a1b2-c3d4-e5f6-a7b8c9d0e1f2
+    assets:
+      enableAuto: true
+      inputs:
+        - id: analytics.marts.fct_orders
+          type: io.kestra.plugin.ee.assets.Table
 ```
 
 :::
