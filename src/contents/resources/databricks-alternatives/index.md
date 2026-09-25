@@ -77,7 +77,7 @@ For example, Apple's ML team uses Kestra to orchestrate large-scale ETL and data
 
 ### 2. Snowflake: Cloud Data Warehouse with a Lakehouse Vision
 
-Snowflake is one of Databricks' most prominent competitors, particularly in the cloud data warehousing space. Its architecture, which decouples storage and compute, allows for immense scalability and concurrency. While traditionally a data warehouse, Snowflake has expanded its capabilities to embrace the lakehouse paradigm with support for open formats like Apache Iceberg and external tables.
+Snowflake is one of Databricks' most prominent competitors, particularly in the cloud data warehousing space. Its architecture, which decouples storage and compute, allows for immense scalability and concurrency. While traditionally a data warehouse, Snowflake has expanded its capabilities to embrace the lakehouse paradigm with support for open formats like [Apache Iceberg](/resources/data/apache-iceberg) and external tables.
 
 Its strengths lie in its fully managed SaaS offering, robust security and governance features, and a thriving data marketplace. Snowflake's Snowpark allows developers to write data processing logic in Python, Java, and Scala, which runs directly within the platform. This makes it a strong contender for organizations that prioritize a managed, SQL-first experience but also need to support more complex data engineering and ML workloads. When comparing size, both Snowflake and Databricks are market leaders, with Snowflake historically dominant in the data warehousing market and Databricks leading the charge in the lakehouse and AI space.
 
