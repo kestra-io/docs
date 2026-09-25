@@ -164,7 +164,7 @@ This evolution demands a powerful control plane capable of coordinating a divers
 
 ## Related Concepts
 -   [Business Workflow: Definition, Types & Automation](/resources/business/business-workflow)
--   [Workflow Management](/resources/infrastructure/workflow-management)
+-   Workflow Management
 -   [IT Process Automation: Orchestrating Efficiency](/resources/infrastructure/it-process-automation)
 -   [Approval Workflow Automation & Governance](/resources/business/approval-workflow)
 -   [Human-in-the-Loop Orchestration](/resources/ai/human-in-the-loop-orchestration)

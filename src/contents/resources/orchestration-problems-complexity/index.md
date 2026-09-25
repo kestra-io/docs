@@ -134,7 +134,7 @@ When teams adopt dedicated "ML orchestrators" they usually end up with two syste
 
 Enterprise orchestration problems compound: more teams, more compliance requirements, more legacy systems, more handoffs between groups who each own part of a process. The complexity is rarely technical — it is organizational, and the orchestration platform either makes it visible or hides it.
 
-A good enterprise orchestration layer exposes a single view of every business process, regardless of which team owns which step. That is what unlocks audit, compliance reporting, incident response, and cross-team optimization — the hallmark of a mature [workflow management](/resources/infrastructure/workflow-management) practice. Without it, every complexity reduction effort stops at the team boundary.
+A good enterprise orchestration layer exposes a single view of every business process, regardless of which team owns which step. That is what unlocks audit, compliance reporting, incident response, and cross-team optimization — the hallmark of a mature workflow management practice. Without it, every complexity reduction effort stops at the team boundary.
 
 ## Future outlook: mastering orchestration challenges
 

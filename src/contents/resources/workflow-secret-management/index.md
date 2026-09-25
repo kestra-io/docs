@@ -168,7 +168,7 @@ When choosing a solution, consider the following criteria:
 
 ### The benefits of a unified orchestration platform for secrets
 
-While dedicated secret managers are excellent at their core function, managing secrets within a unified orchestration platform like Kestra offers distinct advantages. It tightly couples access control and auditing with the actual workflow execution, providing context that a standalone vault lacks. This integration simplifies the entire [workflow management](/resources/infrastructure/workflow-management) process, reducing operational complexity and the number of systems you need to secure and maintain. By handling both orchestration and secret injection, a platform like Kestra can provide a holistic security and governance model for all your automation needs, from initial development to production operations on your [infrastructure automation](/infra-automation) stack.
+While dedicated secret managers are excellent at their core function, managing secrets within a unified orchestration platform like Kestra offers distinct advantages. It tightly couples access control and auditing with the actual workflow execution, providing context that a standalone vault lacks. This integration simplifies the entire workflow management process, reducing operational complexity and the number of systems you need to secure and maintain. By handling both orchestration and secret injection, a platform like Kestra can provide a holistic security and governance model for all your automation needs, from initial development to production operations on your [infrastructure automation](/infra-automation) stack.
 
 ## Conclusion: A Unified Approach to Workflow Security
 

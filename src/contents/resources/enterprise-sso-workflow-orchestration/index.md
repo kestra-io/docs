@@ -54,7 +54,7 @@ The terms "workflow" and "orchestration" are often used interchangeably, but the
 *   **Workflow**: A workflow is a defined sequence of tasks designed to achieve a specific outcome. For example, a user onboarding workflow might include creating an account in Active Directory, assigning permissions in Salesforce, and adding the user to a Slack channel.
 *   **Orchestration**: Orchestration is the automated coordination of multiple, interconnected workflows. It's the "conductor" that ensures all the different "instruments" (workflows, systems, APIs) play together harmoniously. It manages dependencies between workflows, handles complex error recovery logic, and provides a unified view of the entire automated process.
 
-Effective [workflow management](https://kestra.io/resources/infrastructure/workflow-management) is about defining the steps, while orchestration is about making sure those steps execute reliably at scale across the entire enterprise.
+Effective workflow management is about defining the steps, while orchestration is about making sure those steps execute reliably at scale across the entire enterprise.
 
 ## Key Benefits of Enterprise SSO Workflow Orchestration
 
