@@ -221,6 +221,10 @@ const SECTIONS = getSections(totalPlugins)
             z-index: 200;
             background: var(--ks-background-primary);
 
+            @include media-breakpoint-down(xxl) {
+                position: static;
+            }
+
             th {
                 vertical-align: top;
                 padding: 1rem 0.75rem 1.25rem;
