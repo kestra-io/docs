@@ -82,7 +82,7 @@ The `timeout` value is forwarded directly to [`requests`](https://docs.python-re
 
 ## Create a flow
 
-Pass the flow definition as a YAML string to [`create_flow`](https://github.com/kestra-io/client-sdk/blob/main/python-sdk/docs/FlowsApi.md#create_flow).
+Pass the flow definition as a YAML string to [`create_flow`](https://github.com/kestra-io/client-sdk/blob/main/python/python-sdk/docs/FlowsApi.md#create_flow).
 
 ```python
 def create_flow():
@@ -156,7 +156,7 @@ Deleting a flow removes its definition. Execution history is retained unless you
 
 ## Execute a flow
 
-Trigger an execution using [`create_execution`](https://github.com/kestra-io/client-sdk/blob/main/python-sdk/docs/ExecutionsApi.md#create_execution).
+Trigger an execution using [`create_execution`](https://github.com/kestra-io/client-sdk/blob/main/python/python-sdk/docs/ExecutionsApi.md#create_execution).
 
 The first three positional arguments are `namespace`, `id` (the flow ID), and `wait`.
 

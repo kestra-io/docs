@@ -195,7 +195,7 @@ const justine: User = {
 console.log(isAdult(justine));
 ```
 
-For more background, see the official [Node.js with TypeScript guide](https://nodejs.org/en/learn/getting-started/nodejs-with-typescript).
+For more background, see the official [Node.js with TypeScript guide](https://nodejs.org/en/learn/typescript/introduction).
 
 ## Use a custom Docker image for extra dependencies
 
