@@ -156,9 +156,23 @@ function comparableCpu(current, base) {
 }
 
 /**
+ * Whether two runs averaged the same number of passes. A median of 3 against a
+ * single-run baseline mostly describes the baseline's noise: that is how a page
+ * reading 90 to 98 all week showed +20 against a stored 74. See #5707.
+ *
+ * @param {number | undefined} current
+ * @param {number | undefined} base
+ * @returns {boolean}
+ */
+function comparableRuns(current, base) {
+    if (!current || !base) return true
+    return current === base
+}
+
+/**
  * The baseline row to compare a page against, or undefined when the two ran on
- * hardware too far apart. Sharding puts pages on their own runner, so the check
- * is per page rather than per run.
+ * hardware too far apart, or averaged a different number of passes. Sharding
+ * puts pages on their own runner, so the check is per page rather than per run.
  *
  * @param {PageResult} result
  * @param {BenchmarkOutput | null} baseline
@@ -169,7 +183,8 @@ function baselineFor(result, baseline) {
         (r) => r.path === result.path && !r.error,
     )
     if (!base) return undefined
-    return comparableCpu(result.benchmarkIndex, base.benchmarkIndex)
+    return comparableCpu(result.benchmarkIndex, base.benchmarkIndex) &&
+        comparableRuns(result.runs, base.runs)
         ? base
         : undefined
 }
@@ -304,6 +319,7 @@ export function buildMarkdown(output, baseline) {
                   )}. A single run of these swings 20+ points between runners.  `
             : "",
         `The sample is measured across ${output.shards?.length ?? 1} parallel runners, so each page carries its own CPU index (Lighthouse's \`benchmarkIndex\`). Lighthouse does not normalise for host CPU, so a page's deltas are hidden when its runner differs from the baseline's by more than ${BENCHMARK_INDEX_THRESHOLD * 100}%.`,
+        `A page's deltas are also hidden when the baseline measured it a different number of times, since comparing a median against a single run mostly reports the baseline's spread. That resolves once \`main\` carries the same run counts.`,
         "",
         "</details>",
         "",
