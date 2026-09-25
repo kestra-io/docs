@@ -11,7 +11,7 @@ Set up authentik as an OIDC provider for Kestra authentication. In conjunction w
 
 ## Install authentik
 
-authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
+authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/install-config/install/docker-compose/) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
 
 ![scim-for-authentik-user](./authentik1.png)
 
