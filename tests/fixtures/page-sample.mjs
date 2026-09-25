@@ -40,10 +40,13 @@ export const PAGES = [
         label: "Plugin Debug Return Page (sample)",
         ssr: true,
     },
-    { path: "/blueprints", label: "Blueprints Landing", ssr: true },
+    // Both /blueprints pages fan out ~15 API calls per request, so their
+    // score tracks runner load more than the code. See #5707.
+    { path: "/blueprints", label: "Blueprints Landing", runs: 5, ssr: true },
     {
         path: "/blueprints/audit-logs-csv-export",
         label: "Blueprint Audit Logs CSV Export",
+        runs: 5,
         ssr: true,
     },
 ]
