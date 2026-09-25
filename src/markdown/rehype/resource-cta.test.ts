@@ -45,7 +45,7 @@ describe("rehypeResourceCta", () => {
         const html = await render(sections(3))
         expect(html).not.toContain('data-resource-cta="mid"')
         expect(html.trimEnd()).toMatch(
-            /data-event="resource_end_cta_demo_click">Book a Demo<\/a><\/div>$/,
+            /data-event="resource_end_cta_demo_click">Book a Demo<\/a><\/div><\/div>$/,
         )
     })
 
