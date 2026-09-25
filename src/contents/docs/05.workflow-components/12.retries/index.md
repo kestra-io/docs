@@ -114,7 +114,7 @@ tasks:
         errorMessage: "Token expired"
 ```
 
-If `call_api` fails, Kestra retries only `call_api` up to 2 times. `get_token` does not run again, and each retry of `call_api` uses the same token from the first run. A token that expires between the two tasks is never refreshed this way.
+If `call_api` fails, Kestra retries only `call_api`. `get_token` does not run again, and each retry of `call_api` uses the same token from the first run. A token that expires between the two tasks is never refreshed this way.
 
 ### Retry a group of tasks as one unit
 
