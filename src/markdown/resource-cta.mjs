@@ -7,6 +7,28 @@
  */
 export function resourceCtaChildren(placement) {
     return [
+        {
+            type: "element",
+            tagName: "p",
+            properties: { className: ["resource-cta-text"] },
+            children: [
+                {
+                    type: "text",
+                    value: "Orchestrate every workflow from one platform.",
+                },
+            ],
+        },
+        {
+            type: "element",
+            tagName: "div",
+            properties: { className: ["resource-cta-actions"] },
+            children: resourceCtaButtons(placement),
+        },
+    ]
+}
+
+function resourceCtaButtons(placement) {
+    return [
         link(
             "/get-started",
             "btn btn-primary",

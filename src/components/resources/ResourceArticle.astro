@@ -211,10 +211,30 @@ const faqSchema =
 
     // Injected into the article body by src/markdown/rehype/resource-cta.ts
     .bd-content :global(.resource-cta) {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin: 2.5rem 0;
+        margin: 3rem 0;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        background: var(--ks-background-secondary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+
+        @include media-breakpoint-up(md) {
+            padding: 2.5rem;
+        }
+
+        :global(.resource-cta-text) {
+            margin: 0 0 1.25rem;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        :global(.resource-cta-actions) {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
 
         :global(.btn) {
             text-decoration: none;
