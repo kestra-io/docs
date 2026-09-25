@@ -261,8 +261,8 @@ kestra:
 
 | Key | Default | Description |
 |---|---|---|
-| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
-| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must match at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
 
 For security guidance and matching behavior, see [HTTP task URL filtering](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering).
 
