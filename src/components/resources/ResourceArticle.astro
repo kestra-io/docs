@@ -209,7 +209,48 @@ const faqSchema =
         }
     }
 
+    // Injected into the article body by src/markdown/rehype/resource-cta.ts
+    .bd-content :global(.resource-cta) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin: 2.5rem 0;
+
+        :global(.btn) {
+            text-decoration: none;
+        }
+    }
+
     .resource-faq :global(section.faq) {
         background: var(--ks-background-secondary);
     }
 </style>
+
+<script>
+    import posthog from "posthog-js"
+
+    // Delegated so it survives Astro client-side navigations. Same fan-out as
+    // ResourceCtaPair: PostHog, GTM and HubSpot behavioural events.
+    document.addEventListener(
+        "click",
+        (e) => {
+            const link = (e.target as Element | null)?.closest<HTMLElement>(
+                "[data-resource-cta] a[data-event]",
+            )
+            const event = link?.dataset.event
+            if (!event) return
+
+            posthog.capture(event)
+            const w = window as any
+            ;(w.dataLayer = w.dataLayer || []).push({
+                event,
+                noninteraction: false,
+            })
+            ;(w._hsq = w._hsq || []).push([
+                "trackCustomBehavioralEvent",
+                { name: event },
+            ])
+        },
+        { capture: true, passive: true },
+    )
+</script>
