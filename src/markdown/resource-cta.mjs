@@ -2,10 +2,41 @@
 // articles. Built as static HAST so it ships no hydration; clicks are tracked
 // by the delegated listener in ResourceArticle.astro via `data-resource-cta`.
 
+// Tagline per resources section (front-matter `tag`): a question mid-article,
+// a promise at the end, so the two blocks never repeat each other.
+const TAGLINES = {
+    mid: {
+        data: "Ready to orchestrate your data pipelines?",
+        infrastructure: "Ready to orchestrate your infrastructure?",
+        ai: "Ready to run your AI workflows in production?",
+        business: "Ready to automate your business processes?",
+        default: "Ready to orchestrate everything from one place?",
+    },
+    end: {
+        data: "Your data pipelines, orchestrated end to end.",
+        infrastructure:
+            "Terraform, Ansible and Kubernetes, orchestrated from one place.",
+        ai: "Your AI agents and pipelines, orchestrated and observable.",
+        business: "Your cross-team processes, automated without glue code.",
+        default:
+            "Data, infrastructure, AI and business, orchestrated from one place.",
+    },
+}
+
 /**
  * @param {"mid" | "end"} placement
+ * @param {string} [tag] front-matter `tag` of the resource
  */
-export function resourceCtaChildren(placement) {
+export function resourceCtaTagline(placement, tag) {
+    const lines = TAGLINES[placement]
+    return lines[tag] ?? lines.default
+}
+
+/**
+ * @param {"mid" | "end"} placement
+ * @param {string} [tag]
+ */
+export function resourceCtaChildren(placement, tag) {
     return [
         {
             type: "element",
@@ -14,7 +45,7 @@ export function resourceCtaChildren(placement) {
             children: [
                 {
                     type: "text",
-                    value: "Orchestrate every workflow from one platform.",
+                    value: resourceCtaTagline(placement, tag),
                 },
             ],
         },
@@ -56,13 +87,14 @@ export function resourceCtaProperties(placement) {
 
 /**
  * @param {"mid" | "end"} placement
+ * @param {string} [tag]
  */
-export function resourceCtaElement(placement) {
+export function resourceCtaElement(placement, tag) {
     return {
         type: "element",
         tagName: "div",
         properties: resourceCtaProperties(placement),
-        children: resourceCtaChildren(placement),
+        children: resourceCtaChildren(placement, tag),
     }
 }
 

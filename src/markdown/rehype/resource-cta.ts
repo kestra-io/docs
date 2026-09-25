@@ -2,8 +2,8 @@ import type { Element, Root } from "hast"
 import type { VFile } from "vfile"
 import { resourceCtaElement } from "../resource-cta.mjs"
 
-const ctaElement = (placement: "mid" | "end") =>
-    resourceCtaElement(placement) as Element
+const ctaElement = (placement: "mid" | "end", tag?: string) =>
+    resourceCtaElement(placement, tag) as Element
 
 // Pages with fewer h2s are too short for a mid-article CTA.
 export const MIN_H2_FOR_MID_CTA = 4
@@ -30,18 +30,19 @@ export default function rehypeResourceCta() {
     return (tree: Root, file: VFile) => {
         if (!isResource(file)) return
 
+        const frontmatter = (file.data.astro as any)?.frontmatter
+
         const h2Indexes = tree.children.flatMap((child, i) =>
             child.type === "element" && child.tagName === "h2" ? [i] : [],
         )
 
         if (h2Indexes.length >= MIN_H2_FOR_MID_CTA && !hasManualMidCta(tree)) {
             const target = h2Indexes[Math.ceil(h2Indexes.length / 2)]
-            tree.children.splice(target, 0, ctaElement("mid"))
+            tree.children.splice(target, 0, ctaElement("mid", frontmatter?.tag))
         }
 
-        const frontmatter = (file.data.astro as any)?.frontmatter
         if (!frontmatter?.cta) {
-            tree.children.push(ctaElement("end"))
+            tree.children.push(ctaElement("end", frontmatter?.tag))
         }
     }
 }
