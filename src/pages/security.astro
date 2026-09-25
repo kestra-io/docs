@@ -10,7 +10,7 @@ import AirGapped from "~/components/security/AirGapped.astro"
 import BuildProcess from "~/components/security/BuildProcess.astro"
 import ReportVulnerability from "~/components/security/ReportVulnerability.astro"
 import TrustCenter from "~/components/security/TrustCenter.astro"
-import { FAQ_ITEMS, SECURITY_EMAIL } from "~/components/security/securityData"
+import { FAQ_ITEMS } from "~/components/security/securityData"
 
 const title = "Kestra Security: SOC 2 Type 2, GDPR and Self-Hosted Controls"
 const description =
@@ -35,8 +35,8 @@ const description =
                 Find answers to your questions right here, and don't hesitate to{
                     " "
                 }
-                <a href={`mailto:${SECURITY_EMAIL}`}>contact us</a> if you couldn't
-                find what you're looking for.
+                <a href="/contact-us">contact us</a> if you couldn't find what you're
+                looking for.
             </p>
         </Faq>
     </div>

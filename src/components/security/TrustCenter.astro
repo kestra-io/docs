@@ -2,9 +2,10 @@
 import SectionTitle from "./SectionTitle.astro"
 import { TRUST_LINKS } from "./securityData"
 
-// Everything except the mailto opens in a new tab, so reviewers keep this
-// page open while they check the linked docs and policies.
-const opensNewTab = (href: string) => !href.startsWith("mailto:")
+// Same-origin links open in place, like the rest of the site. External links
+// and /trust (which redirects to the Drata-hosted Trust Center) open in a new tab.
+const opensNewTab = (href: string) =>
+    href.startsWith("http") || href === "/trust"
 ---
 
 <section class="security-section trust" aria-labelledby="trust-title">

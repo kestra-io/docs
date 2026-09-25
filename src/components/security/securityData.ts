@@ -83,7 +83,7 @@ export const DEPLOYMENTS: Deployment[] = [
             { label: "Who operates it", value: "Kestra." },
             {
                 label: "Where your data sits",
-                value: "Kestra Cloud infrastructure. Choose an EU or US region.",
+                value: "Your workflow data stays in the EU or US region you choose.",
             },
             { label: "SOC 2 coverage", value: "Covers the service end to end." },
         ],
@@ -132,7 +132,7 @@ export const SECURITY_CONTROLS: SecurityControl[] = [
         name: "Built-in secrets management",
         description:
             "Credentials never sit in flow definitions. Flows reference a key and the value resolves at runtime.",
-        availability: [true, true, true],
+        availability: [false, true, true],
     },
     {
         name: "External secrets managers",
@@ -147,16 +147,20 @@ export const SECURITY_CONTROLS: SecurityControl[] = [
         availability: [false, true, false],
     },
     {
-        name: "Encryption of secret values",
+        name: "Encryption at rest (secret inputs and outputs)",
         description:
             "Secret-typed inputs and outputs are encrypted at rest with a key you configure.",
         availability: [true, true, true],
     },
     {
-        name: "Encryption in transit",
-        description:
-            "TLS on the UI and API. One-way or mutual TLS between the control plane and workers.",
+        name: "Encryption in transit (UI and API)",
+        description: "TLS on the UI and API.",
         availability: [true, true, true],
+    },
+    {
+        name: "Encryption in transit (workers)",
+        description: "One-way or mutual TLS between the control plane and workers.",
+        availability: [false, true, true],
     },
     {
         name: "Audit logs",
@@ -295,7 +299,7 @@ export const FAQ_ITEMS = [
     },
     {
         question: "Which secrets managers does Kestra support?",
-        answer: "Enterprise Edition connects to HashiCorp Vault, CyberArk, Delinea Secret Server, BeyondTrust, AWS Secrets Manager, AWS SSM Parameter Store, Azure Key Vault, Google Secret Manager, 1Password, Bitwarden and Doppler. Read-only mode keeps your vault as the source of truth, so Kestra can read secrets but cannot create, edit or delete them. Kestra also has a built-in secrets manager available in all editions.",
+        answer: "Enterprise Edition connects to HashiCorp Vault, CyberArk, Delinea Secret Server, BeyondTrust, AWS Secrets Manager, AWS SSM Parameter Store, Azure Key Vault, Google Secret Manager, 1Password, Bitwarden and Doppler. Read-only mode keeps your vault as the source of truth, so Kestra can read secrets but cannot create, edit or delete them. Enterprise Edition and Kestra Cloud also include a built-in secrets manager.",
     },
     {
         question: "Which Kestra versions receive security fixes?",
