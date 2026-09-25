@@ -19,7 +19,7 @@ This week we launched the new Kestra Academy with three new courses on a rebuilt
 
 ### Three new courses
 
-Alongside [Kestra Fundamentals](https://academy.kestra.io/course/kestra-fundamentals) (which is refreshed for 2.0), the academy now covers three more courses covering the how you can build workflows for your use case:
+Alongside [Kestra Fundamentals](https://academy.kestra.io/course/kestra-fundamentals) (which is refreshed for 2.0), Kestra Academy now includes three new courses covering the how you can build workflows for your use case:
 
 - **Infrastructure Automation:** provision, patch, and govern infra with Kestra.
 - **AI Workflows:** run agents and RAG pipelines under production controls.
@@ -33,7 +33,7 @@ And of course, all of these courses are built for Kestra 2.0. If you're keen to 
 
 As part of this launch, Kestra Academy has migrated to a brand new platform which means higher quality lessons, better code blocks and easier navigation. 
 
-Anyone who had previously signed up to Kestra Academy will be automatically invited, and if you had completed the Kestra Fundamentals course as well, it will be automatically completed on your profile. Check your inbox for an invite so you can get started with the new courses.
+Anyone who had previously signed up to Kestra Academy will be automatically invited, and if you had previously completed the Kestra Fundamentals course, it will be automatically completed on your profile. Check your inbox for an invite so you can get started with the new courses.
 
 ### Getting Kestra Certified
 
