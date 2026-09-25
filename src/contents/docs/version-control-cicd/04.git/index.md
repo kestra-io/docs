@@ -213,11 +213,38 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
 
 `TenantSync` and `NamespaceSync` both support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
+- `sourceOfTruthOverrides` to override the sync direction per resource kind. In OSS, exposes `flows` and `namespaceFiles`. In Enterprise Edition, `NamespaceSync` also exposes `apps` and `unitTests`; `TenantSync` additionally exposes `blueprints` and `dashboards` (which have no namespace and can only be synced at the tenant level). Any field left unset falls back to `sourceOfTruth`.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
-- An **opinionated folder structure** for flows and files, plus EE-only resources (apps, unit tests, custom blueprints, dashboards), with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
-- `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted when `sourceOfTruth` is `GIT`.
+- An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
+- `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted, regardless of which direction `sourceOfTruth` is set.
 - Validation rules requiring explicit Git `branch` and optional `gitDirectory`.
 - Options like `dryRun` and `onInvalidSyntax` for safe rollouts and error handling.
+
+### Mixed source of truth
+
+Use `sourceOfTruthOverrides` when flows and namespace files have different owners. A common pattern is to treat Kestra as the source of truth for flows (authored in the UI) while treating Git as the source of truth for namespace files (code checked into the repo):
+
+```yaml
+tasks:
+  - id: sync
+    type: io.kestra.plugin.git.NamespaceSync
+    namespace: company.team
+    sourceOfTruth: KESTRA          # flows: Kestra -> Git
+    sourceOfTruthOverrides:
+      namespaceFiles: GIT          # namespace files: Git -> Kestra
+    whenMissingInSource: KEEP
+    url: https://github.com/org/repo
+    branch: main
+```
+
+`whenMissingInSource` is a single global setting, but "missing in source" means different things depending on which direction each kind syncs:
+
+| Resource kind | Source of truth | `KEEP` holds... |
+|---|---|---|
+| Namespace files | Git | Files in Kestra that are absent from Git |
+| Flows | Kestra | Flows in Git that are absent from Kestra |
+
+`protectedNamespaces` still guards every deletion regardless of direction.
 
 Example usage of the `TenantSync` task:
 
