@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: read
+      # The prune step deletes main's superseded image caches.
+      actions: write
 
     steps:
       - name: Checkout
@@ -51,6 +53,16 @@ jobs:
           echo "Fixture server did not come up on port 9001."
           exit 1
 
+      # Sharp output keyed by source and transform, so a hit is byte-identical to
+      # a fresh run. Only assets/: the incremental page cache must stay cold here.
+      - name: Restore the image cache
+        id: image-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules/.astro/assets
+          key: lighthouse-images-${{ github.sha }}
+          restore-keys: lighthouse-images-
+
       - name: Build site
         run: npm run build
         env:
@@ -61,6 +73,27 @@ jobs:
           # Inlined into the server and client bundles, so both the build and
           # the SSR pages read the API through the fixture server.
           API_URL: http://127.0.0.1:9001/v1
+
+      # Main only: PR runs read main's entry, and one per PR would eat the quota.
+      - name: Save the image cache
+        if: github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules/.astro/assets
+          key: ${{ steps.image-cache.outputs.cache-primary-key }}
+
+      # Each save holds every older transform too, so only the newest is kept.
+      - name: Prune superseded image caches
+        if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KEY_PREFIX: lighthouse-images-
+        run: |
+          ids=$(gh cache list --repo "$GITHUB_REPOSITORY" --key "$KEY_PREFIX" --limit 100 --json id,key \
+            --jq ".[] | select(.key != \"$KEY_PREFIX$GITHUB_SHA\") | .id")
+          printf '%s\n' $ids | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          echo "deleted $(printf '%s\n' $ids | grep -c .) superseded entries under $KEY_PREFIX"
 
       # dist is thousands of files, most of them images. One tarball moves in a
       # fraction of the time the artifact actions take over the tree itself.
