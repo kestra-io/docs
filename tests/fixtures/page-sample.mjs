@@ -1,6 +1,6 @@
 // Pages sampled by the visual-regression suite and the Lighthouse benchmark.
 // `runs` is how many times the benchmark measures a page before taking the
-// median, for the ones whose score swings between runners; `ssr` marks the
+// median, named only where it differs from DEFAULT_RUNS; `ssr` marks the
 // prerender = false pages, which the benchmark measures first. `styles` is a
 // stylesheet under snapshot-styles/ injected before the screenshot is taken.
 export const PAGES = [
@@ -10,7 +10,7 @@ export const PAGES = [
     { path: "/enterprise", label: "Enterprise" },
     { path: "/cloud", label: "Cloud" },
     { path: "/features", label: "Features" },
-    { path: "/about-us", label: "About Us", runs: 3 },
+    { path: "/about-us", label: "About Us" },
     {
         path: "/docs",
         label: "Docs Landing",
@@ -24,12 +24,11 @@ export const PAGES = [
     {
         path: "/docs/workflow-components/flow",
         label: "Flow (full featured docs)",
-        runs: 3,
     },
     { path: "/blogs", label: "Blog Index" },
     { path: "/blogs/2022-04-27-etl-vs-elt", label: "Blog Post (sample)" },
     { path: "/vs/aws-step-functions", label: "VS Page (sample)" },
-    { path: "/plugins", label: "Plugins Landing", runs: 3, ssr: true },
+    { path: "/plugins", label: "Plugins Landing", ssr: true },
     { path: "/plugins/core", label: "Plugin Page (sample)", ssr: true },
     {
         path: "/plugins/core/debug",
@@ -41,15 +40,13 @@ export const PAGES = [
         label: "Plugin Debug Return Page (sample)",
         ssr: true,
     },
-    {
-        path: "/blueprints",
-        label: "Blueprints Landing",
-        runs: 3,
-        ssr: true,
-    },
+    // Both /blueprints pages fan out ~15 API calls per request, so their
+    // score tracks runner load more than the code. See #5707.
+    { path: "/blueprints", label: "Blueprints Landing", runs: 5, ssr: true },
     {
         path: "/blueprints/audit-logs-csv-export",
         label: "Blueprint Audit Logs CSV Export",
+        runs: 5,
         ssr: true,
     },
 ]
