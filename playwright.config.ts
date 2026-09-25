@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test"
+import { SCREENSHOT_COMPARE } from "./tests/fixtures/screenshot-options.mjs"
 
 export default defineConfig({
     testDir: "./tests",
@@ -18,10 +19,10 @@ export default defineConfig({
         ? [["github"], ["html", { open: "never" }]]
         : "html",
 
+    // toHaveScreenshotOdiff reads this block too and merges it under the
+    // call-site options, so every call site inherits the tolerance by default.
     expect: {
-        toHaveScreenshot: {
-            maxDiffPixelRatio: 0.01, // Allow up to 1% pixel difference for minor rendering variations
-        },
+        toHaveScreenshot: SCREENSHOT_COMPARE,
     },
 
     use: {

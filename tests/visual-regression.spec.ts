@@ -1,5 +1,6 @@
 import { fileURLToPath } from "node:url"
 import { test, expect } from "@playwright/test"
+import "playwright-odiff/setup"
 import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
 
 /**
@@ -8,6 +9,7 @@ import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
  * Covers the Lighthouse page sample plus VISUAL_ONLY_PAGES, which exists so
  * every surface touched by the SVG asset rework has a baseline. Run
  * `npx playwright test --update-snapshots` to regenerate after intended changes.
+ * Comparison runs through odiff; tolerances come from playwright.config.ts.
  */
 
 // The sample is plain JS, so the optional fields are declared here.
@@ -28,7 +30,7 @@ for (const page of pages) {
         })
         await p.waitForTimeout(500)
 
-        await expect(p).toHaveScreenshot(`${page.label}.png`, {
+        await expect(p).toHaveScreenshotOdiff(`${page.label}.png`, {
             fullPage: true,
             animations: "disabled",
             timeout: 15_000,

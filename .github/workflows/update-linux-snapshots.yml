@@ -138,6 +138,14 @@ jobs:
         id: snapshot_changes
         run: |
           SNAPSHOT_CHANGES="$(git status --porcelain --untracked-files=all -- tests/visual-regression.spec.ts-snapshots tests/fixtures/api)"
+          # The diff report only reads the snapshot folder, so it needs its own
+          # flag: an API-fixture-only run would otherwise report "0 changed".
+          PNG_CHANGES="$(git status --porcelain --untracked-files=all -- tests/visual-regression.spec.ts-snapshots)"
+          if [[ -n "$PNG_CHANGES" ]]; then
+            echo "has_png_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_png_changes=false" >> "$GITHUB_OUTPUT"
+          fi
           if [[ -n "$SNAPSHOT_CHANGES" ]]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
             echo "Detected Linux snapshot changes:"
@@ -146,6 +154,24 @@ jobs:
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
             echo "No Linux snapshot changes to commit."
           fi
+
+      # odiff compares each rewritten baseline against its committed version, so
+      # this has to run before the commit step moves HEAD onto the new snapshots.
+      # continue-on-error: the commit and the PR run after this, and the report
+      # is a convenience. A slow odiff compare must not discard the refresh.
+      - name: Build visual diff report
+        id: diff_report
+        continue-on-error: true
+        if: steps.snapshot_changes.outputs.has_png_changes == 'true'
+        run: npm run test:visual:report
+
+      - name: Upload visual diff report
+        if: steps.snapshot_changes.outputs.has_png_changes == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diff-report
+          path: visual-diff-report/
+          retention-days: 14
 
       - name: Commit and push updated Linux snapshots
         if: steps.snapshot_changes.outputs.has_changes == 'true' && github.ref_name != 'main'
@@ -192,6 +218,8 @@ jobs:
             Content dated after ${{ env.SNAPSHOT_CUTOFF }} was excluded from
             the build, and the sampled API responses were replayed from
             tests/fixtures/api.
+
+            ${{ steps.diff_report.outputs.report_summary }}
           add-paths: |
             tests/visual-regression.spec.ts-snapshots
             tests/fixtures/api
