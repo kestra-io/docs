@@ -65,6 +65,21 @@ describe("rehypeResourceCta", () => {
         expect(html).toContain('data-resource-cta="mid"')
     })
 
+    it("picks the tagline from the resource tag", async () => {
+        const html = await render(sections(6), RESOURCE, { tag: "data" })
+        expect(html).toContain("Ready to orchestrate your data pipelines?")
+        expect(html).toContain("Your data pipelines, orchestrated end to end.")
+    })
+
+    it("falls back to the generic tagline for other tags", async () => {
+        const html = await render(`## A\n\n::cta\n\n${sections(6)}`, RESOURCE, {
+            tag: "whitepapers",
+        })
+        expect(html).toContain(
+            "Ready to orchestrate everything from one place?",
+        )
+    })
+
     it("leaves other collections alone", async () => {
         const html = await render(sections(6), "/repo/src/contents/blogs/a.md")
         expect(html).not.toContain("data-resource-cta")
