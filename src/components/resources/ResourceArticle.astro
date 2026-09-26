@@ -209,7 +209,68 @@ const faqSchema =
         }
     }
 
+    // Injected into the article body by src/markdown/rehype/resource-cta.ts
+    .bd-content :global(.resource-cta) {
+        margin: 3rem 0;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        background: var(--ks-background-secondary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+
+        @include media-breakpoint-up(md) {
+            padding: 2.5rem;
+        }
+
+        :global(.resource-cta-text) {
+            margin: 0 0 1.25rem;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        :global(.resource-cta-actions) {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        :global(.btn) {
+            text-decoration: none;
+        }
+    }
+
     .resource-faq :global(section.faq) {
         background: var(--ks-background-secondary);
     }
 </style>
+
+<script>
+    import posthog from "posthog-js"
+
+    // Delegated so it survives Astro client-side navigations. Same fan-out as
+    // ResourceCtaPair: PostHog, GTM and HubSpot behavioural events.
+    document.addEventListener(
+        "click",
+        (e) => {
+            const link = (e.target as Element | null)?.closest<HTMLElement>(
+                "[data-resource-cta] a[data-event]",
+            )
+            const event = link?.dataset.event
+            if (!event) return
+
+            posthog.capture(event)
+            const w = window as any
+            ;(w.dataLayer = w.dataLayer || []).push({
+                event,
+                noninteraction: false,
+            })
+            ;(w._hsq = w._hsq || []).push([
+                "trackCustomBehavioralEvent",
+                { name: event },
+            ])
+        },
+        { capture: true, passive: true },
+    )
+</script>
