@@ -185,7 +185,7 @@ jobs:
         run: npm install --no-save lighthouse chrome-launcher
 
       - name: Download the build
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: lighthouse-dist
 
@@ -337,7 +337,7 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Download shard results
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: lighthouse-results-shard-*
           merge-multiple: true
