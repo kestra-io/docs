@@ -130,7 +130,7 @@ For smaller teams or those just beginning their automation journey, the accessib
 
 ## Conclusion
 
-Moving away from a legacy platform like Broadcom Dollar Universe is an opportunity to modernize your entire automation strategy. The shift from traditional, imperative job schedulers to modern, declarative orchestration platforms enables greater agility, better governance, and a more unified approach to [workflow management](/resources/infrastructure/workflow-management) across your organization.
+Moving away from a legacy platform like Broadcom Dollar Universe is an opportunity to modernize your entire automation strategy. The shift from traditional, imperative job schedulers to modern, declarative orchestration platforms enables greater agility, better governance, and a more unified approach to workflow management across your organization.
 
 The best alternative depends entirely on your specific needs. For enterprises seeking a managed SaaS solution for business processes, Redwood RunMyJobs is a strong contender. For complex hybrid IT environments, Stonebranch provides extensive connectivity. However, for organizations looking to build a future-proof, vendor-neutral control plane that empowers developers and unifies data, AI, and infrastructure workflows, Kestra offers a compelling path forward.
 

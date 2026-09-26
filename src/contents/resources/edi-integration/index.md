@@ -219,5 +219,5 @@ Ultimately, modernizing EDI integration is a critical part of a broader [data or
 *   [Data Pipeline: Building Blocks & Best Practices](/resources/data/data-pipeline)
 *   [Business Process Automation](/resources/business/business-process-automation)
 *   [What Is Data Ingestion?](/resources/data/what-is-data-ingestion)
-*   [Workflow Management: Orchestrating Complex Processes](/resources/infrastructure/workflow-management)
+*   Workflow Management: Orchestrating Complex Processes
 *   [Best Workflow Automation Tools (2026)](/resources/infrastructure/best-workflow-automation-tools)

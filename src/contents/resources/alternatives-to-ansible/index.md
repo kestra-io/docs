@@ -47,7 +47,7 @@ So, what is replacing Ansible? The answer isn't a single tool, but a strategic s
 - **Scope of Automation:** Are you focused purely on server configuration, or do you need to orchestrate broader workflows that include data pipelines, AI models, and ITSM integrations?
 - **Operational Overhead:** Consider the complexity of setting up and maintaining the tool itself. Does it require a dedicated team to manage?
 
-Is Ansible still relevant? Absolutely. For its core competency—configuring software on existing servers—it remains a powerful and effective tool. The search for alternatives is driven not by Ansible's failure, but by the need for a higher-level [workflow management](/resources/infrastructure/workflow-management) layer that can coordinate Ansible alongside other specialized tools in a modern, multi-domain environment.
+Is Ansible still relevant? Absolutely. For its core competency—configuring software on existing servers—it remains a powerful and effective tool. The search for alternatives is driven not by Ansible's failure, but by the need for a higher-level workflow management layer that can coordinate Ansible alongside other specialized tools in a modern, multi-domain environment.
 
 ## How We Evaluated These Alternatives
 

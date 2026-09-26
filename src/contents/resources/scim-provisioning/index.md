@@ -176,6 +176,6 @@ Kestra's [Enterprise Edition](/enterprise) supports SCIM, SSO, and other advance
 *   [Automate User Provisioning with SCIM Directory Sync](/docs/enterprise/auth/scim)
 *   [What's New in Kestra 0.18.0: SCIM Provisioning and More](/blogs/2024-08-06-release-0-18)
 *   [Manage Workflow Assets for Governance and Lineage](/docs/enterprise/governance/assets)
-*   [Declarative Workflow Management for Modern Infrastructure](/resources/infrastructure/workflow-management)
+*   Declarative Workflow Management for Modern Infrastructure
 *   [Enterprise Job Scheduler for Mission-Critical Workloads](/resources/infrastructure/job-scheduler)
 *   [Kestra Documentation Hub](/docs)
