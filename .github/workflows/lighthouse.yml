@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: read
+    outputs:
+      image-cache-key: ${{ steps.image-cache.outputs.cache-primary-key }}
 
     steps:
       - name: Checkout
@@ -51,6 +53,16 @@ jobs:
           echo "Fixture server did not come up on port 9001."
           exit 1
 
+      # Astro keys entries by source and transform, not by its or sharp's version,
+      # so those go in the prefix. Only assets/: the page cache must stay cold.
+      - name: Restore the image cache
+        id: image-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules/.astro/assets
+          key: lighthouse-images-${{ hashFiles('node_modules/sharp/package.json', 'node_modules/astro/package.json') }}-${{ github.sha }}
+          restore-keys: lighthouse-images-${{ hashFiles('node_modules/sharp/package.json', 'node_modules/astro/package.json') }}-
+
       - name: Build site
         run: npm run build
         env:
@@ -61,6 +73,14 @@ jobs:
           # Inlined into the server and client bundles, so both the build and
           # the SSR pages read the API through the fixture server.
           API_URL: http://127.0.0.1:9001/v1
+
+      # Main only: PR runs read main's entry, and one per PR would eat the quota.
+      - name: Save the image cache
+        if: github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules/.astro/assets
+          key: ${{ steps.image-cache.outputs.cache-primary-key }}
 
       # dist is thousands of files, most of them images. One tarball moves in a
       # fraction of the time the artifact actions take over the tree itself.
@@ -104,6 +124,31 @@ jobs:
           name: api-fixtures-build
           path: tests/fixtures/api/
           retention-days: 30
+
+  # Separate so the build keeps a read-only token. A failed save is only a
+  # warning in cache/save, so older entries go only once this run's is listed.
+  prune-image-cache:
+    name: Prune superseded image caches
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Delete older lighthouse-images entries
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KEEP: ${{ needs.build.outputs.image-cache-key }}
+        run: |
+          entries=$(gh cache list --repo "$GITHUB_REPOSITORY" --key lighthouse-images- --limit 100 --json id,key)
+          if ! jq -e --arg k "$KEEP" 'any(.[]; .key == $k)' <<<"$entries" > /dev/null; then
+            echo "::warning::$KEEP is not in the cache, keeping the older entries."
+            exit 0
+          fi
+          ids=$(jq -r --arg k "$KEEP" '.[] | select(.key != $k) | .id' <<<"$entries")
+          printf '%s\n' $ids | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          echo "deleted $(printf '%s\n' $ids | grep -c .) superseded entries"
 
   # scripts/lighthouse-shared.mjs splits the page sample into SHARD_TOTAL slices
   # of roughly equal measuring time, so the matrix length is the only knob.
@@ -205,12 +250,13 @@ jobs:
 
       # The results are named per shard: the report job merges every shard
       # artifact into one directory, so equal filenames would overwrite.
+      # Transport only, the report job keeps the merged lighthouse-results.json.
       - name: Upload shard results
         uses: actions/upload-artifact@v7
         with:
           name: lighthouse-results-shard-${{ matrix.shard }}
           path: lighthouse-results-shard-${{ matrix.shard }}.json
-          retention-days: 30
+          retention-days: 1
 
       # Per-page LHR JSONs — view any at https://googlechrome.github.io/lighthouse/viewer/.
       - name: Upload LHR reports artifact
@@ -265,6 +311,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
+      actions: write
       contents: write
       pull-requests: write
 
@@ -323,6 +370,7 @@ jobs:
           OUTPUT_FILE: lighthouse-results.json
           BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
           MARKDOWN_FILE: lighthouse-report.md
+          ARTIFACTS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}#artifacts
 
       - name: Read Lighthouse report
         id: report
@@ -360,9 +408,59 @@ jobs:
           retention-days: 30
 
       - name: Comment on PR
-        if: github.event_name == 'pull_request'
+        # GitHub downgrades the token for fork PRs to read-only.
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         uses: kestra-io/actions/actions/comment-update@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: 🔦 Lighthouse Benchmark
           template: ${{ steps.report.outputs.content }}
+
+      # One artifact to browse instead of four: nobody knows which shard measured
+      # a page. Missing when every shard failed, which the report already shows.
+      - name: Merge LHR reports into one artifact
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        uses: actions/upload-artifact/merge@v7
+        with:
+          name: lhr-reports
+          pattern: lhr-reports-shard-*
+          delete-merged: true
+          retention-days: 30
+
+      # Fixtures upload only when a job recorded calls not committed yet, so most
+      # runs have none and merge throws on an empty match.
+      - name: Find recorded API fixtures
+        id: fixtures
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          COUNT=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+            --jq '[.artifacts[] | select(.name | startswith("api-fixtures-"))] | length' \
+            | jq -s 'add // 0')
+          echo "count=${COUNT:-0}" >> "$GITHUB_OUTPUT"
+          echo "api-fixtures artifacts to merge: ${COUNT:-0}"
+
+      # Filenames hash the request, so a call recorded by two jobs lands on one file.
+      - name: Merge API fixtures into one artifact
+        if: ${{ !cancelled() && steps.fixtures.outputs.count != '0' }}
+        uses: actions/upload-artifact/merge@v7
+        with:
+          name: api-fixtures
+          pattern: api-fixtures-*
+          delete-merged: true
+          retention-days: 30
+
+      # The build tarball and shard results only feed this run. Kept when a shard
+      # failed, so "Re-run failed jobs" still finds them. Fork PR tokens cannot delete.
+      - name: Delete the transport artifacts
+        if: ${{ always() && needs.lighthouse.result == 'success' }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ids=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+            --jq '.artifacts[] | select(.name == "lighthouse-dist" or (.name | startswith("lighthouse-results-shard-"))) | .id')
+          printf '%s\n' $ids | xargs -r -I{} gh api -X DELETE "repos/$GITHUB_REPOSITORY/actions/artifacts/{}"
+          echo "deleted $(printf '%s\n' $ids | grep -c .) transport artifact(s)"

@@ -9,6 +9,7 @@
  *   OUTPUT_FILE     – Path for the merged JSON (default: lighthouse-results.json)
  *   BASELINE_FILE   – Path to baseline JSON (optional; omit to skip comparison)
  *   MARKDOWN_FILE   – Path for Markdown report (default: lighthouse-report.md)
+ *   ARTIFACTS_URL   – Link to this run's artifacts list (optional)
  *
  * Exits with code 0 on success, 1 when no shard result could be read.
  * Score regressions never cause a non-zero exit — output is informational only.
@@ -37,6 +38,7 @@ const BASE_URL_OUTPUT = (process.env.BASE_URL_OUTPUT ?? "").replace(/\/$/, "")
 const OUTPUT_FILE = process.env.OUTPUT_FILE ?? "lighthouse-results.json"
 const BASELINE_FILE = process.env.BASELINE_FILE ?? ""
 const MARKDOWN_FILE = process.env.MARKDOWN_FILE ?? "lighthouse-report.md"
+const ARTIFACTS_URL = process.env.ARTIFACTS_URL ?? ""
 
 // ---------------------------------------------------------------------------
 // Merge
@@ -310,6 +312,8 @@ export function buildMarkdown(output, baseline) {
         "<details><summary>View full Lighthouse HTML report for a page</summary>",
         "",
         "Full per-page Lighthouse Results (LHR) are attached as the `lhr-reports-shard-*` artifacts on this run. Download and unzip one, then open <https://googlechrome.github.io/lighthouse/viewer/> and drop the `<page>-lhr.json` file into the page to see every audit, opportunity, and diagnostic.",
+        "",
+        ARTIFACTS_URL ? `[Open this run's artifacts](${ARTIFACTS_URL})` : "",
         "",
         "</details>",
     )
