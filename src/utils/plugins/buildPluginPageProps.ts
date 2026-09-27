@@ -106,10 +106,20 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     const rootPlugin = pluginsWithoutDeprecated.find((p) => p.subGroup === undefined)
 
-    const currentSubgroupPlugin =
-        !effectiveSubGroup || pluginType
+    const currentSubgroupPlugin = (() => {
+        if (pluginType) {
+            const hasTask = (p: Plugin) =>
+                (Object.entries(p) as [string, { cls: string; title?: string }[]][])
+                    .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+                    .some(([, value]) => value.some((element) => element.cls === pluginType))
+
+            return pluginsWithoutDeprecated.find((p) => p.subGroup !== undefined && hasTask(p))
+        }
+
+        return !effectiveSubGroup
             ? undefined
             : pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
+    })()
 
     const currentPluginMetadata = (() => {
         const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
