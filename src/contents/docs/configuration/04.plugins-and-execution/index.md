@@ -181,7 +181,7 @@ kestra:
 - `remote-storage-enabled`: store managed plugins in internal storage rather than on local disk
 - `auto-reload-enabled` / `auto-reload-interval`: check for updated plugins on a fixed interval
 - `default-version`: controls which plugin version is selected when no explicit version is pinned; accepts `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or a specific version string
-- `worker-access` (EE): controls how workers fetch managed plugin artifacts. Set to `CONTROLLER` when a worker runs with dedicated storage that differs from the cluster's. See [Dedicated-storage workers](../06.enterprise-and-advanced/index.md#dedicated-storage-workers).
+- `worker-access` (EE): controls how workers fetch managed plugin artifacts. Set to `CONTROLLER` when a worker runs with dedicated storage that differs from the deployment's. See [Dedicated-storage workers](../06.enterprise-and-advanced/index.md#dedicated-storage-workers).
 
 ## Execution behavior
 
