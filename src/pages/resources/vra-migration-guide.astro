@@ -1,0 +1,186 @@
+---
+import { getEntry, render } from "astro:content"
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+import Link from "~/components/common/Link.astro"
+import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
+import Hero from "~/components/vra-migration-guide/Hero.astro"
+import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
+import { tocLinks } from "~/components/vra-migration-guide/toc"
+
+import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
+
+const post = await getEntry("resources", "vra-migration-guide")
+if (!post) throw new Error("resources/vra-migration-guide entry missing")
+const { Content, headings } = await render(post)
+const page = post.data
+
+const title = page.metaTitle ?? page.title
+const description = page.metaDescription ?? page.description
+
+const faqItems = page.faq ?? []
+
+const links = [
+    ...tocLinks(headings),
+    ...(faqItems.length > 0
+        ? [{ text: "Questions", id: "faq", depth: 2 }]
+        : []),
+]
+
+const INSIDE = [
+    "The six parts of a vRA estate, and a framework for deciding what happens to each one before you convert a single workflow",
+    "How to inventory, rationalize and classify vRO workflows so the migration becomes a small number of repeatable patterns",
+    "The four stages, from assessment through a measured proof of concept and migration waves to ending the licence at renewal",
+    "A payback calculator: what leaving costs, and the month the move pays for itself, using your own numbers",
+]
+
+const META = [
+    "Four enterprise VMware estates behind the method",
+    "Three handouts for review teams",
+    "Updated September 2026",
+]
+
+const jsonLinkedData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": Astro.url.href,
+    },
+    headline: page.title,
+    image: [`${Astro.url.origin}/og-image.png`],
+    author: { "@id": "https://kestra.io/#organization" },
+    ...(page.date ? { datePublished: page.date } : {}),
+    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
+    publisher: {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description,
+}
+
+const faqSchema =
+    faqItems.length > 0
+        ? {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: faqItems.map((item) => ({
+                  "@type": "Question",
+                  name: item.question,
+                  acceptedAnswer: { "@type": "Answer", text: item.answer },
+              })),
+          }
+        : null
+---
+
+<Layout {title} {description}>
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        {
+            page.date && (
+                <meta
+                    property="article:published_time"
+                    content={new Date(page.date).toISOString()}
+                />
+            )
+        }
+        {
+            page.lastUpdated && (
+                <meta
+                    property="article:modified_time"
+                    content={new Date(page.lastUpdated).toISOString()}
+                />
+            )
+        }
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        {
+            faqSchema && (
+                <script
+                    is:inline
+                    type="application/ld+json"
+                    set:html={JSON.stringify(faqSchema)}
+                />
+            )
+        }
+    </Fragment>
+    <Hero
+        title={page.title}
+        deck={page.description ?? ""}
+        inside={INSIDE}
+        meta={META}
+    />
+    <section class="guide-content">
+        <TwoColumnStickyLayout client:load>
+            <div slot="sidebar" class="guide-sidebar">
+                <GuideToc client:load links={links}>
+                    <a slot="footer" href="#section-7-2"
+                        >Work out your payback</a
+                    >
+                </GuideToc>
+            </div>
+            <div class="bd-content">
+                <Content />
+            </div>
+        </TwoColumnStickyLayout>
+    </section>
+    {
+        faqItems.length > 0 && (
+            <div class="guide-faq" id="faq">
+                <Faq
+                    title="Questions that come up"
+                    items={faqItems}
+                    client:visible
+                />
+            </div>
+        )
+    }
+    <SeeHow imgSrc={shapesImage} cta={{ text: "Book a Demo", href: "/demo" }}>
+        <Fragment slot="title">Start with your own workflows</Fragment>
+        Stage 1 needs nothing from us, and you can talk to us before you have run
+        an export. A proof of concept then turns your counts into a rate you can defend.
+        <Fragment slot="footer">
+            <Link href="#section-8-2" class="btn btn-secondary"
+                >Or start with open source</Link
+            >
+        </Fragment>
+    </SeeHow>
+</Layout>
+
+<style lang="scss">
+    .guide-content {
+        padding: 3rem 0;
+    }
+
+    .guide-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @include media-breakpoint-down(lg) {
+            gap: 1rem;
+        }
+    }
+
+    .guide-content :global(.bd-content h2 .section-number) {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: var(--ks-content-link);
+    }
+
+    .guide-faq {
+        scroll-margin-top: 100px;
+    }
+
+    .guide-faq :global(section.faq) {
+        background: var(--ks-background-secondary);
+    }
+</style>
