@@ -49,8 +49,8 @@ describe("rehypeResourceCta", () => {
         )
     })
 
-    it("uses the ::cta position instead of the automatic one", async () => {
-        const html = await render(`## A\n\n::cta\n\n${sections(6)}`)
+    it("uses the ::resource-cta position instead of the automatic one", async () => {
+        const html = await render(`## A\n\n::resource-cta\n\n${sections(6)}`)
         expect(html.match(/data-resource-cta="mid"/g)).toHaveLength(1)
         expect(html.indexOf('data-resource-cta="mid"')).toBeLessThan(
             html.indexOf("<h2>S1</h2>"),
@@ -72,9 +72,13 @@ describe("rehypeResourceCta", () => {
     })
 
     it("falls back to the generic tagline for other tags", async () => {
-        const html = await render(`## A\n\n::cta\n\n${sections(6)}`, RESOURCE, {
-            tag: "whitepapers",
-        })
+        const html = await render(
+            `## A\n\n::resource-cta\n\n${sections(6)}`,
+            RESOURCE,
+            {
+                tag: "whitepapers",
+            },
+        )
         expect(html).toContain(
             "Ready to orchestrate everything from one place?",
         )
@@ -83,5 +87,17 @@ describe("rehypeResourceCta", () => {
     it("leaves other collections alone", async () => {
         const html = await render(sections(6), "/repo/src/contents/blogs/a.md")
         expect(html).not.toContain("data-resource-cta")
+    })
+
+    it("rejects ::resource-cta outside /resources", async () => {
+        await expect(
+            render("::resource-cta", "/repo/src/contents/blogs/a.md"),
+        ).rejects.toThrow("only supported")
+    })
+
+    it("rejects the inline :resource-cta form", async () => {
+        await expect(render("Text :resource-cta here")).rejects.toThrow(
+            "only supported",
+        )
     })
 })

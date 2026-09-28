@@ -261,12 +261,11 @@ const faqSchema =
             if (!event) return
 
             posthog.capture(event)
-            const w = window as any
-            ;(w.dataLayer = w.dataLayer || []).push({
+            ;(window.dataLayer = window.dataLayer || []).push({
                 event,
                 noninteraction: false,
             })
-            ;(w._hsq = w._hsq || []).push([
+            ;(window._hsq = window._hsq || []).push([
                 "trackCustomBehavioralEvent",
                 { name: event },
             ])
