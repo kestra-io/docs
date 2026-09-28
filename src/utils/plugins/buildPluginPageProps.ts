@@ -162,7 +162,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     // "AWS S3", "Google Cloud BigQuery", "PostgreSQL".
     const containerTitle =
         (rootPlugin
-            ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
+            ? getPluginTitle(taskSubgroupPlugin ?? currentSubgroupPlugin ?? rootPlugin, metadataMap)
             : undefined) ?? pluginName
 
     // Task pages prefix the bare class name with their container title (e.g.
@@ -170,15 +170,26 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     // this, every plugin's "Trigger"/"Query"/"Create"/"Delete" task shared the
     // same short, duplicated title across hundreds of pages.
     const elementName = pluginType ? formatElementName(pluginType) : undefined
-    const headingTitle = pluginType && elementName
-        ? containerTitle.toLowerCase() === elementName.toLowerCase()
-            ? containerTitle
-            : `${containerTitle} ${elementName}`
-        : containerTitle
 
     const rootPluginTitle = rootPlugin
         ? getPluginTitle(rootPlugin, metadataMap)
         : pluginName
+
+    const headingTitle = (() => {
+        if (!pluginType || !elementName) return containerTitle
+
+        if (containerTitle.toLowerCase() === elementName.toLowerCase()) {
+            // Prevent generic titles for SEO (e.g. subgroup "Log" + task "Log" = "Log").
+            // If the collision happens inside a subgroup, fallback to the root title
+            // so the page is indexed descriptively (e.g. "Core Plugins and tasks Log").
+            if (taskSubgroupPlugin) {
+                return `${rootPluginTitle} ${elementName}`
+            }
+            return containerTitle
+        }
+
+        return `${containerTitle} ${elementName}`
+    })()
 
     let combinedDescription = currentPageMetadata?.description
     const bodyText = (currentPageMetadata as any)?.body
