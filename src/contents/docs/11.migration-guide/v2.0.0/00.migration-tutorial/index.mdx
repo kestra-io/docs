@@ -62,7 +62,7 @@ kestra-migrate --check ./flows/
 | `✎` | Auto-rewritable — the tool will apply the change when you run without `--check` | Run `kestra-migrate -o ./v2-flows/ ./flows/` |
 | `⚠ ✗` | Removed or unsupported construct — the tool writes the file through unchanged | Rewrite manually before importing to 2.0 |
 
-Each `⚠ ✗` entry includes a `↳ docs:` line pointing to the relevant migration guide page for that specific pattern.
+`⚠ ✗` warnings have two severities. **v2-incompatible** (red `✗`) means Kestra 2.0 rejects the flow on save and it cannot be deployed at all. **Advisory** (yellow `⚠`) means the flow deploys but breaks at runtime (for example, `read()` with a removed `version=` argument). Each entry includes a `↳ docs:` line pointing to the relevant migration guide page.
 
 The eight example flows below cover the main migration patterns. Each snippet shows only the flagged construct — the `--check` output that follows shows what the tool reports for each one.
 
@@ -261,6 +261,8 @@ The tool detects these patterns and prints a `✗` message with a docs link. The
 |---|---|---|
 | `io.kestra.plugin.core.flow.ForEach` | Rewrite as `Loop`; replace `taskrun.value` → `item.value`, `taskrun.iteration` → `item.index` | [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) |
 | `io.kestra.plugin.core.flow.ForEachItem` | Rewrite as `Loop` + `Subflow`; see Step 4 | [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) |
+| `io.kestra.plugin.core.flow.EachSequential` | Rewrite as `Loop`; same expression changes as `ForEach` | [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) |
+| `io.kestra.plugin.core.flow.EachParallel` | Rewrite as `Loop` with `concurrencyLimit`; same expression changes | [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) |
 | Flow-level `pluginDefaults:` | OSS: inline values on each task. EE: migrate to a namespace Policy | [Plugin defaults removed](../plugin-defaults-removed/index.md) |
 | Flow-level `taskDefaults:` | Same as `pluginDefaults` above — both keys are removed in 2.0 | [Plugin defaults removed](../plugin-defaults-removed/index.md) |
 | `io.kestra.plugin.core.execution.Count` | Use a [KV Store](../../../concepts/kv-store) task or custom script | — |
@@ -345,6 +347,18 @@ diff -r flows/08-trigger-conditions.yaml v2-flows/08-trigger-conditions.yaml
 
 Flows 01, 03, 04, and 07 have no diff because the tool wrote them through unchanged. The `⚠` warnings above are your signal that manual work is still required on those four before you move to Step 4.
 
+### Bulk deployments with incompatible flows
+
+If you are deploying a large namespace where some flows still need manual rewrites, use `--disable-v2-incompatible` instead of fixing everything first. The flag rewrites each incompatible flow into a disabled placeholder tagged `v2-migration: needs-manual-rewrite`, with the migrated definition preserved as comments. The placeholder deploys without error, so a single `kestractl flows deploy` can land the entire namespace.
+
+Compatible flows run immediately. Incompatible ones are visible in the UI, searchable by label, and ready for manual review. Re-running the tool over its own output is a no-op: a disabled placeholder has no live v2-incompatible construct, so it produces no warning and is written through unchanged.
+
+```bash
+kestra-migrate --disable-v2-incompatible -o ./v2-flows/ ./flows/
+```
+
+This flag cannot be combined with `--stay-v1-compatible`.
+
 ### Parallel v1/v2 deployments
 
 If you need migrated flows to run on a 1.3 instance while preparing for the 2.0 cutover, use `--stay-v1-compatible`. This skips the trigger `conditions` → `when` rewrite, which produces YAML that 1.3 cannot parse, and applies only backward-compatible changes:
@@ -408,10 +422,10 @@ Two AI options can help with the manual rewrites in this step:
 ### `ForEach` and `ForEachItem`
 
 ```bash
-grep -rn "plugin.core.flow.ForEach" ./v2-flows/
+grep -rn "plugin.core.flow.ForEach\|plugin.core.flow.EachSequential\|plugin.core.flow.EachParallel" ./v2-flows/
 ```
 
-Both task types are removed in 2.0 and replaced by `Loop`. `kestra-migrate` flags them with `⚠ ✗` and writes the files through unchanged — the grep confirms which flows still need rewriting after Step 3.
+All four flow-iteration task types (`ForEach`, `ForEachItem`, `EachSequential`, and `EachParallel`) are removed in 2.0 and replaced by `Loop`. `kestra-migrate` flags each with `⚠ ✗` and writes the files through unchanged — the grep confirms which flows still need rewriting after Step 3.
 
 **`ForEach` → `Loop`**
 
@@ -945,11 +959,10 @@ See [Instance Owner](../superadmin-renamed-instance-owner/index.md) for full det
 The tool exits `1` whenever any flow needs migration — both in `--check` mode and when running the actual migration. Check the output for `✎` (auto-rewritable) and `⚠ ✗` (manual required) markers. Each `⚠ ✗` line includes a `↳ docs:` link to the relevant migration guide.
 
 **A flow passes `kestra-migrate` but fails to import on 2.0**
-`kestra-migrate` flags `ForEach`, `ForEachItem`, `pluginDefaults`, and `taskDefaults` as `⚠ ✗` and writes those files through unchanged. They will fail on the 2.0 server. Confirm none remain in your output directory:
+`kestra-migrate` flags `ForEach`, `ForEachItem`, `EachSequential`, `EachParallel`, `pluginDefaults`, and `taskDefaults` as `⚠ ✗` and writes those files through unchanged. They will fail on the 2.0 server. Confirm none remain in your output directory:
 
 ```bash
-grep -rn "plugin.core.flow.ForEach" ./v2-flows/
-grep -rn "plugin.core.flow.ForEachItem" ./v2-flows/
+grep -rn "plugin.core.flow.ForEach\|plugin.core.flow.EachSequential\|plugin.core.flow.EachParallel" ./v2-flows/
 grep -rn "pluginDefaults:" ./v2-flows/
 grep -rn "taskDefaults:" ./v2-flows/
 grep -rn "json(" ./v2-flows/
