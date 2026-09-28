@@ -1,0 +1,58 @@
+---
+export type VerdictKind = "replace" | "integrate" | "keep" | "retire"
+
+interface Props {
+    kind: VerdictKind
+}
+
+const LABELS: Record<VerdictKind, string> = {
+    replace: "Replace",
+    integrate: "Integrate",
+    keep: "Keep",
+    retire: "Retire",
+}
+
+const { kind } = Astro.props
+---
+
+<span class={`verdict verdict-${kind}`}
+    ><span class="dot" aria-hidden="true"></span>{LABELS[kind]}</span
+>
+
+<style lang="scss">
+    .verdict {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.1rem 0.55rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 999px;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--ks-content-primary);
+    }
+
+    .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .verdict-replace .dot {
+        background: var(--ks-content-link);
+    }
+
+    .verdict-integrate .dot {
+        background: var(--ks-content-alert-info);
+    }
+
+    .verdict-keep .dot {
+        background: var(--ks-content-alert-success);
+    }
+
+    .verdict-retire .dot {
+        background: var(--ks-content-tertiary);
+    }
+</style>

@@ -1,0 +1,30 @@
+---
+interface Props {
+    columns?: 2 | 3
+}
+
+const { columns = 2 } = Astro.props
+---
+
+<div class={`guide-cards columns-${columns}`}>
+    <slot />
+</div>
+
+<style lang="scss">
+    .guide-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 1.5rem 0;
+
+        @include media-breakpoint-up(md) {
+            &.columns-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            &.columns-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    }
+</style>

@@ -1,0 +1,37 @@
+---
+interface Props {
+    caption: string
+}
+
+const { caption } = Astro.props
+---
+
+<figure class="guide-figure">
+    <slot />
+    <figcaption>{caption}</figcaption>
+</figure>
+
+<style lang="scss">
+    .guide-figure {
+        margin: 1.75rem 0;
+
+        :global(p) {
+            margin: 0;
+        }
+
+        :global(img) {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: $border-radius-lg;
+            background: #fff;
+        }
+
+        figcaption {
+            margin-top: 0.5rem;
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+        }
+    }
+</style>

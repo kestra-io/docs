@@ -1,0 +1,64 @@
+---
+interface Props {
+    /** Anchor target, e.g. "appendix-b" (the guide links to these) */
+    id: string
+    appendix: string
+    title: string
+    pdfHref?: string
+}
+
+const { id, appendix, title, pdfHref } = Astro.props
+---
+
+<div class="handout-card" id={id}>
+    <p class="appendix">{appendix}</p>
+    <p class="title">{title}</p>
+    <slot />
+    {
+        pdfHref ? (
+            <a class="btn btn-sm btn-secondary" href={pdfHref}>
+                Download the PDF
+            </a>
+        ) : (
+            <p class="pending">PDF coming soon</p>
+        )
+    }
+</div>
+
+<style lang="scss">
+    .handout-card {
+        display: flex;
+        flex-direction: column;
+        padding: 1.1rem 1.2rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        font-size: $font-size-sm;
+        scroll-margin-top: 100px;
+
+        .btn {
+            align-self: flex-start;
+            margin-top: auto;
+        }
+    }
+
+    .appendix {
+        margin: 0 0 0.35rem;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: var(--ks-content-link);
+    }
+
+    .title {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    .pending {
+        margin: auto 0 0;
+        font-size: $font-size-xs;
+        color: var(--ks-content-tertiary);
+    }
+</style>

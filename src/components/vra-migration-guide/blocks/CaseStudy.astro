@@ -1,0 +1,114 @@
+---
+interface Stat {
+    value: string
+    label: string
+}
+
+interface Props {
+    status: string
+    stats?: Stat[]
+    quote?: string
+    quoteBy?: string
+    storyHref?: string
+}
+
+const { status, stats = [], quote, quoteBy, storyHref } = Astro.props
+---
+
+<div class="case-study">
+    <p class="status">{status}</p>
+    <slot />
+    {
+        stats.length > 0 && (
+            <ul class="stats">
+                {stats.map((stat) => (
+                    <li>
+                        <strong>{stat.value}</strong>
+                        <span>{stat.label}</span>
+                    </li>
+                ))}
+            </ul>
+        )
+    }
+    {
+        quote && (
+            <blockquote class="quote">
+                <p>{quote}</p>
+                {quoteBy && (
+                    <footer>
+                        {quoteBy}
+                        {storyHref && (
+                            <>
+                                , <a href={storyHref}>read the full story</a>
+                            </>
+                        )}
+                    </footer>
+                )}
+            </blockquote>
+        )
+    }
+</div>
+
+<style lang="scss">
+    .case-study {
+        margin: 1.25rem 0;
+        padding: 1.1rem 1.25rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        font-size: $font-size-sm;
+
+        > :global(p:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    .status {
+        margin: 0 0 0.5rem;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: var(--ks-content-link);
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            padding: 0.6rem 0.75rem;
+            border-radius: $border-radius;
+            background: var(--ks-background-secondary);
+        }
+
+        strong {
+            display: block;
+            font-size: 1.35rem;
+            line-height: 1.2;
+            color: var(--ks-content-primary);
+        }
+
+        span {
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .quote {
+        margin: 1rem 0 0;
+        padding-left: 1rem;
+        border-left: 3px solid var(--ks-content-link);
+
+        p {
+            margin: 0 0 0.35rem;
+            font-style: italic;
+            color: var(--ks-content-primary);
+        }
+
+        footer {
+            color: var(--ks-content-secondary);
+        }
+    }
+</style>

@@ -1,0 +1,25 @@
+---
+interface Props {
+    kind: "talk" | "pdf"
+    label?: string
+    variant?: "primary" | "secondary"
+}
+
+const { kind, label, variant = "primary" } = Astro.props
+---
+
+{
+    kind === "talk" && (
+        <p class="guide-cta">
+            <a class={`btn btn-${variant}`} href="/demo">
+                {label ?? "Talk to our team"}
+            </a>
+        </p>
+    )
+}
+
+<style lang="scss">
+    .guide-cta {
+        margin: 1.25rem 0;
+    }
+</style>

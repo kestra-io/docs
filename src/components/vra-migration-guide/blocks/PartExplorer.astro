@@ -1,0 +1,125 @@
+---
+interface Props {
+    count: number
+    legendId?: string
+    id?: string
+}
+
+const { count, legendId, id } = Astro.props
+---
+
+<div class="part-explorer" data-part-explorer>
+    <div class="legend" id={legendId}>
+        <slot name="legend" />
+    </div>
+    <div class="parts" id={id} style={`--parts: ${count}`}>
+        <slot />
+    </div>
+</div>
+
+<script>
+    type Found<T extends HTMLElement> = { root: HTMLElement; el: T }
+
+    function find<T extends HTMLElement>(
+        target: EventTarget | null,
+        selector: string,
+    ): Found<T> | null {
+        const el = (target as Element | null)?.closest?.(selector) as T | null
+        const root = el?.closest<HTMLElement>("[data-part-explorer]")
+        return el && root ? { root, el } : null
+    }
+
+    const buttonsOf = (root: HTMLElement) =>
+        Array.from(root.querySelectorAll<HTMLButtonElement>(".part-button"))
+
+    function openPart(root: HTMLElement, index: number, focus = false) {
+        const buttons = buttonsOf(root)
+        buttons.forEach((b, i) =>
+            b.setAttribute("aria-expanded", i === index ? "true" : "false"),
+        )
+        root.querySelectorAll<HTMLElement>(".part-panel").forEach(
+            (p, i) => (p.hidden = i !== index),
+        )
+        if (focus) buttons[index].focus()
+    }
+
+    function showTab(root: HTMLElement, which: string) {
+        root.querySelectorAll<HTMLElement>("[data-part-tab]").forEach((t) => {
+            const on = t.dataset.partTab === which
+            t.setAttribute("aria-selected", on ? "true" : "false")
+            t.tabIndex = on ? 0 : -1
+        })
+        root.querySelectorAll<HTMLElement>("[data-part-view]").forEach(
+            (v) => (v.hidden = v.dataset.partView !== which),
+        )
+    }
+
+    document.addEventListener("click", (e) => {
+        const button = find<HTMLButtonElement>(e.target, ".part-button")
+        if (button) {
+            openPart(button.root, buttonsOf(button.root).indexOf(button.el))
+            return
+        }
+        const tab = find<HTMLElement>(e.target, "[data-part-tab]")
+        if (tab) showTab(tab.root, tab.el.dataset.partTab!)
+    })
+
+    document.addEventListener("keydown", (e) => {
+        const button = find<HTMLButtonElement>(e.target, ".part-button")
+        if (button && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+            e.preventDefault()
+            const n = buttonsOf(button.root).length
+            const i = buttonsOf(button.root).indexOf(button.el)
+            openPart(
+                button.root,
+                (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n,
+                true,
+            )
+            return
+        }
+        const tab = find<HTMLElement>(e.target, "[data-part-tab]")
+        if (tab && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+            e.preventDefault()
+            const list = tab.el.parentElement!
+            const sibling = (
+                e.key === "ArrowRight"
+                    ? (tab.el.nextElementSibling ?? list.firstElementChild)
+                    : (tab.el.previousElementSibling ?? list.lastElementChild)
+            ) as HTMLElement | null
+            if (!sibling?.dataset.partTab) return
+            showTab(tab.root, sibling.dataset.partTab)
+            sibling.focus()
+        }
+    })
+</script>
+
+<style lang="scss">
+    .part-explorer {
+        margin: 1.5rem 0;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        overflow: hidden;
+    }
+
+    .legend {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-secondary);
+        font-size: $font-size-sm;
+
+        :global(p:last-child),
+        :global(ul:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    .parts {
+        display: grid;
+        grid-template-columns: 1fr;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: minmax(12rem, 16rem) 1fr;
+            grid-template-rows: repeat(var(--parts), auto) 1fr;
+        }
+    }
+</style>

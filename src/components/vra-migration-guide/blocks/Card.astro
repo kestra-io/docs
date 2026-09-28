@@ -1,0 +1,43 @@
+---
+interface Props {
+    kicker?: string
+    title?: string
+}
+
+const { kicker, title } = Astro.props
+---
+
+<div class="guide-card">
+    {kicker && <p class="kicker">{kicker}</p>}
+    {title && <p class="title">{title}</p>}
+    <slot />
+</div>
+
+<style lang="scss">
+    .guide-card {
+        padding: 1.1rem 1.2rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-secondary);
+        font-size: $font-size-sm;
+
+        > :global(:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    .kicker {
+        margin: 0 0 0.35rem;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        color: var(--ks-content-link);
+    }
+
+    .title {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+</style>
