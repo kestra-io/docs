@@ -85,7 +85,7 @@ The network automation landscape is rich with tools, each with its own strengths
 A capable network automation solution typically provides:
 *   **Multi-Vendor Support:** The ability to manage devices from various manufacturers (Cisco, Juniper, Arista, etc.).
 *   **Idempotency:** The assurance that running an automation task multiple times produces the same result as running it once.
-*   **Source of Truth Integration:** Connectors for systems like NetBox or ServiceNow that store authoritative network data.
+*   **Source of Truth Integration:** Connectors for systems like [NetBox](/resources/infrastructure/netbox-alternatives) or ServiceNow that store authoritative network data.
 *   **Validation and Testing:** Frameworks to test changes in a staging environment before pushing to production.
 *   **Extensibility:** A plugin architecture or SDK to build custom integrations.
 

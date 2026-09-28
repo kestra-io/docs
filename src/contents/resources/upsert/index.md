@@ -172,7 +172,7 @@ Upsert operations are a cornerstone of many data-intensive applications and work
 
 -   **Change Data Capture (CDC):** As changes are captured from a source database, an upsert operation is the most efficient way to apply those inserts, updates, and deletes to a target warehouse. Learn more about [Change Data Capture](/resources/data/change-data-capture).
 -   **Search Index Synchronization:** Keeping search indexes like Algolia, Typesense, or Pinecone up-to-date requires constant upserts to reflect changes in the source data. Kestra offers plugins for [Pinecone](/plugins/plugin-pinecone/io.kestra.plugin.pinecone.upsert), [Typesense](/plugins/plugin-typesense), and a blueprint for [syncing with Algolia](/blueprints/algolia-index-sync).
--   **CRM/ERP Data Integration:** When syncing customer or order data between systems, upserts ensure that records are not duplicated and that the latest information is always available.
+-   **CRM/[ERP Data Integration](/resources/data/erp-data-integration):** When syncing customer or order data between systems, upserts ensure that records are not duplicated and that the latest information is always available.
 -   **Real-time Analytics:** Ingesting streaming data into analytical databases often relies on high-frequency upserts to maintain an accurate, real-time view of business metrics.
 
 ## Related concepts
