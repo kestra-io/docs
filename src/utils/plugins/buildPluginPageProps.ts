@@ -106,20 +106,20 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     const rootPlugin = pluginsWithoutDeprecated.find((p) => p.subGroup === undefined)
 
-    const currentSubgroupPlugin = (() => {
-        if (pluginType) {
-            const hasTask = (p: Plugin) =>
-                (Object.entries(p) as [string, { cls: string; title?: string }[]][])
-                    .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-                    .some(([, value]) => value.some((element) => element.cls === pluginType))
-
-            return pluginsWithoutDeprecated.find((p) => p.subGroup !== undefined && hasTask(p))
-        }
-
-        return !effectiveSubGroup
+    const currentSubgroupPlugin =
+        !effectiveSubGroup || pluginType
             ? undefined
             : pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
-    })()
+
+    // Subgroup owning the task on task pages, used only for the heading title. Root plugins can also
+    // list their subgroups' tasks, so match subgroups only and fall back to the root for root-level tasks.
+    const taskSubgroupPlugin = pluginType
+        ? pluginsWithoutDeprecated.find(
+              (p) =>
+                  p.subGroup !== undefined &&
+                  Object.values(extractPluginElements(p)).flat().includes(pluginType),
+          )
+        : undefined
 
     const currentPluginMetadata = (() => {
         const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
