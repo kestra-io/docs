@@ -68,7 +68,7 @@ When creating a new Provisioning Integration, Kestra will automatically create t
   ![scim5](../okta/scim5.png)
 
 :::alert{type="info"}
-Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user using our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
+The `SCIMProvisioner` role has no `DELETE` permission for users because users are global in scope. Deleting a user via SCIM removes their tenant access without removing the user from the system.
 :::
 
 ## Keycloak SCIM setup
@@ -85,7 +85,7 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
 
   ![scim-for-keycloak-download](./keycloak2.png)
 
-   Place the JAR in the `./providers` directory of your Keycloak installation. See [SCIM for Keycloak Installation](https://scim-for-keycloak.de/documentation/installation/install) for details.
+   Place the JAR in the `./providers` directory of your Keycloak installation. See the [SCIM for Keycloak](https://scim-for-keycloak.de/) documentation for details.
 
 3. **Deploy Keycloak**:
    - Create a simple `docker-compose.yaml` file:
@@ -125,4 +125,4 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
 
 ## Additional resources
 
-- [SCIM for Keycloak Documentation](https://scim-for-keycloak.de/documentation/administration/scim-client)
+- [SCIM for Keycloak](https://scim-for-keycloak.de/)

@@ -16,3 +16,5 @@
   to: "/contact-us"
 - regexp: "/tutorial-videos(.*)"
   to: "/videos$1"
+- regexp: "^/hacktoberfest$"
+  to: "/hacktober"

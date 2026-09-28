@@ -232,13 +232,13 @@ There are multiple ways to use Namespace Files in your flows. You can use the `r
 Kestra 0.24 introduced a universal file protocol that simplifies accessing files — local or namespace — in your flow. For more details, refer to the [File Access documentation page](../file-access/index.md).
 :::
 
-Usually, pointing to a file location, rather than reading the file's content, is required when you want to use a file as an input to a CLI command (e.g., in a `Commands` task such as `io.kestra.plugin.scripts.python.Commands` or `io.kestra.plugin.scripts.node.Commands`). In all other cases, the `read()` function can be used to read the content of a file as a string (e.g., in `Query` or `Script` tasks).
+Usually, pointing to a file location, rather than reading the file's content, is required when you want to use a file as an input to a CLI command (e.g., in a `Commands` task such as [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands) or [io.kestra.plugin.scripts.node.Commands](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands)). In all other cases, the `read()` function can be used to read the content of a file as a string (e.g., in `Query` or `Script` tasks).
 
-You can also use the `io.kestra.plugin.core.flow.WorkingDirectory` task to read namespace files and then use them in child tasks that require a file path in CLI commands, for example: `python scripts/hello.py`.
+You can also use the [io.kestra.plugin.core.flow.WorkingDirectory](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) task to read namespace files and then use them in child tasks that require a file path in CLI commands, for example: `python scripts/hello.py`.
 
 ### The `read()` function
 
-`read()` returns the **contents** of a namespace file as a string. Use it in tasks that accept string input — `io.kestra.plugin.scripts.python.Script`, `io.kestra.plugin.scripts.node.Script`, SQL query properties, and similar — not in `Commands` tasks that expect a file path on disk. The path must point to a file in the same namespace as the flow.
+`read()` returns the **contents** of a namespace file as a string. Use it in tasks that accept string input — [io.kestra.plugin.scripts.python.Script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script), [io.kestra.plugin.scripts.node.Script](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script), SQL query properties, and similar — not in `Commands` tasks that expect a file path on disk. The path must point to a file in the same namespace as the flow.
 
 This example logs the contents of `example.txt`:
 

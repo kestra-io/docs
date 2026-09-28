@@ -13,7 +13,7 @@ Set up Keycloak as an OIDC provider for Kestra authentication. In conjunction wi
 
 If you don't have a Keycloak server already running, you can use a managed service like [Cloud IAM](https://app.cloud-iam.com).
 
-You can follow the steps described in the [Keycloak tutorial documentation](https://documentation.cloud-iam.com/get-started/complete-tutorial.html) to deploy a managed Keycloak cluster for free.
+See the [Keycloak tutorial documentation](https://documentation.cloud-iam.com/get-started/complete-tutorial.html) to deploy a managed Keycloak cluster for free.
 
 ## Configure Keycloak client
 
@@ -44,7 +44,7 @@ micronaut:
         get-allowed: true
 ```
 
-You can retrieve the `clientId` and `clientSecret` via the Keycloak user interface.
+Retrieve the `clientId` and `clientSecret` from the Keycloak UI:
 
 ![Client ID](./clientId.png)
 ![Client Secret](./clientSecret.png)

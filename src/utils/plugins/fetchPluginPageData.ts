@@ -3,6 +3,7 @@ import type { JSONSchema } from "./schema"
 import type { Plugin, PluginMetadata } from "./plugin"
 
 import { $fetchApiCached } from "~/utils/fetch"
+import { beforeCutoff } from "~/utils/snapshotCutoff"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 import { pageBlocksFromJsonSchema } from "~/utils/plugins/pageBlocks"
 import { retrieveRepoReleases } from "~/utils/plugins/repoReleases"
@@ -240,7 +241,7 @@ export async function fetchSecondaryData(pluginName: string) {
         loadBlogPostsMetadata(),
     ])
 
-    const relatedBlogs = blogs
+    const relatedBlogs = beforeCutoff(blogs, (b) => new Date(b.data.date))
         .filter((b) => b.data.plugins?.includes(pluginName ?? ""))
         .sort(
             (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime(),

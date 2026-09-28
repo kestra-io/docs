@@ -18,7 +18,7 @@ When working with subflows, it’s important to understand the difference betwee
 
 ### Subflow task-level retry
 
-When you define a retry on the `Subflow` task, it controls how the **Subflow task** itself is retried within the parent flow. For example:
+When you define a retry on the [Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task, it controls how the **Subflow task** itself is retried within the parent flow. For example:
 
 ```yaml
 id: parent_flow
@@ -40,7 +40,7 @@ In this case, the retry applies to the `Subflow` task in the parent flow. When t
 
 ### Flow-level retry inside the subflow
 
-To retry the execution from **failed task** within a subflow (without rerunning tasks that already succeeded), configure the `retry` property **on the subflow flow definition**, not on the Subflow task. This allows the subflow execution to restart from the failed task rather than from the start.
+To retry the execution from **failed task** within a subflow (without rerunning tasks that already succeeded), configure the `retry` property **on the subflow flow definition**, not on the [Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task. This allows the subflow execution to restart from the failed task rather than from the start.
 
 Example:
 

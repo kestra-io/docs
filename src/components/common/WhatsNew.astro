@@ -1,11 +1,12 @@
 ---
 import BlogList from "~/components/common/BlogList.astro"
 import { getCollection } from "astro:content"
+import { beforeCutoff } from "~/utils/snapshotCutoff"
 
 const blogs = await getCollection("blogs")
 
 const recentBlogs = await Promise.all(
-    blogs
+    beforeCutoff(blogs, (blog) => blog.data.date)
         .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
         .slice(0, 4)
         .map(async (blog) => ({

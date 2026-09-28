@@ -22,7 +22,7 @@ To launch a task on Azure Batch, there are two main concepts to understand:
 
 ## How the Azure Batch task runner works
 
-To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the Azure Batch task runner relies on [resource files](https://learn.microsoft.com/en-us/azure/batch/resource-files) and [output files](https://learn.microsoft.com/en-us/rest/api/batchservice/task/add?view=rest-batchservice-2023-11-01&tabs=HTTP), which transit through [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs).
+To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the Azure Batch task runner relies on [resource files](https://learn.microsoft.com/en-us/azure/batch/resource-files) and [output files](https://learn.microsoft.com/en-us/rest/api/batchservice/tasks/create-task), which transit through [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs).
 
 The container does not start in the Kestra working directory. Use `{{ workingDir }}` or `WORKING_DIR` to reference input and output files — for example, `cat {{ workingDir }}/myFile.txt` rather than `cat myFile.txt`.
 
@@ -235,7 +235,7 @@ Now that you’ve created your Batch account, storage account, pool, and contain
 
 ### Creating your flow
 
-Below is an example flow that runs a Python file called `main.py` on an Azure Batch task runner. At the top of the `io.kestra.plugin.scripts.python.Commands` task, you’ll define the task runner properties:
+Below is an example flow that runs a Python file called `main.py` on an Azure Batch task runner. At the top of the [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands) task, you’ll define the task runner properties:
 
 ```yaml
 containerImage: ghcr.io/kestra-io/pydata:latest

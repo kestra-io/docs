@@ -10,12 +10,6 @@ version: "0.22.0"
 
 Install multiple versions of any plugin and run them simultaneously across all your flows — assigned at the task, flow, namespace, or instance level.
 
-## Use cases
-
-<div class="video-container">
-    <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
 Versioned plugins give you fine-grained control over which plugin version runs in each flow, namespace, or across your entire instance. Common use cases include:
 
 - **Build and iterate on plugins**: Upload a custom plugin directly from a `.jar` file and test it immediately in any flow — no instance restart required.
@@ -96,20 +90,9 @@ Versioned plugins can be installed from the Kestra UI as well as programmaticall
 
 ### From the UI
 
-Below is a video demonstration walking through each step from installation to application in a flow.
-
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Both official and custom plugins can be installed from the UI. Go to **Instance Owner → Infrastructure → Versioned Plugins** and click **+ Install** to browse the full plugin library. Search for the plugin, select the version, and confirm.
-
-After installing, the full list of versioned plugins is displayed. Kestra alerts you when a newer version is available. Upgrading installs the new version separately — the previous version stays active in existing flows.
-
-For a custom plugin, click **+ Install**, switch to **Custom plugin**, and provide:
-
-- **Group ID**: The group identifier of the plugin.
-- **Artifact ID**: The artifact identifier of the plugin.
-
-To upload a custom build, click **Upload** and select a valid `.jar` file.
+Versioned Plugins are managed under **Instance Owner → Infrastructure → Versioned Plugins**. Both official and custom plugins can be installed. Kestra alerts you when a newer version is available; upgrading installs the new version alongside the previous one without removing it.
 
 ### From the API
 

@@ -571,7 +571,7 @@ kestra:
       read-only: true
 ```
 
-Use `secret-path-prefix` to scope Kestra's view to a specific path within the engine. In the example above, only secrets under the `app1` path are visible. Reference a subkey in a flow with:
+`secret-path-prefix` scopes Kestra's view to a specific path within the engine. In the example above, only secrets under the `app1` path are visible. Reference a subkey in a flow with:
 
 ```twig
 {{ secret('my-app', subkey='MY_SUBKEY') }}
@@ -1257,10 +1257,6 @@ When a namespace or tenant switches from Kestra's internal secret backend (JDBC 
 
 Kestra will attempt to resolve those secret keys against the new external backend. Because the external backend does not hold them, resolution fails silently — the Kestra UI shows no error, but the `secret()` function fails at runtime when a flow uses one of those keys.
 
-**Before switching backends:**
-
-1. Export all existing secrets from the current backend.
-2. Re-create them in the new external backend with the correct tags (`namespace`, `key`, `prefix`).
-3. Switch the backend configuration in Kestra.
+Switching backends requires exporting all existing secrets from the current backend, re-creating them in the new external backend with the correct tags (`namespace`, `key`, `prefix`), and then updating the backend configuration in Kestra.
 
 This also applies when adding a dedicated external backend to a namespace that previously used the instance-level JDBC or Elasticsearch backend.

@@ -65,7 +65,7 @@ triggers:
 | `namespace` | `String`              | The namespace of the upstream flow. Exact match only — use `when` for prefix or pattern matching.                    |
 | `states`    | `List<State>`         | States that satisfy this entry. Defaults to all terminal states and `PAUSED` when omitted.                           |
 | `labels`    | `Map<String, String>` | Key-value pairs that must all be present on the upstream execution's labels.                                         |
-| `when`      | `String`              | A Pebble expression evaluated against the upstream execution. The entry is satisfied only when this evaluates to true.|
+| `when`      | `String`              | A Pebble expression evaluated against the upstream execution. Available variables: `flow.namespace`, `flow.id`, `labels`, `execution.outputs`, `execution.state`. The entry is satisfied only when this evaluates to true.|
 
 ### Satisfaction mode
 
@@ -117,7 +117,7 @@ triggers:
 
 ### Prefix and pattern matching
 
-When `namespace` is set, Kestra matches it exactly. To match a range of namespaces or flows, omit `namespace` and use `when` with a Pebble expression:
+When `namespace` is set, Kestra matches it exactly. To match a range of namespaces or flows, omit `namespace` and use `when` with a Pebble expression. In `when`, `flow.namespace` and `flow.id` refer to the upstream flow (the one that just completed):
 
 ```yaml
 triggers:
@@ -125,7 +125,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - states: [FAILED, WARNING]
-        when: "{{ namespace | startsWith('company') }}"
+        when: "{{ flow.namespace | startsWith('company') }}"
 ```
 
 ## Conditional guard with `when`
@@ -234,29 +234,23 @@ triggers:
 
 Once every `dependsOn` entry has been satisfied and an execution has been created, the stored results are reset. The trigger can fire again in the same window, though every dependency has to be satisfied again first. To create an execution as soon as any single upstream flow succeeds, use `mode: ANY` instead.
 
-## Scoped trigger outputs
+## Trigger outputs
 
-When a Flow trigger fires, upstream execution outputs are available under `trigger.outputs`. Outputs are scoped by flow ID to avoid key collisions when multiple upstream flows are involved:
-
-```
-trigger.outputs.<flowId>.<outputKey>
-```
-
-For example, to pass an output from an upstream flow named `extract`:
+When a Flow trigger fires, `trigger.outputs.<key>` gives access to the upstream execution's outputs:
 
 ```yaml
 triggers:
   - id: after_extract
     type: io.kestra.plugin.core.trigger.Flow
     inputs:
-      date: "{{ trigger.outputs.extract.date }}"
+      date: "{{ trigger.outputs.date }}"
     dependsOn:
       - flowId: extract
         namespace: company.team
 ```
 
-:::alert{type="warning"}
-The output scoping format changed in Kestra 2.0. If you previously used `trigger.outputs.<key>` (a flat map), update your expressions to the new `trigger.outputs.<flowId>.<key>` format.
+:::alert{type="info"}
+`trigger.outputs.<key>` holds the outputs of the last upstream execution. For single-flow triggers, this is always the correct execution. For multi-flow triggers (`mode: ALL` or `mode: ANY` with multiple `dependsOn` entries), only the last-completed upstream flow's outputs are available; per-flow output access is not yet supported.
 :::
 
 ## Label-based filtering
@@ -276,9 +270,9 @@ triggers:
 
 ## Filtering with `when` expressions
 
-Use `when` on a `dependsOn` entry to apply arbitrary Pebble conditions against the upstream execution context.
+Use `when` on a `dependsOn` entry to apply Pebble conditions against the upstream execution. The available variables are `flow.namespace`, `flow.id`, `labels`, `execution.outputs`, and `execution.state` — where `flow` is the upstream flow. The variable `state` (without the `execution.` prefix) is not available; use the `states` list on the `dependsOn` entry for declarative state filtering, or `execution.state` for expression-based checks such as `when: "{{ execution.state != 'SUCCESS' }}"`.
 
-Filter on an output value:
+Filter on a flow-level output value using `execution.outputs.<key>`:
 
 ```yaml
 triggers:
@@ -287,21 +281,18 @@ triggers:
     dependsOn:
       - flowId: extract
         namespace: company.team
-        when: "{{ outputs.row_count > 0 }}"
+        when: "{{ execution.outputs.row_count > 0 }}"
 ```
+
+:::alert{type="warning"}
+`execution.outputs.<key>` accesses the upstream flow's declared **flow-level outputs**. `outputs` is also available in `when` but holds **task outputs** — use `execution.outputs` to filter on flow outputs.
+:::
 
 Filter on retry attempts:
 
-```yaml
-triggers:
-  - id: after_flaky
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: flaky_pipeline
-        namespace: company.team
-        states: [SUCCESS]
-        when: "{{ hasRetryAttempt == true }}"
-```
+:::alert{type="warning"}
+`hasRetryAttempt` is not available yet in the `when` expression context.
+:::
 
 ## Example: data pipeline with SLA deadline
 
@@ -347,7 +338,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - states: [FAILED, WARNING]
-        when: "{{ namespace | startsWith('company') }}"
+        when: "{{ flow.namespace | startsWith('company') }}"
 ```
 
 ## Example: mixed success and failure triggers
@@ -372,7 +363,7 @@ triggers:
 
 ## Example: passing upstream outputs downstream
 
-Reference upstream outputs using the scoped path `trigger.outputs.<flowId>.<key>`:
+Reference upstream outputs using `trigger.outputs.<key>`:
 
 ```yaml
 id: flow_b
@@ -391,7 +382,7 @@ triggers:
   - id: upstream_dep
     type: io.kestra.plugin.core.trigger.Flow
     inputs:
-      value_from_a: "{{ trigger.outputs.flow_a.return_value }}"
+      value_from_a: "{{ trigger.outputs.return_value }}"
     dependsOn:
       - flowId: flow_a
         namespace: company.team

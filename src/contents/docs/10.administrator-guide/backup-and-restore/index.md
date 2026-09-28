@@ -75,7 +75,9 @@ To restore from a metadata backup, run the command using the URI returned by the
 kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 ```
 
-Restore is idempotent at the record level — every record is upserted, so a partially completed restore can be safely re-run.
+Restore is idempotent for most resource types. Records are upserted on a stable key, so a partially completed restore can be safely re-run for those types.
+
+`LOG` and `METRIC` records do not carry stable identifiers and are always inserted rather than upserted. Re-running a restore that includes these types will add duplicate log and metric entries. Use `--resources` to exclude them from a re-run if the instance already contains data from a previous restore attempt.
 
 The restore command checks the archive's Kestra version against the running instance and logs a warning when they differ. This does not block the restore, but review the warning before proceeding in production.
 

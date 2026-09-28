@@ -1,0 +1,13 @@
+/* /docs renders the four newest posts through WhatsNew, where the blog list is
+   incidental: /blogs is the baseline that owns it. */
+.list-of-posts .post-card {
+    /* Pins the card to its thumbnail height so a title that wraps to a second
+       line cannot move everything below it. */
+    height: 70px;
+    overflow: hidden;
+}
+
+.list-of-posts .card-img-left,
+.list-of-posts .card-body {
+    visibility: hidden;
+}

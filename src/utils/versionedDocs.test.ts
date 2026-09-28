@@ -17,6 +17,8 @@ import {
     resolveRelativeAssetRef,
     resolveVersionedDocLink,
     versionedAssetUrl,
+    versionedSpecHref,
+    versionedSpecSourceUrl,
     decideVersionedRoute,
     docsLatestVersion,
     docsVersionFromPath,
@@ -903,5 +905,29 @@ describe("currentDocKey", () => {
 
     it("prefixes a sub-path with docs/ and trims slashes", () => {
         expect(currentDocKey("/ui/dashboard/")).toBe("docs/ui/dashboard")
+    })
+})
+
+describe("versionedSpecHref", () => {
+    it("routes an archived API reference at this site's own spec route", () => {
+        expect(versionedSpecHref("1.3", "ee")).toBe("/api/openapi/1.3/ee.yml")
+        expect(versionedSpecHref("0.19", "oss")).toBe("/api/openapi/0.19/oss.yml")
+    })
+})
+
+describe("versionedSpecSourceUrl", () => {
+    it("resolves a version to the spec the indexing job uploaded for it", () => {
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "1.3", "ee")).toBe(
+            "https://api.kestra.io/v1/docs/kestra-ee.yml/versions/1.3.0",
+        )
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "0.19", "oss")).toBe(
+            "https://api.kestra.io/v1/docs/kestra.yml/versions/0.19.0",
+        )
+    })
+
+    it("refuses anything but major.minor, so a path can't be spliced into the URL", () => {
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "../../docs", "oss")).toBeUndefined()
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "1.3.0", "ee")).toBeUndefined()
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "", "ee")).toBeUndefined()
     })
 })

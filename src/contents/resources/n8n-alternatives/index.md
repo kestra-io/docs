@@ -36,7 +36,7 @@ While n8n is a powerful tool for visual workflow automation, teams often start l
 *   **Scaling and Performance**: High-throughput data pipelines or complex, long-running processes can push the limits of n8n's architecture. Teams may need a solution designed for more demanding engineering workloads.
 *   **Limited Polyglot Support**: n8n's node-based system is excellent for API integrations but can be cumbersome for running custom scripts in various languages like Python, SQL, or R as first-class citizens.
 *   **Evolving AI and LLM Needs**: The rise of agentic AI requires more than simple API calls. Specialized platforms offer better tools for building, managing, and orchestrating complex AI agents and LLM chains.
-*   **Unified Orchestration**: Teams often manage separate tools for data pipelines, infrastructure automation, and business workflows. A single, unified control plane can reduce complexity and improve observability. Effective [workflow management](https://kestra.io/resources/infrastructure/workflow-management) requires a holistic view that n8n's app-centric focus may not provide.
+*   **[Unified Orchestration](/resources/orchestration/unified-orchestration)**: Teams often manage separate tools for data pipelines, infrastructure automation, and business workflows. A single, unified control plane can reduce complexity and improve observability. Effective [workflow management](https://kestra.io/resources/infrastructure/workflow-management) requires a holistic view that n8n's app-centric focus may not provide.
 
 ## How we evaluated these alternatives
 

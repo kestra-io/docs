@@ -85,7 +85,7 @@ Use these guides for complete examples, outputs, metrics, and dependency managem
 
 ## Run other languages with the Shell plugin
 
-Use `io.kestra.plugin.scripts.shell.Commands` when your language does not have a dedicated plugin or when you want to compile and run code in a container.
+Use [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands) when your language does not have a dedicated plugin or when you want to compile and run code in a container.
 
 This approach works best when:
 
@@ -195,7 +195,7 @@ const justine: User = {
 console.log(isAdult(justine));
 ```
 
-For more background, see the official [Node.js with TypeScript guide](https://nodejs.org/en/learn/getting-started/nodejs-with-typescript).
+For more background, see the official [Node.js with TypeScript guide](https://nodejs.org/en/learn/typescript/introduction).
 
 ## Use a custom Docker image for extra dependencies
 

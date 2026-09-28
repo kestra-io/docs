@@ -14,11 +14,9 @@ Communicate planned maintenance or incidents with in-app banners
   <iframe src="https://www.youtube.com/embed/2QqGABneiNI?si=iT2NleQpZFYL2g66" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## How to create an announcement
+## Announcement configuration
 
-To add a custom in-app banner, go to **Instance Owner → Instance → Announcements**.
-
-As an Instance Owner, you can configure the following within each announcement:
+Announcements are managed under **Instance Owner → Instance → Announcements**. Each announcement supports the following properties:
 
 - **Message**: the text to display in the banner
 - **Type**: the severity of the banner — `INFO`, `WARNING`, or `ERROR`

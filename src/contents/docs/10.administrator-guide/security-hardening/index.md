@@ -101,7 +101,7 @@ This filter applies to HTTP plugin tasks and the `http()` Pebble expression func
 
 ## Encryption key
 
-Configure an encryption key so that `SECRET` inputs and outputs can be stored safely at rest. Without it, any flow that uses `SECRET`-typed inputs or outputs fails at runtime.
+An encryption key under `kestra.encryption.secret-key` is required for `SECRET` inputs and outputs to be stored safely at rest. Without it, any flow that uses `SECRET`-typed inputs or outputs fails at runtime.
 
 ```yaml
 kestra:
@@ -119,7 +119,7 @@ See [Encryption configuration](../../configuration/05.security-and-secrets/index
 
 ## Plugin restrictions (EE)
 
-Restrict which task runners and plugins flow authors can use. At minimum, restrict access to the Process task runner in multi-tenant or untrusted environments — the Process runner executes directly on the worker host with no container isolation.
+Plugin restrictions control which task runners and plugins flow authors can use. At minimum, the Process task runner should be restricted in multi-tenant or untrusted environments — it executes directly on the worker host with no container isolation.
 
 Configure plugin restrictions and worker isolation under [Worker Isolation](../../07.enterprise/02.governance/worker-isolation/index.md). For finer-grained policy enforcement across namespaces and tenants, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject, validate, or reject plugin and flow configuration at save or execution time.
 
@@ -154,7 +154,7 @@ Kestra exposes internal endpoints on a separate management port (default `8081`)
 
 The primary protection is network isolation: do not expose port `8081` outside the internal network. Firewall or security-group rules should restrict access to the management port to trusted internal hosts only (monitoring agents, load balancer health checkers, operations tooling).
 
-If network isolation is not sufficient, you can add Basic Auth to the management port and optionally move it to a non-default port by configuring `endpoints.all` in your `application.yml`:
+When network isolation alone is insufficient, Basic Auth can be added to the management port and the port can be moved from its default by configuring `endpoints.all` in your `application.yml`:
 
 ```yaml
 endpoints:

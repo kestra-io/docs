@@ -3,9 +3,11 @@ export const prerender = false
 import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "~/utils/plugins/plugin"
 import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
-import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
+import { prunePluginsForCards, type CardPlugin } from "~/utils/plugins/pruneForClient"
 import { calculateTotalPlugins, formatPluginCount } from "~/utils/plugins/pluginCount"
 import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
+import { buildFamilyIndex, familyNameForPlugin, type ArtifactsResponse } from "~/utils/plugins/pluginFamily"
+import { formatPluginName } from "~/utils/plugins/pluginUtils"
 
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
@@ -13,6 +15,9 @@ import PluginsLists from "~/components/plugins/PluginsLists.vue"
 
 const rawPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
 const rawPluginsData = await $fetchApiCached(`/plugins/pluginsInformation`)
+const familyIndex = buildFamilyIndex(
+    await $fetchApiCached<ArtifactsResponse>(`/plugins/artifacts`),
+)
 
 const nonDeprecatedPlugins = filterPluginsWithoutDeprecated(rawPlugins)
 const pluginsByName = nonDeprecatedPlugins.reduce(
@@ -26,18 +31,45 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
     return subgroups.length === 1 && parent ? subgroups : group
 })
 
+// Multi-artifact plugin groups (Debezium, JDBC, Scripts, ...) ship one unrelated top-level
+// plugin per sub-technology (plugin-jdbc-oracle, plugin-jdbc-postgres, ...). Each still gets
+// its own Hub card as usual; this just also adds one "/plugins/<family>" overview card per
+// family, so the family page is reachable from the Hub like any other plugin.
+const familyMembers: Record<string, Plugin[]> = {}
+for (const p of filteredPlugins) {
+    if (p.subGroup) continue
+    const family = familyNameForPlugin(p.name, familyIndex)
+    if (family) (familyMembers[family] ??= []).push(p)
+}
+
 // Rendered per request, so the count is derived from the groups fetched above
 // rather than the build-time memo in fetchTotalPluginsCount.
 const totalPluginCount = `${formatPluginCount(calculateTotalPlugins(rawPlugins))}+`
 const rootGroups = new Set(
     nonDeprecatedPlugins.filter((p) => !p.subGroup).map((p) => p.group),
 )
-const cardPlugins = prunePluginsForCards(
-    filteredPlugins,
-    rawPluginsData.byPlugin,
-    buildPluginUrlIndex(rawPlugins),
-    rootGroups,
-)
+const urlIndex = buildPluginUrlIndex(rawPlugins)
+const familyCards: CardPlugin[] = Object.entries(familyMembers).map(([family, members]) => {
+    const title = formatPluginName(family)
+    const memberCards = prunePluginsForCards(members, rawPluginsData.byPlugin, urlIndex, rootGroups)
+    return {
+        name: family,
+        title,
+        group: family,
+        description: `${members.length} ${title} plugins`,
+        categories: [...new Set(memberCards.flatMap((m) => m.categories ?? []))],
+        // No className: none of these families have a real dedicated icon (the
+        // API's own fallback for an unmatched className is a generic blank-file
+        // glyph, worse than PluginCard's own /icon.svg fallback used below).
+        elementCounts: memberCards.reduce((sum, m) => sum + (m.elementCounts ?? 0), 0),
+        blueprints: memberCards.reduce((sum, m) => sum + (m.blueprints ?? 0), 0),
+        href: `/plugins/${family}`,
+    }
+})
+const cardPlugins = [
+    ...prunePluginsForCards(filteredPlugins, rawPluginsData.byPlugin, urlIndex, rootGroups),
+    ...familyCards,
+]
 const categories = [
     ...new Set(cardPlugins.flatMap((p) => p.categories ?? [])),
 ].sort()

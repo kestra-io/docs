@@ -31,7 +31,7 @@ The image below shows the relationship between Users, Groups, Service Accounts, 
 
 A role is a collection of permissions that can be assigned to users, service accounts, or groups. Each permission is a combination of a **resource** (e.g., `FLOW`, `EXECUTION`, `SECRET`) and one or more **actions** (e.g., `EXECUTE`, `VIEW`, `DELETE`). A role alone grants nothing — it must be attached to a user, service account, or group via a **binding** on the **IAM** page.
 
-Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). Use [Impersonate](#impersonate) to verify a user's effective permissions after assigning roles.
+Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). [Impersonate](#impersonate) allows Instance Owners to verify a user's effective permissions after role assignment.
 
 ## Impersonate
 
@@ -170,7 +170,7 @@ Key differences between Admin and Instance Owner:
 
 ## Instance Owner
 
-Instance Owner is a powerful user type with instance-wide privileges. Use it sparingly — only for tasks that require it, such as creating tenants, troubleshooting, or helping a user.
+Instance Owner is a powerful user type with instance-wide privileges. Instance Owner is intended for tasks that require instance-wide control, such as creating tenants, troubleshooting, or assisting users.
 
 Unlike tenant-scoped roles, Instance Owner operates across all tenants and does not require any Role or Binding. Instance Owners access instance-wide controls through the [Instance Owner console](../../05.instance/00.instance-owner/index.md), which covers tenant management, instance IAM, infrastructure, and governance.
 
@@ -190,17 +190,7 @@ If you see an error when creating a new User or Service Account, it might be cau
 
 ## Creating a user with an Admin role
 
-### Through the UI
-
-When launching Kestra for the first time with no prior CLI setup, you are prompted to set up Kestra through the [Setup Page](../../01.overview/02.setup/index.md).
-
-This creates the first user, automatically assigns the Admin role, and binds it.
-
-Later, create a new user or select an existing user and assign the Admin role from the **Access** tab in IAM.
-
-### Through the CLI
-
-To create a user with the Admin role from the CLI, use the `--admin` option:
+Admin users are created via the [Setup Page](../../01.overview/02.setup/index.md) on first launch, or by assigning the Admin role to a user via IAM or the CLI with `--admin`:
 
 ```bash
 kestra auths users create prod.admin@kestra.io TopSecret42 --admin
@@ -211,7 +201,7 @@ kestra auths users create <username> <password> --admin
 
 ## User lockout
 
-Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra locks the user for the `lock-duration` period after a `threshold` number of failed attempts within the `monitoring-window` duration. The snippet below lists the default values — adjust them based on your preferences:
+User lockout behavior is configured under `kestra.security.login.failed-attempts`. By default, Kestra locks the user for the `lock-duration` period after a `threshold` number of failed attempts within the `monitoring-window` duration. The default values are:
 
 ```yaml
 kestra:
@@ -233,7 +223,7 @@ With the configuration above, a user gets 10 failed login attempts in a 5-minute
 
 ## Change password
 
-Users can change their password from their profile, accessible via the user avatar in the bottom-left corner of the UI. "Forgot Password" settings can be configured in your Kestra configuration under `basic-auth.password-reset`. Settings to consider are the cooldown time between reset requests and how many requests can be made in a given time window.
+Passwords are changed from the user profile (user avatar, bottom-left of the UI). "Forgot Password" behavior is configured under `kestra.security.basic-auth.password-reset`. Settings to consider are the cooldown time between reset requests and how many requests can be made in a given time window.
 
 ```yaml
 kestra:
@@ -254,7 +244,7 @@ Users can reset their password via the Forgot Password link on the login page. A
 
 ![Instance Owner Change Password](./create-user-password.png)
 
-## RBAC FAQ
+## RBAC design notes
 
 :::collapse{title="Why is Admin a Role rather than User type?"}
 

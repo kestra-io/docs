@@ -34,13 +34,11 @@ Since Kestra supports [everything as code and from the UI](https://youtu.be/dU3p
 
 ### Secrets
 
-On the namespace page, go to the **Secrets** tab, click **Add a secret**, enter a key and value, and save.
+Secrets are managed from the **Secrets** tab on the namespace page. Each secret has a key and value; action buttons on each row edit or delete it. Secrets are referenced in flows using `"{{ secret('KEY_NAME') }}"`.
 
-The secret key now appears on the **Secrets** tab. Edit or delete it using the action buttons on the right. Reference the secret in flows using its key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
+For APIs that issue short-lived access tokens (e.g., OAuth2), a [Credential](../../03.auth/credentials/index.md) built on these secrets provides a token via `{{ credential('your_credential_key') }}`.
 
-For APIs that issue short-lived access tokens (e.g., OAuth2), create a [Credential](../../03.auth/credentials/index.md) that relies on these secrets and fetch the token in flows with `{{ credential('your_credential_key') }}`.
-
-Here is how you can use it in a flow:
+Example usage in a flow:
 
 ```yaml
 id: query-mysql
@@ -64,7 +62,7 @@ When building new flows in a Namespace, Namespace secrets are accessible from th
 
 ### Policies
 
-[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. On the namespace page, open the **Policies** tab to create and manage Policies.
+[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. Policies are managed from the **Policies** tab on the namespace page.
 
 Policies can reference secrets and variables defined in the same Namespace.
 
@@ -114,9 +112,9 @@ On the Namespace **Edit** page, open the **Default authentication** section and 
 
 Variables defined at the Namespace level can be used in any flow defined under the same Namespace using the syntax: `{{ namespace.variable_name }}`.
 
-On the namespace page, go to the **Variables** tab, define the variables, and save.
+Variables are managed from the **Variables** tab on the namespace page.
 
-Here is an example flow where the Namespace variable is used:
+Example flow using a namespace variable:
 
 ```yaml
 id: query-mysql
@@ -152,7 +150,7 @@ The following example reproduces those steps in Terraform.
 
 To create a Namespace from Terraform, use the [kestra_namespace](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) resource.
 
-First, configure your Terraform backend and add Kestra as a required provider:
+Configure your Terraform backend and add Kestra as a required provider:
 
 ```hcl
 terraform {
@@ -177,7 +175,7 @@ provider "kestra" {
 }
 ```
 
-You can add a file `main.tf` to your Terraform project with the following content:
+Add a `main.tf` file to your Terraform project:
 
 ```hcl
 resource "kestra_namespace" "marketing" {
@@ -190,9 +188,9 @@ The only required property is the `namespace_id`, which is the name of the Names
 
 #### Adding variables and plugin defaults to a Namespace Terraform resource
 
-You can add variables and plugin defaults directly to the Namespace resource by pointing to the YAML configuration files.
+Variables and plugin defaults are added directly to the Namespace resource by pointing to YAML configuration files.
 
-First, create the `variables_marketing.yml` file:
+Create the `variables_marketing.yml` file:
 
 ```yaml
 github:
@@ -226,7 +224,7 @@ resource "kestra_namespace" "marketing" {
 
 #### Adding secrets to a Namespace using Terraform
 
-To programmatically add secrets to your Namespace via [Terraform](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs), you can use the [kestra_namespace_secret](../../../13.terraform/resources/namespace_secret/index.md) resource. Here is an example of adding multiple secrets to the `marketing` Namespace:
+The [kestra_namespace_secret](../../../13.terraform/resources/namespace_secret/index.md) resource adds secrets programmatically to a namespace. Example adding multiple secrets to the `marketing` namespace:
 
 ```hcl
 resource "kestra_namespace_secret" "github_token" {
@@ -248,7 +246,7 @@ resource "kestra_namespace_secret" "aws_secret_access_key" {
 }
 ```
 
-Before referencing variables in your Terraform configuration, make sure to define them in your `variables.tf` file:
+Variables used in Terraform are declared in `variables.tf`:
 
 ```hcl
 variable "github_token" {

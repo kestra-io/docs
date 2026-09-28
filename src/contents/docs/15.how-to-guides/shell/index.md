@@ -14,7 +14,7 @@ You can execute bash script in a flow by either writing your Shell commands inli
 
 ## Scripts
 
-If you want to write a series of commands together to form a small script, and run that script as a task in the flow, you can use the `io.kestra.plugin.scripts.shell.Script`.
+If you want to write a series of commands together to form a small script, and run that script as a task in the flow, you can use the [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script).
 
 ```yaml
 id: shell_script
@@ -62,7 +62,7 @@ sleep 2
 echo "I am back from sleep"
 ```
 
-You can now invoke this script as one of the commands in the `io.kestra.plugin.scripts.shell.Commands` task. Note that we have set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You can now invoke this script as one of the commands in the [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands) task. Note that we have set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 ```yaml
 id: shell_invoke_file
@@ -122,7 +122,7 @@ tasks:
     message: '{{ outputs.shell_outputs_task.vars.test }}'
 ```
 
-_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) and [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands)._
 
 ### File Output
 
@@ -148,7 +148,7 @@ tasks:
     message: "{{ read(outputs.shell_outputs_task.outputFiles['output.txt']) }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) and [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands)._
 
 ## Handling Metrics
 

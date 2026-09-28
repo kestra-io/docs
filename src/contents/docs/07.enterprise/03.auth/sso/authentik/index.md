@@ -11,13 +11,13 @@ Set up authentik as an OIDC provider for Kestra authentication. In conjunction w
 
 ## Install authentik
 
-authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
+authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/install-config/install/docker-compose/) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
 
 ![scim-for-authentik-user](./authentik1.png)
 
 ## Create application and SSO provider in authentik
 
-On the left-hand side, select **Applications → Applications**. For simplicity, we’ll use the **Create with Wizard** button, as this will create both an application and a provider.
+On the left-hand side, select **Applications → Applications**. Click **Create with Wizard** to create both an application and a provider in one step.
 
 ![scim-for-authentik-2](./authentik2.png)
 

@@ -176,7 +176,7 @@ The future of CI/CD is moving towards more intelligent, declarative, and unified
 
 ### Which CI/CD pipeline is best?
 There is no single "best" CI/CD pipeline. The ideal choice depends entirely on your context.
-- For **unified orchestration**, Kestra is the strongest choice.
+- For **[unified orchestration](/resources/orchestration/unified-orchestration)**, Kestra is the strongest choice.
 - For **pure GitOps on Kubernetes**, Argo CD is the standard.
 - For an **all-in-one DevOps platform**, GitLab CI/CD is hard to beat.
 - For **mobile development**, Bitrise is the clear leader.

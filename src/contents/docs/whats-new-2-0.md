@@ -9,6 +9,10 @@ version: ">= 2.0.0"
 
 Kestra 2.0 is a major release introducing AI-native orchestration, redesigned governance, and significant infrastructure improvements.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/UYR8a2inCqc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 For breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx). For a hands-on walkthrough with real command output, see the [migration tutorial](./11.migration-guide/v2.0.0/migration-tutorial/index.mdx).
 
 ## AI

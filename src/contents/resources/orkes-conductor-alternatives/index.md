@@ -140,6 +140,6 @@ If your organization values clear, reviewable, and auditable workflow definition
 
 ## Conclusion: Modernizing Your Workflow Orchestration
 
-The move away from Orkes Conductor is often part of a broader shift towards more flexible, developer-friendly, and unified orchestration platforms. While tools like Temporal offer deep durability for application code and Camunda provides robust business process modeling, the trend is towards a single control plane that can manage the full spectrum of technical and business workflows.
+The move away from Orkes Conductor is often part of a broader shift towards more flexible, developer-friendly, and [unified orchestration](/resources/orchestration/unified-orchestration) platforms. While tools like Temporal offer deep durability for application code and Camunda provides robust business process modeling, the trend is towards a single control plane that can manage the full spectrum of technical and business workflows.
 
 Platforms like [Kestra](/) are designed for this modern reality, providing a declarative, language-agnostic, and event-driven foundation to connect all your systems. By choosing an orchestrator that aligns with your core use cases and operational model, you can build more resilient, scalable, and manageable systems.
