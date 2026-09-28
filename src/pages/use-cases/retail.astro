@@ -1131,8 +1131,8 @@ const FAQ = [
         }
 
         &__row {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             align-items: center;
             justify-content: center;
             column-gap: 2rem;
@@ -1140,10 +1140,24 @@ const FAQ = [
             width: 100%;
             max-width: 48rem;
             margin: 0 auto;
+            
+            & > :nth-child(6){
+                grid-column:3;
+            }
+
+            & > :nth-child(7) {
+                grid-column:4;
+            }
 
             @include media-breakpoint-down(md) {
+                grid-template-columns:repeat(2, 1fr);
                 column-gap: 1.5rem;
                 row-gap: 1.5rem;
+
+                & > :nth-child(6),
+                & > :nth-child(7){
+                    grid-column: auto;
+                }
             }
         }
 
@@ -1162,7 +1176,7 @@ const FAQ = [
             // Unified optical sizing across all industry pages:
             // text wordmarks 36px, small text 32px, compact icon+text
             // 42px, stacked vertically icon+text 52–56px.
-            &--leroy      { max-height: 36px; max-width: 180px; }  // text
+            &--leroy      { max-height: 36px; max-width: 180px; opacity: 1; }  // text
             &--gorgias    { max-height: 36px; max-width: 160px; }  // text
             &--auchan     { max-height: 36px; max-width: 140px; }  // text
             &--decathlon  { max-height: 36px; max-width: 180px; }  // text wide
