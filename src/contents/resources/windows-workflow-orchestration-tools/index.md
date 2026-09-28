@@ -129,5 +129,3 @@ With a polyglot orchestrator like Kestra, these steps can be defined in a single
 Windows workflow orchestration no longer needs to be a compromise between legacy tools and Linux-first platforms. A modern, declarative orchestrator like Kestra provides a unified control plane that embraces the Windows ecosystem while offering the flexibility, scalability, and developer-friendly experience that today's engineering teams demand.
 
 By moving from fragmented scripts to version-controlled, auditable YAML workflows, organizations can enhance reliability, improve efficiency, and empower their teams to build robust automation across IT, data, and business domains.
-
-Ready to see how Kestra can transform your Windows workflows? [Get started](https://kestra.io/get-started) today and explore a better way to orchestrate.
