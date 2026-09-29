@@ -11,13 +11,13 @@ href: /resources/vra-migration-guide
 sectionIds: true
 faq:
   - question: "Do we have to leave VMware to leave vRA?"
-    answer: 'No. VMware can stay as your hypervisor. The decision is what replaces the automation layer on top of it. vSphere, vCenter and Nutanix get the keep verdict and are called from a flow the same way Ansible or your vault is. See <a href="#section-3-1-2">3.1.2</a>.'
+    answer: 'No. VMware can stay as your hypervisor. The decision is what replaces the automation layer on top of it. vSphere, vCenter and Nutanix get the keep verdict and are called from a flow the same way Ansible or your vault is. See <a href="#verdicts">3.1.1</a>.'
   - question: "How many of our workflows actually have to be converted?"
     answer: 'Fewer than the export shows. Workflows that have not run in twelve months are candidates for retirement, and that is usually 10 to 20 percent of the list. Near-duplicates collapse into one flow with inputs. Wrappers around Ansible, scripts or pipelines carry no conversion cost, because Kestra calls the same thing directly. A 1,600-workflow estate is usually a dozen or so patterns repeated many times each. <a href="#section-3-2-2">Size your own counts in 3.2.2</a>.'
   - question: "What does the migration cost, and when does it pay back?"
     answer: 'The migration is the investment, and the vRA and vRO renewal you do not sign is what pays it back. The licence you have already paid is sunk, so the saving starts at the renewal date rather than at cutover. The <a href="#section-7-2">calculator in 7.2</a> works out both sides from your own counts, rates and renewal date.'
   - question: "Does the ServiceNow catalog have to move?"
-    answer: 'No, and most teams keep it. Where the catalog lives is one of the two decisions that shape the target architecture. If the ITSM keeps the catalog, each item calls a Kestra flow and approvals stay where they are. If the catalog moves to Kestra Apps, approvals become a Pause task, a named approver step or a Case. Both are valid, and one large public-sector customer was mandated to keep the catalog in ServiceNow by decision of the CIO. See <a href="#section-3-1-5">3.1.5</a>.'
+    answer: 'No, and most teams keep it. Where the catalog lives is one of the two decisions that shape the target architecture. If the ITSM keeps the catalog, each item calls a Kestra flow and approvals stay where they are. If the catalog moves to Kestra Apps, approvals become a Pause task, a named approver step or a Case. Both are valid, and one large public-sector customer was mandated to keep the catalog in ServiceNow by decision of the CIO. See <a href="#section-3-1-2">3.1.2</a>.'
   - question: "Can Kestra run air-gapped and across segmented network zones?"
     answer: 'Yes. Kestra is self-hosted, and Kestra 2.0 separates the control plane from the data plane, with workers connecting outbound over gRPC and mTLS. One EU federal agency runs fully air-gapped with no outbound connectivity. A global industrial company whose security policy prohibited a control plane from spanning security zones deployed six separate control planes, one per zone. The <a href="#appendix-b">deployment options handout</a> covers the details.'
   - question: "Is there a tool that converts vRO workflows automatically?"
@@ -273,7 +273,7 @@ Before converting anything, decide what happens to each part of the estate. We d
 </Figure>
 
 <InteractiveFrame title="The six parts, plus targets" subtitle="Select a part. The first tab says what it is, the second gives the verdict and the trade-offs.">
-<PartExplorer count={7} legendId="section-3-1-2" id="section-3-1-3">
+<PartExplorer count={7} legendId="verdicts" id="parts">
 <Fragment slot="legend">
 
 Each part of your environment, and each component in it, gets one of four verdicts. Two of them involve Kestra taking something on, and two of them leave the component where it is.
@@ -470,7 +470,7 @@ These four verdicts sort into two motions with different owners and different ti
 
 Most of the six parts stay. The two decisions that change the target architecture are where the catalog lives and where the resource inventory lives.
 
-#### 3.1.5 The shape you end up with
+#### 3.1.2 The shape you end up with
 
 Those decisions usually produce one of two target architectures. They differ in where the catalog and resource inventory live, and the table under each example is its decision table, filled in.
 
@@ -638,8 +638,8 @@ Stage 1 is done when you can put the following four things on one page:
 
 | Output | Where it came from | What it looks like |
 | --- | --- | --- |
-| **The decision table** | [3.1.1](#section-3-1-1), with the examples in [3.1.5](#section-3-1-5) | Seven rows, each with a verdict and a destination |
-| **The target architecture** | [3.1.5](#section-3-1-5) | One of the two shapes, with the catalog and inventory decisions settled |
+| **The decision table** | [3.1.1](#section-3-1-1), with the examples in [3.1.2](#section-3-1-2) | Seven rows, each with a verdict and a destination |
+| **The target architecture** | [3.1.2](#section-3-1-2) | One of the two shapes, with the catalog and inventory decisions settled |
 | **The workflow list** | [3.2.1](#section-3-2-1) and [3.2.2](#section-3-2-2) | Distinct workflows that need to move, after retirement and de-duplication, with the original inventory count kept alongside it so you can show the reduction |
 | **The pattern breakdown** | [3.2.3](#section-3-2-3) | That list grouped by lifecycle stage and pattern, with counts per group, and sorted into wrappers, medium and complex |
 

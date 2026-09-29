@@ -50,17 +50,34 @@ describe("vRA migration guide headings", () => {
         )
     })
 
-    it("resolves every in-page #section link to a heading or a known anchor", () => {
+    it("gives 3.1.2 to the target architectures, not the old 3.1.5", () => {
+        const ids = headings.map((h) => h.id)
+        expect(ids).toContain("section-3-1-2")
+        expect(ids).not.toContain("section-3-1-5")
+        expect(source).not.toMatch(/section-3-1-[35]\b/)
+    })
+
+    it("resolves every in-page anchor link to a heading or a known anchor", () => {
         const ids = new Set(headings.map((h) => h.id))
         // Not headings: the verdict legend and the part list in 3.1.1.
-        const other = new Set(["section-3-1-2", "section-3-1-3"])
-        expect(source).toContain('legendId="section-3-1-2"')
-        expect(source).toContain('id="section-3-1-3"')
-        const links = [...source.matchAll(/#(section-[\d-]+)/g)].map(
+        const other = new Set(["verdicts", "parts"])
+        expect(source).toContain('legendId="verdicts"')
+        expect(source).toContain('id="parts"')
+        // Handout cards and the FAQ render outside the MDX headings.
+        const outside = new Set([
+            "appendix-a",
+            "appendix-b",
+            "appendix-c",
+            "faq",
+        ])
+        const links = [...source.matchAll(/(?:\]\(|href=")#([a-z0-9-]+)/g)].map(
             (m) => m[1],
         )
         for (const link of new Set(links)) {
-            expect(ids.has(link) || other.has(link), link).toBe(true)
+            expect(
+                ids.has(link) || other.has(link) || outside.has(link),
+                link,
+            ).toBe(true)
         }
     })
 })
