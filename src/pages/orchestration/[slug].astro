@@ -208,13 +208,16 @@ try {
     console.warn(`Could not fetch plugin icon for ${tool.pluginClass}`, e)
 }
 
-// Resolve the plugin group page from the catalog: guessing `plugin-<segment>`
-// from the class name yields `/plugins/plugin-jdbc` for `io.kestra.plugin.jdbc.duckdb.Query`,
-// a page that only 301s to the /plugins index (the artifact is `plugin-jdbc-duckdb`).
-const canonicalTaskUrl = (await buildTaskUrls([tool.pluginClass]))[tool.pluginClass]
+// Resolve the plugin page from the catalog: guessing `plugin-<segment>` from the class
+// name yields `/plugins/plugin-jdbc` for `io.kestra.plugin.jdbc.duckdb.Query`, a page that
+// only 301s to the /plugins index (the artifact is `plugin-jdbc-duckdb`). Dropping the last
+// segment of the element URL keeps the subgroup, the most specific page for the tool.
+const canonicalTaskUrl = (await buildTaskUrls([tool.pluginClass]))[
+    tool.pluginClass
+]
 const pluginParts = tool.pluginClass.split(".")
-const pluginDocsUrl = canonicalTaskUrl?.startsWith("/plugins/")
-    ? canonicalTaskUrl.split("/").slice(0, 3).join("/")
+const pluginDocsUrl = canonicalTaskUrl
+    ? canonicalTaskUrl.split("/").slice(0, -1).join("/")
     : pluginParts.length > 4 && pluginParts[3] === "ee"
       ? `/plugins/plugin-ee-${pluginParts[4]}`
       : pluginParts.length > 3
