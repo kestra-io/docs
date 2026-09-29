@@ -10,16 +10,17 @@
 // applied here: a rule such as `/docs/(.*)variables` is meant for a request
 // that already 404'd, and applied to live links it would rewrite valid pages.
 import docsRedirectsRaw from "~/contents/redirects/docs.yml?raw"
+import { resolveRedirect, type RedirectRule } from "~/utils/redirects"
 
-export type LiteralRedirect = { from: string; to: string }
+export type LiteralRedirect = RedirectRule & { from: string }
 
 const KESTRA_ORIGIN = "https://kestra.io"
 
 // The redirect files are flat lists of `- regexp: "..."` / `to: "..."` pairs
 // with double-quoted scalars. Reading them by line keeps the YAML library out
 // of the client bundle, where this module also runs during hydration.
-export function parseRedirectRules(raw: string): { regexp: string; to: string }[] {
-    const rules: { regexp: string; to: string }[] = []
+export function parseRedirectRules(raw: string): RedirectRule[] {
+    const rules: RedirectRule[] = []
     let pending: string | undefined
     for (const line of raw.split("\n")) {
         const regexp = line.match(/^-\s*regexp:\s*(".*")\s*$/)
@@ -38,7 +39,11 @@ export function parseRedirectRules(raw: string): { regexp: string; to: string }[
 
 // Keeps a rule only when its regexp is a literal path, with or without the
 // `(/.*)?`, `(.*)?`, `.*` or `/?` tail and the `^`/`$` anchors the file uses.
-export function toLiteralRedirects(rules: { regexp: string; to: string }[]): LiteralRedirect[] {
+// The regexp itself is kept and matched as the middleware would, so an exact
+// rule (`/docs/x/?$`) never catches `/docs/x/child`. A rule pointing back at
+// its own path is a fallback for dead children of a live page: applied to a
+// link, it would rewrite a page that renders.
+export function toLiteralRedirects(rules: RedirectRule[]): LiteralRedirect[] {
     const literals: LiteralRedirect[] = []
     for (const { regexp, to } of rules) {
         if (to.includes("$")) continue
@@ -46,7 +51,9 @@ export function toLiteralRedirects(rules: { regexp: string; to: string }[]): Lit
         path = path.replace(/(\(\/\.\*\)\?|\(\.\*\)\?|\(\.\*\)|\.\*|\/\?)$/, "")
         path = path.replace(/\\\./g, ".")
         if (/[()[\]*?+|{}^$\\]/.test(path) || !path.startsWith("/")) continue
-        literals.push({ from: path.replace(/\/$/, ""), to })
+        const from = path.replace(/\/$/, "")
+        if (from === to.replace(/[?#].*$/, "").replace(/\/$/, "")) continue
+        literals.push({ from, regexp, to })
     }
     return literals
 }
@@ -62,11 +69,9 @@ export function resolveLiteralRedirect(
     let current = pathname
     // A rule can point at a path another rule has since moved again.
     for (let hop = 0; hop < 3; hop++) {
-        const rule = redirects.find(
-            ({ from }) => current === from || current.startsWith(from + "/"),
-        )
-        if (!rule) break
-        current = rule.to
+        const next = resolveRedirect(current, redirects)
+        if (next === null || next === current) break
+        current = next
     }
     return current
 }
@@ -91,16 +96,31 @@ export function rewriteRedirectedHref(
     const suffix = suffixStart === -1 ? "" : rest.slice(suffixStart)
 
     let next = pathname
+    let nextSuffix = suffix
     if (pathname.startsWith("/docs/") || pathname === "/docs") {
-        // The middleware strips trailing slashes for every route.
-        next = resolveLiteralRedirect(pathname.replace(/\/$/, "") || "/docs", redirects)
+        // The middleware strips trailing slashes for every route (`trailingSlash: "never"`),
+        // so `/docs/x/` is rewritten to `/docs/x` even when no rule matches.
+        next = resolveLiteralRedirect(
+            pathname.replace(/\/$/, "") || "/docs",
+            redirects,
+        )
+        // A rule can target a section of its page: its fragment wins over the link's own,
+        // the link's query string is kept.
+        const hashAt = next.indexOf("#")
+        if (hashAt !== -1) {
+            const query = suffix.replace(/#.*$/, "")
+            nextSuffix = query + next.slice(hashAt)
+            next = next.slice(0, hashAt)
+        }
     } else if (pathname.startsWith("/plugins/")) {
         // Plugin URLs are lowercase and never carry the `.md` some plugin
         // READMEs link with; both are 301s in the plugin router.
         next = pathname.replace(/\.md$/, "").replace(/\/$/, "").toLowerCase()
     }
 
-    return next === pathname ? href : prefix + next + suffix
+    return next === pathname && nextSuffix === suffix
+        ? href
+        : prefix + next + nextSuffix
 }
 
 /** `walkTokens` hook for marked: rewrites redirected internal links in place. */
