@@ -12,7 +12,8 @@
                 <div class="item">
                     <h6>Tasks</h6>
                     <div v-if="visibleTaskIcons.length" class="tasks">
-                        <a
+                        <component
+                            :is="taskHref(icon) ? 'a' : 'div'"
                             v-for="icon in visibleTaskIcons"
                             :key="icon"
                             :href="taskHref(icon)"
@@ -24,7 +25,7 @@
                             <span class="task-label">
                                 {{ getLastWord(icon) }}
                             </span>
-                        </a>
+                        </component>
                     </div>
                 </div>
                 <div v-if="orchestrationLinks?.length" class="item">
@@ -84,13 +85,18 @@
         taskUrls?: Record<string, string>
     }>()
 
-    // Falls back to the flat form for a class the plugin payload does not know: it still
-    // reaches the right page, just through the redirects this map exists to avoid.
-    const taskHref = (cls: string) => props.taskUrls?.[cls] ?? `/plugins/${cls}`
+    // A class the plugin payload does not know (its plugin was removed) has no page: the
+    // flat `/plugins/<class>` form only 301s to the /plugins index, so it is not linked.
+    // An empty map means the plugin API failed, and the flat form is kept as fallback.
+    const taskHref = (cls: string) =>
+        props.taskUrls && Object.keys(props.taskUrls).length > 0
+            ? props.taskUrls[cls]
+            : `/plugins/${cls}`
 
+    // A templated type (`{{ fromJson(item.value).type }}`) is not a class.
     const visibleTaskIcons = computed(() =>
         (props.page.includedTasks ?? []).filter(
-            (cls) => !cls.startsWith("io.kestra.plugin.ee.assets."),
+            (cls) => !cls.startsWith("io.kestra.plugin.ee.assets.") && !cls.includes("{{"),
         ),
     )
 
