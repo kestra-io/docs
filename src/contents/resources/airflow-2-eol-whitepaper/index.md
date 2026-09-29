@@ -211,7 +211,7 @@ Migration is often framed as an all-or-nothing rewrite. That framing is misleadi
 3. **Phase 2:** complex workflows remain in Airflow, triggered by Kestra when needed.
 4. **Phase 3:** Airflow is decommissioned once confidence is established.
 
-Production stays stable and feature delivery continues throughout. Parallel operation is an accepted, intentional state — the goal is not to eliminate overlap immediately but to ensure it shrinks rather than becoming permanent.
+Production stays stable and feature delivery continues throughout. Parallel operation is an accepted, intentional state — the goal is not to eliminate overlap immediately but to ensure it shrinks rather than becoming permanent. For the step-by-step version — concept mapping, a DAG translated to YAML, and cutover pitfalls — see the [Airflow to Kestra migration guide](/resources/data/airflow-to-kestra-migration).
 
 AI-assisted translation acts as a force multiplier here. Airflow DAGs are structured artifacts that AI can analyze mechanically: task structure, dependencies, and control flow translate from Python to YAML automatically, and engineers review, confirm correctness, and adjust edge cases. In practice this makes migration review-driven rather than rewrite-driven, reducing the most tedious parts of the work by 60–70%. See [how AI-assisted Airflow migration works in practice](/blogs/airflow-to-kestra-migration-with-ai).
 

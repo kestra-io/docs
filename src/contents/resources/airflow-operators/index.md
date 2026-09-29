@@ -152,7 +152,7 @@ This YAML file is the entire workflow definition. It's versionable in Git, revie
 
 Migrating from an established tool is a significant undertaking. For teams with a large investment in Airflow, Kestra offers a path for gradual adoption and hybrid orchestration. Using the dedicated [Kestra Airflow plugin](/plugins/plugin-airflow), you can trigger and monitor Airflow DAGs directly from a Kestra workflow.
 
-The [`TriggerDagRun` task](/plugins/plugin-airflow/io.kestra.plugin.airflow.dags.triggerdagrun) allows Kestra to act as an orchestrator of orchestrators. This is particularly useful when you need to coordinate Airflow pipelines with tasks that run on different systems or involve infrastructure automation, AI model interactions, or business processes—domains where Kestra's declarative model excels. You can find a ready-to-use example in our [Airflow Trigger DAG blueprint](/blueprints/airflow-trigger-dag).
+The [`TriggerDagRun` task](/plugins/plugin-airflow/io.kestra.plugin.airflow.dags.triggerdagrun) allows Kestra to act as an orchestrator of orchestrators. This is particularly useful when you need to coordinate Airflow pipelines with tasks that run on different systems or involve infrastructure automation, AI model interactions, or business processes—domains where Kestra's declarative model excels. You can find a ready-to-use example in our [Airflow Trigger DAG blueprint](/blueprints/airflow-trigger-dag), and the [Airflow to Kestra migration guide](/resources/data/airflow-to-kestra-migration) shows how common operators, sensors, and XCom translate to Kestra.
 
 ## When to Consider Airflow Operator Alternatives for Modern Orchestration
 
