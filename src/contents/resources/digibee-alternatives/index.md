@@ -16,7 +16,7 @@ faq:
   - question: "Is Workato a good replacement for Digibee?"
     answer: "Workato is an excellent alternative for business-to-app integration and AI-driven automation, though it operates on a consumption and seat-based pricing model that can become costly at high execution volumes."
   - question: "Can Kestra replace an enterprise iPaaS like Digibee?"
-    answer: "Yes. Kestra connects systems, APIs, databases, and SaaS tools using over 1,700 plugins and custom HTTP tasks, offering predictable deployment pricing without per-execution charges."
+    answer: "Yes. Kestra connects systems, APIs, databases, and SaaS tools using {totalPlugins}+ plugins and custom HTTP tasks, offering predictable deployment pricing without per-execution charges."
   - question: "What should you look for when choosing an integration platform?"
     answer: "Evaluate integration platforms based on deployment flexibility (cloud vs. self-hosted), pricing transparency, support for polyglot code execution, version control integration (GitOps), and monitoring observability."
 ---

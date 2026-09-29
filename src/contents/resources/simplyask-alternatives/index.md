@@ -8,7 +8,7 @@ date: 2026-05-27
 slug: "simplyask-alternatives"
 faq:
   - question: "What is the best SimplyAsk alternative for engineering teams?"
-    answer: "For engineering-led teams that need declarative, version-controlled automation across data, AI, and infrastructure, Kestra is the strongest SimplyAsk alternative. It offers a YAML-based orchestration engine with 1,400+ plugins, native AI agent support, and a polyglot execution environment covering Python, Go, Node.js, and more. Unlike SimplyAsk's no-code interface, Kestra is built around GitOps and CI/CD workflows."
+    answer: "For engineering-led teams that need declarative, version-controlled automation across data, AI, and infrastructure, Kestra is the strongest SimplyAsk alternative. It offers a YAML-based orchestration engine with {totalPlugins}+ plugins, native AI agent support, and a polyglot execution environment covering Python, Go, Node.js, and more. Unlike SimplyAsk's no-code interface, Kestra is built around GitOps and CI/CD workflows."
   - question: "Who are the main competitors of SimplyAsk AI?"
     answer: "SimplyAsk's main competitors span two categories: platforms and consulting firms. On the platform side, Kestra (universal declarative orchestration) and n8n (visual app-to-app automation) are the closest alternatives. In the consulting space, Capital Numbers, Trigma, and TechWize offer custom AI and digital transformation services as an alternative to SimplyAsk's product-led approach."
   - question: "Is SimplyAsk open source?"
