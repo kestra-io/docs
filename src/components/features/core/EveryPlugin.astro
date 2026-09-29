@@ -5,7 +5,7 @@ import { $fetchApiCached } from "~/utils/fetch"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import KestraIcon from "~/components/icons/KestraIcon.vue"
 import { randomSortFunction } from "~/utils/random"
-import { fetchDeprecatedOnlyPlugins } from "~/utils/plugins/deprecatedOnlyPlugins"
+import { fetchPluginPagePredicate } from "~/utils/plugins/pluginPagePredicate"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
@@ -23,15 +23,15 @@ try {
         await $fetchApiCached<{ artifactId: string; group: string; name: string }[]>(
             "/plugins/metadata",
         )
-    // Metadata keeps listing plugins whose elements are all deprecated; their
-    // group page 301s to /plugins, so linking a logo there is a redirected link.
-    const deprecatedOnly = await fetchDeprecatedOnlyPlugins()
+    // Metadata keeps listing artifacts with no page (every element deprecated, or
+    // no /plugins entry); they 301 to /plugins, so a logo there is a redirected link.
+    const hasPage = await fetchPluginPagePredicate()
     plugins = metadata
         .filter(
             (p) =>
                 p.artifactId &&
                 !excluded.test(p.artifactId) &&
-                !deprecatedOnly.has(p.artifactId.toLowerCase()),
+                hasPage(p.artifactId),
         )
         .map((p) => ({
             ...p,

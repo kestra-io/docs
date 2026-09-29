@@ -6,15 +6,15 @@ import Link from "~/components/common/Link.astro"
 import TaskIcon from "~/components/common/TaskIcon.astro"
 
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-import { fetchDeprecatedOnlyPlugins } from "~/utils/plugins/deprecatedOnlyPlugins"
+import { fetchPluginPagePredicate } from "~/utils/plugins/pluginPagePredicate"
 import { randomSortFunction } from "~/utils/random"
 
 const totalPlugins = await fetchTotalPluginsCount()
 const metadata =
     (await $fetchApiCachedOptional<PluginMetadata[]>("/plugins/metadata")) ?? []
-// Metadata keeps listing plugins whose elements are all deprecated; their
-// group page 301s to /plugins, so linking a logo there is a redirected link.
-const deprecatedOnly = await fetchDeprecatedOnlyPlugins()
+// Metadata keeps listing artifacts with no page (every element deprecated, or
+// no /plugins entry); they 301 to /plugins, so a logo there is a redirected link.
+const hasPage = await fetchPluginPagePredicate()
 
 const excluded =
     /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
@@ -24,7 +24,7 @@ const plugins = metadata
         (p) =>
             p.artifactId &&
             !excluded.test(p.artifactId) &&
-            !deprecatedOnly.has(p.artifactId.toLowerCase()),
+            hasPage(p.artifactId),
     )
     .sort(randomSortFunction)
     .slice(0, 80)
