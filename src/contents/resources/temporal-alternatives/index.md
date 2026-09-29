@@ -222,5 +222,3 @@ Ultimately, the best choice is a platform that not only solves today's problem b
 The search for a Temporal alternative is often a search for a different approach to orchestration—one that might be more declarative, more data-aware, or less operationally intensive. While Temporal excels at durable execution for microservices, the modern landscape offers a wide array of tools tailored to specific needs.
 
 Platforms like Airflow, Prefect, and Dagster serve the Python-native data world, while Inngest and Trigger.dev focus on a modern developer experience for application backends. Kestra stands out by offering a unified, declarative control plane that bridges all these domains. By defining workflows in YAML and executing tasks in any language, Kestra provides a scalable and collaborative foundation for orchestrating everything from data pipelines and AI agents to infrastructure automation.
-
-If you're looking for an orchestrator that can grow with you, we encourage you to [get started with Kestra](https://kestra.io/get-started) or [book a demo](https://kestra.io/demo) to see how it can simplify your complex workflows.

@@ -173,5 +173,3 @@ For smaller teams, ease of use, a low barrier to entry, and strong community sup
 ## Conclusion
 
 While Databricks Workflows is an effective tool for jobs contained within the Lakehouse, the modern data landscape often requires more. The shift is toward universal orchestration platforms that can manage diverse workloads across any cloud, system, or language. Solutions like Kestra offer a path away from vendor lock-in and toward a more flexible, scalable, and future-proof automation strategy. By choosing a declarative and extensible orchestrator, you empower your teams to build reliable workflows that unify your entire technology stack.
-
-Explore how Kestra can unify your data, AI, and infrastructure workflows. [Book a demo today](/demo) or [get started for free](/get-started).
