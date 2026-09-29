@@ -120,5 +120,3 @@ Choosing the right platform depends on your team's primary focus and long-term s
 The shift in the VMware ecosystem has created a compelling reason to evaluate the broader infrastructure automation market. While VMware Aria Automation has been a powerful tool, modern alternatives offer greater flexibility, vendor neutrality, and alignment with developer-centric practices.
 
 Platforms like Kestra provide a path forward by offering a single, declarative control plane that unifies not just infrastructure, but also the data, AI, and business workflows that run on it. By choosing a solution that is open, flexible, and built for the future of multi-cloud and AI-driven operations, you can turn a moment of market uncertainty into a strategic advantage for your organization.
-
-Ready to see how a declarative approach can simplify your automation challenges? [Get started with Kestra](https://kestra.io/get-started) or [book a demo](https://kestra.io/demo) to see the platform in action.
