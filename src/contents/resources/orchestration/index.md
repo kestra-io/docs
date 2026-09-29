@@ -39,7 +39,7 @@ Orchestration is distinct from both integration and execution. Integration tools
 
 ## Orchestration vs. automation: understanding the difference
 
-While often used interchangeably, orchestration and automation represent different levels of control. [Automation](https://www.kestra.io/resources/infrastructure/automation) focuses on executing a single task or a linear sequence of tasks within one system, like a script that provisions a server or a tool that automates a software build.
+While often used interchangeably, orchestration and automation represent different levels of control. [Automation](/resources/infrastructure/automation) focuses on executing a single task or a linear sequence of tasks within one system, like a script that provisions a server or a tool that automates a software build.
 
 Orchestration is the coordination of multiple automated tasks across different systems, teams, and environments. It manages the complex dependencies, conditional logic, error handling, and human approvals that connect these automated steps into a cohesive, end-to-end workflow.
 
@@ -51,15 +51,15 @@ Orchestration has evolved independently in four technical domains, each with its
 
 ### Data orchestration: managing pipelines and data flows
 
-This is the most mature domain, focused on automating the movement and transformation of data. Data orchestration tools manage complex ETL (Extract, Transform, Load) and ELT pipelines, ensuring data is processed reliably and delivered on time for analytics and machine learning. The practice evolved from simple cron jobs to sophisticated, code-first platforms like Airflow, which became the standard for many data teams. Explore more in our [Data Engineering Resources](https://www.kestra.io/resources/data).
+This is the most mature domain, focused on automating the movement and transformation of data. Data orchestration tools manage complex ETL (Extract, Transform, Load) and ELT pipelines, ensuring data is processed reliably and delivered on time for analytics and machine learning. The practice evolved from simple cron jobs to sophisticated, code-first platforms like Airflow, which became the standard for many data teams. Explore more in our [Data Engineering Resources](/resources/data).
 
 ### Infrastructure and workload orchestration: automating IT operations
 
-This domain deals with the provisioning, configuration, and management of IT infrastructure. It covers everything from legacy batch job scheduling on mainframes with tools like Control-M and AutoSys to modern Infrastructure as Code (IaC) with Terraform and Ansible. The goal is to create reproducible, auditable, and scalable environments. For example, Crédit Agricole's IT arm (CAGIP) used Kestra to replace fragmented scripts and unify infrastructure operations across more than 100 clusters. Dive deeper with our [Infrastructure Automation Resources](https://www.kestra.io/resources/infrastructure).
+This domain deals with the provisioning, configuration, and management of IT infrastructure. It covers everything from legacy batch job scheduling on mainframes with tools like Control-M and AutoSys to modern Infrastructure as Code (IaC) with Terraform and Ansible. The goal is to create reproducible, auditable, and scalable environments. For example, Crédit Agricole's IT arm (CAGIP) used Kestra to replace fragmented scripts and unify infrastructure operations across more than 100 clusters. Dive deeper with our [Infrastructure Automation Resources](/resources/infrastructure).
 
 ### Application and microservices orchestration: coordinating distributed services
 
-As applications shifted from monoliths to distributed microservices, a new need for orchestration emerged. This domain focuses on managing the communication and workflow between different services. It handles long-running transactions, durable execution, and complex API choreography. Tools like Temporal and AWS Step Functions are prominent here, ensuring that distributed application logic executes reliably. Learn more about [API Orchestration](https://www.kestra.io/resources/infrastructure/api-orchestration).
+As applications shifted from monoliths to distributed microservices, a new need for orchestration emerged. This domain focuses on managing the communication and workflow between different services. It handles long-running transactions, durable execution, and complex API choreography. Tools like Temporal and AWS Step Functions are prominent here, ensuring that distributed application logic executes reliably. Learn more about [API Orchestration](/resources/infrastructure/api-orchestration).
 
 ### Business process orchestration: streamlining enterprise workflows
 
@@ -86,10 +86,10 @@ When evaluating an orchestration platform, look for these seven key capabilities
 3.  **Declarative and Version-Controlled:** Workflows should be defined as code (e.g., YAML) and managed in Git, enabling collaboration, rollbacks, and CI/CD practices.
 4.  **Robust Governance:** Essential features include Role-Based Access Control (RBAC), audit logs, secrets management, and support for human-in-the-loop (HITL) approvals.
 5.  **Data Sovereignty:** The platform must be deployable anywhere—on-prem, in a private cloud, or in air-gapped environments—to meet security and compliance needs.
-6.  **Extensibility:** A rich [plugin ecosystem](https://www.kestra.io/plugins) is crucial for integrating with a wide range of tools and services without writing custom code.
+6.  **Extensibility:** A rich [plugin ecosystem](/plugins) is crucial for integrating with a wide range of tools and services without writing custom code.
 7.  **Governed Nondeterministic Steps:** For AI workflows, the orchestrator must be able to manage and audit the probabilistic nature of AI agents and LLMs.
 
-The choice between open-source and commercial offerings is also important. A strong open-source core ensures flexibility and avoids vendor lock-in, while an [Enterprise edition](https://www.kestra.io/enterprise) should build on that same engine to provide the necessary governance and scale.
+The choice between open-source and commercial offerings is also important. A strong open-source core ensures flexibility and avoids vendor lock-in, while an [Enterprise edition](/enterprise) should build on that same engine to provide the necessary governance and scale.
 
 ## Orchestration tools and platforms by category
 
@@ -103,7 +103,7 @@ The orchestration market is diverse, with tools tailored to specific domains. He
 | **Business Process Automation** | Camunda, n8n, Workato | Visual workflow design, strong human-in-the-loop features. | Can be less flexible for complex, code-heavy engineering tasks. |
 | **Unified Orchestration** | Kestra | Declarative YAML, polyglot, spans all domains with a single control plane. | Newer than domain-specific incumbents. |
 
-For a deeper comparison, explore our guides on [Airflow alternatives](https://www.kestra.io/resources/data/airflow-alternatives), [n8n alternatives](https://www.kestra.io/resources/infrastructure/n8n-alternatives), and [Flyte alternatives](https://www.kestra.io/resources/ai/flyte-alternatives).
+For a deeper comparison, explore our guides on [Airflow alternatives](/resources/data/airflow-alternatives), [n8n alternatives](/resources/infrastructure/n8n-alternatives), and [Flyte alternatives](/resources/ai/flyte-alternatives).
 
 ![Kestra topology of a cross-domain flow: a daily schedule trigger, a Docker disk-space check, then an If task branching to a Python transform and a Slack success notification, or a Slack disk-full alert](./cross-domain-healthcheck-flow.png)
 
@@ -166,12 +166,12 @@ This single YAML file defines a workflow that:
 3.  **Data Task:** Executes a Python script for data transformation only if disk space is below 90%.
 4.  **Business Notification:** Sends a status update to Slack, alerting the team to success or critical failure.
 
-This demonstrates the power of a unified platform to manage diverse tasks within a single, auditable workflow. To build your first workflow, check out our [quickstart guide](https://www.kestra.io/docs/quickstart).
+This demonstrates the power of a unified platform to manage diverse tasks within a single, auditable workflow. To build your first workflow, check out our [quickstart guide](/docs/quickstart).
 
 ## Explore Kestra's orchestration resources
 
 Orchestration is a vast topic. Start with the definition of the converged category, [unified orchestration](/resources/orchestration/unified-orchestration), then explore our dedicated [resource hubs](/resources) for each domain:
-*   [Data Engineering Resources](https://www.kestra.io/resources/data)
-*   [Infrastructure Automation Resources](https://www.kestra.io/resources/infrastructure)
-*   [AI Orchestration Resources](https://www.kestra.io/resources/ai)
-*   [Business Process Resources](https://www.kestra.io/resources/business)
+*   [Data Engineering Resources](/resources/data)
+*   [Infrastructure Automation Resources](/resources/infrastructure)
+*   [AI Orchestration Resources](/resources/ai)
+*   [Business Process Resources](/resources/business)
