@@ -225,7 +225,7 @@ See the [Architecture](./08.architecture/index.mdx) page for the current model.
 
 ### Slim image and plugin auto-install
 
-The `kestra/kestra:*-slim` image ships without bundled plugins. Set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to have Kestra fetch plugins from Maven Central before execution and cache them for subsequent runs. The suffix was renamed from `-no-plugins` to `-slim` in 2.0. See the [Docker installation guide](./02.installation/02.docker/index.md).
+The `kestra/kestra:*-slim` image ships without bundled plugins. Its default local server setting has `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` in order to have Kestra fetch plugins from Maven Central before execution and cache them for subsequent runs. The suffix was renamed from `-no-plugins` to `-slim` in 2.0. See the [Docker installation guide](./02.installation/02.docker/index.md).
 
 ---
 

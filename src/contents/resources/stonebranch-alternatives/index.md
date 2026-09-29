@@ -124,5 +124,3 @@ Selecting the right Stonebranch alternative depends on your team's primary goals
 Moving away from a traditional workload automation solution like Stonebranch is an opportunity to adopt a more modern, flexible, and developer-friendly approach to orchestration. The "best" alternative is the one that aligns with your organization's specific needs—whether that's the comprehensive enterprise features of ActiveBatch, the SaaS convenience of Redwood RunMyJobs, or the robust batch processing of Control-M.
 
 For teams looking for a single control plane to unify workflows across all domains—data, AI, infrastructure, and business—Kestra offers a powerful, declarative, and event-driven platform. It's designed to reduce complexity, improve developer productivity, and provide the visibility needed to manage modern IT environments at scale.
-
-Ready to experience a modern approach to workload automation? [Book a demo](https://kestra.io/demo) to see Kestra in action or join our [Kestra Cloud Early Adopter Program](https://kestra.io/cloud) to get started with a fully managed solution.

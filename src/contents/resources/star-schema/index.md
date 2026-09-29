@@ -220,5 +220,3 @@ You can explore pre-built workflows for these scenarios in our [data engineering
 - **Reverse ETL**: While ETL loads data into a warehouse, [Reverse ETL](/blogs/2023-09-04-reverse-etl-vs-cdp) does the opposite, syncing enriched data from the warehouse back to operational systems like CRMs or marketing platforms.
 - **Schema Evolution**: As business requirements change, schemas must evolve. Managing these changes without breaking downstream reports is a critical challenge in [data integration](/blogs/2023-10-11-why-ingestion-will-never-be-solved).
 - **Multi-Tenancy**: In SaaS applications, data from different tenants might be isolated using separate schemas within a shared database, a concept explored in our guide to [building multi-tenant SaaS](/blogs/2024-03-08-building-multi-tenant-saas).
-
-Ready to simplify your data warehousing with powerful orchestration? Get started with [Kestra](/get-started) today and build efficient ETL pipelines for your star schema.

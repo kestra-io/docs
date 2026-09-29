@@ -188,5 +188,3 @@ Selecting the right platform depends entirely on your specific context. Key fact
 ### Future-proofing your data strategy
 
 The data landscape evolves rapidly. To future-proof your strategy, prioritize flexibility, open standards, and the ability to integrate new tools without being locked into a single vendor's ecosystem. This is where an orchestration control plane like Kestra provides significant value. By decoupling your workflow logic from your data platform, you can adapt your stack as new technologies emerge, ensuring your data strategy remains agile and resilient. Whether you need to manage [data workflows](/resources/data), [AI pipelines](/resources/ai), or [infrastructure automation](/resources/infrastructure), a universal orchestrator provides the foundation for a scalable and adaptable future.
-
-Ready to see how a declarative, vendor-neutral orchestration layer can unify your entire data stack? [Get started with Kestra today](/get-started).
