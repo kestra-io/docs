@@ -596,7 +596,7 @@ Then:
 2. Install `kestractl`: [kestra.io/docs/kestra-cli/kestractl](../../docs/kestra-cli/kestractl/index.md)
 3. Pick a simple DAG to start (a 3-5 task sequential pipeline works well) and run it through the migration workflow described above
 
-For the rest of the migration (sensors, catchup, pools, running both orchestrators in parallel, and cutover), follow the [Airflow to Kestra migration guide](/resources/data/airflow-to-kestra-migration).
+For the rest of the migration (sensors, catchup, pools, running both orchestrators in parallel, and cutover), follow the [Airflow to Kestra migration guide](/resources/migrate/airflow-to-kestra).
 
 If you prefer a standalone migration tool, the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills/blob/main/skills/migrate-airflow-kestra/SKILL.md) repository on GitHub provides a dedicated `/migrate-airflow-kestra` skill you can install directly into Claude Code. It handles the full migration workflow (DAG parsing, namespace file extraction, flow validation, and deployment) as a single command.
 

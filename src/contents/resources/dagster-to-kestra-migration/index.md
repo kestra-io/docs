@@ -225,4 +225,4 @@ Migrating off Dagster means trading an asset-centric, Python-native model for a 
 
 Start with the pilot. One pipeline, run in parallel, compared honestly. That's the lowest-cost way to find out whether the trade-offs in this guide are the right ones for your team.
 
-To go further, explore [Kestra for data engineering](/data) and our [data engineering resources](/resources/data), or compare the two platforms in depth on [Kestra vs. Dagster](/vs/dagster). Coming from Airflow instead? See the [Airflow to Kestra migration guide](/resources/data/airflow-to-kestra-migration).
+To go further, explore [Kestra for data engineering](/data) and our [data engineering resources](/resources/data), or compare the two platforms in depth on [Kestra vs. Dagster](/vs/dagster). Coming from Airflow instead? See the [Airflow to Kestra migration guide](/resources/migrate/airflow-to-kestra).

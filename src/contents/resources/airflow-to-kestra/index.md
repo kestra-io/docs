@@ -3,9 +3,9 @@ title: "How to Migrate from Airflow to Kestra: A Practical Guide"
 description: "A step-by-step plan to move Apache Airflow DAGs to Kestra: a complete concept mapping, a DAG translated before and after, the patterns that need a decision, and how to run both orchestrators side by side until cutover."
 metaTitle: "Migrate from Airflow to Kestra: Step-by-Step Guide | Kestra"
 metaDescription: "Move Airflow DAGs to Kestra without a big-bang rewrite: concept mapping (XCom, sensors, catchup, pools), a DAG translated to YAML, and a phased migration plan."
-tag: "data"
+tag: "migrate"
 date: 2026-09-29
-slug: "airflow-to-kestra-migration"
+slug: "airflow-to-kestra"
 author: "Kestra"
 faq:
   - question: "How do I migrate from Airflow to Kestra?"
@@ -375,6 +375,6 @@ Parallel operation is an intentional state, and it comes with specific failure m
 
 [Apple's ML team](/customers/apple) replaced Airflow for 200 engineers running large-scale ETL across App Store, Apple Music, and device data. The driver was operational overhead: Python DAG definitions, a complex scheduler, and the specialized knowledge needed to tune and scale it. They moved to declarative, language-agnostic pipelines.
 
-Moving from Dagster instead? The [Dagster to Kestra migration guide](/resources/data/dagster-to-kestra-migration) follows the same structure. For a broader view of the market, see [Airflow alternatives](/resources/data/airflow-alternatives).
+Moving from Dagster instead? The [Dagster to Kestra migration guide](/resources/data/dagster-to-kestra-migration) follows the same structure, and all [migration guides](/resources/migrate) are collected in one place. For a broader view of the market, see [Airflow alternatives](/resources/data/airflow-alternatives).
 
 Kestra is open source, so you can [start locally](/docs/quickstart) and translate your first DAG today. If you are planning a migration across many teams, [talk to our team](/demo) about your setup.

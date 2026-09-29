@@ -91,7 +91,7 @@ Here’s how Kestra helps you:
 
 The Strangler Fig approach handles the tactical question: how do you move workflows without breaking production? There’s a harder one underneath it. Teams upgrading to Airflow 3 are not just modernizing their tooling. They’re reaffirming a commitment to a Python-first, scheduler-centric architecture where execution is coupled to orchestration. That may still be the right call for your team, but the Airflow 2 EOL is worth treating as a moment for deliberate evaluation rather than routine maintenance.
 
-Our [Airflow migration whitepaper](/resources/airflow-2-eol-whitepaper) covers the decision in full: the real cost of the Airflow 3 upgrade, what a declarative alternative looks like at scale, and how Leroy Merlin moved off Airflow incrementally without a big-bang cutover. Free to download. Once you've decided, the [Airflow to Kestra migration guide](/resources/data/airflow-to-kestra-migration) covers the execution: concept mapping, a DAG translated to YAML, and a phased cutover plan.
+Our [Airflow migration whitepaper](/resources/airflow-2-eol-whitepaper) covers the decision in full: the real cost of the Airflow 3 upgrade, what a declarative alternative looks like at scale, and how Leroy Merlin moved off Airflow incrementally without a big-bang cutover. Free to download. Once you've decided, the [Airflow to Kestra migration guide](/resources/migrate/airflow-to-kestra) covers the execution: concept mapping, a DAG translated to YAML, and a phased cutover plan.
 
 [Download the whitepaper →](/resources/airflow-2-eol-whitepaper)
 
