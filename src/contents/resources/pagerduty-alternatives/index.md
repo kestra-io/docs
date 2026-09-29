@@ -154,5 +154,3 @@ Selecting the right tool depends on your team's specific context, existing stack
 Ultimately, the best choice is one that not only solves your immediate alerting needs but also provides a path toward a more automated and resilient incident management practice.
 
 While many tools can tell you when something is broken, a true orchestration platform can help you fix it automatically. If your goal is to move beyond manual response and build a governed, automated system for incident resolution, Kestra offers a flexible and powerful foundation.
-
-Ready to see how orchestration can transform your incident response? [Get started with Kestra](/get-started) and explore our blueprints for automated workflows.

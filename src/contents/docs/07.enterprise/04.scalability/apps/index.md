@@ -356,7 +356,7 @@ tasks:
       Reviewer notes: {{ resume.notes }}
 ```
 
-The `Pause` task's `onResume` inputs define what the reviewer submits when approving — in this case, optional notes. Those values are available to downstream tasks as `{{ resume.<id> }}`.
+The [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task's `onResume` inputs define what the reviewer submits when approving — in this case, optional notes. Those values are available to downstream tasks as `{{ resume.<id> }}`.
 
 **App:**
 

@@ -68,12 +68,13 @@ To add Copilot to your flow editor, add one of the following to your configurati
 ```yaml
 kestra:
   ai:
-    - id: gemini
-      display-name: Gemini
-      type: gemini
-      configuration:
-        api-key: YOUR_GEMINI_API_KEY
-        model-name: gemini-3.5-flash-lite
+    providers:
+      - id: gemini
+        display-name: Gemini
+        type: gemini
+        configuration:
+          api-key: YOUR_GEMINI_API_KEY
+          model-name: gemini-3.5-flash-lite
 ```
 
 For Enterprise, the `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):

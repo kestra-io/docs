@@ -37,7 +37,7 @@ schema:
         "@id": "https://kestra.io/#organization"
 ---
 
-Unified orchestration is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane.
+[Unified orchestration](/resources/orchestration/unified-orchestration) is the coordination of data, infrastructure, application, and business workflows, including governed agentic AI steps, on a single control plane.
 
 ## Executive summary
 
@@ -85,7 +85,7 @@ Gartner also named a category for the business side: Business Orchestration and 
 
 Collectively, these categories validate the emergence of unified orchestration as a distinct market, but they do not establish the leadership of any individual vendor. Kestra does not appear in the SOAP Magic Quadrant, which is populated by workload automation incumbents such as BMC, Redwood, and Stonebranch. This absence reflects Kestra's distinct starting point: a declarative, event-driven engine designed to orchestrate the existing technology stack, rather than a batch scheduler subsequently adapted to serve that role.
 
-**Related:** [SOAP, BOAT and Adaptive Process Orchestration explained](/resources/orchestration/gartner-soap-boat-forrester-apo)
+**Related:** [SOAP, BOAT and Adaptive Process Orchestration explained](/resources/orchestration/unified-orchestration#how-analysts-frame-the-shift-from-soap-to-adaptive-process-orchestration)
 
 ## Where does unified orchestration sit in the enterprise architecture stack?
 

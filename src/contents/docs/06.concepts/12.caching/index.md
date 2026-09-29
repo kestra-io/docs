@@ -6,7 +6,7 @@ sidebarTitle: Caching
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
-Kestra supports two complementary caching strategies: file caching via `WorkingDirectory` and output caching via `taskCache`.
+Kestra supports two complementary caching strategies: file caching via [WorkingDirectory](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory) and output caching via `taskCache`.
 
 - **File caching** stores files (dependencies, build artifacts) in internal storage and restores them at the start of the next run.
 - **Output caching** stores a task's status and outputs in the database and skips re-execution entirely when inputs have not changed. See [Task Cache](../../05.workflow-components/task-cache/index.md).

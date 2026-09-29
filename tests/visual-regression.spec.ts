@@ -11,7 +11,7 @@ import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
  */
 
 // The sample is plain JS, so the optional fields are declared here.
-type SamplePage = { path: string; label: string; styles?: string }
+type SamplePage = { path: string; label: string; styles?: string; reducedMotion?: boolean }
 
 const styleSheet = (name: string) =>
     fileURLToPath(new URL(`./fixtures/snapshot-styles/${name}`, import.meta.url))
@@ -20,10 +20,16 @@ const pages: SamplePage[] = [...PAGES, ...VISUAL_ONLY_PAGES]
 
 for (const page of pages) {
     test(`${page.label} matches screenshot`, async ({ page: p }) => {
+        if (page.reducedMotion) await p.emulateMedia({ reducedMotion: "reduce" })
         // networkidle never settles on pages that keep polling, which is how a
         // run wedges with no output. Wait for fonts instead, they drive layout.
         await p.goto(page.path, { waitUntil: "load" })
+        // fullPage captures beyond the viewport without scrolling, so lazy
+        // images far below the fold would never be fetched.
         await p.evaluate(async () => {
+            const imgs = [...document.images]
+            for (const img of imgs) if (img.loading === "lazy") img.loading = "eager"
+            await Promise.all(imgs.map((img) => img.decode().catch(() => {})))
             await document.fonts.ready
         })
         await p.waitForTimeout(500)
@@ -34,7 +40,10 @@ for (const page of pages) {
             timeout: 15_000,
             // Neutralises the content a page only renders incidentally, so the
             // baseline it owns is the one that moves.
-            ...(page.styles ? { stylePath: styleSheet(page.styles) } : {}),
+            stylePath: [
+                styleSheet("intersection.css"),
+                ...(page.styles ? [styleSheet(page.styles)] : []),
+            ],
         })
     })
 }

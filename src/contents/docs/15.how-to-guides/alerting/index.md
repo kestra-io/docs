@@ -26,7 +26,7 @@ Each platform exposes two task types:
 - **Execution task** – sends execution metadata directly in the notification, including a link to the run, ID, namespace, flow name, start time, duration, and final status.
 - **Send task** – sends a custom message, useful when you want to describe the state of a specific task or output.
 
-For this walkthrough we’ll use the `SlackExecution` task to send a detailed execution summary.
+For this walkthrough we’ll use the [SlackExecution](/plugins/plugin-slack/io.kestra.plugin.slack.notifications.slackexecution) task to send a detailed execution summary.
 
 ## `errors` property
 

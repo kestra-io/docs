@@ -52,12 +52,12 @@
             </figure>
         </div>
 
-        <div v-if="activeItem.kpis" class="kpis">
+        <dl v-if="activeItem.kpis" class="kpis">
             <div v-for="kpi in activeItem.kpis" :key="kpi.name" class="kpi">
-                <span class="kpi-value">{{ kpi.value }}</span>
-                <span>{{ kpi.name }}</span>
+                <dt class="kpi-value">{{ kpi.value }}</dt>
+                <dd>{{ kpi.name }}</dd>
             </div>
-        </div>
+        </dl>
 
         <div class="navigation">
             <a
@@ -382,7 +382,8 @@
                 line-height: 1.2;
             }
 
-            span {
+            dd {
+                margin: 0;
                 font-size: $font-size-md;
                 color: var(--ks-content-secondary);
             }

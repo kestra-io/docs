@@ -85,7 +85,7 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
 
   ![scim-for-keycloak-download](./keycloak2.png)
 
-   Place the JAR in the `./providers` directory of your Keycloak installation. See [SCIM for Keycloak Installation](https://scim-for-keycloak.de/documentation/installation/install) for details.
+   Place the JAR in the `./providers` directory of your Keycloak installation. See the [SCIM for Keycloak](https://scim-for-keycloak.de/) documentation for details.
 
 3. **Deploy Keycloak**:
    - Create a simple `docker-compose.yaml` file:
@@ -125,4 +125,4 @@ However, there are paid solutions such as [SCIM for Keycloak](https://scim-for-k
 
 ## Additional resources
 
-- [SCIM for Keycloak Documentation](https://scim-for-keycloak.de/documentation/administration/scim-client)
+- [SCIM for Keycloak](https://scim-for-keycloak.de/)

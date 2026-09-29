@@ -54,7 +54,7 @@ Kestra is an open-source, event-driven orchestration platform that unifies data,
 - **Declarative YAML:** Workflows are defined in simple, human-readable YAML. This makes them easy to version control, review in pull requests, and manage with GitOps practices. Non-engineers can understand and even contribute to workflow logic.
 - **Polyglot & Language-Agnostic:** Kestra runs any code, anywhere. It has first-class support for Python, SQL, Bash, R, Node.js, and Java, as well as Docker containers, without requiring Python wrappers.
 - **Event-Driven by Default:** Kestra is built for modern, event-driven architectures. It can trigger workflows from webhooks, message queues (Kafka, SQS), file detections (S3, GCS), and more, with millisecond-level latency.
-- **Unified Orchestration:** Unlike tools focused solely on data, Kestra is a universal orchestrator. Teams at companies like [Apple and Crédit Agricole](https://kestra.io/customers/apple) use it to coordinate everything from infrastructure provisioning with Terraform to complex AI pipelines.
+- **[Unified Orchestration](/resources/orchestration/unified-orchestration):** Unlike tools focused solely on data, Kestra is a universal orchestrator. Teams at companies like [Apple and Crédit Agricole](https://kestra.io/customers/apple) use it to coordinate everything from infrastructure provisioning with Terraform to complex AI pipelines.
 - **Lower Operational Overhead:** Built on a robust JVM-based architecture, Kestra is a single binary that simplifies deployment and scaling compared to Airflow's complex distributed system.
 
 ```yaml
@@ -188,5 +188,3 @@ The best choice depends on your team's specific context, skills, and priorities.
 The orchestration landscape has evolved far beyond the batch-oriented, Python-centric world for which Airflow was originally designed. Today's challenges demand platforms that are declarative, language-agnostic, event-driven, and capable of unifying workflows across an entire organization.
 
 While tools like Prefect and Dagster offer excellent modern alternatives within the Python ecosystem, platforms like Kestra provide a more fundamental shift. By separating orchestration logic from business logic and embracing a declarative, YAML-based approach, Kestra empowers teams to build more reliable, scalable, and collaborative workflows across any language or system. As you move beyond Airflow, consider not just a replacement, but an upgrade to a true orchestration control plane.
-
-Ready to see how a modern, declarative orchestrator can simplify your data, AI, and infrastructure pipelines? [Get started with Kestra](https://kestra.io/get-started) today or [book a demo](https://kestra.io/demo) to see the platform in action.

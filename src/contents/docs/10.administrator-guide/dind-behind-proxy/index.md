@@ -103,7 +103,7 @@ Here, `volume-enabled: true` ensures that the CA certificate is mounted from the
 
 This configuration will help the DinD pod pull the required container images successfully through the MITM proxy.
 
-For Kestra tasks that run in Docker containers (e.g., `io.kestra.plugin.scripts.shell.Script`), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.
+For Kestra tasks that run in Docker containers (e.g., [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script)), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.
 For consistency across tasks, consider configuring these settings as plugin defaults.
 
 ```yaml

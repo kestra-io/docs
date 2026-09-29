@@ -124,5 +124,3 @@ Selecting the right Control-M alternative depends on your organization's specifi
 Moving away from a long-established platform like Control-M is a significant decision, but it presents an opportunity to adopt a more modern, flexible, and cost-effective approach to workload automation. The "best" alternative is not a one-size-fits-all answer; it depends on your technical stack, team skills, and strategic priorities.
 
 Whether you need the unified, declarative power of Kestra, the SaaS convenience of Redwood, or the data-centric focus of Airflow, the solutions available today offer a wide range of capabilities to meet the demands of modern IT. By evaluating your needs against the criteria of developer experience, scalability, and support for hybrid environments, you can choose a platform that not only replaces legacy functionality but also accelerates your automation journey.
-
-Explore the [full range of Kestra's capabilities](https://kestra.io/vs) or [book a demo](https://kestra.io/demo) to see how a modern orchestration control plane can transform your enterprise workload automation.

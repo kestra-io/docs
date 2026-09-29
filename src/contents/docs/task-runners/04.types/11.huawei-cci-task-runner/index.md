@@ -204,3 +204,5 @@ When a Pod ends in a failed phase, the runner reports each container's exit code
 | `Running` | `2` |
 | `Pending` | `4` |
 | `Unknown` / other | `-1` |
+
+For a full list of available properties, see the [Huawei plugin documentation](/plugins/plugin-ee-huawei/huawei-cloud-cci-task-runner/io.kestra.plugin.ee.huawei.runner.cci) or explore the configuration in the built-in Code Editor.

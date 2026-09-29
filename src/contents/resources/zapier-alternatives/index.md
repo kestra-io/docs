@@ -230,5 +230,3 @@ To make the right choice, consider your trajectory. A tool that works today migh
 The automation market has matured far beyond simple app-to-app connections. While Zapier remains a valuable tool for its target audience, the alternatives available in 2026 offer a rich spectrum of capabilities tailored to different needs.
 
 For teams moving beyond basic SaaS integrations, the choice is no longer just about which platform has the most connectors. It's about finding a solution that aligns with your technical practices, budget, and long-term vision. Open-source, declarative platforms like Kestra represent a significant step forward, providing an engineering-centric approach to automation that offers unparalleled flexibility, scalability, and cost control. By evaluating your specific requirements against the options presented here, you can select an automation platform that not only solves today's problems but also grows with you.
-
-Ready to explore a more powerful, declarative approach to orchestration? [Check out our pricing](https://kestra.io/pricing) or [book a demo](https://kestra.io/demo) to see how Kestra can unify your workflows.
