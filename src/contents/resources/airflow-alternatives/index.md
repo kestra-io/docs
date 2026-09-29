@@ -188,5 +188,3 @@ The best choice depends on your team's specific context, skills, and priorities.
 The orchestration landscape has evolved far beyond the batch-oriented, Python-centric world for which Airflow was originally designed. Today's challenges demand platforms that are declarative, language-agnostic, event-driven, and capable of unifying workflows across an entire organization.
 
 While tools like Prefect and Dagster offer excellent modern alternatives within the Python ecosystem, platforms like Kestra provide a more fundamental shift. By separating orchestration logic from business logic and embracing a declarative, YAML-based approach, Kestra empowers teams to build more reliable, scalable, and collaborative workflows across any language or system. As you move beyond Airflow, consider not just a replacement, but an upgrade to a true orchestration control plane.
-
-Ready to see how a modern, declarative orchestrator can simplify your data, AI, and infrastructure pipelines? [Get started with Kestra](https://kestra.io/get-started) today or [book a demo](https://kestra.io/demo) to see the platform in action.
