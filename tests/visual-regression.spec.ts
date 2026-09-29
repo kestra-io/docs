@@ -11,7 +11,7 @@ import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
  */
 
 // The sample is plain JS, so the optional fields are declared here.
-type SamplePage = { path: string; label: string; styles?: string }
+type SamplePage = { path: string; label: string; styles?: string; reducedMotion?: boolean }
 
 const styleSheet = (name: string) =>
     fileURLToPath(new URL(`./fixtures/snapshot-styles/${name}`, import.meta.url))
@@ -20,6 +20,7 @@ const pages: SamplePage[] = [...PAGES, ...VISUAL_ONLY_PAGES]
 
 for (const page of pages) {
     test(`${page.label} matches screenshot`, async ({ page: p }) => {
+        if (page.reducedMotion) await p.emulateMedia({ reducedMotion: "reduce" })
         // networkidle never settles on pages that keep polling, which is how a
         // run wedges with no output. Wait for fonts instead, they drive layout.
         await p.goto(page.path, { waitUntil: "load" })

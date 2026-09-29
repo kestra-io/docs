@@ -2,7 +2,9 @@
 // `runs` is how many times the benchmark measures a page before taking the
 // median, for the ones whose score swings between runners; `ssr` marks the
 // prerender = false pages, which the benchmark measures first. `styles` is a
-// stylesheet under snapshot-styles/ injected before the screenshot is taken.
+// stylesheet under snapshot-styles/ injected before the screenshot is taken;
+// `reducedMotion` freezes pages whose auto-playing motion would otherwise make
+// the visual baseline non-deterministic.
 export const PAGES = [
     { path: "/", label: "Home", runs: 5 },
     { path: "/get-started", label: "Get Started" },
@@ -29,6 +31,8 @@ export const PAGES = [
     { path: "/blogs", label: "Blog Index" },
     { path: "/blogs/2022-04-27-etl-vs-elt", label: "Blog Post (sample)" },
     { path: "/vs/aws-step-functions", label: "VS Page (sample)" },
+    { path: "/customers", label: "Customers Landing", reducedMotion: true },
+    { path: "/customers/apple", label: "Customer Story (sample)" },
     { path: "/plugins", label: "Plugins Landing", runs: 3, ssr: true },
     { path: "/plugins/core", label: "Plugin Page (sample)", ssr: true },
     {
@@ -58,6 +62,7 @@ export const PAGES = [
 // PAGES is the perf sample and stays small on purpose; this list exists so the
 // SVG asset rework (dot-grid backgrounds to CSS, base64 PNG wrappers to WebP,
 // SVGO passes) has a screenshot baseline on every surface it touches.
+/** @type {SamplePage[]} */
 export const VISUAL_ONLY_PAGES = [
     // Use-case detail pages: each renders one of the ~5.6 MB dot-grid
     // backgrounds under public/landing/usecases/, the highest-risk conversion.

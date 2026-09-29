@@ -1,18 +1,12 @@
 <template>
-    <section class="more">
-        <div class="container">
+    <section v-if="related?.results?.length" class="more">
+        <div class="more-inner">
             <h2>Similar Kestra Stories</h2>
-            <div class="row g-3 my-2">
-                <div
-                    v-for="(story, index) in related?.results"
-                    :key="index"
-                    class="col-lg-4 col-md-6"
-                >
-                    <Card :story />
-                </div>
+            <div class="more-grid">
+                <Card v-for="story in related.results" :key="story.id" :story />
             </div>
             <div class="bottom">
-                <Link href="/customers" text="See All Stories" class="read-link" />
+                <Link href="/customers" text="See all stories" class="read-link" />
             </div>
         </div>
     </section>
@@ -22,7 +16,7 @@
     import Card from "./Card.vue"
     import Link from "~/components/common/Link.vue"
 
-    const props = defineProps<{
+    defineProps<{
         related: {
             results: Story[]
         }
@@ -31,40 +25,62 @@
 
 <style scoped lang="scss">
     .more {
-        padding: 2.5rem 1rem;
+        padding: 3rem 1rem 4rem;
+        background: var(--ks-background-body);
+        border-top: 1px solid var(--ks-border-secondary);
+
         @include media-breakpoint-up(lg) {
-            padding-top: 4rem;
-            padding-bottom: 5rem;
+            padding: 4.5rem 1rem 5rem;
         }
-        background: var(--ks-background-secondary) url("/stories/grid.png") no-repeat center;
-        background-size: cover;
-        h2 {
-            width: 100%;
-            margin: 0 auto;
+    }
+
+    .more-inner {
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--ks-content-primary);
+        margin: 0 0 1.75rem;
+    }
+
+    .more-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
         }
     }
 
     .bottom {
-        width: 100%;
-        gap: 0.3125rem;
         display: flex;
-        align-items: center;
         justify-content: flex-end;
-        margin-top: 2rem;
+        margin-top: 1.75rem;
+
         .read-link {
             display: flex;
             align-items: center;
             gap: 0.3125rem;
             color: var(--ks-content-link);
             font-weight: 700;
-            font-size: 1rem;
-            .arrow-icon {
+            font-size: 0.9375rem;
+
+            :deep(.arrow-icon) {
                 transition: transform 0.3s ease;
             }
-            &:hover .arrow-icon {
+
+            &:hover :deep(.arrow-icon) {
                 transform: translateX(2px);
             }
         }
     }
 </style>
-
