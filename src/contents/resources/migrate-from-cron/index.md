@@ -196,8 +196,6 @@ Migrating from cron to Kestra is not just about replacing a scheduler. It's abou
 *   **Event-Driven Workflows:** Go beyond schedules and trigger workflows from webhooks, message queues, or file uploads.
 *   **Scalability and Resilience:** Distribute work across a cluster of workers, eliminating single points of failure.
 
-Ready to take control of your scheduled tasks? [Get started](/get-started) with the open-source version, explore the [documentation](/docs), or see what's possible with [Kestra Cloud](/cloud).
-
 ## Related resources
 
 *   [Cron Replacement: Modern Alternatives for Job Scheduling](/resources/infrastructure/cron-replacement)
