@@ -44,7 +44,7 @@ To provide a balanced comparison, we evaluated each alternative based on a core 
 
 Kestra is an open-source, declarative orchestration platform that unifies data, AI, infrastructure, and business workflows. It uses a simple YAML interface to define even the most complex workflows, making them easy to version, review, and manage with GitOps principles. With a language-agnostic architecture, Kestra can run any code, script, or container, acting as a central control plane that coordinates existing tools rather than forcing a replacement.
 
-*   **Strengths:** Its event-driven architecture is ideal for real-time processing, and its highly scalable design supports everything from simple cron jobs to millions of parallel executions. With over 1,400 plugins, Kestra offers extensive connectivity across the tech stack.
+*   **Strengths:** Its event-driven architecture is ideal for real-time processing, and its highly scalable design supports everything from simple cron jobs to millions of parallel executions. With {totalPlugins}+ plugins, Kestra offers extensive connectivity across the tech stack.
 *   **Proof point:** Enterprises like Crédit Agricole use Kestra to consolidate fragmented infrastructure scripts into a single, auditable platform, while Apple leverages it for large-scale AI/ML data pipelines.
 *   **Best for:** Organizations seeking a modern, vendor-neutral control plane to manage complex, cross-domain workflows with a strong focus on developer experience and GitOps.
 *   **Honest limitation:** Kestra requires a shift to a declarative, YAML-first mindset. This can be a change for teams deeply ingrained in GUI-driven or code-heavy imperative systems, but it unlocks significant operational benefits in the long run.

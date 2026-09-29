@@ -52,7 +52,7 @@ Enterprise budgeting requires cost stability. Platforms that charge per seat or 
 ### 1. Kestra (The Declarative Orchestration and Integration Control Plane)
 Kestra is an open-source, declarative orchestration and integration platform that unifies data pipelines, infrastructure automation, and API integrations under a single control plane. Unlike traditional visual iPaaS tools that hide logic behind proprietary UI state, Kestra defines all workflows as pure YAML files that integrate naturally with GitOps workflows. 
 
-With over 1,700 plugins covering cloud providers, databases, SaaS applications, and message queues, Kestra connects disparate systems without requiring complex custom wrappers. Organizations migrating from rigid integration tools often adopt Kestra's architecture to handle mission-critical workloads, as shown in the [Víssimo deployment](/customers/vissimo-group).
+With {totalPlugins}+ plugins covering cloud providers, databases, SaaS applications, and message queues, Kestra connects disparate systems without requiring complex custom wrappers. Organizations migrating from rigid integration tools often adopt Kestra's architecture to handle mission-critical workloads, as shown in the [Víssimo deployment](/customers/vissimo-group).
 
 Here is an example of how a multi-system API integration and data load is declared in Kestra:
 

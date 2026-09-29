@@ -58,7 +58,7 @@ Conductor excels at managing long-running, stateful application flows and is bui
 
 [Kestra](https://kestra.io/) is a modern, open-source orchestration platform that unifies data, AI, infrastructure, and business workflows under a single control plane. Its key differentiator is its declarative, YAML-based approach to workflow definition. This makes workflows easy to read, write, and version-control, enabling GitOps best practices for all automation.
 
-Kestra is language-agnostic, allowing you to run scripts in Python, R, Shell, Node.js, and more, or execute Docker containers as first-class citizens. It has a rich ecosystem of over [1,400 plugins](https://kestra.io/plugins) for seamless integration with hundreds of tools. Self-hosting Kestra is straightforward, with options for Docker, Kubernetes, and bare-metal [installations](https://kestra.io/docs/installation), making it highly adaptable to any environment.
+Kestra is language-agnostic, allowing you to run scripts in Python, R, Shell, Node.js, and more, or execute Docker containers as first-class citizens. It has a rich ecosystem of [{totalPlugins}+ plugins](https://kestra.io/plugins) for seamless integration with hundreds of tools. Self-hosting Kestra is straightforward, with options for Docker, Kubernetes, and bare-metal [installations](https://kestra.io/docs/installation), making it highly adaptable to any environment.
 
 ### Other notable self-hosted workflow engines
 
