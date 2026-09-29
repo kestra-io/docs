@@ -405,6 +405,16 @@
         height: 100%;
         object-fit: cover;
         transition: transform 0.5s ease;
+        /* Fades the photo into the card's own background instead of covering
+           it with a dark overlay: two layers clipped to the same rounded edge
+           let the bright photo bleed through as a light rim. Same result as a
+           $base-grey-800 overlay at 1 / 0.9 / 0.35 opacity. */
+        mask-image: linear-gradient(
+            to top,
+            transparent 22%,
+            rgba($black, 0.1) 48%,
+            rgba($black, 0.65) 100%
+        );
     }
 
     .fc-card:hover .fc-bg {
@@ -420,12 +430,6 @@
         justify-content: space-between;
         gap: 2rem;
         padding: 1rem 1.5rem 1.5rem;
-        background: linear-gradient(
-            to top,
-            $base-grey-800 22%,
-            rgba($base-grey-800, 0.9) 48%,
-            rgba($base-grey-800, 0.35) 100%
-        );
     }
 
     .fc-top {
