@@ -1,0 +1,18 @@
+---
+import {
+    resolveTotalPluginsPlaceholder,
+    usesTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
+
+// Rendered markdown is cached across builds, so the live plugin count can't be
+// baked in when it renders: {totalPlugins} is filled in here instead.
+interface Props {
+    body?: string
+}
+
+const html = usesTotalPluginsPlaceholder(Astro.props.body)
+    ? await resolveTotalPluginsPlaceholder(await Astro.slots.render("default"))
+    : undefined
+---
+
+{html === undefined ? <slot /> : <Fragment set:html={html} />}

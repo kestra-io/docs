@@ -10,6 +10,7 @@ import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Faq from "~/components/common/Faq.vue"
 import ResourceCtaPair from "~/components/resources/ResourceCtaPair.vue"
+import LivePluginCount from "~/components/content/LivePluginCount.astro"
 import ResourceList from "~/components/resources/ResourceList.astro"
 import type { ResourceListItem } from "~/components/resources/getResources"
 
@@ -147,7 +148,9 @@ const faqSchema =
                 </div>
             </div>
             <div class="bd-content">
-                <Content />
+                <LivePluginCount body={post.body}>
+                    <Content />
+                </LivePluginCount>
                 {page.cta && (
                     <ResourceCtaPair
                         client:load
