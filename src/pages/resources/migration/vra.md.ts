@@ -9,7 +9,7 @@ import handoutsSource from "~/components/vra-migration-guide/ReferenceHandouts.m
 // from the per-topic endpoint, so it needs its own. The body is MDX, so the
 // component markup is stripped and the calculators point to the web page.
 export const GET: APIRoute = async ({ site }) => {
-    const PAGE = new URL("/resources/vra-migration-guide", site).href
+    const PAGE = new URL("/resources/migration/vra", site).href
     const post = await getEntry("resources", "vra-migration-guide")
     if (!post) return new Response("Not found", { status: 404 })
     const body = mdxToMarkdown(post.body ?? "", {

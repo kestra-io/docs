@@ -224,6 +224,7 @@ export const collections = {
                     "ai",
                     "business",
                     "orchestration",
+                    "migration",
                     "whitepapers",
                 ]),
                 date: z.coerce.date().optional(),

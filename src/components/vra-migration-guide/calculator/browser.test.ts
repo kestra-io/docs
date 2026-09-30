@@ -9,7 +9,7 @@ import {
     type StorageLike,
 } from "./browser"
 
-const PAGE = "https://kestra.io/resources/vra-migration-guide"
+const PAGE = "https://kestra.io/resources/migration/vra"
 
 describe("share URLs", () => {
     it("adds ?kvc= and points the hash at the calculator", () => {

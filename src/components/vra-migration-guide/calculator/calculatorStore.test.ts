@@ -14,7 +14,7 @@ import {
 import type { BrowserEnv, StorageLike } from "./browser"
 import { createCalculatorStore, type CalculatorStore } from "./calculatorStore"
 
-const PAGE = "https://kestra.io/resources/vra-migration-guide"
+const PAGE = "https://kestra.io/resources/migration/vra"
 
 function memoryStorage(initial: Record<string, string> = {}) {
     const data = new Map(Object.entries(initial))

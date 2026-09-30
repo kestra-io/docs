@@ -1,4 +1,4 @@
-// Plain markdown from the guide's MDX, for the /resources/vra-migration-guide.md
+// Plain markdown from the guide's MDX, for the /resources/migration/vra.md
 // endpoint. The body keeps its prose, lists and tables; the component
 // wrappers around them are dropped, a `title` or `label` on a wrapper becomes
 // a bold line, and the calculators become a line pointing to the web page.
