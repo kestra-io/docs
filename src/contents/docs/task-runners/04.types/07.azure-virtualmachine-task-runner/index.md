@@ -162,10 +162,11 @@ kotlp reports the VM's resource usage as `process.*` task metrics, sampled every
 | `process.memory.usage` | gauge | `By` | — |
 | `process.memory.virtual` | gauge | `By` | — |
 | `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.network.io` | sum | `By` | `network.io.direction`: `receive` or `transmit` |
 | `process.thread.count` | gauge | `{thread}` | — |
 | `process.open_file_descriptor.count` | gauge | `{count}` | — |
 
-The two sum metrics (`process.cpu.time`, `process.disk.io`) are cumulative and reflect totals for the entire run. The gauge metrics reflect the last sample taken before the command exits, not a peak.
+The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all traffic in the network namespace the command runs in, including loopback, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak.
 
 kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
 
@@ -213,7 +214,7 @@ If kotlp cannot create `.kestra-kotlp` inside the working directory, it exits wi
 
 ## Caveats and platform limits
 
-**4 KB output cap**: Azure Run Command captures at most approximately 4 KB of stdout and 4 KB of stderr. Output beyond that limit is silently truncated by the Azure platform. Set `monitoring.enabled: true` to bypass this limit — kotlp writes logs to a file in the working directory instead of stdout, so Kestra reads them from blob storage. Without monitoring, redirect stdout to a file inside `{{ workingDir }}` and declare it as an `outputFile`, or set `syncWorkingDirectory: true` to download the entire working directory.
+**4 KB output cap**: Azure Run Command captures at most approximately 4 KB of stdout and 4 KB of stderr. Output beyond that limit is silently truncated by the Azure platform. Set `monitoring.enabled: true` to bypass this limit: kotlp writes logs to a file in the working directory instead of stdout, so Kestra reads them from blob storage. Without monitoring, redirect stdout to a file inside `{{ workingDir }}` and declare it as an `outputFile`, or set `syncWorkingDirectory: true` to download the entire working directory.
 
 **No live log streaming**: Run Command output is not emitted until the command finishes. Kestra execution logs show task output only after the command completes, not in real time.
 

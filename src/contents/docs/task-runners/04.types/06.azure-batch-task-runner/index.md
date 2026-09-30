@@ -338,10 +338,11 @@ kotlp reports the container's resource usage as `process.*` task metrics, sample
 | `process.memory.usage` | gauge | `By` | — |
 | `process.memory.virtual` | gauge | `By` | — |
 | `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.network.io` | sum | `By` | `network.io.direction`: `receive` or `transmit` |
 | `process.thread.count` | gauge | `{thread}` | — |
 | `process.open_file_descriptor.count` | gauge | `{count}` | — |
 
-The two sum metrics (`process.cpu.time`, `process.disk.io`) are cumulative and reflect totals for the entire run. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
+The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all traffic in the network namespace the command runs in, including loopback, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
 
 kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
 
