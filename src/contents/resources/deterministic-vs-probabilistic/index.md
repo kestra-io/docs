@@ -166,5 +166,3 @@ Understanding the deterministic and probabilistic distinction is a gateway to mo
 - **[Event-Driven Orchestration](/resources/infrastructure/event-driven-orchestration):** A paradigm where workflows are triggered by events rather than fixed schedules, often blending probabilistic event detection with deterministic responses.
 - **[ML Orchestration](/resources/ai/ml-orchestration):** The specialized practice of managing the lifecycle of machine learning models, which are inherently probabilistic, from data preparation to deployment and monitoring.
 - **[Automation](/resources/infrastructure/automation):** The broader discipline of creating systems that can execute tasks without human intervention, encompassing both simple, rule-based deterministic scripts and complex, AI-driven probabilistic processes.
-
-Ready to unify your deterministic and probabilistic workflows? [Explore Kestra's powerful orchestration capabilities](/get-started).

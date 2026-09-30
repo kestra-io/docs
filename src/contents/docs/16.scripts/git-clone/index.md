@@ -14,14 +14,14 @@ This task clones a Git repository into a working directory, and then enables you
 
 ## `Git` plugin
 
-To use the `io.kestra.plugin.git.Clone` task in your flow, add it as the first child task of the `WorkingDirectory` task. Otherwise, you’ll get an error: `Destination path "xyz" already exists and is not an empty directory`. This happens because you can only clone a GitHub repository into an empty working directory.
+To use the [io.kestra.plugin.git.Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) task in your flow, add it as the first child task of the `WorkingDirectory` task. Otherwise, you’ll get an error: `Destination path "xyz" already exists and is not an empty directory`. This happens because you can only clone a GitHub repository into an empty working directory.
 
 ### Add `io.kestra.plugin.git.Clone` as the first task in a `WorkingDirectory`
 
-Adding the `io.kestra.plugin.git.Clone` task directly as the first child task of the `WorkingDirectory` task ensures that you clone your repository into an empty directory before any other task would generate any output artifacts.
+Adding the [io.kestra.plugin.git.Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) task directly as the first child task of the `WorkingDirectory` task ensures that you clone your repository into an empty directory before any other task would generate any output artifacts.
 
 ### Private Git repositories
-Typically, you want to use `io.kestra.plugin.git.Clone`  with a private GitHub repository. Make sure to:
+Typically, you want to use [io.kestra.plugin.git.Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) with a private GitHub repository. Make sure to:
 1. Add your organization/user name as `username`
 2. Generate your access token and provide it on the `password` property
 

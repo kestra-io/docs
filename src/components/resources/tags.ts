@@ -48,9 +48,9 @@ export const tagTheme: Record<ResourceTag, TagTheme> = {
         borderTo: "#E4DEFF",
     },
     whitepapers: {
-        text: "#C77CFF",
-        borderFrom: "#C77CFF",
-        borderTo: "#F0D1FF",
+        text: "#FF7CCF",
+        borderFrom: "#FF7CCF",
+        borderTo: "#FFD1EA",
     },
 }
 

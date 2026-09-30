@@ -157,7 +157,7 @@ Use the **Debug Expression** button in the **Outputs** tab of an execution to tr
 
 ## Using conditions in Pebble
 
-Tasks like `If` and `Switch` accept Pebble expressions as conditions, letting you branch on inputs or previous task outputs:
+Tasks like [If](/plugins/core/flow/io.kestra.plugin.core.flow.if) and [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) accept Pebble expressions as conditions, letting you branch on inputs or previous task outputs:
 
 ```yaml
 id: test-object

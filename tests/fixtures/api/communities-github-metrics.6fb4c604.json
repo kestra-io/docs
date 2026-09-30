@@ -1,1 +1,1 @@
-{"path":"/v1/communities/github/metrics","status":200,"contentType":"application/json","body":{"issues":43407,"pullRequests":51802,"commits":66091,"forks":4158,"stars":29036,"contributors":2450}}
+{"path":"/v1/communities/github/metrics","status":200,"contentType":"application/json","body":{"issues":43867,"pullRequests":52382,"commits":66353,"forks":4193,"stars":29156,"contributors":2494}}

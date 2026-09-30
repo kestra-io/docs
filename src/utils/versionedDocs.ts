@@ -203,6 +203,29 @@ export function versionedAssetUrl(
     return `${apiUrl}/docs${src}/versions/${version}.0`
 }
 
+export type SpecEdition = "oss" | "ee"
+
+/** This site's route for a version's OpenAPI spec, proxied by [edition].yml.ts. */
+export function versionedSpecHref(version: string, edition: SpecEdition): string {
+    return `/api/openapi/${version}/${edition}.yml`
+}
+
+/**
+ * The OpenAPI spec is a static asset of the live site, so an archived page would
+ * otherwise document today's API. The docs indexing job uploads `public/` per
+ * version alongside the doc assets, so each release's own spec is already served
+ * at the versioned asset path. Undefined for anything but major.minor, so no
+ * path can be spliced into the fetched URL.
+ */
+export function versionedSpecSourceUrl(
+    apiUrl: string,
+    version: string,
+    edition: SpecEdition,
+): string | undefined {
+    if (!/^\d+\.\d+$/.test(version)) return undefined
+    return versionedAssetUrl(apiUrl, version, edition === "ee" ? "/kestra-ee.yml" : "/kestra.yml")
+}
+
 /**
  * True for an in-content href that should be resolved against the versioned
  * docs tree: a relative path ("./x.md", "../y/z.md", "plugins/a.md"). Absolute

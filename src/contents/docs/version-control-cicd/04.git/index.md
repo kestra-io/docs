@@ -78,7 +78,6 @@ You can also sync namespace files with the example below:
 id: sync_from_git
 namespace: company.ops
 
-
 tasks:
   - id: git
     type: io.kestra.plugin.git.SyncNamespaceFiles
@@ -89,6 +88,10 @@ tasks:
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
 ```
+
+On Enterprise Edition, if the target `namespace` does not exist, `SyncNamespaceFiles` creates it automatically before writing any files. The task needs credentials to do this: configure task-level `auth` or instance-level `kestra.tasks.sdk.authentication.*` (see [SDK authentication](../../11.migration-guide/v2.0.0/sdk-authentication/index.md)). Without credentials, the task logs a warning and continues, but the namespace will not appear in the UI until it is created manually. On OSS, namespaces have no create API and this behavior is not available.
+
+Use `namespaceDirectory` to control where files land inside the namespace independently of `gitDirectory`. For example, `gitDirectory: scripts` paired with `namespaceDirectory: /shared-scripts` reads from the `scripts/` folder in the repo and writes into the `shared-scripts` folder in the namespace. When `delete: true` is set, only files under the `namespaceDirectory` prefix are eligible for deletion; files elsewhere in the namespace are not touched. `PushNamespaceFiles` accepts the same property and strips the prefix from the Git path, so a sync-then-push round-trip produces an empty diff.
 
 You can also trigger this flow with a [GitHub webhook](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) whenever changes land in Git:
 
@@ -195,7 +198,7 @@ The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a
 
 Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [Git NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) give you full control over synchronizing Kestra objects with your Git repository.
 
-- **`TenantSync`** – synchronizes **all namespaces** in a tenant, including flows, files, apps, tests, dashboards, and custom blueprints.
+- **`TenantSync`** – synchronizes **all namespaces** in a tenant. Always syncs flows and namespace files. In Enterprise Edition, also syncs apps, unit tests, custom blueprints, and dashboards.
   - Requires `kestraUrl` and `auth` so the task can call Kestra's API with tenant-wide RBAC.
   - Useful when you need to back up the entire tenant to Git and promote environments through pull requests.
   - When `sourceOfTruth: GIT`, namespaces discovered in Git that have content are created automatically.
@@ -206,13 +209,42 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
   - The flow running this task does not need to live in the namespace being synced — a flow in `company.ops` can sync `company.team`.
   - **Namespace creation**: When `sourceOfTruth: GIT`, the target namespace is created automatically if it does not exist — in both OSS and Enterprise Edition. When `sourceOfTruth: KESTRA`, the namespace must already exist.
 
-Both plugins support:
+- **`SyncNamespaceFiles`** – syncs namespace files only (not flows, apps, or tests). Unlike `NamespaceSync`, it does not require `kestraUrl` or `auth` for the sync itself, but namespace creation on EE requires credentials. Set task-level `auth` or instance-level `kestra.tasks.sdk.authentication.*`. Without credentials, a missing namespace is not created and files remain invisible in the UI. On OSS, namespace creation is not available; files still sync to storage.
+
+`TenantSync` and `NamespaceSync` both support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
+- `sourceOfTruthOverrides` to override the sync direction per resource kind. In OSS, exposes `flows` and `namespaceFiles`. In Enterprise Edition, `NamespaceSync` also exposes `apps` and `unitTests`; `TenantSync` additionally exposes `blueprints` and `dashboards` (which have no namespace and can only be synced at the tenant level). Any field left unset falls back to `sourceOfTruth`.
 - `whenMissingInSource` with options `DELETE`, `KEEP`, or `FAIL` to control how missing objects should be handled.
 - An **opinionated folder structure** for flows, apps, dashboards, tests, and files with one folder per namespace (see [Git directory structure](#git-directory-structure) below).
-- `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted when `sourceOfTruth` is `GIT`.
+- `protectedNamespaces` to ensure your Kestra objects from critical namespaces (such as `system`) are not accidentally deleted, regardless of which direction `sourceOfTruth` is set.
 - Validation rules requiring explicit Git `branch` and optional `gitDirectory`.
 - Options like `dryRun` and `onInvalidSyntax` for safe rollouts and error handling.
+
+### Mixed source of truth
+
+Use `sourceOfTruthOverrides` when flows and namespace files have different owners. A common pattern is to treat Kestra as the source of truth for flows (authored in the UI) while treating Git as the source of truth for namespace files (code checked into the repo):
+
+```yaml
+tasks:
+  - id: sync
+    type: io.kestra.plugin.git.NamespaceSync
+    namespace: company.team
+    sourceOfTruth: KESTRA          # flows: Kestra -> Git
+    sourceOfTruthOverrides:
+      namespaceFiles: GIT          # namespace files: Git -> Kestra
+    whenMissingInSource: KEEP
+    url: https://github.com/org/repo
+    branch: main
+```
+
+`whenMissingInSource` is a single global setting, but "missing in source" means different things depending on which direction each kind syncs:
+
+| Resource kind | Source of truth | `KEEP` holds... |
+|---|---|---|
+| Namespace files | Git | Files in Kestra that are absent from Git |
+| Flows | Kestra | Flows in Git that are absent from Kestra |
+
+`protectedNamespaces` still guards every deletion regardless of direction.
 
 Example usage of the `TenantSync` task:
 
@@ -261,10 +293,10 @@ Both `TenantSync` and `NamespaceSync` expect a specific folder structure inside 
 | --- | --- |
 | Flows | `<namespace>/flows/<flowId>.yaml` |
 | Namespace files | `<namespace>/files/<path>` |
-| Apps | `<namespace>/apps/<appId>.yaml` |
-| Unit tests | `<namespace>/tests/<testId>.yaml` |
-| Dashboards | `_global/dashboards/<dashboardId>.yaml` |
-| Custom blueprints | `_global/blueprints/<blueprintId>.yaml` |
+| Apps (EE only) | `<namespace>/apps/<appId>.yaml` |
+| Unit tests (EE only) | `<namespace>/tests/<testId>.yaml` |
+| Dashboards (EE only) | `_global/dashboards/<dashboardId>.yaml` |
+| Custom blueprints (EE only) | `_global/blueprints/<blueprintId>.yaml` |
 
 | `gitDirectory` | Namespace | Expected Git path |
 | --- | --- | --- |

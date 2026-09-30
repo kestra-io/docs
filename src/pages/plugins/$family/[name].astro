@@ -5,11 +5,12 @@ import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "~/utils/plugins/plugin"
 import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
 import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
-import { findFamilySiblings } from "~/utils/plugins/pluginFamily"
+import { buildFamilyIndex, findFamilySiblings, type ArtifactsResponse } from "~/utils/plugins/pluginFamily"
 import { formatPluginName } from "~/utils/plugins/pluginUtils"
 import { slugify } from "~/utils/slugify"
 
 import Layout from "~/components/layout.astro"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import PluginLayout from "~/components/plugins/PluginLayout.astro"
 import OneHeader from "~/components/plugins/OneHeader.astro"
 import PluginCard from "~/components/plugins/PluginCard.vue"
@@ -18,15 +19,18 @@ import PluginCard from "~/components/plugins/PluginCard.vue"
 // unrelated top-level plugin per sub-technology instead of a single plugin
 // with subgroups, so there is no natural "/plugins/plugin-debezium" page for
 // them. This route (reached only via an internal Astro.rewrite from
-// [...slug].astro, never a real URL) synthesizes one by grouping siblings on
-// the shared artifact-name prefix from pluginFamily.ts's allowlist.
+// [...slug].astro, never a real URL) synthesizes one by grouping siblings
+// detected in pluginFamily.ts from real release metadata.
 // See https://github.com/kestra-io/kestra-ee/issues/1923
 const familyName = Astro.params.name ?? ""
 
 const rawPlugins = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const rawPluginsData = await $fetchApiCached("/plugins/pluginsInformation")
+const familyIndex = buildFamilyIndex(
+    await $fetchApiCached<ArtifactsResponse>("/plugins/artifacts"),
+)
 
-const siblings = findFamilySiblings(rawPlugins, familyName)
+const siblings = findFamilySiblings(rawPlugins, familyName, familyIndex)
 
 if (siblings.length === 0) {
     return new Response(null, { status: 404, statusText: "Not found" })
@@ -63,7 +67,15 @@ const description = `Browse all ${siblings.length} ${displayName} plugins availa
                 }
             </ul>
         </nav>
-        <OneHeader headingTitle={title} headingDescription={description} />
+        <div class="bd-title">
+            <Breadcrumb
+                items={[
+                    { label: "Plugins", href: "/plugins" },
+                    { label: displayName, href: "" },
+                ]}
+            />
+            <OneHeader headingTitle={title} headingDescription={description} />
+        </div>
         <div class="family-grid">
             {
                 cardPlugins.map((p) => (
@@ -77,6 +89,17 @@ const description = `Browse all ${siblings.length} ${displayName} plugins availa
 </Layout>
 
 <style lang="scss">
+    // DocsLayout.astro's own ".bd-title" rule is scoped to that component and never
+    // reaches this page, so this page needs its own copy of the same spacing.
+    .bd-title {
+        @include media-breakpoint-up(lg) {
+            margin-top: 4rem;
+        }
+        @include media-breakpoint-down(md) {
+            margin-top: 2rem;
+        }
+    }
+
     .family-nav {
         font-size: $font-size-sm;
 

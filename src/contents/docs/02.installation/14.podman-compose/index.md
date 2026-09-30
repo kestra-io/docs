@@ -25,9 +25,35 @@ https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
 
 If you don't have `curl` installed, you can download the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) manually and save it as `docker-compose.yml`.
 
-:::alert{type="info"}
-Podman Compose works using the provided Docker Compose file out of the box.
+:::alert{type="warning"}
+While Podman Compose works with the provided Docker Compose file, **rootless Podman deployments** require a volume override to map the correct user socket. See the rootless configuration below.
 :::
+
+### Rootless Podman Configuration
+
+If you are running Podman in rootless mode, Kestra needs access to your user-specific API socket rather than the default root socket. 
+
+Create a `docker-compose.override.yml` file in the same directory to override the volume mount:
+
+```yaml
+services:
+  kestra:
+    # Required if your system uses SELinux (e.g., Fedora, RHEL)
+    security_opt:
+      - label=disable
+    volumes:
+      - ${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+```
+
+Finally, export the `DOCKER_HOST` environment variable so your local CLI knows where to find the socket:
+
+```bash
+export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/podman/podman.sock"
+```
+*(Tip: Add this export to your `~/.bashrc` or `~/.zshrc` to make it persistent).*
+
+Once configured, run `podman-compose up` as usual.
 
 ## Launch Kestra in Root Mode
 

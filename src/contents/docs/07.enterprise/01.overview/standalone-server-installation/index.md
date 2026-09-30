@@ -11,20 +11,18 @@ To deploy Kestra without Docker, use the standalone JAR — a single executable 
 
 ## Standalone JAR
 
-Download the latest version of the Kestra EE JAR from:
+Download the Kestra EE JAR from `https://registry.kestra.io/exe/` using your license ID and fingerprint as Basic auth credentials. Use `/exe/latest` for the latest release or pin a specific version:
 
-[http://registry.kestra.io/exe/latest](http://registry.kestra.io/exe/latest)
+```bash
+# Latest
+curl -u "$LICENSE_ID:$LICENSE_FINGERPRINT" https://registry.kestra.io/exe/latest | funzip > kestra-ee
 
-**Credentials:**
+# Specific version
+VERSION=2.0.3
+curl -u "$LICENSE_ID:$LICENSE_FINGERPRINT" https://registry.kestra.io/exe/$VERSION | funzip > kestra-ee
+```
 
-- **Username**: `license-id`
-- **Password**: `fingerprint`
-
-:::alert{type="info"}
-Make sure to store your credentials in an `application.yaml` file.
-:::
-
-This provides a single JAR file that can be used to start Kestra. Store the file in your execution environment as `kestra` (make it executable).
+This provides a single executable file. Store it in your execution environment as `kestra`.
 
 Make the file executable (Linux or macOS):
 
