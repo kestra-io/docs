@@ -40,3 +40,28 @@ export function resolveShortElementSlug(
 
     return subgroupPath
 }
+
+/**
+ * Same shape one level down: `/plugins/<plugin>/v<version>/<subgroup>/<bareName>`.
+ *
+ * `pageList` holds unversioned paths, so the match runs on the version-stripped path and the
+ * version segment is put back into the target — reusing the resolver as-is would 301 to a URL
+ * with the version dropped.
+ *
+ * The target is only as good as `pageList`: the caller builds it from the requested version's
+ * own elements, but falls back to the latest catalog when `fetchVersionedSubgroups` degrades to
+ * `pending`/`unavailable`. A bare name can then 301 to an element page that did not exist at
+ * that version — still preferable to serving the self-canonical duplicate.
+ */
+export function resolveVersionedShortElementSlug(
+    splitRouteSlug: string[],
+    canonicalPathname: string,
+    pageList: string[] | undefined,
+    version: string,
+): string | null {
+    const target = resolveShortElementSlug(splitRouteSlug, canonicalPathname, pageList)
+    if (!target) return null
+
+    const [plugin, ...rest] = target.slice("/plugins/".length).split("/")
+    return ["/plugins", plugin, `v${version}`, ...rest].join("/")
+}

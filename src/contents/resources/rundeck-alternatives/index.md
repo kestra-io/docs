@@ -123,5 +123,3 @@ Avoid choosing a tool that solves today's problem but creates tomorrow's silo. A
 Choosing a Rundeck alternative in 2026 means looking beyond simple runbook automation. While Rundeck excels at providing self-service access to scripts, modern platforms offer more extensive capabilities, from event-driven automation to declarative, cross-domain orchestration.
 
 For teams seeking a versatile, developer-friendly platform that unifies workflows across their entire tech stack, [Kestra offers a compelling solution](/vs/rundeck). Its declarative YAML interface, language-agnostic design, and low operational overhead make it an ideal control plane for modern infrastructure and data ecosystems.
-
-Ready to see how a universal orchestration platform can transform your automation strategy? [Get started with the open-source version](/get-started) or [book a demo](/demo) to see Kestra Enterprise in action.

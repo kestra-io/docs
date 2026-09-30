@@ -10,7 +10,7 @@
  *   BASE_URL        – Root URL to benchmark, no trailing slash (required)
  *   OUTPUT_FILE     – Path for JSON output  (default: lighthouse-results.json)
  *   LHR_DIR         – Directory for per-page LHR JSON dumps (default: lhr-reports)
- *   MULTI_RUN_COUNT – Overrides the `runs` counts in the page sample
+ *   MULTI_RUN_COUNT – Runs per page, overriding the sample and its default
  *   SHARD_INDEX     – 0-based shard to measure (default: 0)
  *   SHARD_TOTAL     – Number of shards the sample is split across (default: 1)
  *   WARMUP_PATH     – Page warmed before measuring (default: /privacy-policy);
@@ -40,8 +40,10 @@ const LHR_DIR = process.env.LHR_DIR ?? "lhr-reports"
 // pulls the worker and the shared layout assets without touching the sample.
 const WARMUP_PATH = process.env.WARMUP_PATH ?? "/privacy-policy"
 const WARMUP_REQUESTS = 3
+const CHROME_FLAGS = ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage"]
 
-// Overrides the `runs` counts carried by the page sample when set above 0.
+// Replaces every page's count, the DEFAULT_RUNS ones included, when set
+// above 0. MULTI_RUN_COUNT=1 is the fast local pass.
 const MULTI_RUN_COUNT = Math.max(
     0,
     Math.trunc(Number(process.env.MULTI_RUN_COUNT ?? 0)) || 0,
@@ -74,7 +76,8 @@ function orderedPages() {
 }
 
 /**
- * Runs to measure for a page: what the sample asks for, 1 by default.
+ * Runs to measure for a page: what the sample asks for, DEFAULT_RUNS otherwise,
+ * or MULTI_RUN_COUNT when it is set.
  *
  * @param {typeof PAGES[number]} page
  * @returns {number}
@@ -201,6 +204,38 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
 }
 
 /**
+ * Launches Chrome, retrying a failed start. One refused DevTools port took out
+ * a whole shard before this, and it is the runner failing, not the flags.
+ *
+ * killAll between attempts because chrome-launcher registers an instance
+ * before it starts it, so a throw leaves a process nobody holds a handle to.
+ *
+ * @param {{ launch: (opts: object) => Promise<any>; killAll: () => unknown[] }} chromeLauncher
+ * @param {number} [maxRetries=2]
+ */
+async function launchChromeWithRetry(chromeLauncher, maxRetries = 2) {
+    let lastError = /** @type {unknown} */ (null)
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            return await chromeLauncher.launch({
+                chromeFlags: CHROME_FLAGS,
+            })
+        } catch (err) {
+            lastError = err
+            chromeLauncher.killAll()
+            const message = err instanceof Error ? err.message : String(err)
+            if (attempt < maxRetries) {
+                console.log(
+                    `  Chrome launch ${attempt + 1} failed (${message}), retrying in 3 s…`,
+                )
+                await new Promise((r) => setTimeout(r, 3000))
+            }
+        }
+    }
+    throw lastError
+}
+
+/**
  * Requests a page a few times, discarding every response, so the work its
  * first hit does stays out of the measured traces.
  *
@@ -318,26 +353,20 @@ async function main() {
     const chromeLauncher = await import("chrome-launcher")
 
     const shardRuns = SHARD_PAGES.reduce((sum, page) => sum + runsFor(page), 0)
-    const runPlan = SHARD_PAGES.filter((page) => runsFor(page) > 1)
-        .map((page) => `${page.path} x${runsFor(page)}`)
-        .join(", ")
+    const runPlan = SHARD_PAGES.map(
+        (page) => `${page.path} x${runsFor(page)}`,
+    ).join(", ")
 
     console.log(`\nLighthouse Benchmark`)
     console.log(`Base URL : ${BASE_URL}`)
     console.log(`Shard    : ${SHARD_INDEX + 1} of ${SHARD_TOTAL}`)
     console.log(`Pages    : ${SHARD_PAGES.length} of ${PAGES.length}`)
     console.log(
-        `Runs     : ${shardRuns}, 1 per page except ${runPlan || "none"}\n`,
+        `Runs     : ${shardRuns} across ${SHARD_PAGES.length} pages: ${runPlan}\n`,
     )
 
     // Launch Chrome once and reuse for all pages.
-    const chrome = await chromeLauncher.launch({
-        chromeFlags: [
-            "--headless=new",
-            "--no-sandbox",
-            "--disable-dev-shm-usage",
-        ],
-    })
+    const chrome = await launchChromeWithRetry(chromeLauncher)
 
     console.log(`Chrome launched on port ${chrome.port}\n`)
 

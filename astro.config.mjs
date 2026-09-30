@@ -25,6 +25,7 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
+import rehypeResourceCta from "./src/markdown/rehype/resource-cta.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
 const __dirname = path.dirname(
@@ -137,6 +138,7 @@ export default defineConfig({
                 rehypeHeadingIds,
                 rehypeAutolinkHeadings,
                 rehypeImgPlugin,
+                rehypeResourceCta,
                 [
                     rehypeExternalLinks,
                     {
