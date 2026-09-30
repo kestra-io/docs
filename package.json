@@ -24,7 +24,8 @@
     "format": "oxfmt . --write && prettier --write **/*.astro",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots=changed",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "test:visual:report": "node scripts/visual-diff-report.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -92,6 +93,8 @@
   "devDependencies": {
     "@astrojs/node": "^11.1.5",
     "@playwright/test": "1.61.0",
+    "odiff-bin": "^4.5.0",
+    "playwright-odiff": "^4.5.0",
     "vitest": "^5.0.0"
   },
   "engines": {
