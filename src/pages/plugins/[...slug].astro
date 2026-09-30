@@ -38,6 +38,8 @@ import {
 } from "~/utils/plugins/pluginFamily"
 import { formatPluginName } from "~/utils/plugins/pluginUtils"
 import { resolveShortElementSlug } from "~/utils/plugins/shortElementSlug"
+import { subGroupName } from "~/utils/plugins/plugin"
+import { slugify } from "~/utils/slugify"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
 import pluginGridUrl from "~/components/plugins/assets/plugin-grid.svg?url"
@@ -124,7 +126,17 @@ if (versionState.version && pluginName) {
     }
 }
 
-if (subGroup && allPlugins.filter((p) => p.name === pluginName && p.subGroup).length === 1) {
+// The subgroup segment is dropped when the plugin has a single subgroup, and when it has
+// none: such a plugin also rendered on /plugins/<plugin>/<slug of its title>
+// (/plugins/plugin-jdbc-postgres/postgresql), a self-canonical duplicate of its root page.
+const pluginEntries = allPlugins.filter((p) => p.name === pluginName)
+const subGroupCount = pluginEntries.filter((p) => p.subGroup).length
+if (
+    subGroup &&
+    (subGroupCount === 1 ||
+        (subGroupCount === 0 &&
+            pluginEntries.some((p) => slugify(subGroupName(p)) === subGroup)))
+) {
     return Astro.redirect(`/plugins/${[pluginName, ...splitRouteSlug.slice(2)].join("/")}`, 301)
 }
 
