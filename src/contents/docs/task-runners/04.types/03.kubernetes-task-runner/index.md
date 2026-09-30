@@ -148,7 +148,7 @@ If a task is resubmitted (for example, due to a retry or a Worker crash), the ne
 
 Set `resume: false` to force a new pod to be created on every execution attempt rather than reattaching to an existing pod.
 
-By default, pods are deleted after the task completes. Set `delete: false` to keep the pod alive after completion, which is useful when debugging failures — you can then inspect the pod with `kubectl exec` or `kubectl logs`:
+By default, pods are deleted after the task completes. Set `delete: false` to keep the pod alive after completion for debugging: you can then inspect the pod with `kubectl exec` or `kubectl logs`:
 
 ```yaml
 taskRunner:
@@ -200,7 +200,7 @@ sequenceDiagram
 ```
 
 
-The task is already marked `FAILED` at step 4. The `java.io.InterruptedIOException: executor rejected` and `ERROR Stop retry` log lines emitted at step 7 are residual — they confirm the cleanup path ran correctly and can be safely ignored. If the `waitUntilRunning` timeout fires before the pod is ready (for example, due to slow image pulls or kubelet initialization on a cold node), increase the value to give the cluster more time:
+The task is already marked `FAILED` at step 4. The `java.io.InterruptedIOException: executor rejected` and `ERROR Stop retry` log lines emitted at step 7 are residual. They confirm the cleanup path ran correctly and can be safely ignored. If the `waitUntilRunning` timeout fires before the pod is ready (for example, due to slow image pulls or kubelet initialization on a cold node), increase the value to give the cluster more time:
 
 ```yaml
 taskRunner:
@@ -341,8 +341,8 @@ Three properties control how long the runner waits at different stages of pod ex
 | Property | Default | Description |
 |---|---|---|
 | `waitUntilRunning` | `PT10M` | Maximum time to wait for the pod to be scheduled, the image to be pulled, and containers to start. |
-| `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. In Job mode, this budget is shared across all pod attempts — size it relative to `job.backoffLimit` so per-attempt eviction-detection overhead does not exhaust it before the task completes. |
-| `waitForLogs` | `PT30S` | Maximum extra time after containers exit to wait for the log stream to flush. The task returns as soon as the log stream goes quiet, so this is a ceiling, not a fixed delay — it only comes into play for a container that keeps writing logs right up to the limit. |
+| `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. In Job mode, this budget is shared across all pod attempts. Size it relative to `job.backoffLimit` so per-attempt eviction-detection overhead does not exhaust it before the task completes. |
+| `waitForLogs` | `PT30S` | Maximum extra time after containers exit to wait for the log stream to flush. The task returns as soon as the log stream goes quiet, so this is a ceiling, not a fixed delay. It only comes into play for a container that keeps writing logs right up to the limit. |
 
 Increase `waitUntilRunning` for clusters that pull large images or have slow scheduling. Increase `waitUntilCompletion` for long-running tasks. Increase `waitForLogs` only if a container's logs keep flushing late enough that the default ceiling is not enough to capture them.
 
@@ -369,11 +369,11 @@ Pod '...' was terminated by Kubernetes for exceeding its active deadline of <N>s
 those is too short for this task, or set 'podSpec.activeDeadlineSeconds' explicitly to override the computed value.
 ```
 
-To set an explicit deadline instead of the derived one, use `podSpec.activeDeadlineSeconds` — see [Pod and container customization](#podspec---overlay-the-full-pod-spec) below. In Job mode, each pod attempt gets its own fresh deadline.
+To set an explicit deadline instead of the derived one, use `podSpec.activeDeadlineSeconds`; see [Pod and container customization](#podspec---overlay-the-full-pod-spec) below. In Job mode, each pod attempt gets its own fresh deadline.
 
 ## Connection and concurrency settings
 
-At high concurrency, each task opens multiple WebSocket connections against the API server — one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and slow API server responses, compounding timeout issues.
+At high concurrency, each task opens multiple WebSocket connections against the API server: one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and slow API server responses, compounding timeout issues.
 
 Three properties on the `config:` block let you cap concurrent connections and tune reconnect backoff:
 
@@ -396,7 +396,7 @@ taskRunner:
 
 ## Job mode
 
-By default, the runner submits a raw pod. When a pod is evicted — for example, because of node pressure on a spot or preemptible instance — the task fails immediately, even though the task itself did nothing wrong.
+By default, the runner submits a raw pod. When a pod is evicted (for example, because of node pressure on a spot or preemptible instance), the task fails immediately, even though the task itself did nothing wrong.
 
 Set `job.enabled: true` to wrap the pod in a `batch/v1` Kubernetes Job instead. The Job controller then restarts a failed or evicted pod, up to `job.backoffLimit` times, before failing the task. Log streaming and file transfer automatically reattach to whichever pod attempt is currently running.
 
@@ -424,7 +424,7 @@ tasks:
 | `job.podFailurePolicy` | — | A [Kubernetes PodFailurePolicy](https://kubernetes.io/docs/concepts/workloads/controllers/job/#pod-failure-policy) spec passed directly to the Job. See below. |
 
 :::alert{type="warning"}
-**`waitUntilCompletion` is a shared budget across all pod attempts.** Detecting a force-deleted or evicted pod can take several minutes per attempt. Set `waitUntilCompletion` generously relative to `job.backoffLimit` — for example, if each attempt can take up to 30 minutes and `backoffLimit` is 3, set `waitUntilCompletion` to at least `PT2H`.
+**`waitUntilCompletion` is a shared budget across all pod attempts.** Detecting a force-deleted or evicted pod can take several minutes per attempt. Set `waitUntilCompletion` generously relative to `job.backoffLimit`. For example, if each attempt can take up to 30 minutes and `backoffLimit` is 3, set `waitUntilCompletion` to at least `PT2H`.
 :::
 
 ### Distinguishing infrastructure failures from application failures
@@ -462,10 +462,80 @@ Rules are evaluated top to bottom and stop at the first match. This example puts
 
 ### Resume and delete behavior in Job mode
 
-`resume: true` (the default) reattaches to an existing Job for the current task run rather than creating a new one — the same semantics as pod mode, applied at the Job level.
+`resume: true` (the default) reattaches to an existing Job for the current task run rather than creating a new one, with the same semantics as pod mode applied at the Job level.
 
-`delete: true` (the default) deletes the Job after the task completes. Job deletion cascades to its pods automatically. Set `delete: false` to keep the Job and its pods after completion — useful when debugging a failed attempt, since you can then inspect pods with `kubectl exec` or `kubectl logs`.
+`delete: true` (the default) deletes the Job after the task completes. Job deletion cascades to its pods automatically. Set `delete: false` to keep the Job and its pods after completion for debugging: you can then inspect pods with `kubectl exec` or `kubectl logs`.
 
+
+## Monitoring
+
+Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the pod's working directory. No image change is needed.
+
+kotlp reports the container's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
+
+| Metric | Type | Unit | Attribute |
+|---|---|---|---|
+| `process.cpu.time` | sum | `s` | `cpu.mode`: `user` or `system` |
+| `process.cpu.utilization` | gauge | `1` | `cpu.mode`: `user` or `system` |
+| `process.memory.usage` | gauge | `By` | — |
+| `process.memory.virtual` | gauge | `By` | — |
+| `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.thread.count` | gauge | `{thread}` | — |
+| `process.open_file_descriptor.count` | gauge | `{count}` | — |
+
+The two sum metrics (`process.cpu.time`, `process.disk.io`) are cumulative and reflect totals for the entire run. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
+
+kotlp also runs an embedded OTLP receiver, so traces the command exports itself are captured as task traces.
+
+Monitoring fixes a long-standing Kubernetes limitation: the pod log stream cannot distinguish stdout from stderr. kotlp tags each line with the stream it came from, so lines the command wrote to stderr are logged at ERROR instead of INFO.
+
+```yaml
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: ubuntu
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      monitoring:
+        enabled: true
+      config:
+        masterUrl: https://docker-for-desktop:6443
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+    commands:
+      - echo "Hello World"
+      - echo "something went wrong" >&2
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `monitoring.enabled` | `false` | When true, wraps the task command with kotlp. |
+| `monitoring.metricsInterval` | `PT1S` | How often kotlp samples the container's resource usage. Accepts values between `PT0.001S` and `PT1H`. |
+
+### Constraints and known limitations
+
+Two requirements apply when monitoring is enabled:
+
+- The image must provide a POSIX `/bin/sh`. `scratch` and distroless images do not work.
+- An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
+
+kotlp is an [Actually Portable Executable](https://justine.lol/ape.html) that unpacks itself on first run into `$TMPDIR`, falling back to `$HOME`. A hardened pod triggers two different failures:
+
+- `readOnlyRootFilesystem: true` without `TMPDIR` set: fails with `cannot create /home/<user>/.ape-<version>: Read-only file system` (exit code 2) because both `/tmp` and `$HOME` are on the read-only root filesystem.
+- `readOnlyRootFilesystem: true` with `TMPDIR=/kestra/working-dir` but without `fsGroup`: fails with `cannot create /kestra/working-dir/.ape-<version>: Permission denied` (exit code 2) because the init container creates the working directory as root and user 1000 cannot write there.
+
+Both fixes are required together: `fsGroup` makes the working-directory volume group-writable by user 1000, and `TMPDIR` redirects the APE unpacking to that volume:
+
+```yaml
+podSpec:
+  securityContext:
+    fsGroup: 1000
+containerSpec:
+  env:
+    - name: TMPDIR
+      value: /kestra/working-dir
+```
+
+Because kotlp is staged as a working-directory file, a task with no `inputFiles` or `outputFiles` gets the file-transfer init container it would otherwise skip.
 
 ## Pod and container customization
 
@@ -473,7 +543,7 @@ The Kubernetes task runner exposes several properties for customizing the pod sp
 
 ### `podSpec` — overlay the full pod spec
 
-`podSpec` accepts a freeform YAML map that is merged into the generated pod's spec. Use it for anything not covered by a first-class property: tolerations, affinity, priority classes, additional volumes, or user-defined sidecar containers. It's also where you set `podSpec.activeDeadlineSeconds` to override the deadline the runner otherwise derives from `waitUntilRunning`/`waitUntilCompletion` — see [Timeout configuration](#timeout-configuration) above.
+`podSpec` accepts a freeform YAML map that is merged into the generated pod's spec. Use it for anything not covered by a first-class property: tolerations, affinity, priority classes, additional volumes, or user-defined sidecar containers. It is also where you set `podSpec.activeDeadlineSeconds` to override the deadline the runner otherwise derives from `waitUntilRunning`/`waitUntilCompletion`; see [Timeout configuration](#timeout-configuration) above.
 
 Any container listed under `podSpec.containers` whose name is **not** `"main"` is added as a user-defined sidecar alongside the Kestra main container. A container named `"main"` has its fields (such as `ports` and `env`) merged as defaults into the Kestra-built main container, with Kestra-injected values taking precedence on collision.
 
@@ -596,7 +666,7 @@ taskRunner:
         memory: "64Mi"
 ```
 
-A custom `fileSidecar.image` must provide, on its `PATH`, a POSIX shell (`sh`), `test`/`[`, and `sleep` — required by the polling script that waits for the file transfer to complete before the container exits. `find` and `wc` are also used, on a best-effort basis, to verify that uploaded files were fully transferred; if they're missing, verification is skipped rather than failing the task.
+A custom `fileSidecar.image` must provide, on its `PATH`, a POSIX shell (`sh`), `test`/`[`, and `sleep`, which are required by the polling script that waits for the file transfer to complete before the container exits. `find` and `wc` are also used, on a best-effort basis, to verify that uploaded files were fully transferred; if they're missing, verification is skipped rather than failing the task.
 
 `fileSidecar.defaultSpec` applies additional container spec fields to the file transfer containers only, and takes precedence over `containerDefaultSpec` for those containers:
 
@@ -770,34 +840,6 @@ Update the following arguments with your own values:
 
 After running the command, access your config with `kubectl config view --minify --flatten` to replace `caCertData`, `masterUrl`, and `username`.
 
-## Execution details
-
-When you open an execution in the topology view, each Kubernetes task runner task shows a visual step tracker that displays progress through the pod lifecycle in real time. Each step shows its status and elapsed duration as it completes.
-
-| Step | Completes when |
-|---|---|
-| `pod.created` | Always |
-| `pod.scheduled` | Always |
-| `files.uploaded` | `inputFiles` or `namespaceFiles` are set |
-| `task.running` | Always |
-| `files.retrieved` | `outputFiles` or `outputDir` are set |
-| `pod.deleted` | Always |
-
-All six steps are always shown in the tracker; steps that do not apply (no input or output files configured) remain in a waiting state. A long `files.uploaded` step suggests large or numerous input files; a long `files.retrieved` step suggests large outputs.
-
-**Show Details modal — Configuration:**
-- Namespace
-- Pull policy (when set)
-- Service account name (when set)
-- CPU and memory requests and limits (when set)
-- Node selector labels (when set)
-
-**Show Details modal — Pod details (post-execution):**
-- Pod name and node it ran on — useful for `kubectl logs` and `kubectl exec` debugging
-- Pod phase badge (Succeeded / Failed)
-- Scheduling wait — time between pod creation and the pod entering `Running` state; a long value indicates cluster pressure, a slow image pull, or insufficient node capacity
-- Per-container exit codes
-
 ### Amazon Elastic Kubernetes Service (EKS)
 
 The following flow authenticates with EKS using an OAuth token:
@@ -820,3 +862,31 @@ tasks:
     commands:
       - echo "Hello from a Kubernetes task runner!"
 ```
+
+## Execution details
+
+When you open an execution in the topology view, each Kubernetes task runner task shows a visual step tracker that displays progress through the pod lifecycle in real time. Each step shows its status and elapsed duration as it completes.
+
+| Step | Completes when |
+|---|---|
+| `pod.created` | Always |
+| `pod.scheduled` | Always |
+| `files.uploaded` | `inputFiles` or `namespaceFiles` are set, or `monitoring.enabled: true` |
+| `task.running` | Always |
+| `files.retrieved` | `outputFiles` or `outputDir` are set |
+| `pod.deleted` | Always |
+
+All six steps are always shown in the tracker; steps that do not apply (no input or output files configured) remain in a waiting state. A long `files.uploaded` step suggests large or numerous input files; a long `files.retrieved` step suggests large outputs.
+
+**Show Details modal — Configuration:**
+- Namespace
+- Pull policy (when set)
+- Service account name (when set)
+- CPU and memory requests and limits (when set)
+- Node selector labels (when set)
+
+**Show Details modal — Pod details (post-execution):**
+- Pod name and node it ran on, useful for `kubectl logs` and `kubectl exec` debugging
+- Pod phase badge (Succeeded / Failed)
+- Scheduling wait: time between pod creation and the pod entering `Running` state. A long value indicates cluster pressure, a slow image pull, or insufficient node capacity.
+- Per-container exit codes
