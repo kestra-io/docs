@@ -147,9 +147,73 @@ The topology detail result (`AzureVmRunnerDetailResult`) reports the VM's final 
 | `stopVm: true`, `deleteVm: false`, task completed | `stopped` |
 | `stopVm: false` and `deleteVm: false` (Kestra-created VM) | `running` |
 
+## Monitoring
+
+Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads with other input files. No image change is needed.
+
+Monitoring also resolves the Run Command 4 KB output cap: when enabled, kotlp writes logs to `.kestra-kotlp/log.ndjson` inside the working directory instead of stdout. Kestra reads them from blob storage after the command completes, so logs are no longer truncated regardless of their size.
+
+kotlp reports the VM's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
+
+| Metric | Type | Unit | Attribute |
+|---|---|---|---|
+| `process.cpu.time` | sum | `s` | `cpu.mode`: `user` or `system` |
+| `process.cpu.utilization` | gauge | `1` | `cpu.mode`: `user` or `system` |
+| `process.memory.usage` | gauge | `By` | — |
+| `process.memory.virtual` | gauge | `By` | — |
+| `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.thread.count` | gauge | `{thread}` | — |
+| `process.open_file_descriptor.count` | gauge | `{count}` | — |
+
+The two sum metrics (`process.cpu.time`, `process.disk.io`) are cumulative and reflect totals for the entire run. The gauge metrics reflect the last sample taken before the command exits, not a peak.
+
+kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
+
+```yaml
+id: vm_with_monitoring
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.ee.azure.runner.VirtualMachine
+      tenantId: "{{ secret('AZURE_TENANT_ID') }}"
+      clientId: "{{ secret('AZURE_CLIENT_ID') }}"
+      clientSecret: "{{ secret('AZURE_CLIENT_SECRET') }}"
+      subscriptionId: "{{ secret('AZURE_SUBSCRIPTION_ID') }}"
+      resourceGroupName: kestra-rg
+      region: eastus
+      vmSize: Standard_DS1_v2
+      subnetId: "{{ secret('AZURE_SUBNET_ID') }}"
+      blobStorage:
+        connectionString: "{{ secret('AZURE_STORAGE_CONNECTION_STRING') }}"
+        containerName: kestra-staging
+      monitoring:
+        enabled: true
+    commands:
+      - echo "stdout line"
+      - echo "stderr line" >&2
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `monitoring.enabled` | `false` | When true, wraps the task command with kotlp. |
+| `monitoring.metricsInterval` | `PT1S` | How often kotlp samples resource usage. Accepts values between `PT0.001S` and `PT1H`. |
+
+### Constraints
+
+Three requirements apply when monitoring is enabled:
+
+- `blobStorage` must be configured. kotlp is staged as a working-directory file and uploaded to blob storage alongside other input files. The task fails immediately if `blobStorage` is absent.
+- The image must provide `/bin/sh` and `gzip`, and the VM must have a writable `$TMPDIR` (default `/tmp`). Standard OS images (Ubuntu, Debian) satisfy all three.
+- An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
+
+If kotlp cannot create `.kestra-kotlp` inside the working directory, it exits with code 2 without running the command.
+
 ## Caveats and platform limits
 
-**4 KB output cap**: Azure Run Command captures at most approximately 4 KB of stdout and 4 KB of stderr. Output beyond that limit is silently truncated by the Azure platform. For scripts that produce large output, redirect stdout to a file inside `{{ workingDir }}` and declare it as an `outputFile`, or set `syncWorkingDirectory: true` to download the entire working directory.
+**4 KB output cap**: Azure Run Command captures at most approximately 4 KB of stdout and 4 KB of stderr. Output beyond that limit is silently truncated by the Azure platform. Set `monitoring.enabled: true` to bypass this limit — kotlp writes logs to a file in the working directory instead of stdout, so Kestra reads them from blob storage. Without monitoring, redirect stdout to a file inside `{{ workingDir }}` and declare it as an `outputFile`, or set `syncWorkingDirectory: true` to download the entire working directory.
 
 **No live log streaming**: Run Command output is not emitted until the command finishes. Kestra execution logs show task output only after the command completes, not in real time.
 
