@@ -293,6 +293,38 @@ kestra:
 | `kestra.grpc.tls.insecure-trust-all-certificates` | `false` | Skip CA verification (development only) |
 | `kestra.grpc.tls.authority-override` | — | Override TLS authority for static discovery |
 
+## Dedicated-storage workers
+
+Some deployments run workers with their own dedicated storage bucket: a separate region, a customer-managed account, or a different storage provider from the rest of the deployment. Two categories of data need explicit configuration to stay consistent across the deployment.
+
+**KV Store values.** KV metadata is always routed through the controller, but values are written directly to storage. On a worker with dedicated storage, a key set from a flow on that worker is listed in the UI but its value is unreachable from anywhere else. A key set from the UI is visible to the worker in listings but cannot be read.
+
+Set `kestra.kv.worker-access: CONTROLLER` on the worker to route all KV reads and writes through the controller over gRPC. The worker no longer accesses its own storage for KV operations.
+
+**Managed plugin artifacts.** When plugin versioning is enabled, workers sync plugin artifacts from the deployment's shared storage. On a worker with dedicated storage, those artifacts are unreachable directly.
+
+Set `kestra.plugins.management.worker-access: CONTROLLER` on the worker to pull plugin artifacts through the controller over gRPC instead.
+
+Both properties default to `STORAGE`, preserving the existing behavior for workers that share the deployment's storage.
+
+```yaml
+# Worker configuration — dedicated-storage deployment
+kestra:
+  kv:
+    worker-access: CONTROLLER          # default: STORAGE
+
+  plugins:
+    management:
+      worker-access: CONTROLLER        # default: STORAGE
+```
+
+`CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it. Both properties are available from Kestra 2.0.4.
+
+| Property | Values | Default | Description |
+|---|---|---|---|
+| `kestra.kv.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes KV values. `CONTROLLER` routes all KV operations through the controller over gRPC. |
+| `kestra.plugins.management.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | How the worker fetches managed plugin artifacts. `CONTROLLER` pulls them through the controller over gRPC. |
+
 ## Elasticsearch, Kafka, and indexing
 
 This section is really about one architectural choice: running Kestra on the Kafka plus Elasticsearch stack instead of the simpler JDBC-backed setup. If you are on PostgreSQL or MySQL only, much of this page will not apply.
