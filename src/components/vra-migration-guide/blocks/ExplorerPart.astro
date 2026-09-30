@@ -1,4 +1,6 @@
 ---
+import GuideTabPanel from "./GuideTabPanel.astro"
+import GuideTabs from "./GuideTabs.astro"
 import Verdict, { type VerdictKind } from "./Verdict.astro"
 
 interface Props {
@@ -10,6 +12,7 @@ interface Props {
 
 const { index, label, title, verdicts } = Astro.props
 const id = `vra-part-${index}`
+const tabsId = `${id}-tabs`
 const open = index === 1
 ---
 
@@ -31,55 +34,27 @@ const open = index === 1
     aria-labelledby={`${id}-button`}
     hidden={!open}
 >
-    <div class="part-tabs" role="tablist" aria-label={title}>
-        <button
-            type="button"
-            role="tab"
-            data-part-tab="what"
-            id={`${id}-tab-what`}
-            aria-controls={`${id}-what`}
-            aria-selected="true"
-        >
-            What this is
-        </button>
-        <button
-            type="button"
-            role="tab"
-            data-part-tab="do"
-            id={`${id}-tab-do`}
-            aria-controls={`${id}-do`}
-            aria-selected="false"
-            tabindex="-1"
-        >
-            What to do with it
-        </button>
-    </div>
-    <div
-        class="part-view"
-        role="tabpanel"
-        id={`${id}-what`}
-        aria-labelledby={`${id}-tab-what`}
-        data-part-view="what"
+    <GuideTabs
+        id={tabsId}
+        label={title}
+        variant="segmented"
+        tabs={[{ label: "What this is" }, { label: "What to do with it" }]}
     >
-        <slot name="what" />
-    </div>
-    <div
-        class="part-view"
-        role="tabpanel"
-        id={`${id}-do`}
-        aria-labelledby={`${id}-tab-do`}
-        data-part-view="do"
-        hidden
-    >
-        <p class="verdicts">
-            <span class="verdicts-label">The verdict</span>
-            {verdicts.map((kind) => <Verdict kind={kind} />)}
-        </p>
-        <slot name="do" />
-    </div>
+        <GuideTabPanel group={tabsId} index={1}>
+            <slot name="what" />
+        </GuideTabPanel>
+        <GuideTabPanel group={tabsId} index={2}>
+            <p class="verdicts">
+                <span class="verdicts-label">The verdict</span>
+                {verdicts.map((kind) => <Verdict kind={kind} />)}
+            </p>
+            <slot name="do" />
+        </GuideTabPanel>
+    </GuideTabs>
 </div>
 
 <style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .part-button {
         display: flex;
         flex-direction: column;
@@ -100,9 +75,7 @@ const open = index === 1
         }
 
         small {
-            font-size: $font-size-xs;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+            @include guide-eyebrow(inherit);
         }
 
         span {
@@ -118,10 +91,7 @@ const open = index === 1
             }
         }
 
-        &:focus-visible {
-            outline: 2px solid var(--ks-content-link);
-            outline-offset: -2px;
-        }
+        @include guide-focus-ring(-2px);
     }
 
     .part-panel {
@@ -136,34 +106,13 @@ const open = index === 1
         }
     }
 
-    .part-tabs {
-        display: flex;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-
-        [role="tab"] {
-            padding: 0.35rem 0.8rem;
-            border: 1px solid var(--ks-border-secondary);
-            border-radius: 999px;
-            background: transparent;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-sm;
-
-            &[aria-selected="true"] {
-                border-color: var(--ks-content-link);
-                color: var(--ks-content-primary);
-                font-weight: 600;
-            }
-
-            &:focus-visible {
-                outline: 2px solid var(--ks-content-link);
-                outline-offset: 2px;
-            }
-        }
+    .part-panel > :global(.guide-tabs) {
+        margin: 0;
     }
 
-    .part-view > :global(:last-child) {
-        margin-bottom: 0;
+    .part-panel :global(.guide-tab-panel) {
+        padding: 0;
+        border: 0;
     }
 
     .verdicts {
@@ -174,11 +123,7 @@ const open = index === 1
     }
 
     .verdicts-label {
+        @include guide-eyebrow(var(--ks-content-secondary), true);
         margin-right: 0.25rem;
-        font-size: $font-size-xs;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--ks-content-secondary);
     }
 </style>

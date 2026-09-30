@@ -122,7 +122,12 @@ describe("remarkSectionIds", () => {
 describe("chapter numbers", () => {
     const numberSpan = (value: string) => ({
         type: "sectionNumber",
-        data: { hName: "span", hProperties: { className: ["section-number"] } },
+        data: {
+            hName: "span",
+            hProperties: {
+                className: ["section-number", "visually-hidden"],
+            },
+        },
         children: [text(value)],
     })
 

@@ -1,8 +1,6 @@
-export interface TocLink {
-    text: string
-    id: string
-    depth: number
-}
+import type { TocLink } from "~/components/docs/NavToc.vue"
+
+export type { TocLink }
 
 export interface TocNode {
     id: string

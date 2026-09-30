@@ -1,0 +1,24 @@
+import Cards from "./blocks/Cards.astro"
+import HandoutCard from "./blocks/HandoutCard.astro"
+
+## Reference handouts
+
+The three appendices are separate downloads, written to be handed to someone who will not read the whole guide: the object-by-object translation for the architect doing the mapping, and the deployment and security documents for the teams that run the review.
+
+<Cards columns={3}>
+<HandoutCard id="appendix-a" appendix="APPENDIX A" title="What every vRA and vRO object becomes">
+
+One row per thing in the vRA and vRO world, what it becomes in Kestra, and which edition you need to get there. Grouped by the six parts, with Direct and Redesign marking how each one converts, and the two decisions that depend on your environment marked.
+
+</HandoutCard>
+<HandoutCard id="appendix-b" appendix="APPENDIX B" title="Deployment options">
+
+Where Kestra runs, backends, components, restricted network zones, HA and sizing, and the named gaps. Also what the licence actually consists of, which matters for an air-gapped install that needs a registry pull mirrored into the environment before anything starts.
+
+</HandoutCard>
+<HandoutCard id="appendix-c" appendix="APPENDIX C" title="What your security and platform teams will ask">
+
+The questions that come up in a security and platform review, with where each answer lives: identity, secrets, audit, segmented network zones and air-gapped operation. Written so a reviewer can work through it without the architect in the room.
+
+</HandoutCard>
+</Cards>

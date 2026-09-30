@@ -3,9 +3,17 @@ import { getEntry, render } from "astro:content"
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import Link from "~/components/common/Link.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Hero from "~/components/vra-migration-guide/Hero.astro"
+import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
+import StartHere, {
+    getHeadings as startHereHeadings,
+} from "~/components/vra-migration-guide/StartHere.mdx"
+import ReferenceHandouts, {
+    getHeadings as handoutHeadings,
+} from "~/components/vra-migration-guide/ReferenceHandouts.mdx"
 import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
 import { tocLinks } from "~/components/vra-migration-guide/toc"
 
@@ -22,7 +30,9 @@ const description = page.metaDescription ?? page.description
 const faqItems = page.faq ?? []
 
 const links = [
+    ...tocLinks(startHereHeadings()),
     ...tocLinks(headings),
+    ...tocLinks(handoutHeadings()),
     ...(faqItems.length > 0
         ? [{ text: "Questions", id: "faq", depth: 2 }]
         : []),
@@ -40,6 +50,8 @@ const META = [
     "Three handouts for review teams",
     "Updated September 2026",
 ]
+
+const PDF_HREF = "#reference-handouts"
 
 const jsonLinkedData = {
     "@context": "https://schema.org",
@@ -61,22 +73,14 @@ const jsonLinkedData = {
     },
     description,
 }
-
-const faqSchema =
-    faqItems.length > 0
-        ? {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                  "@type": "Question",
-                  name: item.question,
-                  acceptedAnswer: { "@type": "Answer", text: item.answer },
-              })),
-          }
-        : null
 ---
 
-<Layout {title} {description}>
+<Layout
+    {title}
+    {description}
+    breadcrumbTitle={page.title}
+    headerTheme="lightText"
+>
     <Fragment slot="head">
         <meta property="og:type" content="article" />
         {
@@ -100,29 +104,29 @@ const faqSchema =
             type="application/ld+json"
             set:html={JSON.stringify(jsonLinkedData)}
         />
-        {
-            faqSchema && (
-                <script
-                    is:inline
-                    type="application/ld+json"
-                    set:html={JSON.stringify(faqSchema)}
-                />
-            )
-        }
+        {faqItems.length > 0 && <SchemaFAQ items={faqItems} />}
     </Fragment>
     <Hero
         title={page.title}
         deck={page.description ?? ""}
         inside={INSIDE}
         meta={META}
+        pdfHref={PDF_HREF}
     />
+    <GuideBand><StartHere /></GuideBand>
     <section class="guide-content">
         <TwoColumnStickyLayout client:load>
             <div slot="sidebar" class="guide-sidebar">
                 <GuideToc client:load links={links}>
-                    <a slot="footer" href="#section-7-2"
-                        >Work out your payback</a
-                    >
+                    <Fragment slot="footer">
+                        <a class="btn btn-primary" href={PDF_HREF}
+                            >Download the PDF</a
+                        >
+                        <a class="btn btn-secondary" href="/demo"
+                            >Talk to our Team</a
+                        >
+                        <a href="#section-7-2">Work out your payback</a>
+                    </Fragment>
                 </GuideToc>
             </div>
             <div class="bd-content">
@@ -130,6 +134,7 @@ const faqSchema =
             </div>
         </TwoColumnStickyLayout>
     </section>
+    <GuideBand><ReferenceHandouts /></GuideBand>
     {
         faqItems.length > 0 && (
             <div class="guide-faq" id="faq">
@@ -141,21 +146,28 @@ const faqSchema =
             </div>
         )
     }
-    <SeeHow imgSrc={shapesImage} cta={{ text: "Book a Demo", href: "/demo" }}>
-        <Fragment slot="title">Start with your own workflows</Fragment>
-        Stage 1 needs nothing from us, and you can talk to us before you have run
-        an export. A proof of concept then turns your counts into a rate you can defend.
-        <Fragment slot="footer">
-            <Link href="#section-8-2" class="btn btn-secondary"
-                >Or start with open source</Link
-            >
-        </Fragment>
-    </SeeHow>
+    <div class="guide-cta">
+        <SeeHow
+            imgSrc={shapesImage}
+            cta={{ text: "Book a Demo", href: "/demo" }}
+        >
+            <Fragment slot="title">Start with your own workflows</Fragment>
+            Stage 1 needs nothing from us, and you can talk to us before you have
+            run an export. A proof of concept then turns your counts into a rate you
+            can defend.
+            <Fragment slot="footer">
+                <Link href="#section-8-2" class="btn btn-secondary"
+                    >Or start with open source</Link
+                >
+            </Fragment>
+        </SeeHow>
+    </div>
+    <script src="../../scripts/resource-cta-tracking.ts"></script>
 </Layout>
 
 <style lang="scss">
     .guide-content {
-        padding: 3rem 0;
+        padding: 0 0 2rem;
     }
 
     .guide-sidebar {
@@ -167,20 +179,38 @@ const faqSchema =
         }
     }
 
-    .guide-content :global(.bd-content h2 .section-number) {
-        display: block;
-        margin-bottom: 0.35rem;
-        font-size: $font-size-sm;
+    .guide-content :global(.bd-content h2),
+    :global(.guide-band .bd-content h2) {
+        font-size: clamp(2.25rem, 4vw, 3rem);
         font-weight: 600;
-        letter-spacing: 0.05em;
-        color: var(--ks-content-link);
+        line-height: 1.05;
+        letter-spacing: -0.015em;
+    }
+
+    .guide-content :global(.bd-content h3) {
+        font-size: clamp(1.75rem, 3vw, 2.125rem);
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+    }
+
+    .guide-content :global(.bd-content > p),
+    .guide-content :global(.bd-content > ul > li),
+    .guide-content :global(.bd-content > ol > li),
+    :global(.guide-band .bd-content > p) {
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+    }
+
+    .guide-content :global(.bd-content > ol > li + li) {
+        margin-top: 1rem;
     }
 
     .guide-faq {
         scroll-margin-top: 100px;
     }
 
-    .guide-faq :global(section.faq) {
-        background: var(--ks-background-secondary);
+    .guide-cta {
+        overflow-x: clip;
     }
 </style>

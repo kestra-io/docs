@@ -94,6 +94,7 @@ const { id, label, tabs, variant = "tabs" } = Astro.props
 </script>
 
 <style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .guide-tabs {
         margin: 1.5rem 0;
 
@@ -116,9 +117,7 @@ const { id, label, tabs, variant = "tabs" } = Astro.props
                 text-align: left;
 
                 small {
-                    font-size: $font-size-xs;
-                    font-weight: 600;
-                    letter-spacing: 0.05em;
+                    @include guide-eyebrow(inherit);
                 }
 
                 span {
@@ -126,7 +125,7 @@ const { id, label, tabs, variant = "tabs" } = Astro.props
                 }
 
                 &[aria-selected="true"] {
-                    border-color: var(--ks-content-link);
+                    border-color: var(--ks-border-active);
                     color: var(--ks-content-primary);
 
                     small {
@@ -134,10 +133,7 @@ const { id, label, tabs, variant = "tabs" } = Astro.props
                     }
                 }
 
-                &:focus-visible {
-                    outline: 2px solid var(--ks-content-link);
-                    outline-offset: 2px;
-                }
+                @include guide-focus-ring;
             }
         }
 

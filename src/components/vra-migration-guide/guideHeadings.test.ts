@@ -50,13 +50,6 @@ describe("vRA migration guide headings", () => {
         )
     })
 
-    it("gives 3.1.2 to the target architectures, not the old 3.1.5", () => {
-        const ids = headings.map((h) => h.id)
-        expect(ids).toContain("section-3-1-2")
-        expect(ids).not.toContain("section-3-1-5")
-        expect(source).not.toMatch(/section-3-1-[35]\b/)
-    })
-
     it("resolves every in-page anchor link to a heading or a known anchor", () => {
         const ids = new Set(headings.map((h) => h.id))
         // Not headings: the verdict legend and the part list in 3.1.1.

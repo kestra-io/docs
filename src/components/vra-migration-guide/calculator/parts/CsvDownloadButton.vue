@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
+    import { refAutoReset } from "@vueuse/core"
     import { downloadTextFile } from "../browser"
-    import { useTransientStatus } from "./useTransientStatus"
 
     const props = defineProps<{
         /** Builds the file from the current state at click time */
@@ -22,7 +22,7 @@
         disabled?: boolean
     }>()
 
-    const { status, show } = useTransientStatus()
+    const status = refAutoReset("", 4000)
 
     function download() {
         const { filename, content } = props.getFile()
@@ -31,11 +31,14 @@
             content,
             "text/csv;charset=utf-8;",
         )
-        show(ok ? "CSV downloaded." : "Download blocked by the browser.")
+        status.value = ok
+            ? "CSV downloaded."
+            : "Download blocked by the browser."
     }
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .csv-download {
         display: flex;
         align-items: center;
@@ -43,7 +46,6 @@
     }
 
     .status {
-        font-size: $font-size-sm;
-        color: var(--ks-content-secondary);
+        @include calc-status;
     }
 </style>

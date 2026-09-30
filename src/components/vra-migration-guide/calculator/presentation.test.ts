@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { compute } from "~/utils/vra-calculator"
+import { compute } from "~/utils/vra-calculator/compute"
 import { GOLDEN } from "~/utils/vra-calculator/__fixtures__/golden"
 import referenceCopy from "./__fixtures__/reference-copy.json"
 import {

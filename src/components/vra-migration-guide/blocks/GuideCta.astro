@@ -17,6 +17,15 @@ const { kind, label, variant = "primary" } = Astro.props
         </p>
     )
 }
+{
+    kind === "pdf" && (
+        <p class="guide-cta">
+            <a class={`btn btn-${variant}`} href="#reference-handouts">
+                {label ?? "Download the PDF"}
+            </a>
+        </p>
+    )
+}
 
 <style lang="scss">
     .guide-cta {

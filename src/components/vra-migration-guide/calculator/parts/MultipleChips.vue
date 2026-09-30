@@ -79,6 +79,7 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .multiple-chips {
         margin: 0 0 1rem;
         padding: 0;
@@ -87,9 +88,7 @@
     }
 
     .form-label {
-        font-size: $font-size-sm;
-        font-weight: 600;
-        color: var(--ks-content-primary);
+        @include calc-form-label;
     }
 
     .chips {
@@ -109,13 +108,13 @@
         font-variant-numeric: tabular-nums;
 
         &[aria-pressed="true"] {
-            border-color: var(--ks-content-link);
+            border-color: var(--ks-border-active);
             color: var(--ks-content-link);
             font-weight: 600;
         }
 
         &:focus-visible {
-            outline: 2px solid var(--ks-content-link);
+            outline: 2px solid var(--ks-border-active);
             outline-offset: 2px;
         }
     }
@@ -126,9 +125,8 @@
     }
 
     .hint {
+        @include calc-hint;
         margin: 0.35rem 0 0;
-        font-size: $font-size-xs;
-        color: var(--ks-content-secondary);
 
         &:empty {
             display: none;

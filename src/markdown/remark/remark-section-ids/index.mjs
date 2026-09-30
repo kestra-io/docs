@@ -7,8 +7,8 @@ import { visit } from "unist-util-visit"
 // number stays.
 //
 // Chapter headings (h2) also get their number wrapped in
-// <span class="section-number">, so the page can show it apart from the
-// title. The number stays in the heading's text, so the table of contents
+// <span class="section-number visually-hidden">, so the page shows the title
+// alone. The number stays in the heading's text, so the table of contents
 // and screen readers still get "7. Build the business case".
 //
 // Opt-in per file with `sectionIds: true` in the frontmatter, so no other
@@ -41,7 +41,9 @@ function wrapChapterNumber(node) {
             type: "sectionNumber",
             data: {
                 hName: "span",
-                hProperties: { className: ["section-number"] },
+                hProperties: {
+                    className: ["section-number", "visually-hidden"],
+                },
             },
             children: [{ type: "text", value: number }],
         },

@@ -2,10 +2,9 @@
 interface Props {
     title?: string
     subtitle?: string
-    tag?: string
 }
 
-const { title, subtitle, tag = "Interactive" } = Astro.props
+const { title, subtitle } = Astro.props
 ---
 
 <div class="interactive-frame">
@@ -21,7 +20,7 @@ const { title, subtitle, tag = "Interactive" } = Astro.props
                 )
             }
         </div>
-        <span class="frame-tag">{tag}</span>
+        <span class="frame-tag">Interactive</span>
     </div>
     <div class="frame-body">
         <slot />
@@ -29,6 +28,7 @@ const { title, subtitle, tag = "Interactive" } = Astro.props
 </div>
 
 <style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .interactive-frame {
         margin: 1.75rem 0;
     }
@@ -56,12 +56,9 @@ const { title, subtitle, tag = "Interactive" } = Astro.props
     }
 
     .frame-tag {
+        @include guide-chip;
         flex: none;
-        padding: 0.1rem 0.55rem;
-        border: 1px solid var(--ks-content-link);
-        border-radius: 999px;
-        font-size: $font-size-xs;
-        font-weight: 600;
+        border-color: var(--ks-border-active);
         letter-spacing: 0.05em;
         text-transform: uppercase;
         color: var(--ks-content-link);

@@ -37,38 +37,11 @@ import Figure from "~/components/vra-migration-guide/blocks/Figure.astro"
 import GuideCta from "~/components/vra-migration-guide/blocks/GuideCta.astro"
 import GuideTabPanel from "~/components/vra-migration-guide/blocks/GuideTabPanel.astro"
 import GuideTabs from "~/components/vra-migration-guide/blocks/GuideTabs.astro"
-import HandoutCard from "~/components/vra-migration-guide/blocks/HandoutCard.astro"
 import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
 import PartExplorer from "~/components/vra-migration-guide/blocks/PartExplorer.astro"
 import Verdict from "~/components/vra-migration-guide/blocks/Verdict.astro"
 import CalculatorFunnel from "~/components/vra-migration-guide/calculator/CalculatorFunnel.vue"
 import CalculatorPayback from "~/components/vra-migration-guide/calculator/CalculatorPayback.vue"
-
-## Start here
-
-**Who this is for:** this guide is for the person who owns a vRA estate and has to decide what replaces it. You may have a renewal coming up, a mandate to move off VMware automation, or the need to scale workflows and the people who can work on them. Whatever is driving the change, you still face the same set of decisions.
-
-The approach in this guide starts with three ideas:
-
-<Cards columns={3}>
-<Card kicker="01" title="Your environment is bigger than vRA, and most of it stays">
-
-ServiceNow, Terraform, Ansible, your CMDB, IPAM, secrets manager and infrastructure targets usually stay where they are. vRA owns the workflow engine and parts of the catalog and deployment record around it. The migration is mostly about replacing that engine, reconnecting the systems around it, and deciding where the catalog and resource inventory should live afterwards.
-
-</Card>
-<Card kicker="02" title="What you move to matters more than how you move">
-
-Replace vRA with another tool shaped like VMware and you may end up facing the same limitations again. The next orchestrator has to reach the environment that has grown around vRA, including cloud accounts, Kubernetes platforms and CI pipelines already doing infrastructure work.
-
-</Card>
-<Card kicker="03" title="This is a method, not a brochure">
-
-We built this guide from experience working with [enterprise vRA estates](#section-2-5) ranging from a few hundred workflows to a few thousand. It covers the four stages of the migration, the tooling available for inventory and conversion, and a way to work out what the migration costs and when it pays back, using your own numbers.
-
-</Card>
-</Cards>
-
-It also sets out why we think Kestra is the right destination, and walks through the four stages of the migration from assessing your estate to switching vRA off. Appendices [B](#appendix-b) and [C](#appendix-c) cover deployment, security and platform review.
 
 ## 1. Why teams leave vRA, and what to move to
 
@@ -81,7 +54,9 @@ Teams leave vRA for several reasons, and most have more than one in play. The tw
 
 vRA is no longer sold as a product on its own. It is part of VMware Cloud Foundation, licensed per core on subscription, so the automation layer is now priced as part of the hypervisor. [Gartner expects](https://www.theregister.com/2024/08/26/vmware_explore_preview/) most VMware customers' bills to grow by 200 to 500 percent at their next renewal.
 
-As an engineer at one Fortune 500 manufacturer put it before they replaced it: _"We're using Aria Automation, that's a massive cost, the cost doesn't justify it anymore."_
+As an engineer at one Fortune 500 manufacturer put it before they replaced it:
+
+> _We're using Aria Automation, that's a massive cost, the cost doesn't justify it anymore._
 
 </Card>
 <Card title="Dependence on VMware's Roadmap">
@@ -91,7 +66,7 @@ What your automation can reach is decided by VMware. Several vRO plugins were de
 </Card>
 </Cards>
 
-<Callout variant="lesson" label="Both point to the same lesson" statement="Your infrastructure vendor should not own your automation.">
+<Callout variant="lesson" label="Both point to the same lesson" statement="Your infrastructure vendor should not own your automation." highlight="not own">
 
 VMware can stay as your hypervisor. The automation on top of it should keep working when the hypervisor, the cloud or the contract changes.
 
@@ -110,11 +85,11 @@ The decision, then, is what replaces the automation layer. Because vRA only ever
 
 Here are three questions you should ask for every option on your shortlist, including Kestra:
 
-**1 - Does it cover your whole infrastructure estate, or a different slice of it?** Several of the obvious candidates are domain-locked in the same way vRA was. Ansible Automation Platform is strong at configuration. Spacelift and Terraform Cloud are strong at infrastructure as code. Rundeck is strong at operational runbooks. Temporal is strong at durable execution inside application code. If you pick one of them, you have replaced one boundary with another one, and the bolt-on tools stay where they are.
+1. **Does it cover your whole infrastructure estate, or a different slice of it?** Several of the obvious candidates are domain-locked in the same way vRA was. Ansible Automation Platform is strong at configuration. Spacelift and Terraform Cloud are strong at infrastructure as code. Rundeck is strong at operational runbooks. Temporal is strong at durable execution inside application code. If you pick one of them, you have replaced one boundary with another one, and the bolt-on tools stay where they are.
 
-**2 - How hard would it be to leave?** Ask where the workflow definitions live, whether you can read them without the product, whether the scripting language is one your team already knows, and whether you can run the thing yourself if the commercial relationship ends. vRO scored badly on all four, and that is a large part of why this migration is as much work as it is.
+2. **How hard would it be to leave?** Ask where the workflow definitions live, whether you can read them without the product, whether the scripting language is one your team already knows, and whether you can run the thing yourself if the commercial relationship ends. vRO scored badly on all four, and that is a large part of why this migration is as much work as it is.
 
-**3 - Is your team the only one who needs this?** Step out of the infrastructure project for a moment. The data team has a scheduler. The application team has a CI pipeline doing more than CI. Somebody upstairs is asking the platform team for self-service. Those lines are blurring in most enterprises, and it is worth knowing now whether you are choosing a tool for the infrastructure team or a platform the others could also use. The answer may be that you only want to solve your own problem, and that is a legitimate answer. It is a worse outcome to discover in two years that you needed the broader one.
+3. **Is your team the only one who needs this?** Step out of the infrastructure project for a moment. The data team has a scheduler. The application team has a CI pipeline doing more than CI. Somebody upstairs is asking the platform team for self-service. Those lines are blurring in most enterprises, and it is worth knowing now whether you are choosing a tool for the infrastructure team or a platform the others could also use. The answer may be that you only want to solve your own problem, and that is a legitimate answer. It is a worse outcome to discover in two years that you needed the broader one.
 
 ### 1.3 Why Kestra
 
@@ -908,7 +883,7 @@ The result is a cost and payback estimate rather than a delivery date. How long 
 
 ### 7.3 Explain why Kestra fits
 
-<Callout variant="lesson" label="The argument leadership needs" statement="Your infrastructure vendor should not own your automation.">
+<Callout variant="lesson" label="The argument leadership needs" statement="Your infrastructure vendor should not own your automation." highlight="not own">
 
 Kestra is the independent layer that stays in place when the hypervisor, the cloud or the contract changes.
 
@@ -981,25 +956,3 @@ Kestra's core is open source and requires no commercial agreement. [Install it](
 | **Promote** | A controlled way to compare and move flows between environments with review and approval |
 
 Whichever route you take, use real workflows from your environment. They will show you what converts cleanly, where redesign is needed and how much work the migration is likely to take. From there, you can build the plan around your own systems and conversion rates instead of relying on a generic estimate.
-
-## Reference handouts
-
-The three appendices are separate downloads, written to be handed to someone who will not read the whole guide: the object-by-object translation for the architect doing the mapping, and the deployment and security documents for the teams that run the review.
-
-<Cards columns={3}>
-<HandoutCard id="appendix-a" appendix="APPENDIX A" title="What every vRA and vRO object becomes">
-
-One row per thing in the vRA and vRO world, what it becomes in Kestra, and which edition you need to get there. Grouped by the six parts, with Direct and Redesign marking how each one converts, and the two decisions that depend on your environment marked.
-
-</HandoutCard>
-<HandoutCard id="appendix-b" appendix="APPENDIX B" title="Deployment options">
-
-Where Kestra runs, backends, components, restricted network zones, HA and sizing, and the named gaps. Also what the licence actually consists of, which matters for an air-gapped install that needs a registry pull mirrored into the environment before anything starts.
-
-</HandoutCard>
-<HandoutCard id="appendix-c" appendix="APPENDIX C" title="What your security and platform teams will ask">
-
-The questions that come up in a security and platform review, with where each answer lives: identity, secrets, audit, segmented network zones and air-gapped operation. Written so a reviewer can work through it without the architect in the room.
-
-</HandoutCard>
-</Cards>

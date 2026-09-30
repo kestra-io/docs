@@ -35,13 +35,10 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .label {
+        @include guide-eyebrow(var(--ks-content-secondary), true);
         margin: 0 0 0.5rem;
-        font-size: $font-size-xs;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--ks-content-secondary);
     }
 
     .bar {

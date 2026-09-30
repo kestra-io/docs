@@ -57,7 +57,6 @@ export function useCalculator(store: CalculatorStore = calculatorStore) {
         ready: readonly(mounted),
         update,
         field,
-        reset: store.reset,
         shareUrl: store.shareUrl,
         csvFile: store.csvFile,
     }

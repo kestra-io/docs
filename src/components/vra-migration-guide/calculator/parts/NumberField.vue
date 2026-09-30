@@ -1,7 +1,7 @@
 <template>
     <div class="number-field" :class="{ compact }">
         <label v-if="!hideLabel" class="form-label" :for="id">
-            <slot name="label">{{ label }}</slot>
+            {{ label }}
         </label>
         <input
             :id="id"
@@ -16,20 +16,17 @@
             :placeholder="placeholder"
             :aria-label="hideLabel ? label : undefined"
             :aria-invalid="invalid || undefined"
-            :aria-describedby="hasHint ? `${id}-hint` : undefined"
+            :aria-describedby="hint ? `${id}-hint` : undefined"
             @input="onInput"
         />
-        <p v-if="hasHint" :id="`${id}-hint`" class="hint">
-            <slot name="hint">{{ hint }}</slot>
-        </p>
+        <p v-if="hint" :id="`${id}-hint`" class="hint">{{ hint }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed, useSlots } from "vue"
     import type { InputValue } from "~/utils/vra-calculator"
 
-    const props = withDefaults(
+    withDefaults(
         defineProps<{
             id: string
             modelValue: InputValue
@@ -48,9 +45,6 @@
 
     const emit = defineEmits<{ "update:modelValue": [value: string] }>()
 
-    const slots = useSlots()
-    const hasHint = computed(() => !!props.hint || !!slots.hint)
-
     function onInput(event: Event) {
         emit(
             "update:modelValue",
@@ -60,6 +54,7 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .number-field {
         margin-bottom: 1rem;
 
@@ -69,15 +64,11 @@
     }
 
     .form-label {
-        font-size: $font-size-sm;
-        font-weight: 600;
-        color: var(--ks-content-primary);
+        @include calc-form-label;
     }
 
     .form-control {
-        --ks-form-bg: var(--ks-background-input, var(--ks-background-body));
-        --ks-form-color: var(--ks-content-primary);
-        --ks-form-border-color: var(--ks-border-primary);
+        @include calc-form-field;
         font-variant-numeric: tabular-nums;
 
         &::placeholder {
@@ -86,8 +77,7 @@
     }
 
     .hint {
+        @include calc-hint;
         margin: 0.35rem 0 0;
-        font-size: $font-size-xs;
-        color: var(--ks-content-secondary);
     }
 </style>

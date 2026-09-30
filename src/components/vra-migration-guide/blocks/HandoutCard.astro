@@ -26,6 +26,7 @@ const { id, appendix, title, pdfHref } = Astro.props
 </div>
 
 <style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .handout-card {
         display: flex;
         flex-direction: column;
@@ -42,11 +43,8 @@ const { id, appendix, title, pdfHref } = Astro.props
     }
 
     .appendix {
+        @include guide-eyebrow;
         margin: 0 0 0.35rem;
-        font-size: $font-size-xs;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        color: var(--ks-content-link);
     }
 
     .title {

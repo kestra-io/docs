@@ -1,14 +1,16 @@
 import { afterEach, describe, expect, it } from "vitest"
 import { nextTick } from "vue"
+import { compute } from "~/utils/vra-calculator/compute"
 import {
     DEFAULTS,
     SHARE_PARAM,
     STORAGE_KEY,
-    compute,
+    resolveInputs,
+} from "~/utils/vra-calculator/defaults"
+import {
     decodeShareState,
     encodeShareState,
-    resolveInputs,
-} from "~/utils/vra-calculator"
+} from "~/utils/vra-calculator/share"
 import type { BrowserEnv, StorageLike } from "./browser"
 import { createCalculatorStore, type CalculatorStore } from "./calculatorStore"
 

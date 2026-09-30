@@ -230,7 +230,7 @@
                 </section>
             </div>
 
-            <aside class="result" :aria-label="'Payback result'">
+            <aside class="result" aria-label="Payback result">
                 <ResultPanel
                     :id="`${idPrefix}-result`"
                     :payback="result.payback"
@@ -302,6 +302,7 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .calculator-payback {
         container-type: inline-size;
     }
@@ -333,10 +334,8 @@
     }
 
     .panel {
+        @include calc-panel;
         margin-bottom: 1rem;
-        padding: 1.25rem;
-        border: 1px solid var(--ks-border-secondary);
-        border-radius: $border-radius-lg;
     }
 
     .panel-head {
@@ -354,11 +353,7 @@
     }
 
     .step {
-        font-size: $font-size-xs;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--ks-content-secondary);
+        @include guide-eyebrow(var(--ks-content-secondary), true);
         white-space: nowrap;
     }
 
@@ -379,11 +374,7 @@
     }
 
     .derived {
-        margin: 0;
-        padding: 0.65rem 0.8rem;
-        border-radius: $border-radius;
-        background: var(--ks-background-secondary);
-        font-size: $font-size-sm;
+        @include calc-derived;
 
         &.spaced {
             margin-bottom: 1rem;
@@ -391,9 +382,8 @@
     }
 
     .hint {
+        @include calc-hint;
         margin: 0.35rem 0 0.75rem;
-        font-size: $font-size-xs;
-        color: var(--ks-content-secondary);
     }
 
     details {
@@ -416,8 +406,7 @@
     }
 
     .form-label {
-        font-size: $font-size-sm;
-        font-weight: 600;
+        @include calc-form-label;
     }
 
     .range-field {
@@ -431,7 +420,7 @@
 
         input {
             flex: 1;
-            accent-color: var(--ks-content-link);
+            accent-color: var(--ks-border-active);
         }
 
         output {

@@ -1,15 +1,19 @@
 ---
+import { Image } from "astro:assets"
+import bookMockup from "./assets/book-mockup.png"
+
 interface Props {
     title: string
     deck: string
     inside: string[]
     meta: string[]
+    pdfHref: string
 }
 
-const { title, deck, inside, meta } = Astro.props
+const { title, deck, inside, meta, pdfHref } = Astro.props
 ---
 
-<section class="guide-hero">
+<section class="guide-hero surface-dark">
     <div class="container">
         <div class="hero-grid">
             <div class="hero-main">
@@ -22,18 +26,19 @@ const { title, deck, inside, meta } = Astro.props
                 </ul>
             </div>
             <div class="hero-card">
-                <p>
-                    The full guide is on this page. Use the calculator in
-                    Section 7.2 to work out your own payback.
-                </p>
-                <div class="hero-actions">
-                    <a class="btn btn-primary" href="#start-here"
-                        >Read the guide</a
-                    >
-                    <a class="btn btn-secondary" href="#section-7-2"
-                        >Work out your payback</a
-                    >
+                <div class="book-wrap" aria-hidden="true">
+                    <Image
+                        src={bookMockup}
+                        alt=""
+                        loading="eager"
+                        class="book-img"
+                    />
                 </div>
+                <p>
+                    The full guide is on this page, or download the PDF to share
+                    with your team (form required)
+                </p>
+                <a class="btn btn-secondary" href={pdfHref}>Download the PDF</a>
             </div>
         </div>
         <ul class="meta">
@@ -44,13 +49,15 @@ const { title, deck, inside, meta } = Astro.props
 
 <style lang="scss">
     .guide-hero {
-        padding: 4rem 0 2.5rem;
-        border-bottom: 1px solid var(--ks-border-secondary);
-        background: var(--ks-background-body);
-        color: var(--ks-content-primary);
+        --header-h: var(--top-bar-height, 67px);
+        margin-top: calc(-1 * var(--header-h));
+        padding: calc(var(--header-h) + 5.5rem) 0 1.5rem;
+        overflow-x: clip;
+        background: $black;
+        color: $white;
 
         @include media-breakpoint-down(lg) {
-            padding: 2.5rem 0 1.5rem;
+            padding: calc(var(--header-h) + 3rem) 0 1rem;
         }
     }
 
@@ -61,78 +68,191 @@ const { title, deck, inside, meta } = Astro.props
     .hero-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 3rem;
 
         @include media-breakpoint-up(lg) {
-            grid-template-columns: minmax(0, 1fr) 22rem;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
             align-items: center;
-            gap: 3rem;
+            gap: 4rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: minmax(0, 1fr) 520px;
         }
     }
 
     .pill {
+        position: relative;
         display: inline-block;
-        margin-bottom: 1rem;
-        padding: 0.2rem 0.75rem;
-        border: 1px solid var(--ks-border-secondary);
+        margin-bottom: 0.75rem;
+        padding: 0.125rem 0.75rem;
         border-radius: 999px;
+        box-shadow: 3px 3px 0 rgba(173, 41, 250, 0.2);
         font-size: $font-size-xs;
         font-weight: 600;
-        color: var(--ks-content-secondary);
+        line-height: 1.5rem;
+        color: $white;
+        text-shadow: 0 4px 0 rgba($black, 0.25);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #a77af6, #1f9bf3);
+            -webkit-mask:
+                linear-gradient($black 0 0) content-box,
+                linear-gradient($black 0 0);
+            -webkit-mask-composite: xor;
+            mask:
+                linear-gradient($black 0 0) content-box,
+                linear-gradient($black 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+        }
     }
 
     h1 {
         margin-bottom: 1rem;
-        font-size: clamp(2rem, 5vw, 3rem);
+        font-size: clamp(2.25rem, 4.2vw, 3.75rem);
         font-weight: 600;
         line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: $white;
     }
 
     .deck {
-        max-width: 42rem;
-        font-size: 1.05rem;
-        color: var(--ks-content-secondary);
+        margin-bottom: 1rem;
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+        color: $white;
     }
 
     .inside-title {
-        margin: 1.75rem 0 0.75rem;
-        font-size: 1rem;
+        margin: 0 0 1rem;
+        font-size: $font-size-md;
         font-weight: 600;
+        line-height: 1.5rem;
+        color: $white;
     }
 
     .inside-list {
         display: grid;
         gap: 0.5rem;
         margin: 0;
-        padding-left: 1.25rem;
-        color: var(--ks-content-secondary);
-    }
+        padding: 0;
+        list-style: none;
 
-    .hero-card {
-        padding: 1.5rem;
-        border: 1px solid var(--ks-border-secondary);
-        border-radius: $border-radius-lg;
-        background: var(--ks-background-secondary);
+        li {
+            position: relative;
+            padding-left: 2.5rem;
+            font-size: $font-size-md;
+            line-height: 1.5rem;
+            color: $white;
 
-        p {
-            color: var(--ks-content-secondary);
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 1.5rem;
+                height: 1.5rem;
+                background-color: var(--ks-icon-color);
+                mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E")
+                    center / contain no-repeat;
+            }
         }
     }
 
-    .hero-actions {
+    .hero-card {
+        position: relative;
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 520px;
+        aspect-ratio: 1;
+        margin: 5rem auto 0;
+        padding: 0 2rem 1.25rem;
+        border-radius: 20px;
+        background: linear-gradient(
+            234deg,
+            #1f1f1f 50%,
+            #1f1f1f 62%,
+            #51659d 92%
+        );
+        text-align: center;
+
+        @include media-breakpoint-up(lg) {
+            margin: 0;
+        }
+
+        p {
+            position: relative;
+            max-width: 20rem;
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.25rem;
+            color: rgba($white, 0.8);
+        }
+
+        .btn {
+            position: relative;
+            min-width: 11.25rem;
+            padding: 0.5rem 1.375rem;
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+        }
+    }
+
+    .book-wrap {
+        position: absolute;
+        left: 50%;
+        top: -22%;
+        width: 118%;
+        transform: translateX(-49%);
+        pointer-events: none;
+
+        .book-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
     }
 
     .meta {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem 1.5rem;
-        margin: 2rem 0 0;
+        justify-content: center;
+        gap: 0.5rem 0;
+        margin: 2.5rem 0 0;
         padding: 0;
         list-style: none;
         font-size: $font-size-sm;
-        color: var(--ks-content-secondary);
+        line-height: 1.25rem;
+        color: rgba($white, 0.8);
+
+        li {
+            padding: 0 1.125rem;
+            border-left: 1px solid rgba($white, 0.8);
+
+            &:first-child {
+                border-left: 0;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            li {
+                padding: 0;
+                border-left: 0;
+            }
+        }
     }
 </style>

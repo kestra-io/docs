@@ -23,9 +23,8 @@
 </template>
 
 <script setup lang="ts">
+    import { refAutoReset, useClipboard } from "@vueuse/core"
     import { nextTick, ref, useTemplateRef } from "vue"
-    import { copyText } from "../browser"
-    import { useTransientStatus } from "./useTransientStatus"
 
     const props = defineProps<{
         /** Builds the link to the current state; null before hydrate */
@@ -33,27 +32,29 @@
         disabled?: boolean
     }>()
 
-    const { status, show } = useTransientStatus()
+    const { copy, isSupported } = useClipboard()
+    const status = refAutoReset("", 4000)
     const fallbackUrl = ref("")
     const fallback = useTemplateRef<HTMLInputElement>("fallback")
 
     async function share() {
         const url = props.getUrl()
         if (!url) return
-        if (await copyText(url)) {
+        if (isSupported.value) {
+            await copy(url)
             fallbackUrl.value = ""
-            show("Link copied.")
+            status.value = "Link copied."
             return
         }
-        // Clipboard refused: show the link to copy by hand, as the reference does.
         fallbackUrl.value = url
-        show("Copy the link below.")
+        status.value = "Copy the link below."
         await nextTick()
         fallback.value?.select()
     }
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .share-link {
         display: flex;
         flex-wrap: wrap;
@@ -62,14 +63,11 @@
     }
 
     .status {
-        font-size: $font-size-sm;
-        color: var(--ks-content-secondary);
+        @include calc-status;
     }
 
     .link-box {
-        --ks-form-bg: var(--ks-background-input, var(--ks-background-body));
-        --ks-form-color: var(--ks-content-primary);
-        --ks-form-border-color: var(--ks-border-primary);
+        @include calc-form-field;
         width: 100%;
         font-size: $font-size-xs;
     }

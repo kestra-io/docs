@@ -15,29 +15,69 @@ const { kicker, title } = Astro.props
 
 <style lang="scss">
     .guide-card {
-        padding: 1.1rem 1.2rem;
+        padding: 2rem;
         border: 1px solid var(--ks-border-secondary);
         border-radius: $border-radius-lg;
-        background: var(--ks-background-secondary);
-        font-size: $font-size-sm;
+        background: var(--ks-background-primary);
+        box-shadow: $box-shadow-sm;
+        font-size: $font-size-md;
+        line-height: 1.5rem;
+        color: var(--ks-content-secondary);
 
         > :global(:last-child) {
             margin-bottom: 0;
         }
+
+        :global(p) {
+            margin-bottom: 1rem;
+        }
+
+        :global(blockquote) {
+            margin: 0 0 1rem;
+            padding: 1rem;
+            border: 0;
+            border-radius: 9px;
+            background: var(--ks-background-purple-light);
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+            color: var(--ks-content-primary);
+
+            :global(p) {
+                margin: 0;
+            }
+
+            :global(em) {
+                font-weight: 500;
+            }
+
+            :global(p)::before {
+                content: "“ ";
+                font-weight: 600;
+                color: var(--ks-content-link);
+            }
+
+            :global(p)::after {
+                content: "”";
+                font-weight: 600;
+                color: var(--ks-content-link);
+            }
+        }
     }
 
     .kicker {
-        margin: 0 0 0.35rem;
-        font-size: $font-size-xs;
+        margin: 0 0 1rem;
+        font-size: $font-size-2xl;
         font-weight: 600;
-        letter-spacing: 0.05em;
-        color: var(--ks-content-link);
+        line-height: 2.375rem;
+        color: var(--ks-icon-color);
     }
 
     .title {
-        margin: 0 0 0.5rem;
-        font-size: 1rem;
-        font-weight: 600;
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.5rem;
+        letter-spacing: -0.1px;
         color: var(--ks-content-primary);
     }
 </style>

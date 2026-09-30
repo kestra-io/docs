@@ -62,21 +62,19 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .calculator-funnel :deep(a) {
         color: var(--ks-content-link);
     }
 
     .panel {
+        @include calc-panel;
         container-type: inline-size;
-        padding: 1.25rem;
-        border: 1px solid var(--ks-border-secondary);
-        border-radius: $border-radius-lg;
     }
 
     .hint {
+        @include calc-hint;
         margin: 0 0 0.75rem;
-        font-size: $font-size-xs;
-        color: var(--ks-content-secondary);
 
         &.after {
             margin: 0.75rem 0 0;
@@ -84,11 +82,7 @@
     }
 
     .derived {
-        margin: 0;
-        padding: 0.65rem 0.8rem;
-        border-radius: $border-radius;
-        background: var(--ks-background-secondary);
-        font-size: $font-size-sm;
+        @include calc-derived;
     }
 
     .readout {
@@ -100,12 +94,8 @@
     }
 
     .label {
+        @include guide-eyebrow(var(--ks-content-secondary), true);
         margin: 0 0 0.5rem;
-        font-size: $font-size-xs;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--ks-content-secondary);
     }
 
     .tiles {

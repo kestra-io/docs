@@ -43,53 +43,23 @@ const { count, legendId, id } = Astro.props
         if (focus) buttons[index].focus()
     }
 
-    function showTab(root: HTMLElement, which: string) {
-        root.querySelectorAll<HTMLElement>("[data-part-tab]").forEach((t) => {
-            const on = t.dataset.partTab === which
-            t.setAttribute("aria-selected", on ? "true" : "false")
-            t.tabIndex = on ? 0 : -1
-        })
-        root.querySelectorAll<HTMLElement>("[data-part-view]").forEach(
-            (v) => (v.hidden = v.dataset.partView !== which),
-        )
-    }
-
     document.addEventListener("click", (e) => {
         const button = find<HTMLButtonElement>(e.target, ".part-button")
-        if (button) {
+        if (button)
             openPart(button.root, buttonsOf(button.root).indexOf(button.el))
-            return
-        }
-        const tab = find<HTMLElement>(e.target, "[data-part-tab]")
-        if (tab) showTab(tab.root, tab.el.dataset.partTab!)
     })
 
     document.addEventListener("keydown", (e) => {
         const button = find<HTMLButtonElement>(e.target, ".part-button")
-        if (button && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
-            e.preventDefault()
-            const n = buttonsOf(button.root).length
-            const i = buttonsOf(button.root).indexOf(button.el)
-            openPart(
-                button.root,
-                (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n,
-                true,
-            )
-            return
-        }
-        const tab = find<HTMLElement>(e.target, "[data-part-tab]")
-        if (tab && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
-            e.preventDefault()
-            const list = tab.el.parentElement!
-            const sibling = (
-                e.key === "ArrowRight"
-                    ? (tab.el.nextElementSibling ?? list.firstElementChild)
-                    : (tab.el.previousElementSibling ?? list.lastElementChild)
-            ) as HTMLElement | null
-            if (!sibling?.dataset.partTab) return
-            showTab(tab.root, sibling.dataset.partTab)
-            sibling.focus()
-        }
+        if (!button || (e.key !== "ArrowDown" && e.key !== "ArrowUp")) return
+        e.preventDefault()
+        const n = buttonsOf(button.root).length
+        const i = buttonsOf(button.root).indexOf(button.el)
+        openPart(
+            button.root,
+            (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n,
+            true,
+        )
     })
 </script>
 

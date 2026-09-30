@@ -39,9 +39,16 @@
                                         ? 'location'
                                         : undefined
                                 "
-                                @click="onNavigate(group.id, $event)"
-                                >{{ group.text }}</a
+                                @click="onNavigate(group.id)"
                             >
+                                <span class="text">{{ group.text }}</span>
+                                <span class="chevron" aria-hidden="true">
+                                    <ChevronDown
+                                        v-if="openGroup === group.id"
+                                    />
+                                    <ChevronRight v-else />
+                                </span>
+                            </a>
                             <ul v-if="group.children.length" class="subs">
                                 <li
                                     v-for="sub in group.children"
@@ -57,7 +64,7 @@
                                                 ? 'location'
                                                 : undefined
                                         "
-                                        @click="onNavigate(sub.id, $event)"
+                                        @click="onNavigate(sub.id)"
                                         >{{ sub.text }}</a
                                     >
                                     <ul v-if="sub.children.length" class="kids">
@@ -74,9 +81,7 @@
                                                         ? 'location'
                                                         : undefined
                                                 "
-                                                @click="
-                                                    onNavigate(kid.id, $event)
-                                                "
+                                                @click="onNavigate(kid.id)"
                                                 >{{ kid.text }}</a
                                             >
                                         </li>
@@ -96,15 +101,17 @@
 
 <script setup lang="ts">
     import { computed, onMounted, onUnmounted, ref } from "vue"
+    import { useMediaQuery } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+    import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import { buildTocTree, type TocLink } from "./toc"
 
     const props = defineProps<{ links: TocLink[] }>()
 
     const tree = computed(() => buildTocTree(props.links))
     const expanded = ref(false)
-    const belowLg = ref(false)
+    const belowLg = useMediaQuery("(max-width: 991.98px)")
     const activeId = ref("")
 
     const collapsed = computed(() => belowLg.value && !expanded.value)
@@ -133,7 +140,7 @@
         return ""
     }
 
-    const HEADER_OFFSET = 120
+    const HEADER_OFFSET = 144
 
     let frame = 0
     function updateActive() {
@@ -153,24 +160,17 @@
         if (!frame) frame = requestAnimationFrame(updateActive)
     }
 
-    function onNavigate(id: string, _event: MouseEvent) {
+    function onNavigate(id: string) {
         activeId.value = id
         if (belowLg.value) expanded.value = false
     }
 
-    let media: MediaQueryList | undefined
-    const onMedia = () => (belowLg.value = !!media?.matches)
-
     onMounted(() => {
-        media = window.matchMedia("(max-width: 991.98px)")
-        onMedia()
-        media.addEventListener("change", onMedia)
         window.addEventListener("scroll", onScroll, { passive: true })
         updateActive()
     })
 
     onUnmounted(() => {
-        media?.removeEventListener("change", onMedia)
         window.removeEventListener("scroll", onScroll)
         if (frame) cancelAnimationFrame(frame)
     })
@@ -178,9 +178,10 @@
 
 <style lang="scss" scoped>
     .title {
-        margin-bottom: 1rem;
-        font-weight: 700;
-        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
         color: var(--ks-content-primary);
     }
 
@@ -244,39 +245,60 @@
     .groups {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: 0.5rem;
     }
 
     a {
         display: block;
-        padding: 0.15rem 0 0.15rem 0.75rem;
-        border-left: 2px solid transparent;
         color: var(--ks-content-secondary);
         text-decoration: none;
         font-size: $font-size-sm;
-        line-height: 1.4;
+        line-height: 1.25rem;
 
         &:hover {
             color: var(--ks-content-link);
         }
 
-        &.trail {
-            color: var(--ks-content-primary);
-        }
-
+        &.trail,
         &.active {
-            border-left-color: var(--ks-content-link);
             color: var(--ks-content-link);
-            font-weight: 500;
         }
     }
 
-    .level-2 {
-        padding-left: 1.5rem;
+    .level-1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.25rem;
+        font-size: $font-size-md;
+        line-height: 1.5rem;
+        color: var(--ks-content-primary);
+
+        .chevron {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .subs,
+    .kids {
+        margin: 0 0.6875rem;
+        border-left: 1px solid var(--ks-border-secondary);
+    }
+
+    .kids {
+        margin: 0 0 0 0.9375rem;
+    }
+
+    .level-2,
+    .level-3 {
+        padding: 0.25rem 0.75rem 0.25rem 0.9375rem;
     }
 
     .level-3 {
-        padding-left: 2.25rem;
         font-size: $font-size-xs;
     }
 
@@ -293,18 +315,25 @@
     }
 
     .footer {
-        margin-top: 1.25rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--ks-border-secondary);
+        margin-top: 1rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1rem;
 
         // Astro passes the slot as static HTML, so :slotted() does not match.
-        :deep(a) {
+        :deep(.btn) {
+            width: 100%;
+            padding: 0.5rem 1.25rem;
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+        }
+
+        :deep(a:not(.btn)) {
             color: var(--ks-content-link);
             font-size: $font-size-sm;
-            font-weight: 600;
+            line-height: 1.25rem;
+            text-align: center;
+            text-decoration: underline;
         }
     }
 </style>

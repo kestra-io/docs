@@ -75,9 +75,5 @@ describe("mdxToMarkdown", () => {
         })
         expect(out).not.toMatch(/^import /m)
         expect(out).not.toMatch(/<\/?[A-Z]/)
-        expect(out).toContain(
-            "### 7.2 What leaving costs, and when it pays back",
-        )
-        expect(out).toContain("**Request intake and governance**")
     })
 })

@@ -32,9 +32,3 @@ export const GOLDEN = golden as unknown as {
     alloc: { total: number; w: number[]; out: number[] }[]
     share: { encoded: string; decoded: CalcInputs }
 }
-
-export function goldenCase(name: string): GoldenCase {
-    const found = GOLDEN.cases.find((c) => c.name === name)
-    if (!found) throw new Error(`golden case "${name}" missing`)
-    return found
-}

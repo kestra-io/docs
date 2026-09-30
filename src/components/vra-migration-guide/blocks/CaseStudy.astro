@@ -33,23 +33,27 @@ const { status, stats = [], quote, quoteBy, storyHref } = Astro.props
     {
         quote && (
             <blockquote class="quote">
-                <p>{quote}</p>
-                {quoteBy && (
-                    <footer>
-                        {quoteBy}
-                        {storyHref && (
-                            <>
-                                , <a href={storyHref}>read the full story</a>
-                            </>
-                        )}
-                    </footer>
-                )}
+                <div class="quote-inner">
+                    <p>{quote}</p>
+                    {quoteBy && (
+                        <footer>
+                            {quoteBy}
+                            {storyHref && (
+                                <>
+                                    ,{" "}
+                                    <a href={storyHref}>read the full story</a>
+                                </>
+                            )}
+                        </footer>
+                    )}
+                </div>
             </blockquote>
         )
     }
 </div>
 
 <style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .case-study {
         margin: 1.25rem 0;
         padding: 1.1rem 1.25rem;
@@ -63,11 +67,8 @@ const { status, stats = [], quote, quoteBy, storyHref } = Astro.props
     }
 
     .status {
+        @include guide-eyebrow;
         margin: 0 0 0.5rem;
-        font-size: $font-size-xs;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        color: var(--ks-content-link);
     }
 
     .stats {
@@ -98,17 +99,49 @@ const { status, stats = [], quote, quoteBy, storyHref } = Astro.props
 
     .quote {
         margin: 1rem 0 0;
-        padding-left: 1rem;
-        border-left: 3px solid var(--ks-content-link);
+        padding: 0.375rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 13px;
+    }
+
+    .quote-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 2.5rem 2rem;
+        border-radius: 9px;
+        background: var(--ks-background-purple-light);
+
+        @include media-breakpoint-down(md) {
+            padding: 1.5rem 1.25rem;
+        }
 
         p {
-            margin: 0 0 0.35rem;
-            font-style: italic;
+            margin: 0;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            line-height: 1.75rem;
             color: var(--ks-content-primary);
+
+            &::before {
+                content: "“ ";
+                color: var(--ks-content-link);
+            }
+
+            &::after {
+                content: "”";
+                color: var(--ks-content-link);
+            }
         }
 
         footer {
+            font-size: $font-size-md;
+            line-height: 1.5rem;
             color: var(--ks-content-secondary);
+
+            &::before {
+                content: "— ";
+            }
         }
     }
 </style>
