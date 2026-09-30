@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Instance-owner-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Instance-owner-only are not tenant-scoped.
-  version: 2.0.3
+  version: 2.0.4
 tags:
 - name: Flows
   description: Flows api
@@ -11311,6 +11311,59 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BlueprintController.UseBlueprintTemplateResponse'
+        '401':
+          description: Authentication required
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '403':
+          description: Access denied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/blueprints/flows/{id}/use-template/validate:
+    post:
+      tags:
+      - Blueprints
+      summary: Validate the template arguments of a Flow Blueprint template
+      description: Resolves the template arguments against the values already provided, so conditional arguments ('dependsOn') and validation errors can be rendered by the form. Requires BLUEPRINT permission.
+      operationId: validateBlueprintTemplateArguments
+      parameters:
+      - name: id
+        in: path
+        description: The flow blueprint id to use
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlueprintController.UseBlueprintTemplateRequest'
+        required: true
+      responses:
+        '200':
+          description: validateBlueprintTemplateArguments 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlueprintController.ApiValidateBlueprintTemplateArgumentsResponse'
         '401':
           description: Authentication required
           content:
@@ -34967,6 +35020,42 @@ components:
           format: date-time
         template:
           $ref: '#/components/schemas/BlueprintTemplate'
+    BlueprintController.ApiValidateBlueprintTemplateArgumentsResponse:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlueprintController.ApiValidateBlueprintTemplateArgumentsResponse.ApiTemplateArgument'
+    BlueprintController.ApiValidateBlueprintTemplateArgumentsResponse.ApiTemplateArgument:
+      required:
+      - errors
+      - input
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/Input_Object_'
+        value:
+          type: object
+        enabled:
+          type: boolean
+        isDefault:
+          type: boolean
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlueprintController.ApiValidateBlueprintTemplateArgumentsResponse.ApiTemplateArgumentError'
+    BlueprintController.ApiValidateBlueprintTemplateArgumentsResponse.ApiTemplateArgumentError:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+        renderError:
+          type: boolean
     BlueprintController.FlowBlueprintCreateOrUpdate:
       required:
       - source
@@ -35015,6 +35104,10 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/Input_Object_'
+        templateArgumentsOrder:
+          type: array
+          items:
+            type: string
     BlueprintWithFlowEntity:
       required:
       - deleted
@@ -38878,6 +38971,9 @@ components:
         gracePeriod:
           type: string
           format: date-time
+        expiryWarningDays:
+          type: integer
+          format: int64
     MiscController.LoginConfiguration:
       type: object
       properties:
