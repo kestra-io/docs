@@ -295,6 +295,66 @@ tasks:
       - python /opt/myapp/inference.py --model /opt/models/my-model
 ```
 
+## Monitoring
+
+Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads with other input files. No image change is needed.
+
+kotlp reports the instance's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
+
+| Metric | Type | Unit | Attribute |
+|---|---|---|---|
+| `process.cpu.time` | sum | `s` | `cpu.mode`: `user` or `system` |
+| `process.cpu.utilization` | gauge | `1` | `cpu.mode`: `user` or `system` |
+| `process.memory.usage` | gauge | `By` | — |
+| `process.memory.virtual` | gauge | `By` | — |
+| `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.network.io` | sum | `By` | `network.io.direction`: `receive` or `transmit` |
+| `process.thread.count` | gauge | `{thread}` | — |
+| `process.open_file_descriptor.count` | gauge | `{count}` | — |
+
+The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all traffic in the network namespace the command runs in, including loopback, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
+
+kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
+
+Monitoring fixes a limitation of the SSM log stream: stdout and stderr are both delivered as a single stream with no way to distinguish them. kotlp tags each line with the stream it came from, so lines the command wrote to stderr are logged at ERROR instead of INFO.
+
+```yaml
+id: ec2_with_monitoring
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.ee.aws.runner.Ec2
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+      region: "{{ secret('AWS_REGION') }}"
+      amiId: "{{ secret('EC2_AMI_ID') }}"
+      instanceType: t3.micro
+      iamInstanceProfile: kestra-ec2-ssm-profile
+      subnetId: "{{ secret('SUBNET_ID') }}"
+      bucket: "{{ secret('S3_BUCKET') }}"
+      monitoring:
+        enabled: true
+    commands:
+      - echo "stdout line"
+      - echo "stderr line" >&2
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `monitoring.enabled` | `false` | When true, wraps the task command with kotlp. |
+| `monitoring.metricsInterval` | `PT1S` | How often kotlp samples resource usage. Accepts values between `PT0.001S` and `PT1H`. |
+
+### Constraints
+
+Three requirements apply when monitoring is enabled:
+
+- `bucket` must be configured. kotlp is staged as a working-directory file and uploaded to S3 alongside other input files. The task fails immediately if `bucket` is absent.
+- The image must provide `/bin/sh`, `gzip`, and `chmod`. The instance must also have a writable `$TMPDIR` (default `/tmp`). Standard AMIs (Amazon Linux, Ubuntu) satisfy all requirements.
+- An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
+
 ## Key properties
 
 | Property | Required | Default | Description |
