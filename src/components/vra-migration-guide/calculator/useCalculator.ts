@@ -41,7 +41,6 @@ export function useCalculator(store: CalculatorStore = calculatorStore) {
         store.setInput(key, value)
     }
 
-    /** v-bind helper for a field: its value, invalid state and update handler. */
     function field(key: Exclude<InputKey, "cur">) {
         return {
             modelValue: inputs.value[key],

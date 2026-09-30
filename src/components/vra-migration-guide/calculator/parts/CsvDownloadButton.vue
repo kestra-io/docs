@@ -17,7 +17,6 @@
     import { downloadTextFile } from "../browser"
 
     const props = defineProps<{
-        /** Builds the file from the current state at click time */
         getFile: () => { filename: string; content: string }
         disabled?: boolean
     }>()

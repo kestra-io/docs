@@ -27,7 +27,6 @@
     import { nextTick, ref, useTemplateRef } from "vue"
 
     const props = defineProps<{
-        /** Builds the link to the current state; null before hydrate */
         getUrl: () => string | null
         disabled?: boolean
     }>()

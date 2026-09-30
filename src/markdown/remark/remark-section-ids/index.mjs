@@ -1,21 +1,5 @@
 import { visit } from "unist-util-visit"
 
-// Gives numbered headings stable `section-…` ids, for pages whose PDF or
-// other documents deep-link into them: "3.2.2 Rationalize" becomes
-// id="section-3-2-2" and "7. Build the business case" becomes "section-7".
-// Heading text can change without breaking those links, as long as the
-// number stays.
-//
-// Chapter headings (h2) also get their number wrapped in
-// <span class="section-number visually-hidden">, so the page shows the title
-// alone. The number stays in the heading's text, so the table of contents
-// and screen readers still get "7. Build the business case".
-//
-// Opt-in per file with `sectionIds: true` in the frontmatter, so no other
-// page's headings change. Headings without a leading number, or with an id
-// already set, are left to rehypeHeadingIds.
-
-// "3.2.2 " or "7. ", but not a bare "2026 ".
 const NUMBERED = /^(\d+(?:\.\d+)+|\d+(?=\.))\.?\s/
 
 function textOf(node) {

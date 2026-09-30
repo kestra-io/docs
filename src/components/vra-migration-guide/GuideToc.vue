@@ -320,7 +320,6 @@
         flex-direction: column;
         gap: 1rem;
 
-        // Astro passes the slot as static HTML, so :slotted() does not match.
         :deep(.btn) {
             width: 100%;
             padding: 0.5rem 1.25rem;

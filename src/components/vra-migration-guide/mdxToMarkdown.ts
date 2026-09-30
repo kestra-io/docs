@@ -3,7 +3,6 @@
 // wrappers around them are dropped, a `title` or `label` on a wrapper becomes
 // a bold line, and the calculators become a line pointing to the web page.
 
-/** A JSX tag, including attributes with nested `{…}` expressions. */
 const JSX_TAG =
     /<\/?([A-Z][A-Za-z0-9.]*)((?:\s+[A-Za-z:-]+(?:=(?:"[^"]*"|'[^']*'|\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}))?)*)\s*\/?>/g
 
@@ -15,11 +14,8 @@ export function mdxToMarkdown(
 ): string {
     return (
         body
-            // ESM imports and exports at the top of the file
             .replace(/^(?:import|export)\s.*$/gm, "")
-            // {/* MDX comments */}
             .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
-            // <Fragment slot="…"> and </Fragment>
             .replace(/<\/?Fragment(?:\s[^>]*)?>/g, "")
             .replace(JSX_TAG, (tag, name: string, attributes: string) => {
                 if (name in replacements) return replacements[name]
@@ -29,7 +25,6 @@ export function mdxToMarkdown(
                     ATTRIBUTE("label").exec(attributes)?.[1]
                 return heading ? `**${heading}**` : ""
             })
-            // inline HTML links left inside slots
             .replace(/<a href="([^"]+)">([^<]*)<\/a>/g, "[$2]($1)")
             .replace(/\n{3,}/g, "\n\n")
             .trim() + "\n"
