@@ -1162,7 +1162,7 @@ const FAQ = [
             &:nth-child(2) { max-height: 42px; max-width: 180px; }  // Crédit Agricole (icon + text)
             &:nth-child(3) { max-height: 36px; max-width: 200px; }  // Bloomberg (text wide)
             &:nth-child(4) { max-height: 56px; max-width: 200px; }  // TotalEnergies (icon + text stacked)
-            &:nth-child(5) { max-height: 36px; max-width: 160px; }  // iCapital (text)
+            &:nth-child(5) { max-height: 36px; max-width: 160px; clip-path: inset(0 0 0 18.5%); transform: translateY(2px); }  // iCapital (wordmark only; icon mark clipped, nudged down to align baseline)
             &:nth-child(6) { max-height: 42px; max-width: 170px; }  // Matmut (icon + text)
             &:nth-child(7) { max-height: 36px; max-width: 140px; }  // Gate.io (text)
         }
