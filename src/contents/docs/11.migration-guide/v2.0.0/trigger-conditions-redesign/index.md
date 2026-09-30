@@ -51,6 +51,7 @@ These functions are introduced specifically for `when` expressions to replace ve
 | `hourOfDay` | `hourOfDay(date)` | Returns the hour as an integer (0–23). |
 | `dayOfMonth` | `dayOfMonth(date)` | Returns the day of the month as an integer (1–31). |
 | `monthOfYear` | `monthOfYear(date)` | Returns the month as an integer (1–12). |
+| `isDateBetween` | `isDateBetween(date, after, before)` | Returns `true` if the date is strictly after `after` and strictly before `before`, compared as instants. Available from 2.0.4. |
 
 Existing Pebble filters (`startsWith`, `endsWith`, `date`, `timestamp`) and operators (`and`, `or`, `not`, `==`, `!=`, `>`, `<`, `>=`, `<=`) cover the remaining use cases.
 
@@ -252,15 +253,18 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/5 * * * *"
-    when: "{{ (trigger.date | timestamp()) > ('2025-12-31T23:59:59Z' | timestamp()) and (trigger.date | timestamp()) < ('2026-06-30T23:59:59Z' | timestamp()) }}"
+    when: "{{ isDateBetween(trigger.date, '2025-12-31T23:59:59Z', '2026-06-30T23:59:59Z') }}"
 ```
 
+Give both bounds an explicit offset (`Z` or `±HH:MM`); a datetime without one raises an error.
+
 :::alert{type="info"}
-Inside a `when` expression `trigger.date` is a `ZonedDateTime`, not a string. Comparing it
-directly against a string literal raises `Could not perform greater than comparison`, and the
-scheduler emits a FAILED execution on every scheduled date. Convert both sides with
-`| timestamp()`, and always give the literal an explicit offset (`Z` or `±HH:MM`) — a literal
-without one is resolved in the server's default timezone.
+`isDateBetween()` is available from Kestra 2.0.4. On 2.0.0 to 2.0.3, convert both sides with
+`| timestamp()` instead:
+`when: "{{ (trigger.date | timestamp()) > ('2025-12-31T23:59:59Z' | timestamp()) and (trigger.date | timestamp()) < ('2026-06-30T23:59:59Z' | timestamp()) }}"`.
+Do not compare `trigger.date` directly against a string literal: inside a `when` expression it is
+a `ZonedDateTime`, so the comparison raises `Could not perform greater than comparison` and the
+scheduler emits a FAILED execution on every scheduled date.
 :::
 
 ### Schedule: specific hours only
@@ -384,14 +388,14 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 | `PublicHoliday` (country: FR) | `{{ isPublicHoliday(trigger.date, 'FR') }}` |
 | `Not` > `PublicHoliday` + `Weekend` (workdays) | `{{ not isWeekend(trigger.date) and not isPublicHoliday(trigger.date, 'FR') }}` |
 | `DayWeekInMonth` (MONDAY, FIRST) | `{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}` |
-| `DateTimeBetween` (after/before) | `{{ (trigger.date \| timestamp()) > ('2025-12-31T23:59:59Z' \| timestamp()) and (trigger.date \| timestamp()) < ('2026-06-30T23:59:59Z' \| timestamp()) }}` |
+| `DateTimeBetween` (after/before) | `{{ isDateBetween(trigger.date, '2025-12-31T23:59:59Z', '2026-06-30T23:59:59Z') }}` |
 | `TimeBetween` (08:00-17:00) | `{{ hourOfDay(trigger.date) >= 8 and hourOfDay(trigger.date) < 17 }}` |
 | `Expression` (custom Pebble) | Direct `when` expression, no wrapper needed |
 | `Expression` on webhook body | `{{ trigger.body.field == 'value' }}` |
 | `Expression` on webhook headers | `{{ trigger.headers['X-Key'] contains 'value' }}` — header values are lists; use `contains` not `==`. The header name must match the exact casing the sender uses. |
 | Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
 
-For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference. The `timestamp` filter used above is documented with the [date filters](../../../expressions/03.filters/04.dates/index.mdx).
+For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, `isDateBetween`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference. The `timestamp` filter used for 2.0.0 to 2.0.3 is documented with the [date filters](../../../expressions/03.filters/04.dates/index.mdx).
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers
 
