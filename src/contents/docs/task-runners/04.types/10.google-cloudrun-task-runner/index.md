@@ -399,7 +399,7 @@ After the task completes, the Cloud Run job is automatically deleted to free up 
 Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads with other input files. No image change is needed.
 
 :::alert{type="info"}
-`monitoring.enabled` has no effect when `useBucketForLog: true`. In that mode, the runner already invokes kotlp and reports the same metrics and stderr tagging. Set `monitoring.enabled: true` only when `useBucketForLog` is not set or is `false`.
+`monitoring.enabled` has no effect when `useBucketForLog: true`. In that mode, the runner already invokes kotlp and reports the same metrics and stderr tagging, sampled every `logFlushInterval` (default `PT2S`). `monitoring.metricsInterval` is ignored. Set `monitoring.enabled: true` only when `useBucketForLog` is not set or is `false`.
 :::
 
 kotlp reports the container's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
@@ -419,7 +419,7 @@ The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.i
 
 kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
 
-Monitoring fixes a limitation of the Cloud Logging stream: stdout and stderr are both delivered as a single stream with no way to distinguish them. kotlp tags each line with the stream it came from, so lines the command wrote to stderr are logged at ERROR instead of INFO.
+Cloud Logging does not give container stderr an ERROR severity, so without monitoring those lines are logged at INFO. kotlp tags each line with the stream it came from, so lines the command wrote to stderr are logged at ERROR instead of INFO.
 
 ```yaml
 id: cloudrun_with_monitoring
