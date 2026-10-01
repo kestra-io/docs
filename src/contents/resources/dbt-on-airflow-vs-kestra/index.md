@@ -160,7 +160,7 @@ For teams exploring transformation tools beyond dbt, Kestra's approach is equall
 | **Operational Complexity** | High (Scheduler, Worker, Metadata DB management)      | Lower (Single binary deployment option)                    |
 | **Scalability**         | Horizontal scaling with Celery/Kubernetes Executor    | Built-in horizontal scaling with Kafka/Pulsar              |
 | **Observability**       | UI for DAG runs, logs, task instances                 | UI with real-time graph, detailed logs, outputs, metrics   |
-| **Ecosystem & Plugins** | Vast ecosystem of Python-based operators              | 1,700+ plugins across data, infra, AI, and business tools  |
+| **Ecosystem & Plugins** | Vast ecosystem of Python-based operators              | {totalPlugins}+ plugins across data, infra, AI, and business tools  |
 | **Learning Curve**      | Steep, requires Python and Airflow-specific knowledge | Approachable for engineers familiar with YAML and CI/CD    |
 | **GitOps & Versioning** | Possible with external tooling and best practices     | Native, as YAML files are inherently version-controllable  |
 | **Event-Driven**        | Supported via Sensors and deferrable operators        | Native support for event-driven triggers (Webhook, Kafka)  |

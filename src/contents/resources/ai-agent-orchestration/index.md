@@ -144,7 +144,7 @@ Agents often require access to sensitive data and systems. Ensuring they operate
 
 ### The Evolving Landscape of AI Agent Frameworks
 
-The AI space is moving incredibly fast, with new models and frameworks emerging constantly. An effective orchestration platform must be vendor-agnostic, allowing you to integrate the best tools for the job without being locked into a single ecosystem. Kestra's plugin-based architecture, with over 1,700 integrations, ensures you can connect to any LLM, vector database, or AI service. This flexibility allows you to evolve your AI stack without having to re-architect your core orchestration logic. Kestra's [agent skills](/docs/ai-tools/agent-skills) further extend this by allowing agents to operate Kestra itself, creating powerful self-managing workflows.
+The AI space is moving incredibly fast, with new models and frameworks emerging constantly. An effective orchestration platform must be vendor-agnostic, allowing you to integrate the best tools for the job without being locked into a single ecosystem. Kestra's plugin-based architecture, with {totalPlugins}+ integrations, ensures you can connect to any LLM, vector database, or AI service. This flexibility allows you to evolve your AI stack without having to re-architect your core orchestration logic. Kestra's [agent skills](/docs/ai-tools/agent-skills) further extend this by allowing agents to operate Kestra itself, creating powerful self-managing workflows.
 
 ## Implementing AI Agent Orchestration in Your Enterprise
 
