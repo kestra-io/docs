@@ -12,7 +12,7 @@ faq:
   - question: "What is the primary difference between Kestra and traditional workload automation tools?"
     answer: "Kestra offers a declarative, YAML-based approach to orchestration, unifying data, AI, and infrastructure workflows. Unlike traditional tools often focused on scheduled batch jobs, Kestra is event-driven, language-agnostic, and designed for GitOps practices, providing greater flexibility and lower operational overhead for diverse technical teams."
   - question: "Can Kestra integrate with existing enterprise systems like SAP or ServiceNow?"
-    answer: "Yes, Kestra has a plugin library with over 2,000 integrations, including native support for major cloud providers, databases, messaging queues, and enterprise systems like ServiceNow. This allows it to orchestrate workflows that span across your entire tech stack, building on existing investments."
+    answer: "Yes, Kestra has a plugin library with {totalPlugins}+ integrations, including native support for major cloud providers, databases, messaging queues, and enterprise systems like ServiceNow. This allows it to orchestrate workflows that span across your entire tech stack, building on existing investments."
   - question: "What should I look for in a Broadcom Automic Automation replacement?"
     answer: "Key factors include deployment flexibility (cloud, on-prem, hybrid), pricing model transparency, ease of use (declarative vs. visual), integration capabilities with your tech stack, developer experience, and scalability for future needs. Consider tools that offer strong governance, observability, and a clear modernization path."
   - question: "Is Control-M a direct competitor to Broadcom Automic Automation?"
@@ -65,7 +65,7 @@ The market offers several strong alternatives, each with a different approach to
 
 Kestra is an [open-source](https://github.com/kestra-io/kestra) (Apache 2.0), event-driven orchestration platform that unifies data, AI, and infrastructure workflows under a single, declarative control plane. Workflows are defined in simple YAML, making them easy to version, review, and manage alongside other application code.
 
-Its language-agnostic architecture allows teams to orchestrate any tool or script, from Python and Shell to SQL and Docker containers, using a library of over 2,000 plugins. Kestra’s event-driven nature makes it ideal for modern, reactive workflows that go beyond simple cron-based scheduling.
+Its language-agnostic architecture allows teams to orchestrate any tool or script, from Python and Shell to SQL and Docker containers, using a library of {totalPlugins}+ plugins. Kestra’s event-driven nature makes it ideal for modern, reactive workflows that go beyond simple cron-based scheduling.
 
 For enterprises, Kestra offers an Enterprise Edition with features like multi-tenancy, advanced security (RBAC, SSO), and high-availability deployments. This makes it a powerful choice for organizations looking to standardize automation across diverse teams. For instance, [CAGIP, Crédit Agricole's IT production arm](/customers/credit-agricole), transformed its infrastructure operations and scaled data workflows across more than 100 clusters with Kestra. Similarly, a [Fortune 500 industrial company](/customers/fortune-500-company) replaced VMware Aria Automation with Kestra to secure hybrid cloud automation across IT and OT environments.
 

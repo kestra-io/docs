@@ -147,7 +147,7 @@ Not every step in a case can be fully automated. Kestra natively supports human-
 
 ### Polyglot Task Execution: Integrating Any System or API
 
-Case management requires connecting to a wide array of systems. Kestra's language-agnostic architecture and vast library of over 1,700 plugins allow you to integrate with virtually any tool or API. Whether you need to run a Python script, query a SQL database, call a REST API, or execute a shell command, Kestra can orchestrate it all within a single, unified workflow. This flexibility allows you to [connect to any API and automate everything](/blogs/2024-04-11-http-trigger). For example, companies like [Displayce](/customers/displayce) have used Kestra to unify monitoring and orchestrate expanding data operations.
+Case management requires connecting to a wide array of systems. Kestra's language-agnostic architecture and vast library of {totalPlugins}+ plugins allow you to integrate with virtually any tool or API. Whether you need to run a Python script, query a SQL database, call a REST API, or execute a shell command, Kestra can orchestrate it all within a single, unified workflow. This flexibility allows you to [connect to any API and automate everything](/blogs/2024-04-11-http-trigger). For example, companies like [Displayce](/customers/displayce) have used Kestra to unify monitoring and orchestrate expanding data operations.
 
 ### Real-Time Visibility and Audit Trails
 
