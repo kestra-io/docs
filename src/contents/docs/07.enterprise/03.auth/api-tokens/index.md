@@ -40,3 +40,11 @@ To authenticate your custom API calls, pass a `Bearer` token to the request's `A
 curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world \
 -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
+
+## How API tokens are secured
+
+An API token is an **opaque bearer credential** — a high-entropy random value generated with a cryptographically secure random number generator. It is **not** a [JWT](https://datatracker.ietf.org/doc/html/rfc7519): it carries no claims and is not signed. This is different from the JWT session cookie used for interactive [UI login](../04.authentication/index.md), which service accounts never use.
+
+- **At rest**, Kestra does not store the token itself. Only a salted SHA-512 hash of the token's secret is persisted, alongside a short prefix used to identify the token in the UI. The plaintext token is shown only once, at creation, and cannot be retrieved afterwards.
+- **On each request**, the presented token is re-hashed and compared against the stored hash in constant time, the owning user or service account must still be active, and the token must not have expired (see maximum age above).
+- **In transit**, the token is sent in the `Authorization: Bearer` header, so API traffic should always run over HTTPS. Treat a token like a password: store it in a secret manager, never commit it to source control, and revoke it if it may have been exposed.
