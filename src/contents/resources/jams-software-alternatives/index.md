@@ -47,7 +47,7 @@ Kestra is the open-source orchestration platform that unifies data, AI, infrastr
 
 **Best for:** Platform engineering teams seeking a vendor-neutral, event-driven, and polyglot orchestrator to modernize IT operations, automate data pipelines, and govern AI agents across hybrid and multi-cloud environments.
 
-Workflows in Kestra are defined in declarative YAML, making them easy to version, review, and manage with GitOps principles. With first-class support for any language (Python, Bash, SQL, Docker) and over 1,700 plugins, Kestra can orchestrate existing tools like Ansible and Terraform rather than forcing a replacement. This makes it a powerful control plane that sits above your current stack. For example, Crédit Agricole's IT production arm (CAGIP) used Kestra to transform its infrastructure operations and scale data workflows across more than 100 clusters.
+Workflows in Kestra are defined in declarative YAML, making them easy to version, review, and manage with GitOps principles. With first-class support for any language (Python, Bash, SQL, Docker) and {totalPlugins}+ plugins, Kestra can orchestrate existing tools like Ansible and Terraform rather than forcing a replacement. This makes it a powerful control plane that sits above your current stack. For example, Crédit Agricole's IT production arm (CAGIP) used Kestra to transform its infrastructure operations and scale data workflows across more than 100 clusters.
 
 **Limitation:** While Kestra's open-source version is fully featured for many use cases, advanced governance features like granular Role-Based Access Control (RBAC), SSO, and audit logs are part of the Enterprise Edition, which is better suited for large-scale, mission-critical deployments.
 

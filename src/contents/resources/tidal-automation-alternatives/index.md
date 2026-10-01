@@ -56,7 +56,7 @@ Many regulated enterprises operate in hybrid or fully air-gapped environments. A
 ### 1. Kestra — The Modern, Declarative Control Plane
 Kestra is an open-source, declarative orchestration platform designed to unify data, infrastructure, and business workflows under a single control plane. Unlike traditional WLA tools that rely on proprietary agents and opaque databases, Kestra defines every workflow as a clear YAML file. 
 
-With over 1,700 plugins covering cloud providers, databases, messaging queues, and DevOps tooling, Kestra executes tasks natively in Docker containers, shell scripts, or specialized task runners. It supports complex event-driven triggers, subflow composition, and robust error handling out of the box. 
+With {totalPlugins}+ plugins covering cloud providers, databases, messaging queues, and DevOps tooling, Kestra executes tasks natively in Docker containers, shell scripts, or specialized task runners. It supports complex event-driven triggers, subflow composition, and robust error handling out of the box.
 
 Enterprise teams scaling past basic scheduling benefit from role-based access control (RBAC), multi-tenant namespace isolation, audit logs, and high availability. Whether you are replacing legacy batch scripts or coordinating complex infrastructure pipelines, Kestra provides an open-source core with enterprise scalability. Learn more about how Kestra fits into broader infrastructure strategies by reviewing our guide on [infrastructure automation](/infra-automation).
 
@@ -101,7 +101,7 @@ ActiveBatch is well-suited for mid-to-enterprise organizations looking for rapid
 
 | Tool | License | Deployment Model | Best for | Key Differentiator |
 | :--- | :--- | :--- | :--- | :--- |
-| **Kestra** | Open Source (Apache 2.0) / Enterprise | Self-hosted, Kubernetes, Hybrid | Declarative, code-adjacent platform automation | YAML-first authoring with 1,700+ plugins |
+| **Kestra** | Open Source (Apache 2.0) / Enterprise | Self-hosted, Kubernetes, Hybrid | Declarative, code-adjacent platform automation | YAML-first authoring with {totalPlugins}+ plugins |
 | **BMC Control-M** | Proprietary | On-Premises, Hybrid, Managed | Mainframe and complex enterprise batch SLAs | Decades of battle-tested enterprise batch scheduling |
 | **Redwood RunMyJobs** | Proprietary (SaaS) | Fully Managed Cloud | ERP-centric enterprise automation (SAP) | SaaS-first delivery with pre-built business application connectors |
 | **Stonebranch UAC** | Proprietary | Hybrid, On-Premises, SaaS | Cross-platform hybrid IT workload automation | Centralized control across diverse agent architectures |
