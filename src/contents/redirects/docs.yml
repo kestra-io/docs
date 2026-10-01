@@ -1,5 +1,7 @@
 - regexp: "^/docs/enterprise/cloud-getting-started(/.*)?$"
   to: "/docs/enterprise/cloud/getting-started"
+- regexp: "^/docs/enterprise/ee-faq(/.*)?$"
+  to: "/docs/enterprise/auth/authentication"
 - regexp: "/docs/workflow-components/plugin-defaults(.*)?$"
   to: "/docs/migration-guide/v2.0.0/plugin-defaults-removed"
 - regexp: "^/docs/enterprise/api-tokens(/.*)?$"

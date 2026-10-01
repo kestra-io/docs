@@ -291,7 +291,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [LDAP Authentication in Kestra: Directory Login](https://kestra.io/docs/enterprise/auth/sso/ldap.md)
 - [Set Up Microsoft OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/microsoft-oidc.md)
 - [Set Up Okta OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/okta.md)
-- [Cloud & Enterprise FAQ: Licensing and Configuration](https://kestra.io/docs/enterprise/ee-faq.md)
 - [Governance in Kestra Enterprise: Security and Control](https://kestra.io/docs/enterprise/governance.md)
 - [Allowed & Restricted Plugins in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/allowed-plugins.md)
 - [Assets in Kestra: Track Lineage and Metadata](https://kestra.io/docs/enterprise/governance/assets.md)
