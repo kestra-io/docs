@@ -312,7 +312,10 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Maintenance Mode in Kestra Enterprise: Safe Upgrades](https://kestra.io/docs/enterprise/instance/maintenance-mode.md)
 - [Versioned Plugins in Kestra Enterprise: Multi-Version](https://kestra.io/docs/enterprise/instance/versioned-plugins.md)
 - [Instance Owner Console in Kestra Enterprise](https://kestra.io/docs/enterprise/instance/instance-owner.md)
-- [Kestra Cloud: Getting Started](https://kestra.io/docs/enterprise/cloud-getting-started.md): Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
+- [Kestra Cloud](https://kestra.io/docs/enterprise/cloud.md): Landing section for Kestra Cloud onboarding, compute billing, and task run counting.
+- [Kestra Cloud: Getting Started](https://kestra.io/docs/enterprise/cloud/getting-started.md): Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
+- [Kestra Cloud Compute](https://kestra.io/docs/enterprise/cloud/cloud-compute.md): Which task types use Kestra Cloud compute, what is measured per attempt, and how to bring your own runner.
+- [Kestra Cloud Task Runs](https://kestra.io/docs/enterprise/cloud/task-runs.md): What a task run is, which ones are counted toward Cloud usage, and how loops, subflows, and retries affect the count.
 - [Enterprise Edition in Kestra: Architecture and Setup](https://kestra.io/docs/enterprise/overview.md)
 - [Enterprise Features in Kestra: High-Availability](https://kestra.io/docs/enterprise/overview/enterprise-edition.md)
 - [Migrate from OSS to Kestra Enterprise Edition](https://kestra.io/docs/enterprise/overview/migrate-from-oss.md)

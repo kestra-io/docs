@@ -32,7 +32,7 @@ While Kestra Cloud is fully managed, it differs from Kestra Enterprise in severa
 | **Identity Providers (IdP)**          | Built-in Google, Microsoft, or Basic Authentication                                                            | Custom SSO/SCIM supported                                                   |
 | **Log Retention**                     | Automatic retention protocol managed by Kestra                                                                 | Unlimited (based on customer setup); route logs to a separate JDBC or Elasticsearch store with the [External Log Data Store](../10.administrator-guide/log-data-store/index.md) |
 | **Deployment Regions**                | US & EU (Belgium) on GCP                                                                                       | Any cloud, any region                                                       |
-| **Task Runners**                      | Compatible with most, [Process Task Runner](/docs/task-runners/types/process-task-runner) excluded | Compatible with all task runners                                            |
+| **Task Runners**                      | Compatible with most ([Process](/docs/task-runners/types/process-task-runner) and Docker excluded); tasks without an explicit `taskRunner` use the [Kestra Cloud runner](./07.cloud/02.cloud-compute/index.md) by default | Compatible with all task runners |
 
 This section describes those features in detail and explains how to configure them.
 

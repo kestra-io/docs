@@ -24,8 +24,10 @@ Choose a task runner to control where and how Kestra executes your script tasks.
 | [Google Batch](./08.google-batch-task-runner/index.md) | EE | Runs tasks on Google Cloud Batch VMs |
 | [Google Compute Engine](./09.google-computeengine-task-runner/index.md) | EE | Runs tasks natively on Compute Engine VMs via startup-script — no SSH, no IAP tunnel |
 | [Google Cloud Run](./10.google-cloudrun-task-runner/index.md) | EE | Runs tasks as serverless Google Cloud Run jobs |
+| [Huawei CCI](./11.huawei-cci-task-runner/index.md) | EE | Runs tasks on Huawei Cloud Container Instances |
+| Cloud | Cloud | Default runner on Kestra Cloud — managed compute provisioned by Kestra. See [Cloud compute](../../07.enterprise/07.cloud/02.cloud-compute/index.md) for billing details. |
 
-[Process](./01.process-task-runner/index.md) and [Docker](./02.docker-task-runner/index.md) are open-source and built into Kestra. Cloud-based runners require an [Enterprise Edition](../../07.enterprise/index.mdx) license.
+[Process](./01.process-task-runner/index.md) and [Docker](./02.docker-task-runner/index.md) are open-source and built into Kestra. Cloud-based runners require an [Enterprise Edition](../../07.enterprise/index.mdx) license. On Kestra Cloud, the Cloud runner is used by default when no `taskRunner` is set; runner time is billed by size and duration.
 
 <div class="video-container">
     <iframe
