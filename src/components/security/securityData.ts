@@ -295,7 +295,7 @@ export const FAQ_ITEMS = [
     },
     {
         question: "Does Kestra support SSO and SCIM?",
-        answer: "Yes, on Enterprise Edition. SSO runs over OIDC with Google, Microsoft Entra ID, Okta, Keycloak and authentik, and LDAP is also supported. SCIM 2.0 handles provisioning, deprovisioning and group sync from Okta, Entra ID, Keycloak and authentik.",
+        answer: "Yes. SSO is available on Enterprise Edition and Kestra Cloud, over OIDC with Google, Microsoft Entra ID, Okta, Keycloak and authentik, and LDAP is also supported. SCIM 2.0 is available on Enterprise Edition and handles provisioning, deprovisioning and group sync from Okta, Entra ID, Keycloak and authentik.",
     },
     {
         question: "Which secrets managers does Kestra support?",
