@@ -221,6 +221,6 @@ No, and trying to will get your approvals rubber-stamped. Reserve human gates fo
 
 ## Where Kestra fits
 
-Kestra is an open-source orchestration platform built so that these controls are properties of the platform rather than habits of the team: workflows are declarative YAML in Git, credentials are injected at runtime, human approval is a first-class workflow state, and every execution is recorded and replayable — across 1,800+ plugins including AI and agent integrations.
+Kestra is an open-source orchestration platform built so that these controls are properties of the platform rather than habits of the team: workflows are declarative YAML in Git, credentials are injected at runtime, human approval is a first-class workflow state, and every execution is recorded and replayable — across {totalPlugins}+ plugins including AI and agent integrations.
 
 For governance under real regulatory constraint, see how [public sector teams](/use-cases/public-services) run it, or start with the fundamentals of [declarative scheduling](/resources/infrastructure/job-scheduler).
