@@ -135,7 +135,7 @@ From data preparation to model training and deployment, [machine learning pipeli
 
 ### Integrating with Existing Systems
 
-Modern enterprises rely on a multitude of applications and services. Python orchestration enables seamless integration by automating API calls, data synchronization, and process handoffs. With over 1,700 plugins, Kestra can orchestrate Python scripts alongside tasks that interact with databases, message queues, and cloud services, all within a single workflow. This allows for powerful automations, such as running Python tasks on a [Kubernetes cluster](/resources/infrastructure/kubernetes-workflow-orchestration) or triggering workflows from cloud events.
+Modern enterprises rely on a multitude of applications and services. Python orchestration enables seamless integration by automating API calls, data synchronization, and process handoffs. With {totalPlugins}+ plugins, Kestra can orchestrate Python scripts alongside tasks that interact with databases, message queues, and cloud services, all within a single workflow. This allows for powerful automations, such as running Python tasks on a [Kubernetes cluster](/resources/infrastructure/kubernetes-workflow-orchestration) or triggering workflows from cloud events.
 
 ## Related Concepts for Python Workflow Management
 
