@@ -153,7 +153,7 @@ Regardless of your choice, you'll need a way to orchestrate the workflows that p
 
 ### Unified control plane for diverse streaming sources
 
-With Kestra's extensive library of over 1,700 plugins, you can build pipelines that interact with Kafka, Kinesis, and any other system in your stack. This allows you to standardize your workflow automation without being locked into a single streaming technology. Kestra offers dedicated plugins for [Apache Kafka](/plugins/plugin-kafka) and a full suite of [AWS integrations](/plugins/plugin-aws).
+With Kestra's extensive library of {totalPlugins}+ plugins, you can build pipelines that interact with Kafka, Kinesis, and any other system in your stack. This allows you to standardize your workflow automation without being locked into a single streaming technology. Kestra offers dedicated plugins for [Apache Kafka](/plugins/plugin-kafka) and a full suite of [AWS integrations](/plugins/plugin-aws).
 
 ### Declarative YAML for Kinesis and Kafka tasks
 

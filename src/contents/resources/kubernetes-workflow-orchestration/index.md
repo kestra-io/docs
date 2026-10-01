@@ -110,7 +110,7 @@ Observability is also critical. Integrating with tools like Prometheus and OpenT
 
 ### Integrating with External Systems and Visual Builders
 
-Workflows rarely exist in isolation. A powerful orchestration engine must connect to a wide range of external systems, including databases, APIs, and cloud services. Kestra’s extensive library of over [1,400 plugins](https://kestra.io/plugins) enables seamless integration across your entire stack.
+Workflows rarely exist in isolation. A powerful orchestration engine must connect to a wide range of external systems, including databases, APIs, and cloud services. Kestra’s extensive library of [{totalPlugins}+ plugins](https://kestra.io/plugins) enables seamless integration across your entire stack.
 
 While YAML is the source of truth, visual workflow builders can accelerate development and empower less technical users. These tools help automate tasks without requiring deep Kubernetes expertise. It's also important to distinguish between different cloud-native orchestrators. For example, Amazon ECS is a powerful container orchestrator, but it is proprietary and designed for the AWS ecosystem, unlike Kubernetes, which is open and multi-cloud.
 

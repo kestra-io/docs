@@ -71,7 +71,7 @@ Your teams use a variety of tools and languages. Kestra's [language-agnostic orc
 
 ### Open-Source by Design, Not by Accident
 
-Kestra's core is licensed under Apache 2.0, a permissive open-source license that guarantees you the freedom to use, modify, and deploy the software anywhere. This transparency eliminates the risk of a vendor changing terms or discontinuing a product. With a vibrant community and a library of over 1,700 plugins, you are not dependent on a single company's roadmap. This model provides significant [cost savings with open-source orchestration](/resources/infrastructure/open-source-orchestration-cost-savings) and ensures long-term viability.
+Kestra's core is licensed under Apache 2.0, a permissive open-source license that guarantees you the freedom to use, modify, and deploy the software anywhere. This transparency eliminates the risk of a vendor changing terms or discontinuing a product. With a vibrant community and a library of {totalPlugins}+ plugins, you are not dependent on a single company's roadmap. This model provides significant [cost savings with open-source orchestration](/resources/infrastructure/open-source-orchestration-cost-savings) and ensures long-term viability.
 
 ## Building Portable Workflows with Kestra: A Practical Example
 

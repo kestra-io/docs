@@ -6,11 +6,16 @@ import {
     layoutDigest,
 } from "~/utils/incrementalCacheKey"
 import ResourceArticle from "~/components/resources/ResourceArticle.astro"
+import {
+    fetchTotalPluginsCount,
+    pluginCountScope,
+} from "~/utils/plugins/pluginCount"
 
 export async function getStaticPaths() {
     const all = await getCollection("resources")
     // The similar-resources list is built from every entry's metadata.
     const scope = [collectionMetadataDigest(all), await layoutDigest()]
+    const totalPlugins = await fetchTotalPluginsCount()
     return all
         .filter((post) => !post.data.href)
         .map((post) => ({
@@ -19,7 +24,11 @@ export async function getStaticPaths() {
                 topic: post.id.toLowerCase(),
             },
             props: { post },
-            cacheKey: entryCacheKey(post, ...scope),
+            cacheKey: entryCacheKey(
+                post,
+                ...scope,
+                ...pluginCountScope(totalPlugins, post.body, post.data.faq),
+            ),
         }))
 }
 

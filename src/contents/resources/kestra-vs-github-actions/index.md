@@ -48,7 +48,7 @@ Unlike GitHub Actions, Kestra is not tied to a specific version control system o
 Key characteristics include:
 *   **Declarative YAML for Any Workflow:** Kestra's YAML-first approach applies to any type of workflow, from simple cron jobs to complex, multi-stage data pipelines and [autonomous AI agents](/blogs/introducing-ai-agents).
 *   **Language-Agnostic Execution:** Kestra can natively run scripts in Python, Shell, Node.js, R, and Julia, execute SQL queries, run Docker containers, and interact with Java applications without requiring wrapper code.
-*   **Event-Driven and Pluggable:** With a vast library of over 1,400 plugins, Kestra can integrate with virtually any tool, from databases and cloud services to SaaS applications and messaging systems. Its trigger system is designed to initiate workflows from a wide array of external events.
+*   **Event-Driven and Pluggable:** With a vast library of {totalPlugins}+ plugins, Kestra can integrate with virtually any tool, from databases and cloud services to SaaS applications and messaging systems. Its trigger system is designed to initiate workflows from a wide array of external events.
 *   **Enterprise-Grade Features:** Kestra includes a rich user interface for observability, robust state management, a key-value store for sharing data between workflows, and advanced governance features. It provides a more [powerful and simpler orchestration solution](/docs/why-kestra) for business-critical operations.
 
 As a comprehensive platform, Kestra offers extensive [documentation](/docs) to help teams manage everything from data pipelines to complex [infrastructure automation](/blogs/infra-automation).

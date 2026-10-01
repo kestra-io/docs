@@ -67,7 +67,8 @@ export function fetchTotalPluginsCount(): Promise<string> {
 const TOTAL_PLUGINS_PLACEHOLDER = "{totalPlugins}";
 
 // Deep-replaces the {totalPlugins} placeholder in content data (e.g. the vs
-// collection YAML) so authored copy always reflects the live plugin count.
+// collection YAML, or rendered markdown) so authored copy always reflects the
+// live plugin count.
 export function replaceTotalPluginsPlaceholder<T>(value: T, totalPlugins: string): T {
     if (typeof value === "string") {
         return value.replaceAll(TOTAL_PLUGINS_PLACEHOLDER, totalPlugins) as T;
@@ -86,4 +87,21 @@ export function replaceTotalPluginsPlaceholder<T>(value: T, totalPlugins: string
         ) as T;
     }
     return value;
+}
+
+export function usesTotalPluginsPlaceholder(value: unknown): boolean {
+    const text = typeof value === "string" ? value : JSON.stringify(value);
+    return text?.includes(TOTAL_PLUGINS_PLACEHOLDER) ?? false;
+}
+
+export async function resolveTotalPluginsPlaceholder<T>(value: T): Promise<T> {
+    return usesTotalPluginsPlaceholder(value)
+        ? replaceTotalPluginsPlaceholder(value, await fetchTotalPluginsCount())
+        : value;
+}
+
+// Incremental-build cache scope for a page that renders authored copy: the live
+// count is one of its build-time inputs only when the copy uses the placeholder.
+export function pluginCountScope(totalPlugins: string, ...copy: unknown[]): string[] {
+    return copy.some((value) => usesTotalPluginsPlaceholder(value)) ? [`p${totalPlugins}`] : [];
 }
