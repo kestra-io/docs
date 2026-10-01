@@ -199,7 +199,7 @@ The requirements for real unification are concrete and testable, and they sit on
 
 Kestra's workflows are declarative and language-agnostic: [defined in YAML](/docs), with any language running inside a task. One engine handles both event-driven and scheduled triggering. Definitions are version-controlled, tested, and deployed like any other code. Governance is first-class, with role-based access control, multi-tenancy, audit, and human-in-the-loop approvals. Deployment is flexible: self-hosted, in the cloud, or air-gapped.
 
-Kestra orchestrates the existing stack through [more than 2,000 plugins](/plugins). Most are open source, and unlike a proprietary connector catalog, they do not lock you in. Because any script or API call runs natively as a task, teams are never blocked waiting for an official plugin. This extends the stack rather than replacing it. Agentic steps run the same way, under deterministic control, logged, audited, and governed.
+Kestra orchestrates the existing stack through [{totalPlugins}+ plugins](/plugins). Most are open source, and unlike a proprietary connector catalog, they do not lock you in. Because any script or API call runs natively as a task, teams are never blocked waiting for an official plugin. This extends the stack rather than replacing it. Agentic steps run the same way, under deterministic control, logged, audited, and governed.
 
 The core is [open source under the Apache 2.0 license](https://github.com/kestra-io/kestra). It is the same engine teams run in production, free to export and run independently, with no lock-in. Two commercial editions extend that core without changing the engine.
 

@@ -139,7 +139,7 @@ All workflows in Kestra are defined as simple, declarative YAML files. This code
 
 ### Polyglot Execution Across Data, AI, and Infrastructure
 
-Kestra is language-agnostic. A single workflow can seamlessly combine a Python script, a SQL query, a shell command, and a Docker container. With a library of over 1,700 plugins, Kestra integrates natively with the tools your teams already use, whether for [data engineering](/data), [infrastructure automation](/infra-automation), or [AI pipelines](/ai-automation). This eliminates the need for multiple, domain-specific schedulers and breaks down technology silos.
+Kestra is language-agnostic. A single workflow can seamlessly combine a Python script, a SQL query, a shell command, and a Docker container. With a library of {totalPlugins}+ plugins, Kestra integrates natively with the tools your teams already use, whether for [data engineering](/data), [infrastructure automation](/infra-automation), or [AI pipelines](/ai-automation). This eliminates the need for multiple, domain-specific schedulers and breaks down technology silos.
 
 ### A Unified Control Plane for All Workloads
 
