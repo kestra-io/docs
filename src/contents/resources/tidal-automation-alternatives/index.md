@@ -10,7 +10,7 @@ faq:
   - question: "Why are enterprises migrating away from Tidal Workload Automation?"
     answer: "Organizations frequently seek Tidal alternatives due to licensing complexity, heavy operational overhead, aging user interfaces, and the need for developer-first workflows that integrate smoothly with modern GitOps and CI/CD practices."
   - question: "What are the best open-source alternatives to Tidal Automation?"
-    answer: "Kestra is the leading open-source, declarative orchestration platform offering an alternative to traditional proprietary workload automation tools, providing YAML-defined workflows and 1,700+ plugins without per-execution fees."
+    answer: "Kestra is the leading open-source, declarative orchestration platform offering an alternative to traditional proprietary workload automation tools, providing YAML-defined workflows and {totalPlugins}+ plugins without per-execution fees."
   - question: "How does Kestra compare to traditional WLA tools like Tidal?"
     answer: "Unlike Tidal which relies on proprietary agents and legacy interfaces, Kestra uses declarative YAML, supports polyglot execution (Python, SQL, Shell, Docker), and runs natively on Kubernetes or on-premises with full GitOps integration."
   - question: "Can Kestra replace enterprise batch schedulers?"

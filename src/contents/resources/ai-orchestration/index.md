@@ -20,7 +20,7 @@ faq:
   - question: Can AI orchestration integrate with existing data pipelines?
     answer: Yes, effective AI orchestration platforms are designed to integrate seamlessly with existing data pipelines and infrastructure. They act as a control plane, coordinating data ingestion, transformation, and movement to feed AI models and process their outputs, often leveraging existing data tools like dbt, Snowflake, or Kafka.
   - question: How does Kestra support AI orchestration?
-    answer: Kestra supports AI orchestration through declarative YAML workflows, a polyglot execution engine, 1,700+ plugins for diverse AI services and data tools, and native support for AI agents. It provides enterprise-grade features like audit logs, RBAC, and human-in-the-loop capabilities to govern complex AI systems.
+    answer: Kestra supports AI orchestration through declarative YAML workflows, a polyglot execution engine, {totalPlugins}+ plugins for diverse AI services and data tools, and native support for AI agents. It provides enterprise-grade features like audit logs, RBAC, and human-in-the-loop capabilities to govern complex AI systems.
 ---
 
 The promise of artificial intelligence is immense, but bringing AI models and agents into production at scale often creates new challenges. Fragmented tools, complex data dependencies, and a lack of unified oversight can turn ambitious AI initiatives into operational nightmares. Teams struggle to coordinate data pipelines, train models, deploy inference services, and manage autonomous agents reliably.

@@ -15,7 +15,7 @@ faq:
   - question: "Is Dollar Universe the same as AutoSys?"
     answer: "No. Dollar Universe and AutoSys are separate Broadcom products with different origins. Dollar Universe was originally developed by ORSYP and is optimized for decentralized, fault-tolerant scheduling in distributed environments. AutoSys (formerly from CA Technologies) is a broader batch job scheduling platform. Both are now owned by Broadcom following its 2018 acquisition of CA Technologies."
   - question: "Can Kestra replace Broadcom Dollar Universe?"
-    answer: "Yes. Kestra can serve as a modern replacement for Broadcom Dollar Universe, particularly for organizations seeking a declarative, open-source, and language-agnostic orchestration platform. Kestra unifies data, AI, and infrastructure workflows with over 1,400 plugins, offering cloud-native flexibility and GitOps-friendly workflow definitions that address the key limitations of legacy schedulers."
+    answer: "Yes. Kestra can serve as a modern replacement for Broadcom Dollar Universe, particularly for organizations seeking a declarative, open-source, and language-agnostic orchestration platform. Kestra unifies data, AI, and infrastructure workflows with {totalPlugins}+ plugins, offering cloud-native flexibility and GitOps-friendly workflow definitions that address the key limitations of legacy schedulers."
   - question: "Is JS7 JobScheduler free to use?"
     answer: "JS7 JobScheduler from SOS GmbH is available under a dual license model: the open-source edition is licensed under GPLv3 and is free to use, while a commercial license is required for high-availability clustering features and professional support."
 ---

@@ -27,7 +27,7 @@ export async function getStaticPaths() {
             cacheKey: entryCacheKey(
                 post,
                 ...scope,
-                ...pluginCountScope(totalPlugins, post.body),
+                ...pluginCountScope(totalPlugins, post.body, post.data.faq),
             ),
         }))
 }

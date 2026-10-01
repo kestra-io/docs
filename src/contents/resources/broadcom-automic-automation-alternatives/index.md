@@ -12,7 +12,7 @@ faq:
   - question: "What is the primary difference between Kestra and traditional workload automation tools?"
     answer: "Kestra offers a declarative, YAML-based approach to orchestration, unifying data, AI, and infrastructure workflows. Unlike traditional tools often focused on scheduled batch jobs, Kestra is event-driven, language-agnostic, and designed for GitOps practices, providing greater flexibility and lower operational overhead for diverse technical teams."
   - question: "Can Kestra integrate with existing enterprise systems like SAP or ServiceNow?"
-    answer: "Yes, Kestra has a plugin library with over 2,000 integrations, including native support for major cloud providers, databases, messaging queues, and enterprise systems like ServiceNow. This allows it to orchestrate workflows that span across your entire tech stack, building on existing investments."
+    answer: "Yes, Kestra has a plugin library with {totalPlugins}+ integrations, including native support for major cloud providers, databases, messaging queues, and enterprise systems like ServiceNow. This allows it to orchestrate workflows that span across your entire tech stack, building on existing investments."
   - question: "What should I look for in a Broadcom Automic Automation replacement?"
     answer: "Key factors include deployment flexibility (cloud, on-prem, hybrid), pricing model transparency, ease of use (declarative vs. visual), integration capabilities with your tech stack, developer experience, and scalability for future needs. Consider tools that offer strong governance, observability, and a clear modernization path."
   - question: "Is Control-M a direct competitor to Broadcom Automic Automation?"
