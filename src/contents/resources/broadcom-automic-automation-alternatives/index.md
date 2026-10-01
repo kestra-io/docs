@@ -65,7 +65,7 @@ The market offers several strong alternatives, each with a different approach to
 
 Kestra is an [open-source](https://github.com/kestra-io/kestra) (Apache 2.0), event-driven orchestration platform that unifies data, AI, and infrastructure workflows under a single, declarative control plane. Workflows are defined in simple YAML, making them easy to version, review, and manage alongside other application code.
 
-Its language-agnostic architecture allows teams to orchestrate any tool or script, from Python and Shell to SQL and Docker containers, using a library of over 2,000 plugins. Kestra’s event-driven nature makes it ideal for modern, reactive workflows that go beyond simple cron-based scheduling.
+Its language-agnostic architecture allows teams to orchestrate any tool or script, from Python and Shell to SQL and Docker containers, using a library of {totalPlugins}+ plugins. Kestra’s event-driven nature makes it ideal for modern, reactive workflows that go beyond simple cron-based scheduling.
 
 For enterprises, Kestra offers an Enterprise Edition with features like multi-tenancy, advanced security (RBAC, SSO), and high-availability deployments. This makes it a powerful choice for organizations looking to standardize automation across diverse teams. For instance, [CAGIP, Crédit Agricole's IT production arm](/customers/credit-agricole), transformed its infrastructure operations and scaled data workflows across more than 100 clusters with Kestra. Similarly, a [Fortune 500 industrial company](/customers/fortune-500-company) replaced VMware Aria Automation with Kestra to secure hybrid cloud automation across IT and OT environments.
 
