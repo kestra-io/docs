@@ -2,7 +2,7 @@
 title: "Kestra Cloud: Getting Started"
 h1: Getting Started with Kestra Cloud
 description: Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
-sidebarTitle: Cloud Getting Started
+sidebarTitle: Getting started
 icon: /src/contents/docs/icons/admin.svg
 editions: ["Cloud"]
 ---
@@ -19,7 +19,7 @@ Kestra Cloud consists of two platforms:
 | | Console | Your Kestra instance |
 |---|---|---|
 | For | Managing instances and billing | Building and running flows |
-| What | View instances, usage, and invoices; set up SSO; add Console users | Write flows, run executions, add secrets, invite teammates, configure IAM/RBAC, build Apps |
+| What | View instances, [usage and invoices](../02.cloud-compute/index.md); set up SSO; add Console users | Write flows, run executions, add secrets, invite teammates, configure IAM/RBAC, build Apps |
 
 :::alert{type="info"}
 Console users and instance users are separate. Adding someone in Console does not give them access to the instance, and vice versa. Invite people where they'll actually work (usually the instance). SSO is configured in Console per instance.
@@ -49,15 +49,15 @@ Three getting-started blueprints run successfully on the first execution with pu
 
 In your instance: go to **Flows → Create → Blueprints**, pick one, **Save**, then **Execute**. Open the run and review the **Logs**, the **Gantt** timeline, and each task's **Outputs**. Edit, execute, review the run: that's the core loop.
 
-Hundreds more are available in the [blueprints library](https://kestra.io/blueprints). The [AI Copilot](../../ai-tools/01.ai-copilot/index.md) can also write a flow from a plain-English description.
+Hundreds more are available in the [blueprints library](https://kestra.io/blueprints). The [AI Copilot](../../../ai-tools/01.ai-copilot/index.md) can also write a flow from a plain-English description.
 
-Building with AI tools? The [Kestra MCP server](../../ai-tools/03.mcp-server/index.md) gives Claude, Cursor, and other tools live access to Kestra docs, plugins, and blueprints. Add [kestractl](https://github.com/kestra-io/kestractl) to generate and deploy flows from the CLI.
+Building with AI tools? The [Kestra MCP server](../../../ai-tools/03.mcp-server/index.md) gives Claude, Cursor, and other tools live access to Kestra docs, plugins, and blueprints. Add [kestractl](https://github.com/kestra-io/kestractl) to generate and deploy flows from the CLI.
 
-Prefer your editor? The [VS Code extension](../../version-control-cicd/05.vscode/index.md) edits, validates, and runs flows locally with instance-aware autocomplete and a topology preview.
+Prefer your editor? The [VS Code extension](../../../version-control-cicd/05.vscode/index.md) edits, validates, and runs flows locally with instance-aware autocomplete and a topology preview.
 
 ## Step 3: Namespaces
 
-Every flow belongs to a [namespace](../../05.workflow-components/02.namespace/index.md) (for example, `mycompany`): a folder that holds flows, secrets, files, and variables. Three rules to follow:
+Every flow belongs to a [namespace](../../../05.workflow-components/02.namespace/index.md) (for example, `mycompany`): a folder that holds flows, secrets, files, and variables. Three rules to follow:
 
 - **Create your own** namespace (for example, `dev`) and build there. Leave `system` alone; it holds Kestra's own maintenance flows.
 - **Nest with `.` to share config.** `marketing.dev` and `marketing.prod` are two environments under `marketing`. Both inherit the parent's secrets, variables, and files, so shared config lives in one place.
@@ -65,7 +65,7 @@ Every flow belongs to a [namespace](../../05.workflow-components/02.namespace/in
 
 ## Step 4: Add your first secret
 
-Store credentials as [secrets](../../06.concepts/04.secret/index.md) and reference them with `{{ secret('NAME') }}`. Never paste credentials directly into a flow.
+Store credentials as [secrets](../../../06.concepts/04.secret/index.md) and reference them with `{{ secret('NAME') }}`. Never paste credentials directly into a flow.
 
 To add a Slack webhook (used by all three getting-started blueprints):
 
@@ -82,7 +82,7 @@ message: "{{ secret('SHARED_TOKEN', namespace='shared') }}"
 
 Cross-namespace reads are allowed by default. Restrict them with `allowedNamespaces` on the owning namespace.
 
-[Policies](../02.governance/policies/index.md) set plugin values (host, credentials, region) once per namespace and apply them to every matching flow. Use them to avoid repeating auth config on every task.
+[Policies](../../02.governance/policies/index.md) set plugin values (host, credentials, region) once per namespace and apply them to every matching flow. Use them to avoid repeating auth config on every task.
 
 ## Step 5: Invite your team
 
@@ -91,8 +91,8 @@ Go to **Tenant → IAM → Invitations → Create**: enter their email and assig
 Leave the namespace field empty to apply the role to all namespaces, or name specific namespaces to limit access.
 
 Related:
-- [Invite colleagues](../03.auth/invitations/index.md)
-- [Set up SSO](../03.auth/sso/index.md) (configured in [Console](https://console.kestra.io/ui/login))
+- [Invite colleagues](../../03.auth/invitations/index.md)
+- [Set up SSO](../../03.auth/sso/index.md) (configured in [Console](https://console.kestra.io/ui/login))
 
 ## Step 6: Go to production
 
@@ -100,26 +100,28 @@ Once flows matter, stop editing production by hand. Build in `dev`, commit to Gi
 
 | Method | Best for |
 |---|---|
-| [Git Sync](../../version-control-cicd/04.git/index.md) | Flows and namespace files: Kestra pulls `main` on a schedule or push |
-| [Terraform](../../13.terraform/index.mdx) | Static config: secrets, variables, namespaces, roles |
+| [Git Sync](../../../version-control-cicd/04.git/index.md) | Flows and namespace files: Kestra pulls `main` on a schedule or push |
+| [Terraform](../../../13.terraform/index.mdx) | Static config: secrets, variables, namespaces, roles |
 | GitHub Actions / CI/CD | Validate on PR, deploy on merge: [validate flows](https://github.com/kestra-io/validate-flows-action-v2), [deploy flows](https://github.com/kestra-io/deploy-flows-action-v2), [deploy namespace files](https://github.com/kestra-io/deploy-namespace-files-action) |
 
-No Git? [Promote](../02.governance/promote/index.md) copies a flow from one instance to another directly from the UI with a diff review before it lands. It moves the flow YAML only, so configure secrets and files per environment separately. See the [dev-to-prod guide](../../14.best-practices/1.from-dev-to-prod/index.md) for the full picture.
+No Git? [Promote](../../02.governance/promote/index.md) copies a flow from one instance to another directly from the UI with a diff review before it lands. It moves the flow YAML only, so configure secrets and files per environment separately. See the [dev-to-prod guide](../../../14.best-practices/1.from-dev-to-prod/index.md) for the full picture.
 
 ## What's next
 
 In the order most active teams adopt them:
 
-1. **Put it on a [schedule or trigger](../../05.workflow-components/07.triggers/index.mdx)** so it runs unattended.
+1. **Put it on a [schedule or trigger](../../../05.workflow-components/07.triggers/index.mdx)** so it runs unattended.
 2. **Wire a Slack alert** (Step 4) so you know when something breaks.
 3. **Connect a second system**: your warehouse, dbt, an API.
 4. **Sync from Git** (Step 6).
-5. **Create a Kestra App.** An [App](../04.scalability/apps/index.md) gives stakeholders a dedicated URL to submit or download data and approve runs without touching flows directly.
+5. **Create a Kestra App.** An [App](../../04.scalability/apps/index.md) gives stakeholders a dedicated URL to submit or download data and approve runs without touching flows directly.
+
+**Understand your usage.** Tasks that run on the Kestra Cloud runner are billed by time and size. See [Cloud compute](../02.cloud-compute/index.md) for which task types use it and [Task runs](../03.task-runs/index.md) for how task runs are counted.
 
 Common first-week blockers:
 
-- Credentials not reaching a task: [Secrets](../../06.concepts/04.secret/index.md)
-- A worker that can't reach your network: [Worker Groups](../04.scalability/worker-group/index.md)
-- Cloud auth or OIDC trust issues: [Credentials](../03.auth/credentials/index.md)
+- Credentials not reaching a task: [Secrets](../../../06.concepts/04.secret/index.md)
+- A worker that can't reach your network: [Worker Groups](../../04.scalability/worker-group/index.md)
+- Cloud auth or OIDC trust issues: [Credentials](../../03.auth/credentials/index.md)
 
 For help, reach the team at support@kestra.io, in the [Slack community](https://kestra.io/slack), or by replying to your onboarding email.
