@@ -189,7 +189,7 @@ tasks:
 No platform switch comes without costs, and Kestra is no exception. Three areas of friction to plan around:
 
 - **YAML verbosity.** Complex branching that fits in 30 lines of Python may take 80 lines of declarative YAML. Kestra mitigates this with reusable subflows and flow-level variables, but the trade is real.
-- **Plugin ecosystem.** Kestra's 1,200+ plugins cover the major clouds, databases, and data tools, but niche connectors may not exist yet. The plugin SDK makes custom development straightforward.
+- **Plugin ecosystem.** Kestra's {totalPlugins}+ plugins cover the major clouds, databases, and data tools, but niche connectors may not exist yet. The plugin SDK makes custom development straightforward.
 - **Community size.** Airflow has a decade of Stack Overflow answers and institutional knowledge. Kestra's community is smaller (26k+ GitHub stars and growing) — though YAML requires no framework-specific expertise to read.
 
 ## The cost and shape of migration

@@ -3,6 +3,8 @@ import {
     calculateTotalPlugins,
     formatPluginCount,
     replaceTotalPluginsPlaceholder,
+    usesTotalPluginsPlaceholder,
+    pluginCountScope,
     PLUGIN_COUNT_FLOOR,
 } from "~/utils/plugins/pluginCount"
 
@@ -291,5 +293,62 @@ describe("fetchTotalPluginsCount", () => {
         } finally {
             vi.useRealTimers()
         }
+    })
+})
+
+describe("usesTotalPluginsPlaceholder", () => {
+    it("finds the placeholder in a markdown body or nested front matter", () => {
+        expect(usesTotalPluginsPlaceholder("With {totalPlugins}+ plugins")).toBe(true)
+        expect(usesTotalPluginsPlaceholder([{ answer: "With {totalPlugins}+ plugins" }])).toBe(true)
+    })
+
+    it("is false for copy without it, or no copy at all", () => {
+        expect(usesTotalPluginsPlaceholder("No count here")).toBe(false)
+        expect(usesTotalPluginsPlaceholder([{ answer: "none" }])).toBe(false)
+        expect(usesTotalPluginsPlaceholder(undefined)).toBe(false)
+    })
+})
+
+describe("pluginCountScope", () => {
+    it("keys a page on the count when any of its copy uses the placeholder", () => {
+        const faq = [{ answer: "With {totalPlugins}+ plugins" }]
+        expect(pluginCountScope("1,900", "With {totalPlugins}+ plugins")).toEqual(["p1,900"])
+        expect(pluginCountScope("1,900", "No count here", faq)).toEqual(["p1,900"])
+    })
+
+    it("adds nothing when none of it does", () => {
+        expect(pluginCountScope("1,900", "No count here", [{ answer: "none" }])).toEqual([])
+        expect(pluginCountScope("1,900", undefined)).toEqual([])
+    })
+})
+
+describe("resolveTotalPluginsPlaceholder", () => {
+    // Goes through the memoized fetchTotalPluginsCount, so re-import a fresh copy.
+    async function freshResolve() {
+        vi.resetModules()
+        const { resolveTotalPluginsPlaceholder } = await import("~/utils/plugins/pluginCount")
+        return resolveTotalPluginsPlaceholder
+    }
+
+    beforeEach(() => {
+        fetchMock.mockReset()
+    })
+
+    it("fills the placeholder with the live count", async () => {
+        fetchMock.mockResolvedValue(subgroupsWith(1949))
+        const resolve = await freshResolve()
+
+        expect(await resolve("<p>With {totalPlugins}+ plugins</p>")).toBe(
+            "<p>With 1,900+ plugins</p>",
+        )
+    })
+
+    it("returns copy without the placeholder as-is, without fetching the count", async () => {
+        const resolve = await freshResolve()
+        const faq = [{ question: "Q", answer: "No count here" }]
+
+        expect(await resolve(faq)).toBe(faq)
+        expect(await resolve(undefined)).toBeUndefined()
+        expect(fetchMock).not.toHaveBeenCalled()
     })
 })

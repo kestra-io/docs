@@ -165,7 +165,7 @@ No single tool solves all monitoring challenges. An effective strategy combines 
 
 Your orchestrator is the first and most critical line of defense. Kestra provides built-in execution logs, metrics, and a visual topology of every run, giving you immediate insight into the operational health of your pipelines. You can check our guide on how to [configure monitoring with Grafana and Prometheus](/docs/how-to-guides/monitoring) for more details.
 
-By using Kestra's declarative workflows and extensive plugin library (over 1,700+ plugins), you can build custom monitoring and data quality checks directly into your pipelines, as shown in the example above. This allows Kestra to act as the central nervous system, coordinating both the data workflows and the specialized tools that ensure data quality, such as Soda, Great Expectations, or a dedicated data observability platform.
+By using Kestra's declarative workflows and extensive plugin library ({totalPlugins}+ plugins), you can build custom monitoring and data quality checks directly into your pipelines, as shown in the example above. This allows Kestra to act as the central nervous system, coordinating both the data workflows and the specialized tools that ensure data quality, such as Soda, Great Expectations, or a dedicated data observability platform.
 
 ## Related Concepts
 

@@ -140,7 +140,7 @@ The value of a unified control plane becomes clear in use cases that inherently 
 
 Kestra is an open-source platform built from the ground up to deliver unified orchestration. Its architecture directly addresses the seven requirements for a true cross-domain control plane.
 
-Workflows are defined declaratively in YAML, making them language-agnostic and easy to version-control. The platform's [event-driven engine](/blogs/2024-06-25-kestra-become-real-time) can trigger workflows from any source, while its library of more than 2,000 plugins ensures extensibility across any stack.
+Workflows are defined declaratively in YAML, making them language-agnostic and easy to version-control. The platform's [event-driven engine](/blogs/2024-06-25-kestra-become-real-time) can trigger workflows from any source, while its library of {totalPlugins}+ plugins ensures extensibility across any stack.
 
 The flow below crosses all four domains in a single, auditable execution: a Kafka alert starts it (data), an Ansible playbook scans the affected host (infrastructure), a human approves the remediation (governance), and a ServiceNow incident records it (business).
 

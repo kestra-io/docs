@@ -175,7 +175,7 @@ Machine learning pipelines are fundamental to modern AI, but their complexity de
 
 The same unification argument applies well beyond training. It is the basis of [what it takes to run AI workloads reliably in production](/resources/ai/ai-orchestration).
 
-With its declarative YAML interface, Kestra ensures that every pipeline is reproducible, versionable, and auditable. Its polyglot nature allows teams to use the best tool for each task—whether it's Python for model training, SQL for data transformation, or Bash for infrastructure setup—all within a single, cohesive workflow. This versatility is backed by an ecosystem of over 1,400 plugins, enabling seamless integration across your entire stack.
+With its declarative YAML interface, Kestra ensures that every pipeline is reproducible, versionable, and auditable. Its polyglot nature allows teams to use the best tool for each task—whether it's Python for model training, SQL for data transformation, or Bash for infrastructure setup—all within a single, cohesive workflow. This versatility is backed by an ecosystem of {totalPlugins}+ plugins, enabling seamless integration across your entire stack.
 
 Kestra is also built for the future of AI with native features for [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration). The [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) accelerates development by translating natural language into production-ready YAML, while [AI Agents](https://kestra.io/docs/ai-tools/ai-agents) can execute complex, multi-step tasks autonomously. This allows organizations like Apple and JPMorgan Chase to orchestrate large-scale AI and data pipelines with robust governance, including human-in-the-loop approvals for critical operations.
 
