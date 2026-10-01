@@ -1,16 +1,22 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
 import { entryCacheKey } from "~/utils/incrementalCacheKey"
+import {
+    fetchTotalPluginsCount,
+    pluginCountScope,
+    replaceTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
+    const totalPlugins = await fetchTotalPluginsCount()
     return blogsPages.map((post) => ({
         params: { slug: post.id },
         props: {
             title: post.data.title,
-            source: post.body,
+            source: replaceTotalPluginsPlaceholder(post.body, totalPlugins),
         },
-        cacheKey: entryCacheKey(post),
+        cacheKey: entryCacheKey(post, ...pluginCountScope(totalPlugins, post.body)),
     }))
 }
 
