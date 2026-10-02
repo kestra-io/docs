@@ -33,7 +33,7 @@ Traditionally viewed through a human-centric lens, case management is evolving. 
 
 ### Defining Case Management: Coordinating Complex Processes
 
-At its core, case management is a collaborative process of assessing, planning, implementing, and monitoring the services and resources required to meet a specific set of needs. Unlike standard business processes that are predictable and repetitive, case management deals with unstructured or semi-structured situations. Each case might follow a unique path, adapting to new information and events as they arise. This adaptability is critical, but it also introduces significant coordination challenges that require a flexible [workflow management](/resources/infrastructure/workflow-management) system.
+At its core, case management is a collaborative process of assessing, planning, implementing, and monitoring the services and resources required to meet a specific set of needs. Unlike standard business processes that are predictable and repetitive, case management deals with unstructured or semi-structured situations. Each case might follow a unique path, adapting to new information and events as they arise. This adaptability is critical, but it also introduces significant coordination challenges that require a flexible workflow management system.
 
 ### Core Principles for Effective Case Management
 

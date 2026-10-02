@@ -92,7 +92,7 @@ An orchestration platform is only as useful as the tools it can connect to. A ro
 *   **Cloud Storage:** Google Drive, Dropbox, S3
 *   **Databases:** PostgreSQL, Snowflake, BigQuery
 
-These integrations should be configurable through simple authentication and form-based inputs, enabling users to build powerful, cross-platform automations without needing to understand APIs or webhooks. Effective [workflow management](/resources/infrastructure/workflow-management) hinges on this ability to connect disparate systems seamlessly.
+These integrations should be configurable through simple authentication and form-based inputs, enabling users to build powerful, cross-platform automations without needing to understand APIs or webhooks. Effective workflow management hinges on this ability to connect disparate systems seamlessly.
 
 ## Top AI orchestration platforms for non-technical users
 

@@ -150,4 +150,4 @@ If your workloads span on-premises data centers and multiple public clouds, prio
 
 ### For Small Teams and Open Source Adoption
 
-For smaller teams or those looking to adopt an open-source model, platforms with a strong community, a generous free tier, and transparent pricing are ideal. Open-source tools like Kestra allow you to start small and scale without initial vendor commitment, providing a lower barrier to entry. For a broader view of the decision framework, see our guide to [workflow management](/resources/infrastructure/workflow-management).
+For smaller teams or those looking to adopt an open-source model, platforms with a strong community, a generous free tier, and transparent pricing are ideal. Open-source tools like Kestra allow you to start small and scale without initial vendor commitment, providing a lower barrier to entry. For a broader view of the decision framework, see our guide to workflow management.

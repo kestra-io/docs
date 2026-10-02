@@ -222,6 +222,6 @@ Event-driven orchestration shows up in three recurring patterns worth recognizin
 
 **Microservice coordination.** An order event triggers a workflow that calls payment, inventory, shipping, and notification services in a defined sequence, with compensating actions on failure. The orchestrator acts as a saga coordinator — the same model used in [data orchestration](/resources/data/data-orchestration) pipelines that span multiple services end-to-end.
 
-**Infrastructure automation.** A webhook from a monitoring system triggers a remediation workflow: scale a cluster, rotate credentials, run a diagnostic, open an incident. The orchestrator ties together the cloud APIs, scripts, and notifications — a pattern covered in depth in [workflow management](/resources/infrastructure/workflow-management) guides.
+**Infrastructure automation.** A webhook from a monitoring system triggers a remediation workflow: scale a cluster, rotate credentials, run a diagnostic, open an incident. The orchestrator ties together the cloud APIs, scripts, and notifications — a pattern covered in depth in workflow management guides.
 
 All three patterns share the same shape: an external event, a declarative workflow, and a single place to observe and debug every run.
