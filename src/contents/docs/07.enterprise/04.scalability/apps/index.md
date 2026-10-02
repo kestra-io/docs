@@ -636,6 +636,7 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 | `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`    |
 | `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
+| `ExecutionAssets`        | SUCCESS, FAILURE                                                         | - `filter`: include, exclude (asset types)                                                   | `- type: io.kestra.plugin.ee.apps.execution.blocks.Assets`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- io.kestra.plugin.ee.assets.VM` |
 | `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
 | `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
 | `Loading`                | RUNNING                                                                  | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
@@ -679,6 +680,29 @@ Before the user interacts with the form, `{{ inputs.* }}` resolves to each input
 :::alert{type="info"}
 When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
 :::
+
+### Assets emitted by an execution
+
+The `Assets` block lists the assets an execution emitted or updated, one row per asset, with its ID, display name, type and metadata. Use it in self-service provisioning flows where the resource the requester asked for is tracked as an asset rather than a flow output.
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "## Your virtual machine is ready"
+
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Assets
+      filter:
+        include:
+          - io.kestra.plugin.ee.assets.VM
+```
+
+- Only assets the execution **emitted or updated** are listed. Assets it merely read as inputs are left out.
+- `filter` matches the asset **type**, so a single Terraform apply or dbt build emitting dozens of assets can be narrowed to the ones the app user cares about. `include` keeps only the listed types, `exclude` drops them.
+- The reserved metadata keys get a column of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. Every other metadata key gets a plain column.
+- The asset ID links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace, and is plain text for everyone else. The table itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors.
+- The block is available on `SUCCESS` and `FAILURE`. On failure, a partially provisioned resource is often what explains what went wrong.
+- When the execution emitted no asset, the block says so instead of rendering an empty table.
 
 ### File preview and download
 
