@@ -105,7 +105,7 @@ To provide a balanced view, we evaluated each alternative on several key criteri
 
 Kestra is an open-source, declarative, and event-driven orchestration platform. It is designed to unify data, AI, infrastructure, and business workflows under a single control plane, defined as code in simple YAML files.
 
-Instead of being a monolithic data platform, Kestra acts as a vendor-neutral layer that connects and coordinates all the tools you already use. With over 1400 plugins and the ability to run any code in any language (Python, SQL, Bash, Go, etc.), it provides ultimate flexibility. This approach allows you to orchestrate tasks across Fabric components, Databricks jobs, Snowflake queries, and infrastructure tools like Terraform or Ansible, all from one place. Its strong GitOps support and built-in CI/CD capabilities make it a natural fit for modern platform engineering practices.
+Instead of being a monolithic data platform, Kestra acts as a vendor-neutral layer that connects and coordinates all the tools you already use. With {totalPlugins}+ plugins and the ability to run any code in any language (Python, SQL, Bash, Go, etc.), it provides ultimate flexibility. This approach allows you to orchestrate tasks across Fabric components, Databricks jobs, Snowflake queries, and infrastructure tools like Terraform or Ansible, all from one place. Its strong GitOps support and built-in CI/CD capabilities make it a natural fit for modern platform engineering practices.
 
 **Best for:** Organizations seeking a unified, flexible, and open-source orchestration layer to coordinate complex workflows across heterogeneous stacks, avoiding vendor lock-in.
 

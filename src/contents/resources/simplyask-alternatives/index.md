@@ -8,7 +8,7 @@ date: 2026-05-27
 slug: "simplyask-alternatives"
 faq:
   - question: "What is the best SimplyAsk alternative for engineering teams?"
-    answer: "For engineering-led teams that need declarative, version-controlled automation across data, AI, and infrastructure, Kestra is the strongest SimplyAsk alternative. It offers a YAML-based orchestration engine with 1,400+ plugins, native AI agent support, and a polyglot execution environment covering Python, Go, Node.js, and more. Unlike SimplyAsk's no-code interface, Kestra is built around GitOps and CI/CD workflows."
+    answer: "For engineering-led teams that need declarative, version-controlled automation across data, AI, and infrastructure, Kestra is the strongest SimplyAsk alternative. It offers a YAML-based orchestration engine with {totalPlugins}+ plugins, native AI agent support, and a polyglot execution environment covering Python, Go, Node.js, and more. Unlike SimplyAsk's no-code interface, Kestra is built around GitOps and CI/CD workflows."
   - question: "Who are the main competitors of SimplyAsk AI?"
     answer: "SimplyAsk's main competitors span two categories: platforms and consulting firms. On the platform side, Kestra (universal declarative orchestration) and n8n (visual app-to-app automation) are the closest alternatives. In the consulting space, Capital Numbers, Trigma, and TechWize offer custom AI and digital transformation services as an alternative to SimplyAsk's product-led approach."
   - question: "Is SimplyAsk open source?"
@@ -43,7 +43,7 @@ Kestra is the open-source orchestration platform that unifies data, AI, infrastr
 
 Where SimplyAsk offers a no-code interface for business efficiency, Kestra provides a declarative YAML approach. This allows engineering teams to treat workflows as code, enabling robust versioning, CI/CD, and collaboration through Git. With its language-agnostic engine, Kestra can run scripts in Python, Go, Node.js, or Shell, orchestrate SQL queries, and manage Docker containers, all within the same workflow. This makes it ideal for unifying disparate tools and teams.
 
-Kestra's architecture is event-driven by default and features over 1,400 plugins, native AI agents, and a built-in Copilot for generating YAML from natural language. It supports [agentic workflows](/resources/ai/agentic-workflows) and [RAG pipelines](/resources/ai/rag-pipeline) natively, making it a strong fit for modern AI-driven automation. Its scalability is proven, with over 2 billion workflows executed in 2025 across more than 30,000 organizations.
+Kestra's architecture is event-driven by default and features {totalPlugins}+ plugins, native AI agents, and a built-in Copilot for generating YAML from natural language. It supports [agentic workflows](/resources/ai/agentic-workflows) and [RAG pipelines](/resources/ai/rag-pipeline) natively, making it a strong fit for modern AI-driven automation. Its scalability is proven, with over 2 billion workflows executed in 2025 across more than 30,000 organizations.
 
 - **Best for:** Engineering teams (Data, Platform, ML/AI) seeking a single, auditable, and scalable platform to orchestrate mission-critical [workflows](/docs/workflow-components/flow) across all domains, including [AI Automation](/ai-automation) and [agentic workflows](/docs/ai-tools/ai-agents).
 - **Limitation:** Kestra's power comes from its declarative, code-centric nature. It requires technical expertise in YAML and engineering best practices, making it less suitable for non-technical users who prefer a purely visual, drag-and-drop interface.
