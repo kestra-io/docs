@@ -56,7 +56,7 @@
             <div id="how-to-use-this-plugin" class="description">
                 <div ref="contentWrap" class="markdown-container" :class="{expanded: isExpanded}">
                     <div ref="contentInner" class="markdown-inner">
-                        <slot name="markdown" :content="description.replace(/ *:(?![ /])/g, ': ')" />
+                        <slot name="markdown" :content="shiftHeadings(description).replace(/ *:(?![ /])/g, ': ')" />
                     </div>
                     <div v-if="isOverflow && !isExpanded" class="gradient-overlay" />
                 </div>
@@ -113,6 +113,27 @@
     const description = computed(() => {
         return plugin.value?.longDescription ?? plugin.value?.description
     });
+
+    // The plugin how-to markdown is authored in the plugin repositories and starts at
+    // heading level 1, which collided with the page title and left every plugin page with
+    // two <h1>. Shift the whole heading tree down one level so the section keeps its
+    // hierarchy under the page title. Headings inside fenced code blocks are skipped:
+    // the flow examples use YAML and shell comments that look exactly like headings.
+    const shiftHeadings = (markdown: string) => {
+        let insideFence = false;
+
+        return markdown
+            .split("\n")
+            .map((line) => {
+                if (/^\s*(```|~~~)/.test(line)) {
+                    insideFence = !insideFence;
+                    return line;
+                }
+
+                return insideFence ? line : line.replace(/^(#{1,5})(\s)/, "#$1$2");
+            })
+            .join("\n");
+    };
 
     const subGroupsWrappers = computed(() => {
         return props.plugins
