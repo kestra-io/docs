@@ -1,5 +1,6 @@
 import { Marked, type Tokens } from "marked"
 import { markedHighlight } from "marked-highlight"
+import { rewriteLinkTokens } from "./redirectedLinks"
 
 const LIGHT_THEME = "github-light-default"
 const DARK_THEME = "github-dark-default"
@@ -44,6 +45,9 @@ export function getMarked() {
                     .replace(/<\/code>\s*<\/pre>\s*$/, "")
             },
         }),
+        // API-sourced markdown links to docs pages by their old URLs; rewrite
+        // them to the current page instead of emitting a 301 hop per link.
+        { walkTokens: rewriteLinkTokens },
     )
 
     return instance
@@ -53,6 +57,7 @@ export function getMarked() {
  * render before Shiki lands and be upgraded in place afterwards. */
 export function getPlainMarked() {
     plainInstance ??= new Marked({
+        walkTokens: rewriteLinkTokens,
         renderer: {
             code({ text }: Tokens.Code) {
                 return `<pre class="shiki-fallback"><code>${escapeHtml(text)}</code></pre>`
