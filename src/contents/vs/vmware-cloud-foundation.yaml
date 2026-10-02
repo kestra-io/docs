@@ -210,7 +210,7 @@ platformStrengths:
       description: "Kestra handles catalog-driven VM provisioning with dynamic Apps, approval gates, and vSphere integration—everything vRA does, plus Terraform, Ansible, and multi-cloud support. One tool, one contract, one set of logs. No JavaScript, no proprietary APIs."
     - title: "Git-Native from Day One"
       description: "Every workflow is YAML you can commit, review in a pull request, and deploy through CI/CD. Fortune 500 platform teams manage all their infrastructure provisioning logic as code—versioned, testable, and auditable. No hidden state in a portal, no manual change tracking."
-    - title: "Works Anywhere: Cloud, On-Prem, Air-Gapped"
+    - title: "Works Anywhere: Any cloud, on-prem, or air-gapped"
       description: "Deploy Kestra on Kubernetes, Docker, or bare metal. Run remote workers close to vSphere targets for hybrid environments. Air-gap deployments supported for regulated industries—no external connectivity required. ITZBund and the Austrian Ministry of Defense run Kestra fully disconnected."
 
 decisionGuide:
