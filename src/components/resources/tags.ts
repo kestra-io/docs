@@ -6,6 +6,7 @@ export type ResourceTag =
     | "ai"
     | "business"
     | "orchestration"
+    | "migrate"
     | "whitepapers"
 
 export const resourceTabs = new Map<string, string>([
@@ -15,6 +16,7 @@ export const resourceTabs = new Map<string, string>([
     ["ai", "AI"],
     ["business", "Business"],
     ["orchestration", "Orchestration"],
+    ["migrate", "Migration"],
     ["whitepapers", "Whitepapers"],
 ])
 
@@ -24,6 +26,7 @@ export const tagLabel: Record<ResourceTag, string> = {
     ai: "AI",
     business: "Business",
     orchestration: "Orchestration",
+    migrate: "Migration",
     whitepapers: "Whitepaper",
 }
 
@@ -46,6 +49,11 @@ export const tagTheme: Record<ResourceTag, TagTheme> = {
         text: "#8C7CFF",
         borderFrom: "#8C7CFF",
         borderTo: "#E4DEFF",
+    },
+    migrate: {
+        text: "#2DD4BF",
+        borderFrom: "#2DD4BF",
+        borderTo: "#CCFBF1",
     },
     whitepapers: {
         text: "#FF7CCF",
