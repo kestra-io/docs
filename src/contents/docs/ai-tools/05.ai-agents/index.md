@@ -135,7 +135,7 @@ The AI Agent can be extended with **tools** — capabilities the LLM can choose 
 
 ### Skills
 
-The [**Skill**](/plugins/plugin-ai/tool/skill) tool lets you attach structured instructions to an agent that it can activate on demand. Rather than including all instructions in the system message, skills let you define discrete, reusable knowledge blocks — each with a name, a description the LLM uses to decide when to activate it, and the actual instruction content.
+The [**Skill**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.skill) tool lets you attach structured instructions to an agent that it can activate on demand. Rather than including all instructions in the system message, skills let you define discrete, reusable knowledge blocks — each with a name, a description the LLM uses to decide when to activate it, and the actual instruction content.
 
 This is useful when an agent has multiple possible modes of operation, such as translating text, reviewing code, or formatting data, where you want the LLM to select and apply the right instructions based on context rather than always receiving all instructions at once.
 
@@ -205,26 +205,26 @@ tasks:
             contentUri: "{{ outputs.write_instructions.uri }}"
 ```
 
-A single `Skill` tool can define multiple skills. Each skill must have a unique name. `content` and `contentUri` are mutually exclusive — exactly one must be set per skill. For more details on all available properties, refer to the [Skill plugin documentation](/plugins/plugin-ai/tool/skill).
+A single `Skill` tool can define multiple skills. Each skill must have a unique name. `content` and `contentUri` are mutually exclusive — exactly one must be set per skill. For more details on all available properties, refer to the [Skill plugin documentation](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.skill).
 
 ### Kestra-native tools
 
-- [**KestraFlow**](/plugins/plugin-ai/tool/kestraflow) — triggers a Kestra flow as a tool, either with a predefined namespace and flow ID or dynamically based on the agent's prompt.
-- [**KestraTask**](/plugins/plugin-ai/tool/kestratask) — exposes one or more Kestra runnable tasks as tools, letting the agent supply values for properties left unset.
+- [**KestraFlow**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.kestraflow) — triggers a Kestra flow as a tool, either with a predefined namespace and flow ID or dynamically based on the agent's prompt.
+- [**KestraTask**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.kestratask) — exposes one or more Kestra runnable tasks as tools, letting the agent supply values for properties left unset.
 
 ### Web search
 
-- [**TavilyWebSearch**](/plugins/plugin-ai/tool/tavilywebsearch) — gives the agent access to live web results via the Tavily search API.
-- [**GoogleCustomWebSearch**](/plugins/plugin-ai/tool/googlecustomwebsearch) — gives the agent access to live web results via a Google Custom Search Engine.
+- [**TavilyWebSearch**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.tavilywebsearch) — gives the agent access to live web results via the Tavily search API.
+- [**GoogleCustomWebSearch**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.googlecustomwebsearch) — gives the agent access to live web results via a Google Custom Search Engine.
 
 ### Code execution
 
-- [**CodeExecution**](/plugins/plugin-ai/tool/codeexecution) — lets the agent write and run JavaScript snippets in a Judge0 sandbox (via RapidAPI).
+- [**CodeExecution**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.codeexecution) — lets the agent write and run JavaScript snippets in a Judge0 sandbox (via RapidAPI).
 
 ### Nested agents
 
-- [**AIAgent**](/plugins/plugin-ai/tool/aiagent) — wraps another AI agent as a callable tool so a parent agent can delegate sub-tasks to a specialized child agent.
-- [**A2AClient**](/plugins/plugin-ai/tool/a2aclient) — forwards prompts to a remote AI agent over the Agent-to-Agent (A2A) protocol and returns its response.
+- [**AIAgent**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.aiagent) — wraps another AI agent as a callable tool so a parent agent can delegate sub-tasks to a specialized child agent.
+- [**A2AClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.a2aclient) — forwards prompts to a remote AI agent over the Agent-to-Agent (A2A) protocol and returns its response.
 
 ### MCP clients
 
@@ -232,10 +232,10 @@ Kestra supports MCP in two directions. These clients cover the **Kestra-as-clien
 
 Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server to expose its tools:
 
-- [**DockerMcpClient**](/plugins/plugin-ai/tool/dockermcpclient) — runs an MCP server inside a Docker container.
-- [**SseMcpClient**](/plugins/plugin-ai/tool/ssemcpclient) — connects to a remote MCP server over Server-Sent Events (SSE).
-- [**StdioMcpClient**](/plugins/plugin-ai/tool/stdiomcpclient) — spawns a local MCP server process and communicates over stdio.
-- [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/streamablehttpmcpclient) — connects to an MCP server over HTTP streaming.
+- [**DockerMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.dockermcpclient) — runs an MCP server inside a Docker container.
+- [**SseMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.ssemcpclient) — connects to a remote MCP server over Server-Sent Events (SSE).
+- [**StdioMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.stdiomcpclient) — spawns a local MCP server process and communicates over stdio.
+- [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.streamablehttpmcpclient) — connects to an MCP server over HTTP streaming.
 
 The [Kestra Python MCP server](https://github.com/kestra-io/mcp-server-python) is an example of an external MCP server you can connect to from a Kestra AI Agent task using one of the clients above.
 
