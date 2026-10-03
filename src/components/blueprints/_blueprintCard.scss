@@ -22,6 +22,18 @@
         transform: scale(1.01);
     }
 
+    // ── Badge-slot reservation ──────────────────────────────────────────
+    // BlueprintCard.astro conditionally renders a `.cs-badge` <span> as
+    // the first child.  When it's absent the `.title` becomes :first-child.
+    // We add top-margin equal to the badge's full height so the remaining
+    // content starts at the same Y in both cases.
+    //   badge font: 0.6875rem × line-height ≈ 1.5 → 16.5px rendered
+    //   badge margin-bottom: 0.5rem (8px)
+    //   total reserved: 24.5px = 1.53125rem
+    .title:first-child {
+        margin-top: 1.53125rem;
+    }
+
     .task-icons {
         display: flex;
         gap: 0.5rem;
@@ -45,7 +57,11 @@
         -webkit-box-orient: vertical;
         line-clamp: 2;
         overflow: hidden;
-        line-height: normal;
+        // Explicit line-height so min-height is deterministic
+        // (was `normal` ≈ 1.2, now locked to 1.2).
+        line-height: 1.2;
+        // Reserve 2 lines: font-size (1rem from h6) × 1.2 × 2 = 2.4rem
+        min-height: 2.4rem;
     }
 
     .description {
@@ -58,6 +74,8 @@
         line-clamp: 2;
         overflow: hidden;
         line-height: 1.4;
+        // Reserve 2 lines: 0.875rem × 1.4 × 2 = 2.45rem
+        min-height: 2.45rem;
     }
 
     hr {
