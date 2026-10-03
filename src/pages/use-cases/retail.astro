@@ -22,7 +22,7 @@ import Git from "vue-material-design-icons/Git.vue"
 import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 
 import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
-import LeroyMerlinLogoImg from "~/assets/trusted-companies/LeroyMerlin.svg"
+import LeroyMerlinLogoImg from "~/assets/companies/leroy-merlin.svg"
 import GorgiasLogoImg from "~/assets/trusted-companies/Gorgias.svg"
 import AuchanLogoImg from "~/assets/trusted-companies/Auchan.svg"
 import DecathlonLogoImg from "~/assets/trusted-companies/Decathlon.svg"
@@ -1107,7 +1107,7 @@ const FAQ = [
     }
 
     // ── Hero logo strip ──────────────────────────────────────────────
-    // 7 logos, 4+3 grid at md+, 2-col stack on mobile. Per-logo
+    // 7 logos, 5+2 grid at md+, 2-col stack on mobile. Per-logo
     // sizing tuned to each SVG's aspect ratio.
     .hero-logos {
         display: flex;
@@ -1132,32 +1132,28 @@ const FAQ = [
 
         &__row {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(10, 1fr);
             align-items: center;
-            justify-content: center;
+            justify-items: center;
             column-gap: 2rem;
             row-gap: 1.5rem;
             width: 100%;
             max-width: 48rem;
             margin: 0 auto;
-            
-            & > :nth-child(6){
-                grid-column:3;
-            }
 
-            & > :nth-child(7) {
-                grid-column:4;
-            }
+            > * { grid-column: span 2; }
+
+            // Center the 2-logo second row under the 5-logo first row
+            > :nth-child(6) { grid-column: 4 / span 2; }
 
             @include media-breakpoint-down(md) {
-                grid-template-columns:repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr);
                 column-gap: 1.5rem;
-                row-gap: 1.5rem;
 
-                & > :nth-child(6),
-                & > :nth-child(7){
-                    grid-column: auto;
-                }
+                > *,
+                > :nth-child(6) { grid-column: auto; }
+
+                > :last-child:nth-child(odd) { grid-column: 1 / -1; }
             }
         }
 
@@ -1176,13 +1172,13 @@ const FAQ = [
             // Unified optical sizing across all industry pages:
             // text wordmarks 36px, small text 32px, compact icon+text
             // 42px, stacked vertically icon+text 52–56px.
-            &--leroy      { max-height: 42px; max-width: 180px; opacity: 1; }  // text
-            &--gorgias    { max-height: 42px; max-width: 160px; }  // text
-            &--auchan     { max-height: 42px; max-width: 140px; }  // text
-            &--decathlon  { max-height: 42px; max-width: 180px; }  // text wide
-            &--intersport { max-height: 42px; max-width: 180px; }  // text wide
-            &--dior       { max-height: 42px; max-width: 110px; }  // small text
-            &--fila       { max-height: 38px; max-width: 120px; }  // small text
+            &--leroy      { max-height: 36px; max-width: 180px; }  // text
+            &--gorgias    { max-height: 36px; max-width: 160px; }  // text
+            &--auchan     { max-height: 36px; max-width: 140px; }  // text
+            &--decathlon  { max-height: 36px; max-width: 180px; }  // text wide
+            &--intersport { max-height: 36px; max-width: 180px; }  // text wide
+            &--dior       { max-height: 32px; max-width: 110px; }  // small text
+            &--fila       { max-height: 32px; max-width: 120px; }  // small text
 
             @include media-breakpoint-down(md) {
                 &--leroy      { max-height: 40px; max-width: 200px; }
