@@ -325,6 +325,66 @@ You can view the generated outputs in the **Outputs** tab in Kestra, which inclu
 
 ![outputs](./outputs.png)
 
+## Monitoring
+
+Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads with other input files. No image change is needed.
+
+kotlp reports the container's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
+
+| Metric | Type | Unit | Attribute |
+|---|---|---|---|
+| `process.cpu.time` | sum | `s` | `cpu.mode`: `user` or `system` |
+| `process.cpu.utilization` | gauge | `1` | `cpu.mode`: `user` or `system` |
+| `process.memory.usage` | gauge | `By` | — |
+| `process.memory.virtual` | gauge | `By` | — |
+| `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.network.io` | sum | `By` | `network.io.direction`: `receive` or `transmit` |
+| `process.thread.count` | gauge | `{thread}` | — |
+| `process.open_file_descriptor.count` | gauge | `{count}` | — |
+
+The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all traffic in the network namespace the command runs in, including loopback, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
+
+kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
+
+```yaml
+id: batch_with_monitoring
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: ubuntu:latest
+    taskRunner:
+      type: io.kestra.plugin.ee.azure.runner.Batch
+      account: "{{ secret('AZURE_ACCOUNT') }}"
+      accessKey: "{{ secret('AZURE_ACCESS_KEY') }}"
+      endpoint: "{{ secret('AZURE_ENDPOINT') }}"
+      poolId: "{{ vars.poolId }}"
+      blobStorage:
+        containerName: "{{ vars.containerName }}"
+        connectionString: "{{ secret('AZURE_CONNECTION_STRING') }}"
+      monitoring:
+        enabled: true
+    commands:
+      - echo "stdout line"
+      - echo "stderr line" >&2
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `monitoring.enabled` | `false` | When true, wraps the task command with kotlp. |
+| `monitoring.metricsInterval` | `PT1S` | How often kotlp samples the container's resource usage. Accepts values between `PT0.001S` and `PT1H`. |
+
+### Constraints
+
+Three requirements apply when monitoring is enabled:
+
+- `blobStorage` must be configured. kotlp is staged as a working-directory file and uploaded to blob storage alongside other input files. The task fails immediately if `blobStorage` is absent.
+- The image must provide `/bin/sh` and `gzip`, and the container must have a writable `$TMPDIR` (default `/tmp`). Standard images (Ubuntu, Debian, Alpine) satisfy all three. `scratch` and distroless images do not work.
+- An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
+
+The Azure Batch node agent stages the kotlp binary as root without an execute permission. The runner handles this automatically using a shell preamble that copies the binary to `$TMPDIR` and sets the execute bit before invoking kotlp.
+
 ## Execution details
 
 When you open an execution in the topology view, the details panel for an Azure Batch task shows job configuration and post-execution resource metrics.

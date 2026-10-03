@@ -55,7 +55,7 @@ Moving from prototype to production requires strict access controls, secure cred
 ### 1. Kestra (Orchestration-first control plane for AI and data workflows)
 Kestra approaches AI engineering from an orchestration-first perspective. Rather than acting as an in-memory prompt composition library, Kestra provides a declarative control plane defined in YAML, enabling engineering teams to coordinate LLM calls, RAG pipelines, and multi-agent workflows alongside existing data engineering and infrastructure tasks. 
 
-With over 1,700 plugins, Kestra includes first-class tasks for calling OpenAI, Anthropic, Google Gemini, Mistral, and AWS Bedrock models, as well as executing Python scripts, querying vector databases, and managing human-in-the-loop approvals. Because workflows are defined declaratively, every change is trackable in Git, and execution state is fully transparent. Explore community guides and architectural playbooks via the [AI Orchestration Resources](/resources/ai).
+With {totalPlugins}+ plugins, Kestra includes first-class tasks for calling OpenAI, Anthropic, Google Gemini, Mistral, and AWS Bedrock models, as well as executing Python scripts, querying vector databases, and managing human-in-the-loop approvals. Because workflows are defined declaratively, every change is trackable in Git, and execution state is fully transparent. Explore community guides and architectural playbooks via the [AI Orchestration Resources](/resources/ai).
 
 ```yaml
 id: ai_content_extraction

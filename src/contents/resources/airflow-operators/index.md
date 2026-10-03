@@ -119,7 +119,7 @@ In contrast to Airflow's code-centric model, [Kestra is an open-source orchestra
 
 This approach decouples the orchestration logic from the execution logic. Instead of writing Python code to instantiate an operator, you define a task with its type and properties directly in YAML.
 
-Kestra supports language-agnostic execution out of the box. You can run Python, Bash, Node.js, R, SQL, and Docker containers as first-class citizens without writing Python wrappers. The platform's extensive plugin ecosystem, with over 1700+ plugins, provides integrations for a vast array of tools and services.
+Kestra supports language-agnostic execution out of the box. You can run Python, Bash, Node.js, R, SQL, and Docker containers as first-class citizens without writing Python wrappers. The platform's extensive plugin ecosystem, with {totalPlugins}+ plugins, provides integrations for a vast array of tools and services.
 
 Here is an example of a Kestra workflow that runs a Python script and a subsequent Bash command:
 
