@@ -652,16 +652,16 @@ const FAQ = [
                     <span class="hero-logos__label">Used by regulated teams across banking, insurance, investment, payments &amp; fintech</span>
                     <div class="hero-logos__row">
                         <a href="/customers/jpmorgan-chase" aria-label="Read the JPMorgan Chase cybersecurity orchestration story">
-                            <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item" />
+                            <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item hero-logos__item--jpmorgan" />
                         </a>
                         <a href="/customers/credit-agricole" aria-label="Read the Crédit Agricole customer story">
-                            <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item" />
+                            <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item hero-logos__item--credit-agricole" />
                         </a>
-                        <Image src={BloombergLogoImg} alt="Bloomberg" class="hero-logos__item" />
-                        <Image src={TotalEnergiesLogoImg} alt="TotalEnergies Trading" class="hero-logos__item" />
-                        <Image src={ICapitalLogoImg} alt="iCapital" class="hero-logos__item" />
-                        <Image src={MatmutLogoImg} alt="Matmut" class="hero-logos__item" />
-                        <Image src={GateIoLogoImg} alt="Gate.io" class="hero-logos__item" />
+                        <Image src={BloombergLogoImg} alt="Bloomberg" class="hero-logos__item hero-logos__item--bloomberg" />
+                        <Image src={TotalEnergiesLogoImg} alt="TotalEnergies Trading" class="hero-logos__item hero-logos__item--totalenergies" />
+                        <Image src={ICapitalLogoImg} alt="iCapital" class="hero-logos__item hero-logos__item--icapital" />
+                        <Image src={MatmutLogoImg} alt="Matmut" class="hero-logos__item hero-logos__item--matmut" />
+                        <Image src={GateIoLogoImg} alt="Gate.io" class="hero-logos__item hero-logos__item--gateio" />
                     </div>
                 </div>
             </div>
@@ -1157,14 +1157,14 @@ const FAQ = [
 
             // Unified optical sizing across all industry pages:
             // text wordmarks 36px, compact icon+text 42px, stacked
-            // vertically icon+text 52–56px. Mobile bumps each by ~4px.
-            &:nth-child(1) { max-height: 36px; max-width: 170px; }  // JPMorgan (text)
-            &:nth-child(2) { max-height: 42px; max-width: 180px; }  // Crédit Agricole (icon + text)
-            &:nth-child(3) { max-height: 36px; max-width: 200px; }  // Bloomberg (text wide)
-            &:nth-child(4) { max-height: 56px; max-width: 200px; }  // TotalEnergies (icon + text stacked)
-            &:nth-child(5) { max-height: 36px; max-width: 160px; clip-path: inset(0 0 0 18.5%); transform: translateY(2px); }  // iCapital (wordmark only; icon mark clipped, nudged down to align baseline)
-            &:nth-child(6) { max-height: 42px; max-width: 170px; }  // Matmut (icon + text)
-            &:nth-child(7) { max-height: 36px; max-width: 140px; }  // Gate.io (text)
+            // vertically icon+text 52–56px.
+            &--jpmorgan        { width: 170px; max-height: 36px; }          // text (explicit width — SVG has no intrinsic size)
+            &--credit-agricole { max-height: 42px; max-width: 180px; }      // icon + text
+            &--bloomberg       { max-height: 36px; max-width: 200px; }      // text wide
+            &--totalenergies   { max-height: 56px; max-width: 200px; }      // icon + text stacked
+            &--icapital        { max-height: 28px; max-width: 160px; transform: translateY(2px); }  // wordmark only (viewBox-cropped SVG)
+            &--matmut          { max-height: 42px; max-width: 170px; }      // icon + text
+            &--gateio          { max-height: 36px; max-width: 140px; }      // text
         }
     }
 
