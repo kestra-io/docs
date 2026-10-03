@@ -1,0 +1,66 @@
+@use "/src/assets/styles/variable" as *;
+
+@mixin guide-eyebrow($color: var(--ks-content-link), $uppercase: false) {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: $color;
+
+    @if $uppercase {
+        text-transform: uppercase;
+    }
+}
+
+@mixin guide-focus-ring($offset: 2px) {
+    &:focus-visible {
+        outline: 2px solid var(--ks-border-active);
+        outline-offset: $offset;
+    }
+}
+
+@mixin guide-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--ks-border-secondary);
+    border-radius: 999px;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+@mixin calc-form-field {
+    --ks-form-bg: var(--ks-background-input);
+    --ks-form-color: var(--ks-content-primary);
+    --ks-form-border-color: var(--ks-border-primary);
+}
+
+@mixin calc-form-label {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: var(--ks-content-primary);
+}
+
+@mixin calc-hint {
+    font-size: $font-size-xs;
+    color: var(--ks-content-secondary);
+}
+
+@mixin calc-status {
+    font-size: $font-size-sm;
+    color: var(--ks-content-secondary);
+}
+
+@mixin calc-panel {
+    padding: 1.25rem;
+    border: 1px solid var(--ks-border-secondary);
+    border-radius: $border-radius-lg;
+}
+
+@mixin calc-derived {
+    margin: 0;
+    padding: 0.65rem 0.8rem;
+    border-radius: $border-radius;
+    background: var(--ks-background-secondary);
+    font-size: $font-size-sm;
+}

@@ -42,7 +42,7 @@ const element = (
 
 const text = (value: string): ElementContent => ({ type: "text", value })
 
-// Tracked by the delegated click listener in ResourceArticle.astro.
+// Tracked by the delegated click listener in src/scripts/resource-cta-tracking.ts.
 const button = (
     placement: Placement,
     href: string,

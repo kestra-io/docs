@@ -1,0 +1,70 @@
+---
+interface Props {
+    title?: string
+    subtitle?: string
+}
+
+const { title, subtitle } = Astro.props
+---
+
+<div class="interactive-frame">
+    <div class="frame-head">
+        <div>
+            {title && <p class="frame-title">{title}</p>}
+            {subtitle && <p class="frame-subtitle">{subtitle}</p>}
+            {
+                Astro.slots.has("note") && (
+                    <p class="frame-subtitle">
+                        <slot name="note" />
+                    </p>
+                )
+            }
+        </div>
+        <span class="frame-tag">Interactive</span>
+    </div>
+    <div class="frame-body">
+        <slot />
+    </div>
+</div>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .interactive-frame {
+        margin: 1.75rem 0;
+    }
+
+    .frame-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .frame-title {
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    .frame-subtitle {
+        font-size: $font-size-sm;
+        color: var(--ks-content-secondary);
+    }
+
+    .frame-tag {
+        @include guide-chip;
+        flex: none;
+        border-color: var(--ks-border-active);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--ks-content-link);
+    }
+
+    .frame-body > :global(:first-child) {
+        margin-top: 0;
+    }
+</style>

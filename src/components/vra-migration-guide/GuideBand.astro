@@ -1,0 +1,30 @@
+<section class="guide-band">
+    <div class="container bd-content">
+        <slot />
+    </div>
+</section>
+
+<style lang="scss">
+    .guide-band {
+        padding: 5.625rem 0;
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-secondary);
+
+        @include media-breakpoint-down(lg) {
+            padding: 3rem 0;
+        }
+    }
+
+    .container {
+        max-width: 1180px;
+    }
+
+    .bd-content :global(h2) {
+        margin: 0 0 1rem;
+    }
+
+    .bd-content > :global(:last-child) {
+        margin-bottom: 0;
+    }
+</style>
