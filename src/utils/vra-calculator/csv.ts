@@ -128,10 +128,18 @@ export function buildCsvRows(
     return rows
 }
 
+// A cell a spreadsheet would run as a formula. Inputs reach the CSV as
+// entered, and a share link can set them to any short string, so a leading
+// "-" counts too unless the whole cell is a plain number like "-5".
+function isFormula(v: string): boolean {
+    if (/^[=+@\t\r]/.test(v)) return true
+    return v.startsWith("-") && !Number.isFinite(Number(v))
+}
+
 /**
- * Serializes rows the way the reference does: cells starting with = + @ are
- * prefixed with ' so spreadsheets do not run them as formulas, and cells with
- * a quote, comma or newline are quoted.
+ * Serializes rows the way the reference does: formula-looking cells are
+ * prefixed with ' so spreadsheets do not run them, and cells with a quote,
+ * comma or newline are quoted.
  */
 export function toCsv(rows: CsvRow[]): string {
     return rows
@@ -140,8 +148,8 @@ export function toCsv(rows: CsvRow[]): string {
                 .map((cell) => {
                     let v =
                         cell === null || cell === undefined ? "" : String(cell)
-                    if (/^[=+@]/.test(v)) v = "'" + v
-                    return /[",\n]/.test(v)
+                    if (isFormula(v)) v = "'" + v
+                    return /[",\n\r]/.test(v)
                         ? '"' + v.replace(/"/g, '""') + '"'
                         : v
                 })

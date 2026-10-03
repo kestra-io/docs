@@ -24,6 +24,19 @@ describe("toCsv", () => {
         )
     })
 
+    it("neutralises a leading minus, tab or carriage return unless the cell is a number", () => {
+        expect(toCsv([["-2+3+cmd|' /C calc'!A0", "-1.5", "\t=1", "\r=1"]])).toBe(
+            "'-2+3+cmd|' /C calc'!A0,-1.5,'\t=1,\"'\r=1\"",
+        )
+    })
+
+    it("neutralises a formula set through a share link", () => {
+        const csv = toCsv(
+            buildCsvRows(resolveInputs({ total: "-1+1" }), "2026-10-19"),
+        )
+        expect(csv).toContain("vRO workflows in the raw export,'-1+1")
+    })
+
     it("writes blanks for null and undefined, and empty rows as empty lines", () => {
         expect(toCsv([[null, undefined, 0], [], ["end"]])).toBe(",,0\n\nend")
     })

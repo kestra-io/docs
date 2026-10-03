@@ -1,4 +1,6 @@
 ---
+import { DOWNLOAD_DIALOG_TARGET } from "../download"
+
 interface Props {
     kind: "talk" | "pdf"
     label?: string
@@ -20,9 +22,13 @@ const { kind, label, variant = "primary" } = Astro.props
 {
     kind === "pdf" && (
         <p class="guide-cta">
-            <a class={`btn btn-${variant}`} href="#reference-handouts">
+            <button
+                type="button"
+                class={`btn btn-${variant}`}
+                data-modal-target={DOWNLOAD_DIALOG_TARGET}
+            >
                 {label ?? "Download the PDF"}
-            </a>
+            </button>
         </p>
     )
 }

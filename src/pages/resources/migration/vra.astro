@@ -15,7 +15,10 @@ import ReferenceHandouts, {
     getHeadings as handoutHeadings,
 } from "~/components/vra-migration-guide/ReferenceHandouts.mdx"
 import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
+import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
 import { tocLinks } from "~/components/vra-migration-guide/toc"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 
@@ -23,6 +26,7 @@ const post = await getEntry("resources", "vra-migration-guide")
 if (!post) throw new Error("resources/vra-migration-guide entry missing")
 const { Content, headings } = await render(post)
 const page = post.data
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = page.metaTitle ?? page.title
 const description = page.metaDescription ?? page.description
@@ -45,13 +49,20 @@ const INSIDE = [
     "A payback calculator: what leaving costs, and the month the move pays for itself, using your own numbers",
 ]
 
+const updated = page.lastUpdated ?? page.date
 const META = [
     "Four enterprise VMware estates behind the method",
     "Three handouts for review teams",
-    "Updated September 2026",
+    ...(updated
+        ? [
+              `Updated ${new Date(updated).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "UTC",
+              })}`,
+          ]
+        : []),
 ]
-
-const PDF_HREF = "#reference-handouts"
 
 const jsonLinkedData = {
     "@context": "https://schema.org",
@@ -111,7 +122,6 @@ const jsonLinkedData = {
         deck={page.description ?? ""}
         inside={INSIDE}
         meta={META}
-        pdfHref={PDF_HREF}
     />
     <GuideBand><StartHere /></GuideBand>
     <section class="guide-content">
@@ -119,9 +129,13 @@ const jsonLinkedData = {
             <div slot="sidebar" class="guide-sidebar">
                 <GuideToc client:load links={links}>
                     <Fragment slot="footer">
-                        <a class="btn btn-primary" href={PDF_HREF}
-                            >Download the PDF</a
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-modal-target={DOWNLOAD_DIALOG_TARGET}
                         >
+                            Download the PDF
+                        </button>
                         <a class="btn btn-secondary" href="/demo"
                             >Talk to our Team</a
                         >
@@ -130,7 +144,7 @@ const jsonLinkedData = {
                 </GuideToc>
             </div>
             <div class="bd-content">
-                <Content />
+                <Content totalPlugins={totalPlugins} />
             </div>
         </TwoColumnStickyLayout>
     </section>
@@ -162,6 +176,7 @@ const jsonLinkedData = {
             </Fragment>
         </SeeHow>
     </div>
+    <DownloadDialog />
     <script src="../../../scripts/resource-cta-tracking.ts"></script>
 </Layout>
 

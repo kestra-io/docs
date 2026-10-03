@@ -1,16 +1,16 @@
 ---
 import { Image } from "astro:assets"
 import bookMockup from "./assets/book-mockup.png"
+import { DOWNLOAD_DIALOG_TARGET } from "./download"
 
 interface Props {
     title: string
     deck: string
     inside: string[]
     meta: string[]
-    pdfHref: string
 }
 
-const { title, deck, inside, meta, pdfHref } = Astro.props
+const { title, deck, inside, meta } = Astro.props
 ---
 
 <section class="guide-hero surface-dark">
@@ -38,7 +38,13 @@ const { title, deck, inside, meta, pdfHref } = Astro.props
                     The full guide is on this page, or download the PDF to share
                     with your team (form required)
                 </p>
-                <a class="btn btn-secondary" href={pdfHref}>Download the PDF</a>
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-modal-target={DOWNLOAD_DIALOG_TARGET}
+                >
+                    Download the PDF
+                </button>
             </div>
         </div>
         <ul class="meta">
