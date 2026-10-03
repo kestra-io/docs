@@ -24,7 +24,7 @@ faq:
     answer: "Migrating from Temporal to Kestra involves translating workflow logic from code-based SDKs (Java, Go, Python, TypeScript) into Kestra's declarative YAML. Kestra's polyglot execution capabilities mean that the core logic of your tasks—Python scripts, shell commands, API calls—can often be reused directly as task scripts inside YAML flows, which significantly simplifies the migration."
 ---
 
-Temporal has established itself as a powerful platform for orchestrating long-running, fault-tolerant microservice workflows, enabling developers to build resilient applications with durable execution guarantees. However, its code-centric approach and operational overhead can present challenges for teams seeking broader orchestration capabilities across data, AI, and infrastructure domains, or those preferring a more declarative model. The leading alternatives to Temporal in 2026, including Kestra, Akka, Camunda, AWS Step Functions, Netflix Conductor, [Inngest](/resources/infrastructure/inngest-alternatives), Apache Airflow, Prefect, Dagster, Windmill, and Trigger.dev, each offer distinct advantages tailored to various use cases, from enterprise process automation to lightweight self-hosted deployments. This article explores these alternatives, providing a framework to help you choose the ideal workflow orchestrator for your specific needs.
+Temporal has established itself as a powerful platform for orchestrating long-running, fault-tolerant microservice workflows, enabling developers to build resilient applications with durable execution guarantees. However, its code-centric approach and operational overhead can present challenges for teams seeking broader orchestration capabilities across data, AI, and infrastructure domains, or those preferring a more declarative model. The leading alternatives to Temporal in 2026, including Kestra, Akka, Camunda, AWS Step Functions, Netflix Conductor, [Inngest](/resources/infrastructure/inngest-alternatives), Apache Airflow, Prefect, Dagster, Windmill, Trigger.dev, and Durable Workflow, each offer distinct advantages tailored to various use cases, from enterprise process automation to lightweight self-hosted deployments. This article explores these alternatives, providing a framework to help you choose the ideal workflow orchestrator for your specific needs.
 
 ## Understanding Temporal and the need for alternatives
 
@@ -189,6 +189,18 @@ Trigger.dev is an open-source framework that helps developers create reliable ba
 
 **Limitation:** It is highly focused on the application layer and is not designed for orchestrating external data or infrastructure resources.
 
+## 12. Durable Workflow: Code-First Workflows for PHP, Python, and Rust
+
+[Durable Workflow](https://durable-workflow.com/) is an open-source durable execution engine with first-party PHP, Python, and Rust SDKs. Its runtime records workflow history and coordinates activities, timers, signals, and retries so application workers can recover after restarts.
+
+**One-liner:** Code-first durable execution with a self-hosted Server, a managed Cloud runtime, and a separate embedded Laravel mode.
+
+**Best for:** Application teams building long-running business processes in PHP, Python, or Rust, including Laravel teams choosing between in-application execution and an independently operated runtime.
+
+**Distinctive Feature:** Service-mode workflows and activities can run in different supported languages through a shared protocol. Embedded Laravel keeps execution inside the application, while service mode separates application workers from runtime-owned state. The [deployment and SDK guide](https://durable-workflow.com/docs/introduction/) explains these boundaries; the self-hosted Server is [MIT-licensed](https://github.com/durable-workflow/server/blob/main/LICENSE).
+
+**Limitation:** This is an SDK-based, code-first model rather than a declarative YAML or visual workflow authoring tool. Teams must write deterministic workflow code and place external side effects in activities; self-hosting also means operating the runtime and its persistence.
+
 ## Comparison table
 
 | Tool | License | Deployment | Primary Focus | Workflow Definition | Language Support | Best for |
@@ -204,12 +216,14 @@ Trigger.dev is an open-source framework that helps developers create reliable ba
 | Dagster | Apache 2.0 OSS / Cloud | Self-hosted, Cloud | Asset-Centric Data Orchestration | Code (Python) | Python | Analytics engineering, data lineage, dbt |
 | Windmill | AGPLv3 OSS / Cloud | Self-hosted, Cloud | Internal Tools, Scripts & Workflows | Code (Python, TS, Go, SQL) | Polyglot | Building internal tools and automations quickly |
 | Trigger.dev | Apache 2.0 OSS / Cloud | Self-hosted, Cloud | Developer Background Jobs | Code (TypeScript, Python) | TypeScript, Python | Resilient background jobs for web apps |
+| Durable Workflow | MIT OSS / Cloud | Self-hosted, Cloud, Embedded Laravel | Durable Application Workflows | Code (PHP, Python, Rust) | PHP, Python, Rust SDKs | Long-running app processes, Laravel integration |
 
 ## How to choose the right alternative
 
 Choosing the right orchestrator depends entirely on your team's primary use case and technical culture.
 
 *   **For microservices & application teams:** If your core need is durable execution embedded within your application logic, tools like **Inngest**, **Trigger.dev**, and **Netflix Conductor** are strong contenders. They prioritize SDKs and a code-first experience.
+*   **For PHP, Python, and Rust application teams:** **Durable Workflow** supports code-first workflows across these languages, with an embedded option for Laravel and a separate runtime for service-mode deployments.
 *   **For data engineering teams:** If your world revolves around ETL/ELT, data quality, and transformation, platforms like **Kestra**, **Airflow**, **Prefect**, and **Dagster** are purpose-built for data pipelines. The choice between them often comes down to code-first Python vs. declarative YAML.
 *   **For infrastructure & DevOps teams:** When orchestrating IaC tools, cloud services, and CI/CD processes, a language-agnostic and API-driven orchestrator is key. **Kestra** is designed for this, allowing you to coordinate tools like Terraform and Ansible within a larger [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) workflow.
 *   **For AI / ML platform teams:** Orchestrating ML pipelines requires handling diverse tasks from data prep to model training and deployment. **Kestra** and **Prefect** offer the flexibility to manage these complex, multi-step [agentic workflows](/resources/ai/agentic-workflows).
