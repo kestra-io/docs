@@ -34,8 +34,6 @@ A reused result is only valid while what produced it is unchanged. Playground st
 - the flow `labels`
 - the flow `variables`
 
-Flow `outputs` are not in this list: they are computed at the end of a run, and no task result depends on them.
-
 Playground only tracks the flow definition. Reused results can still be out of date after a change to namespace files, KV store entries, [secrets](../../06.concepts/04.secret/index.md), or an external system a task reads from. Use **Run all tasks** to start a fresh run when you change any of these.
 
 To see Playground in action, check out the demo below.
