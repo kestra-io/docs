@@ -7,7 +7,7 @@ export async function getStaticPaths() {
     return docsPages.map((doc) => ({
         params: { docsPath: doc.id },
         props: {
-            title: doc.data.title,
+            title: doc.data.h1 ?? doc.data.title,
             source: doc.body,
         },
         cacheKey: entryCacheKey(doc),
