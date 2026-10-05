@@ -121,3 +121,26 @@ Migration is complete when the 1.3 instance has no flows remaining. Migrate them
 3. **Drain before removing.** Wait for any active executions of the flow on 1.3 to finish before deleting it. Removing a flow with running executions leaves those executions in an unresolvable state.
 4. **Activate triggers on 2.0 first.** If the flow has a schedule or polling trigger, confirm the trigger is active on 2.0 before removing the flow from 1.3; otherwise scheduled runs are silently dropped during the gap.
 5. **Delete from 1.3.** Once validated, drained, and triggers are live, delete the flow from the 1.3 instance.
+
+## Verifying the migration with kestractl
+
+Once all flows are on the 2.0 instance, use `kestractl flows validate-by-query` to confirm every stored flow is still valid against the new runtime. The command fetches flows from the live instance, validates them in batches, and exits non-zero if any violations are found, making it suitable as a CI gate.
+
+```bash
+# Validate all flows on the instance
+kestractl flows validate-by-query --all
+
+# Scope to a single namespace
+kestractl flows validate-by-query --namespace company.team
+
+# Machine-readable output for CI
+kestractl flows validate-by-query --all --output json
+```
+
+This is equivalent to the manual export-unzip-validate round-trip, done in a single command and entirely in memory. A flow with an unsaved draft is validated at its last saved revision.
+
+:::alert{type="info"}
+`validate-by-query` covers flows the server cannot fully parse (for example, a task type removed in 2.0): the export writes the stored source text without deserializing it, so those flows appear as validation failures in the output. Flows with no saved revision (draft-only) are skipped by the export and are not validated.
+
+An empty namespace or filter that matches nothing exits 0, since zero flows means zero failures. Use `--namespace` to scope large instances and avoid accidentally validating nothing due to a typo.
+:::
