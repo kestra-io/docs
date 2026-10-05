@@ -55,3 +55,27 @@ The `download` task is skipped — Kestra reuses its output from the original ex
 The **Overview** tab shows the attempt number, the revision used, a `system.replay: true` label marking this as a replay, and a `system.correlationId` label linking back to the original execution.
 
 ![Overview tab showing Execution is Replayed badge, system.replay: true label, 2 revisions, 2 attempts, and a link to the original execution](./replay-execution-overview.png)
+
+## Replay on another flow revision
+
+When you replay from a task run on the **Latest flow revision** or a **Specific flow revision**, Kestra reuses the stored results of the tasks before it. The original revision produced those results, so Kestra first checks that the chosen revision would have produced the same ones, and refuses the replay otherwise.
+
+Compared with the revision the execution ran on, the replay is refused when:
+
+- a task before the one you replay from changed, was renamed, was removed, or had a task inserted in front of it. Flowable tasks are compared recursively, and changes to `description`, `retry`, `timeout`, `workerSelector`, `allowFailure` and `allowWarning` are ignored.
+- an input was removed, changed type, or lost its default value.
+- a variable was removed or changed.
+
+You can still edit the task you replay from, any task after it, and any task that never ran. Replaying on the original revision, or replaying a whole execution without selecting a task run, needs no check because nothing is reused.
+
+The replay dialog runs the check as soon as you pick a revision and shows the result before you confirm. When the check fails, the confirm button is disabled and the reason is shown. Select **Replay the whole execution instead** to keep the chosen revision and run every task again. The original execution is kept and linked, as for any replay.
+
+The API applies the same check. `POST /api/v1/{tenant}/executions/{executionId}/actions/replay/validate` takes the `taskRunId` and `revision` query parameters and returns `200` when the replay is possible, or `409` with the reason when it is not. The replay endpoints refuse the same cases with the same reason.
+
+### What the check cannot tell
+
+Kestra compares flow definitions. A passing check does not make a replay on another revision deterministic, because the results of the tasks after the chosen one can still depend on things outside the flow:
+
+- secrets are read on every call and can be rotated or expired
+- file inputs and other non-interactive inputs can have changed
+- a [Pebble](../../06.concepts/06.pebble/index.md) expression calling an external system can return something different today
