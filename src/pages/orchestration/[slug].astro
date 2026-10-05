@@ -35,6 +35,7 @@ import {
     fetchTotalPluginsCount,
     replaceTotalPluginsPlaceholder,
 } from "~/utils/plugins/pluginCount"
+import { resolveBlueprintRenders, fetchToolBlueprintCount } from "~/utils/blueprints/orchestrationBlueprints"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
 import GraviteeLogo from "~/contents/customer-stories/when-your-api-writes-its-own-docs-with-kestra/logo.svg?raw"
@@ -50,7 +51,6 @@ import SophtLogo from "~/components/orchestrate/assets/sopht.svg?raw"
 import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
 import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
 import WestBendLogo from "~/components/orchestrate/assets/west-bend.svg?raw"
-import Fortune500Logo from "~/components/enterprise/assets/fortune500.svg?raw"
 
 const versusLogoModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -88,7 +88,6 @@ const LOGO_MAP: Record<string, string> = {
     bsi: optimizeSvgIcon(BsiLogo, "bsi-orch-logo"),
     censhare: optimizeSvgIcon(CenshareLogo, "censhare-orch-logo"),
     "west-bend": optimizeSvgIcon(WestBendLogo, "west-bend-orch-logo"),
-    fortune500: optimizeSvgIcon(Fortune500Logo, "fortune500-orch-logo"),
 }
 
 export async function getStaticPaths() {
@@ -167,38 +166,9 @@ const {
     resources,
 } = replaceTotalPluginsPlaceholder(entry.data, totalPlugins)
 
-const blueprintItems = await Promise.all(
-    blueprints.items.map(async (item) => {
-        if (!item.blueprintId) return item
-        try {
-            const [bp, graph] = await Promise.all([
-                $fetchApiCached<{ flow: string }>(
-                    `/blueprints/${item.blueprintId}/versions/latest`,
-                ),
-                $fetchApiCached(
-                    `/blueprints/${item.blueprintId}/versions/latest/graph`,
-                ),
-            ])
-            return { ...item, render: { source: bp.flow, graph } }
-        } catch (e) {
-            console.warn(
-                `Could not fetch blueprint "${item.blueprintId}" for ${entry.id}`,
-                e,
-            )
-            return item
-        }
-    }),
-)
+const blueprintItems = await resolveBlueprintRenders(blueprints.items)
 
-let allBlueprintsCount = 0
-try {
-    const search = await $fetchApiCached<{ total: number }>(
-        `/blueprints/versions/latest?q=${encodeURIComponent(tool.name)}&size=1`,
-    )
-    allBlueprintsCount = search?.total ?? 0
-} catch (e) {
-    console.warn(`Could not fetch blueprint count for ${tool.name}`, e)
-}
+const allBlueprintsCount = await fetchToolBlueprintCount(tool.name)
 
 let pluginIcon = ""
 try {
