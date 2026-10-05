@@ -252,6 +252,9 @@ Exit code is `1` whenever any flow needs changes, making it useful as a CI gate.
 | Log Fetch | `io.kestra.plugin.core.log.Fetch` | `io.kestra.plugin.kestra.logs.Fetch` |
 | Script runner key | `runner:` | `taskRunner:` |
 | Required/defaults conflict | `required: false` + `defaults:` | Remove `required: false` |
+| Pebble `json()` function | `{{ json(x) }}` | `{{ fromJson(x) }}` |
+| Pebble `\| json` filter | `{{ value \| json }}` | `{{ value \| toJson }}` |
+| State name `CANCELED` in `states:` | `CANCELED` | `CANCELLED` |
 
 ### What `kestra-migrate` flags but does not rewrite (`⚠ ✗`)
 
@@ -375,7 +378,6 @@ Two AI options can help with the manual rewrites in this step:
   │ pluginDefaults        │ 04-plugin-defaults.yaml         │
   │ taskDefaults          │ 07-task-defaults.yaml           │
   │ Flow trigger          │ 08-trigger-conditions.yaml      │
-  │ | json filter         │ 04-plugin-defaults.yaml         │
   └───────────────────────┴─────────────────────────────────┘
   ```
 
@@ -386,19 +388,15 @@ Two AI options can help with the manual rewrites in this step:
   ├──────────────────────────────────┼──────────────────────────────────────┼──────────┤
   │ 01-foreach.yaml                  │ ForEach → Loop (confirmed)           │ ✔        │
   │ 03-foreachitem.yaml              │ ForEachItem → Split+Loop+Subflow     │ ✔        │
-  │ 04-plugin-defaults.yaml          │ pluginDefaults inlined; | json →     │ ✔        │
-  │                                  │ | toJson                             │          │
+  │ 04-plugin-defaults.yaml          │ pluginDefaults inlined               │ ✔        │
   │ 07-task-defaults.yaml            │ taskDefaults inlined                 │ ✔        │
   │ 08-trigger-conditions.yaml       │ Trigger shipped disabled: true       │ ✔        │
   └──────────────────────────────────┴──────────────────────────────────────┴──────────┘
 
   ⚠  Attention items:
-  1. 04-plugin-defaults.yaml — | json is a runtime failure, not a parse error. It
-     passed --check and parsed fine on 2.0; it would have failed at execution.
-     Caught via grep; fixed to | toJson.
-  2. 07-task-defaults.yaml — transform_data calls json.dumps without import json.
+  1. 07-task-defaults.yaml — transform_data calls json.dumps without import json.
      Pre-existing bug on 1.3, not migration-caused; carried through unchanged.
-  3. 08-trigger-conditions.yaml — trigger ships disabled: true. Enable after the
+  2. 08-trigger-conditions.yaml — trigger ships disabled: true. Enable after the
      gating probe confirms correct dependsOn firing behavior.
   ```
 
@@ -591,10 +589,6 @@ grep -rln "pluginDefaults:" ./v2-flows/
 ### Other patterns to grep for
 
 ```bash
-# Removed Pebble json() function and | json filter
-grep -rn "json(" ./v2-flows/
-grep -rn "| json" ./v2-flows/
-
 # Script task runner key rename
 grep -rn "^\s*runner:" ./v2-flows/
 
@@ -621,10 +615,10 @@ grep -rln "io.kestra.plugin.ee.git\|io.kestra.plugin.kestra" ./v2-flows/
 | `fs.local.Delete` on a directory | Add `recursive: true` if subdirectory deletion was intended — the 2.0 default flipped to `false` and stops without error | [Local delete recursive default](../local-delete-recursive-default/index.md) |
 | Tasks that call Kestra API internally (git sync, push, fetch tasks) | Add an `auth` block with credentials, or configure a namespace default service account — without it the task fails with `401 Unauthorized` | [SDK authentication](../sdk-authentication/index.md) |
 
-:::alert{type="warning"}
-**`| json` and `json(` are runtime failures, not parse failures.** Flows using these patterns load and execute on 2.0 without error — the failure only surfaces when the expression is evaluated. `kestra-migrate --check` does not flag them. The grep is your only safety net.
+:::alert{type="info"}
+`kestra-migrate` auto-rewrites `json(` and `| json` — you do not need to grep for them. If you ran an older version of the tool, re-run the migration against your output directory to apply those rewrites.
 
-The `grep -rn "read("` sweep also matches `read()` inside Python or JavaScript tasks. Check only Pebble expressions (`{{ read(...) }}`) that consume the output of an ION-producing task — not host-language code.
+`kestra-migrate --check` flags `read()` expressions that consume ION-producing task outputs and prints a warning with a docs link. The fix is still manual. When grepping for `read(`, note that the sweep matches `read()` inside Python or JavaScript code too — check only Pebble expressions (`{{ read(...) }}`) over ION-producing task outputs, not host-language code.
 :::
 
 ### Verify all flows are v2-compatible
@@ -952,8 +946,6 @@ grep -rn "plugin.core.flow.ForEach" ./v2-flows/
 grep -rn "plugin.core.flow.ForEachItem" ./v2-flows/
 grep -rn "pluginDefaults:" ./v2-flows/
 grep -rn "taskDefaults:" ./v2-flows/
-grep -rn "json(" ./v2-flows/
-grep -rn "| json" ./v2-flows/
 grep -rn "^\s*runner:" ./v2-flows/
 ```
 
