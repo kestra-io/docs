@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-    import { $fetchApiCached } from "~/utils/fetch"
+    import { $fetch } from "~/utils/fetch"
     import { ref, onMounted } from "vue"
 
     const emit = defineEmits(["apiError"])
@@ -12,12 +12,12 @@
 
     onMounted(async () => {
         try {
-            const { stars } = await $fetchApiCached<{ stars?: number }>(
-                "/communities/github/metrics",
+            const { stargazers } = await $fetch<{ stargazers?: number }>(
+                "/api/github",
             )
             // A zero count only ever means an upstream failure, so hide the badge.
-            if (!stars) throw new Error("No stargazer count")
-            stargazersText.value = Intl.NumberFormat("en-US").format(stars)
+            if (!stargazers) throw new Error("No stargazer count")
+            stargazersText.value = Intl.NumberFormat("en-US").format(stargazers)
         } catch (error) {
             emit("apiError")
         }
