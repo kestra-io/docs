@@ -27,7 +27,7 @@ Playground mode requires a DAG (Directed Acyclic Graph) structure, so you cannot
 
 ### When reused results are reset
 
-A reused result is only valid while what produced it is unchanged. Playground starts a fresh run, instead of reusing earlier task runs, when you change:
+Playground reuses earlier task outputs as long as nothing that affects them has changed. It starts a fresh run when you change:
 
 - a task before the one you run
 - the flow `inputs`
