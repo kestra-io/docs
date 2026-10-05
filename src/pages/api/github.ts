@@ -57,7 +57,7 @@ export const GET: APIRoute = async ({ locals }) => {
     const stats = DISABLE_GITHUB
         ? undefined
         : await getGithubStats({
-              kv: env.ICON_CACHE,
+              kv: env.GITHUB_CACHE,
               fetchStats,
               waitUntil: (promise) => locals.cfContext?.waitUntil(promise),
           })
