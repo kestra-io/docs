@@ -18,7 +18,7 @@ type StatsKv = {
 }
 
 export const GITHUB_STATS_KEY = "github:kestra-io/kestra"
-export const FRESH_MS = 2 * 60 * 60 * 1000
+export const FRESH_MS = 10 * 60 * 1000
 // After a failed refresh, wait this long before hitting GitHub again.
 export const RETRY_MS = 10 * 60 * 1000
 
@@ -77,7 +77,7 @@ async function refresh(
     return stats
 }
 
-// Serves the KV copy, refreshing it in the background once it is 2h old.
+// Serves the KV copy, refreshing it in the background once it is 10 min old.
 export async function getGithubStats({
     kv,
     fetchStats,
