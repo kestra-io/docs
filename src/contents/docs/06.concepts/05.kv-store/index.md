@@ -316,3 +316,19 @@ data "kestra_kv" "new" {
 ```
 
 Run `terraform apply` to create, update, or delete KV pairs from your Terraform state.
+
+## Remote workers with dedicated storage
+
+:::alert{type="info"}
+This configuration applies to Enterprise Edition deployments where workers use dedicated storage that differs from the deployment's.
+:::
+
+Workers with dedicated storage read and write KV values against their own bucket by default. Keys set on such a worker are visible across the deployment but their values are unreachable from anywhere else. Set `kestra.kv.worker-access: CONTROLLER` to route KV operations through the controller instead:
+
+```yaml
+kestra:
+  kv:
+    worker-access: CONTROLLER    # default: STORAGE
+```
+
+See [Dedicated-storage workers](../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation, the equivalent setting for managed plugin artifacts, and the property reference.

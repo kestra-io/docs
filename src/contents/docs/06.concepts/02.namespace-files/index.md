@@ -472,3 +472,19 @@ namespaceFiles:
 :::alert{type="warning"}
 Patterns without a leading `/` are automatically prefixed with `**/`, which makes them recursive. Use a leading `/` or explicit `glob:`/`regex:` to restrict matching to the namespace root. Patterns that already contain `**` (e.g. `my_dir/**`) are still prefixed, producing `**/my_dir/**`; use `/my_dir/**` or `glob:/my_dir/**` to avoid the double prefix.
 :::
+
+## Remote workers with dedicated storage
+
+:::alert{type="info"}
+This configuration applies to Enterprise Edition deployments where workers use dedicated storage that differs from the deployment's.
+:::
+
+Workers with dedicated storage read and write namespace file content against their own bucket by default. A file uploaded from the UI is listed on the worker but its content is unreachable, and a file written by a task on the worker cannot be read from anywhere else. Set `kestra.namespace-files.worker-access: CONTROLLER` to route all namespace file operations through the controller instead:
+
+```yaml
+kestra:
+  namespace-files:
+    worker-access: CONTROLLER    # default: STORAGE
+```
+
+See [Dedicated-storage workers](../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation, the equivalent settings for KV Store values and managed plugin artifacts, and the property reference.
