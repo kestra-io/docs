@@ -58,11 +58,11 @@ The **Overview** tab shows the attempt number, the revision used, a `system.repl
 
 ## Replay on another flow revision
 
-When you replay from a task run on the **Latest flow revision** or a **Specific flow revision**, Kestra reuses the stored results of the tasks before it. The original revision produced those results, so Kestra first checks that the chosen revision would have produced the same ones, and refuses the replay otherwise.
+When you replay from a task run on the **Latest flow revision** or a **Specific flow revision**, Kestra reuses the stored results of the tasks before the one you replay from. The original revision produced those results, so Kestra first checks that the chosen revision would have produced the same results, and refuses the replay otherwise.
 
 Compared with the revision the execution ran on, Kestra refuses the replay when:
 
-- a task before the one you replay from changed, was renamed, was removed, or had a task inserted in front of it. Flowable tasks are compared recursively, and changes to `description`, `retry`, `timeout`, `workerSelector`, `allowFailure` and `allowWarning` are ignored.
+- a task before the one you replay from changed, was renamed, was removed, or had a task inserted in front of it (Flowable tasks are compared recursively; Kestra ignores changes to `description`, `retry`, `timeout`, `workerSelector`, `allowFailure`, and `allowWarning`)
 - an input was removed, changed type, or lost its default value.
 - a variable was removed or changed.
 
@@ -70,7 +70,7 @@ You can still edit the task you replay from, any task after it, and any task tha
 
 The replay dialog runs the check as soon as you pick a revision and shows the result before you confirm. When the check fails, the confirm button is disabled and the dialog shows the reason. Select **Replay the whole execution instead** to keep the chosen revision and run every task again. Kestra keeps and links the original execution, as with any replay.
 
-The API applies the same check. `POST /api/v1/{tenant}/executions/{executionId}/actions/replay/validate` takes the `taskRunId` and `revision` query parameters and returns `200` when the replay is possible, or `409` with the reason when it is not. The replay endpoint itself applies the same check and returns the same reason.
+The API exposes the same check. `POST /api/v1/{tenant}/executions/{executionId}/actions/replay/validate` takes the `taskRunId` and `revision` query parameters and returns `200` when the replay is possible, or `409` with the reason when it is not.
 
 ### What the check cannot tell
 
