@@ -109,7 +109,7 @@ ION files already stored in internal storage from a 1.x instance are in text for
 
 ## Migration steps
 
-1. Search all flows for expressions matching `read(outputs.` that perform string operations: `contains`, direct string embedding in messages, or string comparison.
+1. Run `kestra-migrate --check` against your flows — the tool flags `read()` expressions over ION-producing task outputs and prints a warning with a docs link. You can also search manually for expressions matching `read(outputs.` that perform string operations: `contains`, direct string embedding in messages, or string comparison.
 2. For each match, confirm the task referenced by the output URI produces ION format (FileTransform, query FETCH tasks, Write with `.ion` extension).
 3. Replace `read(outputs.x.uri)` with `fromIon(read(outputs.x.uri))` to get the first row deserialized, or `fromIon(read(outputs.x.uri), allRows=true)` to get all rows as a list.
 4. Update Assert conditions, log messages, and any downstream expressions that operated on the raw string content.
