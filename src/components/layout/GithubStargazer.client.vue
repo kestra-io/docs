@@ -12,10 +12,12 @@
 
     onMounted(async () => {
         try {
-            const response = await $fetch<{ stargazers: number }>("/api/github")
-            stargazersText.value = Intl.NumberFormat("en-US").format(
-                response.stargazers,
+            const { stargazers } = await $fetch<{ stargazers?: number }>(
+                "/api/github",
             )
+            // A zero count only ever means an upstream failure, so hide the badge.
+            if (!stargazers) throw new Error("No stargazer count")
+            stargazersText.value = Intl.NumberFormat("en-US").format(stargazers)
         } catch (error) {
             emit("apiError")
         }
