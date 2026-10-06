@@ -59,6 +59,11 @@
             "binding": "docs-session",
             "id": "7697469604b64c6899be1721cc799e02",
         },
+        // /api/github stats, shared by prod and every preview version.
+        {
+            "binding": "GITHUB_CACHE",
+            "id": "e9fb516da12640bdb4a2f9531eb9578c",
+        },
     ],
     /**
      * Environment Variables
@@ -77,6 +82,10 @@
                 {
                     "binding": "docs-session",
                     "id": "7697469604b64c6899be1721cc799e02",
+                },
+                {
+                    "binding": "GITHUB_CACHE",
+                    "id": "e9fb516da12640bdb4a2f9531eb9578c",
                 },
             ],
         },
