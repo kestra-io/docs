@@ -195,6 +195,72 @@ Log streaming is capped at 10 MiB per Pod. Beyond that limit, the runner stops s
 
 When a Pod ends in a failed phase, the runner reports each container's exit code, reason, and message, and dumps the log of each failed container other than `main`. This is the only way to see why file staging failed when `delete: true` — the Pod is gone before it can be inspected.
 
+## Monitoring
+
+Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads alongside other input files. No image change is needed.
+
+kotlp reports the container's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT10S`):
+
+| Metric | Type | Unit | Attribute |
+|---|---|---|---|
+| `process.cpu.time` | sum | `s` | `cpu.mode`: `user` or `system` |
+| `process.cpu.utilization` | gauge | `1` | `cpu.mode`: `user` or `system` |
+| `process.memory.usage` | gauge | `By` | — |
+| `process.memory.virtual` | gauge | `By` | — |
+| `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.network.io` | sum | `By` | `network.io.direction`: `receive` or `transmit` |
+| `process.thread.count` | gauge | `{thread}` | — |
+| `process.open_file_descriptor.count` | gauge | `{count}` | — |
+
+The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all traffic in the network namespace the command runs in, including loopback, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
+
+kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
+
+Monitoring fixes a limitation of the CCI Pod-log stream: stdout and stderr are delivered as a single stream with no way to distinguish them. kotlp tags each line with the stream it came from, so lines the command wrote to stderr are logged at ERROR instead of INFO.
+
+The default interval is `PT10S` rather than 1 second because Pod log tailing in CCI is capped at 10 MiB. At 1-second sampling, each `resourceMetrics` frame is approximately 3.3 KB, which exhausts the cap in roughly 54 minutes and stops log delivery for the rest of the task.
+
+```yaml
+id: monitored_container
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: ubuntu:latest
+    taskRunner:
+      type: io.kestra.plugin.ee.huawei.runner.Cci
+      region: eu-west-101
+      endpointSuffix: myhuaweicloud.eu
+      namespace: kestra
+      accessKeyId: "{{ secret('HUAWEI_ACCESS_KEY_ID') }}"
+      secretAccessKey: "{{ secret('HUAWEI_SECRET_ACCESS_KEY') }}"
+      bucket: kestra-cci-staging
+      imagePullSecret: imagepull-secret
+      obsSyncImage: swr.eu-west-101.myhuaweicloud.eu/my-org/aws-cli:latest
+      monitoring:
+        enabled: true
+        metricsInterval: PT10S
+    commands:
+      - echo "Hello World"
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `monitoring.enabled` | `false` | When true, wraps the task command with kotlp. |
+| `monitoring.metricsInterval` | `PT10S` | How often kotlp samples the container's resource usage. Values below 1 ms are treated as 1 ms. |
+
+### Constraints
+
+Four requirements apply when monitoring is enabled:
+
+- `bucket` must be configured with `accessKeyId` and `secretAccessKey`. kotlp is staged as a working-directory file and uploaded to OBS alongside other input files. A configuration that provides only a `securityToken` is rejected because OBS staging cannot use it.
+- The main container image must provide `/bin/sh` and must have a writable `$TMPDIR` (default `/tmp`). Standard images such as Ubuntu, Debian, and Alpine satisfy both. `scratch` and distroless images do not work.
+- `obsSyncImage` must be reachable and must provide `/bin/sh`, `gzip`, and a writable `$TMPDIR`. Monitoring always forces the `input-files` init container, so these requirements apply even when no `inputFiles` are configured.
+- An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
+
+`aws s3 sync` (used by the init container) drops the execute bit on downloaded files. The runner handles this automatically by copying the kotlp binary to a temporary file under `$TMPDIR` and setting the execute bit before invoking kotlp.
+
 ## Exit codes
 
 | Pod phase | Exit code |
