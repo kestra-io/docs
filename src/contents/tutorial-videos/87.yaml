@@ -1,7 +1,0 @@
-title: "Building Webinar Infrastructure for Sales, Marketing & Leadership"
-description: "Parham walks through how Kestra built a GTM data stack that serves sales, marketing, product, and leadership from a single orchestration layer — covering subflows, namespace-based alerting, and Terraform deployment."
-category: "Webinar"
-author: "Kestra"
-url: "https://www.youtube.com/watch?v=sLUl2PzcBK4"
-publicationDate: "2026-02-20T00:00:00.000"
-contentType: "Webinar"

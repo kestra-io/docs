@@ -1,2 +1,0 @@
-- regexp: "/tutorial-videos/(.*)"
-  to: "/videos/$1"
