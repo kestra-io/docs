@@ -1,12 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import {
+    COLD_RETRY_MS,
     FRESH_MS,
+    GITHUB_FAILURE_KEY,
     GITHUB_STATS_KEY,
     RETRY_MS,
-    getGithubStats,
     keepNonZero,
     type GithubStats,
 } from "./githubStats"
+
+// Fresh module per test: the failure cooldown is module-level state.
+let getGithubStats: typeof import("./githubStats").getGithubStats
 
 const stats = (value: number): GithubStats => ({
     stargazers: value,
@@ -36,8 +40,10 @@ function fakeKv(initial?: { stats: GithubStats; fetchedAt: number }) {
 
 const NOW = 1_000_000_000_000
 
-beforeEach(() => {
+beforeEach(async () => {
     vi.spyOn(console, "error").mockImplementation(() => {})
+    vi.resetModules()
+    ;({ getGithubStats } = await import("./githubStats"))
 })
 
 describe("keepNonZero", () => {
@@ -136,7 +142,7 @@ describe("getGithubStats", () => {
         expect(kv.put).toHaveBeenCalledOnce()
     })
 
-    it("returns nothing and writes nothing when there is no data at all", async () => {
+    it("returns nothing and writes no stats when there is no data at all", async () => {
         const kv = fakeKv()
 
         const result = await getGithubStats({
@@ -147,6 +153,42 @@ describe("getGithubStats", () => {
         })
 
         expect(result).toBeUndefined()
-        expect(kv.put).not.toHaveBeenCalled()
+        expect(kv.store.has(GITHUB_STATS_KEY)).toBe(false)
+    })
+
+    it("does not retry an empty cache within COLD_RETRY_MS of a failure", async () => {
+        const kv = fakeKv()
+        const fetchStats = vi.fn(async () => {
+            throw new Error("GitHub 403")
+        })
+        const call = (now: number) =>
+            getGithubStats({ kv, fetchStats, waitUntil: vi.fn(), now })
+
+        expect(await call(NOW)).toBeUndefined()
+        expect(await call(NOW + COLD_RETRY_MS - 1)).toBeUndefined()
+        expect(fetchStats).toHaveBeenCalledOnce()
+        expect(kv.put).toHaveBeenCalledWith(GITHUB_FAILURE_KEY, "1", {
+            expirationTtl: COLD_RETRY_MS / 1000,
+        })
+
+        kv.store.delete(GITHUB_FAILURE_KEY)
+        await call(NOW + COLD_RETRY_MS)
+        expect(fetchStats).toHaveBeenCalledTimes(2)
+    })
+
+    it("honours a failure marker written by another isolate", async () => {
+        const kv = fakeKv()
+        kv.store.set(GITHUB_FAILURE_KEY, "1")
+        const fetchStats = vi.fn(async () => stats(3))
+
+        const result = await getGithubStats({
+            kv,
+            fetchStats,
+            waitUntil: vi.fn(),
+            now: NOW,
+        })
+
+        expect(result).toBeUndefined()
+        expect(fetchStats).not.toHaveBeenCalled()
     })
 })
