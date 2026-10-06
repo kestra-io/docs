@@ -48,3 +48,7 @@ visual-diff-report/
 ## mkcert
 localhost.pem
 localhost-key.pem
+
+## Visual regression (captured per run, never committed)
+tests/visual-regression.spec.ts-snapshots/
+visual-diff-report/
