@@ -140,6 +140,11 @@ kestractl flows import flows.zip
 kestractl flows validate path/to/flow.yaml
 kestractl flows validate ./flows/
 
+# Validate flows already stored on the instance (no local files needed)
+kestractl flows validate-by-query --namespace my.namespace        # scoped to a namespace
+kestractl flows validate-by-query --all                           # every flow on the instance
+kestractl flows validate-by-query --all --output json             # CI gate; exits non-zero on violations
+
 # Validate a task or trigger definition from a YAML file
 kestractl flows validate-task    --file task.yaml
 kestractl flows validate-trigger --file trigger.yaml
