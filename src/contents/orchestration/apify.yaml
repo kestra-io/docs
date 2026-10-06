@@ -188,23 +188,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Apify orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Scrape to Postgres"
       blueprintId: "apify-scrape-to-postgres"
       title: "Load a scheduled Apify scrape into Postgres"
       description: "A daily actor run with <code>maxItems</code> and <code>maxTotalChargeUsd</code> caps, then <code>dataset.Get</code>, a typed reshape, and a Postgres <code>CopyIn</code>. <a href='/orchestration/slack'>Slack</a> confirms with the row count and cost, and an errors handler alerts on failure."
-      href: "/blueprints"
     - name: "Web data to RAG"
       blueprintId: "apify-web-data-to-rag"
       title: "Turn an Apify crawl into a fresh RAG index"
       description: "The Website Content Crawler returns clean text, which Kestra embeds into a vector store with <code>IngestDocument</code> and <code>drop: true</code> so the index never goes stale. An <code>AIAgent</code> answers grounded questions, and Discord confirms the refresh."
-      href: "/blueprints"
     - name: "Cost and quality guardrail"
       blueprintId: "apify-cost-quality-guardrail"
       title: "Cost caps plus an automated quality gate"
       description: "Run any actor under hard cost and run caps, then branch with <code>If</code> on the item count. A healthy scrape is promoted downstream; a degraded one pages the on-call through PagerDuty, so a broken selector never ships bad data."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Apify teams evaluate"

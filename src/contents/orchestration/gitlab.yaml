@@ -183,23 +183,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for GitLab orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Open an issue on failure"
       blueprintId: "gitlab-issue-on-failure"
       title: "Open a GitLab issue when a pipeline fails"
       description: "An <code>errors</code> handler opens a GitLab issue with the execution link and failing task, and pings <a href='/orchestration/slack'>Slack</a>. The incident lands in the team's tracker automatically, no manual relay."
-      href: "/blueprints"
     - name: "Triage stale issues weekly"
       blueprintId: "gitlab-triage-stale-issues"
       title: "Triage stale GitLab issues and report"
       description: "On a weekly schedule, searches open GitLab issues with <code>issues.Search</code>, filters those untouched for N days in a Python step, and opens a triage issue summarizing the stale items for the team to review."
-      href: "/blueprints"
     - name: "Trigger CI on an event"
       blueprintId: "gitlab-ci-trigger-on-event"
       title: "Trigger and poll GitLab CI on an upstream event"
       description: "When an upstream step finishes, Kestra POSTs to the GitLab pipeline trigger endpoint over REST, polls until the pipeline finishes, and reports the status to <a href='/orchestration/slack'>Slack</a>. CI fires on the event, not only on a push."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives GitLab teams evaluate"

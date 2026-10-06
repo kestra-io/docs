@@ -172,23 +172,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Pub/Sub orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Stream events into BigQuery"
       blueprintId: "bigquery-pubsub-streaming-insert"
       title: "Micro-batch Pub/Sub messages into BigQuery"
       description: "A Pub/Sub <code>Trigger</code> micro-batches messages on a short interval, Kestra converts them to newline-delimited JSON, and appends them to a raw <a href='/orchestration/bigquery'>BigQuery</a> table. Micro-batching stays under per-row DML quotas while keeping latency low."
-      href: "/blueprints"
     - name: "Process each message into Postgres"
       blueprintId: "pubsub-realtime-to-postgres"
       title: "One execution per message, upserted to Postgres"
       description: "The <code>RealtimeTrigger</code> starts one run per message, an <code>If</code> validates it, and a <a href='/orchestration/postgres'>Postgres</a> <code>Query</code> upserts it with named parameters. Microsoft Teams is alerted on failure, and each message gets its own execution history."
-      href: "/blueprints"
     - name: "Publish completion events"
       blueprintId: "pubsub-publish-pipeline-events"
       title: "Emit a Pub/Sub event when a pipeline finishes"
       description: "After a scheduled <a href='/orchestration/bigquery'>BigQuery</a> aggregation, <code>Publish</code> emits a structured completion event to a topic so downstream consumers and other flows react. Email confirms the publish, and an error handler alerts on failure."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Pub/Sub teams evaluate"

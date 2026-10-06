@@ -175,23 +175,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Vertex AI orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Batch row enrichment"
       blueprintId: "vertex-ai-batch-row-enrichment"
       title: "Batch-enrich BigQuery rows with Vertex AI"
       description: "Select unenriched rows from <a href='/orchestration/bigquery'>BigQuery</a>, fan them out with a <code>ForEach</code> whose concurrency caps the request rate, call a Gemini model per row, and write the labels back. Email confirms, and an error handler alerts on failure."
-      href: "/blueprints"
     - name: "RAG ingestion with Gemini"
       blueprintId: "vertex-ai-gemini-rag-ingestion"
       title: "Nightly RAG ingestion with Gemini embeddings"
       description: "On a schedule, Kestra ingests documents, chunks them, and embeds them with a Gemini model into a vector store with <code>ai.rag.IngestDocument</code>, so a RAG app retrieves current context. Slack confirms each reindex."
-      href: "/blueprints"
     - name: "Classify and route events"
       blueprintId: "vertex-ai-event-classification-guardrail"
       title: "Classify Pub/Sub events with an automated guardrail"
       description: "A <a href='/orchestration/pubsub'>Pub/Sub</a> <code>RealtimeTrigger</code> starts one run per event, Vertex AI labels it, and an automated <code>If</code> escalates high-priority events to a BigQuery audit table and Discord. The guardrail is code, not a human pause."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Vertex AI teams evaluate"

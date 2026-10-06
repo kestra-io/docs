@@ -184,23 +184,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for BigQuery orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Transform BigQuery with dbt"
       blueprintId: "dbt-bigquery"
       title: "Run dbt transformations on BigQuery from Git"
       description: "Clones a <a href='/orchestration/dbt-core'>dbt</a> project from Git and runs <code>dbt build</code> against BigQuery in a container, authenticated with a service account. Version-controlled, reproducible analytics transformations on the warehouse."
-      href: "/blueprints"
     - name: "Incremental partition load"
       blueprintId: "bigquery-incremental-partitions"
       title: "Refresh only the partitions that changed"
       description: "On a daily schedule, <code>DeletePartitions</code> clears the affected date range and <code>LoadFromGcs</code> reloads just those partitions. Cost and runtime scale with the delta, not the table size, and reruns are safe to repeat."
-      href: "/blueprints"
     - name: "Stream Pub/Sub into BigQuery"
       blueprintId: "bigquery-pubsub-streaming-insert"
       title: "Micro-batch Pub/Sub events into BigQuery"
       description: "A <code>pubsub.Trigger</code> polls the subscription on a short interval and starts the flow with the batch; Kestra converts it to JSON and appends it to BigQuery in one load. Micro-batching stays under per-row DML limits while keeping latency low; a failed load alerts <a href='/orchestration/slack'>Slack</a>."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives BigQuery teams evaluate"
