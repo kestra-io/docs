@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger workflows instantly as events occur, with millisecond latency.
 
-Most Kestra [triggers](./index.md) poll external systems at a fixed interval, which works well for batch processing. Realtime Triggers listen directly for events and start a flow the moment one arrives — with millisecond latency.
+Most Kestra [triggers](../index.mdx) poll external systems at a fixed interval, which works well for batch processing. Realtime Triggers listen directly for events and start a flow the moment one arrives — with millisecond latency.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
