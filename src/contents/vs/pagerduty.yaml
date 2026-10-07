@@ -208,7 +208,7 @@ platformStrengths:
       description: "Kestra triggers on PagerDuty alerts, Kafka events, webhooks, and file detection. Automated diagnosis, conditional remediation, human approval gates, and ITSM ticket closure all happen in a single declarative workflow—no handoffs between tools."
     - title: "Git-Native Runbooks That Actually Scale"
       description: "Every workflow is YAML you can commit, review in a pull request, and deploy through CI/CD. When Mercy Health's team needed to update their incident response playbook, it was a PR—not a UI change on a live production system."
-    - title: "Works Anywhere: Cloud, On-Prem, Air-Gapped"
+    - title: "Works Anywhere: Any cloud, on-prem, or air-gapped"
       description: "Deploy Kestra on Kubernetes, Docker, or bare metal. Run remote workers close to targets in hybrid and OT environments. Air-gap deployments supported for regulated industries—the Austrian Ministry of Defense runs Kestra fully disconnected from the internet."
 
 decisionGuide:
