@@ -187,7 +187,7 @@ Selecting the right tool depends entirely on your team's priorities and the prob
 *   **For Teams Seeking Agentless & Declarative Approaches:** To reduce agent management overhead and simplify deployments, **Ansible** is the most direct agentless alternative. For a broader, declarative approach that can coordinate multiple tools (including Ansible), **Kestra** offers a YAML-based orchestration layer that sits above your entire stack.
 *   **For Small Teams & Open-Source Adopters:** If you need a cost-effective and flexible solution, open-source tools are the best starting point. **Ansible**, **OpenTofu**, **Windmill**, and the **Kestra Open-Source** edition all provide powerful capabilities without licensing fees.
 
-For more resources on modern infrastructure practices, explore our guides on [event-driven orchestration](/resources/infrastructure/event-driven-orchestration), [GitOps](/resources/infrastructure/gitops), and [workflow management](/resources/infrastructure/workflow-management).
+For more resources on modern infrastructure practices, explore our guides on [event-driven orchestration](/resources/infrastructure/event-driven-orchestration), [GitOps](/resources/infrastructure/gitops), and workflow management.
 
 ## Conclusion
 

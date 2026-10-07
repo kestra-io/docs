@@ -124,7 +124,7 @@ For technical workflows—such as data pipelines, infrastructure provisioning, a
 - **Governance and Version Control:** Defining workflows as code (e.g., in YAML) allows for versioning, peer reviews, and auditable changes through Git.
 - **Scalability and Performance:** Direct system-to-system communication is faster and more scalable than mimicking human clicks.
 
-This is where the concept of a universal control plane for [workflow management](/resources/infrastructure/workflow-management) emerges, one that can handle diverse workloads beyond the scope of traditional RPA.
+This is where the concept of a universal control plane for workflow management emerges, one that can handle diverse workloads beyond the scope of traditional RPA.
 
 ## Kestra's Approach to Unified Enterprise Orchestration
 

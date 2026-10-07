@@ -32,7 +32,7 @@ Organizations evaluate Stonebranch alternatives for several key reasons, often t
 
 A significant driver is the need for an improved developer experience. Teams increasingly expect to manage automation workflows like any other code, using declarative configurations (like YAML) that integrate seamlessly with DevOps and [GitOps principles](https://kestra.io/resources/infrastructure/gitops). This contrasts with proprietary interfaces that can slow down development and complicate version control.
 
-Furthermore, as businesses break down silos, the need for a single control plane to unify data, AI, and infrastructure workflows becomes critical. Many legacy tools are not built to handle this cross-domain orchestration natively. This leads teams to seek more flexible, cloud-native alternatives that can [solve orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) without adding more complexity to their [workflow management](https://kestra.io/resources/infrastructure/workflow-management).
+Furthermore, as businesses break down silos, the need for a single control plane to unify data, AI, and infrastructure workflows becomes critical. Many legacy tools are not built to handle this cross-domain orchestration natively. This leads teams to seek more flexible, cloud-native alternatives that can [solve orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) without adding more complexity to their workflow management.
 
 ## How we evaluated these alternatives
 

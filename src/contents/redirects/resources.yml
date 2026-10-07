@@ -1,0 +1,4 @@
+# Removed /resources pages. Rules only fire on 404s, so the source page is deleted.
+# Anchored: an unanchored rule replaces only the matched span of the path.
+- regexp: "^/resources/infrastructure/workflow-management/?$"
+  to: "/resources/infrastructure/open-source-workflow-engine"
