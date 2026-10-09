@@ -62,10 +62,10 @@ Changes that affect how flows are written or behave at runtime. Review all of th
 | [ForEach replaced by Loop](./foreach-loop) | OSS, EE | `ForEach` and `ForEachItem` are removed. Migrate all uses to the `Loop` task before upgrading; flows that reference either task fail to parse in 2.0. |
 | [Trigger conditions redesign](./trigger-conditions-redesign) | OSS, EE | The `conditions` list and `preconditions` block on triggers are removed. All trigger types now use a top-level `when` Pebble expression. |
 | [condition → when (Checks)](./checks-condition-renamed-when) | OSS, EE | The `condition` property on flow-level checks is renamed to `when`. |
-| [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function and `\| json` filter are removed. Replace `json(x)` with `fromJson(x)` and `\| json` with `\| toJson`. The filter form fails at runtime rather than parse time — `kestra-migrate --check` does not flag it; grep for `\| json` manually. |
+| [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function and `\| json` filter are removed. Replace `json(x)` with `fromJson(x)` and `\| json` with `\| toJson`. `kestra-migrate` rewrites both automatically. |
 | [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. |
 
-Two additional removals have no dedicated guide. The four tasks `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed from core; replace them with the equivalent tasks from `plugin-kestra`. The `CANCELED` execution state alias is also removed; replace with `CANCELLED` (double-L) in flow expressions, API clients, and any tooling that reads execution state.
+Two additional removals have no dedicated guide. The four tasks `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed from core; replace them with the equivalent tasks from `plugin-kestra`. The `CANCELED` state name (single-L) was never a valid `State.Type` value and is not accepted in `states:` lists on either 1.x or 2.0. `kestra-migrate` rewrites any occurrences to `CANCELLED` (double-L) automatically. Update any external API clients or tooling that sends `CANCELED`.
 
 ### Governance and plugins
 
@@ -108,6 +108,14 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 | [Terraform provider](./terraform-provider) | EE, Cloud | The `permissions` block on `kestra_role` is renamed to `resources` with `actions` instead of CRUD verbs; `plugin_defaults` and `worker_group` are removed from `kestra_namespace`; `kestra_template` resources must be deleted. Pin to `~> 2.0`. |
 | [Super Admin renamed to Instance Owner](./superadmin-renamed-instance-owner) | EE, Cloud | The Super Admin privilege is renamed to Instance Owner. Deprecated CLI, config, and request-body aliases are retained. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update API consumers that read this field. |
 
+### CLI
+
+Changes to `kestractl` behavior. Relevant for teams using the CLI in CI/CD pipelines.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [flows bulk-update --delete default](./bulk-update-delete-default) | OSS, EE | `--delete` now defaults to `false`. Pipelines relying on the previous default must pass `--delete` explicitly to delete flows absent from the file. |
+
 ## Completing the migration
 
 Migration is complete when the 1.3 instance has no flows remaining. Migrate them one at a time using this sequence:
@@ -121,3 +129,26 @@ Migration is complete when the 1.3 instance has no flows remaining. Migrate them
 3. **Drain before removing.** Wait for any active executions of the flow on 1.3 to finish before deleting it. Removing a flow with running executions leaves those executions in an unresolvable state.
 4. **Activate triggers on 2.0 first.** If the flow has a schedule or polling trigger, confirm the trigger is active on 2.0 before removing the flow from 1.3; otherwise scheduled runs are silently dropped during the gap.
 5. **Delete from 1.3.** Once validated, drained, and triggers are live, delete the flow from the 1.3 instance.
+
+## Verifying the migration with kestractl
+
+Once all flows are on the 2.0 instance, use `kestractl flows validate-by-query` to confirm every stored flow is still valid against the new runtime. The command fetches flows from the live instance, validates them in batches, and exits non-zero if any violations are found, making it suitable as a CI gate.
+
+```bash
+# Validate all flows on the instance
+kestractl flows validate-by-query --all
+
+# Scope to a single namespace
+kestractl flows validate-by-query --namespace company.team
+
+# Machine-readable output for CI
+kestractl flows validate-by-query --all --output json
+```
+
+This is equivalent to the manual export-unzip-validate round-trip, done in a single command and entirely in memory. A flow with an unsaved draft is validated at its last saved revision.
+
+:::alert{type="info"}
+`validate-by-query` covers flows the server cannot fully parse (for example, a task type removed in 2.0): the export writes the stored source text without deserializing it, so those flows appear as validation failures in the output. Flows with no saved revision (draft-only) are skipped by the export and are not validated.
+
+An empty namespace or filter that matches nothing exits 0, since zero flows means zero failures. Use `--namespace` to scope large instances and avoid accidentally validating nothing due to a typo.
+:::
