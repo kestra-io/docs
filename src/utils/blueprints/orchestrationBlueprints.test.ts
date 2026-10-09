@@ -43,8 +43,8 @@ describe("orchestrationBlueprints", () => {
   describe("resolveBlueprintRenders", () => {
     it("returns items with render when both flow and graph succeed", async () => {
       vi.mocked($fetchApiCachedOptional)
-        .mockResolvedValueOnce({ source: "flow source 1" })
-        .mockResolvedValueOnce({ source: "flow source 2" })
+        .mockResolvedValueOnce({ flow: "flow source 1" })
+        .mockResolvedValueOnce({ flow: "flow source 2" })
         .mockResolvedValueOnce({ nodes: [], edges: [] })
         .mockResolvedValueOnce({ nodes: [1], edges: [2] });
 
@@ -73,7 +73,7 @@ describe("orchestrationBlueprints", () => {
 
     it("returns item with source only when graph fetch fails but flow succeeds", async () => {
       vi.mocked($fetchApiCachedOptional)
-        .mockResolvedValueOnce({ source: "flow source" })
+        .mockResolvedValueOnce({ flow: "flow source" })
         .mockResolvedValueOnce(null);
 
       const items = [{ blueprintId: "bp1", name: "Item 1" }];
@@ -89,7 +89,7 @@ describe("orchestrationBlueprints", () => {
       const items = [{ name: "No blueprint" }, { blueprintId: "bp1", name: "Has blueprint" }];
 
       vi.mocked($fetchApiCachedOptional)
-        .mockResolvedValueOnce({ source: "flow" })
+        .mockResolvedValueOnce({ flow: "flow" })
         .mockResolvedValueOnce({ nodes: [] });
 
       const result = await resolveBlueprintRenders(items);

@@ -1,30 +1,21 @@
 import { $fetchApiCachedOptional } from "~/utils/fetch";
 
-export interface BlueprintItem {
-  blueprintId?: string;
-  [key: string]: unknown;
-}
-
 export interface BlueprintRender {
   source: string;
   graph: unknown | null;
 }
 
-export interface BlueprintItemWithRender extends BlueprintItem {
-  render?: BlueprintRender;
-}
-
-export async function resolveBlueprintRenders(
-  items: BlueprintItem[]
-): Promise<BlueprintItemWithRender[]> {
-  const results = await Promise.all(
+export async function resolveBlueprintRenders<T extends { blueprintId?: string }>(
+  items: T[]
+): Promise<(T & { render?: BlueprintRender })[]> {
+  return Promise.all(
     items.map(async (item) => {
       if (!item.blueprintId) {
         return item;
       }
 
-      const flow = await $fetchApiCachedOptional<{ source: string }>(
-        `/blueprints/${item.blueprintId}/versions/latest`
+      const flow = await $fetchApiCachedOptional<{ flow: string }>(
+        buildBlueprintFlowUrl(item.blueprintId)
       );
 
       if (!flow) {
@@ -32,20 +23,18 @@ export async function resolveBlueprintRenders(
       }
 
       const graph = await $fetchApiCachedOptional<unknown>(
-        `/blueprints/${item.blueprintId}/versions/latest/graph`
+        buildBlueprintGraphUrl(item.blueprintId)
       );
 
       return {
         ...item,
         render: {
-          source: flow.source,
+          source: flow.flow,
           graph: graph ?? null,
         },
       };
     })
   );
-
-  return results;
 }
 
 export function buildBlueprintFlowUrl(blueprintId: string): string {
