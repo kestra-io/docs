@@ -108,6 +108,14 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 | [Terraform provider](./terraform-provider) | EE, Cloud | The `permissions` block on `kestra_role` is renamed to `resources` with `actions` instead of CRUD verbs; `plugin_defaults` and `worker_group` are removed from `kestra_namespace`; `kestra_template` resources must be deleted. Pin to `~> 2.0`. |
 | [Super Admin renamed to Instance Owner](./superadmin-renamed-instance-owner) | EE, Cloud | The Super Admin privilege is renamed to Instance Owner. Deprecated CLI, config, and request-body aliases are retained. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update API consumers that read this field. |
 
+### CLI
+
+Changes to `kestractl` behavior. Relevant for teams using the CLI in CI/CD pipelines.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [flows bulk-update --delete default](./bulk-update-delete-default) | OSS, EE | `--delete` now defaults to `false`. Pipelines relying on the previous default must pass `--delete` explicitly to delete flows absent from the file. |
+
 ## Completing the migration
 
 Migration is complete when the 1.3 instance has no flows remaining. Migrate them one at a time using this sequence:
