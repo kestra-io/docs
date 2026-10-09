@@ -1,0 +1,71 @@
+---
+import GuideDownloadForm from "~/components/resources/GuideDownloadForm.vue"
+import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD } from "./download"
+---
+
+<dialog
+    class="modal download-dialog"
+    id={DOWNLOAD_DIALOG_ID}
+    aria-label="Download the guide"
+    closedby="any"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button
+                type="button"
+                class="btn-close"
+                commandfor={DOWNLOAD_DIALOG_ID}
+                command="close"
+                aria-label="Close">X</button
+            >
+            <GuideDownloadForm client:idle {...GUIDE_DOWNLOAD} />
+        </div>
+    </div>
+</dialog>
+
+<script>
+    document.addEventListener("click", (e) => {
+        const target = e.target as Element | null
+        const dialog = target?.closest<HTMLDialogElement>(
+            "dialog.download-dialog",
+        )
+        if (!dialog?.open) return
+        if (
+            target === dialog ||
+            target?.classList.contains("modal-dialog") ||
+            target?.closest(".btn-close")
+        )
+            dialog.close()
+    })
+</script>
+
+<style lang="scss">
+    .download-dialog {
+        --ks-modal-width: 560px;
+
+        .modal-dialog {
+            display: flex;
+            align-items: center;
+            min-height: calc(100% - var(--ks-modal-margin) * 2);
+        }
+
+        .modal-content {
+            border: 0;
+        }
+
+        .btn-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            z-index: 2;
+            border: 0;
+            background: transparent;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-md;
+
+            &:hover {
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+</style>

@@ -1,0 +1,129 @@
+---
+import GuideTabPanel from "./GuideTabPanel.astro"
+import GuideTabs from "./GuideTabs.astro"
+import Verdict, { type VerdictKind } from "./Verdict.astro"
+
+interface Props {
+    index: number
+    label: string
+    title: string
+    verdicts: VerdictKind[]
+}
+
+const { index, label, title, verdicts } = Astro.props
+const id = `vra-part-${index}`
+const tabsId = `${id}-tabs`
+const open = index === 1
+---
+
+<button
+    type="button"
+    class="part-button"
+    id={`${id}-button`}
+    style={`--row: ${index}`}
+    aria-expanded={open ? "true" : "false"}
+    aria-controls={`${id}-panel`}
+>
+    <small>{label}</small>
+    <span>{title}</span>
+</button>
+<div
+    class="part-panel"
+    id={`${id}-panel`}
+    role="region"
+    aria-labelledby={`${id}-button`}
+    hidden={!open}
+>
+    <GuideTabs
+        id={tabsId}
+        label={title}
+        variant="segmented"
+        tabs={[{ label: "What this is" }, { label: "What to do with it" }]}
+    >
+        <GuideTabPanel group={tabsId} index={1}>
+            <slot name="what" />
+        </GuideTabPanel>
+        <GuideTabPanel group={tabsId} index={2}>
+            <p class="verdicts">
+                <span class="verdicts-label">The verdict</span>
+                {verdicts.map((kind) => <Verdict kind={kind} />)}
+            </p>
+            <slot name="do" />
+        </GuideTabPanel>
+    </GuideTabs>
+</div>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .part-button {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1rem;
+        padding: 0.75rem 1rem;
+        border: 0;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-body);
+        color: var(--ks-content-secondary);
+        text-align: left;
+        font-size: $font-size-sm;
+
+        @include media-breakpoint-up(md) {
+            grid-column: 1;
+            grid-row: var(--row);
+            border-right: 1px solid var(--ks-border-secondary);
+        }
+
+        small {
+            @include guide-eyebrow(inherit);
+        }
+
+        span {
+            font-weight: 600;
+        }
+
+        &[aria-expanded="true"] {
+            background: var(--ks-background-secondary);
+            color: var(--ks-content-primary);
+
+            small {
+                color: var(--ks-content-link);
+            }
+        }
+
+        @include guide-focus-ring(-2px);
+    }
+
+    .part-panel {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        font-size: $font-size-sm;
+
+        @include media-breakpoint-up(md) {
+            grid-column: 2;
+            grid-row: 1 / -1;
+            border-bottom: 0;
+        }
+    }
+
+    .part-panel > :global(.guide-tabs) {
+        margin: 0;
+    }
+
+    .part-panel :global(.guide-tab-panel) {
+        padding: 0;
+        border: 0;
+    }
+
+    .verdicts {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .verdicts-label {
+        @include guide-eyebrow(var(--ks-content-secondary), true);
+        margin-right: 0.25rem;
+    }
+</style>

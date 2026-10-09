@@ -224,6 +224,7 @@ export const collections = {
                     "ai",
                     "business",
                     "orchestration",
+                    "migration",
                     "whitepapers",
                 ]),
                 date: z.coerce.date().optional(),
@@ -231,6 +232,7 @@ export const collections = {
                 author: z.string().optional(),
                 image: image().optional(),
                 href: z.string().optional(),
+                sectionIds: z.boolean().optional(),
                 faq: z
                     .array(
                         z.object({

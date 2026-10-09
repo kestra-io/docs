@@ -1,0 +1,153 @@
+---
+interface Tab {
+    label: string
+    kicker?: string
+}
+
+interface Props {
+    id: string
+    label: string
+    tabs: Tab[]
+    variant?: "tabs" | "stages" | "segmented"
+}
+
+const { id, label, tabs, variant = "tabs" } = Astro.props
+---
+
+<div class={`guide-tabs ${variant}`} data-guide-tabs id={id}>
+    <div class="tablist" role="tablist" aria-label={label}>
+        {
+            tabs.map((tab, i) => (
+                <button
+                    type="button"
+                    role="tab"
+                    id={`${id}-tab-${i + 1}`}
+                    aria-controls={`${id}-panel-${i + 1}`}
+                    aria-selected={i === 0 ? "true" : "false"}
+                    tabindex={i === 0 ? 0 : -1}
+                >
+                    {tab.kicker && <small>{tab.kicker}</small>}
+                    <span>{tab.label}</span>
+                </button>
+            ))
+        }
+    </div>
+    <slot />
+</div>
+
+<script>
+    function tabOf(target: EventTarget | null): HTMLButtonElement | null {
+        const tab = (target as Element | null)?.closest?.("[role=tab]")
+        const list = tab?.parentElement
+        if (!list?.classList.contains("tablist")) return null
+        if (!list.parentElement?.hasAttribute("data-guide-tabs")) return null
+        return tab as HTMLButtonElement
+    }
+
+    function tabsBeside(tab: HTMLButtonElement): HTMLButtonElement[] {
+        return Array.from(
+            tab.parentElement!.querySelectorAll<HTMLButtonElement>(
+                ":scope > [role=tab]",
+            ),
+        )
+    }
+
+    function select(tab: HTMLButtonElement, focus = false) {
+        for (const t of tabsBeside(tab)) {
+            const on = t === tab
+            t.setAttribute("aria-selected", on ? "true" : "false")
+            t.tabIndex = on ? 0 : -1
+            const panel = document.getElementById(
+                t.getAttribute("aria-controls") ?? "",
+            )
+            if (panel) panel.hidden = !on
+        }
+        if (focus) tab.focus()
+    }
+
+    document.addEventListener("click", (e) => {
+        const tab = tabOf(e.target)
+        if (tab) select(tab)
+    })
+
+    document.addEventListener("keydown", (e) => {
+        const tab = tabOf(e.target)
+        if (!tab) return
+        const tabs = tabsBeside(tab)
+        const i = tabs.indexOf(tab)
+        const n = tabs.length
+        const next =
+            e.key === "ArrowRight"
+                ? (i + 1) % n
+                : e.key === "ArrowLeft"
+                  ? (i - 1 + n) % n
+                  : e.key === "Home"
+                    ? 0
+                    : e.key === "End"
+                      ? n - 1
+                      : null
+        if (next === null) return
+        e.preventDefault()
+        select(tabs[next], true)
+    })
+</script>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .guide-tabs {
+        margin: 1.5rem 0;
+
+        > .tablist {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+
+            > [role="tab"] {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.6rem 0.9rem;
+                border: 1px solid var(--ks-border-secondary);
+                border-radius: $border-radius-lg;
+                background: var(--ks-background-body);
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                text-align: left;
+
+                small {
+                    @include guide-eyebrow(inherit);
+                }
+
+                span {
+                    font-weight: 600;
+                }
+
+                &[aria-selected="true"] {
+                    border-color: var(--ks-border-active);
+                    color: var(--ks-content-primary);
+
+                    small {
+                        color: var(--ks-content-link);
+                    }
+                }
+
+                @include guide-focus-ring;
+            }
+        }
+
+        &.stages > .tablist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        &.segmented > .tablist > [role="tab"] {
+            border-radius: 999px;
+            padding: 0.4rem 0.9rem;
+        }
+    }
+</style>
