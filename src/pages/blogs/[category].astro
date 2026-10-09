@@ -9,7 +9,6 @@ import Layout from "~/components/layout.astro"
 import Subscribe from "~/components/layout/Subscribe.vue"
 import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
 import { allBlogCategories } from "~/components/blogs/categories"
-import { beforeCutoff } from "~/utils/snapshotCutoff"
 
 export const getStaticPaths = (() => {
     return Array.from(allBlogCategories.keys()).map((category) => ({
@@ -26,7 +25,7 @@ const PLACEHOLDER_IMAGE = `data:image/svg+xml;base64,${Buffer.from(
 const blogs = await getCollection("blogs")
 
 const sortedBlogs = await Promise.all(
-    beforeCutoff(blogs, (blog) => blog.data.date)
+    blogs
         .sort((a, b) => {
             return (
                 new Date(b.data.date).getTime() -
@@ -56,7 +55,7 @@ const sortedBlogs = await Promise.all(
 const allExternalBlogs = await getCollection("externalBlogs")
 
 const externalNews = await Promise.all(
-    beforeCutoff(allExternalBlogs, (entry) => entry.data.publicationDate)
+    allExternalBlogs
         .sort(
             (a, b) =>
                 b.data.publicationDate.getTime() -
@@ -94,10 +93,7 @@ const internalBlogs = sortedBlogs.map((blog) => ({
 }))
 
 const allTutorialVideos = await getCollection("tutorialVideos")
-const tutorialVideoResults = beforeCutoff(
-    allTutorialVideos,
-    (video) => video.data.publicationDate,
-)
+const tutorialVideoResults = allTutorialVideos
     .sort(
         (a, b) =>
             b.data.publicationDate.getTime() - a.data.publicationDate.getTime(),
