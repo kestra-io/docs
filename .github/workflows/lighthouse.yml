@@ -57,7 +57,7 @@ jobs:
       # so those go in the prefix. Only assets/: the page cache must stay cold.
       - name: Restore the image cache
         id: image-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: node_modules/.astro/assets
           key: lighthouse-images-${{ hashFiles('node_modules/sharp/package.json', 'node_modules/astro/package.json') }}-${{ github.sha }}
@@ -77,7 +77,7 @@ jobs:
       # Main only: PR runs read main's entry, and one per PR would eat the quota.
       - name: Save the image cache
         if: github.ref == 'refs/heads/main'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: node_modules/.astro/assets
           key: ${{ steps.image-cache.outputs.cache-primary-key }}
