@@ -105,8 +105,6 @@ kestra:
           - UPDATE
           - DELETE
           - MANAGE_FILES
-          - EXPORT_PLUGIN_DEFAULTS
-          - IMPORT_PLUGIN_DEFAULTS
         SECRET: ["VIEW", "LIST", "UPDATE", "DELETE"]
         KVSTORE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
         BLUEPRINT: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
