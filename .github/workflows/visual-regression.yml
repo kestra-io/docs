@@ -8,17 +8,26 @@ on:
       base:
         description: "Branch to compare against; the capture uses its merge base with the dispatched ref"
         default: main
+  # Adding the label runs it once; every later push re-runs it while it stays.
   pull_request:
-    types: [labeled]
+    types: [labeled, synchronize]
 
+# Unrelated label events get a group of their own, or their no-op run would
+# cancel a capture in flight.
 concurrency:
-  group: visual-regression-${{ github.event.pull_request.number || github.ref }}
+  group: >-
+    visual-regression-${{ github.event.pull_request.number || github.ref }}${{
+    github.event.action == 'labeled' && github.event.label.name != 'visual-regression'
+    && format('-noop-{0}', github.run_id) || '' }}
   cancel-in-progress: true
 
 jobs:
   refs:
     name: Resolve refs
-    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'visual-regression'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.action == 'labeled' && github.event.label.name == 'visual-regression') ||
+      (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'visual-regression'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
