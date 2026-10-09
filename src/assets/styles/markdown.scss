@@ -35,6 +35,11 @@
         display: none;
     }
 
+    // The html scroll-padding clears the top bar but not the announcement bar, whose height is declared on body.
+    span[id] {
+        scroll-margin-top: calc(var(--announce-height, 0px) + 1rem);
+    }
+
     h1,
     h2,
     h3,
