@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { mkdirSync, copyFileSync, writeFileSync, rmSync, readdirSync, readFileSync } from "node:fs"
+import { mkdirSync, copyFileSync, writeFileSync, rmSync, readdirSync, readFileSync, existsSync } from "node:fs"
 import { basename, join } from "node:path"
 import { ODiffServer } from "odiff-bin"
 import { PAGES, VISUAL_ONLY_PAGES } from "../tests/fixtures/page-sample.mjs"
@@ -17,23 +17,20 @@ const flag = (name, fallback) => {
     return i === -1 || args[i + 1] === undefined ? fallback : args[i + 1]
 }
 
-const baselineDir = flag("baseline")
-const currentDir = flag("current")
+const baselineDir = flag("baseline", "visual-baseline")
+const currentDir = flag("current", "tests/visual-regression.spec.ts-snapshots")
 const outDir = flag("out", DEFAULT_OUT)
 const baseLabel = flag("baseline-label", baselineDir)
 
-if (!baselineDir || !currentDir) {
-    console.error("usage: visual-diff-report.mjs --baseline <dir> --current <dir> [--out <dir>]")
-    process.exit(2)
-}
-
-const pngs = (dir) => {
-    try {
-        return readdirSync(dir).filter((f) => f.endsWith(".png"))
-    } catch {
-        return []
+// A side that never captured would otherwise read as every page added or removed.
+for (const dir of [baselineDir, currentDir]) {
+    if (!existsSync(dir)) {
+        console.error(`::error::${dir} does not exist: that capture produced no screenshots.`)
+        process.exit(1)
     }
 }
+
+const pngs = (dir) => readdirSync(dir).filter((f) => f.endsWith(".png"))
 
 /** Pairs the two capture dirs by file name; byte-identical pairs are dropped. */
 function pairSnapshots() {

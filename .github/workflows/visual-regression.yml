@@ -12,13 +12,12 @@ on:
   pull_request:
     types: [labeled, synchronize]
 
-# Unrelated label events get a group of their own, or their no-op run would
-# cancel a capture in flight.
+# Any other label lands in its own group, so its no-op run cannot cancel a
+# capture in flight; pushes and the label itself share one.
 concurrency:
   group: >-
-    visual-regression-${{ github.event.pull_request.number || github.ref }}${{
-    github.event.action == 'labeled' && github.event.label.name != 'visual-regression'
-    && format('-noop-{0}', github.run_id) || '' }}
+    visual-regression-${{ github.event.pull_request.number || github.ref }}-${{
+    github.event.label.name != 'visual-regression' && github.event.label.name || 'run' }}
   cancel-in-progress: true
 
 jobs:
@@ -76,8 +75,9 @@ jobs:
         with:
           ref: ${{ matrix.side == 'baseline' && needs.refs.outputs.base || needs.refs.outputs.head }}
 
-      # Both sides run the PR's harness (routes, masking styles, fixtures), so
-      # only the site differs. Base snapshots still tracked there are dropped.
+      # Both sides run the PR's harness (routes, masking styles, fixtures), so only
+      # the site differs. node_modules still follows the base lockfile: a test-side
+      # dependency the PR adds fails this capture on import until it is on main.
       - name: Use the head harness
         env:
           HEAD_SHA: ${{ needs.refs.outputs.head }}
