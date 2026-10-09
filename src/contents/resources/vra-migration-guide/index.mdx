@@ -40,8 +40,6 @@ import GuideTabs from "~/components/vra-migration-guide/blocks/GuideTabs.astro"
 import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
 import PartExplorer from "~/components/vra-migration-guide/blocks/PartExplorer.astro"
 import Verdict from "~/components/vra-migration-guide/blocks/Verdict.astro"
-import CalculatorFunnel from "~/components/vra-migration-guide/calculator/CalculatorFunnel.vue"
-import CalculatorPayback from "~/components/vra-migration-guide/calculator/CalculatorPayback.vue"
 
 ## 1. Why teams leave vRA, and what to move to
 
@@ -550,10 +548,9 @@ The third pass often changes the estimate the most. A wrapper carries no convers
 
 Run the review with the owners of each functional area. The person holding the export usually cannot tell whether an annual workflow is dead or whether an unclaimed script still supports a production process. Give each owner their slice of the list and use the three passes above as the agenda.
 
-<InteractiveFrame>
-<Fragment slot="note">Size your own counts. The numbers carry into the payback calculator in <a href="#section-7-2">7.2</a>.</Fragment>
-<CalculatorFunnel client:visible idPrefix="vra-calc-funnel" calcHref="#section-7-2" />
-</InteractiveFrame>
+The [payback calculator](/resources/migration/vra/payback) applies these three passes to your export count and carries the result straight into the cost estimate, so you do not size the inventory twice.
+
+<GuideCta kind="calc" />
 
 #### 3.2.3 Classify what moves
 
@@ -861,10 +858,9 @@ The migration is the investment. What pays it back is the vRA and vRO renewal yo
 
 Payback is the month in which the renewal you avoided has covered the migration and Kestra. Compare over your finance team's planning horizon, or three years if there is none.
 
-<InteractiveFrame>
-<Fragment slot="note">Your counts from <a href="#section-3-2-2">3.2.2</a> are already carried in.</Fragment>
-<CalculatorPayback client:visible idPrefix="vra-calc-payback" shareAnchor="section-7-2" pocHref="#section-8-1" />
-</InteractiveFrame>
+The [payback calculator](/resources/migration/vra/payback) takes your renewal, your workflow counts from [3.2.2](#section-3-2-2) and your migration rates, and gives you the month the move pays for itself, with a CSV and a shareable link for the finance review.
+
+<GuideCta kind="calc" />
 
 Two habits make the estimate hold up in front of a CFO:
 

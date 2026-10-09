@@ -28,7 +28,7 @@
         </div>
         <p class="hint after">
             A rough sizing pass, not a substitute for the real inventory.
-            <a :href="calcHref">The calculator in Section 7.2</a> turns these
+            <a :href="calcHref">The payback calculator</a> turns these
             counts into a cost and a payback.
         </p>
     </div>
@@ -52,7 +52,7 @@
             idPrefix?: string
             calcHref?: string
         }>(),
-        { idPrefix: "vra-calc-funnel", calcHref: "#section-7-2" },
+        { idPrefix: "vra-calc-funnel", calcHref: "/resources/migration/vra/payback" },
     )
 
     const { result, field, ready } = useCalculator()

@@ -2,7 +2,7 @@
 import { DOWNLOAD_DIALOG_TARGET } from "../download"
 
 interface Props {
-    kind: "talk" | "pdf"
+    kind: "talk" | "pdf" | "calc"
     label?: string
     variant?: "primary" | "secondary"
 }
@@ -15,6 +15,18 @@ const { kind, label, variant = "primary" } = Astro.props
         <p class="guide-cta">
             <a class={`btn btn-${variant}`} href="/demo">
                 {label ?? "Talk to our team"}
+            </a>
+        </p>
+    )
+}
+{
+    kind === "calc" && (
+        <p class="guide-cta">
+            <a
+                class={`btn btn-${variant}`}
+                href="/resources/migration/vra/payback"
+            >
+                {label ?? "Calculate your savings"}
             </a>
         </p>
     )

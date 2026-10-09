@@ -1,0 +1,227 @@
+---
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
+import CalculatorPayback from "~/components/vra-migration-guide/calculator/CalculatorPayback.vue"
+import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
+import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
+
+const title =
+    "vRA Migration Payback Calculator: What Leaving Costs and When It Pays Back"
+const description =
+    "Put your own vRA renewal, workflow counts and migration rates into the calculator and get the month the move to Kestra pays for itself."
+
+const TIPS = [
+    {
+        title: "Run it twice",
+        text: "Once with low assumptions and once with high. The result should be a range, not a single number.",
+    },
+    {
+        title: "Label every rate",
+        text: "A proof of concept gives you measured rates. The rest are estimates, and a reviewer should see which is which.",
+    },
+    {
+        title: "Count a saving only when the payment stops",
+        text: "If vRA is part of a VCF bundle you keep buying for the hypervisor, confirm with procurement that the invoice actually drops.",
+    },
+]
+---
+
+<Layout
+    {title}
+    {description}
+    breadcrumbTitle="Payback calculator"
+    headerTheme="lightText"
+>
+    <section class="calc-hero">
+        <div class="container">
+            <p class="pill">Payback calculator · VMware vRA migration</p>
+            <h1>What leaving vRA costs, and when it pays back.</h1>
+            <p class="deck">
+                The migration is the investment. What pays it back is the vRA
+                and vRO renewal you do not sign. Enter your renewal, your
+                workflow counts and your rates, and get the month the move to
+                Kestra pays for itself.
+            </p>
+            <div class="actions">
+                <a class="btn btn-primary" href="#calculator"
+                    >Calculate your savings</a
+                >
+                <a class="btn btn-secondary" href="/demo">Book a Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="calc-body" id="calculator">
+        <div class="container">
+            <InteractiveFrame
+                title="Payback calculator"
+                subtitle="Three steps: what leaving costs, what the migration costs, what you would spend on Kestra."
+            >
+                <Fragment slot="note"
+                    >Start from your vRO export count. The three rationalization
+                    passes from the guide, retire, group, separate wrappers, are
+                    built into step 2.</Fragment
+                >
+                <CalculatorPayback
+                    client:load
+                    idPrefix="vra-calc-payback"
+                    shareAnchor="calculator"
+                    pocHref="/demo"
+                />
+            </InteractiveFrame>
+        </div>
+    </section>
+
+    <section class="calc-tips">
+        <div class="container">
+            <div class="tips-head">
+                <h2>Before it goes in front of finance</h2>
+            </div>
+            <ul class="tips">
+                {
+                    TIPS.map((tip) => (
+                        <li>
+                            <h3>{tip.title}</h3>
+                            <p>{tip.text}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </section>
+
+    <div class="calc-cta">
+        <SeeHow
+            imgSrc={shapesImage}
+            cta={{ text: "Book a Demo", href: "/demo" }}
+        >
+            <Fragment slot="title"
+                >Turn the estimate into a measured rate</Fragment
+            >
+            A proof of concept on two or three of your own workflows replaces the
+            estimated rates with measured ones and gets you a Kestra quote. Bring
+            your result and we scope it with you.
+            <Fragment slot="footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-modal-target={DOWNLOAD_DIALOG_TARGET}
+                >
+                    Download the migration guide
+                </button>
+            </Fragment>
+        </SeeHow>
+    </div>
+    <DownloadDialog />
+    <script src="../../../../scripts/resource-cta-tracking.ts"></script>
+</Layout>
+
+<style lang="scss">
+    .calc-hero {
+        background: #0f0e14;
+        color: $white;
+        padding: 7.5rem 0 3.5rem;
+        margin-top: calc(-80px - var(--announce-height));
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            max-width: 56rem;
+        }
+
+        .pill {
+            font-size: $font-size-xs;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #b39cff;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: clamp(2.25rem, 5vw, 3.75rem);
+            font-weight: 600;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .deck {
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+            color: #cfd3d6;
+            margin: 0;
+            max-width: 44rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+    }
+
+    .calc-body {
+        padding: 2rem 0 3rem;
+        scroll-margin-top: 100px;
+    }
+
+    .calc-tips {
+        padding: 3.5rem 0 4rem;
+        background: var(--ks-background-secondary);
+
+        .tips-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin: 0;
+            text-wrap: balance;
+        }
+
+        h3 {
+            font-size: $font-size-lg;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+            color: var(--ks-content-secondary);
+            line-height: 1.6;
+        }
+    }
+
+    .tips {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--ks-border-active);
+        }
+    }
+
+    .calc-cta {
+        overflow-x: clip;
+    }
+</style>

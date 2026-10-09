@@ -38,13 +38,20 @@ const { title, deck, inside, meta } = Astro.props
                     The full guide is on this page, or download the PDF to share
                     with your team (form required)
                 </p>
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-modal-target={DOWNLOAD_DIALOG_TARGET}
-                >
-                    Download the PDF
-                </button>
+                <div class="hero-actions">
+                    <a
+                        class="btn btn-primary"
+                        href="/resources/migration/vra/payback"
+                        >Calculate your savings</a
+                    >
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-modal-target={DOWNLOAD_DIALOG_TARGET}
+                    >
+                        Download the PDF
+                    </button>
+                </div>
             </div>
         </div>
         <ul class="meta">
@@ -212,6 +219,13 @@ const { title, deck, inside, meta } = Astro.props
             font-size: $font-size-lg;
             line-height: 1.75rem;
         }
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
     }
 
     .book-wrap {
