@@ -26,7 +26,7 @@ See the [Google OIDC setup documentation](https://cloud.google.com/identity-plat
 1. In the Identity Platform menu, select **Providers**.
 2. Click **Add a Provider** and choose **OpenID Connect**.
 
-![add-provider](./add-provider.png)
+![Add provider option in Google Identity Platform](./add-provider.png)
 
 3. Configure the OIDC Provider:
    - **Grant type**: Select the Code Flow grant type.
@@ -36,7 +36,7 @@ See the [Google OIDC setup documentation](https://cloud.google.com/identity-plat
    - **Issuer URL**: Provide the **Issuer URL** (e.g., `https://accounts.google.com`).
    - **Scopes**: Specify any additional scopes required by your application.
 
-![oidc-details](./oidc-provider.png)
+![OIDC provider configuration form in Google Identity Platform](./oidc-provider.png)
 
 4. Click **Save** to add the provider.
 
@@ -57,6 +57,72 @@ Add the following to your [Kestra Security and Secrets configuration](../../../.
             issuer: 'https://accounts.google.com'
 ```
 Replace `clientId` and `clientSecret` with the values from the Google Identity Platform, then restart Kestra.
+
+## Configure a default role for SSO users
+
+SSO users need a default role for initial access in Kestra. Add the following to `kestra.security`:
+
+```yaml
+kestra:
+  security:
+    defaultRole:
+      name: default_admin_role
+      description: "Default Admin Role"
+      permissions:
+        FLOW:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - EXECUTE
+          - DISABLE
+          - ENABLE
+          - VALIDATE
+          - EXPORT
+          - IMPORT
+        EXECUTION:
+          - VIEW
+          - LIST
+          - UPDATE
+          - DELETE
+          - RESTART
+          - KILL
+          - REPLAY
+          - PAUSE
+          - RESUME
+          - CHANGE_LABELS
+          - ACCESS_LOGS
+          - ACCESS_OUTPUTS
+          - ACCESS_FILES
+          - EXPORT
+          - UNQUEUE
+          - FORCE_RUN
+          - FOLLOW
+        NAMESPACE:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - MANAGE_FILES
+        SECRET: ["VIEW", "LIST", "UPDATE", "DELETE"]
+        KVSTORE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        BLUEPRINT: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        ROLE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        GROUP: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_MEMBERS"]
+        USER: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_GROUP_MEMBERSHIP"]
+        BINDING: ["VIEW", "LIST", "CREATE", "DELETE"]
+        AUDITLOG: ["VIEW", "LIST", "EXPORT"]
+  ee:
+    tenants:
+      enabled: true
+      defaultTenant: false
+```
+
+:::alert{type="info"}
+Place `defaultRole` under `kestra.security`, not under `micronaut.security`. The example above grants broad access — adjust the action lists to match the permissions your users actually need in production.
+:::
 
 ## Additional resources
 
