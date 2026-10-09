@@ -74,6 +74,17 @@ const spellings = (term: string): string[] => {
     )
 }
 
+// "Slack app" or "Kubernetes instance" is another product's noun; a sentence-initial "The task" and "Kestra instance" are not.
+const OTHER_PRODUCT_BEFORE = /[^.!?:\s]\s+([A-Z][\w.-]*)\s+$/
+const EXCLUDED_PHRASES = new Set(["for instance"])
+
+const isOtherSense = (before: string, word: string) => {
+    const product = OTHER_PRODUCT_BEFORE.exec(before)?.[1]
+    if (product && "Kestra" !== product) return true
+    const previous = /(\S+)\s+$/.exec(before)?.[1] ?? ""
+    return EXCLUDED_PHRASES.has(`${previous} ${word}`.toLowerCase())
+}
+
 const escapeRegExp = (value: string) =>
     value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
@@ -102,6 +113,7 @@ class Matcher {
         for (const match of node.value.matchAll(this.pattern)) {
             const entry = this.byAlias.get(match[0].toLowerCase())
             if (!entry || linked.has(entry.anchor)) continue
+            if (isOtherSense(node.value.slice(0, match.index), match[0])) continue
             linked.add(entry.anchor)
             if (match.index > cursor) {
                 out.push({

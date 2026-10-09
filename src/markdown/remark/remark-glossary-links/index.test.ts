@@ -15,6 +15,7 @@ const TERMS: GlossaryTerm[] = [
     { term: "Tasks", anchor: "tasks", definition: "a unit of work." },
     { term: "Task runner", anchor: "task-runner", definition: "where a task runs." },
     { term: "Time To Live (TTL)", anchor: "ttl", definition: "how long a value is kept." },
+    { term: "Instance", anchor: "instance", definition: "a Kestra deployment." },
 ]
 
 async function render(md: string, path = DOC) {
@@ -63,6 +64,14 @@ describe("remarkGlossaryLinks", () => {
         )
         expect(html.match(/glossary#/g)).toHaveLength(1)
         expect(html).toContain(`<td>${link("tasks", "task", "a unit of work.")}</td>`)
+    })
+
+    it("skips another product's noun and idioms, but not Kestra's or a sentence start", async () => {
+        const html = await render("The Slack task is not ours. Task one.")
+        expect(html).toContain(`ours. ${link("tasks", "Task", "a unit of work.")} one.`)
+        expect(html.match(/<a /g)).toHaveLength(1)
+        expect(await render("For instance, nothing.")).not.toContain("glossary#")
+        expect(await render("A Kestra instance.")).toContain("glossary#instance")
     })
 
     it("does nothing outside the docs or on the glossary page itself", async () => {
