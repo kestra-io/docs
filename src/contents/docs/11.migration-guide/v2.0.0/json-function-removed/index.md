@@ -26,4 +26,4 @@ The `json()` Pebble function has been removed in Kestra 2.0.0. Replace every cal
 
 ## What to update
 
-Search your flows and templates for `json(` and replace each occurrence with `fromJson(`. The `json` Pebble test (`{% if x is json %}`) is unrelated and still works — only the function call form changes.
+`kestra-migrate` rewrites both `json(` and `| json` automatically. Run the migration tool and verify the output. If you are updating flows by hand, search for `json(` and replace each occurrence with `fromJson(`. The `json` Pebble test (`{% if x is json %}`) is unrelated and still works — only the function call form changes.
