@@ -7,9 +7,7 @@ docId: flowEditor
 icon: /src/contents/docs/icons/ui.svg
 ---
 
-Manage your flows in one place.
-
-The **Flows** page lists all flows. Click a flow ID to open it, or create a new flow from the top-right corner.
+The **Flows** page lists all flows in the instance. Click a flow ID to open it, or create a new flow from the top-right corner.
 
 ![Kestra User Interface Flows Page](./04-Flows.png)
 
@@ -19,20 +17,21 @@ A **Flow** page has tabs for Overview, Executions, Edit, Revisions, Triggers, Lo
 
 ## Filters
 
-From the main Flows page, you can filter the displayed flows on fields like namespace, scope, labels, and open text. The filters are key based with comma-separated OR-conditions and spaced-separated AND-conditions. The following video demonstrates the filters in action:
+From the main Flows page, filter flows by namespace, scope, labels, or free text. Filters are key-based: comma-separated values are OR conditions, and space-separated values are AND conditions.
 
 <div style="position: relative; padding-bottom: calc(54.828% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/azAPQSNOo4z4I3CZcF9c?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows Filters | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Edit
 
 The **Edit** tab is the main authoring environment. Open panels from the tab bar and arrange them side by side:
-- **Flow Code** — YAML editor with autocomplete
-- **No-code** — visual flow builder with task cards and a structured outline
-- **Topology** — visual DAG of the flow
-- **Docs** — plugin documentation, updates as you move the cursor
-- **Files** — namespace files editor
-- **Blueprints** — ready-to-use flow examples
-- **Context** — namespace variables, KV pairs, and secrets (Enterprise)
+
+- **Flow Code**: YAML editor with autocomplete
+- **No Code**: visual flow builder with task cards and a structured outline
+- **Topology**: visual DAG of the flow
+- **Docs**: plugin documentation, updates as you move the cursor
+- **Files**: namespace files editor
+- **Blueprints**: ready-to-use flow examples
+- **Context**: searchable tree of flow inputs, variables, KV pairs, and secrets across the namespace hierarchy (Enterprise)
 
 From the top-right of the editor, you can access **Revisions**, **Dependencies**, and any validation **Errors**. Use **Export flow** to download the flow as a YAML file.
 
@@ -42,17 +41,17 @@ From the top-right of the editor, you can access **Revisions**, **Dependencies**
 
 ### Flow Code view
 
-The **Flow Code** view is a YAML editor with autocomplete. Tasks added here appear immediately in the No-code and Topology views.
+The **Flow Code** view is a YAML editor with autocomplete. Tasks added here appear immediately in the No Code and Topology views.
 
 ![Flow Code](./flow-editor.png)
 
 ### No Code view
 
-The **No Code** view is a canvas-based flow editor. The canvas displays each flow section — Triggers, Tasks, Errors, Finally, and After Execution — as a group of visual blocks. Selecting a block opens its configuration form in a third panel alongside the canvas.
+The **No Code** view is a canvas-based flow editor. The canvas displays each flow section (Triggers, Tasks, Errors, Finally, and After Execution) as a group of visual blocks. Selecting a block opens its configuration form in a third panel alongside the canvas.
 
 ![No Code canvas showing a schedule trigger selected with its configuration form open](./no-code-canvas.png)
 
-Click any block to open its form. The form has two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). You can switch to **Source** to write or paste YAML directly — the flow YAML editor on the left stays in sync instantly.
+Click any block to open its form. The form has two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). You can switch to **Source** to write or paste YAML directly; the flow YAML editor on the left stays in sync.
 
 ![Errors block with two tasks, notify_failure selected and its YAML open in the Source tab](./no-code-errors.png)
 
@@ -71,15 +70,15 @@ Opening a block expands it into a focused modal by default. The modal has two pa
 
 Tasks open as a modal by default. To open blocks as tabs in the editor instead, change the default in **Settings**.
 
-You can open multiple panels simultaneously — for example, keep **Docs** open alongside the canvas to reference plugin documentation while configuring a task. Use the **Actions** menu to export or copy the flow at any time.
+You can open multiple panels simultaneously; for example, keep **Docs** open alongside the canvas to reference plugin documentation while configuring a task. Use the **Actions** menu to export or copy the flow at any time.
 
 :::alert{type="info"}
-Flow Code, No-code, and [AI Copilot](../../ai-tools/01.ai-copilot/index.md) all stay in sync. Start in any mode — write YAML, describe your flow to the Copilot, or build visually on the canvas — and switch freely at any point. Every change is reflected across all three views instantly.
+Flow Code, No Code, and [AI Copilot](../../ai-tools/01.ai-copilot/index.md) all stay in sync. Write YAML, describe your flow to the Copilot, or build visually on the canvas and switch freely at any point. Every change is reflected across all three views instantly.
 :::
 
 ### Topology view
 
-The **Topology** view shows a visual DAG of the flow — useful for complex flows with multiple branches. Zoom controls and a `.png` export are in the bottom-left corner.
+The **Topology** view shows a visual DAG of the flow, useful for complex flows with multiple branches. Zoom controls and a `.png` export are in the bottom-left corner.
 
 ![Topology](./topology-editor.png)
 
@@ -97,11 +96,26 @@ The **Files** view lets you create, edit, and delete [Namespace Files](../../06.
 
 ### Blueprints view
 
-The **Blueprints** view gives you example flows to copy directly into the editor — useful when working with a new plugin.
+The **Blueprints** view gives you example flows to copy directly into the editor, useful when working with a new plugin.
 
 ### Context panel (Enterprise)
 
-The **Context** panel gives you direct access to namespace Variables, KV pairs, and Secrets from within the editor. You can also render expressions against those values inline.
+The **Context** panel shows everything available to the current flow in a single searchable tree.
+
+![Context panel showing the expression renderer, filter chips, a Context / this flow section with Inputs and Variables, and the company › team namespace chain with nested variable groups, a KV entry, and a masked secret](./context-panel.png)
+
+At the top of the panel, an expression input and **Render** button let you evaluate any Pebble expression against the current namespace context inline.
+
+The tree has two sections:
+
+- **Context** (tagged **this flow**): the flow's own inputs and variables, parsed from the live YAML, grouped under **Inputs** and **Variables** sub-nodes. This section is omitted when the flow defines neither.
+- **Namespace chain**: ancestor namespaces as nested nodes (for example, `company` › `team`). The flow's own namespace is tagged **flow's namespace**. Variables, KV entries, and secrets at each level appear under their namespace node; variable groups can themselves be nested when they contain sub-keys.
+
+Values are shown inline on the right of each row. Secrets are never fetched; the value column shows `......`.
+
+**Clicking any element copies its Pebble expression to the clipboard.** Hovering reveals a copy button and, when the expression can be evaluated, a render button that fills the expression input at the top of the panel.
+
+Where the same key is defined at multiple namespace levels, the deeper definition wins. The overriding value is marked with what it overrides; the shadowed value renders struck through with an **overridden** tag.
 
 ## Revisions
 
@@ -109,5 +123,5 @@ You can view the history of your flow code changes under the **Revisions** tab. 
 
 ## Dependencies
 
-The **Dependencies** tab shows the relationship between this flow and other flows, and lets you navigate between them. The **Dependencies View** on the **Namespaces** page shows all flows in the namespace and how they relate to one another — the flow-level Dependencies view is scoped to the selected flow only.
+The **Dependencies** tab shows the relationship between this flow and other flows and lets you navigate between them. The **Dependencies** view on the **Namespaces** page shows all flows in the namespace and how they relate to one another; the flow-level **Dependencies** tab is scoped to the selected flow only.
 
