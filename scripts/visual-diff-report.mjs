@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-import { execFileSync } from "node:child_process"
-import { mkdirSync, copyFileSync, writeFileSync, rmSync } from "node:fs"
+import { mkdirSync, copyFileSync, writeFileSync, rmSync, readdirSync, readFileSync, existsSync } from "node:fs"
 import { basename, join } from "node:path"
 import { ODiffServer } from "odiff-bin"
 import { PAGES, VISUAL_ONLY_PAGES } from "../tests/fixtures/page-sample.mjs"
@@ -9,7 +8,6 @@ import {
     compareSummary,
 } from "../tests/fixtures/screenshot-options.mjs"
 
-const SNAPSHOT_DIR = "tests/visual-regression.spec.ts-snapshots"
 const DEFAULT_OUT = "visual-diff-report"
 const DIFF_COLOR = "#ff0055"
 
@@ -19,34 +17,33 @@ const flag = (name, fallback) => {
     return i === -1 || args[i + 1] === undefined ? fallback : args[i + 1]
 }
 
-const snapshotDir = flag("dir", SNAPSHOT_DIR)
+const baselineDir = flag("baseline", "visual-baseline")
+const currentDir = flag("current", "tests/visual-regression.spec.ts-snapshots")
 const outDir = flag("out", DEFAULT_OUT)
-const baseRef = flag("base", "HEAD")
+const baseLabel = flag("baseline-label", baselineDir)
 
-const git = (...a) => execFileSync("git", a, { encoding: "utf8" })
+// A side that never captured would otherwise read as every page added or removed.
+for (const dir of [baselineDir, currentDir]) {
+    if (!existsSync(dir)) {
+        console.error(`::error::${dir} does not exist: that capture produced no screenshots.`)
+        process.exit(1)
+    }
+}
 
-/** Parse `git status --porcelain -z`, which is NUL separated and appends a
- * second path for renames. */
-function changedSnapshots() {
-    const raw = execFileSync(
-        "git",
-        ["status", "--porcelain=v1", "-z", "--untracked-files=all", "--", snapshotDir],
-        { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 },
-    )
-    const fields = raw.split("\0").filter(Boolean)
+const pngs = (dir) => readdirSync(dir).filter((f) => f.endsWith(".png"))
+
+/** Pairs the two capture dirs by file name; byte-identical pairs are dropped. */
+function pairSnapshots() {
+    const before = new Set(pngs(baselineDir))
+    const after = new Set(pngs(currentDir))
     const entries = []
 
-    for (let i = 0; i < fields.length; i++) {
-        const code = fields[i].slice(0, 2)
-        const path = fields[i].slice(3)
-        if (code[0] === "R" || code[0] === "C") i++ // consume the old path
-        if (!path.endsWith(".png")) continue
-
-        const gone = code.includes("D")
-        const fresh = code === "??" || code.includes("A") || code[0] === "R"
-        entries.push({ path, status: gone ? "removed" : fresh ? "added" : "changed" })
+    for (const file of new Set([...before, ...after])) {
+        if (!after.has(file)) entries.push({ path: file, status: "removed" })
+        else if (!before.has(file)) entries.push({ path: file, status: "added" })
+        else if (!readFileSync(join(baselineDir, file)).equals(readFileSync(join(currentDir, file))))
+            entries.push({ path: file, status: "changed" })
     }
-
     return entries.sort((a, b) => a.path.localeCompare(b.path))
 }
 
@@ -72,13 +69,6 @@ function describe(path) {
         project: m[2],
         platform: m[3],
     }
-}
-
-function writeBaseline(path, dest) {
-    const buf = execFileSync("git", ["show", `${baseRef}:${path}`], {
-        maxBuffer: 256 * 1024 * 1024,
-    })
-    writeFileSync(dest, buf)
 }
 
 const esc = (s) =>
@@ -236,6 +226,7 @@ function renderHtml(entries, summary) {
       <div><dt>Changed</dt><dd>${summary.changed}</dd></div>
       <div><dt>Added</dt><dd>${summary.added}</dd></div>
       <div><dt>Removed</dt><dd>${summary.removed}</dd></div>
+      <div><dt>Within tolerance</dt><dd>${summary.withinTolerance}</dd></div>
       <div><dt>Diff pixels</dt><dd>${summary.diffPixels.toLocaleString("en-US")}</dd></div>
       <div><dt>Baseline</dt><dd>${esc(summary.baseRef)}</dd></div>
       <div><dt>Compared at</dt><dd>${esc(summary.compare)}</dd></div>
@@ -261,7 +252,7 @@ function renderHtml(entries, summary) {
 }
 
 async function main() {
-    const changes = changedSnapshots()
+    const changes = pairSnapshots()
     rmSync(outDir, { recursive: true, force: true })
     for (const d of ["baseline", "current", "diff"])
         mkdirSync(join(outDir, "images", d), { recursive: true })
@@ -269,6 +260,7 @@ async function main() {
     const server = new ODiffServer()
     const entries = []
     let diffPixels = 0
+    let withinTolerance = 0
 
     try {
         for (const { path, status } of changes) {
@@ -276,11 +268,11 @@ async function main() {
             const files = {}
 
             if (status !== "added") {
-                writeBaseline(path, join(outDir, "images/baseline", file))
+                copyFileSync(join(baselineDir, file), join(outDir, "images/baseline", file))
                 files.baseline = `images/baseline/${file}`
             }
             if (status !== "removed") {
-                copyFileSync(path, join(outDir, "images/current", file))
+                copyFileSync(join(currentDir, file), join(outDir, "images/current", file))
                 files.current = `images/current/${file}`
             }
 
@@ -302,6 +294,18 @@ async function main() {
                     },
                 )
                 delete diff.requestId // server protocol noise, not part of the result
+                // Two live captures never match byte for byte; the suite's own
+                // tolerance decides what counts as a change.
+                const noise =
+                    diff.match ||
+                    (diff.reason === "pixel-diff" &&
+                        diff.diffPercentage <= SCREENSHOT_COMPARE.maxDiffPixelRatio * 100)
+                if (noise) {
+                    withinTolerance++
+                    for (const d of ["baseline", "current", "diff"])
+                        rmSync(join(outDir, "images", d, file), { force: true })
+                    continue
+                }
                 if (diff.reason === "pixel-diff") {
                     files.diff = `images/diff/${file}`
                     diffPixels += diff.diffCount
@@ -325,7 +329,7 @@ async function main() {
     )
 
     const summary = {
-        baseRef: `${baseRef} ${git("rev-parse", "--short", baseRef).trim()}`,
+        baseRef: baseLabel,
         compare: compareSummary(),
         generatedAt: new Date().toISOString(),
         total: entries.length,
@@ -333,6 +337,7 @@ async function main() {
         added: entries.filter((e) => e.status === "added").length,
         removed: entries.filter((e) => e.status === "removed").length,
         diffPixels,
+        withinTolerance,
     }
 
     writeFileSync(join(outDir, "index.html"), renderHtml(entries, summary))
@@ -345,14 +350,13 @@ async function main() {
     console.log(`Report written to ${outDir}/index.html`)
 
     if (process.env.GITHUB_OUTPUT) {
-        // Pre-composed: has_changes also covers tests/fixtures/api, so this
-        // runs on API-only drift, where a bare count would read "0 changed".
+        // Pre-composed for the PR comment, which posts on a clean run too.
         const line = summary.total
             ? `${summary.total} snapshot(s) changed, ` +
               `${diffPixels.toLocaleString("en-US")} differing pixels. ` +
               `Download the \`visual-diff-report\` artifact from this run and ` +
               `open \`index.html\` for a side-by-side, slider and highlighted diff.`
-            : ""
+            : `No visual change past maxDiffPixelRatio (${withinTolerance} within tolerance).`
         writeFileSync(
             process.env.GITHUB_OUTPUT,
             `report_total=${summary.total}\n` +

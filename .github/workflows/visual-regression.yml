@@ -1,0 +1,241 @@
+name: Visual Regression
+
+# No baselines are committed: each run captures the PR and its merge base side
+# by side, diffs them, and keeps only the report.
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "Branch to compare against; the capture uses its merge base with the dispatched ref"
+        default: main
+  # Adding the label runs it once; every later push re-runs it while it stays.
+  pull_request:
+    types: [labeled, synchronize]
+
+# Any other label lands in its own group, so its no-op run cannot cancel a
+# capture in flight; pushes and the label itself share one.
+concurrency:
+  group: >-
+    visual-regression-${{ github.event.pull_request.number || github.ref }}-${{
+    github.event.label.name != 'visual-regression' && github.event.label.name || 'run' }}
+  cancel-in-progress: true
+
+jobs:
+  refs:
+    name: Resolve refs
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.action == 'labeled' && github.event.label.name == 'visual-regression') ||
+      (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'visual-regression'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      head: ${{ steps.refs.outputs.head }}
+      base: ${{ steps.refs.outputs.base }}
+      base-label: ${{ steps.refs.outputs.base-label }}
+    steps:
+      # The merge base, not the base branch tip, so posts merged to main since
+      # the PR branched do not show up as changes.
+      - name: Resolve head and merge base
+        id: refs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref || inputs.base }}
+        run: |
+          BASE_SHA=$(gh api "repos/$GITHUB_REPOSITORY/compare/$BASE_BRANCH...$HEAD_SHA" --jq .merge_base_commit.sha)
+          echo "head=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "base=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "base-label=$BASE_BRANCH ${BASE_SHA::7}" >> "$GITHUB_OUTPUT"
+
+  capture:
+    name: Capture ${{ matrix.side }}
+    needs: refs
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        side: [baseline, current]
+    env:
+      # What the sampled SSR pages and the community metrics read from
+      # tests/fixtures/api, so a plugin release between captures moves nothing.
+      FIXTURE_PATHS: >-
+        /v1/blueprints*,/v1/plugins,/v1/plugins/subgroups,
+        /v1/plugins/definitions/*,/v1/plugins/metadata*,
+        /v1/plugins/pluginsInformation*,/v1/plugins/artifacts/*,
+        /v1/plugins/*/versions,/v1/versions,/v1/communities/github/*
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.side == 'baseline' && needs.refs.outputs.base || needs.refs.outputs.head }}
+
+      # Both sides run the PR's harness (routes, masking styles, fixtures), so only
+      # the site differs. node_modules still follows the base lockfile: a test-side
+      # dependency the PR adds fails this capture on import until it is on main.
+      - name: Use the head harness
+        env:
+          HEAD_SHA: ${{ needs.refs.outputs.head }}
+          SIDE: ${{ matrix.side }}
+        run: |
+          if [[ "$SIDE" == "baseline" ]]; then
+            git fetch --depth=1 origin "$HEAD_SHA"
+            git checkout "$HEAD_SHA" -- tests playwright.config.ts scripts/api-fixture-server.mjs
+          fi
+          rm -rf tests/visual-regression.spec.ts-snapshots
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Restore Playwright browsers
+        id: browser_cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      # Only chromium (desktop) and webkit (iPad, iPhone) are used by the projects
+      # in playwright.config.ts. The apt deps are not cacheable, so install them either way.
+      - name: Install Playwright browsers
+        if: steps.browser_cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Install Playwright system dependencies
+        if: steps.browser_cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium webkit
+
+      # An explicit if: replaces the implicit success() guard, so without it a
+      # failed install would write a partial cache under this key permanently.
+      - name: Save Playwright browsers
+        if: steps.browser_cache.outputs.cache-hit != 'true' && success()
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Start the API fixture server
+        run: node scripts/api-fixture-server.mjs &
+
+      - name: Wait for the fixture server
+        run: |
+          for _ in $(seq 1 10); do
+            curl -sf http://127.0.0.1:9001/__fixtures/stats > /dev/null && exit 0
+            sleep 1
+          done
+          echo "::error::Fixture server did not come up on port 9001."
+          exit 1
+
+      - name: Build the site
+        run: npm run build
+        env:
+          NO_IMAGE_OPTIM: "true"
+          DISABLE_USAL: "true"
+          DISABLE_GITHUB: "true"
+          PREVIEW: "true"
+          NO_RANDOM_ORDER: "true"
+          # Inlined into both bundles, so the build, the SSR routes under
+          # wrangler and the browser-side calls all read the fixture server.
+          API_URL: http://127.0.0.1:9001/v1
+
+      # With no baseline on disk, =all writes every screenshot and only fails
+      # on a page that errors, which then shows as added or removed.
+      - name: Capture screenshots
+        run: npx playwright test --update-snapshots=all
+
+      # Deleted by the report job once it has copied what it needs.
+      - name: Upload screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshots-${{ matrix.side }}
+          path: tests/visual-regression.spec.ts-snapshots/
+          retention-days: 1
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report-${{ matrix.side }}
+          path: playwright-report/
+          retention-days: 14
+
+  report:
+    name: Visual diff report
+    needs: [refs, capture]
+    if: ${{ !cancelled() && needs.refs.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.refs.outputs.head }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download screenshots
+        uses: actions/download-artifact@v7
+        with:
+          pattern: screenshots-*
+          path: shots
+
+      - name: Build visual diff report
+        id: diff_report
+        run: |
+          node scripts/visual-diff-report.mjs \
+            --baseline shots/screenshots-baseline \
+            --current shots/screenshots-current \
+            --baseline-label "$BASE_LABEL"
+          echo "run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_LABEL: ${{ needs.refs.outputs.base-label }}
+
+      - name: Upload visual diff report
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diff-report
+          path: visual-diff-report/
+          retention-days: 30
+
+      # The report carries copies of every image it shows; the raw captures
+      # are dead weight. Fork PRs get a read-only token, so retention covers them.
+      - name: Delete raw screenshots
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+            --jq '.artifacts[] | select(.name | startswith("screenshots-")) | .id' |
+            xargs -r -I{} gh api -X DELETE "repos/$GITHUB_REPOSITORY/actions/artifacts/{}"
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: kestra-io/actions/actions/comment-update@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          title: 🖼️ Visual Regression
+          template: |
+            Compared against ${{ needs.refs.outputs.base-label }}. ${{ steps.diff_report.outputs.report_summary }}
+            [Run and report artifact](${{ steps.diff_report.outputs.run_url }})

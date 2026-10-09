@@ -22,8 +22,7 @@
     "svgo:check": "node scripts/svgo-batch.mjs --check",
     "lint": "oxlint --fix",
     "format": "oxfmt . --write && prettier --write **/*.astro",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots=changed",
+    "test:visual:capture": "playwright test --update-snapshots=all",
     "test:unit": "vitest run",
     "test:visual:report": "node scripts/visual-diff-report.mjs"
   },
