@@ -128,6 +128,8 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 
 ## T
 
+<span id="task-run"></span>
+- [Task run](#task-run) - one run of one task inside one [execution](#execution), with its own state, attempts and [outputs](#outputs). A `Loop` over 500 items produces 500 task runs, and a retry adds an attempt to the same task run. See [task runs](../05.workflow-components/01.tasks/02.taskruns/index.md).
 <span id="task-runner"></span>
 - [Task runner](#task-runner) - extensible, pluggable system within Kestra capable of executing your tasks in arbitrary remote environments, to offload computationally intensive tasks. Learn more about [task runners](../task-runners/01.overview/index.md).
 <span id="tasks"></span>
