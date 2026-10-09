@@ -104,16 +104,20 @@
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
 
+    const props = defineProps<{
+        hubspotFormId: string
+        guideUrl: string
+        submissionIdentifier: string
+        pageUri: string
+        event: string
+    }>()
+
     const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("download-form")
 
     const message = ref("")
     const submitted = ref(false)
     const submitting = ref(false)
-
-    const HUBSPOT_FORM_ID = "e1706097-e681-441a-8306-7e715e9daa9a"
-
-    const guideUrl = "/airflow-2-eol-whitepaper.pdf"
 
     const onSubmit = async () => {
         const form = formRef.value
@@ -152,27 +156,24 @@
                     {
                         objectTypeId: "0-1",
                         name: "form_submission_identifier",
-                        value: "Airflow 2 EOL Whitepaper",
+                        value: props.submissionIdentifier,
                     },
                     { objectTypeId: "0-1", name: "kuid", value: kuid },
                 ],
                 context: {
                     hutk: getHubspotTracking() || undefined,
                     ipAddress: ip,
-                    pageUri: "resources/airflow-2-eol-whitepaper",
+                    pageUri: props.pageUri,
                     pageName: document.title,
                 },
             }
 
-            await submitHubspotForm(HUBSPOT_FORM_ID, payload)
+            await submitHubspotForm(props.hubspotFormId, payload)
 
-            posthog.capture("airflow_2_eol_whitepaper_download")
-            hsq.push([
-                "trackCustomBehavioralEvent",
-                { name: "airflow_2_eol_whitepaper_download" },
-            ])
+            posthog.capture(props.event)
+            hsq.push(["trackCustomBehavioralEvent", { name: props.event }])
             gtm?.trackEvent({
-                event: "airflow_2_eol_whitepaper_download",
+                event: props.event,
                 noninteraction: false,
             })
             identify(email)

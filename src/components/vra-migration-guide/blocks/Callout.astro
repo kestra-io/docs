@@ -1,0 +1,112 @@
+---
+interface Props {
+    label: string
+    statement?: string
+    highlight?: string
+    variant?: "lesson" | "note" | "aside"
+}
+
+const { label, statement, highlight, variant = "note" } = Astro.props
+
+const at = statement && highlight ? statement.indexOf(highlight) : -1
+const statementParts =
+    statement && highlight && at >= 0
+        ? [
+              { text: statement.slice(0, at), highlight: false },
+              { text: highlight, highlight: true },
+              {
+                  text: statement.slice(at + highlight.length),
+                  highlight: false,
+              },
+          ].filter((part) => part.text)
+        : statement
+          ? [{ text: statement, highlight: false }]
+          : []
+---
+
+<aside class={`guide-callout ${variant}`}>
+    <p class:list={["label", { "visually-hidden": variant === "lesson" }]}>
+        {label}
+    </p>
+    {
+        statementParts.length > 0 && (
+            <p class="statement">
+                {statementParts.map((part) =>
+                    part.highlight ? (
+                        <span class="highlight">{part.text}</span>
+                    ) : (
+                        part.text
+                    ),
+                )}
+            </p>
+        )
+    }
+    <slot />
+</aside>
+
+<style lang="scss">
+    .guide-callout {
+        margin: 2rem 0;
+
+        > :global(:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    .label {
+        margin: 0 0 1rem;
+        font-weight: 700;
+        letter-spacing: normal;
+        text-transform: none;
+        color: var(--ks-content-primary);
+    }
+
+    .note {
+        padding: 2rem;
+        border-left: 4px solid var(--ks-border-active);
+        background: var(--ks-background-secondary);
+        font-size: $font-size-md;
+        line-height: 1.5rem;
+        color: var(--ks-content-secondary);
+
+        .label {
+            font-size: 1.25rem;
+            line-height: 1.5rem;
+            letter-spacing: -0.1px;
+        }
+    }
+
+    .lesson {
+        padding: 2rem 0;
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+        color: var(--ks-content-primary);
+    }
+
+    .statement {
+        margin: 0 0 1rem;
+        font-size: clamp(1.75rem, 3vw, 2.25rem);
+        font-weight: 600;
+        line-height: 1.22;
+        letter-spacing: -0.01em;
+        color: var(--ks-content-primary);
+
+        .highlight {
+            color: var(--ks-content-link);
+        }
+    }
+
+    .aside {
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+        color: var(--ks-content-primary);
+
+        .label {
+            font-size: $font-size-lg;
+            font-weight: 600;
+            line-height: 1.75rem;
+        }
+    }
+</style>

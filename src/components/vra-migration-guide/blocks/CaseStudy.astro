@@ -1,0 +1,147 @@
+---
+interface Stat {
+    value: string
+    label: string
+}
+
+interface Props {
+    status: string
+    stats?: Stat[]
+    quote?: string
+    quoteBy?: string
+    storyHref?: string
+}
+
+const { status, stats = [], quote, quoteBy, storyHref } = Astro.props
+---
+
+<div class="case-study">
+    <p class="status">{status}</p>
+    <slot />
+    {
+        stats.length > 0 && (
+            <ul class="stats">
+                {stats.map((stat) => (
+                    <li>
+                        <strong>{stat.value}</strong>
+                        <span>{stat.label}</span>
+                    </li>
+                ))}
+            </ul>
+        )
+    }
+    {
+        quote && (
+            <blockquote class="quote">
+                <div class="quote-inner">
+                    <p>{quote}</p>
+                    {quoteBy && (
+                        <footer>
+                            {quoteBy}
+                            {storyHref && (
+                                <>
+                                    ,{" "}
+                                    <a href={storyHref}>read the full story</a>
+                                </>
+                            )}
+                        </footer>
+                    )}
+                </div>
+            </blockquote>
+        )
+    }
+</div>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .case-study {
+        margin: 1.25rem 0;
+        padding: 1.1rem 1.25rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        font-size: $font-size-sm;
+
+        > :global(p:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    .status {
+        @include guide-eyebrow;
+        margin: 0 0 0.5rem;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            padding: 0.6rem 0.75rem;
+            border-radius: $border-radius;
+            background: var(--ks-background-secondary);
+        }
+
+        strong {
+            display: block;
+            font-size: 1.35rem;
+            line-height: 1.2;
+            color: var(--ks-content-primary);
+        }
+
+        span {
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .quote {
+        margin: 1rem 0 0;
+        padding: 0.375rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 13px;
+    }
+
+    .quote-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 2.5rem 2rem;
+        border-radius: 9px;
+        background: var(--ks-background-purple-light);
+
+        @include media-breakpoint-down(md) {
+            padding: 1.5rem 1.25rem;
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            line-height: 1.75rem;
+            color: var(--ks-content-primary);
+
+            &::before {
+                content: "“ ";
+                color: var(--ks-content-link);
+            }
+
+            &::after {
+                content: "”";
+                color: var(--ks-content-link);
+            }
+        }
+
+        footer {
+            font-size: $font-size-md;
+            line-height: 1.5rem;
+            color: var(--ks-content-secondary);
+
+            &::before {
+                content: "— ";
+            }
+        }
+    }
+</style>

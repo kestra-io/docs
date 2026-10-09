@@ -1,0 +1,52 @@
+---
+export type VerdictKind = "replace" | "integrate" | "keep" | "retire"
+
+interface Props {
+    kind: VerdictKind
+}
+
+const LABELS: Record<VerdictKind, string> = {
+    replace: "Replace",
+    integrate: "Integrate",
+    keep: "Keep",
+    retire: "Retire",
+}
+
+const { kind } = Astro.props
+---
+
+<span class={`verdict verdict-${kind}`}
+    ><span class="dot" aria-hidden="true"></span>{LABELS[kind]}</span
+>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .verdict {
+        @include guide-chip;
+        gap: 0.35rem;
+        color: var(--ks-content-primary);
+    }
+
+    .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .verdict-replace .dot {
+        background: var(--ks-content-link);
+    }
+
+    .verdict-integrate .dot {
+        background: var(--ks-content-alert-info);
+    }
+
+    .verdict-keep .dot {
+        background: var(--ks-content-alert-success);
+    }
+
+    .verdict-retire .dot {
+        background: var(--ks-content-tertiary);
+    }
+</style>

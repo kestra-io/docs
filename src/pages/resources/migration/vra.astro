@@ -1,0 +1,234 @@
+---
+import { getEntry, render } from "astro:content"
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Link from "~/components/common/Link.astro"
+import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
+import Hero from "~/components/vra-migration-guide/Hero.astro"
+import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
+import StartHere, {
+    getHeadings as startHereHeadings,
+} from "~/components/vra-migration-guide/StartHere.mdx"
+import ReferenceHandouts, {
+    getHeadings as handoutHeadings,
+} from "~/components/vra-migration-guide/ReferenceHandouts.mdx"
+import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
+import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
+import { tocLinks } from "~/components/vra-migration-guide/toc"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
+
+const post = await getEntry("resources", "vra-migration-guide")
+if (!post) throw new Error("resources/vra-migration-guide entry missing")
+const { Content, headings } = await render(post)
+const page = post.data
+const totalPlugins = await fetchTotalPluginsCount()
+
+const title = page.metaTitle ?? page.title
+const description = page.metaDescription ?? page.description
+
+const faqItems = page.faq ?? []
+
+const links = [
+    ...tocLinks(startHereHeadings()),
+    ...tocLinks(headings),
+    ...tocLinks(handoutHeadings()),
+    ...(faqItems.length > 0
+        ? [{ text: "Questions", id: "faq", depth: 2 }]
+        : []),
+]
+
+const INSIDE = [
+    "The six parts of a vRA estate, and a framework for deciding what happens to each one before you convert a single workflow",
+    "How to inventory, rationalize and classify vRO workflows so the migration becomes a small number of repeatable patterns",
+    "The four stages, from assessment through a measured proof of concept and migration waves to ending the licence at renewal",
+    "A payback calculator: what leaving costs, and the month the move pays for itself, using your own numbers",
+]
+
+const updated = page.lastUpdated ?? page.date
+const META = [
+    "Four enterprise VMware estates behind the method",
+    "Three handouts for review teams",
+    ...(updated
+        ? [
+              `Updated ${new Date(updated).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "UTC",
+              })}`,
+          ]
+        : []),
+]
+
+const jsonLinkedData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": Astro.url.href,
+    },
+    headline: page.title,
+    image: [`${Astro.url.origin}/og-image.png`],
+    author: { "@id": "https://kestra.io/#organization" },
+    ...(page.date ? { datePublished: page.date } : {}),
+    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
+    publisher: {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description,
+}
+---
+
+<Layout
+    {title}
+    {description}
+    breadcrumbTitle={page.title}
+    headerTheme="lightText"
+>
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        {
+            page.date && (
+                <meta
+                    property="article:published_time"
+                    content={new Date(page.date).toISOString()}
+                />
+            )
+        }
+        {
+            page.lastUpdated && (
+                <meta
+                    property="article:modified_time"
+                    content={new Date(page.lastUpdated).toISOString()}
+                />
+            )
+        }
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        {faqItems.length > 0 && <SchemaFAQ items={faqItems} />}
+    </Fragment>
+    <Hero
+        title={page.title}
+        deck={page.description ?? ""}
+        inside={INSIDE}
+        meta={META}
+    />
+    <GuideBand><StartHere /></GuideBand>
+    <section class="guide-content">
+        <TwoColumnStickyLayout client:load>
+            <div slot="sidebar" class="guide-sidebar">
+                <GuideToc client:load links={links}>
+                    <Fragment slot="footer">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-modal-target={DOWNLOAD_DIALOG_TARGET}
+                        >
+                            Download the PDF
+                        </button>
+                        <a
+                            class="btn btn-secondary"
+                            href="/resources/migration/vra/payback"
+                            >Calculate your savings</a
+                        >
+                        <a href="/demo">Talk to our team</a>
+                    </Fragment>
+                </GuideToc>
+            </div>
+            <div class="bd-content">
+                <Content totalPlugins={totalPlugins} />
+            </div>
+        </TwoColumnStickyLayout>
+    </section>
+    <GuideBand><ReferenceHandouts /></GuideBand>
+    {
+        faqItems.length > 0 && (
+            <div class="guide-faq" id="faq">
+                <Faq
+                    title="Questions that come up"
+                    items={faqItems}
+                    client:visible
+                />
+            </div>
+        )
+    }
+    <div class="guide-cta">
+        <SeeHow
+            imgSrc={shapesImage}
+            cta={{ text: "Book a Demo", href: "/demo" }}
+        >
+            <Fragment slot="title">Start with your own workflows</Fragment>
+            Stage 1 needs nothing from us, and you can talk to us before you have
+            run an export. A proof of concept then turns your counts into a rate you
+            can defend.
+            <Fragment slot="footer">
+                <Link
+                    href="/resources/migration/vra/payback"
+                    class="btn btn-secondary">Calculate your savings</Link
+                >
+            </Fragment>
+        </SeeHow>
+    </div>
+    <DownloadDialog />
+    <script src="../../../scripts/resource-cta-tracking.ts"></script>
+</Layout>
+
+<style lang="scss">
+    .guide-content {
+        padding: 0 0 2rem;
+    }
+
+    .guide-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @include media-breakpoint-down(lg) {
+            gap: 1rem;
+        }
+    }
+
+    .guide-content :global(.bd-content h2),
+    :global(.guide-band .bd-content h2) {
+        font-size: clamp(2.25rem, 4vw, 3rem);
+        font-weight: 600;
+        line-height: 1.05;
+        letter-spacing: -0.015em;
+    }
+
+    .guide-content :global(.bd-content h3) {
+        font-size: clamp(1.75rem, 3vw, 2.125rem);
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+    }
+
+    .guide-content :global(.bd-content > p),
+    .guide-content :global(.bd-content > ul > li),
+    .guide-content :global(.bd-content > ol > li),
+    :global(.guide-band .bd-content > p) {
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+    }
+
+    .guide-content :global(.bd-content > ol > li + li) {
+        margin-top: 1rem;
+    }
+
+    .guide-faq {
+        scroll-margin-top: 100px;
+    }
+
+    .guide-cta {
+        overflow-x: clip;
+    }
+</style>

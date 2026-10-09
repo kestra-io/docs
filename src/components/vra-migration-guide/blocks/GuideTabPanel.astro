@@ -1,0 +1,35 @@
+---
+interface Props {
+    group: string
+    index: number
+}
+
+const { group, index } = Astro.props
+---
+
+<div
+    class="guide-tab-panel"
+    role="tabpanel"
+    id={`${group}-panel-${index}`}
+    aria-labelledby={`${group}-tab-${index}`}
+    tabindex="0"
+    hidden={index !== 1}
+>
+    <slot />
+</div>
+
+<style lang="scss">
+    .guide-tab-panel {
+        padding: 1rem 1.25rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+
+        > :global(:first-child) {
+            margin-top: 0;
+        }
+
+        > :global(:last-child) {
+            margin-bottom: 0;
+        }
+    }
+</style>

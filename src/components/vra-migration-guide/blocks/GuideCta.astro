@@ -1,0 +1,52 @@
+---
+import { DOWNLOAD_DIALOG_TARGET } from "../download"
+
+interface Props {
+    kind: "talk" | "pdf" | "calc"
+    label?: string
+    variant?: "primary" | "secondary"
+}
+
+const { kind, label, variant = "primary" } = Astro.props
+---
+
+{
+    kind === "talk" && (
+        <p class="guide-cta">
+            <a class={`btn btn-${variant}`} href="/demo">
+                {label ?? "Talk to our team"}
+            </a>
+        </p>
+    )
+}
+{
+    kind === "calc" && (
+        <p class="guide-cta">
+            <a
+                class={`btn btn-${variant}`}
+                href="/resources/migration/vra/payback"
+            >
+                {label ?? "Calculate your savings"}
+            </a>
+        </p>
+    )
+}
+{
+    kind === "pdf" && (
+        <p class="guide-cta">
+            <button
+                type="button"
+                class={`btn btn-${variant}`}
+                data-modal-target={DOWNLOAD_DIALOG_TARGET}
+            >
+                {label ?? "Download the PDF"}
+            </button>
+        </p>
+    )
+}
+
+<style lang="scss">
+    .guide-cta {
+        margin: 1.25rem 0;
+    }
+</style>
