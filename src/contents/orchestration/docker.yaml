@@ -179,23 +179,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Docker orchestration."
-  lead: "One blueprint per use case above. Copy the YAML, point it at your registry, ship it."
   items:
     - name: "Build, scan, sign, push"
       blueprintId: "docker-build-scan-sign-push"
       title: "Supply-chain: Build, Trivy scan, Cosign sign, push the signed digest"
       description: "Builds the image, runs Trivy, signs the digest with Cosign keyless via Sigstore OIDC (or a stored key), then pushes the image and the <code>.sig</code> reference. The exact digest is logged for the downstream deploy step to verify."
-      href: "/blueprints?tags=Infrastructure"
     - name: "Digest-pinned promotion"
       blueprintId: "docker-digest-promotion"
       title: "Promote the same sha256 digest from staging to prod"
       description: "Builds once, pushes to staging, runs smoke tests against the staging digest, pauses for a named reviewer, then retags the exact same digest for prod and pushes. The artifact that was tested is the artifact that ships."
-      href: "/blueprints?tags=Infrastructure"
     - name: "Compose ephemeral test environment"
       blueprintId: "docker-compose-ephemeral-test"
       title: "Bring up a Compose stack for integration tests, tear down on every exit"
       description: "<code>docker.Compose</code> starts the app + Postgres + Redis stack from an inline Compose file. Tests run against the live stack. The <code>errors</code> branch always runs <code>compose down -v</code> so volumes and containers never leak, even on test failure or timeout."
-      href: "/blueprints?tags=Infrastructure"
 comparison:
   title: "Kestra vs Docker pipeline alternatives"
   subtitle: "Kestra wraps Docker CLI runs with native scheduling, supply-chain steps, digest pinning, and Compose stack lifecycle. The competitors below are the CI tools where teams orchestrate Docker today."

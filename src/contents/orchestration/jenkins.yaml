@@ -201,23 +201,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Jenkins orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Event-driven Jenkins job with polling"
       blueprintId: "jenkins-event-driven-job"
       title: "Trigger a Jenkins job from a webhook and poll until terminal"
       description: "A Webhook trigger fires the flow with build parameters in the body. Kestra calls <code>JobBuild</code> with those parameters, polls <code>JobInfo</code> until the build reaches a terminal status, branches on the result, and posts to <a href='/orchestration/slack'>Slack</a> on outcome."
-      href: "/blueprints"
     - name: "Approval gate between build and deploy"
       blueprintId: "jenkins-approval-build-to-deploy"
       title: "Pause between Jenkins build and deploy, with Teams approval"
       description: "Kestra fires the build job, polls for success, posts the build number to Microsoft Teams, then pauses for human approval. On resume, the deploy job fires. Reviewer identity and timestamp are logged; <a href='/orchestration/slack'>Slack</a> confirms completion."
-      href: "/blueprints"
     - name: "Chain Terraform, Ansible, and Jenkins"
       blueprintId: "jenkins-terraform-ansible-chain"
       title: "Provision with Terraform, configure with Ansible, test with Jenkins"
       description: "Terraform provisions the test fleet, Ansible applies the baseline, then Kestra triggers a Jenkins test job via <code>JobBuild</code> and waits for terminal status. <a href='/orchestration/slack'>Discord</a> reports the chain outcome. Outputs flow forward; step retries stay local."
-      href: "/blueprints"
 comparison:
   title: "Kestra vs the orchestration alternatives Jenkins teams evaluate"
   subtitle: "When Jenkins is the CI workhorse but the orchestration around it needs more than Groovy, here is how Kestra compares to the usual alternatives."

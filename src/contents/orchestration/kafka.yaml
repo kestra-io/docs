@@ -184,23 +184,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Kafka orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Per-record processing"
       blueprintId: "kafka-realtime-record-processing"
       title: "Start a flow for every Kafka record"
       description: "A <code>RealtimeTrigger</code> starts one execution per record, a <code>Switch</code> routes by payload, and matching work runs with offset commits after success. Anomalies alert <a href='/orchestration/slack'>Slack</a>. No consumer service to operate."
-      href: "/blueprints"
     - name: "Stream a topic to the warehouse"
       blueprintId: "auditlogs-to-bigquery"
       title: "Stream a Kafka topic into BigQuery"
       description: "Consumes records from a Kafka topic on a schedule, transforms them, converts to Avro, and loads them into <a href='/orchestration/bigquery'>BigQuery</a>. The pattern for landing a Kafka stream in the warehouse for analytics."
-      href: "/blueprints"
     - name: "Produce to a topic"
       blueprintId: "produce-kafka-message"
       title: "Extract from an API and produce to Kafka"
       description: "Extracts data from a REST API and publishes it to a Kafka topic with the <code>Produce</code> task using a JSON value serializer. The pattern for emitting events into Kafka from a flow."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the alternatives Kafka teams reach for"

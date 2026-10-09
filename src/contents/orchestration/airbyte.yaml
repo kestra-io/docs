@@ -187,23 +187,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Airbyte orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Airbyte to dbt to activation"
       blueprintId: "hightouch-airbyte-dbt-activation"
       title: "Airbyte to dbt to Hightouch in one flow"
       description: "Kestra runs the Airbyte sync, waits for terminal status, builds <a href='/orchestration/dbt-core'>dbt</a>, then fires the <a href='/orchestration/hightouch'>Hightouch</a> sync and confirms on <a href='/orchestration/slack'>Slack</a>. Step retries stay local: a dbt failure never re-runs the sync."
-      href: "/blueprints"
     - name: "Scheduled Airbyte Cloud sync"
       blueprintId: "airbyte-cloud-sync"
       title: "Run a scheduled ETL sync with Airbyte Cloud"
       description: "Triggers an Airbyte Cloud connection sync on a recurring schedule, keeping a single source refreshed without coordinating dependencies. The foundation for simple, reliable ETL ingestion you can grow into a larger chain."
-      href: "/blueprints"
     - name: "Parallel connector fan-out"
       blueprintId: "airbyte-sync-parallel"
       title: "Run many Airbyte syncs in parallel"
       description: "Runs multiple Airbyte connection syncs concurrently with the <code>Parallel</code> task, ingesting several sources on the same schedule without serializing them. Connection config is centralized via namespace variables or a Kestra Policy (Enterprise Edition)."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Airbyte teams evaluate"

@@ -182,23 +182,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for ServiceNow orchestration."
-  lead: "One blueprint per use case above. Copy the YAML, set your ServiceNow instance URL and credentials, point at your tables, ship it."
   items:
     - name: "Standard change request fires a runbook"
       blueprintId: "servicenow-change-request-runbook"
       title: "Ticket approved, flow runs, ticket updated, ticket closed"
       description: "Listens for ServiceNow Business Rule webhooks on change_request approval. Dispatches the matching subflow based on the template field. Updates the ticket through the work via servicenow.Update calls and closes with the execution URL."
-      href: "/blueprints?tags=Business"
     - name: "Flow failure opens an incident with CMDB-driven severity"
       blueprintId: "servicenow-incident-on-failure"
       title: "Production flow errors branch creates a ServiceNow incident"
       description: "On a production flow failure, looks up the affected application's owner and tier from cmdb_ci_appl, calculates severity from the tier, and opens an incident with the full context routed to the right assignment group."
-      href: "/blueprints?tags=Business"
     - name: "CMDB-driven patch wave"
       blueprintId: "servicenow-cmdb-patch-wave"
       title: "Change request approved, CMDB lookup, per-CI patch, ticket closed"
       description: "Listens for patch-category change requests, pulls every CI related to the application from cmdb_ci_appl_relationship, runs the per-host patching subflow per CI, updates the ticket with per-CI status, closes with a summary."
-      href: "/blueprints?tags=Business"
 comparison:
   title: "Kestra vs ServiceNow automation alternatives"
   subtitle: "Kestra wraps the ServiceNow Table API with first-class tasks for record Get, Post, Update, Delete. The competitors below are how teams typically wire ServiceNow tickets to operational flows today."

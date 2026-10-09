@@ -166,23 +166,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Redis orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Real-time list to database"
       blueprintId: "redis-list-realtime-trigger"
       title: "Push Redis list events into a database in real time"
       description: "The <code>RealtimeTrigger</code> pops each item off a Redis list the moment it arrives and starts one execution that writes the record into Cassandra. Swap the target for <a href='/orchestration/postgres'>Postgres</a> or another store; the streaming pattern stays the same."
-      href: "/blueprints"
     - name: "Semantic LLM cache"
       blueprintId: "ai-semantic-cache-redis"
       title: "Cut LLM API cost with a Redis semantic cache"
       description: "A Python step hashes the question, <code>string.Get</code> checks Redis, and an <code>If</code> calls OpenAI only on a miss, then <code>string.Set</code> caches the answer. FAQ-heavy workloads serve repeated questions instantly instead of re-billing the model."
-      href: "/blueprints"
     - name: "Parallel bulk key writes"
       blueprintId: "redis-set-parallel"
       title: "Write many Redis keys in parallel from JSON"
       description: "A <code>ForEach</code> fans a JSON payload out and writes each entry to Redis with <code>string.Set</code> in parallel, turning a slow serial seed into one short run. Adjust the input and key options to seed or refresh any key set."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Redis teams evaluate"

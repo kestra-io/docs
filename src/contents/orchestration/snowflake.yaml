@@ -172,23 +172,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Snowflake orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Stage load and analytics"
       blueprintId: "snowflake"
       title: "Load files to a stage, COPY to a table, run SQL"
       description: "The end-to-end Snowflake ETL pattern: create a table, upload a CSV to the internal stage with <code>Upload</code>, COPY it into the table, then run an analytical query and export the result. Stage, load, and analyze in one flow."
-      href: "/blueprints"
     - name: "Event-driven on query results"
       blueprintId: "snowflake-query-trigger"
       title: "Start a flow when a Snowflake query returns rows"
       description: "A Snowflake <code>Trigger</code> polls the warehouse and starts the flow only when a sentinel query returns rows. The flow processes the new rows, then marks them processed with afterSQL so the same rows do not fire twice."
-      href: "/blueprints"
     - name: "Incremental MERGE upsert"
       blueprintId: "snowflake-incremental-merge-upsert"
       title: "Incremental MERGE upsert with a transactional load"
       description: "COPY new rows into a staging table, then MERGE into the target with dedup and a watermark update as one transaction via <code>Queries</code>. A failed MERGE rolls back so the target never holds a half-applied batch, and reruns resume from the last watermark."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Snowflake teams evaluate"

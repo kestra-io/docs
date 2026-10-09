@@ -196,23 +196,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Postgres orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Extract and load into Postgres"
       blueprintId: "extract-load-postgres"
       title: "Download a file and bulk-load it with COPY"
       description: "The core ingestion pattern: <code>core.http.Download</code> pulls a remote CSV, a <code>Query</code> runs the DDL to create the table, then <code>CopyIn</code> bulk-loads it over the COPY protocol. Swap the source URL and table schema for your own dataset."
-      href: "/blueprints"
     - name: "Trigger on row changes with CDC"
       blueprintId: "listen-debezium"
       title: "Run a flow whenever Postgres rows change"
       description: "A Debezium <code>Trigger</code> reads the Postgres write-ahead log and starts the flow on every change. It posts the row count to <a href='/orchestration/slack'>Slack</a>, then a Python step processes the captured JSON. Real-time capture with no polling and no missed commits."
-      href: "/blueprints"
     - name: "Transform with dbt on Postgres"
       blueprintId: "dbt-postgres"
       title: "Run dbt build on Postgres from Git"
       description: "Kestra clones a <a href='/orchestration/dbt-core'>dbt</a> project from Git and runs <code>dbt build</code> against Postgres inside a container, with the profile resolved from secrets. The same flow promotes across dev, staging, and production without touching the project."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Postgres teams evaluate"

@@ -179,23 +179,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for NetBox orchestration."
-  lead: "One blueprint per use case above. Copy the YAML, set your NetBox URL and API token, point at your inventory, ship it."
   items:
     - name: "Run Ansible against every device of a role and site"
       blueprintId: "netbox-ansible-by-role-site"
       title: "device.List filtered by role and site, ForEach playbook, rollup to Slack"
       description: "Filters devices in NetBox by role and site, iterates with ForEach, runs an Ansible playbook against each device's primary IP, captures per-device results via the Kestra Ansible callback, and posts a rollup to Slack with success counts and failure details."
-      href: "/blueprints?tags=Infrastructure"
     - name: "VM provision with IP allocation and device registration"
       blueprintId: "netbox-vm-provision-register"
       title: "Proxmox VM created, NetBox allocates IP, device registered, owner assigned"
       description: "On a VM provisioning request, the flow creates the VM in Proxmox, requests an IP from a NetBox prefix, configures the VM's network with that IP, registers the VM as a device in NetBox, and assigns the requesting team as the primary contact."
-      href: "/blueprints?tags=Infrastructure"
     - name: "Drift reconciliation: scan vs NetBox, alert on diffs"
       blueprintId: "netbox-drift-reconciliation"
       title: "Weekly reconciliation flow between network scan and NetBox state"
       description: "Runs a Python scan task (LLDP, SNMP, or hypervisor API), pulls device.List from NetBox, computes the additions and deletions, auto-creates additions with a review-needed tag, and opens a GitHub issue for each missing device."
-      href: "/blueprints?tags=Infrastructure"
 comparison:
   title: "Kestra vs NetBox automation alternatives"
   subtitle: "Kestra wraps the NetBox API with first-class tasks for device, IPAM, site, and contact assignment operations. The competitors below are how network teams typically drive NetBox today, each with different ergonomics."
