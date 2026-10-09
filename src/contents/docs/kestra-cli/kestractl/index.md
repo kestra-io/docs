@@ -162,8 +162,9 @@ kestractl flows delete-by-query  --namespace my.namespace --query old-
 # Search flows by source content
 kestractl flows search-by-source --query "http.request"
 
-# Bulk-update flows from a YAML file
+# Bulk-update flows from a YAML file (--delete defaults to false; pass it to remove unlisted flows)
 kestractl flows bulk-update --file flows.yaml
+kestractl flows bulk-update --file flows.yaml --delete
 
 # Export flows
 kestractl flows export            --namespace my.namespace --output-file flows.zip
