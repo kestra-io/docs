@@ -68,6 +68,11 @@ import { EDITIONS, SECURITY_CONTROLS } from "./securityData"
                 </tbody>
             </table>
         </div>
+
+        <p class="pricing-note">
+            Need the full feature comparison? See{" "}
+            <a href="/pricing">Kestra plans and pricing</a>.
+        </p>
     </div>
 </section>
 
@@ -76,6 +81,19 @@ import { EDITIONS, SECURITY_CONTROLS } from "./securityData"
         display: flex;
         flex-direction: column;
         gap: 2rem;
+    }
+
+    .pricing-note {
+        margin: 0;
+        color: var(--ks-content-secondary);
+        font-size: $font-size-md;
+        line-height: 24px;
+        text-align: center;
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+        }
     }
 
     .table-wrapper {

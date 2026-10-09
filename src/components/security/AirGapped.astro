@@ -19,7 +19,8 @@ import { SECURITY_OVERVIEW_PDF_URL } from "./securityData"
                     Enterprise and air-gapped deployments
                 </h2>
                 <p>
-                    Enterprise Edition runs entirely inside your infrastructure.
+                    <a href="/enterprise">Enterprise Edition</a> runs entirely
+                    inside your infrastructure.
                     Workers run inside air-gapped zones, never reaching the
                     internet. The control plane usually sits outside that zone
                     with internet egress, since it never touches the systems
@@ -50,15 +51,17 @@ import { SECURITY_OVERVIEW_PDF_URL } from "./securityData"
             <ArchitectureDiagram />
         </div>
 
-        <a
-            href={SECURITY_OVERVIEW_PDF_URL}
-            class="btn btn-primary"
-            target="_blank"
-            rel="noopener"
-            data-usal="zoomin"
-        >
-            Download the security overview
-        </a>
+        <div class="ctas" data-usal="zoomin">
+            <a
+                href={SECURITY_OVERVIEW_PDF_URL}
+                class="btn btn-primary"
+                target="_blank"
+                rel="noopener"
+            >
+                Download the security overview
+            </a>
+            <a href="/demo" class="btn btn-secondary">Talk to our team</a>
+        </div>
     </div>
 </section>
 
@@ -131,6 +134,22 @@ import { SECURITY_OVERVIEW_PDF_URL } from "./securityData"
         p {
             margin: 0 0 0.5rem;
             line-height: 24px;
+        }
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+        }
+    }
+
+    .ctas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
         }
     }
 
