@@ -156,6 +156,10 @@ Keep new packages aligned with project conventions and metadata.
 - Use `"{{ secret('YOUR_SECRET') }}"` in the examples for sensitive info such as an API key.
 - Align the `"""` to close examples blocks with the flow id.
 - Update the existing `index.yaml` for the main plugin, and for each new subpackage add a metadata file named exactly after the subpackage (e.g. `s3.yaml` for `io.kestra.plugin.aws.s3`) under `src/main/resources/metadata/`, following the same schema — never invent fields, and make sure `group` matches the Java package name of the subpackage.
+- **Ticketing systems** (Jira, GitHub issues, ServiceNow, Zendesk, …): the task that **creates** a ticket must implement the marker interface `io.kestra.core.models.tasks.TicketingTaskInterface`, alongside `RunnableTask` (e.g., `public class Create extends JiraClient implements RunnableTask<Create.Output>, TicketingTaskInterface`). Kestra lists the plugin in `GET /api/v1/plugins/ticketing-systems` only through that marker — without it, the ticketing system is invisible to the catalog. See [kestra-io/plugin-jira#104](https://github.com/kestra-io/plugin-jira/pull/104).
+  - Implement it on the ticket-creating task **only**: tasks that comment on, search, update, or transition a ticket are not ticketing tasks.
+  - The interface ships from Kestra `1.3.42` and `2.0.5`: bump `kestraVersion` in `gradle.properties` to at least that patch of the plugin's line if it is older, or the build fails to resolve the import.
+  - Add no test asserting the class implements the interface — the catalog behavior is covered by the Kestra core tests.
 
 ---
 
