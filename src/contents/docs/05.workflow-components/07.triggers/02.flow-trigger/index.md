@@ -290,9 +290,16 @@ triggers:
 
 Filter on retry attempts:
 
-:::alert{type="warning"}
-`hasRetryAttempt` is not available yet in the `when` expression context.
-:::
+```yaml
+triggers:
+  - id: after_flaky
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: flaky_pipeline
+        namespace: company.team
+        states: [SUCCESS]
+        when: "{{ hasRetryAttempt == true }}"
+```
 
 ## Example: data pipeline with SLA deadline
 
