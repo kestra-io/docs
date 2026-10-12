@@ -121,6 +121,10 @@ The `REUSABLE_INPUTS` resource controls who can manage reusable input sets. Flow
 | Editor | View, list, create, update, delete |
 | Admin | All actions |
 
+## Audit logs
+
+Kestra records an audit log entry for every create, update, and delete operation on a reusable input set. Each entry includes the set `id`, `namespace`, and revision. Filter by resource type `REUSABLE_INPUTS` in the **Audit Logs** page to see who changed a set and when.
+
 ## Validation
 
 Kestra does not check whether a referenced set exists at flow save time — the existence check runs at execution creation. If the set is missing, execution creation fails with an error naming the missing set and the namespace hierarchy that was searched.
