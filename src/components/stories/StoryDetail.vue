@@ -21,7 +21,7 @@
         slug: string
         story: Story
         content: string
-        related: any
+        related: { results: Story[]; total: number }
     }>()
 </script>
 

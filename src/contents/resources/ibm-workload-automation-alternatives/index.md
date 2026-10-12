@@ -131,5 +131,3 @@ Modernization is often a gradual process. The ideal solution should be able to o
 The shift away from traditional workload automation tools like IBM WLA is driven by the need for greater agility, developer productivity, and support for modern architectures. While incumbents like Control-M and Redwood offer established solutions, a new generation of declarative, event-driven platforms provides a more flexible and future-proof path.
 
 Kestra stands out as a universal control plane that bridges the gap between legacy and modern systems. Its declarative YAML interface, language-agnostic execution, and unified approach across data, AI, and infrastructure make it a powerful choice for any enterprise looking to build a resilient and scalable orchestration strategy for 2026 and beyond.
-
-Ready to see how a modern orchestrator can transform your workflows? [Book a demo](/demo) to explore Kestra's capabilities.

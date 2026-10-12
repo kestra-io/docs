@@ -150,6 +150,23 @@ describe("transient failures", () => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
     })
 
+    it("does not retry a request its caller aborted", async () => {
+
+        fetchMock.mockImplementation((_url, init) =>
+            Promise.reject(init.signal.reason),
+        )
+        const { $fetchApi } = await load({ PROD: false, SSR: false })
+        const controller = new AbortController()
+        controller.abort("Search restarted")
+
+        const outcome = await settle(
+            $fetchApi("/search?q=kafka", { signal: controller.signal }),
+        )
+
+        expect(outcome).toEqual({ error: "Search restarted" })
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
     it("waits out a Retry-After sent as an HTTP-date", async () => {
         vi.setSystemTime(new Date("2026-01-01T00:00:00Z"))
         fetchMock

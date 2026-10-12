@@ -18,7 +18,7 @@ faq:
   - question: "What are the key benefits of using Kestra as a European data orchestration platform?"
     answer: "Kestra offers a declarative, YAML-based approach for defining workflows, ensuring version control and auditability. Its open-source nature provides transparency and avoids vendor lock-in, while its polyglot execution capabilities support diverse technical stacks common in European enterprises, from on-prem to multi-cloud environments."
   - question: "Can Kestra integrate with existing European data infrastructure?"
-    answer: "Yes, Kestra is designed for vendor-agnostic integration. With over 1,400 plugins, it connects seamlessly with popular European data tools, cloud providers, and on-premise systems, allowing organizations to orchestrate their existing stack without extensive refactoring."
+    answer: "Yes, Kestra is designed for vendor-agnostic integration. With {totalPlugins}+ plugins, it connects seamlessly with popular European data tools, cloud providers, and on-premise systems, allowing organizations to orchestrate their existing stack without extensive refactoring."
 ---
 
 European organizations face unique challenges in data management, from stringent data sovereignty laws like GDPR to a diverse landscape of on-premise, hybrid, and multi-cloud infrastructure. Traditional orchestration tools often struggle to provide the flexibility, transparency, and control needed to navigate these complexities, leading to fragmented pipelines and compliance headaches.

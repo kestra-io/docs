@@ -153,9 +153,9 @@ Set `allowConcurrent: true` to allow multiple executions to run simultaneously f
 
 Update a concurrency limit when executions are backing up or hitting the limit unexpectedly. Avoid changing limits routinely; a stable limit is a deliberate resource protection decision.
 
-**In Open Source and Enterprise Edition**, edit the `concurrency.limit` value directly in the flow editor and save. The executor reads the latest flow revision immediately, so the new limit takes effect for all in-progress executions without a restart.
+Edit the `concurrency.limit` value directly in the flow editor and save. The executor reads the latest flow revision immediately, so the new limit takes effect for all in-progress executions without a restart.
 
-You can also update the limit from the **Concurrency Limits** page (under **Instance Owner** in the sidebar) in the Enterprise Edition): click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
+You can also update the limit from the **Concurrency Limits** page in the sidebar: click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
 
 ## Troubleshooting concurrency issues
 

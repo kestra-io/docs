@@ -122,6 +122,11 @@ async function internalFetch(
         try {
             return await fetchOnce(url, init)
         } catch (error) {
+            // An aborted request was cancelled on purpose: retrying it with the
+            // same (already aborted) signal can only fail again, and would
+            // delay the rejection until after a newer request has resolved.
+            if (init.signal?.aborted) throw error
+
             const fetchError = error as FetchError
             const status = fetchError.response?.status
 
