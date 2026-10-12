@@ -238,6 +238,43 @@ triggers:
 - The HTTP response body contains the flow outputs as a JSON object. With the example above, the response includes `"greeting": "Hello Alice!"`.
 - `responseContentType` sets the `Content-Type` header on the response. It does not change how the body is serialized — the body is always the JSON-serialized outputs map when `returnOutputs: true` is set.
 
+## Return a custom response body
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Some callers expect a specific body rather than a JSON object of outputs. Set `responseBody` to send a rendered string as the raw response body. It is rendered once the execution has finished, so it can use the trigger variables (`trigger.body`, `trigger.headers`, `trigger.parameters`) and the outputs of the tasks. `responseBody` requires `wait: true` and cannot be combined with `returnOutputs`.
+
+For example, Microsoft Graph validates a change-notification endpoint by sending a `validationToken` query parameter, and expects the token back as the `text/plain` body:
+
+```yaml
+id: microsoft_graph_webhook
+namespace: company.team
+
+tasks:
+  - id: handle_request
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.parameters.validationToken[0] ?? 'notification received' }}"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    wait: true
+    responseContentType: text/plain
+    responseBody: "{{ trigger.parameters.validationToken[0] ?? 'notification processed' }}"
+```
+
+- A validation request (`?validationToken=abc123`) gets `abc123` back as the body, with `Content-Type: text/plain`.
+- `responseContentType` sets the `Content-Type` header; without it, the body is sent as `application/json`.
+- `responseCode` still applies, so you can answer with a different status code.
+- If `responseBody` cannot be rendered, the error is logged on the execution and the webhook responds with `500`.
+- With `wait: true`, every call waits for the execution to finish before it gets a response, and Microsoft Graph only waits a few seconds. Keep a flow like this one short, and hand any longer processing to a [subflow](../../10.subflows/index.md) that it does not wait for.
+
+:::alert{type="warning"}
+The response body is sent to anyone who calls the webhook URL. Do not put secrets in `responseBody`, either directly or through an expression such as `secret()` or `kv()`: it is rendered with the flow's secrets available, and the result is returned to the caller as is.
+:::
+
 ## Test a webhook trigger
 
 To test a webhook trigger without an external tool, go to the flow's **Triggers** tab and click **Send a test event**. The modal lets you post a custom JSON payload and optional headers directly to the webhook URL:
