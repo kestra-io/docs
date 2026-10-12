@@ -65,7 +65,7 @@ tasks:
 
 ## Flow outputs
 
-Flows can declare strongly typed outputs that are surfaced in the **Overview** tab and accessible to parent flows via the Subflow task:
+Flows can declare strongly typed outputs that are surfaced in the **Overview** tab and accessible to parent flows via the [Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task:
 
 ```yaml
 id: flow_outputs

@@ -13,6 +13,9 @@ export const formatElementType = (type: string): string =>
 export const formatElementName = (cls: string): string =>
     cls.substring(cls.lastIndexOf(".") + 1)
 
+// Words whose acronym casing should survive title-casing, regardless of length.
+const PRESERVE_CASE = ["AI", "BI", "JDBC"]
+
 // Extract last segment, strip plugin prefix, capitalize words. e.g. "plugin-aws-s3" -> "Aws S3"
 export const formatPluginName = (raw?: string): string => {
     if (!raw) return ""
@@ -23,14 +26,14 @@ export const formatPluginName = (raw?: string): string => {
     if (words.length === 0) return ""
     if (words.length === 1) {
         const w = words[0]!
+        const upper = w.toUpperCase()
+        if (PRESERVE_CASE.includes(upper)) return upper
         return /^[a-z0-9]{1,3}$/i.test(w) || /\d/.test(w)
             ? w.toUpperCase()
             : w.charAt(0).toUpperCase() + w.slice(1)
     }
     return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
 }
-
-const PRESERVE_CASE = ["AI", "BI"]
 export const formatCategoryName = (category: string): string =>
     PRESERVE_CASE.includes(category) ? category : formatPluginName(category.toLowerCase())
 

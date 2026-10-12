@@ -66,6 +66,7 @@ Improvements to the tools and workflows used to build and manage flows.
 - **Plugin file renderers** — plugins can register format-specific renderers for inline output file preview. [Docs](../../plugin-developer-guide/09.file-renderer/index.md)
 - **Dynamic Apps content blocks** — Apps support content blocks that update based on execution state. [Docs](../../07.enterprise/04.scalability/apps/index.md)
 - **`kestractl` IAM commands** — roles, role bindings, service accounts, and invitations via CLI. [Docs](../../kestra-cli/kestractl/index.md)
+- **`flows bulk-update --delete` default changed to `false`** — deletion of flows absent from the file is now opt-in. Scripts relying on the previous default must pass `--delete` explicitly.
 
 ### Infrastructure
 
@@ -75,7 +76,7 @@ Changes to deployment, storage, and runtime behavior.
 - **New VM task runners** — AWS EC2 (SSM Run Command, no SSH, Spot support), Azure Virtual Machine (Run Command API, no SSH or public IP), Google Compute Engine (startup script, no SSH), Huawei Cloud CCI (bare Pods, OBS staging, AK/SK or temp credentials). [Docs](../../task-runners/04.types/index.mdx)
 - **Worker Groups 2.0 (EE)** — tag-based routing via `workerSelector.tags` replaces `workerGroup.key`; Worker Queues as routing lanes; per-subscription capacity reservation (STRICT/ELASTIC modes); JWT worker authentication; declarative topology bootstrap via `kestra.ee.setup`. [Docs](../../07.enterprise/04.scalability/worker-group/index.md)
 - **PurgeStorage** — storage-driven file cleanup by last-modified date, independent of execution records. Defaults to `dryRun: true`. [Docs](../../10.administrator-guide/purge/index.md)
-- **Slim image + plugin auto-install** — `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to auto-fetch from Maven Central. Renamed from `-no-plugins`. [Docs](../../02.installation/02.docker/index.md)
+- **Slim image + plugin auto-install** — `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to auto-fetch from Maven Central; this is the default configuration for the `-slim` image running locally. Renamed from `-no-plugins`. [Docs](../../02.installation/02.docker/index.md)
 - **External Log Data Store (EE)** — route execution logs to a separate JDBC database or Elasticsearch, keeping the main database lean and reducing schema migration time. [Docs](../../10.administrator-guide/log-data-store/index.md)
 - **ION binary format** — task output files in ION format stored as binary (~20–40% smaller). [Migration guide](../../11.migration-guide/v2.0.0/ion-binary-format/index.md)
 
@@ -114,3 +115,4 @@ Each breaking change has a dedicated migration guide. See the [2.0 migration gui
 | `CANCELED` enum alias removed | Replace with `CANCELLED` in flow expressions, API consumers, and tooling. |
 | Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, `log.Fetch` — replace with equivalents in `plugin-kestra`. |
 | Terraform provider `~> 2.0` | [Guide](../../11.migration-guide/v2.0.0/terraform-provider/index.md) |
+| `kestractl flows bulk-update --delete` default changed | Pass `--delete` explicitly; the flag now defaults to `false`. [Guide](../../11.migration-guide/v2.0.0/bulk-update-delete-default/index.md) |

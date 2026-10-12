@@ -15,7 +15,7 @@ faq:
   - question: "Is Dollar Universe the same as AutoSys?"
     answer: "No. Dollar Universe and AutoSys are separate Broadcom products with different origins. Dollar Universe was originally developed by ORSYP and is optimized for decentralized, fault-tolerant scheduling in distributed environments. AutoSys (formerly from CA Technologies) is a broader batch job scheduling platform. Both are now owned by Broadcom following its 2018 acquisition of CA Technologies."
   - question: "Can Kestra replace Broadcom Dollar Universe?"
-    answer: "Yes. Kestra can serve as a modern replacement for Broadcom Dollar Universe, particularly for organizations seeking a declarative, open-source, and language-agnostic orchestration platform. Kestra unifies data, AI, and infrastructure workflows with over 1,400 plugins, offering cloud-native flexibility and GitOps-friendly workflow definitions that address the key limitations of legacy schedulers."
+    answer: "Yes. Kestra can serve as a modern replacement for Broadcom Dollar Universe, particularly for organizations seeking a declarative, open-source, and language-agnostic orchestration platform. Kestra unifies data, AI, and infrastructure workflows with {totalPlugins}+ plugins, offering cloud-native flexibility and GitOps-friendly workflow definitions that address the key limitations of legacy schedulers."
   - question: "Is JS7 JobScheduler free to use?"
     answer: "JS7 JobScheduler from SOS GmbH is available under a dual license model: the open-source edition is licensed under GPLv3 and is free to use, while a commercial license is required for high-availability clustering features and professional support."
 ---
@@ -44,7 +44,7 @@ To provide a balanced comparison, we evaluated each alternative based on a core 
 
 Kestra is an open-source, declarative orchestration platform that unifies data, AI, infrastructure, and business workflows. It uses a simple YAML interface to define even the most complex workflows, making them easy to version, review, and manage with GitOps principles. With a language-agnostic architecture, Kestra can run any code, script, or container, acting as a central control plane that coordinates existing tools rather than forcing a replacement.
 
-*   **Strengths:** Its event-driven architecture is ideal for real-time processing, and its highly scalable design supports everything from simple cron jobs to millions of parallel executions. With over 1,400 plugins, Kestra offers extensive connectivity across the tech stack.
+*   **Strengths:** Its event-driven architecture is ideal for real-time processing, and its highly scalable design supports everything from simple cron jobs to millions of parallel executions. With {totalPlugins}+ plugins, Kestra offers extensive connectivity across the tech stack.
 *   **Proof point:** Enterprises like Crédit Agricole use Kestra to consolidate fragmented infrastructure scripts into a single, auditable platform, while Apple leverages it for large-scale AI/ML data pipelines.
 *   **Best for:** Organizations seeking a modern, vendor-neutral control plane to manage complex, cross-domain workflows with a strong focus on developer experience and GitOps.
 *   **Honest limitation:** Kestra requires a shift to a declarative, YAML-first mindset. This can be a change for teams deeply ingrained in GUI-driven or code-heavy imperative systems, but it unlocks significant operational benefits in the long run.
@@ -133,5 +133,3 @@ For smaller teams or those just beginning their automation journey, the accessib
 Moving away from a legacy platform like Broadcom Dollar Universe is an opportunity to modernize your entire automation strategy. The shift from traditional, imperative job schedulers to modern, declarative orchestration platforms enables greater agility, better governance, and a more unified approach to [workflow management](/resources/infrastructure/workflow-management) across your organization.
 
 The best alternative depends entirely on your specific needs. For enterprises seeking a managed SaaS solution for business processes, Redwood RunMyJobs is a strong contender. For complex hybrid IT environments, Stonebranch provides extensive connectivity. However, for organizations looking to build a future-proof, vendor-neutral control plane that empowers developers and unifies data, AI, and infrastructure workflows, Kestra offers a compelling path forward.
-
-Explore Kestra to experience modern, declarative orchestration that unifies your entire workflow landscape. You can [book a demo](https://kestra.io/demo) with our team or explore the [Kestra Cloud](https://kestra.io/cloud) early adopter program.

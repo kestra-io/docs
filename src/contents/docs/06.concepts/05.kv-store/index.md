@@ -45,7 +45,7 @@ KV pairs are readable across namespaces when those namespaces are [allowed](../.
 KV pairs can be managed from the UI, in flows via tasks, through the REST API, via Terraform, or from the command line:
 
 1. **Kestra UI**: create, edit, and delete KV pairs directly (see [Namespace binding](#namespace-binding) for navigation paths).
-2. **Tasks in a flow**: use `io.kestra.plugin.core.kv.Set`, `Get`, and `Delete` tasks.
+2. **Tasks in a flow**: use [io.kestra.plugin.core.kv.Set](/plugins/core/kv/io.kestra.plugin.core.kv.set), [Get](/plugins/core/kv/io.kestra.plugin.core.kv.get), and [Delete](/plugins/core/kv/io.kestra.plugin.core.kv.delete) tasks.
 3. **REST API**: create, read, and delete KV pairs via the HTTP API.
 4. **Terraform**: use the `kestra_kv` resource.
 5. **Pebble function**: use `kv()` to retrieve a value inline in a flow expression.
@@ -64,7 +64,7 @@ Action buttons on each row edit, delete, or copy the [Pebble expression for the 
 
 ### Create a KV pair with the `Set` task
 
-`io.kestra.plugin.core.kv.Set` creates or updates a KV pair from a flow:
+Use [io.kestra.plugin.core.kv.Set](/plugins/core/kv/io.kestra.plugin.core.kv.set) to create or update a KV pair from a flow:
 
 ```yaml
 id: add_kv_pair

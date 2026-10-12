@@ -8,7 +8,7 @@ description: Troubleshoot common issues with Basic Authentication in Kestra, inc
 
 Troubleshoot issues with Basic Authentication.
 
-Every open-source instance of Kestra requires Basic Authentication (`username` and `password`). You can configure credentials via the Setup page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
+Every open-source instance of Kestra requires Basic Authentication (`username` and `password`). Credentials can be configured via the Setup page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
 
 ```yaml
 kestra:

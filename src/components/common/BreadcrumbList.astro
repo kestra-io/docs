@@ -2,9 +2,11 @@
 interface Props {
     url: URL
     pageTitle?: string
+    /** Extra crumbs inserted right after Home, for an ancestor the URL alone doesn't carry. */
+    prependItems?: { name: string; url: string }[]
 }
 
-const { url, pageTitle } = Astro.props
+const { url, pageTitle, prependItems } = Astro.props
 
 const SITE_ORIGIN = "https://kestra.io"
 
@@ -35,20 +37,25 @@ const segments = rawPath
     .filter(Boolean)
     .filter((seg) => !versionSegmentRegex.test(seg))
 
+const segmentItems = segments.map((seg, index) => {
+    const href = SITE_ORIGIN + "/" + segments.slice(0, index + 1).join("/")
+    const isLast = index === segments.length - 1
+    // Use the page title for the last segment if provided
+    const name = isLast && pageTitle ? pageTitle : slugToLabel(seg)
+    return { name, url: href }
+})
+
 const breadcrumbs =
     segments.length === 0
         ? []
         : [
               // Always start with Home
               { name: "Home", url: SITE_ORIGIN + "/" },
-              // Build intermediate + leaf segments
-              ...segments.map((seg, index) => {
-                  const href = SITE_ORIGIN + "/" + segments.slice(0, index + 1).join("/")
-                  const isLast = index === segments.length - 1
-                  // Use the page title for the last segment if provided
-                  const name = isLast && pageTitle ? pageTitle : slugToLabel(seg)
-                  return { name, url: href }
-              }),
+              // The first URL segment (e.g. "Plugins"), then any prepended ancestor the
+              // URL alone doesn't carry (e.g. "JDBC"), then the rest of the segments.
+              ...segmentItems.slice(0, 1),
+              ...(prependItems ?? []),
+              ...segmentItems.slice(1),
           ]
 
 const jsonLd =

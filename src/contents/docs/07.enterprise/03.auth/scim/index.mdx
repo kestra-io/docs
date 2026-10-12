@@ -25,11 +25,11 @@ SCIM (System for Cross-domain Identity Management) is an open-standard protocol 
 
 ![System for Cross-domain Identity Management specification](./scim.png)
 
-## Benefits of directory sync with SCIM
+## How SCIM provisioning works
 
-1. **Automated provisioning and de-provisioning**: SCIM automates the provisioning and de-provisioning of users, creating a single source of truth (SSOT) for user identity data. Instead of manually creating and managing users in Kestra, you can synchronize them from your IdP.
-2. **Consistency and compliance**: With SCIM, you can ensure consistency of identity information across systems and stay compliant with security and regulatory requirements.
-3. **Governance at scale**: Managing users at scale across many applications can be difficult without a standardized method for identity synchronization. SCIM provides a scalable solution for managing user identities.
+1. **Automated provisioning and de-provisioning**: Users and groups are created, updated, and removed in Kestra automatically when they change in the IdP, keeping the IdP as the single source of truth for identity data.
+2. **Consistency and compliance**: Identity information stays consistent across systems, supporting security and regulatory requirements without manual reconciliation.
+3. **Group synchronization**: IdP group memberships map to Kestra groups, so role assignments follow the IdP structure without per-user configuration in Kestra.
 
 ## Supported identity providers
 

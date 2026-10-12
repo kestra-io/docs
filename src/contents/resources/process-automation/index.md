@@ -27,7 +27,7 @@ faq:
 
 In an environment where every minute counts, manual, repetitive tasks drain resources and introduce errors. From IT operations to data pipelines and business approvals, fragmented processes stifle innovation and create bottlenecks. The solution isn't just to automate individual steps, but to orchestrate entire processes end-to-end, ensuring reliability, visibility, and control.
 
-This article explores the landscape of process automation, distinguishing between its core principles and specific technologies like RPA and AI. We'll demonstrate how a unified orchestration platform like Kestra enables teams to define, execute, and monitor complex processes declaratively, turning operational friction into workflows that run on their own.
+This article explores the landscape of process automation, distinguishing between its core principles and specific technologies like RPA and AI. We'll demonstrate how a [unified orchestration](/resources/orchestration/unified-orchestration) platform like Kestra enables teams to define, execute, and monitor complex processes declaratively, turning operational friction into workflows that run on their own.
 
 ## How Process Automation Works: From Repetitive Tasks to Intelligent Workflows
 

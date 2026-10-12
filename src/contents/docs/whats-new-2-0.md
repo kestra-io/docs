@@ -9,6 +9,10 @@ version: ">= 2.0.0"
 
 Kestra 2.0 is a major release introducing AI-native orchestration, redesigned governance, and significant infrastructure improvements.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/UYR8a2inCqc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 For breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx). For a hands-on walkthrough with real command output, see the [migration tutorial](./11.migration-guide/v2.0.0/migration-tutorial/index.mdx).
 
 ## AI
@@ -221,7 +225,7 @@ See the [Architecture](./08.architecture/index.mdx) page for the current model.
 
 ### Slim image and plugin auto-install
 
-The `kestra/kestra:*-slim` image ships without bundled plugins. Set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to have Kestra fetch plugins from Maven Central before execution and cache them for subsequent runs. The suffix was renamed from `-no-plugins` to `-slim` in 2.0. See the [Docker installation guide](./02.installation/02.docker/index.md).
+The `kestra/kestra:*-slim` image ships without bundled plugins. Its default local server setting has `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` in order to have Kestra fetch plugins from Maven Central before execution and cache them for subsequent runs. The suffix was renamed from `-no-plugins` to `-slim` in 2.0. See the [Docker installation guide](./02.installation/02.docker/index.md).
 
 ---
 

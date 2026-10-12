@@ -21,7 +21,7 @@ In this example, the flow will install the required npm packages, make an API re
 
 ## Scripts
 
-If you want to write a short amount of NodeJS code to perform a task, you can use the `io.kestra.plugin.scripts.node.Script` type to write it directly inside your flow. This allows you to keep everything in one place.
+If you want to write a short amount of NodeJS code to perform a task, you can use the [io.kestra.plugin.scripts.node.Script](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script) type to write it directly inside your flow. This allows you to keep everything in one place.
 
 ```yaml
 id: js_scripts
@@ -62,7 +62,7 @@ You can read more about the Scripts type in the [Plugin documentation](/plugins/
 
 ## Commands
 
-If you would prefer to put your NodeJS code in a `.js` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.node.Commands` type:
+If you would prefer to put your NodeJS code in a `.js` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the [io.kestra.plugin.scripts.node.Commands](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands) type:
 
 ```yaml
 id: js_commands
@@ -153,7 +153,7 @@ tasks:
     message: "Number of downloads: {{ outputs.run_nodejs_commands.vars.pull_count }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
+_This example works for both [io.kestra.plugin.scripts.node.Script](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script) and [io.kestra.plugin.scripts.node.Commands](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands)._
 
 ### File Output
 
@@ -205,7 +205,7 @@ We can also preview our file directly in the Outputs tab as well.
 
 ![outputs](./outputs.png)
 
-_This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
+_This example works for both [io.kestra.plugin.scripts.node.Script](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script) and [io.kestra.plugin.scripts.node.Commands](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands)._
 
 ## Handling Metrics
 

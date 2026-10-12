@@ -37,6 +37,8 @@ interface Props {
     canonical?: string
     /** Breadcrumb JSON-LD name, for pages whose `title` carries a meta title distinct from the visible H1. Defaults to `title`. */
     breadcrumbTitle?: string
+    /** Extra Breadcrumb JSON-LD crumbs inserted right after Home, for an ancestor the URL alone doesn't carry. */
+    breadcrumbPrependItems?: { name: string; url: string }[]
     /** Override the analytics content-view-name (window.astroClientConfig.slug); kept separate from `canonical`, which some pages use for syndicated-content URLs. */
     analyticsSlug?: string
     /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
@@ -220,7 +222,11 @@ const organizationSchema = {
                 : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
-        <BreadcrumbList url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl} pageTitle={props.breadcrumbTitle ?? props.title} />
+        <BreadcrumbList
+            url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl}
+            pageTitle={props.breadcrumbTitle ?? props.title}
+            prependItems={props.breadcrumbPrependItems}
+        />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />

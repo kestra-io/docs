@@ -106,7 +106,7 @@ This focus on developer experience makes Pipedream a strong Tray.ai alternative 
 
 ### 7. Boomi: Cloud-Native Integration Platform
 
-Boomi is a comprehensive, cloud-native iPaaS that has been a leader in the enterprise integration space for years. It offers a wide range of capabilities, including application integration, API management, master data management, and B2B/EDI integration. Its visual, low-code interface is designed to handle complex enterprise scenarios.
+Boomi is a comprehensive, cloud-native iPaaS that has been a leader in the enterprise integration space for years. It offers a wide range of capabilities, including application integration, API management, master data management, and B2B/[EDI integration](/resources/business/edi-integration). Its visual, low-code interface is designed to handle complex enterprise scenarios.
 
 Boomi's platform supports hybrid deployments, allowing organizations to connect cloud and on-premises systems securely. Its robust feature set makes it a viable Tray.ai alternative for large enterprises with diverse and demanding integration needs.
 

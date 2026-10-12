@@ -6,15 +6,7 @@ icon: /src/contents/docs/icons/padlock.svg
 description: Configure Kestra to route outbound HTTPS traffic through a Man-in-the-Middle (MITM) proxy for secure environments.
 ---
 
-Route and inspect Kestra's outbound HTTP/S traffic through an MITM proxy.
-
-## Why use an MITM proxy
-
-In secured or restricted environments it’s common to route outbound HTTP/S traffic through a **Man-in-the-Middle (MITM) proxy** for auditing, inspection, or policy enforcement. For this to work, clients (Kestra) must:
-
-- Trust the proxy’s CA certificate.
-- Route outbound traffic through the proxy.
-- Configure the JVM and any auxiliary daemons (e.g., Docker daemon) to use the proxy and truststore.
+Route and inspect Kestra’s outbound HTTP/S traffic through an MITM proxy. In secured or restricted environments this is used for auditing, inspection, or policy enforcement. Kestra must trust the proxy’s CA certificate, route outbound traffic through the proxy, and configure the JVM and any auxiliary daemons (such as the Docker daemon) to use the proxy and truststore.
 
 :::alert{type="info"}
 **Security note:** An MITM proxy intercepts TLS traffic. Only enable this in controlled environments and with appropriate approvals.
@@ -46,7 +38,7 @@ This secret will be mounted into Kestra pods.
 
 ## Configuring Kestra to use the MITM proxy
 
-You must update the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
+The [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) must include proxy settings, and the truststore must be available inside the container. The following covers both Kubernetes (Helm) and Docker Compose deployments.
 
 ### 1. Micronaut / Kestra configuration
 

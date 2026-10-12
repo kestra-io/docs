@@ -17,7 +17,7 @@ Build custom UIs to interact with Kestra from the outside world.
 
 ## What are Apps
 
-Apps let you wrap any Kestra flow in a custom UI — forms for data entry, output displays, approval buttons, progress indicators, and markdown blocks — without writing any frontend code. Building and serving a frontend, connecting it to Kestra's API, validating user inputs, handling responses, managing workflow outputs, and handling authentication and authorization — Apps take care of all of that.
+Apps let you wrap any Kestra flow in a custom UI — forms for data entry, output displays, approval buttons, progress indicators, and markdown blocks — without writing any frontend code. Building and serving a frontend, connecting it to Kestra's API, validating user inputs, handling responses, managing workflow outputs, and handling authentication and authorization: Apps take care of all of that.
 
 Flows act as the backend, processing data and executing tasks. Apps act as the frontend, giving anyone — including business users without Kestra access — a clean interface to trigger executions, submit approvals, and view results.
 
@@ -27,7 +27,7 @@ Apps work well for external-facing forms and for internal workflows such as appr
 
 ## Common App patterns
 
-Start with one of these patterns when designing your own App:
+The following patterns illustrate typical App designs:
 
 - **FTP upload portal**: give users a simple upload form while Kestra handles the backend credentials and transfer logic. See the [business user Apps blog example](../../../../blogs/use-case-apps/index.md#requests--review).
 - **Self-serve analytics request**: let users choose a dimension and time range, run a query and chart generation flow, and return the generated output on `SUCCESS`. See the [dynamic self-serve example](../../../../blogs/use-case-apps/index.md#dynamic-self-serve).
@@ -35,7 +35,7 @@ Start with one of these patterns when designing your own App:
 - **VM or infrastructure request**: collect the requested environment, size, region, and justification on `OPEN`, show validation progress on `RUNNING`, pause for approval on `PAUSE`, then display the created VM details on `SUCCESS`. This pattern also fits the infrastructure workflows described in the [infrastructure automation blog](../../../../blogs/infra-automation/index.md).
 - **Human-in-the-loop review**: display task outputs, logs, or model results, then let an approver accept or reject the execution from the same screen.
 
-Start by mapping the user journey:
+Mapping the user journey determines which blocks to use for each stage:
 
 1. What should the user submit?
 2. What should they see while the flow is running?
@@ -356,7 +356,7 @@ tasks:
       Reviewer notes: {{ resume.notes }}
 ```
 
-The `Pause` task's `onResume` inputs define what the reviewer submits when approving — in this case, optional notes. Those values are available to downstream tasks as `{{ resume.<id> }}`.
+The [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task's `onResume` inputs define what the reviewer submits when approving — in this case, optional notes. Those values are available to downstream tasks as `{{ resume.<id> }}`.
 
 **App:**
 
@@ -459,7 +459,7 @@ access:
 
 ### Hiding an app from the catalog
 
-Setting `catalog: false` removes the app from the browseable catalog while keeping its direct URL fully functional. Use this when you want to share an app with a specific audience via URL without surfacing it to everyone who can browse the catalog.
+Setting `catalog: false` removes the app from the browseable catalog while keeping its direct URL functional — suited to apps shared with a specific audience via URL.
 
 ```yaml
 access:
@@ -637,6 +637,7 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`    |
 | `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
 | `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
 | `Loading`                | RUNNING                                                                  | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
 | `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
 | `Button`                 | SUCCESS, FAILURE                                                        | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
@@ -692,3 +693,24 @@ By default, file preview shows the first 100 rows. You can change this server-si
 ### Log download
 
 The `ExecutionLogs` block renders an inline log viewer. When a `Logs` block is present in the layout, users can also download the full log file directly from the app. Log download is only available for `Execution`-type apps that include a `Logs` block in their layout.
+
+### Execution progress as a Gantt chart
+
+The `Gantt` block shows a simplified version of the execution Gantt view: one bar per task run, with its state and duration, nested under its parent task. Use it on long-running flows, so app users who cannot log in to Kestra can follow the progress instead of a loading indicator.
+
+```yaml
+- on: RUNNING
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "Provisioning is in progress, please keep this window open."
+
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Gantt
+      filter:
+        exclude:
+          - technical_step
+```
+
+- On a `RUNNING` layout, the chart updates as the execution progresses, without any extra configuration.
+- The block shows only task IDs, states and durations. It shows no logs, outputs, iteration values or task actions, so a public app can show it to anonymous visitors.
+- `filter` matches the task ID. `include` keeps only the listed tasks, `exclude` drops them, which is useful to hide technical steps the app user does not need to follow.
+- The block is available on `RUNNING`, `PAUSE`, `RESUME`, `SUCCESS` and `FAILURE`. Add it to `SUCCESS` and `FAILURE` too to keep the final timings visible once the execution ends.

@@ -6,9 +6,9 @@ sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 ---
 
-Use purge tasks to remove old executions, logs, and key-value pairs and reduce storage usage.
+Purge tasks remove old executions, logs, and key-value pairs to reduce storage usage.
 
-To keep storage optimized, use [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv), and [`PurgeStorage`](/plugins/core/storage/io.kestra.plugin.core.storage.purgestorage).
+The available purge tasks are [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv), and [`PurgeStorage`](/plugins/core/storage/io.kestra.plugin.core.storage.purgestorage).
 
 - `PurgeExecutions`: deletes execution records from the database and their associated storage files
 - `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently. If you have configured an [external log data store](../log-data-store/index.md) that does not support purge, `PurgeLogs` is a no-op for logs — manage retention directly in that backend.
@@ -23,7 +23,7 @@ The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAud
 
 ## Purge executions and logs
 
-Use a multi-step log purge that applies progressively shorter retention windows by log level. Verbose logs accumulate far faster than errors or warnings, so keeping them longer than necessary inflates storage without adding much value:
+The following flow applies a multi-step log purge with progressively shorter retention windows by log level. Verbose logs accumulate far faster than errors or warnings, so keeping them longer than necessary inflates storage without adding much value:
 
 - All logs: purge anything older than **1 month**
 - DEBUG logs: purge anything older than **1 week** — error stacktraces are often logged at DEBUG level, so this also removes them; extend the window if you need those for post-incident debugging
@@ -275,7 +275,7 @@ Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin
 
 ## Purge assets and lineage (retention)
 
-Use the `io.kestra.plugin.ee.assets.PurgeAssets` task to enforce asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
+Use the [io.kestra.plugin.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
 
 **Filters:**
 

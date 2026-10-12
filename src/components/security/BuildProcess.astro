@@ -1,0 +1,121 @@
+---
+import { Icon } from "astro-icon/components"
+import SectionTitle from "./SectionTitle.astro"
+import { BUILD_PRACTICES, HARDENING_GUIDE_URL } from "./securityData"
+---
+
+<section class="security-section build" aria-labelledby="build-title">
+    <div class="container">
+        <SectionTitle id="build-title" title="How we build the software" />
+
+        <ul class="practices">
+            {
+                BUILD_PRACTICES.map((practice) => (
+                    <li data-usal="fade-u">
+                        <Icon name="mdi:check-circle-outline" class="icon" />
+                        <span set:html={practice} />
+                    </li>
+                ))
+            }
+        </ul>
+
+        <div class="security-cards">
+            <article class="security-card" data-usal="fade-u">
+                <h3>Supported versions</h3>
+                <p>
+                    Security fixes ship to the <code>latest</code> release and to
+                    all active LTS versions. We release a new LTS every six months
+                    and support each for one year, with at most two active at any
+                    time. For production, pin an exact version number on an LTS line.
+                    The <code>latest-lts</code> tag points to the current LTS if you
+                    need to check which one that is.
+                </p>
+                <p>
+                    Fixes for known CVEs are backported to all active LTS
+                    versions. If you are running an unsupported version, upgrade
+                    to <code>latest</code> or the current LTS to receive security
+                    fixes.
+                </p>
+            </article>
+            <article class="security-card" data-usal="fade-u delay-50">
+                <h3>Infrastructure hardening</h3>
+                <p>
+                    For self-hosted deployments, Kestra publishes guidance for
+                    hardening the underlying infrastructure: network isolation
+                    for link-local metadata services, container sandboxes and
+                    ephemeral task runners, minimum host permissions, plugin
+                    restriction, upload protections and CI/CD flow validation.
+                    See the <a href={HARDENING_GUIDE_URL}
+                        >security hardening guide</a
+                    >.
+                </p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .practices {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding-block: 1.25rem;
+            color: var(--ks-content-primary);
+            font-size: $font-size-lg;
+            line-height: 28px;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--ks-border-primary);
+            }
+
+            @include media-breakpoint-down(md) {
+                align-items: flex-start;
+                gap: 1rem;
+                font-size: $font-size-md;
+                line-height: 24px;
+            }
+
+            :global(a) {
+                color: var(--ks-content-link);
+            }
+        }
+
+        .icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            color: var(--ks-content-link);
+        }
+    }
+
+    .security-cards {
+        p {
+            margin: 0;
+            color: var(--ks-content-secondary);
+            line-height: 24px;
+        }
+
+        code {
+            padding: 0;
+            background: none;
+            color: var(--ks-content-link);
+            font-size: $font-size-md;
+        }
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+        }
+    }
+</style>

@@ -7,13 +7,13 @@ icon: /src/contents/docs/icons/ui.svg
 docId: settings
 ---
 
-Configure per-user preferences, profile details, and API tokens from the **Settings** page, accessible via the bottom-left environment menu.
+The **Settings** page, accessible via the bottom-left environment menu, covers per-user preferences, profile details, and API tokens.
 
 ![Kestra User Interface Settings Page](./settings.png)
 
 ## Preferences
 
-Options you can configure under **Preferences** include:
+The **Preferences** section includes the following options:
 - **Default Namespace**: Pre-selects a namespace when creating a new flow and filters the Flows and Executions pages to that namespace by default.
 - **Default Log Level**: Minimum log level shown in execution logs (e.g., `INFO`, `TRACE`).
 - **Default Log Display**: How logs are presented when opening an execution — expand all, collapse all, or expand only failed tasks.
@@ -28,7 +28,7 @@ Options you can configure under **Preferences** include:
 
 ## Profile
 
-Access **Profile** from the Settings left-hand menu to manage your personal account details.
+**Profile** (Settings left-hand menu) covers personal account details.
 
 The following fields are editable directly — no separate save step is required:
 - **First Name** and **Last Name**
@@ -40,9 +40,9 @@ Your avatar displays your initials derived from your first and last name. If you
 
 Kestra supports both Light and Dark mode.
 
-You can also configure the Editor independently in Light or Dark mode. In addition, you can adjust the Editor font size and family.
+The Editor can be configured independently in Light or Dark mode, with font size and family also adjustable.
 
-There's also the option to change the environment name and color to help you identify if you have multiple Kestra instances, for example a `dev` and `prod` environment.
+The environment name and color can be set to distinguish between multiple Kestra instances (e.g., `dev` and `prod`).
 
 Below is a detailed list of the Appearance options you can configure:
 

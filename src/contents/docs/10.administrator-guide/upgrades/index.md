@@ -35,11 +35,11 @@ Check the [Backup and Restore](../backup-and-restore/index.md) section for more 
 We strongly recommend avoiding downgrades. To prevent surprises, test the new version in a non-production environment before upgrading. If you must roll back, closely follow the steps above.
 :::
 
-## Where you can find the release changelog
+## Release changelog
 
-You can find the changelog on the main repository’s [Releases](https://github.com/kestra-io/kestra/releases) page. It lists changes, new features, and bug fixes for each release, as well as any breaking changes. For a high-level overview, see the release [blog posts](/blogs).
+The changelog is on the main repository’s [Releases](https://github.com/kestra-io/kestra/releases) page. It lists changes, new features, and bug fixes for each release, as well as any breaking changes. For a high-level overview, see the release [blog posts](/blogs).
 
-## How to identify breaking changes in a release
+## Breaking changes
 
 In addition to bug fixes and enhancements, the release notes include a `Breaking Changes` section. It lists changes that may require adjustments to your code or Kestra configuration, with links to [migration docs](../../11.migration-guide/index.mdx).
 
@@ -123,20 +123,20 @@ If the worker has no running tasks, or finishes them before the grace period, it
 
 If a worker exits unexpectedly, the executor detects it and resubmits unfinished task runs to a new worker. The same behavior applies when a pod is terminated at `terminationGracePeriodSeconds`.
 
-## Where can I find migration guides
+## Migration guides
 
 The [Migrations section](../../11.migration-guide/index.mdx) details deprecated features and explains how to migrate to the new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 
-## How to stay informed about new releases
+## Release notifications
 
-You can get notified about new releases in the following ways:
-1. Subscribe to notifications in the `#announcements` channel in the [Slack](/slack) community.
-2. Follow us on [X (Twitter)](https://twitter.com/kestra_io)
-3. Follow us on [LinkedIn](https://www.linkedin.com/company/kestra/)
-4. Subscribe to the [Kestra newsletter](/blogs)
-5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
+New releases are announced through:
+1. The `#announcements` channel in the [Slack](/slack) community.
+2. [X (Twitter)](https://twitter.com/kestra_io)
+3. [LinkedIn](https://www.linkedin.com/company/kestra/)
+4. The [Kestra newsletter](/blogs)
+5. Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
 ![release_notification_github](./release_notifications_github.png)
 

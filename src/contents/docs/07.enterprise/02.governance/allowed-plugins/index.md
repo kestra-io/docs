@@ -22,7 +22,7 @@ Each entry in `includes` or `excludes` supports three formats:
 
 ## Allowed plugins
 
-To allow specific plugins, add the `includes` attribute and list the approved plugins. The following example allows all plugins from the `io.kestra` package:
+The `includes` attribute allowlists specific plugins. The following example allows all plugins from the `io.kestra` package:
 
 ```yaml
 kestra:
@@ -34,7 +34,7 @@ kestra:
 
 ## Restricted plugins
 
-To restrict certain plugins, add the `excludes` attribute. The following example allows all `io.kestra` plugins while blocking `io.kestra.plugin.core.debug.Echo`:
+The `excludes` attribute blocklists specific plugins. The following example allows all `io.kestra` plugins while blocking `io.kestra.plugin.core.debug.Echo`:
 
 ```yaml
 kestra:
@@ -46,7 +46,7 @@ kestra:
         - io.kestra.plugin.core.debug.Echo
 ```
 
-Use the `regex:` prefix for more precise pattern matching, such as excluding a single plugin without prefix side-effects:
+The `regex:` prefix enables more precise pattern matching, such as excluding a single plugin without prefix side-effects:
 
 ```yaml
 kestra:

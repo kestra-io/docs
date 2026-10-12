@@ -24,7 +24,7 @@ In a distributed deployment, each server role runs as its own process and scales
 
 Workers connect to the Worker Controller over a single outbound gRPC stream. They never access the queue or the database directly. This means workers can run in an isolated network, a different region, or behind a firewall that allows only outbound connections, and still participate in the cluster.
 
-To run each role as a dedicated process, launch it with the corresponding server command:
+Each role runs as a dedicated process via its server command:
 
 ```bash
 kestra server executor
@@ -37,13 +37,13 @@ kestra server indexer
 
 ## Scaling components
 
-Scale each role independently by increasing the number of replicas in your Helm chart. See the [Kubernetes deployment guide](../../02.installation/03.kubernetes/index.md) for a full setup walkthrough and the [chart values reference](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for all available options.
+Each role scales independently by increasing the number of replicas in the Helm chart. See the [Kubernetes deployment guide](../../02.installation/03.kubernetes/index.md) for a full setup walkthrough and the [chart values reference](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for all available options.
 
-Workers are the primary horizontal scaling target. Add replicas to increase task throughput. The Worker Controller routes jobs across all connected workers automatically.
+Workers are the primary horizontal scaling target. Additional replicas increase task throughput; the Worker Controller routes jobs across all connected workers automatically.
 
 The Executor and Scheduler are coordinating roles; two or three replicas provide redundancy. Both are idempotent: if one fails, queue messages are redelivered and picked up by a healthy instance automatically.
 
-Run at least two Webserver replicas behind a load balancer so the API and UI remain available if one instance fails.
+At least two Webserver replicas behind a load balancer keep the API and UI available if one instance fails.
 
 :::alert{type="info"}
 Ensure the underlying host system is tuned for high availability. For example, adjusting the Linux kernel parameter `net.ipv4.tcp_retries2` can reduce [TCP retransmission times](https://access.redhat.com/solutions/726753).
@@ -69,7 +69,7 @@ kestra:
 
 ## Shared internal storage
 
-In a distributed deployment, all server roles must have access to the same internal storage backend. Local filesystem storage is not suitable. Use a shared object store instead:
+In a distributed deployment, all server roles must have access to the same internal storage backend. Local filesystem storage is not suitable; all distributed deployments require a shared object store:
 
 - [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md)
 - [AWS S3](../../02.installation/08.aws-ec2/index.md)
@@ -81,9 +81,9 @@ For a full list of supported backends (including Cloudflare R2, Huawei OBS, Ceph
 
 ## Load balancing
 
-Deploy a load balancer in front of multiple Webserver replicas. The Webserver is the only network-facing role; the Executor, Scheduler, Worker Controller, and Workers are never reachable from outside the cluster.
+A load balancer in front of multiple Webserver replicas is the only network-facing surface; the Executor, Scheduler, Worker Controller, and Workers are never reachable from outside the cluster.
 
-Configure your load balancer's health checks against the Webserver's [`/health` endpoint](../03.monitoring/index.md#kestra-endpoints).
+Load balancer health checks point to the Webserver's [`/health` endpoint](../03.monitoring/index.md#kestra-endpoints).
 
 ## Queue backend and scale
 

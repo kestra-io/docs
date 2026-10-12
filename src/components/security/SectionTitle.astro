@@ -1,0 +1,65 @@
+---
+interface Props {
+    title: string
+    id?: string
+    align?: "left" | "center"
+}
+
+const { title, id, align = "left" } = Astro.props
+---
+
+<div class:list={["section-title", align]}>
+    <h2 {id} data-usal="fade-u delay-50 duration-500 ease-out">{title}</h2>
+    {
+        Astro.slots.has("default") && (
+            <p data-usal="fade-u delay-100 duration-500 ease-out">
+                <slot />
+            </p>
+        )
+    }
+</div>
+
+<style lang="scss">
+    .section-title {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+
+        &.center {
+            gap: 0.5rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 0;
+            color: var(--ks-content-primary);
+            font-size: 3rem;
+            line-height: 50px;
+            letter-spacing: -0.72px;
+
+            @include media-breakpoint-down(lg) {
+                font-size: $font-size-3xl;
+                line-height: 1.15;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--ks-content-primary);
+            font-size: $font-size-lg;
+            line-height: 28px;
+
+            @include media-breakpoint-down(lg) {
+                font-size: $font-size-md;
+                line-height: 24px;
+            }
+
+            :global(a) {
+                color: var(--ks-content-link);
+                text-decoration: underline;
+            }
+        }
+    }
+</style>

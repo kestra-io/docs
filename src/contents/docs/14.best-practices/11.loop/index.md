@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/best-practices.svg
 description: Best practices for using the Loop task in Kestra — output collection, concurrency, map-reduce patterns, error handling, large-file processing, and subflow isolation.
 ---
 
-Use `Loop` for all iteration needs in Kestra.
+Use [Loop](/plugins/core/flow/io.kestra.plugin.core.flow.loop) for all iteration needs in Kestra.
 
 ## Choose the right iteration pattern
 
@@ -104,9 +104,11 @@ Inside the loop, sibling task outputs are accessed with plain `outputs.task_id.a
 
 ## Use `concurrencyLimit` deliberately
 
-- `1` (default) — sequential execution
-- A positive integer — bounded parallelism; prefer this for heavy workloads
-- `0` — unlimited; all iterations run simultaneously; avoid for large datasets unless you understand the resource implications
+- `0` (default): unlimited; all iterations run simultaneously and workers regulate actual throughput
+- A positive integer: bounded parallelism; set this for heavy workloads to avoid overwhelming workers
+- `1`: sequential execution; use when order matters or resources are constrained
+
+Any value set on the task or via a [policy](../../07.enterprise/02.governance/policies/index.md) takes precedence over the default.
 
 ## Process large files with Split and Loop
 
@@ -295,14 +297,14 @@ tasks:
 
 | Task | Role | When to reach for it |
 |---|---|---|
-| `io.kestra.plugin.core.storage.Split` | Batching | Split a single file into chunk URIs by `rows`, `bytes`, `partitions`, or `separator`. Feeds `Loop.values` for map-reduce. |
-| `io.kestra.plugin.core.storage.Concat` | Stitching | Concatenate per-iteration output files into one before a reduce step. |
-| `io.kestra.plugin.transform.Aggregate` | Reduce | Group records by one or more keys with `count()`, `sum()`, `max()`, and more. The reduce side of map-reduce. |
-| `io.kestra.plugin.transform.Filter` | Predicate | Keep only rows where a boolean expression holds. |
-| `io.kestra.plugin.transform.Map` | Project | Per-record rename, drop, or compute fields — SQL `SELECT`-style. |
-| `io.kestra.plugin.transform.Unnest` | Explode | Flatten an array field into one row per element, carrying sibling fields through. |
-| `io.kestra.plugin.core.flow.Subflow` | Isolate | Spawn a separate execution per iteration — own retries, own logs, own failure state. |
-| `io.kestra.plugin.core.flow.Parallel` | Fan-out | Run independent task groups concurrently inside a single iteration. |
+| [io.kestra.plugin.core.storage.Split](/plugins/core/storage/io.kestra.plugin.core.storage.split) | Batching | Split a single file into chunk URIs by `rows`, `bytes`, `partitions`, or `separator`. Feeds `Loop.values` for map-reduce. |
+| [io.kestra.plugin.core.storage.Concat](/plugins/core/storage/io.kestra.plugin.core.storage.concat) | Stitching | Concatenate per-iteration output files into one before a reduce step. |
+| [io.kestra.plugin.transform.Aggregate](/plugins/plugin-transform-records/io.kestra.plugin.transform.aggregate) | Reduce | Group records by one or more keys with `count()`, `sum()`, `max()`, and more. The reduce side of map-reduce. |
+| [io.kestra.plugin.transform.Filter](/plugins/plugin-transform-records/io.kestra.plugin.transform.filter) | Predicate | Keep only rows where a boolean expression holds. |
+| [io.kestra.plugin.transform.Map](/plugins/plugin-transform-records/io.kestra.plugin.transform.map) | Project | Per-record rename, drop, or compute fields — SQL `SELECT`-style. |
+| [io.kestra.plugin.transform.Unnest](/plugins/plugin-transform-records/io.kestra.plugin.transform.unnest) | Explode | Flatten an array field into one row per element, carrying sibling fields through. |
+| [io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) | Isolate | Spawn a separate execution per iteration — own retries, own logs, own failure state. |
+| [io.kestra.plugin.core.flow.Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) | Fan-out | Run independent task groups concurrently inside a single iteration. |
 
 ## Common mistakes to avoid
 
@@ -310,6 +312,6 @@ tasks:
 - Do not access `item.value.field` directly on object values — use `fromJson(item.value).field`.
 - Do not expect loop outputs to be visible downstream without declaring an `outputs:` block.
 - Do not use `outputs.task_id[item.value]` inside a loop — sibling outputs are accessed with plain `outputs.task_id.attribute`.
-- Do not set `concurrencyLimit: 0` on very large datasets without considering memory and worker capacity.
+- For very large datasets, set an explicit `concurrencyLimit` to cap parallelism. The default unlimited behavior can overwhelm workers if iterations are resource-intensive.
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop) and the [Flowable Tasks reference](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop).

@@ -1,0 +1,16 @@
+/* Full-page captures never scroll, so IntersectionObserver never fires below
+   the fold. Pin every IO-gated component to its in-view state. */
+.split-badge-card.is-folded {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+@media (min-width: 768px) {
+    .platform-wrapper {
+        --stack-offset: -150px !important;
+    }
+
+    .platform-wrapper figcaption {
+        opacity: 1 !important;
+    }
+}

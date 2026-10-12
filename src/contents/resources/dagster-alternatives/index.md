@@ -114,5 +114,3 @@ Kestra is a strong open-source alternative to Dagster, offering a declarative, e
 ## Conclusion
 
 Choosing the right data orchestrator is a critical decision that impacts team productivity, operational efficiency, and scalability. While Dagster offers a powerful, asset-centric model for Python-heavy data teams, the market provides a rich array of [alternatives](/vs). From Kestra's unified, polyglot, and declarative approach to Airflow's vast ecosystem or Prefect's modern Pythonic experience, the ideal tool aligns with your specific technical stack, team composition, and long-term automation strategy. Evaluating these options against your core requirements will ensure you select a platform that not only solves today's challenges but also scales with your evolving needs.
-
-Ready to simplify your data, AI, and infrastructure workflows with a single, declarative platform? [Book a demo](/demo) to see Kestra in action.

@@ -72,7 +72,7 @@ outputs:
 
 Using the [KV Store](../../06.concepts/05.kv-store/index.md), you can set and get values across different flows. This is good if you want to be able to store values without flows directly interacting with one another, like they do with Subflows. Flows can use the Get and Set tasks to make themselves stateful, allowing one flow to store the state, and another to access it when it wants. However, this approach isn't ideal if you don't want these values to be modified by the flows directly.
 
-For example, you can use `io.kestra.plugin.core.kv.Set` task as well as use the UI interface to manage the values in the KV Store. To access them, you can use the  `io.kestra.plugin.core.kv.Get` task which will return them as an output.
+For example, you can use the [io.kestra.plugin.core.kv.Set](/plugins/core/kv/io.kestra.plugin.core.kv.set) task as well as use the UI interface to manage the values in the KV Store. To access them, you can use the [io.kestra.plugin.core.kv.Get](/plugins/core/kv/io.kestra.plugin.core.kv.get) task which will return them as an output.
 
 ```yaml
 id: kv_store

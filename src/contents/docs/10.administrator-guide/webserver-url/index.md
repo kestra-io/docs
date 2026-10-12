@@ -6,9 +6,7 @@ icon: /src/contents/docs/icons/admin.svg
 description: Configure the Kestra webserver URL and proxy settings to ensure correct link generation and access behind reverse proxies.
 ---
 
-Configure the URL of your Kestra webserver.
-
-Some notification services require a URL configuration to add links from alert messages. Use a full URI with a trailing `/` (excluding `ui` or `api`).
+The `kestra.url` property sets the base URL for the Kestra webserver. Notification services use it to generate links in alert messages. The value must be a full URI with a trailing `/`, excluding `ui` or `api`.
 
 ```yaml
 kestra:
@@ -25,7 +23,7 @@ A forward proxy serves as an intermediary for requests from clients seeking reso
 
 In a forward proxy, the client connects to the proxy server, requesting some service (such as Kestra API) available from a different server.
 
-To set up a proxy in your Kestra installation, adjust the `micronaut.http.services.api` configuration to include a proxy address, username, and password. This will allow you to make requests to the Kestra API through the proxy to fetch data for the Kestra UI, such as Blueprints. Here is how you can adjust your `config.yml` file to include the necessary configuration:
+The `micronaut.http.services.api` configuration accepts a proxy address, username, and password. This routes Kestra API requests (used to fetch Blueprints and plugin documentation for the UI) through the proxy:
 
 ```yaml
 micronaut:

@@ -20,9 +20,9 @@ How to use GitHub Actions to automatically validate and deploy your flows to Kes
 If you're version controlling your flows in a Git repository, it can be useful to automatically validate that they're in the correct format before merging into your `main` branch. On top of that, you can automatically deploy your flows in your `main` branch to your Kestra instance.
 
 There are three GitHub Actions available:
-- [Validate Flows](https://github.com/kestra-io/github-actions/tree/main/validate-flows) - Validate your flows before deploying anything.
-- [Deploy Flows](https://github.com/kestra-io/github-actions/tree/main/deploy-flows) - Deploy your flows to your Kestra server.
-- [Deploy Namespace Files](https://github.com/kestra-io/github-actions/tree/main/deploy-namespace-files) - Deploy namespace files to your Kestra server.
+- [Validate Flows](https://github.com/kestra-io/validate-flows-action-v2) - Validate your flows before deploying anything.
+- [Deploy Flows](https://github.com/kestra-io/deploy-flows-action-v2) - Deploy your flows to your Kestra server.
+- [Deploy Namespace Files](https://github.com/kestra-io/deploy-namespace-files-action) - Deploy namespace files to your Kestra server.
 
 ## Validate Your Flows
 
@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate all flows
-        uses: kestra-io/github-actions/validate-flows@main
+        uses: kestra-io/validate-flows-action-v2@main
         with:
           directory: ./kestra/flows
           server: https://server-url.com
@@ -82,7 +82,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy flows
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           namespace: company.team
           directory: ./kestra/flows
@@ -113,7 +113,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy namespace files
-        uses: kestra-io/github-actions/deploy-namespace-files@main
+        uses: kestra-io/deploy-namespace-files-action@main
         with:
           namespace: company.team
           localPath: ./config/app.yaml
@@ -144,7 +144,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy flows
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           namespace: company.team
           directory: ./kestra/flows
@@ -174,7 +174,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy flows
-        uses: kestra-io/github-actions/deploy-flows@main
+        uses: kestra-io/deploy-flows-action-v2@main
         with:
           namespace: company.team
           directory: ./kestra/flows

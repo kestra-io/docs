@@ -14,7 +14,11 @@ Subflows let you build modular and reusable workflow components. Executing a sub
 
 ## Declaring a subflow
 
-The `io.kestra.plugin.core.flow.Subflow` task accepts `flowId` and `namespace` as required properties. Custom `inputs` for the subflow are declared under the `inputs` property.
+For example, you might define a subflow that handles error alerts by posting to Slack and email. Any flow that needs error notifications calls this subflow rather than duplicating those tasks.
+
+## How to declare a subflow
+
+Use the [io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task and specify the `flowId` and `namespace` of the flow to execute. Pass custom `inputs` the same way you would pass arguments to a function.
 
 The `wait` and `transmitFailed` properties control execution behavior. If `wait` is `false`, the parent flow continues without waiting for the subflow to finish. `transmitFailed` determines whether a failure in the subflow causes the parent flow to fail.
 
@@ -68,7 +72,7 @@ tasks:
 
 ## Subflow properties
 
-`io.kestra.plugin.core.flow.Subflow` task properties:
+[io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task properties:
 
 | Field                  | Description                                                                 |
 |------------------------|-----------------------------------------------------------------------------|

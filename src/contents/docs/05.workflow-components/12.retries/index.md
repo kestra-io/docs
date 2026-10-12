@@ -16,7 +16,7 @@ Retries automatically rerun failed tasks. Each retry creates a new task run atte
 
 ### Example
 
-Constant retry, 5 attempts, 15-minute interval:
+This task runs up to 5 times total (1 initial attempt + up to 4 retries) with a 15-minute interval between attempts:
 
 ```yaml
 - id: retry_sample
@@ -74,7 +74,7 @@ Ensure `retry.interval` is smaller than `maxDuration`, or retries may never run.
 | Name             | Type       | Description |
 |------------------|------------|-------------|
 | `type`           | string     | Retry strategy: `constant`, `exponential`, or `random`. |
-| `maxAttempts`    | integer    | Maximum number of attempts, including the initial run. |
+| `maxAttempts`    | integer    | Maximum number of attempts, including the initial run. `maxAttempts: 1` means no retry; `maxAttempts: 2` means one retry after the initial attempt. |
 | `maxDuration`    | Duration   | Maximum total time for the task, across all attempts. |
 | `warningOnRetry` | Boolean    | Marks execution as `WARNING` if retries occurred (default: false). |
 
@@ -89,6 +89,73 @@ Durations use [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) forma
 | PT1M     | 1 minute |
 | PT3.5H   | 3 hours, 30 minutes |
 | P6DT4H   | 6 days, 4 hours |
+
+## Retry on flowable tasks
+
+Flowable tasks such as `Sequential` and `Parallel` accept a `retry` block, but it does not behave like a task-level retry. **A retry on a flowable task does not rerun the group.** Instead, it sets the default retry policy that child tasks inherit when they have no `retry` of their own.
+
+```yaml
+id: token_and_api
+namespace: company.team
+
+tasks:
+  - id: group
+    type: io.kestra.plugin.core.flow.Sequential
+    retry:
+      type: constant
+      maxAttempts: 2
+      interval: PT1S
+    tasks:
+      - id: get_token
+        type: io.kestra.plugin.core.debug.Return
+        format: "{{ now() }}"
+      - id: call_api
+        type: io.kestra.plugin.core.execution.Fail
+        errorMessage: "Token expired"
+```
+
+If `call_api` fails, Kestra retries only `call_api`. `get_token` does not run again, and each retry of `call_api` uses the same token from the first run. A token that expires between the two tasks is never refreshed this way.
+
+### Retry a group of tasks as one unit
+
+To retry a set of tasks together so that every task in the group reruns on failure, move them into a subflow and place `retry` on the `Subflow` task. Each retry creates a new child execution, so all tasks in the subflow run again from the start.
+
+```yaml
+id: parent
+namespace: company.team
+
+tasks:
+  - id: group
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.team
+    flowId: get_token_and_call_api
+    retry:
+      type: constant
+      maxAttempts: 2
+      interval: PT1S
+```
+
+### Token refresh pattern
+
+For the specific case of a short-lived token that may expire between tasks, [Credentials](../../07.enterprise/03.auth/credentials/index.md) (Enterprise Edition and Cloud) is the cleaner solution. Kestra fetches and refreshes the token automatically, so every retry gets a valid one without needing a `get_token` task at all.
+
+```yaml
+id: api_call
+namespace: company.team
+
+tasks:
+  - id: call_api
+    type: io.kestra.plugin.core.http.Request
+    uri: https://api.example.com/v1/data
+    options:
+      auth:
+        type: BEARER
+        token: "{{ credential('my_oauth') }}"
+    retry:
+      type: constant
+      maxAttempts: 3
+      interval: PT1S
+```
 
 ## Retry types
 

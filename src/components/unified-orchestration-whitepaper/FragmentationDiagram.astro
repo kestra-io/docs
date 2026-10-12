@@ -1,0 +1,265 @@
+---
+// "Four domains, four orchestrators" — the figure the paper opens on: each
+// domain runs its own engine, the handoffs between them break, and the agent
+// layer reaches into all four with nothing governing it. The per-domain audit
+// trail is made in the prose, not here: a second chip per card cost more room
+// than the point was worth at this size.
+//
+// Drawn to the conventions of the hand-made Kestra figures (see
+// src/components/twozero/assets/gov-*.svg): tinted canvas, white cards with a
+// bold title and monospace chips for the technical detail, tinted-and-bordered
+// containers for a group, dashed connectors, and a pill for the takeaway.
+// Those figures do NOT use the UI grey ramp ($base-grey-*) — they use a
+// violet-tinted neutral ramp of their own, reproduced in --dg-* below.
+//
+// Categories, not vendors: the paper argues about the shape of the problem,
+// and naming four competitors in the opening figure picks a fight it does not
+// need to pick.
+import KestraMonogram from "~/components/ai-automation/assets/monogram.svg"
+
+const DOMAINS = [
+    { label: "Data", kind: "ETL" },
+    { label: "Infra", kind: "IaC" },
+    { label: "Apps", kind: "APIs" },
+    { label: "Business", kind: "BPM" },
+] as const
+
+// Geometry is tuned so the monospace chips stay legible at the width the hero
+// actually renders this at. Chip widths are computed from the string, at the
+// 6.6px advance of JetBrains Mono 11px, so every chip keeps 8px of padding.
+const PAD = 16
+const CARD_W = 97
+const CARD_H = 70
+const GAP = 20
+const CARD_Y = 84
+const cardX = (i: number) => PAD + i * (CARD_W + GAP)
+const mid = (i: number) => cardX(i) + CARD_W / 2
+const chipW = (s: string) => s.length * 6.6 + 16
+
+// Kestra mark, bottom right, 16px in from the canvas edges. The monogram is
+// imported as a nested <svg>: Astro's svg integration drops its width/height,
+// and a nested <svg> without them defaults to 100% of the viewport, so both
+// have to be passed explicitly or the mark blows up to fill the figure.
+const MARK = 24
+const MARK_X = 480 - 16 - MARK
+const MARK_Y = 210 - 16 - MARK
+---
+
+<figure class="diagram">
+    <svg
+        viewBox="0 0 480 210"
+        role="img"
+        aria-labelledby="frag-title frag-desc"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <title id="frag-title">Four domains, four orchestrators</title>
+        <desc id="frag-desc">
+            Data, infrastructure, applications and business processes each
+            run their own orchestrator. The handoffs between them break, and an
+            agent layer reaches across all four with no single layer governing
+            the actions.
+        </desc>
+
+        <rect x="0" y="0" width="480" height="210" rx="12" class="canvas" />
+
+        {/* the agent layer, drawn as a group container spanning all four */}
+        <rect
+            x={PAD}
+            y="26"
+            width={480 - PAD * 2}
+            height="30"
+            rx="8"
+            class="agent-band"
+        />
+        <text x="240" y="45" class="agent-label">
+            Agentic AI reaches across all four
+        </text>
+        {
+            DOMAINS.map((_, i) => (
+                <path d={`M ${mid(i)} 56 L ${mid(i)} ${CARD_Y}`} class="reach" />
+            ))
+        }
+
+        {
+            DOMAINS.map((d, i) => (
+                <g>
+                    <rect
+                        x={cardX(i)}
+                        y={CARD_Y}
+                        width={CARD_W}
+                        height={CARD_H}
+                        rx="10"
+                        class="card"
+                    />
+                    <text x={mid(i)} y={CARD_Y + 27} class="card-title">
+                        {d.label}
+                    </text>
+
+                    {/* its own engine */}
+                    <rect
+                        x={mid(i) - chipW(d.kind) / 2}
+                        y={CARD_Y + 40}
+                        width={chipW(d.kind)}
+                        height="20"
+                        rx="5"
+                        class="chip"
+                    />
+                    <text x={mid(i)} y={CARD_Y + 54} class="chip-text">
+                        {d.kind}
+                    </text>
+                </g>
+            ))
+        }
+
+        {/* the handoff between two domains, severed: a connector that leaves
+            each tool and never reaches the next one. Deliberately neutral —
+            the cost is the boundary, not the tools on either side of it. */}
+        {
+            [0, 1, 2].map((i) => {
+                const from = cardX(i) + CARD_W
+                const y = CARD_Y + 35
+                return (
+                    <g class="cut">
+                        <path d={`M ${from + 1} ${y} L ${from + 7} ${y}`} />
+                        <path
+                            d={`M ${from + GAP - 7} ${y} L ${from + GAP - 1} ${y}`}
+                        />
+                    </g>
+                )
+            })
+        }
+
+        <rect x="108" y="168" width="264" height="28" rx="14" class="takeaway" />
+        <text x="240" y="186" class="takeaway-text">
+            The work breaks at the boundaries
+        </text>
+
+        <KestraMonogram
+            x={MARK_X}
+            y={MARK_Y}
+            width={MARK}
+            height={MARK}
+            class="mark"
+        />
+    </svg>
+</figure>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .diagram {
+        // Diagram neutrals, taken from the hand-made Kestra figures. They are
+        // deliberately violet-tinted and are not the $base-grey-* UI ramp.
+        --dg-canvas: #f4f4fb;
+        --dg-card: #ffffff;
+        --dg-border: #e9e9ee;
+        --dg-title: #08090a;
+        --dg-chip: #eeeef3;
+        --dg-chip-text: #5f5f7c;
+        --dg-cut: #adadbf;
+
+        --dg-agent-fill: #{$base-primary-100};
+        --dg-agent-border: #{$base-primary-200};
+        --dg-agent-text: #{$base-primary-600};
+        --dg-reach: #{$base-primary-300};
+        --dg-takeaway: #{$base-primary-base};
+        --dg-takeaway-text: #{$base-grey-white};
+
+        margin: 0;
+        width: 100%;
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    :global(html.dark) .diagram {
+        --dg-canvas: #{$base-grey-800};
+        --dg-card: #{$base-grey-700};
+        --dg-border: #{$base-grey-600};
+        --dg-title: #{$base-grey-white};
+        --dg-chip: #{$base-grey-600};
+        --dg-chip-text: #{$base-grey-200};
+        --dg-cut: #{$base-grey-400};
+
+        --dg-agent-fill: #{rgba($base-primary-500, 0.18)};
+        --dg-agent-border: #{$base-primary-500};
+        --dg-agent-text: #{$base-primary-200};
+        --dg-reach: #{$base-primary-400};
+    }
+
+    .canvas {
+        fill: var(--dg-canvas);
+    }
+
+    // the monogram carries its own brand colours in both themes
+    .mark {
+        pointer-events: none;
+    }
+
+    .agent-band {
+        fill: var(--dg-agent-fill);
+        stroke: var(--dg-agent-border);
+        stroke-width: 1;
+    }
+
+    .agent-label {
+        fill: var(--dg-agent-text);
+        font-family: $font-family-sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        text-anchor: middle;
+    }
+
+    .reach {
+        stroke: var(--dg-reach);
+        stroke-width: 1.5;
+        stroke-dasharray: 4 4;
+        stroke-linecap: round;
+    }
+
+    .card {
+        fill: var(--dg-card);
+        stroke: var(--dg-border);
+        stroke-width: 1;
+    }
+
+    .card-title {
+        fill: var(--dg-title);
+        font-family: $font-family-sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        text-anchor: middle;
+    }
+
+    .chip {
+        fill: var(--dg-chip);
+    }
+
+    .chip-text {
+        fill: var(--dg-chip-text);
+        font-family: $font-family-monospace;
+        font-size: 11px;
+        text-anchor: middle;
+    }
+
+    .cut path {
+        stroke: var(--dg-cut);
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+
+    .takeaway {
+        fill: var(--dg-takeaway);
+    }
+
+    .takeaway-text {
+        fill: var(--dg-takeaway-text);
+        font-family: $font-family-sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        text-anchor: middle;
+    }
+</style>

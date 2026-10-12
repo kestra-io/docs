@@ -34,6 +34,8 @@
         pageList?: string[]
         pageNames?: Record<string, string>
         pageTitle?: string
+        /** Extra crumbs inserted right after the root, for an ancestor the URL/nav tree doesn't carry. */
+        prependItems?: BreadcrumbItem[]
     }>()
 
     const crumbs = computed<BreadcrumbItem[]>(() => {
@@ -43,7 +45,7 @@
             ? [...new Set(props.slug.split("/").filter(Boolean))]
             : ["docs"]
 
-        return (segments.length > 0 ? segments : ["docs"]).map((item, index, arr) => {
+        const base = (segments.length > 0 ? segments : ["docs"]).map((item, index, arr) => {
             const href = "/" + arr.slice(0, index + 1).join("/")
             const isLast = index === arr.length - 1
             const label = isLast && props.pageTitle
@@ -56,6 +58,18 @@
                 href: index === 0 || props.pageList?.includes(href) ? href : "",
             }
         })
+
+        if (!props.prependItems?.length) return base
+
+        // "Debezium > Debezium PostgreSQL" repeats the family name the member's own
+        // title already carries; strip it from the crumb right after the prepended ones.
+        const familyLabel = props.prependItems[props.prependItems.length - 1]!.label
+        const rest = base.slice(1).map((crumb, index) =>
+            index === 0 && crumb.label.startsWith(`${familyLabel} `)
+                ? { ...crumb, label: crumb.label.slice(familyLabel.length + 1) }
+                : crumb,
+        )
+        return [base[0]!, ...props.prependItems, ...rest]
     })
 
     const formatDirectoryName = (item: string) => {

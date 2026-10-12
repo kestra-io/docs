@@ -25,6 +25,7 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
+import rehypeResourceCta from "./src/markdown/rehype/resource-cta.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
 const __dirname = path.dirname(
@@ -137,6 +138,7 @@ export default defineConfig({
                 rehypeHeadingIds,
                 rehypeAutolinkHeadings,
                 rehypeImgPlugin,
+                rehypeResourceCta,
                 [
                     rehypeExternalLinks,
                     {
@@ -223,6 +225,12 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            // Raises the /api/github rate limit; works unauthenticated without it.
+            GITHUB_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             DISABLE_GITHUB: envField.boolean({
                 context: "server",
                 access: "public",
@@ -308,6 +316,13 @@ export default defineConfig({
                 // Mirror the tsconfig `~/*` paths so the alias also resolves
                 // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
                 "~": path.resolve(__dirname, "src"),
+                // Dev runs on Node, which has no Worker bindings: SSR routes see no KV.
+                ...(isDev && {
+                    "cloudflare:workers": path.resolve(
+                        __dirname,
+                        "src/utils/cloudflareWorkersDevStub.ts",
+                    ),
+                }),
             },
         },
         css: {

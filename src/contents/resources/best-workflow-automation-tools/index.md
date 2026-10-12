@@ -173,6 +173,6 @@ Business users and ops teams need intuitive, visual tools that don't require dee
 
 ## Conclusion: Embracing the Future of Automation
 
-The era of single-purpose, siloed automation tools is drawing to a close. As technology stacks become more diverse and interconnected, the need for a versatile, scalable, and unified orchestration layer has never been greater. The right workflow tool acts as a central nervous system for your operations, bringing consistency, observability, and governance to every process.
+The era of single-purpose, siloed automation tools is drawing to a close. As technology stacks become more diverse and interconnected, the need for a versatile, scalable, and [unified orchestration](/resources/orchestration/unified-orchestration) layer has never been greater. The right workflow tool acts as a central nervous system for your operations, bringing consistency, observability, and governance to every process.
 
 Whether you're a data engineer building resilient pipelines, a platform engineer automating infrastructure, or an AI developer deploying agentic workflows, the principles remain the same: automation should be declarative, observable, and adaptable. Platforms like [Kestra](/), which embrace these principles, are best positioned to handle the challenges of today and the opportunities of tomorrow. Explore Kestra's [features](/features) to see how a universal control plane can transform your organization's automation strategy.

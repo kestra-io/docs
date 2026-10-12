@@ -6,9 +6,9 @@ icon: /src/contents/docs/icons/admin.svg
 description: Learn about anonymous usage reporting in Kestra and how to configure or disable data collection.
 ---
 
-Configure whether Kestra shares anonymous usage data and how frequently.
+The `kestra.anonymous-usage-report` options control whether Kestra shares anonymous usage data and how frequently.
 
-The `kestra.anonymous-usage-report.enabled` option controls the server-side report — decide whether to share anonymous data to help improve Kestra.
+The `kestra.anonymous-usage-report.enabled` option controls the server-side report — whether to share anonymous data to help improve Kestra.
 
 - `kestra.anonymous-usage-report.enabled`: (default true)
 - `kestra.anonymous-usage-report.initial-delay`: (default 5m)
@@ -19,7 +19,7 @@ Kestra collects anonymous usage through **two independent streams**, each contro
 - `kestra.anonymous-usage-report.enabled`: the **server-side** report (host, plugins, flow, and execution data listed below).
 - `kestra.ui-anonymous-usage-report.enabled`: (default true) the **UI (frontend)** usage report, sent separately from the browser to help us understand user experience in the interface.
 
-To disable **all** anonymous usage reporting, set **both** options to `false`:
+Both options must be set to `false` to disable all anonymous usage reporting:
 
 ```yaml
 kestra:
