@@ -1,7 +1,7 @@
 <template>
     <div class="download-form-container">
         <div v-if="!submitted" class="download-form">
-            <h3 class="form-title">Download the Free Guide</h3>
+            <h3 class="form-title">{{ title }}</h3>
 
             <form
                 class="row"
@@ -63,7 +63,7 @@
                         class="btn btn-primary w-100"
                         :disabled="submitting"
                     >
-                        {{ submitting ? "Sending..." : "Download the guide" }}
+                        {{ submitting ? "Sending..." : submitLabel }}
                     </button>
                 </div>
 
@@ -79,12 +79,12 @@
         </div>
 
         <div v-else class="thank-you" data-usal="zoomin">
-            <h3 class="thank-you-title">Thanks — your guide is ready.</h3>
-            <p class="thank-you-text">
-                A copy is on its way to your inbox. You can also download it
-                directly below.
+            <h3 class="thank-you-title">{{ thankYouTitle }}</h3>
+            <p v-if="thankYouText" class="thank-you-text">
+                {{ thankYouText }}
             </p>
             <a
+                v-if="guideUrl"
                 :href="guideUrl"
                 target="_blank"
                 rel="noopener"
@@ -104,13 +104,29 @@
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
 
-    const props = defineProps<{
-        hubspotFormId: string
-        guideUrl: string
-        submissionIdentifier: string
-        pageUri: string
-        event: string
-    }>()
+    // Defaults are the guide download. Without a guideUrl the form is a plain
+    // request (no download link after submit).
+    const props = withDefaults(
+        defineProps<{
+            hubspotFormId: string
+            guideUrl?: string
+            submissionIdentifier: string
+            pageUri: string
+            event: string
+            title?: string
+            submitLabel?: string
+            thankYouTitle?: string
+            thankYouText?: string
+        }>(),
+        {
+            guideUrl: undefined,
+            title: "Download the Free Guide",
+            submitLabel: "Download the guide",
+            thankYouTitle: "Thanks — your guide is ready.",
+            thankYouText:
+                "A copy is on its way to your inbox. You can also download it directly below.",
+        },
+    )
 
     const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("download-form")

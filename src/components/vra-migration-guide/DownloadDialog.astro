@@ -1,12 +1,24 @@
 ---
 import GuideDownloadForm from "~/components/resources/GuideDownloadForm.vue"
 import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD } from "./download"
+
+interface Props {
+    id?: string
+    label?: string
+    form?: Record<string, string>
+}
+
+const {
+    id = DOWNLOAD_DIALOG_ID,
+    label = "Download the guide",
+    form = GUIDE_DOWNLOAD,
+} = Astro.props
 ---
 
 <dialog
     class="modal download-dialog"
-    id={DOWNLOAD_DIALOG_ID}
-    aria-label="Download the guide"
+    id={id}
+    aria-label={label}
     closedby="any"
 >
     <div class="modal-dialog">
@@ -14,11 +26,11 @@ import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD } from "./download"
             <button
                 type="button"
                 class="btn-close"
-                commandfor={DOWNLOAD_DIALOG_ID}
+                commandfor={id}
                 command="close"
                 aria-label="Close">X</button
             >
-            <GuideDownloadForm client:idle {...GUIDE_DOWNLOAD} />
+            <GuideDownloadForm client:idle {...form} />
         </div>
     </div>
 </dialog>

@@ -3,54 +3,124 @@ import { Image } from "astro:assets"
 import bookMockup from "./assets/book-mockup.png"
 import { DOWNLOAD_DIALOG_TARGET } from "./download"
 
-interface Props {
-    title: string
-    deck: string
-    inside: string[]
-    meta: string[]
+interface CardButton {
+    label: string
+    href?: string
+    modalTarget?: string
+    variant?: "primary" | "secondary" | "link"
 }
 
-const { title, deck, inside, meta } = Astro.props
+// Defaults render the migration guide's hero. Other pages pass their own pill
+// and card, a `deck` slot for a deck with links, and a `visual` slot in
+// place of the book mockup.
+interface Props {
+    title: string
+    deck?: string
+    inside?: string[]
+    meta: string[]
+    pill?: string
+    cardTitle?: string
+    cardText?: string
+    cardButtons?: CardButton[]
+}
+
+const {
+    title,
+    deck = "",
+    inside = [],
+    meta,
+    pill = "Migration guide · Infrastructure Automation",
+    cardTitle,
+    cardText = "The full guide is on this page, or download the PDF to share with your team (form required)",
+    cardButtons = [
+        {
+            label: "Work out your payback",
+            href: "/resources/migration/vra/payback",
+            variant: "primary",
+        },
+        {
+            label: "Download the PDF",
+            modalTarget: DOWNLOAD_DIALOG_TARGET,
+            variant: "secondary",
+        },
+    ],
+} = Astro.props
+
+const hasVisual = Astro.slots.has("visual")
+const buttonClass = (variant: CardButton["variant"] = "secondary") =>
+    variant === "link" ? "card-link" : `btn btn-${variant}`
+const isExternal = (href?: string) => href?.startsWith("http")
 ---
 
 <section class="guide-hero surface-dark">
     <div class="container">
         <div class="hero-grid">
             <div class="hero-main">
-                <p class="pill">Migration guide · Infrastructure Automation</p>
+                <p class="pill">{pill}</p>
                 <h1>{title}</h1>
-                <p class="deck">{deck}</p>
-                <h2 class="inside-title">What's inside</h2>
-                <ul class="inside-list">
-                    {inside.map((item) => <li>{item}</li>)}
-                </ul>
+                <p class="deck"><slot name="deck">{deck}</slot></p>
+                {
+                    inside.length > 0 && (
+                        <>
+                            <h2 class="inside-title">What's inside</h2>
+                            <ul class="inside-list">
+                                {inside.map((item) => (
+                                    <li>{item}</li>
+                                ))}
+                            </ul>
+                        </>
+                    )
+                }
             </div>
-            <div class="hero-card">
-                <div class="book-wrap" aria-hidden="true">
-                    <Image
-                        src={bookMockup}
-                        alt=""
-                        loading="eager"
-                        class="book-img"
-                    />
-                </div>
-                <p>
-                    The full guide is on this page, or download the PDF to share
-                    with your team (form required)
-                </p>
-                <div class="hero-actions">
-                    <a
-                        class="btn btn-primary"
-                        href="/resources/migration/vra/payback"
-                        >Work out your payback</a
-                    >
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-modal-target={DOWNLOAD_DIALOG_TARGET}
-                    >
-                        Download the PDF
-                    </button>
+            <div class:list={["hero-card", { "has-visual": hasVisual }]}>
+                {
+                    hasVisual ? (
+                        <div class="card-visual">
+                            <slot name="visual" />
+                        </div>
+                    ) : (
+                        <div class="book-wrap" aria-hidden="true">
+                            <Image
+                                src={bookMockup}
+                                alt=""
+                                loading="eager"
+                                class="book-img"
+                            />
+                        </div>
+                    )
+                }
+                {cardTitle && <p class="card-title">{cardTitle}</p>}
+                <p>{cardText}</p>
+                <div
+                    class:list={[
+                        "card-actions",
+                        { "hero-actions": cardButtons.length > 1 },
+                    ]}
+                >
+                    {
+                        cardButtons.map((button) =>
+                            button.href ? (
+                                <a
+                                    class={buttonClass(button.variant)}
+                                    href={button.href}
+                                    {...(isExternal(button.href) && {
+                                        target: "_blank",
+                                        rel: "noopener",
+                                    })}
+                                >
+                                    {button.label}
+                                </a>
+                            ) : (
+                                <button
+                                    type="button"
+                                    class={buttonClass(button.variant)}
+                                    data-modal-target={button.modalTarget}
+                                >
+                                    {button.label}
+                                </button>
+                            ),
+                        )
+                    }
                 </div>
             </div>
         </div>
@@ -140,6 +210,12 @@ const { title, deck, inside, meta } = Astro.props
         font-size: $font-size-lg;
         line-height: 1.75rem;
         color: $white;
+
+        :global(a) {
+            color: $white;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
     }
 
     .inside-title {
@@ -221,11 +297,51 @@ const { title, deck, inside, meta } = Astro.props
         }
     }
 
+    .hero-card.has-visual {
+        justify-content: flex-start;
+        aspect-ratio: auto;
+        margin-top: 0;
+        padding-top: 2rem;
+    }
+
+    .card-visual {
+        position: relative;
+        width: 100%;
+    }
+
+    .hero-card .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.5rem;
+        color: $white;
+    }
+
+    // One button lays out exactly as before; several stack in a column.
+    .card-actions {
+        display: contents;
+    }
+
     .hero-actions {
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
         width: 100%;
+    }
+
+    .card-link {
+        position: relative;
+        padding: 0;
+        border: 0;
+        background: none;
+        font-size: $font-size-sm;
+        line-height: 1.25rem;
+        color: $white;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+
+        &:hover {
+            color: rgba($white, 0.8);
+        }
     }
 
     .book-wrap {
