@@ -77,14 +77,36 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 - `CANCEL`: immediately mark the execution as `CANCELLED`.
 - `FAIL`: immediately mark the execution as `FAILED`.
 
-If you expect execution spikes, combine a conservative limit with backoff at the source (e.g., slower trigger rates) to avoid large queues that increase database lock contention.
+When using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
 
 ```yaml
 id: concurrency_limited_flow
 namespace: company.team
 
 concurrency:
-  behavior: FAIL # QUEUE, CANCEL, or FAIL
+  behavior: QUEUE
+  limit: 1
+  queueLimit: 1  # cancel incoming executions when 1 is already waiting
+
+tasks:
+  - id: wait
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - sleep 10
+```
+
+With this configuration, the first execution claims the slot, a second waits in the queue, and any further executions are immediately `CANCELLED` — they never enter the queue. If you expect execution spikes, combine `queueLimit` with backoff at the source (e.g., slower trigger rates) to avoid a queue that grows faster than it drains.
+
+To immediately terminate executions that exceed the limit instead of queuing them, use `behavior: CANCEL` or `behavior: FAIL`:
+
+```yaml
+id: concurrency_fail_flow
+namespace: company.team
+
+concurrency:
+  behavior: FAIL
   limit: 2
 
 tasks:
@@ -155,7 +177,7 @@ Update a concurrency limit when executions are backing up or hitting the limit u
 
 **In Open Source and Enterprise Edition**, edit the `concurrency.limit` value directly in the flow editor and save. The executor reads the latest flow revision immediately, so the new limit takes effect for all in-progress executions without a restart.
 
-You can also update the limit from the **Concurrency Limits** page (under **Instance Owner** in the sidebar) in the Enterprise Edition): click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
+You can also update the limit from the **Concurrency Limits** page (under **Instance Owner** in the sidebar) in the Enterprise Edition: click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
 
 ## Troubleshooting concurrency issues
 
