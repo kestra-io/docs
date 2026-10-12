@@ -45,7 +45,7 @@ The liveness mechanism resubmits pending jobs from a terminating worker to anoth
 
 Configure this behavior via `kestra.server.workerTaskRestartStrategy`:
 - `AFTER_TERMINATION_GRACE_PERIOD` (default): wait another grace period before resubmitting jobs, preventing a terminated worker from returning.
-- `IMMEDIATELY`: resubmit jobs right away.
+- `IMMEDIATELY`: resubmit jobs as soon as the worker is detected as `DISCONNECTED` (missed heartbeat, unclean failure such as OOM kill). This strategy does not apply when a worker is in the `TERMINATING` state — a gracefully shutting-down worker always honors the full `terminationGracePeriod` before its jobs are resubmitted, regardless of the configured strategy. This ensures the worker has time to finish or cleanly abandon its tasks before another worker picks them up, preventing duplicate execution.
 - `NEVER`: never resubmit jobs (tasks remain incomplete and flows stay `RUNNING`).
 
 ::alert{type="info"}
