@@ -164,7 +164,7 @@ The following types of retries are currently supported:
 - **Exponential**: The task will also be retried every X seconds/minutes/hours/days but with an exponential backoff (i.e., an exponential time interval in between each retry attempt.)
 - **Random**: The task will be retried every X seconds/minutes/hours/days with a random delay (i.e., a random time interval in between each retry attempt.)
 
-In this example, the task is retried up to 5 times within a total duration of 1 minute, with a constant 2-second interval between attempts.
+In this example, the task runs up to 5 times total (1 initial attempt + up to 4 retries) within a total duration of 1 minute, with a constant 2-second interval between attempts. `maxAttempts` counts the initial run, so `maxAttempts: 1` means no retry and `maxAttempts: 2` means one retry.
 
 ```yaml
 id: retries
@@ -192,7 +192,7 @@ errors:
 
 ### Adding a retry configuration to our tutorial workflow
 
-Returning to the first iteration of our flow from the [Fundamentals](../01.fundamentals/index.md) section. We can add a retry configuration to the `api` task. API calls are prone to transient errors, so we will retry that task up to 10 times, for at most 1 hour of total duration, every 10 seconds (i.e., with a constant interval of 10 seconds in between retry attempts).
+Returning to the first iteration of our flow from the [Fundamentals](../01.fundamentals/index.md) section. We can add a retry configuration to the `api` task. API calls are prone to transient errors, so we will run that task up to 10 times total (1 initial attempt + up to 9 retries), for at most 1 hour of total duration, with a constant 20-second interval between attempts.
 
 ```yaml
 id: retry_request
