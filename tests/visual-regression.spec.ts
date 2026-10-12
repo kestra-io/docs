@@ -1,6 +1,6 @@
+import { readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { test, expect } from "@playwright/test"
-import "playwright-odiff/setup"
+import { test } from "@playwright/test"
 import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
 
 /**
@@ -16,12 +16,12 @@ import { PAGES, VISUAL_ONLY_PAGES } from "./fixtures/page-sample.mjs"
 type SamplePage = { path: string; label: string; styles?: string; reducedMotion?: boolean }
 
 const styleSheet = (name: string) =>
-    fileURLToPath(new URL(`./fixtures/snapshot-styles/${name}`, import.meta.url))
+    readFileSync(fileURLToPath(new URL(`./fixtures/snapshot-styles/${name}`, import.meta.url)), "utf8")
 
 const pages: SamplePage[] = [...PAGES, ...VISUAL_ONLY_PAGES]
 
 for (const page of pages) {
-    test(`${page.label} matches screenshot`, async ({ page: p }) => {
+    test(`${page.label} screenshot`, async ({ page: p }, testInfo) => {
         if (page.reducedMotion) await p.emulateMedia({ reducedMotion: "reduce" })
         // networkidle never settles on pages that keep polling, which is how a
         // run wedges with no output. Wait for fonts instead, they drive layout.
@@ -38,16 +38,16 @@ for (const page of pages) {
         })
         await p.waitForTimeout(500)
 
-        await expect(p).toHaveScreenshotOdiff(`${page.label}.png`, {
+        // A plain capture: an assertion would demand two identical frames in a row,
+        // which pages with JS-driven motion never give. The report's tolerance absorbs it.
+        await p.screenshot({
+            path: testInfo.snapshotPath(`${page.label}.png`, { kind: "screenshot" }),
             fullPage: true,
             animations: "disabled",
             timeout: 15_000,
             // Neutralises the content a page only renders incidentally, so the
-            // baseline it owns is the one that moves.
-            stylePath: [
-                styleSheet("intersection.css"),
-                ...(page.styles ? [styleSheet(page.styles)] : []),
-            ],
+            // capture it owns is the one that moves.
+            style: [styleSheet("intersection.css"), page.styles ? styleSheet(page.styles) : ""].join("\n"),
         })
     })
 }

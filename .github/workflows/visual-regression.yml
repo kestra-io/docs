@@ -148,10 +148,10 @@ jobs:
           # wrangler and the browser-side calls all read the fixture server.
           API_URL: http://127.0.0.1:9001/v1
 
-      # With no baseline on disk, =all writes every screenshot and only fails
-      # on a page that errors, which then shows as added or removed.
+      # Plain captures, no assertion: only a page that errors fails, and it then
+      # shows as added or removed in the report.
       - name: Capture screenshots
-        run: npx playwright test --update-snapshots=all
+        run: npx playwright test
 
       # Deleted by the report job once it has copied what it needs.
       - name: Upload screenshots
