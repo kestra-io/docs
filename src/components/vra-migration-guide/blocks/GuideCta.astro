@@ -2,7 +2,7 @@
 import { DOWNLOAD_DIALOG_TARGET } from "../download"
 
 interface Props {
-    kind: "talk" | "pdf" | "calc"
+    kind: "talk" | "pdf" | "calc" | "assistant"
     label?: string
     variant?: "primary" | "secondary"
 }
@@ -26,7 +26,19 @@ const { kind, label, variant = "primary" } = Astro.props
                 class={`btn btn-${variant}`}
                 href="/resources/migration/vra/payback"
             >
-                {label ?? "Calculate your savings"}
+                {label ?? "Work out your payback"}
+            </a>
+        </p>
+    )
+}
+{
+    kind === "assistant" && (
+        <p class="guide-cta">
+            <a
+                class={`btn btn-${variant}`}
+                href="/resources/migration/vra/assistant"
+            >
+                {label ?? "Get the Kestra Migration Assistant for vRA"}
             </a>
         </p>
     )

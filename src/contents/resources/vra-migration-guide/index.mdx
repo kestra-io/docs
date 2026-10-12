@@ -13,19 +13,19 @@ faq:
   - question: "Do we have to leave VMware to leave vRA?"
     answer: 'No. VMware can stay as your hypervisor. The decision is what replaces the automation layer on top of it. vSphere, vCenter and Nutanix get the keep verdict and are called from a flow the same way Ansible or your vault is. See <a href="#verdicts">3.1.1</a>.'
   - question: "How many of our workflows actually have to be converted?"
-    answer: 'Fewer than the export shows. Workflows that have not run in twelve months are candidates for retirement, and that is usually 10 to 20 percent of the list. Near-duplicates collapse into one flow with inputs. Wrappers around Ansible, scripts or pipelines carry no conversion cost, because Kestra calls the same thing directly. A 1,600-workflow estate is usually a dozen or so patterns repeated many times each. <a href="#section-3-2-2">Size your own counts in 3.2.2</a>.'
+    answer: 'Fewer than the export shows. Workflows that have not run in twelve months are candidates for retirement, and that is usually 10 to 20 percent of the list. Near-duplicates collapse into one flow with inputs. Wrappers, which only call Ansible, a script, a pipeline or a single integration Kestra has a plugin for, carry no conversion cost, because Kestra calls the same thing directly. What is left usually falls into a much smaller set of patterns than the raw count suggests. <a href="#section-3-2-2">Size your own counts in 3.2.2</a>.'
   - question: "What does the migration cost, and when does it pay back?"
-    answer: 'The migration is the investment, and the vRA and vRO renewal you do not sign is what pays it back. The licence you have already paid is sunk, so the saving starts at the renewal date rather than at cutover. The <a href="#section-7-2">calculator in 7.2</a> works out both sides from your own counts, rates and renewal date.'
+    answer: 'The migration is the investment, and the vRA and vRO renewal you do not sign is what pays it back. The licence you have already paid is sunk, so the saving starts at the renewal date rather than at cutover. The <a href="/resources/migration/vra/payback">payback calculator</a> works out both sides from your own counts, rates and renewal date.'
   - question: "Does the ServiceNow catalog have to move?"
     answer: 'No, and most teams keep it. Where the catalog lives is one of the two decisions that shape the target architecture. If the ITSM keeps the catalog, each item calls a Kestra flow and approvals stay where they are. If the catalog moves to Kestra Apps, approvals become a Pause task, a named approver step or a Case. Both are valid, and one large public-sector customer was mandated to keep the catalog in ServiceNow by decision of the CIO. See <a href="#section-3-1-2">3.1.2</a>.'
   - question: "Can Kestra run air-gapped and across segmented network zones?"
-    answer: 'Yes. Kestra is self-hosted, and Kestra 2.0 separates the control plane from the data plane, with workers connecting outbound over gRPC and mTLS. One EU federal agency runs fully air-gapped with no outbound connectivity. A global industrial company whose security policy prohibited a control plane from spanning security zones deployed six separate control planes, one per zone. The <a href="#appendix-b">deployment options handout</a> covers the details.'
+    answer: 'Yes. Kestra is self-hosted, and Kestra 2.0 separates the control plane from the data plane, with workers connecting outbound over gRPC and mTLS. One EU federal agency runs fully air-gapped with no outbound connectivity. A Fortune 500 manufacturer whose security policy prohibited a control plane from spanning security zones deployed five separate control planes, four across its OT environments and one for IT. The <a href="#appendix-b">deployment options handout</a> covers the details.'
   - question: "Is there a tool that converts vRO workflows automatically?"
-    answer: 'The AI-assisted vRO migration tool converts the structure of an exported package: folder hierarchy to namespaces, configuration elements to the KV Store, SecureStrings to secrets, resource elements to namespace files, workflows to flows. It also drafts the rewrite of the JavaScript, and an engineer reviews the result. How much it handles depends on how much logic sits in JavaScript and how consistent that code is, so a proof of concept measures it on your own code. See <a href="#section-5-2">5.2</a>.'
+    answer: 'The Kestra Migration Assistant for vRA does two things. Its assessment, which is free and open source, reads your exported package on your own machine and gives you a brief: what each workflow does and what starts it, a recommendation for each one, the Kestra plugins that cover your integrations, and a migration plan in waves. The conversion is the other half, and we run it with you: tests are written from each workflow before it is converted, an engineer reviews every converted flow, and each wave runs against a simulated copy of your environment, then side by side with vRA until the owner certifies it. How much it converts depends on how much logic sits in JavaScript, so a proof of concept measures it on your own code. See <a href="#section-5-2">5.2</a>.'
   - question: "When do the licence savings actually land?"
     answer: 'At renewal, not at cutover. Term licences do not refund mid-contract, and for a perpetual licence the date that matters is the support and maintenance renewal. Build the wave plan backwards from that date, because if the last wave slips past it, the saving moves out by a full term. If vRA sits inside a VCF bundle you will keep buying for the hypervisor, confirm with procurement whether removing it reduces the invoice at all. See <a href="#section-6-1">6.1</a>.'
   - question: "How long does a migration take?"
-    answer: 'It depends on the environment and on how much time the team can give it. One global industrial company completed its migration roughly twelve months after the proof of concept began, with the five or six people who already owned the platform doing the work alongside their normal jobs. An EU federal agency with roughly 1,600 workflows and a team of 11 is working toward an initial go-live in January 2027 and full service migration in October 2027. See <a href="#section-2-5">2.5</a>.'
+    answer: 'It depends on the environment and on how much time the team can give it. One Fortune 500 manufacturer completed its migration roughly twelve months after the proof of concept began, with the five or six people who already owned the platform doing the work alongside their normal jobs. An EU federal agency with roughly 1,600 workflows and a team of 11 is working toward an initial go-live in January 2027 and full service migration in October 2027. See <a href="#section-2-5">2.5</a>.'
 ---
 
 import Callout from "~/components/vra-migration-guide/blocks/Callout.astro"
@@ -43,7 +43,7 @@ import Verdict from "~/components/vra-migration-guide/blocks/Verdict.astro"
 
 ## 1. Why teams leave vRA, and what to move to
 
-### 1.1 Whatever brought you here
+### 1.1 Why teams leave vRA: VCF 9, pricing and roadmap
 
 Teams leave vRA for several reasons, and most have more than one in play. The two that come up most often are both about who controls your automation.
 
@@ -77,7 +77,7 @@ VMware can stay as your hypervisor. The automation on top of it should keep work
 
 </Callout>
 
-### 1.2 Choosing what to move to
+### 1.2 vRA alternatives: choosing what to move to
 
 The decision, then, is what replaces the automation layer. Because vRA only ever reached VMware well, other teams found their own solutions along the way: the Kubernetes platform has its own operator, the data team runs its own scheduler, and a Jenkins pipeline is quietly doing the provisioning that vRA only triggers. Whatever you choose next has to account for all of that.
 
@@ -104,13 +104,13 @@ Additionally:
 - **The economics are different.** vRA is sold inside VCF and priced per core, so the bill tracks the size of your estate whether or not you automate more of it. Kestra Enterprise is licensed by instance, so adding workflows does not change what you pay. The [Fortune 500 manufacturer](#section-2-5) that replaced vRA reported **licensing costs 90% lower** than Aria Automation.
 - **It orchestrates on top of what you already run.** Terraform, Ansible, your ITSM, your CMDB, your IPAM and your secrets manager all stay and get called. Kestra does not ask you to re-express your infrastructure in its own object model the way blueprints did.
 - **{props.totalPlugins}+ plugins, and writing your own is documented.** They cover the storage, network and compute systems vRO estates usually integrate with by hand, such as Infoblox, NetBox and SolarWinds, so the integration code your team wrote and maintained for vRO is replaced by a plugin someone else maintains. Extending it further is a normal engineering task rather than a professional services engagement.
-- **You can prove it before you buy it.** [Section 8](#section-8) covers how to do that, from open source on your own laptop to a proof of concept run with us.
+- **You can prove it before you buy it.** Start by running the Migration Assistant on your exports to see what your migration involves, then prove it on real workflows. [Section 8](#section-8) covers how to do that, from an assessment on your own machine to a proof of concept run with us.
 
 ### 1.4 What your security and platform teams will ask
 
 The questions that stop a migration usually come from the security review and the platform team rather than from the workflow inventory: where it runs, whether it can be air-gapped, how identity and secrets work, what the audit trail looks like, and how it behaves across segmented network zones. All of them are answerable, and none of them need to wait until the end. [**Dataport**](/customers/dataport), which provides IT services to German public administration and had no SaaS option open to it, validated compliance on a self-hosted deployment in three weeks.
 
-[Appendix B](#appendix-b) covers deployment options and [Appendix C](#appendix-c) lists the security and platform questions with where each answer lives.
+The [deployment options handout](https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf) covers where and how Kestra runs, and the [security overview](https://hs.kestra.io/hubfs/kestra-security-overview-enterprise-edition.pdf) is what we share with review teams: compliance, deployment, where your data lives, and the security controls.
 
 ## 2. The migration in four stages
 
@@ -161,7 +161,7 @@ We have worked with enterprises leaving vRA, and the four stages below are the s
 </GuideTabs>
 </InteractiveFrame>
 
-You can run Stage 1 on your own, or [talk to us before you start](/demo) and we will guide you through it. Sections 3 to 6 are one stage each.
+The Kestra Migration Assistant for vRA does most of Stage 1 for you, on your own machine (see [section 2.2](#section-2-2) below). You can also [talk to us before you start](/demo), and we will guide you through it. Sections 3 to 6 are one stage each.
 
 ### 2.1 Coexistence runs across Stages 3 and 4
 
@@ -173,13 +173,28 @@ vRA keeps running until each migration wave is verified and switched over. Plan 
 
 This lets the migration run alongside normal operations without a change freeze across the full estate.
 
-### 2.2 It does not have to be all manual
+### 2.2 The Kestra Migration Assistant for vRA
 
-You do not need to inventory the estate or convert every workflow by hand. [Section 3.2.1](#section-3-2-1) covers tools for extracting vRA and vRO content. [Section 5.2](#section-5-2) covers the AI-assisted vRO migration tool and what still needs an engineer after it runs.
+The Kestra Migration Assistant for vRA is an AI-powered tool that does the reading for you. Its assessment is free and open source: point it at your vRO package and, if you have one, your vRA export, run one command on your own machine, and it works through Stage 1 in the order this guide describes. It sanitizes your export before anything reaches a model, and it also runs without one.
 
-### 2.3 The three appendices
+Here's what its brief contains:
 
-Use the appendices as reference. [Appendix A](#appendix-a) is a translation table, mapping every vRA and vRO object to Kestra. [Appendix B](#appendix-b) covers deployment options. [Appendix C](#appendix-c) answers the security and platform questions that usually come up during review.
+- **A description of each workflow**: what it does, what starts it (a catalog item, an event subscription, a schedule) and which systems it touches, with possible defects flagged for the owner.
+- **A recommendation for each workflow and action**: retire, merge into another, treat as a wrapper, convert, or rebuild.
+- **A translation table**: what each part of your estate becomes in Kestra, and which plugins cover your integrations, checked against Kestra's plugin catalog.
+- **A migration plan in waves**, each starting with its first of a kind.
+
+In Stage 2, its brief helps you pick the workflows for your proof of concept. In Stage 3, the migration follows its waves. The conversion is the other half of the Migration Assistant, and we run it with you: tests are written from the original workflow before anything is converted, and each wave is verified before it reaches your environment ([section 5.2](#section-5-2)).
+
+<GuideCta kind="assistant" />
+
+### 2.3 The three handouts
+
+Three handouts go with this guide, each written to be passed to someone who will not read the whole thing:
+
+- [**The capability map**](https://hs.kestra.io/hubfs/kestra-vmware-migration-capability-map.pdf). One row per thing in the vRA and vRO world, what it becomes in Kestra, and which edition you need. Grouped by the six parts, with Direct and Redesign marking how each one converts.
+- [**Deployment options**](https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf). Where Kestra runs, backends, components, restricted network zones, HA and sizing, and the named gaps, including what an air-gapped install needs before anything starts.
+- [**The security overview**](https://hs.kestra.io/hubfs/kestra-security-overview-enterprise-edition.pdf). Kestra Enterprise's security and compliance posture, written for the reviewer: the SOC 2 Type 2 and GDPR audit, self-hosted and air-gapped deployment, where your data lives, and the controls for identity, secrets, audit, tenant isolation and transport.
 
 ### 2.4 What the migration costs, and what pays it back
 
@@ -189,9 +204,9 @@ A migration costs money up front, and the first estimate is usually alarming bec
 
 These four environments informed the approach in this guide. They differ in scale, security requirements and migration progress. They also show how teams have handled the catalog, resource inventory and systems that stay around the orchestration layer.
 
-<CaseStudy status="MIGRATION COMPLETE" stats={[{ value: "30×", label: "faster delivery" }, { value: "90%", label: "lower licensing cost than Aria Automation" }, { value: "6", label: "isolated automation platforms" }]} quote="We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra." quoteBy="Principal Hosting" storyHref="/customers/fortune-500-company">
+<CaseStudy status="MIGRATION COMPLETE" stats={[{ value: "30×", label: "faster delivery" }, { value: "90%", label: "lower licensing cost than Aria Automation" }, { value: "5", label: "isolated automation platforms" }]} quote="We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra." quoteBy="Principal Hosting" storyHref="/customers/fortune-500-company">
 
-[**A global industrial company**](/customers/fortune-500-company) had one team responsible for both IT and OT. They replaced vRA and vRO together, including the catalog, request forms, orchestration and vCenter integration, across about 75 vCenters and roughly 4,000 automation runs a month. Their security policy prohibited a control plane from spanning security zones, so they deployed six separate Kestra control planes, one per zone.
+[**A Fortune 500 manufacturer**](/customers/fortune-500-company) had one team responsible for both IT and OT. They replaced vRA and vRO together, including the catalog, request forms, orchestration and vCenter integration, across about 75 vCenters and roughly 4,000 automation runs a month. Their security policy prohibited a control plane from spanning security zones, so they deployed five separate Kestra control planes, four across their OT environments and one for IT.
 
 The catalog moved to Kestra Apps. Resource state stayed in the document store they already operated, and Ansible, ServiceNow, Infoblox and Splunk all stayed. The migration was completed in April 2026, roughly twelve months after the proof of concept began.
 
@@ -225,15 +240,17 @@ Stage 1 happens before Kestra is installed, and it has two steps. First, decide 
 
 At the end of Stage 1 you will know which workflows to start with in Stage 2 (Proof of Concept), which Kestra features and plugins those workflows need, and how to split the rest of your estate into migration waves.
 
-You can do all of this on your own, and everything below is written so that you can. Many teams talk to us first instead, before they have run an export or made any decisions, and we guide them through it as they go.
+The Kestra Migration Assistant for vRA does most of this for you. Run it on your exports and it produces the workflow list, the pattern breakdown and the waves, and asks for what it can't find in them. The rest of this section is the method it follows, so you know what it's doing and which calls stay with your team, and the method works just as well if you'd rather do it by hand. Many teams also talk to us first, and we guide them through it.
 
-<GuideCta kind="talk" />
+<GuideCta kind="assistant" />
+
+<GuideCta kind="talk" variant="secondary" />
 
 ### 3.1 The Estate: Decide Once
 
 #### 3.1.1 The parts of your estate, and what to do with each
 
-vRA and vRO are two different things, and this guide treats them separately. vRA is the automation product: the Service Broker catalog, blueprints, deployments and the lifecycle around them. vRO, VMware vRealize Orchestrator and now VCF Operations Orchestrator, is the workflow engine underneath it, where your workflows, actions and scriptable tasks live. Most teams just call it the orchestrator. Both go when you migrate.
+vRA and vRO are two different things, and this guide treats them separately. vRA is the automation product: the Service Broker catalog, blueprints, deployments and the lifecycle around them. vRO, VMware vRealize Orchestrator and now VCF Operations Orchestrator, is the workflow engine underneath it, where your workflows, actions and scriptable tasks live. Most teams just call it the orchestrator. Both products go when you migrate, but not everything they did moves to Kestra. Some of it, such as the catalog or the inventory, may stay in your ITSM.
 
 Together they own the workflow engine and the pieces that support it: the Service Broker catalog in front of it, the schedules and lifecycle events that fire it, the blueprints it executes, and the deployment records it keeps. Everything else, the ITSM portal, Terraform and Ansible, the CMDB, the enterprise secrets vault, are separate, predate vRA in most cases, and will outlive it.
 
@@ -249,7 +266,7 @@ Before converting anything, decide what happens to each part of the estate. We d
 <PartExplorer count={7} legendId="verdicts" id="parts">
 <Fragment slot="legend">
 
-Each part of your environment, and each component in it, gets one of four verdicts. Two of them involve Kestra taking something on, and two of them leave the component where it is.
+Each part of your environment, and each component in it, gets one of four verdicts. Two of them leave the component where it is, and two of them take it away.
 
 - <Verdict kind="replace" /> Kestra takes it over and the incumbent goes away.
 - <Verdict kind="integrate" /> The incumbent stays, and Kestra connects to it in both directions.
@@ -273,7 +290,7 @@ How a request enters the system and who is allowed to make it.
 
 This part has the most options and the least consensus, and the decision that drives everything else in it is where the catalog lives. We have seen four possibilities:
 
-- **Kestra Apps**, which map directly to what Service Broker did. A form sits in front of a flow, and the form's fields are the flow's inputs.
+- **Kestra Apps**, which cover the self-service role Service Broker played. A form sits in front of a flow, and the form's fields are the flow's inputs.
 - The **ITSM catalog** you already run, in ServiceNow or BMC Helix Digital Workplace, with each catalog item calling a Kestra flow behind the scenes.
 - An **internal developer portal** such as Backstage, for teams that already route self-service through one.
 - A **mix**, with some requests native to Kestra and others coming from upstream.
@@ -287,7 +304,7 @@ Both options are valid, and Kestra supports whatever suits you or may be an inte
 
 Keep in mind that approvals travel with the catalog. If the catalog stays in the ITSM, the approval step stays there and Kestra receives the approved request. If the catalog moves to Kestra, approvals become a Pause task for a simple gate, a named approver step for a named approver, or a Case for anything that needs an owner, watchers and an SLA of its own. Entitlements and project scoping become namespaces, tenants and roles, which is design work rather than translation, and a good moment to ask whether the existing entitlement model deserves to be carried forward as it is.
 
-For organizations with an established ITSM portal, Integrate is often the lowest-change starting point: keep catalog, approvals and request history there, and move the orchestration behind the request to Kestra. The default verdict for this part is integrate. Most of our customers choose to maintain their ITSM as part of leaving vRA.
+The default verdict for this part is integrate, since for teams with an established ITSM portal it is the lowest-change starting point. Most of our customers keep their ITSM as part of leaving vRA, with the catalog, approvals and request history staying there and the orchestration behind each request moving to Kestra.
 
 </Fragment>
 </ExplorerPart>
@@ -305,7 +322,7 @@ What causes a workflow to run when no one submits a form.
 </Fragment>
 <Fragment slot="do">
 
-There are no decisions to be made here. Here's what happens to them:
+Where each trigger goes is straightforward. How the ones that stay are delivered is a decision. Here's what happens to them:
 
 - **vRO Schedules** are replaced one for one. A vRO schedule becomes a Kestra schedule trigger on the converted flow.
 - **vRA event subscriptions on the provisioning lifecycle retire.** The lifecycle events they subscribed to belong to vRA, and when vRA goes so do they. What each subscription did still has to happen, so it gets re-sourced from a trigger that exists in the new world: a webhook, an API call, a message on the bus, an asset trigger, or a flow trigger when one flow finishing should start another.
@@ -328,10 +345,9 @@ This is vRO itself.
 </Fragment>
 <Fragment slot="do">
 
-Replace vRO with Kestra.
-
-- Every vRO workflow becomes a Kestra flow, every action a subflow or task, every configuration element a KV Store entry, and every SecureString a secret. The JavaScript inside the scriptable tasks is either rewritten by hand or drafted by the AI-assisted vRO migration tool and reviewed by an engineer (see [Section 5](#section-5)).
-- If you run more than one vRO instance, this is also where Kestra simplifies the architecture. A single Kestra instance handles all of them: tenants and namespaces keep the content separated, and worker groups separate execution where a network zone requires it. Multiple consoles become one, multiple upgrade cycles become one, and a workflow can no longer live somewhere nobody remembers to look.
+- The starting mapping is vRO workflows to Kestra flows, actions to subflows or tasks, configuration elements to KV Store entries, and SecureStrings to secrets read from the manager you already run. Many of these will be retired or merged before anything is converted.
+- The JavaScript inside the scriptable tasks is either rewritten by hand, or converted with the Migration Assistant and reviewed by an engineer ([section 5.2](#section-5-2)).
+- If you run more than one vRO instance, this is also where Kestra can simplify the architecture. Where your security and availability requirements allow it, one Kestra deployment can take over from several vRO instances: tenants and namespaces keep the content separated, and worker groups place execution in the network zone that requires it. Multiple consoles become one, multiple upgrade cycles become one, and a workflow can no longer live somewhere nobody remembers to look. Teams that need separate failure domains or regulatory boundaries still run several deployments, as the Fortune 500 manufacturer in [2.5](#section-2-5) did.
 
 </Fragment>
 </ExplorerPart>
@@ -358,7 +374,7 @@ What does the actual work of building and changing things. Workflows call most o
 
 Most of this is kept, with two exceptions.
 
-- Terraform, Ansible, Argo CD, the cloud services, and the patch, vulnerability, backup and certificate tooling all stay and get called from flows. Nothing about them changes, and the teams that own them keep owning them. The script folder is the same, minus whatever rationalization retires.
+- Terraform, Ansible, Argo CD, the cloud services, and the patch, vulnerability, backup and certificate tooling all stay and get called from flows, and the teams that own them keep owning them. What changes is how they are called: service accounts, invocation interfaces, retry behavior and monitoring may need adapting to the new orchestration path. The script folder is the same, minus whatever rationalization retires.
 - The first exception is a **CI system that does infrastructure work**. If Azure DevOps or Jenkins is what actually provisions, and vRA only triggered it, the verdict is **integrate** rather than **keep**. Kestra triggers the pipeline, waits, and reads the result, and the pipeline itself is untouched. We have seen cases where vRA's entire contribution to provisioning was to start a pipeline somewhere else, and recognizing that early changes which part of your environment the real logic lives in. It also shrinks the list of things you have to replace.
 - The second exception is the **blueprints**. A vRA blueprint is a canvas holding a VM, a disk and a network with the dependencies between them, and each resource on it fires lifecycle events that vRO workflows subscribe to. In Kestra the provisioning becomes a flow, and the workflows that hung off those subscriptions fold into it as tasks. The topology the canvas described is carried by Assets, which the flow generates as it runs. You usually need fewer flows than you had blueprints, because blueprints that differ only in size, region or business unit collapse into a single flow with inputs. The provisioning underneath is done by Terraform, the vSphere plugin, or the Nutanix plugin, which are interchangeable at the flow level.
 
@@ -385,7 +401,7 @@ What your environment knows about itself.
 Kept, with one open decision.
 
 - The CMDB, IPAM, DNS, Terraform state and configuration state all stay. Kestra reads them and writes to them from inside flows, the same way vRO did. Kestra has plugins for Infoblox, NetBox and SolarWinds IPAM.
-- The open decision is the **vRA deployment object**. This is the record vRA kept of everything it provisioned: what it is, who requested it, which project it belongs to, where it is in its lifecycle, and which day-2 actions are available against it. When vRA goes, that record has to live somewhere, and there are two possibilities: it can become a **Kestra Asset**, which puts the inventory and the automation that acts on it in the same place. Or it lands in the **CMDB**. Neither is wrong, and the choice usually follows the catalog decision in Part 1. Teams that keep the catalog in the ITSM tend to keep the inventory there too.
+- The open decision is the **vRA deployment object**. This is the record vRA kept of everything it provisioned: what it is, who requested it, which project it belongs to, where it is in its lifecycle, and which day-2 actions are available against it. When vRA goes, that record has to live somewhere, and there are two possibilities: it can become a **Kestra Asset**, which puts the inventory and the automation that acts on it in the same place, and the existing records can be loaded in bulk, for example from a CSV export. Or it lands in the **CMDB**. Neither is wrong, and the choice usually follows the catalog decision in Part 1. Teams that keep the catalog in the ITSM tend to keep the inventory there too. If you keep both, decide which fields each system owns and how they stay in step.
 
 Resource actions, the day-2 operations users invoke against a deployment, become ordinary flows. What that takes depends on the inventory decision above. If the inventory lands in Kestra Assets, each action is a flow bound to the asset, so the resource and the actions available against it sit together. If the inventory stays in your CMDB, the flow looks its target up there instead, and where the list of available actions lives becomes a design decision of its own.
 
@@ -405,7 +421,7 @@ What everything else depends on.
 </Fragment>
 <Fragment slot="do">
 
-Mostly kept, with two things to integrate.
+Most of it stays, with two things to integrate.
 
 - **Secrets and identity stay.** Kestra reads secrets from the manager you already run and authenticates through your existing SSO. Kestra provides plugins for tens of secrets backends, including HashiCorp Vault, CyberArk, Delinea, BeyondTrust and the three major cloud providers' managers. vRO ships no built-in plugin for any of them, so teams reach their vault through custom code and keep a copy in SecureStrings and configuration elements. Those become Kestra secrets read from the same vault, which also means rotating a secret stops meaning updating it in several places.
 - **Observability** integrates. Most environments have two layers: vROps watching the VMware estate itself, and an enterprise stack such as Splunk or Grafana where the rest of the business looks. What the migration changes is registration. Getting a newly provisioned server into the monitoring stack was usually a step somebody remembered afterwards, and in Kestra it is a task inside the provisioning flow, so a server that exists is a server that is monitored.
@@ -427,7 +443,7 @@ What your environment acts on.
 </Fragment>
 <Fragment slot="do">
 
-Targets get the **keep** verdict. vSphere, Nutanix, the cloud accounts and Kubernetes stay exactly where they are and get called from a flow, the same way Ansible or your vault does. The difference is that there is no decision to make: every other part has at least one alternative worth weighing, and this one does not.
+vSphere, Nutanix, the cloud accounts and Kubernetes stay exactly where they are and get called from a flow, the same way Ansible or your vault does. The difference is that there is no decision to make: every other part has at least one alternative worth weighing, and this one does not.
 
 </Fragment>
 </ExplorerPart>
@@ -445,7 +461,7 @@ Most of the six parts stay. The two decisions that change the target architectur
 
 #### 3.1.2 The shape you end up with
 
-Those decisions usually produce one of two target architectures. They differ in where the catalog and resource inventory live, and the table under each example is its decision table, filled in.
+Those decisions usually produce one of two target architectures. They differ in where the catalog and resource inventory live, and the table under each example shows where each part ends up.
 
 <InteractiveFrame title="Two target architectures" subtitle="Everything below the orchestration layer is the same in both">
 <GuideTabs id="vra-architecture" label="Target architecture" variant="segmented" tabs={[{ label: "Example 1: Kestra under your ITSM" }, { label: "Example 2: Kestra owns the front door" }]}>
@@ -492,7 +508,7 @@ Those decisions usually produce one of two target architectures. They differ in 
 </GuideTabs>
 </InteractiveFrame>
 
-Both shapes support the same transport choices for events (webhook or a message bus such as Kafka or RabbitMQ), and both can be deployed on-prem, across network zones or fully air-gapped. Those are deployment decisions rather than architecture ones, and [Appendix B](#appendix-b) covers them.
+Both shapes support the same transport choices for events (webhook or a message bus such as Kafka or RabbitMQ), and both can be deployed on-prem, across network zones or fully air-gapped. Those are deployment decisions rather than architecture ones, and the [deployment options handout](https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf) covers them.
 
 ### 3.2 The workflows: count the work
 
@@ -500,7 +516,11 @@ Both shapes support the same transport choices for events (webhook or a message 
 
 Now that you've made decisions about the estate as a system, this section is where you find out how many vRO workflows you'll actually need to migrate.
 
-Start with an export rather than a manual count or a list assembled from people's memory. There are three practical ways to get it:
+Start with an export rather than a manual count or a list assembled from people's memory. You need two things from it: the content, and when each workflow last ran.
+
+The content is a .package export from the vRO client, holding the workflows, actions, configuration elements and resource elements. It is also what the Kestra Migration Assistant for vRA reads. If vRA starts your workflows, export its content as well.
+
+When each workflow last ran is not in a .package, and it is what the retirement decisions rest on. There are three practical ways to get it, and each also gives you a fuller inventory:
 
 <GuideTabs id="vra-export" label="Ways to export your inventory" tabs={[{ kicker: "OPTION 1", label: "Build Tools for VMware Aria (BTVA)" }, { kicker: "OPTION 2", label: "An MCP server over the vRO API" }, { kicker: "OPTION 3", label: "The vRO API directly, or by hand" }]}>
 <GuideTabPanel group="vra-export" index={1}>
@@ -508,7 +528,7 @@ Start with an export rather than a manual count or a list assembled from people'
 VMware's own open-source toolchain, at [github.com/vmware/build-tools-for-vmware-aria](https://github.com/vmware/build-tools-for-vmware-aria).
 
 - **What it is for.** BTVA exists to package and deliver Aria content as code, so exporting your environment to look at it is a repurpose rather than its stated job. It works well for this anyway, and because it is VMware's own project you can run it without asking anyone's permission.
-- **What it gives you.** On the vRO side, workflows, actions, configuration elements and resource elements. On the vRA side, blueprints, subscriptions, custom resources, resource actions, catalog items, content sources, property groups and policies. From that you get counts by element type, and enough structure to see what each workflow calls.
+- **What it gives you.** On the vRO side, workflows, actions, configuration elements and resource elements. On the vRA side, blueprints, subscriptions, custom resources, resource actions, catalog items, content sources, property groups and policies. From that you get counts by element type, the last-execution date of each workflow, and enough structure to see what each workflow calls.
 - **Who supports it.** It is open source and community-maintained. There is no support contract behind it, from VMware or from us.
 - **What you are risking.** BTVA authenticates against your vRO and vRA endpoints and pulls content. It can also push, so the safe pattern is to run only the export commands, with a service account that has read permissions and nothing else, against a non-production environment first.
 
@@ -525,12 +545,12 @@ A community project at [github.com/mgovedarov/mcp-vcf-orchestrator](https://gith
 </GuideTabPanel>
 <GuideTabPanel group="vra-export" index={3}>
 
-If neither tool suits your environment, the vRO REST API returns the same inventory, and a short script against it is often all a team needs. Some teams already have the list because someone built a usage report years ago and never stopped running it.
+If neither tool suits your environment, the vRO REST API returns the same inventory and each workflow's execution records, and a short script against it is often all a team needs. Some teams already have the list because someone built a usage report years ago and never stopped running it.
 
 </GuideTabPanel>
 </GuideTabs>
 
-The first count may be large. Make sure the export includes last-execution dates, because workflows that have not run in twelve months are candidates for retirement. In the estates behind this guide, that group is usually 10 to 20 percent of the list.
+The first count may be large. Workflows that have not run in twelve months are candidates for retirement, and in the estates behind this guide that group is usually 10 to 20 percent of the list.
 
 Treat the workflows that ran in the last year as in scope until an owner confirms otherwise. The next two steps reduce the work by consolidating duplicates and separating wrappers from workflows that contain their own logic.
 
@@ -547,6 +567,15 @@ The third pass often changes the estimate the most. A wrapper carries no convers
 **The libraries go too.** The export also contains actions and script modules, and many of them are integration libraries: a REST client for Infoblox, one for the load balancer, one for SolarWinds, written by hand because vRO had no plugin for any of them. Where [Kestra has a plugin](/plugins) for the target, that library is deleted rather than converted, and any business logic layered on top of it still moves. Where there is no plugin, the integration is rebuilt, through an HTTP task or a plugin of your own. Count these libraries separately from the workflows, because once a plugin covers the target, maintaining that integration stops being your team's job.
 
 Run the review with the owners of each functional area. The person holding the export usually cannot tell whether an annual workflow is dead or whether an unclaimed script still supports a production process. Give each owner their slice of the list and use the three passes above as the agenda.
+
+**The Migration Assistant runs these passes for you.** It lists retirement candidates (and asks for run history), groups near-duplicates, separates wrappers from workflows with logic of their own, and marks which integration libraries a Kestra plugin replaces. The owners still confirm each one.
+
+**Your rough count.** Apply the three passes in order and the export resolves into four numbers:
+
+- **vRO workflows**, the raw export.
+- **Migrate to Kestra**, what is left after retiring workflows that have not run in twelve months, which in a large environment are usually 10 to 20 percent of the list.
+- **Flows in Kestra**, what is left once each group of near-duplicates becomes a single flow with inputs.
+- **Wrappers (easy migration)**, the flows that only call something else.
 
 The [payback calculator](/resources/migration/vra/payback) applies these three passes to your export count and carries the result straight into the cost estimate, so you do not size the inventory twice.
 
@@ -569,7 +598,7 @@ Day 2 is worth splitting in two, because the two halves are different kinds of w
 - **Resource actions** act on a specific thing, usually because someone asked. Patch, resize, snapshot, extend a lease, decommission.
 - **Operational automation** watches and reacts, usually with nobody asking. Certificate expiry, configuration drift, compliance sweeps, failure alerting, incident response.
 
-Then sort within each stage by pattern. This is where the count stops mattering, because a 1,600-workflow estate is usually a dozen or so patterns repeated many times each. Kestra's blueprints are organized the same way, so each pattern has a working template to build against, and a wave becomes "these 40 workflows are all patching, here is the blueprint, do them as a batch."
+Then sort within each stage by pattern. In large estates, many workflows turn out to fall into a much smaller set of patterns, so the number of patterns matters more than the raw count. Check that ratio against your own inventory before you use it to estimate effort. Kestra's blueprints are organized the same way, so each pattern has a working template to build against, and a wave becomes "these 40 workflows are all patching, here is the blueprint, do them as a batch."
 
 | Pattern | Typical vRA and vRO workflows in this class | Target Kestra blueprint |
 | --- | --- | --- |
@@ -592,8 +621,8 @@ Then sort within each stage by pattern. This is where the count stops mattering,
 
 **Classify the conversion effort.** Lifecycle stage and pattern help organize migration waves. Complexity helps estimate the effort. Sort the workflows that move into three groups:
 
-- **Wrappers.** Flows that only call something else, such as a script, an Ansible job or a pipeline. They carry no conversion cost, because Kestra calls the same thing directly.
-- **Medium.** Flows with their own logic and understood dependencies. The AI-assisted vRO migration tool handles much of the conversion, and an engineer reviews the result.
+- **Wrappers.** Flows that only call Ansible, a script, a pipeline, or a single integration Kestra has a plugin for. They carry no conversion cost, because Kestra calls the same thing directly.
+- **Medium.** Flows with their own logic and understood dependencies. The Migration Assistant handles much of the conversion, and an engineer reviews the result.
 - **Complex.** Flows nobody fully understands, deep custom JavaScript, or behavior that should be redesigned rather than carried across. These are rewritten by hand.
 
 Before a flow goes into complex, check what its JavaScript actually does. Much of what looks like deep custom code is an integration library for a target [Kestra already has a plugin](/plugins) for. That code is deleted, and the flow is classified on what is left, which is often medium and sometimes a wrapper.
@@ -604,18 +633,20 @@ Keep near-duplicates in the same group as their first of a kind. If one needs su
 
 These counts are inputs to the payback estimate in [Section 7](#section-7-2). Retain the workflow list behind each group so you can check that every workflow in scope is counted once.
 
+**The Migration Assistant does this classification too**, and adds what a spreadsheet can't: for each workflow, the systems it calls and the Kestra plugin or HTTP route for each one, and a wave plan with the first of a kind for each wave.
+
 ### 3.3 Summary of what you leave Stage 1 with
 
 Stage 1 is done when you can put the following four things on one page:
 
-| Output | Where it came from | What it looks like |
-| --- | --- | --- |
-| **The decision table** | [3.1.1](#section-3-1-1), with the examples in [3.1.2](#section-3-1-2) | Seven rows, each with a verdict and a destination |
-| **The target architecture** | [3.1.2](#section-3-1-2) | One of the two shapes, with the catalog and inventory decisions settled |
-| **The workflow list** | [3.2.1](#section-3-2-1) and [3.2.2](#section-3-2-2) | Distinct workflows that need to move, after retirement and de-duplication, with the original inventory count kept alongside it so you can show the reduction |
-| **The pattern breakdown** | [3.2.3](#section-3-2-3) | That list grouped by lifecycle stage and pattern, with counts per group, and sorted into wrappers, medium and complex |
+| Output | Where it came from | What it looks like | From the Migration Assistant |
+| --- | --- | --- | --- |
+| **The decision table** | [3.1.1](#section-3-1-1) | Seven rows, each with a verdict and a destination | Your decisions, informed by its questions |
+| **The target architecture** | [3.1.2](#section-3-1-2) | One of the two shapes, with the catalog and inventory decisions settled | It asks where the catalog and inventory will live, and plans for your answer |
+| **The workflow list** | [3.2.1](#section-3-2-1) and [3.2.2](#section-3-2-2) | Distinct workflows that need to move, after retirement and de-duplication, with the original inventory count kept alongside it so you can show the reduction | Yes, once owners confirm the retirement candidates |
+| **The pattern breakdown** | [3.2.3](#section-3-2-3) | That list grouped by lifecycle stage and pattern, with counts per group, and sorted into wrappers, medium and complex | Yes, with the waves |
 
-The pattern breakdown identifies candidates for the proof of concept and suggests how the remaining workflows can be grouped into waves. The decision table and target architecture show which Kestra features and plugins the proof of concept needs to exercise. None of this requires Kestra to be installed.
+The pattern breakdown identifies candidates for the proof of concept and suggests how the remaining workflows can be grouped into waves. The decision table and target architecture show which Kestra features and plugins the proof of concept needs to exercise. None of this requires Kestra to be installed, and neither does the Migration Assistant.
 
 <GuideCta kind="pdf" variant="secondary" />
 
@@ -675,7 +706,7 @@ Enough signal to size the whole thing: roughly how many waves, roughly how long,
 </Card>
 </Cards>
 
-The last one is the link between the stages. Stage 1 gives you the counts. Stage 2 gives you the rate, and how much of the conversion the AI-assisted vRO migration tool actually handles on your own code. Together they give you an estimate you can defend.
+The last one is the link between the stages. Stage 1 gives you the counts. Stage 2 gives you the rate, and how much of the conversion the Migration Assistant actually handles on your own code. Together they give you an estimate you can defend.
 
 Some answers arrive faster than others. At the [Fortune 500 manufacturer](/customers/fortune-500-company) above, the difference in day-to-day engineering was clear within the first few days: errors were legible, execution was predictable, and the workflows stopped behaving like a black box.
 
@@ -694,7 +725,7 @@ It moves through five phases:
 1. **Scoping.** The session [described above](#section-4-1), covering the sponsor, the requirements, the success criteria and the people. It also confirms that your deployment requirements fit one of our reference installation templates, so the install is a known quantity before anyone starts.
 2. **Launchpad.** A one-hour kick-off with your engineers and executive sponsor, and ours. The shared channel is live before the call, and we go through a pre-flight checklist covering the network connectivity, identity, storage and secrets the install will need.
 3. **Install.** Kestra is self-hosted, so this is your environment. We send an Enterprise licence ahead of time, so nothing is gated during the evaluation, and provide a Helm chart or Docker Compose template configured for what you described at scoping. The aim is the UI running within two days and a first workflow executed in the first week. Security and the target architecture are settled here rather than discovered later.
-4. **Sprint.** Your team builds the workflows and we advise. We do not touch your keyboard, because the point is that your team leaves ready to do this without us. The integrations with your ITSM, CMDB, IPAM and monitoring get wired up first. Then come retries, error branches, SLAs, monitoring and parallel execution at close to real volume, which is where the team tests production behavior rather than the happy path.
+4. **Sprint.** Your team builds the workflows and we advise. Where the Migration Assistant converts one, we run it with your team and your engineers review and own the result, because the point is that your team leaves ready to do this without us. The integrations with your ITSM, CMDB, IPAM and monitoring get wired up first. Then come retries, error branches, SLAs, monitoring and parallel execution at close to real volume, which is where the team tests production behavior rather than the happy path.
 5. **Review and decision.** Progress is checked against the success criteria each week. At the end you have the results against each one and what production actually needs, so the cost side of your business case is measured rather than estimated. Whether to proceed is decided with your executive sponsor.
 
 ### 4.4 Choosing the workflows
@@ -711,7 +742,7 @@ Record any other candidates for the migration plan rather than adding them to th
 
 The success criteria decide whether the proof of concept passed. The measurements are what the business case needs from it. They only mean something if the same workflow is measured on both platforms, so we baseline in vRA before converting anything. Two kinds of number come out:
 
-- **Conversion effort**, which sizes the rest of the migration. For each workflow, record the hands-on hours to understand, convert and validate it, whether it is medium or complex, and whether it is a first of a kind or a near-duplicate. For medium workflows, also record how much of the conversion the migration tool handled. These replace the starting assumptions in the [payback calculation](#section-7-2) with rates measured on your own code.
+- **Conversion effort**, which sizes the rest of the migration. For each workflow, record the hands-on hours to understand, convert and validate it, whether it is medium or complex, and whether it is a first of a kind or a near-duplicate. For medium workflows, also record how much of the conversion the Migration Assistant handled. These replace the starting assumptions in the [payback calculation](#section-7-2) with rates measured on your own code.
 - **The four measures**, which show what changes once you have migrated: speed of delivery (request to working automation), development effort (hours to build or change a workflow on each platform), people who can build automation, and consolidation (instances and consoles you run). Take each on the same workflows in vRA first and in Kestra afterwards. [The business case section](#section-7-1) shows how to present them.
 
 Keep shared deployment and integration work out of the per-workflow numbers, and note any workflow that needed redesign or produced a different result from the original. Two or three workflows will not cover every combination, so use them to inform estimates for the rest rather than as the estimate itself.
@@ -731,38 +762,34 @@ Two rules that hold for every wave:
 - **Acceptance criteria are written before the wave starts.** What has to be true for this group to be considered migrated, agreed with whoever owns those workflows, in writing, before anyone converts anything. Retrofitting criteria at the end is how waves stall.
 - **Sequence by risk, not by size.** Start with a pattern where a failure is recoverable and visible. Leave the one where a failure means someone cannot provision in a production datacentre until the team has done two or three waves.
 
-### 5.2 Three ways to convert a workflow
+### 5.2 How to convert vRO workflows to Kestra
 
-Most estates use all three, and the mix is what determines the cost per workflow that Stage 2 measured. Wrappers need none of them, since Kestra calls what they called. Integration libraries that a Kestra plugin covers are not converted either. The library is deleted, and the workflows that used it are rebuilt on the plugin, which is faster than converting the code, though not free.
+There are three ways to convert a workflow, and most estates use all three. The mix is what determines the cost per workflow. Wrappers need none of them, since Kestra calls what they called. Integration libraries that a Kestra plugin covers are not converted either. The library is deleted, and the workflows that used it are rebuilt on the plugin, which is faster than converting the code, though not free.
 
 **Manual rewrite.** An engineer reads the vRO workflow and writes the Kestra flow. Use this for complex workflows, code the team no longer understands, or logic that should be redesigned instead of carried across.
 
 **Templated.** Build the first of a kind once, then apply it to its near-duplicates. Kestra blueprints can provide a starting point, but the first flow you finish in your environment becomes the template. The near-duplicates are then mostly inputs and integration details.
 
-**AI assisted.** A vRO package exported from your estate is structured content: workflows, actions, configuration elements, resource elements, and the JavaScript inside them. The AI-assisted vRO migration tool converts the structure: folder hierarchy to namespaces, configuration elements to the KV Store, SecureStrings to secrets, resource elements to namespace files, workflows to flows. It also drafts the rewrite of the JavaScript, turning vRO SDK calls into Kestra tasks and expressions. This is the route for medium workflows.
+**With the Migration Assistant.** This is the route for medium workflows, and we run it with you. It works from the migration plan in Stage 1, one wave at a time:
 
-Every flow the tool converts goes through four steps, in this order, before the vRA version is retired:
+1. **Tests come first.** Kestra unit tests are written from each workflow's description before any conversion exists, one per path through the vRO workflow. Behavior you chose to keep, including a possible defect, gets a test that pins it.
+2. **The first of a kind is converted and reviewed.** The tool converts the structure (folder hierarchy to namespaces, configuration elements to the KV Store, SecureStrings to secrets, resource elements to namespace files) and rewrites the JavaScript as Kestra tasks, using a plugin wherever one covers the integration. Every vRO item becomes a Kestra task or an explicit TODO, so nothing is dropped silently. An engineer reviews the first of a kind before the rest of the wave follows, and every converted flow is reviewed before it is certified.
+3. **The flows pass their tests**, in your Kestra.
+4. **The wave runs against a simulated copy of your environment**, then against your non-production systems, side by side with vRA, until the owner certifies it against the acceptance criteria agreed before the wave started. Only then is the vRA version retired.
 
-1. **The tool converts the workflow**, structure and scripts, into a draft Kestra flow.
-2. **An engineer reviews the converted flow.** This step is required.
-3. **A test is created for the flow, and it has to pass.**
-4. **vRA and Kestra run in parallel until the flow is certified.** The owner of the workflow certifies it against the acceptance criteria agreed before the wave started, and only then is the vRA version retired.
+How much of the conversion the Migration Assistant handles depends on how much logic sits in JavaScript, how consistent that code is, and which SDK calls it uses. The [payback calculation](#section-7-2) in the business case lets you set your own share, and a proof of concept measures it on your code.
 
-How much of the conversion the tool handles depends on how much logic sits in JavaScript, how consistent that code is, and which SDK calls it uses. The [payback calculation](#section-7-2) in the business case lets you set your own share, and a proof of concept measures it on your code.
-
-**For some estates, the right answer is not to convert at all.** When most of the JavaScript turns out to be integration libraries that plugins replace, and what is left is logic the team would design differently today, rebuilding from the pattern breakdown can be faster than converting workflow by workflow. Stage 1 applies either way: the inventory, the decisions and the patterns are what you build to.
+**For some estates, the right answer is not to convert at all.** When most of the JavaScript turns out to be integration libraries that plugins replace, and what is left is logic the team would design differently today, rebuilding from the pattern breakdown can be faster than converting workflow by workflow. Stage 1 applies either way: the inventory, the decisions and the patterns are what you build to. The Migration Assistant's brief says which side of that line your estate falls on, and why.
 
 ### 5.3 Who does the work
 
 Most migrations use a mix of three delivery models.
 
-**Level 1, tooling you run yourself.** All three conversion paths above are yours, along with the extraction tools from Stage 1, the migration tool, Kestra's blueprints, and your own templates once each first of a kind exists. Teams that have done their Stage 1 work properly and have engineering capacity run the bulk of a migration this way. The completed migration in [the business case](#section-2-5) was done by the five or six people who already owned the platform, alongside their normal work.
+**Level 1, on your own.** The assessment is yours to run, along with the extraction tools from Stage 1, Kestra's blueprints, and your own templates once each first of a kind exists. Teams with engineering capacity can do the conversion by hand or from templates. The completed migration in [Section 2.5](#section-2-5) was done by the five or six people who already owned the platform, alongside their normal work.
 
-**Level 2, guided help from us.** Not doing the work, advising on it: reviewing your wave plan, unblocking the patterns that do not convert cleanly, reviewing each first of a kind before you replicate it thirty times. Kestra support tiers include Expert Advisory hours, which are also available separately for whenever needed. This is the level most estates actually need, because the expensive mistakes in a migration are made once, early, and then repeated.
+**Level 2, migrating with us.** We run the Migration Assistant's conversion with your team, wave by wave: we review each first of a kind before it's replicated, unblock the patterns that don't convert cleanly, and verify each wave. Kestra support tiers include Expert Advisory hours, which are also available separately. This is the level most estates need, because the expensive mistakes in a migration are made once, early, and then repeated.
 
-**Level 3, a partner doing the heavy lifting.** For a large estate, a team without capacity, or a timeline set by a renewal date rather than by engineering, a systems integrator does the conversion work. The same is true when the migration is part of a broader architectural change rather than a like-for-like replacement, because the design work then extends well past the workflows. Several partners already do exactly this kind of migration, and the assessment they perform at the start is the same one described in Stage 1.
-
-**Kestra builds and supports the platform.** We can advise and help with scope. For conversion work at scale, a services partner is usually the better fit. The same extraction tools, migration tool and templates are available to your team and the partner.
+**Level 3, a partner.** For a very large estate, or a migration that's part of a broader architectural change rather than a like-for-like replacement, a systems integrator can do the conversion work, starting from the same assessment.
 
 ### 5.4 Verification has to be supplied
 
@@ -774,6 +801,8 @@ The minimum for each wave:
 - **Output equivalence against the vRA run** for the PoC set, so you can show that the converted flow does the same thing rather than merely running.
 - **The acceptance criteria you agreed before the wave started**, checked before it is called done.
 
+This is where the Migration Assistant does the most work. Tests are written from the original workflow before conversion, and each wave runs its full lifecycle against a simulated copy of your environment, with mocks of the systems it calls, built from the vendors' published APIs where they exist, before it reaches yours. In our own testing, that step caught a conversion bug the unit tests had missed.
+
 ### 5.5 Running both systems
 
 vRA keeps running the estate until each wave is verified and switched over, which has three consequences worth planning for.
@@ -784,7 +813,7 @@ vRA keeps running the estate until each wave is verified and switched over, whic
 
 <Callout variant="note" label="Wrap before replacing">
 
-A useful intermediate step is to wrap before replacing. Point the existing trigger at a Kestra flow that calls the vRO workflow. Once the trigger path works, replace the vRO workflow itself. Each change can then be tested separately.
+A useful intermediate step is to point the existing trigger at a Kestra flow that calls the vRO workflow. Once the trigger path works, replace the vRO workflow itself. Each change can then be tested separately.
 
 </Callout>
 
@@ -856,6 +885,12 @@ Some benefits will remain projections until the migration is complete. A proof o
 
 The migration is the investment. What pays it back is the vRA and vRO renewal you do not sign, together with the other annual costs that stop when vRA goes. The licence you have already paid is sunk, whether it is perpetual or a term already under way, so the saving starts at the renewal date rather than at cutover.
 
+The calculation has three inputs:
+
+1. **The renewal you avoid.** Your annual vRA and vRO spend at renewal, plus other annual costs that stop, such as support, infrastructure and consulting.
+2. **What getting out costs.** Only medium and complex flows carry a conversion cost, since wrappers and their near-duplicates do not. For each group, estimate the hours for a first of a kind and for each near-duplicate, reduce the medium first-of-a-kind hours by the share the Migration Assistant handles, and multiply by your blended hourly rate.
+3. **What you would spend on Kestra.** Licence and hosting, a year.
+
 Payback is the month in which the renewal you avoided has covered the migration and Kestra. Compare over your finance team's planning horizon, or three years if there is none.
 
 The [payback calculator](/resources/migration/vra/payback) takes your renewal, your workflow counts from [3.2.2](#section-3-2-2) and your migration rates, and gives you the month the move pays for itself, with a CSV and a shareable link for the finance review.
@@ -920,9 +955,15 @@ The final proposal should make clear what the organization will spend, what it e
 
 ## 8. Getting started
 
-There are two ways to start. Most enterprise teams begin with a conversation, whether they are still assessing their estate or ready to run a migration proof of concept. A vRA migration usually crosses several systems, and many of the capabilities needed to test it properly are available only in Enterprise Edition. If you want to explore the product and its authoring model first, you can install Kestra Open Source without contacting us.
+There are three ways to start. The quickest is to run the Migration Assistant on your own estate, which needs no conversation and no Kestra install. From there, the next step is a migration proof of concept with us, built on what the assessment found. A vRA migration usually crosses several systems, and many of the capabilities needed to test it properly are available only in Enterprise Edition. If you want to explore the product and its authoring model first, you can install Kestra Open Source without contacting us.
 
-### 8.1 Run a proof of concept with us
+### 8.1 Run the assessment on your own estate
+
+Export your vRO package, and your vRA content if vRA starts your workflows, then run the Kestra Migration Assistant for vRA on your own machine. It's free and open source, and installs with one command. You get a brief describing your estate, a recommendation for every workflow, the Kestra plugins that cover your integrations, and a migration plan in waves. It covers the workflow side of Stage 1 for you and asks the questions behind the estate decisions, which makes it the best starting point for a conversation with us.
+
+<GuideCta kind="assistant" />
+
+### 8.2 Run a proof of concept with us
 
 A migration PoC uses two or three workflows from your environment, including at least one difficult one, and connects them to the systems they use today. Before converting anything, we agree on the success criteria and baseline the same workflows in vRA.
 
@@ -932,9 +973,9 @@ At the end, you have working flows, a measured conversion rate, before-and-after
 
 <GuideCta kind="talk" />
 
-### 8.2 Start with open source
+### 8.3 Start with open source
 
-Kestra's core is open source and requires no commercial agreement. [Install it](/docs), choose a small set of real workflows from [section 3.2.3](#section-3-2-3), and build them. The [infrastructure automation use case](/docs/use-cases/infrastructure#getting-started-with-infrastructure-automation) is a practical starting point.
+Kestra's core is open source and requires no commercial agreement. [Install it](/docs/quickstart), choose a small set of real workflows from [section 3.2.3](#section-3-2-3), and build them. The [infrastructure automation use case](/docs/use-cases/infrastructure#getting-started-with-infrastructure-automation) is a practical starting point.
 
 **What open source covers.** You can test the workflow engine, the conversion pattern, and the point where manual work begins. vRO workflows, actions, configuration elements, schedules, error handling, retries and dynamic request forms have open-source equivalents. You can also provision against vSphere or Nutanix through Terraform and see whether the authoring model fits your team.
 
