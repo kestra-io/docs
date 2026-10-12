@@ -133,6 +133,14 @@ kestractl flows task my.namespace my-flow my-task-id
 kestractl flows deploy path/to/flow.yaml
 kestractl flows deploy ./flows/ --namespace prod --override --fail-fast
 
+# Deploy under a namespace prefix (prepends to each flow's own namespace; mutually exclusive with --namespace)
+# Only the flow's own namespace is prefixed — subflow targets, Flow trigger dependsOn, namespace files, and KV lookups are not.
+kestractl flows deploy ./flows/ --namespace-prefix staging.pr42 --override
+
+# Disable every trigger on deploy (sets disabled: true on all triggers; use for ephemeral preview environments)
+# Flows with no triggers are deployed unchanged; YAML-aliased or flow-style trigger mappings cause an error.
+kestractl flows deploy ./flows/ --namespace-prefix staging.pr42 --disable-triggers --override
+
 # Import flows from a ZIP archive
 kestractl flows import flows.zip
 
