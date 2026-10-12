@@ -197,7 +197,7 @@ When a Pod ends in a failed phase, the runner reports each container's exit code
 
 ## Monitoring
 
-Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads alongside other input files. No image change is needed.
+Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads alongside other input files. No dedicated image is needed, but see [Constraints](#constraints).
 
 kotlp reports the container's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT10S`):
 
@@ -212,7 +212,7 @@ kotlp reports the container's resource usage as `process.*` task metrics, sample
 | `process.thread.count` | gauge | `{thread}` | — |
 | `process.open_file_descriptor.count` | gauge | `{count}` | — |
 
-The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all traffic in the network namespace the command runs in, including loopback, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
+The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all non-loopback traffic in the network namespace the command runs in, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
 
 kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
 
@@ -248,15 +248,15 @@ tasks:
 | Property | Default | Description |
 |---|---|---|
 | `monitoring.enabled` | `false` | When true, wraps the task command with kotlp. |
-| `monitoring.metricsInterval` | `PT10S` | How often kotlp samples the container's resource usage. Values below 1 ms are treated as 1 ms. |
+| `monitoring.metricsInterval` | `PT10S` | How often kotlp samples the command's resource usage. Must be between `PT0.001S` and `PT1H`; values outside that range are rejected. |
 
 ### Constraints
 
 Four requirements apply when monitoring is enabled:
 
 - `bucket` must be configured with `accessKeyId` and `secretAccessKey`. kotlp is staged as a working-directory file and uploaded to OBS alongside other input files. A configuration that provides only a `securityToken` is rejected because OBS staging cannot use it.
-- The main container image must provide `/bin/sh` and must have a writable `$TMPDIR` (default `/tmp`). Standard images such as Ubuntu, Debian, and Alpine satisfy both. `scratch` and distroless images do not work.
-- `obsSyncImage` must be reachable and must provide `/bin/sh`, `gzip`, and a writable `$TMPDIR`. Monitoring always forces the `input-files` init container, so these requirements apply even when no `inputFiles` are configured.
+- The main container image must provide `/bin/sh` and `gzip`, and must have a writable `$TMPDIR` (default `/tmp`). Standard images such as Ubuntu, Debian, and Alpine satisfy these. `scratch` and distroless images do not work.
+- `obsSyncImage` must be reachable. Monitoring always forces the `input-files` init container, so this applies even when no `inputFiles` are configured.
 - An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
 
 `aws s3 sync` (used by the init container) drops the execute bit on downloaded files. The runner handles this automatically by copying the kotlp binary to a temporary file under `$TMPDIR` and setting the execute bit before invoking kotlp.
