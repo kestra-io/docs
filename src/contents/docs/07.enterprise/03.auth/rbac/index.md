@@ -56,6 +56,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `KVSTORE` | Key-value store entries |
 | `SECRET` | Secrets stored in the namespace |
 | `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
+| `REUSABLE_INPUTS` | Reusable input sets defined at the namespace level |
 
 **Apps and features** (tenant-scoped):
 
@@ -145,7 +146,7 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 |---|---|
 | **Admin** | All actions on all resources. |
 | **Developer** | Everything Editor has, plus: full namespace management (including file management), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
-| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
+| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
