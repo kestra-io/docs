@@ -325,10 +325,10 @@ Don't add `@kestra-io/kestra-sdk` to your `ui/package.json` for one of these thr
 ## Running backend logic with plugin endpoints
 
 :::alert{type="warning"}
-Plugin endpoints are a preview. The `PluginEndpoint` interface is proposed in [kestra-io/kestra#19807](https://github.com/kestra-io/kestra/pull/19807) and is not part of a Kestra release yet, so its shape can still change.
+Plugin endpoints are a preview. The `PluginEndpoint` interface was added in [kestra-io/kestra#19807](https://github.com/kestra-io/kestra/pull/19807) and its shape can still change.
 :::
 
-Outputs and metrics only contain what the task computed while it ran. When your artifact needs something that cannot be computed in advance, such as data that is too large to store as an output or that must be fetched from an external system when the user asks for it, the plugin can expose an **endpoint**: a Java class that Kestra calls on the server.
+Outputs and metrics only contain what the task computed while it ran. When your artifact needs something that cannot be computed in advance, such as data that is too large to store as an output or that must be read from the execution's files when the user asks for it, the plugin can expose an **endpoint**: a Java class that Kestra calls on the server.
 
 Prefer task outputs whenever the value is known at the end of the task. Use an endpoint only for work that has to happen on demand.
 
@@ -345,32 +345,46 @@ public class HelloEndpoint implements PluginEndpoint {
     }
 
     @Override
-    public PluginEndpointResponse handle(PluginEndpointRequest request) {
-        String name = request.param("name");
+    public PluginEndpointResponse handle(PluginEndpointContext context) {
+        String name = context.param("name");
         return PluginEndpointResponse.of(Map.of("message", "hello: " + name));
     }
 }
 ```
 
-- **`name()`** is the last segment of the URL. It must be unique within a plugin JAR; when two endpoints share a name, Kestra logs a warning and keeps the first.
-- **`request.param(name)`** returns the first value of a query parameter, or `null`. `request.parameters()` returns all of them, and `request.body()` returns the raw request body as bytes.
-- **`PluginEndpointResponse.of(object)`** serializes the object as JSON. **`PluginEndpointResponse.ofBytes(bytes, contentType)`** returns raw bytes.
+- **`name()`** is a URL segment. It must be unique within a plugin JAR; when two endpoints share a name, Kestra logs a warning and keeps the first.
+- **`context.param(name)`** returns the first value of a query parameter, or `null`. `context.parameters()` returns all of them.
+- **`context.body()`** returns the JSON request body as a `Map<String, Object>`. It is empty for a `GET` call.
+- **`context.executionId()`** and **`context.taskRunId()`** identify the task run the endpoint was called for.
+- **`PluginEndpointResponse.of(object)`** serializes the object as JSON. **`PluginEndpointResponse.ofBytes(bytes, contentType)`** returns raw bytes. **`PluginEndpointResponse.ofFile(bytes, contentType, fileName)`** returns raw bytes with a download file name.
 
 The class must be a stateless singleton with a public no-argument constructor.
+
+### Read the task run from an endpoint
+
+The context gives read access to the task run the endpoint was called for, and nothing beyond it:
+
+| Accessor | What it gives you |
+|---|---|
+| `context.logs()` | `find()` or `find(Level minLevel)` returns the task run's log entries. |
+| `context.outputs()` | `get()` returns the task run's outputs. A value can be a `kestra://` storage URI instead of inline data. |
+| `context.storage()` | `getFile`, `list`, `exists`, `putFile` and `deleteFile` on the internal storage of the current execution. A URI outside that execution's storage, or one that uses `..`, is rejected with an `IllegalArgumentException`. |
+
+Use `context.storage()` to read a file that an output points to.
 
 ### Call an endpoint
 
 Kestra serves every endpoint at:
 
 ```
-GET|POST /api/v1/{tenant}/plugins/{group}/endpoints/{name}
+GET|POST /api/v1/{tenant}/plugins/{cls}/endpoints/{name}/{executionId}/{taskRunId}
 ```
 
-`{group}` is the plugin group of your JAR (for example `io.kestra.plugin.example`).
+`{cls}` is the fully qualified name of a plugin class in the same JAR as the endpoint (for example `io.kestra.plugin.example.Hello`). A `POST` call needs a JSON object body.
 
 ```bash
 curl -H "Authorization: Bearer $TOKEN" \
-  "http://localhost:8080/api/v1/main/plugins/io.kestra.plugin.example/endpoints/hello?name=kestra"
+  "http://localhost:8080/api/v1/main/plugins/io.kestra.plugin.example.Hello/endpoints/hello/$EXECUTION_ID/$TASKRUN_ID?name=kestra"
 ```
 
 ```json
@@ -381,20 +395,23 @@ curl -H "Authorization: Bearer $TOKEN" \
 
 | Situation | Result |
 |---|---|
-| The caller is not allowed to view flows (Enterprise Edition) | `403` |
-| No plugin with that group, or no endpoint with that name | `404` |
-| The request body is larger than the server limit | `413` |
+| The caller is not allowed to read the execution's namespace (Enterprise Edition) | `403` |
+| The execution or task run does not exist, no plugin has that class, or no endpoint has that name | `404` |
+| A `POST` call has no JSON body | `422` |
+| The request body is larger than the server limit (10 MiB by default, set with `kestra.plugins.endpoint.max-body-size`) | `413` |
 | `handle()` throws an exception | `500` with a generic message. The exception itself is only written to the server log. |
 | The response is JSON | Served inline |
 | The response is any other content type | Always served as a download (`Content-Disposition: attachment`, `X-Content-Type-Options: nosniff`), never rendered in the page |
 
 Authorization is enforced by Kestra before your code runs. Don't implement your own permission checks in `handle()`.
 
+You can turn the feature off with `kestra.plugins.endpoint.enabled: false`.
+
 ### Limits
 
-- `handle()` receives only the query parameters and the body. It has no access to internal storage, secrets, the current flow or the execution. To reach Kestra, call its HTTP API with the SDK.
+- `handle()` has no access to secrets, the flow definition, other task runs or other executions. To reach Kestra beyond the context, call its HTTP API with the SDK.
 - `handle()` runs synchronously on a web server thread and there is no timeout yet. Keep it short and bounded, and never wait indefinitely on an external system.
-- A response has a body and a content type only. You cannot set a status code or headers, so invalid input and internal errors both return `500`.
+- A response has a body, a content type and an optional file name only. You cannot set a status code or headers, so invalid input and internal errors both return `500`.
 - Artifacts cannot call an endpoint through a slot prop yet.
 
 ## Pebble expressions in task config
