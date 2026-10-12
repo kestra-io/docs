@@ -2,10 +2,23 @@
 import GuideDownloadForm from "~/components/resources/GuideDownloadForm.vue"
 import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD } from "./download"
 
+// The props GuideDownloadForm takes; the defaults are the guide PDF.
+interface FormConfig {
+    hubspotFormId: string
+    guideUrl?: string
+    submissionIdentifier: string
+    pageUri: string
+    event: string
+    title?: string
+    submitLabel?: string
+    thankYouTitle?: string
+    thankYouText?: string
+}
+
 interface Props {
     id?: string
     label?: string
-    form?: Record<string, string>
+    form?: FormConfig
 }
 
 const {
