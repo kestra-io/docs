@@ -43,6 +43,8 @@ for (const page of pages) {
         await p.screenshot({
             path: testInfo.snapshotPath(`${page.label}.png`, { kind: "screenshot" }),
             fullPage: true,
+            // toHaveScreenshot's default: at 3x DPR, long mobile pages pass Chromium's 32767px cap.
+            scale: "css",
             animations: "disabled",
             timeout: 15_000,
             // Neutralises the content a page only renders incidentally, so the
