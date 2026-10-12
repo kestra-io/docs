@@ -79,6 +79,8 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 
 When using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
 
+Queued executions are picked up on the executor's delay loop interval, configurable via [`kestra.executor.execution-delay-loop-periodicity-ms`](../../../configuration/04.plugins-and-execution/index.md#executor-loop-intervals) (default: 1000ms).
+
 ```yaml
 id: concurrency_limited_flow
 namespace: company.team
