@@ -188,7 +188,7 @@ export function effortBars(p: PaybackResult): EffortBar[] {
             "manual",
         ),
         bar(
-            `With the AI-assisted vRO migration tool at ${p.toolPct}%`,
+            `With the Migration Assistant at ${p.toolPct}%`,
             p.hours,
             "tool",
         ),

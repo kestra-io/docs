@@ -104,8 +104,8 @@
                     />
                     <div class="range-field">
                         <label class="form-label" :for="`${idPrefix}-tool`">
-                            Share of the conversion the AI-assisted vRO
-                            migration tool handles
+                            Share of the conversion the Migration Assistant
+                            handles
                         </label>
                         <div class="range">
                             <input
@@ -129,10 +129,12 @@
                             }}</output>
                         </div>
                         <p :id="`${idPrefix}-tool-hint`" class="hint">
-                            It converts the structure and drafts the script
-                            rewrite for medium workflows. Complex ones are
-                            usually rewritten or redesigned, so they stay at the
-                            manual rate. Section 5.2 covers how it works.
+                            It converts the structure and rewrites the
+                            JavaScript for medium workflows, and we run it with
+                            you. Complex ones are usually rewritten or
+                            redesigned, so they stay at the manual rate. The
+                            default is an assumption, so replace it with the
+                            share measured in your proof of concept.
                         </p>
                     </div>
                     <NumberField
@@ -146,7 +148,7 @@
                         <summary>Adjust the effort assumptions</summary>
                         <div class="details-body">
                             <p class="hint">
-                                Hours by hand, before the migration tool. The
+                                Hours by hand, before the Migration Assistant. The
                                 first column is working out what a workflow
                                 does, building it in Kestra and checking the
                                 result. The second is each near-duplicate once
@@ -285,7 +287,7 @@
         {
             idPrefix: "vra-calc-payback",
             shareAnchor: "section-7-2",
-            pocHref: "#section-8-1",
+            pocHref: "#section-8-2",
         },
     )
 

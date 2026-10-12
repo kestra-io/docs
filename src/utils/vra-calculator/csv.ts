@@ -77,7 +77,7 @@ export function buildCsvRows(
         ])
         rows.push(["Complex share of careful migrations (%)", inputs.complex])
         rows.push([
-            "AI-assisted vRO migration tool share (%)",
+            "Migration Assistant share (%)",
             inputs.tool,
             "Applied to medium first-of-a-kind hours",
         ])
@@ -89,7 +89,7 @@ export function buildCsvRows(
             "After rationalization, by hand, hours",
             Math.round(payback.manualHours),
         ])
-        rows.push(["With the migration tool, hours", Math.round(payback.hours)])
+        rows.push(["With the Migration Assistant, hours", Math.round(payback.hours)])
         rows.push(["Blended hourly rate", payback.rate])
         rows.push(["Migration cost", Math.round(payback.migrationCost)])
         rows.push([

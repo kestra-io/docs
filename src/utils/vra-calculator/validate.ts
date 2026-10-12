@@ -6,7 +6,7 @@ export const MESSAGES = Object.freeze({
     dupes: "The near-duplicate share has to be between 0 and 99 percent.",
     wrappers: "The wrapper share has to be between 0 and 100 percent.",
     complex: "The complex share has to be between 0 and 100 percent.",
-    tool: "The migration tool share has to be between 0 and 100 percent.",
+    tool: "The Migration Assistant share has to be between 0 and 100 percent.",
     rate: "Enter a blended hourly rate of zero or more.",
     hours: "Effort hours have to be zero or more.",
     today: "Enter your annual vRA and vRO spend, zero or more.",

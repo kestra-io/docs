@@ -1,10 +1,11 @@
 import type { CalcInputs, InputKey } from "./types"
 
 /**
- * Starting assumptions, confirmed final by the product team (including the
- * effort hours and the 55% tool share). Hour rates are manual conversion hours.
- * Wrappers migrate at no cost. The migration tool share reduces medium
- * first-of-a-kind hours; complex work stays at the manual rate.
+ * Starting assumptions. Hour rates are manual conversion hours. Wrappers
+ * migrate at no cost. The Migration Assistant share reduces medium
+ * first-of-a-kind hours; complex work stays at the manual rate. The 55% share
+ * is a placeholder with no measured source: the UI tells the visitor to
+ * replace it with the share measured in their proof of concept.
  *
  * `cur` is the fallback only: the UI picks the visitor's currency with
  * `currencyFromLocale` before first render.
