@@ -11,3 +11,19 @@ export const GUIDE_DOWNLOAD = {
     pageUri: "resources/migration/vra",
     event: "vra_migration_guide_download",
 }
+
+// The Migration Assistant's "Get help running it" request. Same dialog and
+// form as the PDF, without the download. The HubSpot form is not created yet.
+export const HELP_DIALOG_ID = "migration-assistant-help"
+export const HELP_DIALOG_TARGET = `#${HELP_DIALOG_ID}`
+
+export const HELP_REQUEST = {
+    hubspotFormId: "TODO-migration-assistant-help-form-id",
+    submissionIdentifier: "Migration Assistant vRA help",
+    pageUri: "resources/migration/vra/assistant",
+    event: "migration_assistant_vra_help_request",
+    title: "Get Help Running It",
+    submitLabel: "[Submit label TBC]",
+    thankYouTitle: "[Confirmation copy TBC]",
+    thankYouText: "",
+}

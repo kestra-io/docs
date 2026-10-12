@@ -1,8 +1,8 @@
 ---
-import { DOWNLOAD_DIALOG_TARGET } from "../download"
+import { DOWNLOAD_DIALOG_TARGET, HELP_DIALOG_TARGET } from "../download"
 
 interface Props {
-    kind: "talk" | "pdf" | "calc" | "assistant"
+    kind: "talk" | "pdf" | "calc" | "assistant" | "github" | "help"
     label?: string
     variant?: "primary" | "secondary"
 }
@@ -52,6 +52,34 @@ const { kind, label, variant = "primary" } = Astro.props
                 data-modal-target={DOWNLOAD_DIALOG_TARGET}
             >
                 {label ?? "Download the PDF"}
+            </button>
+        </p>
+    )
+}
+
+{
+    kind === "github" && (
+        <p class="guide-cta">
+            <a
+                class={`btn btn-${variant}`}
+                href="https://github.com/kestra-io/migration-assistant"
+                target="_blank"
+                rel="noopener"
+            >
+                {label ?? "View on GitHub"}
+            </a>
+        </p>
+    )
+}
+{
+    kind === "help" && (
+        <p class="guide-cta">
+            <button
+                type="button"
+                class={`btn btn-${variant}`}
+                data-modal-target={HELP_DIALOG_TARGET}
+            >
+                {label ?? "Need help running it?"}
             </button>
         </p>
     )
