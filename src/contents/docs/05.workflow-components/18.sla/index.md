@@ -13,14 +13,14 @@ SLAs define time or assertion-based checks on flow executions and trigger correc
   <iframe src="https://www.youtube.com/embed/FlkyPIWPLSk?si=KH3Aa7oqKcBBNuo1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Use the `sla` property at the root of a flow to declare one or more SLA checks. Each SLA specifies a `type`, the condition to check, and a `behavior` to trigger when the condition is violated.
+The `sla` property at the root of a flow declares one or more SLA checks. Each SLA specifies a `type`, the condition to check, and a `behavior` to trigger when the condition is violated.
 
 ## SLA types
 
 Kestra supports two SLA types:
 
-1. **MAX_DURATION** — the maximum allowed execution duration before the SLA is breached
-2. **EXECUTION_ASSERTION** — a Pebble expression that must evaluate to `true` during execution. If it evaluates to `false`, the SLA is breached.
+1. **MAX_DURATION**: the maximum allowed execution duration before the SLA is breached
+2. **EXECUTION_ASSERTION**: a Pebble expression that must evaluate to `true` during execution. If it evaluates to `false`, the SLA is breached.
 
 ### MAX_DURATION
 
@@ -80,15 +80,15 @@ tasks:
 
 The `behavior` property controls what happens when the SLA is breached:
 
-1. **CANCEL** — cancels the execution
-2. **FAIL** — fails the execution
-3. **NONE** — logs a message without stopping the execution
+1. **CANCEL**: cancels the execution
+2. **FAIL**: fails the execution
+3. **NONE**: logs a message without stopping the execution
 
 Each SLA can also set `labels` on the breached execution, making it easy to filter affected executions or trigger follow-up actions.
 
 ## Alerts on SLA breaches
 
-Use a Flow trigger on the `sla: miss` label to send an alert whenever an SLA is breached:
+The following example uses a Flow trigger on the `sla: miss` label to send an alert on SLA breaches:
 
 ```yaml
 id: sla_miss_alert
