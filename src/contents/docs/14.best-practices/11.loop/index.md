@@ -254,6 +254,34 @@ tasks:
         message: "Loop finished (with or without failures)"
 ```
 
+## Stop the loop early with `breakWhen`
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `breakWhen` to a Pebble expression evaluated after each iteration. When it returns a truthy value, the loop stops and marks remaining iterations as `SKIPPED`.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    concurrencyLimit: 1
+    values: ["ok", "fail", "ok", "ok"]
+    transmitFailed: false
+    breakWhen: "{{ iteration.state == 'FAILED' }}"
+    tasks:
+      - id: maybe_fail
+        type: io.kestra.plugin.core.flow.If
+        condition: '{{ item.value == "fail" }}'
+        then:
+          - id: do_fail
+            type: io.kestra.plugin.core.execution.Fail
+```
+
+Inside `breakWhen`, use `iteration.state` for the completed iteration's final state, `iteration.outputs` for its declared outputs, and `iteration.executionId` for its execution ID.
+
+Set `concurrencyLimit: 1` when using `breakWhen`. With parallel iterations running simultaneously, the break condition is evaluated per iteration as it finishes, so later iterations may already be running when an earlier one triggers the break.
+
 ## Use Loop + Subflow for isolated per-batch execution
 
 When each batch needs its own execution — independent retries, logs, and failure ownership — pair `Loop` with `Subflow`. The parent splits the data and fans out; the child flow receives one chunk URI per invocation and returns its result as a flow-level output.
