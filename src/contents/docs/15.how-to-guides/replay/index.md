@@ -6,7 +6,7 @@ sidebarTitle: Replay
 icon: /src/contents/docs/icons/dev.svg
 ---
 
-Replay re-runs a workflow execution from any chosen task, skipping tasks that already completed successfully. Use it to recover from failures without reprocessing upstream work, or to iterate on a specific task without re-running the full flow.
+Replay re-runs a workflow execution from any chosen task, skipping tasks that already completed successfully. Use it to recover from failures without reprocessing upstream tasks, or to iterate on a specific task without re-running the full flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/RvNc3gLXMEs?si=sBuEo3yPfJvi4K48" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
