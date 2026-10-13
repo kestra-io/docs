@@ -57,7 +57,6 @@ namespace: company.team
 tasks:
   - id: set_up_env
     type: io.kestra.plugin.ansible.cli.AnsibleCLI
-    resultsStorage: INLINE
     namespaceFiles:
       enabled: true
     taskRunner:
@@ -67,21 +66,22 @@ tasks:
       interpreter_python = auto_silent
       log_path={{ workingDir }}/log
       callback_plugins = ./callback_plugins
-      stdout_callback = kestra_logger
+      callbacks_enabled = kestra_logger
+      stdout_callback = ansible.builtin.null
     commands:
       - ansible-playbook -i inventory.ini myplaybook.yml
 
   - id: loop_hosts
     type: io.kestra.plugin.core.flow.Loop
-    values: "{{ outputs.set_up_env.playbooks[0].plays[0].tasks[0].hosts }}"
+    values: "{{ outputs.set_up_env.playbooks[0].plays[0].tasks[1].hosts }}"
     tasks:
       - id: check_drift
         type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-        runIf: "{{ fromJson(item.value).changed == true }}"
+        runIf: "{{ fromJson(item.value).result.changed == true }}"
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
-              "text": "Configuration updated on {{ item.key }} - {{ fromJson(item.value).msg ?? '' }}"
+              "text": "Configuration updated on {{ fromJson(item.value).host }} - {{ fromJson(item.value).result.msg ?? '' }}"
           }
 
 triggers:
@@ -101,6 +101,6 @@ In the execution outputs, you can examine results and debug expressions to use i
 
 ## Why this matters
 
-This pattern enforces a critical env var across a fleet to catch drift quickly, streams Ansible output in structured form via `stdout_callback = kestra_logger`, and alerts only on changed hosts to keep Slack noise low. Keeping the playbook and inventory as Namespace Files means you can version and reuse them across flows without hardcoding paths in each run.
+This pattern enforces a critical env var across a fleet to catch drift quickly, streams Ansible output in structured form via the `kestra_logger` callback, and alerts only on changed hosts to keep Slack noise low. Keeping the playbook and inventory as Namespace Files means you can version and reuse them across flows without hardcoding paths in each run.
 
 You can expand this pattern to check multiple config files, package versions, or CIS controls per host, while letting Kestra handle scheduling, secrets, notifications, and downstream tasks (tickets, S3 archiving, SIEM) so Ansible remediation and orchestration stay tightly linked.
