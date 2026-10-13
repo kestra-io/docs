@@ -199,7 +199,7 @@ When a Pod ends in a failed phase, the runner reports each container's exit code
 
 Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads alongside other input files. No dedicated image is needed, but see [Constraints](#constraints).
 
-kotlp reports the container's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT10S`):
+kotlp reports the command's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT10S`):
 
 | Metric | Type | Unit | Attribute |
 |---|---|---|---|
@@ -227,7 +227,7 @@ namespace: company.team
 tasks:
   - id: run
     type: io.kestra.plugin.scripts.shell.Commands
-    containerImage: ubuntu:latest
+    containerImage: swr.eu-west-101.myhuaweicloud.eu/my-org/alpine:3.20  # must provide /bin/sh, gzip, and a writable $TMPDIR
     taskRunner:
       type: io.kestra.plugin.ee.huawei.runner.Cci
       region: eu-west-101
@@ -260,6 +260,10 @@ Four requirements apply when monitoring is enabled:
 - An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
 
 `aws s3 sync` (used by the init container) drops the execute bit on downloaded files. The runner handles this automatically by copying the kotlp binary to a temporary file under `$TMPDIR` and setting the execute bit before invoking kotlp.
+
+After the task completes, the kotlp binary is removed from the local working directory and excluded from the `output-files` upload — it is never captured by `outputFiles` patterns, even `**`. With `delete: false`, the staged copy remains in the OBS staging prefix.
+
+Kestra output markers (`::{"outputs":...}::`) keep working under kotlp — the log consumer unwraps them and they produce task outputs as normal.
 
 ## Exit codes
 
