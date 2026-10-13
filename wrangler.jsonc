@@ -39,6 +39,10 @@
     },
     "upload_source_maps": true,
     "logpush": true,
+    // Deploy id, part of the SSR edge-cache key in src/middlewares/worker.ts.
+    "version_metadata": {
+        "binding": "CF_VERSION_METADATA",
+    },
     /**
      * Smart Placement
      * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
@@ -88,6 +92,9 @@
                     "id": "e9fb516da12640bdb4a2f9531eb9578c",
                 },
             ],
+            "version_metadata": {
+                "binding": "CF_VERSION_METADATA",
+            },
         },
     },
     /**

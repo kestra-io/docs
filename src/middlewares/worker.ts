@@ -172,7 +172,9 @@ function edgeCache(): EdgeCache {
     return (caches as unknown as { default: EdgeCache }).default
 }
 
-function edgeCacheKey(url: URL): Request {
+// The deploy id scopes entries to one deploy: a page cached by the previous one
+// links `/_astro/` hashes this deploy no longer serves.
+function edgeCacheKey(url: URL, deployId: string): Request {
     const keyUrl = new URL(url.toString())
     for (const param of [...keyUrl.searchParams.keys()]) {
         if (TRACKING_PARAMS.has(param.toLowerCase())) {
@@ -180,6 +182,7 @@ function edgeCacheKey(url: URL): Request {
         }
     }
     keyUrl.searchParams.sort()
+    keyUrl.searchParams.set("__deploy", deployId)
     return new Request(keyUrl.toString(), { method: "GET" })
 }
 
@@ -225,11 +228,14 @@ export default {
         // Worker, Cloudflare's CDN never caches the generated HTML on its own;
         // we do it explicitly via the Cache API so each page is rendered at
         // most once per TTL (and the CSP is rebuilt at most once per TTL too).
+        const deployId = (env as { CF_VERSION_METADATA?: { id: string } })
+            .CF_VERSION_METADATA?.id
         const canEdgeCache =
+            deployId !== undefined &&
             request.method === "GET" &&
             url.host === "kestra.io" &&
             isEdgeCacheablePage(url)
-        const cacheKey = canEdgeCache ? edgeCacheKey(url) : undefined
+        const cacheKey = canEdgeCache ? edgeCacheKey(url, deployId) : undefined
 
         if (cacheKey) {
             const hit = await edgeCache().match(cacheKey)
