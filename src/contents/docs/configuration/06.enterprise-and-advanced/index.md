@@ -416,16 +416,16 @@ kestra:
 
   plugins:
     management:
-      worker-access: CONTROLLER        # default: STORAGE
+      worker-access: CONTROLLER        # default: STORAGE; requires Kestra 2.1
 ```
 
-`CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it. `kestra.namespace-files.worker-access` and `kestra.plugins.management.worker-access` are available from Kestra 2.0.4; `kestra.kv.worker-access` requires Kestra 2.1.
+`CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it. `kestra.namespace-files.worker-access` is available from Kestra 2.0.4; `kestra.kv.worker-access` and `kestra.plugins.management.worker-access` require Kestra 2.1.
 
 | Property | Values | Default | Description |
 |---|---|---|---|
 | `kestra.kv.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes KV values. `CONTROLLER` routes all KV operations through the controller over gRPC. Requires Kestra 2.1. |
 | `kestra.namespace-files.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes namespace file content. `CONTROLLER` routes all file operations through the controller over gRPC. |
-| `kestra.plugins.management.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | How the worker fetches managed plugin artifacts. `CONTROLLER` pulls them through the controller over gRPC. |
+| `kestra.plugins.management.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | How the worker fetches managed plugin artifacts. `CONTROLLER` pulls them through the controller over gRPC. Requires Kestra 2.1. |
 
 ## Elasticsearch, Kafka, and indexing
 
