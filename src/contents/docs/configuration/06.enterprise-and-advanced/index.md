@@ -295,35 +295,26 @@ kestra:
 
 ## Dedicated-storage workers
 
-Some deployments run workers with their own dedicated storage bucket: a separate region, a customer-managed account, or a different storage provider from the rest of the deployment. Three categories of data need explicit configuration to stay consistent across the deployment.
+Some deployments run workers with their own dedicated storage bucket: a separate region, a customer-managed account, or a different storage provider from the rest of the deployment. Namespace file content needs explicit configuration to stay consistent across the deployment.
 
 **Namespace files.** Namespace file metadata is routed through the controller, but file content is read and written directly to storage. On a worker with dedicated storage, a file uploaded from the UI is listed on the worker but its content is unreachable, and a file written by a task on the worker cannot be read anywhere else.
 
 Set `kestra.namespace-files.worker-access: CONTROLLER` on the worker to route all namespace file reads and writes through the controller over gRPC.
 
-**Managed plugin artifacts.** When plugin versioning is enabled, workers sync plugin artifacts from the deployment's shared storage. On a worker with dedicated storage, those artifacts are unreachable directly.
-
-Set `kestra.plugins.management.worker-access: CONTROLLER` on the worker to pull plugin artifacts through the controller over gRPC instead.
-
-All three properties default to `STORAGE`, preserving the existing behavior for workers that share the deployment's storage.
+This property defaults to `STORAGE`, preserving the existing behavior for workers that share the deployment's storage.
 
 ```yaml
 # Worker configuration — dedicated-storage deployment
 kestra:
   namespace-files:
     worker-access: CONTROLLER          # default: STORAGE
-
-  plugins:
-    management:
-      worker-access: CONTROLLER        # default: STORAGE
 ```
 
-`CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it. Both properties are available from Kestra 2.0.4.
+`CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it. Available from Kestra 2.0.4.
 
 | Property | Values | Default | Description |
 |---|---|---|---|
 | `kestra.namespace-files.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes namespace file content. `CONTROLLER` routes all file operations through the controller over gRPC. |
-| `kestra.plugins.management.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | How the worker fetches managed plugin artifacts. `CONTROLLER` pulls them through the controller over gRPC. |
 
 ## Elasticsearch, Kafka, and indexing
 
