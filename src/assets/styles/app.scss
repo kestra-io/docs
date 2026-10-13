@@ -10,8 +10,14 @@
 }
 
 html {
+    --announce-height: 0px;
     height: 100%;
-    scroll-padding-top: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px));
+    // Every anchor target lands 1rem below the header; the bar height lives here because body's properties are out of html's reach.
+    scroll-padding-top: calc(var(--top-bar-height, 67px) + var(--announce-height) + 1rem);
+
+    &:has(body.has-annonces) {
+        --announce-height: 40px;
+    }
 }
 
 pre {
@@ -29,7 +35,6 @@ html.dark .markdown-renderer pre code span {
 }
 
 body {
-    --announce-height: 0px;
     min-width: 320px;
     min-height: 100%;
     position: relative;
@@ -37,11 +42,10 @@ body {
     color: var(--ks-content-primary);
 
     &.has-annonces {
-        --announce-height: 40px;
-        padding-top: 40px;
+        padding-top: var(--announce-height);
 
         #top-bar {
-            top: 40px;
+            top: var(--announce-height);
         }
     }
 }
@@ -75,7 +79,6 @@ h4,
 h5,
 h6 {
     font-weight: 600;
-    scroll-margin-top: 100px;
 }
 
 @include media-breakpoint-down(lg) {
