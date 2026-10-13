@@ -18,12 +18,6 @@ export default defineConfig({
         ? [["github"], ["html", { open: "never" }]]
         : "html",
 
-    expect: {
-        toHaveScreenshot: {
-            maxDiffPixelRatio: 0.01, // Allow up to 1% pixel difference for minor rendering variations
-        },
-    },
-
     use: {
         baseURL: "http://localhost:8787",
         navigationTimeout: 45_000,

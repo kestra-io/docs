@@ -7,17 +7,17 @@ editions: ["EE", "Cloud"]
 description: Run Kestra script tasks directly on Compute Engine VMs — no SSH, no IAP tunnel. The script runs as the instance's startup-script; logs stream from the serial console.
 ---
 
-Run script tasks directly on a Compute Engine VM instance — no SSH, no IAP tunnel.
+Run script tasks directly on a Compute Engine VM instance, with no SSH or IAP tunnel required.
 
 ## Overview
 
 The Google Compute Engine task runner injects the task script as the instance's `startup-script` metadata. When the VM boots, the guest environment runs the script automatically, mirrors its stdout and stderr to the serial console (port 1), and Kestra streams those lines back as task logs. Completion is detected via a `kestra/status` guest attribute the wrapper script writes on exit.
 
 This mechanism requires:
-- **Guest attributes enabled** — the runner sets `enable-guest-attributes` automatically on every instance it touches.
-- **An image with `bash`, `curl`, and `python3`** — the default Debian and Ubuntu Compute Engine images satisfy this. Custom images must include all three.
+- **Guest attributes enabled**: the runner sets `enable-guest-attributes` automatically on every instance it touches.
+- **An image with `bash`, `curl`, and `python3`**: the default Debian and Ubuntu Compute Engine images satisfy this. Custom images must include all three.
 
-Unlike the [Google Batch](../08.google-batch-task-runner/index.md) and [Google Cloud Run](../10.google-cloudrun-task-runner/index.md) runners, the Compute Engine runner executes commands from the working directory — use `{{ workingDir }}` or the `WORKING_DIR` environment variable when you need the explicit path.
+Unlike the [Google Batch](../08.google-batch-task-runner/index.md) and [Google Cloud Run](../10.google-cloudrun-task-runner/index.md) runners, the Compute Engine runner executes commands from the working directory. Use `{{ workingDir }}` or the `WORKING_DIR` environment variable when you need the explicit path.
 
 :::alert{type="warning"}
 If your project enforces the `compute.disableGuestAttributesAccess` organization policy, the runner fails fast with an actionable error on the first poll. Guest attributes cannot be selectively enabled for a single instance when this org policy is active.
@@ -42,8 +42,15 @@ taskRunner:
           sourceImage: projects/debian-cloud/global/images/family/debian-12
     networkInterfaces:
       - network: projects/my-project/global/networks/default
-        accessConfigs:
-          - type: ONE_TO_ONE_NAT
+        subnetwork: projects/my-project/regions/europe-west1/subnetworks/default
+    shieldedInstanceConfig:
+      enableSecureBoot: true
+      enableVtpm: true
+      enableIntegrityMonitoring: true
+    serviceAccounts:
+      - email: default
+        scopes:
+          - https://www.googleapis.com/auth/devstorage.read_write
 ```
 
 The `machineType` property (default `e2-medium`) always overrides any `machineType` set inside `instanceConfig`.
@@ -53,10 +60,10 @@ The `machineType` property (default `e2-medium`) always overrides any `machineTy
 Set `instanceName` to run the task on an already-existing VM. Startup scripts run only on boot, so the runner reboots the instance (`instances.reset`) if it is already running.
 
 :::alert{type="warning"}
-Rebooting an existing instance interrupts anything else currently running on it. Never target the same `instanceName` from two concurrent Kestra executions — the second reboot kills the first task's in-flight script.
+Rebooting an existing instance interrupts anything else currently running on it. Never target the same `instanceName` from two concurrent Kestra executions. The second reboot kills the first task's in-flight script.
 :::
 
-The runner never deletes an instance it did not create. Setting `deleteInstance: true` when using `instanceName` only cleans up the staged GCS blob prefix for that run; the instance itself is left untouched. Use `stopInstance: true` if you also want the instance stopped after the task completes.
+The runner never deletes an instance it did not create. Setting `deleteInstance: true` when using `instanceName` only cleans up the staged GCS blob prefix for that run; the instance itself is left untouched. `stopInstance` has no effect on instances targeted via `instanceName`. Stop the instance manually when you are done with it.
 
 ```yaml
 taskRunner:
@@ -78,7 +85,13 @@ Set `bucket` to enable `inputFiles`, `namespaceFiles`, `outputFiles`, and `{{ ou
 
 `bucket` is required when any file transfer is configured. The runner raises an error at task start if output files are requested without a bucket.
 
-The instance's network must be able to reach Cloud Storage — an external IP, [Cloud NAT](https://cloud.google.com/nat/docs/overview), or [Private Google Access](https://cloud.google.com/vpc/docs/private-google-access) all satisfy this. When creating a new instance via `instanceConfig`, include `serviceAccounts` with at least the `https://www.googleapis.com/auth/cloud-platform` scope. The startup script calls the instance metadata server at `/service-accounts/default/token` to obtain a GCS authentication token; without an attached service account, this call fails and file transfer silently breaks.
+The instance's network must be able to reach Cloud Storage and the metadata server. Enable [Private Google Access](https://cloud.google.com/vpc/docs/private-google-access) on the subnet or use [Cloud NAT](https://cloud.google.com/nat/docs/overview). Both let the VM reach `storage.googleapis.com` without a public IP. An external IP also works but is not recommended; see [Security hardening](#security-hardening).
+
+When creating a new instance via `instanceConfig`, include `serviceAccounts` with at least the `https://www.googleapis.com/auth/devstorage.read_write` scope. The startup script fetches a GCS token from `http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token`; without an attached service account, this call fails and file transfer silently breaks.
+
+:::alert{type="info"}
+The runner's `scopes` property controls the OAuth scopes for Kestra's own GCP credentials (used to call the Compute Engine and Cloud Storage APIs). It has no effect on the VM's service account scopes. Set those in `instanceConfig.serviceAccounts[].scopes`.
+:::
 
 ```yaml
 taskRunner:
@@ -94,10 +107,81 @@ taskRunner:
           sourceImage: projects/debian-cloud/global/images/family/debian-12
     networkInterfaces:
       - network: projects/my-project/global/networks/default
+        subnetwork: projects/my-project/regions/europe-west1/subnetworks/default
     serviceAccounts:
       - email: default
         scopes:
-          - https://www.googleapis.com/auth/cloud-platform
+          - https://www.googleapis.com/auth/devstorage.read_write
+```
+
+## Security hardening
+
+A common `instanceConfig` pattern includes `accessConfigs: [{type: ONE_TO_ONE_NAT}]`, which gives the VM a public IP. Security Command Center flags this as a high-severity finding. The recommended setup omits the external IP and uses Private Google Access or Cloud NAT instead.
+
+### No external IP
+
+Omit `accessConfigs` from `networkInterfaces` and specify `subnetwork` explicitly. The metadata server is always reachable from inside the VPC, so tasks that don't use a `bucket` need no other connectivity. Tasks that do need to reach `storage.googleapis.com` — enable Private Google Access on the subnet or use Cloud NAT:
+
+```yaml
+networkInterfaces:
+  - network: projects/my-project/global/networks/default
+    subnetwork: projects/my-project/regions/europe-west1/subnetworks/default
+    # No accessConfigs — no external IP
+```
+
+If GCS input or output fails after removing the external IP, check that Private Google Access is enabled on the subnet, or that a Cloud NAT gateway covers it.
+
+Images that need internet access at boot time (for example, to install packages) still need Cloud NAT. Private Google Access only covers Google API endpoints, not the general internet.
+
+### Shielded VM
+
+Enable Secure Boot, vTPM, and integrity monitoring via `shieldedInstanceConfig`. The standard Debian and Ubuntu Compute Engine images support all three:
+
+```yaml
+shieldedInstanceConfig:
+  enableSecureBoot: true
+  enableVtpm: true
+  enableIntegrityMonitoring: true
+```
+
+Custom or older images may not support Shielded VM. The `instances.insert` call fails if the image does not support the requested shielded features.
+
+### Least-privilege VM scope
+
+Grant the VM only the `devstorage.read_write` scope instead of `cloud-platform`. This is sufficient for all GCS file transfer the runner performs:
+
+```yaml
+serviceAccounts:
+  - email: default
+    scopes:
+      - https://www.googleapis.com/auth/devstorage.read_write
+```
+
+### Hardened example
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.gcp.runner.ComputeEngine
+  projectId: "{{ secret('GCP_PROJECT_ID') }}"
+  zone: europe-west1-b
+  bucket: my-staging-bucket
+  serviceAccount: "{{ secret('GOOGLE_SA') }}"
+  instanceConfig:
+    disks:
+      - boot: true
+        initializeParams:
+          sourceImage: projects/debian-cloud/global/images/family/debian-12
+    networkInterfaces:
+      - network: projects/my-project/global/networks/default
+        subnetwork: projects/my-project/regions/europe-west1/subnetworks/default
+    shieldedInstanceConfig:
+      enableSecureBoot: true
+      enableVtpm: true
+      enableIntegrityMonitoring: true
+    serviceAccounts:
+      - email: default
+        scopes:
+          - https://www.googleapis.com/auth/devstorage.read_write
 ```
 
 ## IAM permissions
@@ -168,7 +252,7 @@ taskRunner:
 |---|---|---|
 | `waitUntilCompletion` | `PT1H` | Maximum wall-clock time before the task times out. The task's own `timeout` takes precedence when set. |
 | `completionCheckInterval` | `PT5S` | How often to poll the guest attribute and stream new serial console log lines. |
-| `waitForLogInterval` | `PT5S` | Quiet period after the task ends — Kestra keeps polling the serial console until no new log lines arrive for this duration, then finalizes logs and outputs. |
+| `waitForLogInterval` | `PT5S` | Quiet period after the task ends. Kestra keeps polling the serial console until no new log lines arrive for this duration, then finalizes logs and outputs. |
 
 ```yaml
 taskRunner:
@@ -215,8 +299,15 @@ tasks:
               sourceImage: projects/debian-cloud/global/images/family/debian-12
         networkInterfaces:
           - network: "projects/{{ vars.projectId }}/global/networks/default"
-            accessConfigs:
-              - type: ONE_TO_ONE_NAT
+            subnetwork: "projects/{{ vars.projectId }}/regions/europe-west1/subnetworks/default"
+        shieldedInstanceConfig:
+          enableSecureBoot: true
+          enableVtpm: true
+          enableIntegrityMonitoring: true
+        serviceAccounts:
+          - email: default
+            scopes:
+              - https://www.googleapis.com/auth/devstorage.read_write
     commands:
       - echo "Hello World"
 ```

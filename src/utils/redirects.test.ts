@@ -13,6 +13,7 @@ const loadRules = (file: string): RedirectRule[] =>
 
 const docsRules = loadRules("docs")
 const blogsRules = loadRules("blogs")
+const indexRules = loadRules("index")
 
 describe("docs redirects", () => {
     // Every case below was a live 404 or a multi-hop chain ending in one.
@@ -105,5 +106,20 @@ describe("blogs redirects", () => {
     it("leaves the clean category paths alone", () => {
         expect(resolveRedirect("/blogs/company-news", blogsRules)).toBeNull()
         expect(resolveRedirect("/blogs/solutions", blogsRules)).toBeNull()
+    })
+})
+
+describe("index redirects", () => {
+    it.each([
+        ["/blog", "/blogs"],
+    ])("%s resolves to %s", (from, to) => {
+        expect(resolveRedirect(from, indexRules)).toBe(to)
+    })
+
+    it.each([
+        ["/blogs.md"],
+        ["/blogss.md"],
+    ])("%s resolves to null", (from) => {
+        expect(resolveRedirect(from, indexRules)).toBeNull()
     })
 })

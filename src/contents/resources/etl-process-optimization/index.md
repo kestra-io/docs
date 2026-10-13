@@ -109,7 +109,7 @@ Kestra is an open-source platform designed to orchestrate and optimize complex E
 
 *   **Declarative YAML Workflows:** Define all steps of your ETL process, including parallelism, error handling, and triggers, in simple, version-controllable YAML files.
 *   **Polyglot Task Execution:** Kestra can run tasks in any language, allowing you to use the best tool for the job, whether it's Python for transformation, SQL for loading, or a shell script for a custom utility. This matters for integrating with tools like [Snowflake](/blogs/2022-10-05-kestra-snowflake) and [Databricks](/blogs/2024-03-12-kestra-databricks).
-*   **Event-Driven Capabilities:** With over 1,700 plugins, Kestra can be triggered by events from a wide range of sources, including message queues, cloud storage, and webhooks, enabling real-time processing.
+*   **Event-Driven Capabilities:** With {totalPlugins}+ plugins, Kestra can be triggered by events from a wide range of sources, including message queues, cloud storage, and webhooks, enabling real-time processing.
 *   **Built-in Parallelism:** Easily define tasks that should run in parallel to speed up execution without complex coding.
 
 For example, implementing an incremental load from PostgreSQL to Snowflake can be defined declaratively in Kestra:

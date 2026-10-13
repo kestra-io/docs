@@ -111,7 +111,7 @@ For organizations with stringent security and compliance needs, open source proj
 
 ### Integration capabilities and ecosystem compatibility
 
-Open source tools thrive on interoperability, typically using open standards and APIs. Kestra’s library of over 1400 plugins and its language-agnostic design mean it can orchestrate almost any tool or system.
+Open source tools thrive on interoperability, typically using open standards and APIs. Kestra’s library of {totalPlugins}+ plugins and its language-agnostic design mean it can orchestrate almost any tool or system.
 
 Proprietary solutions may offer deep integrations with a specific vendor's ecosystem but can be restrictive when connecting to outside or competing tools. This can force you into a walled garden, limiting your flexibility and increasing long-term costs.
 

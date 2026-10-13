@@ -57,7 +57,7 @@ To provide a fair and comprehensive comparison, we evaluated each alternative ba
 
 [Kestra](/) is an open-source, event-driven orchestration platform that uses a declarative YAML interface to manage workflows across any domain. It stands out by providing a single control plane for not just data and AI but also infrastructure, business processes, and application integration.
 
-Kestra's language-agnostic architecture allows teams to run tasks written in any language—Python, SQL, R, Bash, Node.js—natively, without requiring wrapper code. This polyglot approach, combined with an extensive library of over 1400 plugins, makes it highly extensible. Workflows are defined as simple YAML files, making them easy to version, review, and manage through [GitOps](/resources/infrastructure/gitops) practices. This declarative model separates the workflow logic from the execution engine, enhancing reliability and simplifying maintenance.
+Kestra's language-agnostic architecture allows teams to run tasks written in any language—Python, SQL, R, Bash, Node.js—natively, without requiring wrapper code. This polyglot approach, combined with an extensive library of {totalPlugins}+ plugins, makes it highly extensible. Workflows are defined as simple YAML files, making them easy to version, review, and manage through [GitOps](/resources/infrastructure/gitops) practices. This declarative model separates the workflow logic from the execution engine, enhancing reliability and simplifying maintenance.
 
 For example, a simple workflow to fetch data from an API and load it into a database is expressed clearly in YAML:
 ```yaml

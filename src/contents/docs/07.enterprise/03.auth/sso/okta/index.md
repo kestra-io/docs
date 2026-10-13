@@ -7,11 +7,13 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
+Authenticate Kestra users with their Okta credentials using OpenID Connect.
+
 ## Prerequisites
 
 - An Okta Developer Account or Organization with administrative access.
 
-For more detail, refer to the [Okta OIDC setup documentation](https://help.okta.com/oie/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
+For more details, refer to the [Okta OIDC setup documentation](https://help.okta.com/oie/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
 
 ## Step 1: Create an App Integration
 
@@ -25,7 +27,7 @@ Next, select **Create App Integration**, select **OIDC - OpenID Connect** as the
 
 ## Step 2: Configure the web app integration
 
-In the General Settings, give your App integration a name and select **Authorization Code** as the grant type. Open **Advanced Settings** to configure additional grants — Okta supports direct-auth API grants such as OTP, OOB, MFA OTP, and MFA OOB.
+In **General Settings**, give your App integration a name and select **Authorization Code** as the grant type. Open **Advanced Settings** to configure additional grants — Okta supports direct-auth API grants such as OTP, OOB, MFA OTP, and MFA OOB.
 
 ![Okta app integration general settings with grant type selection](./okta-3.png)
 
@@ -78,3 +80,69 @@ On restart, Okta appears as an available login method.
 After logging in, go to **IAM → Users** to confirm the user shows both login methods in the **Login & API Tokens** column.
 
 ![User shown with Okta authentication in IAM Users tab](./okta-10.png)
+
+## Configure a default role for SSO users
+
+SSO users need a default role for initial access in Kestra. Add the following to `kestra.security`:
+
+```yaml
+kestra:
+  security:
+    defaultRole:
+      name: default_admin_role
+      description: "Default Admin Role"
+      permissions:
+        FLOW:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - EXECUTE
+          - DISABLE
+          - ENABLE
+          - VALIDATE
+          - EXPORT
+          - IMPORT
+        EXECUTION:
+          - VIEW
+          - LIST
+          - UPDATE
+          - DELETE
+          - RESTART
+          - KILL
+          - REPLAY
+          - PAUSE
+          - RESUME
+          - CHANGE_LABELS
+          - ACCESS_LOGS
+          - ACCESS_OUTPUTS
+          - ACCESS_FILES
+          - EXPORT
+          - UNQUEUE
+          - FORCE_RUN
+          - FOLLOW
+        NAMESPACE:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - MANAGE_FILES
+        SECRET: ["VIEW", "LIST", "UPDATE", "DELETE"]
+        KVSTORE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        BLUEPRINT: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        ROLE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        GROUP: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_MEMBERS"]
+        USER: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_GROUP_MEMBERSHIP"]
+        BINDING: ["VIEW", "LIST", "CREATE", "DELETE"]
+        AUDITLOG: ["VIEW", "LIST", "EXPORT"]
+  ee:
+    tenants:
+      enabled: true
+      defaultTenant: false
+```
+
+:::alert{type="info"}
+Place `defaultRole` under `kestra.security`, not under `micronaut.security`. The example above grants broad access — adjust the action lists to match the permissions your users actually need in production.
+:::

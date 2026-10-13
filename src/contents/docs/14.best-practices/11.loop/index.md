@@ -104,9 +104,11 @@ Inside the loop, sibling task outputs are accessed with plain `outputs.task_id.a
 
 ## Use `concurrencyLimit` deliberately
 
-- `1` (default) — sequential execution
-- A positive integer — bounded parallelism; prefer this for heavy workloads
-- `0` — unlimited; all iterations run simultaneously; avoid for large datasets unless you understand the resource implications
+- `0` (default): unlimited; all iterations run simultaneously and workers regulate actual throughput
+- A positive integer: bounded parallelism; set this for heavy workloads to avoid overwhelming workers
+- `1`: sequential execution; use when order matters or resources are constrained
+
+Any value set on the task or via a [policy](../../07.enterprise/02.governance/policies/index.md) takes precedence over the default.
 
 ## Process large files with Split and Loop
 
@@ -310,6 +312,6 @@ tasks:
 - Do not access `item.value.field` directly on object values — use `fromJson(item.value).field`.
 - Do not expect loop outputs to be visible downstream without declaring an `outputs:` block.
 - Do not use `outputs.task_id[item.value]` inside a loop — sibling outputs are accessed with plain `outputs.task_id.attribute`.
-- Do not set `concurrencyLimit: 0` on very large datasets without considering memory and worker capacity.
+- For very large datasets, set an explicit `concurrencyLimit` to cap parallelism. The default unlimited behavior can overwhelm workers if iterations are resource-intensive.
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop) and the [Flowable Tasks reference](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop).
