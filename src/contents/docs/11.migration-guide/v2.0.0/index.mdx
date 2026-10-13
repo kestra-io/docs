@@ -75,6 +75,7 @@ Changes to flow configuration, permissions, and plugin defaults. The SDK auth an
 |---|---|---|
 | [SDK authentication required for internal tasks](./sdk-authentication) | OSS, EE | Tasks that call the Kestra API internally (git sync tasks, and others) now require explicit credentials. Add an `auth` block to the task, configure a namespace/tenant default service account, or set `kestra.tasks.sdk.authentication` in your server config. |
 | [Git dashboard tasks moved to EE](./git-dashboard-tasks-moved-to-ee) | EE | `io.kestra.plugin.git.SyncDashboards` and `PushDashboards` are removed from the OSS plugin and replaced by `io.kestra.plugin.ee.git.SyncDashboards` and `PushDashboards`. OSS flows referencing the old types will fail to load. `PushDashboards` output field `flows` is renamed to `dashboards`. |
+| [EE Git Clone removed](./ee-git-clone-removed) | EE | `io.kestra.plugin.ee.git.Clone` is removed. Flows that reference it return `422 Invalid type` on save. Replace with `io.kestra.plugin.git.Clone`; SSH flows using `privateKey` also require `strictHostKeyChecking: true` to preserve the host-key verification behavior the EE task had by default. |
 | [pluginDefaults removed](./plugin-defaults-removed) | OSS, EE | The `pluginDefaults` keyword is removed at all scopes. EE users migrate to Policies; OSS users inline task values manually. |
 | [pluginDefaults.forced removed from flows](./plugin-defaults-forced-removed) | OSS, EE | The `forced` property on flow-level `pluginDefaults` is removed. Use `Add` rules with `override: true` in a Policy (EE) or inline the values (OSS). |
 | [RBAC action model](./rbac-action-model) | EE | The CRUD-based permission model is replaced by a resource and action model. Existing roles are migrated automatically; CLI role definitions require updates. |
@@ -107,6 +108,14 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 |---|---|---|
 | [Terraform provider](./terraform-provider) | EE, Cloud | The `permissions` block on `kestra_role` is renamed to `resources` with `actions` instead of CRUD verbs; `plugin_defaults` and `worker_group` are removed from `kestra_namespace`; `kestra_template` resources must be deleted. Pin to `~> 2.0`. |
 | [Super Admin renamed to Instance Owner](./superadmin-renamed-instance-owner) | EE, Cloud | The Super Admin privilege is renamed to Instance Owner. Deprecated CLI, config, and request-body aliases are retained. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update API consumers that read this field. |
+
+### CLI
+
+Changes to `kestractl` behavior. Relevant for teams using the CLI in CI/CD pipelines.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [flows bulk-update --delete default](./bulk-update-delete-default) | OSS, EE | `--delete` now defaults to `false`. Pipelines relying on the previous default must pass `--delete` explicitly to delete flows absent from the file. |
 
 ## Completing the migration
 

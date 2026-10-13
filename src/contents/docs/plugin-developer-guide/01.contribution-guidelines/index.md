@@ -56,11 +56,35 @@ public void kill() {
 - `kill()` and `stop()` must never throw or block: catch and log cancellation failures instead of propagating them.
 - Only override `stop()` too when a graceful shutdown should equally avoid orphaning the resource — typically the same cancellation logic as `kill()`.
 - Prefer a shared base class when several tasks in a plugin submit the same kind of cancellable job: implement the hook once instead of duplicating it per task.
-- Annotate mutable lifecycle fields (`AtomicBoolean`, `AtomicReference`, a cached client, …) with `@EqualsAndHashCode.Exclude` and `@ToString.Exclude` — they are runtime state, not part of the task's declarative identity.
+- Annotate mutable lifecycle fields (`AtomicBoolean`, `AtomicReference`, `CountDownLatch`, …) with `@EqualsAndHashCode.Exclude` and `@ToString.Exclude` — they are runtime state, not part of the task's declarative identity.
 
 When a service ships both a polling [`Trigger`](../04.trigger/index.md) and a `RealtimeTrigger`, extract a shared `Abstract<Service>Trigger extends AbstractTrigger implements <Service>ConnectionInterface` that holds the connection properties and client factory, so both triggers inherit them instead of redeclaring each field. A `Task` and a `Trigger` for the same service cannot share a superclass, so connection properties are an accepted exception — keep the two declarations in lockstep (same validation, defaults, `@Schema` wording, and secret annotations on both copies).
 
 **Polling triggers must never re-fire on an item they already delivered.** Persist a watermark (last-seen ID, sequence number, or timestamp) in the flow's namespace KV Store (`runContext.namespaceKv(namespace)`) and advance it on every poll, not only when the trigger fires. If the KV key concatenates several identifiers, length-prefix each segment (e.g. `svc_watermark_<flowId.length()>_<flowId>_<triggerId>`) so a plain `_` join can't let `("ab", "c")` and `("a", "bc")` collide onto the same key.
+
+---
+
+## Stateless tasks and triggers
+
+Keep tasks and triggers **stateless**. Each `run()` or `evaluate()` call builds what it needs from its rendered properties, uses it, and releases it before returning. A task instance is a declarative definition: it can be re-created, run on any worker, and run many times in parallel, so nothing may survive between runs.
+
+Do not keep any of these on a task or trigger, or in a `static` field:
+
+- A connection pool (JDBC/HikariCP, HTTP, Redis, broker).
+- A long-lived or cached client or SDK instance shared across runs.
+- An open session, socket, or file handle.
+- A cache, a counter, or a "last seen" value held in memory.
+- Any other mutable field that one run writes and a later run reads.
+
+Instead:
+
+- Create the client inside `run()` and close it in a `try-with-resources` or `finally` block, so it never outlives the run.
+- Persist state that must survive between runs outside the JVM, in the namespace KV Store (see the polling watermark rule above) or in internal storage.
+- A realtime trigger may hold a connection for the life of the trigger, but it must free the connection on stop and rebuild it from its properties on restart.
+
+The only instance fields allowed are the `kill()` and `stop()` lifecycle handles described above, and they are not shared across runs.
+
+A pool or cached client tied to a task instance leaks connections when the instance is dropped, breaks when the same task runs on another worker or in parallel, and goes stale when properties are re-rendered.
 
 ---
 
@@ -116,6 +140,7 @@ Use the standard serializers and avoid breaking changes from upstream APIs.
 - Must use Jackson mappers provided by core (`io.kestra.core.serializers`).
 - Add `@JsonIgnoreProperties(ignoreUnknown = true)` at the mapped class level when serializing responses from external APIs to prevent crashes when providers add new fields. Never assume response stability.
 - **Never mutate the mappers returned by `JacksonMapper.of*()`**: they are process-wide shared singletons, and reconfiguring one (`registerModule`, `configure`, `setSerializationInclusion`, …) changes serialization for every plugin in the JVM. If you need a customized mapper, `.copy()` it first and mutate the copy.
+- **Never call `activateDefaultTyping(...)` or use `@JsonTypeInfo(use = Id.CLASS)`**: both let the payload choose which class to instantiate. Use `Id.NAME` with registered subtypes.
 
 ---
 
@@ -156,6 +181,10 @@ Keep new packages aligned with project conventions and metadata.
 - Use `"{{ secret('YOUR_SECRET') }}"` in the examples for sensitive info such as an API key.
 - Align the `"""` to close examples blocks with the flow id.
 - Update the existing `index.yaml` for the main plugin, and for each new subpackage add a metadata file named exactly after the subpackage (e.g. `s3.yaml` for `io.kestra.plugin.aws.s3`) under `src/main/resources/metadata/`, following the same schema — never invent fields, and make sure `group` matches the Java package name of the subpackage.
+- **Ticketing systems** (Jira, GitHub issues, ServiceNow, Zendesk, …): the task that **creates** a ticket must implement the marker interface `io.kestra.core.models.tasks.TicketingTaskInterface`, alongside `RunnableTask` (e.g., `public class Create extends JiraClient implements RunnableTask<Create.Output>, TicketingTaskInterface`). Kestra lists the plugin in `GET /api/v1/plugins/ticketing-systems` only through that marker — without it, the ticketing system is invisible to the catalog. See [kestra-io/plugin-jira#104](https://github.com/kestra-io/plugin-jira/pull/104).
+  - Implement it on the ticket-creating task **only**: tasks that comment on, search, update, or transition a ticket are not ticketing tasks.
+  - The interface ships from Kestra `1.3.42` and `2.0.5`: bump `kestraVersion` in `gradle.properties` to at least that patch of the plugin's line if it is older, or the build fails to resolve the import.
+  - Add no test asserting the class implements the interface — the catalog behavior is covered by the Kestra core tests.
 
 ---
 
