@@ -50,7 +50,7 @@ The most valuable enterprise platforms bridge the gap between static knowledge d
 ## The 6 best Glean alternatives and competitors
 
 ### 1. Kestra (Best for workflow orchestration and automated AI pipelines)
-Kestra is an open-source workflow orchestration platform that unifies data, AI, infrastructure, and business processes under a single declarative control plane. Rather than functioning as a standalone search bar, Kestra provides the foundational execution engine to build custom enterprise search and RAG pipelines using YAML. With over 1,700 plugins connecting vector databases, LLM providers (OpenAI, Anthropic, Mistral, Vertex AI), and SaaS tools, Kestra enables engineering teams to ingest documents, generate embeddings, and orchestrate complex AI workflows without vendor lock-in.
+Kestra is an open-source workflow orchestration platform that unifies data, AI, infrastructure, and business processes under a single declarative control plane. Rather than functioning as a standalone search bar, Kestra provides the foundational execution engine to build custom enterprise search and RAG pipelines using YAML. With {totalPlugins}+ plugins connecting vector databases, LLM providers (OpenAI, Anthropic, Mistral, Vertex AI), and SaaS tools, Kestra enables engineering teams to ingest documents, generate embeddings, and orchestrate complex AI workflows without vendor lock-in.
 
 - **Best for:** Engineering and platform teams building custom, event-driven AI pipelines and automated enterprise search solutions.
 - **Distinctive feature:** Language-agnostic execution paired with native event-driven triggers and human-in-the-loop approvals.
@@ -96,7 +96,7 @@ Workato is an enterprise-grade integration platform (iPaaS) that combines robust
 
 | Tool | License | Primary Focus | Open Source | Custom RAG / Workflows | Deployment Model |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Kestra** | Open Source (Apache 2.0) / EE | Workflow Orchestration & AI Pipelines | Yes | Advanced (YAML / 1700+ plugins) | Self-Hosted, K8s, Cloud |
+| **Kestra** | Open Source (Apache 2.0) / EE | Workflow Orchestration & AI Pipelines | Yes | Advanced (YAML / {totalPlugins}+ plugins) | Self-Hosted, K8s, Cloud |
 | **Onyx** | Open Source | Enterprise Search & Chat | Yes | Moderate (Self-hosted RAG) | Self-Hosted |
 | **Dust** | Proprietary (SaaS) | Tailored Team AI Assistants | No | Moderate (Modular Builders) | Cloud SaaS |
 | **Microsoft Copilot** | Proprietary (SaaS) | M365 Productivity & Search | No | Limited (Microsoft Ecosystem) | Cloud SaaS |

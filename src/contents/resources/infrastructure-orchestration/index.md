@@ -116,7 +116,7 @@ Kestra is an [open-source](https://github.com/kestra-io/kestra), declarative pla
 
 With Kestra, you define workflows as simple YAML files, making them easy to version, review, and manage with GitOps practices. The platform can be deployed self-hosted on-premises, in the cloud, or in air-gapped environments, meeting strict enterprise security and data residency requirements.
 
-Instead of replacing your specialized tools, Kestra orchestrates them. With over 2,000 plugins, you can natively [orchestrate Terraform](/orchestration/terraform), [run Ansible playbooks](/orchestration/ansible), manage Kubernetes jobs, and integrate with ITSM platforms like ServiceNow. Kestra provides the missing layer of dependency management, human-in-the-loop approvals, and a centralized audit trail, giving platform engineers and operators a single platform to [orchestrate infrastructure from one control plane](/infra-automation).
+Instead of replacing your specialized tools, Kestra orchestrates them. With {totalPlugins}+ plugins, you can natively [orchestrate Terraform](/orchestration/terraform), [run Ansible playbooks](/orchestration/ansible), manage Kubernetes jobs, and integrate with ITSM platforms like ServiceNow. Kestra provides the missing layer of dependency management, human-in-the-loop approvals, and a centralized audit trail, giving platform engineers and operators a single platform to [orchestrate infrastructure from one control plane](/infra-automation).
 
 Here is an example of an end-to-end workflow that provisions and configures a server, complete with a manual approval gate:
 

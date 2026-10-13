@@ -29,9 +29,9 @@ The variables available in a `when` expression depend on the trigger type. For S
 |---|---|
 | Schedule | `trigger.date` |
 | Webhook | `trigger.body`, `trigger.headers` |
-| Flow (`dependsOn.when`) | `flow.namespace`, `flow.id`, `labels`, `execution.outputs`, `execution.state` |
+| Flow (`dependsOn.when`) | `namespace` (also `flow.namespace` / `execution.namespace`), `flowId` (also `flow.id` / `execution.flowId`), `state`, `hasRetryAttempt`, `labels`, `execution.outputs` |
 
-`flow` refers to the upstream flow (the one that just completed). `execution.outputs` holds the upstream flow's declared outputs. `outputs` is also available but holds task outputs, not flow-level outputs — use `execution.outputs.<key>` to filter on flow outputs.
+`flow.namespace` and `flow.id` refer to the upstream flow (the one that just completed) and are equivalent to the bare `namespace` and `flowId`. `execution.namespace` and `execution.flowId` are additional aliases for the same values. `execution.outputs` holds the upstream flow's declared outputs; `outputs` is also available but holds task outputs — use `execution.outputs.<key>` to filter on flow outputs.
 
 :::alert{type="info"}
 **Schedule date skipping:** When a Schedule trigger has a `when` expression, the scheduler evaluates it against each candidate date. If `when` evaluates to `false`, the scheduler skips that date and advances to the next cron-matching date. This is the same behavior as the previous `conditions` on Schedule triggers; `when` controls which scheduled dates fire, not just whether a single date fires.
@@ -51,6 +51,7 @@ These functions are introduced specifically for `when` expressions to replace ve
 | `hourOfDay` | `hourOfDay(date)` | Returns the hour as an integer (0–23). |
 | `dayOfMonth` | `dayOfMonth(date)` | Returns the day of the month as an integer (1–31). |
 | `monthOfYear` | `monthOfYear(date)` | Returns the month as an integer (1–12). |
+| `isDateBetween` | `isDateBetween(date, after, before)` | Returns `true` if the date is strictly after `after` and strictly before `before`, compared as instants. Available from 2.0.4. |
 
 Existing Pebble filters (`startsWith`, `endsWith`, `date`, `timestamp`) and operators (`and`, `or`, `not`, `==`, `!=`, `>`, `<`, `>=`, `<=`) cover the remaining use cases.
 
@@ -252,15 +253,18 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "*/5 * * * *"
-    when: "{{ (trigger.date | timestamp()) > ('2025-12-31T23:59:59Z' | timestamp()) and (trigger.date | timestamp()) < ('2026-06-30T23:59:59Z' | timestamp()) }}"
+    when: "{{ isDateBetween(trigger.date, '2025-12-31T23:59:59Z', '2026-06-30T23:59:59Z') }}"
 ```
 
+Give both bounds an explicit offset (`Z` or `±HH:MM`); a datetime without one raises an error.
+
 :::alert{type="info"}
-Inside a `when` expression `trigger.date` is a `ZonedDateTime`, not a string. Comparing it
-directly against a string literal raises `Could not perform greater than comparison`, and the
-scheduler emits a FAILED execution on every scheduled date. Convert both sides with
-`| timestamp()`, and always give the literal an explicit offset (`Z` or `±HH:MM`) — a literal
-without one is resolved in the server's default timezone.
+`isDateBetween()` is available from Kestra 2.0.4. On 2.0.0 to 2.0.3, convert both sides with
+`| timestamp()` instead:
+`when: "{{ (trigger.date | timestamp()) > ('2025-12-31T23:59:59Z' | timestamp()) and (trigger.date | timestamp()) < ('2026-06-30T23:59:59Z' | timestamp()) }}"`.
+Do not compare `trigger.date` directly against a string literal: inside a `when` expression it is
+a `ZonedDateTime`, so the comparison raises `Could not perform greater than comparison` and the
+scheduler emits a FAILED execution on every scheduled date.
 :::
 
 ### Schedule: specific hours only
@@ -384,14 +388,14 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 | `PublicHoliday` (country: FR) | `{{ isPublicHoliday(trigger.date, 'FR') }}` |
 | `Not` > `PublicHoliday` + `Weekend` (workdays) | `{{ not isWeekend(trigger.date) and not isPublicHoliday(trigger.date, 'FR') }}` |
 | `DayWeekInMonth` (MONDAY, FIRST) | `{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}` |
-| `DateTimeBetween` (after/before) | `{{ (trigger.date \| timestamp()) > ('2025-12-31T23:59:59Z' \| timestamp()) and (trigger.date \| timestamp()) < ('2026-06-30T23:59:59Z' \| timestamp()) }}` |
+| `DateTimeBetween` (after/before) | `{{ isDateBetween(trigger.date, '2025-12-31T23:59:59Z', '2026-06-30T23:59:59Z') }}` |
 | `TimeBetween` (08:00-17:00) | `{{ hourOfDay(trigger.date) >= 8 and hourOfDay(trigger.date) < 17 }}` |
 | `Expression` (custom Pebble) | Direct `when` expression, no wrapper needed |
 | `Expression` on webhook body | `{{ trigger.body.field == 'value' }}` |
 | `Expression` on webhook headers | `{{ trigger.headers['X-Key'] contains 'value' }}` — header values are lists; use `contains` not `==`. The header name must match the exact casing the sender uses. |
 | Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
 
-For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference. The `timestamp` filter used above is documented with the [date filters](../../../expressions/03.filters/04.dates/index.mdx).
+For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, `isDateBetween`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference. The `timestamp` filter used for 2.0.0 to 2.0.3 is documented with the [date filters](../../../expressions/03.filters/04.dates/index.mdx).
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers
 
@@ -672,9 +676,20 @@ triggers:
       - type: io.kestra.plugin.core.condition.HasRetryAttempt
 ```
 
-:::alert{type="warning"}
-`HasRetryAttempt` has no working replacement. `hasRetryAttempt` is not available yet in the `when` expression context. Until it is, this condition cannot be migrated.
-:::
+**After**
+
+```yaml
+triggers:
+  - id: after_flaky
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: flaky_pipeline
+        namespace: company.team
+        states: [SUCCESS]
+        when: "{{ hasRetryAttempt == true }}"
+```
+
+`hasRetryAttempt` is `true` when the upstream execution had at least one retry attempt before reaching a terminal state.
 
 ### Negation: trigger on any state except SUCCESS
 
@@ -930,7 +945,7 @@ triggers:
 | `ExecutionNamespace` (`comparison: PREFIX`) | `when: "{{ flow.namespace \| startsWith('...') }}"` on the entry |
 | `ExecutionLabels` (`labels: {k: v}`) | `labels: {k: v}` on the `dependsOn` entry |
 | `ExecutionOutputs` (`expression`) | `when` with `execution.outputs.<key>` on the entry (flow-level outputs) |
-| `HasRetryAttempt` | no working replacement — `hasRetryAttempt` is not available yet in the `when` context |
+| `HasRetryAttempt` | `when: "{{ hasRetryAttempt == true }}"` on the `dependsOn` entry |
 | `Not` > `ExecutionStatus` | Explicit `states` list only — `state` is not available in the `when` context; use `execution.state` for expression-based checks |
 | `where` filter `REGEX` | `{{ flow.id \| regexMatch('^pattern$') }}` — note: `regexMatch` matches anywhere in the value (partial match), while 1.3 `REGEX` matched the whole value. Use `^...$` anchors to preserve 1.3 behavior. |
 | Multiple triggers for OR logic | `mode: ANY` with `dependsOn` entries |

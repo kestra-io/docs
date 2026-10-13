@@ -130,5 +130,3 @@ It's also important to distinguish between orchestration and processing. Cloud C
 ## Conclusion
 
 Moving away from Google Cloud Composer opens up a diverse landscape of powerful orchestration tools. The decision hinges on whether you need a lightweight serverless solution, an enterprise-grade managed Airflow platform, or a flexible, multi-domain control plane. By evaluating your specific requirements around cost, control, ecosystem, and language support, you can select an alternative that not only solves today's challenges but also scales with your future needs.
-
-If a modern, declarative, and language-agnostic approach aligns with your goals, [get started with Kestra's open-source edition](https://kestra.io/get-started) to see how it can simplify your orchestration across your entire stack.

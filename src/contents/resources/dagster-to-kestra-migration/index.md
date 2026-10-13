@@ -42,7 +42,7 @@ Your business logic stays in Python. What changes is where orchestration lives: 
 
 ### What you gain
 
-- **Language-agnostic orchestration.** Not everything is Python anymore: Bash, Node.js, Go, R, Julia, SQL, and containerized workloads are first-class citizens, backed by a plugin ecosystem of 1,800+ plugins.
+- **Language-agnostic orchestration.** Not everything is Python anymore: Bash, Node.js, Go, R, Julia, SQL, and containerized workloads are first-class citizens, backed by a plugin ecosystem of {totalPlugins}+ plugins.
 - **One declarative model for orchestration, triggers, and deployment.** Flow definitions, scheduling, event triggers, and environment configuration all live in the same YAML, versioned in Git.
 - **UI-based development.** Flows can be authored, tested, and monitored from the built-in editor — no local development environment required to get started.
 - **API-first platform with Terraform support.** Everything you can do in the UI is available through the API and infrastructure-as-code.

@@ -149,7 +149,7 @@ Kestra workflows are defined in simple, declarative YAML. This "infrastructure a
 
 ### Boosting Efficiency Across Data, AI, and Infrastructure Workflows
 
-Kestra acts as a universal control plane, connecting disparate tools and teams. Instead of writing brittle glue code, you can use over 1,700 plugins to orchestrate everything from data pipelines to infrastructure provisioning and AI model deployments. This language-agnostic approach allows you to run [business logic in Python](/blogs/2024-03-27-python-business-logic) alongside shell scripts, SQL queries, and containerized applications, all within a single workflow.
+Kestra acts as a universal control plane, connecting disparate tools and teams. Instead of writing brittle glue code, you can use {totalPlugins}+ plugins to orchestrate everything from data pipelines to infrastructure provisioning and AI model deployments. This language-agnostic approach allows you to run [business logic in Python](/blogs/2024-03-27-python-business-logic) alongside shell scripts, SQL queries, and containerized applications, all within a single workflow.
 
 ```yaml
 id: monthly_finance_report

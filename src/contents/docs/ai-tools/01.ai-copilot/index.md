@@ -68,12 +68,13 @@ To add Copilot to your flow editor, add one of the following to your configurati
 ```yaml
 kestra:
   ai:
-    - id: gemini
-      display-name: Gemini
-      type: gemini
-      configuration:
-        api-key: YOUR_GEMINI_API_KEY
-        model-name: gemini-3.5-flash-lite
+    providers:
+      - id: gemini
+        display-name: Gemini
+        type: gemini
+        configuration:
+          api-key: YOUR_GEMINI_API_KEY
+          model-name: gemini-3.5-flash-lite
 ```
 
 For Enterprise, the `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):
@@ -117,7 +118,7 @@ kestra:
 The property defaults to `true`.
 
 :::alert{type="warning"}
-**Known issue (Kestra 2.0.0):** `kestra.ai.enabled: false` does not fully disable AI Copilot in the current release. The Copilot UI button remains visible and the feature continues to respond. This is being tracked and will be resolved in an upcoming release.
+**Known issue (Kestra 2.0.0):** `kestra.ai.enabled: false` does not fully disable AI Copilot in the current release. The Copilot UI button and other AI features such as "Fix with AI" remain visible and the feature continues to respond. This is being tracked and will be resolved in an upcoming release.
 :::
 
 ### Multiple providers

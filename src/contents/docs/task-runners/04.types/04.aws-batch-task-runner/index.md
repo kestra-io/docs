@@ -710,6 +710,69 @@ taskRunner:
 | `stsEndpointOverride` | Override the STS endpoint URL (optional, useful in GovCloud or custom environments). |
 | `stsRoleSessionDuration` | Duration of the assumed-role session (optional; defaults to the AWS minimum). |
 
+## Monitoring
+
+Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory and uploads with input files. No image change is needed.
+
+kotlp reports the container's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
+
+| Metric | Type | Unit | Attribute |
+|---|---|---|---|
+| `process.cpu.time` | sum | `s` | `cpu.mode`: `user` or `system` |
+| `process.cpu.utilization` | gauge | `1` | `cpu.mode`: `user` or `system` |
+| `process.memory.usage` | gauge | `By` | — |
+| `process.memory.virtual` | gauge | `By` | — |
+| `process.disk.io` | sum | `By` | `disk.io.direction`: `read` or `write` |
+| `process.network.io` | sum | `By` | `network.io.direction`: `receive` or `transmit` |
+| `process.thread.count` | gauge | `{thread}` | — |
+| `process.open_file_descriptor.count` | gauge | `{count}` | — |
+
+The three sum metrics (`process.cpu.time`, `process.disk.io`, `process.network.io`) are cumulative and reflect totals for the entire run. `process.network.io` counts all traffic in the network namespace the command runs in, including loopback, not only the command's own. The gauge metrics reflect the last sample taken before the command exits, not a peak. A task that spikes memory early and frees it before finishing reports the figure at exit, not the high-water mark.
+
+kotlp also runs an embedded OTLP receiver, so traces the command exports are captured as task traces.
+
+Monitoring fixes a limitation in pooled compute: the log stream cannot distinguish stdout from stderr. kotlp tags each line with the stream it came from, so lines the command wrote to stderr are logged at ERROR instead of INFO.
+
+```yaml
+id: batch_with_monitoring
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: ubuntu:latest
+    taskRunner:
+      type: io.kestra.plugin.ee.aws.runner.Batch
+      region: eu-central-1
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+      computeEnvironmentArn: "{{ secret('AWS_BATCH_COMPUTE_ENV_ARN') }}"
+      executionRoleArn: "{{ secret('AWS_BATCH_EXECUTION_ROLE_ARN') }}"
+      taskRoleArn: "{{ secret('AWS_BATCH_TASK_ROLE_ARN') }}"
+      bucket: "{{ secret('S3_BUCKET') }}"
+      monitoring:
+        enabled: true
+    commands:
+      - echo "stdout line"
+      - echo "stderr line" >&2
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `monitoring.enabled` | `false` | When true, wraps the task command with kotlp. |
+| `monitoring.metricsInterval` | `PT1S` | How often kotlp samples the container's resource usage. Accepts values between `PT0.001S` and `PT1H`. |
+
+### Constraints
+
+Four requirements apply when monitoring is enabled:
+
+- `bucket` must be configured. kotlp is staged as a working-directory file and uploaded to S3 through the inputFiles sidecar, so the sidecar always runs. The task fails immediately if `bucket` is absent.
+- The image must provide `/bin/sh`, `gzip`, and standard POSIX utilities (`mktemp`, `cp`, `chmod`). The container must also have a writable `$TMPDIR` (default `/tmp`). Standard images (Ubuntu, Debian, Alpine, Amazon Linux) satisfy all requirements. `scratch` and distroless images do not work.
+- An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
+- `streamLogs` must be `true` (the default). kotlp's metrics and logs reach Kestra through the CloudWatch log stream; `monitoring.enabled: true` has no effect when `streamLogs: false`. A warning is emitted when both are set.
+
+Monitoring is not supported on local emulator (inferred EKS) compute environments, which have no file staging. The task fails immediately if monitoring is enabled in that configuration.
+
 ## Execution details
 
 When you open an execution in the topology view, the topology node for an AWS Batch task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.

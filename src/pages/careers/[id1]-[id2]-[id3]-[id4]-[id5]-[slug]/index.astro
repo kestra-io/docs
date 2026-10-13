@@ -25,6 +25,8 @@ if (!page) {
 }
 
 const title = page.title
+
+const applyPath = `${Astro.url.pathname.replace(/\/$/, "")}/apply${Astro.url.search}`
 ---
 
 <Layout title={title}>
@@ -48,7 +50,7 @@ const title = page.title
                     class="mt-4"
                 />
                 <Link
-                    href={url + "/apply"}
+                    href={applyPath}
                     class="btn btn-primary apply-btn"
                 >
                     Apply for this job

@@ -30,7 +30,20 @@ micronaut:
 ```
 
 :::alert{type="info"}
-You can change the JWT cookie behavior using [Micronaut Cookie Token Reader](https://micronaut-projects.github.io/micronaut-security/latest/guide/#cookieToken) configuration. For example, define the cookie's maximum lifetime with `micronaut.security.token.cookie.cookie-max-age: P2D`.
+You can change the JWT cookie behavior using [Micronaut Cookie Token Reader](https://micronaut-projects.github.io/micronaut-security/latest/guide/#cookieToken) configuration. To set both the access token expiry and the cookie lifetime — for example, to 10 hours — add the following to your Kestra configuration:
+
+```yaml
+micronaut:
+  security:
+    token:
+      generator:
+        access-token:
+          expiration: 36000
+      cookie:
+        cookie-max-age: 10h
+```
+
+On Kestra Cloud, contact support to change this setting.
 :::
 
 ## Basic authentication

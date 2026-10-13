@@ -97,7 +97,7 @@ Kestra is an open-source orchestration platform designed to serve as a unified c
 
 Workflows in Kestra are defined as simple YAML files, making them easy to version-control, review, and manage with GitOps practices. Its polyglot nature means you can run any script (Python, Shell, etc.), container, or application as part of a workflow, without being locked into a single language.
 
-With over 1,700 plugins, Kestra integrates seamlessly with the tools modern IT teams rely on, including Terraform, Ansible, Kubernetes, all major cloud providers, and ITSM platforms like ServiceNow. This allows organizations to build powerful, end-to-end automations. For instance, Dataport, Germany's public-sector IT provider, uses Kestra to create a government-grade orchestration control plane on its private cloud. Similarly, Crédit Agricole's IT production arm transformed its operations by using Kestra to scale workflows across more than 100 clusters.
+With {totalPlugins}+ plugins, Kestra integrates seamlessly with the tools modern IT teams rely on, including Terraform, Ansible, Kubernetes, all major cloud providers, and ITSM platforms like ServiceNow. This allows organizations to build powerful, end-to-end automations. For instance, Dataport, Germany's public-sector IT provider, uses Kestra to create a government-grade orchestration control plane on its private cloud. Similarly, Crédit Agricole's IT production arm transformed its operations by using Kestra to scale workflows across more than 100 clusters.
 
 Here is an example of a Kestra workflow that uses Terraform to provision a new AWS S3 bucket, a common ITPA task:
 

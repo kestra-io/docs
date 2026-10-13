@@ -1,7 +1,7 @@
 ---
 title: "Date and Calendar Functions in Kestra Expressions"
 h1: "Date and Calendar Functions"
-description: Reference for Kestra's date and calendar functions — isWeekend(), isPublicHoliday(), isDayWeekInMonth(), dayOfWeek(), dayOfMonth(), monthOfYear(), and hourOfDay() — for scheduling and routing logic.
+description: Reference for Kestra's date and calendar functions — isWeekend(), isPublicHoliday(), isDayWeekInMonth(), dayOfWeek(), dayOfMonth(), monthOfYear(), hourOfDay(), and isDateBetween() — for scheduling and routing logic.
 sidebarTitle: Date Functions
 icon: /src/contents/docs/icons/expression.svg
 ---
@@ -75,3 +75,16 @@ Returns the hour as an integer (0–23):
 ```twig
 {{ hourOfDay(execution.startDate) }}
 ```
+
+## `isDateBetween()`
+
+:::badge{version=">=2.0.4" editions="OSS,EE,Cloud"}
+:::
+
+Returns `true` if the date is strictly after the first bound and strictly before the second:
+
+```twig
+{{ isDateBetween(trigger.date, '2025-12-31T23:59:59Z', '2026-06-30T23:59:59Z') }}
+```
+
+The values are compared as instants, so bounds written with different offsets still compare correctly. Give every value an explicit offset (`Z` or `±HH:MM`): a datetime without one raises an error.
