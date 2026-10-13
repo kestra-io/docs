@@ -607,9 +607,9 @@ kestra:
 
 If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
 
-## Redis, AMQP, and GCP Pub/Sub queue backends
+## Redis, AMQP, GCP Pub/Sub, and NATS queue backends
 
-Redis, AMQP (RabbitMQ), and GCP Pub/Sub are Enterprise Edition queue backends, alongside Kafka which is covered above. All three use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All three require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis, AMQP (RabbitMQ), GCP Pub/Sub, and NATS are Enterprise Edition queue backends, alongside Kafka which is covered above. All four use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All four require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -758,6 +758,110 @@ kestra:
 | `kestra.gcp-pubsub.client.exactly-once-delivery` | Enable exactly-once delivery on subscriptions. | `true` |
 | `kestra.gcp-pubsub.client.message-ordering` | Enable message ordering on subscriptions. | `true` |
 | `kestra.gcp-pubsub.client.message-retention-duration` | How long Pub/Sub retains unacknowledged messages. Leave unset to use the Pub/Sub subscription default. | — |
+
+### NATS
+
+Set `kestra.queue.type: nats` and configure the connection under `kestra.nats`. NATS with JetStream enabled is required.
+
+Minimal configuration:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://localhost:4222
+```
+
+With token authentication:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://localhost:4222
+    token: "${NATS_TOKEN}"
+```
+
+With username and password:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://localhost:4222
+    username: kestra
+    password: "${NATS_PASSWORD}"
+```
+
+With a credentials file (NKey or JWT):
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://nats.example.com:4222
+    credentials-file: /etc/kestra/nats.creds
+```
+
+`token`, `credentials-file`, and `username` are mutually exclusive — set exactly one.
+
+With TLS:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - tls://nats.example.com:4222
+    truststore-path: /etc/kestra/truststore.jks
+    truststore-password: "${TRUSTSTORE_PASSWORD}"
+```
+
+For mutual TLS, also set `keystorePath` and `keystorePassword`.
+
+#### Configuration reference
+
+**Connection (`kestra.nats`)**
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.nats.servers` | List of NATS server URLs to connect to. | `[nats://localhost:4222]` |
+| `kestra.nats.connection-name` | Connection name visible in the NATS server monitoring. | `kestra` |
+| `kestra.nats.credentials-file` | Path to a credentials file (NKey or JWT). Exclusive with `token` and `username`. | — |
+| `kestra.nats.token` | Authentication token. Exclusive with `credentials-file` and `username`. | — |
+| `kestra.nats.username` | Username for user/password authentication. Exclusive with `credentials-file` and `token`. | — |
+| `kestra.nats.password` | Password for user/password authentication. | — |
+| `kestra.nats.truststore-path` | Path to the JKS truststore holding server certificates, for TLS. | — |
+| `kestra.nats.truststore-password` | Truststore password. | — |
+| `kestra.nats.keystore-path` | Path to the JKS keystore holding the client certificate, for mutual TLS. | — |
+| `kestra.nats.keystore-password` | Keystore password. | — |
+| `kestra.nats.jetstream-domain` | JetStream domain. Exclusive with `jetstream-api-prefix`. | — |
+| `kestra.nats.jetstream-api-prefix` | JetStream API prefix. Exclusive with `jetstream-domain`. | — |
+| `kestra.nats.request-timeout` | Timeout for requests to the NATS server. | `PT2S` |
+
+**Queue tuning (`kestra.nats.queues`)**
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.nats.queues.replicas` | Number of stream replicas. Applied only when a stream is first created. | `1` |
+| `kestra.nats.queues.storage` | Stream storage type: `FILE` or `MEMORY`. Applied only when a stream is first created. | `FILE` |
+| `kestra.nats.queues.emit-timeout` | Overall deadline for an emit, including retries. | `PT10S` |
+| `kestra.nats.queues.max-in-flight` | Maximum unacknowledged messages across all queues before emits start waiting. | `500` |
+| `kestra.nats.queues.broadcast-max-age` | How long broadcast stream messages are retained. | `PT1H` |
+| `kestra.nats.queues.fetch-batch-size` | Messages a batch subscriber requests ahead of processing. | `100` |
+| `kestra.nats.queues.fetch-single-size` | Messages a single-message subscriber requests ahead of processing. | `10` |
+| `kestra.nats.queues.fetch-wait` | How long a subscriber waits for a message before checking for pause or close. | `PT1S` |
+| `kestra.nats.queues.ack-wait` | How long the server waits for an acknowledgement before redelivering. | `PT60S` |
+| `kestra.nats.queues.max-ack-pending` | Maximum unacknowledged messages per consumer, shared across all its subscribers. | `1000` |
 
 ## MCP server cache
 

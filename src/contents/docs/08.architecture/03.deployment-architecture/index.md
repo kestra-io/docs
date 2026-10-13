@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/architecture.svg
 
 Choosing a Kestra deployment architecture involves two decisions: how server roles are deployed (standalone vs distributed), and which queue and repository backends they use.
 
-The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, Kafka, and Elasticsearch.
+The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, NATS, Kafka, and Elasticsearch.
 
 ## Standalone vs distributed
 
@@ -47,11 +47,11 @@ A PostgreSQL or MySQL database drives the queue by default. This is the simplest
 - **Dependencies**: PostgreSQL or MySQL
 - Available in Open Source and Enterprise
 
-### AMQP / Redis (Enterprise)
+### AMQP / Redis / NATS (Enterprise)
 
-When queue latency matters, replace the database queue with an AMQP broker or Redis.
+When queue latency matters, replace the database queue with an AMQP broker, Redis, or NATS.
 
-- **Dependencies**: RabbitMQ or Redis
+- **Dependencies**: RabbitMQ, Redis, or NATS (JetStream required)
 - Can reduce queue latency significantly compared to a database queue, depending on workload
 - Also raises the throughput ceiling; use Kafka for the highest throughput requirements
 - RabbitMQ is recommended for simpler operation and fewer edge cases
@@ -91,7 +91,7 @@ Elasticsearch can serve as the repository backend in Kafka deployments, providin
 
 ## Comparison
 
-| | Database + Database | AMQP/Redis + Database | Kafka + Database | Kafka + Elasticsearch |
+| | Database + Database | AMQP/Redis/NATS + Database | Kafka + Database | Kafka + Elasticsearch |
 |---|---|---|---|---|
 | Latency | Baseline | Lower | Moderate | Moderate |
 | Throughput | Single-instance ceiling | Higher | Highest | Highest |
