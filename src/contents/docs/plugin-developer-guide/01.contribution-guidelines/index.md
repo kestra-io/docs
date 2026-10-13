@@ -120,6 +120,46 @@ Ensure properties are declared and validated consistently.
 - Secret properties (passwords, API keys, API tokens, private keys, and any credential) **must** be annotated with `@PluginProperty(secret = true)` to enable masking in logs and the UI. Omitting it on a secret property is a security defect.
 - **Every secret field must also carry `@ToString.Exclude`** (and `@EqualsAndHashCode.Exclude` if the field type has no meaningful equality). `@PluginProperty(secret = true)` only masks the value in the schema and UI — it does not stop Lombok's generated `toString()` from printing the raw value, which would leak the token in worker debug logs or exception dumps. This applies to both a task and its sibling trigger when a secret field is redeclared on each.
 
+### Ticketing tasks
+
+A task that **creates** a ticket in an external system (GitHub issue, Jira issue, ServiceNow incident) must implement the marker interface `TicketingTaskInterface`, and only that task, not the ones that comment on, search, or update a ticket. Then annotate the properties Cases should use with `@TicketingField(role = ...)`, so the Cases setup reads your hints instead of guessing from property names. Use each role once per task, except `CASE_SEVERITY`, which may fill several fields.
+
+| Role | Where | What it carries |
+|---|---|---|
+| `CASE_ID` | Input | The case id |
+| `CASE_TITLE` | Input | The case title |
+| `CASE_DESCRIPTION` | Input | The case description |
+| `CASE_DESCRIPTION_HTML` | Input | The case description for an HTML body (escaped, line breaks become `<br>`) |
+| `CASE_URL` | Input | The link to the case |
+| `CASE_SEVERITY` | Input | The case severity |
+| `TICKET_KEY` | Output | The key of the created ticket |
+| `TICKET_URL` | Output | The link to the created ticket |
+
+- Annotate inputs on the task and outputs on its `Output` class (`TICKET_KEY`, `TICKET_URL`).
+- `valueMap` on `CASE_SEVERITY` translates a case severity into the task's own vocabulary, for example `CRITICAL` to `URGENT`. A severity without a mapping is passed unchanged.
+- `defaultValue` pre-fills the Connect form when a Cases ticketing flow is generated. It does not change the task's own default.
+- Requires a Kestra version that ships the annotation, so check the `kestraVersion` your plugin compiles against.
+
+```java
+public class Create extends AbstractGithubTask implements RunnableTask<Create.Output>, TicketingTaskInterface {
+    @PluginProperty(group = "main")
+    @TicketingField(role = TicketingField.Role.CASE_TITLE)
+    private Property<String> title;
+
+    @PluginProperty(group = "main")
+    @TicketingField(role = TicketingField.Role.CASE_DESCRIPTION)
+    private Property<String> body;
+
+    public static class Output implements io.kestra.core.models.tasks.Output {
+        @TicketingField(role = TicketingField.Role.TICKET_URL)
+        private URL issueUrl;
+
+        @TicketingField(role = TicketingField.Role.TICKET_KEY)
+        private Integer issueNumber;
+    }
+}
+```
+
 ---
 
 ## HTTP
