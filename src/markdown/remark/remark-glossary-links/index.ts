@@ -4,7 +4,7 @@ import type { Plugin } from "unified"
 import { SKIP, visit } from "unist-util-visit"
 import type { VFile } from "vfile"
 
-export const GLOSSARY_URL = "/docs/glossary"
+const GLOSSARY_URL = "/docs/glossary"
 const DOCS_ROOT = "/src/contents/docs/"
 const GLOSSARY_FILE = "glossary/index.md"
 
@@ -19,8 +19,12 @@ interface Options {
 }
 
 const ENTRY = /^\s*- \[([^\]]+)\]\(#([^)]+)\)\s+-\s+(.*)$/
-// A term is not a match inside a longer word or a hyphenated identifier (task-runner).
-const BOUNDARY = "[\\p{L}\\p{N}_-]"
+const SPAN = /<span id="([^"]+)"><\/span>/g
+// Not inside a word, a hyphenated identifier (task-runner) or a dotted or slashed name (values.yaml, worker.running.count).
+const BEFORE = "(?<![\\p{L}\\p{N}_-]|[\\p{L}\\p{N}][./])"
+const AFTER = "(?![\\p{L}\\p{N}_-]|[./][\\p{L}\\p{N}])"
+// Bare words used as often for other products' contexts, events and apps; "execution context" and "external events" still link.
+const AMBIGUOUS_ALIASES = new Set(["context", "contexts", "event", "events", "app"])
 const SKIPPED_TYPES = new Set([
     "code",
     "inlineCode",
@@ -76,13 +80,29 @@ const spellings = (term: string): string[] => {
 
 // "Slack app" or "Kubernetes instance" is another product's noun; a sentence-initial "The task" and "Kestra instance" are not.
 const OTHER_PRODUCT_BEFORE = /[^.!?:\s]\s+([A-Z][\w.-]*)\s+$/
-const EXCLUDED_PHRASES = new Set(["for instance"])
+const PREVIOUS_WORD = /([\p{L}\p{N}_-]+)\s+$/u
+const NEXT_WORD = /^\s+([\p{L}\p{N}_-]+)/u
+const EXCLUDED_PHRASES = new Set([
+    "for instance",
+    "spot instance",
+    "spot instances",
+    "compute instance",
+    "compute instances",
+    "service instance",
+    "service instances",
+    "instance id",
+    "instance ids",
+    "high concurrency",
+])
 
-const isOtherSense = (before: string, word: string) => {
+const isOtherSense = (before: string, word: string, after: string) => {
     const product = OTHER_PRODUCT_BEFORE.exec(before)?.[1]
-    if (product && "Kestra" !== product) return true
-    const previous = /(\S+)\s+$/.exec(before)?.[1] ?? ""
-    return EXCLUDED_PHRASES.has(`${previous} ${word}`.toLowerCase())
+    if (product && product !== "Kestra") return true
+    const previous = PREVIOUS_WORD.exec(before)?.[1]
+    const next = NEXT_WORD.exec(after)?.[1]
+    return [previous && `${previous} ${word}`, next && `${word} ${next}`].some(
+        (phrase) => phrase && EXCLUDED_PHRASES.has(phrase.toLowerCase()),
+    )
 }
 
 const escapeRegExp = (value: string) =>
@@ -95,14 +115,15 @@ class Matcher {
     constructor(terms: GlossaryTerm[]) {
         for (const entry of terms) {
             for (const alias of spellings(entry.term)) {
-                this.byAlias.set(alias.toLowerCase(), entry)
+                const key = alias.toLowerCase()
+                if (!AMBIGUOUS_ALIASES.has(key)) this.byAlias.set(key, entry)
             }
         }
         const aliases = [...this.byAlias.keys()].sort(
             (a, b) => b.length - a.length,
         )
         this.pattern = new RegExp(
-            `(?<!${BOUNDARY})(?:${aliases.map(escapeRegExp).join("|")})(?!${BOUNDARY})`,
+            `${BEFORE}(?:${aliases.map(escapeRegExp).join("|")})${AFTER}`,
             "giu",
         )
     }
@@ -113,7 +134,10 @@ class Matcher {
         for (const match of node.value.matchAll(this.pattern)) {
             const entry = this.byAlias.get(match[0].toLowerCase())
             if (!entry || linked.has(entry.anchor)) continue
-            if (isOtherSense(node.value.slice(0, match.index), match[0])) continue
+            const end = match.index + match[0].length
+            if (isOtherSense(node.value.slice(0, match.index), match[0], node.value.slice(end))) {
+                continue
+            }
             linked.add(entry.anchor)
             if (match.index > cursor) {
                 out.push({
@@ -125,10 +149,11 @@ class Matcher {
                 type: "link",
                 url: `${GLOSSARY_URL}#${entry.anchor}`,
                 title: entry.definition,
+                data: { hProperties: { className: ["ks-glossary-link"] } },
                 children: [{ type: "text", value: match[0] }],
             }
             out.push(link)
-            cursor = match.index + match[0].length
+            cursor = end
         }
         if (out.length === 0) return undefined
         if (cursor < node.value.length) {
@@ -149,16 +174,27 @@ const glossaryFileFor = (file: VFile) => {
     return path === glossary ? undefined : glossary
 }
 
-const loadGlossary = (glossaryFile: string) => {
-    const terms = parseGlossary(readFileSync(glossaryFile, "utf8"))
+export function checkGlossary(markdown: string, terms: GlossaryTerm[], source: string) {
     if (terms.length === 0) {
-        throw new Error(`No glossary entries were found in ${glossaryFile}; its entry format may have changed.`)
+        throw new Error(`No glossary entries were found in ${source}; its entry format may have changed.`)
     }
+    const spans = new Set([...markdown.matchAll(SPAN)].map((match) => match[1]))
+    const missing = terms.filter((entry) => !spans.has(entry.anchor)).map((entry) => entry.anchor)
+    if (missing.length > 0) {
+        throw new Error(`Glossary entries in ${source} have no matching <span id>: ${missing.join(", ")}.`)
+    }
+}
+
+// Read once per process, so a glossary edit needs a dev-server restart to reach other pages.
+const loadGlossary = (glossaryFile: string) => {
+    const markdown = readFileSync(glossaryFile, "utf8")
+    const terms = parseGlossary(markdown)
+    checkGlossary(markdown, terms, glossaryFile)
     return terms
 }
 
 const isTableHeader = (node: { type: string }, index?: number, parent?: Parent) =>
-    "tableRow" === node.type && "table" === parent?.type && 0 === index
+    node.type === "tableRow" && parent?.type === "table" && index === 0
 
 /** Links the first occurrence of each glossary term on a docs page; headings, code, links and table headers are left alone. */
 const remarkGlossaryLinks: Plugin<[Options?], Root> = (options = {}) => {

@@ -6,7 +6,7 @@ import remarkRehype from "remark-rehype"
 import rehypeStringify from "rehype-stringify"
 import { VFile } from "vfile"
 import { readFileSync } from "node:fs"
-import remarkGlossaryLinks, { parseGlossary, type GlossaryTerm } from "./index"
+import remarkGlossaryLinks, { checkGlossary, parseGlossary, type GlossaryTerm } from "./index"
 
 const DOC = "/repo/src/contents/docs/concepts/index.md"
 const GLOSSARY = "/repo/src/contents/docs/glossary/index.md"
@@ -16,6 +16,8 @@ const TERMS: GlossaryTerm[] = [
     { term: "Task runner", anchor: "task-runner", definition: "where a task runs." },
     { term: "Time To Live (TTL)", anchor: "ttl", definition: "how long a value is kept." },
     { term: "Instance", anchor: "instance", definition: "a Kestra deployment." },
+    { term: "Context", anchor: "context", definition: "variables of a run." },
+    { term: "Execution context", anchor: "execution-context", definition: "variables of an execution." },
 ]
 
 async function render(md: string, path = DOC) {
@@ -30,7 +32,7 @@ async function render(md: string, path = DOC) {
 }
 
 const link = (anchor: string, text: string, title: string) =>
-    `<a href="/docs/glossary#${anchor}" title="${title}">${text}</a>`
+    `<a href="/docs/glossary#${anchor}" title="${title}" class="ks-glossary-link">${text}</a>`
 
 describe("remarkGlossaryLinks", () => {
     it("links only the first occurrence of a term, keeping its casing", async () => {
@@ -74,6 +76,22 @@ describe("remarkGlossaryLinks", () => {
         expect(await render("A Kestra instance.")).toContain("glossary#instance")
     })
 
+    it("leaves dotted and slashed names alone but links a term ending a sentence", async () => {
+        const html = await render("Edit tasks.yaml, read worker.tasks.count and io.kestra.Task or tasks/run. Then a task.")
+        expect(html.match(/glossary#/g)).toHaveLength(1)
+        expect(html).toContain(`Then a ${link("tasks", "task", "a unit of work.")}.`)
+    })
+
+    it("links an ambiguous word only through its longer entry", async () => {
+        const html = await render("The security context differs from the execution context.")
+        expect(html.match(/glossary#/g)).toHaveLength(1)
+        expect(html).toContain(link("execution-context", "execution context", "variables of an execution."))
+    })
+
+    it("skips an excluded phrase whichever side of the term it is on", async () => {
+        expect(await render("Use spot instances, then copy the instance ID.")).not.toContain("glossary#")
+    })
+
     it("does nothing outside the docs or on the glossary page itself", async () => {
         const blog = await render("A task.", "/repo/src/contents/blogs/post/index.md")
         const glossary = await render("A task.", GLOSSARY)
@@ -104,8 +122,13 @@ describe("parseGlossary", () => {
             new URL("../../../contents/docs/glossary/index.md", import.meta.url),
             "utf8",
         )
-        const anchors = parseGlossary(glossary).map((entry) => entry.anchor)
-        expect(anchors.length).toBeGreaterThan(30)
-        expect(anchors).toContain("namespace")
+        const terms = parseGlossary(glossary)
+        expect(terms.length).toBeGreaterThan(30)
+        expect(() => checkGlossary(glossary, terms, "glossary")).not.toThrow()
+    })
+
+    it("fails when an entry has no anchor to land on", () => {
+        const markdown = '<span id="a"></span>\n- [A](#a) - first.\n- [B](#b) - second.'
+        expect(() => checkGlossary(markdown, parseGlossary(markdown), "glossary")).toThrow(/no matching <span id>: b\./)
     })
 })
