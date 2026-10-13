@@ -47,7 +47,7 @@ tasks:
 
 ### Handling outputs: fetch vs. store
 
-The `fetchType` property controls how task outputs are returned.
+The `fetchType` property controls how task outputs are returned. For large datasets, use `STORE`: it writes results to internal storage and returns only a URI, preventing large payloads from bloating the execution context.
 
 | Setting | Use when you need | Stored in context | Pebble access |
 |---|---|---|---|

@@ -47,7 +47,7 @@ With `limit: 2`, a third execution waits until one of the two running executions
 
 Set a concurrency limit on a namespace to cap the total simultaneous executions across all flows within that namespace and its children.
 
-The namespace concurrency limit is configurable from the namespace settings in the UI or via the API.
+Navigate to **Namespaces**, open the target namespace, click **Edit**, and scroll to the **Concurrency** section. Set the **Limit** and choose a **Behavior** (`Queue`, `Cancel`, or `Fail`). The same configuration is also available via the API.
 
 A namespace concurrency limit applies to every flow whose namespace matches or is a child of the configured namespace. For example, a limit on `company` applies to flows in `company`, `company.team`, and `company.team.project`.
 
