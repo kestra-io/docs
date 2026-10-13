@@ -16,7 +16,7 @@ Retries automatically rerun failed tasks. Each retry creates a new task run atte
 
 ### Example
 
-This task retries up to 5 times with a 15-minute interval between attempts:
+This task runs up to 5 times total (1 initial attempt + up to 4 retries) with a 15-minute interval between attempts:
 
 ```yaml
 - id: retry_sample
@@ -74,7 +74,7 @@ Ensure `retry.interval` is smaller than `maxDuration`, or retries may never run.
 | Name             | Type       | Description |
 |------------------|------------|-------------|
 | `type`           | string     | Retry strategy: `constant`, `exponential`, or `random`. |
-| `maxAttempts`    | integer    | Maximum number of attempts, including the initial run. |
+| `maxAttempts`    | integer    | Maximum number of attempts, including the initial run. `maxAttempts: 1` means no retry; `maxAttempts: 2` means one retry after the initial attempt. |
 | `maxDuration`    | Duration   | Maximum total time for the task, across all attempts. |
 | `warningOnRetry` | Boolean    | Marks execution as `WARNING` if retries occurred (default: false). |
 
