@@ -120,46 +120,6 @@ Ensure properties are declared and validated consistently.
 - Secret properties (passwords, API keys, API tokens, private keys, and any credential) **must** be annotated with `@PluginProperty(secret = true)` to enable masking in logs and the UI. Omitting it on a secret property is a security defect.
 - **Every secret field must also carry `@ToString.Exclude`** (and `@EqualsAndHashCode.Exclude` if the field type has no meaningful equality). `@PluginProperty(secret = true)` only masks the value in the schema and UI — it does not stop Lombok's generated `toString()` from printing the raw value, which would leak the token in worker debug logs or exception dumps. This applies to both a task and its sibling trigger when a secret field is redeclared on each.
 
-### Ticketing tasks
-
-A task that **creates** a ticket in an external system (GitHub issue, Jira issue, ServiceNow incident) must implement the marker interface `TicketingTaskInterface`, and only that task, not the ones that comment on, search, or update a ticket. Then annotate the properties Cases should use with `@TicketingField(role = ...)`, so the Cases setup reads your hints instead of guessing from property names. Use each role once per task, except `CASE_SEVERITY`, which may fill several fields.
-
-| Role | Where | What it carries |
-|---|---|---|
-| `CASE_ID` | Input | The case id |
-| `CASE_TITLE` | Input | The case title |
-| `CASE_DESCRIPTION` | Input | The case description |
-| `CASE_DESCRIPTION_HTML` | Input | The case description for an HTML body (escaped, line breaks become `<br>`) |
-| `CASE_URL` | Input | The link to the case |
-| `CASE_SEVERITY` | Input | The case severity |
-| `TICKET_KEY` | Output | The key of the created ticket |
-| `TICKET_URL` | Output | The link to the created ticket |
-
-- Annotate inputs on the task and outputs on its `Output` class (`TICKET_KEY`, `TICKET_URL`).
-- `valueMap` on `CASE_SEVERITY` translates a case severity into the task's own vocabulary, for example `CRITICAL` to `URGENT`. A severity without a mapping is passed unchanged.
-- `defaultValue` pre-fills the Connect form when a Cases ticketing flow is generated. It does not change the task's own default.
-- Requires a Kestra version that ships the annotation, so check the `kestraVersion` your plugin compiles against.
-
-```java
-public class Create extends AbstractGithubTask implements RunnableTask<Create.Output>, TicketingTaskInterface {
-    @PluginProperty(group = "main")
-    @TicketingField(role = TicketingField.Role.CASE_TITLE)
-    private Property<String> title;
-
-    @PluginProperty(group = "main")
-    @TicketingField(role = TicketingField.Role.CASE_DESCRIPTION)
-    private Property<String> body;
-
-    public static class Output implements io.kestra.core.models.tasks.Output {
-        @TicketingField(role = TicketingField.Role.TICKET_URL)
-        private URL issueUrl;
-
-        @TicketingField(role = TicketingField.Role.TICKET_KEY)
-        private Integer issueNumber;
-    }
-}
-```
-
 ---
 
 ## HTTP
@@ -221,7 +181,7 @@ Keep new packages aligned with project conventions and metadata.
 - Use `"{{ secret('YOUR_SECRET') }}"` in the examples for sensitive info such as an API key.
 - Align the `"""` to close examples blocks with the flow id.
 - Update the existing `index.yaml` for the main plugin, and for each new subpackage add a metadata file named exactly after the subpackage (e.g. `s3.yaml` for `io.kestra.plugin.aws.s3`) under `src/main/resources/metadata/`, following the same schema — never invent fields, and make sure `group` matches the Java package name of the subpackage.
-- **Ticketing systems** (Jira, GitHub issues, ServiceNow, Zendesk, …): the task that **creates** a ticket must implement the marker interface `io.kestra.core.models.tasks.TicketingTaskInterface`, alongside `RunnableTask` (e.g., `public class Create extends JiraClient implements RunnableTask<Create.Output>, TicketingTaskInterface`). Kestra lists the plugin in `GET /api/v1/plugins/ticketing-systems` only through that marker — without it, the ticketing system is invisible to the catalog. See [kestra-io/plugin-jira#104](https://github.com/kestra-io/plugin-jira/pull/104).
+- **Ticketing systems** (Jira, GitHub issues, ServiceNow, Zendesk, …): the task that **creates** a ticket must implement the marker interface `io.kestra.core.models.tasks.TicketingTaskInterface`, alongside `RunnableTask` (e.g., `public class Create extends JiraClient implements RunnableTask<Create.Output>, TicketingTaskInterface`). Kestra lists the plugin in `GET /api/v1/plugins/ticketing-systems` only through that marker — without it, the ticketing system is invisible to the catalog. Annotate its properties with `@TicketingField(role = ...)` so Cases knows how to use them: `CASE_TITLE`, `CASE_DESCRIPTION` (or `CASE_DESCRIPTION_HTML`), `CASE_ID`, `CASE_URL`, `CASE_SEVERITY` on inputs, `TICKET_KEY` and `TICKET_URL` on outputs. Use each role once, except `CASE_SEVERITY`. Optional `valueMap` (e.g. `CRITICAL=URGENT`) translates the case severity, `defaultValue` pre-fills the Cases form. See [kestra-io/plugin-jira#104](https://github.com/kestra-io/plugin-jira/pull/104).
   - Implement it on the ticket-creating task **only**: tasks that comment on, search, update, or transition a ticket are not ticketing tasks.
   - The interface ships from Kestra `1.3.42` and `2.0.5`: bump `kestraVersion` in `gradle.properties` to at least that patch of the plugin's line if it is older, or the build fails to resolve the import.
   - Add no test asserting the class implements the interface — the catalog behavior is covered by the Kestra core tests.
