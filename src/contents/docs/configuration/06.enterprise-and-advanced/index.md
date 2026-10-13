@@ -280,6 +280,76 @@ kestra:
         key-password: "<key-entry-password>"
 ```
 
+### PEM certificates
+
+PEM files can be used instead of keystores. This is the natural format for Kubernetes deployments using cert-manager, kubelet-managed Secrets, or tools such as `kestractl`, Vault, or `openssl`, which all write PEM output and would otherwise require a manual conversion step on every certificate renewal.
+
+Set a `pem` block under `kestra.grpc.tls` on both the controller and each worker. The `pem` identity (`certificate-chain*` + `private-key*`) and the keystore (`key-store`) are mutually exclusive, as are `pem` trust (`trust-certificates*`) and `trust-store`. Combining them fails at startup with a message naming the conflicting properties.
+
+**Controller:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      client-auth: REQUIRE
+      pem:
+        certificate-chain-path: /tls/controller.crt
+        private-key-path: /tls/controller.key
+        trust-certificates-path: /tls/ca.crt
+```
+
+**Worker:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      pem:
+        certificate-chain-path: /tls/worker.crt
+        private-key-path: /tls/worker.key
+        trust-certificates-path: /tls/ca.crt
+```
+
+Private keys can be PKCS#8, PKCS#1 (RSA), or SEC1 (EC). Certificate chains are leaf-first. Trust bundles may contain multiple concatenated CA certificates.
+
+#### Kubernetes and cert-manager
+
+The standard field names in a Kubernetes `tls` Secret (`tls.crt`, `tls.key`, `ca.crt`) map directly to the `pem` properties, so a cert-manager `Certificate` or kubelet-managed Secret can be mounted and used without conversion:
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      pem:
+        certificate-chain-path: /tls/tls.crt
+        private-key-path: /tls/tls.key
+        trust-certificates-path: /tls/ca.crt
+        reload-interval: PT1M
+```
+
+Mount the Secret as a volume in your Kubernetes deployment:
+
+```yaml
+volumes:
+  - name: grpc-tls
+    secret:
+      secretName: kestra-worker-tls
+volumeMounts:
+  - name: grpc-tls
+    mountPath: /tls
+    readOnly: true
+```
+
+#### Hot reload
+
+When at least one `pem` item is a `-path` property, a background thread checks each file every `reload-interval` (default `PT1M`). When file content changes, the new material is loaded and verified. New TLS handshakes use the updated certificate immediately; open connections continue with the previous material until they reconnect. If a reloaded file is invalid or the private key does not match its certificate, the current material is kept and an error is logged.
+
+Inline values (`certificate-chain`, `private-key`, `trust-certificates`) are loaded once at startup and never reloaded.
+
 ### Development: skip certificate verification
 
 :::alert{type="warning"}
@@ -306,6 +376,13 @@ kestra:
 | `kestra.grpc.tls.trust-store.path` | — | Path to truststore file |
 | `kestra.grpc.tls.trust-store.type` | `PKCS12` | Truststore format |
 | `kestra.grpc.tls.trust-store.password` | — | Truststore password |
+| `kestra.grpc.tls.pem.certificate-chain-path` | — | Path to PEM certificate chain (leaf first) |
+| `kestra.grpc.tls.pem.certificate-chain` | — | Inline PEM certificate chain |
+| `kestra.grpc.tls.pem.private-key-path` | — | Path to unencrypted private key (PKCS#8, PKCS#1, or SEC1) |
+| `kestra.grpc.tls.pem.private-key` | — | Inline unencrypted private key |
+| `kestra.grpc.tls.pem.trust-certificates-path` | — | Path to trusted CA certificates (bundle supported) |
+| `kestra.grpc.tls.pem.trust-certificates` | — | Inline trusted CA certificates |
+| `kestra.grpc.tls.pem.reload-interval` | `PT1M` | How often path-based files are checked for changes |
 | `kestra.grpc.tls.client-auth` | `NONE` | Client auth mode: `NONE`, `OPTIONAL`, or `REQUIRE` |
 | `kestra.grpc.tls.insecure-trust-all-certificates` | `false` | Skip CA verification (development only) |
 | `kestra.grpc.tls.authority-override` | — | Override TLS authority for static discovery |
