@@ -35,6 +35,13 @@
         display: none;
     }
 
+    // Glossary terms are linked on every docs page, so they stay in the text colour to not compete with real links.
+    a.ks-glossary-link {
+        color: inherit;
+        text-decoration: underline dotted;
+        text-underline-offset: 0.2em;
+    }
+
     h1,
     h2,
     h3,

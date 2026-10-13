@@ -22,6 +22,7 @@ import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/i
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
 import remarkSectionIds from "./src/markdown/remark/remark-section-ids/index.mjs"
+import remarkGlossaryLinks from "./src/markdown/remark/remark-glossary-links/index.ts"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
@@ -136,6 +137,7 @@ export default defineConfig({
                         },
                     },
                 ],
+                remarkGlossaryLinks,
             ],
             rehypePlugins: [
                 rehypeHeadingIds,
