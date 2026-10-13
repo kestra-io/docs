@@ -72,6 +72,17 @@ kestra:
 Events are not lost during the failover window. They remain in the source system (Kafka topic, SQS queue, etc.) and will be consumed once the trigger listener is restarted on another worker.
 :::
 
-Realtime Triggers are **stateless**: each event creates its own independent workflow execution.
+## Polling triggers vs. Realtime Triggers
+
+| Criteria | Polling trigger | Realtime Trigger |
+|---|---|---|
+| **Implementation** | Micro-batch | Realtime |
+| **Event processing** | Batch-processes all events received within the poll interval | Processes each event immediately as it arrives |
+| **Latency** | Seconds or minutes | Milliseconds |
+| **Execution model** | Each execution processes one or many events | Each execution processes exactly one event |
+| **Data handling** | Stores all received events in a file | Stores each event in its raw format |
+| **Output format** | URI of a file in internal storage | Raw event payload and metadata |
+
+Realtime Triggers are **stateless**: each event creates its own independent workflow execution. They are designed for orchestrating workflows and microservices in response to events, not for continuous stateful stream processing.
 
 To continue with Realtime Triggers, check out their [How-to Guide](../../../15.how-to-guides/realtime-triggers/index.md).
