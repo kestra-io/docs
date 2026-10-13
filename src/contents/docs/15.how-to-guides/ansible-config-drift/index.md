@@ -57,6 +57,7 @@ namespace: company.team
 tasks:
   - id: set_up_env
     type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    resultsStorage: INLINE
     namespaceFiles:
       enabled: true
     taskRunner:
@@ -72,15 +73,15 @@ tasks:
 
   - id: loop_hosts
     type: io.kestra.plugin.core.flow.Loop
-    values: "{{ outputs.set_up_env.vars.outputs }}"
+    values: "{{ outputs.set_up_env.playbooks[0].plays[0].tasks[0].hosts }}"
     tasks:
       - id: check_drift
         type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-        runIf: "{{ item.value | jq('.changed') | first == true }}"
+        runIf: "{{ fromJson(item.value).changed == true }}"
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
-              "text": "Configuration updated - {{ item.value | jq('.msg') | first ?? Null }}"
+              "text": "Configuration updated on {{ item.key }} - {{ fromJson(item.value).msg ?? '' }}"
           }
 
 triggers:
