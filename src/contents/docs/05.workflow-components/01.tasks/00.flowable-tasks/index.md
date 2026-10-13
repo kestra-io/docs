@@ -214,7 +214,7 @@ tasks:
 
 #### Concurrent execution
 
-By default (`concurrencyLimit: 1`), iterations run one at a time in order. Set `concurrencyLimit` to a higher value to run multiple iterations simultaneously, or `0` for no limit.
+By default (`concurrencyLimit: 0`), all iterations run in parallel and workers regulate actual throughput. Set `concurrencyLimit` to a positive integer to cap how many iterations run at once. Any value set on the task or via a [policy](../../../07.enterprise/02.governance/policies/index.md) takes precedence over the default.
 
 ```yaml
 tasks:

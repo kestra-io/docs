@@ -32,7 +32,7 @@ const title = page.title
         <div class="container">
             <div
                 id="ashby_embed"
-                data-uid={uid}
+                data-jid={uid}
                 class="application-form-embed-container"
                 data-tab="application"
                 data-noChrome="true"
@@ -52,7 +52,7 @@ const title = page.title
 </Layout>
 
 <script is:inline>
-    window.__Ashby = {
+    window.__Ashby = window.__Ashby || {
         settings: {
             autoScroll: false,
             autoLoad: true,
@@ -60,25 +60,17 @@ const title = page.title
         },
     }
 
-    function init() {
-        const jobPostingId = document.getElementById("ashby_embed").dataset.uid
-
-        window.__Ashby.iFrame().load({
-            jobPostingId
-        });
+    if (!window.__ashbyListenerAdded) {
+        window.__ashbyListenerAdded = true
+        document.addEventListener("astro:after-swap", () => {
+            if (document.getElementById("ashby_embed") && window.__Ashby.isInitialized) {
+                window.__Ashby.iFrame().load()
+            }
+        })
     }
-
-    document.addEventListener('astro:page-load', init);
 </script>
 
 <script is:inline id="ashby-script" src="https://jobs.ashbyhq.com/kestra/embed?version=2"></script>
-
-
-<script is:inline>
-
-
-</script>
-
 
 <style lang="scss" scoped>
     #ashby_embed {

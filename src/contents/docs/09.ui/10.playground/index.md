@@ -23,7 +23,18 @@ Playground mode runs tasks one at a time via their **Play** button. Each task re
 
 Kestra tracks up to 10 recent playground runs, so you can go back to inspect the outputs of previously executed tasks. Older runs are purged automatically. Playground runs won't appear in the regular execution list to avoid confusion with production executions.
 
-Playground mode requires a DAG (Directed Acyclic Graph) structure, so you cannot run a task before its upstream tasks have been played. If you change flow-level `inputs`, `variables`, or `outputs` properties while in Playground mode, existing task runs are automatically reset and must be rerun. Kestra resets them to ensure that task outputs remain consistent with the flow-level properties.
+Playground mode requires a DAG (Directed Acyclic Graph) structure, so you cannot run a task before its upstream tasks have been played.
+
+### When reused results are reset
+
+Playground reuses earlier task outputs as long as nothing that affects them has changed. It starts a fresh run when you change:
+
+- a task before the one you run
+- the flow `inputs`
+- the flow `labels`
+- the flow `variables`
+
+Playground only tracks the flow definition. Reused results can still be out of date after a change to namespace files, KV store entries, [secrets](../../06.concepts/04.secret/index.md), or an external system a task reads from. Use **Run all tasks** to start a fresh run when you change any of these.
 
 To see Playground in action, check out the demo below.
 
@@ -47,13 +58,13 @@ tasks:
 
   - id: extract_titles
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs.fetch_products.body | jq('map(select(.completed == false)) | map(.title)') }}"
+    format: "{{ outputs.fetch_products.body | jq('map(select(.completed == false)) | map(.title)') | first }}"
 
   - id: count_pending
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs.fetch_products.body | jq('[.[] | select(.completed == false)] | length') }}"
+    format: "{{ outputs.fetch_products.body | jq('[.[] | select(.completed == false)] | length') | first }}"
 
   - id: build_report
     type: io.kestra.plugin.core.debug.Return
-    format: "Pending tasks: {{ outputs.count_pending.value }} | First item: {{ outputs.extract_titles.value | jq('.[0]') }}"
+    format: "Pending tasks: {{ outputs.count_pending.value }} | First item: {{ outputs.extract_titles.value | jq('.[0]') | first }}"
 ```

@@ -1,0 +1,262 @@
+---
+import Lock from "./assets/lock.svg"
+import dots from "./assets/hero-dots.svg"
+---
+
+<!--
+    Vector rebuild of the Figma hero artwork (node 30545:122924). The stage is
+    the Figma frame at 1:1 (1900 x 574, header included), so every layer keeps
+    the design's coordinates; the stage is re-anchored below 1400px.
+-->
+<div class="hero-visual" aria-hidden="true">
+    <div class="stage">
+        <span class="glow horizon"></span>
+        <span class="glow orb-blue"></span>
+        <span class="glow orb-cyan"></span>
+        <span class="glow orb-teal"></span>
+        <span class="glow halo"></span>
+
+        <div class="dots" style={`--dots: url("${dots.src}")`}>
+            <span class="dots-base"></span>
+            <span class="dots-shine"></span>
+        </div>
+
+        <div class="lock">
+            <Lock class="lock-art" />
+        </div>
+    </div>
+    <span class="grain"></span>
+</div>
+
+<style lang="scss">
+    .hero-visual {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .stage {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 1900px;
+        height: 574px;
+        transform: translateX(-50%);
+
+        @include media-breakpoint-down(xxl) {
+            top: 40px;
+            right: -198px;
+            left: auto;
+            transform: scale(0.8);
+            transform-origin: right top;
+        }
+
+        @include media-breakpoint-down(lg) {
+            top: auto;
+            right: -179px;
+            bottom: -50px;
+            // Low enough that the white copy overlapping the lock stays above
+            // 4.5:1 contrast (about 6.6:1 over the lock's lightest fill).
+            opacity: 0.45;
+            transform: scale(0.65);
+            transform-origin: right bottom;
+        }
+
+        @include media-breakpoint-down(md) {
+            right: -150px;
+            bottom: -44px;
+            transform: scale(0.55);
+        }
+    }
+
+    .glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        will-change: transform;
+    }
+
+    .horizon {
+        left: -250px;
+        top: 400px;
+        width: 2400px;
+        height: 720px;
+        background: radial-gradient(
+            closest-side,
+            var(--security-hero-horizon),
+            var(--security-hero-horizon-deep) 55%,
+            transparent
+        );
+        filter: blur(20px);
+    }
+
+    .orb-blue {
+        left: 1030px;
+        top: 250px;
+        width: 240px;
+        height: 240px;
+        background: radial-gradient(
+            closest-side,
+            var(--security-hero-orb-blue),
+            var(--security-hero-orb-blue-soft) 60%,
+            transparent
+        );
+        animation: drift 14s ease-in-out infinite alternate;
+    }
+
+    .orb-cyan {
+        left: 1420px;
+        top: 390px;
+        width: 280px;
+        height: 260px;
+        background: radial-gradient(
+            closest-side,
+            var(--security-hero-orb-cyan),
+            var(--security-hero-orb-cyan-soft) 60%,
+            transparent
+        );
+        animation: drift 18s ease-in-out -6s infinite alternate-reverse;
+    }
+
+    .orb-teal {
+        left: 1185px;
+        top: 480px;
+        width: 190px;
+        height: 170px;
+        background: radial-gradient(
+            closest-side,
+            var(--security-hero-orb-teal),
+            transparent
+        );
+        animation: drift 16s ease-in-out -3s infinite alternate;
+    }
+
+    .halo {
+        left: 1250px;
+        top: 130px;
+        width: 400px;
+        height: 380px;
+        background: radial-gradient(
+            closest-side,
+            var(--security-hero-halo),
+            transparent
+        );
+        filter: blur(30px);
+        animation: pulse 6s ease-in-out infinite;
+    }
+
+    // Figma "Colors" frame sits at x 1063, y 41; the SVG carries 24px padding.
+    .dots {
+        position: absolute;
+        left: 1039px;
+        top: 17px;
+        width: 862px;
+        height: 510px;
+        // Fade the grid out towards the copy on the left.
+        mask-image: linear-gradient(90deg, transparent, #000 45%);
+
+        span {
+            position: absolute;
+            inset: 0;
+            background: var(--dots) no-repeat center / contain;
+        }
+    }
+
+    .dots-base {
+        opacity: 0.55;
+        mix-blend-mode: screen;
+    }
+
+    // A diagonal band that sweeps across the grid, brightening the dots it
+    // passes over.
+    .dots-shine {
+        mix-blend-mode: screen;
+        mask-image: linear-gradient(
+            115deg,
+            transparent 35%,
+            #000 50%,
+            transparent 65%
+        );
+        mask-size: 300% 100%;
+        mask-repeat: no-repeat;
+        animation: sweep 7s ease-in-out infinite;
+    }
+
+    // Figma places the lock box at x 1315, y 140; the SVG's own origin sits
+    // 34.7 / 17px above-left of that box.
+    .lock {
+        position: absolute;
+        left: 1280px;
+        top: 123px;
+        width: 332px;
+        height: 396px;
+        animation: float 6s ease-in-out infinite;
+
+        :global(.lock-art) {
+            display: block;
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px var(--security-hero-lock-glow));
+        }
+    }
+
+    .grain {
+        position: absolute;
+        inset: 0;
+        background: url("./assets/hero-grain.svg");
+        opacity: 0.08;
+        mix-blend-mode: overlay;
+    }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-12px);
+        }
+    }
+
+    @keyframes drift {
+        from {
+            transform: translate(0, 0) scale(1);
+        }
+        to {
+            transform: translate(40px, -24px) scale(1.08);
+        }
+    }
+
+    @keyframes pulse {
+        0%,
+        100% {
+            opacity: 0.7;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes sweep {
+        from {
+            mask-position: 100% 0;
+        }
+        to {
+            mask-position: 0 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .glow,
+        .lock,
+        .dots-shine {
+            animation: none;
+        }
+
+        .dots-shine {
+            display: none;
+        }
+    }
+</style>

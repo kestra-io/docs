@@ -210,5 +210,3 @@ You need a tool that is easy to set up, cost-effective, and allows for rapid ite
 While Prefect offers a powerful, modern experience for Python-based workflows, the orchestration landscape is broad and diverse. The right alternative depends on your specific needs: Airflow's mature ecosystem, Dagster's asset-centric governance, or ZenML's MLOps focus each serve a distinct purpose.
 
 However, for teams looking to break free from language constraints and unify their automation efforts, a platform like Kestra offers a compelling path forward. By embracing a declarative, language-agnostic, and event-driven approach, Kestra acts as a universal control plane for your entire technology stack. It empowers data, platform, and AI teams to build reliable, scalable, and observable workflows without being locked into a single programming paradigm.
-
-Ready to see how a declarative approach can simplify your orchestration? [Get started with Kestra](https://kestra.io/get-started) or [book a demo](https://kestra.io/demo) to explore its capabilities.

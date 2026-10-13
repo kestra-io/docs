@@ -161,7 +161,7 @@ tasks:
 
 ### Unifying Diverse Systems with a Rich Plugin Ecosystem
 
-A key challenge in business automation is connecting different tools. Kestra provides over 1,700 plugins to integrate with databases, cloud services, messaging systems, and business applications like [Microsoft Dynamics 365](/plugins/plugin-microsoft365/microsoft-dynamics-365-business-central) or even other automation tools like [n8n](/plugins/plugin-n8n/io.kestra.plugin.n8n.triggerworkflow). This rich ecosystem allows you to build end-to-end workflows that orchestrate your entire tech stack from a single control plane.
+A key challenge in business automation is connecting different tools. Kestra provides {totalPlugins}+ plugins to integrate with databases, cloud services, messaging systems, and business applications like [Microsoft Dynamics 365](/plugins/plugin-microsoft365/microsoft-dynamics-365-business-central) or even other automation tools like [n8n](/plugins/plugin-n8n/io.kestra.plugin.n8n.triggerworkflow). This rich ecosystem allows you to build end-to-end workflows that orchestrate your entire tech stack from a single control plane.
 
 ### Building Resilient and Scalable Workflows
 

@@ -322,12 +322,15 @@
                     : ""
                 this.$refs.aiChatDialog?.setUserInput(prefill)
             },
-            search(value) {
+            search(value = "") {
                 // https://developer.mozilla.org/en-US/docs/Web/API/AbortController
                 if (this.abortController) {
                     this.abortController.abort("Search restarted")
                 }
-                this.abortController = new AbortController()
+                const controller = new AbortController()
+                this.abortController = controller
+                // A newer search has started: this one must not touch the state.
+                const isStale = () => this.abortController !== controller
                 this.loading = true
 
                 this.searchValue = value
@@ -340,23 +343,30 @@
                     window.location.pathname,
                     this.docsLatest,
                 )
-                return this.fetchSearch(params, scope.version)
+                return this.fetchSearch(
+                    params,
+                    scope.version,
+                    controller.signal,
+                )
                     .then((response) => {
                         // A version indexed before this content existed (or not
                         // indexed at all) answers empty rather than 404 — fall
                         // back to unscoped search instead of showing nothing.
                         if (scope.version && !response?.results?.length) {
-                            return this.fetchSearch(params, undefined).then(
-                                (fallback) => {
-                                    this.hrefVersion = undefined
-                                    return fallback
-                                },
-                            )
+                            return this.fetchSearch(
+                                params,
+                                undefined,
+                                controller.signal,
+                            ).then((fallback) => {
+                                this.hrefVersion = undefined
+                                return fallback
+                            })
                         }
                         this.hrefVersion = scope.hrefVersion
                         return response
                     })
                     .then((response) => {
+                        if (isStale()) return
                         this.initialLoad = true
                         const results = prepareSearchResults(
                             response?.results,
@@ -382,23 +392,20 @@
                             resultsCount: response?.results?.length || 0,
                         })
                     })
-                    .catch((e) => {
-                        if (e.code !== "ERR_CANCELED") {
-                            this.resetData()
-                        }
+                    .catch(() => {
+                        if (!isStale()) this.resetData()
                     })
                     .finally(() => {
+                        if (isStale()) return
                         this.abortController = undefined
                         this.loading = false
                     })
             },
-            fetchSearch(params, version) {
+            fetchSearch(params, version, signal) {
                 const path = version
                     ? `/search/versions/${version}?${params.toString()}`
                     : `/search?${params.toString()}`
-                return $fetchApi(path, {
-                    signal: this.abortController.signal,
-                })
+                return $fetchApi(path, { signal })
             },
             resultHref(result) {
                 return searchResultHref(result, this.hrefVersion)

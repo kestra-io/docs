@@ -11,6 +11,7 @@ import Hero from "~/components/airflow-2-eol-whitepaper/Hero.astro"
 import WhoThisIsFor from "~/components/airflow-2-eol-whitepaper/WhoThisIsFor.astro"
 import VsTable from "~/components/airflow-2-eol-whitepaper/VsTable.astro"
 import Link from "~/components/common/Link.astro"
+import LivePluginCount from "~/components/content/LivePluginCount.astro"
 
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 import AppleLogo from "~/assets/teams/apple.svg?raw"
@@ -142,7 +143,9 @@ const quotes = [
                 <BlogToc client:load links={tocLinks} />
             </div>
             <div class="bd-content">
-                <Content />
+                <LivePluginCount body={post.body}>
+                    <Content />
+                </LivePluginCount>
             </div>
         </TwoColumnStickyLayout>
     </section>
