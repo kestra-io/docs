@@ -118,17 +118,9 @@ The **Quota Limits** page (left sidebar, under **Tenant**) lists active quota co
 
 For namespace-level quotas, the flow column shows `<namespace level quota>`; for tenant-level quotas, both columns show `<tenant level quota>`.
 
-Rows for expired windows are automatically hidden. Use the refresh button (top right of the page) to reload the current state. Columns are sortable by namespace and flow ID.
+Rows for expired windows are automatically hidden. The page can be refreshed to reload the current state. Columns are sortable by namespace and flow ID.
 
 ## Managing quotas
 
-Update a quota limit when executions are being cancelled or failed at a rate that indicates the configured limit is too low for the current workload. Avoid adjusting quotas routinely; quotas are a deliberate rate-limiting decision.
-
 The **Quota Limits** page (under **Instance Owner** in the sidebar) lists all currently active quota limits across the tenant, including flow-level, namespace-level, and tenant-level entries. Click the edit icon next to any entry to update its limit and save. This takes effect immediately without modifying flow YAML.
 
-## When to use quotas
-
-- **Flow level**: cap how often a specific flow can be triggered by external events or webhooks to prevent runaway execution chains, or enforce a cost policy on flows that call expensive external APIs.
-- **Namespace level**: apply a shared execution budget across all flows in a team or environment namespace, without configuring each flow individually.
-- **Tenant level**: enforce an organization-wide ceiling on execution creation, for example to stay within an infrastructure or cost constraint that applies across all namespaces.
-- **Complement concurrency**: quotas cap the creation rate; concurrency caps simultaneous parallelism.

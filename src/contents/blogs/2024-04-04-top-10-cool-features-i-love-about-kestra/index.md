@@ -66,7 +66,7 @@ You can read more about it on this [page](/plugins/core/trigger/io.kestra.plugin
 
 ## 6. Backfill
 
-[Backfill](../../docs/06.concepts/08.backfill/index.md) is one of the dreadful words in the orchestration world. While it is one of the necessary features, it is also one of the difficult tasks to achieve. Many tools are not able to abstract this underlying complexity and make it tedious for the data engineer to trigger a backfill. Data Engineers are confused by the number of parameters they need to fill in and get them right to achieve the desired results from a backfill.
+[Backfill](../../docs/05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill) is one of the dreadful words in the orchestration world. While it is one of the necessary features, it is also one of the difficult tasks to achieve. Many tools are not able to abstract this underlying complexity and make it tedious for the data engineer to trigger a backfill. Data Engineers are confused by the number of parameters they need to fill in and get them right to achieve the desired results from a backfill.
 
 Kestra has done an amazing job of achieving this with the click of a button. If you trigger this from the UI, the "backfill execution" is placed where Kestra is already aware of the context of the backfill and requires as minimum information as the time for which backfill needs to be performed. With Kestra, no data engineer will ever panic about backfilling.
 
