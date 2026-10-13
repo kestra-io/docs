@@ -834,9 +834,12 @@
         },
     ]
 
-{
+// re-run on every page load: the ClientRouter swaps in a fresh card without
+// re-running this script, which left the animation frozen on return visits
+function startCopilot() {
     let tid = null
     const copilotCard = document.querySelector(".copilot-card")
+    if (!copilotCard) return
     const after = (fn, ms) => {
         clearTimeout(tid)
         tid = setTimeout(async () => {
@@ -858,8 +861,10 @@
 
     let cursorAnim = null
 
+    // a detached card means this run was superseded by a later page load,
+    // so it parks itself instead of animating nodes nobody sees
     async function waitForVisible() {
-        while (copilotCard.closest(".paused")) {
+        while (!copilotCard.isConnected || copilotCard.closest(".paused")) {
             await new Promise((r) => setTimeout(r, 100))
         }
     }
@@ -1186,5 +1191,8 @@
     showCopilot(true)
     after(startCopilotAnim, 900)
 }
+
+startCopilot()
+document.addEventListener("astro:page-load", startCopilot)
 </script>
 

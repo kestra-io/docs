@@ -122,6 +122,11 @@ async function internalFetch(
         try {
             return await fetchOnce(url, init)
         } catch (error) {
+            // An aborted request was cancelled on purpose: retrying it with the
+            // same (already aborted) signal can only fail again, and would
+            // delay the rejection until after a newer request has resolved.
+            if (init.signal?.aborted) throw error
+
             const fetchError = error as FetchError
             const status = fetchError.response?.status
 
@@ -189,6 +194,20 @@ export async function $fetchApiCached<T = any>(
 
     return await memoizeGet(`${API_URL}${url}`, init, () =>
         $fetchApi<T>(url, cachingConfig),
+    )
+}
+
+// Plugin icons are SVG text, not JSON, so they need their own memoized helper
+// rather than going through $fetchApiCached.
+export async function $fetchApiTextCached(
+    url: string,
+    init: RequestInit = {},
+): Promise<string> {
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
+
+    // `text:` keeps this out of the JSON memo entry for the same URL.
+    return await memoizeGet(`text:${API_URL}${url}`, init, async () =>
+        (await internalFetch(`${API_URL}${url}`, cachingConfig)).text(),
     )
 }
 

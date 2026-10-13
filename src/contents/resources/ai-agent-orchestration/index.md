@@ -116,7 +116,7 @@ Full autonomy is not always desirable, especially in critical enterprise process
 
 ## Benefits of Orchestrating AI Agents with a Unified Platform
 
-Using a dedicated orchestration platform like Kestra for your agentic workflows provides significant advantages over ad-hoc scripts or embedded framework logic. The benefits extend beyond simple task execution to encompass reliability, scalability, and governance.
+Using a dedicated orchestration platform like Kestra for your agentic workflows provides significant advantages over ad-hoc scripts or embedded framework logic. The benefits extend beyond simple task execution to encompass reliability, scalability, and governance. Agents rarely stay inside one domain, which is why the [unified orchestration whitepaper](/resources/whitepapers/unified-orchestration) treats agentic AI as a layer governed across data, infrastructure, applications and business processes rather than a silo of its own.
 
 ### Enhanced Reliability and Error Handling
 
@@ -144,7 +144,7 @@ Agents often require access to sensitive data and systems. Ensuring they operate
 
 ### The Evolving Landscape of AI Agent Frameworks
 
-The AI space is moving incredibly fast, with new models and frameworks emerging constantly. An effective orchestration platform must be vendor-agnostic, allowing you to integrate the best tools for the job without being locked into a single ecosystem. Kestra's plugin-based architecture, with over 1,700 integrations, ensures you can connect to any LLM, vector database, or AI service. This flexibility allows you to evolve your AI stack without having to re-architect your core orchestration logic. Kestra's [agent skills](/docs/ai-tools/agent-skills) further extend this by allowing agents to operate Kestra itself, creating powerful self-managing workflows.
+The AI space is moving incredibly fast, with new models and frameworks emerging constantly. An effective orchestration platform must be vendor-agnostic, allowing you to integrate the best tools for the job without being locked into a single ecosystem. Kestra's plugin-based architecture, with {totalPlugins}+ integrations, ensures you can connect to any LLM, vector database, or AI service. This flexibility allows you to evolve your AI stack without having to re-architect your core orchestration logic. Kestra's [agent skills](/docs/ai-tools/agent-skills) further extend this by allowing agents to operate Kestra itself, creating powerful self-managing workflows.
 
 ## Implementing AI Agent Orchestration in Your Enterprise
 

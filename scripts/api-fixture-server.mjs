@@ -16,8 +16,8 @@
  *   UPSTREAM        – Real API origin (default: https://api.kestra.io)
  *   FIXTURE_DIR     – Fixture directory (default: tests/fixtures/api)
  *   FIXTURE_PATHS   – Comma-separated paths to record; a trailing * is a
- *                     prefix (default: /v1/blueprints*,/v1/plugins,
- *                     /v1/plugins/subgroups)
+ *                     prefix, an inner * one path segment (default:
+ *                     /v1/blueprints*,/v1/plugins,/v1/plugins/subgroups)
  *   RECORD          – "false" to never write new fixtures (default: record)
  *
  * GET /__fixtures/stats returns the hit/record/passthrough counters as JSON.
@@ -59,6 +59,26 @@ const stats = { hits: 0, records: 0, passthrough: 0, errors: 0 }
 const replayCache = new Map()
 
 /**
+ * Compiles one matcher: a trailing * is a prefix over the whole path, an inner
+ * * is one segment, so /v1/plugins/<fqcn>/versions needs no /v1/plugins*.
+ *
+ * @param {string} matcher
+ * @returns {{ prefix: boolean; regex: RegExp }}
+ */
+function compileMatcher(matcher) {
+    const prefix = matcher.endsWith("*")
+    const body = prefix ? matcher.slice(0, -1) : matcher
+    const source = body
+        .split("*")
+        .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+        .join("[^/?]*")
+
+    return { prefix, regex: new RegExp(`^${source}${prefix ? "" : "$"}`) }
+}
+
+const MATCHERS = FIXTURE_PATHS.map(compileMatcher)
+
+/**
  * Whether a request path is recorded. Exact matchers ignore the query string,
  * so /v1/plugins does not swallow /v1/plugins/core.
  *
@@ -67,10 +87,8 @@ const replayCache = new Map()
  */
 function isRecorded(path) {
     const pathname = path.split("?")[0]
-    return FIXTURE_PATHS.some((matcher) =>
-        matcher.endsWith("*")
-            ? path.startsWith(matcher.slice(0, -1))
-            : pathname === matcher,
+    return MATCHERS.some(({ prefix, regex }) =>
+        regex.test(prefix ? path : pathname),
     )
 }
 

@@ -65,7 +65,7 @@ triggers:
 The **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../../06.concepts/04.secret/index.md) to store it securely.
 :::
 
-Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the Webhook trigger.
+Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the [Webhook](/plugins/core/trigger/io.kestra.plugin.core.trigger.webhook) trigger.
 
 We'll look at how to do this using Python and FastAPI. For deployments, we'll show two options:
 1. Using Modal for easy deployment

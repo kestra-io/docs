@@ -1,6 +1,10 @@
 ---
 import { render, getCollection, type CollectionEntry } from "astro:content"
 import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
+import {
+    fetchTotalPluginsCount,
+    pluginCountScope,
+} from "~/utils/plugins/pluginCount"
 import { getImage, Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
@@ -12,14 +16,20 @@ import TeamsImages from "~/utils/teamsImages"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Mesh from "~/components/layout/Mesh.vue"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
+import LivePluginCount from "~/components/content/LivePluginCount.astro"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
     const scope = [await layoutDigest()]
+    const totalPlugins = await fetchTotalPluginsCount()
     return blogsPages.map((post) => ({
         params: { slug: post.id.toLowerCase() },
         props: post,
-        cacheKey: entryCacheKey(post, ...scope),
+        cacheKey: entryCacheKey(
+            post,
+            ...scope,
+            ...pluginCountScope(totalPlugins, post.body),
+        ),
     }))
 }
 
@@ -174,7 +184,9 @@ const jsonLinkedData = {
                 </div>
             </div>
             <div class="bd-content">
-                <Content />
+                <LivePluginCount body={post.body}>
+                    <Content />
+                </LivePluginCount>
             </div>
             <div class="socials-mobile">
                 <BlogSocials

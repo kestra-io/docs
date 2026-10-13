@@ -33,10 +33,10 @@ schema:
       name: "Does adding the documentation tools change how I connect to the MCP server?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "No. The endpoint is the same: https://api.kestra.io/v1/mcp. The three new tools are automatically available to any connected client alongside the existing 13 tools. No reconnection or configuration change is needed if you already have the Kestra MCP server set up."
+        text: "No. The endpoint is the same: https://api.kestra.io/v1/mcp. The three new tools are automatically available to any connected client alongside the 9 plugin and Blueprint tools, for 12 tools total. No reconnection or configuration change is needed if you already have the Kestra MCP server set up."
 ---
 
-The [Kestra MCP server](../2026-04-30-kestra-mcp-plugins-blueprints/index.md) started with 13 tools covering the full plugin registry and Blueprint catalog. That was enough for an AI coding agent to write correct Kestra flows: discover plugins, inspect task schemas, retrieve ready-made YAML templates.
+The [Kestra MCP server](../2026-04-30-kestra-mcp-plugins-blueprints/index.md) started with a set of tools covering the full plugin registry and Blueprint catalog. That was enough for an AI coding agent to write correct Kestra flows: discover plugins, inspect task schemas, retrieve ready-made YAML templates.
 
 It was not enough to reason about the platform itself.
 
@@ -44,7 +44,7 @@ Choosing a storage backend, structuring RBAC namespaces, deciding between a poll
 
 ## Connecting Claude Code
 
-Add the Kestra MCP server to Claude Code with a single command. If you already have it configured from the earlier release, no change is needed — the documentation tools are automatically available alongside the existing 13.
+Add the Kestra MCP server to Claude Code with a single command. If you already have it configured from the earlier release, no change is needed — the documentation tools are automatically available alongside the plugin and Blueprint tools, for 12 tools total.
 
 ```bash
 # Project-scoped (stores in .claude/settings.json in current repo)
@@ -94,7 +94,7 @@ Install [`kestractl`](https://github.com/kestra-io/kestractl) with one command �
 
 Before writing from scratch, a smarter agent checks whether the problem has already been solved:
 
-1. `blueprints` with a keyword like `"dbt"`, `"slack"`, or `"file transfer"` to scan available templates
+1. `search_blueprints` with a keyword like `"dbt"`, `"slack"`, or `"file transfer"` to scan available templates
 2. `get_blueprint_flow` on the best match to retrieve the full YAML
 3. `task_schema` on the tasks it does not recognize to understand the properties to customize
 
@@ -139,7 +139,7 @@ With that context, the agent can propose a namespace structure, generate the YAM
 **Choosing between task runner backends**
 
 ```
-Agent calls: list_task_runners
+Agent calls: list_plugin_elements(elementType: "TASK_RUNNER")
 → lists all available backends: Docker, Kubernetes, GCP Batch, AWS Batch, …
 
 Agent calls: search_docs("task runners Kubernetes")
@@ -181,4 +181,4 @@ Three tools added to the existing MCP server: `search_docs` (keyword search retu
 A flow-writing agent composes correct task YAML. An architect-level agent understands platform decisions: which storage backend fits a deployment, how to structure RBAC for a multi-tenant environment, when subflows are preferable to trigger chaining, and how worker groups isolate workloads. The documentation tools provide that second layer of reasoning, directly in the conversation.
 
 ### Does adding the documentation tools change how I connect to the MCP server?
-No. The endpoint is unchanged: `https://api.kestra.io/v1/mcp`. The three new tools appear automatically alongside the existing 13. No reconnection or configuration update is needed if you already have the server registered.
+No. The endpoint is unchanged: `https://api.kestra.io/v1/mcp`. The three new tools appear automatically alongside the plugin and Blueprint tools, for 12 tools total. No reconnection or configuration update is needed if you already have the server registered.

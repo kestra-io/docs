@@ -18,29 +18,26 @@ import ArrowRightIcon from "vue-material-design-icons/ArrowRight.vue"
 <script>
     const ONE_BLUEPRINT_WIDTH_WITH_MARGIN = 370
 
-    const wrapper = document.querySelector(".carousel-content")
+    // delegated so it survives a ClientRouter swap, and so a page with several
+    // carousels wires them all instead of only the first one on the page
+    document.addEventListener("click", (event) => {
+        const target = event.target instanceof Element ? event.target : null
+        const nav = target?.closest(".navigation-left, .navigation-right")
+        if (!nav) return
 
-    document
-        .querySelector(".navigation-left")
-        ?.addEventListener("click", () => {
-            if (wrapper) {
-                wrapper.scrollTo({
-                    left: wrapper.scrollLeft - ONE_BLUEPRINT_WIDTH_WITH_MARGIN,
-                    behavior: "smooth",
-                })
-            }
-        })
+        const wrapper = nav
+            .closest(".carousel-container")
+            ?.querySelector(".carousel-content")
+        if (!wrapper) return
 
-    document
-        .querySelector(".navigation-right")
-        ?.addEventListener("click", () => {
-            if (wrapper) {
-                wrapper.scrollTo({
-                    left: wrapper.scrollLeft + ONE_BLUEPRINT_WIDTH_WITH_MARGIN,
-                    behavior: "smooth",
-                })
-            }
+        const direction = nav.matches(".navigation-left") ? -1 : 1
+        wrapper.scrollTo({
+            left:
+                wrapper.scrollLeft +
+                direction * ONE_BLUEPRINT_WIDTH_WITH_MARGIN,
+            behavior: "smooth",
         })
+    })
 </script>
 
 <style lang="scss">

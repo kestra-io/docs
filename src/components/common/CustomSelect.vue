@@ -1,21 +1,21 @@
 <template>
     <div class="select-wrapper">
         <label v-if="label" class="label">{{ label }}</label>
-        <div class="dropdown">
+        <div class="dropdown" ref="root" :class="{ open }">
             <button
                 class="btn btn-sm btn-custom"
                 :class="[`btn-custom-${$props.size}`]"
                 type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+                :aria-expanded="open"
+                @click="toggle"
             >
                 <span class="placeholder-value">{{ selectedLabel }}</span>
                 <ChevronDown class="icon" />
             </button>
-            <ul class="dropdown-menu">
+            <ul class="select-menu" v-show="open">
                 <li v-for="option in options" :key="option.value">
                     <a
-                        class="dropdown-item"
+                        class="select-item"
                         :class="{ active: option.value === modelValue }"
                         href="#"
                         @click.prevent="selectOption(option)"
@@ -29,8 +29,9 @@
 </template>
 
 <script setup lang="ts">
-    import { computed } from "vue"
+    import { computed, useTemplateRef } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
+    import { useDropdown } from "~/composables/useDropdown"
 
     const props = withDefaults(
         defineProps<{
@@ -60,8 +61,12 @@
         )
     })
 
+    const root = useTemplateRef<HTMLElement>("root")
+    const { open, close, toggle } = useDropdown(root)
+
     const selectOption = (option: { value: string; label: string }) => {
         emit("update:modelValue", option.value)
+        close()
     }
 </script>
 
@@ -121,14 +126,28 @@
                 display: none;
             }
         }
-        .show :deep(svg) {
+        .dropdown {
+            position: relative;
+        }
+        .dropdown.open .btn-custom :deep(svg) {
             transform: rotate(180deg);
         }
-        .dropdown-menu {
+        .select-menu {
+            position: absolute;
+            inset-block-start: 100%;
+            inset-inline-start: 0;
+            z-index: 1000;
+            min-width: 100%;
+            margin-block-start: 0.125rem;
+            list-style: none;
+            border: $block-border;
             background-color: var(--ks-background-input);
             border-radius: 0.25rem;
             padding: 0;
-            .dropdown-item {
+            .select-item {
+                display: block;
+                white-space: nowrap;
+                text-decoration: none;
                 color: var(--ks-content-primary);
                 font-size: 12px;
                 padding: 0.25rem 0.75rem;

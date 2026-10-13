@@ -14,7 +14,7 @@ Write inline `.csx` scripts with NuGet package references, or run arbitrary `dot
 
 ## Scripts
 
-Use `io.kestra.plugin.scripts.dotnet.Script` to write C# code inline in your flow. The script is written to a temporary `.csx` file and executed with `dotnet-script`, which is installed automatically before each run. The default container image is `mcr.microsoft.com/dotnet/sdk:10.0`; set `containerImage` to override it, for example to pin an older SDK version.
+Use [io.kestra.plugin.scripts.dotnet.Script](/plugins/plugin-script-dotnet/io.kestra.plugin.scripts.dotnet.script) to write C# code inline in your flow. The script is written to a temporary `.csx` file and executed with `dotnet-script`, which is installed automatically before each run. The default container image is `mcr.microsoft.com/dotnet/sdk:10.0`; set `containerImage` to override it, for example to pin an older SDK version.
 
 ```yaml
 id: dotnet_script
@@ -50,7 +50,7 @@ For the full property list, see the [Script plugin documentation](/plugins/plugi
 
 ## Commands
 
-Use `io.kestra.plugin.scripts.dotnet.Commands` when your C# code lives in namespace files or when you need direct `dotnet` CLI access.
+Use [io.kestra.plugin.scripts.dotnet.Commands](/plugins/plugin-script-dotnet/io.kestra.plugin.scripts.dotnet.commands) when your C# code lives in namespace files or when you need direct `dotnet` CLI access.
 
 `dotnet-script` is not pre-installed in the default image. Add it to `beforeCommands` when running `.csx` files:
 

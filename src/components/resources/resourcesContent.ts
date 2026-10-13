@@ -53,6 +53,14 @@ const resourceSections: Record<string, Section> = {
         subtitle:
             "Playbooks for automating the work that runs between teams — approvals, recurring reporting, onboarding and cross-system processes that connect your business apps without glue code.",
     },
+    orchestration: {
+        metaTitle: "Orchestration Resources: Concepts, Types & Platforms",
+        metaDescription:
+            "What orchestration is across data, infrastructure, applications and business processes: concepts, orchestration types, and the case for a unified control plane.",
+        heading: "Orchestration Resources",
+        subtitle:
+            "Orchestration as a discipline, across every domain — definitions, orchestration types, orchestration vs automation, and why fragmented orchestrators are converging into one control plane.",
+    },
     whitepapers: {
         metaTitle: "Kestra Whitepapers: Orchestration Guides for Engineering Leaders",
         metaDescription:

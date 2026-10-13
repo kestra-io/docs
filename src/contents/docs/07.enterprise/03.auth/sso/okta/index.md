@@ -7,11 +7,13 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
+Authenticate Kestra users with their Okta credentials using OpenID Connect.
+
 ## Prerequisites
 
 - An Okta Developer Account or Organization with administrative access.
 
-For more detail, refer to the [Okta OIDC setup documentation](https://help.okta.com/oie/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
+For more details, refer to the [Okta OIDC setup documentation](https://help.okta.com/oie/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
 
 ## Step 1: Create an App Integration
 
@@ -25,30 +27,23 @@ Next, select **Create App Integration**, select **OIDC - OpenID Connect** as the
 
 ## Step 2: Configure the web app integration
 
-In the General Settings, give your App integration a name and set your grant type. For this example, we are using Authorization Code. You can open **Advanced Settings** to configure more sensitive grants. Okta has several direct-auth API grants, such as OTP, OOB, MFA OTP, and MFA OOB that you can select only if necessary.
+In **General Settings**, give your App integration a name and select **Authorization Code** as the grant type. Open **Advanced Settings** to configure additional grants — Okta supports direct-auth API grants such as OTP, OOB, MFA OTP, and MFA OOB.
 
 ![Okta app integration general settings with grant type selection](./okta-3.png)
 
-Here, you also set the **Sign-in redirect URIs** and **Sign-out redirect URIs** for your App integration. For this example connecting to Kestra, we set a Sign-in redirect URI as `http://localhost:8080/oauth/callback/okta` and sign-out as `http://localhost:8080/logout`, but you can customize this to your environment.
-Further down the page, you can configure optional **Trusted Origins**, and then choose the **Assignments** and the access settings for the App integration.
+Set the **Sign-in redirect URI** to `http://localhost:8080/oauth/callback/okta` and the **Sign-out redirect URI** to `http://localhost:8080/logout` (adjust to match your environment). Configure optional **Trusted Origins** and **Assignments** as needed.
 
-We'll set the access to everyone in the organization, but you can set stricter access to only certain selected groups or skip for now. Lastly, we uncheck the setting to enable immediate access with Federation Broker Mode because we will give manual app access for this basic example. Click **Save**.
+Set access to **Everyone** or to a more restricted group. Uncheck **Enable immediate access with Federation Broker Mode** to control app access manually. Click **Save**.
 
 ![Sign-in redirect URIs and assignments settings for Okta app](./okta-4.png)
 
-## Step 3: Add test user to Okta app integration
+## Step 3: Add a test user (optional)
 
-To create a test user in your Okta Directory to test your app integration, in your Okta Admin Dashboard, navigate to **Directory → People**. Select **Add Person**.
+To verify the integration before enabling it for all users, add a test user in **Directory → People → Add Person**. Assign the Kestra application to that user from the user's **Applications** tab.
 
 ![Add Person form in Okta Directory](./okta-7.png)
 
-Enter user test details, including a password, and save the test user.
-
-In the **Directory**, select the new user, and navigate to the **Applications** tab for the user and choose **Assign Applications**.
-
 ![Assign Applications to user in Okta Directory](./okta-8.png)
-
-Select the Kestra application, enter the required details for the user, and click **Save**.
 
 ## Step 4: Connect to Kestra
 
@@ -85,3 +80,69 @@ On restart, Okta appears as an available login method.
 After logging in, go to **IAM → Users** to confirm the user shows both login methods in the **Login & API Tokens** column.
 
 ![User shown with Okta authentication in IAM Users tab](./okta-10.png)
+
+## Configure a default role for SSO users
+
+SSO users need a default role for initial access in Kestra. Add the following to `kestra.security`:
+
+```yaml
+kestra:
+  security:
+    defaultRole:
+      name: default_admin_role
+      description: "Default Admin Role"
+      permissions:
+        FLOW:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - EXECUTE
+          - DISABLE
+          - ENABLE
+          - VALIDATE
+          - EXPORT
+          - IMPORT
+        EXECUTION:
+          - VIEW
+          - LIST
+          - UPDATE
+          - DELETE
+          - RESTART
+          - KILL
+          - REPLAY
+          - PAUSE
+          - RESUME
+          - CHANGE_LABELS
+          - ACCESS_LOGS
+          - ACCESS_OUTPUTS
+          - ACCESS_FILES
+          - EXPORT
+          - UNQUEUE
+          - FORCE_RUN
+          - FOLLOW
+        NAMESPACE:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - MANAGE_FILES
+        SECRET: ["VIEW", "LIST", "UPDATE", "DELETE"]
+        KVSTORE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        BLUEPRINT: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        ROLE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        GROUP: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_MEMBERS"]
+        USER: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_GROUP_MEMBERSHIP"]
+        BINDING: ["VIEW", "LIST", "CREATE", "DELETE"]
+        AUDITLOG: ["VIEW", "LIST", "EXPORT"]
+  ee:
+    tenants:
+      enabled: true
+      defaultTenant: false
+```
+
+:::alert{type="info"}
+Place `defaultRole` under `kestra.security`, not under `micronaut.security`. The example above grants broad access — adjust the action lists to match the permissions your users actually need in production.
+:::

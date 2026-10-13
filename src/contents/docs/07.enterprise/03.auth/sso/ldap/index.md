@@ -20,12 +20,6 @@ Enable LDAP authentication to authenticate users against your existing directory
 LDAP is a licensed feature. If `micronaut.security.ldap.default` is configured but your license does not include LDAP, Kestra will refuse to start with the error: `LDAP is not supported by your license`. Contact your Kestra account team to enable it.
 :::
 
-## What is LDAP
-
-Lightweight directory access protocol (LDAP) allows applications to quickly query user information. Organizations use directories to store usernames, passwords, email addresses, and other static data. LDAP is an open, vendor-neutral protocol for accessing and managing that data.
-
-With Kestra, you can use an existing LDAP directory to authenticate users and sync them to groups with specific access permissions.
-
 ## Configuration
 
 LDAP is configured under the security context of your [Kestra Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md) file.
@@ -112,7 +106,7 @@ micronaut:
 Key points for Windows Active Directory:
 
 - **Login format**: the `userPrincipalName` filter requires users to log in with their full UPN, e.g. `john@domain.local`. If your users expect to log in with just their short username (e.g. `john`), change the filter to `(sAMAccountName={0})` and update the `email` attribute mapping accordingly.
-- **Search base**: setting `search.base` and `groups.base` to the root domain (`DC=domain,DC=local`) covers users and groups across all OUs. Narrow these to a specific OU (e.g. `OU=Engineering,DC=domain,DC=local`) if you want to restrict access to a subset of your directory.
+- **Search base**: setting `search.base` and `groups.base` to the root domain (`DC=domain,DC=local`) covers users and groups across all OUs. Narrow these to a specific OU (e.g. `OU=Engineering,DC=domain,DC=local`) to restrict access to a subset of your directory.
 - **Group filter attribute**: AD `member` attributes store full DNs, so `filter-attribute: dn` is required. Without it, Micronaut defaults to `cn` and group membership lookups will silently return no results.
 - **TLS**: use `ldaps://` on port 636 in production. Plain `ldap://` on port 389 sends credentials in cleartext. If your AD uses a self-signed certificate, you must add it to the JVM truststore or configure certificate trust in your Kestra deployment.
 

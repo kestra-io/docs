@@ -21,7 +21,8 @@ import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
 import Git from "vue-material-design-icons/Git.vue"
 
 import JPMorganLogo from "~/contents/customer-stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows/logo.svg?raw"
-import JPMorganLogoImg from "~/assets/trusted-companies/JPMorgan.svg"
+// Byte-identical to the JPMorgan Chase story logo; see public-services.
+import JPMorganLogoImg from "~/contents/customer-stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows/logo.svg"
 import CreditAgricoleLogoImg from "~/assets/trusted-companies/CreditAgricole.svg"
 import BloombergLogoImg from "~/assets/trusted-companies/Bloomberg.svg"
 import ICapitalLogoImg from "~/assets/trusted-companies/iCapital.svg"
@@ -1442,14 +1443,6 @@ const FAQ = [
         border: 1px solid var(--ks-border-secondary);
         border-radius: 10px;
         box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-
-        &:hover {
-            border-color: $fs-yellow;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
-        }
-
         &__icon {
             font-size: 1.375rem;
             color: $fs-yellow-deep;

@@ -540,11 +540,14 @@
     </div>
 </div>
 
-<script is:inline>
+<script is:inline data-astro-rerun>
     ;(function () {
         var root = document.querySelector(".oa-3")
+        if (!root) return
+        // a detached root means this run was superseded by a later page
+        // load, so it parks itself instead of animating nodes nobody sees
         function isPaused() {
-            return !!root.closest(".paused")
+            return !root.isConnected || !!root.closest(".paused")
         }
 
         var WF_RIGHT = 40 + 76

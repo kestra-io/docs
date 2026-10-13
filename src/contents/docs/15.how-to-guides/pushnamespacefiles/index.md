@@ -142,6 +142,31 @@ Now if you change the `dryRun` property to `false` and run the flow again, you s
 
 ![git8.png](./git8.png)
 
+## Scoping push to a namespace subdirectory
+
+Use `namespaceDirectory` to push only the files under a specific folder inside the namespace. The prefix is stripped from the Git path, so files at `/shared-scripts/helpers/parse.py` in the namespace land at `helpers/parse.py` inside `gitDirectory` in Git.
+
+```yaml
+id: push_to_git
+namespace: company.ops
+
+tasks:
+  - id: commit_and_push
+    type: io.kestra.plugin.git.PushNamespaceFiles
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    url: https://github.com/git_username/scripts
+    branch: dev
+    namespace: company.team
+    gitDirectory: scripts
+    namespaceDirectory: /shared-scripts
+    commitMessage: "push shared scripts"
+```
+
+A `SyncNamespaceFiles` task with `gitDirectory: scripts` and `namespaceDirectory: /shared-scripts` is the exact inverse: syncing then pushing produces an empty diff.
+
+The `files` glob always matches against the full namespace-relative path, not the path relative to `namespaceDirectory`. A glob of `shared-scripts/*.py` selects files at `/shared-scripts/parse.py` regardless of the `namespaceDirectory` value.
+
 ## Extra notes
 
 - Git does not guarantee the order of push operations to a remote repository, which can lead to potential conflicts when multiple users or flows attempt to push changes simultaneously. To minimize the risk of data loss and merge conflicts, it is strongly recommended to use sequential workflows or push changes to separate branches.

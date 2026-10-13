@@ -154,7 +154,7 @@ Note that there is an exception to this rule if a tenant is created by an Instan
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-To configure a dedicated storage and secrets backend per tenant, open the tenant's **Settings** page and scroll to the **Dedicated internal storage** and **Dedicated secrets manager** sections. Each section has a storage type selector and a YAML configuration editor.
+A dedicated storage and secrets backend is configured from the tenant's **Settings** page, under **Dedicated internal storage** and **Dedicated secrets manager**. Each section provides a storage type selector and a YAML configuration editor.
 
 For storage configuration examples, refer to [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md). For secrets backend options, refer to the [Secret Managers documentation](../secrets-manager/index.md).
 

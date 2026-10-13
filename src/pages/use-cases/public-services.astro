@@ -23,7 +23,9 @@ import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline
 
 import DataportLogo from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/logo.svg?raw"
 import COELogoImg from "~/components/enterprise/assets/logos/COE.svg"
-import DataportLogoImg from "~/assets/trusted-companies/Dataport.svg"
+// Byte-identical to the Dataport story logo, so importing both emitted two
+// copies of the same bytes and Vite kept whichever name registered first.
+import DataportLogoImg from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/logo.svg"
 import ITZBundLogoImg from "~/assets/trusted-companies/ITZBunds.svg"
 import BundesagenturLogoImg from "~/assets/trusted-companies/Bundesagentur.svg"
 import BattelleLogoImg from "~/assets/trusted-companies/Battelle.svg"
@@ -1461,14 +1463,6 @@ const FAQ = [
         border: 1px solid var(--ks-border-secondary);
         border-radius: 10px;
         box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-
-        &:hover {
-            border-color: $ps-blue;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
-        }
-
         &__icon {
             font-size: 1.375rem;
             color: $ps-blue;

@@ -14,8 +14,8 @@ The `plugin-datagen` plugin solves this with two tasks — choose based on what 
 
 | Situation | Task | What it does |
 |---|---|---|
-| You have a production export | `Pseudonymize` | Replaces PII fields in the file with realistic fakes; all other fields pass through unchanged |
-| You have no production data | `Generate` | Creates a synthetic dataset from scratch using [Datafaker](https://www.datafaker.net/documentation/expressions/) expressions |
+| You have a production export | [Pseudonymize](/plugins/plugin-datagen/datagen-core/io.kestra.plugin.datagen.core.pseudonymize) | Replaces PII fields in the file with realistic fakes; all other fields pass through unchanged |
+| You have no production data | [Generate](/plugins/plugin-datagen/datagen-core/io.kestra.plugin.datagen.core.generate) | Creates a synthetic dataset from scratch using [Datafaker](https://www.datafaker.net/documentation/expressions/) expressions |
 
 Both tasks write output to Kestra internal storage.
 

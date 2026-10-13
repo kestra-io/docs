@@ -16,6 +16,8 @@ The `disabled` property is a boolean that skips a flow, task, or trigger without
 
 A disabled flow will not execute and its triggers are automatically ignored — you do not need to disable each trigger separately.
 
+When you disable a flow from the UI, Kestra writes `disabled: true` into the flow source and saves a new revision. This means a redeploy or git sync that does not include `disabled: true` will re-enable the flow. If you manage flows as code, add `disabled: true` to the YAML in your repository rather than using the UI toggle, so the disabled state survives future deploys.
+
 ```yaml
 id: disabled_flow
 namespace: company.team

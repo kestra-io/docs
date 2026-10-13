@@ -34,7 +34,7 @@ The `Pause` task will pause the execution and the `Log` task will run only once 
 
 ## Pause and resume a workflow from the UI
 
-You can either use the Pause task or manually pause from the Execution overview page. Once the execution is paused, inspect the logs and outputs, then resume using the **Resume** button in the **Overview** tab:
+You can either use the [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task or manually pause from the Execution overview page. Once the execution is paused, inspect the logs and outputs, then resume using the **Resume** button in the **Overview** tab:
 
 ![pause_resume](./pause_resume.png)
 

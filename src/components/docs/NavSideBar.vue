@@ -2,13 +2,11 @@
     <aside class="bd-sidebar scroller">
         <div>
             <button
-                ref="menuToggleBtn"
                 class="btn d-lg-none mt-2"
                 type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#docs-menu"
-                aria-expanded="false"
-                aria-controls="tocContents"
+                :aria-expanded="menuExpanded"
+                aria-controls="docs-menu"
+                @click="menuExpanded = !menuExpanded"
             >
                 <Menu /> Documentation Menu
             </button>
@@ -16,8 +14,7 @@
                 <button
                     class="ai-button"
                     title="Ask Kestra AI"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-ai-modal"
+                    data-modal-target="#search-ai-modal"
                 >
                     <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
                     Ask Kestra AI
@@ -25,8 +22,7 @@
             </div>
             <div
                 class="search"
-                data-bs-toggle="modal"
-                data-bs-target="#search-modal"
+                data-modal-target="#search-modal"
                 title="Search"
             >
                 <div class="input-group">
@@ -59,7 +55,12 @@
                     </option>
                 </select>
             </div>
-            <div class="collapse bd-menu-collapse" id="docs-menu">
+            <div
+                class="bd-menu-collapse"
+                :class="{ open: menuExpanded }"
+                id="docs-menu"
+            >
+                <div class="bd-menu-collapse-inner" :inert="collapsed">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <ul class="list-unstyled mb-0">
                         <RecursiveNavSidebar
@@ -73,6 +74,7 @@
                         />
                     </ul>
                 </nav>
+                </div>
             </div>
         </div>
     </aside>
@@ -80,6 +82,7 @@
 
 <script lang="ts" setup>
     import { computed, onMounted, provide, ref, type PropType } from "vue"
+    import { useMediaQuery } from "@vueuse/core"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Keyboard from "vue-material-design-icons/Keyboard.vue"
     import Menu from "vue-material-design-icons/Menu.vue"
@@ -153,16 +156,18 @@
         "/docs/terraform/resources",
     ]
 
-    const menuToggleBtn = ref<HTMLButtonElement | null>(null)
+    const menuExpanded = ref(false)
+
+    // `overflow: hidden` on the 0fr grid clips the panel but leaves its links
+    // focusable, where bootstrap's `.collapse` was `display: none`. Above lg
+    // the panel is always shown and `menuExpanded` stays false, so the
+    // viewport has to be part of the condition or the desktop sidebar goes
+    // inert.
+    const belowLg = useMediaQuery("(max-width: 991.98px)")
+    const collapsed = computed(() => belowLg.value && !menuExpanded.value)
 
     const closeSidebar = () => {
-        if (
-            window.innerWidth < 992 &&
-            menuToggleBtn.value &&
-            menuToggleBtn.value.getAttribute("aria-expanded") === "true"
-        ) {
-            menuToggleBtn.value.click()
-        }
+        if (window.innerWidth < 992) menuExpanded.value = false
     }
 
     provide(closeSidebarInjectionKey, closeSidebar)
@@ -184,7 +189,7 @@
             top: calc(8rem + var(--announce-height));
             display: block !important;
             height: fit-content;
-            max-height: subtract(100vh, 9rem);
+            max-height: calc(100vh - 9rem);
             padding-left: 0.25rem;
             margin-left: -0.25rem;
             overflow-y: auto;
@@ -193,7 +198,7 @@
             min-width: 250px;
         }
         button.btn {
-            border: 1px solid var(--bs-gray-300);
+            border: 1px solid var(--ks-gray-300);
             font-weight: bold;
             width: 100%;
             color: var(--ks-content-primary);
@@ -209,17 +214,40 @@
                 }
             }
         }
+        // Height transition without JS: 0fr to 1fr on a single-row grid.
         .bd-menu-collapse {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.25s ease;
+
+            .bd-menu-collapse-inner {
+                overflow: hidden;
+                min-height: 0;
+            }
+
+            &.open {
+                grid-template-rows: 1fr;
+            }
+
             @include media-breakpoint-down(lg) {
                 nav {
                     padding: calc($spacer / 2) $spacer;
                     border: $block-border;
                     box-shadow: $box-shadow-sm;
-                    @include border-radius(var(--bs-border-radius));
+                    border-radius: $border-radius;
                 }
             }
             @include media-breakpoint-up(lg) {
-                display: block !important; // stylelint-disable-line declaration-no-important
+                // Above the breakpoint the panel is always open and never
+                // animates, so the grid wrapper and its inner div drop out of
+                // the box model entirely. Leaving them as boxes shifts the
+                // sidebar ~8px (grid suppresses the margin collapse main
+                // relied on) and changes where its max-height clips.
+                display: contents;
+
+                .bd-menu-collapse-inner {
+                    display: contents;
+                }
             }
         }
         .search,

@@ -1,0 +1,52 @@
+// Replaces bootstrap/scss/helpers. Imported after the components, as
+// bootstrap's was: `.fixed-top` and `.navbar` both carry a `position` at the
+// same specificity, so source order is what decides it.
+// Dropped: the other five position helpers, ratio, vstack/hstack/vr,
+// icon-link, colored-links and the color-mode helpers.
+// The one position helper in use; bootstrap shipped six.
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.clearfix::after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.focus-ring:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.stretched-link::after {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    content: "";
+}
+
+.visually-hidden {
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+
+    &:not(caption) {
+        position: absolute !important;
+    }
+}

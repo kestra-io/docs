@@ -17,7 +17,7 @@ When dealing with multiple teams, you can add extra security measures to your Ke
 
 By default, Kestra uses a shared worker to handle workloads. This is fine for most use cases. However, when using a shared Kestra instance between multiple teams, this can allow people to access temporary files created by Kestra with powerful tasks like [Groovy](/plugins/plugin-script-groovy), [GraalVM Python](/plugins/plugin-graalvm/python-graalvm), and more. This is because the worker shares the same file system.
 
-You can use the following to opt in to real isolation of file systems using advanced Kestra EE Java security:
+File system isolation is enabled via Kestra EE Java security:
 
 ```yaml
 kestra:
@@ -61,7 +61,7 @@ Currently, all the official Kestra plugins are safe to be authorized **except** 
 
 ## Scripting isolation
 
-Use a [Policy](../policies/index.md) to enforce Docker isolation for script tasks. For installation-wide enforcement, declare a static policy in server configuration (Enterprise Edition):
+A [Policy](../policies/index.md) enforces Docker isolation for script tasks. For installation-wide enforcement, declare a static policy in server configuration (Enterprise Edition):
 
 ```yaml
 kestra:

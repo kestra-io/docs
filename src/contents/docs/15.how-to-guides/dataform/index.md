@@ -65,9 +65,9 @@ The `clone_repo` task pulls the repository with the Dataform project, and the `t
 First, create and save the Kestra flow. The flow contains the following tasks:
 
 1. HTTP Download task that downloads the `orders.csv` file using HTTP URL.
-2. BigQuery CreateTable task that creates the `orders` table in the `ecommerce` dataset.
-3. BigQuery Load task that loads the `orders.csv` contents into the BigQuery `orders` table.
-4. DataformCLI task that runs the Dataform project, created later using Namespace Files. The project creates the `stg_orders` BigQuery view based on the `orders` BigQuery table.
+2. [BigQuery CreateTable](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.createtable) task that creates the `orders` table in the `ecommerce` dataset.
+3. [BigQuery Load](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.load) task that loads the `orders.csv` contents into the BigQuery `orders` table.
+4. [DataformCLI](/plugins/plugin-dataform/io.kestra.plugin.dataform.cli.dataformcli) task that runs the Dataform project, created later using Namespace Files. The project creates the `stg_orders` BigQuery view based on the `orders` BigQuery table.
 
 ```yaml
 id: dataform_project

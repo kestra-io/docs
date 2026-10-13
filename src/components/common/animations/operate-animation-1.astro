@@ -627,9 +627,10 @@
     </div>
 </div>
 
-<script is:inline>
+<script is:inline data-astro-rerun>
     ;(function () {
         const root = document.querySelector(".oa-1")
+        if (!root) return
         const codeEl = root.querySelector("#oa1-code"),
             badge = root.querySelector("#oa1-badge"),
             bico = root.querySelector("#oa1-bico")
@@ -644,8 +645,10 @@
         const tLine1 = root.querySelector("#oa1-tLine1"),
             tLine2 = root.querySelector("#oa1-tLine2")
 
+        // a detached root means this run was superseded by a later page
+        // load, so it parks itself instead of animating nodes nobody sees
         function isPaused() {
-            return !!root.closest(".paused")
+            return !root.isConnected || !!root.closest(".paused")
         }
 
         let tid = null

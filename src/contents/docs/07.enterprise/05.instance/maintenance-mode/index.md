@@ -22,6 +22,6 @@ When activated:
 - [Workers](../../../08.architecture/02.server-components/index.md#worker) finish their current tasks without picking up new ones.
 - The [web server](../../../08.architecture/02.server-components/index.md#webserver) and [scheduler](../../../08.architecture/02.server-components/index.md#scheduler) remain active — no requests are lost.
 
-## Enter maintenance mode
+## Enabling maintenance mode
 
-Go to **Instance Owner → Instance → Services** and click **Enter maintenance mode** in the top-right corner. A confirmation prompt explains what will happen before the transition begins. To exit, click the same button and confirm you want to return to a live state.
+Maintenance mode is enabled from **Instance Owner → Instance → Services**. A confirmation prompt appears before the transition begins. The same button exits maintenance mode and returns the instance to a live state.

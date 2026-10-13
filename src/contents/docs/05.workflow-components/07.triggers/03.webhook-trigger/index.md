@@ -167,19 +167,33 @@ triggers:
     when: "{{ trigger.body.hello == 'world' }}"
 ```
 
-You can combine multiple criteria in a single expression using `and` / `or`:
+### Filtering on headers
+
+`trigger.headers` maps each header name to a **list** of values, so use `contains` rather than `==` when filtering:
 
 ```yaml
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
     key: "{{ secret('WEBHOOK_KEY') }}"
-    when: "{{ trigger.body.event == 'push' and trigger.headers['x-github-event'] == 'push' }}"
+    when: "{{ trigger.headers['X-GitHub-Event'] contains 'push' }}"
+```
+
+Header names are matched by the exact casing the sender used. HTTP/2 clients and many proxies canonicalize headers to lowercase, so `trigger.headers['X-GitHub-Event']` finds nothing when the client sends `x-github-event`. Check your client's behavior and match the case accordingly.
+
+You can combine body and header criteria in a single expression using `and` / `or`:
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    when: "{{ trigger.body.event == 'push' and trigger.headers['X-GitHub-Event'] contains 'push' }}"
 ```
 
 ## Webhook response
 
-By default, the trigger responds immediately with JSON. When the caller needs to wait for the result — for example, a validation handshake that requires `text/plain` — enable `wait` and set `responseContentType`.
+By default, the trigger responds immediately without waiting for the flow to finish. Set `wait: true` to hold the HTTP connection open until the execution completes (or the trigger's timeout is reached), and `returnOutputs: true` to include the flow outputs as a JSON object in the response body.
 
 ```yaml
 triggers:
@@ -188,7 +202,6 @@ triggers:
     key: "{{ secret('WEBHOOK_KEY') }}"
     wait: true
     returnOutputs: true
-    responseContentType: text/plain   # optional, defaults to application/json
 ```
 
 - `wait: true` keeps the HTTP connection open until the flow finishes or the trigger's timeout is reached.
@@ -218,12 +231,12 @@ triggers:
     key: "{{ secret('WEBHOOK_KEY') }}"
     wait: true
     returnOutputs: true
-    # optional: responseContentType: "text/plain"
+    responseContentType: application/json   # sets the Content-Type header only; body is always the JSON outputs map
 ```
 
 - Call the webhook URL with a query parameter (for example `?name=Alice`). The execution runs synchronously because `wait: true` is set.
-- The HTTP response body contains the flow outputs (JSON by default). With the example above, the response includes `"greeting": "Hello Alice!"`.
-- Set `responseContentType: "text/plain"` when you want the response body to be plain text (ensure the flow returns a single string output, such as from the `Return` task).
+- The HTTP response body contains the flow outputs as a JSON object. With the example above, the response includes `"greeting": "Hello Alice!"`.
+- `responseContentType` sets the `Content-Type` header on the response. It does not change how the body is serialized — the body is always the JSON-serialized outputs map when `returnOutputs: true` is set.
 
 ## Test a webhook trigger
 

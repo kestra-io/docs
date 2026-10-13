@@ -109,7 +109,7 @@
             font-size: $font-size-sm;
             text-transform: uppercase;
             color: var(--ks-content-primary);
-            font-family: var(--bs-font-monospace);
+            font-family: var(--ks-font-monospace);
             font-weight: 700;
             &:after {
                 content: "";
@@ -119,7 +119,7 @@
                 display: inline-block;
                 height: 2px;
                 width: 51px;
-                background: var(--bs-pink);
+                background: var(--ks-pink);
             }
         }
     }

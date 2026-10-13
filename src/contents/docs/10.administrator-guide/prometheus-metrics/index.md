@@ -87,6 +87,42 @@ Worker server exclusive:
 * `kestra_worker_running_count` (gauge): The number of tasks currently running inside the Worker.
 * `kestra_worker_started_count_total` (counter): The total number of tasks started by the Worker.
 
+### Kestra Worker Controller Metrics
+
+Worker Controller server exclusive:
+
+**Global gauges (no tags):**
+* `kestra_controller_worker_active_all` (gauge): The number of active workers across all worker queues.
+* `kestra_controller_permits_available_all` (gauge): The total available permits across all worker queues.
+
+**Per-worker-queue gauges (tagged `worker_queue`):**
+* `kestra_controller_worker_active` (gauge): The number of active workers in a worker queue.
+* `kestra_controller_permits_available` (gauge): The total available permits (remaining capacity) in a worker queue.
+* `kestra_controller_job_inflight` (gauge): The number of in-flight jobs in a worker queue.
+
+**Per-worker-group gauges (tagged `worker_group`):**
+* `kestra_controller_worker_group_job_inflight` (gauge): The number of in-flight jobs being processed by workers in a worker group.
+
+**Per-worker-group capacity gauges (tagged `worker_group`, `worker_queue`):**
+* `kestra_controller_capacity_subscription_allocated` (gauge): Reserved slots allocated to a worker queue subscription, aggregated across workers in the worker group.
+* `kestra_controller_capacity_subscription_used` (gauge): Reserved slots currently used by a worker queue subscription, aggregated across workers in the worker group.
+* `kestra_controller_capacity_shared_allocated` (gauge): Shared (unreserved) slots allocated, aggregated across workers in the worker group.
+* `kestra_controller_capacity_shared_used` (gauge): Shared (unreserved) slots currently used, aggregated across workers in the worker group.
+
+**Per-(worker-group, worker-queue) counters (tagged `worker_group`, `worker_queue`):**
+* `kestra_controller_worker_registered_total` (counter): The total number of worker–worker-queue subscription registrations. A worker subscribed to N queues increments this counter N times.
+* `kestra_controller_worker_unregistered_total` (counter): The total number of worker–worker-queue subscription removals.
+
+**Per-worker-queue counters (tagged `worker_queue`):**
+* `kestra_controller_job_requeued_total` (counter): The total number of jobs re-queued due to no worker capacity.
+* `kestra_controller_job_killed_total` (counter): The total number of jobs skipped because the execution was killed.
+* `kestra_controller_subscription_paused_total` (counter): The total number of queue subscription pauses.
+* `kestra_controller_subscription_resumed_total` (counter): The total number of queue subscription resumes.
+
+**Per-(worker-group, worker-queue) counters (tagged `worker_group`, `worker_queue`):**
+* `kestra_controller_job_dispatched_total` (counter): The total number of jobs dispatched to workers.
+* `kestra_controller_job_dispatch_failed_total` (counter): The total number of job dispatch failures.
+
 ### Kestra JDBC Metrics
 
 Various Kestra-specific database queries:

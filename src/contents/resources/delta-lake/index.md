@@ -183,7 +183,7 @@ Delta Lake is an open-source project with a growing ecosystem. It integrates nat
 
 ## Delta Lake vs. other table formats: Iceberg and Hudi
 
-Delta Lake is one of three major open table formats for the data lakehouse. Its main counterparts are Apache Iceberg and Apache Hudi.
+Delta Lake is one of three major open table formats for the data lakehouse. Its main counterparts are [Apache Iceberg](/resources/data/apache-iceberg) and Apache Hudi.
 
 *   **Apache Iceberg:** Originally developed at Netflix, Iceberg is known for its strong focus on correctness and performance, especially for huge tables. It is compute-engine agnostic and has broad support across the ecosystem.
 *   **Apache Hudi:** Created at Uber, Hudi (Hadoop Upserts Deletes and Incrementals) focuses on providing fast upserts and incremental data processing, making it a strong choice for change data capture and streaming use cases.

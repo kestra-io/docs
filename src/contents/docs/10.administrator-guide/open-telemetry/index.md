@@ -21,7 +21,7 @@ Kestra supports all three kinds of telemetry data via OpenTelemetry-compatible e
 
 ## Traces
 
-The first step is to enable distributed traces inside the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
+Distributed traces are enabled in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
 
 ```yaml
 micronaut:
@@ -118,7 +118,7 @@ The following screenshot shows three correlated traces:
 
 ### Disabling traces
 
-You can disable traces for flows while keeping API traces:
+Traces can be disabled for flows while keeping API traces:
 
 ```yaml
 kestra:
@@ -126,7 +126,7 @@ kestra:
     root: DISABLED
 ```
 
-You can also disable traces per component (experimental). For example, disabling only Executor spans:
+Traces can also be disabled per component (experimental). For example, disabling only Executor spans:
 
 ```yaml
 kestra:
@@ -158,7 +158,7 @@ micronaut:
         url: http://localhost:4318/v1/metrics # Replace with your collector URL
 ```
 
-For example, you can configure an OpenTelemetry Collector to forward metrics to Prometheus:
+For example, an OpenTelemetry Collector can be configured to forward metrics to Prometheus:
 
 ```yaml
 receivers:

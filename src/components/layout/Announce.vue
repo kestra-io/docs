@@ -14,6 +14,8 @@
                         <a
                             class="slide-content d-flex justify-content-center align-items-center text-decoration-none"
                             :href="slide.href"
+                            :target="slide.href.startsWith('http') ? '_blank' : undefined"
+                            :rel="slide.href.startsWith('http') ? 'noopener' : undefined"
                             @click="slideTo(index)"
                         >
                             <span class="d-inline-block text-truncate">

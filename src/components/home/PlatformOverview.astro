@@ -106,22 +106,36 @@ const pluginIcons = await Promise.all(
 
 <script>
     const THRESHOLD = -250
-    const stack = document.querySelector(".platform-wrapper")
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                const isEntryAboveTheFold =
-                    entry.boundingClientRect.top < THRESHOLD
-                entry.target.classList.toggle(
-                    "expanded",
-                    entry.isIntersecting || isEntryAboveTheFold,
-                )
-            })
-        },
-        { threshold: 0.6 },
-    )
-    if (stack) {
+    let observer: IntersectionObserver | null = null
+
+    // re-wired on every page load: the ClientRouter swaps the DOM without
+    // re-running this module, leaving the observer on a discarded element
+    function wireImageStack() {
+        observer?.disconnect()
+        const stack = document.querySelector(".platform-wrapper")
+        if (!stack) return
+
+        observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const isEntryAboveTheFold =
+                        entry.boundingClientRect.top < THRESHOLD
+                    entry.target.classList.toggle(
+                        "expanded",
+                        entry.isIntersecting || isEntryAboveTheFold,
+                    )
+                })
+            },
+            { threshold: 0.6 },
+        )
         observer.observe(stack)
+    }
+
+    document.addEventListener("astro:page-load", wireImageStack)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wireImageStack)
+    } else {
+        wireImageStack()
     }
 </script>
 

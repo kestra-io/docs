@@ -7,17 +7,7 @@ description: Configure Docker-in-Docker (DinD) to run securely behind a corporat
 ---
 Configure Docker-in-Docker (DinD) to work behind a corporate or MITM proxy in a rootless Kubernetes deployment.
 
-## Why configure CA certs and proxies for DinD?
-
-Docker-in-Docker (DinD) runs a Docker daemon inside a container, allowing it to build and run other containers. Kestra relies on DinD for certain task types that require Docker runtime isolation.
-
-If your environment uses a proxy that intercepts HTTPS traffic (such as an MITM proxy), Docker must **trust the proxy’s CA certificate** when pulling images from remote registries (like Docker Hub or private registries).
-
-Without this, you'll see errors like:
-
-```plaintext
-x509: certificate signed by unknown authority
-```
+In environments that use a proxy intercepting HTTPS traffic, Docker must trust the proxy’s CA certificate when pulling images from remote registries. Without this, image pulls fail with `x509: certificate signed by unknown authority`.
 
 ## Prerequisites
 1. Create a ConfigMap for the Docker daemon configuration.
@@ -113,7 +103,7 @@ Here, `volume-enabled: true` ensures that the CA certificate is mounted from the
 
 This configuration will help the DinD pod pull the required container images successfully through the MITM proxy.
 
-For Kestra tasks that run in Docker containers (e.g., `io.kestra.plugin.scripts.shell.Script`), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.
+For Kestra tasks that run in Docker containers (e.g., [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script)), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.
 For consistency across tasks, consider configuring these settings as plugin defaults.
 
 ```yaml

@@ -89,6 +89,3 @@ Selecting the ideal Argo Workflows alternative depends on your team's specific n
 *   **For small teams getting started:** Kestra's open-source edition provides a powerful yet accessible entry point with its YAML-first approach and comprehensive UI. Prefect also offers a developer-friendly experience for Python users.
 
 The landscape of orchestration tools is diverse. While Argo Workflows is a powerful tool for its niche, alternatives like Kestra offer broader or more specialized capabilities that may better fit your organization's needs. By evaluating your primary use cases—whether data, AI, infrastructure, or application workflows—you can select a platform that not only meets your current requirements but also scales with your future ambitions.
-
-Ready to explore a universal orchestration platform? [Get started with Kestra](https://kestra.io/get-started) to see how its declarative, polyglot approach can simplify your data, AI, and infrastructure workflows.
-

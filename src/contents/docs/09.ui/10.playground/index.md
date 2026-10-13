@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/ui.svg
 editions: ["OSS", "EE"]
 ---
 
-Iteratively build and test flows task by task without running the entire workflow.
+Playground mode supports iterative flow development by running tasks individually rather than executing the full workflow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/p7UXd66GI1M?si=1Dzc6cjghO8BGAhh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -17,20 +17,24 @@ Iteratively build and test flows task by task without running the entire workflo
 
 If you've ever worked with a [Jupyter](https://jupyter.org/) notebook, you might be familiar with this pattern: you run the first cell to extract data, then you run the second cell to transform that data, and you can rerun the second cell multiple times to test different transformations without having to rerun the first cell again. Kestra's Playground mode allows you to do the same within your flows.
 
-## Use Playground mode
+## Running tasks in Playground mode
 
-To use Playground mode:
-
-1. Enable the Playground mode.
-2. Add a task to your flow and hit **Play** to run it.
-3. Add a second task and hit **Play** to run it, reusing the output of the first task.
-4. Modify the second task and hit **Play** again to rerun only the second task.
-5. Add a third task and hit **Play** to run it, reusing the outputs of the first and second tasks.
-6. Keep iterating by adding more tasks and running them individually, or click on **Run all tasks** or **Run all downstream tasks** options to run multiple tasks at once.
+Playground mode runs tasks one at a time via their **Play** button. Each task reuses the cached outputs of all upstream tasks that have already been played, so only the selected task re-executes. **Run all tasks** and **Run all downstream tasks** are available to run multiple tasks in sequence.
 
 Kestra tracks up to 10 recent playground runs, so you can go back to inspect the outputs of previously executed tasks. Older runs are purged automatically. Playground runs won't appear in the regular execution list to avoid confusion with production executions.
 
-Playground mode requires a DAG (Directed Acyclic Graph) structure, so you cannot run a task before its upstream tasks have been played. If you change flow-level `inputs`, `variables`, or `outputs` properties while in Playground mode, existing task runs are automatically reset and must be rerun. Kestra resets them to ensure that task outputs remain consistent with the flow-level properties.
+Playground mode requires a DAG (Directed Acyclic Graph) structure, so you cannot run a task before its upstream tasks have been played.
+
+### When reused results are reset
+
+Playground reuses earlier task outputs as long as nothing that affects them has changed. It starts a fresh run when you change:
+
+- a task before the one you run
+- the flow `inputs`
+- the flow `labels`
+- the flow `variables`
+
+Playground only tracks the flow definition. Reused results can still be out of date after a change to namespace files, KV store entries, [secrets](../../06.concepts/04.secret/index.md), or an external system a task reads from. Use **Run all tasks** to start a fresh run when you change any of these.
 
 To see Playground in action, check out the demo below.
 
@@ -54,13 +58,13 @@ tasks:
 
   - id: extract_titles
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs.fetch_products.body | jq('map(select(.completed == false)) | map(.title)') }}"
+    format: "{{ outputs.fetch_products.body | jq('map(select(.completed == false)) | map(.title)') | first }}"
 
   - id: count_pending
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs.fetch_products.body | jq('[.[] | select(.completed == false)] | length') }}"
+    format: "{{ outputs.fetch_products.body | jq('[.[] | select(.completed == false)] | length') | first }}"
 
   - id: build_report
     type: io.kestra.plugin.core.debug.Return
-    format: "Pending tasks: {{ outputs.count_pending.value }} | First item: {{ outputs.extract_titles.value | jq('.[0]') }}"
+    format: "Pending tasks: {{ outputs.count_pending.value }} | First item: {{ outputs.extract_titles.value | jq('.[0]') | first }}"
 ```

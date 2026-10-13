@@ -25,6 +25,7 @@ import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
+import rehypeResourceCta from "./src/markdown/rehype/resource-cta.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
 const __dirname = path.dirname(
@@ -37,6 +38,20 @@ const __dirname = path.dirname(
 // sharp) and Cloudflare only for the build.
 const isDev = process.argv.includes("dev")
 
+// Cloudflare's image service only runs on Cloudflare. `NO_IMAGE_OPTIM` serves
+// the originals instead, which is fast but leaves multi-MB images in the page.
+const imageService = () => {
+    // The Lighthouse benchmark measures what images cost, so it pays ~10 min of
+    // sharp at build time rather than benchmarking untransformed originals.
+    if (process.env.IMAGE_OPTIM_AT_BUILD === "true") {
+        return /** @type {const} */ ({
+            build: "compile",
+            runtime: "passthrough",
+        })
+    }
+    return process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare"
+}
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
@@ -45,11 +60,7 @@ export default defineConfig({
         : cloudflare({
               sessionKVBindingName: "docs-session",
               prerenderEnvironment: "node",
-              // only use cloudflare images in production
-              imageService:
-                  process.env.NO_IMAGE_OPTIM === "true"
-                      ? "passthrough"
-                      : "cloudflare",
+              imageService: imageService(),
           }),
     trailingSlash: "never",
     integrations: [
@@ -127,6 +138,7 @@ export default defineConfig({
                 rehypeHeadingIds,
                 rehypeAutolinkHeadings,
                 rehypeImgPlugin,
+                rehypeResourceCta,
                 [
                     rehypeExternalLinks,
                     {
@@ -213,6 +225,12 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            // Raises the /api/github rate limit; works unauthenticated without it.
+            GITHUB_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             DISABLE_GITHUB: envField.boolean({
                 context: "server",
                 access: "public",
@@ -298,14 +316,21 @@ export default defineConfig({
                 // Mirror the tsconfig `~/*` paths so the alias also resolves
                 // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
                 "~": path.resolve(__dirname, "src"),
+                // Dev runs on Node, which has no Worker bindings: SSR routes see no KV.
+                ...(isDev && {
+                    "cloudflare:workers": path.resolve(
+                        __dirname,
+                        "src/utils/cloudflareWorkersDevStub.ts",
+                    ),
+                }),
             },
         },
         css: {
             preprocessorOptions: {
                 scss: {
-                    // silence invasive bootstrap warnings
+                    // `@import` and the global built-ins are still used by our own
+                    // stylesheets; `if-function` comes from NavToc's `if()` calls.
                     silenceDeprecations: [
-                        "color-functions",
                         "global-builtin",
                         "import",
                         "if-function",

@@ -22,9 +22,9 @@ By reviewing Audit Logs, system administrators can track user activity, and secu
 
 Audit logs are a historical record that developers and system administrators can use to track changes, monitor system usage, and verify system activity. They track the sequence of activities, ensuring accountability and providing data for troubleshooting and analysis. Because audit logs are immutable, they can also be used to detect and investigate security incidents. If you use the Elasticsearch backend, you can use Kibana to search and visualize your logs.
 
-## How to access Audit Logs
+## Accessing audit logs
 
-You can access Audit Logs from the **Tenant** section in the UI. That UI page provides a detailed table of recorded events, capturing the actions taken within the system:
+Audit logs are available under the **Tenant** section in the UI. The page provides a detailed table of recorded events:
 
 ![Audit Logs](./audit-logs-filter.png)
 
@@ -37,31 +37,29 @@ Each row in the table represents a distinct event with several columns providing
 - **Date** represents the timestamp of when the event occurred.
 - **Changes** shows two buttons: one to view the revision and a second to link you directly to the resource that created the log.
 
-## How to see a full diff of a specific event
+## Full diff view
 
-To see a full diff of a specific event, click the icon in the **Changes** column. The expanded view shows the full diff of the event side-by-side, including the `before` and `after` states of a given resource:
+The icon in the **Changes** column opens the full diff for that event, showing the `before` and `after` states side-by-side:
 
 ![Changes Diff](./changes_diff.png)
 
-## How to filter audit logs
+## Filtering audit logs
 
-Click **Add filters** to open the Advanced filter dialog. You can combine multiple conditions — for example, filter by Interval (Last 7 days) and Resource type (NAMESPACE) to narrow the table:
+The **Add filters** button opens the Advanced filter dialog. Multiple conditions can be combined; for example, Interval (Last 7 days) and Resource type (NAMESPACE):
 
 ![Advanced filter dialog](./audit_logs.png)
 
 To filter for a specific event, click any tag in the **Details** column to add it as a filter condition.
 
-## How to purge audit logs
+## Purging audit logs
 
-The Enterprise Edition of Kestra generates an audit log for _every action_ taken on the platform. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up a significant amount of space in the database.
-
-The `PurgeAuditLogs` task removes old audit logs that are no longer needed. You can set a date range for the logs you want to delete, choose a specific `namespace`, and even filter by `resources` or `actions` (`CREATE`, `READ`, `UPDATE`, `DELETE`).
+Audit logs accumulate over time. The `PurgeAuditLogs` task removes old records, with filters for date range, `namespace`, `resources`, and `actions` (`CREATE`, `READ`, `UPDATE`, `DELETE`).
 
 :::alert{type="info"}
-Additional types of **Purge tasks** are described in the [dedicated section](../../../10.administrator-guide/purge/index.md).
+Additional **Purge tasks** are described in the [dedicated section](../../../10.administrator-guide/purge/index.md).
 :::
 
-Here is the recommended way to implement the audit logs retention policy that purges audit logs older than one month:
+Example retention policy that purges audit logs older than one month:
 
 ```yaml
 id: audit_log_cleanup

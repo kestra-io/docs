@@ -4,9 +4,9 @@ rank: 1
 description: Leroy Merlin France replaced a fragmented legacy scheduling stack and a failing Airflow deployment with Kestra, scaling data production by 900% and growing to 5,000+ flows across 250+ engineers since May 2020.
 metaTitle: "Leroy Merlin France & Kestra: Data Mesh at Scale, 900% More Data Production"
 metaDescription: How Leroy Merlin France replaced Airflow and legacy schedulers with Kestra, scaling to 5,000+ flows across 250+ active engineers and cutting pipeline deployment from days to hours.
-heroImage: ./hero.png
+heroImage: ./hero.jpeg
 featured: true
-featuredImage: ./hero.png
+featuredImage: ./hero.jpeg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
 tasks:

@@ -119,7 +119,7 @@ Selecting the ideal workflow engine or orchestration platform requires a careful
 *   **Is Jira a Workflow Engine?**: While Jira excels at managing tasks, approvals, and transitions within its issue-tracking domain, it is primarily a project management tool. A dedicated workflow engine or orchestrator, like Kestra, offers broader capabilities for executing arbitrary code, integrating with external systems, and managing complex, high-throughput technical workflows beyond the scope of project management.
 
 ## Beyond the Engine: A Unified Orchestration Control Plane
-The concept of a workflow engine has evolved. Today's challenges—from managing sprawling data lakes to governing AI agents and automating complex infrastructure—demand a platform that can act as a unified orchestration control plane. Kestra provides this by:
+The concept of a workflow engine has evolved. Today's challenges—from managing sprawling data lakes to governing AI agents and automating complex infrastructure—demand a platform that can act as a [unified orchestration](/resources/orchestration/unified-orchestration) control plane. Kestra provides this by:
 
 *   **Unifying Domains**: Orchestrating data, AI, infrastructure, and business workflows from a single, declarative platform.
 *   **Embracing Declarative YAML**: Enabling GitOps best practices where workflows are version-controlled, auditable, and reviewed like any other code.

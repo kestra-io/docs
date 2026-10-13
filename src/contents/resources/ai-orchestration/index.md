@@ -20,7 +20,7 @@ faq:
   - question: Can AI orchestration integrate with existing data pipelines?
     answer: Yes, effective AI orchestration platforms are designed to integrate seamlessly with existing data pipelines and infrastructure. They act as a control plane, coordinating data ingestion, transformation, and movement to feed AI models and process their outputs, often leveraging existing data tools like dbt, Snowflake, or Kafka.
   - question: How does Kestra support AI orchestration?
-    answer: Kestra supports AI orchestration through declarative YAML workflows, a polyglot execution engine, 1,700+ plugins for diverse AI services and data tools, and native support for AI agents. It provides enterprise-grade features like audit logs, RBAC, and human-in-the-loop capabilities to govern complex AI systems.
+    answer: Kestra supports AI orchestration through declarative YAML workflows, a polyglot execution engine, {totalPlugins}+ plugins for diverse AI services and data tools, and native support for AI agents. It provides enterprise-grade features like audit logs, RBAC, and human-in-the-loop capabilities to govern complex AI systems.
 ---
 
 The promise of artificial intelligence is immense, but bringing AI models and agents into production at scale often creates new challenges. Fragmented tools, complex data dependencies, and a lack of unified oversight can turn ambitious AI initiatives into operational nightmares. Teams struggle to coordinate data pipelines, train models, deploy inference services, and manage autonomous agents reliably.
@@ -182,7 +182,7 @@ For any step that is irreversible or customer-facing, add [human approval gates]
 With Kestra, you can:
 - **Unify Your Stack:** Use a single platform to coordinate everything from data ingestion and transformation with tools like dbt and Snowflake, to model training with Python scripts, to deploying applications on Kubernetes.
 - **Empower All Teams:** The declarative nature of YAML makes workflows accessible to a broader audience, enabling [AI orchestration for non-technical teams](/resources/ai/ai-orchestration-for-non-technical-teams) to collaborate with engineers.
-- **Leverage a Vast Ecosystem:** With over [1,700 plugins](/plugins) for popular AI providers, vector databases, cloud services, and data tools, you can connect your entire stack without writing boilerplate code.
+- **Leverage a Vast Ecosystem:** With [{totalPlugins}+ plugins](/plugins) for popular AI providers, vector databases, cloud services, and data tools, you can connect your entire stack without writing boilerplate code.
 - **Scale with Confidence:** Kestra's architecture is built for scale, having executed over 2 billion workflows in 2025. The Enterprise Edition provides the governance, security, and support needed for mission-critical AI applications.
 
 Kestra's approach is to provide a flexible, language-agnostic control plane that adapts to your tools and teams, rather than forcing you into a rigid framework. You can [stop writing glue code and start orchestrating](/ai-automation).
@@ -191,7 +191,7 @@ Kestra's approach is to provide a flexible, language-agnostic control plane that
 
 The field of AI is evolving rapidly, and orchestration platforms must evolve with it. The rise of [autonomous AI agents](/blogs/introducing-ai-agents) and complex LLM-powered applications is placing new demands on orchestration. The future will require platforms that can manage dynamic, decision-driven workflows and provide robust governance for increasingly autonomous systems.
 
-Two directions are worth following closely: [agentic workflows](/resources/ai/agentic-workflows) as the execution model, and [multi-agent systems](/resources/ai/multi-agent-system) as the coordination problem that follows from it.
+Two directions are worth following closely: [agentic workflows](/resources/ai/agentic-workflows) as the execution model, and [multi-agent systems](/resources/ai/multi-agent-system) as the coordination problem that follows from it. The [unified orchestration whitepaper](/resources/whitepapers/unified-orchestration) sets out the seven requirements a platform has to meet to govern them alongside data, infrastructure and business workflows.
 
 Orchestration is no longer just about scheduling static tasks; it's about providing the guardrails, observability, and human oversight for intelligent systems. Platforms that embrace this new reality by integrating features like AI Copilots for workflow generation and native support for agentic patterns will be essential for building the next generation of AI applications.
 

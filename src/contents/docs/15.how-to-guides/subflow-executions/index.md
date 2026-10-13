@@ -18,7 +18,7 @@ When working with subflows, it’s important to understand the difference betwee
 
 ### Subflow task-level retry
 
-When you define a retry on the `Subflow` task, it controls how the **Subflow task** itself is retried within the parent flow. For example:
+When you define a retry on the [Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task, it controls how the **Subflow task** itself is retried within the parent flow. For example:
 
 ```yaml
 id: parent_flow
@@ -40,7 +40,7 @@ In this case, the retry applies to the `Subflow` task in the parent flow. When t
 
 ### Flow-level retry inside the subflow
 
-To retry the execution from **failed task** within a subflow (without rerunning tasks that already succeeded), configure the `retry` property **on the subflow flow definition**, not on the Subflow task. This allows the subflow execution to restart from the failed task rather than from the start.
+To retry the execution from **failed task** within a subflow (without rerunning tasks that already succeeded), configure the `retry` property **on the subflow flow definition**, not on the [Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task. This allows the subflow execution to restart from the failed task rather than from the start.
 
 Example:
 
@@ -103,6 +103,7 @@ When `my_subflow` is configured with `behavior: RETRY_FAILED_TASK`, it automatic
 
 * **Replay**: You can replay the parent execution from the failed subflow task if the subflow defines `behavior: RETRY_FAILED_TASK`.
 * **Restart**: When you restart the parent execution where a subflow task failed from the UI or API, this will restart the entire child execution from the beginning (regardless of the subflow task definition), unless the subflow YAML defines `behavior: RETRY_FAILED_TASK` as flow-level retry configuration.
+* **Restarting a subflow execution directly**: If you restart the subflow execution itself rather than the parent, the parent execution remains `FAILED` and its downstream tasks will not run. Always restart from the parent execution to resume the full pipeline.
 
 ## Summary
 

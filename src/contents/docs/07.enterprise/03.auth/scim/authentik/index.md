@@ -66,7 +66,7 @@ When creating a new Provisioning Integration, Kestra will automatically create t
   ![scim5](../okta/scim5.png)
 
 :::alert{type="info"}
-Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
+The `SCIMProvisioner` role has no `DELETE` permission for users because users are global in scope. Deleting a user via SCIM removes their tenant access without removing the user from the system.
 :::
 
 ## authentik SCIM 2.0 setup
@@ -78,7 +78,7 @@ Configuring SCIM 2.0 follows a process similar to SSO — you'll need to create 
 In the `Protocol settings` section, enter the `URL` and `Secret Token` obtained from Kestra.
 
 :::alert{type="info"}
-If you are running authentik on a Mac machine with [docker-compose installer](https://docs.goauthentik.io/docs/installation/docker-compose), make sure to replace `localhost` in your Kestra's SCIM endpoint with `host.docker.internal` since otherwise the sync won't work. Your URL should look as follows: `http://host.docker.internal:8080/api/v1/dev/integrations/zIRjRAMGvkammpeLVuyJl/scim/v2`.
+If you are running authentik on a Mac machine with [docker-compose installer](https://docs.goauthentik.io/docs/install-config/install/docker-compose/), make sure to replace `localhost` in your Kestra's SCIM endpoint with `host.docker.internal` since otherwise the sync won't work. Your URL should look as follows: `http://host.docker.internal:8080/api/v1/dev/integrations/zIRjRAMGvkammpeLVuyJl/scim/v2`.
 :::
 
 ![scim-for-authentik-8](./authentik8.png)

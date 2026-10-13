@@ -1,15 +1,25 @@
 // Pages sampled by the visual-regression suite and the Lighthouse benchmark.
 // `runs` is how many times the benchmark measures a page before taking the
-// median, for the ones whose score swings between runners; `ssr` marks the
-// prerender = false pages, which the benchmark measures first.
+// median, named only where it differs from DEFAULT_RUNS; `ssr` marks the
+// prerender = false pages, which the benchmark measures first. `styles` is a
+// stylesheet under snapshot-styles/ injected before the screenshot is taken;
+// `reducedMotion` freezes pages whose auto-playing motion would otherwise make
+// the visual baseline non-deterministic.
 export const PAGES = [
     { path: "/", label: "Home", runs: 5 },
     { path: "/get-started", label: "Get Started" },
     { path: "/pricing", label: "Pricing" },
     { path: "/enterprise", label: "Enterprise" },
     { path: "/cloud", label: "Cloud" },
-    { path: "/about-us", label: "About Us", runs: 3 },
-    { path: "/docs", label: "Docs Landing", runs: 5 },
+    { path: "/features", label: "Features" },
+    { path: "/about-us", label: "About Us" },
+    { path: "/security", label: "Security" },
+    {
+        path: "/docs",
+        label: "Docs Landing",
+        runs: 5,
+        styles: "docs-landing.css",
+    },
     {
         path: "/docs/contribute-to-kestra",
         label: "Contribute to Kestra (simple docs)",
@@ -17,12 +27,13 @@ export const PAGES = [
     {
         path: "/docs/workflow-components/flow",
         label: "Flow (full featured docs)",
-        runs: 3,
     },
     { path: "/blogs", label: "Blog Index" },
     { path: "/blogs/2022-04-27-etl-vs-elt", label: "Blog Post (sample)" },
     { path: "/vs/aws-step-functions", label: "VS Page (sample)" },
-    { path: "/plugins", label: "Plugins Landing", runs: 3, ssr: true },
+    { path: "/customers", label: "Customers Landing", reducedMotion: true },
+    { path: "/customers/apple", label: "Customer Story (sample)" },
+    { path: "/plugins", label: "Plugins Landing", ssr: true },
     { path: "/plugins/core", label: "Plugin Page (sample)", ssr: true },
     {
         path: "/plugins/core/debug",
@@ -34,15 +45,13 @@ export const PAGES = [
         label: "Plugin Debug Return Page (sample)",
         ssr: true,
     },
-    {
-        path: "/blueprints",
-        label: "Blueprints Landing",
-        runs: 3,
-        ssr: true,
-    },
+    // Both /blueprints pages fan out ~15 API calls per request, so their
+    // score tracks runner load more than the code. See #5707.
+    { path: "/blueprints", label: "Blueprints Landing", runs: 5, ssr: true },
     {
         path: "/blueprints/audit-logs-csv-export",
         label: "Blueprint Audit Logs CSV Export",
+        runs: 5,
         ssr: true,
     },
 ]
@@ -51,6 +60,7 @@ export const PAGES = [
 // PAGES is the perf sample and stays small on purpose; this list exists so the
 // SVG asset rework (dot-grid backgrounds to CSS, base64 PNG wrappers to WebP,
 // SVGO passes) has a screenshot baseline on every surface it touches.
+/** @type {SamplePage[]} */
 export const VISUAL_ONLY_PAGES = [
     // Use-case detail pages: each renders one of the ~5.6 MB dot-grid
     // backgrounds under public/landing/usecases/, the highest-risk conversion.

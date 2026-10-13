@@ -18,7 +18,7 @@ schema:
       name: "What is the Kestra MCP server?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "The Kestra MCP server is a remote HTTP endpoint at https://api.kestra.io/v1/mcp that implements the Model Context Protocol. It exposes Kestra's full plugin registry and blueprint catalog as 13 read-only callable tools, so AI coding agents can discover plugins, list tasks, fetch task schemas, and retrieve blueprint templates without leaving their environment."
+        text: "The Kestra MCP server is a remote HTTP endpoint at https://api.kestra.io/v1/mcp that implements the Model Context Protocol. It exposes Kestra's full plugin registry and blueprint catalog as 9 read-only callable tools, so AI coding agents can discover plugins, list tasks, fetch task schemas, and retrieve blueprint templates without leaving their environment."
     - "@type": "Question"
       name: "How do I connect Claude Code to the Kestra MCP server?"
       acceptedAnswer:
@@ -28,12 +28,12 @@ schema:
       name: "What tools does the Kestra MCP server expose?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "It provides 13 tools: list_plugins, plugin_tasks, versions, list_task_runners, list_triggers, list_storages, list_secret_managers, list_log_exporters, plugin_versions, blueprints, get_blueprint_flow, search, and task_schema. Together they let an agent explore the full plugin ecosystem, inspect task schemas, and retrieve ready-made flow templates. The blueprints tool supports a types filter (comma-separated FQCNs) to narrow results by included task type."
+        text: "It provides 9 tools: list_plugins, plugin_tasks, list_installed_versions, list_plugin_elements, plugin_release_history, search_blueprints, get_blueprint_flow, search, and task_schema. Together they let an agent explore the full plugin ecosystem, inspect task schemas, and retrieve ready-made flow templates. The search_blueprints tool supports a types filter (comma-separated FQCNs) to narrow results by included task type."
     - "@type": "Question"
       name: "Does the Kestra MCP server require authentication?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "No. The public endpoint at https://api.kestra.io/v1/mcp is open and requires no API key or login. All 13 tools are read-only."
+        text: "No. The public endpoint at https://api.kestra.io/v1/mcp is open and requires no API key or login. All 9 tools are read-only."
     - "@type": "Question"
       name: "Can I use the Kestra MCP server with AI agents other than Claude Code?"
       acceptedAnswer:
@@ -74,43 +74,39 @@ Or add it manually to `.claude/settings.json`:
 }
 ```
 
-Once connected, the 13 tools are immediately available in every Claude Code session. You can verify with `/mcp`, or simply start a flow-writing task — Claude will invoke the relevant tools automatically.
+Once connected, the 9 tools are immediately available in every Claude Code session. You can verify with `/mcp`, or simply start a flow-writing task — Claude will invoke the relevant tools automatically.
 
 ## What the server exposes
 
-All 13 tools carry `readOnlyHint: true`. The server is a pure catalog; it never modifies state.
+All 9 tools carry `readOnlyHint: true`. The server is a pure catalog; it never modifies state.
 
 ### Plugin discovery
 
 | Tool | What it returns |
 |------|-----------------|
-| `list_plugins` | All loaded plugins with name, categories, and counts per element type (tasks, triggers, task runners, storages, secret managers, log exporters). Optional `category` filter: `AI`, `ALERTING`, `BUSINESS`, `CLOUD`, `CORE`, `DATA`, `INFRASTRUCTURE`. |
+| `list_plugins` | All loaded plugins with name, categories, and counts per element type (tasks, triggers, task runners, storages, secret managers, log exporters). Optional `category` filter: `AI`, `BUSINESS`, `CLOUD`, `CORE`, `DATA`, `INFRASTRUCTURE`. Optional `detail` filter: `full` (default) or `concise` to omit descriptions. |
 | `plugin_tasks` | All tasks, triggers, conditions, and task runners for one plugin, grouped by subpackage. Accepts a plugin name (`plugin-aws`) or group (`io.kestra.plugin.aws`). |
-| `versions` | Installed version of every plugin. Optional name filter. |
-| `list_task_runners` | All [task runner backends](../../docs/task-runners/index.mdx) across all plugins (Docker, Kubernetes, GCP Batch, AWS Batch, …). |
-| `list_triggers` | All [trigger types](../../docs/05.workflow-components/07.triggers/index.mdx) across all plugins (Schedule, Webhook, [Kafka](/plugins/plugin-kafka), JDBC, …). |
-| `list_storages` | All internal [storage backends](../../docs/06.concepts/11.storage/index.md) (GCS, S3, Azure Blob Storage, MinIO, …). |
-| `list_secret_managers` | All [secret manager](../../docs/06.concepts/04.secret/index.md) integrations (HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, 1Password, CyberArk, Doppler, Delinea, BeyondTrust, …). |
-| `list_log_exporters` | All log shipper backends. |
+| `list_installed_versions` | Installed version of every plugin. Optional name filter. |
+| `list_plugin_elements` | All elements of one type across all plugins (FQCN + owning plugin), via an `elementType` parameter: `TASK_RUNNER` ([task runner backends](../../docs/task-runners/index.mdx) — Docker, Kubernetes, GCP Batch, AWS Batch, …), `TRIGGER` ([trigger types](../../docs/05.workflow-components/07.triggers/index.mdx) — Schedule, Webhook, [Kafka](/plugins/plugin-kafka), JDBC, …), `STORAGE` (internal [storage backends](../../docs/06.concepts/11.storage/index.md) — GCS, S3, Azure Blob Storage, MinIO, …), `SECRET_MANAGER` ([secret manager](../../docs/06.concepts/04.secret/index.md) integrations — HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, 1Password, CyberArk, Doppler, …), `LOG_EXPORTER` (log shipper backends), plus `APP`, `APP_BLOCK`, `CHART`, `DATA_FILTER`, `DATA_FILTER_KPI`, and `ADDITIONAL_PLUGIN`. Optional `detail` filter: `full` (default) or `concise`. |
 
 ### Task documentation
 
 | Tool | What it returns |
 |------|-----------------|
-| `task_schema` | Full JSON schema and documentation for a task class, including all properties and outputs. Accepts the fully-qualified class name (e.g. `io.kestra.plugin.aws.s3.Upload`) and an optional `all` flag to include inherited properties. |
+| `task_schema` | Full JSON schema and documentation for a task class, including all properties and outputs. Accepts the fully-qualified class name (e.g. `io.kestra.plugin.aws.s3.Upload`) and an optional `properties` parameter: `declared` (default) or `all` to include inherited properties. |
 
 ### Blueprints
 
 | Tool | What it returns |
 |------|-----------------|
-| `blueprints` | Search flow templates by text query and/or tags. Optional `types` parameter filters by included task FQCN (combine with `list_triggers`, `list_task_runners`, etc. to get valid values). Returns id, title, description, tags, included task list, and `ee` flag (Enterprise Edition only). |
+| `search_blueprints` | Search flow templates by text query and/or tags. Optional `types` parameter filters by included task FQCN (combine with `list_plugin_elements` to get valid values). Returns id, title, description, tags, included task list, and `ee` flag (Enterprise Edition only). |
 | `get_blueprint_flow` | Full YAML source for a Blueprint by id. Ready to paste into a flow. |
 
 ### Plugin release history
 
 | Tool | What it returns |
 |------|-----------------|
-| `plugin_versions` | Full GitHub release history for a plugin, including the Kestra version each release targets. |
+| `plugin_release_history` | Full GitHub release history for a plugin, including the Kestra version each release targets. |
 
 ### Full-text search
 
@@ -126,15 +122,15 @@ Ask Claude Code to write a flow that reads from S3 and loads into BigQuery. Inst
 
 ### Checking what plugins are available
 
-_"Does Kestra support Vault for secrets?"_ — the agent calls `list_secret_managers` and returns the full list including the FQCN and description for the HashiCorp Vault implementation. The same pattern works for `list_task_runners` ("can I run tasks on GCP Batch?"), `list_storages` ("does Kestra support MinIO?"), and `list_triggers` ("is there a Kafka realtime trigger?"). No guessing, no docs tab, no stale answers.
+_"Does Kestra support Vault for secrets?"_ — the agent calls `list_plugin_elements(elementType: "SECRET_MANAGER")` and returns the full list including the FQCN and description for the HashiCorp Vault implementation. The same pattern works for `TASK_RUNNER` ("can I run tasks on GCP Batch?"), `STORAGE` ("does Kestra support MinIO?"), and `TRIGGER` ("is there a Kafka realtime trigger?"). No guessing, no docs tab, no stale answers.
 
 ### Bootstrapping with Blueprints
 
-Before writing a flow from scratch, the agent calls `blueprints` with a query like `"dbt"` or `"slack notification"`, scans the matches, and calls `get_blueprint_flow` on the best result to retrieve the full YAML. This is faster than authoring from scratch and guarantees the output follows Kestra's own patterns and best practices.
+Before writing a flow from scratch, the agent calls `search_blueprints` with a query like `"dbt"` or `"slack notification"`, scans the matches, and calls `get_blueprint_flow` on the best result to retrieve the full YAML. This is faster than authoring from scratch and guarantees the output follows Kestra's own patterns and best practices.
 
 ### Investigating plugin compatibility
 
-When a flow breaks after a plugin upgrade, the agent calls `plugin_versions` to retrieve the full release history with the target Kestra version for each tag. This surfaces the exact release where a change was introduced without leaving the conversation or opening GitHub.
+When a flow breaks after a plugin upgrade, the agent calls `plugin_release_history` to retrieve the full release history with the target Kestra version for each tag. This surfaces the exact release where a change was introduced without leaving the conversation or opening GitHub.
 
 ## Connecting other AI clients
 
@@ -179,13 +175,13 @@ Most MCP servers are local processes: install them, keep them updated, configure
 ## Frequently asked questions
 
 ### What is the Kestra MCP server?
-A remote HTTP endpoint at `https://api.kestra.io/v1/mcp` that implements the [Model Context Protocol](https://modelcontextprotocol.io). It gives AI coding agents live access to Kestra's plugin registry and Blueprint catalog through 13 read-only tools — with no installation required.
+A remote HTTP endpoint at `https://api.kestra.io/v1/mcp` that implements the [Model Context Protocol](https://modelcontextprotocol.io). It gives AI coding agents live access to Kestra's plugin registry and Blueprint catalog through 9 read-only tools — with no installation required.
 
 ### How do I connect Claude Code to the Kestra MCP server?
 Run `claude mcp add --transport http kestra https://api.kestra.io/v1/mcp` for project scope, or add `--scope user` for global availability. You can also add the `mcpServers` entry directly to `.claude/settings.json`.
 
 ### What tools does the Kestra MCP server expose?
-13 tools covering plugin discovery (`list_plugins`, `plugin_tasks`, `versions`), element-type listing (`list_task_runners`, `list_triggers`, `list_storages`, `list_secret_managers`, `list_log_exporters`), task documentation (`task_schema`), Blueprint search and retrieval (`blueprints`, `get_blueprint_flow`), release history (`plugin_versions`), and full-text search (`search`). The `blueprints` tool accepts a `types` parameter (comma-separated FQCNs) to filter templates by included task type — combine it with the element-listing tools to get valid values.
+9 tools covering plugin discovery (`list_plugins`, `plugin_tasks`, `list_installed_versions`), element-type listing (`list_plugin_elements`, parameterized by `elementType`), task documentation (`task_schema`), Blueprint search and retrieval (`search_blueprints`, `get_blueprint_flow`), release history (`plugin_release_history`), and full-text search (`search`). The `search_blueprints` tool accepts a `types` parameter (comma-separated FQCNs) to filter templates by included task type — combine it with `list_plugin_elements` to get valid values.
 
 ### Does the Kestra MCP server require authentication?
 No. The endpoint is public and requires no API key or login. All tools are read-only.

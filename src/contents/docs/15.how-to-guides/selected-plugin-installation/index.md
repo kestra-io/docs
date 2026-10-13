@@ -17,7 +17,7 @@ Pick and choose Kestra plugins to create lightweight builds and achieve a faster
 - Automate plugin installation using Docker Compose
 - Link to plugin documentation and versioning support
 
-See also: [Versioned Plugins in Kestra Enterprise](../../07.enterprise/05.instance/versioned-plugins/index.md).
+See also: [Versioned Plugins in Kestra Enterprise](../../07.enterprise/05.instance/versioned-plugins/index.md) · [Add Plugins to a Slim Kestra Docker Image](../slim-image-plugins/index.md).
 
 To download plugins for a standalone worker or local development environment, use [`kestractl plugins download`](../../kestra-cli/kestractl/index.md#plugin-management).
 
@@ -25,6 +25,7 @@ To download plugins for a standalone worker or local development environment, us
 
 Kestra plugins are distributed as individual JAR files and loaded at runtime. Plugins are not embedded by default in `-slim` Docker images (formerly published as `-no-plugins`). You can:
 
+- Write a flow with new plugins, then save the flow to auto-install as needed (only with the `-slim` image on a local server, otherwise configure `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`).
 - Download specific [plugin JARs](https://repo.maven.apache.org/maven2/io/kestra/plugin/) manually or via `kestra plugins install`.
 - Mount them into `/app/plugins/` in your [Docker Compose](../../02.installation/03.docker-compose/index.md) setup.
 
