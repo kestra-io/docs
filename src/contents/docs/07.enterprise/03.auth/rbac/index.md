@@ -35,11 +35,28 @@ Users, service accounts, and groups can hold any number of roles simultaneously.
 
 ## Impersonate
 
-After assigning permissions to a user, Instance Owners can impersonate users to verify their access is correct. Impersonation switches your view to that user's perspective and can be closed back to the Instance Owner view at any time.
+After assigning permissions to a user, Instance Owners can impersonate them to verify their access is correct. Impersonation switches your view to that user's perspective. A persistent banner confirms who you are impersonating, and you can return to your own session at any time using the **Stop impersonating** button in the top right.
 
-![Impersonate](./impersonate-user.png)
+**From the UI:** go to **IAM → Users**, find the user row, and select **Impersonate** from the action menu on the right.
 
-![Stop Impersonating User](./stop-impersonate-user.png)
+![The Impersonate button appears on each user row in the IAM Users list](./impersonate-user.png)
+
+Once active, a banner at the top of the page confirms the impersonation session. Select **Stop impersonating** to return to your own session.
+
+![The Stop impersonating button appears in the top right during an active impersonation session](./stop-impersonate-user.png)
+
+**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`. The response contains a short-lived JWT you can use in place of your regular credentials to act as that user.
+
+```bash
+curl -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
+  -H "Authorization: Bearer YOUR_API_TOKEN"
+```
+
+**From kestractl:** use the `users impersonate` command, which calls the same endpoint and prints the token:
+
+```bash
+kestractl users impersonate <user_id>
+```
 
 ### Resources
 

@@ -12,11 +12,11 @@ Inputs are typed, validated parameters passed to a flow at execution time.
   <iframe src="https://www.youtube.com/embed/peQvnhaspyQ?si=gcZxTX5KF2dC7ZLO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Flow inputs are stored in the execution context and accessed with `{{ inputs.parameter_name }}`. All inputs are validated when the execution is created — invalid or missing required inputs prevent the execution from being created and it will not appear in the executions list.
+Flow inputs are stored in the execution context and accessed with `{{ inputs.parameter_name }}`. All inputs are validated when the execution is created; invalid or missing required inputs prevent the execution from being created and it will not appear in the executions list.
 
 ## Declaring inputs
 
-Inputs are declared under the `inputs` key. Each input requires an `id` and a `type`. Inputs are required by default; set `required: false` to make one optional.
+Inputs are declared under the `inputs` key. Each input requires an `id` and a `type`. Inputs are required by default; `required: false` makes an input optional.
 
 ```yaml
 id: inputs_demo
@@ -66,15 +66,15 @@ Inputs are strongly typed and validated before execution starts.
 | `INT` | Integer | `min`, `max` |
 | `FLOAT` | Float | `min`, `max` |
 | `BOOL` | `true` or `false` | — |
-| `DATETIME` | [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime in UTC — e.g. `2042-04-02T04:20:42.000Z` | `after`, `before` |
-| `DATE` | ISO 8601 date without timezone — e.g. `2042-12-03` | `after`, `before` |
-| `TIME` | ISO 8601 time without timezone — e.g. `10:15:30` | `after`, `before` |
-| `DURATION` | ISO 8601 duration — e.g. `PT5M6S` | `min`, `max` |
+| `DATETIME` | [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime in UTC, e.g. `2042-04-02T04:20:42.000Z` | `after`, `before` |
+| `DATE` | ISO 8601 date without timezone, e.g. `2042-12-03` | `after`, `before` |
+| `TIME` | ISO 8601 time without timezone, e.g. `10:15:30` | `after`, `before` |
+| `DURATION` | ISO 8601 duration, e.g. `PT5M6S` | `min`, `max` |
 | `SELECT` | One value from a predefined list | `values`, `expression`, `allowCustomValue`, `autoSelectFirst` |
 | `MULTISELECT` | One or more values from a predefined list | Same as `SELECT` |
-| `FILE` | Uploaded file, `nsfile:///` (namespace file), or `file:///` (local allowed path) | `allowedFileExtensions`; stored in [internal storage](../../08.architecture/data-components/index.md#internal-storage); the only type that accepts a multipart file upload via the API — all other types require a plain string value |
+| `FILE` | Uploaded file, `nsfile:///` (namespace file), or `file:///` (local allowed path) | `allowedFileExtensions`; stored in [internal storage](../../08.architecture/data-components/index.md#internal-storage); the only type that accepts a multipart file upload via the API; all other types require a plain string value |
 | `JSON` | Valid JSON string | `jsonSchema` (JSON Schema Draft 2020-12) |
-| `ION` | Ion-formatted text, parsed into a structured object (Map or List) accessible with dot notation — e.g. `{{ inputs.record.name }}`; use Ion syntax for `defaults`: `'{name:"Ada",score:21}'` | — |
+| `ION` | Ion-formatted text, parsed into a structured object (Map or List) accessible with dot notation, e.g. `{{ inputs.record.name }}`; use Ion syntax for `defaults`: `'{name:"Ada",score:21}'` | — |
 | `YAML` | Valid YAML string | — |
 | `URI` | Valid URI, kept as a string | — |
 | `SECRET` | Encrypted string, decrypted at runtime and masked in UI and logs | `validator` (regex); requires [encryption key](../../configuration/05.security-and-secrets/index.md) |
@@ -94,7 +94,7 @@ Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510),
 
 | Property | Description |
 |---|---|
-| `id` | Identifier used to reference the input — e.g. `{{ inputs.user }}`. |
+| `id` | Identifier used to reference the input, e.g. `{{ inputs.user }}`. |
 | `type` | Data type, as listed above. |
 | `required` | Whether the input is required. Defaults to `true`. |
 | `defaults` | Default value applied when no value is provided at runtime. |
@@ -102,7 +102,7 @@ Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510),
 | `displayName` | Label shown in the UI instead of the `id`. |
 | `description` | Markdown description displayed in the UI. |
 | `validator` | Regex pattern for `STRING` and `SECRET` types. |
-| `expression` | Pebble expression used to populate `SELECT` and `MULTISELECT` values dynamically — e.g. `{{ kv('MY_LIST') }}`. |
+| `expression` | Pebble expression used to populate `SELECT` and `MULTISELECT` values dynamically, e.g. `{{ kv('MY_LIST') }}`. |
 | `dependsOn` | Makes this input conditional on other inputs being provided or matching a `condition`. |
 | `autoSelectFirst` | Auto-selects the first value in `SELECT`/`MULTISELECT` lists as the default. |
 
@@ -131,7 +131,7 @@ inputs:
 
 ### JSON Schema validation
 
-Use the `jsonSchema` property to validate a `JSON` input against a schema at execution time. An invalid payload rejects the execution before any task runs:
+The `jsonSchema` property validates a `JSON` input against a JSON Schema at execution time. An invalid payload rejects the execution before any task runs:
 
 ```yaml
 id: json_schema_validation
@@ -159,7 +159,7 @@ tasks:
 
 ## Nested inputs
 
-Use `.` in an input `id` to create a nested structure, accessible with the same dot notation in expressions:
+A `.` in an input `id` creates a nested structure, accessible with the same dot notation in expressions:
 
 ```yaml
 inputs:
@@ -248,7 +248,7 @@ inputs:
 
 ## Using inputs in a flow
 
-Reference inputs with `{{ inputs.name }}` in any dynamic property. Use bracket notation for IDs containing hyphens or other special characters:
+Inputs are referenced with `{{ inputs.name }}` in any dynamic property. Bracket notation is required for IDs containing hyphens or other special characters:
 
 ```yaml
 inputs:
@@ -269,15 +269,15 @@ tasks:
 
 ## Setting inputs at execution time
 
-Provide input values from the **UI** (Kestra generates a form based on your input definitions), the **API**, the **CLI** (`kestractl`), **Python** (`kestra` pip package), or any HTTP client. See [Execute a flow](../03.execution/index.md#execute-via-api) for full examples with `curl`, Python, and kestractl.
+Input values are provided at execution time via the UI Execute modal, the API, the CLI (`kestractl`), or the Python SDK (`kestra` pip package). See [Execute a flow](../03.execution/index.md#execute-via-api) for full examples with `curl`, Python, and kestractl.
 
 ## Inputs vs. variables
 
-[Variables](../04.variables/index.md) are defined before execution and cannot be changed once it starts. Inputs are provided at execution time and can differ between runs. Use variables for fixed values reused across tasks; use inputs for values that change per execution.
+[Variables](../04.variables/index.md) are defined before execution and cannot be changed once it starts. Inputs are provided at execution time and can differ between runs.
 
 ## Dynamic inputs
 
-`SELECT` and `MULTISELECT` inputs support an `expression` property that populates the dropdown from a Pebble expression — a KV store lookup, an HTTP API call, or a subflow result:
+`SELECT` and `MULTISELECT` inputs support an `expression` property that populates the dropdown from a Pebble expression: a KV store lookup, an HTTP API call, or a subflow result:
 
 ```yaml
 inputs:
@@ -290,7 +290,7 @@ See the [Dynamic inputs how-to guide](../../15.how-to-guides/dynamic-inputs/inde
 
 ## Conditional inputs
 
-Use `dependsOn` and `condition` to show inputs only when a previous input matches a value:
+`dependsOn` makes an input conditional on one or more other inputs. When `condition` evaluates falsy, the input is hidden in the Execute modal:
 
 ```yaml
 inputs:
@@ -333,7 +333,7 @@ tasks:
 
 ## Custom values in SELECT and MULTISELECT
 
-Set `allowCustomValue: true` to let users enter a value outside the predefined list:
+`allowCustomValue: true` allows users to enter a value outside the predefined list:
 
 ```yaml
 inputs:
