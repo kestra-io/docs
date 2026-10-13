@@ -450,13 +450,10 @@ Under `type: DNS` discovery, the authority is derived from the DNS hostname auto
 
 ## Dedicated storage isolation
 
-If a worker group uses its own storage bucket rather than the deployment's shared storage, KV values, namespace files, and managed plugin artifacts will not be consistent across the deployment without additional configuration. Set all three properties on the worker:
+If a worker group uses its own storage bucket rather than the deployment's shared storage, namespace files and managed plugin artifacts will not be consistent across the deployment without additional configuration. Set the following properties on the worker:
 
 ```yaml
 kestra:
-  kv:
-    worker-access: CONTROLLER          # default: STORAGE
-
   namespace-files:
     worker-access: CONTROLLER          # default: STORAGE
 
@@ -465,7 +462,7 @@ kestra:
       worker-access: CONTROLLER        # default: STORAGE
 ```
 
-See [Dedicated-storage workers](../../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference. Available from Kestra 2.0.4.
+See [Dedicated-storage workers](../../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference. Available from Kestra 2.0.4. KV Store values can also be routed through the controller with `kestra.kv.worker-access: CONTROLLER`, available from Kestra 2.1.
 
 ## Use cases
 
