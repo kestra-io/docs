@@ -335,6 +335,7 @@ Freshness states for each asset are visible in the [dependencies graph](#explore
 | --- | --- |
 | `EventTrigger` | React instantly to asset lifecycle events (`CREATED`, `UPDATED`, `DELETED`, `USED`). |
 | `FreshnessTrigger` | Poll assets on an interval to detect staleness and launch remediation. |
+| `TtlTrigger` | Start a flow once when an asset's TTL enters a warning window (`EXPIRING`) or is past (`EXPIRED`). |
 
 :::collapse{title="Advanced: event-driven automation"}
 
@@ -477,6 +478,81 @@ triggers:
         type: EQUAL_TO
         value: mart
 ```
+
+:::
+
+:::collapse{title="Advanced: TTL triggers"}
+
+React to an asset's TTL expiry using `TtlTrigger`. A flow is started at most once per window — repeated checks do not restart it. Changing the TTL resets the windows.
+
+**Properties:**
+
+| Property | Required | Description |
+|---|---|---|
+| `on` | Yes | `EXPIRING` — fires once when the TTL enters the warning window. `EXPIRED` — fires once when the TTL is past. |
+| `expiresWithin` | With `EXPIRING` | The warning window as an ISO 8601 duration (e.g. `P3D`). Required with `EXPIRING`, not allowed with `EXPIRED`. |
+| `assetId` | No | Scope the trigger to a specific asset. |
+| `namespace` | No | Scope the trigger to a namespace. |
+| `assetType` | No | Filter by asset type. Defaults to deployments. |
+| `metadataQuery` | No | Filter by metadata key-value pairs, same syntax as `EventTrigger`. |
+
+**Trigger context variables:**
+
+| Variable | Description |
+|---|---|
+| `trigger.asset` | The asset whose TTL is expiring or has expired. |
+| `trigger.asset.id` | The asset's ID. |
+| `trigger.asset.ttl` | The TTL expiry timestamp (ISO 8601 UTC with milliseconds, e.g. `2026-12-01T00:00:00.000Z`). |
+| `trigger.asset.owner` | The owner value set on the asset (e.g. `user:alice` or `group:ops`). |
+| `trigger.asset.status` | The lifecycle status of the asset (e.g. `active`). |
+| `trigger.on` | `EXPIRING` or `EXPIRED`. |
+
+:::alert{type="info"}
+`interval` is not a trigger property. The TTL checker runs on a fixed delay configured at the instance level via `kestra.assets.ttl-check.fixed-delay` (default: one hour). One checker serves every trigger.
+:::
+
+When an `EXPIRING` or `EXPIRED` check fires, Kestra also notifies the asset owner in-app if `system.owner` is set. The owner is resolved as a user (by username then ID) or a group (by name then ID, expanded to its members). An owner that matches no user or group is silently skipped and never causes the check to fail. For `EXPIRED`, the notification fires even when no flow reacts to it.
+
+```yaml
+# Warn 7 days and 1 day before any deployment expires
+id: ttl_warning
+namespace: company.infra
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.asset.id }} expires on {{ trigger.asset.ttl }}"
+
+triggers:
+  - id: warn_7_days
+    type: io.kestra.plugin.ee.assets.TtlTrigger
+    on: EXPIRING
+    expiresWithin: P7D
+  - id: warn_1_day
+    type: io.kestra.plugin.ee.assets.TtlTrigger
+    on: EXPIRING
+    expiresWithin: P1D
+```
+
+```yaml
+# Act the moment a specific deployment expires
+id: retire_staging_cluster
+namespace: company.infra
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.asset.id }} has expired"
+
+triggers:
+  - id: expired
+    type: io.kestra.plugin.ee.assets.TtlTrigger
+    on: EXPIRED
+    namespace: company.infra
+    assetId: staging-cluster-eu
+```
+
+From the deployment page, **On expiring** and **On expired** let you open or prefill a flow at three levels: for this deployment (`assetId` set), for the namespace (`namespace` set), or for all deployments (no filter). Only the most specific existing level is started for a given asset.
 
 :::
 
