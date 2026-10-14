@@ -129,6 +129,48 @@ These outputs can then be passed on as notifications or system messages to exter
 
 Each task using the AI Agent requires the `provider` property. To avoid repeating it on every task, use a [Policy](../../07.enterprise/02.governance/policies/index.md) with an `Add` rule to inject the `provider` block into all `AIAgent` tasks across a namespace — this is an Enterprise Edition and Cloud feature. For your provider API key, store it as a [Secret](../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`.
 
+### Provider fallback
+
+Use `io.kestra.plugin.ai.provider.Fallback` to try multiple chat providers in order. The task attempts each provider in sequence and moves to the next on connection failures, timeouts, and retriable errors such as HTTP 5xx and 429 responses. Authentication failures, invalid request errors, guardrail violations, tool execution errors, and response-processing failures stop execution without advancing to the next provider.
+
+```yaml
+id: agent_with_fallback
+namespace: company.ai
+
+inputs:
+  - id: prompt
+    type: STRING
+
+tasks:
+  - id: agent
+    type: io.kestra.plugin.ai.agent.AIAgent
+    systemMessage: You are a helpful assistant. Answer clearly and concisely.
+    prompt: "{{ inputs.prompt }}"
+    provider:
+      type: io.kestra.plugin.ai.provider.Fallback
+      providers:
+        - type: io.kestra.plugin.ai.provider.OpenAI
+          modelName: gpt-5-mini
+          apiKey: "{{ secret('OPENAI_API_KEY') }}"
+        - type: io.kestra.plugin.ai.provider.GoogleGemini
+          modelName: gemini-2.5-flash
+          apiKey: "{{ secret('GEMINI_API_KEY') }}"
+```
+
+Set `modelName` on each nested provider. Connection properties such as `baseUrl`, `clientPem`, and `caPem` also belong on the nested provider, not on `Fallback` directly.
+
+Each provider receives the full configured timeout independently. With N providers all timing out, total execution time can approach N times the timeout before the task fails. When all providers fail, the task throws with a message listing each provider and its failure type.
+
+Each attempt is logged:
+
+```
+INFO  Attempting chat request with provider OPEN_AI [model=gpt-4o-mini] (1/2)
+WARN  Skipping provider OPEN_AI [model=gpt-4o-mini] after provider-side failure of type ConnectException
+INFO  Attempting chat request with provider GOOGLE_AI_GEMINI [model=gemini-2.5-flash] (2/2)
+```
+
+`Fallback` supports chat tasks only. Using it with image generation or embedding tasks throws an error.
+
 ## Agent tools
 
 The AI Agent can be extended with **tools** — capabilities the LLM can choose to invoke at runtime to complete its task. Tools are listed under the `tools` property of an `AIAgent` task.
