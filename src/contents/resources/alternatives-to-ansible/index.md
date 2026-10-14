@@ -26,6 +26,8 @@ Ansible has long been a cornerstone of IT automation, lauded for its simplicity,
 
 This article explores 13 top alternatives to Ansible for modern DevOps. We'll delve into tools that address the evolving needs of platform engineers, offering more declarative, event-driven, or specialized approaches to infrastructure as code, configuration management, and end-to-end workflow orchestration. By understanding their core strengths and trade-offs, you can identify the best fit for your team's unique automation challenges.
 
+Before you compare, decide what you are actually replacing. If the pain is host configuration itself, Terraform, Puppet, Chef, and Salt below are the candidates. If your playbooks work and what hurts is everything around them (scheduling, approvals, run history, chaining a playbook with the Terraform plan before it and the ticket after it), you don't need to rewrite anything: [Kestra orchestrates the playbooks you already have](#1-kestra-keep-your-playbooks-orchestrate-everything-around-them), and our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the control planes built for that job.
+
 ## Understanding the Need for Ansible Alternatives
 
 Ansible's success is built on a solid foundation: its agentless, SSH-based approach makes it easy to get started, and its YAML playbooks are more approachable than the complex DSLs of earlier tools. It excels at configuration management, application deployment, and automating routine IT tasks.
@@ -53,16 +55,50 @@ Is Ansible still relevant? Absolutely. For its core competency—configuring sof
 
 We evaluated each alternative on its core purpose, deployment model, license (open source vs. commercial), primary use case fit, authoring model (declarative vs. imperative), integration ecosystem, scalability, and operational overhead. Emphasis was placed on solutions that offer a modern, cloud-native, or universal orchestration approach, providing a clear contrast to Ansible's traditional configuration management focus.
 
-## 1. Kestra: The Declarative Orchestration Control Plane
+## 1. Kestra: Keep Your Playbooks, Orchestrate Everything Around Them
 
-Kestra is an open-source, declarative orchestration platform designed to unify data, AI, and infrastructure workflows. It acts as a universal control plane, coordinating various tools, including Ansible, from a single, language-agnostic interface.
+Most teams looking for an Ansible alternative don't want to throw away years of tested playbooks. What they are missing sits around the playbook: a scheduler, retries, an approval step before production, a run history someone can audit, and a way to connect `ansible-playbook` to the Terraform apply that precedes it and the ServiceNow ticket that follows it. Ansible itself was never designed to be that layer, and AWX or Ansible Automation Platform only provide it for Ansible.
 
-- **Strengths:** Kestra's workflows are defined in YAML, making them easy to version and manage within a GitOps framework. It is language-agnostic, capable of running Python, Shell, Go, SQL, and Docker containers as first-class citizens. Its event-driven architecture is ideal for building reactive, real-time automations. With built-in features for CI/CD, robust error handling, and enterprise-grade security (RBAC, SSO, audit logs), Kestra provides a scalable foundation for platform engineering.
+Kestra is an open-source, declarative orchestration platform that supplies that layer for every tool in your stack. Your playbooks stay in Git and run unchanged through the [Ansible plugin](/plugins/plugin-ansible); Kestra decides when they run, with which inputs and credentials, and what happens next. A weekly patch run, with a dry-run default and the playbook pulled straight from your repository, looks like this:
+
+```yaml
+id: patch_web_servers
+namespace: company.infra
+
+inputs:
+  - id: dry_run
+    type: BOOL
+    defaults: true
+
+tasks:
+  - id: run_playbook
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/your-org/infrastructure
+        branch: main
+
+      - id: patch
+        type: io.kestra.plugin.ansible.cli.AnsibleCLI
+        checkMode: "{{ inputs.dry_run }}"
+        commands:
+          - ansible-playbook -i ansible/inventory.ini ansible/patch.yml
+
+triggers:
+  - id: weekly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 3 * * 0"
+```
+
+Every execution records the exact output of each host, and the same flow can be triggered by a webhook, a ticket, or an upstream workflow instead of a schedule. The [Ansible playbook from Git blueprint](/blueprints/ansible-playbook-from-git) is a ready-to-run starting point.
+
+- **Strengths:** No migration: existing playbooks, roles, and inventories run as they are, inside a container, so workers need no local Ansible install. Workflows are YAML in Git, which fits a GitOps review process. The same flow can run Terraform, Python, Shell, SQL, Kubernetes jobs, and API calls, with event triggers, retries, human approvals, and enterprise controls (RBAC, SSO, audit logs).
 - **Proof Point:** Leading enterprises like Crédit Agricole and other Fortune 500 organizations use Kestra to coordinate complex workflows spanning VMware, Ansible, ITSM tools, APIs, and human approvals, demonstrating its power as a [unified orchestration](/resources/orchestration/unified-orchestration) layer.
-- **Weaknesses:** While Kestra can execute Ansible playbooks as part of a larger workflow, it is not a direct replacement for fine-grained, host-level configuration management. It's designed to orchestrate *around* tools like Ansible, not to replicate their specific function.
-- **Best for:** Platform engineers and DevOps teams who need a unified, declarative control plane to orchestrate Ansible playbooks alongside Terraform, cloud APIs, data pipelines, and AI agents in hybrid and multi-cloud environments.
+- **Weaknesses:** Kestra does not replace host-level configuration management. Ansible (or Puppet, Chef, Salt) still does the configuring; Kestra orchestrates *when* and *in what context* it happens.
+- **Best for:** Teams that are happy with their playbooks but have outgrown cron, CI jobs, or AWX as the way to run them, and need Ansible coordinated with Terraform, cloud APIs, ITSM tools, and approvals in one place.
 
-Learn more about how to [automate your infrastructure with Kestra](/docs/use-cases/infrastructure).
+See how teams [orchestrate Ansible with Kestra](/orchestration/ansible), or explore Kestra for [infrastructure automation](/infra-automation).
 
 ## 2. Terraform: Infrastructure as Code for Provisioning
 
@@ -110,7 +146,7 @@ AWX is the open-source upstream project for Red Hat's Ansible Automation Platfor
 - **Weaknesses:** As an upstream project, AWX lacks the enterprise support, hardening, and some of the advanced features (like analytics and certified content collections) found in the commercial Red Hat product.
 - **Best for:** Teams looking for a web UI and API for their Ansible automation without committing to a Red Hat subscription, often serving as a stepping stone to AAP.
 
-For an enterprise perspective, see our comparison of [Ansible Automation Platform vs Kestra](/vs/ansible-automation-platform).
+For an enterprise perspective, see our comparison of [Ansible Automation Platform vs Kestra](/vs/ansible-automation-platform). If you already run AWX and are hitting its limits, our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the options in detail.
 
 ## 7. GitLab CI/CD: Integrated DevOps Automation
 
