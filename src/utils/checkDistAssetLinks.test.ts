@@ -55,4 +55,24 @@ describe("findDanglingAssetLinks", () => {
         })
         expect(findDanglingAssetLinks(dist).size).toBe(0)
     })
+
+    it("reports stylesheets the server bundle links for on-demand pages", () => {
+        const dist = makeDist({
+            "client/_astro/layout.BXesLP3H.css": "",
+            "client/index.html": `<link href="/_astro/layout.BXesLP3H.css">`,
+            "server/chunks/server_abc.mjs": `const styles = ["/_astro/layout.BeOTLfir.css","/_astro/layout.BXesLP3H.css"]`,
+        })
+        const missing = findDanglingAssetLinks(path.join(dist, "client"), path.join(dist, "server"))
+        expect(Object.fromEntries(missing)).toEqual({
+            "/_astro/layout.BeOTLfir.css": ["server/chunks/server_abc.mjs"],
+        })
+    })
+
+    it("ignores images the server bundle names but only prerendered pages emit", () => {
+        const dist = makeDist({
+            "client/_astro/x.js": "",
+            "server/chunks/server_abc.mjs": `const img = "/_astro/hero.abc123.webp"; import("/_astro/x.js")`,
+        })
+        expect(findDanglingAssetLinks(path.join(dist, "client"), path.join(dist, "server")).size).toBe(0)
+    })
 })

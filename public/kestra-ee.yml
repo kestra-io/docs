@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Instance-owner-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Instance-owner-only are not tenant-scoped.
-  version: 2.0.5
+  version: 2.0.6
 tags:
 - name: Flows
   description: Flows api
@@ -12188,7 +12188,7 @@ paths:
       tags:
       - Cases
       summary: Create a case from a task run, or attach to a matching open case
-      description: 'Best-effort creates a case from a task run, or attaches the triggering execution to a matching already-open case (same tenant + flow namespace/id + task id), used by the `CreateCase` plugin task. This is a check-then-act, not atomic: concurrent runs of the same task can each create their own case. Unlike #createCaseFromRequest, title/description are stored verbatim: the task has already rendered any Pebble expressions itself.'
+      description: 'Creates a case from a task run, or attaches the triggering execution to a matching already-open case, used by the `CreateCase` plugin task. A match is the same tenant + `deduplicationKey` when one is set, otherwise the same flow namespace/id + task id. The find-or-create is serialized per match through a lock, and fails with a 503 when the lock cannot be taken in time rather than risk a duplicate case. Unlike #createCaseFromRequest, title/description are stored verbatim: the task has already rendered any Pebble expressions itself.'
       operationId: createFromTask
       parameters:
       - name: tenant
@@ -18963,6 +18963,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BulkResponse'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
         '401':
           description: Authentication required
           content:
@@ -34577,7 +34583,7 @@ components:
       type: object
       properties:
         ttl:
-          description: How long the lock is held before it expires.
+          description: How long the lock is held before it expires. Must be positive and at most P3650D.
           allOf:
           - $ref: '#/components/schemas/Duration'
           default: PT5M
@@ -35659,6 +35665,10 @@ components:
         caseId:
           type: string
           nullable: true
+        deduplicationKey:
+          maxLength: 250
+          type: string
+          nullable: true
     CasesController.CaseUpdateRequest:
       type: object
       properties:
@@ -36180,7 +36190,7 @@ components:
         nano:
           type: integer
           format: int32
-      description: How long the lock is held before it expires.
+      description: How long the lock is held before it expires. Must be positive and at most P3650D.
       default: PT5M
     EditionProvider.Edition:
       type: string
@@ -39208,6 +39218,9 @@ components:
         taskId:
           type: string
         executionId:
+          type: string
+          nullable: true
+        deduplicationKey:
           type: string
           nullable: true
     Output:
