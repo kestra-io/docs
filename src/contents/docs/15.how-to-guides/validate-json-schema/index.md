@@ -14,7 +14,7 @@ For validating flow inputs at execution time, see [JSON input validation](../../
 
 ## Prerequisites
 
-- [plugin-serdes](https://kestra.io/plugins/plugin-serdes) installed on your Kestra instance.
+- [plugin-serdes](/plugins/plugin-serdes) 2.2.0 or later installed on your Kestra instance.
 
 ## Provide the JSON payload
 
@@ -22,6 +22,8 @@ The `from` property accepts:
 - A JSON string
 - A `kestra://` internal storage URI pointing to a JSON file
 - A map, list, or scalar value, which is serialized to JSON before validation
+
+The payload must be a single JSON document. JSONL files are rejected rather than validated record by record.
 
 ## Provide the schema
 
@@ -48,6 +50,7 @@ tasks:
     from: "{{ inputs.payload }}"
     schema: |
       {
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
         "required": ["id", "email"],
         "properties": {
@@ -57,7 +60,7 @@ tasks:
       }
 ```
 
-When validation fails, the task throws an exception listing the first ten errors. The `errors` output list is capped at 100 entries; use the `errors` counter metric for the full count.
+When validation fails, the task throws an exception listing the first ten errors, and the `errors` counter metric records the total number of errors.
 
 ## Namespace file schema
 
@@ -160,10 +163,10 @@ The `options` property accepts basic or bearer auth, SSL configuration, proxy se
 
 When the schema comes from a registry, the outputs also include `schemaId` and `schemaVersion`.
 
-Pin `subjectVersion` to a specific version number in production flows. Using `"latest"` means the schema fetched can change between executions as the registry evolves, causing payloads that passed before to fail with no change to the flow.
+Pin `subjectVersion` to a specific version number in production flows. If `subjectVersion` is omitted, it defaults to `latest`, which means the schema fetched can change between executions as the registry evolves, causing payloads that passed before to fail with no change to the flow.
 
 :::alert{type="info"}
-Schema `references` (cross-subject references) and remote `$ref` URLs are not supported. A schema with `references` fails with a clear error. Remote `$ref` URLs are never fetched. The `$ref` keyword is silently ignored, so a schema that relies on remote references will not enforce those rules and no error is raised.
+Schema `references` (cross-subject references) and remote `$ref` URLs are not supported. A registry schema with `references` fails with a clear error. Remote `$ref` URLs are never fetched: a schema that points to one fails the task, even with `failOnInvalid: false`. Local references such as `#/definitions/...` or `#/$defs/...` work.
 :::
 
 For all properties and outputs, see the [ValidateJsonSchema plugin reference](/plugins/plugin-serdes/json/io.kestra.plugin.serdes.json.validatejsonschema).
