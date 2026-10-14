@@ -690,7 +690,7 @@ When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/ind
 
 `nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
 
-To embed a namespace file image in a block, convert it to a `data:` URI using the [`read()`](../../../expressions/04.functions/02.data-access/index.mdx#read) function and the `base64encode` filter. The MIME type in the prefix must match the file format:
+To embed a namespace file image in a block, convert it to a `data:` URI using the [`read()`](../../../expressions/04.functions/02.data-access/index.mdx#read) function and the `base64encode` filter:
 
 ```yaml
 # Image block
@@ -701,17 +701,12 @@ To embed a namespace file image in a block, convert it to a `data:` URI using th
 # Markdown block
 - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
   content: |
-    ![Report chart](data:image/png;base64,{{ read('nsfile:///report.png') | base64encode }})
+    ![Report chart](data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }})
 ```
 
-Common MIME type prefixes:
-
-| File type | MIME type prefix |
-|---|---|
-| SVG | `data:image/svg+xml;base64,` |
-| PNG | `data:image/png;base64,` |
-| JPEG | `data:image/jpeg;base64,` |
-| GIF | `data:image/gif;base64,` |
+:::alert{type="warning"}
+`read()` decodes the file as UTF-8 text, so this approach only works for **SVG** images. Binary formats such as PNG, JPEG, and GIF are corrupted by the UTF-8 decode and will not render.
+:::
 
 To read from a different namespace, pass the `namespace` argument: `read('nsfile:///logo.svg', namespace='other.namespace')`.
 
