@@ -83,14 +83,14 @@ Dedicated tasks allow managing the files stored inside the internal storage:
 - [Split](/plugins/core/storage/io.kestra.plugin.core.storage.split): split a file into multiple files depending on the size of the file or the number of rows.
 
 :::alert{type="warning"}
-Use internal storage for large data. If an [HTTP Request](/plugins/core/http/io.kestra.plugin.core.http.request) returns a heavy payload, use [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) with a [Serdes](/plugins/plugin-serdes) task instead of carrying the raw data in the [execution context](#storing-data-inside-the-flow-execution-context).
+Large payloads belong in internal storage, not the execution context. For heavy HTTP responses, [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) paired with a [Serdes](/plugins/plugin-serdes) task avoids carrying raw data through the [execution context](#storing-data-inside-the-flow-execution-context).
 :::
 
 ### Storing data inside the KV store
 
 Dedicated tasks can store data inside Kestra's KV store. The KV store transparently uses Kestra's internal storage as its backend store.
 
-The KV store allows storing data that will be shared by all executions of the same namespace. You can think of it as a key/value store dedicated to a namespace.
+The KV store allows storing data that will be shared by all executions of the same namespace. The KV store is scoped to a namespace.
 
 The following tasks are available:
 - [Set](/plugins/core/kv/io.kestra.plugin.core.kv.set): set data in key/value pair.
@@ -248,9 +248,9 @@ tasks:
 
 Kestra offers several plugins for ingesting and transforming data — check [the Plugin list](/plugins) for more details.
 
-Make sure to also check:
-1. The [Script documentation](../../16.scripts/index.mdx) for a detailed overview of how to work with Python, R, Node.js, Shell and Powershell scripts, and how to integrate them with Git and Docker.
-2. The [Blueprints](/blueprints) catalog — simply search for the relevant language (e.g., Python, R, Rust)  or use case (*ETL, Git, dbt, etc.*) to find the relevant examples.
+See also:
+1. The [Script documentation](../../16.scripts/index.mdx) for an overview of Python, R, Node.js, Shell, and PowerShell scripts and their integration with Git and Docker.
+2. The [Blueprints](/blueprints) catalog, searchable by language (Python, R, Rust) or use case (ETL, Git, dbt).
 
 
 ### Processing data using file transform
@@ -320,7 +320,7 @@ tasks:
 The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 
-Also, the [Purge](/plugins/core) task can be used to purge storages, logs, and executions of previous execution. For example, this flow purges all of these every day:
+The [Purge](/plugins/core) task purges storages, logs, and executions of previous executions. This flow purges all of these every day:
 ```yaml
 id: purge
 namespace: company.team
@@ -336,13 +336,13 @@ triggers:
     cron: "0 0 * * *"
 ```
 
-## FAQ
+## Common patterns
 
-### Internal storage FAQ
+### Internal storage
 
-#### How to read a file from internal storage as a string
+#### Reading a file from internal storage as a string
 
-The `read()` function expects a `path` argument that points to a namespace file or an internal storage URI. Note that when using inputs, outputs, or trigger variables, you don't need any extra quotation marks. Here is how you can use those variables with the `read()` function:
+The `read()` function accepts a `path` argument pointing to a namespace file or an internal storage URI. When using inputs, outputs, or trigger variables, no extra quotation marks are needed:
 - `{{ read(inputs.file) }}` for a FILE-type input variable named `file`
 - `{{ read(outputs.mytaskid.uri) }}` for an output `uri` from a task named `mytaskid`
 - `{{ read(trigger.uri) }}` for a `uri` of many triggers incl. Kafka, AWS SQS, GCP PubSub, etc.
@@ -421,13 +421,11 @@ tasks:
 ```
 :::
 
-#### How to read a Namespace File as a string?
+#### Reading a namespace file as a string
 
-So far, you've seen how to read a file from the internal storage as a string. However, you can use the same `read()` function to read a Namespace File as a string. This is especially useful when you want to execute a Python script or a long SQL query stored in a dedicated SQL file.
+The same `read()` function reads a namespace file as a string. The path must point to a file in the **same namespace** as the executing flow.
 
-The `read()` function takes the absolute path to the file you want to read. The path must point to a file stored in the **same namespace** as the flow you are executing.
-
-Below is a simple example showing how you can read a file named `hello.py` stored in the `scripts` directory of the `company.team` namespace:
+This example reads `hello.py` from the `scripts` directory of the `company.team` namespace:
 
 ```yaml
 id: hello
@@ -441,9 +439,9 @@ tasks:
 
 The same syntax applies to SQL queries, custom scripts, and many more. Check the [Namespace Files](../../06.concepts/02.namespace-files/index.md) documentation for more details.
 
-#### How to read a file from the internal storage as a JSON object?
+#### Reading a file from internal storage as a JSON object
 
-You can use the Pebble function `{{ fromJson(myvar) }}` and a `{{ myvar | toJson }}` filter to process JSON data.
+The `{{ fromJson(myvar) }}` function and `{{ myvar | toJson }}` filter process JSON data.
 
 :::collapse{title="The fromJson() function"}
 
