@@ -36,4 +36,6 @@ A response reporting this problem:
 
 Check the field and the operator against the filters the endpoint documents. An unrecognised filter is rejected rather than ignored, so that a query never silently returns unfiltered results.
 
+For the full list of available fields and operators per resource type, see [Query filter reference](../query-filters.md).
+
 For the members every problem document carries, see [Problem Details](./index.md).
