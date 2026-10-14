@@ -13,7 +13,7 @@ version: "0.22.0"
     <iframe src="https://www.youtube.com/embed/7PCOvxOl9LI?si=opJjV_Drs-dsjy_L" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Use `afterExecution` with `runIf` to branch on the final execution state:
+The following example branches on the final execution state using `runIf`:
 
 ```yaml
 id: alerts_demo
@@ -44,10 +44,10 @@ Both run near the end of a flow, but at different moments and for different purp
 | | `afterExecution` | `errors` |
 |---|---|---|
 | When it runs | After the execution reaches a terminal state | When a task or flow errors |
-| State visibility | Sees the final execution state (`SUCCESS`, `FAILED`, etc.) | Sees `RUNNING` — the execution hasn't settled yet |
+| State visibility | Sees the final execution state (`SUCCESS`, `FAILED`, etc.) | Sees `RUNNING`; the execution hasn't settled yet |
 | Scope | Flow level only | Flow level or local to a flowable task |
 
-Use `afterExecution` when you need to branch on the final status — one message for `SUCCESS`, another for `FAILED`, a third for `WARNING`. Use `errors` when you only need failure handling or local error handling inside a specific flowable task. See the [`errors` documentation](../11.errors/index.md) for details.
+`afterExecution` receives the final execution state, making it suitable for status-branched logic (one action for `SUCCESS`, another for `FAILED`, another for `WARNING`). `errors` runs before the execution reaches a terminal state and handles failure-specific or task-local logic. See the [`errors` documentation](../11.errors/index.md) for details.
 
 :::alert{type="warning"}
 Errors inside an `afterExecution` block do not change the final execution state. A failing `afterExecution` task will not flip the execution from `SUCCESS` to `FAILED`, and will not trigger flows that listen for `FAILED` executions. To force a state change, use a [Sequential](../01.tasks/00.flowable-tasks/index.md#sequential) task with its own `errors` block:
@@ -72,9 +72,7 @@ afterExecution:
 
 ## `afterExecution` vs `finally`
 
-`finally` runs while the execution is still `RUNNING` — it cannot see the terminal state. `afterExecution` runs after the execution settles, so it sees `SUCCESS`, `FAILED`, or `WARNING`. Use `finally` for cleanup that must always happen; use `afterExecution` when follow-up logic depends on the outcome.
-
-The following flow demonstrates the difference:
+`finally` runs while the execution is still `RUNNING`; it cannot see the terminal state. `afterExecution` runs after the execution settles, so it sees `SUCCESS`, `FAILED`, or `WARNING`.
 
 ```yaml
 id: state_demo
