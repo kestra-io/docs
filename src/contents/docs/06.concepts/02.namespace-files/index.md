@@ -473,7 +473,7 @@ namespaceFiles:
 Patterns without a leading `/` are automatically prefixed with `**/`, which makes them recursive. Use a leading `/` or explicit `glob:`/`regex:` to restrict matching to the namespace root. Patterns that already contain `**` (e.g. `my_dir/**`) are still prefixed, producing `**/my_dir/**`; use `/my_dir/**` or `glob:/my_dir/**` to avoid the double prefix.
 :::
 
-## Remote workers with dedicated storage
+## Dedicated-storage workers
 
 :::alert{type="info"}
 This configuration applies to Enterprise Edition deployments where workers use dedicated storage that differs from the deployment's.
