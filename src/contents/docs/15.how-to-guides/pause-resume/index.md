@@ -117,3 +117,15 @@ When you click on the `Resume` button in the UI, you will be prompted to provide
 After the Execution has been resumed, any downstream task can access the `onResume` inputs using the `outputs` of the `Pause` task:
 
 ![pause_resume_2](./pause_resume_2.png)
+
+### Who resumed the execution
+
+The `Pause` task records the identity of whoever resumed the execution in `outputs.<taskId>.resumed.by`. Reference it in downstream tasks to capture the approver:
+
+```yaml
+  - id: logApprover
+    type: io.kestra.plugin.core.log.Log
+    message: "Approved by {{ outputs.waitForApproval.resumed.by }}"
+```
+
+`resumed.by` is set when the execution is resumed from the Kestra UI, the API, or an App. For service accounts it contains the service account name; for standard users it contains the username.
