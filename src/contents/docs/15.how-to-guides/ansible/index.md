@@ -476,3 +476,63 @@ A trigger allows you to build a historical log of machine health in S3 and Slack
 Ansible handles host-level automation — collecting facts, checking software package versions, remediating with the right package manager, and so much more. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
 
 If your playbooks handle sensitive data such as credentials or connection strings, see [Declare Explicit Outputs in Ansible Playbooks](../ansible-explicit-outputs/index.md) to control exactly what appears in `vars.outputs`.
+
+## Install and cache Galaxy collections and Python packages
+
+Declare Galaxy collections with `galaxyDependencies` and Python packages with `pythonDependencies` directly on the `AnsibleCLI` task. The task installs them into a working-directory subtree shared by every command in the task, then caches the result in Kestra internal storage so subsequent runs skip the install step.
+
+This example installs the `community.proxmox` collection and its required Python package `proxmoxer` before running a playbook that queries Proxmox VMs:
+
+```yaml
+id: ansible_proxmox
+namespace: company.team
+
+tasks:
+  - id: list_vms
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    galaxyDependencies:
+      - community.proxmox
+    pythonDependencies:
+      - proxmoxer
+    inputFiles:
+      inventory.ini: |
+        localhost ansible_connection=local
+      list_vms.yml: |
+        ---
+        - hosts: localhost
+          gather_facts: false
+          tasks:
+            - name: List Proxmox VMs
+              community.proxmox.proxmox_vm_info:
+                api_host: "{{ secret('PROXMOX_HOST') }}"
+                api_user: "{{ secret('PROXMOX_USER') }}"
+                api_password: "{{ secret('PROXMOX_PASSWORD') }}"
+              register: vms
+
+            - name: Show VMs
+              ansible.builtin.debug:
+                var: vms.proxmox_vms
+    containerImage: cytopia/ansible:latest-tools
+    commands:
+      - ansible-playbook -i inventory.ini list_vms.yml
+```
+
+### Cache behavior
+
+`dependencyCacheEnabled` defaults to `true`. On the first run the task installs the declared dependencies and uploads the result to Kestra internal storage. On subsequent runs it restores that tree instead of reinstalling.
+
+The cache key covers the values of `galaxyDependencies` and `pythonDependencies`, the contents of any `requirements.yml` and `requirements.txt` present in the working directory before commands run, the task runner type, and the container image. A failed install is never cached.
+
+`dependencyCacheTtl` sets how long a cached install stays valid before the task rebuilds it from scratch. The default is 7 days; the allowed range is 1 second to 365 days (ISO 8601 duration format).
+
+:::alert{type="info"}
+The cache key does not include the container image digest or the latest release of unpinned dependencies. Pin collection versions (e.g. `community.proxmox:>=1.0.0`) and your container image tag to avoid running stale dependencies after an upstream release.
+:::
+
+On Kestra 2.x with the Docker task runner, tasks with more than one entry in `commands` can fail on the second command with a "killed during image pull" error. Use a single shell command and chain steps with `&&` if needed.
+
+### Galaxy roles and requirements files
+
+`galaxyDependencies` installs collections only. Declare Galaxy roles in a `requirements.yml` file instead. When `autoInstallGalaxyRequirements` is `true` (the default) and that file is present in the working directory before commands run, the task installs it automatically and the result goes through the same cache. Load `requirements.yml` into the working directory with `namespaceFiles` or `inputFiles`.
+
+The same applies to Python dependencies: a `requirements.txt` present before commands run is installed via `pip` and cached alongside any `pythonDependencies` you declare. Dependencies created or modified by `beforeCommands` are not part of the cache key and will not be cached.
