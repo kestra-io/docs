@@ -6,7 +6,7 @@ sidebarTitle: Runnable Tasks
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Runnable tasks perform the actual work in a flow — file system operations, API calls, database queries, and scripts — executed by distributed workers.
+Runnable tasks perform the actual work in a flow: file system operations, API calls, database queries, and scripts, executed by distributed workers.
 
 Each task requires an `id` and a `type`, defined by its fully qualified Java class name. Refer to each task’s plugin documentation for a full list of available properties.
 

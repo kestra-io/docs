@@ -98,7 +98,7 @@ triggers:
 
 ### Storing State with Kestra
 
-Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily rerun any part of the pipeline if any task fails, e.g. using one of our most popular 🔥 [Replay feature](../../docs/06.concepts/10.replay/index.md) allowing you to rerun a flow from any chosen task.
+Another benefit of using Kestra in this architecture is its ability to store and manage state, which is especially needed for serverless data pipelines that are typically stateless by design. Kestra keeps track of the workflow state, so you can easily rerun any part of the pipeline if any task fails, e.g. using one of our most popular 🔥 [Replay feature](../../docs/15.how-to-guides/replay/index.md) allowing you to rerun a flow from any chosen task.
 
 For example, Kestra can store artifacts such as dbt's `manifest.json` in the [KV store](../../docs/06.concepts/05.kv-store). This file contains information about materialized tables, so we can avoid rerunning dbt models that haven't changed since the last run. This is a notable time-saver, especially when working with large datasets or complex transformations.
 

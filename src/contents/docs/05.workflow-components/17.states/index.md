@@ -6,7 +6,7 @@ sidebarTitle: States
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-States represent where an execution or task run is in its lifecycle. Each state determines what Kestra does next — whether to continue, retry, wait for input, or terminate. For a broader overview of executions, see the [Execution documentation](../03.execution/index.md).
+States represent where an execution or task run is in its lifecycle. Each state determines what Kestra does next: whether to continue, retry, wait for input, or terminate. For a broader overview of executions, see the [Execution documentation](../03.execution/index.md).
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h5AigXBAs6Y?si=ftaD1zM24b7BDUMo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -22,7 +22,7 @@ States represent where an execution or task run is in its lifecycle. Each state 
 | `SUBMITTED` | Transient | Submitted to the Executor queue but not yet running. Appears briefly between `CREATED` and `RUNNING`. |
 | `QUEUED` | Transient | Waiting for a free slot. Only occurs when [concurrency](../14.concurrency/index.md) limits are set and all slots are occupied. |
 | `RUNNING` | Transient | Currently in progress. Continues until all task runs complete. |
-| `PAUSED` | Transient | Awaiting manual approval or a fixed delay before continuing. Transitions directly back to `RUNNING` when resumed — there is no `RESUMING` or `RESUMED` state. |
+| `PAUSED` | Transient | Awaiting manual approval or a fixed delay before continuing. Transitions directly back to `RUNNING` when resumed; there is no `RESUMING` or `RESUMED` state. |
 | `BREAKPOINT` | Transient | The execution is paused at a debug breakpoint set in the flow editor (Enterprise Edition). Distinct from `PAUSED`, which handles manual approvals and configured delays. Resume via the **Resume from Breakpoint** command. |
 | `RESTARTED` | Transient | Equivalent to `CREATED` but for a failed execution that has been manually restarted from the UI. Transitions to `RUNNING` once processed. |
 | `RETRYING` | Transient | One or more failed task runs are being retried under a [flow-level retry policy](../12.retries/index.md#flow-level-retries). Transitions to `SUCCESS`, `WARNING`, or `FAILED` once all attempts are exhausted. |
@@ -40,8 +40,8 @@ States represent where an execution or task run is in its lifecycle. Each state 
 
 Both are terminal states that stop an execution, but they have different causes:
 
-- **`CANCELLED`** — triggered by the **system** when the concurrency limit is reached and `behavior: CANCEL` is configured. No user action required.
-- **`KILLED`** — triggered by the **user** via the **Kill** button in the UI or an API call. The execution first passes through `KILLING` while in-progress task runs are terminated, then settles in `KILLED`.
+- **`CANCELLED`**: triggered by the **system** when the concurrency limit is reached and `behavior: CANCEL` is configured. No user action required.
+- **`KILLED`**: triggered by the **user** via the **Kill** button in the UI or an API call. The execution first passes through `KILLING` while in-progress task runs are terminated, then settles in `KILLED`.
 
 ## Task run states
 

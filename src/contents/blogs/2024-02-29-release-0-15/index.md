@@ -63,7 +63,7 @@ The scheduling system in Kestra has received a major upgrade, improving performa
 ### Backfills from the UI
 You can now trigger backfills directly **from the UI**, specifying the **start and end dates** for the period you want to cover. This **API-first** feature eliminates the need to edit source code to execute backfills, significantly simplifying the process without disrupting your deployment patterns. No more Terraform state conflicts due to backfill changes in the source code!
 
-Moreover, backfills are now more flexible — they can be paused or cancelled at any time. You can also add custom execution labels to your backfills, making it easier to track why a backfill process was started. For more details on this feature, check out the new [Backfill documentation](../../docs/06.concepts/08.backfill/index.md).
+Moreover, backfills are now more flexible — they can be paused or cancelled at any time. You can also add custom execution labels to your backfills, making it easier to track why a backfill process was started. For more details on this feature, check out the new [Backfill documentation](../../docs/05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill).
 
 <div class="video-container">
 <iframe src="https://www.youtube.com/embed/iVTrBdYGbew?si=3GFA0TOZPhOIKc-Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
