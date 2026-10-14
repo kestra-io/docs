@@ -74,7 +74,7 @@ Automated systems scan for vulnerabilities and apply critical patches within hou
 
 ### Operational efficiency and better-spent time
 
-Automation removes the repetitive identify-download-test-deploy grind across hundreds or thousands of systems. Teams reclaim that time for architecture, performance, and other higher-value work. A dependable [workflow management](/resources/infrastructure/workflow-management) layer keeps these automated processes observable rather than opaque.
+Automation removes the repetitive identify-download-test-deploy grind across hundreds or thousands of systems. Teams reclaim that time for architecture, performance, and other higher-value work. A dependable workflow management layer keeps these automated processes observable rather than opaque.
 
 ### Consistent, auditable compliance
 

@@ -47,7 +47,7 @@ The foundation of any BPM tool is its ability to model and visualize business pr
 
 ### Workflow Automation and Orchestration Capabilities
 
-Once a process is designed, the BPM tool automates its execution. This involves routing tasks to the right people or systems, enforcing business rules, and managing deadlines. Effective [workflow management](/resources/infrastructure/workflow-management) capabilities ensure that processes run smoothly without manual intervention. This includes features like task scheduling, parallel execution, and event-driven triggers that can initiate workflows based on real-world events, such as a new customer signing up or an inventory level dropping. An [open-source workflow engine](/resources/infrastructure/open-source-workflow-engine) often provides the flexibility needed to integrate with a wide array of systems.
+Once a process is designed, the BPM tool automates its execution. This involves routing tasks to the right people or systems, enforcing business rules, and managing deadlines. Effective workflow management capabilities ensure that processes run smoothly without manual intervention. This includes features like task scheduling, parallel execution, and event-driven triggers that can initiate workflows based on real-world events, such as a new customer signing up or an inventory level dropping. An [open-source workflow engine](/resources/infrastructure/open-source-workflow-engine) often provides the flexibility needed to integrate with a wide array of systems.
 
 ### Business Rules Management for Dynamic Decisions
 

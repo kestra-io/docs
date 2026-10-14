@@ -97,7 +97,7 @@ Continuously monitor your pipelines to identify bottlenecks. Partitioning large 
 
 ### Ensuring Data Quality and Error Handling
 
-A dependable ETL process must include thorough error handling and data quality checks. Implement mechanisms to catch bad data, log errors, and alert operators. Workflows should be designed to be restartable and capable of handling failures gracefully without causing data corruption. Effective [workflow management](/resources/infrastructure/workflow-management) is key to building these resilient systems.
+A dependable ETL process must include thorough error handling and data quality checks. Implement mechanisms to catch bad data, log errors, and alert operators. Workflows should be designed to be restartable and capable of handling failures gracefully without causing data corruption. Effective workflow management is key to building these resilient systems.
 
 ### Embracing GitOps for ETL Workflows
 

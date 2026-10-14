@@ -203,7 +203,7 @@ These principles are not limited to private insurance. [Public sector workflow a
 
 *   [Control-M Alternatives](/resources/infrastructure/control-m-alternatives)
 *   [Job Scheduling Software](/resources/infrastructure/job-scheduling-software)
-*   [Workflow Management](/resources/infrastructure/workflow-management)
+*   Workflow Management
 *   [Workflow Governance](/resources/infrastructure/workflow-governance)
 *   [Workflow Observability](/resources/infrastructure/workflow-observability)
 *   [Infrastructure Automation Control Plane](/infra-automation)

@@ -33,7 +33,7 @@ The importance of this practice cannot be overstated. Effective automation leads
 *   **Improved Scalability:** Managing hundreds or thousands of VMs becomes feasible without a linear increase in operational staff.
 *   **Better Governance and Compliance:** Automated policies and audit trails ensure that infrastructure changes are tracked and compliant with security requirements.
 
-Ultimately, robust VMware automation is foundational to effective [workflow management](https://kestra.io/resources/infrastructure/workflow-management) in any enterprise running on a vSphere-based stack.
+Ultimately, robust VMware automation is foundational to effective workflow management in any enterprise running on a vSphere-based stack.
 
 ## Native VMware Automation Platforms
 

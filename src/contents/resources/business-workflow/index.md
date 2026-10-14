@@ -29,7 +29,7 @@ At its core, a business workflow is the operational blueprint for achieving a sp
 
 ### Defining a Business Workflow
 
-A business workflow is a defined sequence of tasks, activities, and decision points that move a piece of work from initiation to completion. It dictates the flow of data, documents, and resources between participants, whether they are human employees or automated systems. Think of it as the choreography of a business process, ensuring every step is executed precisely and consistently. Effective [workflow management](/resources/infrastructure/workflow-management) is the key to turning this choreography into a reliable operational reality.
+A business workflow is a defined sequence of tasks, activities, and decision points that move a piece of work from initiation to completion. It dictates the flow of data, documents, and resources between participants, whether they are human employees or automated systems. Think of it as the choreography of a business process, ensuring every step is executed precisely and consistently. Effective workflow management is the key to turning this choreography into a reliable operational reality.
 
 ### Key Characteristics of Effective Workflows
 

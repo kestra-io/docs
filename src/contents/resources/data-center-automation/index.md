@@ -53,7 +53,7 @@ A reliable data center automation strategy relies on several interconnected comp
 
 ### Workload automation and orchestration platforms
 
-Workload automation tools focus on scheduling and managing batch jobs and repetitive tasks. Orchestration platforms take this a step further by coordinating complex, multi-step, and cross-system workflows. Effective [workflow management](/resources/infrastructure/workflow-management) is the central nervous system of an automated data center, ensuring that different tools and systems work together to achieve a desired outcome.
+Workload automation tools focus on scheduling and managing batch jobs and repetitive tasks. Orchestration platforms take this a step further by coordinating complex, multi-step, and cross-system workflows. Effective workflow management is the central nervous system of an automated data center, ensuring that different tools and systems work together to achieve a desired outcome.
 
 ### Automated provisioning and configuration management
 
