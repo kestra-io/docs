@@ -12,7 +12,7 @@ faq:
   - question: "Why is signature validation crucial for webhook security?"
     answer: "Signature validation ensures the integrity and authenticity of webhook payloads. By verifying a cryptographic signature (e.g., HMAC) using a shared secret, the receiver can confirm that the message originated from the legitimate sender and has not been tampered with during transit, preventing unauthorized or malicious data injection."
   - question: "How does Kestra help secure webhooks?"
-    answer: "Kestra provides a declarative and auditable platform for consuming webhooks. Its built-in `Webhook` trigger supports secret keys for signature validation, integrates with robust secrets management, and allows for IP whitelisting. Kestra workflows also enable advanced error handling, logging, and audit trails to ensure secure and reliable webhook processing."
+    answer: "Kestra provides a declarative and auditable platform for consuming webhooks. Its built-in `Webhook` trigger secures endpoints using secret key authentication in the webhook URL, integrates with robust secrets management, and allows conditions on incoming headers or payloads. Payload signature validation (such as HMAC verification) can then be executed reliably in downstream tasks before processing data, alongside built-in error handling and audit trails."
   - question: "What is mTLS and when should it be used for webhooks?"
     answer: "Mutual TLS (mTLS) is an enhanced security measure where both the client (webhook provider) and server (webhook consumer) authenticate each other using TLS certificates. It should be used in highly sensitive environments where strong identity verification is paramount, such as regulated industries or critical internal systems, to prevent unauthorized connections."
   - question: "Can IP whitelisting alone secure webhooks?"
@@ -87,7 +87,7 @@ The process works as follows:
 4.  **Verify the Signature:** Upon receiving the request, the consumer independently computes the HMAC signature of the received payload using its copy of the secret.
 5.  **Compare:** The consumer compares its computed signature with the signature from the header. If they match, the request is considered authentic and its integrity is verified.
 
-This process ensures that only a party with the secret key could have generated the valid signature, and that any change to the payload would result in a signature mismatch. For more details on implementation, see how to use a [Webhook Trigger in Kestra](/docs/workflow-components/triggers/webhook-trigger), which has built-in support for signature validation. Proper [secrets management](/docs/best-practices/secrets-management) is crucial for this process.
+This process ensures that only a party with the secret key could have generated the valid signature, and that any change to the payload would result in a signature mismatch. For more details on implementation, see how to use a [Webhook Trigger in Kestra](/docs/workflow-components/triggers/webhook-trigger) to expose the endpoint, and then validate the signature within a task before acting on the payload (such as using dedicated provider plugins or script tasks for HMAC verification). Proper [secrets management](/docs/best-practices/secrets-management) is crucial for this process.
 
 ### Controlling network access with IP whitelisting and firewalls
 
@@ -159,9 +159,9 @@ The strategies are complementary. A secure system often uses both: a webhook not
 Implementing and managing these best practices across dozens of integrations can become complex. An orchestration platform like Kestra centralizes and standardizes webhook consumption, turning security configurations into auditable, version-controlled code.
 
 With Kestra, you can define webhook-triggered workflows declaratively in YAML. This approach provides several security benefits:
-*   **Security as Code:** Webhook trigger configurations, including secret validation, are defined in code. This makes security policies reviewable, versionable, and easy to replicate.
+*   **Security as Code:** Webhook trigger configurations, including endpoint secret authentication and condition filtering, are defined in code. This makes security policies reviewable, versionable, and easy to replicate.
 *   **Integrated Secrets Management:** Kestra allows you to manage your webhook secrets through its UI or integrate with external secret managers like HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault. This keeps sensitive keys out of your workflow definitions. For details, see Kestra's documentation on [security and secrets configuration](/docs/configuration/security-and-secrets).
-*   **Built-in Validation:** The native `Webhook` trigger can automatically validate HMAC signatures, simplifying the most critical security step.
+*   **Task-Level Signature Validation:** Validate incoming signatures directly within your workflow tasks before processing payloads. You can use provider-specific plugins (such as `io.kestra.plugin.stripe.webhook.HandleEvent`), or execute cryptographic verification using a script task (e.g., Python or OpenSSL) combined with `runIf` conditions or error handlers.
 *   **Auditability:** Every webhook received and every workflow executed is logged, providing a complete and immutable audit trail for compliance and debugging.
 
 Here is an example of a secure Kestra webhook trigger:
@@ -180,8 +180,11 @@ triggers:
     type: io.kestra.plugin.core.trigger.Webhook
     key: "your-secret-key-here" # Replace with a secret from your secrets manager
     conditions:
+      # Pre-filter requests to ensure the signature header is present before triggering an execution
       - type: io.kestra.plugin.core.condition.ExpressionCondition
         expression: "{{ trigger.headers['X-Hub-Signature-256'] is defined }}"
 ```
+
+> **Note:** The `ExpressionCondition` above verifies the **presence** of the signature header to filter requests early. Cryptographic signature verification (such as computing the HMAC digest and comparing it to the header) should be performed inside a subsequent task before processing sensitive payload data.
 
 By using an orchestration platform, you can create a unified control plane to manage not just webhooks, but your entire [infrastructure automation](/infra-automation) landscape. This ensures that security best practices are applied consistently, from simple notifications to complex, multi-system workflows.
