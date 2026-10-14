@@ -29,7 +29,7 @@ The **Previous** and **Next Execution** buttons step through past and scheduled 
 - Flow [Variables](../../05.workflow-components/04.variables/index.md) and [Inputs](../../05.workflow-components/05.inputs/index.md) are clearly listed along with execution details including dates and the corresponding namespace and flow.
 - Flow outputs and trigger data are captured with expression rendering.
 
-The **Overview** tab also supports [**Replay**](../../06.concepts/10.replay/index.md) and **Pause**, and displays execution history for comparing previous runs.
+The **Overview** tab also supports [**Replay**](../../15.how-to-guides/replay/index.md) and **Pause**, and displays execution history for comparing previous runs.
 
 The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph — green for `SUCCESS`, red for `FAILED`. Click any task node to access its logs, replay it, or change its status.
 

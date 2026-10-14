@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger flows automatically in response to web-based events.
 
-A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) start new executions in Kestra. Each webhook URL requires a secret `key`. Store the key value in [Kestra Secrets](../../../07.enterprise/02.governance/secrets/index.md) and reference it from the trigger definition — never hardcode a key directly in the flow YAML. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL.
+A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) start new executions in Kestra. Each webhook URL requires a secret `key`. Store the key value in [Kestra Secrets](../../../06.concepts/04.secret/index.md) and reference it from the trigger definition; never hardcode a key directly in the flow YAML. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -83,7 +83,7 @@ triggers:
 
 ### Stream large bodies to internal storage
 
-Use `STORE` to stream the body directly to internal storage without loading it into memory. The flow receives `trigger.uri` instead of `trigger.body`.
+With `fetchType: STORE`, the body is streamed to internal storage and the flow receives `trigger.uri` instead of `trigger.body`.
 
 ```yaml
 id: webhook_store_body
@@ -106,10 +106,10 @@ triggers:
 ```
 
 :::alert{type="warning"}
-When `fetchType: STORE`, the body is never deserialized. `when` conditions that reference `trigger.body` will not work — filter on headers or query parameters instead.
+When `fetchType: STORE`, the body is never deserialized. `when` conditions that reference `trigger.body` will not work; filter on headers or query parameters instead.
 :::
 
-### File uploads — multipart/form-data
+### File uploads with multipart/form-data
 
 When a request arrives as `multipart/form-data`, file parts are stored in internal storage and exposed on `trigger.parts`. Text fields are exposed on `trigger.formFields`. This works regardless of `fetchType`.
 
@@ -153,7 +153,36 @@ triggers:
     key: "{{ secret('WEBHOOK_KEY') }}"
 ```
 
-Stored bytes are scoped to the execution and purged with it. If no execution is created — for example, because a `when` condition vetoed the request — stored bytes are cleaned up automatically.
+Stored bytes are scoped to the execution and purged with it. If no execution is created (for example, because a `when` condition vetoed the request), stored bytes are cleaned up automatically.
+
+## Pass request data to scripts through environment variables
+
+Anyone who has the webhook URL can call it without signing in to Kestra; the `key` is the only check. Treat everything the caller sends (`trigger.body`, `trigger.headers`, `trigger.parameters`, `trigger.formFields`) as untrusted input.
+
+In script tasks, Kestra renders expressions in `commands`, `beforeCommands`, `script`, and `interpreter` before the interpreter runs, so a request value written there becomes part of the code. With the shell `Commands` task below, a body of `{"name": "$(id)"}` runs the `id` command, even inside double quotes:
+
+```yaml
+# Unsafe: the request body becomes shell code
+- id: greet
+  type: io.kestra.plugin.scripts.shell.Commands
+  commands:
+    - echo "Hello {{ trigger.body.name }}"
+```
+
+Pass the value through `env` instead. The interpreter receives it as data and never parses it as code:
+
+```yaml
+- id: greet
+  type: io.kestra.plugin.scripts.shell.Commands
+  env:
+    NAME: "{{ trigger.body.name }}"
+  commands:
+    - echo "Hello $NAME"
+```
+
+The same applies to other languages: in a Python `Script`, read the value with `os.environ["NAME"]` rather than writing `{{ trigger.body.name }}` into the script. To pass a whole JSON body, set `BODY: "{{ trigger.body | toJson }}"` and parse it in the script. Never wrap request data in the `render()` function, which evaluates any expression the caller sends.
+
+See [Security hardening](../../../10.administrator-guide/security-hardening/index.md#webhook-endpoints) for how to protect the webhook endpoint itself.
 
 ## Filtering webhook executions with `when`
 
@@ -238,9 +267,10 @@ triggers:
 - The HTTP response body contains the flow outputs as a JSON object. With the example above, the response includes `"greeting": "Hello Alice!"`.
 - `responseContentType` sets the `Content-Type` header on the response. It does not change how the body is serialized — the body is always the JSON-serialized outputs map when `returnOutputs: true` is set.
 
+
 ## Test a webhook trigger
 
-To test a webhook trigger without an external tool, go to the flow's **Triggers** tab and click **Send a test event**. The modal lets you post a custom JSON payload and optional headers directly to the webhook URL:
+The **Triggers** tab on the flow page includes a **Send a test event** button for testing without an external tool. The modal accepts a custom JSON payload and optional headers:
 
 ![Webhook Trigger Test](./webhook-trigger-test.png)
 

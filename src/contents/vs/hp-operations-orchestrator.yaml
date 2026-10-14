@@ -99,21 +99,27 @@ easeOfUse:
       tasks:
         - id: diagnose
           type: io.kestra.plugin.scripts.python.Script
+          env:
+            INCIDENT: "{{ trigger.body | toJson }}"
           script: |
-            import json
-            incident = json.loads('{{ trigger.body }}')
+            import json, os
+            incident = json.loads(os.environ["INCIDENT"])
             # Run diagnostics based on incident type
 
         - id: auto_remediate
           type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          env:
+            AFFECTED_CI: "{{ trigger.body.affected_ci }}"
           commands:
+            # remediate.yml reads the host with lookup('env', 'AFFECTED_CI')
             - ansible-playbook remediate.yml
-              -e "host={{ trigger.body.affected_ci }}"
 
         - id: validate
           type: io.kestra.plugin.scripts.shell.Commands
+          env:
+            AFFECTED_CI: "{{ trigger.body.affected_ci }}"
           commands:
-            - ./health_check.sh "{{ trigger.body.affected_ci }}"
+            - ./health_check.sh "$AFFECTED_CI"
 
         - id: close_incident
           type: io.kestra.plugin.servicenow.table.Update
