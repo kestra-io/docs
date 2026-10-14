@@ -13,6 +13,16 @@ export const formatElementType = (type: string): string =>
 export const formatElementName = (cls: string): string =>
     cls.substring(cls.lastIndexOf(".") + 1)
 
+// "Terraform CLI" + "TerraformCLI", "Kubernetes Runner" + "Kubernetes" -> true
+export const isElementNameRedundant = (containerTitle: string, elementName: string): boolean => {
+    const words = (s: string) => s.toLowerCase().split(/\s+/).filter(Boolean)
+    const container = words(containerTitle)
+    return (
+        container.join("") === words(elementName).join("") ||
+        words(elementName).every((w) => container.includes(w))
+    )
+}
+
 // Words whose acronym casing should survive title-casing, regardless of length.
 const PRESERVE_CASE = ["AI", "BI", "JDBC"]
 
