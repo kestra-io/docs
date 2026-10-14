@@ -183,6 +183,17 @@ When `basic-auth` credentials are present, Kestra's management endpoint filter r
 
 See [Kestra endpoints](../03.monitoring/index.md#kestra-endpoints) for the full list of what is exposed on the management port.
 
+## Webhook endpoints
+
+Webhook URLs (`/api/v1/{tenant}/executions/webhook/{namespace}/{flowId}/{key}`) are served without authentication, even when Basic Authentication or SSO is enabled. The trigger's `key` is the only credential, and anyone who has it can start the flow and choose the request body it receives.
+
+- Treat the key as a credential: generate a long random value, store it as a [secret](../../06.concepts/04.secret/index.md), and reference it with `{{ secret('WEBHOOK_KEY') }}`. To rotate it, update the secret; the flow does not change.
+- The key is part of the URL path, so it appears in reverse proxy, load balancer, and access logs. Restrict who can read those logs.
+- Treat request data as untrusted input. Pass it to script tasks through `env`, never inside `commands`, `beforeCommands`, `script`, or `interpreter`. See [Pass request data to scripts through environment variables](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md#pass-request-data-to-scripts-through-environment-variables).
+- Run script tasks in webhook-triggered flows on the [Docker or Kubernetes task runners](../../task-runners/index.mdx) rather than the Process runner. A command that runs through the Process runner runs on the worker host with the worker's privileges.
+- If your callers can authenticate (mTLS, IP ranges, or a provider signature such as HMAC), enforce it in a reverse proxy or API gateway in front of `/api/v1/*/executions/webhook/`. The core `Webhook` trigger does not verify signatures.
+- Keep [recursive rendering](../../11.migration-guide/v0.14.0/recursive-rendering/index.md) (`kestra.variables.recursive-rendering`) disabled, which is the default. When enabled, expressions inside request data are evaluated.
+
 ## ZIP bomb protection
 
 Kestra guards against ZIP bomb attacks on the two endpoints that accept user-uploaded ZIP archives: flow import and namespace file upload. The protection is opt-in and disabled by default.

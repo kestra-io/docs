@@ -6,6 +6,8 @@ sidebarTitle: Glossary
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
+<!-- Every entry is linked from the rest of the docs by remark-glossary-links: keep one <span id> per entry, and restart the dev server to see an edit on other pages. -->
+
 A list of terms useful for understanding Kestra and declarative orchestration. 
 
 ## A
@@ -27,7 +29,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 <span id="backfill"></span>
 - [Backfill](#backfill) - replays of missed schedule intervals between a defined start and end date. All missed schedules are automatically recovered by default if the Kestra server is down. Learn how to manage and configure [backfills](../05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill).
 <span id="blueprints"></span>
-- [Blueprints](#blueprints) - ready-to-use examples with code and documentation designed to kickstart your worflow. [Blueprints](../06.concepts/07.blueprints/index.md) typically include multiple plugins.
+- [Blueprints](#blueprints) - ready-to-use examples with code and documentation designed to kickstart your workflow. [Blueprints](../06.concepts/07.blueprints/index.md) typically include multiple plugins.
 
 ## C
 
@@ -103,7 +105,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 <span id="pebble-templating-engine"></span>
 - [Pebble Templating Engine](#pebble-templating-engine) - inspired by the Java templating engine, use `.` notation to access nested properties. [Pebble](../06.concepts/06.pebble/index.md) is used to dynamically render variables, inputs, and outputs withint the execution context.
 <span id="plugin"></span>
-- [Plugin](#plugin) - the building blocks of tasks in Kestra that offer integerations to different systems and functionality. [Plugins](../05.workflow-components/02.plugins/index.md) power every task and trigger in Kestra.
+- [Plugin](#plugin) - the building blocks of tasks in Kestra that offer integrations to different systems and functionality. [Plugins](../05.workflow-components/02.plugins/index.md) power every task and trigger in Kestra.
 
 ## R
 
@@ -120,8 +122,9 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 - [SCIM](#scim) - System for Cross-domain Identity Management, an open standard for automating the provisioning of users and groups. Kestra uses [SCIM directory sync](../07.enterprise/03.auth/scim/index.mdx) to synchronize users and groups from identity providers like Okta, Azure AD, and Keycloak.
 <span id="secrets"></span>
 - [Secrets](#secrets) - sensitive information stored securely. [Secrets](../06.concepts/04.secret/index.md) can be retrieved and used within Kestra flows using the `secret()` function (e.g., `{{ secret('API_TOKEN') }}`).
-<span id="subflow"></span>
+<span id="sibling-task"></span>
 - [Sibling task](#sibling-task) - A sibling task is a task that shares a common parent task with other tasks, like in the `tasks` list inside a loop.  
+<span id="subflow"></span>
 - [Subflow](#subflow) - Subflows let you build modular and reusable workflow components. They work like function calls: executing a [subflow](../05.workflow-components/10.subflows/index.md) creates a new flow run from within another flow.
 <span id="system-flows"></span>
 - [System flows](#system-flows) - System flows automate maintenance workflows. Any valid Kestra flow can become a [System Flow](../06.concepts/system-flows/index.md) if it’s added to the `system` namespace.

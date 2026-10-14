@@ -1136,6 +1136,9 @@ const FAQ = [
                 grid-template-columns: repeat(2, 1fr);
                 column-gap: 1.5rem;
                 row-gap: 1.75rem;
+
+                // Center the odd last logo across both columns
+                > :last-child:nth-child(odd) { grid-column: 1 / -1; }
             }
         }
 
