@@ -324,6 +324,7 @@ Assets also support lifecycle management, event-driven triggers, and freshness m
 - Lifecycle tasks to create, update, list, and delete assets (`Set`, `List`, `Delete`).
 - Event-based triggers with `EventTrigger` that react to asset lifecycle events (`CREATED`, `UPDATED`, `DELETED`, `USED`).
 - Freshness monitoring with `FreshnessTrigger` to detect stale assets and launch flows automatically.
+- Lease expiry handling with `TtlTrigger` to start a flow before or after an asset's TTL runs out.
 - Scope triggers by asset ID, namespace, type, and metadata filters.
 - Trigger context variables (`event`, `eventTime`, `lastUpdated`, `staleDuration`, `checkTime`) available for routing, alerting, and recovery logic.
 
@@ -508,10 +509,27 @@ React to an asset's TTL expiry using `TtlTrigger`. A flow is started at most onc
 | `trigger.on` | `EXPIRING` or `EXPIRED`. |
 
 :::alert{type="info"}
-`interval` is not a trigger property. The TTL checker runs on a fixed delay configured at the instance level via `kestra.assets.ttl-check.fixed-delay` (default: one hour). One checker serves every trigger.
+`interval` is not a trigger property. A single instance-wide checker evaluates every `TtlTrigger`, once an hour by default. To change the interval, see [Asset TTL checks](../../../configuration/06.enterprise-and-advanced/index.md#asset-ttl-checks-kestraassetsttl-check).
 :::
 
-When an `EXPIRING` or `EXPIRED` check fires, Kestra also notifies the asset owner in-app if `system.owner` is set. The owner is resolved as a user (by username then ID) or a group (by name then ID, expanded to its members). An owner that matches no user or group is silently skipped and never causes the check to fail. For `EXPIRED`, the notification fires even when no flow reacts to it.
+**Owner notifications:**
+
+The TTL check also notifies the asset's `owner` in-app, once per window:
+
+- **Expiring**: sent only when an `EXPIRING` trigger starts a flow for the asset.
+- **Expired**: sent when the TTL is past, even if no flow reacts. This applies to every asset type, not only deployments.
+
+Clicking the notification opens the asset. In an Infrastructure tenant, a deployment opens on its Deployments page and any other asset opens in Inventory.
+
+Kestra resolves `owner` to the users to notify:
+
+| `owner` value | Resolved as |
+|---|---|
+| `user:<name>` | A user, matched by username, then by ID. |
+| `group:<name>` | A group in the tenant, matched by name, then by ID. Every member is notified. |
+| `<name>` | A user first, then a group if no user matches. |
+
+If `owner` matches no user or group, such as free text, no one is notified.
 
 ```yaml
 # Warn 7 days and 1 day before any deployment expires
@@ -552,7 +570,23 @@ triggers:
     assetId: staging-cluster-eu
 ```
 
-From the deployment page, **On expiring** and **On expired** let you open or prefill a flow at three levels: for this deployment (`assetId` set), for the namespace (`namespace` set), or for all deployments (no filter). Only the most specific existing level is started for a given asset.
+**TTL flow levels:**
+
+On a deployment's **TTL & Lease** card, **On expiring** and **On expired** open a TTL flow at one of three levels. TTL flows live in the [system namespace](../../../06.concepts/system-flows/index.md), and Kestra identifies each level by its flow ID:
+
+| Level | Menu entry | `EXPIRING` flow ID | Prefilled filter |
+|---|---|---|---|
+| One deployment | **Edit for this deployment** | `ttl_expiring_asset_<assetId>` | `assetId` |
+| One namespace | **Edit for namespace `<namespace>`** | `ttl_expiring_namespace_<namespace>` | `namespace` |
+| All deployments | **Edit for all deployments** | `ttl_expiring` | None |
+
+`EXPIRED` flows follow the same pattern with `ttl_expired` in place of `ttl_expiring`. If an asset ID or namespace contains characters that aren't allowed in a flow ID, or the ID would exceed 100 characters, Kestra sanitizes it and appends a hash. Create those flows from the menu rather than by hand.
+
+For each asset, Kestra starts only the most specific level that exists. For example, if both `ttl_expiring_namespace_company.infra` and `ttl_expiring` exist, deployments in `company.infra` start only the namespace-level flow. A level flow must contain a `TtlTrigger`, and that trigger's filters apply on top of the level. `TtlTrigger` flows with other IDs, or outside the system namespace, aren't part of this hierarchy and start whenever their trigger matches.
+
+When a level has no flow yet, the menu opens the editor with a flow copied from the level in effect, or with a starter flow if no level exists. The flow is created only when you save it. Attaching a flow requires permission to create flows in the system namespace.
+
+Deleting an asset also deletes its asset-level TTL flows (`ttl_expiring_asset_<assetId>` and `ttl_expired_asset_<assetId>`).
 
 :::
 

@@ -106,6 +106,27 @@ kestra:
 
 The example bundle ships inside the JAR — no network access is required at tenant creation time.
 
+## Asset TTL checks (kestra.assets.ttl-check)
+
+Kestra periodically checks the TTL of every asset to start [`TtlTrigger`](../../07.enterprise/02.governance/01.assets/index.md#operational-automation) flows and to notify asset owners in-app when a TTL is expiring or has expired. The check runs on executor nodes. When several executors run, only one of them checks a given tenant at a time.
+
+```yaml
+kestra:
+  assets:
+    ttl-check:
+      enabled: true
+      initial-delay: PT1M
+      fixed-delay: PT1H
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.assets.ttl-check.enabled` | `true` | When `false`, no TTL check runs: `TtlTrigger` flows never start and owners receive no TTL notifications. |
+| `kestra.assets.ttl-check.initial-delay` | `PT1M` | Delay between executor startup and the first check. |
+| `kestra.assets.ttl-check.fixed-delay` | `PT1H` | Delay between the end of one check and the start of the next. |
+
+`fixed-delay` sets how late a `TtlTrigger` flow or notification can be. With the default, a flow starts up to one hour after an asset enters its window.
+
 ## Worker topology bootstrap (kestra.ee.setup)
 
 `kestra.ee.setup` lets you declare worker queues, worker groups, subscriptions, and registration tokens in configuration so the full topology is provisioned at startup without any runtime API calls.

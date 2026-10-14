@@ -56,9 +56,19 @@ These properties appear as dedicated columns on the Deployments screen and suppo
 | `EXPIRED` | Past the expiry instant |
 | `NO_EXPIRY` | No `ttl` set |
 
+### TTL and lease
+
+The **TTL & Lease** card on a deployment's page shows when its lease expires. If you can update assets in the deployment's namespace and the deployment isn't destroyed, you can change the expiry from the card:
+
+1. Click the pencil icon next to **Expires**.
+2. Choose **Keep current**, **No expiry**, a preset of 7, 30, 60, or 90 days from now, or **Pick a date and time**. A picked time uses the time zone from your [UI settings](../../../../../09.ui/06.settings/index.md) and defaults to 23:59:59 if you only pick a day. Past dates and times are disabled.
+3. Click **Save**. A confirmation shows the new expiry.
+
+Changing the expiry updates only the deployment's `ttl`, not the underlying infrastructure. To act on the resource when its lease is about to expire or has expired, attach a flow with **On expiring** or **On expired** on the same card. These flows use the [`TtlTrigger`](../../../01.assets/index.md#operational-automation) and can apply to one deployment, to a namespace, or to every deployment in the tenant.
+
 ### Day-2 actions
 
-Day-2 actions are flows attached to a deployment that can be run directly from its page. Common actions include extending a lease, resizing a resource, or decommissioning it. The execution is stamped with the asset ID it was started from, linking it back to the deployment in the Deployments screen.
+Day-2 actions are flows attached to a deployment that can be run directly from its page. Common actions include resizing a resource or decommissioning it. The execution is stamped with the asset ID it was started from, linking it back to the deployment in the Deployments screen.
 
 Attach day-2 actions to a deployment by declaring `assetActions` on the asset in `assets.outputs`. Each action names a flow by namespace and flow ID and provides a label for the button shown on the deployment's page:
 
@@ -71,8 +81,8 @@ assets:
       status: active
       assetActions:
         - namespace: infrastructure.examples
-          flowId: extend_lease
-          label: Extend lease
+          flowId: resize_vm
+          label: Resize
         - namespace: infrastructure.examples
           flowId: decommission_resource
           label: Decommission
@@ -113,7 +123,7 @@ Kestra rejects a `ttl` value that is not in the expected UTC format. An empty `t
 When an Infrastructure tenant is created, Kestra seeds it with an example environment so the vertical opens with content rather than empty screens. The seed includes:
 
 - A namespace (`infrastructure.examples`) with a description
-- Flows: provisioning policy, allowed regions, VM provisioning, database/environment/bucket requests, lease extension, resize, decommission, and a lease watchdog trigger
+- Flows: provisioning policy, allowed regions, VM provisioning, database/environment/bucket requests, resize, decommission, and a lease watchdog trigger
 - Apps: four self-service catalog entries (provision VM, request database, environment, and bucket)
 - A dashboard: Infrastructure Overview
 - A bootstrap flow (`setup_demo_environment`) that runs once on creation to populate demo inventory
@@ -124,7 +134,7 @@ Example resources are tagged so they can be hidden in the Catalog using the **Hi
 
 ### Seeding on type change
 
-If a tenant is switched from `DEFAULT` to `INFRASTRUCTURE`, it is also seeded with the example bundle. An existing tenant that already received this bundle version is not seeded again.
+If a tenant is switched from `DEFAULT` to `INFRASTRUCTURE`, it is also seeded with the example bundle. An existing tenant that already received this bundle version is not seeded again. Later updates to the example bundle aren't applied to existing tenants. To see them, create a new tenant.
 
 ### Disabling example seeding
 
