@@ -314,4 +314,90 @@ describe("buildPluginPageProps", () => {
         expect(props.headingTitle).toBe("Core Log")
         expect(props.pageNamesHeading[pathname]).toBe("Core Log")
     })
+
+    it("collapses multi-word task suffixes matching the container (Log Exporter)", () => {
+        const rootPlugin: Plugin = {
+            name: "plugin-aws",
+            title: "AWS",
+            group: "io.kestra.plugin.aws",
+            tasks: [{ cls: "io.kestra.plugin.aws.s3.logexporter.LogExporter" }],
+        }
+
+        const exporterSubgroup: Plugin = {
+            name: "plugin-aws",
+            title: "Amazon S3 Log Exporter",
+            group: "io.kestra.plugin.aws.s3.logexporter",
+            subGroup: "io.kestra.plugin.aws.s3.logexporter",
+            tasks: [{ cls: "io.kestra.plugin.aws.s3.logexporter.LogExporter" }],
+        }
+
+        const plugins = [rootPlugin, exporterSubgroup]
+        const pathname = "/plugins/plugin-aws/s3-log-exporter/io.kestra.plugin.aws.s3.logexporter.logexporter"
+
+        const props = buildPluginPageProps({
+            pluginName: "plugin-aws",
+            subGroup: "s3-log-exporter",
+            pluginType: "io.kestra.plugin.aws.s3.logexporter.LogExporter",
+            pathname,
+            pageNames: {},
+            allPlugins: plugins,
+            allPluginMetadata: [
+                {
+                    name: "aws",
+                    group: "io.kestra.plugin.aws.s3.logexporter",
+                    title: "Amazon S3 Log Exporter",
+                },
+            ] as any,
+            blueprintCounts: {},
+            relatedBlogs: [],
+            page: { title: "LogExporter", body: {} },
+            sidebarPluginData: { body: { group: "io.kestra.plugin.aws", plugins } },
+        })
+
+        expect(props.headingTitle).toBe("Amazon S3 Log Exporter")
+        expect(props.pageNamesHeading[pathname]).toBe("Amazon S3 Log Exporter")
+    })
+
+    it("does not collapse when task name matches only an internal substring of a container word (BigQuery Query)", () => {
+        const rootPlugin: Plugin = {
+            name: "plugin-gcp",
+            title: "Google Cloud",
+            group: "io.kestra.plugin.gcp",
+            tasks: [{ cls: "io.kestra.plugin.gcp.bigquery.Query" }],
+        }
+
+        const bigquerySubgroup: Plugin = {
+            name: "plugin-gcp",
+            title: "Google Cloud BigQuery",
+            group: "io.kestra.plugin.gcp.bigquery",
+            subGroup: "io.kestra.plugin.gcp.bigquery",
+            tasks: [{ cls: "io.kestra.plugin.gcp.bigquery.Query" }],
+        }
+
+        const plugins = [rootPlugin, bigquerySubgroup]
+        const pathname = "/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.query"
+
+        const props = buildPluginPageProps({
+            pluginName: "plugin-gcp",
+            subGroup: "bigquery",
+            pluginType: "io.kestra.plugin.gcp.bigquery.Query",
+            pathname,
+            pageNames: {},
+            allPlugins: plugins,
+            allPluginMetadata: [
+                {
+                    name: "gcp",
+                    group: "io.kestra.plugin.gcp.bigquery",
+                    title: "Google Cloud BigQuery",
+                },
+            ] as any,
+            blueprintCounts: {},
+            relatedBlogs: [],
+            page: { title: "Query", body: {} },
+            sidebarPluginData: { body: { group: "io.kestra.plugin.gcp", plugins } },
+        })
+
+        expect(props.headingTitle).toBe("Google Cloud BigQuery Query")
+        expect(props.pageNamesHeading[pathname]).toBe("Google Cloud BigQuery Query")
+    })
 })

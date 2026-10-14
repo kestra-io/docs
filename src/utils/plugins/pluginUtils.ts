@@ -13,13 +13,16 @@ export const formatElementType = (type: string): string =>
 export const formatElementName = (cls: string): string =>
     cls.substring(cls.lastIndexOf(".") + 1)
 
-// "Terraform CLI" + "TerraformCLI", "Kubernetes Runner" + "Kubernetes" -> true
+// "Terraform CLI" + "TerraformCLI", "Kubernetes Runner" + "Kubernetes",
+// "Amazon S3 Log Exporter" + "LogExporter" -> true
 export const isElementNameRedundant = (containerTitle: string, elementName: string): boolean => {
     const words = (s: string) => s.toLowerCase().split(/\s+/).filter(Boolean)
     const container = words(containerTitle)
+    const element = words(elementName)
+    const joined = element.join("")
     return (
-        container.join("") === words(elementName).join("") ||
-        words(elementName).every((w) => container.includes(w))
+        element.every((w) => container.includes(w)) ||
+        container.some((_, i) => container.slice(i).join("") === joined)
     )
 }
 
