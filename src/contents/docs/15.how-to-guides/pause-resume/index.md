@@ -108,7 +108,6 @@ tasks:
   - id: log
     type: io.kestra.plugin.core.log.Log
     message: Status is {{ outputs.waitForApproval.onResume.reason }}. Process finished with {{ outputs.approve.body }}
-```
 
 When you click on the `Resume` button in the UI, you will be prompted to provide the approval status and the reason for their decision. The workflow will then continue with the provided input values.
 
@@ -125,7 +124,7 @@ The `Pause` task records the identity of whoever resumed the execution in `outpu
 ```yaml
   - id: log_approver
     type: io.kestra.plugin.core.log.Log
-    message: "Approved by {{ outputs.waitForApproval.resumed.by }}"
+    message: "Approved by {{ outputs.wait_for_approval.resumed.by }}"
 ```
 
 `resumed.by` is set when the execution is resumed from the Kestra UI, the API, or an App. For service accounts it contains the service account name; for standard users it contains the username.
