@@ -734,8 +734,9 @@ The `Assets` block lists the assets an execution emitted or updated, one row per
 
 - Only assets the execution **emitted or updated** are listed. Assets it merely read as inputs are left out.
 - `filter` matches the asset **type**, so a single Terraform apply or dbt build emitting dozens of assets can be narrowed to the ones the app user cares about. `include` keeps only the listed types, `exclude` drops them.
-- The reserved metadata keys get a column of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. Every other metadata key gets a plain column.
-- The asset ID links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace, and is plain text for everyone else. The table itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors.
+- Rows follow the order in which the execution emitted the assets.
+- The reserved metadata keys get a column of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. These come first. Every other metadata key gets a plain column, sorted alphabetically, and other `system.` keys are hidden. A column only appears when at least one row has a value for it.
+- The asset ID links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace. For an asset without a namespace, the viewer needs `ASSET:VIEW` across the tenant. Otherwise, and when the app is opened at a URL without a tenant, the ID is plain text. The table itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors.
 - The block is available on `SUCCESS` and `FAILURE`. On failure, a partially provisioned resource is often what explains what went wrong.
 - When the execution emitted no asset, the block says so instead of rendering an empty table.
 

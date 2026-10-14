@@ -23,7 +23,7 @@ Everything available in a `DEFAULT` tenant is still accessible. The Infrastructu
 
 The Catalog is the home page of an Infrastructure tenant. It shows the Apps available for users to request — for example, provisioning a VM, requesting a database, or creating a cloud bucket.
 
-Each catalog entry is a Kestra [App](../../../../apps/index.md) visible to users with the appropriate RBAC. When a user submits a catalog form, it creates a Request and triggers the underlying flow.
+Each catalog entry is a Kestra [App](../../../../04.scalability/apps/index.md) visible to users with the appropriate RBAC. When a user submits a catalog form, it creates a Request and triggers the underlying flow. When the flow finishes, the example catalog apps list the resources it provisioned with the [`Assets` block](../../../../04.scalability/apps/index.md#assets-emitted-by-an-execution).
 
 The catalog title, colors, and banner are configurable per tenant. Open **Instance Owner → Tenants**, find the tenant, and open its **Apps Catalog** page to customize them.
 
