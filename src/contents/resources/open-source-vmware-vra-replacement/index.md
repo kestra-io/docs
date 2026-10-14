@@ -31,6 +31,8 @@ Most of a vRA estate does not move at all. ServiceNow, Terraform, Ansible, the C
 
 ## What a vRA replacement takes over, and what stays put
 
+![What moves when you replace vRA: Kestra replaces the automation layer (vRO workflows, actions and scriptable tasks, configuration and resource elements, vRO schedules and vRA event subscriptions, hand-written integration libraries, and .package files replaced by Git); two decisions remain, where the catalog and approvals live and where the deployment inventory lives; vSphere, Nutanix, the public clouds, Kubernetes, Terraform, Ansible, the ITSM and CMDB, IPAM, DNS, the secrets vault and monitoring stay and get called](./what-moves-when-you-replace-vra.png)
+
 vRA and vRO are two products. vRA is the front end: the Service Broker catalog, cloud templates (blueprints), deployments and their lifecycle. vRO is the engine underneath, where workflows, actions, scriptable tasks in JavaScript, configuration elements and resource elements live. Both go when you migrate, but not everything they did moves to the new orchestrator.
 
 A practical way to scope the replacement is to split the estate into six parts and give each one a verdict: **replace** (the new orchestrator takes it over), **integrate** (the incumbent stays and exchanges events with the orchestrator), **keep** (the incumbent stays and gets called) or **retire** (nothing replaces it).
