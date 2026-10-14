@@ -94,6 +94,87 @@ assets:
 
 Like Deployments, Inventory supports filtering by lease expiry bucket, owner, and status.
 
+## Import an existing inventory
+
+Import a Terraform state or a file of records to bring existing infrastructure into Kestra. Kestra creates one asset per resource and groups the resources under a single deployment, so they appear in Deployments and Inventory next to the resources your flows provision.
+
+Importing requires permission to create assets in the target namespace, and to update any assets that already exist.
+
+1. On the **Deployments** or **Inventory** page, click **Import**.
+2. Drop a file in the upload area, or click it to select one:
+   - Terraform state: `.tfstate`, `.backup`, or a `.json` state file
+   - Table: `.csv` or `.tsv`
+   - Records: `.json`, `.jsonl`, `.ndjson`, `.yaml`, or `.yml`
+3. For a table or records file, review the **Id column**, **Name column**, and **Resource type column**. Kestra preselects them from the column names.
+4. Review the **Deployment** name, which defaults to the file name. Optionally, choose a **Namespace**.
+5. Review the preview, then click **Import**.
+
+A confirmation shows how many assets were imported and into which deployment.
+
+### How a file maps to assets
+
+| Asset field | Terraform state | Table or records file |
+|---|---|---|
+| ID | `tf:<deployment>:<resource address>` | Value of the **Id column** |
+| Display name | Resource address, for example `aws_instance.web` | Value of the **Name column**, or the ID |
+| Type | Resource type in PascalCase, for example `AwsInstance` | Value of the **Resource type column** |
+| Metadata | `provider` and `externalId` (the resource's `arn` or `id`) | Every other column |
+
+A Terraform state imports one asset per instance of each managed resource. Data sources are skipped. The output of `terraform show -json` isn't accepted. Import the state file itself, for example the output of `terraform state pull`.
+
+For a table or records file:
+
+- A type that contains a dot, such as `com.example.VirtualMachine`, is used as is. Other values are converted to PascalCase, so `virtual_machine` becomes `VirtualMachine`. An empty value becomes `io.kestra.core.models.assets.External`.
+- Characters in an ID other than letters, digits, `.`, `_`, `:`, and `-` are replaced with `-`, and IDs are capped at 150 characters. When this changes an ID, the original value is kept in the `externalId` metadata.
+- Rows with an empty ID, or an ID already used earlier in the file, are skipped. The preview shows how many.
+- Columns named `deployment` or starting with `system.` aren't imported as metadata.
+
+Each imported resource gets a `deployment` metadata entry that links it to its deployment. The resources and the deployment also get a `system.source` value of `terraform`, `csv`, `json`, or `yaml`, shown in the **Source** column of Deployments and Inventory.
+
+If you leave **Namespace** empty and the deployment already exists, new resources go into the deployment's namespace.
+
+### Preview and re-import
+
+Before anything is written, the preview labels each resource:
+
+| Result | Meaning |
+|---|---|
+| **New** | No asset with this ID exists. Kestra creates it. |
+| **Will be updated** | An asset with this ID already belongs to this deployment. Kestra updates its metadata with the file's values. |
+| **Outside this deployment** | An asset with this ID exists but doesn't belong to this deployment. Kestra leaves it untouched. |
+
+**Import** stays disabled when nothing would be created or updated.
+
+When you re-import, an asset keeps its stored display name unless the file provides one through the **Name column**. An import can't change the namespace or the type of an existing asset, except to or from `External`. Kestra validates every resource before writing, so if any resource is invalid or locked, nothing is imported.
+
+### Import through the API
+
+The **Import** dialog calls the bulk asset endpoint, which you can also call directly in any tenant. It takes asset definitions as YAML documents separated by `---` and applies the same rules as the dialog. For example, this `assets.yaml` defines a deployment and one resource in it:
+
+```yaml
+id: web-prod
+type: io.kestra.plugin.ee.assets.Deployment
+namespace: company.infra
+---
+id: vm-web-01
+type: VirtualMachine
+namespace: company.infra
+metadata:
+  deployment: web-prod
+  region: eu-west-1
+```
+
+Send the file with `dryRun=true` to preview the result without writing anything:
+
+```bash
+curl -X POST "https://kestra.example.com/api/v1/<tenant>/assets/bulk?dryRun=true" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/x-yaml" \
+  --data-binary @assets.yaml
+```
+
+The response lists asset IDs under `created`, `updated`, and `skipped`, which match the preview's **New**, **Will be updated**, and **Outside this deployment**. To import, set `dryRun=false` or omit it.
+
 ## Asset lifecycle properties
 
 The `status`, `ttl`, and `owner` fields are top-level properties on any asset declaration — not entries in the `metadata` map. They apply to all asset types, not just Deployments. Kestra stores them internally under the `system.` prefix (`system.status`, `system.ttl`, `system.owner`), which is the form used in dashboard queries and filter expressions.
@@ -163,4 +244,3 @@ The following capabilities are planned and not yet available:
 - Auto-emission of assets by Terraform, Ansible, and cloud provider plugins. Assets must be declared explicitly in tasks.
 - Declaring relationships between assets (for example, recording that a resource belongs to a deployment without a flow that reads one and writes the other).
 - An App screen that shows the assets its execution produced.
-- An import path for bringing existing infrastructure under management.
