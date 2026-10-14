@@ -124,7 +124,7 @@ tasks:
 
 ## Validate against a Schema Registry
 
-The `registry` property connects to a Confluent-compatible Schema Registry such as Karapace or Aiven. Look up schemas by subject and version, or by global schema ID.
+The `registry` property connects to a Confluent-compatible Schema Registry such as Karapace or Aiven. Look up schemas by subject and version, or by global schema ID. Registry schemas often have no `$schema` field; set `defaultDialect` to the draft they were written for so the validator applies the right rules.
 
 ```yaml
 id: validate_json_registry
@@ -159,7 +159,7 @@ tasks:
         message: "Invalid order: {{ outputs.validate.errors }}"
 ```
 
-The `options` property accepts basic or bearer auth, SSL configuration, proxy settings, and timeouts through the standard `HttpConfiguration` interface.
+The `options` property accepts basic or bearer auth, SSL configuration, proxy settings, and timeouts.
 
 When the schema comes from a registry, the outputs also include `schemaId` and `schemaVersion`.
 
