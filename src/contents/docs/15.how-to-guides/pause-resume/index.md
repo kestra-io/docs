@@ -80,11 +80,7 @@ tasks:
   - id: sendApprovalRequest
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ inputs.slack_webhook_uri }}"
-    payload: |
-      {
-        "channel": "#vacation",
-        "text": "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
-      }
+    messageText: "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
 
   - id: waitForApproval
     type: io.kestra.plugin.core.flow.Pause
