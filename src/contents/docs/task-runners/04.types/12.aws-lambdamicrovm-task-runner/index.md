@@ -54,7 +54,7 @@ The Lambda MicroVM task runner involves three IAM principals: the **runner crede
 
 ### Runner credentials
 
-The IAM principal used by Kestra (the user or role whose credentials are passed via `accessKeyId`/`secretKeyId`, or the worker's instance profile) needs the following minimum permissions:
+The IAM principal used by Kestra (the user or role whose credentials are passed via `accessKeyId`/`secretKeyId`, or the one resolved by the AWS default credentials provider chain) needs the following minimum permissions:
 
 ```json
 {
@@ -114,6 +114,8 @@ The IAM principal used by Kestra (the user or role whose credentials are passed 
 ```
 
 Replace `<buildRoleArn>` and `<executionRoleArn>` with the ARNs of the two roles described below.
+
+The runner needs `lambda:PassNetworkConnector` because, when no network connector is set, AWS attaches its managed `INTERNET_EGRESS` and `HTTP_INGRESS` connectors to the MicroVM, and passing them requires this permission. If you set custom connectors in `ingressNetworkConnectors` or `egressNetworkConnectors`, add their ARNs to that statement.
 
 :::alert{type="info"}
 **Running on Kestra Cloud?** The Cloud control plane runs outside your AWS account and has no EC2 instance profile to supply a base AWS identity. Static `accessKeyId` / `secretKeyId` credentials are required.
@@ -210,7 +212,11 @@ Add any permissions your task commands need (for example, S3, DynamoDB, or other
 
 ### KMS-encrypted buckets
 
-If your S3 bucket uses a customer-managed KMS key for server-side encryption, set `serverSideEncryption: aws:kms` and `kmsKeyId` on the task runner. Add the following to the **runner credentials** (the principal whose `accessKeyId`/`secretKeyId` or instance profile the runner uses):
+To encrypt staged objects with KMS, set `serverSideEncryption` to `aws:kms` or `aws:kms:dsse`. Set `kmsKeyId` to use a specific key. When it's unset, S3 uses the AWS managed key `aws/s3`. The runner rejects `kmsKeyId` when `serverSideEncryption` is `AES256`.
+
+`serverSideEncryption` only applies to the objects the runner uploads: the bundle, the input archive, and the agent's code artifact. The MicroVM writes `output.zip` and `status.json` through presigned links, so those objects use the bucket's default encryption.
+
+When you use `aws:kms`, or your bucket's default encryption is SSE-KMS, add the following to the **runner credentials**:
 
 ```json
 {
@@ -223,11 +229,11 @@ If your S3 bucket uses a customer-managed KMS key for server-side encryption, se
 }
 ```
 
-The runner credentials need both actions because they sign the presigned links the microVM uses to read and write objects. Add `kms:Decrypt` to the **build role** as well, since Lambda assumes it to read the agent's code artifact from S3.
+The runner credentials need `kms:GenerateDataKey` to upload objects and `kms:Decrypt` to read the result back. They need both for the MicroVM too, because they sign the presigned links it uses. With an SSE-KMS bucket default, `kms:GenerateDataKey` on that key also covers the `output.zip` and `status.json` objects the MicroVM writes. Add `kms:Decrypt` to the **build role** as well, since Lambda assumes it to read the agent's code artifact from S3.
 
 ### S3 lifecycle rule
 
-The runner stages files under `kestra-lambda-microvm/run/` in your bucket. Add a lifecycle rule to expire objects under this prefix after 1 day to avoid accumulating staging objects from completed runs.
+The runner stages files under `kestra-lambda-microvm/run/` in your bucket and removes them when the run ends. If a run is killed before it can clean up, the objects stay behind. As a safety net, add a lifecycle rule that expires objects under this prefix after 1 day.
 
 ## Example flows
 
@@ -306,6 +312,8 @@ tasks:
 **This example is keyless only when Kestra runs inside AWS.** On a self-hosted instance on EC2 or EKS, the AWS SDK uses the instance profile or IRSA to make the `sts:AssumeRole` call without static keys. On Kestra Cloud, you must supply `accessKeyId` and `secretKeyId` alongside `stsRoleArn`.
 :::
 
+The runner credentials sign the presigned links the MicroVM uses to write its result, so temporary credentials must stay valid for the whole run. With `stsRoleArn`, the session defaults to the run's wait (`waitUntilCompletion`, or the task `timeout` when set) plus 15 minutes, capped at 1 hour. For a longer wait, set `stsRoleSessionDuration` explicitly. Otherwise the runner fails the task before it starts. The role's maximum session duration must allow the value you set.
+
 ## Security
 
 :::alert{type="warning"}
@@ -318,7 +326,7 @@ Use `ingressNetworkConnectors` and `egressNetworkConnectors` to control the Micr
 
 Set `monitoring.enabled: true` to run the task command under [kotlp](https://github.com/kestra-io/kotlp), a portable observability wrapper Kestra stages into the task's working directory. No image change is needed.
 
-kotlp reports the instance's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
+kotlp reports the command's resource usage as `process.*` task metrics, sampled every `monitoring.metricsInterval` (default `PT1S`):
 
 | Metric | Type | Unit | Attribute |
 |---|---|---|---|
