@@ -16,7 +16,7 @@ Use the Lambda MicroVM task runner when your workload needs lightweight VM isola
 - **Fast-start serverless workloads** that need VM-level isolation but can tolerate a one-time per-region image build (a few minutes on first run)
 - **Long-running non-containerized tasks** that exceed Lambda's 15-minute function timeout — runs can last up to 8 hours
 - **ARM64-native workloads** built for Amazon Linux 2023 on ARM64 that do not require a custom container image
-- **Simplified IAM setup** where you want the runner to manage image builds automatically without maintaining AMIs or job queues
+- **No infrastructure to maintain**: the runner builds and manages its own image, with no AMIs or job queues to maintain
 
 For containerized workloads, use the [AWS Batch task runner](../04.aws-batch-task-runner/index.md). For direct EC2 control with Spot instances, GPU support, or custom AMIs, use the [AWS EC2 task runner](../05.aws-ec2-task-runner/index.md).
 
@@ -28,9 +28,9 @@ This runner is **ARM64 only**. The `containerImage` property is ignored — the 
 
 For each task run, the Lambda MicroVM task runner:
 
-1. On the **first run** (per unique bucket and region combination), builds a managed ARM64 image named `kestra-task-runner-<hash>` from an Amazon Linux 2023 minimal base. This one-time build takes a few minutes. Subsequent runs reuse the cached image.
-2. Uploads `inputFiles` and `namespaceFiles` to S3 under the `kestra-lambda-microvm/` prefix using presigned URLs — the MicroVM requires no IAM credentials for staging.
-3. Starts the MicroVM and runs the task's commands directly on the instance OS.
+1. On the **first run** in an AWS account and region, builds a managed ARM64 image named `kestra-task-runner-<hash>` from an Amazon Linux 2023 minimal base. This one-time build takes a few minutes. Later runs reuse it. A plugin upgrade, a different `memory`, or a different `baseImageArn` builds a new image next to the old one.
+2. Uploads the commands, environment variables, `inputFiles` and `namespaceFiles` to S3 under the `kestra-lambda-microvm/run/` prefix. The MicroVM reads and writes them through short-lived presigned URLs, so it needs no IAM credentials for staging.
+3. Starts the MicroVM and runs the task's commands directly in it, with no container.
 4. Streams command output to the log group at `/aws/lambda-microvm/kestra` (default) via CloudWatch Logs.
 5. Downloads `outputFiles` from S3 to Kestra internal storage once the command completes.
 6. Terminates the MicroVM unconditionally on success, failure, or worker interruption.
@@ -41,7 +41,7 @@ The following Pebble expressions and environment variables are available inside 
 
 | Pebble expression | Environment variable | Description |
 |---|---|---|
-| `{{ workingDir }}` | `WORKING_DIR` | Path to the task's working directory on the instance where input files are placed |
+| `{{ workingDir }}` | `WORKING_DIR` | Path to the task's working directory in the MicroVM, where input files are placed |
 | `{{ outputDir }}` | `OUTPUT_DIR` | Path to the output directory; all files written here are automatically captured |
 
 :::alert{type="info"}
@@ -50,7 +50,7 @@ If a run fails, look up the failure detail in `{{ outputs.<taskId>.vars.kestraTa
 
 ## IAM permissions
 
-The Lambda MicroVM task runner uses two IAM roles: a **runner credential** role (used by the Kestra worker to submit and monitor runs) and two dedicated roles for the MicroVM itself — a **build role** (for image construction) and an **execution role** (for the task at runtime).
+The Lambda MicroVM task runner involves three IAM principals: the **runner credentials** (used by the Kestra worker to build the image, start and monitor runs, and stage files) and two roles assumed by Lambda: a **build role** (for image construction) and an **execution role** (for the task at runtime). For a quick setup, one role can serve as both the build and the execution role (same trust policy, merged permissions). Separate roles are cleaner, because the build role then grants nothing your commands could use.
 
 ### Runner credentials
 
@@ -62,51 +62,52 @@ The IAM principal used by Kestra (the user or role whose credentials are passed 
   "Statement": [
     {
       "Effect": "Allow",
+      "Action": ["lambda:RunMicrovm", "lambda:GetMicrovm", "lambda:TerminateMicrovm"],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
       "Action": [
-        "lambda:RunMicrovm",
-        "lambda:GetMicrovm",
-        "lambda:TerminateMicrovm",
         "lambda:CreateMicrovmImage",
         "lambda:GetMicrovmImage",
         "lambda:ListMicrovmImages",
         "lambda:GetMicrovmImageVersion",
         "lambda:ListManagedMicrovmImages",
         "lambda:ListManagedMicrovmImageVersions",
-        "lambda:TagResource",
-        "lambda:PassNetworkConnector"
+        "lambda:TagResource"
       ],
       "Resource": "*"
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:AbortMultipartUpload",
-        "s3:ListBucket",
-        "s3:GetBucketLocation"
-      ],
+      "Action": "iam:PassRole",
+      "Resource": ["<buildRoleArn>", "<executionRoleArn>"],
+      "Condition": {"StringEquals": {"iam:PassedToService": "lambda.amazonaws.com"}}
+    },
+    {
+      "Effect": "Allow",
+      "Action": "lambda:PassNetworkConnector",
+      "Resource": "arn:aws:lambda:*:aws:network-connector:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject", "s3:AbortMultipartUpload"],
+      "Resource": "arn:aws:s3:::<bucket>/kestra-lambda-microvm/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket", "s3:GetBucketLocation"],
+      "Resource": "arn:aws:s3:::<bucket>"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "logs:DescribeLogGroups",
       "Resource": "*"
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "logs:DescribeLogGroups",
-        "logs:CreateLogGroup",
-        "logs:FilterLogEvents"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:PassRole"
-      ],
-      "Resource": [
-        "<buildRoleArn>",
-        "<executionRoleArn>"
-      ]
+      "Action": ["logs:CreateLogGroup", "logs:FilterLogEvents"],
+      "Resource": "arn:aws:logs:<region>:<account>:log-group:<logGroup>:*"
     }
   ]
 }
@@ -158,7 +159,7 @@ The build role is assumed by Lambda MicroVM to construct the managed image on fi
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:logs:<region>:<account>:log-group:<logGroup>:*"
     }
   ]
 }
@@ -199,7 +200,7 @@ The execution role is assumed by the MicroVM at runtime when running your task c
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
-      "Resource": "*"
+      "Resource": "arn:aws:logs:<region>:<account>:log-group:<logGroup>:*"
     }
   ]
 }
@@ -308,10 +309,10 @@ tasks:
 ## Security
 
 :::alert{type="warning"}
-The MicroVM communicates with the Kestra worker over an unauthenticated webhook connection. Do not expose port `8080` on the Kestra worker to untrusted networks when using this runner.
+The Kestra agent inside the MicroVM listens on port `8080`, and its hooks are not authenticated: any peer that can reach it could start a job or stop the running one. With no `ingressNetworkConnectors` set, AWS attaches its managed `HTTP_INGRESS` connector, and reaching a MicroVM through it requires a MicroVM auth token (`lambda:CreateMicrovmAuthToken`). Restrict that permission to trusted principals, and do not add ingress connectors that expose port `8080`.
 :::
 
-Use `ingressNetworkConnectors` and `egressNetworkConnectors` to control network access for the MicroVM when your account has Lambda Network Connectors configured.
+Use `ingressNetworkConnectors` and `egressNetworkConnectors` to control the MicroVM's network access when your account has Lambda Network Connectors configured.
 
 ## Monitoring
 
@@ -361,10 +362,7 @@ tasks:
 
 ### Monitoring constraints
 
-Two requirements apply when monitoring is enabled:
-
-- `bucket` must be configured. kotlp is staged alongside other input files. The task fails immediately if `bucket` is absent.
-- An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
+An explicit `commands` list is required when monitoring is enabled: kotlp wraps the commands you supply.
 
 ## Key properties
 
@@ -372,30 +370,31 @@ Two requirements apply when monitoring is enabled:
 |---|---|---|---|
 | `region` | Yes | — | AWS region where the MicroVM runs. |
 | `bucket` | Yes | — | S3 bucket for file staging and bootstrap objects. |
-| `buildRoleArn` | Yes | — | ARN of the IAM role Lambda MicroVM assumes to build the managed image. See [Build role](#build-role). |
+| `buildRoleArn` | Unless `imageIdentifier` is set | — | ARN of the IAM role Lambda MicroVM assumes to build the managed image. See [Build role](#build-role). |
 | `executionRoleArn` | Yes | — | ARN of the IAM role the MicroVM assumes at runtime. See [Execution role](#execution-role). |
-| `memory` | No | — | MicroVM memory in MiB. Must be a positive integer, for example `2048`. Each distinct value gets its own managed image. |
+| `memory` | No | Service default | MicroVM memory in MiB, for example `2048`. Must be positive. The memory belongs to the image, so each distinct value gets its own managed image, built on first use. |
 | `serverSideEncryption` | No | `AES256` | S3 server-side encryption algorithm for objects the runner uploads. One of `AES256`, `aws:kms`, or `aws:kms:dsse`. |
-| `kmsKeyId` | No | — | KMS key ID or ARN for S3 object encryption. Requires `serverSideEncryption: aws:kms`. |
-| `accessKeyId` | No | — | AWS access key ID. Uses the worker's instance profile when omitted. |
+| `kmsKeyId` | No | — | KMS key ID, key ARN or alias ARN for S3 object encryption. Only valid with `serverSideEncryption` set to `aws:kms` or `aws:kms:dsse`. S3 uses the AWS managed key `aws/s3` when unset. |
+| `accessKeyId` | No | — | AWS access key ID. When omitted, the AWS default credentials provider chain is used. |
 | `secretKeyId` | No | — | AWS secret access key. |
 | `sessionToken` | No | — | AWS session token for temporary credentials. |
 | `stsRoleArn` | No | — | ARN of an IAM role to assume via STS. |
 | `stsRoleExternalId` | No | — | External ID for the STS trust policy. |
 | `stsRoleSessionName` | No | — | Name tag for the assumed-role session. |
-| `endpointOverride` | No | — | Override the AWS endpoint URL (useful in GovCloud or LocalStack). |
-| `waitUntilCompletion` | No | `PT1H` | Maximum time to wait for the run to finish. Cannot exceed `PT8H`; values over 8 hours are rejected. |
+| `endpointOverride` | No | — | Replaces the AWS endpoint of every service the runner calls. Only for emulators or private endpoints. |
+| `stsEndpointOverride` | No | — | STS endpoint override. |
+| `waitUntilCompletion` | No | `PT1H` | Maximum time to wait for the run to finish; the task `timeout` takes precedence when set. The MicroVM is capped to this duration. Cannot exceed `PT8H`; longer values are rejected. |
 | `completionCheckInterval` | No | `PT5S` | How often to poll for run completion. |
 | `logGroup` | No | `/aws/lambda-microvm/kestra` | CloudWatch Logs log group for task output. |
-| `imageIdentifier` | No | — | Custom image identifier. Leave unset to use the Kestra-managed image. |
+| `imageIdentifier` | No | — | ARN or ID of a custom image to run instead of the managed one. It must embed the Kestra agent (serving `POST /aws/lambda-microvms/runtime/v1/{run,terminate,validate,ready}` on port 8080). When set, nothing is built and `buildRoleArn` is not needed. |
 | `imageVersion` | No | — | Version of the custom image to run. Only used with `imageIdentifier`; defaults to the latest active version. |
 | `baseImageArn` | No | — | Lambda-managed base image ARN the runner builds its image on. Defaults to the only managed base image AWS lists for the region. |
-| `syncWorkingDirectory` | No | `false` | When `true`, syncs the entire working directory back to S3 after the run completes. |
-| `idlePolicy` | No | — | Policy controlling MicroVM idle behavior. |
+| `syncWorkingDirectory` | No | `false` | When `true`, uploads the whole working directory of the MicroVM back to Kestra after the commands finish, not only `outputFiles` and the output directory. |
+| `idlePolicy` | No | — | What AWS does with a MicroVM that receives no activity. Unset by default: the service default applies. A suspended MicroVM stops running your commands. |
 | `ingressNetworkConnectors` | No | — | Lambda Network Connectors for inbound network access. |
 | `egressNetworkConnectors` | No | — | Lambda Network Connectors for outbound network access. |
-| `tags` | No | — | Tags to apply to MicroVM resources. |
-| `stsRoleSessionDuration` | No | — | Duration of the STS assumed-role session. Defaults to `waitUntilCompletion` plus 15 minutes, capped at 1 hour. Set explicitly for runs that exceed 1 hour with `stsRoleArn`. |
-| `waitForLogInterval` | No | `PT5S` | How long the runner keeps draining CloudWatch Logs after the task reports completion, to capture any late-arriving output. |
+| `tags` | No | — | Tags added to the image the runner builds, in addition to `kestra:managed`, `kestra:agent-hash` and `kestra:base-image-version`. A MicroVM itself cannot be tagged. |
+| `stsRoleSessionDuration` | No | — | Duration of the STS assumed-role session. Defaults to the run's wait (`waitUntilCompletion`, or the task `timeout` when set) plus 15 minutes, capped at 1 hour. Set it explicitly for longer runs with `stsRoleArn`. |
+| `waitForLogInterval` | No | `PT5S` | After the task reports completion, the runner keeps polling CloudWatch Logs until no new output has arrived for this long, so late-arriving output isn't lost. |
 
 For the full property reference, see the [plugin documentation](/plugins/plugin-ee-aws/aws-task-runners/io.kestra.plugin.ee.aws.runner.lambdamicrovm).
