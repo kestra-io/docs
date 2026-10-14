@@ -71,7 +71,7 @@ The global regulatory environment is a complex patchwork of national and regiona
 
 GDPR is the most influential data privacy regulation globally, and it is often misread as a residency law. It is not: GDPR does not require personal data to stay in the EU. What it regulates is [transfers outside the European Economic Area](https://www.edpb.europa.eu/sme-data-protection-guide/international-data-transfers_en). A transfer is allowed when the destination has an [adequacy decision](https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection/adequacy-decisions_en) from the European Commission, or when the organization puts safeguards in place, such as standard contractual clauses plus a transfer impact assessment.
 
-In practice, many companies still choose EU hosting, because it removes the transfer question entirely and is easier to explain to customers and auditors. That choice is a design decision, not a legal obligation, and it only works if every copy of the data, including backups, logs, and intermediate files, stays in the EU as well.
+In practice, many companies still choose EU hosting, because it removes the transfer question entirely and is easier to explain to customers and auditors. That choice is a design decision, not a legal obligation, and it only works if every copy of the data, including backups, logs, and intermediate files, stays in the EU as well. The rest of GDPR, such as retention limits, erasure requests, and audit trails, is covered in [GDPR compliant orchestration](/resources/infrastructure/gdpr-compliant-orchestration).
 
 ### The regulatory landscape in the United States
 
