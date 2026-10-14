@@ -118,7 +118,8 @@ Some plugins support automatic asset generation when `assets.enableAuto: true` i
 
 - **JDBC Query**: detects `CREATE TABLE` statements and emits a single `io.kestra.plugin.ee.assets.Table` output; JDBC URL populates `system` and `database`.
 - **Ansible CLI**: parses `inventory` hosts as `inputs` of type `io.kestra.core.models.assets.External`, marking the infrastructure targets the playbook runs against.
-- **dbt CLI**: parses `manifest.json` to emit each model as an `io.kestra.plugin.ee.assets.Table` output with `database`, `schema`, `name`, and lineage edges based on `depends_on`.
+- **dbt CLI** and **dbt Cloud `CheckStatus`**: parse `manifest.json` and `run_results.json` to emit models, seeds, and snapshots as `io.kestra.plugin.ee.assets.Table` outputs with `database`, `schema`, `name`, and lineage edges based on `depends_on`. Test outcomes ride the model's asset as metadata: `dbtTestStatus` (`pass`, `fail`, `warn`), `dbtTestsTotal`, and `dbtTestsFailed`. A relationships test rolls onto every model it targets. Skipped tests carry no keys; a model with no executed tests carries no keys either.
+
 - **Helm**: `Upgrade`, `Rollback`, `Status`, and `Uninstall` emit a `Custom` output typed `io.kestra.plugin.ee.assets.HelmRelease` for the release plus one `Custom` output typed `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource (`Deployment`, `Service`, `Ingress`, etc.) — these aren't typed asset classes yet, but the type strings are chosen to match what they'd become if `core-ee` adds them later, so nothing in the catalog needs to change on that swap; the chart reference and any `valuesFrom` files are declared as inputs.
 - **Qlik Cloud `apps.Reload`**: emits a `Custom` asset typed `io.kestra.plugin.qlikcloud.assets.App` for the reloaded app, carrying the app's freshness. The asset id is the Qlik app id. Declare `assets.inputs` manually to connect upstream dbt or Fivetran assets to this node.
 - **Hex `projects.Run`**: emits a `Custom` asset typed `io.kestra.plugin.ee.assets.Dataset` (with `system: hex`) for the Hex project that ran, so Hex appears as the terminal consumer in a Fivetran → dbt → Hex lineage chain. The asset id is the `projectId`. Hex's API reports no upstream tables, so declare `assets.inputs` manually using the same `database.schema.table` ids that plugin-dbt and plugin-fivetran emit.
@@ -357,6 +358,33 @@ triggers:
 
 :::
 
+:::collapse{title="Advanced: alert on dbt test failures"}
+
+```yaml
+id: dbt_test_failure_alert
+namespace: company.data
+
+tasks:
+  - id: notify
+    type: io.kestra.plugin.core.log.Log
+    message: >
+      dbt tests failed on asset {{ trigger.asset.id }}.
+      Status: {{ trigger.asset.metadata.dbtTestStatus }},
+      failed: {{ trigger.asset.metadata.dbtTestsFailed }} of {{ trigger.asset.metadata.dbtTestsTotal }}.
+
+triggers:
+  - id: dbt_tests_failed
+    type: io.kestra.plugin.ee.assets.EventTrigger
+    events:
+      - UPDATED
+    metadataQuery:
+      - field: dbtTestStatus
+        type: EQUAL_TO
+        value: fail
+```
+
+:::
+
 :::collapse{title="Advanced: freshness monitoring"}
 
 ```yaml
@@ -368,8 +396,8 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: >
       Found {{ trigger.assets | length }} stale assets.
-      First asset: {{ trigger.assets[0].id ?? 'n/a' }}.
-      Stale for: {{ trigger.assets[0].staleDuration ?? 'n/a' }}.
+      First asset: {{ trigger.asset.id ?? 'n/a' }}.
+      Stale for: {{ trigger.asset.staleDuration ?? 'n/a' }}.
 
 triggers:
   - id: stale_assets
@@ -392,9 +420,9 @@ tasks:
     namespace: company.data
     flowId: refresh_marts
     inputs:
-      asset_id: "{{ trigger.assets[0].id }}"
-      last_updated: "{{ trigger.assets[0].lastUpdated }}"
-      stale_duration: "{{ trigger.assets[0].staleDuration }}"
+      asset_id: "{{ trigger.asset.id }}"
+      last_updated: "{{ trigger.asset.lastUpdated }}"
+      stale_duration: "{{ trigger.asset.staleDuration }}"
 
 triggers:
   - id: stale_prod_marts

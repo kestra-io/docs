@@ -79,7 +79,7 @@ Workflows in Kestra are defined as simple YAML files, which aligns perfectly wit
 **Key Features:**
 - **Declarative YAML Interface:** Simplifies workflow creation and makes them easy to read, version, and share.
 - **Language-Agnostic:** Natively runs Python, R, Shell, SQL, Node.js, and more, all as first-class citizens within the same workflow.
-- **Rich Plugin Library:** Offers over 1,700 plugins for a vast array of technologies, from databases and cloud services to AI models and business applications.
+- **Rich Plugin Library:** Offers {totalPlugins}+ plugins for a vast array of technologies, from databases and cloud services to AI models and business applications.
 - **Flexible Deployment:** Runs anywhere—on-premise, on any cloud, in hybrid setups, or in air-gapped environments, via Docker or Kubernetes.
 - **Built for Scale:** The architecture is designed for high throughput, with a distributed model that can handle billions of task executions.
 

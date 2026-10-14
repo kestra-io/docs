@@ -166,7 +166,7 @@ triggers:
 
 ### Integrating Diverse Systems and Data Sources
 
-A typical claims process involves dozens of systems. Kestra's library of over 2,000 plugins and its ability to [run scripts](/docs/scripts) in any language (Python, SQL, Shell, etc.) make it easy to connect to any data source or application, whether it's a modern API, a legacy database, or a custom internal tool.
+A typical claims process involves dozens of systems. Kestra's library of {totalPlugins}+ plugins and its ability to [run scripts](/docs/scripts) in any language (Python, SQL, Shell, etc.) make it easy to connect to any data source or application, whether it's a modern API, a legacy database, or a custom internal tool.
 
 ### Incorporating Human-in-the-Loop and Approvals
 

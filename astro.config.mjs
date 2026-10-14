@@ -21,6 +21,7 @@ import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
+import remarkGlossaryLinks from "./src/markdown/remark/remark-glossary-links/index.ts"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
@@ -133,6 +134,7 @@ export default defineConfig({
                         },
                     },
                 ],
+                remarkGlossaryLinks,
             ],
             rehypePlugins: [
                 rehypeHeadingIds,
@@ -225,6 +227,12 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            // Raises the /api/github rate limit; works unauthenticated without it.
+            GITHUB_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             DISABLE_GITHUB: envField.boolean({
                 context: "server",
                 access: "public",
@@ -236,13 +244,6 @@ export default defineConfig({
                 access: "public",
                 optional: true,
                 default: false,
-            }),
-            // ISO date. Set only by the visual-snapshot workflow so dated
-            // content added after it never moves a screenshot baseline.
-            SNAPSHOT_CUTOFF: envField.string({
-                context: "server",
-                access: "public",
-                optional: true,
             }),
         },
     },
@@ -317,6 +318,13 @@ export default defineConfig({
                 // Mirror the tsconfig `~/*` paths so the alias also resolves
                 // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
                 "~": path.resolve(__dirname, "src"),
+                // Dev runs on Node, which has no Worker bindings: SSR routes see no KV.
+                ...(isDev && {
+                    "cloudflare:workers": path.resolve(
+                        __dirname,
+                        "src/utils/cloudflareWorkersDevStub.ts",
+                    ),
+                }),
             },
         },
         css: {

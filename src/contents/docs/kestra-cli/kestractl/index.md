@@ -7,7 +7,7 @@ editions: ["OSS","EE"]
 description: Manage Kestra flows, executions, namespaces, plugins, and IAM resources from the command line without a UI.
 ---
 
-Use `kestractl` to manage flows, executions, triggers, namespaces, namespace files, key-value pairs, plugins, IAM resources, dashboards, apps, assets, blueprints, test suites, execution logs, secrets, and server administration. Most commands interact with the Kestra host API; `workers registration-tokens generate` runs entirely offline.
+Use `kestractl` to manage flows, executions, triggers, namespaces, namespace files, key-value pairs, plugins, IAM resources, dashboards, apps, assets, blueprints, test suites, reusable inputs blocks, tenants, execution logs, secrets, and server administration. Most commands interact with the Kestra host API; `workers registration-tokens generate` runs entirely offline.
 
 For server components and system maintenance commands (starting standalone servers, server-side plugin installation), see the [Kestra Server CLI](../kestra-server/index.md).
 
@@ -98,7 +98,9 @@ kestractl flows list my.namespace --output json
 - `logs`: list, search, download, and delete execution logs.
 - `secrets`: list, set, patch, and delete secrets. Requires Kestra EE.
 - `server`: view license info, list server actions, and generate statistics reports. `server license` requires Kestra EE.
-- `plugins`: list compatible plugins for a Kestra version and download them to a local directory.
+- `plugins`: list compatible plugins for a Kestra version, download them to a local directory, and list plugins installed on a connected server.
+- `reusable-inputs` (alias: `ri`): list, get, manage revisions, create, update, and delete reusable inputs blocks. Requires Kestra EE 2.0.1 or later.
+- `tenants`: list, get, create, update, and delete tenants. Requires Kestra EE and instance-owner permissions.
 - `workers`: manage worker registration tokens.
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
@@ -133,12 +135,25 @@ kestractl flows task my.namespace my-flow my-task-id
 kestractl flows deploy path/to/flow.yaml
 kestractl flows deploy ./flows/ --namespace prod --override --fail-fast
 
+# Deploy under a namespace prefix (prepends to each flow's own namespace; mutually exclusive with --namespace)
+# Only the flow's own namespace is prefixed — subflow targets, Flow trigger dependsOn, namespace files, and KV lookups are not.
+kestractl flows deploy ./flows/ --namespace-prefix staging.pr42 --override
+
+# Disable every trigger on deploy (sets disabled: true on all triggers; use for ephemeral preview environments)
+# Flows with no triggers are deployed unchanged; YAML-aliased or flow-style trigger mappings cause an error.
+kestractl flows deploy ./flows/ --namespace-prefix staging.pr42 --disable-triggers --override
+
 # Import flows from a ZIP archive
 kestractl flows import flows.zip
 
 # Validate a flow or directory
 kestractl flows validate path/to/flow.yaml
 kestractl flows validate ./flows/
+
+# Validate flows already stored on the instance (no local files needed)
+kestractl flows validate-by-query --namespace my.namespace        # scoped to a namespace
+kestractl flows validate-by-query --all                           # every flow on the instance
+kestractl flows validate-by-query --all --output json             # CI gate; exits non-zero on violations
 
 # Validate a task or trigger definition from a YAML file
 kestractl flows validate-task    --file task.yaml
@@ -157,8 +172,9 @@ kestractl flows delete-by-query  --namespace my.namespace --query old-
 # Search flows by source content
 kestractl flows search-by-source --query "http.request"
 
-# Bulk-update flows from a YAML file
+# Bulk-update flows from a YAML file (--delete defaults to false; pass it to remove unlisted flows)
 kestractl flows bulk-update --file flows.yaml
+kestractl flows bulk-update --file flows.yaml --delete
 
 # Export flows
 kestractl flows export            --namespace my.namespace --output-file flows.zip
@@ -191,6 +207,12 @@ kestractl flows expressions --file my-flow.yaml --task-id my-task
 # Show namespace-level or flow-level dependency trees
 kestractl flows namespace-dependencies my.namespace
 kestractl flows dependencies           my.namespace my-flow
+
+# Build a migration usage report from all flow sources (1.x → 2.0 signal analysis)
+kestractl flows usage-report                                          # markdown report
+kestractl flows usage-report --output json                            # machine-readable
+kestractl flows usage-report --namespace my.namespace --anonymize=false
+kestractl flows usage-report --detailed                               # include per-namespace table
 ```
 
 ## Execution management
@@ -398,13 +420,6 @@ kestractl namespaces update my.namespace --variables-file vars.yaml --variable e
 # View inherited secrets and variables
 kestractl namespaces inherited-secrets   my.namespace
 kestractl namespaces inherited-variables my.namespace
-
-# View plugin defaults for a namespace (includes inherited configuration)
-kestractl namespaces plugin-defaults my.namespace
-
-# Export / import plugin defaults
-kestractl namespaces export-plugin-defaults my.namespace --output-file defaults.yaml
-kestractl namespaces import-plugin-defaults my.namespace --file defaults.yaml
 ```
 
 :::alert{type="warning"}
@@ -682,6 +697,66 @@ kestractl test-suites search-results --namespace my.namespace
 kestractl test-suites last-result    --ids my.namespace/suite-a --ids my.namespace/suite-b
 kestractl test-suites get-result     <result_id>
 ```
+
+## Reusable inputs (Enterprise Edition)
+
+A reusable inputs block is a named set of flow input definitions that flows reference through a `REUSABLE_INPUTS` input type. Requires Kestra Enterprise Edition 2.0.1 or later.
+
+`list` and `get` resolve namespace inheritance — a block defined in a parent namespace is visible from its children. `revisions`, `create`, `update`, and `delete` act on the exact namespace given and do not inherit.
+
+```bash
+# List reusable inputs blocks visible from a namespace (includes inherited blocks)
+kestractl reusable-inputs list my.namespace
+kestractl reusable-inputs list my.namespace --page 2 --size 20 --output json
+
+# Get a reusable inputs block
+kestractl reusable-inputs get my.namespace my-inputs-block
+
+# List revisions of a reusable inputs block
+kestractl reusable-inputs revisions my.namespace my-inputs-block
+
+# Create a reusable inputs block from a YAML file
+kestractl reusable-inputs create my.namespace my-inputs-block --file inputs.yaml
+
+# Update a reusable inputs block
+kestractl reusable-inputs update my.namespace my-inputs-block --file inputs.yaml
+
+# Delete a reusable inputs block
+kestractl reusable-inputs delete my.namespace my-inputs-block
+
+# List the namespaces that define at least one reusable inputs block
+kestractl reusable-inputs namespaces
+```
+
+## Tenant management (Enterprise Edition)
+
+Tenants are instance-level resources. Managing them requires Enterprise Edition and instance-owner permissions.
+
+```bash
+# List all tenants
+kestractl tenants list
+kestractl tenants list --output json
+
+# Get a tenant by ID
+kestractl tenants get <tenant_id>
+
+# Create a tenant
+kestractl tenants create <tenant_id> --name "My Tenant"
+kestractl tenants create <tenant_id> --concurrency-behavior CANCEL
+
+# Update a tenant
+kestractl tenants update <tenant_id> --name "Updated Name"
+kestractl tenants update <tenant_id> --concurrency-behavior FAIL
+
+# Delete a tenant — prompts for confirmation; skip with --yes
+kestractl tenants delete <tenant_id>
+kestractl tenants delete <tenant_id> --yes
+```
+
+| Flag | Default | Description |
+|---|---|---|
+| `--name` | tenant ID | Tenant display name |
+| `--concurrency-behavior` | `QUEUE` | Behavior when the concurrency limit is reached: `QUEUE`, `CANCEL`, or `FAIL` |
 
 ## IAM management (Enterprise Edition)
 
@@ -1022,6 +1097,15 @@ kestractl plugins get io.kestra.ee:ee-plugin:2.0.0 \
   --maven-repository https://registry.kestra.io/maven \
   --maven-username myuser \
   --maven-password mypassword
+```
+
+### `kestractl plugins installed`
+
+List the plugins installed on the connected Kestra server. Unlike `plugins list`, which resolves the public compatibility catalog from `api.kestra.io` and ignores the configured host, this queries the running instance's own classpath.
+
+```bash
+kestractl plugins installed
+kestractl plugins installed --output json
 ```
 
 ### `kestractl plugins download [version]`

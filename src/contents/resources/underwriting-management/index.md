@@ -82,7 +82,7 @@ Modernization efforts focus on several key areas:
 
 ### Kestra's Role in Underwriting Orchestration
 
-Kestra provides a unified control plane to automate and orchestrate the end-to-end underwriting workflow. As an [open-source](https://github.com/kestra-io/kestra) platform with over 2,000 plugins, Kestra connects disparate systems and technologies into a cohesive, auditable process.
+Kestra provides a unified control plane to automate and orchestrate the end-to-end underwriting workflow. As an [open-source](https://github.com/kestra-io/kestra) platform with {totalPlugins}+ plugins, Kestra connects disparate systems and technologies into a cohesive, auditable process.
 
 *   **Declarative YAML Workflows:** Underwriting processes are defined as simple, readable YAML files. This "workflow-as-code" approach allows for version control, peer review, and GitOps-style management, bringing engineering rigor to a business-critical function.
 *   **Polyglot Task Execution:** Kestra can run any type of code: Python for data analysis, SQL for database queries, shell scripts for legacy systems, alongside pre-built tasks for interacting with APIs, messaging queues, and cloud services.

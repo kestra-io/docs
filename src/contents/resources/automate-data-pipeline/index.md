@@ -238,7 +238,7 @@ Kestra is designed from the ground up to address the challenges of modern data p
 *   **Declarative YAML Interface:** Workflows are defined in simple, human-readable YAML. This makes pipelines easy to understand, version control, and manage as code, aligning with GitOps best practices.
 *   **Language-Agnostic:** Kestra is not tied to a single language. It can run tasks written in Python, R, Julia, SQL, Node.js, and shell scripts as first-class citizens, allowing your team to use the best tool for every job.
 *   **Unified Platform:** Kestra is one of the few platforms that can orchestrate data, AI, and infrastructure workflows from a single control plane. This breaks down silos between teams and creates a cohesive automation strategy.
-*   **Extensive Plugin Ecosystem:** With over 1,400 plugins, Kestra offers out-of-the-box integrations for a vast array of databases, storage systems, and applications, dramatically reducing development time.
+*   **Extensive Plugin Ecosystem:** With {totalPlugins}+ plugins, Kestra offers out-of-the-box integrations for a vast array of databases, storage systems, and applications, dramatically reducing development time.
 *   **Built for Scale and Resilience:** The enterprise edition offers high availability, multi-tenancy, RBAC, and audit logs, providing the governance and reliability needed for mission-critical pipelines.
 
 By combining these capabilities, Kestra empowers [data teams](/features) to build sophisticated automated pipelines with less complexity and more confidence.

@@ -636,17 +636,23 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 | `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`    |
 | `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
+| `ExecutionAssets`        | SUCCESS, FAILURE                                                         | - `filter`: include, exclude (asset types)                                                   | `- type: io.kestra.plugin.ee.apps.execution.blocks.Assets`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- io.kestra.plugin.ee.assets.VM` |
 | `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
 | `Loading`                | RUNNING                                                                  | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
 | `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
 | `Button`                 | SUCCESS, FAILURE                                                        | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
 | `TaskOutputs`            | RUNNING, PAUSE, RESUME, SUCCESS                                         | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
-### Dynamic content in the OPEN state
+### Pebble expressions in Markdown blocks
 
-The `Markdown` block's `content` property is a Pebble template. When the layout includes a `CreateExecutionForm`, `{{ inputs.<id> }}` is available in the render context and updates live as the user interacts with the form — useful for context-sensitive descriptions that react to dropdown changes.
+The `Markdown` block's `content` property is a Pebble template. `{{ inputs.<id> }}` is available in the render context across all layout stages.
 
-For example, given a flow with a `product` SELECT input, the app below renders the current selection inline:
+On the `OPEN` stage, when the layout includes a `CreateExecutionForm`, `{{ inputs.<id> }}` updates live as the user interacts with the form, useful for context-sensitive descriptions that react to dropdown changes. Before the user interacts with the form, it resolves to each input's default value.
+
+On all other stages (CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE), `{{ inputs.* }}` references the execution's submitted values.
+
+For example, given a flow with a `product` SELECT input, the app below renders the current selection inline on OPEN and confirms it on SUCCESS:
 
 ```yaml
 id: software_request_form
@@ -668,16 +674,39 @@ layout:
 
   - on: SUCCESS
     blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "Access granted for: **{{ inputs.product }}**"
       - type: io.kestra.plugin.ee.apps.core.blocks.Alert
         style: SUCCESS
         content: Your request has been submitted.
 ```
 
-Before the user interacts with the form, `{{ inputs.* }}` resolves to each input's default value. In other states (RUNNING, SUCCESS, FAILURE), `{{ inputs.* }}` references the execution's submitted values.
-
 :::alert{type="info"}
 When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
 :::
+
+### Assets emitted by an execution
+
+The `Assets` block lists the assets an execution emitted or updated, one row per asset, with its ID, display name, type and metadata. Use it in self-service provisioning flows where the resource the requester asked for is tracked as an asset rather than a flow output.
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "## Your virtual machine is ready"
+
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Assets
+      filter:
+        include:
+          - io.kestra.plugin.ee.assets.VM
+```
+
+- Only assets the execution **emitted or updated** are listed. Assets it merely read as inputs are left out.
+- `filter` matches the asset **type**, so a single Terraform apply or dbt build emitting dozens of assets can be narrowed to the ones the app user cares about. `include` keeps only the listed types, `exclude` drops them.
+- The reserved metadata keys get a column of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. Every other metadata key gets a plain column.
+- The asset ID links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace, and is plain text for everyone else. The table itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors.
+- The block is available on `SUCCESS` and `FAILURE`. On failure, a partially provisioned resource is often what explains what went wrong.
+- When the execution emitted no asset, the block says so instead of rendering an empty table.
 
 ### File preview and download
 
@@ -692,3 +721,24 @@ By default, file preview shows the first 100 rows. You can change this server-si
 ### Log download
 
 The `ExecutionLogs` block renders an inline log viewer. When a `Logs` block is present in the layout, users can also download the full log file directly from the app. Log download is only available for `Execution`-type apps that include a `Logs` block in their layout.
+
+### Execution progress as a Gantt chart
+
+The `Gantt` block shows a simplified version of the execution Gantt view: one bar per task run, with its state and duration, nested under its parent task. Use it on long-running flows, so app users who cannot log in to Kestra can follow the progress instead of a loading indicator.
+
+```yaml
+- on: RUNNING
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "Provisioning is in progress, please keep this window open."
+
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Gantt
+      filter:
+        exclude:
+          - technical_step
+```
+
+- On a `RUNNING` layout, the chart updates as the execution progresses, without any extra configuration.
+- The block shows only task IDs, states and durations. It shows no logs, outputs, iteration values or task actions, so a public app can show it to anonymous visitors.
+- `filter` matches the task ID. `include` keeps only the listed tasks, `exclude` drops them, which is useful to hide technical steps the app user does not need to follow.
+- The block is available on `RUNNING`, `PAUSE`, `RESUME`, `SUCCESS` and `FAILURE`. Add it to `SUCCESS` and `FAILURE` too to keep the final timings visible once the execution ends.

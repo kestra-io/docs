@@ -62,7 +62,7 @@ The analytical database landscape is vast. Here are eight leading alternatives, 
 
 Kestra is not a database but an orchestration platform that works with DuckDB and all its alternatives. In a modern data stack, you rarely use a single tool. Kestra provides the control plane to connect and manage workflows across your entire analytical ecosystem, from data ingestion and transformation to machine learning and reporting.
 
-Workflows are defined in declarative YAML, making them easy to version, review, and maintain. With over 1,700 plugins and polyglot task execution (Python, SQL, Shell), Kestra can run dbt models, execute Spark jobs, query ClickHouse, and load data into Snowflake, all within a single, unified workflow. Its event-driven architecture and robust error handling ensure that complex data pipelines run reliably and efficiently.
+Workflows are defined in declarative YAML, making them easy to version, review, and maintain. With {totalPlugins}+ plugins and polyglot task execution (Python, SQL, Shell), Kestra can run dbt models, execute Spark jobs, query ClickHouse, and load data into Snowflake, all within a single, unified workflow. Its event-driven architecture and robust error handling ensure that complex data pipelines run reliably and efficiently.
 
 **Best for:** Teams needing to orchestrate complex data pipelines that involve multiple analytical tools, ensuring reliability, visibility, and governance across their entire data stack.
 

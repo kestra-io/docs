@@ -12,15 +12,15 @@ Outputs let you pass data between tasks and flows.
   <iframe src="https://www.youtube.com/embed/j6Iyn5rCeRI?si=2al6ZgqzfNqAJ0Wf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Outputs are stored in the flow's execution context and accessible by all downstream tasks and flows. Each task defines its own output attributes — see the task's plugin documentation for details, or inspect them in the **Input/Output** tab of the **Execution** page.
+Outputs are stored in the flow's execution context and accessible by all downstream tasks and flows. Each task defines its own output attributes; see the task's plugin documentation for details, or inspect them in the **Input/Output** tab of the **Execution** page.
 
 :::alert{type="warning"}
 Do not use outputs to fetch sensitive data such as passwords, secrets, or API tokens. All data fetched via outputs is stored in clear text in the backend database, internal storage, logs, and API responses. Use [Secrets](../../06.concepts/04.secret/index.md) instead. Enterprise Edition and Kestra Cloud offer native integrations with [external secrets managers](../../07.enterprise/02.governance/secrets-manager/index.md).
 :::
 
-## Using outputs
+## Output reference syntax
 
-Reference a previous task's output with `{{ outputs.<task_id>.<attribute> }}` in any dynamic property:
+Task outputs are referenced with `{{ outputs.<task_id>.<attribute> }}` in any dynamic property:
 
 ```yaml
 id: task_outputs_example
@@ -36,13 +36,13 @@ tasks:
     message: The previous task output is {{ outputs.produce_output.value }}
 ```
 
-File outputs are previewable and downloadable from the execution's **Input/Output** tab; any output can be inspected and debugged using the built-in expression evaluator on the same tab. See [Outputs](../../03.tutorial/03.outputs/index.md) in the tutorial if you're unfamiliar with either. 
+File outputs are previewable and downloadable from the execution's **Input/Output** tab; any output can be inspected and debugged using the built-in expression evaluator on the same tab. See [Outputs](../../03.tutorial/03.outputs/index.md) in the tutorial.
 
 For loop iteration outputs, sibling task outputs, and the `loopOutputs()` function, see [Flowable tasks](../01.tasks/00.flowable-tasks/index.md#loop) and the [Loop how-to guide](../../15.how-to-guides/loop/index.md).
 
 ## Internal storage
 
-Tasks that produce large results write them to Kestra's internal storage and return a URI. Pass that URI to downstream tasks:
+Tasks that produce large results write them to Kestra's internal storage and return a URI. Downstream tasks reference the URI directly. For a full explanation of how internal storage works, including `fetchType` and file lifetime, see [Data Storage](../../06.concepts/11.storage/index.md).
 
 ```yaml
 id: output_sample
@@ -84,9 +84,9 @@ outputs:
 
 Supported output types: `ARRAY`, `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `EMAIL`, `ENUM`, `FILE`, `FLOAT`, `INT`, `JSON`, `MULTISELECT`, `SECRET`, `STRING`, `TIME`, `URI`, `YAML`.
 
-### Pass data between flows
+### Child flow output access
 
-Access a child flow's declared outputs in the parent via `{{ outputs.<subflow_task_id>.outputs.<output_id> }}`:
+A child flow's declared outputs are accessible in the parent via `{{ outputs.<subflow_task_id>.outputs.<output_id> }}`:
 
 ```yaml
 id: parent_flow
@@ -106,9 +106,9 @@ tasks:
 
 The double `outputs` is intentional: the first accesses the Subflow task's outputs, the second accesses the child flow's declared output `final`.
 
-### Return outputs conditionally
+### Conditional output values
 
-Use a ternary expression to return different outputs based on task state:
+A ternary expression selects between output values based on task state:
 
 ```yaml
 id: conditionally_return_output
