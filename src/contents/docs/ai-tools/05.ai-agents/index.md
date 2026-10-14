@@ -243,10 +243,12 @@ The [Kestra Python MCP server](https://github.com/kestra-io/mcp-server-python) i
 
 [Docker Agent](https://docs.docker.com/ai/docker-agent/) is a multi-agent framework where specialized agents, defined in a YAML configuration file, collaborate and delegate work. The `io.kestra.plugin.docker.Agent` task runs a Docker Agent team from a Kestra flow, so you can schedule agent workloads, chain them after upstream tasks, and capture results as a `ScriptOutput`.
 
-The task requires a Docker task runner and accepts model provider credentials through the inherited `env` property.
+The task requires a Docker task runner and accepts model provider credentials through the inherited `env` property. Model strings use the `provider/model-name` format: `openai/` with `OPENAI_API_KEY` for OpenAI, or `google/` with `GOOGLE_API_KEY` for Google Gemini.
+
+**OpenAI:**
 
 ```yaml
-id: docker_agent_daily
+id: docker_agent_openai
 namespace: company.ai
 
 triggers:
@@ -270,10 +272,37 @@ tasks:
           instruction: You write concise operations digests.
 ```
 
-The `agentConfig` property accepts inline YAML (as above), a relative path to an existing file in the working directory, or a `kestra://` internal storage URI.
+**Google Gemini:**
+
+```yaml
+id: docker_agent_gemini
+namespace: company.ai
+
+triggers:
+  - id: every_morning
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 7 * * *"
+
+tasks:
+  - id: daily_digest
+    type: io.kestra.plugin.docker.Agent
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      user: root
+    env:
+      GOOGLE_API_KEY: "{{ secret('GOOGLE_API_KEY') }}"
+    prompt: "Write a short digest of yesterday's failed deployments."
+    agentConfig: |
+      agents:
+        root:
+          model: google/gemini-3.5-flash-lite
+          instruction: You write concise operations digests.
+```
+
+The `agentConfig` property accepts inline YAML (as above), a relative path to an existing file in the working directory, or a `kestra://` internal storage URI. When using a relative path, the file must exist in the working directory before the `Agent` task starts — stage it with a `WorkingDirectory` task and an earlier write or download step.
 
 :::alert{type="info"}
-When using a relative path for `agentConfig`, the file must already exist in the working directory before the `Agent` task starts — the task's own `inputFiles` and `namespaceFiles` cannot supply it. Use a `WorkingDirectory` task with an earlier download or write step to stage the file first.
+Docker Agent prints a startup banner to stderr. Kestra captures stderr as ERROR-level log entries, so those lines appear red in the execution logs even when the task succeeds. The agent's actual output appears at INFO level.
 :::
 
 For all properties and outputs, see the [Docker Agent plugin reference](/plugins/plugin-docker/cli/agent).
