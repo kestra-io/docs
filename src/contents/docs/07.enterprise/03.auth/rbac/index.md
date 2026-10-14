@@ -190,13 +190,15 @@ If you see an error when creating a new User or Service Account, it might be cau
 
 ## Creating a user with an Admin role
 
-Admin users are created via the [Setup Page](../../01.overview/02.setup/index.md) on first launch, or by assigning the Admin role to a user via IAM or the CLI with `--admin`:
+Admin users are created via the [Setup Page](../../01.overview/02.setup/index.md) on first launch, or by assigning the Admin role to a user in IAM or with [`kestractl`](../../../kestra-cli/kestractl/index.md#iam-management-enterprise-edition):
 
 ```bash
-kestra auths users create prod.admin@kestra.io TopSecret42 --admin
+# Create the user
+kestractl users create --email prod.admin@kestra.io --user-password 'TopSecret42'
 
-## schema:
-kestra auths users create <username> <password> --admin
+# Find the Admin role ID, then bind it to the user in the active tenant
+kestractl roles list
+kestractl bindings create --type USER --external-id <user_id> --role <admin_role_id>
 ```
 
 ## User lockout

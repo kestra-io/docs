@@ -70,41 +70,19 @@ The user who creates a tenant is automatically granted the Admin Role for that t
 
 ### Creating a tenant from the CLI
 
-Kestra provides CLI commands for tenant creation. The following command creates a tenant with the identifier `stage` and the name `Staging`:
+Use [`kestractl`](../../../kestra-cli/kestractl/index.md#tenant-management-enterprise-edition) to create a tenant. The following command creates a tenant with the identifier `stage` and the name `Staging`:
 
 ```bash
-kestra tenants create --tenant stage --name "Staging"
+kestractl tenants create stage --name "Staging"
 ```
 
-Running `kestra tenants create --help` shows you all available properties:
+As in the UI, you are granted the Admin role in the new tenant. To make another user an admin of the tenant, create a binding:
 
 ```bash
-$ kestra tenants create --help
-Usage: kestra tenants create [-hVv] [--internal-log]
-                                [--admin-username=<adminUser>] [-c=<config>]
-                                [-l=<logLevel>] [--name=<tenantName>]
-                                [-p=<pluginsPath>] [--tenant=<tenantId>]
-create a tenant and assign admin roles to an existing admin user
-      --admin-username=<adminUser>
-                            Username of an existing admin user that will be
-                              admin of this tenant
-  -c, --config=<config>     Path to a configuration file, default: /Users/anna/.
-                              kestra/config.yml)
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log, default:
-                              false)
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR; default: INFO)
-      --name=<tenantName>   tenant description
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory , default:
-                              /Users/anna/dev/plugins)
-      --tenant=<tenantId>   tenant identifier
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
+kestractl bindings create --tenant stage --type USER --external-id <user_id> --role <admin_role_id>
 ```
+
+Run `kestractl tenants create --help` to see all available options, including concurrency limits and execution quotas.
 
 ### Creating a tenant from the API
 
