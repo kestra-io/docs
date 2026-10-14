@@ -123,7 +123,7 @@ After the Execution has been resumed, any downstream task can access the `onResu
 The `Pause` task records the identity of whoever resumed the execution in `outputs.<taskId>.resumed.by`. Reference it in downstream tasks to capture the approver:
 
 ```yaml
-  - id: logApprover
+  - id: log_approver
     type: io.kestra.plugin.core.log.Log
     message: "Approved by {{ outputs.waitForApproval.resumed.by }}"
 ```
