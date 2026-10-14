@@ -43,7 +43,6 @@ The following Pebble expressions and environment variables are available inside 
 |---|---|---|
 | `{{ workingDir }}` | `WORKING_DIR` | Path to the task's working directory on the instance where input files are placed |
 | `{{ outputDir }}` | `OUTPUT_DIR` | Path to the output directory; all files written here are automatically captured |
-| `{{ bucketPath }}` | `BUCKET_PATH` | S3 URI of the task's staging folder in the configured bucket |
 
 :::alert{type="info"}
 If a run fails, look up the failure detail in `{{ outputs.<taskId>.vars.kestraTaskRunner }}`. This output includes the MicroVM identifier and any error message from the run.
@@ -84,7 +83,9 @@ The IAM principal used by Kestra (the user or role whose credentials are passed 
         "s3:GetObject",
         "s3:PutObject",
         "s3:DeleteObject",
-        "s3:ListBucket"
+        "s3:AbortMultipartUpload",
+        "s3:ListBucket",
+        "s3:GetBucketLocation"
       ],
       "Resource": "*"
     },
@@ -154,7 +155,6 @@ The build role is assumed by Lambda MicroVM to construct the managed image on fi
     {
       "Effect": "Allow",
       "Action": [
-        "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
@@ -196,7 +196,6 @@ The execution role is assumed by the MicroVM at runtime when running your task c
     {
       "Effect": "Allow",
       "Action": [
-        "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
       ],
@@ -210,7 +209,7 @@ Add any permissions your task commands need (for example, S3, DynamoDB, or other
 
 ### KMS-encrypted buckets
 
-If your S3 bucket uses a customer-managed KMS key for server-side encryption, set `kmsKeyId` on the task runner and add the following to both the build role and execution role:
+If your S3 bucket uses a customer-managed KMS key for server-side encryption, set `serverSideEncryption: aws:kms` and `kmsKeyId` on the task runner. Add the following to the **runner credentials** (the principal whose `accessKeyId`/`secretKeyId` or instance profile the runner uses):
 
 ```json
 {
@@ -222,6 +221,8 @@ If your S3 bucket uses a customer-managed KMS key for server-side encryption, se
   "Resource": "<kmsKeyArn>"
 }
 ```
+
+The runner credentials need both actions because they sign the presigned links the microVM uses to read and write objects. Add `kms:Decrypt` to the **build role** as well, since Lambda assumes it to read the agent's code artifact from S3.
 
 ### S3 lifecycle rule
 
@@ -373,8 +374,8 @@ Two requirements apply when monitoring is enabled:
 | `bucket` | Yes | — | S3 bucket for file staging and bootstrap objects. |
 | `buildRoleArn` | Yes | — | ARN of the IAM role Lambda MicroVM assumes to build the managed image. See [Build role](#build-role). |
 | `executionRoleArn` | Yes | — | ARN of the IAM role the MicroVM assumes at runtime. See [Execution role](#execution-role). |
-| `memory` | No | — | MicroVM memory in MiB. |
-| `serverSideEncryption` | No | `AES256` | S3 server-side encryption algorithm. Set to `aws:kms` when using a KMS key. |
+| `memory` | No | — | MicroVM memory in MiB. Must be a positive integer, for example `2048`. Each distinct value gets its own managed image. |
+| `serverSideEncryption` | No | `AES256` | S3 server-side encryption algorithm for objects the runner uploads. One of `AES256`, `aws:kms`, or `aws:kms:dsse`. |
 | `kmsKeyId` | No | — | KMS key ID or ARN for S3 object encryption. Requires `serverSideEncryption: aws:kms`. |
 | `accessKeyId` | No | — | AWS access key ID. Uses the worker's instance profile when omitted. |
 | `secretKeyId` | No | — | AWS secret access key. |
@@ -387,10 +388,14 @@ Two requirements apply when monitoring is enabled:
 | `completionCheckInterval` | No | `PT5S` | How often to poll for run completion. |
 | `logGroup` | No | `/aws/lambda-microvm/kestra` | CloudWatch Logs log group for task output. |
 | `imageIdentifier` | No | — | Custom image identifier. Leave unset to use the Kestra-managed image. |
+| `imageVersion` | No | — | Version of the custom image to run. Only used with `imageIdentifier`; defaults to the latest active version. |
+| `baseImageArn` | No | — | Lambda-managed base image ARN the runner builds its image on. Defaults to the only managed base image AWS lists for the region. |
 | `syncWorkingDirectory` | No | `false` | When `true`, syncs the entire working directory back to S3 after the run completes. |
 | `idlePolicy` | No | — | Policy controlling MicroVM idle behavior. |
 | `ingressNetworkConnectors` | No | — | Lambda Network Connectors for inbound network access. |
 | `egressNetworkConnectors` | No | — | Lambda Network Connectors for outbound network access. |
 | `tags` | No | — | Tags to apply to MicroVM resources. |
+| `stsRoleSessionDuration` | No | — | Duration of the STS assumed-role session. Defaults to `waitUntilCompletion` plus 15 minutes, capped at 1 hour. Set explicitly for runs that exceed 1 hour with `stsRoleArn`. |
+| `waitForLogInterval` | No | `PT5S` | How long the runner keeps draining CloudWatch Logs after the task reports completion, to capture any late-arriving output. |
 
 For the full property reference, see the [plugin documentation](/plugins/plugin-ee-aws/aws-task-runners/io.kestra.plugin.ee.aws.runner.lambdamicrovm).
