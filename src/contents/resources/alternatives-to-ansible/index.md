@@ -26,7 +26,7 @@ Ansible has long been a cornerstone of IT automation, lauded for its simplicity,
 
 This article explores 13 top alternatives to Ansible for modern DevOps. We'll delve into tools that address the evolving needs of platform engineers, offering more declarative, event-driven, or specialized approaches to infrastructure as code, configuration management, and end-to-end workflow orchestration. By understanding their core strengths and trade-offs, you can identify the best fit for your team's unique automation challenges.
 
-Before you compare, decide what you are actually replacing. If the pain is host configuration itself, Terraform, Puppet, Chef, and Salt below are the candidates. If your playbooks work and what hurts is everything around them (scheduling, approvals, run history, chaining a playbook with the Terraform plan before it and the ticket after it), you don't need to rewrite anything: [Kestra orchestrates the playbooks you already have](#1-kestra-keep-your-playbooks-orchestrate-everything-around-them), and our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the control planes built for that job.
+Before you compare, decide what you are actually replacing. If the pain is host configuration itself, Terraform, Puppet, Chef, and Salt below are the candidates. If your playbooks work and what hurts is everything around them (scheduling, approvals, run history, chaining a playbook with the Terraform plan before it and the ticket after it), you don't need to rewrite anything: [Kestra orchestrates the playbooks you already have](#1-kestra-the-declarative-orchestration-control-plane), and our guide to [AWX alternatives](/resources/infrastructure/awx-alternatives) compares the control planes built for that job.
 
 ## Understanding the Need for Ansible Alternatives
 
@@ -55,7 +55,7 @@ Is Ansible still relevant? Absolutely. For its core competency—configuring sof
 
 We evaluated each alternative on its core purpose, deployment model, license (open source vs. commercial), primary use case fit, authoring model (declarative vs. imperative), integration ecosystem, scalability, and operational overhead. Emphasis was placed on solutions that offer a modern, cloud-native, or universal orchestration approach, providing a clear contrast to Ansible's traditional configuration management focus.
 
-## 1. Kestra: Keep Your Playbooks, Orchestrate Everything Around Them
+## 1. Kestra: The Declarative Orchestration Control Plane
 
 Most teams looking for an Ansible alternative don't want to throw away years of tested playbooks. What they are missing sits around the playbook: a scheduler, retries, an approval step before production, a run history someone can audit, and a way to connect `ansible-playbook` to the Terraform apply that precedes it and the ServiceNow ticket that follows it. Ansible itself was never designed to be that layer, and AWX or Ansible Automation Platform only provide it for Ansible.
 
