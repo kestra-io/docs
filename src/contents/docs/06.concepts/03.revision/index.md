@@ -22,9 +22,9 @@ When you click **Save as draft** in the flow editor, Kestra saves your changes a
 Executions do not run against a draft revision. If the latest revision of a flow is a draft, any execution — whether triggered manually, by a schedule, or by an event — will run against the last published revision instead. A warning banner in the run panel makes this explicit.
 :::
 
-To make your latest changes active, open the run panel — it displays a draft warning banner with a **Publish** button that promotes the draft to a published revision.
+The run panel displays a draft warning banner with a **Publish** button that promotes the draft to a published revision.
 
-Use **Save as draft** when you want to stage changes without affecting running executions — for example, while iterating on a flow that is already in production.
+**Save as draft** stages changes without affecting running executions — for example, while iterating on a flow that is already in production.
 
 :::alert{type="info"}
 On Kestra Enterprise, you can promote a published revision to another environment (staging, production) directly from the flow's **Deploy** tab, without copy-pasting YAML or setting up a CI/CD pipeline. See [Promote flows across environments](../../07.enterprise/02.governance/promote/index.md).
