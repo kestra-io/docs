@@ -225,7 +225,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Python SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/python-sdk.md)
 - [Open Source API Reference for Kestra](https://kestra.io/docs/api-reference/open-source.md)
 - [Problem details](https://kestra.io/docs/api-reference/problems.md)
-- [Query filter reference – Fields and operators for API list and by-query endpoints](https://kestra.io/docs/api-reference/query-filters.md)
 - [Architecture in Kestra: Components and Deployment Models](https://kestra.io/docs/architecture.md)
 - [Data Storage Components in Kestra Architecture](https://kestra.io/docs/architecture/data-components.md)
 - [Kestra Deployment Architectures: Postgres, AMQP, and Kafka](https://kestra.io/docs/architecture/deployment-architecture.md)
