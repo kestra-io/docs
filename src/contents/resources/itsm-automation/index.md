@@ -160,9 +160,11 @@ tasks:
     runner: DOCKER
     docker:
       image: ubuntu:latest
+    env:
+      TARGET_HOST: "{{ trigger.body.hostname }}"
     commands:
-      - echo "Running diagnostics on {{ trigger.body.hostname }}..."
-      - ./check_server_status.sh {{ trigger.body.hostname }}
+      - echo "Running diagnostics on $TARGET_HOST..."
+      - ./check_server_status.sh "$TARGET_HOST"
     
   - id: check-severity
     type: io.kestra.plugin.core.flow.If
