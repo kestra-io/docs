@@ -9,13 +9,15 @@ docId: variables
 
 Variables are key-value pairs that let you reuse values across tasks in a flow, or across multiple flows when stored at the namespace level.
 
+For sensitive values such as API keys, use [Secrets](../../06.concepts/04.secret/index.md) instead. For values that must persist across executions or be shared between flows without being embedded in YAML, use the [KV Store](../../06.concepts/05.kv-store/index.md). For a full comparison, see [Choosing where to store sensitive and shared values](../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/1iSam2aftKo?si=NfrnWM86SFQ_IePo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Declaring variables
 
-Define variables under the `variables` key in a flow and reference them with `{{ vars.variable_name }}`:
+The `variables` key at the flow level defines a map of named values. Each variable is accessible in any dynamic property via `{{ vars.variable_name }}`:
 
 ```yaml
 id: hello_world
@@ -41,7 +43,7 @@ Variables are no longer rendered recursively. See the [migration guide](../../11
 
 ## Dynamic variables
 
-If a variable contains an expression, wrap it with `render()` when using it in a task — otherwise the expression is treated as a literal string:
+If a variable contains an expression, wrap it with `render()` when using it in a task. Without it, the expression is treated as a literal string:
 
 ```yaml
 id: dynamic_variable
@@ -57,7 +59,7 @@ tasks:
 ```
 
 :::alert{type="warning"}
-Always wrap expression-valued variables with `render()` when referencing them in tasks.
+Without `render()`, an expression-valued variable resolves to the literal string rather than the evaluated expression.
 :::
 
 ## Set or modify variables at runtime
@@ -95,11 +97,11 @@ The `UnsetVariables` task deletes variables from the execution context. It suppo
       - nested.child
 ```
 
-## FAQ
+## Variable behavior
 
-### How do I escape a Pebble expression so it is not evaluated?
+### Escaping Pebble expressions in variable values
 
-Use the `{% raw %}` and `{% endraw %}` tags. The following returns the string `{{ myvar }}` literally:
+The `{% raw %}` and `{% endraw %}` tags prevent a Pebble expression from being evaluated. The following returns the string `{{ myvar }}` literally:
 
 ```yaml
 {% raw %}{{ myvar }}{% endraw %}
@@ -107,15 +109,15 @@ Use the `{% raw %}` and `{% endraw %}` tags. The following returns the string `{
 
 See [Pebble syntax](../../expressions/02.syntax/index.mdx#raw) for details.
 
-### In what order are inputs and variables resolved?
+### Variable resolution order
 
-[Inputs](../05.inputs/index.md) are resolved first, before the execution starts — an invalid input value prevents the execution from being created. You can use inputs within variables, but not variables within inputs (see [Dynamic Inputs](../05.inputs/index.md#dynamic-inputs) for the exception).
+[Inputs](../05.inputs/index.md) are resolved first, before the execution starts; an invalid input value prevents the execution from being created. Inputs are usable within variables, but variables are not usable within inputs (see [Dynamic Inputs](../05.inputs/index.md#dynamic-inputs) for the exception).
 
-Triggers are resolved like inputs — before the execution starts — so you can reference trigger variables inside `variables`, but not inputs within triggers unless they have `defaults`.
+Triggers are resolved before the execution starts, like inputs, so trigger variables are referenceable inside `variables`, but inputs are not referenceable within triggers unless they have `defaults`.
 
-### Can I transform variables with Pebble expressions?
+### Pebble filters and functions in variable values
 
-Yes. Pebble filters and functions work in any dynamic property. For example, use a variable to store a date format and apply it with the `date` filter:
+Pebble filters and functions work in any dynamic property. A variable can store a format string and apply it with the `date` filter:
 
 ```yaml
 variables:
@@ -129,9 +131,9 @@ tasks:
 
 See the [Expressions reference](../../expressions/index.mdx) for the full list of available filters and functions.
 
-### Can I use nested variables?
+### Nested variables and `json()` access
 
-Yes. Use `json(item.value).key` to access fields on a nested object:
+`json(item.value).key` accesses fields on a nested object:
 
 ```yaml
 id: vars

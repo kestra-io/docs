@@ -38,7 +38,7 @@ System Labels are labels prefixed with `system.` that serve specific purposes. T
 - Automatically set for every execution and propagated to downstream executions created by `Subflow` or `Loop` tasks
 - Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage
 - Can also be set to a stable business key and used as an idempotency key for flows that must not process the same event twice
-- Use this label to filter all executions originating from a specific parent execution or business event.
+- Filtering by this label shows all executions originating from a specific parent execution or business event.
 
 For example, if a parent flow triggers multiple subflows, filtering by the parent's `system.correlationId` displays all related executions.
 
@@ -49,12 +49,12 @@ The Execution API supports setting this label at execution creation but not modi
 ### `system.username`
 
 - Automatically set for every execution and contains the username of the user who triggered the execution
-- Useful for auditing and identifying who initiated specific executions
+- Enables filtering executions by the user who initiated them
 
 ### `system.readOnly`
 
 - Used to mark a flow as read-only, disabling the flow editor in the UI
-- Helps prevent modifications to critical workflows, such as production flows managed through CI/CD pipelines
+- When set to `true`, the flow editor is disabled and server-side updates are restricted to service accounts or API keys (Enterprise Edition)
 
 **Example:**
 
@@ -81,16 +81,16 @@ In the Enterprise Edition, updating a read-only flow server-side is restricted t
 
 - Automatically set on every execution to indicate how it was triggered
 - Common values include `ui` (triggered from the Kestra UI) and `mcp` (triggered by a Kestra MCP server)
-- Use this label to filter executions by their trigger source
+- Filtering by this label finds executions by their trigger source
 
 ### `system.mcpServerId`
 
 - Automatically set on every execution created by a Kestra MCP server
 - Value is the `id` of the MCP server that invoked the tool
-- Use this label together with `system.from: mcp` to identify which server triggered a specific execution
+- Used together with `system.from: mcp` to identify which server triggered a specific execution
 
 ### `system.mcpSessionId`
 
 - Automatically set on every execution created by a Kestra MCP server
 - Value is the session ID of the MCP client connection that triggered the execution
-- Use this label to correlate multiple executions that originated from the same agent session
+- Correlates multiple executions that originated from the same agent session
