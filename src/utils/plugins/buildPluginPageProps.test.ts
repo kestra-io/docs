@@ -158,4 +158,160 @@ describe("buildPluginPageProps", () => {
             "io.kestra.plugin.aws.s3",
         ])
     })
+
+    it("collapses redundant CLI task names when spaces are removed", () => {
+        const rootPlugin: Plugin = {
+            name: "plugin-terraform",
+            title: "Terraform",
+            group: "io.kestra.plugin.terraform",
+            tasks: [{ cls: "io.kestra.plugin.terraform.cli.TerraformCLI" }],
+        }
+
+        const cliSubgroup: Plugin = {
+            name: "plugin-terraform",
+            title: "Terraform CLI",
+            group: "io.kestra.plugin.terraform.cli",
+            subGroup: "io.kestra.plugin.terraform.cli",
+            tasks: [{ cls: "io.kestra.plugin.terraform.cli.TerraformCLI" }],
+        }
+
+        const plugins = [rootPlugin, cliSubgroup]
+        const pathname = "/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli"
+
+        const props = buildPluginPageProps({
+            pluginName: "plugin-terraform",
+            subGroup: "cli",
+            pluginType: "io.kestra.plugin.terraform.cli.TerraformCLI",
+            pathname,
+            pageNames: {},
+            allPlugins: plugins,
+            allPluginMetadata: [
+                { name: "terraform", group: "io.kestra.plugin.terraform.cli", title: "Terraform CLI" },
+            ] as any,
+            blueprintCounts: {},
+            relatedBlogs: [],
+            page: { title: "TerraformCLI", body: {} },
+            sidebarPluginData: { body: { group: "io.kestra.plugin.terraform", plugins } },
+        })
+
+        expect(props.headingTitle).toBe("Terraform CLI")
+        expect(props.pageNamesHeading[pathname]).toBe("Terraform CLI")
+    })
+
+    it("collapses container titles when the task name matches whole words", () => {
+        const rootPlugin: Plugin = {
+            name: "plugin-kubernetes",
+            title: "Kubernetes",
+            group: "io.kestra.plugin.kubernetes",
+            tasks: [{ cls: "io.kestra.plugin.kubernetes.runner.Kubernetes" }],
+        }
+
+        const runnerSubgroup: Plugin = {
+            name: "plugin-kubernetes",
+            title: "Kubernetes Runner",
+            group: "io.kestra.plugin.kubernetes.runner",
+            subGroup: "io.kestra.plugin.kubernetes.runner",
+            tasks: [{ cls: "io.kestra.plugin.kubernetes.runner.Kubernetes" }],
+        }
+
+        const plugins = [rootPlugin, runnerSubgroup]
+        const pathname = "/plugins/plugin-kubernetes/runner/io.kestra.plugin.kubernetes.runner.kubernetes"
+
+        const props = buildPluginPageProps({
+            pluginName: "plugin-kubernetes",
+            subGroup: "runner",
+            pluginType: "io.kestra.plugin.kubernetes.runner.Kubernetes",
+            pathname,
+            pageNames: {},
+            allPlugins: plugins,
+            allPluginMetadata: [
+                { name: "kubernetes", group: "io.kestra.plugin.kubernetes.runner", title: "Kubernetes Runner" },
+            ] as any,
+            blueprintCounts: {},
+            relatedBlogs: [],
+            page: { title: "Kubernetes", body: {} },
+            sidebarPluginData: { body: { group: "io.kestra.plugin.kubernetes", plugins } },
+        })
+
+        expect(props.headingTitle).toBe("Kubernetes Runner")
+        expect(props.pageNamesHeading[pathname]).toBe("Kubernetes Runner")
+    })
+
+    it("does not collapse when task name is a substring of a container word", () => {
+        const rootPlugin: Plugin = {
+            name: "plugin-gcp",
+            title: "Google Cloud",
+            group: "io.kestra.plugin.gcp",
+            tasks: [{ cls: "io.kestra.plugin.gcp.compute.Put" }],
+        }
+
+        const computeSubgroup: Plugin = {
+            name: "plugin-gcp",
+            title: "Google Compute",
+            group: "io.kestra.plugin.gcp.compute",
+            subGroup: "io.kestra.plugin.gcp.compute",
+            tasks: [{ cls: "io.kestra.plugin.gcp.compute.Put" }],
+        }
+
+        const plugins = [rootPlugin, computeSubgroup]
+        const pathname = "/plugins/plugin-gcp/compute/io.kestra.plugin.gcp.compute.put"
+
+        const props = buildPluginPageProps({
+            pluginName: "plugin-gcp",
+            subGroup: "compute",
+            pluginType: "io.kestra.plugin.gcp.compute.Put",
+            pathname,
+            pageNames: {},
+            allPlugins: plugins,
+            allPluginMetadata: [
+                { name: "gcp", group: "io.kestra.plugin.gcp.compute", title: "Google Compute" },
+            ] as any,
+            blueprintCounts: {},
+            relatedBlogs: [],
+            page: { title: "Put", body: {} },
+            sidebarPluginData: { body: { group: "io.kestra.plugin.gcp", plugins } },
+        })
+
+        expect(props.headingTitle).toBe("Google Compute Put")
+        expect(props.pageNamesHeading[pathname]).toBe("Google Compute Put")
+    })
+
+    it("prefixes plugin name when collapsed title is just the bare task name (log.Log)", () => {
+        const rootPlugin: Plugin = {
+            name: "core",
+            title: "Core",
+            group: "io.kestra.plugin.core",
+            tasks: [{ cls: "io.kestra.plugin.core.log.Log" }],
+        }
+
+        const logSubgroup: Plugin = {
+            name: "core",
+            title: "Log",
+            group: "io.kestra.plugin.core.log",
+            subGroup: "io.kestra.plugin.core.log",
+            tasks: [{ cls: "io.kestra.plugin.core.log.Log" }],
+        }
+
+        const plugins = [rootPlugin, logSubgroup]
+        const pathname = "/plugins/core/log/io.kestra.plugin.core.log.log"
+
+        const props = buildPluginPageProps({
+            pluginName: "core",
+            subGroup: "log",
+            pluginType: "io.kestra.plugin.core.log.Log",
+            pathname,
+            pageNames: {},
+            allPlugins: plugins,
+            allPluginMetadata: [
+                { name: "core", group: "io.kestra.plugin.core.log", title: "Log" },
+            ] as any,
+            blueprintCounts: {},
+            relatedBlogs: [],
+            page: { title: "Log", body: {} },
+            sidebarPluginData: { body: { group: "io.kestra.plugin.core", plugins } },
+        })
+
+        expect(props.headingTitle).toBe("Core Log")
+        expect(props.pageNamesHeading[pathname]).toBe("Core Log")
+    })
 })

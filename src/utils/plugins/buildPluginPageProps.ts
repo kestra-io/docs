@@ -11,8 +11,10 @@ import { slugify } from "../slugify"
 import {
     formatElementName,
     formatElementType,
+    formatPluginName,
     getBlueprintsHeading,
     getPluginTitle,
+    isElementNameRedundant,
 } from "~/utils/plugins/pluginUtils"
 import { prunePluginsForSidebar } from "./pruneForClient"
 import { matchesSubGroup } from "./subgroupMatcher"
@@ -178,17 +180,20 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const headingTitle = (() => {
         if (!pluginType || !elementName) return containerTitle
 
-        if (containerTitle.toLowerCase() === elementName.toLowerCase()) {
-            // Prevent generic titles for SEO (e.g. subgroup "Log" + task "Log" = "Log").
-            // If the collision happens inside a subgroup, fallback to the root title
-            // so the page is indexed descriptively (e.g. "Core Plugins and tasks Log").
-            if (taskSubgroupPlugin) {
-                return `${rootPluginTitle} ${elementName}`
+        let title = isElementNameRedundant(containerTitle, elementName)
+            ? containerTitle
+            : `${containerTitle} ${elementName}`
+
+        // If the title collapsed to just the bare task name (e.g. subgroup "Log" + task "Log"),
+        // prefix with the plugin name so the page is indexed descriptively (e.g. "Core Log").
+        if (title.toLowerCase() === elementName.toLowerCase()) {
+            const prefix = formatPluginName(pluginName)
+            if (prefix && !title.toLowerCase().includes(prefix.toLowerCase())) {
+                title = `${prefix} ${title}`
             }
-            return containerTitle
         }
 
-        return `${containerTitle} ${elementName}`
+        return title
     })()
 
     let combinedDescription = currentPageMetadata?.description
