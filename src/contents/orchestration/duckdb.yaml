@@ -163,23 +163,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for DuckDB orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Scheduled CSV analytics to Slack"
       blueprintId: "csv-duckdb-slack"
       title: "Run weekly sales analytics on a CSV with DuckDB"
       description: "A cron <code>Schedule</code> runs a DuckDB <code>Queries</code> aggregation directly on a remote CSV with <code>httpfs</code>, then posts revenue and order metrics to <a href='/orchestration/slack'>Slack</a>. Lightweight analytics with no warehouse, scaled to MotherDuck by changing the JDBC URL."
-      href: "/blueprints"
     - name: "REST API to Python to DuckDB"
       blueprintId: "api-python-sql"
       title: "Build an ETL pipeline from a REST API with Python and DuckDB"
       description: "<code>http.Request</code> pulls JSON from an API, a Python step transforms it with Polars, then DuckDB runs the analytical SQL on the result. The notebook ETL pattern, productionized as ordered, retryable tasks in one flow."
-      href: "/blueprints"
     - name: "SQLMesh on a DuckDB engine"
       blueprintId: "sqlmesh"
       title: "Orchestrate SQLMesh transformations on DuckDB"
       description: "Kestra clones a SQLMesh project from Git and runs it against a DuckDB engine with <code>SQLMeshCLI</code>, then queries the materialized tables. A fast, credential-free way to run transformation models in CI before promoting to a cloud warehouse."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives DuckDB teams evaluate"

@@ -172,23 +172,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Dataproc orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Serverless Spark batch"
       blueprintId: "dataproc-serverless-spark-batch"
       title: "Run a Spark batch on Dataproc Serverless"
       description: "Submit a Spark job to Dataproc Serverless on a <code>Schedule</code>. Serverless provisions and tears down its own compute per run, so there is no cluster to manage and cost tracks the work. Slack reports the final batch state."
-      href: "/blueprints"
     - name: "GCS to BigQuery lakehouse"
       blueprintId: "dataproc-gcs-to-bigquery-lakehouse"
       title: "GCS to Dataproc to BigQuery refresh"
       description: "A PySpark batch transforms raw <a href='/orchestration/gcs'>GCS</a> data and writes curated Parquet back, then <code>bigquery.LoadFromGcs</code> loads it into the gold table. Microsoft Teams confirms the lakehouse refresh, with retries on each step."
-      href: "/blueprints"
     - name: "Readiness-gated PySpark"
       blueprintId: "dataproc-readiness-gated-pyspark"
       title: "Gate a PySpark batch on data readiness"
       description: "Kestra queries <a href='/orchestration/bigquery'>BigQuery</a> for fresh rows and an <code>If</code> submits the PySpark batch only when the check passes, otherwise it reports a skip. Discord confirms the outcome, so no compute is spent on missing data."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Dataproc teams evaluate"

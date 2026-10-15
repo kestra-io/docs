@@ -172,33 +172,27 @@ quotes: []
 
 blueprints:
   title: "Blueprints for SQL Server orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Incremental batch sync"
       blueprintId: "sql-server-incremental-batch-sync"
       title: "Watermark-based incremental sync between SQL Server instances"
       description: "Reads a KV Store watermark, extracts changed rows with <code>Query</code>, and bulk-inserts them into a destination instance with <code>Batch</code> in 1,000-row chunks. The watermark only advances once the load commits, so a retry never double-inserts."
-      href: "/blueprints"
     - name: "CDC via Debezium"
       blueprintId: "sql-server-cdc-debezium-notify"
       title: "Real-time row changes via the Debezium SQL Server connector"
       description: "Streams change data capture events with <code>RealtimeTrigger</code>, one execution per row, no Kafka Connect cluster required. High-value changes post a Microsoft Teams alert; every change is logged for audit."
-      href: "/blueprints"
     - name: "Scheduled report export"
       blueprintId: "sql-server-scheduled-report-export"
       title: "Daily SQL Server report exported to CSV and emailed"
       description: "Aggregates a daily report with <code>Query</code>, converts it to CSV, and emails it as an attachment, skipping the send on empty days and alerting Slack on failure. Fully backfillable by passing a report date."
-      href: "/blueprints"
     - name: "Event-driven queue processing"
       blueprintId: "sql-server-event-driven-queue-processor"
       title: "Start a flow when SQL Server has new work to process"
       description: "The SQL Server <code>Trigger</code> polls a queue-style table every minute and only starts an execution when rows are pending, flipping them to processed in the same transaction via <code>afterSQL</code> so a slow consumer never double-processes a row."
-      href: "/blueprints"
     - name: "Transactional MERGE upsert"
       blueprintId: "sql-server-transactional-merge-upsert"
       title: "Stage, MERGE, and advance a watermark as one transaction"
       description: "Stages changed rows since a KV-tracked watermark, MERGEs them into a target table with dedup, and advances the watermark, all inside one <code>Queries</code> transaction, so a failed MERGE rolls back everything instead of leaving a half-applied batch."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives SQL Server teams evaluate"

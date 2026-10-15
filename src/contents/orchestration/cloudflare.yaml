@@ -167,23 +167,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Cloudflare orchestration."
-  lead: "One blueprint per use case above. Copy the YAML, set your Cloudflare API token, point at your zone, ship it."
   items:
     - name: "DNS upsert when Terraform writes a new IP"
       blueprintId: "cloudflare-dns-from-terraform"
       title: "Sync a Cloudflare A record with terraform output, then purge cache"
       description: "terraform apply produces a new IP output. The flow upserts the matching A record in Cloudflare, purges the cache for that hostname, and posts a Slack message with the record ID and the new content."
-      href: "/blueprints?tags=Infrastructure"
     - name: "Cache purge after Argo CD reports Healthy"
       blueprintId: "cloudflare-cache-purge-on-deploy"
       title: "Listen for the deploy webhook, purge cache, verify with a probe"
       description: "A Webhook trigger receives the Argo CD workflow_run completion. The flow calls cache.Purge by hostname, then runs an HTTP HEAD with cache-control: no-cache to verify the origin response. Slack confirms with the deploy URL."
-      href: "/blueprints?tags=Infrastructure"
     - name: "Multi-zone DNS reconciliation from a Git manifest"
       blueprintId: "cloudflare-multizone-dns-from-git"
       title: "Iterate every zone on the account, apply declared records in one batch each"
       description: "Weekly schedule. Clone the manifest repo. List every zone on the account. Per zone, parse the manifest, build the declared record set, and apply with dns.records.Batch. A drift summary posts to Slack showing records changed per zone."
-      href: "/blueprints?tags=Infrastructure"
 comparison:
   title: "Kestra vs Cloudflare automation alternatives"
   subtitle: "Kestra wraps the Cloudflare API with first-class tasks for DNS records, cache purge, WAF rules, Workers KV, Worker scripts, and zone metadata. The competitors below are how teams typically drive Cloudflare changes today."

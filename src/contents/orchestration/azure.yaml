@@ -188,33 +188,27 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Azure orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Blob trigger, cross-cloud load"
       blueprintId: "azure-blob-to-bigquery"
       title: "Route Azure Blob arrivals into a cross-cloud ETL and dbt Cloud build"
       description: "<code>blob.Trigger</code> polls the <code>stage</code> container, moves processed files to an archive prefix, and fans them out with a <code>ForEach</code>. Each file loads into BigQuery, then a dbt Cloud job transforms the result. One execution spans the Azure event and the cross-cloud transform."
-      href: "/blueprints?tags=Cloud"
     - name: "Event Hub volume alert"
       blueprintId: "azure-eventhub-volume-alert"
       title: "Page on-call automatically when Event Hub volume drops"
       description: "A schedule consumes an Event Hub batch every 5 minutes, checks the event count against a floor, and pages PagerDuty with a dedup key when a producer goes quiet. Checkpointed consumption means the monitor never re-reads what it already counted."
-      href: "/blueprints?tags=Cloud"
     - name: "Blob to Function to Service Bus to Data Factory"
       blueprintId: "azure-blob-function-servicebus-chain"
       title: "Chain Blob, an Azure Function, Service Bus, and Data Factory in one flow"
       description: "A blob arrival calls an Azure Function to transform the file, publishes the result to Service Bus for downstream subscribers, then runs a Data Factory pipeline for the heavier processing. A Teams card reports the whole chain's outcome, not just the last hop."
-      href: "/blueprints?tags=Cloud"
     - name: "Batch pool cost guardrail"
       blueprintId: "azure-batch-cost-guardrail"
       title: "Scale Batch pools on idle utilization and purge cold blobs on the same schedule"
       description: "An hourly flow queries Azure Monitor for idle Batch pool nodes, scales the pool down automatically through an <code>If</code> gate when it is over-provisioned, and deletes expired scratch blobs in the same run. No dashboard click, no manual storage sweep."
-      href: "/blueprints?tags=Cloud"
     - name: "Backup archive with gated cleanup"
       blueprintId: "azure-blob-backup-retention-cutover"
       title: "Archive backups into a dated prefix and gate the expiry cleanup behind a human review"
       description: "A weekly flow lists a container, copies each blob into a dated archive prefix, and notifies Slack with the count. It then pauses before deleting expired backups so only the destructive step waits on a named reviewer."
-      href: "/blueprints?tags=Cloud"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Azure teams evaluate"

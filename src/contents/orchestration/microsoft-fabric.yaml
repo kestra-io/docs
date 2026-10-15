@@ -175,23 +175,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for Microsoft Fabric orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "End-to-end Fabric pipeline"
       blueprintId: "fabric-end-to-end-pipeline"
       title: "Ingest, transform, and validate across Fabric"
       description: "A nightly flow runs a Fabric Data Pipeline to load bronze, a Notebook to conform to silver, and a Warehouse query to validate the result. The <code>errors</code> block emits a structured failure for alerting. The full medallion run in one flow."
-      href: "/blueprints"
     - name: "Process OneLake files"
       blueprintId: "fabric-onelake-download-and-process"
       title: "Download from OneLake, process, and upload back"
       description: "Downloads a file from a Fabric OneLake Lakehouse, transforms it with a Python script in a container, and uploads the processed result back to OneLake in a date-partitioned path. Lightweight ETL on Lakehouse files."
-      href: "/blueprints"
     - name: "Run a Fabric notebook"
       blueprintId: "fabric-run-notebook"
       title: "Run a Microsoft Fabric notebook and wait"
       description: "Submits a Fabric Notebook job via the item job scheduler API and waits for a terminal state, exposing the job instance ID and status as outputs for downstream tasks or alerting. The building block for notebook orchestration."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives Microsoft Fabric teams evaluate"

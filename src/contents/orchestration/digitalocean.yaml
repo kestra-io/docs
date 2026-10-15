@@ -184,23 +184,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for DigitalOcean orchestration."
-  lead: "Production-ready flows from the catalog. Copy the YAML, set your API token, ship."
   items:
     - name: "Ephemeral droplet runner"
       blueprintId: "digitalocean-ephemeral-droplet-runner"
       title: "A droplet per batch job, with guaranteed teardown in a finally block"
       description: "Creates a droplet with the job injected through cloud-init, polls until active with LoopUntil, applies a per-run SSH firewall, and destroys both resources in a finally block that runs on success and failure alike. Region, size, image, and admin CIDR are flow inputs."
-      href: "/blueprints?tags=cloud"
     - name: "Business-hours database resize"
       blueprintId: "digitalocean-database-business-hours-resize"
       title: "Scheduled vertical scaling for managed Postgres with completion polling"
       description: "Two schedules pass different target sizes into one flow. A health pre-check refuses to stack operations, database.Resize submits the migration, and LoopUntil polls until the cluster reports online again before Slack gets the confirmation."
-      href: "/blueprints?tags=cloud"
     - name: "New droplet governance guard"
       blueprintId: "digitalocean-new-droplet-governance-guard"
       title: "React to every new droplet, power off the ones violating naming policy"
       description: "The droplet trigger fires per new machine on the account. Names failing the approved-prefix rule get a reversible POWER_OFF and a Slack review request with full identity; compliant machines leave an audit log line behind."
-      href: "/blueprints?tags=cloud"
 
 comparison:
   title: "Kestra vs DigitalOcean automation alternatives"

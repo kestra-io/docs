@@ -198,23 +198,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Hightouch orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Airbyte to dbt to Hightouch chain"
       blueprintId: "hightouch-airbyte-dbt-activation"
       title: "Airbyte to dbt to Hightouch with Slack confirmation"
       description: "Airbyte ingests, <code>dbt build</code> runs models and tests inline, Hightouch activates, <a href='/orchestration/slack'>Slack</a> confirms with the run ID. Step retries stay local: a dbt failure never re-runs Airbyte. The errors handler posts a Slack alert on any failure."
-      href: "/blueprints"
     - name: "dbt test gate before activation"
       blueprintId: "hightouch-dbt-test-gate"
       title: "dbt test gate before Hightouch activation"
       description: "Build dbt, run <code>dbt test</code> as a separate task, activate Hightouch only on pass. A failure halts the flow and pages PagerDuty; Hightouch never fires, so bad rows do not reach the CRM. On pass, <a href='/orchestration/slack'>Slack</a> confirms with the run ID."
-      href: "/blueprints"
     - name: "Staging-to-prod approval"
       blueprintId: "hightouch-staging-to-prod-approval"
       title: "Staging-to-prod promotion with Teams approval"
       description: "Staging Hightouch sync runs first. Kestra posts an Adaptive Card to Microsoft Teams with the run ID, pauses for review, then fires the production sync. Reviewer identity and timestamp are logged automatically; <a href='/orchestration/slack'>Slack</a> confirms when production completes."
-      href: "/blueprints"
 comparison:
   title: "Kestra vs the orchestration alternatives Hightouch teams evaluate"
   subtitle: "When Hightouch's built-in scheduler is not enough, and a generic orchestrator costs you Python glue, here is how Kestra compares."

@@ -184,23 +184,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for GCS orchestration."
-  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
   items:
     - name: "Load files on arrival"
       blueprintId: "gcs-object-arrival-load-to-bigquery"
       title: "Load GCS files into BigQuery on arrival"
       description: "A GCS <code>Trigger</code> fires on new objects, a <code>ForEach</code> loads each into a raw <a href='/orchestration/bigquery'>BigQuery</a> table, and the trigger moves processed files to an archive prefix so they never re-fire. Slack confirms the batch."
-      href: "/blueprints"
     - name: "Partition-aware refresh"
       blueprintId: "bigquery-incremental-partitions"
       title: "Refresh only the BigQuery partitions that changed"
       description: "For each day in a rolling window, Kestra loads that day's GCS files into the matching <a href='/orchestration/bigquery'>BigQuery</a> partition with <code>WRITE_TRUNCATE</code>, so cost tracks the delta. Reruns are safe because each load truncates only its own partition."
-      href: "/blueprints"
     - name: "Curate raw to clean"
       blueprintId: "gcs-download-transform-load"
       title: "Curate GCS files into BigQuery with Python"
       description: "Kestra downloads a raw GCS object, cleans and reshapes it with Python and pandas in a container, then loads the curated result into <a href='/orchestration/bigquery'>BigQuery</a>. Discord confirms, and the messy raw never lands in the warehouse."
-      href: "/blueprints"
 
 comparison:
   title: "Kestra vs the orchestration alternatives GCS teams evaluate"
