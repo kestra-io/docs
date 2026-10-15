@@ -174,7 +174,7 @@ useCases:
 quotes:
   - quote: "Kestra's declarative model and Terraform integration gave us exactly what we needed to build customer-specific pipelines, automate deployment, and monitor everything reliably."
     author: "Lirav Duvshani, CEO @DataFlooder · Sopht"
-    storyLink: "/customers/sopht"
+    storyLink: "/stories/sopht"
     logoFile: "sopht"
 
 blueprints:

@@ -140,7 +140,7 @@ A successful digital transformation program in insurance is incremental and prag
 *   [Orchestrate Your Entire Infrastructure from One Control Plane](/infra-automation)
 *   [Stop writing glue code around your AI pipelines.](/ai-automation)
 *   [DORA Compliance Guide for Digital Resilience](/resources/infrastructure/dora-compliance)
-*   [Fila & Kestra: ERP Transformation Smarter, Faster, Fully Automated](/customers/fila)
+*   [Fila & Kestra: ERP Transformation Smarter, Faster, Fully Automated](/stories/fila)
 *   [dbt vs SQLMesh: Modern Data Transformation Tools](/resources/data/dbt-vs-sqlmesh)
 
 Getting started with a modern approach to insurance digital transformation doesn't have to be a monumental task. By focusing on orchestration as the bridge between your legacy core and modern capabilities, you can build a resilient, compliant, and agile foundation for the future.

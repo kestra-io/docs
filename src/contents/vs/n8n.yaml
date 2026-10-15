@@ -202,7 +202,7 @@ testimonials:
         name: "Faster workflow creation"
       - value: "0"
         name: "Pipeline failures"
-    storyLink: "/customers/apple"
+    storyLink: "/stories/apple"
 
 platformStrengths:
   title: Built for Pipelines That Go to Production
