@@ -135,13 +135,13 @@ The task returns `caseId` and `created`. `created: false` means the execution wa
 
 ### Case templates in the task
 
-The task applies a case template the same way the Create Case modal does: the one referenced by `templateId`, or the tenant's default template when `templateId` is not set. Every property set on the task takes precedence over the template. The template's title pattern and description are rendered against the triggering execution, so the built-in default template gives a case titled `<execution id> failed for <flow id>` without any `title` on the task. The case keeps a link to the template, so the template's resolution rules apply when the case is resolved.
+The task applies a case template the same way the Create Case modal does: the one referenced by `templateId`, or the tenant's default template when `templateId` is not set. Every property set on the task takes precedence over the template. The template's title pattern and description are rendered against the triggering execution, so the built-in default template gives a case titled `<execution id> failed for <flow id>` without any `title` on the task. Rendering requires the task's credentials to have the `VIEW` action on the `EXECUTION` permission for that execution's namespace; otherwise the pattern is stored as is. A template's ID is shown in the templates table under **Cases → Settings**. The case keeps a link to the template, so the template's resolution rules apply when the case is resolved.
 
 ```yaml
 errors:
   - id: open_case
     type: io.kestra.plugin.kestra.ee.cases.CreateCase
-    templateId: payments_incident
+    templateId: 5mSfVmh4GwLKO1nQ0qCRu8
     severity: CRITICAL
     resolutionReasons:
       - Provider outage
