@@ -431,6 +431,72 @@ The `PAUSE` stage shows the original request inputs (`ExecutionInputs`), the `on
 
 This pattern applies directly to database access requests, sandbox environment creation, firewall rule approvals, SaaS account provisioning, and any other workflow that needs a human gate before it continues.
 
+### Lay out blocks in a grid
+
+Blocks stack in a single column by default. Use the `Grid` block to place blocks side by side, for example `Outputs` next to `Logs`, or a form next to its button.
+
+```yaml
+- type: io.kestra.plugin.ee.apps.core.blocks.Grid
+  columns: 2
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+```
+
+| Property | Applies to | Description |
+| --- | --- | --- |
+| `columns` | `Grid` | The number of columns, from `1` to `12`. Defaults to `1`. |
+| `gap` | `Grid` | The space between cells: `NONE`, `SMALL`, `MEDIUM`, `LARGE` or `EXTRA_LARGE`. Defaults to `MEDIUM`. |
+| `blocks` | `Grid` | The blocks to display. At least one is required. |
+| `span` | every block | The number of columns the block takes in the grid that holds it, from `1` to the `columns` of that grid. Defaults to `1` and is ignored outside a `Grid`. |
+
+Blocks flow from left to right and wrap when the row is full. A `span` larger than the `columns` of its grid is rejected when the app is saved. On a narrow screen, below `40rem` of available width, the grid collapses to a single column and every `span` is ignored.
+
+The example below uses three columns. The second card takes two of them, and the third takes the full row.
+
+```yaml
+- type: io.kestra.plugin.ee.apps.core.blocks.Grid
+  columns: 3
+  gap: LARGE
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "**Card A** - one column"
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      span: 2
+      content: "**Card B** - spans two columns"
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      span: 3
+      content: "**Card C** - spans the full row"
+```
+
+A cell holds exactly one block. To put several blocks in one cell, nest a `Grid` in it. The example below shows a form and its submit button in different cells, with the button and two text blocks grouped in a nested grid.
+
+```yaml
+- type: io.kestra.plugin.ee.apps.core.blocks.Grid
+  columns: 2
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+    - type: io.kestra.plugin.ee.apps.core.blocks.Grid
+      columns: 2
+      gap: SMALL
+      blocks:
+        - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+          content: "Nested cell 1"
+        - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+          content: "Nested cell 2"
+        - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+          span: 2
+          text: Submit
+```
+
+![App with a grid of blocks](./app-grid-block.png)
+
+Blocks inside a grid follow the same rules as top-level blocks. For example, `Outputs` can only be used on the `SUCCESS` and `FAILURE` stages, wherever it sits in the layout.
+
+In the no-code editor, a `Grid` is added like any other block. Select it to edit its `columns` and `gap`, or select a block inside it to edit that block and its `span`. Blocks inside a grid can be duplicated, deleted and reordered within the grid, and the block list shows the nesting.
+
+![Editing a grid in the no-code editor](./app-grid-builder.png)
+
 ---
 
 ## Creating Apps without code
