@@ -1,6 +1,6 @@
 <template>
     <a
-        :href="`/customers/${story.slug}`"
+        :href="`/stories/${story.slug}`"
         class="story-card"
         :class="{ 'is-highlighted': highlighted }"
     >

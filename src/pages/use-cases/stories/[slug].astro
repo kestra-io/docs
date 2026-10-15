@@ -13,5 +13,5 @@ export const getStaticPaths = (async () => {
     }))
 }) satisfies GetStaticPaths
 
-return Astro.redirect(`/customers/${Astro.props.newSlug}`, 301)
+return Astro.redirect(`/stories/${Astro.props.newSlug}`, 301)
 ---
