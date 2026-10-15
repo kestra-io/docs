@@ -10,6 +10,7 @@ export function formatCount(n: number): string {
  * values instead.
  */
 export function formatMoney(n: number, currency: string): string {
+    if (!Number.isFinite(n)) return "—"
     const a = Math.abs(n)
     const sign = n < 0 ? "-" : ""
     const symbol = currencySymbol(currency)

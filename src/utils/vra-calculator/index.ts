@@ -1,5 +1,6 @@
 export type * from "./types"
 export {
+    MAX,
     RENEWAL_MULTIPLE_PRESETS,
     SHARE_PARAM,
     STORAGE_KEY,

@@ -3,12 +3,14 @@
         <button
             type="button"
             class="link-button"
-            :disabled="disabled"
+            :disabled="disabled || blocked"
             @click="download"
         >
             Download CSV
         </button>
-        <span class="status" role="status">{{ status }}</span>
+        <span class="status" role="status">{{
+            blocked ? BLOCKED_STATUS : status
+        }}</span>
     </div>
 </template>
 
@@ -19,7 +21,10 @@
     const props = defineProps<{
         getFile: () => { filename: string; content: string }
         disabled?: boolean
+        blocked?: boolean
     }>()
+
+    const BLOCKED_STATUS = "Fix the inputs to download the CSV."
 
     const status = refAutoReset("", 4000)
 

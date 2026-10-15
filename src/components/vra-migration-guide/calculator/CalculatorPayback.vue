@@ -255,6 +255,7 @@
                         <CsvDownloadButton
                             :get-file="() => csvFile(new Date())"
                             :disabled="!ready"
+                            :blocked="result.errors.length > 0"
                         />
                         <ShareLinkButton
                             :get-url="() => shareUrl(shareAnchor)"

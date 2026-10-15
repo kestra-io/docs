@@ -23,15 +23,15 @@
 </template>
 
 <script setup lang="ts">
-    import { refAutoReset, useClipboard } from "@vueuse/core"
+    import { refAutoReset } from "@vueuse/core"
     import { nextTick, ref, useTemplateRef } from "vue"
+    import { copyText } from "../browser"
 
     const props = defineProps<{
         getUrl: () => string | null
         disabled?: boolean
     }>()
 
-    const { copy, isSupported } = useClipboard()
     const status = refAutoReset("", 4000)
     const fallbackUrl = ref("")
     const fallback = useTemplateRef<HTMLInputElement>("fallback")
@@ -39,8 +39,7 @@
     async function share() {
         const url = props.getUrl()
         if (!url) return
-        if (isSupported.value) {
-            await copy(url)
+        if (await copyText(url)) {
             fallbackUrl.value = ""
             status.value = "Link copied."
             return

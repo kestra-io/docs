@@ -111,3 +111,23 @@ export function downloadTextFile(
         return false
     }
 }
+
+export interface ClipboardLike {
+    writeText(text: string): Promise<void>
+}
+
+export async function copyText(
+    text: string,
+    clipboard: ClipboardLike | null | undefined = typeof navigator ===
+    "undefined"
+        ? null
+        : navigator.clipboard,
+): Promise<boolean> {
+    if (!clipboard) return false
+    try {
+        await clipboard.writeText(text)
+        return true
+    } catch {
+        return false
+    }
+}

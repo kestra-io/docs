@@ -37,6 +37,14 @@ export const RENEWAL_MULTIPLE_PRESETS = [2, 3, 5] as const
 
 export const TOOL_SHARE_RANGE = Object.freeze({ min: 0, max: 90, step: 5 })
 
+export const MAX = Object.freeze({
+    workflows: 1_000_000,
+    amount: 10_000_000_000,
+    multiple: 100,
+    rate: 100_000,
+    hours: 10_000,
+})
+
 export const PAYBACK_SEARCH_MONTHS = 180
 
 export const STORAGE_KEY = "kestra-vra-calc-v1"

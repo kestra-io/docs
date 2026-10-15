@@ -1,7 +1,30 @@
 import { computeFunnel } from "./funnel"
 import { computePayback } from "./payback"
-import type { CalcInputs, CalcResult } from "./types"
-import { WARNINGS, validateFunnel, validatePayback } from "./validate"
+import type { CalcInputs, CalcResult, PaybackResult } from "./types"
+import {
+    TOO_LARGE,
+    WARNINGS,
+    validateFunnel,
+    validatePayback,
+} from "./validate"
+
+function isFinitePayback(p: PaybackResult): boolean {
+    const numbers = [
+        p.renewalCost,
+        p.avoided,
+        p.migrationCost,
+        p.hours,
+        p.naiveHours,
+        p.manualHours,
+        p.saved,
+        p.net,
+        ...p.cumulative,
+        ...p.yearly,
+        p.breakEven ?? 0,
+        p.breakEvenAlt ?? 0,
+    ]
+    return numbers.every(Number.isFinite)
+}
 
 /**
  * One state, both views. The funnel (3.2.2) needs only the four workflow
@@ -33,6 +56,16 @@ export function compute(inputs: CalcInputs): CalcResult {
         }
     }
     const payback = computePayback(funnel, paybackCheck.values)
+    
+    if (!isFinitePayback(payback)) {
+        return {
+            errors: [TOO_LARGE.result],
+            warnings: [],
+            invalid: {},
+            funnel,
+            payback: null,
+        }
+    }
 
     const warnings: string[] = []
     if (funnel.total === 0) warnings.push(WARNINGS.noWorkflows)

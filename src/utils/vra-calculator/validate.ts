@@ -1,3 +1,4 @@
+import { MAX } from "./defaults"
 import type { CalcInputs, InputKey, InputValue, NumericInputKey } from "./types"
 
 export const MESSAGES = Object.freeze({
@@ -16,6 +17,20 @@ export const MESSAGES = Object.freeze({
     horizon:
         "The planning horizon has to be a whole number of years from 1 to 10.",
     kestra: "The Kestra figure has to be zero or more.",
+})
+
+const tooLarge = (what: string) =>
+    `${what} is too large to estimate with. Check for extra digits.`
+
+export const TOO_LARGE = Object.freeze({
+    total: tooLarge("The number of vRO workflows"),
+    rate: tooLarge("The blended hourly rate"),
+    hours: tooLarge("An effort figure"),
+    today: tooLarge("The annual vRA and vRO spend"),
+    mult: tooLarge("The renewal multiple"),
+    other: tooLarge("The other annual costs figure"),
+    kestra: tooLarge("The Kestra figure"),
+    result: "These numbers are too large to estimate with. Check for extra digits.",
 })
 
 export const WARNINGS = Object.freeze({
@@ -79,22 +94,34 @@ function collector() {
             errors.push(message)
             invalid[key] = true
         }
+        return ok
     }
-    return { errors, invalid, need }
+
+    const cap = (
+        key: InputKey,
+        message: string,
+        n: number | null,
+        max: number,
+        ok: boolean,
+    ) => {
+        if (ok) need(key, message, (n as number) <= max)
+    }
+    return { errors, invalid, need, cap }
 }
 
 export function validateFunnel(inputs: CalcInputs): Validation<FunnelValues> {
-    const { errors, invalid, need } = collector()
+    const { errors, invalid, need, cap } = collector()
     const total = toNumber(inputs.total)
     const dormant = toNumber(inputs.dormant)
     const dupes = toNumber(inputs.dupes)
     const wrappers = toNumber(inputs.wrappers)
 
-    need(
+    const totalOk = need(
         "total",
         MESSAGES.total,
         total !== null && total >= 0 && isWhole(total),
     )
+    cap("total", TOO_LARGE.total, total, MAX.workflows, totalOk)
     need(
         "dormant",
         MESSAGES.dormant,
@@ -121,7 +148,7 @@ export function validateFunnel(inputs: CalcInputs): Validation<FunnelValues> {
 }
 
 export function validatePayback(inputs: CalcInputs): Validation<PaybackValues> {
-    const { errors, invalid, need } = collector()
+    const { errors, invalid, need, cap } = collector()
 
     const complex = toNumber(inputs.complex)
     const tool = toNumber(inputs.tool)
@@ -132,13 +159,15 @@ export function validatePayback(inputs: CalcInputs): Validation<PaybackValues> {
         complex !== null && complex >= 0 && complex <= 100,
     )
     need("tool", MESSAGES.tool, tool !== null && tool >= 0 && tool <= 100)
-    need("rate", MESSAGES.rate, rate !== null && rate >= 0)
+    const rateOk = need("rate", MESSAGES.rate, rate !== null && rate >= 0)
+    cap("rate", TOO_LARGE.rate, rate, MAX.rate, rateOk)
 
     // One message per invalid hour field, as in the reference.
     const hourKeys: NumericInputKey[] = ["hp1", "hp2", "hv1", "hv2"]
     const hours = hourKeys.map((key) => {
         const n = toNumber(inputs[key])
-        need(key, MESSAGES.hours, n !== null && n >= 0)
+        const ok = need(key, MESSAGES.hours, n !== null && n >= 0)
+        cap(key, TOO_LARGE.hours, n, MAX.hours, ok)
         return n
     })
 
@@ -150,9 +179,12 @@ export function validatePayback(inputs: CalcInputs): Validation<PaybackValues> {
     const kestraBlank = isBlank(inputs.kestra)
     const kestra = kestraBlank ? null : toNumber(inputs.kestra)
 
-    need("today", MESSAGES.today, today !== null && today >= 0)
-    need("mult", MESSAGES.mult, mult !== null && mult >= 0)
-    need("other", MESSAGES.other, other !== null && other >= 0)
+    const todayOk = need("today", MESSAGES.today, today !== null && today >= 0)
+    cap("today", TOO_LARGE.today, today, MAX.amount, todayOk)
+    const multOk = need("mult", MESSAGES.mult, mult !== null && mult >= 0)
+    cap("mult", TOO_LARGE.mult, mult, MAX.multiple, multOk)
+    const otherOk = need("other", MESSAGES.other, other !== null && other >= 0)
+    cap("other", TOO_LARGE.other, other, MAX.amount, otherOk)
     need(
         "renew",
         MESSAGES.renew,
@@ -163,8 +195,14 @@ export function validatePayback(inputs: CalcInputs): Validation<PaybackValues> {
         MESSAGES.horizon,
         horizon !== null && horizon >= 1 && horizon <= 10 && isWhole(horizon),
     )
-    if (!kestraBlank)
-        need("kestra", MESSAGES.kestra, kestra !== null && kestra >= 0)
+    if (!kestraBlank) {
+        const kestraOk = need(
+            "kestra",
+            MESSAGES.kestra,
+            kestra !== null && kestra >= 0,
+        )
+        cap("kestra", TOO_LARGE.kestra, kestra, MAX.amount, kestraOk)
+    }
 
     if (errors.length) return { errors, invalid, values: null }
     const [hp1, hp2, hv1, hv2] = hours as number[]
