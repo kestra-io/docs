@@ -1,32 +1,115 @@
 ---
 import Layout from "~/components/layout.astro"
-import Quotes from "~/components/common/Quotes.vue"
-import Lists from "~/components/partners/Lists.astro"
-import Intro from "~/components/partners/Intro.astro"
-import Reasons from "~/components/partners/Reasons.astro"
-import PluginsBlock from "~/components/common/PluginsBlock.astro"
-import BecomeAPartner from "~/components/partners/BecomeAPartner.vue"
+import Link from "~/components/common/Link.astro"
+import Squared from "~/components/layout/Squared.vue"
+import Benefits from "~/components/partners/Benefits.astro"
+import TrackBlock from "~/components/partners/TrackBlock.astro"
+import PartnerCta from "~/components/partners/PartnerCta.astro"
+import HeroIcon from "~/assets/landing/partners/icon-partner.svg?raw"
 
 const title = "Kestra Partners"
 const description =
-    "Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.Discover the team and values behind our mission to empower data-driven organizations worldwide"
+    "Sell, deliver or integrate with Kestra. Find a partner near you, or join the program as a consulting or technology partner."
 
-import dltLogo from "~/components/partners/assets/dltLogo.svg?raw"
-
-const DLTQuotes = [
+const BENEFITS = [
     {
-        quote: "Kestra and dlt share a vision of simplifying data pipeline creation. Thanks to Kestra's and dlt's declarative interface, you can deploy existing pipelines in seconds or build new ones in minutes, complete with self healing schemas and lineage to increase robustness and trust.",
-        author: "Co-Founder @ <strong>dlthub</strong>",
-        smallLogoSvg: dltLogo
-    }
+        title: "Sell with us",
+        text: "Register deals, co-sell with the Kestra sales team and earn margin on Enterprise and Cloud, with a partner manager who knows your pipeline.",
+    },
+    {
+        title: "Deliver with our engineers behind you",
+        text: "Enablement, a sandbox Enterprise Edition, priority routing to support and a direct line to the people who build Kestra.",
+    },
+    {
+        title: "Grow your pipeline",
+        text: "A listing in the partner directory, the partner badge, co-marketing material and joint customer stories that bring the next customer to you.",
+    },
+    {
+        title: "Shape what we build",
+        text: "Early access to features and plugin APIs, and a seat in the conversations that decide the roadmap.",
+    },
 ]
 ---
 
 <Layout {title} {description}>
-    <Intro />
-    <Lists />
-    <PluginsBlock />
-    <Quotes quotes={DLTQuotes} />
-    <Reasons />
-    <BecomeAPartner routePath={Astro.url.pathname} client:load />
+    <Squared>
+        <div class="icon" set:html={HeroIcon} role="img" />
+        <div class="content">
+            <h1>Become a Kestra partner</h1>
+            <p>
+                Kestra orchestrates data, infrastructure, applications and AI
+                for enterprises on every continent. Partners sell it, deliver it
+                and build on it. Pick the track that matches what you do.
+            </p>
+            <div class="actions">
+                <Link href="/partners/apply" class="btn btn-primary"
+                    >Become a partner</Link
+                >
+                <Link href="/partners/consulting" class="btn btn-secondary"
+                    >Find a partner</Link
+                >
+            </div>
+        </div>
+    </Squared>
+
+    <Benefits
+        title="Let's orchestrate together"
+        intro="Kestra is open source, language-agnostic and runs anywhere, so partners meet customers where they already are. We partner with the firms that deliver Kestra and the technologies it runs with, and we give both the same thing: a program with real resources behind it."
+        benefits={BENEFITS}
+    />
+
+    <TrackBlock
+        type="Consulting"
+        title="Consulting Partners"
+        text="Consulting firms and systems integrators who sell, implement and support Kestra for their customers. Listed in a directory buyers search by country and service."
+        href="/partners/consulting"
+        cta="Find a consulting partner"
+    />
+
+    <TrackBlock
+        type="Technology"
+        title="Technology Partners"
+        text="Cloud, data and infrastructure platforms with a Kestra integration. Listed in the plugin catalog, launched together, and reachable by every team orchestrating with Kestra."
+        href="/partners/technology"
+        cta="See technology partners"
+        reverse
+    />
+
+    <PartnerCta />
 </Layout>
+
+<style lang="scss">
+    .icon {
+        width: 344px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .content {
+        text-align: center;
+        max-width: 100%;
+        margin: 0 auto;
+
+        @include media-breakpoint-up(md) {
+            max-width: 640px;
+        }
+
+        p {
+            margin: 1.5rem 0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    }
+</style>
