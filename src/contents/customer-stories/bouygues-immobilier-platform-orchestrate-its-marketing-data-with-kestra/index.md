@@ -38,7 +38,7 @@ region: Europe
 companySize: "51–500"
 solution: "Solution for real-esrate investment "
 tagline: Leading French real estate developer and property investor
-companyName: ""
+companyName: Bouygues Immobilier
 useCase: Orchestrating a modern data stack with dbt, BigQuery, and Hightouch to double conversion rates for a real estate investment platform
 useCaseShort: Data Orchestration
 cta: "What would change if your marketing data pipelines ran automatically—keeping every campaign fed with fresh, accurate data?"

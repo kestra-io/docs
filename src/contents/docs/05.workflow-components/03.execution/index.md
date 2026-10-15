@@ -13,13 +13,13 @@ An execution is a single run of a flow with a specific state.
   <iframe src="https://www.youtube.com/embed/6TqWWz9difM?si=cUKVVbohgNjlpd19" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Each execution contains one or more [task runs](../01.tasks/02.taskruns/index.md) — one per task in the flow. Task runs support [retries](../12.retries/index.md): if retries are configured, a failure generates new attempts until the `maxAttempts` or `maxDuration` threshold is reached.
+Each execution contains one or more [task runs](../01.tasks/02.taskruns/index.md), one per task in the flow. Task runs support [retries](../12.retries/index.md): if retries are configured, a failure generates new attempts until the `maxAttempts` or `maxDuration` threshold is reached.
 
 ![Execution overview showing the visual task graph and execution tabs](./executions-overview.png)
 
 ## Outputs
 
-Each task can produce output data — variables or files stored in Kestra's internal storage — that downstream tasks in the same execution can reference. View outputs in the **Outputs** tab of the execution page. See the [Outputs page](../../05.workflow-components/06.outputs/index.md) for details.
+Each task can produce output data (variables or files stored in Kestra's internal storage) that downstream tasks in the same execution can reference. View outputs in the **Outputs** tab of the execution page. See the [Outputs page](../../05.workflow-components/06.outputs/index.md) for details.
 
 ## Metrics
 
@@ -50,7 +50,7 @@ Executions and task runs move through the following states:
 
 | State | Description |
 | - | - |
-| `CREATED` | Waiting to be processed — queued but not yet started. |
+| `CREATED` | Waiting to be processed; queued but not yet started. |
 | `SUBMITTED` | Submitted to the Executor queue but not yet running. |
 | `RUNNING` | Currently being processed. |
 | `PAUSED` | Paused for manual validation or a configured delay. |
@@ -60,13 +60,13 @@ Executions and task runs move through the following states:
 | `KILLING` | Kill command issued; system is terminating associated tasks. |
 | `QUEUED` | On hold due to a concurrency limit with `QUEUE` behavior. |
 | `SUCCESS` | Completed successfully. |
-| `WARNING` | Completed with warnings — execution continued but was flagged. |
+| `WARNING` | Completed with warnings; execution continued but was flagged. |
 | `FAILED` | Encountered errors that caused the execution to fail. |
 | `RETRIED` | Stopped and created a new execution as defined by a [flow-level retry policy](../12.retries/index.md#flow-level-retries) with `CREATE_NEW_EXECUTION` behavior. |
 | `RESUBMITTED` | Resubmitted directly; a new execution continues in its place. |
 | `SKIPPED` | Skipped. Did not run due to a condition, SLA policy, or concurrency behavior. |
 | `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior. |
-| `KILLED` | Killed on request — no further tasks will run. |
+| `KILLED` | Killed on request; no further tasks will run. |
 
 For a detailed overview of state transitions, see the [States](../17.states/index.md) page.
 
@@ -76,7 +76,7 @@ For a detailed overview of state transitions, see the [States](../17.states/inde
 | - | - |
 | `{{ execution.id }}` | Unique identifier generated for each execution. |
 | `{{ execution.startDate }}` | Start date of the current execution; can be formatted with `{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
-| `{{ execution.originalId }}` | The original execution ID — never changes across replays. |
+| `{{ execution.originalId }}` | The original execution ID, which never changes across replays. |
 
 ## Execute from the UI
 
@@ -84,7 +84,7 @@ Click **Execute** on the flow page to trigger a run manually.
 
 ## Use automatic triggers
 
-Add a [Schedule trigger](../07.triggers/01.schedule-trigger/index.md) to launch executions on a time interval, or a [Flow trigger](../07.triggers/index.mdx) to launch an execution when another flow completes — useful for namespace-level error handling or event-driven patterns where flows are decoupled rather than explicitly calling each other as subflows.
+Add a [Schedule trigger](../07.triggers/01.schedule-trigger/index.md) to launch executions on a time interval, or a [Flow trigger](../07.triggers/index.mdx) to launch an execution when another flow completes, useful for namespace-level error handling or event-driven patterns where flows are decoupled rather than explicitly calling each other as subflows.
 
 Use a [Webhook trigger](../07.triggers/03.webhook-trigger/index.md) to launch an execution from an external HTTP request. Access the request body with `{{ trigger.body }}` and headers with `{{ trigger.headers }}`. See the [Webhooks how-to guide](../../15.how-to-guides/webhooks/index.md) for setup and real-world examples.
 
