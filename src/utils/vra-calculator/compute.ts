@@ -56,7 +56,6 @@ export function compute(inputs: CalcInputs): CalcResult {
         }
     }
     const payback = computePayback(funnel, paybackCheck.values)
-    
     if (!isFinitePayback(payback)) {
         return {
             errors: [TOO_LARGE.result],
