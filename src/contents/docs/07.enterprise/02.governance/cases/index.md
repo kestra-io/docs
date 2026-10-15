@@ -43,7 +43,7 @@ Cases require the [Kestra plugin](https://kestra.io/plugins/plugin-kestra) to be
 
 There is no restrictive state machine: any status can be changed to any other, including reopening a resolved or cancelled case. A few rules apply:
 
-1. Resolving requires a **resolution reason**; the note is optional. The accepted reasons are, in order: the case's own reasons (set with the `resolutionReasons` property of the `CreateCase` task), the reasons of the template the case was created from, then those of the tenant's default template. When none of them define reasons, any reason is accepted and the built-in ones are offered: Fixed, Workaround applied, Configuration change, Duplicate, No action needed, Won't fix. The template the case was created from can also make the note mandatory.
+1. Resolving requires a **resolution reason**; the note is optional. The accepted reasons are, in order: the case's own reasons (set with the `resolutionReasons` property of the `CreateCase` task), the reasons of the template the case was created from, then those of the tenant's default template. When none of them define reasons, any reason is accepted and the built-in ones are offered: Fixed, Workaround applied, Configuration change, Duplicate, No action needed, Won't fix. The note is mandatory when the case requires it (the `requireResolutionNote` property of the `CreateCase` task), otherwise when the template the case was created from does.
 2. Cancelling accepts an optional reason and note.
 3. The first time the case moves from `Open` to any other status, the acknowledgement time is recorded (this satisfies the acknowledgement SLA and is kept even if the case is later reopened).
 4. Reopening a terminal case clears the resolution, and the case's auto-attach flow (if any) is recreated.
@@ -119,6 +119,7 @@ tasks:
 | `namespace` | Namespace the case belongs to; defaults to the flow's namespace. |
 | `sla` | `acknowledgement` and `resolution` durations (ISO-8601, e.g. `PT1H`); defaults to the template's SLA. |
 | `resolutionReasons` | The only reasons the case can be resolved with, offered on the Resolve dialog; defaults to the template's reasons. Must contain at least one reason when set. |
+| `requireResolutionNote` | Whether resolving the case requires a note; defaults to the template's setting. |
 | `linkMatchingExecutions` | When `true`, the execution is attached to an already-open case with the same origin instead of creating a new one; defaults to `false`. |
 | `caseId` | Attach the execution to this exact case instead of creating one (used by generated auto-attach flows). |
 | `executionId` | Execution to link; defaults to the current execution. |
@@ -147,7 +148,12 @@ errors:
       - Provider outage
       - Data fixed
       - False alarm
+    requireResolutionNote: true
 ```
+
+:::alert{type="warning"}
+Existing `CreateCase` tasks that set no `templateId` now get the tenant's default template applied. Severity, SLA, assignees, watchers, description, custom fields and actions they do not set come from that template; for the built-in default template, this means `HIGH` severity and a 1 hour acknowledgement and 8 hour resolution SLA instead of `MEDIUM` and no SLA. Set those properties on the task to keep the previous values.
+:::
 
 ## Deduplication
 
