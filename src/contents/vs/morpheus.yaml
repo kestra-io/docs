@@ -223,7 +223,7 @@ testimonials:
         name: "Platform for data, infra, and business workflows"
       - value: "70%"
         name: "Reduction in manual operations"
-    storyLink: "/customers/software-provider"
+    storyLink: "/stories/software-provider"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

@@ -120,7 +120,7 @@ Kestra can run self-hosted in the region or private cloud of your choice, so the
 - **Tenants with dedicated storage and secrets:** each [tenant](/docs/enterprise/governance/tenants) can use its own internal storage bucket and secrets backend, for example one tenant per region. See [multi-tenancy orchestration](/resources/infrastructure/multi-tenancy-orchestration) for the isolation models.
 - **Policies:** a [policy](/docs/enterprise/governance/policies) can add the regional selector to every task in a namespace, so the rule is enforced by the platform instead of by each flow author.
 
-Public-sector organizations use this kind of setup when control over location is non-negotiable: [Dataport](/customers/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud with Kestra, a government-grade orchestration control plane.
+Public-sector organizations use this kind of setup when control over location is non-negotiable: [Dataport](/stories/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud with Kestra, a government-grade orchestration control plane.
 
 ### Example: Enforcing regional storage constraints in YAML
 
