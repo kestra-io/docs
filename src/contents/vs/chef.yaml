@@ -223,7 +223,7 @@ testimonials:
         name: "Agents to install and maintain"
       - value: "5x"
         name: "More workflows automated"
-    storyLink: "/customers/software-provider"
+    storyLink: "/stories/software-provider"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

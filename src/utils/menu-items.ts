@@ -168,7 +168,7 @@ export const menuItems: MenuItems = {
             {
                 icon: FormatQuoteCloseOutline,
                 title: "Customer Stories",
-                link: "/customers"
+                link: "/stories"
             },
             {
                 icon: School,
