@@ -89,6 +89,44 @@ kestra:
 
 The old multi-tenancy and default-tenant configuration is no longer supported.
 
+## Tenant example seeding (kestra.ee.tenant-examples)
+
+When a tenant of a type that ships an example bundle (`INFRASTRUCTURE`) is created, Kestra seeds it with a namespace, flows, apps, a dashboard, and a bootstrap execution. This behavior is enabled by default and controlled with:
+
+```yaml
+kestra:
+  ee:
+    tenant-examples:
+      enabled: false   # set to false to disable example seeding globally
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.ee.tenant-examples.enabled` | `true` | When `true`, creating a tenant of a seeded type provisions the example bundle. Set to `false` to skip seeding entirely. |
+
+The example bundle ships inside the JAR — no network access is required at tenant creation time.
+
+## Asset TTL checks (kestra.assets.ttl-check)
+
+Kestra periodically checks the TTL of every asset to start [`TtlTrigger`](../../07.enterprise/02.governance/01.assets/index.md#operational-automation) flows and to notify asset owners in-app when a TTL is expiring or has expired. The check runs on executor nodes. When several executors run, only one of them checks a given tenant at a time.
+
+```yaml
+kestra:
+  assets:
+    ttl-check:
+      enabled: true
+      initial-delay: PT1M
+      fixed-delay: PT1H
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.assets.ttl-check.enabled` | `true` | When `false`, no TTL check runs: `TtlTrigger` flows never start and owners receive no TTL notifications. |
+| `kestra.assets.ttl-check.initial-delay` | `PT1M` | Delay between executor startup and the first check. |
+| `kestra.assets.ttl-check.fixed-delay` | `PT1H` | Delay between the end of one check and the start of the next. |
+
+`fixed-delay` sets how late a `TtlTrigger` flow or notification can be. With the default, a flow starts up to one hour after an asset enters its window.
+
 ## Worker topology bootstrap (kestra.ee.setup)
 
 `kestra.ee.setup` lets you declare worker queues, worker groups, subscriptions, and registration tokens in configuration so the full topology is provisioned at startup without any runtime API calls.
@@ -263,6 +301,76 @@ kestra:
         key-password: "<key-entry-password>"
 ```
 
+### PEM certificates
+
+PEM files can be used instead of keystores. This is the natural format for Kubernetes deployments using cert-manager, kubelet-managed Secrets, or tools such as `kestractl`, Vault, or `openssl`, which all write PEM output and would otherwise require a manual conversion step on every certificate renewal.
+
+Set a `pem` block under `kestra.grpc.tls` on both the controller and each worker. The `pem` identity (`certificate-chain*` + `private-key*`) and the keystore (`key-store`) are mutually exclusive, as are `pem` trust (`trust-certificates*`) and `trust-store`. Combining them fails at startup with a message naming the conflicting properties.
+
+**Controller:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      client-auth: REQUIRE
+      pem:
+        certificate-chain-path: /tls/controller.crt
+        private-key-path: /tls/controller.key
+        trust-certificates-path: /tls/ca.crt
+```
+
+**Worker:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      pem:
+        certificate-chain-path: /tls/worker.crt
+        private-key-path: /tls/worker.key
+        trust-certificates-path: /tls/ca.crt
+```
+
+Private keys can be PKCS#8, PKCS#1 (RSA), or SEC1 (EC). Certificate chains are leaf-first. Trust bundles may contain multiple concatenated CA certificates.
+
+#### Kubernetes and cert-manager
+
+The standard field names in a Kubernetes `tls` Secret (`tls.crt`, `tls.key`, `ca.crt`) map directly to the `pem` properties, so a cert-manager `Certificate` or kubelet-managed Secret can be mounted and used without conversion:
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      pem:
+        certificate-chain-path: /tls/tls.crt
+        private-key-path: /tls/tls.key
+        trust-certificates-path: /tls/ca.crt
+        reload-interval: PT1M
+```
+
+Mount the Secret as a volume in your Kubernetes deployment:
+
+```yaml
+volumes:
+  - name: grpc-tls
+    secret:
+      secretName: kestra-worker-tls
+volumeMounts:
+  - name: grpc-tls
+    mountPath: /tls
+    readOnly: true
+```
+
+#### Hot reload
+
+When at least one `pem` item is a `-path` property, a background thread checks each file every `reload-interval` (default `PT1M`). When file content changes, the new material is loaded and verified. New TLS handshakes use the updated certificate immediately; open connections continue with the previous material until they reconnect. If a reloaded file is invalid or the private key does not match its certificate, the current material is kept and an error is logged.
+
+Inline values (`certificate-chain`, `private-key`, `trust-certificates`) are loaded once at startup and never reloaded.
+
 ### Development: skip certificate verification
 
 :::alert{type="warning"}
@@ -289,9 +397,56 @@ kestra:
 | `kestra.grpc.tls.trust-store.path` | — | Path to truststore file |
 | `kestra.grpc.tls.trust-store.type` | `PKCS12` | Truststore format |
 | `kestra.grpc.tls.trust-store.password` | — | Truststore password |
+| `kestra.grpc.tls.pem.certificate-chain-path` | — | Path to PEM certificate chain (leaf first) |
+| `kestra.grpc.tls.pem.certificate-chain` | — | Inline PEM certificate chain |
+| `kestra.grpc.tls.pem.private-key-path` | — | Path to unencrypted private key (PKCS#8, PKCS#1, or SEC1) |
+| `kestra.grpc.tls.pem.private-key` | — | Inline unencrypted private key |
+| `kestra.grpc.tls.pem.trust-certificates-path` | — | Path to trusted CA certificates (bundle supported) |
+| `kestra.grpc.tls.pem.trust-certificates` | — | Inline trusted CA certificates |
+| `kestra.grpc.tls.pem.reload-interval` | `PT1M` | How often path-based files are checked for changes |
 | `kestra.grpc.tls.client-auth` | `NONE` | Client auth mode: `NONE`, `OPTIONAL`, or `REQUIRE` |
 | `kestra.grpc.tls.insecure-trust-all-certificates` | `false` | Skip CA verification (development only) |
 | `kestra.grpc.tls.authority-override` | — | Override TLS authority for static discovery |
+
+## Dedicated-storage workers
+
+Some deployments run workers with their own dedicated storage bucket: a separate region, a customer-managed account, or a different storage provider from the rest of the deployment. Three categories of data need explicit configuration to stay consistent across the deployment.
+
+**KV Store values.** KV metadata is always routed through the controller, but values are written directly to storage. On a worker with dedicated storage, a key set from a flow on that worker is listed in the UI but its value is unreachable from anywhere else. A key set from the UI is visible to the worker in listings but cannot be read.
+
+Set `kestra.kv.worker-access: CONTROLLER` on the worker to route all KV reads and writes through the controller over gRPC. The worker no longer accesses its own storage for KV operations.
+
+**Namespace files.** Namespace file metadata is routed through the controller, but file content is read and written directly to storage. On a worker with dedicated storage, a file uploaded from the UI is listed on the worker but its content is unreachable, and a file written by a task on the worker cannot be read anywhere else.
+
+Set `kestra.namespace-files.worker-access: CONTROLLER` on the worker to route all namespace file reads and writes through the controller over gRPC.
+
+**Managed plugin artifacts.** When plugin versioning is enabled, workers sync plugin artifacts from the deployment's shared storage. On a worker with dedicated storage, those artifacts are unreachable directly.
+
+Set `kestra.plugins.management.worker-access: CONTROLLER` on the worker to pull plugin artifacts through the controller over gRPC instead.
+
+All three properties default to `STORAGE`, preserving the existing behavior for workers that share the deployment's storage.
+
+```yaml
+# Worker configuration — dedicated-storage deployment
+kestra:
+  kv:
+    worker-access: CONTROLLER          # default: STORAGE; requires Kestra 2.1
+
+  namespace-files:
+    worker-access: CONTROLLER          # default: STORAGE
+
+  plugins:
+    management:
+      worker-access: CONTROLLER        # default: STORAGE; requires Kestra 2.1
+```
+
+`CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it. `kestra.namespace-files.worker-access` is available from Kestra 2.0.4; `kestra.kv.worker-access` and `kestra.plugins.management.worker-access` require Kestra 2.1.
+
+| Property | Values | Default | Description |
+|---|---|---|---|
+| `kestra.kv.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes KV values. `CONTROLLER` routes all KV operations through the controller over gRPC. Requires Kestra 2.1. |
+| `kestra.namespace-files.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes namespace file content. `CONTROLLER` routes all file operations through the controller over gRPC. |
+| `kestra.plugins.management.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | How the worker fetches managed plugin artifacts. `CONTROLLER` pulls them through the controller over gRPC. Requires Kestra 2.1. |
 
 ## Elasticsearch, Kafka, and indexing
 
@@ -473,9 +628,9 @@ kestra:
 
 If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
 
-## Redis, AMQP, and GCP Pub/Sub queue backends
+## Redis, AMQP, GCP Pub/Sub, and NATS queue backends
 
-Redis, AMQP (RabbitMQ), and GCP Pub/Sub are Enterprise Edition queue backends, alongside Kafka which is covered above. All three use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All three require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis, AMQP (RabbitMQ), GCP Pub/Sub, and NATS are Enterprise Edition queue backends, alongside Kafka which is covered above. All four use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All four require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -624,6 +779,110 @@ kestra:
 | `kestra.gcp-pubsub.client.exactly-once-delivery` | Enable exactly-once delivery on subscriptions. | `true` |
 | `kestra.gcp-pubsub.client.message-ordering` | Enable message ordering on subscriptions. | `true` |
 | `kestra.gcp-pubsub.client.message-retention-duration` | How long Pub/Sub retains unacknowledged messages. Leave unset to use the Pub/Sub subscription default. | — |
+
+### NATS
+
+Set `kestra.queue.type: nats` and configure the connection under `kestra.nats`. NATS with JetStream enabled is required.
+
+Minimal configuration:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://localhost:4222
+```
+
+With token authentication:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://localhost:4222
+    token: "${NATS_TOKEN}"
+```
+
+With username and password:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://localhost:4222
+    username: kestra
+    password: "${NATS_PASSWORD}"
+```
+
+With a credentials file (NKey or JWT):
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - nats://nats.example.com:4222
+    credentials-file: /etc/kestra/nats.creds
+```
+
+`token`, `credentials-file`, and `username` are mutually exclusive — set exactly one.
+
+With TLS:
+
+```yaml
+kestra:
+  queue:
+    type: nats
+  nats:
+    servers:
+      - tls://nats.example.com:4222
+    truststore-path: /etc/kestra/truststore.jks
+    truststore-password: "${TRUSTSTORE_PASSWORD}"
+```
+
+For mutual TLS, also set `keystorePath` and `keystorePassword`.
+
+#### Configuration reference
+
+**Connection (`kestra.nats`)**
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.nats.servers` | List of NATS server URLs to connect to. | `[nats://localhost:4222]` |
+| `kestra.nats.connection-name` | Connection name visible in the NATS server monitoring. | `kestra` |
+| `kestra.nats.credentials-file` | Path to a credentials file (NKey or JWT). Exclusive with `token` and `username`. | — |
+| `kestra.nats.token` | Authentication token. Exclusive with `credentials-file` and `username`. | — |
+| `kestra.nats.username` | Username for user/password authentication. Exclusive with `credentials-file` and `token`. | — |
+| `kestra.nats.password` | Password for user/password authentication. | — |
+| `kestra.nats.truststore-path` | Path to the JKS truststore holding server certificates, for TLS. | — |
+| `kestra.nats.truststore-password` | Truststore password. | — |
+| `kestra.nats.keystore-path` | Path to the JKS keystore holding the client certificate, for mutual TLS. | — |
+| `kestra.nats.keystore-password` | Keystore password. | — |
+| `kestra.nats.jetstream-domain` | JetStream domain. Exclusive with `jetstream-api-prefix`. | — |
+| `kestra.nats.jetstream-api-prefix` | JetStream API prefix. Exclusive with `jetstream-domain`. | — |
+| `kestra.nats.request-timeout` | Timeout for requests to the NATS server. | `PT2S` |
+
+**Queue tuning (`kestra.nats.queues`)**
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.nats.queues.replicas` | Number of stream replicas. Applied only when a stream is first created. | `1` |
+| `kestra.nats.queues.storage` | Stream storage type: `FILE` or `MEMORY`. Applied only when a stream is first created. | `FILE` |
+| `kestra.nats.queues.emit-timeout` | Overall deadline for an emit, including retries. | `PT10S` |
+| `kestra.nats.queues.max-in-flight` | Maximum unacknowledged messages across all queues before emits start waiting. | `500` |
+| `kestra.nats.queues.broadcast-max-age` | How long broadcast stream messages are retained. | `PT1H` |
+| `kestra.nats.queues.fetch-batch-size` | Messages a batch subscriber requests ahead of processing. | `100` |
+| `kestra.nats.queues.fetch-single-size` | Messages a single-message subscriber requests ahead of processing. | `10` |
+| `kestra.nats.queues.fetch-wait` | How long a subscriber waits for a message before checking for pause or close. | `PT1S` |
+| `kestra.nats.queues.ack-wait` | How long the server waits for an acknowledgement before redelivering. | `PT60S` |
+| `kestra.nats.queues.max-ack-pending` | Maximum unacknowledged messages per consumer, shared across all its subscribers. | `1000` |
 
 ## MCP server cache
 

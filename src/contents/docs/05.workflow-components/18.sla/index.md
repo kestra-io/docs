@@ -108,3 +108,5 @@ triggers:
           sla: miss
         states: [FAILED, WARNING, CANCELLED]
 ```
+
+The interval at which the executor checks for SLA breaches is configurable via [`kestra.executor.monitor-sla-loop-periodicity-ms`](../../../configuration/04.plugins-and-execution/index.md#executor-loop-intervals) (default: 1000ms).

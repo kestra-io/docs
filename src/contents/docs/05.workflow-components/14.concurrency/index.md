@@ -63,14 +63,38 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 - `CANCEL`: immediately mark the execution as `CANCELLED`.
 - `FAIL`: immediately mark the execution as `FAILED`.
 
-If you expect execution spikes, combine a conservative limit with backoff at the source (e.g., slower trigger rates) to avoid large queues that increase database lock contention.
+When using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
+
+Queued executions are picked up on the executor's delay loop interval, configurable via [`kestra.executor.execution-delay-loop-periodicity-ms`](../../../configuration/04.plugins-and-execution/index.md#executor-loop-intervals) (default: 1000ms).
 
 ```yaml
 id: concurrency_limited_flow
 namespace: company.team
 
 concurrency:
-  behavior: FAIL # QUEUE, CANCEL, or FAIL
+  behavior: QUEUE
+  limit: 1
+  queueLimit: 1  # cancel incoming executions when 1 is already waiting
+
+tasks:
+  - id: wait
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - sleep 10
+```
+
+With this configuration, the first execution claims the slot, a second waits in the queue, and any further executions are immediately `CANCELLED` — they never enter the queue. If you expect execution spikes, combine `queueLimit` with backoff at the source (e.g., slower trigger rates) to avoid a queue that grows faster than it drains.
+
+To immediately terminate executions that exceed the limit instead of queuing them, use `behavior: CANCEL` or `behavior: FAIL`:
+
+```yaml
+id: concurrency_fail_flow
+namespace: company.team
+
+concurrency:
+  behavior: FAIL
   limit: 2
 
 tasks:
