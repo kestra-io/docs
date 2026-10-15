@@ -234,7 +234,7 @@
     <section
         class="fc-root"
         aria-roledescription="carousel"
-        aria-label="Featured customer stories"
+        aria-label="Featured stories"
         @mouseenter="slow"
         @mouseleave="restore"
         @focusin="onFocusIn"
@@ -257,7 +257,7 @@
                     <a
                         v-for="story in stories"
                         :key="`${copy}-${story.slug}`"
-                        :href="`/customers/${story.slug}`"
+                        :href="`/stories/${story.slug}`"
                         class="fc-card"
                         :aria-hidden="copy !== EXPOSED || undefined"
                         :tabindex="copy !== EXPOSED ? -1 : undefined"
