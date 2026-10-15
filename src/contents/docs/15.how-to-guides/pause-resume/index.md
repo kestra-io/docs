@@ -80,11 +80,7 @@ tasks:
   - id: sendApprovalRequest
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ inputs.slack_webhook_uri }}"
-    payload: |
-      {
-        "channel": "#vacation",
-        "text": "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
-      }
+    messageText: "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:8080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
 
   - id: waitForApproval
     type: io.kestra.plugin.core.flow.Pause
@@ -108,7 +104,6 @@ tasks:
   - id: log
     type: io.kestra.plugin.core.log.Log
     message: Status is {{ outputs.waitForApproval.onResume.reason }}. Process finished with {{ outputs.approve.body }}
-```
 
 When you click on the `Resume` button in the UI, you will be prompted to provide the approval status and the reason for their decision. The workflow will then continue with the provided input values.
 
@@ -117,3 +112,15 @@ When you click on the `Resume` button in the UI, you will be prompted to provide
 After the Execution has been resumed, any downstream task can access the `onResume` inputs using the `outputs` of the `Pause` task:
 
 ![pause_resume_2](./pause_resume_2.png)
+
+### Who resumed the execution
+
+The `Pause` task records the identity of whoever resumed the execution in `outputs.<taskId>.resumed.by`. Reference it in downstream tasks to capture the approver:
+
+```yaml
+  - id: log_approver
+    type: io.kestra.plugin.core.log.Log
+    message: "Approved by {{ outputs.wait_for_approval.resumed.by }}"
+```
+
+`resumed.by` is set when the execution is resumed from the Kestra UI, the API, or an App. For service accounts it contains the service account name; for standard users it contains the username.

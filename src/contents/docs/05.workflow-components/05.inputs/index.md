@@ -157,6 +157,8 @@ tasks:
     message: "Hello, {{ inputs.payload.name }}!"
 ```
 
+To validate JSON at any point in a flow — not just at execution start — use the [ValidateJsonSchema](../../15.how-to-guides/validate-json-schema/index.md) task from plugin-serdes.
+
 ## Nested inputs
 
 A `.` in an input `id` creates a nested structure, accessible with the same dot notation in expressions:

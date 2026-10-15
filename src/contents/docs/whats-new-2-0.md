@@ -182,9 +182,9 @@ Changes to deployment, storage, and runtime behavior.
 Four new task runners ship in 2.0 for workloads that require direct VM control:
 
 - [AWS EC2 Task Runner](./task-runners/04.types/05.aws-ec2-task-runner/index.md) — runs commands on EC2 via AWS Systems Manager Run Command; no SSH required. Supports Spot instances and reattaches mid-run if the Kestra Worker restarts.
-- [Azure Virtual Machine Task Runner](./task-runners/04.types/07.azure-virtualmachine-task-runner/index.md) — runs commands on Azure VMs via the Azure Run Command API; no SSH and no public IP required.
-- [Google Compute Engine Task Runner](./task-runners/04.types/09.google-computeengine-task-runner/index.md) — runs commands directly on a Compute Engine VM as a startup script; no SSH or IAP tunnel.
-- [Huawei Cloud CCI Task Runner](./task-runners/04.types/11.huawei-cci-task-runner/index.md) (EE) — runs tasks as bare Pods on Huawei Cloud CCI with OBS file staging, flavor-tier resource sizing, and AK/SK or temporary credential authentication.
+- [Azure Virtual Machine Task Runner](./task-runners/04.types/08.azure-virtualmachine-task-runner/index.md) — runs commands on Azure VMs via the Azure Run Command API; no SSH and no public IP required.
+- [Google Compute Engine Task Runner](./task-runners/04.types/10.google-computeengine-task-runner/index.md) — runs commands directly on a Compute Engine VM as a startup script; no SSH or IAP tunnel.
+- [Huawei Cloud CCI Task Runner](./task-runners/04.types/12.huawei-cci-task-runner/index.md) (EE) — runs tasks as bare Pods on Huawei Cloud CCI with OBS file staging, flavor-tier resource sizing, and AK/SK or temporary credential authentication.
 
 ### Worker Groups 2.0 (EE)
 
