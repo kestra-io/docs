@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest"
+import { formatCount } from "~/utils/vra-calculator"
 import { compute } from "~/utils/vra-calculator/compute"
 import { GOLDEN } from "~/utils/vra-calculator/__fixtures__/golden"
 import referenceCopy from "./__fixtures__/reference-copy.json"
@@ -12,9 +13,6 @@ import {
     effortBars,
     effortLine,
     funnelCounts,
-    funnelLine,
-    funnelReadout,
-    funnelSummary,
     headline,
     netLine,
     paybackChart,
@@ -67,15 +65,7 @@ describe("funnel copy matches the reference", () => {
     it.each(cases)("%s", (_name, { state, copy }) => {
         const { funnel } = compute(state)
         const s = copy.funnel
-        if (funnel) {
-            expect(toHtml(funnelLine(funnel))).toBe(slot(s, "funnelLine"))
-        } else {
-            expect(slot(s, "funnelLine")).toBe(PLACEHOLDER)
-        }
-        expect(funnelReadout(funnel).map((t) => t.value)).toEqual(
-            ["rTotal", "rScope", "rDistinct", "rWrap"].map((k) => slot(s, k)),
-        )
-        expect(funnelSummary(funnel)).toBe(slot(s, "funnelShort"))
+        expect(funnelCounts(funnel).scope).toBe(slot(s, "rScope"))
         expect(carefulCounts(funnel)).toEqual({
             careful: slot(s, "careful"),
             distinct: slot(s, "distinctN"),
@@ -152,37 +142,24 @@ describe("viewMessages", () => {
     it("shows each repeated effort-hours error once", () => {
         const result = compute({ ...GOLDEN.defaults, hp1: "", hp2: -1 })
         expect(result.errors).toHaveLength(2)
-        expect(viewMessages(result, "payback").errors).toEqual([
+        expect(viewMessages(result).errors).toEqual([
             "Effort hours have to be zero or more.",
         ])
     })
 
     it("words the dormant error as the share still in use in the payback view", () => {
         const result = compute({ ...GOLDEN.defaults, dormant: 150 })
-        expect(viewMessages(result, "payback").errors).toEqual([
+        expect(viewMessages(result).errors).toEqual([
             "The share still in use has to be between 0 and 100 percent.",
         ])
         expect(result.errors).toEqual([
             "The share not executed has to be between 0 and 100 percent.",
         ])
-        expect(viewMessages(result, "funnel").errors).toEqual(result.errors)
     })
 
-    it("keeps warnings in the payback view only", () => {
+    it("shows the warnings", () => {
         const result = compute({ ...GOLDEN.defaults, total: 0 })
-        expect(viewMessages(result, "funnel").warnings).toEqual([])
-        expect(viewMessages(result, "payback").warnings).toHaveLength(1)
-    })
-
-    it("shows the funnel view only errors about its own inputs", () => {
-        const paybackOnly = compute({ ...GOLDEN.defaults, horizon: 0 })
-        expect(viewMessages(paybackOnly, "funnel").errors).toEqual([])
-        expect(viewMessages(paybackOnly, "payback").errors).toHaveLength(1)
-
-        const funnelError = compute({ ...GOLDEN.defaults, total: "" })
-        expect(viewMessages(funnelError, "funnel").errors).toEqual(
-            funnelError.errors,
-        )
+        expect(viewMessages(result).warnings).toHaveLength(1)
     })
 })
 
@@ -192,7 +169,7 @@ describe("design views", () => {
     it("counts the funnel rows, wrappers as a deduction", () => {
         const { careful, distinct, wrappers } = carefulCounts(funnel)
         expect(funnelCounts(funnel)).toEqual({
-            scope: funnelReadout(funnel)[1].value,
+            scope: formatCount(funnel!.scope),
             distinct,
             wrappers: `-${wrappers}`,
             careful,

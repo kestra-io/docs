@@ -66,12 +66,6 @@
     color: var(--ks-content-secondary);
 }
 
-@mixin calc-panel {
-    padding: 1.25rem;
-    border: 1px solid var(--ks-border-secondary);
-    border-radius: $border-radius-lg;
-}
-
 @mixin calc-derived {
     margin: 0;
     padding: 1rem;

@@ -309,7 +309,7 @@
     const { inputs, result, field, update, ready, shareUrl, csvFile } =
         useCalculator()
 
-    const messages = computed(() => viewMessages(result.value, "payback"))
+    const messages = computed(() => viewMessages(result.value))
     const careful = computed(() => carefulCounts(result.value.funnel).careful)
     const symbol = computed(() => currencySymbol(inputs.value.cur))
 

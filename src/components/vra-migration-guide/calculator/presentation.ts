@@ -24,17 +24,6 @@ const strong = (text: string | number, tone?: Tone): RichPart =>
 
 export const PLACEHOLDER = "—"
 
-export function funnelLine(f: FunnelResult): Rich {
-    return [
-        strong(formatCount(f.scope)),
-        ` of your ${formatCount(f.total)} workflows need to be migrated. They will become `,
-        strong(`${formatCount(f.distinct)} distinct flows`),
-        ` in Kestra (${formatCount(f.scope)} - ${f.dupesPct}%). Out of those, `,
-        strong(formatCount(f.wrappers)),
-        ` (${f.wrapPct}%) are wrappers that can be migrated mostly for free.`,
-    ]
-}
-
 export function effortLine(f: FunnelResult): Rich {
     return [
         strong(formatCount(f.scope)),
@@ -43,22 +32,6 @@ export function effortLine(f: FunnelResult): Rich {
         " distinct flows in Kestra. Out of those, ",
         strong(formatCount(f.wrappers)),
         " are wrappers and migrate for free.",
-    ]
-}
-
-export function funnelSummary(f: FunnelResult | null): string {
-    if (!f) return ""
-    return `· ${formatCount(f.total)} vRO workflows, ${formatCount(f.distinct)} flows in Kestra`
-}
-
-export function funnelReadout(f: FunnelResult | null) {
-    const n = (v: number | undefined) =>
-        f && v !== undefined ? formatCount(v) : PLACEHOLDER
-    return [
-        { value: n(f?.total), label: "vRO workflows" },
-        { value: n(f?.scope), label: "migrate to Kestra" },
-        { value: n(f?.distinct), label: "flows in Kestra" },
-        { value: n(f?.wrappers), label: "are wrappers (easy migration)" },
     ]
 }
 
@@ -234,35 +207,23 @@ export function toolShareLabel(value: InputValue): string {
     return `${toNumber(value) || 0}%`
 }
 
-/**
- * Messages to show above a view. The payback view shows every error and the
- * warnings. The funnel view shows only errors about its own four inputs
- * (the reference shows all errors there, including fields the 3.2.2 view
- * does not have). Repeated messages (one per invalid effort-hour field) are
- * shown once.
- */
-// The payback view asks for the share of workflows still in use, the
-// complement of the engine's "not executed" input, so its error says so too.
-// The engine keeps the reference's wording, which the funnel view still uses.
-export const PAYBACK_MESSAGE_OVERRIDES: Readonly<Record<string, string>> =
+// The calculator asks for the share of workflows still in use, the complement
+// of the engine's "not executed" input, so its error says so too. The engine
+// keeps the reference's wording.
+export const MESSAGE_OVERRIDES: Readonly<Record<string, string>> =
     Object.freeze({
         [MESSAGES.dormant]:
             "The share still in use has to be between 0 and 100 percent.",
     })
 
-export function viewMessages(result: CalcResult, view: "funnel" | "payback") {
+/**
+ * Messages to show above the calculator: every error and the warnings, each
+ * once (one per invalid effort-hour field otherwise).
+ */
+export function viewMessages(result: CalcResult) {
     const unique = (list: string[]) => [...new Set(list)]
-    if (view === "funnel") {
-        // Funnel errors are the only ones that leave `funnel` null.
-        return {
-            errors: result.funnel ? [] : unique(result.errors),
-            warnings: [],
-        }
-    }
     return {
-        errors: unique(
-            result.errors.map((e) => PAYBACK_MESSAGE_OVERRIDES[e] ?? e),
-        ),
+        errors: unique(result.errors.map((e) => MESSAGE_OVERRIDES[e] ?? e)),
         warnings: unique(result.warnings),
     }
 }

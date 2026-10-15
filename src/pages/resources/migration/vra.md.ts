@@ -17,7 +17,6 @@ export const GET: APIRoute = async ({ site }) => {
         (post.body ?? "").replaceAll("{props.totalPlugins}", "{totalPlugins}"),
     )
     const body = mdxToMarkdown(source, {
-        CalculatorFunnel: `_Interactive: size your own workflow counts in the calculator at ${PAGE}#section-3-2-2._`,
         CalculatorPayback: `_Interactive: work out your payback in the calculator at ${PAGE}#section-7-2._`,
     })
 
