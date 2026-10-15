@@ -1,0 +1,206 @@
+---
+import Link from "~/components/common/Link.astro"
+import awsSVG from "~/assets/enterprise/aws.svg?raw"
+import azureSVG from "~/assets/enterprise/azure.svg?raw"
+import googleSVG from "~/assets/enterprise/google.svg?raw"
+import homeRoofSVG from "~/assets/enterprise/home-roof.svg?raw"
+
+const CLOUDS = [
+    {
+        name: "AWS",
+        logo: awsSVG,
+        href: "/plugins/plugin-aws",
+        cta: "Explore the AWS plugin",
+        facts: [
+            "60+ tasks and triggers: S3, Lambda, Glue, Athena, EMR, SQS, SNS, EventBridge, Kinesis, Bedrock and more.",
+            "S3 as Kestra's internal storage for outputs and namespace files.",
+            "AWS Secrets Manager as the secrets backend in the Enterprise Edition.",
+        ],
+    },
+    {
+        name: "Azure",
+        logo: azureSVG,
+        href: "/plugins/plugin-azure",
+        cta: "Explore the Azure plugin",
+        facts: [
+            "80+ tasks and triggers: Blob Storage, Data Factory, Synapse, Functions, Event Hubs, Service Bus, Batch, AI Foundry and more.",
+            "Blob Storage as Kestra's internal storage for outputs and namespace files.",
+            "Azure Key Vault as the secrets backend in the Enterprise Edition.",
+        ],
+    },
+    {
+        name: "Google Cloud",
+        logo: googleSVG,
+        href: "/plugins/plugin-gcp",
+        cta: "Explore the Google Cloud plugin",
+        facts: [
+            "80+ tasks and triggers: BigQuery, Cloud Storage, Pub/Sub, Dataproc, Dataflow, Vertex AI, Cloud Functions, GKE and more.",
+            "Cloud Storage as Kestra's internal storage for outputs and namespace files.",
+            "Google Secret Manager as the secrets backend in the Enterprise Edition.",
+        ],
+    },
+]
+---
+
+<section class="clouds">
+    <div class="container">
+        <div class="heading">
+            <h2>Partnering with the major cloud providers</h2>
+            <p>
+                To give you the best integrations, each cloud is a plugin group,
+                a storage backend and a secrets backend, so workflows run next
+                to the data and services they orchestrate.
+            </p>
+        </div>
+        <div class="row g-4">
+            {
+                CLOUDS.map((cloud) => (
+                    <div class="col-12 col-lg-4">
+                        <article class="cloud">
+                            <div class="head">
+                                <span class="logo" set:html={cloud.logo} />
+                                <h3>{cloud.name}</h3>
+                            </div>
+                            <ul>
+                                {cloud.facts.map((fact) => (
+                                    <li>{fact}</li>
+                                ))}
+                            </ul>
+                            <Link href={cloud.href} class="more">
+                                {cloud.cta}
+                            </Link>
+                        </article>
+                    </div>
+                ))
+            }
+        </div>
+        <p class="anywhere">
+            <span class="logo" set:html={homeRoofSVG} />
+            Not on one of these? Kestra runs on any Kubernetes cluster, Docker host
+            or bare metal server, in the cloud or on-premises.
+        </p>
+    </div>
+</section>
+
+<style lang="scss">
+    .clouds {
+        padding: 5rem 0;
+        background: var(--ks-background-secondary);
+
+        .heading {
+            max-width: 640px;
+            margin-bottom: 2.5rem;
+
+            h2 {
+                font-size: clamp(1.75rem, 3vw, 2.25rem);
+                font-weight: 600;
+                letter-spacing: -0.015em;
+                margin: 0 0 1rem;
+                text-wrap: balance;
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-secondary);
+                line-height: 1.6;
+            }
+        }
+
+        .cloud {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--ks-border-secondary);
+            background: var(--ks-background-primary);
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+
+            .head {
+                display: flex;
+                align-items: center;
+                gap: 0.875rem;
+            }
+
+            h3 {
+                font-size: $font-size-lg;
+                font-weight: 600;
+                margin: 0;
+                color: var(--ks-content-primary);
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.625rem;
+            }
+
+            li {
+                position: relative;
+                padding-left: 1rem;
+                font-size: $font-size-sm;
+                line-height: 1.5;
+                color: var(--ks-content-secondary);
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 0.6em;
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 50%;
+                    background: var(--ks-content-link);
+                }
+            }
+
+            .more {
+                margin-top: auto;
+                font-size: $font-size-sm;
+                font-weight: 600;
+                color: var(--ks-content-link);
+                text-decoration: none;
+            }
+        }
+
+        .logo {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: #f7f7f7;
+            color: #232f3e;
+
+            :global(svg) {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
+        .anywhere {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            margin: 2rem 0 0;
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+
+            .logo {
+                width: 36px;
+                height: 36px;
+
+                :global(svg) {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+</style>

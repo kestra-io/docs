@@ -533,4 +533,9 @@
             margin-top: 0.75rem;
         }
     }
+
+    .form-control::placeholder {
+        color: var(--ks-content-tertiary);
+        opacity: 1;
+    }
 </style>
