@@ -742,11 +742,15 @@ kestractl tenants get <tenant_id>
 
 # Create a tenant
 kestractl tenants create <tenant_id> --name "My Tenant"
-kestractl tenants create <tenant_id> --concurrency-behavior CANCEL
 
-# Update a tenant
+# Create a tenant with a concurrency limit and an execution quota
+kestractl tenants create <tenant_id> --concurrency-limit 10 --concurrency-behavior CANCEL
+kestractl tenants create <tenant_id> --quota duration=PT1H,limit=100,behavior=FAIL
+
+# Update a tenant — only the flags you pass change
 kestractl tenants update <tenant_id> --name "Updated Name"
-kestractl tenants update <tenant_id> --concurrency-behavior FAIL
+kestractl tenants update <tenant_id> --concurrency-limit 20 --concurrency-behavior FAIL
+kestractl tenants update <tenant_id> --quota duration=PT1H,limit=100,behavior=FAIL --quota duration=P1D,limit=1000,behavior=CANCEL
 
 # Delete a tenant — prompts for confirmation; skip with --yes
 kestractl tenants delete <tenant_id>
@@ -756,7 +760,9 @@ kestractl tenants delete <tenant_id> --yes
 | Flag | Default | Description |
 |---|---|---|
 | `--name` | tenant ID | Tenant display name |
-| `--concurrency-behavior` | `QUEUE` | Behavior when the concurrency limit is reached: `QUEUE`, `CANCEL`, or `FAIL` |
+| `--concurrency-limit` | none | Maximum number of concurrent executions in the tenant |
+| `--concurrency-behavior` | `QUEUE` | Behavior when the concurrency limit is reached: `QUEUE`, `CANCEL`, or `FAIL`. Requires `--concurrency-limit` |
+| `--quota` | none | Execution quota in the form `duration=<ISO 8601>,limit=<n>,behavior=<FAIL\|CANCEL>`. Repeatable. On `update`, the quotas you pass replace all existing quotas |
 
 ## IAM management (Enterprise Edition)
 
