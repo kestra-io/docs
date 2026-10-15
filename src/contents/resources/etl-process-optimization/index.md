@@ -178,7 +178,7 @@ triggers:
     cron: "0 0 * * *" # Daily at midnight
 ```
 
-This workflow automates the entire incremental ETL process, from extraction based on the last run time to transformation and loading, providing a reliable and optimized solution. Companies like [Reglo](/customers/reglo) use Kestra to automate their ETL processes with simple integrations. This approach provides a significant advantage over code-heavy frameworks like [Prefect](/vs/prefect) or [Dagster](/vs/dagster) for teams that need a universal, language-agnostic platform.
+This workflow automates the entire incremental ETL process, from extraction based on the last run time to transformation and loading, providing a reliable and optimized solution. Companies like [Reglo](/stories/reglo) use Kestra to automate their ETL processes with simple integrations. This approach provides a significant advantage over code-heavy frameworks like [Prefect](/vs/prefect) or [Dagster](/vs/dagster) for teams that need a universal, language-agnostic platform.
 
 ## Conclusion: The Future of Optimized Data Pipelines
 

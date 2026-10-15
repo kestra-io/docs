@@ -200,7 +200,7 @@ testimonials:
         name: Active users
       - value: "+5000"
         name: Workflows created
-    storyLink: /customers/leroy-merlin-france
+    storyLink: /stories/leroy-merlin-france
 
 platformStrengths:
   title: Kestra Is Built for Production Workloads
