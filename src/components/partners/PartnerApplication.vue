@@ -97,6 +97,7 @@
                                 <div class="form-group">
                                     <label for="apply-plan">
                                         {{ form.track === "consulting" ? "What do you want to do with Kestra?" : "What would the integration do?" }}
+                                        <span class="required-field">*</span>
                                     </label>
                                     <textarea id="apply-plan" v-model.trim="form.plan" class="form-control" rows="4" :placeholder="form.track === 'consulting' ? 'Customers you have in mind, services you want to offer, migrations you run (VMware, Airflow, Control-M...)' : 'Which of your products, which Kestra tasks or triggers, who asked for it'" />
                                 </div>
@@ -404,6 +405,7 @@
             font-size: $font-size-xl;
             font-weight: 600;
             margin-bottom: 1rem;
+            color: var(--ks-content-primary);
         }
     }
 
@@ -432,6 +434,7 @@
 
         strong {
             font-size: $font-size-md;
+            color: var(--ks-content-primary);
         }
 
         span {
@@ -453,6 +456,7 @@
     .label {
         display: block;
         margin-bottom: 0.5rem;
+        color: var(--ks-content-primary);
     }
 
     .checks {
@@ -483,6 +487,11 @@
         p {
             margin: 0;
         }
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+        }
     }
 
     .nav {
@@ -511,6 +520,7 @@
 
         h2 {
             margin: 0;
+            color: var(--ks-content-primary);
         }
 
         p {

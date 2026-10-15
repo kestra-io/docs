@@ -22,7 +22,6 @@ import FormatQuoteCloseOutline from "vue-material-design-icons/FormatQuoteCloseO
 import BriefcaseOutline from "vue-material-design-icons/BriefcaseOutline.vue"
 import KestraIcon from "~/components/icons/KestraIcon.vue"
 import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
-import AccountPlusOutline from "vue-material-design-icons/AccountPlusOutline.vue"
 import EmailOutline from "vue-material-design-icons/EmailOutline.vue"
 import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
 import HubOutline from "vue-material-design-icons/HubOutline.vue"
@@ -207,11 +206,6 @@ export const menuItems: MenuItems = {
                 icon: HandshakeOutline,
                 title: "Partners",
                 link: "/partners"
-            },
-            {
-                icon: AccountPlusOutline,
-                title: "Become a Partner",
-                link: "/partners/apply"
             },
             {
                 icon: EmailOutline,
