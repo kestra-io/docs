@@ -8,6 +8,7 @@ import {
     type InputValue,
     type PaybackResult,
 } from "~/utils/vra-calculator"
+import { MESSAGES } from "~/utils/vra-calculator/validate"
 
 // Display copy and chart geometry for the calculator views, worded as in the
 // reference's render(). Numbers all come from the engine; this module only
@@ -240,6 +241,15 @@ export function toolShareLabel(value: InputValue): string {
  * does not have). Repeated messages (one per invalid effort-hour field) are
  * shown once.
  */
+// The payback view asks for the share of workflows still in use, the
+// complement of the engine's "not executed" input, so its error says so too.
+// The engine keeps the reference's wording, which the funnel view still uses.
+export const PAYBACK_MESSAGE_OVERRIDES: Readonly<Record<string, string>> =
+    Object.freeze({
+        [MESSAGES.dormant]:
+            "The share still in use has to be between 0 and 100 percent.",
+    })
+
 export function viewMessages(result: CalcResult, view: "funnel" | "payback") {
     const unique = (list: string[]) => [...new Set(list)]
     if (view === "funnel") {
@@ -249,7 +259,12 @@ export function viewMessages(result: CalcResult, view: "funnel" | "payback") {
             warnings: [],
         }
     }
-    return { errors: unique(result.errors), warnings: unique(result.warnings) }
+    return {
+        errors: unique(
+            result.errors.map((e) => PAYBACK_MESSAGE_OVERRIDES[e] ?? e),
+        ),
+        warnings: unique(result.warnings),
+    }
 }
 
 export function funnelCounts(f: FunnelResult | null) {

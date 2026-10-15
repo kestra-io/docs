@@ -157,6 +157,17 @@ describe("viewMessages", () => {
         ])
     })
 
+    it("words the dormant error as the share still in use in the payback view", () => {
+        const result = compute({ ...GOLDEN.defaults, dormant: 150 })
+        expect(viewMessages(result, "payback").errors).toEqual([
+            "The share still in use has to be between 0 and 100 percent.",
+        ])
+        expect(result.errors).toEqual([
+            "The share not executed has to be between 0 and 100 percent.",
+        ])
+        expect(viewMessages(result, "funnel").errors).toEqual(result.errors)
+    })
+
     it("keeps warnings in the payback view only", () => {
         const result = compute({ ...GOLDEN.defaults, total: 0 })
         expect(viewMessages(result, "funnel").warnings).toEqual([])

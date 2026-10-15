@@ -86,8 +86,8 @@
                         <span class="step" aria-label="Step 2 of 3">2/3</span>
                     </div>
                     <p class="intro">
-                        Your count from 3.2.2 is carried in. Change it here and
-                        both sections update.
+                        Start from your vRO export count. Change any number and
+                        the result updates.
                     </p>
                     <FunnelTable
                         :id-prefix="`${idPrefix}-counts`"
