@@ -192,9 +192,9 @@ The integration libraries go too. Hand-written vRO clients for Infoblox, a load 
 
 Open source is where most evaluations start, not where every migration ends. Leaving vRA crosses the catalog, the inventory and the security review, and the teams that finished used both editions.
 
-A [Fortune 500 industrial company replaced VMware Aria Automation with Kestra](/customers/fortune-500-company) to cut costs and secure hybrid cloud automation across IT and OT. Its security policy forbade a control plane spanning security zones, so it runs four isolated Kestra platforms for OT and one for IT. The company reports a 90% reduction in licensing cost versus Aria Automation and delivery that went from six months to six days. Ansible kept doing the heavy lifting, now called from flows, and ServiceNow stayed the system that tickets and incidents flow through.
+A [Fortune 500 industrial company replaced VMware Aria Automation with Kestra](/stories/fortune-500-company) to cut costs and secure hybrid cloud automation across IT and OT. Its security policy forbade a control plane spanning security zones, so it runs four isolated Kestra platforms for OT and one for IT. The company reports a 90% reduction in licensing cost versus Aria Automation and delivery that went from six months to six days. Ansible kept doing the heavy lifting, now called from flows, and ServiceNow stayed the system that tickets and incidents flow through.
 
-[Dataport](/customers/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on its private cloud, with a government-grade orchestration control plane. [CAGIP, Crédit Agricole's IT production arm](/customers/credit-agricole), transformed its infrastructure operations and scaled workflows across more than 100 clusters, showing that the same engine scales past one team's workflows.
+[Dataport](/stories/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on its private cloud, with a government-grade orchestration control plane. [CAGIP, Crédit Agricole's IT production arm](/stories/credit-agricole), transformed its infrastructure operations and scaled workflows across more than 100 clusters, showing that the same engine scales past one team's workflows.
 
 ## Where to start
 

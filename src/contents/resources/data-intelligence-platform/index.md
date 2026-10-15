@@ -148,10 +148,10 @@ The example above uses an event-driven `Trigger` for real-time updates, which is
 Implementing a data intelligence platform, powered by disciplined orchestration, delivers concrete benefits across the organization.
 
 *   **Self-Service Analytics:** By making data discoverable, understandable, and trustworthy, business users and analysts can find and use the data they need without heavy reliance on engineering teams.
-*   **Accelerating AI/ML Model Development:** Data scientists can spend more time building models and less time searching for and cleaning data. As seen at **[Apple's ML team](/customers/apple)**, orchestrating large-scale data pipelines is fundamental to supporting advanced AI initiatives.
+*   **Accelerating AI/ML Model Development:** Data scientists can spend more time building models and less time searching for and cleaning data. As seen at **[Apple's ML team](/stories/apple)**, orchestrating large-scale data pipelines is fundamental to supporting advanced AI initiatives.
 *   **Ensuring Regulatory Compliance:** Automated lineage tracking and governance provide a clear audit trail for regulations like GDPR, CCPA, and others, simplifying compliance efforts.
 *   **Optimizing Business Operations:** Companies can gain deeper insights into their operations, from supply chains to customer behavior. This enables data-driven decisions that improve efficiency and reduce costs, a key driver in [logistics data orchestration](/resources/data/logistics-data-orchestration).
-*   **Improving Customer Experiences:** With a unified view of customer data, organizations can deliver more personalized products and services. At **[JPMorgan Chase](/customers/jpmorgan-chase)**, orchestrating cybersecurity analytics helps protect customer data at a massive scale, processing billions of rows securely. It also enables [AI orchestration for non-technical teams](/resources/ai/ai-orchestration-for-non-technical-teams) to put these rich datasets to work.
+*   **Improving Customer Experiences:** With a unified view of customer data, organizations can deliver more personalized products and services. At **[JPMorgan Chase](/stories/jpmorgan-chase)**, orchestrating cybersecurity analytics helps protect customer data at a massive scale, processing billions of rows securely. It also enables [AI orchestration for non-technical teams](/resources/ai/ai-orchestration-for-non-technical-teams) to put these rich datasets to work.
 
 ## Related Concepts
 
