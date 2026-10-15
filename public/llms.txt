@@ -582,6 +582,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Task Runner Types – Choose the Right Execution Backend](https://kestra.io/docs/task-runners/types.md)
 - [AWS Batch Task Runner – Run Tasks on ECS Fargate, EC2, or EKS](https://kestra.io/docs/task-runners/types/aws-batch-task-runner.md)
 - [AWS EC2 Task Runner – Run Tasks Natively on EC2 Instances](https://kestra.io/docs/task-runners/types/aws-ec2-task-runner.md)
+- [AWS Lambda MicroVM Task Runner – Run Tasks on ARM64 MicroVMs](https://kestra.io/docs/task-runners/types/aws-lambdamicrovm-task-runner.md)
 - [Azure Batch Task Runner: Run Tasks on Azure Containers](https://kestra.io/docs/task-runners/types/azure-batch-task-runner.md)
 - [Azure Virtual Machine Task Runner – Run Tasks Natively on Azure VMs](https://kestra.io/docs/task-runners/types/azure-virtualmachine-task-runner.md)
 - [Docker Task Runner – Run Tasks in Containers](https://kestra.io/docs/task-runners/types/docker-task-runner.md)
