@@ -10,7 +10,7 @@ Secure a Kestra deployment with credential setup, network and worker isolation, 
 
 ## Credential initialization
 
-On Enterprise Edition, use [OIDC/SSO](../07.enterprise/03.auth/sso/index.md) or [LDAP](../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials. [One-Time-Password (OTP)](../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) is also supported, though it provides less protection than SSO with MFA.
+On Enterprise Edition, use [OIDC/SSO](../07.enterprise/03.auth/sso/index.md) or [LDAP](../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials. [One-Time-Password (OTP)](../07.enterprise/03.auth/04.authentication/index.md#passwordless-one-time-password) is also supported, though it provides less protection than SSO with MFA.
 
 If you use Basic Authentication on OSS or EE, configure `username` and `password` in the application configuration file before you start Kestra in production. Kestra then skips the Setup page.
 
@@ -54,11 +54,46 @@ This changes what a compromised worker can reach:
 
 Because the worker only needs an outbound route to the controller, you can run it in a restricted subnet, a separate region, or an air-gapped site. Give it network access to the controller port and to the systems its tasks call, and nothing else. Do not give worker hosts database credentials or cloud IAM roles that the tasks themselves do not need.
 
-The gRPC channel is plaintext by default. Before a worker runs outside the network you trust, secure the channel as described in the next section.
+The gRPC channel is plaintext and unauthenticated by default. Before a worker runs outside the network you trust, secure the channel as described in the next section.
 
 ## Transport security
 
-In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default this channel is plaintext. TLS, mTLS, and JWT-based worker authentication are Enterprise Edition features; the open-source edition always uses a plaintext channel, so keep controller and workers on a trusted network.
+In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default, this channel is plaintext and unauthenticated: any process that can reach the controller port can register as a worker, receive tasks, read KV and namespace file metadata, and send task results back. The controller also sends each worker the instance's encryption key (`kestra.encryption.secret-key`) when it connects, so an unauthenticated worker can decrypt `SECRET` values.
+
+### Basic authentication (OSS)
+
+The open-source edition has no TLS on this channel, so keep controllers and workers on a trusted network. To stop unknown processes from connecting as workers, require a shared username and password:
+
+```yaml
+kestra:
+  grpc:
+    basic-auth:
+      enabled: true
+      username: kestra-worker
+      password: ${KESTRA_GRPC_PASSWORD}
+```
+
+Set the same values on every worker and on every server that runs a controller. Webserver and standalone servers start an embedded controller unless you pass `--no-controller`, so they need the credentials too.
+
+The credentials authenticate the worker fleet as a whole. They don't identify an individual worker or assign it to a worker group, and they're separate from `kestra.server.basic-auth`.
+
+:::alert{type="warning"}
+Basic authentication doesn't encrypt the channel. Every call carries the credentials base64-encoded, so anyone who can capture traffic between workers and the controller can read them.
+:::
+
+Health checks (`grpc.health.v1.Health`) don't require credentials, so orchestrator liveness probes keep working. To change the credentials, update them on every server, then restart the controllers and the workers.
+
+To confirm the setup, check that the controller logs `gRPC basic authentication is enabled` at startup and that each worker logs `Connected to controller`. A worker with missing or wrong credentials doesn't start, and logs this error:
+
+```
+Failed connecting to Kestra controller (UNAUTHENTICATED): Missing or invalid basic authentication credentials. Configure kestra.grpc.basic-auth.username and kestra.grpc.basic-auth.password on this worker with the values expected by the controller.
+```
+
+See [gRPC basic authentication](../configuration/05.security-and-secrets/index.md#grpc-basic-authentication) for the property reference.
+
+### TLS and worker authentication (EE)
+
+Enterprise Edition encrypts the channel with TLS and can verify each worker's identity:
 
 - **One-way TLS** — the controller presents a certificate; workers verify it. Encrypts the channel without requiring worker certificates.
 - **Mutual TLS (mTLS)** — both controller and worker present certificates. Use this when you need strong identity verification between components, not just encryption.
@@ -66,6 +101,8 @@ In distributed deployments, Worker Controllers communicate with Workers over gRP
 See [gRPC TLS/mTLS configuration](../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference. With mTLS (`kestra.grpc.tls.client-auth: REQUIRE`), a worker without a certificate signed by the controller's trusted CA is refused at the handshake.
 
 On top of transport security, Enterprise Edition workers can be required to present a JWT obtained with a per-group registration token (`kestra.ee.worker.auth.enabled`, off by default). See [worker authentication](../07.enterprise/04.scalability/worker-group/index.md#worker-authentication).
+
+`kestra.grpc.basic-auth` has no effect on Enterprise Edition. Use worker authentication instead.
 
 ## HTTP task URL filtering
 
