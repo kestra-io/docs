@@ -441,6 +441,42 @@ DELETE
 
 ---
 
+:::collapse{title="REUSABLE_INPUTS"}
+**Scope:** Namespace
+
+**Actions and their meaning**
+- `VIEW`: read a reusable input set and its revision history.
+- `LIST`: search or browse reusable input sets, including sets inherited from parent namespaces.
+- `CREATE`: create a new reusable input set.
+- `UPDATE`: update an existing reusable input set.
+- `DELETE`: delete a reusable input set.
+
+**Endpoints**
+
+LIST
+- `GET /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs`
+- `GET /api/v1/{tenant}/reusable-inputs/namespaces` (distinct namespaces that own at least one set; any `REUSABLE_INPUTS: LIST` action)
+
+VIEW
+- `GET /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}/revisions`
+
+CREATE
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}` (when the set does not yet exist in the namespace)
+
+UPDATE
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}` (when the set already exists in the namespace)
+
+DELETE
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/reusable-inputs/{id}`
+
+Notes
+- The same `PUT` endpoint checks `CREATE` or `UPDATE` depending on whether the set already exists.
+- Listing and resolving a set from a child namespace also returns sets inherited from parent namespaces; the action check uses the calling user's access to the child namespace.
+:::
+
+---
+
 :::collapse{title="BLUEPRINT"}
 **Scope:** Tenant
 

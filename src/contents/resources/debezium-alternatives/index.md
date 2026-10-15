@@ -94,7 +94,7 @@ triggers:
     # Other Debezium connector properties here
 ```
 
-Companies like [Leroy Merlin France](/customers/leroy-merlin-france) have used Kestra to build a Data Mesh at scale, increasing data production by 900%, while [JPMorgan Chase](/customers/jpmorgan-chase) orchestrates complex cybersecurity analytics workflows processing billions of rows. Kestra's strength lies in its ability to provide a single, unified platform for all your [data orchestration](/data) needs.
+Companies like [Leroy Merlin France](/stories/leroy-merlin-france) have used Kestra to build a Data Mesh at scale, increasing data production by 900%, while [JPMorgan Chase](/stories/jpmorgan-chase) orchestrates complex cybersecurity analytics workflows processing billions of rows. Kestra's strength lies in its ability to provide a single, unified platform for all your [data orchestration](/data) needs.
 
 **Best for:** Teams seeking a flexible, event-driven orchestrator to manage CDC alongside other data, infra, and AI workflows, simplifying operations and enabling a Kafka-less approach when desired.
 
