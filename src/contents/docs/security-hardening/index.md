@@ -1,12 +1,32 @@
 ---
 title: "Security Hardening for Kestra: Network and Process Isolation"
 h1: Harden your deployment with isolation and network controls
-sidebarTitle: Security Hardening
+sidebarTitle: Security
 icon: /src/contents/docs/icons/admin.svg
 description: Best practices for hardening Kestra security, including network isolation, host-level controls, and plugin validation.
 ---
 
-Configure network isolation, endpoint authentication, and upload protection to harden a Kestra deployment.
+Secure a Kestra deployment with credential setup, network and worker isolation, transport security, request filtering, and endpoint protection.
+
+## Credential initialization
+
+On Enterprise Edition, use [OIDC/SSO](../07.enterprise/03.auth/sso/index.md) or [LDAP](../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials. [One-Time-Password (OTP)](../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) is also supported, though it provides less protection than SSO with MFA.
+
+If you use Basic Authentication on OSS or EE, configure `username` and `password` in the application configuration file before you start Kestra in production. Kestra then skips the Setup page.
+
+```yaml
+kestra:
+  server:
+    basic-auth:
+      username: admin@kestra.io
+      password: "{{ your-strong-password }}"
+```
+
+:::alert{type="warning"}
+On a fresh installation with no `basic-auth` credentials configured, the Setup page at `/ui/main/setup` is publicly reachable. Any user who reaches it first can set credentials and lock out the intended administrator.
+:::
+
+## Network isolation
 
 By design, Kestra allows arbitrary HTTP calls and script execution. To prevent misuse of link-local metadata services (IMDS), isolate and block access at the network layer:
 
@@ -19,12 +39,12 @@ By design, Kestra allows arbitrary HTTP calls and script execution. To prevent m
 Running workflows in isolated environments reduces the impact of potentially malicious flows:
 
 - Container sandboxes: launch each flow execution in its own container (for example, Docker or Kubernetes Pod) with minimal privileges.
-- Ephemeral compute: use Kestra's native [Task Runners](../../task-runners/index.mdx) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
+- Ephemeral compute: use Kestra's native [Task Runners](../task-runners/index.mdx) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
 - Minimum host permissions: grant only the OS-level rights required for the runtime; avoid mounting cloud credential files or granting host-level IAM roles directly.
 
 ## Worker isolation
 
-In Kestra 2.0, workers do not connect to the database. A worker opens an outbound gRPC stream to a Worker Controller, receives jobs on that stream, and sends results, logs, and metrics back on it. The database repositories are not on the worker classpath, so there is no worker-side setting that can re-enable direct database access. See [worker communication](../../08.architecture/index.mdx#worker-communication) for how the stream works.
+In Kestra 2.0, workers do not connect to the database. A worker opens an outbound gRPC stream to a Worker Controller, receives jobs on that stream, and sends results, logs, and metrics back on it. The database repositories are not on the worker classpath, so there is no worker-side setting that can re-enable direct database access. See [worker communication](../08.architecture/index.mdx#worker-communication) for how the stream works.
 
 This changes what a compromised worker can reach:
 
@@ -43,9 +63,9 @@ In distributed deployments, Worker Controllers communicate with Workers over gRP
 - **One-way TLS** — the controller presents a certificate; workers verify it. Encrypts the channel without requiring worker certificates.
 - **Mutual TLS (mTLS)** — both controller and worker present certificates. Use this when you need strong identity verification between components, not just encryption.
 
-See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference. With mTLS (`kestra.grpc.tls.client-auth: REQUIRE`), a worker without a certificate signed by the controller's trusted CA is refused at the handshake.
+See [gRPC TLS/mTLS configuration](../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference. With mTLS (`kestra.grpc.tls.client-auth: REQUIRE`), a worker without a certificate signed by the controller's trusted CA is refused at the handshake.
 
-On top of transport security, Enterprise Edition workers can be required to present a JWT obtained with a per-group registration token (`kestra.ee.worker.auth.enabled`, off by default). See [worker authentication](../../07.enterprise/04.scalability/worker-group/index.md#worker-authentication).
+On top of transport security, Enterprise Edition workers can be required to present a JWT obtained with a per-group registration token (`kestra.ee.worker.auth.enabled`, off by default). See [worker authentication](../07.enterprise/04.scalability/worker-group/index.md#worker-authentication).
 
 ## HTTP task URL filtering
 
@@ -129,38 +149,18 @@ Generate a key with:
 openssl rand -base64 32
 ```
 
-See [Encryption configuration](../../configuration/05.security-and-secrets/index.md#encryption) for full details.
+See [Encryption configuration](../configuration/05.security-and-secrets/index.md#encryption) for full details.
 
 ## Plugin restrictions (EE)
 
 Plugin restrictions control which task runners and plugins flow authors can use. At minimum, the Process task runner should be restricted in multi-tenant or untrusted environments — it executes directly on the worker host with no container isolation.
 
-Configure plugin restrictions and worker isolation under [Worker Isolation](../../07.enterprise/02.governance/worker-isolation/index.md). For finer-grained policy enforcement across namespaces and tenants, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject, validate, or reject plugin and flow configuration at save or execution time.
+Configure plugin restrictions and worker isolation under [Worker Isolation](../07.enterprise/02.governance/worker-isolation/index.md). For finer-grained policy enforcement across namespaces and tenants, use [Policies](../07.enterprise/02.governance/policies/index.md) to inject, validate, or reject plugin and flow configuration at save or execution time.
 
 ## Plugin and code validation
 
-- Plugin configuration: use Kestra’s plugin architecture, including [Plugin Versioning](../../07.enterprise/05.instance/versioned-plugins/index.md), to control which plugins are allowed and [which should be prohibited](../../07.enterprise/02.governance/worker-isolation/index.md).
-- CI/CD validation: add a [Flow Validation step in your CI/CD pipeline](../../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
-
-## Credential initialization
-
-On Enterprise Edition, use [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials. [One-Time-Password (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) is also supported, though it provides less protection than SSO with MFA.
-
-If you use Basic Authentication on OSS or EE:
-
-:::alert{type="warning"}
-On a fresh installation with no `basic-auth` credentials configured, the Setup page at `/ui/main/setup` is publicly reachable. Any user who reaches it first can set credentials and lock out the intended administrator.
-
-**Configure `username` and `password` in the application configuration file before starting Kestra in production.** This skips the Setup page entirely and ensures the instance is never in an unprotected state.
-
-```yaml
-kestra:
-  server:
-    basic-auth:
-      username: admin@kestra.io
-      password: "{{ your-strong-password }}"
-```
-:::
+- Plugin configuration: use Kestra’s plugin architecture, including [Plugin Versioning](../07.enterprise/05.instance/versioned-plugins/index.md), to control which plugins are allowed and [which should be prohibited](../07.enterprise/02.governance/worker-isolation/index.md).
+- CI/CD validation: add a [Flow Validation step in your CI/CD pipeline](../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
 
 ## Management endpoint access
 
@@ -181,18 +181,18 @@ endpoints:
 
 When `basic-auth` credentials are present, Kestra's management endpoint filter requires Basic Auth on every request to that port.
 
-See [Kestra endpoints](../03.monitoring/index.md#kestra-endpoints) for the full list of what is exposed on the management port.
+See [Kestra endpoints](../10.administrator-guide/03.monitoring/index.md#kestra-endpoints) for the full list of what is exposed on the management port.
 
 ## Webhook endpoints
 
 Webhook URLs (`/api/v1/{tenant}/executions/webhook/{namespace}/{flowId}/{key}`) are served without authentication, even when Basic Authentication or SSO is enabled. The trigger's `key` is the only credential, and anyone who has it can start the flow and choose the request body it receives.
 
-- Treat the key as a credential: generate a long random value, store it as a [secret](../../06.concepts/04.secret/index.md), and reference it with `{{ secret('WEBHOOK_KEY') }}`. To rotate it, update the secret; the flow does not change.
+- Treat the key as a credential: generate a long random value, store it as a [secret](../06.concepts/04.secret/index.md), and reference it with `{{ secret('WEBHOOK_KEY') }}`. To rotate it, update the secret; the flow does not change.
 - The key is part of the URL path, so it appears in reverse proxy, load balancer, and access logs. Restrict who can read those logs.
-- Treat request data as untrusted input. Pass it to script tasks through `env`, never inside `commands`, `beforeCommands`, `script`, or `interpreter`. See [Pass request data to scripts through environment variables](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md#pass-request-data-to-scripts-through-environment-variables).
-- Run script tasks in webhook-triggered flows on the [Docker or Kubernetes task runners](../../task-runners/index.mdx) rather than the Process runner. A command that runs through the Process runner runs on the worker host with the worker's privileges.
+- Treat request data as untrusted input. Pass it to script tasks through `env`, never inside `commands`, `beforeCommands`, `script`, or `interpreter`. See [Pass request data to scripts through environment variables](../05.workflow-components/07.triggers/03.webhook-trigger/index.md#pass-request-data-to-scripts-through-environment-variables).
+- Run script tasks in webhook-triggered flows on the [Docker or Kubernetes task runners](../task-runners/index.mdx) rather than the Process runner. A command that runs through the Process runner runs on the worker host with the worker's privileges.
 - If your callers can authenticate (mTLS, IP ranges, or a provider signature such as HMAC), enforce it in a reverse proxy or API gateway in front of `/api/v1/*/executions/webhook/`. The core `Webhook` trigger does not verify signatures.
-- Keep [recursive rendering](../../11.migration-guide/v0.14.0/recursive-rendering/index.md) (`kestra.variables.recursive-rendering`) disabled, which is the default. When enabled, expressions inside request data are evaluated.
+- Keep [recursive rendering](../11.migration-guide/v0.14.0/recursive-rendering/index.md) (`kestra.variables.recursive-rendering`) disabled, which is the default. When enabled, expressions inside request data are evaluated.
 
 ## ZIP bomb protection
 
@@ -218,6 +218,6 @@ The protection applies only to user-uploaded ZIPs (flow import and namespace fil
 
 ## Related configuration
 
-- [Encryption and secrets configuration](../../configuration/05.security-and-secrets/index.md) — encryption key setup, secret backend configuration, and auth security settings.
-- [External Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) — integrate with AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault, and others to avoid storing credentials in Kestra directly.
-- [Policies](../../07.enterprise/02.governance/policies/index.md) — enforce governance rules that inject, validate, or reject plugin and flow configuration across namespaces and tenants.
+- [Encryption and secrets configuration](../configuration/05.security-and-secrets/index.md) — encryption key setup, secret backend configuration, and auth security settings.
+- [External Secrets Manager](../07.enterprise/02.governance/secrets-manager/index.md) — integrate with AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault, and others to avoid storing credentials in Kestra directly.
+- [Policies](../07.enterprise/02.governance/policies/index.md) — enforce governance rules that inject, validate, or reject plugin and flow configuration across namespaces and tenants.
