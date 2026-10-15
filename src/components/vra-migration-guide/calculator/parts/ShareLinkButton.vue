@@ -2,11 +2,11 @@
     <div class="share-link">
         <button
             type="button"
-            class="btn btn-sm btn-secondary"
+            class="link-button"
             :disabled="disabled"
             @click="share"
         >
-            Copy a link with these numbers
+            Copy link with these numbers
         </button>
         <span class="status" role="status">{{ status }}</span>
         <input
@@ -59,6 +59,11 @@
         flex-wrap: wrap;
         align-items: center;
         gap: 0.5rem;
+    }
+
+    .link-button {
+        @include calc-link-button;
+        @include guide-focus-ring;
     }
 
     .status {

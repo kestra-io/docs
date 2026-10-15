@@ -32,12 +32,27 @@
 @mixin calc-form-field {
     --ks-form-bg: var(--ks-background-input);
     --ks-form-color: var(--ks-content-primary);
-    --ks-form-border-color: var(--ks-border-primary);
+    --ks-form-border-color: var(--ks-border-secondary);
+    min-height: 2.5rem;
+    border-radius: $border-radius;
+    font-family: inherit;
+    font-size: 1rem;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    &[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
 }
 
 @mixin calc-form-label {
-    font-size: $font-size-sm;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 400;
     color: var(--ks-content-primary);
 }
 
@@ -59,8 +74,43 @@
 
 @mixin calc-derived {
     margin: 0;
-    padding: 0.65rem 0.8rem;
+    padding: 1rem;
     border-radius: $border-radius;
     background: var(--ks-background-secondary);
     font-size: $font-size-sm;
+}
+
+$calc-shadow-surface: 0 2px 8px rgba(58, 29, 109, 0.05);
+$calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
+
+@mixin calc-card {
+    padding: 2rem;
+    border: 1px solid var(--ks-border-primary);
+    border-radius: $border-radius-lg;
+    background: var(--ks-background-body);
+    box-shadow: $calc-shadow-elevated;
+}
+
+@mixin calc-step-badge {
+    padding: 0 0.625rem;
+    border-radius: 999px;
+    background: var(--ks-background-secondary);
+    font-size: $font-size-sm;
+    color: var(--ks-content-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+@mixin calc-link-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: $font-size-sm;
+    color: var(--ks-content-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:disabled {
+        color: var(--ks-content-tertiary);
+        text-decoration: none;
+    }
 }

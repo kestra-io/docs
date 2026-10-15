@@ -187,11 +187,7 @@ export function effortBars(p: PaybackResult): EffortBar[] {
             p.manualHours,
             "manual",
         ),
-        bar(
-            `With the Migration Assistant at ${p.toolPct}%`,
-            p.hours,
-            "tool",
-        ),
+        bar(`With the Migration Assistant at ${p.toolPct}%`, p.hours, "tool"),
     ]
 }
 
@@ -254,4 +250,80 @@ export function viewMessages(result: CalcResult, view: "funnel" | "payback") {
         }
     }
     return { errors: unique(result.errors), warnings: unique(result.warnings) }
+}
+
+export function funnelCounts(f: FunnelResult | null) {
+    const n = (v: number | undefined) =>
+        f && v !== undefined ? formatCount(v) : PLACEHOLDER
+    return {
+        scope: n(f?.scope),
+        distinct: n(f?.distinct),
+        // Shown as a deduction from the unique flows, but never as "-0".
+        wrappers: !f
+            ? PLACEHOLDER
+            : f.wrappers > 0
+              ? `-${formatCount(f.wrappers)}`
+              : formatCount(f.wrappers),
+        careful: n(f?.careful),
+    }
+}
+
+export function costLine(p: PaybackResult, cur: Currency): Rich {
+    return [
+        "About ",
+        strong(`${formatCount(p.hours)} h`),
+        ", so ",
+        strong(formatMoney(p.migrationCost, cur)),
+        " of migration work.",
+    ]
+}
+
+export interface ChartTick {
+    label: string
+    x: number
+}
+
+export interface PaybackChart {
+    line: string
+    area: string
+    zeroY: number
+    renewalX: number | null
+    point: { x: number; y: number } | null
+    ticks: ChartTick[]
+    caption: string
+}
+
+export function paybackChart(p: PaybackResult): PaybackChart {
+    const months = p.horizonMonths
+    const series = [0, ...p.cumulative.slice(0, months)]
+    const top = Math.max(...series, 0)
+    const bottom = Math.min(...series, 0)
+    const range = top - bottom || 1
+    const round = (v: number) => Math.round(v * 100) / 100
+    const x = (m: number) => round((m / months) * 100)
+    const y = (v: number) => round(((top - v) / range) * 100)
+
+    const points = series.map((v, m) => `${x(m)},${y(v)}`)
+    const line = `M${points.join(" L")}`
+    const zeroY = y(0)
+    const inHorizon = (m: number | null): m is number =>
+        m !== null && m > 0 && m <= months
+
+    return {
+        line,
+        area: `${line} L100,${zeroY} L0,${zeroY} Z`,
+        zeroY,
+        renewalX: inHorizon(p.renewInMonths) ? x(p.renewInMonths) : null,
+        point: inHorizon(p.paybackMonth)
+            ? { x: x(p.paybackMonth), y: y(series[p.paybackMonth]) }
+            : null,
+        ticks: [
+            { label: "Today", x: 0 },
+            ...Array.from({ length: p.horizonYears }, (_, i) => ({
+                label: `Year ${i + 1}`,
+                x: x((i + 1) * 12),
+            })),
+        ],
+        caption: `Over ${p.horizonYears} year${p.horizonYears === 1 ? "" : "s"}`,
+    }
 }

@@ -4,56 +4,68 @@
             <div class="inputs">
                 <CalculatorMessages v-bind="messages" />
 
-                <section class="panel" :aria-labelledby="`${idPrefix}-step-1`">
-                    <div class="panel-head">
+                <section
+                    class="step-card"
+                    :aria-labelledby="`${idPrefix}-step-1`"
+                >
+                    <div class="card-head">
                         <h4 :id="`${idPrefix}-step-1`">
-                            vRA/vRO renewal you are trying to avoid
+                            The renewal you're avoiding
                         </h4>
-                        <span class="step">Step 1</span>
-                    </div>
-                    <div class="row-currency">
+                        <span class="step" aria-label="Step 1 of 3">1/3</span>
                         <CurrencySelect
                             :id="`${idPrefix}-cur`"
+                            class="currency"
                             :model-value="inputs.cur"
                             @update:model-value="update('cur', $event)"
                         />
+                    </div>
+                    <div class="grid-2">
                         <NumberField
                             :id="`${idPrefix}-today`"
                             v-bind="field('today')"
-                            :label="`Approx. annual vRA and vRO spend today (${inputs.cur})`"
+                            label="Annual vRA + vRO spend today"
+                            :prefix="symbol"
                             :step="1000"
                         />
-                    </div>
-                    <div class="grid-2">
-                        <MultipleChips
-                            :id="`${idPrefix}-mult`"
-                            v-bind="field('mult')"
-                        >
-                            <template #hint>
-                                <a
-                                    href="https://www.theregister.com/2024/08/26/vmware_explore_preview/"
-                                    target="_blank"
-                                    rel="noopener"
-                                    >Gartner expects increases of 200 to 500% at
-                                    renewal</a
-                                >. The 3x default is deliberately conservative.
-                                Enter your expected multiple.
-                            </template>
-                        </MultipleChips>
                         <NumberField
                             :id="`${idPrefix}-renew`"
                             v-bind="field('renew')"
-                            label="Months until the renewal"
+                            label="Months until renewal"
                             :max="60"
                         />
                     </div>
+                    <ChoiceChips
+                        :id="`${idPrefix}-mult`"
+                        v-bind="field('mult')"
+                        label="Expected price increase at renewal"
+                        :presets="RENEWAL_MULTIPLE_PRESETS"
+                        :format="(preset) => `${preset}x`"
+                        custom-label="Custom renewal multiple (×)"
+                    >
+                        <template #info>
+                            <a
+                                href="https://www.theregister.com/2024/08/26/vmware_explore_preview/"
+                                target="_blank"
+                                rel="noopener"
+                                >Gartner expects increases of 200 to 500% at
+                                renewal</a
+                            >. The 3x default is deliberately conservative.
+                            Enter your expected multiple.
+                        </template>
+                    </ChoiceChips>
                     <NumberField
                         :id="`${idPrefix}-other`"
                         v-bind="field('other')"
-                        :label="`Other annual costs (${inputs.cur})`"
+                        label="Other annual costs"
+                        :prefix="symbol"
                         :step="1000"
-                        hint="Ex: support, infra, consulting, professional services"
-                    />
+                    >
+                        <template #info>
+                            Ex: support, infra, consulting, professional
+                            services
+                        </template>
+                    </NumberField>
                     <p class="derived">
                         <RichText
                             v-if="result.payback"
@@ -63,93 +75,84 @@
                     </p>
                 </section>
 
-                <section class="panel" :aria-labelledby="`${idPrefix}-step-2`">
-                    <div class="panel-head">
+                <section
+                    class="step-card"
+                    :aria-labelledby="`${idPrefix}-step-2`"
+                >
+                    <div class="card-head">
                         <h4 :id="`${idPrefix}-step-2`">
-                            What getting out costs
+                            What the migration costs
                         </h4>
-                        <span class="step">Step 2</span>
+                        <span class="step" aria-label="Step 2 of 3">2/3</span>
                     </div>
-                    <details class="counts">
-                        <summary>
-                            Your workflow counts
-                            <span class="summary-line">{{
-                                funnelSummary(result.funnel)
-                            }}</span>
-                        </summary>
-                        <div class="details-body">
-                            <FunnelFields
-                                :id-prefix="`${idPrefix}-counts`"
-                                :field="field"
-                            />
-                            <p class="hint">
-                                Carried over from Section 3.2.2. Change them
-                                here or there.
-                            </p>
-                        </div>
-                    </details>
-                    <p class="derived spaced">
+                    <p class="intro">
+                        Your count from 3.2.2 is carried in. Change it here and
+                        both sections update.
+                    </p>
+                    <FunnelTable
+                        :id-prefix="`${idPrefix}-counts`"
+                        :field="field"
+                        :funnel="result.funnel"
+                    />
+                    <div class="grid-3">
+                        <NumberField
+                            :id="`${idPrefix}-rate`"
+                            v-bind="field('rate')"
+                            label="Blended hourly rate"
+                            :prefix="symbol"
+                            :step="5"
+                        >
+                            <template #info>
+                                Your internal cost, an offshore rate or a
+                                partner quote, whichever you will actually pay.
+                            </template>
+                        </NumberField>
+                        <NumberField
+                            :id="`${idPrefix}-complex`"
+                            v-bind="field('complex')"
+                            label="Share that's complex"
+                            suffix="%"
+                            :max="100"
+                        >
+                            <template #info>
+                                Of the {{ careful }} workflows that need careful
+                                conversion. Complex is code nobody fully
+                                understands, or behavior that should be
+                                redesigned.
+                            </template>
+                        </NumberField>
+                        <NumberField
+                            :id="`${idPrefix}-tool`"
+                            v-bind="field('tool')"
+                            label="Handled by the AI migration tool"
+                            suffix="%"
+                            :min="TOOL_SHARE_RANGE.min"
+                            :max="TOOL_SHARE_RANGE.max"
+                            :step="TOOL_SHARE_RANGE.step"
+                        >
+                            <template #info>
+                                It converts the structure and rewrites the
+                                JavaScript for medium workflows, and we run it
+                                with you. Complex ones are usually rewritten or
+                                redesigned, so they stay at the manual rate. The
+                                default is an assumption, so replace it with the
+                                share measured in your proof of concept.
+                            </template>
+                        </NumberField>
+                    </div>
+                    <p class="derived">
                         <RichText
-                            v-if="result.funnel"
-                            :parts="effortLine(result.funnel)"
+                            v-if="result.payback"
+                            :parts="costLine(result.payback, inputs.cur)"
                         />
                         <template v-else>{{ PLACEHOLDER }}</template>
                     </p>
-                    <NumberField
-                        :id="`${idPrefix}-complex`"
-                        v-bind="field('complex')"
-                        :label="`Of the ${careful.careful} workflows (${careful.distinct} - ${careful.wrappers}) that need careful migration, what share is complex (%)`"
-                        :max="100"
-                        hint="Complex is code nobody fully understands, or behavior that should be redesigned."
-                    />
-                    <div class="range-field">
-                        <label class="form-label" :for="`${idPrefix}-tool`">
-                            Share of the conversion the Migration Assistant
-                            handles
-                        </label>
-                        <div class="range">
-                            <input
-                                :id="`${idPrefix}-tool`"
-                                type="range"
-                                :min="TOOL_SHARE_RANGE.min"
-                                :max="TOOL_SHARE_RANGE.max"
-                                :step="TOOL_SHARE_RANGE.step"
-                                :value="inputs.tool ?? ''"
-                                :aria-describedby="`${idPrefix}-tool-hint`"
-                                @input="
-                                    update(
-                                        'tool',
-                                        ($event.target as HTMLInputElement)
-                                            .value,
-                                    )
-                                "
-                            />
-                            <output :for="`${idPrefix}-tool`">{{
-                                toolShareLabel(inputs.tool)
-                            }}</output>
-                        </div>
-                        <p :id="`${idPrefix}-tool-hint`" class="hint">
-                            It converts the structure and rewrites the
-                            JavaScript for medium workflows, and we run it with
-                            you. Complex ones are usually rewritten or
-                            redesigned, so they stay at the manual rate. The
-                            default is an assumption, so replace it with the
-                            share measured in your proof of concept.
-                        </p>
-                    </div>
-                    <NumberField
-                        :id="`${idPrefix}-rate`"
-                        v-bind="field('rate')"
-                        :label="`Blended hourly rate (${inputs.cur})`"
-                        :step="5"
-                        hint="Your internal cost, an offshore rate or a partner quote, whichever you will actually pay."
-                    />
                     <details class="assumptions">
                         <summary>Adjust the effort assumptions</summary>
                         <div class="details-body">
                             <p class="hint">
-                                Hours by hand, before the Migration Assistant. The
-                                first column is working out what a workflow
+                                Hours by hand, before the Migration Assistant.
+                                The first column is working out what a workflow
                                 does, building it in Kestra and checking the
                                 result. The second is each near-duplicate once
                                 the first exists. Wrappers migrate at no cost.
@@ -204,29 +207,39 @@
                     </details>
                 </section>
 
-                <section class="panel" :aria-labelledby="`${idPrefix}-step-3`">
-                    <div class="panel-head">
+                <section
+                    class="step-card"
+                    :aria-labelledby="`${idPrefix}-step-3`"
+                >
+                    <div class="card-head">
                         <h4 :id="`${idPrefix}-step-3`">
-                            What you would spend on Kestra
+                            What you'd spend on Kestra
                         </h4>
-                        <span class="step">Step 3</span>
+                        <span class="step" aria-label="Step 3 of 3">3/3</span>
                     </div>
-                    <div class="grid-2">
+                    <div class="grid-2 top">
                         <NumberField
                             :id="`${idPrefix}-kestra`"
                             v-bind="field('kestra')"
-                            :label="`Kestra licence and hosting, a year (${inputs.cur})`"
+                            label="Kestra licence and hosting, a year"
+                            :prefix="symbol"
                             :step="1000"
-                            placeholder="Leave blank if no quote"
-                            hint="If you don't have a quote yet, leave it blank and the calculator works out the most you could pay and still come out ahead."
+                            hint="No quote yet? Leave it blank and we'll show the most you could pay and still come out ahead."
                         />
-                        <NumberField
+                        <ChoiceChips
                             :id="`${idPrefix}-horizon`"
                             v-bind="field('horizon')"
-                            label="Planning horizon, years"
-                            :min="1"
-                            :max="10"
-                            hint="Three years is the usual convention if finance has not set one."
+                            label="Planning horizon"
+                            :presets="HORIZON_PRESETS"
+                            :format="
+                                (years) =>
+                                    `${years} year${years === 1 ? '' : 's'}`
+                            "
+                            custom-label="Planning horizon, years"
+                            :custom-chip="false"
+                            :custom-min="1"
+                            :custom-step="1"
+                            hint="Three years is the usual convention if finance hasn't set one."
                         />
                     </div>
                 </section>
@@ -234,7 +247,6 @@
 
             <aside class="result" aria-label="Payback result">
                 <ResultPanel
-                    :id="`${idPrefix}-result`"
                     :payback="result.payback"
                     :currency="inputs.cur"
                     :poc-href="pocHref"
@@ -257,12 +269,16 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import { TOOL_SHARE_RANGE } from "~/utils/vra-calculator"
+    import {
+        RENEWAL_MULTIPLE_PRESETS,
+        TOOL_SHARE_RANGE,
+        currencySymbol,
+    } from "~/utils/vra-calculator"
     import CalculatorMessages from "./parts/CalculatorMessages.vue"
+    import ChoiceChips from "./parts/ChoiceChips.vue"
     import CsvDownloadButton from "./parts/CsvDownloadButton.vue"
     import CurrencySelect from "./parts/CurrencySelect.vue"
-    import FunnelFields from "./parts/FunnelFields.vue"
-    import MultipleChips from "./parts/MultipleChips.vue"
+    import FunnelTable from "./parts/FunnelTable.vue"
     import NumberField from "./parts/NumberField.vue"
     import ResultPanel from "./parts/ResultPanel.vue"
     import RichText from "./parts/RichText.vue"
@@ -270,10 +286,8 @@
     import {
         PLACEHOLDER,
         carefulCounts,
-        effortLine,
-        funnelSummary,
+        costLine,
         renewalLine,
-        toolShareLabel,
         viewMessages,
     } from "./presentation"
     import { useCalculator } from "./useCalculator"
@@ -295,7 +309,10 @@
         useCalculator()
 
     const messages = computed(() => viewMessages(result.value, "payback"))
-    const careful = computed(() => carefulCounts(result.value.funnel))
+    const careful = computed(() => carefulCounts(result.value.funnel).careful)
+    const symbol = computed(() => currencySymbol(inputs.value.cur))
+
+    const HORIZON_PRESETS = [1, 3, 5] as const
 
     const effortRows = [
         { label: "Medium", first: "hp1", variant: "hv1" },
@@ -307,80 +324,103 @@
     @use "/src/components/vra-migration-guide/shared" as *;
     .calculator-payback {
         container-type: inline-size;
+        padding: 1rem 0.5rem 1rem 1rem;
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-secondary);
+        color: var(--ks-content-primary);
     }
 
     .layout {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 0.5rem 1.5rem;
 
-        @container (min-width: 46rem) {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+        @container (min-width: 52rem) {
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
             align-items: start;
         }
     }
 
     .inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
         container-type: inline-size;
     }
 
-    .calculator-payback :deep(a) {
+    .calculator-payback :deep(a:not(.btn)) {
         color: var(--ks-content-link);
     }
 
     .result {
-        @container (min-width: 46rem) {
+        @container (min-width: 52rem) {
             position: sticky;
             top: calc(100px + var(--announce-height, 0px));
         }
     }
 
-    .panel {
-        @include calc-panel;
-        margin-bottom: 1rem;
+    .step-card {
+        @include calc-card;
+
+        @container (max-width: 30rem) {
+            padding: 1.25rem;
+        }
     }
 
-    .panel-head {
+    .card-head {
         display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 1rem;
+        padding-bottom: 1rem;
 
         h4 {
             margin: 0;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 600;
+            color: inherit;
         }
     }
 
     .step {
-        @include guide-eyebrow(var(--ks-content-secondary), true);
-        white-space: nowrap;
+        @include calc-step-badge;
     }
 
-    .row-currency {
-        display: grid;
-        grid-template-columns: 7rem 1fr;
-        gap: 1rem;
+    .currency {
+        margin-left: auto;
     }
 
-    .grid-2 {
+    .intro {
+        margin: 0 0 1rem;
+        font-size: 1rem;
+    }
+
+    .grid-2,
+    .grid-3 {
         display: grid;
         grid-template-columns: 1fr;
         column-gap: 1rem;
+    }
 
-        @container (min-width: 34rem) {
+    .grid-2 {
+        @container (min-width: 28rem) {
             grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .top {
+        align-items: start;
+    }
+
+    .grid-3 {
+        @container (min-width: 28rem) {
+            grid-template-columns: repeat(3, 1fr);
         }
     }
 
     .derived {
         @include calc-derived;
-
-        &.spaced {
-            margin-bottom: 1rem;
-        }
+        font-size: 1rem;
     }
 
     .hint {
@@ -388,49 +428,18 @@
         margin: 0.35rem 0 0.75rem;
     }
 
-    details {
-        margin-bottom: 1rem;
+    .assumptions {
+        margin-top: 1rem;
 
         summary {
             cursor: pointer;
             font-size: $font-size-sm;
-            font-weight: 600;
+            color: var(--ks-content-secondary);
         }
-    }
-
-    .summary-line {
-        font-weight: 400;
-        color: var(--ks-content-secondary);
     }
 
     .details-body {
         padding-top: 0.75rem;
-    }
-
-    .form-label {
-        @include calc-form-label;
-    }
-
-    .range-field {
-        margin-bottom: 1rem;
-    }
-
-    .range {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-
-        input {
-            flex: 1;
-            accent-color: var(--ks-border-active);
-        }
-
-        output {
-            min-width: 3rem;
-            text-align: right;
-            font-weight: 600;
-            font-variant-numeric: tabular-nums;
-        }
     }
 
     .table {

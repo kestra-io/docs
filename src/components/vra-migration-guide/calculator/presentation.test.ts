@@ -8,13 +8,16 @@ import {
     avoidedLine,
     breakEvenLine,
     carefulCounts,
+    costLine,
     effortBars,
     effortLine,
+    funnelCounts,
     funnelLine,
     funnelReadout,
     funnelSummary,
     headline,
     netLine,
+    paybackChart,
     reductionLine,
     renewalLine,
     toolShareLabel,
@@ -169,5 +172,57 @@ describe("viewMessages", () => {
         expect(viewMessages(funnelError, "funnel").errors).toEqual(
             funnelError.errors,
         )
+    })
+})
+
+describe("design views", () => {
+    const { funnel, payback } = compute(GOLDEN.cases[0].state)
+
+    it("counts the funnel rows, wrappers as a deduction", () => {
+        const { careful, distinct, wrappers } = carefulCounts(funnel)
+        expect(funnelCounts(funnel)).toEqual({
+            scope: funnelReadout(funnel)[1].value,
+            distinct,
+            wrappers: `-${wrappers}`,
+            careful,
+        })
+        const noWrappers = compute({ ...GOLDEN.cases[0].state, wrappers: 0 })
+        expect(funnelCounts(noWrappers.funnel).wrappers).toBe("0")
+        expect(funnelCounts(null)).toEqual({
+            scope: PLACEHOLDER,
+            distinct: PLACEHOLDER,
+            wrappers: PLACEHOLDER,
+            careful: PLACEHOLDER,
+        })
+    })
+
+    it("states hours and cost of the migration work", () => {
+        expect(toHtml(costLine(payback!, "EUR"))).toMatch(
+            /^About <b>[\d,]+ h<\/b>, so <b>€[\d.,]+[KM]?<\/b> of migration work\.$/,
+        )
+    })
+
+    it("plots the cumulative position from today to the horizon", () => {
+        const chart = paybackChart(payback!)
+        const points = chart.line.slice(1).split(" L")
+        expect(points).toHaveLength(payback!.horizonMonths + 1)
+        expect(points[0].startsWith("0,")).toBe(true)
+        expect(points.at(-1)!.startsWith("100,")).toBe(true)
+        expect(chart.ticks.map((t) => t.label)).toEqual([
+            "Today",
+            ...Array.from(
+                { length: payback!.horizonYears },
+                (_, i) => `Year ${i + 1}`,
+            ),
+        ])
+        for (const p of points) {
+            const [x, y] = p.split(",").map(Number)
+            expect(x).toBeGreaterThanOrEqual(0)
+            expect(y).toBeGreaterThanOrEqual(0)
+            expect(y).toBeLessThanOrEqual(100)
+        }
+        if (chart.point) {
+            expect(chart.point.y).toBeCloseTo(chart.zeroY, -1)
+        }
     })
 })

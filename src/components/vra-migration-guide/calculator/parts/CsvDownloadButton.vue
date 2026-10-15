@@ -2,7 +2,7 @@
     <div class="csv-download">
         <button
             type="button"
-            class="btn btn-sm btn-primary"
+            class="link-button"
             :disabled="disabled"
             @click="download"
         >
@@ -42,6 +42,11 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+
+    .link-button {
+        @include calc-link-button;
+        @include guide-focus-ring;
     }
 
     .status {

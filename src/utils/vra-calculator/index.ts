@@ -9,7 +9,12 @@ export {
 } from "./defaults"
 export { toNumber } from "./validate"
 export { compute } from "./compute"
-export { CURRENCIES, currencyFromLocale, isCurrency } from "./currency"
+export {
+    CURRENCIES,
+    currencyFromLocale,
+    currencySymbol,
+    isCurrency,
+} from "./currency"
 export { formatCount, formatMoney } from "./format"
 export { CSV_FILENAME, buildCsvFile } from "./csv"
 export { decodeShareState, encodeShareState } from "./share"
