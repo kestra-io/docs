@@ -22,7 +22,27 @@ interface Props {
     cardTitle?: string
     cardText?: string
     cardButtons?: CardButton[]
+    codeHints?: boolean
 }
+
+const CODE_HINTS = [
+    { text: "System.log(...)", left: 51, top: 35, size: 18.6, opacity: 0.2 },
+    {
+        text: "Server.findAllForType(...)",
+        left: 88,
+        top: 186,
+        size: 18.6,
+        opacity: 0.5,
+    },
+    {
+        text: "System.getModule(...)",
+        left: 91,
+        top: 382,
+        size: 12.6,
+        opacity: 0.5,
+    },
+    { text: "inputProperties", left: 93, top: 533, size: 18.6, opacity: 0.5 },
+]
 
 const {
     title,
@@ -34,16 +54,12 @@ const {
     cardText = "The full guide is on this page, or download the PDF to share with your team (form required)",
     cardButtons = [
         {
-            label: "Work out your payback",
-            href: "/resources/migration/vra/payback",
-            variant: "primary",
-        },
-        {
             label: "Download the PDF",
             modalTarget: DOWNLOAD_DIALOG_TARGET,
             variant: "secondary",
         },
     ],
+    codeHints = false,
 } = Astro.props
 
 const hasVisual = Astro.slots.has("visual")
@@ -53,6 +69,24 @@ const isExternal = (href?: string) => href?.startsWith("http")
 ---
 
 <section class="guide-hero surface-dark">
+    {
+        codeHints && (
+            <div class="code-hints" aria-hidden="true">
+                {CODE_HINTS.map((hint) => (
+                    <span
+                        style={{
+                            left: `${hint.left}%`,
+                            top: `calc(var(--header-h) + ${hint.top}px)`,
+                            fontSize: `${hint.size}px`,
+                            opacity: hint.opacity,
+                        }}
+                    >
+                        {hint.text}
+                    </span>
+                ))}
+            </div>
+        )
+    }
     <div class="container">
         <div class="hero-grid">
             <div class="hero-main">
@@ -72,7 +106,9 @@ const isExternal = (href?: string) => href?.startsWith("http")
                     )
                 }
             </div>
-            <div class:list={["hero-card", { "has-visual": hasVisual }]}>
+            <div
+                class:list={["hero-card", hasVisual ? "has-visual" : "frosted"]}
+            >
                 {
                     hasVisual ? (
                         <div class="card-visual">
@@ -131,12 +167,29 @@ const isExternal = (href?: string) => href?.startsWith("http")
 </section>
 
 <style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+    @use "/src/assets/styles/color-palette" as *;
+
+    $hero-teal: #1e4557;
+    $hero-teal-deep: #19546d;
+    $pill-border: #a77af6;
+    $pill-shadow: rgba(173, 41, 250, 0.2);
+    $visual-card-dark: #1f1f1f;
+    $visual-card-blue: #51659d;
+
     .guide-hero {
         --header-h: var(--top-bar-height, 67px);
+        position: relative;
         margin-top: calc(-1 * var(--header-h));
         padding: calc(var(--header-h) + 5.5rem) 0 1.5rem;
         overflow-x: clip;
-        background: $black;
+        background: linear-gradient(
+            168.5deg,
+            $black 10.94%,
+            $hero-teal 35.99%,
+            $hero-teal-deep 46.58%,
+            $black 111.12%
+        );
         color: $white;
 
         @include media-breakpoint-down(lg) {
@@ -144,8 +197,37 @@ const isExternal = (href?: string) => href?.startsWith("http")
         }
     }
 
+    .code-hints {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+
+        @include media-breakpoint-down(xl) {
+            display: none;
+        }
+
+        span {
+            position: absolute;
+            transform: translateX(-50%);
+            font-family: $font-family-monospace;
+            line-height: 1.43;
+            white-space: nowrap;
+            color: $white;
+            filter: blur(2px);
+            mix-blend-mode: overlay;
+        }
+    }
+
     .container {
-        max-width: 1180px;
+        position: relative;
+        max-width: calc(1320px + 2 * 1.5rem);
+        padding-inline: 1.5rem;
+
+        @include media-breakpoint-up(lg) {
+            max-width: calc(1320px + 2 * 3rem);
+            padding-inline: 3rem;
+        }
     }
 
     .hero-grid {
@@ -162,45 +244,31 @@ const isExternal = (href?: string) => href?.startsWith("http")
         @include media-breakpoint-up(xl) {
             grid-template-columns: minmax(0, 1fr) 520px;
         }
+
+        @include media-breakpoint-up(xxl) {
+            grid-template-columns: minmax(0, 1fr) 555px;
+        }
     }
 
     .pill {
-        position: relative;
         display: inline-block;
         margin-bottom: 0.75rem;
         padding: 0.125rem 0.75rem;
+        border: 1px solid $pill-border;
         border-radius: 999px;
-        box-shadow: 3px 3px 0 rgba(173, 41, 250, 0.2);
+        box-shadow: 3px 3px 0 $pill-shadow;
         font-size: $font-size-xs;
         font-weight: 600;
         line-height: 1.5rem;
         color: $white;
         text-shadow: 0 4px 0 rgba($black, 0.25);
-
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            padding: 1px;
-            border-radius: inherit;
-            background: linear-gradient(90deg, #a77af6, #1f9bf3);
-            -webkit-mask:
-                linear-gradient($black 0 0) content-box,
-                linear-gradient($black 0 0);
-            -webkit-mask-composite: xor;
-            mask:
-                linear-gradient($black 0 0) content-box,
-                linear-gradient($black 0 0);
-            mask-composite: exclude;
-            pointer-events: none;
-        }
     }
 
     h1 {
         margin-bottom: 1rem;
-        font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+        font-size: clamp(2.25rem, 4.2vw, 4rem);
         font-weight: 600;
-        line-height: 1.1;
+        line-height: 1.09;
         letter-spacing: -0.02em;
         color: $white;
     }
@@ -247,7 +315,7 @@ const isExternal = (href?: string) => href?.startsWith("http")
                 top: 0;
                 width: 1.5rem;
                 height: 1.5rem;
-                background-color: var(--ks-icon-color);
+                background-color: $base-primary-300;
                 mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E")
                     center / contain no-repeat;
             }
@@ -262,16 +330,16 @@ const isExternal = (href?: string) => href?.startsWith("http")
         align-items: center;
         gap: 1.5rem;
         width: 100%;
-        max-width: 520px;
+        max-width: 555px;
         aspect-ratio: 1;
         margin: 5rem auto 0;
         padding: 0 2rem 1.25rem;
         border-radius: 20px;
         background: linear-gradient(
             234deg,
-            #1f1f1f 50%,
-            #1f1f1f 62%,
-            #51659d 92%
+            $visual-card-dark 50%,
+            $visual-card-dark 62%,
+            $visual-card-blue 92%
         );
         text-align: center;
 
@@ -294,6 +362,48 @@ const isExternal = (href?: string) => href?.startsWith("http")
             padding: 0.5rem 1.375rem;
             font-size: $font-size-lg;
             line-height: 1.75rem;
+        }
+    }
+
+    .hero-card.frosted {
+        background: none;
+        isolation: isolate;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+        }
+
+        &::before {
+            inset: 0;
+            border-radius: inherit;
+            background: rgba($white, 0.2);
+            box-shadow: inset 0 0 0 1px rgba($white, 0.12);
+            mask-image: linear-gradient(to bottom, transparent 10%, $black 55%);
+        }
+
+        &::after {
+            inset: -30px;
+            padding: 30px;
+            background: rgba($white, 0.2) content-box;
+            filter: blur(15px);
+            mask-image: linear-gradient(to bottom, $black 15%, transparent 55%);
+        }
+
+        p {
+            max-width: 23rem;
+            font-size: $font-size-md;
+            font-weight: 600;
+            line-height: 1.5rem;
+            color: $white;
+        }
+
+        .btn-secondary {
+            @include btn-secondary-light-surface;
+            min-height: 3.5rem;
+            border-radius: $border-radius-lg;
         }
     }
 
@@ -347,10 +457,20 @@ const isExternal = (href?: string) => href?.startsWith("http")
     .book-wrap {
         position: absolute;
         left: 50%;
-        top: -22%;
-        width: 118%;
+        top: -30%;
+        width: 123%;
         transform: translateX(-49%);
         pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            top: -22%;
+            width: 90%;
+        }
+
+        @include media-breakpoint-down(md) {
+            top: -16%;
+            width: 72%;
+        }
 
         .book-img {
             display: block;
@@ -369,11 +489,11 @@ const isExternal = (href?: string) => href?.startsWith("http")
         list-style: none;
         font-size: $font-size-sm;
         line-height: 1.25rem;
-        color: rgba($white, 0.8);
+        color: $base-grey-200;
 
         li {
             padding: 0 1.125rem;
-            border-left: 1px solid rgba($white, 0.8);
+            border-left: 1px solid $base-grey-200;
 
             &:first-child {
                 border-left: 0;
