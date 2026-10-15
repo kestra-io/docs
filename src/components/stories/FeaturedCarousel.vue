@@ -234,7 +234,7 @@
     <section
         class="fc-root"
         aria-roledescription="carousel"
-        aria-label="Featured customer stories"
+        aria-label="Featured stories"
         @mouseenter="slow"
         @mouseleave="restore"
         @focusin="onFocusIn"
