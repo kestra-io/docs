@@ -214,7 +214,7 @@ testimonials:
         name: "Java app servers to maintain"
       - value: "10x"
         name: "More workflows automated"
-    storyLink: "/customers/pharmacy-retailer"
+    storyLink: "/stories/pharmacy-retailer"
 
 platformStrengths:
   title: "Kestra Is What HP OO Would Be If Built Today"
