@@ -8,6 +8,8 @@ description: Get started with Kestra in minutes by launching Kestra locally with
 
 Launch Kestra locally, create a simple flow, and run your first execution in a few minutes.
 
+This setup is for local evaluation. Before you run Kestra where other users or networks can reach it, follow the [security hardening guide](../security-hardening/index.md).
+
 ## Watch the quickstart video
 
 <div class="video-container">

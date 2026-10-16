@@ -1967,7 +1967,7 @@ Since Kestra is based on [Micronaut](https://micronaut.io), the [default Microna
 You can disable some endpoints following the above Micronaut configuration.
 
 :::alert{type="warning"}
-The management port is unauthenticated by default. Do not expose port `8081` outside your internal network. See [Management endpoint access](../security-hardening/index.md#management-endpoint-access) for hardening guidance.
+The management port is unauthenticated by default. Do not expose port `8081` outside your internal network. See [Management endpoint access](../../security-hardening/index.md#management-endpoint-access) for hardening guidance.
 :::
 
 ## Debugging techniques
