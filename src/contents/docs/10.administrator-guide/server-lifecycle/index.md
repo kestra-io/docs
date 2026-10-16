@@ -31,7 +31,7 @@ By default, liveness checks run every 10 seconds.
 
 If a server does not send a heartbeat within `kestra.server.liveness.timeout`, it is marked `DISCONNECTED` and then `NOT_RUNNING` at the next check. If that server is still alive, it self-terminates after detecting that other components classified it as `NOT_RUNNING`, preventing “resurrection.”
 
-For configuration details, see the [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md).
+For configuration details, see [Liveness and worker task restarts](../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts).
 
 ## Worker job resubmission
 
