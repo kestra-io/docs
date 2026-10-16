@@ -1,22 +1,15 @@
 ---
-export type VerdictKind = "replace" | "integrate" | "keep" | "retire"
+import { VERDICT_LABELS, type VerdictKind } from "./verdict"
 
 interface Props {
     kind: VerdictKind
-}
-
-const LABELS: Record<VerdictKind, string> = {
-    replace: "Replace",
-    integrate: "Integrate",
-    keep: "Keep",
-    retire: "Retire",
 }
 
 const { kind } = Astro.props
 ---
 
 <span class={`verdict verdict-${kind}`}
-    ><span class="dot" aria-hidden="true"></span>{LABELS[kind]}</span
+    ><span class="dot" aria-hidden="true"></span>{VERDICT_LABELS[kind]}</span
 >
 
 <style lang="scss">

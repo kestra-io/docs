@@ -233,6 +233,7 @@ export const collections = {
                 image: image().optional(),
                 href: z.string().optional(),
                 sectionIds: z.boolean().optional(),
+                resourceCta: z.boolean().optional(),
                 faq: z
                     .array(
                         z.object({

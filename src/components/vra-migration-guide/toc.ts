@@ -1,4 +1,4 @@
-import type { TocLink } from "~/components/docs/NavToc.vue"
+import type { TocLink } from "~/composables/useTocScrollSpy"
 
 export type { TocLink }
 

@@ -101,6 +101,8 @@ export default function rehypeResourceCta() {
         if (!RESOURCE_PATH.test(file.path ?? "")) return
 
         const frontmatter = file.data.astro?.frontmatter
+        // Pages that place their own CTAs opt out with `resourceCta: false`.
+        if (frontmatter?.resourceCta === false) return
         const tag = frontmatter?.tag as ResourceTag | undefined
 
         let pinned = false

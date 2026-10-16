@@ -1,6 +1,14 @@
 import { nextTick, onUnmounted, ref } from "vue"
 import { useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
 
+/** One entry of a table of contents, as docs/NavToc.vue and the guide TOC render it. */
+export interface TocLink {
+    id: string
+    depth: number
+    text: string
+    children?: TocLink[]
+}
+
 interface Options {
     /** Selector of the scrolling list, so the active link is kept in view. */
     container?: string

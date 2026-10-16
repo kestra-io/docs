@@ -94,19 +94,12 @@
 
 <script setup lang="ts">
     import { useTocCollapse } from "~/composables/useTocCollapse"
-    import { useTocScrollSpy } from "~/composables/useTocScrollSpy"
+    import { useTocScrollSpy, type TocLink } from "~/composables/useTocScrollSpy"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
     import MarkdownActionsMenu from "~/components/docs/MarkdownActionsMenu.vue"
     import type { MarkdownActionId } from "~/utils/markdown-actions"
-
-    export interface TocLink {
-        id: string
-        depth: number
-        text: string
-        children?: TocLink[]
-    }
 
     const props = withDefaults(
         defineProps<{

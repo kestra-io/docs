@@ -24,6 +24,16 @@ const strong = (text: string | number, tone?: Tone): RichPart =>
 
 export const PLACEHOLDER = "—"
 
+/**
+ * The share "executed in the last 12 months" is the complement of the stored
+ * `dormant` share. Rounded to four decimals so the round trip through floating
+ * point gives back what was typed (0.1 -> 99.9 -> 0.1, not 0.0999…).
+ */
+export function complementPercent(value: InputValue): InputValue {
+    const n = toNumber(value)
+    return n === null ? value : String(Math.round((100 - n) * 1e4) / 1e4)
+}
+
 export function effortLine(f: FunnelResult): Rich {
     return [
         strong(formatCount(f.scope)),

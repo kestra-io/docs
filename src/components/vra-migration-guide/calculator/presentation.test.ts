@@ -9,6 +9,7 @@ import {
     avoidedLine,
     breakEvenLine,
     carefulCounts,
+    complementPercent,
     costLine,
     effortBars,
     effortLine,
@@ -212,5 +213,24 @@ describe("design views", () => {
         if (chart.point) {
             expect(chart.point.y).toBeCloseTo(chart.zeroY, -1)
         }
+    })
+})
+
+describe("complementPercent", () => {
+    it("gives back what was typed after a round trip", () => {
+        // 100 - 99.9 is 0.09999999999999432 in floating point; the field
+        // must not re-render the visitor's 0.1 as that.
+        for (let tenths = 1; tenths < 1000; tenths++) {
+            const typed = String(tenths / 10)
+            expect(complementPercent(complementPercent(typed))).toBe(typed)
+        }
+        expect(complementPercent("0.1")).toBe("99.9")
+        expect(complementPercent(15)).toBe("85")
+    })
+
+    it("passes non-numbers through for validation to flag", () => {
+        expect(complementPercent("")).toBe("")
+        expect(complementPercent(null)).toBe(null)
+        expect(complementPercent("abc")).toBe("abc")
     })
 })

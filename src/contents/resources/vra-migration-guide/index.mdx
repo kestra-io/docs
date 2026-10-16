@@ -9,6 +9,8 @@ href: /resources/migration/vra
 # Numbered headings get stable ids ("7.2 ..." -> #section-7-2); the PDF and
 # the Google Doc deep-link into them. See src/markdown/remark/remark-section-ids.
 sectionIds: true
+# The guide places its own CTAs (GuideCta), so the generic injected pair is off.
+resourceCta: false
 faq:
   - question: "Do we have to leave VMware to leave vRA?"
     answer: 'No. VMware can stay as your hypervisor. The decision is what replaces the automation layer on top of it. vSphere, vCenter and Nutanix get the keep verdict and are called from a flow the same way Ansible or your vault is. See <a href="#verdicts">3.1.1</a>.'
@@ -94,11 +96,11 @@ Here are three questions you should ask for every option on your shortlist, incl
 
 Kestra's answers to those questions are below:
 
-**It reaches the systems outside VMware's boundary.** vSphere and Nutanix, your cloud accounts, Kubernetes, your ITSM and CMDB, IPAM and DNS, Terraform and Ansible, your patch, backup and alert management tooling, and more than two thousand plugins besides. On-prem, across segmented network zones, and fully air-gapped with no outbound connectivity. [**Dataport**](/customers/dataport), the IT provider for German public administration, runs its private cloud service portal this way because no SaaS option was available to it. Nothing in that list is a second-class integration reached through generic REST.
+**It reaches the systems outside VMware's boundary.** vSphere and Nutanix, your cloud accounts, Kubernetes, your ITSM and CMDB, IPAM and DNS, Terraform and Ansible, your patch, backup and alert management tooling, and more than two thousand plugins besides. On-prem, across segmented network zones, and fully air-gapped with no outbound connectivity. [**Dataport**](/stories/dataport), the IT provider for German public administration, runs its private cloud service portal this way because no SaaS option was available to it. Nothing in that list is a second-class integration reached through generic REST.
 
 **The workflow definitions stay portable.** Flows are declarative YAML that can live in your own Git repository and go through normal pull-request review. Task code can use Python, Shell, PowerShell or another language that runs in a container. The core is open source, so the definitions do not depend on a proprietary editor or scripting dialect.
 
-**Other teams can use the same platform.** The engine that runs infrastructure provisioning can also run data pipelines, application workflows and business processes, with the same RBAC, secrets and audit trail. A data team can use its own namespace instead of buying and operating a second scheduler. The infrastructure arm of [**Crédit Agricole**](/customers/credit-agricole) runs automation across more than a hundred clusters this way, and describes the change as moving from fragmented automation to a single control plane that all their teams can manage.
+**Other teams can use the same platform.** The engine that runs infrastructure provisioning can also run data pipelines, application workflows and business processes, with the same RBAC, secrets and audit trail. A data team can use its own namespace instead of buying and operating a second scheduler. The infrastructure arm of [**Crédit Agricole**](/stories/credit-agricole) runs automation across more than a hundred clusters this way, and describes the change as moving from fragmented automation to a single control plane that all their teams can manage.
 
 Additionally:
 
@@ -109,7 +111,7 @@ Additionally:
 
 ### 1.4 What your security and platform teams will ask
 
-The questions that stop a migration usually come from the security review and the platform team rather than from the workflow inventory: where it runs, whether it can be air-gapped, how identity and secrets work, what the audit trail looks like, and how it behaves across segmented network zones. All of them are answerable, and none of them need to wait until the end. [**Dataport**](/customers/dataport), which provides IT services to German public administration and had no SaaS option open to it, validated compliance on a self-hosted deployment in three weeks.
+The questions that stop a migration usually come from the security review and the platform team rather than from the workflow inventory: where it runs, whether it can be air-gapped, how identity and secrets work, what the audit trail looks like, and how it behaves across segmented network zones. All of them are answerable, and none of them need to wait until the end. [**Dataport**](/stories/dataport), which provides IT services to German public administration and had no SaaS option open to it, validated compliance on a self-hosted deployment in three weeks.
 
 The [deployment options handout](https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf) covers where and how Kestra runs, and the [security overview](https://hs.kestra.io/hubfs/kestra-security-overview-enterprise-edition.pdf) is what we share with review teams: compliance, deployment, where your data lives, and the security controls.
 
@@ -205,9 +207,9 @@ A migration costs money up front, and the first estimate is usually alarming bec
 
 These four environments informed the approach in this guide. They differ in scale, security requirements and migration progress. They also show how teams have handled the catalog, resource inventory and systems that stay around the orchestration layer.
 
-<CaseStudy status="MIGRATION COMPLETE" stats={[{ value: "30×", label: "faster delivery" }, { value: "90%", label: "lower licensing cost than Aria Automation" }, { value: "5", label: "isolated automation platforms" }]} quote="We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra." quoteBy="Principal Hosting" storyHref="/customers/fortune-500-company">
+<CaseStudy status="MIGRATION COMPLETE" stats={[{ value: "30×", label: "faster delivery" }, { value: "90%", label: "lower licensing cost than Aria Automation" }, { value: "5", label: "isolated automation platforms" }]} quote="We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra." quoteBy="Principal Hosting" storyHref="/stories/fortune-500-company">
 
-[**A Fortune 500 manufacturer**](/customers/fortune-500-company) had one team responsible for both IT and OT. They replaced vRA and vRO together, including the catalog, request forms, orchestration and vCenter integration, across about 75 vCenters and roughly 4,000 automation runs a month. Their security policy prohibited a control plane from spanning security zones, so they deployed five separate Kestra control planes, four across their OT environments and one for IT.
+[**A Fortune 500 manufacturer**](/stories/fortune-500-company) had one team responsible for both IT and OT. They replaced vRA and vRO together, including the catalog, request forms, orchestration and vCenter integration, across about 75 vCenters and roughly 4,000 automation runs a month. Their security policy prohibited a control plane from spanning security zones, so they deployed five separate Kestra control planes, four across their OT environments and one for IT.
 
 The catalog moved to Kestra Apps. Resource state stayed in the document store they already operated, and Ansible, ServiceNow, Infoblox and Splunk all stayed. The migration was completed in April 2026, roughly twelve months after the proof of concept began.
 
@@ -231,7 +233,7 @@ Kestra 2.0's separation of the control plane from the data plane, with workers c
 
 <CaseStudy status="ASSESSED, NOT MIGRATED">
 
-**A global systems integrator** runs roughly 3,000 workflows across three production vRO nodes, supporting more than 100 services in its ServiceNow catalog. It has not migrated. Its environment illustrates the assessment work involved when several thousand workflows are distributed across multiple instances and tied to an established service catalog. Scale itself is not the obstacle: [**Fila**](/customers/fila) runs 2,000 workflows and 2.5 million executions a month on Kestra across ERP, PLM and supply chain operations in more than 70 countries.
+**A global systems integrator** runs roughly 3,000 workflows across three production vRO nodes, supporting more than 100 services in its ServiceNow catalog. It has not migrated. Its environment illustrates the assessment work involved when several thousand workflows are distributed across multiple instances and tied to an established service catalog. Scale itself is not the obstacle: [**Fila**](/stories/fila) runs 2,000 workflows and 2.5 million executions a month on Kestra across ERP, PLM and supply chain operations in more than 70 countries.
 
 </CaseStudy>
 
@@ -379,7 +381,7 @@ Most of this is kept, with two exceptions.
 - The first exception is a **CI system that does infrastructure work**. If Azure DevOps or Jenkins is what actually provisions, and vRA only triggered it, the verdict is **integrate** rather than **keep**. Kestra triggers the pipeline, waits, and reads the result, and the pipeline itself is untouched. We have seen cases where vRA's entire contribution to provisioning was to start a pipeline somewhere else, and recognizing that early changes which part of your environment the real logic lives in. It also shrinks the list of things you have to replace.
 - The second exception is the **blueprints**. A vRA blueprint is a canvas holding a VM, a disk and a network with the dependencies between them, and each resource on it fires lifecycle events that vRO workflows subscribe to. In Kestra the provisioning becomes a flow, and the workflows that hung off those subscriptions fold into it as tasks. The topology the canvas described is carried by Assets, which the flow generates as it runs. You usually need fewer flows than you had blueprints, because blueprints that differ only in size, region or business unit collapse into a single flow with inputs. The provisioning underneath is done by Terraform, the vSphere plugin, or the Nutanix plugin, which are interchangeable at the flow level.
 
-Teams that keep Ansible generally find the integration improves rather than degrades. The [Fortune 500 manufacturer above](/customers/fortune-500-company) called Ansible output parsing a major win after the move, because the parsing became deterministic.
+Teams that keep Ansible generally find the integration improves rather than degrades. The [Fortune 500 manufacturer above](/stories/fortune-500-company) called Ansible output parsing a major win after the move, because the parsing became deterministic.
 
 </Fragment>
 </ExplorerPart>
@@ -709,7 +711,7 @@ Enough signal to size the whole thing: roughly how many waves, roughly how long,
 
 The last one is the link between the stages. Stage 1 gives you the counts. Stage 2 gives you the rate, and how much of the conversion the Migration Assistant actually handles on your own code. Together they give you an estimate you can defend.
 
-Some answers arrive faster than others. At the [Fortune 500 manufacturer](/customers/fortune-500-company) above, the difference in day-to-day engineering was clear within the first few days: errors were legible, execution was predictable, and the workflows stopped behaving like a black box.
+Some answers arrive faster than others. At the [Fortune 500 manufacturer](/stories/fortune-500-company) above, the difference in day-to-day engineering was clear within the first few days: errors were legible, execution was predictable, and the workflows stopped behaving like a black box.
 
 ### 4.3 How it runs
 
@@ -853,10 +855,10 @@ Use the four measures below to present the results.
 
 | Measure | Evidence to include | Business impact to assess | Published reference points |
 | --- | --- | --- | --- |
-| **Speed of delivery** | Elapsed time from an agreed request to an automation service ready for use, including handoffs and waiting | Whether infrastructure requests stop delaying application releases, customer delivery or other named projects | A [Fortune 500 manufacturer](/customers/fortune-500-company) reports 30× faster delivery after replacing vRA. [**Amdocs**](/customers/amdocs) moved environment delivery from days to hours |
-| **Development effort** | Hands-on hours to build or change comparable workflows, including testing | How much more the team can deliver within the same budget, expressed as projects or requests per period, and whether planned hiring or consulting spend can be reduced | [**CleverConnect**](/customers/cleverconnect) reports building integrations ten times faster, and reached production in two months |
-| **People who can build automation** | Engineers who have demonstrated that they can independently modify and troubleshoot the flows | Whether the team can maintain services and deliver changes when a specialist is unavailable or leaves | [**JPMorgan Chase**](/customers/jpmorgan-chase) has more than 100 analysts building and running their own workflows rather than waiting on engineering. [**Acxiom**](/customers/acxiom) reports 120+ engineers on the platform |
-| **Consolidation** | Instances, consoles, upgrade cycles and maintenance tasks that can be removed | Which hosting and support costs disappear, and how much maintenance capacity becomes available for other work | [**Crédit Agricole**](/customers/credit-agricole) runs more than 100 clusters from one control plane. [**Dataport**](/customers/dataport) runs its private cloud portal on a single self-hosted control plane |
+| **Speed of delivery** | Elapsed time from an agreed request to an automation service ready for use, including handoffs and waiting | Whether infrastructure requests stop delaying application releases, customer delivery or other named projects | A [Fortune 500 manufacturer](/stories/fortune-500-company) reports 30× faster delivery after replacing vRA. [**Amdocs**](/stories/amdocs) moved environment delivery from days to hours |
+| **Development effort** | Hands-on hours to build or change comparable workflows, including testing | How much more the team can deliver within the same budget, expressed as projects or requests per period, and whether planned hiring or consulting spend can be reduced | [**CleverConnect**](/stories/cleverconnect) reports building integrations ten times faster, and reached production in two months |
+| **People who can build automation** | Engineers who have demonstrated that they can independently modify and troubleshoot the flows | Whether the team can maintain services and deliver changes when a specialist is unavailable or leaves | [**JPMorgan Chase**](/stories/jpmorgan-chase) has more than 100 analysts building and running their own workflows rather than waiting on engineering. [**Acxiom**](/stories/acxiom) reports 120+ engineers on the platform |
+| **Consolidation** | Instances, consoles, upgrade cycles and maintenance tasks that can be removed | Which hosting and support costs disappear, and how much maintenance capacity becomes available for other work | [**Crédit Agricole**](/stories/credit-agricole) runs more than 100 clusters from one control plane. [**Dataport**](/stories/dataport) runs its private cloud portal on a single self-hosted control plane |
 
 #### Start with the numbers you already have
 
@@ -909,7 +911,7 @@ Two habits make the estimate hold up in front of a CFO:
 
 **Only count a saving when the payment actually stops.** If vRA is part of a VCF bundle you will keep buying for the hypervisor, removing vRA may not reduce that invoice at all. Confirm the amount and timing with procurement before it goes in the case.
 
-As a reference point rather than a projection: the [Fortune 500 manufacturer above](/customers/fortune-500-company) reports **licensing costs 90% below** Aria Automation after replacing it.
+As a reference point rather than a projection: the [Fortune 500 manufacturer above](/stories/fortune-500-company) reports **licensing costs 90% below** Aria Automation after replacing it.
 
 The result is a cost and payback estimate rather than a delivery date. How long the migration takes depends on team availability, access to systems and approval windows, and if the last wave finishes after the renewal, the saving moves out by a full term.
 

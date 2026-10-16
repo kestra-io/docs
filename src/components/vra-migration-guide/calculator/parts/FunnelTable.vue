@@ -74,8 +74,8 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import { toNumber, type FunnelResult } from "~/utils/vra-calculator"
-    import { funnelCounts } from "../presentation"
+    import type { FunnelResult } from "~/utils/vra-calculator"
+    import { complementPercent, funnelCounts } from "../presentation"
     import type { useCalculator } from "../useCalculator"
     import NumberField from "./NumberField.vue"
 
@@ -87,18 +87,14 @@
 
     const counts = computed(() => funnelCounts(props.funnel))
 
-    const complement = (value: string | number | null) => {
-        const n = toNumber(value)
-        return n === null ? value : String(100 - n)
-    }
     const active = computed(() => {
         const dormant = props.field("dormant")
         return {
-            modelValue: complement(dormant.modelValue),
+            modelValue: complementPercent(dormant.modelValue),
             invalid: dormant.invalid,
             "onUpdate:modelValue": (value: string) =>
                 dormant["onUpdate:modelValue"](
-                    value === "" ? "" : (complement(value) ?? ""),
+                    value === "" ? "" : complementPercent(value),
                 ),
         }
     })
