@@ -177,17 +177,28 @@ The `worker.job.pending`, `worker.job.running`, and `worker.job.thread` metrics 
 
 |Metrics|Type|Description|
 |-|-|-|
-|executor.taskrun.next.count|`COUNTER`|Count of tasks found|
-|executor.execution.end.count|`COUNTER`|Count of completed executions|
-|executor.taskrun.ended.duration|`TIMER`|Duration of tasks completed|
-|executor.workertaskresult.count|`COUNTER`|Count of task results sent by a worker|
 |executor.execution.started.count|`COUNTER`|Count of executions started|
 |executor.execution.end.count|`COUNTER`|Count of executions completed|
 |executor.execution.duration|`TIMER`|Duration of executions completed|
+|executor.execution.message.process|`TIMER`|Duration of processing a single execution message|
+|executor.execution.queued.count|`COUNTER`|Count of executions queued by a [concurrency limit](../../05.workflow-components/14.concurrency/index.md)|
+|executor.execution.popped.count|`COUNTER`|Count of queued executions released from the queue|
+|executor.execution.delay.created.count|`COUNTER`|Count of delays created for retries, pauses, and `LoopUntil` waits|
+|executor.execution.delay.ended.count|`COUNTER`|Count of delays that ended and resumed an execution|
+|executor.taskrun.created.count|`COUNTER`|Count of task runs created|
+|executor.taskrun.ended.count|`COUNTER`|Count of task runs completed|
+|executor.taskrun.ended.duration|`TIMER`|Duration of task runs completed|
 |executor.flowable.execution.count|`COUNTER`|Count of flowable tasks executed|
-|executor.execution.popped.count|`COUNTER`|Count of executions popped|
-|executor.execution.queued.count|`COUNTER`|Count of executions queued|
-|executor.thread.count|`COUNTER`|Count of executor threads|
+|executor.killed.count|`COUNTER`|Count of kill requests received, tagged by `execution_killed_type`|
+|executor.sla.expired.count|`COUNTER`|Count of `MAX_DURATION` [SLAs](../../05.workflow-components/18.sla/index.md) that expired|
+|executor.sla.violation.count|`COUNTER`|Count of SLA violations of any type|
+|executor.quota.exceeded.total|`COUNTER`|Count of exceeded [quotas](../../05.workflow-components/21.quotas/index.md) (Enterprise Edition)|
+|executor.worker.job.resubmit.count|`COUNTER`|Count of worker jobs resubmitted after a worker stopped responding|
+|executor.worker.job.orphan.count|`COUNTER`|Count of running worker jobs reclaimed from a worker that left the cluster|
+|executor.processing.flow.trigger.duration|`TIMER`|Duration of evaluating [Flow triggers](../../05.workflow-components/07.triggers/02.flow-trigger/index.md)|
+|executor.loop.delay.duration|`TIMER`|Duration of one pass of the delay loop that resumes retries and pauses|
+|executor.loop.sla.duration|`TIMER`|Duration of one pass of the SLA monitoring loop|
+|executor.thread.count|`GAUGE`|Number of executor threads|
 
 #### Indexer
 

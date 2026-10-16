@@ -33,24 +33,32 @@ For deeper details on Micrometer metrics integration, see the [Micronaut Microme
 Executor server exclusive:
 
 * `kestra_executor_execution_delay_created_count_total` (counter): The total number of execution delays created by the Executor.
+* `kestra_executor_execution_delay_ended_count_total` (counter): The total number of execution delays ended (resumed) by the Executor.
 * `kestra_executor_execution_duration_seconds` (summary): Execution duration inside the Executor.
 * `kestra_executor_execution_duration_seconds_max` (gauge): Maximum observed execution duration inside the Executor.
 * `kestra_executor_execution_end_count_total` (counter): The total number of executions ended by the Executor.
 * `kestra_executor_execution_message_process_seconds` (summary): Duration of a single execution message processed by the Executor.
 * `kestra_executor_execution_message_process_seconds_max` (gauge): Maximum observed duration of a single execution message processed by the Executor.
+* `kestra_executor_execution_popped_count_total` (counter): The total number of executions popped by the Executor.
+* `kestra_executor_execution_queued_count_total` (counter): The total number of executions queued by the Executor.
 * `kestra_executor_execution_started_count_total` (counter): The total number of executions started by the Executor.
 * `kestra_executor_flowable_execution_count_total` (counter): The total number of flowable tasks executed by the Executor
+* `kestra_executor_killed_count_total` (counter): The total number of execution kill events received by the Executor.
 * `kestra_executor_loop_delay_duration_seconds` (summary): Execution delay loop duration inside the Executor.
 * `kestra_executor_loop_delay_duration_seconds_max` (gauge): Maximum observed execution delay loop duration inside the Executor.
 * `kestra_executor_loop_sla_duration_seconds` (summary): SLA monitor loop duration inside the Executor.
 * `kestra_executor_loop_sla_duration_seconds_max` (gauge): Maximum observed SLA monitor loop duration inside the Executor.
 * `kestra_executor_processing_flow_trigger_duration_seconds` (summary): Flow trigger processing duration inside the Executor.
 * `kestra_executor_processing_flow_trigger_duration_seconds_max` (gauge): Maximum observed flow trigger processing duration inside the Executor.
+* `kestra_executor_quota_exceeded_total` (counter): The total number of exceeded quotas evaluated by the Executor (Enterprise Edition).
+* `kestra_executor_sla_expired_count_total` (counter): The total number of `MAX_DURATION` SLAs that expired.
+* `kestra_executor_sla_violation_count_total` (counter): The total number of SLA violations of any type.
 * `kestra_executor_taskrun_created_count_total` (counter): The total number of tasks created by the Executor.
-* `kestra_executor_taskrun_ended_count_total` (counter): he total number of tasks ended by the Executor.
+* `kestra_executor_taskrun_ended_count_total` (counter): The total number of tasks ended by the Executor.
 * `kestra_executor_taskrun_ended_duration_seconds` (summary): Task duration inside the Executor.
 * `kestra_executor_taskrun_ended_duration_seconds_max` (gauge): Maximum observed task duration inside the Executor.
 * `kestra_executor_thread_count` (gauge): The number of executor threads.
+* `kestra_executor_worker_job_orphan_count_total` (counter): The total number of running worker jobs reclaimed by the Executor from a worker that left the cluster.
 * `kestra_executor_worker_job_resubmit_count_total` (counter): The total number of worker jobs resubmitted to the Worker by the Executor.
 
 ### Kestra Indexer Metrics
