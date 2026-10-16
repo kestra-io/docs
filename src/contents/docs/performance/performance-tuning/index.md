@@ -68,12 +68,11 @@ You can configure the number of threads used by the Executor with the following 
 
 ```yaml
 kestra:
-  jdbc:
-    executor:
-      thread-count: 0
+  executor:
+    thread-count: 0
 ```
 
-By default, it's 0, which means the number of available CPUs. Two thread pools are started, effectively using 2 times the number of available CPUs by default.
+The Executor starts two thread pools of this size: one for execution events and one for worker task results. The default, `0`, sizes each pool to the number of [allocated CPU cores](../../configuration/02.runtime-and-storage/index.md#allocated-cpu-cores), with a minimum of 4.
 
 ## MySQL-specific tuning
 
