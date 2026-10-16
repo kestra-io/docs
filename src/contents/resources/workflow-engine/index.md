@@ -77,13 +77,15 @@ inputs:
 triggers:
   - id: webhook_trigger
     type: io.kestra.plugin.core.trigger.Webhook
-    uri: /webhook/data-process # Public URI endpoint for this webhook
+    key: "{{ secret('WEBHOOK_KEY') }}" # Part of the webhook URL: keep it secret
 
 tasks:
   - id: process_data
     type: io.kestra.plugin.scripts.shell.Commands
+    env:
+      MESSAGE: "{{ trigger.body.message }}"
     commands:
-      - echo "Processing received message: {{ trigger.body.message }}"
+      - 'echo "Processing received message: $MESSAGE"'
       - sleep 5 # Simulate a data processing task
       - echo "Data processed successfully."
 

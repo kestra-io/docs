@@ -131,16 +131,16 @@ Finally, this concept of enterprise-wide orchestration is distinct from telecom-
 
 The value of a unified control plane becomes clear in use cases that inherently cross domains.
 
-- **Cybersecurity:** a security workflow might start with a SIEM alert (data), trigger an infrastructure scan (infrastructure), call a SOAR platform API (application), and create an ITSM ticket for human review (business). With a unified orchestrator, this entire process has a single, auditable trail. Cybersecurity analytics orchestration at firms like [JPMorgan Chase](/customers/jpmorgan-chase) demonstrates this power, processing billions of rows to automate detection and response.
+- **Cybersecurity:** a security workflow might start with a SIEM alert (data), trigger an infrastructure scan (infrastructure), call a SOAR platform API (application), and create an ITSM ticket for human review (business). With a unified orchestrator, this entire process has a single, auditable trail. Cybersecurity analytics orchestration at firms like [JPMorgan Chase](/stories/jpmorgan-chase) demonstrates this power, processing billions of rows to automate detection and response.
 - **Manufacturing:** as described by Kai Waehner in the [unified orchestration whitepaper](/resources/whitepapers/unified-orchestration), unified orchestration can connect shop-floor OT systems to cloud-based IT platforms, creating a seamless flow of information from industrial sensors to business analytics.
-- **Legacy modernization:** companies like [Quadis](/customers/quadis), a car retail leader, use orchestration to automate financial reporting and replace legacy ETL tools. Public-sector providers like [Dataport](/customers/dataport) leverage it to build sovereign cloud automation platforms, ensuring data stays within jurisdictional boundaries.
-- **IT process automation displacement:** a [Fortune 500 industrial company](/customers/fortune-500-company) moved its infrastructure provisioning workflows off VMware Aria Automation onto an open engine, with the estate underneath unchanged.
+- **Legacy modernization:** companies like [Quadis](/stories/quadis), a car retail leader, use orchestration to automate financial reporting and replace legacy ETL tools. Public-sector providers like [Dataport](/stories/dataport) leverage it to build sovereign cloud automation platforms, ensuring data stays within jurisdictional boundaries.
+- **IT process automation displacement:** a [Fortune 500 industrial company](/stories/fortune-500-company) moved its infrastructure provisioning workflows off VMware Aria Automation onto an open engine, with the estate underneath unchanged.
 
 ## Kestra's approach to unified orchestration
 
 Kestra is an open-source platform built from the ground up to deliver unified orchestration. Its architecture directly addresses the seven requirements for a true cross-domain control plane.
 
-Workflows are defined declaratively in YAML, making them language-agnostic and easy to version-control. The platform's [event-driven engine](/blogs/2024-06-25-kestra-become-real-time) can trigger workflows from any source, while its library of more than 2,000 plugins ensures extensibility across any stack.
+Workflows are defined declaratively in YAML, making them language-agnostic and easy to version-control. The platform's [event-driven engine](/blogs/2024-06-25-kestra-become-real-time) can trigger workflows from any source, while its library of {totalPlugins}+ plugins ensures extensibility across any stack.
 
 The flow below crosses all four domains in a single, auditable execution: a Kafka alert starts it (data), an Ansible playbook scans the affected host (infrastructure), a human approves the remediation (governance), and a ServiceNow incident records it (business).
 

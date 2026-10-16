@@ -111,7 +111,7 @@ AWS Glue, Azure Data Factory and Google Cloud Dataflow are the integration servi
 
 | Tool | License Model | Deployment Options | Connector Count | Pricing Structure | Best Fit |
 |---|---|---|---|---|---|
-| **Kestra** | Open-source (Apache 2.0) + EE | Self-hosted, K8s, Cloud | 1,700+ plugins | Flat instance-based / SaaS | Unified workflow & data orchestration |
+| **Kestra** | Open-source (Apache 2.0) + EE | Self-hosted, K8s, Cloud | {totalPlugins}+ plugins | Flat instance-based / SaaS | Unified workflow & data orchestration |
 | **Airbyte** | Open-source (MIT/BSL) + Cloud | Self-hosted or SaaS | 300+ | Free self-hosted / Consumption cloud | Open-source data integration |
 | **Hevo Data** | Proprietary SaaS | Managed SaaS | 150+ | Volume-based SaaS | Zero-maintenance managed ELT |
 | **Estuary** | Proprietary / Source-available | Managed SaaS | 100+ | Usage-based streaming | Real-time CDC & streaming |

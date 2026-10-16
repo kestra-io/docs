@@ -75,6 +75,16 @@ The CLI remains for open-source parity, with renamed flags to match the behavior
 --ignore-executions / --ignore-flows
 ```
 
+The `kestra server executor` and `kestra server standalone` commands accept these troubleshooting flags. Each takes a comma-separated list:
+
+| Flag | Ignores |
+|---|---|
+| `--ignore-executions` | Execution IDs |
+| `--ignore-flows` | Flows, as `namespace.flowId` |
+| `--ignore-namespaces` | Namespaces, as `tenant\|namespace` |
+| `--ignore-tenants` | Tenant IDs |
+| `--ignore-queue-records` | Queue record keys. Also available on the `controller`, `indexer`, and `webserver` commands. |
+
 ## Relationship to maintenance mode
 
-[Maintenance Mode](../maintenance-mode/index.md) pauses the platform broadly (queues new executions, lets running ones finish). Kill Switch keeps services up and targets specific tenants/namespaces/flows/executions to stop or ignore problematic runs: it is an operational tool, not a platform pause.
+[Maintenance Mode](../maintenance-mode/index.md) pauses the platform broadly: requests to create executions are held, and running executions don't advance until maintenance ends. Kill Switch keeps services up and targets specific tenants/namespaces/flows/executions to stop or ignore problematic runs: it is an operational tool, not a platform pause.

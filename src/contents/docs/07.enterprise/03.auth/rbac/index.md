@@ -35,11 +35,28 @@ Users, service accounts, and groups can hold any number of roles simultaneously.
 
 ## Impersonate
 
-After assigning permissions to a user, Instance Owners can impersonate users to verify their access is correct. Impersonation switches your view to that user's perspective and can be closed back to the Instance Owner view at any time.
+After assigning permissions to a user, Instance Owners can impersonate them to verify their access is correct. Impersonation switches your view to that user's perspective. A persistent banner confirms who you are impersonating, and you can return to your own session at any time using the **Stop impersonating** button in the top right.
 
-![Impersonate](./impersonate-user.png)
+**From the UI:** go to **IAM → Users**, find the user row, and select **Impersonate** from the action menu on the right.
 
-![Stop Impersonating User](./stop-impersonate-user.png)
+![The Impersonate button appears on each user row in the IAM Users list](./impersonate-user.png)
+
+Once active, a banner at the top of the page confirms the impersonation session. Select **Stop impersonating** to return to your own session.
+
+![The Stop impersonating button appears in the top right during an active impersonation session](./stop-impersonate-user.png)
+
+**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`. The response contains a short-lived JWT you can use in place of your regular credentials to act as that user.
+
+```bash
+curl -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
+  -H "Authorization: Bearer YOUR_API_TOKEN"
+```
+
+**From kestractl:** use the `users impersonate` command, which calls the same endpoint and prints the token:
+
+```bash
+kestractl users impersonate <user_id>
+```
 
 ### Resources
 
@@ -56,6 +73,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `KVSTORE` | Key-value store entries |
 | `SECRET` | Secrets stored in the namespace |
 | `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
+| `REUSABLE_INPUTS` | Reusable input sets defined at the namespace level |
 
 **Apps and features** (tenant-scoped):
 
@@ -144,8 +162,8 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 | Role | Description |
 |---|---|
 | **Admin** | All actions on all resources. |
-| **Developer** | Everything Editor has, plus: full namespace management (including file management and plugin default import), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
-| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
+| **Developer** | Everything Editor has, plus: full namespace management (including file management), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
+| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 

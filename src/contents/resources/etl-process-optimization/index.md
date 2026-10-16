@@ -109,7 +109,7 @@ Kestra is an open-source platform designed to orchestrate and optimize complex E
 
 *   **Declarative YAML Workflows:** Define all steps of your ETL process, including parallelism, error handling, and triggers, in simple, version-controllable YAML files.
 *   **Polyglot Task Execution:** Kestra can run tasks in any language, allowing you to use the best tool for the job, whether it's Python for transformation, SQL for loading, or a shell script for a custom utility. This matters for integrating with tools like [Snowflake](/blogs/2022-10-05-kestra-snowflake) and [Databricks](/blogs/2024-03-12-kestra-databricks).
-*   **Event-Driven Capabilities:** With over 1,700 plugins, Kestra can be triggered by events from a wide range of sources, including message queues, cloud storage, and webhooks, enabling real-time processing.
+*   **Event-Driven Capabilities:** With {totalPlugins}+ plugins, Kestra can be triggered by events from a wide range of sources, including message queues, cloud storage, and webhooks, enabling real-time processing.
 *   **Built-in Parallelism:** Easily define tasks that should run in parallel to speed up execution without complex coding.
 
 For example, implementing an incremental load from PostgreSQL to Snowflake can be defined declaratively in Kestra:
@@ -178,7 +178,7 @@ triggers:
     cron: "0 0 * * *" # Daily at midnight
 ```
 
-This workflow automates the entire incremental ETL process, from extraction based on the last run time to transformation and loading, providing a reliable and optimized solution. Companies like [Reglo](/customers/reglo) use Kestra to automate their ETL processes with simple integrations. This approach provides a significant advantage over code-heavy frameworks like [Prefect](/vs/prefect) or [Dagster](/vs/dagster) for teams that need a universal, language-agnostic platform.
+This workflow automates the entire incremental ETL process, from extraction based on the last run time to transformation and loading, providing a reliable and optimized solution. Companies like [Reglo](/stories/reglo) use Kestra to automate their ETL processes with simple integrations. This approach provides a significant advantage over code-heavy frameworks like [Prefect](/vs/prefect) or [Dagster](/vs/dagster) for teams that need a universal, language-agnostic platform.
 
 ## Conclusion: The Future of Optimized Data Pipelines
 

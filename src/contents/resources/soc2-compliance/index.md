@@ -148,7 +148,7 @@ This workflow automates several critical functions:
 *   **Automated Alerting:** If any check finds a non-compliant resource, an immediate alert is sent to the security team via Slack for swift remediation.
 *   **Structured Audit Trail:** Every finding is logged with a clear message, creating a searchable and filterable audit trail within Kestra's [Audit Logs](/docs/enterprise/governance/audit-logs).
 
-By using Kestra, organizations can implement a robust system for continuous compliance, similar to how [JPMorgan Chase orchestrates cybersecurity analytics](/customers/jpmorgan-chase) at scale. The platform's declarative nature and extensive plugin ecosystem, including tools like Open Policy Agent via the [OPA compliance audit blueprint](/blueprints/opa-compliance-audit), make it an ideal foundation for any organization's [Enterprise](/enterprise) compliance strategy.
+By using Kestra, organizations can implement a robust system for continuous compliance, similar to how [JPMorgan Chase orchestrates cybersecurity analytics](/stories/jpmorgan-chase) at scale. The platform's declarative nature and extensive plugin ecosystem, including tools like Open Policy Agent via the [OPA compliance audit blueprint](/blueprints/opa-compliance-audit), make it an ideal foundation for any organization's [Enterprise](/enterprise) compliance strategy.
 
 ## Beyond the Audit: Sustaining SOC 2 Compliance with Automation
 
