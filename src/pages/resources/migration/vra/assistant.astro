@@ -1,15 +1,16 @@
 ---
-import { Code } from "astro-expressive-code/components"
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import Hero from "~/components/vra-migration-guide/Hero.astro"
-import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
-import Cards from "~/components/vra-migration-guide/blocks/Cards.astro"
-import Card from "~/components/vra-migration-guide/blocks/Card.astro"
-import Figure from "~/components/vra-migration-guide/blocks/Figure.astro"
-import CaseStudy from "~/components/vra-migration-guide/blocks/CaseStudy.astro"
-import GuideCta from "~/components/vra-migration-guide/blocks/GuideCta.astro"
+import HeroActions from "~/components/vra-migration-guide/assistant/HeroActions.astro"
+import HeroVisual from "~/components/vra-migration-guide/assistant/HeroVisual.astro"
+import WhatItDoes from "~/components/vra-migration-guide/assistant/WhatItDoes.astro"
+import HowItWorks from "~/components/vra-migration-guide/assistant/HowItWorks.astro"
+import SecurityPosture from "~/components/vra-migration-guide/assistant/SecurityPosture.astro"
+import ExampleUseCase from "~/components/vra-migration-guide/assistant/ExampleUseCase.astro"
+import GetItCards from "~/components/vra-migration-guide/assistant/GetItCards.astro"
+import NextSteps from "~/components/vra-migration-guide/assistant/NextSteps.astro"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
 import {
     HELP_DIALOG_ID,
@@ -26,10 +27,8 @@ const GUIDE_HREF = "/resources/migration/vra"
 const GUIDE_INTRO_HREF = "/resources/migration/vra"
 const ROI_CALCULATOR_HREF = "/resources/migration/vra/payback"
 const GITHUB_HREF = "https://github.com/kestra-io/migration-assistant"
-
-const COMMANDS = `pipx install kestra-migration-assistant
-kestra-migrate init
-kestra-migrate vra run ./my-estate`
+// TBC: the registration page before November 5, then the recording.
+const WEBINAR_HREF = "#"
 
 const faqItems = [
     {
@@ -68,7 +67,7 @@ const faqItems = [
         tag: "Webinar",
         linkText: "Migrating off vRA, live on November 4 and 5:",
         tail: "see the Migration Assistant run end to end",
-        href: "#",
+        href: WEBINAR_HREF,
     }}
 >
     <Fragment slot="head">
@@ -78,16 +77,6 @@ const faqItems = [
     <Hero
         pill="Migration Assistant · vRA and vRO"
         title="Kestra Migration Assistant for vRA"
-        meta={["Apache 2.0", "Runs on your machine", "No telemetry"]}
-        cardText="Install it with pipx on Python 3.10 or later, or run the container image if you don't have Python. The source and instructions are on GitHub."
-        cardButtons={[
-            { label: "View on GitHub", href: GITHUB_HREF, variant: "primary" },
-            {
-                label: "Need help running it?",
-                modalTarget: HELP_DIALOG_TARGET,
-                variant: "link",
-            },
-        ]}
     >
         <Fragment slot="deck">
             A free, open-source tool that assesses your VMware vRA and vRO
@@ -97,266 +86,30 @@ const faqItems = [
                 href={GUIDE_HREF}>vRA migration guide</a
             >.
         </Fragment>
-        <div slot="visual" class="placeholder placeholder-hero">
-            Screenshot of the brief's front page
-        </div>
+        <HeroActions
+            slot="actions"
+            githubHref={GITHUB_HREF}
+            helpTarget={HELP_DIALOG_TARGET}
+        />
+        <HeroVisual slot="visual" />
     </Hero>
 
-    <section class="ma-section">
-        <div class="container bd-content">
-            <h2>What it does</h2>
-            <p>
-                The Migration Assistant runs the assessment for moving off
-                VMware vRA and vRO to Kestra. It covers the workflow half of
-                Stage 1 in the <a href={GUIDE_HREF}>vRA migration guide</a>: it
-                reads your vRO package and vRA export, works out what's in the
-                estate, and writes a brief you open in a browser. The brief
-                covers:
-            </p>
-            <ul>
-                <li>
-                    <strong>What each workflow does and what starts it</strong>,
-                    including the catalog items, cloud templates and event
-                    subscriptions in the vRA export.
-                </li>
-                <li>
-                    <strong>Which systems each workflow touches</strong>, and
-                    whether a <a href="/plugins">Kestra plugin</a> already exists
-                    for each one.
-                </li>
-                <li>
-                    <strong>A recommendation for each workflow</strong> (retire, merge
-                    into another, treat as a wrapper, convert, or rebuild), with the
-                    reason next to it.
-                </li>
-                <li>
-                    <strong>A migration plan in waves</strong>, ordered by risk
-                    and dependency, with what each wave needs before it starts.
-                </li>
-            </ul>
-            <p>
-                The tool stops at the plan. Converting the workflows, testing
-                them and verifying each wave before cutover is work Kestra does
-                with you, starting from the brief.
-            </p>
-            <p>
-                If you're still deciding whether to move, the <a
-                    href={GUIDE_INTRO_HREF}>introduction to the guide</a
-                > covers why teams are leaving vRA, and the <a
-                    href={ROI_CALCULATOR_HREF}>ROI calculator</a
-                > shows whether the move pays back for your estate.
-            </p>
-            <Figure
-                caption="The front page of the brief leads with what to do next."
-            >
-                <div class="placeholder" aria-hidden="true"></div>
-            </Figure>
-        </div>
-    </section>
+    <WhatItDoes
+        guideHref={GUIDE_HREF}
+        guideIntroHref={GUIDE_INTRO_HREF}
+        calculatorHref={ROI_CALCULATOR_HREF}
+    />
 
-    <GuideBand>
-        <h2>Next steps</h2>
-        <Cards columns={2}>
-            <Card>
-                <p>
-                    <a href={GUIDE_HREF}
-                        ><strong>Read the vRA migration guide</strong></a
-                    > for the method behind the brief, and for the parts of the estate
-                    the tool doesn't read, such as the ITSM catalog, Terraform and
-                    Ansible, and the CMDB.
-                </p>
-            </Card>
-            <Card>
-                <!-- TBC: registration page before November 5, then "Watch the webinar" and the recording. -->
-                <p>
-                    <strong>Join the webinar</strong> on November 4 and 5 to see the
-                    Migration Assistant run end to end.
-                </p>
-            </Card>
-        </Cards>
-    </GuideBand>
+    <HowItWorks />
 
-    <section class="ma-section">
-        <div class="container bd-content">
-            <h2>How it works</h2>
-            <p>It takes three steps, all on your machine.</p>
-            <Cards columns={3}>
-                <Card kicker="1" title="Export">
-                    <p>
-                        A vRO administrator exports a .package from the
-                        Orchestrator client. If vRA starts your workflows,
-                        export the vRA content from VMware Build Tools as well,
-                        so the brief can see what triggers them. Put both in one
-                        folder.
-                    </p>
-                </Card>
-                <Card kicker="2" title="Run">
-                    <p>
-                        The first time, run <code>kestra-migrate init</code>. It
-                        creates a config file in your home folder where you
-                        choose your model and settings. Then run <code
-                            >kestra-migrate vra run</code
-                        > on the export folder. It sanitizes the export, maps every
-                        workflow and the systems it touches, and writes the brief
-                        to a kestra-assessment folder next to the exports.
-                    </p>
-                </Card>
-                <Card kicker="3" title="Answer and run again">
-                    <p>
-                        When the exports can't answer something, such as how
-                        often a workflow runs or what else starts it, the tool
-                        writes the question to <code>answers.yaml</code>, with a
-                        suggested answer where the code points to one. Fill in
-                        the answers and run the same command again. When there
-                        are no open questions left, the plan is final.
-                    </p>
-                </Card>
-            </Cards>
-            <Code code={COMMANDS} lang="bash" />
-        </div>
-    </section>
+    <SecurityPosture />
 
-    <GuideBand>
-        <h2>Security posture</h2>
-        <ul>
-            <li>
-                <strong>Runs on your machine.</strong> Nothing is sent to Kestra.
-            </li>
-            <li>
-                <strong>Sanitized first.</strong> Host names, IP addresses, URLs,
-                emails, accounts and credentials are replaced with placeholders before
-                anything reaches a model, and you get a report to review.
-            </li>
-            <li>
-                <strong>Only model calls leave the machine.</strong> No telemetry
-                and no update check.
-            </li>
-            <li>
-                <strong>Your choice of model</strong>, including one you host
-                yourself, or no model at all for a first look.
-            </li>
-            <li>
-                <strong>Guarded against prompt injection.</strong> Workflow content
-                reaches the model marked as data to analyze, so a comment in a script
-                that reads like an instruction is treated as part of the code.
-            </li>
-            <li>
-                <strong>Open source</strong> under Apache 2.0, so your security team
-                can read the code.
-            </li>
-        </ul>
-    </GuideBand>
+    <!-- TBC: zip hosted on HubSpot or attached to the GitHub release. -->
+    <ExampleUseCase downloadHref="#" />
 
-    <section class="ma-section">
-        <div class="container bd-content">
-            <h2>Example: a self-service load balancer</h2>
-            <CaseStudy status="Example">
-                <p>
-                    Here's an example to show how the tool works: a load
-                    balancer ordered from the vRA catalog that stays in sync as
-                    machines come and go. It has:
-                </p>
-                <ul>
-                    <li>
-                        <strong>vRA:</strong> a Service Broker catalog item with a
-                        13-field request form, a cloud template that creates the machines
-                        and their network, and five event subscriptions.
-                    </li>
-                    <li>
-                        <strong>vRO:</strong> four workflows (create, add machine,
-                        remove machine, delete), with 39 actions, four configuration
-                        elements and three resource elements behind them.
-                    </li>
-                    <li>
-                        <strong>Targets:</strong> an F5 BIG-IP or an Avi load balancer,
-                        picked on the request form, and vCenter through the cloud
-                        template.
-                    </li>
-                </ul>
-                <p>
-                    The brief recommended converting rather than rebuilding. It
-                    mapped F5 to Kestra's F5 plugin and Avi to HTTP tasks on
-                    Avi's REST API, and proposed two waves: the four workflows
-                    together, since they share state, then the catalog item and
-                    cloud template replaced by a Kestra App and a provisioning
-                    flow.
-                </p>
-            </CaseStudy>
-            <Figure
-                caption="How each part of the service maps to Kestra, and whether it converts directly or needs a redesign."
-            >
-                <div class="placeholder" aria-hidden="true"></div>
-            </Figure>
-            <Figure
-                caption="Two waves, with what each one needs before it starts."
-            >
-                <div class="placeholder" aria-hidden="true"></div>
-            </Figure>
-            <Figure
-                caption="What one workflow does, what starts it and what it touches."
-            >
-                <div class="placeholder" aria-hidden="true"></div>
-            </Figure>
-            <Figure
-                caption="Open questions in plain words, with suggested answers."
-            >
-                <div class="placeholder" aria-hidden="true"></div>
-            </Figure>
-            <p>
-                The vRO package and vRA export are free to download, so you can
-                run the Migration Assistant on them before you run it on your
-                own.
-            </p>
-            <!-- TBC: zip hosted on HubSpot or attached to the GitHub release. -->
-            <p class="guide-cta">
-                <a class="btn btn-secondary" href="#"
-                    >Download the use case files</a
-                >
-            </p>
-            <!-- Phase 2: the converted flows running in Kestra, with the demo video. -->
-            <div class="placeholder placeholder-video">
-                Video: the converted flows running in Kestra (Phase 2)
-            </div>
-        </div>
-    </section>
+    <GetItCards githubHref={GITHUB_HREF} helpTarget={HELP_DIALOG_TARGET} />
 
-    <GuideBand>
-        <h2>Get the Migration Assistant</h2>
-        <p>
-            The Migration Assistant is free and open source under Apache 2.0,
-            and it runs on Linux, macOS and Windows.
-        </p>
-        <ul>
-            <li>
-                <strong>With Python 3.10 or later</strong>, install it from PyPI
-                with <code>pipx install kestra-migration-assistant</code>.
-            </li>
-            <li>
-                <strong>Without Python</strong>, run the container image [image
-                name TBC].
-            </li>
-            <li>
-                <strong>Source and documentation</strong> are at <a
-                    href={GITHUB_HREF}
-                    target="_blank"
-                    rel="noopener">kestra-io/migration-assistant</a
-                > on GitHub.
-            </li>
-        </ul>
-        <GuideCta kind="github" />
-    </GuideBand>
-
-    <section class="ma-section">
-        <div class="container bd-content">
-            <h2 id="help">Get help running it</h2>
-            <p>
-                If you'd rather not run it alone, one of our engineers can run
-                it with you on a call, or run it for you on a sanitized copy of
-                your export.
-            </p>
-            <GuideCta kind="help" />
-        </div>
-    </section>
+    <NextSteps guideHref={GUIDE_HREF} webinarHref={WEBINAR_HREF} />
 
     <div class="ma-faq" id="faq">
         <Faq title="Questions that come up" items={faqItems} client:visible />
@@ -370,65 +123,6 @@ const faqItems = [
 </Layout>
 
 <style lang="scss">
-    .ma-section {
-        padding: 5.625rem 0;
-
-        @include media-breakpoint-down(lg) {
-            padding: 3rem 0;
-        }
-
-        .container {
-            max-width: 1180px;
-        }
-    }
-
-    .ma-section :global(.bd-content h2),
-    :global(.guide-band .bd-content h2) {
-        font-size: clamp(2.25rem, 4vw, 3rem);
-        font-weight: 600;
-        line-height: 1.05;
-        letter-spacing: -0.015em;
-    }
-
-    .ma-section :global(.bd-content > p),
-    .ma-section :global(.bd-content > ul > li),
-    :global(.guide-band .bd-content > p),
-    :global(.guide-band .bd-content > ul > li) {
-        font-size: $font-size-lg;
-        line-height: 1.75rem;
-    }
-
-    .placeholder {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 16rem;
-        padding: 1.5rem;
-        border: 1px dashed var(--ks-border-secondary);
-        border-radius: $border-radius-lg;
-        background: var(--ks-background-secondary);
-        font-size: $font-size-sm;
-        text-align: center;
-        color: var(--ks-content-secondary);
-    }
-
-    .placeholder-hero {
-        min-height: 14rem;
-        border-color: rgba($white, 0.3);
-        background: rgba($white, 0.05);
-        color: rgba($white, 0.8);
-    }
-
-    .placeholder-video {
-        min-height: 0;
-        aspect-ratio: 16 / 9;
-        margin: 1.75rem 0;
-    }
-
-    .guide-cta {
-        margin: 1.25rem 0;
-    }
-
     .ma-faq {
         scroll-margin-top: 100px;
     }

@@ -11,6 +11,19 @@
     }
 }
 
+// Figma's 1320px content width, with a side margin below that. Shared by the
+// hero and the Migration Assistant sections so they line up.
+@mixin guide-container {
+    position: relative;
+    max-width: calc(1320px + 2 * 1.5rem);
+    padding-inline: 1.5rem;
+
+    @include media-breakpoint-up(lg) {
+        max-width: calc(1320px + 2 * 3rem);
+        padding-inline: 3rem;
+    }
+}
+
 @mixin guide-focus-ring($offset: 2px) {
     &:focus-visible {
         outline: 2px solid var(--ks-border-active);
@@ -106,5 +119,32 @@ $calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
     &:disabled {
         color: var(--ks-content-tertiary);
         text-decoration: none;
+    }
+}
+
+// Figma's dark-theme (ks/*) values for the Migration Assistant pieces that
+// stay dark in both themes: code boxes, the browser frame, the example.
+$dark-bg-input: #111115;
+$dark-bg-control: #23252e;
+$dark-raised: #2e2e3c; // ks/bg-hover-elevated and ks/border-default
+$dark-border-strong: #424256;
+$dark-text-secondary: #adadbf;
+$dark-text-muted: #7e7e9b;
+$dark-link: #cdb6fb;
+
+// The Migration Assistant's full-width sections.
+@mixin assistant-section(
+    $background,
+    $color: var(--ks-content-primary),
+    $border: var(--ks-border-primary),
+    $padding: 5.625rem 0
+) {
+    padding: $padding;
+    border-bottom: 1px solid $border;
+    background: $background;
+    color: $color;
+
+    @include media-breakpoint-down(lg) {
+        padding: 3.5rem 0;
     }
 }

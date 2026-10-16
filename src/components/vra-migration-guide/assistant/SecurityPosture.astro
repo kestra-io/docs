@@ -1,0 +1,129 @@
+---
+import SectionTitle from "~/components/security/SectionTitle.astro"
+import { Icon } from "astro-icon/components"
+
+const POINTS = [
+    {
+        icon: "mdi:laptop",
+        title: "Runs on your machine",
+        text: "Nothing is sent to Kestra.",
+    },
+    {
+        icon: "mdi:filter-outline",
+        title: "Sanitized first",
+        text: "Host names, IP addresses, URLs, emails, accounts and credentials are replaced with placeholders before anything reaches a model, and you get a report to review.",
+    },
+    {
+        icon: "mdi:filter-outline",
+        title: "Only model calls leave the machine",
+        text: "No telemetry and no update check.",
+    },
+    {
+        icon: "mdi:tune-variant",
+        title: "Your choice of model",
+        text: "Including one you host yourself, or no model at all for a first look.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "Guarded against prompt injection",
+        text: "Workflow content reaches the model marked as data to analyze, so a comment in a script that reads like an instruction is treated as part of the code.",
+    },
+    {
+        icon: "mdi:code-tags",
+        title: "Open source",
+        text: "Under Apache 2.0, so your security team can read the code.",
+    },
+]
+---
+
+<section class="security-posture">
+    <div class="container">
+        <SectionTitle title="Security posture" align="center" />
+        <ul>
+            {
+                POINTS.map((point) => (
+                    <li>
+                        <Icon name={point.icon} class="icon" />
+                        <h3>{point.title}</h3>
+                        <p>{point.text}</p>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    .security-posture {
+        @include assistant-section(
+            var(--ks-background-body),
+            $border: var(--ks-border-secondary),
+            $padding: 4rem 0 7.5rem
+        );
+    }
+
+    .container {
+        @include guide-container;
+    }
+
+    // One bordered panel; the cells share their inner borders.
+    ul {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        overflow: hidden;
+        margin: 4rem 0 0;
+        padding: 0;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        box-shadow: $calc-shadow-elevated;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            margin-top: 2.5rem;
+        }
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin: 0 -1px -1px 0;
+        padding: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-up(xl) {
+            padding: 2rem 4rem;
+        }
+    }
+
+    .icon {
+        width: 2rem;
+        height: 2rem;
+        color: var(--ks-content-link);
+    }
+
+    h3 {
+        margin: 0;
+        font-size: $font-size-lg;
+        font-weight: 600;
+        line-height: 1.75rem;
+    }
+
+    p {
+        margin: 0.5rem 0 0;
+        font-size: $font-size-sm;
+        line-height: 1.25rem;
+        color: var(--ks-content-secondary);
+    }
+</style>

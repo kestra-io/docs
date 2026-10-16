@@ -1,0 +1,120 @@
+---
+import { Icon } from "astro-icon/components"
+import GithubButton from "./GithubButton.astro"
+import InstallCommand from "./InstallCommand.astro"
+
+interface Props {
+    githubHref: string
+    helpTarget: string
+}
+
+const { githubHref, helpTarget } = Astro.props
+
+const BADGES = [
+    { icon: "mdi:code-tags", label: "Apache 2.0" },
+    { icon: "mdi:laptop", label: "Runs on your machine" },
+    { icon: "mdi:eye-off-outline", label: "No telemetry" },
+]
+---
+
+<div class="hero-actions">
+    <div class="buttons">
+        <GithubButton href={githubHref} />
+        <button
+            type="button"
+            class="btn btn-secondary btn-lg"
+            data-modal-target={helpTarget}
+        >
+            Need help running it?
+        </button>
+    </div>
+
+    <InstallCommand
+        command="pipx install kestra-migration-assistant"
+        note="Python 3.10 or later. No Python? Run the container image instead."
+    />
+
+    <ul class="badges">
+        {
+            BADGES.map((badge) => (
+                <li>
+                    <Icon name={badge.icon} class="badge-icon" />
+                    {badge.label}
+                </li>
+            ))
+        }
+    </ul>
+</div>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    @use "/src/assets/styles/color-palette" as *;
+
+    .hero-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1.625rem;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.125rem;
+
+        // The help button, matched to the GitHub one.
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            min-width: 11.25rem;
+        }
+
+        .btn-secondary {
+            --ks-border-button-secondary: #{$dark-text-secondary};
+        }
+    }
+
+    .badges {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: $font-size-sm;
+        line-height: 1.25rem;
+        color: $base-grey-200;
+
+        li {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0 1.125rem;
+            border-left: 1px solid $base-grey-500;
+
+            &:first-child {
+                padding-left: 0;
+                border-left: 0;
+            }
+        }
+
+        // Too narrow for one line: drop the dividers so a wrapped badge
+        // doesn't start with one.
+        @include media-breakpoint-down(sm) {
+            gap: 0.5rem 1.25rem;
+
+            li {
+                padding: 0;
+                border-left: 0;
+            }
+        }
+    }
+
+    .badge-icon {
+        width: 1rem;
+        height: 1rem;
+        color: $dark-link;
+    }
+</style>

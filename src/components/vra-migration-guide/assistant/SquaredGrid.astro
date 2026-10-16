@@ -1,0 +1,25 @@
+---
+// The site's squared grid (also used by layout/Squared.vue), faded in behind
+// a section heading. The section needs position: relative and overflow: hidden.
+import grid from "~/assets/squared-grid.svg"
+---
+
+<img
+    class="squared-grid"
+    src={grid.src}
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+/>
+
+<style lang="scss">
+    .squared-grid {
+        position: absolute;
+        top: -15rem;
+        left: 50%;
+        width: 1720px;
+        max-width: none;
+        transform: translateX(-50%);
+        pointer-events: none;
+    }
+</style>

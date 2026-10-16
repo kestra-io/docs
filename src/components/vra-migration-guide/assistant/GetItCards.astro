@@ -1,0 +1,188 @@
+---
+import SectionTitle from "~/components/security/SectionTitle.astro"
+import GithubButton from "./GithubButton.astro"
+import InstallCommand from "./InstallCommand.astro"
+import SquaredGrid from "./SquaredGrid.astro"
+
+interface Props {
+    githubHref: string
+    helpTarget: string
+}
+
+const { githubHref, helpTarget } = Astro.props
+---
+
+<section class="get-it">
+    <SquaredGrid />
+    <div class="container">
+        <SectionTitle title="Get the Migration Assistant" />
+        <div class="cards">
+            <div class="get-card">
+                <div class="head">
+                    <span class="pill">Run it yourself</span>
+                    <h3>Get the Migration Assistant</h3>
+                    <p>
+                        Free and open source under Apache 2.0. It runs on Linux,
+                        macOS and Windows.
+                    </p>
+                </div>
+                <div class="install">
+                    <p>
+                        <strong>With Python 3.10 or later,</strong> install it from
+                        PyPI:
+                    </p>
+                    <InstallCommand
+                        command="pipx install kestra-migration-assistant"
+                    />
+                </div>
+                <div class="small">
+                    <!-- TBC: the container image name. -->
+                    <p>
+                        <strong>Without Python,</strong> run the container image
+                    </p>
+                    <p>
+                        <strong>Source and documentation</strong> are at <a
+                            href={githubHref}
+                            target="_blank"
+                            rel="noopener">kestra-io/migration-assistant</a
+                        > on GitHub.
+                    </p>
+                </div>
+                <GithubButton href={githubHref} />
+            </div>
+
+            <div class="get-card help" id="help">
+                <div class="head">
+                    <span class="pill">We run it with you</span>
+                    <h3>Get help running it</h3>
+                    <p>
+                        If you'd rather not run it alone, one of our engineers
+                        can run it with you on a call, or run it for you on a
+                        sanitized copy of your export.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-lg"
+                    data-modal-target={helpTarget}
+                >
+                    Need help running it?
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    .get-it {
+        position: relative;
+        overflow: hidden;
+        @include assistant-section(var(--ks-background-body));
+    }
+
+    .container {
+        @include guide-container;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .cards {
+        display: grid;
+        margin-top: 1rem;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .get-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+        padding: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 1rem;
+        background: var(--ks-background-body);
+        box-shadow: $calc-shadow-elevated;
+
+        @include media-breakpoint-down(md) {
+            padding: 1.5rem;
+        }
+
+        &.help {
+            border-color: var(--ks-border-active);
+            background: var(--ks-background-purple-light);
+
+            // The button sits at the bottom, level with the other card's.
+            .head {
+                flex: 1;
+            }
+        }
+    }
+
+    .head {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+
+        > p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    .pill {
+        padding: 0.125rem 0.5rem;
+        border-radius: 6px;
+        background: color-mix(in srgb, var(--ks-content-link) 14%, transparent);
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.5rem;
+        letter-spacing: -0.005em;
+        color: var(--ks-content-link);
+    }
+
+    h3 {
+        margin: 0;
+        font-size: $font-size-2xl;
+        font-weight: 600;
+        line-height: 2.375rem;
+    }
+
+    .install {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        max-width: 100%;
+    }
+
+    .install p,
+    .small p {
+        font-size: $font-size-sm;
+        line-height: 1.25rem;
+    }
+
+    strong {
+        font-weight: 600;
+    }
+
+    .small {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        a {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+</style>

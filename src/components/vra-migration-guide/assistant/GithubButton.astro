@@ -1,0 +1,34 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    href: string
+}
+
+const { href } = Astro.props
+---
+
+<a
+    class="btn btn-primary btn-lg github-button"
+    {href}
+    target="_blank"
+    rel="noopener"
+>
+    <Icon name="mdi:github" class="icon" />
+    View on GitHub
+</a>
+
+<style lang="scss">
+    .github-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        min-width: 11.25rem;
+    }
+
+    .icon {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+</style>

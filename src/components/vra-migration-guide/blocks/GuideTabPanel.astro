@@ -2,9 +2,10 @@
 interface Props {
     group: string
     index: number
+    selected?: number
 }
 
-const { group, index } = Astro.props
+const { group, index, selected = 1 } = Astro.props
 ---
 
 <div
@@ -13,7 +14,7 @@ const { group, index } = Astro.props
     id={`${group}-panel-${index}`}
     aria-labelledby={`${group}-tab-${index}`}
     tabindex="0"
-    hidden={index !== 1}
+    hidden={index !== selected}
 >
     <slot />
 </div>

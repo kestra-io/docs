@@ -1,6 +1,7 @@
 <template>
     <div class="share-link">
         <button
+            ref="button"
             type="button"
             class="link-button"
             :disabled="disabled"
@@ -8,7 +9,7 @@
         >
             Copy link with these numbers
         </button>
-        <span class="status" role="status">{{ status }}</span>
+        <span class="status" aria-hidden="true">{{ status }}</span>
         <input
             v-if="fallbackUrl"
             ref="fallback"
@@ -25,7 +26,7 @@
 <script setup lang="ts">
     import { refAutoReset } from "@vueuse/core"
     import { nextTick, ref, useTemplateRef } from "vue"
-    import { copyText } from "../browser"
+    import { copyWithFeedback } from "~/utils/code-copy"
 
     const props = defineProps<{
         getUrl: () => string | null
@@ -35,11 +36,15 @@
     const status = refAutoReset("", 4000)
     const fallbackUrl = ref("")
     const fallback = useTemplateRef<HTMLInputElement>("fallback")
+    const button = useTemplateRef<HTMLButtonElement>("button")
 
     async function share() {
         const url = props.getUrl()
         if (!url) return
-        if (await copyText(url)) {
+        if (
+            button.value &&
+            (await copyWithFeedback(button.value, url, "Link copied."))
+        ) {
             fallbackUrl.value = ""
             status.value = "Link copied."
             return
@@ -47,7 +52,7 @@
         fallbackUrl.value = url
         status.value = "Copy the link below."
         await nextTick()
-        fallback.value?.select()
+        fallback.value?.focus()
     }
 </script>
 

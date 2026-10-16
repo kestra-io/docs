@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
 import {
-    copyText,
     getBrowserEnv,
     readShareParam,
     readStored,
@@ -66,35 +65,5 @@ describe("storage helpers", () => {
 describe("getBrowserEnv", () => {
     it("is null without a window (SSR)", () => {
         expect(getBrowserEnv()).toBeNull()
-    })
-})
-
-describe("copyText", () => {
-    it("reports success when the clipboard accepts the text", async () => {
-        const written: string[] = []
-        const ok = await copyText("https://x", {
-            writeText: async (text) => void written.push(text),
-        })
-        expect(ok).toBe(true)
-        expect(written).toEqual(["https://x"])
-    })
-
-    it("reports failure when the clipboard rejects", async () => {
-        const denied = { writeText: () => Promise.reject(new Error("denied")) }
-        expect(await copyText("https://x", denied)).toBe(false)
-    })
-
-    it("reports failure when writeText throws synchronously", async () => {
-        const broken = {
-            writeText: () => {
-                throw new Error("not allowed")
-            },
-        }
-        expect(await copyText("https://x", broken)).toBe(false)
-    })
-
-    it("reports failure without a clipboard", async () => {
-        expect(await copyText("https://x", null)).toBe(false)
-        expect(await copyText("https://x", undefined)).toBe(false)
     })
 })

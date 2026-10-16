@@ -9,9 +9,10 @@ interface Props {
     label: string
     tabs: Tab[]
     variant?: "tabs" | "stages" | "segmented"
+    selected?: number
 }
 
-const { id, label, tabs, variant = "tabs" } = Astro.props
+const { id, label, tabs, variant = "tabs", selected = 1 } = Astro.props
 ---
 
 <div class={`guide-tabs ${variant}`} data-guide-tabs id={id}>
@@ -23,8 +24,8 @@ const { id, label, tabs, variant = "tabs" } = Astro.props
                     role="tab"
                     id={`${id}-tab-${i + 1}`}
                     aria-controls={`${id}-panel-${i + 1}`}
-                    aria-selected={i === 0 ? "true" : "false"}
-                    tabindex={i === 0 ? 0 : -1}
+                    aria-selected={i + 1 === selected ? "true" : "false"}
+                    tabindex={i + 1 === selected ? 0 : -1}
                 >
                     {tab.kicker && <small>{tab.kicker}</small>}
                     <span>{tab.label}</span>

@@ -7,19 +7,18 @@ interface CardButton {
     label: string
     href?: string
     modalTarget?: string
-    variant?: "primary" | "secondary" | "link"
+    variant?: "primary" | "secondary"
 }
 
-// Defaults render the migration guide's hero. Other pages pass their own pill
-// and card, a `deck` slot for a deck with links, and a `visual` slot in
-// place of the book mockup.
+// Defaults render the migration guide's hero: the book card on the right.
+// Other pages pass their own pill, a `deck` slot for a deck with links, an
+// `actions` slot under it, and a `visual` slot that replaces the book card.
 interface Props {
     title: string
     deck?: string
     inside?: string[]
-    meta: string[]
+    meta?: string[]
     pill?: string
-    cardTitle?: string
     cardText?: string
     cardButtons?: CardButton[]
     codeHints?: boolean
@@ -48,9 +47,8 @@ const {
     title,
     deck = "",
     inside = [],
-    meta,
+    meta = [],
     pill = "Migration guide · Infrastructure Automation",
-    cardTitle,
     cardText = "The full guide is on this page, or download the PDF to share with your team (form required)",
     cardButtons = [
         {
@@ -63,12 +61,10 @@ const {
 } = Astro.props
 
 const hasVisual = Astro.slots.has("visual")
-const buttonClass = (variant: CardButton["variant"] = "secondary") =>
-    variant === "link" ? "card-link" : `btn btn-${variant}`
 const isExternal = (href?: string) => href?.startsWith("http")
 ---
 
-<section class="guide-hero surface-dark">
+<section class:list={["guide-hero surface-dark", { "no-meta": !meta.length }]}>
     {
         codeHints && (
             <div class="code-hints" aria-hidden="true">
@@ -88,7 +84,7 @@ const isExternal = (href?: string) => href?.startsWith("http")
         )
     }
     <div class="container">
-        <div class="hero-grid">
+        <div class:list={["hero-grid", { "has-visual": hasVisual }]}>
             <div class="hero-main">
                 <p class="pill">{pill}</p>
                 <h1>{title}</h1>
@@ -105,16 +101,21 @@ const isExternal = (href?: string) => href?.startsWith("http")
                         </>
                     )
                 }
-            </div>
-            <div
-                class:list={["hero-card", hasVisual ? "has-visual" : "frosted"]}
-            >
                 {
-                    hasVisual ? (
-                        <div class="card-visual">
-                            <slot name="visual" />
+                    Astro.slots.has("actions") && (
+                        <div class="main-actions">
+                            <slot name="actions" />
                         </div>
-                    ) : (
+                    )
+                }
+            </div>
+            {
+                hasVisual ? (
+                    <div class="hero-visual">
+                        <slot name="visual" />
+                    </div>
+                ) : (
+                    <div class="hero-card">
                         <div class="book-wrap" aria-hidden="true">
                             <Image
                                 src={bookMockup}
@@ -123,77 +124,87 @@ const isExternal = (href?: string) => href?.startsWith("http")
                                 class="book-img"
                             />
                         </div>
-                    )
-                }
-                {cardTitle && <p class="card-title">{cardTitle}</p>}
-                <p>{cardText}</p>
-                <div
-                    class:list={[
-                        "card-actions",
-                        { "hero-actions": cardButtons.length > 1 },
-                    ]}
-                >
-                    {
-                        cardButtons.map((button) =>
-                            button.href ? (
-                                <a
-                                    class={buttonClass(button.variant)}
-                                    href={button.href}
-                                    {...(isExternal(button.href) && {
-                                        target: "_blank",
-                                        rel: "noopener",
-                                    })}
-                                >
-                                    {button.label}
-                                </a>
-                            ) : (
-                                <button
-                                    type="button"
-                                    class={buttonClass(button.variant)}
-                                    data-modal-target={button.modalTarget}
-                                >
-                                    {button.label}
-                                </button>
-                            ),
-                        )
-                    }
-                </div>
-            </div>
+                        <p>{cardText}</p>
+                        {cardButtons.map(
+                            ({
+                                label,
+                                href,
+                                modalTarget,
+                                variant = "secondary",
+                            }) =>
+                                href ? (
+                                    <a
+                                        class={`btn btn-${variant}`}
+                                        href={href}
+                                        {...(isExternal(href) && {
+                                            target: "_blank",
+                                            rel: "noopener",
+                                        })}
+                                    >
+                                        {label}
+                                    </a>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        class={`btn btn-${variant}`}
+                                        data-modal-target={modalTarget}
+                                    >
+                                        {label}
+                                    </button>
+                                ),
+                        )}
+                    </div>
+                )
+            }
         </div>
-        <ul class="meta">
-            {meta.map((item) => <li>{item}</li>)}
-        </ul>
+        {
+            meta.length > 0 && (
+                <ul class="meta">
+                    {meta.map((item) => (
+                        <li>{item}</li>
+                    ))}
+                </ul>
+            )
+        }
     </div>
 </section>
 
 <style lang="scss">
     @use "/src/assets/styles/buttons" as *;
     @use "/src/assets/styles/color-palette" as *;
+    @use "/src/components/vra-migration-guide/shared" as *;
 
     $hero-teal: #1e4557;
     $hero-teal-deep: #19546d;
+    $hero-ink: #121215;
+    $hero-ink-deep: #030709;
     $pill-border: #a77af6;
     $pill-shadow: rgba(173, 41, 250, 0.2);
-    $visual-card-dark: #1f1f1f;
-    $visual-card-blue: #51659d;
 
     .guide-hero {
         --header-h: var(--top-bar-height, 67px);
         position: relative;
         margin-top: calc(-1 * var(--header-h));
         padding: calc(var(--header-h) + 5.5rem) 0 1.5rem;
-        overflow-x: clip;
+        // Clip both ways: the terminal's long Figma drop shadow would
+        // otherwise spill into the section below.
+        overflow: clip;
         background: linear-gradient(
-            168.5deg,
-            $black 10.94%,
-            $hero-teal 35.99%,
-            $hero-teal-deep 46.58%,
-            $black 111.12%
+            91.15deg,
+            $hero-ink 19.11%,
+            $hero-ink-deep 35.38%,
+            $hero-teal 51.65%,
+            $hero-teal-deep 57.7%,
+            $black 127.58%
         );
         color: $white;
 
         @include media-breakpoint-down(lg) {
             padding: calc(var(--header-h) + 3rem) 0 1rem;
+        }
+
+        &.no-meta {
+            padding-bottom: 3.75rem;
         }
     }
 
@@ -220,19 +231,14 @@ const isExternal = (href?: string) => href?.startsWith("http")
     }
 
     .container {
-        position: relative;
-        max-width: calc(1320px + 2 * 1.5rem);
-        padding-inline: 1.5rem;
-
-        @include media-breakpoint-up(lg) {
-            max-width: calc(1320px + 2 * 3rem);
-            padding-inline: 3rem;
-        }
+        @include guide-container;
     }
 
     .hero-grid {
         display: grid;
-        grid-template-columns: 1fr;
+        // minmax(0, …) so a long unbreakable line in a slot, such as a
+        // command, scrolls instead of widening the column past the screen.
+        grid-template-columns: minmax(0, 1fr);
         gap: 3rem;
 
         @include media-breakpoint-up(lg) {
@@ -248,6 +254,22 @@ const isExternal = (href?: string) => href?.startsWith("http")
         @include media-breakpoint-up(xxl) {
             grid-template-columns: minmax(0, 1fr) 555px;
         }
+
+        &.has-visual {
+            @include media-breakpoint-up(xl) {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 568px);
+            }
+        }
+    }
+
+    .main-actions {
+        margin-top: 0.625rem;
+    }
+
+    .hero-visual {
+        width: 100%;
+        max-width: 568px;
+        margin-inline: auto;
     }
 
     .pill {
@@ -280,9 +302,13 @@ const isExternal = (href?: string) => href?.startsWith("http")
         color: $white;
 
         :global(a) {
-            color: $white;
+            color: $base-primary-200;
             text-decoration: underline;
             text-underline-offset: 3px;
+
+            &:hover {
+                color: $white;
+            }
         }
     }
 
@@ -322,8 +348,11 @@ const isExternal = (href?: string) => href?.startsWith("http")
         }
     }
 
+    // The guide's book card: a frosted panel with Figma's progressive blur,
+    // drawn as a blurred copy (top) cross-fading into a crisp copy (bottom).
     .hero-card {
         position: relative;
+        isolation: isolate;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -335,39 +364,11 @@ const isExternal = (href?: string) => href?.startsWith("http")
         margin: 5rem auto 0;
         padding: 0 2rem 1.25rem;
         border-radius: 20px;
-        background: linear-gradient(
-            234deg,
-            $visual-card-dark 50%,
-            $visual-card-dark 62%,
-            $visual-card-blue 92%
-        );
         text-align: center;
 
         @include media-breakpoint-up(lg) {
             margin: 0;
         }
-
-        p {
-            position: relative;
-            max-width: 20rem;
-            margin: 0;
-            font-size: $font-size-sm;
-            line-height: 1.25rem;
-            color: rgba($white, 0.8);
-        }
-
-        .btn {
-            position: relative;
-            min-width: 11.25rem;
-            padding: 0.5rem 1.375rem;
-            font-size: $font-size-lg;
-            line-height: 1.75rem;
-        }
-    }
-
-    .hero-card.frosted {
-        background: none;
-        isolation: isolate;
 
         &::before,
         &::after {
@@ -393,64 +394,27 @@ const isExternal = (href?: string) => href?.startsWith("http")
         }
 
         p {
+            position: relative;
             max-width: 23rem;
+            margin: 0;
             font-size: $font-size-md;
             font-weight: 600;
             line-height: 1.5rem;
             color: $white;
         }
 
+        .btn {
+            position: relative;
+            min-width: 11.25rem;
+            min-height: 3.5rem;
+            padding: 0.5rem 1.375rem;
+            border-radius: $border-radius-lg;
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+        }
+
         .btn-secondary {
             @include btn-secondary-light-surface;
-            min-height: 3.5rem;
-            border-radius: $border-radius-lg;
-        }
-    }
-
-    .hero-card.has-visual {
-        justify-content: flex-start;
-        aspect-ratio: auto;
-        margin-top: 0;
-        padding-top: 2rem;
-    }
-
-    .card-visual {
-        position: relative;
-        width: 100%;
-    }
-
-    .hero-card .card-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        line-height: 1.5rem;
-        color: $white;
-    }
-
-    // One button lays out exactly as before; several stack in a column.
-    .card-actions {
-        display: contents;
-    }
-
-    .hero-actions {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        width: 100%;
-    }
-
-    .card-link {
-        position: relative;
-        padding: 0;
-        border: 0;
-        background: none;
-        font-size: $font-size-sm;
-        line-height: 1.25rem;
-        color: $white;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-
-        &:hover {
-            color: rgba($white, 0.8);
         }
     }
 
