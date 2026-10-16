@@ -85,7 +85,7 @@ Elasticsearch can serve as the repository backend in Kafka deployments, providin
 - **Dependencies**: Elasticsearch + Kafka queue
 - Uses asynchronous indexing, trading insertion atomicity for analytical and search performance
 - Suited for deployments where query capabilities outweigh consistency requirements
-- The Indexer subscribes to Kafka topics and writes to Elasticsearch, keeping the index in sync
+- The Indexer writes logs, metrics, execution statistics, audit logs, and asset lineage events to Elasticsearch in batches. Flows, executions, and triggers are written to Elasticsearch directly by the components that change them.
 - Executions continue processing even if Elasticsearch is temporarily unavailable
 - Available only in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 

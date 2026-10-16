@@ -106,7 +106,7 @@ const quotes = [
             { value: "50+", name: "critical workflows modernized" },
             { value: "30+ yrs", name: "of legacy platform, replaced" },
         ],
-        storyLink: "/customers/pharmacy-retailer",
+        storyLink: "/stories/pharmacy-retailer",
     },
 ]
 
@@ -637,7 +637,7 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Trusted by healthcare, pharmacy, and life-sciences teams</span>
                     <div class="hero-logos__row">
-                        <a href="/customers/pharmacy-retailer" aria-label="Read the Apotek Hjärtat pharmacy customer story">
+                        <a href="/stories/pharmacy-retailer" aria-label="Read the Apotek Hjärtat pharmacy story">
                             <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item hero-logos__item--apotek" />
                         </a>
                         <Image src={BrainlabLogoImg} alt="Brainlab" class="hero-logos__item hero-logos__item--brainlab" />
@@ -1440,14 +1440,6 @@ const FAQ = [
         border: 1px solid var(--ks-border-secondary);
         border-radius: 10px;
         box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-
-        &:hover {
-            border-color: $hc-green;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
-        }
-
         &__icon {
             font-size: 1.375rem;
             color: $hc-green;

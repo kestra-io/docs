@@ -18,12 +18,13 @@ import expressiveCode from "astro-expressive-code"
 import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
+import { resolveRelativeDocLink } from "./src/markdown/remark/resolve-doc-link.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
+import remarkGlossaryLinks from "./src/markdown/remark/remark-glossary-links/index.ts"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeResourceCta from "./src/markdown/rehype/resource-cta.ts"
 import rehypeExternalLinks from "rehype-external-links"
@@ -97,42 +98,11 @@ export default defineConfig({
                          * @returns
                          */
                         replacer(url, file) {
-                            if (url.startsWith(".")) {
-                                // Extract hash fragment before processing relative URLs
-                                let hash = ""
-                                if (url.includes("#")) {
-                                    const hashIndex = url.indexOf("#")
-                                    hash = url.slice(hashIndex)
-                                    url = url.slice(0, hashIndex)
-                                }
-
-                                // if the file basename starts with index.
-                                if (
-                                    file.basename &&
-                                    file.basename.startsWith("index.")
-                                ) {
-                                    // if the url start with ./
-                                    if (url.startsWith("./") && file.dirname) {
-                                        // we preprend to the path the last part of the dirname
-                                        url = path.join(
-                                            path.basename(file.dirname),
-                                            url.slice(2),
-                                        )
-                                    }
-
-                                    // if the url starts with ../
-                                    if (url.startsWith("../")) {
-                                        // we replace ../ by ./
-                                        url = "./" + url.slice(3)
-                                    }
-                                }
-
-                                return generateId({ entry: url }) + hash
-                            }
-                            return url
+                            return resolveRelativeDocLink(url, file)
                         },
                     },
                 ],
+                remarkGlossaryLinks,
             ],
             rehypePlugins: [
                 rehypeHeadingIds,
@@ -225,6 +195,12 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            // Raises the /api/github rate limit; works unauthenticated without it.
+            GITHUB_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             DISABLE_GITHUB: envField.boolean({
                 context: "server",
                 access: "public",
@@ -236,13 +212,6 @@ export default defineConfig({
                 access: "public",
                 optional: true,
                 default: false,
-            }),
-            // ISO date. Set only by the visual-snapshot workflow so dated
-            // content added after it never moves a screenshot baseline.
-            SNAPSHOT_CUTOFF: envField.string({
-                context: "server",
-                access: "public",
-                optional: true,
             }),
         },
     },
@@ -317,6 +286,13 @@ export default defineConfig({
                 // Mirror the tsconfig `~/*` paths so the alias also resolves
                 // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
                 "~": path.resolve(__dirname, "src"),
+                // Dev runs on Node, which has no Worker bindings: SSR routes see no KV.
+                ...(isDev && {
+                    "cloudflare:workers": path.resolve(
+                        __dirname,
+                        "src/utils/cloudflareWorkersDevStub.ts",
+                    ),
+                }),
             },
         },
         css: {

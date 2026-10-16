@@ -8,7 +8,7 @@ version: ">= 0.10.0"
 docId: blueprints
 ---
 
-Blueprints are a searchable catalog of validated, documented flow examples. Each blueprint combines code and documentation with tags for discoverability. Click **Use** to copy any blueprint into your editor and customize it from there.
+Blueprints are a searchable catalog of validated, documented flow examples. Each blueprint combines code and documentation with tags for discoverability. The **Use** button copies any blueprint into your editor.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5mvYVLKLzGk?si=Ga4ndYv_pI3NIlLK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -34,7 +34,7 @@ Blueprints are available from the **Blueprints** item in the left sidebar. Each 
 
 ### How to find the right blueprint
 
-From the Blueprints page, **search** by use case or integration (Snowflake, DuckDB, Slack, dbt, Docker, etc.) or **filter** by tag to narrow results.
+The Blueprints page supports search by use case or integration (Snowflake, DuckDB, Slack, dbt, Docker, etc.) and filtering by tag.
 
 ## Custom blueprints
 

@@ -91,7 +91,7 @@ namespace: company.team.production
 triggers:
   - id: listen-for-monitoring-alerts
     type: io.kestra.plugin.core.trigger.Webhook
-    key: "my-secret-webhook-key"
+    key: "{{ secret('WEBHOOK_KEY') }}"
 
 tasks:
   - id: attempt_restart
@@ -99,10 +99,15 @@ tasks:
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
     containerImage: alpine:latest
+    env:
+      HOST: "{{ trigger.body.host }}"
+      SERVICE: "{{ trigger.body.serviceName }}"
     commands:
-      - 'echo "Attempting to restart service: {{ trigger.body.serviceName }}"'
+      - 'echo "Attempting to restart service: $SERVICE"'
+      # The request body is untrusted and ssh passes its command to a remote shell, so allow only safe characters
+      - case "$HOST$SERVICE" in *[!A-Za-z0-9@._-]*) echo "Invalid host or service name"; exit 1;; esac
       # In a real scenario, this would be an SSH command or API call
-      - ssh ops@{{ trigger.body.host }} 'sudo systemctl restart {{ trigger.body.serviceName }}'
+      - ssh ops@"$HOST" sudo systemctl restart "$SERVICE"
     retry:
       type: exponential
       maxAttempts: 3

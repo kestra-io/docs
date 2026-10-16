@@ -216,6 +216,7 @@ This group includes:
 - invitation expiration
 - password rules
 - server basic auth
+- gRPC basic auth between workers and controllers
 - deletion of configuration files
 
 Server and endpoint hardening examples:
@@ -237,6 +238,29 @@ endpoints:
       username: your-user
       password: your-password
 ```
+
+### gRPC basic authentication
+
+Require a shared username and password on the gRPC channel between workers and the Worker Controller. This applies to the open-source edition only. Enterprise Edition ignores these properties and uses [TLS and worker authentication](../../security-hardening/index.md#tls-and-worker-authentication-ee) instead.
+
+```yaml
+kestra:
+  grpc:
+    basic-auth:
+      enabled: true
+      username: kestra-worker
+      password: ${KESTRA_GRPC_PASSWORD}
+```
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `kestra.grpc.basic-auth.enabled` | `false` | Require the credentials on every gRPC call to the controller, except health checks. |
+| `kestra.grpc.basic-auth.username` | — | Username that workers present and controllers expect. Required when `enabled` is `true`. |
+| `kestra.grpc.basic-auth.password` | — | Password that workers present and controllers expect. Required when `enabled` is `true`. |
+
+Set identical values on every worker and on every server that runs a controller, including webserver and standalone servers started without `--no-controller`. If `enabled` is `true` and `username` or `password` is missing or blank, the controller or worker fails to start with an error that includes `Property kestra.grpc.basic-auth.username is required when gRPC basic authentication is enabled.`
+
+Changing the credentials requires restarting the controllers and the workers. The channel stays plaintext, so the credentials are readable to anyone who can capture its traffic. See [Basic authentication (OSS)](../../security-hardening/index.md#basic-authentication-oss) for the security model.
 
 ### Instance Owner
 
@@ -328,46 +352,34 @@ kestra:
     delete-files-on-start: true
 ```
 
-Liveness and heartbeat settings also belong here. The parameter constraints below affect cluster stability:
+### Liveness and worker task restarts
 
-- `timeout` — must match across **all Executors**
-- `initial-delay` — must match across **all Executors**
-- `heartbeat-interval` — must be strictly less than `timeout`
-
-Recommended settings for JDBC-backed (OSS) deployments:
+Every Kestra server sends heartbeats, and executors use them to detect servers that stopped responding. The defaults are:
 
 ```yaml
 kestra:
   server:
     liveness:
       enabled: true
-      interval: 5s
-      timeout: 45s
-      initial-delay: 45s
+      interval: 10s
+      timeout: 1m
+      initial-delay: 1m
       heartbeat-interval: 3s
 ```
 
-Recommended settings for Kafka-based (EE) deployments:
+These constraints affect cluster stability:
 
-```yaml
-kestra:
-  server:
-    liveness:
-      timeout: 1m
-      initial-delay: 1m
-```
+- `timeout` must match across **all Executors**.
+- `initial-delay` must match across **all Executors**.
+- `heartbeat-interval` must be strictly less than `timeout`.
 
-:::alert{type="warning"}
-Worker liveness in Kafka mode is handled by Kafka's protocol guarantees, so you only need to set `timeout` and `initial-delay` for the EE stack.
-:::
+When a worker stops responding, `kestra.server.worker-task-restart-strategy` decides what happens to the tasks it was running:
 
-Heartbeat and restart behavior also belong here:
+- `NEVER`: the tasks are not restarted.
+- `IMMEDIATELY`: the tasks are restarted as soon as the worker is detected as disconnected. Recovery is faster, but a task can run twice.
+- `AFTER_TERMINATION_GRACE_PERIOD` (default): the tasks are restarted after the termination grace period elapses, which limits the risk of running a task twice.
 
-- `kestra.heartbeat.frequency` controls how often workers emit heartbeats. Default: `10s`.
-- `kestra.heartbeat.heartbeat-missed` controls how many missed heartbeats mark a worker as dead. Default: `3`.
-- `kestra.server.worker-task-restart-strategy` accepts `NEVER`, `IMMEDIATELY`, or `AFTER_TERMINATION_GRACE_PERIOD` and determines what happens to running worker tasks during shutdown.
-
-Set the termination grace period long enough for tasks to exit cleanly:
+Set the termination grace period long enough for tasks to exit cleanly. The default is `5m`:
 
 ```yaml
 kestra:
@@ -375,7 +387,7 @@ kestra:
     termination-grace-period: 5m
 ```
 
-If the deployment regularly creates empty server instances, adjust how often purge runs:
+Kestra keeps records of stopped server instances for 30 days by default. If the deployment regularly creates short-lived server instances, shorten the retention:
 
 ```yaml
 kestra:
@@ -423,7 +435,7 @@ kestra:
         window: PT1H
 ```
 
-See [Passwordless (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) for setup prerequisites and full property details.
+See [Passwordless (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-one-time-password) for setup prerequisites and full property details.
 
 ## Related docs
 
