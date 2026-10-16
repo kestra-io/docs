@@ -6,7 +6,7 @@ sidebarTitle: Pebble Templating Engine
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
-Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to [Jinja](https://palletsprojects.com/p/jinja/). Kestra uses it to dynamically render variables, inputs, and outputs within the execution context. For the full list of available variables, filters, and functions, see the [Expressions](../../expressions/index.md) reference.
+Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to [Jinja](https://palletsprojects.com/p/jinja/). Kestra uses it to dynamically render variables, inputs, and outputs within the execution context. For the full list of available variables, filters, and functions, see the [Expressions](../../expressions/index.mdx) reference.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
