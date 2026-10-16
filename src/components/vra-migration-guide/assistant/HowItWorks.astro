@@ -155,6 +155,12 @@ const ANSWERS = `- id: auth.avi-controller
         --ec-brdRad: #{$border-radius-lg};
         --ec-codeFontSize: #{$font-size-xs};
         --ec-codeLineHt: 1.5rem;
+        // markdown.scss restates these for every code block without a
+        // `.dark`/`.light` class; `class="dark"` opts out of that rule, so
+        // the font, the flat frame and the "Copied!" colour are restated here.
+        --ec-codeFontFml: var(--font-family-jetbrains-mono);
+        --ec-frm-frameBoxShdCssVal: none;
+        --ec-frm-tooltipSuccessBg: var(--ks-background-button-primary);
         min-height: 105px;
 
         :global(pre) {
