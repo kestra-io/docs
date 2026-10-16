@@ -63,7 +63,7 @@ Executor server exclusive:
 
 ### Kestra Indexer Metrics
 
-Indexer server exclusive:
+Emitted by every server that runs an indexer, including the webserver and standalone servers, which embed one by default. Each metric is tagged with `type`, the class name of the indexed record:
 
 * `kestra_indexer_message_in_count_total` (counter): Total number of records received by the Indexer
 * `kestra_indexer_message_out_count_total` (counter): Total number of records indexed by the Indexer
@@ -75,25 +75,55 @@ Indexer server exclusive:
 
 Scheduler server exclusive:
 
+* `kestra_scheduler_assigned_vnodes_count` (gauge): The number of virtual nodes assigned to the Scheduler.
 * `kestra_scheduler_evaluate_count_total` (counter): Total number of triggers evaluated by the Scheduler.
 * `kestra_scheduler_evaluation_loop_duration_seconds` (summary): Trigger evaluation loop duration inside the Scheduler.
 * `kestra_scheduler_evaluation_loop_duration_seconds_max` (gauge): Maximum observed trigger evaluation loop duration inside the Scheduler.
+* `kestra_scheduler_eventloop_event_process_duration_seconds` (summary): Duration of processing one event in the event loop, tagged by `thread-id`.
+* `kestra_scheduler_eventloop_event_process_duration_seconds_max` (gauge): Maximum observed event processing duration in the event loop.
+* `kestra_scheduler_eventloop_event_received_total` (counter): Total number of events received by the event loop, tagged by `thread-id`.
+* `kestra_scheduler_eventloop_thread_max` (gauge): The maximum number of event-loop threads.
+* `kestra_scheduler_eventloop_tick_duration_seconds` (summary): Duration of one event-loop tick, tagged by `thread-id`.
+* `kestra_scheduler_eventloop_tick_duration_seconds_max` (gauge): Maximum observed event-loop tick duration.
+* `kestra_scheduler_execution_lock_duration_seconds` (summary): Time a trigger stays locked waiting for its execution to end.
+* `kestra_scheduler_execution_lock_duration_seconds_max` (gauge): Maximum observed trigger lock duration.
+* `kestra_scheduler_execution_missing_duration_seconds` (summary): Time a locked trigger waits for an execution that the Executor has not started.
+* `kestra_scheduler_execution_missing_duration_seconds_max` (gauge): Maximum observed missing execution duration.
 * `kestra_scheduler_loop_count_total` (counter): Total number of evaluation loops executed by the Scheduler.
+* `kestra_scheduler_trigger_count_total` (counter): Total number of executions triggered by the Scheduler.
+* `kestra_scheduler_trigger_delay_duration_seconds` (summary): Delay between a trigger's scheduled date and its evaluation. Backfills are excluded.
+* `kestra_scheduler_trigger_delay_duration_seconds_max` (gauge): Maximum observed trigger delay.
+* `kestra_scheduler_trigger_evaluation_duration_seconds` (summary): Duration of evaluating a schedulable trigger, tagged by `trigger_type`.
+* `kestra_scheduler_trigger_evaluation_duration_seconds_max` (gauge): Maximum observed schedulable trigger evaluation duration.
 
 ### Kestra Worker Metrics
 
-Worker server exclusive:
+Emitted by worker servers. Every metric except `kestra_worker_killed_count_total` is tagged with `worker_group`:
 
+* `kestra_worker_abandoned_count` (gauge): The number of jobs the Worker stopped waiting for that are still holding a Worker thread.
 * `kestra_worker_ended_count_total` (counter): The total number of tasks ended by the Worker.
 * `kestra_worker_ended_duration_seconds` (summary): Task run duration inside the Worker.
 * `kestra_worker_ended_duration_seconds_max` (gauge): Maximum observed task run duration inside the Worker.
-* `kestra_worker_job_pending` (gauge): The number of jobs (tasks or triggers) pending to be run by the Worker.
-* `kestra_worker_job_running` (gauge): The number of jobs (tasks or triggers) currently running inside the Worker.
 * `kestra_worker_job_thread` (gauge): The number of worker threads.
+* `kestra_worker_killed_count_total` (counter): The total number of execution kill events received by the Worker.
+* `kestra_worker_max_concurrency` (gauge): The maximum number of jobs the Worker can hold: running threads plus jobs waiting in its buffer.
+* `kestra_worker_pending_count` (gauge): The number of tasks waiting for a free Worker thread.
+* `kestra_worker_queue_dequeued_total` (counter): The number of items taken from an internal Worker buffer, tagged by buffer `name`.
+* `kestra_worker_queue_enqueued_total` (counter): The number of items added to an internal Worker buffer, tagged by buffer `name`.
+* `kestra_worker_queue_remaining_capacity` (gauge): The remaining capacity of an internal Worker buffer, tagged by buffer `name` (for example `workerjob`).
+* `kestra_worker_queue_size` (gauge): The number of items in an internal Worker buffer, tagged by buffer `name`.
 * `kestra_worker_queued_duration_seconds` (summary): Task queued duration inside the Worker.
 * `kestra_worker_queued_duration_seconds_max` (gauge): Maximum observed task queued duration inside the Worker.
 * `kestra_worker_running_count` (gauge): The number of tasks currently running inside the Worker.
 * `kestra_worker_started_count_total` (counter): The total number of tasks started by the Worker.
+* `kestra_worker_timeout_count_total` (counter): The total number of tasks and polling trigger evaluations that timed out inside the Worker.
+* `kestra_worker_trigger_duration_seconds` (summary): Trigger evaluation duration inside the Worker.
+* `kestra_worker_trigger_duration_seconds_max` (gauge): Maximum observed trigger evaluation duration inside the Worker.
+* `kestra_worker_trigger_ended_count_total` (counter): The total number of trigger evaluations ended by the Worker.
+* `kestra_worker_trigger_error_count_total` (counter): The total number of trigger evaluations that failed inside the Worker.
+* `kestra_worker_trigger_execution_count_total` (counter): The total number of triggers evaluated by the Worker.
+* `kestra_worker_trigger_running_count` (gauge): The number of triggers currently evaluating inside the Worker.
+* `kestra_worker_trigger_started_count_total` (counter): The total number of trigger evaluations started by the Worker.
 
 ### Kestra Worker Controller Metrics
 
@@ -140,14 +170,18 @@ Various Kestra-specific database queries:
 
 ### Kestra Queue Metrics
 
-For each internal queue:
+For each internal queue, on every queue backend. Unless noted, each metric is tagged with `queue_name`:
 
-* `kestra_queue_big_message_count_total` (counter): Big messages in the queue.
-* `kestra_queue_message_lag_count` (gauge): Total number of messages in the queue that are not yet consumed.
-* `kestra_queue_poll_size` (gauge): Size of a poll to the queue (message batch size).
-* `kestra_queue_produce_count_total` (counter): Total number of produced messages.
-* `kestra_queue_receive_duration_seconds` (summary): Queue duration to receive and consume a batch of messages.
-* `kestra_queue_receive_duration_seconds_max` (gauge): Maximum observed queue duration to receive and consume a batch of messages.
+* `kestra_queue_consume_batch_duration_seconds` (summary): Duration of consuming a batch of messages.
+* `kestra_queue_consume_batch_duration_seconds_max` (gauge): Maximum observed duration of consuming a batch of messages.
+* `kestra_queue_consume_duration_seconds` (summary): Duration of consuming a single message.
+* `kestra_queue_consume_duration_seconds_max` (gauge): Maximum observed duration of consuming a single message.
+* `kestra_queue_message_big_total` (counter): Total number of messages over the message protection limit, tagged by `class_name`.
+* `kestra_queue_message_emitted_total` (counter): Total number of emitted messages.
+* `kestra_queue_message_lag` (gauge): Number of worker jobs not yet consumed, tagged by `worker_queue`. Reported by the webserver or standalone server only when `kestra.metric.queue.lag.enabled` is `true`.
+* `kestra_queue_subscribers_active` (gauge): Number of active queue subscribers.
+* `kestra_queue_subscribers_paused_total` (counter): Total number of queue subscriber pauses.
+* `kestra_queue_subscribers_resumed_total` (counter): Total number of queue subscriber resumes.
 
 ## Cache metrics
 
