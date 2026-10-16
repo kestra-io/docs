@@ -37,7 +37,7 @@ tasks:
     format: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-For more details, check out the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
+For more details, see the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
 
 ### Parallel
 
@@ -93,7 +93,7 @@ tasks:
             message: "step 2b"
 ```
 
-For more task details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
+For more details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
 
@@ -474,6 +474,35 @@ tasks:
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
 
+#### Early exit
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `breakWhen` to a Pebble expression to stop the loop early. After each iteration completes, the expression is evaluated; when it returns a truthy value (`true`, a non-empty string, a non-zero number), the loop stops and remaining iterations are marked `SKIPPED`.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    concurrencyLimit: 1
+    values: ["value 1", "value 2", "value 3"]
+    breakWhen: "{{ iteration.state == 'FAILED' }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.log.Log
+        message: "Processing {{ item.value }}"
+```
+
+Inside `breakWhen`, these variables are available in addition to the standard `item.*` context:
+
+| Variable | Description |
+|---|---|
+| `iteration.executionId` | Execution ID of the iteration that just completed |
+| `iteration.state` | Final state of that execution (e.g. `SUCCESS`, `FAILED`) |
+| `iteration.outputs` | Output map of the iteration's declared outputs |
+
+Set `concurrencyLimit: 1` when using `breakWhen`. With parallel iterations running simultaneously, the break condition is evaluated per iteration as it finishes, so later iterations may already be running when an earlier one triggers the break.
 
 ### LoopUntil
 

@@ -49,19 +49,13 @@ When you launch Kestra for the first time, the [setup wizard](../../01.overview/
 
 ### Through the CLI
 
-To create a new user with the Instance Owner privilege:
+An existing Instance Owner can create another one with [`kestractl`](../../../kestra-cli/kestractl/index.md#users). In `kestractl`, the Instance Owner privilege is set with the `--superadmin` flag:
 
 ```bash
-kestra auths users create admin@kestra.io TopSecret42 --instance-owner
-
-# with tenant scoping:
-kestra auths users create <username> <password> \
---tenant=<tenant-id> --instance-owner
+kestractl users create --email admin@kestra.io --user-password 'TopSecret42' --superadmin
 ```
 
-:::alert{type="info"}
-`--superadmin` is a deprecated alias for `--instance-owner` and still works.
-:::
+`kestractl` authenticates against a running instance, so it can't create the first Instance Owner. Use the setup wizard or the configuration below for that.
 
 ### Through configuration
 

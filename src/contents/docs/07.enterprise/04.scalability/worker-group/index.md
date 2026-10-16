@@ -343,7 +343,7 @@ Registration tokens must not appear as plaintext in a committed configuration fi
 - **`token-file`** — path to a file containing the pre-generated token. Preferred in Kubernetes environments where Secrets mount as files. The file must exist and be non-empty at startup.
 - **`token: "${ENV_VAR}"`** — environment variable placeholder resolved at startup. Simpler outside Kubernetes, but environment variables are readable from `/proc/<pid>/environ` and may appear in crash dumps.
 
-Exactly one of the two is required. Use `kestra workers registration-tokens generate` to mint a token offline before deployment.
+Exactly one of the two is required. Use [`kestractl workers registration-tokens generate`](../../../kestra-cli/kestractl/index.md#worker-management) to mint a token offline before deployment.
 
 ### The default group
 
@@ -447,6 +447,25 @@ kestra:
 
 Under `type: DNS` discovery, the authority is derived from the DNS hostname automatically and no override is needed.
 :::
+
+## Dedicated storage isolation
+
+If a worker group uses its own storage bucket rather than the deployment's shared storage, KV values, namespace files, and managed plugin artifacts will not be consistent across the deployment without additional configuration. Set the relevant properties on the worker:
+
+```yaml
+kestra:
+  kv:
+    worker-access: CONTROLLER          # default: STORAGE; requires Kestra 2.1
+
+  namespace-files:
+    worker-access: CONTROLLER          # default: STORAGE
+
+  plugins:
+    management:
+      worker-access: CONTROLLER        # default: STORAGE; requires Kestra 2.1
+```
+
+See [Dedicated-storage workers](../../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference. `kestra.namespace-files.worker-access` is available from Kestra 2.0.4; `kestra.kv.worker-access` and `kestra.plugins.management.worker-access` require Kestra 2.1.
 
 ## Use cases
 
