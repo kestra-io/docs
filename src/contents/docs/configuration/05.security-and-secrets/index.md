@@ -352,46 +352,34 @@ kestra:
     delete-files-on-start: true
 ```
 
-Liveness and heartbeat settings also belong here. The parameter constraints below affect cluster stability:
+### Liveness and worker task restarts
 
-- `timeout` — must match across **all Executors**
-- `initial-delay` — must match across **all Executors**
-- `heartbeat-interval` — must be strictly less than `timeout`
-
-Recommended settings for JDBC-backed (OSS) deployments:
+Every Kestra server sends heartbeats, and executors use them to detect servers that stopped responding. The defaults are:
 
 ```yaml
 kestra:
   server:
     liveness:
       enabled: true
-      interval: 5s
-      timeout: 45s
-      initial-delay: 45s
+      interval: 10s
+      timeout: 1m
+      initial-delay: 1m
       heartbeat-interval: 3s
 ```
 
-Recommended settings for Kafka-based (EE) deployments:
+These constraints affect cluster stability:
 
-```yaml
-kestra:
-  server:
-    liveness:
-      timeout: 1m
-      initial-delay: 1m
-```
+- `timeout` must match across **all Executors**.
+- `initial-delay` must match across **all Executors**.
+- `heartbeat-interval` must be strictly less than `timeout`.
 
-:::alert{type="warning"}
-Worker liveness in Kafka mode is handled by Kafka's protocol guarantees, so you only need to set `timeout` and `initial-delay` for the EE stack.
-:::
+When a worker stops responding, `kestra.server.worker-task-restart-strategy` decides what happens to the tasks it was running:
 
-Heartbeat and restart behavior also belong here:
+- `NEVER`: the tasks are not restarted.
+- `IMMEDIATELY`: the tasks are restarted as soon as the worker is detected as disconnected. Recovery is faster, but a task can run twice.
+- `AFTER_TERMINATION_GRACE_PERIOD` (default): the tasks are restarted after the termination grace period elapses, which limits the risk of running a task twice.
 
-- `kestra.heartbeat.frequency` controls how often workers emit heartbeats. Default: `10s`.
-- `kestra.heartbeat.heartbeat-missed` controls how many missed heartbeats mark a worker as dead. Default: `3`.
-- `kestra.server.worker-task-restart-strategy` accepts `NEVER`, `IMMEDIATELY`, or `AFTER_TERMINATION_GRACE_PERIOD` and determines what happens to running worker tasks during shutdown.
-
-Set the termination grace period long enough for tasks to exit cleanly:
+Set the termination grace period long enough for tasks to exit cleanly. The default is `5m`:
 
 ```yaml
 kestra:
@@ -399,7 +387,7 @@ kestra:
     termination-grace-period: 5m
 ```
 
-If the deployment regularly creates empty server instances, adjust how often purge runs:
+Kestra keeps records of stopped server instances for 30 days by default. If the deployment regularly creates short-lived server instances, shorten the retention:
 
 ```yaml
 kestra:
