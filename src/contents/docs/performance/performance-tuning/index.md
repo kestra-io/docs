@@ -22,13 +22,21 @@ Before you read on, please familiarize yourself with the [Kestra architecture](.
 
 The [Worker](../../08.architecture/02.server-components/index.md#worker) executes your tasks, and tuning it depends on the type of workloads you run.
 
-The most useful configuration is the number of Worker threads, which is 8 times the number of available cores by default.
+The most useful configuration is the number of Worker threads, which is 8 times the number of available processors by default. `kestra.allocated-cpu-cores` doesn't change this default.
 
 You can increase it to boost parallel task execution. Depending on how you start Kestra, use one of the following methods:
 
 - If using the standalone, set `--worker-thread` in the standalone command line.
 - If using separate component processes, set `--thread` in the Worker command line.
 - If using our Helm chart, set `deployments.worker.workerThreads` in the values.
+
+A Worker also holds a buffer of jobs it has already fetched while all its threads are busy. Set its size with `kestra.worker.job-buffer-size`. It defaults to the thread count, which is also its maximum. A smaller buffer leaves more of the backlog with the Worker Controller, so newly started Workers can pick it up, at the cost of some dispatch throughput for short tasks. `0` makes a Worker request a job only when a thread is idle.
+
+```yaml
+kestra:
+  worker:
+    job-buffer-size: 0
+```
 
 ## JDBC backend
 

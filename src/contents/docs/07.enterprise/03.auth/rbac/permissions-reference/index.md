@@ -57,10 +57,9 @@ CREATE
 
 UPDATE
 - `PUT /api/v1/{tenant}/flows/{namespace}/{id}`
-- `PATCH /api/v1/{tenant}/flows/{namespace}/{id}/{taskId}`
 - `POST /api/v1/{tenant}/flows/bulk` (also requires `CREATE` and `DELETE`)
-- `POST /api/v1/{tenant}/executions/{executionId}/eval/{taskRunId}`
-- `POST /api/v1/{tenant}/executions/{executionId}/{taskRunId}/eval`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/eval`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/eval/{taskRunId}`
 
 DELETE
 - `DELETE /api/v1/{tenant}/flows/{namespace}/{id}`
@@ -146,34 +145,34 @@ DELETE
 - `DELETE /api/v1/{tenant}/logs/{namespace}/{flowId}` (delete logs for a flow)
 
 RESTART
-- `POST /api/v1/{tenant}/executions/{executionId}/restart`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/restart`
 - `POST /api/v1/{tenant}/executions/restart/by-ids`
 - `POST /api/v1/{tenant}/executions/restart/by-query`
 
 KILL
-- `DELETE /api/v1/{tenant}/executions/{executionId}/kill`
+- `DELETE /api/v1/{tenant}/executions/{executionId}/actions/kill`
 - `DELETE /api/v1/{tenant}/executions/kill/by-ids`
 - `DELETE /api/v1/{tenant}/executions/kill/by-query`
 
 REPLAY
-- `POST /api/v1/{tenant}/executions/{executionId}/replay`
-- `POST /api/v1/{tenant}/executions/{executionId}/replay-with-inputs`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/replay`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/replay-with-inputs`
 - `POST /api/v1/{tenant}/executions/replay/by-ids`
 - `POST /api/v1/{tenant}/executions/replay/by-query`
 
 PAUSE
-- `POST /api/v1/{tenant}/executions/{executionId}/pause`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/pause`
 - `POST /api/v1/{tenant}/executions/pause/by-ids`
 - `POST /api/v1/{tenant}/executions/pause/by-query`
 
 RESUME
-- `POST /api/v1/{tenant}/executions/{executionId}/resume`
-- `POST /api/v1/{tenant}/executions/{executionId}/resume-from-breakpoint`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/resume`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/resume-from-breakpoint`
 - `POST /api/v1/{tenant}/executions/resume/by-ids`
 - `POST /api/v1/{tenant}/executions/resume/by-query`
 
 CHANGE_LABELS
-- `POST /api/v1/{tenant}/executions/{executionId}/labels`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/labels`
 - `POST /api/v1/{tenant}/executions/labels/by-ids`
 - `POST /api/v1/{tenant}/executions/labels/by-query`
 
@@ -184,8 +183,9 @@ ACCESS_LOGS
 - `GET /api/v1/{tenant}/logs/{executionId}/follow` (SSE log stream)
 
 ACCESS_OUTPUTS
-- `GET /api/v1/{tenant}/outputs/{executionId}/{taskRunId}`
-- `GET /api/v1/{tenant}/outputs/{executionId}`
+- `GET /api/v1/{tenant}/outputs/tasks/{executionId}/{taskRunId}`
+- `GET /api/v1/{tenant}/outputs/tasks/{executionId}`
+- `GET /api/v1/{tenant}/outputs/executions/{executionId}`
 
 ACCESS_FILES
 - `GET /api/v1/{tenant}/executions/{executionId}/file`
@@ -200,20 +200,20 @@ EXPORT
 - `GET /api/v1/{tenant}/executions/export/by-query/csv` (streaming)
 
 UNQUEUE
-- `POST /api/v1/{tenant}/executions/{executionId}/unqueue`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/unqueue`
 - `POST /api/v1/{tenant}/executions/unqueue/by-ids`
 - `POST /api/v1/{tenant}/executions/unqueue/by-query`
 
 FORCE_RUN
-- `POST /api/v1/{tenant}/executions/{executionId}/force-run`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/force-run`
 - `POST /api/v1/{tenant}/executions/force-run/by-ids`
 - `POST /api/v1/{tenant}/executions/force-run/by-query`
 
 UPDATE
-- `POST /api/v1/{tenant}/executions/{executionId}/state`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/change-status`
 - `POST /api/v1/{tenant}/executions/change-status/by-ids`
 - `POST /api/v1/{tenant}/executions/change-status/by-query`
-- `POST /api/v1/{tenant}/executions/{executionId}/{taskRunId}/state`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/state`
 
 Notes
 - Webhook execution endpoints are authorized by webhook key only; RBAC is not checked.
@@ -242,30 +242,36 @@ LIST
 
 UNLOCK
 - `POST /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}/unlock`
-- `POST /api/v1/{tenant}/triggers/unlock/by-ids`
+- `POST /api/v1/{tenant}/triggers/unlock/by-triggers`
+- `POST /api/v1/{tenant}/triggers/unlock/by-query`
 
 RESTART
 - `POST /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}/restart`
 
 DISABLE / ENABLE
-- `POST /api/v1/{tenant}/triggers/disable/by-ids` (also used for re-enabling)
+- `PUT /api/v1/{tenant}/triggers/set-disabled` (also used for re-enabling)
+- `POST /api/v1/{tenant}/triggers/set-disabled/by-triggers`
+- `POST /api/v1/{tenant}/triggers/set-disabled/by-query`
 
 DELETE
 - `DELETE /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}`
-- `DELETE /api/v1/{tenant}/triggers/by-ids`
-- `DELETE /api/v1/{tenant}/triggers/by-query`
+- `DELETE /api/v1/{tenant}/triggers/delete/by-triggers`
+- `DELETE /api/v1/{tenant}/triggers/delete/by-query`
 
 EXPORT
-- `GET /api/v1/{tenant}/triggers/export/by-query` (streaming)
+- `GET /api/v1/{tenant}/triggers/export/by-query/csv` (streaming)
 
 BACKFILL
-- `POST /api/v1/{tenant}/triggers/backfills` (create)
-- `POST /api/v1/{tenant}/triggers/backfills/pause`
-- `POST /api/v1/{tenant}/triggers/backfills/pause/by-ids`
-- `POST /api/v1/{tenant}/triggers/backfills/unpause`
-- `POST /api/v1/{tenant}/triggers/backfills/unpause/by-ids`
-- `DELETE /api/v1/{tenant}/triggers/backfills`
-- `DELETE /api/v1/{tenant}/triggers/backfills/by-ids`
+- `PUT /api/v1/{tenant}/triggers/backfill/create`
+- `PUT /api/v1/{tenant}/triggers/backfill/pause`
+- `POST /api/v1/{tenant}/triggers/backfill/pause/by-triggers`
+- `POST /api/v1/{tenant}/triggers/backfill/pause/by-query`
+- `PUT /api/v1/{tenant}/triggers/backfill/unpause`
+- `POST /api/v1/{tenant}/triggers/backfill/unpause/by-triggers`
+- `POST /api/v1/{tenant}/triggers/backfill/unpause/by-query`
+- `POST /api/v1/{tenant}/triggers/backfill/delete`
+- `POST /api/v1/{tenant}/triggers/backfill/delete/by-triggers`
+- `POST /api/v1/{tenant}/triggers/backfill/delete/by-query`
 :::
 
 ---
@@ -333,7 +339,7 @@ VIEW
 - `GET /api/v1/{tenant}/namespaces/{namespace}/kv/{key}/detail`
 
 LIST
-- `GET /api/v1/{tenant}/namespaces/{namespace}/kv`
+- `GET /api/v1/{tenant}/kv`
 - `GET /api/v1/{tenant}/namespaces/{namespace}/kv/inheritance`
 
 CREATE / UPDATE
@@ -364,8 +370,8 @@ VIEW / LIST (any `DASHBOARD` action — no dedicated per-action check at control
 - `POST /api/v1/{tenant}/dashboards/charts/preview`
 - `POST /api/v1/{tenant}/dashboards/validate`
 - `POST /api/v1/{tenant}/dashboards/validate/chart`
-- `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export/to-csv`
-- `POST /api/v1/{tenant}/dashboards/charts/export/to-csv`
+- `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export`
+- `POST /api/v1/{tenant}/dashboards/charts/export`
 
 CREATE
 - `POST /api/v1/{tenant}/dashboards`
@@ -390,7 +396,7 @@ DELETE
 **Endpoints**
 
 VIEW / LIST (any `SECRET` action)
-- `GET /api/v1/{tenant}/namespaces/{namespace}/secrets`
+- `GET /api/v1/{tenant}/secrets`
 - `GET /api/v1/{tenant}/namespaces/{namespace}/inherited-secrets`
 
 UPDATE
@@ -787,7 +793,7 @@ VIEW / LIST
 - `POST /api/v1/{tenant}/roles/autocomplete`
 - `POST /api/v1/{tenant}/roles/ids`
 - `GET /api/v1/{tenant}/acls/permissions` (any `ROLE` action)
-- `GET /api/v1/{tenant}/acls/actions` (any `ROLE` action)
+- `GET /api/v1/{tenant}/acls/templates` (any `ROLE` action)
 
 CREATE
 - `POST /api/v1/{tenant}/roles`
@@ -931,7 +937,6 @@ EXPORT
 
 IMPORT
 - `POST /api/v1/{tenant}/policies/import`
-- `POST /api/v1/{tenant}/namespaces/{namespace}/policies/import`
 
 VALIDATE (any `POLICY` VIEW action — no dedicated check)
 - `POST /api/v1/{tenant}/policies/validate`
