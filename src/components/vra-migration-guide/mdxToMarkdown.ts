@@ -17,6 +17,7 @@ export function mdxToMarkdown(
             .replace(/^(?:import|export)\s.*$/gm, "")
             .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
             .replace(/<\/?Fragment(?:\s[^>]*)?>/g, "")
+            .replace(/<\/?mark>/g, "")
             .replace(JSX_TAG, (tag, name: string, attributes: string) => {
                 if (name in replacements) return replacements[name]
                 if (tag.startsWith("</")) return ""

@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets"
 import translation from "../assets/assistant-brief-translation.png"
-import GuideTabs from "../blocks/GuideTabs.astro"
-import GuideTabPanel from "../blocks/GuideTabPanel.astro"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
 import BrowserFrame from "./BrowserFrame.astro"
 
 interface Props {
@@ -91,10 +91,12 @@ const GROUP = "assistant-example"
         </div>
 
         <div class="tabs-panel">
-            <GuideTabs
+            <TabGroup
                 id={GROUP}
                 label="The brief for the load balancer"
                 variant="stages"
+                theme="dark"
+                flush
                 selected={SELECTED}
                 tabs={TABS.map((tab, i) => ({
                     label: `${i + 1}. ${tab.label}`,
@@ -102,7 +104,7 @@ const GROUP = "assistant-example"
             >
                 {
                     TABS.map((tab, i) => (
-                        <GuideTabPanel
+                        <TabPanel
                             group={GROUP}
                             index={i + 1}
                             selected={SELECTED}
@@ -150,10 +152,10 @@ const GROUP = "assistant-example"
                                     </BrowserFrame>
                                 </div>
                             </div>
-                        </GuideTabPanel>
+                        </TabPanel>
                     ))
                 }
-            </GuideTabs>
+            </TabGroup>
         </div>
 
         <div class="download">
@@ -172,14 +174,11 @@ const GROUP = "assistant-example"
 <style lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
 
-    $section-bg: #1a1c22;
-    $accent: #9869f7;
-
     @mixin marker-pill {
         flex-shrink: 0;
         padding: 0.125rem 0.5rem;
         border-radius: 999px;
-        background: $accent;
+        background: $dark-accent;
         font-size: $font-size-sm;
         font-weight: 600;
         line-height: 1.25rem;
@@ -187,7 +186,7 @@ const GROUP = "assistant-example"
     }
 
     .example {
-        @include assistant-section($section-bg, $white, $dark-raised);
+        @include assistant-section($dark-section-bg, $white, $dark-raised);
     }
 
     .container {
@@ -276,9 +275,7 @@ const GROUP = "assistant-example"
         }
     }
 
-    // The tab strip and panels, restyled from the guide's shared tabs.
-    // Anchored on the section so these outrank GuideTabs' own scoped rules.
-    .example .tabs-panel {
+    .tabs-panel {
         overflow: hidden;
         padding: 2rem;
         border: 1px solid $dark-raised;
@@ -287,47 +284,6 @@ const GROUP = "assistant-example"
 
         @include media-breakpoint-down(md) {
             padding: 1rem;
-        }
-
-        :global(.guide-tabs) {
-            margin: 0;
-        }
-
-        :global(.guide-tabs > .tablist) {
-            gap: 0.625rem;
-            margin-bottom: 4rem;
-
-            @include media-breakpoint-down(lg) {
-                margin-bottom: 2rem;
-            }
-        }
-
-        :global(.guide-tabs > .tablist > [role="tab"]) {
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border: 1px solid $dark-border-strong;
-            border-radius: 6px;
-            background: $dark-bg-control;
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-            text-align: center;
-            color: $dark-text-secondary;
-
-            @include media-breakpoint-down(md) {
-                font-size: 1rem;
-            }
-        }
-
-        :global(.guide-tabs > .tablist > [role="tab"][aria-selected="true"]) {
-            border-color: $accent;
-            background: $dark-raised;
-            box-shadow: 2px 3px 16px rgba($accent, 0.1);
-            color: $white;
-        }
-
-        :global(.guide-tab-panel) {
-            padding: 0;
-            border: 0;
         }
     }
 

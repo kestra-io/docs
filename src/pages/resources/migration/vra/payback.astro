@@ -1,6 +1,7 @@
 ---
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
+import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
 import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
 import CalculatorPayback from "~/components/vra-migration-guide/calculator/CalculatorPayback.vue"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
@@ -34,24 +35,24 @@ const TIPS = [
     breadcrumbTitle="Payback calculator"
     headerTheme="lightText"
 >
-    <section class="calc-hero">
-        <div class="container">
-            <p class="pill">Payback calculator · VMware vRA migration</p>
-            <h1>What leaving vRA costs, and when it pays back.</h1>
-            <p class="deck">
-                The migration is the investment. What pays it back is the vRA
-                and vRO renewal you do not sign. Enter your renewal, your
-                workflow counts and your rates, and get the month the move to
-                Kestra pays for itself.
-            </p>
-            <div class="actions">
-                <a class="btn btn-primary" href="#calculator"
-                    >Work out your payback</a
-                >
-                <a class="btn btn-secondary" href="/demo">Book a Demo</a>
-            </div>
-        </div>
-    </section>
+    <GuideHero
+        pill="Payback calculator · VMware vRA migration"
+        title="What leaving vRA costs, and when it pays back."
+        card={false}
+    >
+        <Fragment slot="deck">
+            The migration is the investment. What pays it back is the vRA and
+            vRO renewal you do not sign. Enter your renewal, your workflow
+            counts and your rates, and get the month the move to Kestra pays for
+            itself.
+        </Fragment>
+        <Fragment slot="actions">
+            <a class="btn btn-primary" href="#calculator"
+                >Work out your payback</a
+            >
+            <a class="btn btn-secondary" href="/demo">Book a Demo</a>
+        </Fragment>
+    </GuideHero>
 
     <section class="calc-body" id="calculator">
         <div class="container">
@@ -119,52 +120,6 @@ const TIPS = [
 </Layout>
 
 <style lang="scss">
-    .calc-hero {
-        background: #0f0e14;
-        color: $white;
-        padding: 7.5rem 0 3.5rem;
-        margin-top: calc(-80px - var(--announce-height));
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            max-width: 56rem;
-        }
-
-        .pill {
-            font-size: $font-size-xs;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #b39cff;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        h1 {
-            font-size: clamp(2.25rem, 5vw, 3.75rem);
-            font-weight: 600;
-            line-height: 1.05;
-            letter-spacing: -0.02em;
-            margin: 0;
-        }
-
-        .deck {
-            font-size: $font-size-lg;
-            line-height: 1.75rem;
-            color: #cfd3d6;
-            margin: 0;
-            max-width: 44rem;
-        }
-
-        .actions {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-top: 0.5rem;
-        }
-    }
-
     .calc-body {
         padding: 2rem 0 3rem;
         scroll-margin-top: 100px;

@@ -39,7 +39,7 @@
                                         ? 'location'
                                         : undefined
                                 "
-                                @click="onNavigate(group.id)"
+                                @click.prevent="onNavigate(group.id)"
                             >
                                 <span class="text">{{ group.text }}</span>
                                 <span class="chevron" aria-hidden="true">
@@ -64,7 +64,7 @@
                                                 ? 'location'
                                                 : undefined
                                         "
-                                        @click="onNavigate(sub.id)"
+                                        @click.prevent="onNavigate(sub.id)"
                                         >{{ sub.text }}</a
                                     >
                                     <ul v-if="sub.children.length" class="kids">
@@ -81,7 +81,7 @@
                                                         ? 'location'
                                                         : undefined
                                                 "
-                                                @click="onNavigate(kid.id)"
+                                                @click.prevent="onNavigate(kid.id)"
                                                 >{{ kid.text }}</a
                                             >
                                         </li>
@@ -100,21 +100,22 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, onMounted, onUnmounted, ref } from "vue"
-    import { useMediaQuery } from "@vueuse/core"
+    import { computed } from "vue"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+    import { useTocCollapse } from "~/composables/useTocCollapse"
+    import { useTocScrollSpy } from "~/composables/useTocScrollSpy"
     import { buildTocTree, type TocLink } from "./toc"
 
     const props = defineProps<{ links: TocLink[] }>()
 
     const tree = computed(() => buildTocTree(props.links))
-    const expanded = ref(false)
-    const belowLg = useMediaQuery("(max-width: 991.98px)")
-    const activeId = ref("")
-
-    const collapsed = computed(() => belowLg.value && !expanded.value)
+    const { expanded, belowLg, collapsed } = useTocCollapse()
+    const { activeId, navigateTo } = useTocScrollSpy(
+        () => props.links.map((link) => link.id),
+        { container: ".guide-toc .toc-collapse-inner" },
+    )
 
     const parents = computed(() => {
         const map = new Map<string, { group: string; sub?: string }>()
@@ -140,40 +141,10 @@
         return ""
     }
 
-    const HEADER_OFFSET = 144
-
-    let frame = 0
-    function updateActive() {
-        frame = 0
-        const threshold = window.scrollY + HEADER_OFFSET
-        let current = ""
-        for (const link of props.links) {
-            const el = document.getElementById(link.id)
-            if (!el) continue
-            if (el.getBoundingClientRect().top + window.scrollY <= threshold)
-                current = link.id
-            else break
-        }
-        activeId.value = current
-    }
-    function onScroll() {
-        if (!frame) frame = requestAnimationFrame(updateActive)
-    }
-
     function onNavigate(id: string) {
-        activeId.value = id
+        navigateTo(id)
         if (belowLg.value) expanded.value = false
     }
-
-    onMounted(() => {
-        window.addEventListener("scroll", onScroll, { passive: true })
-        updateActive()
-    })
-
-    onUnmounted(() => {
-        window.removeEventListener("scroll", onScroll)
-        if (frame) cancelAnimationFrame(frame)
-    })
 </script>
 
 <style lang="scss" scoped>

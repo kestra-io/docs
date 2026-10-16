@@ -14,6 +14,7 @@ const { kicker, title } = Astro.props
 </div>
 
 <style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
     .guide-card {
         padding: 2rem;
         border: 1px solid var(--ks-border-secondary);
@@ -33,33 +34,13 @@ const { kicker, title } = Astro.props
         }
 
         :global(blockquote) {
+            @include guide-quote(":global(p)");
             margin: 0 0 1rem;
             padding: 1rem;
             border: 0;
-            border-radius: 9px;
-            background: var(--ks-background-purple-light);
-            font-size: $font-size-lg;
-            line-height: 1.75rem;
-            color: var(--ks-content-primary);
-
-            :global(p) {
-                margin: 0;
-            }
 
             :global(em) {
                 font-weight: 500;
-            }
-
-            :global(p)::before {
-                content: "“ ";
-                font-weight: 600;
-                color: var(--ks-content-link);
-            }
-
-            :global(p)::after {
-                content: "”";
-                font-weight: 600;
-                color: var(--ks-content-link);
             }
         }
     }

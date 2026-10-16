@@ -28,15 +28,15 @@ faq:
     answer: 'It depends on the environment and on how much time the team can give it. One Fortune 500 manufacturer completed its migration roughly twelve months after the proof of concept began, with the five or six people who already owned the platform doing the work alongside their normal jobs. An EU federal agency with roughly 1,600 workflows and a team of 11 is working toward an initial go-live in January 2027 and full service migration in October 2027. See <a href="#section-2-5">2.5</a>.'
 ---
 
-import Callout from "~/components/vra-migration-guide/blocks/Callout.astro"
-import Card from "~/components/vra-migration-guide/blocks/Card.astro"
-import Cards from "~/components/vra-migration-guide/blocks/Cards.astro"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import GuideCallout from "~/components/vra-migration-guide/blocks/GuideCallout.astro"
+import GuideCard from "~/components/vra-migration-guide/blocks/GuideCard.astro"
+import GuideCards from "~/components/vra-migration-guide/blocks/GuideCards.astro"
 import CaseStudy from "~/components/vra-migration-guide/blocks/CaseStudy.astro"
 import ExplorerPart from "~/components/vra-migration-guide/blocks/ExplorerPart.astro"
-import Figure from "~/components/vra-migration-guide/blocks/Figure.astro"
+import GuideFigure from "~/components/vra-migration-guide/blocks/GuideFigure.astro"
 import GuideCta from "~/components/vra-migration-guide/blocks/GuideCta.astro"
-import GuideTabPanel from "~/components/vra-migration-guide/blocks/GuideTabPanel.astro"
-import GuideTabs from "~/components/vra-migration-guide/blocks/GuideTabs.astro"
 import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
 import PartExplorer from "~/components/vra-migration-guide/blocks/PartExplorer.astro"
 import Verdict from "~/components/vra-migration-guide/blocks/Verdict.astro"
@@ -47,8 +47,8 @@ import Verdict from "~/components/vra-migration-guide/blocks/Verdict.astro"
 
 Teams leave vRA for several reasons, and most have more than one in play. The two that come up most often are both about who controls your automation.
 
-<Cards columns={2}>
-<Card title="Pricing and Packaging">
+<GuideCards columns={2}>
+<GuideCard title="Pricing and Packaging">
 
 vRA is no longer sold as a product on its own. It is part of VMware Cloud Foundation, licensed per core on subscription, so the automation layer is now priced as part of the hypervisor. [Gartner expects](https://www.theregister.com/2024/08/26/vmware_explore_preview/) most VMware customers' bills to grow by 200 to 500 percent at their next renewal.
 
@@ -56,26 +56,27 @@ As an engineer at one Fortune 500 manufacturer put it before they replaced it:
 
 > _We're using Aria Automation, that's a massive cost, the cost doesn't justify it anymore._
 
-</Card>
-<Card title="Dependence on VMware's Roadmap">
+</GuideCard>
+<GuideCard title="Dependence on VMware's Roadmap">
 
 What your automation can reach is decided by VMware. Several vRO plugins were deprecated in VCF 9, and recently native AWS, Azure and GCP management were also deprecated and switched it off by default. The Git integration needs a vRA licence. Only a handful of built-in plugins reach outside VMware, so every other integration is a library you write and then maintain yourself.
 
-</Card>
-</Cards>
+</GuideCard>
+</GuideCards>
 
-<Callout variant="lesson" label="Both point to the same lesson" statement="Your infrastructure vendor should not own your automation." highlight="not own">
+<GuideCallout variant="lesson" label="Both point to the same lesson">
+<Fragment slot="statement">Your infrastructure vendor should <mark>not own</mark> your automation.</Fragment>
 
 VMware can stay as your hypervisor. The automation on top of it should keep working when the hypervisor, the cloud or the contract changes.
 
-</Callout>
+</GuideCallout>
 
-<Callout variant="aside" label="Two other reasons usually show up alongside them">
+<GuideCallout variant="aside" label="Two other reasons usually show up alongside them">
 
 - **Sprawl.** A single vRA with an embedded vRO is managed as one suite. Many teams outgrow that, with separate instances per tenant, since tenants sharing one Orchestrator can see and change each other's workflows, and separate instances per environment. Each one is its own console, run history and upgrade cycle.
 - **People and accessibility.** vRO JavaScript is a dialect, and the number of people who can confidently read and change it shrinks every year. In most teams it is a handful. When those skills are not in the team, the work goes to consultants, which turns your automation into a recurring professional services line.
 
-</Callout>
+</GuideCallout>
 
 ### 1.2 vRA alternatives: choosing what to move to
 
@@ -117,8 +118,8 @@ The [deployment options handout](https://hs.kestra.io/hubfs/kestra-deployment-op
 We have worked with enterprises leaving vRA, and the four stages below are the sequence that held up across them. You can run it with your own team, with us, or with a services partner.
 
 <InteractiveFrame title="The four stages" subtitle="Select a stage to see what you do and what you end up with">
-<GuideTabs id="vra-stages" label="The four stages" variant="stages" tabs={[{ kicker: "STAGE 1", label: "Assess" }, { kicker: "STAGE 2", label: "Proof of Concept" }, { kicker: "STAGE 3", label: "Migrate" }, { kicker: "STAGE 4", label: "Exit" }]}>
-<GuideTabPanel group="vra-stages" index={1}>
+<TabGroup id="vra-stages" label="The four stages" variant="stages" tabs={[{ kicker: "STAGE 1", label: "Assess" }, { kicker: "STAGE 2", label: "Proof of Concept" }, { kicker: "STAGE 3", label: "Migrate" }, { kicker: "STAGE 4", label: "Exit" }]}>
+<TabPanel group="vra-stages" index={1}>
 
 **Stage 1 - Assess**
 
@@ -127,8 +128,8 @@ We have worked with enterprises leaving vRA, and the four stages below are the s
 
 [Go to Section 3](#section-3)
 
-</GuideTabPanel>
-<GuideTabPanel group="vra-stages" index={2}>
+</TabPanel>
+<TabPanel group="vra-stages" index={2}>
 
 **Stage 2 - Proof of Concept**
 
@@ -137,8 +138,8 @@ We have worked with enterprises leaving vRA, and the four stages below are the s
 
 [Go to Section 4](#section-4)
 
-</GuideTabPanel>
-<GuideTabPanel group="vra-stages" index={3}>
+</TabPanel>
+<TabPanel group="vra-stages" index={3}>
 
 **Stage 3 - Migrate**
 
@@ -147,8 +148,8 @@ We have worked with enterprises leaving vRA, and the four stages below are the s
 
 [Go to Section 5](#section-5)
 
-</GuideTabPanel>
-<GuideTabPanel group="vra-stages" index={4}>
+</TabPanel>
+<TabPanel group="vra-stages" index={4}>
 
 **Stage 4 - Exit**
 
@@ -157,8 +158,8 @@ We have worked with enterprises leaving vRA, and the four stages below are the s
 
 [Go to Section 6](#section-6)
 
-</GuideTabPanel>
-</GuideTabs>
+</TabPanel>
+</TabGroup>
 </InteractiveFrame>
 
 The Kestra Migration Assistant for vRA does most of Stage 1 for you, on your own machine (see [section 2.2](#section-2-2) below). You can also [talk to us before you start](/demo), and we will guide you through it. Sections 3 to 6 are one stage each.
@@ -256,11 +257,11 @@ Together they own the workflow engine and the pieces that support it: the Servic
 
 Before converting anything, decide what happens to each part of the estate. We describe it as six parts plus the targets they act on.
 
-<Figure caption="Figure 1: Your current estate with vRA and vRO">
+<GuideFigure caption="Figure 1: Your current estate with vRA and vRO">
 
 ![Your current estate with vRA and vRO: six parts around the vRA and vRO workflow engine, with request intake and governance, triggers and events, records of truth, platform services, execution tooling and templates, and the targets they act on. Dark boxes are what vRA or vRO owns, white boxes are yours and stay.](./figure-1.png)
 
-</Figure>
+</GuideFigure>
 
 <InteractiveFrame title="The six parts, plus targets" subtitle="Select a part. The first tab says what it is, the second gives the verdict and the trade-offs.">
 <PartExplorer count={7} legendId="verdicts" id="parts">
@@ -464,16 +465,16 @@ Most of the six parts stay. The two decisions that change the target architectur
 Those decisions usually produce one of two target architectures. They differ in where the catalog and resource inventory live, and the table under each example shows where each part ends up.
 
 <InteractiveFrame title="Two target architectures" subtitle="Everything below the orchestration layer is the same in both">
-<GuideTabs id="vra-architecture" label="Target architecture" variant="segmented" tabs={[{ label: "Example 1: Kestra under your ITSM" }, { label: "Example 2: Kestra owns the front door" }]}>
-<GuideTabPanel group="vra-architecture" index={1}>
+<TabGroup id="vra-architecture" label="Target architecture" variant="segmented" tabs={[{ label: "Example 1: Kestra under your ITSM" }, { label: "Example 2: Kestra owns the front door" }]}>
+<TabPanel group="vra-architecture" index={1}>
 
 **Example 1 - Kestra under your existing ITSM.** ServiceNow or BMC Helix keeps the catalog, approvals, request history and CMDB. Kestra replaces vRO, and the ITSM calls a Kestra flow where it previously called vRA. Users keep the same front door, the CMDB remains the shared record, and the ITSM team keeps its current responsibilities. This requires less organizational change and is common when the ITSM platform predates vRA.
 
-<Figure caption="Figure 2: Example estate with Kestra under your existing ITSM">
+<GuideFigure caption="Figure 2: Example estate with Kestra under your existing ITSM">
 
 ![Example estate with Kestra under your existing ITSM: Kestra is the workflow engine, Kestra triggers replace vRO schedules, the vRA lifecycle is retired, the ITSM portal stays as the front door and catalog, and the CMDB holds the record of what was deployed.](./figure-2.png)
 
-</Figure>
+</GuideFigure>
 
 | Part | Where it lives in Example 1 |
 | --- | --- |
@@ -484,16 +485,16 @@ Those decisions usually produce one of two target architectures. They differ in 
 | Resource actions | Kestra flows, invoked from the ITSM against a CMDB record |
 | Everything else | Unchanged |
 
-</GuideTabPanel>
-<GuideTabPanel group="vra-architecture" index={2}>
+</TabPanel>
+<TabPanel group="vra-architecture" index={2}>
 
 **Example 2 - Kestra owns the front door.** This fits teams retiring the existing portal with vRA, or teams that never had a strong one. Kestra Apps become the catalog, with a form in front of each flow. Approvals run in Kestra, and Kestra Assets hold the inventory of what was provisioned. Resource actions can then appear against the asset itself. A CMDB can still be updated from flows, but users no longer depend on it as the front door. This is the larger change because the catalog, approvals and inventory all move.
 
-<Figure caption="Figure 3: Example estate with Kestra as your front door">
+<GuideFigure caption="Figure 3: Example estate with Kestra as your front door">
 
 ![Example estate with Kestra as your front door: Kestra Apps become the front door and catalog, Kestra Assets hold the record of what was deployed, Kestra is the workflow engine, and the vRA lifecycle is retired.](./figure-3.png)
 
-</Figure>
+</GuideFigure>
 
 | Part | Where it lives in Example 2 |
 | --- | --- |
@@ -504,8 +505,8 @@ Those decisions usually produce one of two target architectures. They differ in 
 | Resource actions | Kestra flows, attached to the asset |
 | Everything else | Unchanged |
 
-</GuideTabPanel>
-</GuideTabs>
+</TabPanel>
+</TabGroup>
 </InteractiveFrame>
 
 Both shapes support the same transport choices for events (webhook or a message bus such as Kafka or RabbitMQ), and both can be deployed on-prem, across network zones or fully air-gapped. Those are deployment decisions rather than architecture ones, and the [deployment options handout](https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf) covers them.
@@ -522,8 +523,8 @@ The content is a .package export from the vRO client, holding the workflows, act
 
 When each workflow last ran is not in a .package, and it is what the retirement decisions rest on. There are three practical ways to get it, and each also gives you a fuller inventory:
 
-<GuideTabs id="vra-export" label="Ways to export your inventory" tabs={[{ kicker: "OPTION 1", label: "Build Tools for VMware Aria (BTVA)" }, { kicker: "OPTION 2", label: "An MCP server over the vRO API" }, { kicker: "OPTION 3", label: "The vRO API directly, or by hand" }]}>
-<GuideTabPanel group="vra-export" index={1}>
+<TabGroup id="vra-export" label="Ways to export your inventory" tabs={[{ kicker: "OPTION 1", label: "Build Tools for VMware Aria (BTVA)" }, { kicker: "OPTION 2", label: "An MCP server over the vRO API" }, { kicker: "OPTION 3", label: "The vRO API directly, or by hand" }]}>
+<TabPanel group="vra-export" index={1}>
 
 VMware's own open-source toolchain, at [github.com/vmware/build-tools-for-vmware-aria](https://github.com/vmware/build-tools-for-vmware-aria).
 
@@ -532,8 +533,8 @@ VMware's own open-source toolchain, at [github.com/vmware/build-tools-for-vmware
 - **Who supports it.** It is open source and community-maintained. There is no support contract behind it, from VMware or from us.
 - **What you are risking.** BTVA authenticates against your vRO and vRA endpoints and pulls content. It can also push, so the safe pattern is to run only the export commands, with a service account that has read permissions and nothing else, against a non-production environment first.
 
-</GuideTabPanel>
-<GuideTabPanel group="vra-export" index={2}>
+</TabPanel>
+<TabPanel group="vra-export" index={2}>
 
 A community project at [github.com/mgovedarov/mcp-vcf-orchestrator](https://github.com/mgovedarov/mcp-vcf-orchestrator), Apache 2.0 licensed.
 
@@ -542,13 +543,13 @@ A community project at [github.com/mgovedarov/mcp-vcf-orchestrator](https://gith
 - **Who supports it.** Community project, no support contract, not affiliated with VMware or Kestra.
 - **What you are risking.** It has write operations alongside the read ones. Same precaution as BTVA: read-only credentials, non-production first.
 
-</GuideTabPanel>
-<GuideTabPanel group="vra-export" index={3}>
+</TabPanel>
+<TabPanel group="vra-export" index={3}>
 
 If neither tool suits your environment, the vRO REST API returns the same inventory and each workflow's execution records, and a short script against it is often all a team needs. Some teams already have the list because someone built a usage report years ago and never stopped running it.
 
-</GuideTabPanel>
-</GuideTabs>
+</TabPanel>
+</TabGroup>
 
 The first count may be large. Workflows that have not run in twelve months are candidates for retirement, and in the estates behind this guide that group is usually 10 to 20 percent of the list.
 
@@ -683,28 +684,28 @@ Most of this comes straight out of your Stage 1 outputs.
 
 A migration proof of concept should answer four questions:
 
-<Cards columns={2}>
-<Card kicker="VIABILITY">
+<GuideCards columns={2}>
+<GuideCard kicker="VIABILITY">
 
 Can your workflows run on Kestra against your vCenter, ITSM, CMDB and IPAM, inside your network?
 
-</Card>
-<Card kicker="MIGRATION PAIN">
+</GuideCard>
+<GuideCard kicker="MIGRATION PAIN">
 
 What converting a real workflow actually costs, measured rather than estimated. This is the number that turns your inventory count into a migration estimate.
 
-</Card>
-<Card kicker="FEATURE PARITY">
+</GuideCard>
+<GuideCard kicker="FEATURE PARITY">
 
 Which capabilities do not map cleanly, and what is the workaround or design change?
 
-</Card>
-<Card kicker="LEVEL OF EFFORT">
+</GuideCard>
+<GuideCard kicker="LEVEL OF EFFORT">
 
 Enough signal to size the whole thing: roughly how many waves, roughly how long, and whether you need help from a partner for the bulk of it.
 
-</Card>
-</Cards>
+</GuideCard>
+</GuideCards>
 
 The last one is the link between the stages. Stage 1 gives you the counts. Stage 2 gives you the rate, and how much of the conversion the Migration Assistant actually handles on your own code. Together they give you an estimate you can defend.
 
@@ -712,11 +713,11 @@ Some answers arrive faster than others. At the [Fortune 500 manufacturer](/custo
 
 ### 4.3 How it runs
 
-<Figure caption="Figure 4: The five phases of a proof of concept">
+<GuideFigure caption="Figure 4: The five phases of a proof of concept">
 
 ![The five phases of a proof of concept: 01 Scoping, before kick-off; 02 Launchpad, day 0; 03 Install, first days; 04 Sprint, weeks 1 to 3; 05 Review and decision, weekly and at the end. Launchpad through Review and decision span three weeks from kick-off, with weekly working sessions across the Sprint and Review phases.](./figure-4.png)
 
-</Figure>
+</GuideFigure>
 
 A PoC runs for three weeks from the kick-off call, including the install. Most of the work happens in weekly working sessions of 30 to 45 minutes, each one setting up or solving one success criterion, with a shared Slack or Teams channel in between so you are never waiting for a meeting to get unblocked. If criteria are still open at three weeks, the PoC continues only while those weekly sessions do.
 
@@ -811,11 +812,11 @@ vRA keeps running the estate until each wave is verified and switched over, whic
 - **The overlap costs infrastructure and people, not licence.** The vRA licence you have already paid covers the overlap. What doubles up is the infrastructure and the team running both platforms at once. It sits outside the [payback calculation](#section-7-2), so add it to your estimate alongside the other one-off costs.
 - **Every wave is reversible until you retire it.** If a converted flow does not behave, the vRA version is still there and still working. Nothing is cut over unverified.
 
-<Callout variant="note" label="Wrap before replacing">
+<GuideCallout variant="note" label="Wrap before replacing">
 
 A useful intermediate step is to point the existing trigger at a Kestra flow that calls the vRO workflow. Once the trigger path works, replace the vRO workflow itself. Each change can then be tested separately.
 
-</Callout>
+</GuideCallout>
 
 ## 6. Stage 4, Exit: retire vRA wave by wave, end the licence at renewal
 
@@ -914,11 +915,12 @@ The result is a cost and payback estimate rather than a delivery date. How long 
 
 ### 7.3 Explain why Kestra fits
 
-<Callout variant="lesson" label="The argument leadership needs" statement="Your infrastructure vendor should not own your automation." highlight="not own">
+<GuideCallout variant="lesson" label="The argument leadership needs">
+<Fragment slot="statement">Your infrastructure vendor should <mark>not own</mark> your automation.</Fragment>
 
 Kestra is the independent layer that stays in place when the hypervisor, the cloud or the contract changes.
 
-</Callout>
+</GuideCallout>
 
 The argument leadership needs is the one this guide opened with. The proof of concept is what makes that believable, so answer [the three questions from the start of this guide](#section-1-2) with your own results rather than ours.
 

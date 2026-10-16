@@ -57,9 +57,6 @@ const { command, note } = Astro.props
     @use "/src/components/vra-migration-guide/shared" as *;
     @use "/src/assets/styles/color-palette" as *;
 
-    // The "copied" check, as in get-started/Hero.astro.
-    $copied: #6bd37a;
-
     .command {
         display: inline-flex;
         align-items: center;
@@ -128,7 +125,7 @@ const { command, note } = Astro.props
 
             :global(.icon-check) {
                 display: inline-block;
-                color: $copied;
+                color: $copied-green;
             }
         }
     }

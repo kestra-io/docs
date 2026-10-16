@@ -1,64 +1,37 @@
 <template>
-    <span ref="root" class="info-tip">
-        <button
-            type="button"
-            class="info-button"
-            :aria-expanded="open"
-            :aria-controls="id"
-            :aria-label="`More about ${label}`"
-            @click="toggle"
-        >
-            <InformationOutline :size="16" />
-        </button>
-        <span
-            v-show="open"
-            :id="id"
-            ref="panel"
-            class="info-panel"
-            role="note"
-            :style="{ left: `calc(-0.5rem + ${shift}px)` }"
-        >
+    <Tooltip
+        class="info-tip"
+        trigger="click"
+        placement="bottom-start"
+        content-class="info-panel"
+    >
+        <template #default="{ visible, panelId }">
+            <button
+                type="button"
+                class="info-button"
+                :aria-expanded="visible"
+                :aria-controls="panelId"
+                :aria-label="`More about ${label}`"
+            >
+                <InformationOutline :size="16" />
+            </button>
+        </template>
+        <template #content>
             <slot />
-        </span>
-    </span>
+        </template>
+    </Tooltip>
 </template>
 
 <script setup lang="ts">
-    import { onClickOutside, onKeyStroke } from "@vueuse/core"
-    import { nextTick, ref, useTemplateRef } from "vue"
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
+    import Tooltip from "~/components/common/Tooltip.vue"
 
-    defineProps<{ id: string; label: string }>()
-
-    const GUTTER = 16
-
-    const open = ref(false)
-    const shift = ref(0)
-    const root = useTemplateRef<HTMLElement>("root")
-    const panel = useTemplateRef<HTMLElement>("panel")
-
-    async function toggle() {
-        if (open.value) {
-            open.value = false
-            return
-        }
-        const viewport = document.documentElement.clientWidth
-        const left = root.value?.getBoundingClientRect().left ?? 0
-        shift.value = 0
-        open.value = true
-        await nextTick()
-        const width = panel.value?.offsetWidth ?? 0
-        const start = left + (panel.value?.offsetLeft ?? 0)
-        const overflow = start + width - (viewport - GUTTER)
-        if (overflow > 0) shift.value = -overflow
-        if (start + shift.value < GUTTER) shift.value = GUTTER - start
-    }
+    defineProps<{ label: string }>()
 </script>
 
 <style scoped lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
     .info-tip {
-        position: relative;
         display: inline-flex;
         vertical-align: middle;
     }
@@ -77,20 +50,23 @@
             color: var(--ks-content-link);
         }
     }
+</style>
 
-    .info-panel {
-        position: absolute;
-        z-index: 5;
-        top: calc(100% + 0.4rem);
-        width: max-content;
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    // The panel is rendered by Tooltip, outside this component's scope.
+    .ks-tooltip.info-panel {
         max-width: min(18rem, calc(100vw - 2rem));
         padding: 0.6rem 0.75rem;
-        border: 1px solid var(--ks-border-primary);
+        border-color: var(--ks-border-primary);
         border-radius: $border-radius;
-        background: var(--ks-background-body);
         box-shadow: $calc-shadow-elevated;
         @include calc-hint;
         font-weight: 400;
         line-height: 1.45;
+
+        a {
+            color: var(--ks-content-link);
+        }
     }
 </style>

@@ -56,14 +56,13 @@ describe("before hydrate (SSR and first client render)", () => {
         fresh()
         expect({ ...store.inputs }).toEqual({ ...DEFAULTS })
         expect(store.result.value).toEqual(compute(resolveInputs()))
-        expect(store.hydrated.value).toBe(false)
         expect(store.shareUrl()).toBeNull()
     })
 
     it("ignores a missing browser environment", () => {
         fresh()
         store.hydrate(null)
-        expect(store.hydrated.value).toBe(false)
+        expect(store.shareUrl()).toBeNull()
     })
 })
 
@@ -168,20 +167,6 @@ describe("persistence", () => {
         expect(data.has(STORAGE_KEY)).toBe(true)
         store.setInput("rate", 100)
         await nextTick()
-        expect(data.has(STORAGE_KEY)).toBe(false)
-    })
-
-    it("reset returns to the defaults with the locale currency and clears storage", async () => {
-        fresh()
-        const { env, data } = fakeEnv({ locales: ["en-GB"] })
-        store.hydrate(env)
-        store.setInput("cur", "USD")
-        store.setInput("mult", 5)
-        await nextTick()
-        expect(data.has(STORAGE_KEY)).toBe(true)
-        store.reset()
-        await nextTick()
-        expect({ ...store.inputs }).toEqual({ ...DEFAULTS, cur: "GBP" })
         expect(data.has(STORAGE_KEY)).toBe(false)
     })
 

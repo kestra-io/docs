@@ -1,10 +1,20 @@
 ---
+import { Code } from "astro-expressive-code/components"
 import SectionTitle from "~/components/security/SectionTitle.astro"
-import SquaredGrid from "./SquaredGrid.astro"
+
+const TREE = `my-estate/
+├─ lb-usecase.package
+└─ vra-export/`
+
+const RUN = `$ kestra-migrate init
+$ kestra-migrate vra run ./my-estate`
+
+const ANSWERS = `- id: auth.avi-controller
+  question: How do the flows sign in to Avi?
+  suggested: basic authentication, as today`
 ---
 
 <section class="how-it-works">
-    <SquaredGrid />
     <div class="container">
         <SectionTitle title="How it works">
             It takes three steps, all on your machine.
@@ -23,9 +33,7 @@ import SquaredGrid from "./SquaredGrid.astro"
                         folder.
                     </p>
                 </div>
-                <pre><code>my-estate/
-<span class="muted">├─</span> lb-usecase.package
-<span class="muted">└─</span> vra-export/</code></pre>
+                <Code code={TREE} lang="text" frame="none" class="dark" />
             </li>
             <li>
                 <div>
@@ -39,8 +47,7 @@ import SquaredGrid from "./SquaredGrid.astro"
                         kestra-assessment folder next to the exports.
                     </p>
                 </div>
-                <pre><code><span class="muted">$</span> kestra-migrate init
-<span class="muted">$</span> kestra-migrate vra run ./my-estate</code></pre>
+                <Code code={RUN} lang="bash" frame="none" class="dark" />
             </li>
             <li>
                 <div>
@@ -55,9 +62,7 @@ import SquaredGrid from "./SquaredGrid.astro"
                         questions left, the plan is final.
                     </p>
                 </div>
-                <pre><code class="yaml"><span class="muted">-</span> <span class="key">id</span><span class="muted">:</span> auth.avi-controller
-  <span class="key">question</span><span class="muted">:</span> How do the flows sign in to Avi?
-  <span class="key">suggested</span><span class="muted">:</span> <span class="answer">basic authentication, as today</span></code></pre>
+                <Code code={ANSWERS} lang="yaml" frame="none" class="dark" />
             </li>
         </ol>
     </div>
@@ -66,13 +71,8 @@ import SquaredGrid from "./SquaredGrid.astro"
 <style lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
 
-    // Figma's code-block values; they stay dark in both themes.
-    $code-value: #f7f7f8;
-    $code-answer: #80fac5;
-
     .how-it-works {
-        position: relative;
-        overflow: hidden;
+        @include squared-grid-backdrop;
         @include assistant-section(var(--ks-background-secondary));
     }
 
@@ -143,38 +143,27 @@ import SquaredGrid from "./SquaredGrid.astro"
         line-height: 2.375rem;
     }
 
-    pre {
+    // Expressive Code renders the blocks. `class="dark"` keeps them on the
+    // dark theme in both site themes; the variables restate Figma's box
+    // (background, no border, radius, type size) over the theme defaults.
+    // `:root` outranks Expressive Code's own `:root:not(.dark) .expressive-code.dark`
+    // rule in light mode, and the frame plugin paints `--ec-frm-edBg`.
+    :global(:root) li :global(.expressive-code.dark) {
+        --ec-codeBg: #{$dark-bg-input};
+        --ec-frm-edBg: #{$dark-bg-input};
+        --ec-brdCol: transparent;
+        --ec-brdRad: #{$border-radius-lg};
+        --ec-codeFontSize: #{$font-size-xs};
+        --ec-codeLineHt: 1.5rem;
         min-height: 105px;
-        margin: 0;
-        padding: 1rem;
-        overflow-x: auto;
-        border-radius: $border-radius-lg;
-        background: $dark-bg-input;
-    }
 
-    code {
-        padding: 0;
-        background: none;
-        font-family: $font-family-monospace;
-        font-size: $font-size-xs;
-        line-height: 1.5rem;
-        white-space: pre;
-        color: $white;
-    }
+        :global(pre) {
+            margin: 0;
+        }
 
-    .muted {
-        color: $dark-text-muted;
-    }
-
-    .yaml {
-        color: $code-value;
-    }
-
-    .key {
-        color: $dark-link;
-    }
-
-    .answer {
-        color: $code-answer;
+        // No language badge on these three: Figma shows a bare box.
+        :global(pre[data-language])::before {
+            display: none;
+        }
     }
 </style>

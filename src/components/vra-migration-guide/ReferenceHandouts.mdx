@@ -1,11 +1,11 @@
-import Cards from "./blocks/Cards.astro"
+import GuideCards from "./blocks/GuideCards.astro"
 import HandoutCard from "./blocks/HandoutCard.astro"
 
 ## Reference handouts
 
 The three handouts are separate downloads, written to be handed to someone who will not read the whole guide: the object-by-object translation for the architect doing the mapping, and the deployment and security documents for the teams that run the review.
 
-<Cards columns={3}>
+<GuideCards columns={3}>
 <HandoutCard id="appendix-a" appendix="HANDOUT" title="The capability map" pdfHref="https://hs.kestra.io/hubfs/kestra-vmware-migration-capability-map.pdf">
 
 One row per thing in the vRA and vRO world, what it becomes in Kestra, and which edition you need. Grouped by the six parts, with Direct and Redesign marking how each one converts.
@@ -21,4 +21,4 @@ Where Kestra runs, backends, components, restricted network zones, HA and sizing
 Kestra Enterprise's security and compliance posture, written for the reviewer: the SOC 2 Type 2 and GDPR audit, self-hosted and air-gapped deployment, where your data lives, and the controls for identity, secrets, audit, tenant isolation and transport.
 
 </HandoutCard>
-</Cards>
+</GuideCards>

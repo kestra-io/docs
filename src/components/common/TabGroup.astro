@@ -1,4 +1,7 @@
 ---
+// An ARIA tablist with keyboard support (arrows, Home, End). Each TabPanel
+// inside it names the same `id` as its `group`. One delegated listener
+// serves every group on the page.
 interface Tab {
     label: string
     kicker?: string
@@ -8,14 +11,31 @@ interface Props {
     id: string
     label: string
     tabs: Tab[]
+    /** `stages` lays the tabs out as a 2/4 grid; `segmented` makes pills. */
     variant?: "tabs" | "stages" | "segmented"
+    /** `dark` is the look for a dark section, in both themes. */
+    theme?: "light" | "dark"
+    /** No outer margin and no padding or border on the panels. */
+    flush?: boolean
     selected?: number
 }
 
-const { id, label, tabs, variant = "tabs", selected = 1 } = Astro.props
+const {
+    id,
+    label,
+    tabs,
+    variant = "tabs",
+    theme = "light",
+    flush = false,
+    selected = 1,
+} = Astro.props
 ---
 
-<div class={`guide-tabs ${variant}`} data-guide-tabs id={id}>
+<div
+    class:list={["ks-tabs", variant, { dark: theme === "dark", flush }]}
+    data-ks-tabs
+    {id}
+>
     <div class="tablist" role="tablist" aria-label={label}>
         {
             tabs.map((tab, i) => (
@@ -41,7 +61,7 @@ const { id, label, tabs, variant = "tabs", selected = 1 } = Astro.props
         const tab = (target as Element | null)?.closest?.("[role=tab]")
         const list = tab?.parentElement
         if (!list?.classList.contains("tablist")) return null
-        if (!list.parentElement?.hasAttribute("data-guide-tabs")) return null
+        if (!list.parentElement?.hasAttribute("data-ks-tabs")) return null
         return tab as HTMLButtonElement
     }
 
@@ -94,8 +114,7 @@ const { id, label, tabs, variant = "tabs", selected = 1 } = Astro.props
 </script>
 
 <style lang="scss">
-    @use "/src/components/vra-migration-guide/shared" as *;
-    .guide-tabs {
+    .ks-tabs {
         margin: 1.5rem 0;
 
         > .tablist {
@@ -117,7 +136,10 @@ const { id, label, tabs, variant = "tabs", selected = 1 } = Astro.props
                 text-align: left;
 
                 small {
-                    @include guide-eyebrow(inherit);
+                    font-size: $font-size-xs;
+                    font-weight: 600;
+                    letter-spacing: 0.05em;
+                    color: inherit;
                 }
 
                 span {
@@ -133,7 +155,10 @@ const { id, label, tabs, variant = "tabs", selected = 1 } = Astro.props
                     }
                 }
 
-                @include guide-focus-ring;
+                &:focus-visible {
+                    outline: 2px solid var(--ks-border-active);
+                    outline-offset: 2px;
+                }
             }
         }
 
@@ -149,6 +174,49 @@ const { id, label, tabs, variant = "tabs", selected = 1 } = Astro.props
         &.segmented > .tablist > [role="tab"] {
             border-radius: 999px;
             padding: 0.4rem 0.9rem;
+        }
+
+        &.flush {
+            margin: 0;
+
+            :global(.ks-tab-panel) {
+                padding: 0;
+                border: 0;
+            }
+        }
+
+        &.dark {
+            > .tablist {
+                gap: 0.625rem;
+                margin-bottom: 4rem;
+
+                @include media-breakpoint-down(lg) {
+                    margin-bottom: 2rem;
+                }
+
+                > [role="tab"] {
+                    align-items: center;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid $dark-border-strong;
+                    border-radius: 6px;
+                    background: $dark-bg-control;
+                    font-size: 1.25rem;
+                    line-height: 1.75rem;
+                    text-align: center;
+                    color: $dark-text-secondary;
+
+                    @include media-breakpoint-down(md) {
+                        font-size: 1rem;
+                    }
+
+                    &[aria-selected="true"] {
+                        border-color: $dark-accent;
+                        background: $dark-raised;
+                        box-shadow: 2px 3px 16px rgba($dark-accent, 0.1);
+                        color: $white;
+                    }
+                }
+            }
         }
     }
 </style>

@@ -105,33 +105,18 @@ const { status, stats = [], quote, quoteBy, storyHref } = Astro.props
     }
 
     .quote-inner {
+        @include guide-quote;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         padding: 2.5rem 2rem;
-        border-radius: 9px;
-        background: var(--ks-background-purple-light);
 
         @include media-breakpoint-down(md) {
             padding: 1.5rem 1.25rem;
         }
 
         p {
-            margin: 0;
-            font-size: $font-size-lg;
             font-weight: 600;
-            line-height: 1.75rem;
-            color: var(--ks-content-primary);
-
-            &::before {
-                content: "“ ";
-                color: var(--ks-content-link);
-            }
-
-            &::after {
-                content: "”";
-                color: var(--ks-content-link);
-            }
         }
 
         footer {

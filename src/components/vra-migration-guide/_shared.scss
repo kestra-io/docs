@@ -1,5 +1,8 @@
 @use "/src/assets/styles/variable" as *;
 
+// Mixins shared by the vRA guide, the payback calculator and the Migration
+// Assistant pages. Colour values live in src/assets/styles/_variable.scss.
+
 @mixin guide-eyebrow($color: var(--ks-content-link), $uppercase: false) {
     font-size: $font-size-xs;
     font-weight: 600;
@@ -40,6 +43,54 @@
     font-size: $font-size-xs;
     font-weight: 600;
     white-space: nowrap;
+}
+
+// A pull quote on the purple-light surface with coloured curly quotes. The
+// caller sets the padding. `$p` is the paragraph selector: `:global(p)` when
+// the paragraphs come from a slot, as in GuideCard.
+@mixin guide-quote($p: "p") {
+    border-radius: 9px;
+    background: var(--ks-background-purple-light);
+    font-size: $font-size-lg;
+    line-height: 1.75rem;
+    color: var(--ks-content-primary);
+
+    #{$p} {
+        margin: 0;
+
+        &::before {
+            content: "“ ";
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+
+        &::after {
+            content: "”";
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+    }
+}
+
+// The site's squared grid (the same SVG as layout/Squared.vue), faded in
+// behind a section heading. Apply to the section; its `.container` must be
+// positioned so it paints above the grid.
+@mixin squared-grid-backdrop {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -15rem;
+        left: 50%;
+        width: 1720px;
+        height: 786px;
+        transform: translateX(-50%);
+        background: url("~/assets/squared-grid.svg") no-repeat top center /
+            1720px auto;
+        pointer-events: none;
+    }
 }
 
 @mixin calc-form-field {
@@ -121,16 +172,6 @@ $calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
         text-decoration: none;
     }
 }
-
-// Figma's dark-theme (ks/*) values for the Migration Assistant pieces that
-// stay dark in both themes: code boxes, the browser frame, the example.
-$dark-bg-input: #111115;
-$dark-bg-control: #23252e;
-$dark-raised: #2e2e3c; // ks/bg-hover-elevated and ks/border-default
-$dark-border-strong: #424256;
-$dark-text-secondary: #adadbf;
-$dark-text-muted: #7e7e9b;
-$dark-link: #cdb6fb;
 
 // The Migration Assistant's full-width sections.
 @mixin assistant-section(

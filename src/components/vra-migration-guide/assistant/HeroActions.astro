@@ -1,6 +1,5 @@
 ---
 import { Icon } from "astro-icon/components"
-import GithubButton from "./GithubButton.astro"
 import InstallCommand from "./InstallCommand.astro"
 
 interface Props {
@@ -19,7 +18,15 @@ const BADGES = [
 
 <div class="hero-actions">
     <div class="buttons">
-        <GithubButton href={githubHref} />
+        <a
+            class="btn btn-primary btn-lg github-button"
+            href={githubHref}
+            target="_blank"
+            rel="noopener"
+        >
+            <Icon name="mdi:github" class="icon" />
+            View on GitHub
+        </a>
         <button
             type="button"
             class="btn btn-secondary btn-lg"
@@ -61,7 +68,6 @@ const BADGES = [
         flex-wrap: wrap;
         gap: 1.125rem;
 
-        // The help button, matched to the GitHub one.
         .btn {
             display: inline-flex;
             align-items: center;
@@ -72,6 +78,11 @@ const BADGES = [
 
         .btn-secondary {
             --ks-border-button-secondary: #{$dark-text-secondary};
+        }
+
+        .icon {
+            width: 1.125rem;
+            height: 1.125rem;
         }
     }
 

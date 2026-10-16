@@ -2,7 +2,7 @@
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
-import Hero from "~/components/vra-migration-guide/Hero.astro"
+import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
 import HeroActions from "~/components/vra-migration-guide/assistant/HeroActions.astro"
 import HeroVisual from "~/components/vra-migration-guide/assistant/HeroVisual.astro"
 import WhatItDoes from "~/components/vra-migration-guide/assistant/WhatItDoes.astro"
@@ -74,7 +74,7 @@ const faqItems = [
         <SchemaFAQ items={faqItems} />
     </Fragment>
 
-    <Hero
+    <GuideHero
         pill="Migration Assistant · vRA and vRO"
         title="Kestra Migration Assistant for vRA"
     >
@@ -92,7 +92,7 @@ const faqItems = [
             helpTarget={HELP_DIALOG_TARGET}
         />
         <HeroVisual slot="visual" />
-    </Hero>
+    </GuideHero>
 
     <WhatItDoes
         guideHref={GUIDE_HREF}

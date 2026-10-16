@@ -5,20 +5,21 @@ import { DOWNLOAD_DIALOG_TARGET } from "./download"
 
 interface CardButton {
     label: string
-    href?: string
-    modalTarget?: string
+    modalTarget: string
     variant?: "primary" | "secondary"
 }
 
 // Defaults render the migration guide's hero: the book card on the right.
 // Other pages pass their own pill, a `deck` slot for a deck with links, an
-// `actions` slot under it, and a `visual` slot that replaces the book card.
+// `actions` slot under it, and either a `visual` slot that replaces the book
+// card or `card={false}` for a single-column hero.
 interface Props {
     title: string
     deck?: string
     inside?: string[]
     meta?: string[]
     pill?: string
+    card?: boolean
     cardText?: string
     cardButtons?: CardButton[]
     codeHints?: boolean
@@ -49,6 +50,7 @@ const {
     inside = [],
     meta = [],
     pill = "Migration guide · Infrastructure Automation",
+    card = true,
     cardText = "The full guide is on this page, or download the PDF to share with your team (form required)",
     cardButtons = [
         {
@@ -61,7 +63,6 @@ const {
 } = Astro.props
 
 const hasVisual = Astro.slots.has("visual")
-const isExternal = (href?: string) => href?.startsWith("http")
 ---
 
 <section class:list={["guide-hero surface-dark", { "no-meta": !meta.length }]}>
@@ -84,7 +85,15 @@ const isExternal = (href?: string) => href?.startsWith("http")
         )
     }
     <div class="container">
-        <div class:list={["hero-grid", { "has-visual": hasVisual }]}>
+        <div
+            class:list={[
+                "hero-grid",
+                {
+                    "has-visual": hasVisual,
+                    "single-column": !card && !hasVisual,
+                },
+            ]}
+        >
             <div class="hero-main">
                 <p class="pill">{pill}</p>
                 <h1>{title}</h1>
@@ -115,35 +124,23 @@ const isExternal = (href?: string) => href?.startsWith("http")
                         <slot name="visual" />
                     </div>
                 ) : (
-                    <div class="hero-card">
-                        <div class="book-wrap" aria-hidden="true">
-                            <Image
-                                src={bookMockup}
-                                alt=""
-                                loading="eager"
-                                class="book-img"
-                            />
-                        </div>
-                        <p>{cardText}</p>
-                        {cardButtons.map(
-                            ({
-                                label,
-                                href,
-                                modalTarget,
-                                variant = "secondary",
-                            }) =>
-                                href ? (
-                                    <a
-                                        class={`btn btn-${variant}`}
-                                        href={href}
-                                        {...(isExternal(href) && {
-                                            target: "_blank",
-                                            rel: "noopener",
-                                        })}
-                                    >
-                                        {label}
-                                    </a>
-                                ) : (
+                    card && (
+                        <div class="hero-card">
+                            <div class="book-wrap" aria-hidden="true">
+                                <Image
+                                    src={bookMockup}
+                                    alt=""
+                                    loading="eager"
+                                    class="book-img"
+                                />
+                            </div>
+                            <p>{cardText}</p>
+                            {cardButtons.map(
+                                ({
+                                    label,
+                                    modalTarget,
+                                    variant = "secondary",
+                                }) => (
                                     <button
                                         type="button"
                                         class={`btn btn-${variant}`}
@@ -152,8 +149,9 @@ const isExternal = (href?: string) => href?.startsWith("http")
                                         {label}
                                     </button>
                                 ),
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )
                 )
             }
         </div>
@@ -173,13 +171,6 @@ const isExternal = (href?: string) => href?.startsWith("http")
     @use "/src/assets/styles/buttons" as *;
     @use "/src/assets/styles/color-palette" as *;
     @use "/src/components/vra-migration-guide/shared" as *;
-
-    $hero-teal: #1e4557;
-    $hero-teal-deep: #19546d;
-    $hero-ink: #121215;
-    $hero-ink-deep: #030709;
-    $pill-border: #a77af6;
-    $pill-shadow: rgba(173, 41, 250, 0.2);
 
     .guide-hero {
         --header-h: var(--top-bar-height, 67px);
@@ -260,6 +251,10 @@ const isExternal = (href?: string) => href?.startsWith("http")
                 grid-template-columns: minmax(0, 1fr) minmax(0, 568px);
             }
         }
+
+        &.single-column {
+            grid-template-columns: minmax(0, 56rem);
+        }
     }
 
     .main-actions {
@@ -276,9 +271,9 @@ const isExternal = (href?: string) => href?.startsWith("http")
         display: inline-block;
         margin-bottom: 0.75rem;
         padding: 0.125rem 0.75rem;
-        border: 1px solid $pill-border;
+        border: 1px solid $hero-pill-border;
         border-radius: 999px;
-        box-shadow: 3px 3px 0 $pill-shadow;
+        box-shadow: 3px 3px 0 $hero-pill-shadow;
         font-size: $font-size-xs;
         font-weight: 600;
         line-height: 1.5rem;

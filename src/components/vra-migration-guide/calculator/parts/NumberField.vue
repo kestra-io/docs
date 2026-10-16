@@ -3,12 +3,7 @@
         <div v-if="!hideLabel" class="label-row">
             <span>
                 <label class="form-label" :for="id">{{ label }}</label>
-                <InfoTip
-                    v-if="$slots.info"
-                    :id="`${id}-info`"
-                    class="info"
-                    :label="label"
-                >
+                <InfoTip v-if="$slots.info" class="info" :label="label">
                     <slot name="info" />
                 </InfoTip>
             </span>

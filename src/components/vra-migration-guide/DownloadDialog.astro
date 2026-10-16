@@ -1,4 +1,5 @@
 ---
+import Dialog from "~/components/common/Dialog.astro"
 import GuideDownloadForm from "~/components/resources/GuideDownloadForm.vue"
 import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD } from "./download"
 
@@ -28,69 +29,13 @@ const {
 } = Astro.props
 ---
 
-<dialog
-    class="modal download-dialog"
-    id={id}
-    aria-label={label}
-    closedby="any"
->
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <button
-                type="button"
-                class="btn-close"
-                commandfor={id}
-                command="close"
-                aria-label="Close">X</button
-            >
-            <GuideDownloadForm client:idle {...form} />
-        </div>
-    </div>
-</dialog>
-
-<script>
-    document.addEventListener("click", (e) => {
-        const target = e.target as Element | null
-        const dialog = target?.closest<HTMLDialogElement>(
-            "dialog.download-dialog",
-        )
-        if (!dialog?.open) return
-        if (
-            target === dialog ||
-            target?.classList.contains("modal-dialog") ||
-            target?.closest(".btn-close")
-        )
-            dialog.close()
-    })
-</script>
+<Dialog {id} {label} class="download-dialog" width="560px">
+    <GuideDownloadForm client:idle {...form} />
+</Dialog>
 
 <style lang="scss">
-    .download-dialog {
-        --ks-modal-width: 560px;
-
-        .modal-dialog {
-            display: flex;
-            align-items: center;
-            min-height: calc(100% - var(--ks-modal-margin) * 2);
-        }
-
-        .modal-content {
-            border: 0;
-        }
-
-        .btn-close {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            z-index: 2;
-            border: 0;
-            background: transparent;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-md;
-
-            &:hover {
-                color: var(--ks-content-primary);
-            }
-        }
+    // The form draws its own border, so the modal content draws none.
+    :global(.download-dialog .modal-content) {
+        border: 0;
     }
 </style>

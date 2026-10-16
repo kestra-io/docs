@@ -19,8 +19,6 @@ const { path } = Astro.props
 <style lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
 
-    $frame-bar-border: #424242;
-
     .browser-frame {
         overflow: hidden;
         border: 1px solid $dark-border-strong;
@@ -34,7 +32,7 @@ const { path } = Astro.props
         align-items: center;
         gap: 0.625rem;
         padding: 0.75rem 1rem;
-        border-bottom: 1px solid $frame-bar-border;
+        border-bottom: 1px solid $dark-border-subtle;
     }
 
     .dots {

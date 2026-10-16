@@ -1,6 +1,6 @@
 ---
-import GuideTabPanel from "./GuideTabPanel.astro"
-import GuideTabs from "./GuideTabs.astro"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
 import Verdict, { type VerdictKind } from "./Verdict.astro"
 
 interface Props {
@@ -34,23 +34,24 @@ const open = index === 1
     aria-labelledby={`${id}-button`}
     hidden={!open}
 >
-    <GuideTabs
+    <TabGroup
         id={tabsId}
         label={title}
         variant="segmented"
+        flush
         tabs={[{ label: "What this is" }, { label: "What to do with it" }]}
     >
-        <GuideTabPanel group={tabsId} index={1}>
+        <TabPanel group={tabsId} index={1}>
             <slot name="what" />
-        </GuideTabPanel>
-        <GuideTabPanel group={tabsId} index={2}>
+        </TabPanel>
+        <TabPanel group={tabsId} index={2}>
             <p class="verdicts">
                 <span class="verdicts-label">The verdict</span>
                 {verdicts.map((kind) => <Verdict kind={kind} />)}
             </p>
             <slot name="do" />
-        </GuideTabPanel>
-    </GuideTabs>
+        </TabPanel>
+    </TabGroup>
 </div>
 
 <style lang="scss">
@@ -104,15 +105,6 @@ const open = index === 1
             grid-row: 1 / -1;
             border-bottom: 0;
         }
-    }
-
-    .part-panel > :global(.guide-tabs) {
-        margin: 0;
-    }
-
-    .part-panel :global(.guide-tab-panel) {
-        padding: 0;
-        border: 0;
     }
 
     .verdicts {

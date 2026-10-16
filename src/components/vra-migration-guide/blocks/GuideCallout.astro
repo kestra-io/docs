@@ -1,27 +1,12 @@
 ---
+// A note (accent-bordered box), a lesson (a big statement with a <mark>
+// highlight in the `statement` slot) or an aside (a labelled paragraph).
 interface Props {
     label: string
-    statement?: string
-    highlight?: string
     variant?: "lesson" | "note" | "aside"
 }
 
-const { label, statement, highlight, variant = "note" } = Astro.props
-
-const at = statement && highlight ? statement.indexOf(highlight) : -1
-const statementParts =
-    statement && highlight && at >= 0
-        ? [
-              { text: statement.slice(0, at), highlight: false },
-              { text: highlight, highlight: true },
-              {
-                  text: statement.slice(at + highlight.length),
-                  highlight: false,
-              },
-          ].filter((part) => part.text)
-        : statement
-          ? [{ text: statement, highlight: false }]
-          : []
+const { label, variant = "note" } = Astro.props
 ---
 
 <aside class={`guide-callout ${variant}`}>
@@ -29,15 +14,9 @@ const statementParts =
         {label}
     </p>
     {
-        statementParts.length > 0 && (
+        Astro.slots.has("statement") && (
             <p class="statement">
-                {statementParts.map((part) =>
-                    part.highlight ? (
-                        <span class="highlight">{part.text}</span>
-                    ) : (
-                        part.text
-                    ),
-                )}
+                <slot name="statement" />
             </p>
         )
     }
@@ -93,7 +72,9 @@ const statementParts =
         letter-spacing: -0.01em;
         color: var(--ks-content-primary);
 
-        .highlight {
+        :global(mark) {
+            padding: 0;
+            background: none;
             color: var(--ks-content-link);
         }
     }

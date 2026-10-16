@@ -77,3 +77,11 @@ describe("mdxToMarkdown", () => {
         expect(out).not.toMatch(/<\/?[A-Z]/)
     })
 })
+
+it("drops <mark> around a highlighted word in a statement slot", () => {
+    expect(
+        mdxToMarkdown(
+            '<GuideCallout variant="lesson" label="Lesson">\n<Fragment slot="statement">Your vendor should <mark>not own</mark> your automation.</Fragment>\n\nBody.\n\n</GuideCallout>',
+        ),
+    ).toBe("**Lesson**\nYour vendor should not own your automation.\n\nBody.\n")
+})

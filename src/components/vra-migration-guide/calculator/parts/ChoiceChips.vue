@@ -2,7 +2,7 @@
     <fieldset class="choice-chips">
         <legend class="label-row">
             <span class="form-label">{{ label }}</span>
-            <InfoTip v-if="$slots.info" :id="`${id}-info`" :label="label">
+            <InfoTip v-if="$slots.info" :label="label">
                 <slot name="info" />
             </InfoTip>
         </legend>

@@ -1,4 +1,5 @@
 ---
+// One panel of a TabGroup: `group` is the TabGroup's id, `index` is 1-based.
 interface Props {
     group: string
     index: number
@@ -9,7 +10,7 @@ const { group, index, selected = 1 } = Astro.props
 ---
 
 <div
-    class="guide-tab-panel"
+    class="ks-tab-panel"
     role="tabpanel"
     id={`${group}-panel-${index}`}
     aria-labelledby={`${group}-tab-${index}`}
@@ -20,7 +21,7 @@ const { group, index, selected = 1 } = Astro.props
 </div>
 
 <style lang="scss">
-    .guide-tab-panel {
+    .ks-tab-panel {
         padding: 1rem 1.25rem;
         border: 1px solid var(--ks-border-secondary);
         border-radius: $border-radius-lg;

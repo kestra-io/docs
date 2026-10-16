@@ -1,89 +1,51 @@
 ---
-import { DOWNLOAD_DIALOG_TARGET, HELP_DIALOG_TARGET } from "../download"
+import { DOWNLOAD_DIALOG_TARGET } from "../download"
+
+type Kind = "talk" | "pdf" | "calc" | "assistant"
 
 interface Props {
-    kind: "talk" | "pdf" | "calc" | "assistant" | "github" | "help"
+    kind: Kind
     label?: string
     variant?: "primary" | "secondary"
 }
 
+// A link opens a page; a modal target opens the download dialog through the
+// global `data-modal-target` handler (src/scripts/modal.ts).
+const CTAS: Record<Kind, { label: string; href?: string; modal?: string }> = {
+    talk: { label: "Talk to our team", href: "/demo" },
+    calc: {
+        label: "Work out your payback",
+        href: "/resources/migration/vra/payback",
+    },
+    assistant: {
+        label: "Get the Kestra Migration Assistant for vRA",
+        href: "/resources/migration/vra/assistant",
+    },
+    pdf: { label: "Download the PDF", modal: DOWNLOAD_DIALOG_TARGET },
+}
+
 const { kind, label, variant = "primary" } = Astro.props
+const cta = CTAS[kind]
+const className = `btn btn-${variant}`
 ---
 
-{
-    kind === "talk" && (
-        <p class="guide-cta">
-            <a class={`btn btn-${variant}`} href="/demo">
-                {label ?? "Talk to our team"}
+<p class="guide-cta">
+    {
+        cta.href ? (
+            <a class={className} href={cta.href}>
+                {label ?? cta.label}
             </a>
-        </p>
-    )
-}
-{
-    kind === "calc" && (
-        <p class="guide-cta">
-            <a
-                class={`btn btn-${variant}`}
-                href="/resources/migration/vra/payback"
-            >
-                {label ?? "Work out your payback"}
-            </a>
-        </p>
-    )
-}
-{
-    kind === "assistant" && (
-        <p class="guide-cta">
-            <a
-                class={`btn btn-${variant}`}
-                href="/resources/migration/vra/assistant"
-            >
-                {label ?? "Get the Kestra Migration Assistant for vRA"}
-            </a>
-        </p>
-    )
-}
-{
-    kind === "pdf" && (
-        <p class="guide-cta">
+        ) : (
             <button
                 type="button"
-                class={`btn btn-${variant}`}
-                data-modal-target={DOWNLOAD_DIALOG_TARGET}
+                class={className}
+                data-modal-target={cta.modal}
             >
-                {label ?? "Download the PDF"}
+                {label ?? cta.label}
             </button>
-        </p>
-    )
-}
-
-{
-    kind === "github" && (
-        <p class="guide-cta">
-            <a
-                class={`btn btn-${variant}`}
-                href="https://github.com/kestra-io/migration-assistant"
-                target="_blank"
-                rel="noopener"
-            >
-                {label ?? "View on GitHub"}
-            </a>
-        </p>
-    )
-}
-{
-    kind === "help" && (
-        <p class="guide-cta">
-            <button
-                type="button"
-                class={`btn btn-${variant}`}
-                data-modal-target={HELP_DIALOG_TARGET}
-            >
-                {label ?? "Need help running it?"}
-            </button>
-        </p>
-    )
-}
+        )
+    }
+</p>
 
 <style lang="scss">
     .guide-cta {

@@ -6,7 +6,7 @@ import Faq from "~/components/common/Faq.vue"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import Link from "~/components/common/Link.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
-import Hero from "~/components/vra-migration-guide/Hero.astro"
+import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
 import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
 import StartHere, {
     getHeadings as startHereHeadings,
@@ -117,7 +117,7 @@ const jsonLinkedData = {
         />
         {faqItems.length > 0 && <SchemaFAQ items={faqItems} />}
     </Fragment>
-    <Hero
+    <GuideHero
         title={page.title}
         deck={page.description ?? ""}
         inside={INSIDE}

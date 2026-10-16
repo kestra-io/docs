@@ -103,10 +103,6 @@ export function createCalculatorStore() {
         inputs[key] = value
     }
 
-    function reset() {
-        assign(baseline())
-    }
-
     function shareUrl(anchor?: string): string | null {
         if (!env) return null
         return withShareParam(env.href(), encodeShareState(inputs), anchor)
@@ -126,12 +122,11 @@ export function createCalculatorStore() {
     return {
         inputs,
         result,
-        hydrated,
         hydrate,
         setInput,
-        reset,
         shareUrl,
         csvFile,
+        /** Stops the storage watcher; for tests that build many stores. */
         dispose,
     }
 }
