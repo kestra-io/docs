@@ -43,8 +43,8 @@ New controls for locking down what flows can do and how they are governed.
 - **RBAC action model (EE)** — CRUD replaced by resource-plus-action permissions (`EXECUTION: ACCESS_LOGS`, `TRIGGER: BACKFILL`, etc.). New resources: `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, `MCP_SERVER`. Five managed roles ship with 2.0; existing roles migrate automatically. [Docs](../../07.enterprise/03.auth/rbac/index.md) [Migration guide](../../11.migration-guide/v2.0.0/rbac-action-model/index.md)
 - **Policies (EE)** — enforce governance rules on flows at save and execution time, per namespace. [Docs](../../07.enterprise/02.governance/policies/index.md)
 - **Management endpoint hardening** — `/env` disabled by default, health details require authentication, logger writes protected, `/worker` and `/scheduler` now sensitive, docker-compose no longer exposes port `8081`. [Migration guide](../../11.migration-guide/v2.0.0/management-endpoint-hardening/index.md)
-- **HTTP task URL filtering** — allow-list and deny-list for URLs reachable by HTTP plugin tasks. [Docs](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering)
-- **ZIP bomb protection** — opt-in protection on flow import and namespace file upload via `kestra.security.zip-bomb-protection`. [Docs](../../10.administrator-guide/security-hardening/index.md#zip-bomb-protection)
+- **HTTP task URL filtering** — allow-list and deny-list for URLs reachable by HTTP plugin tasks. [Docs](../../security-hardening/index.md#http-task-url-filtering)
+- **ZIP bomb protection** — opt-in protection on flow import and namespace file upload via `kestra.security.zip-bomb-protection`. [Docs](../../security-hardening/index.md#zip-bomb-protection)
 - **Multi-field secrets** — secrets can now store structured objects with multiple fields, not just single string values.
 - **Instance Owner (formerly Super Admin)** — the Super Admin privilege is renamed to Instance Owner across the UI, CLI, config, and API. Deprecated aliases are retained; HTTP API responses emit `instanceOwner` instead of `superAdmin`. [Migration guide](../../11.migration-guide/v2.0.0/superadmin-renamed-instance-owner/index.md)
 
@@ -66,6 +66,7 @@ Improvements to the tools and workflows used to build and manage flows.
 - **Plugin file renderers** — plugins can register format-specific renderers for inline output file preview. [Docs](../../plugin-developer-guide/09.file-renderer/index.md)
 - **Dynamic Apps content blocks** — Apps support content blocks that update based on execution state. [Docs](../../07.enterprise/04.scalability/apps/index.md)
 - **`kestractl` IAM commands** — roles, role bindings, service accounts, and invitations via CLI. [Docs](../../kestra-cli/kestractl/index.md)
+- **`flows bulk-update --delete` default changed to `false`** — deletion of flows absent from the file is now opt-in. Scripts relying on the previous default must pass `--delete` explicitly.
 
 ### Infrastructure
 
@@ -114,3 +115,4 @@ Each breaking change has a dedicated migration guide. See the [2.0 migration gui
 | `CANCELED` enum alias removed | Replace with `CANCELLED` in flow expressions, API consumers, and tooling. |
 | Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, `log.Fetch` — replace with equivalents in `plugin-kestra`. |
 | Terraform provider `~> 2.0` | [Guide](../../11.migration-guide/v2.0.0/terraform-provider/index.md) |
+| `kestractl flows bulk-update --delete` default changed | Pass `--delete` explicitly; the flag now defaults to `false`. [Guide](../../11.migration-guide/v2.0.0/bulk-update-delete-default/index.md) |

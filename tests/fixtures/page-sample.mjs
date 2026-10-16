@@ -13,6 +13,7 @@ export const PAGES = [
     { path: "/cloud", label: "Cloud" },
     { path: "/features", label: "Features" },
     { path: "/about-us", label: "About Us" },
+    { path: "/security", label: "Security" },
     {
         path: "/docs",
         label: "Docs Landing",

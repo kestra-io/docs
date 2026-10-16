@@ -103,6 +103,7 @@ When `my_subflow` is configured with `behavior: RETRY_FAILED_TASK`, it automatic
 
 * **Replay**: You can replay the parent execution from the failed subflow task if the subflow defines `behavior: RETRY_FAILED_TASK`.
 * **Restart**: When you restart the parent execution where a subflow task failed from the UI or API, this will restart the entire child execution from the beginning (regardless of the subflow task definition), unless the subflow YAML defines `behavior: RETRY_FAILED_TASK` as flow-level retry configuration.
+* **Restarting a subflow execution directly**: If you restart the subflow execution itself rather than the parent, the parent execution remains `FAILED` and its downstream tasks will not run. Always restart from the parent execution to resume the full pipeline.
 
 ## Summary
 

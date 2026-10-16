@@ -108,7 +108,7 @@ const quotes = [
             { value: "Validated", name: "test-ready environments out of the box" },
             { value: "2 months", name: "from evaluation to production" },
         ],
-        storyLink: "/customers/amdocs",
+        storyLink: "/stories/amdocs",
     },
 ]
 
@@ -637,13 +637,13 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Trusted by software vendors, SaaS platforms, consultancies &amp; managed-service providers</span>
                     <div class="hero-logos__row">
-                        <a href="/customers/amdocs" aria-label="Read the Amdocs customer story">
+                        <a href="/stories/amdocs" aria-label="Read the Amdocs story">
                             <Image src={AmdocsLogoImg} alt="Amdocs" class="hero-logos__item hero-logos__item--amdocs" />
                         </a>
                         <Image src={AcxiomLogoImg} alt="Acxiom" class="hero-logos__item hero-logos__item--acxiom" />
                         <Image src={KPMGLogoImg} alt="KPMG" class="hero-logos__item hero-logos__item--kpmg" />
                         <Image src={HCLLogoImg} alt="HCL" class="hero-logos__item hero-logos__item--hcl" />
-                        <a href="/customers/sopht" aria-label="Read the Sopht customer story">
+                        <a href="/stories/sopht" aria-label="Read the Sopht story">
                             <Image src={SophtLogoImg} alt="Sopht" class="hero-logos__item hero-logos__item--sopht" />
                         </a>
                     </div>
@@ -1136,6 +1136,9 @@ const FAQ = [
                 grid-template-columns: repeat(2, 1fr);
                 column-gap: 1.5rem;
                 row-gap: 1.75rem;
+
+                // Center the odd last logo across both columns
+                > :last-child:nth-child(odd) { grid-column: 1 / -1; }
             }
         }
 
@@ -1452,14 +1455,6 @@ const FAQ = [
         border: 1px solid var(--ks-border-secondary);
         border-radius: 10px;
         box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-
-        &:hover {
-            border-color: $sw-magenta;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
-        }
-
         &__icon {
             font-size: 1.375rem;
             color: $sw-magenta;
