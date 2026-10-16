@@ -59,7 +59,7 @@ Kestra is an open-source, event-driven orchestration platform that unifies workf
 
 Workflows in Kestra are defined as declarative YAML files, making them easy to version, review, and manage within a GitOps framework. Its language-agnostic architecture allows you to seamlessly combine Ansible tasks with Python scripts, SQL queries, shell commands, Docker containers, and interactions with hundreds of other systems through an extensive plugin library. This makes Kestra ideal for scenarios where Ansible is just one piece of the puzzle, such as provisioning infrastructure with Terraform and then configuring it with Ansible, all within a single, observable workflow.
 
-Kestra’s Kubernetes-native design ensures scalability and resilience, making it suitable for mission-critical operations. As demonstrated by organizations like [Dataport](/customers/dataport), Kestra can serve as a government-grade orchestration control plane, handling complex automation with strict security and reliability requirements.
+Kestra’s Kubernetes-native design ensures scalability and resilience, making it suitable for mission-critical operations. As demonstrated by organizations like [Dataport](/stories/dataport), Kestra can serve as a government-grade orchestration control plane, handling complex automation with strict security and reliability requirements.
 
 **Best for:** Organizations seeking a unified platform to orchestrate Ansible alongside data, AI, and other infrastructure tools within a declarative, event-driven, and scalable framework.
 

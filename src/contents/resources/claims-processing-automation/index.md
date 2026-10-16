@@ -67,7 +67,7 @@ Manual data entry and review are inherently susceptible to human error, which ca
 
 ### Lowering Operational Costs and Boosting Efficiency
 
-By automating repetitive, high-volume tasks, organizations can reduce their cost-per-claim. This allows them to reallocate skilled claims handlers to more complex, judgment-based work where their expertise adds the most value. As an example of operational scale, retailer [Leroy Merlin France](/customers/leroy-merlin-france) used orchestration to increase its data production by 900%, demonstrating the scale of efficiency gains possible. A clear [business case for automation](/resources/business/business-case-for-automation) can be built on these efficiency improvements.
+By automating repetitive, high-volume tasks, organizations can reduce their cost-per-claim. This allows them to reallocate skilled claims handlers to more complex, judgment-based work where their expertise adds the most value. As an example of operational scale, retailer [Leroy Merlin France](/stories/leroy-merlin-france) used orchestration to increase its data production by 900%, demonstrating the scale of efficiency gains possible. A clear [business case for automation](/resources/business/business-case-for-automation) can be built on these efficiency improvements.
 
 ### Improving Customer Satisfaction and Experience
 
@@ -183,10 +183,10 @@ Organizations that embrace orchestration for claims automation see transformativ
 ### Orchestration in Production, Beyond Claims
 
 None of these teams automate claims, but the orchestration problems are the same: many systems, strict audit requirements, and no tolerance for silent failures.
-*   **[JPMorgan Chase](/customers/jpmorgan-chase)** orchestrates its cybersecurity analytics: thousands of API pulls every week and billions of rows processed securely with Trino, dbt, and AWS.
-*   **[Quadis](/customers/quadis-drives-innovation-transforming-car-retail-operations-with-kestra)**, a car retail operator, uses orchestration to automate its financial reporting.
-*   **[Foundation Data](/customers/foundation-data)** consolidated its data orchestration, which boosted productivity, cut costs, and accelerated delivery for its automotive marketing clients.
-*   **[Airpaz](/customers/airpaz-optimizes-travel-data-workflows-with-kestra)** runs its travel data workflows on the same orchestration layer.
+*   **[JPMorgan Chase](/stories/jpmorgan-chase)** orchestrates its cybersecurity analytics: thousands of API pulls every week and billions of rows processed securely with Trino, dbt, and AWS.
+*   **[Quadis](/stories/quadis)**, a car retail operator, uses orchestration to automate its financial reporting.
+*   **[Foundation Data](/stories/foundation-data)** consolidated its data orchestration, which boosted productivity, cut costs, and accelerated delivery for its automotive marketing clients.
+*   **[Airpaz](/stories/airpaz)** runs its travel data workflows on the same orchestration layer.
 
 These examples show how a centralized orchestration platform can bring order and efficiency to complex, data-intensive processes.
 
