@@ -1,0 +1,41 @@
+---
+import Dialog from "~/components/common/Dialog.astro"
+import GuideDownloadForm from "~/components/resources/GuideDownloadForm.vue"
+import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD } from "./download"
+
+// The props GuideDownloadForm takes; the defaults are the guide PDF.
+interface FormConfig {
+    hubspotFormId: string
+    guideUrl?: string
+    submissionIdentifier: string
+    pageUri: string
+    event: string
+    title?: string
+    submitLabel?: string
+    thankYouTitle?: string
+    thankYouText?: string
+}
+
+interface Props {
+    id?: string
+    label?: string
+    form?: FormConfig
+}
+
+const {
+    id = DOWNLOAD_DIALOG_ID,
+    label = "Download the guide",
+    form = GUIDE_DOWNLOAD,
+} = Astro.props
+---
+
+<Dialog {id} {label} class="download-dialog" width="560px">
+    <GuideDownloadForm client:idle {...form} />
+</Dialog>
+
+<style lang="scss">
+    // The form draws its own border, so the modal content draws none.
+    :global(.download-dialog .modal-content) {
+        border: 0;
+    }
+</style>

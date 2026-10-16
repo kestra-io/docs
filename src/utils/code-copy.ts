@@ -54,14 +54,17 @@ const resetTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>()
 /**
  * Copy `text` and confirm it on `button`: a `copied` class for the icon swap,
  * plus a live-region announcement for screen readers. Shared by the injected
- * markdown copy buttons and the get-started hero so both stay in step.
+ * markdown copy buttons, the get-started hero and the vRA pages so all stay in
+ * step. Resolves to whether the text was copied, so a caller can offer a
+ * fallback when the browser blocks the clipboard.
  */
 export async function copyWithFeedback(
     button: HTMLElement,
     text: string,
-): Promise<void> {
+    message = "Copied to clipboard",
+): Promise<boolean> {
     if (!navigator.clipboard || !text) {
-        return
+        return false
     }
 
     try {
@@ -69,11 +72,11 @@ export async function copyWithFeedback(
     } catch (error) {
         // Nothing was copied, so don't claim otherwise.
         console.error("Failed to copy to clipboard: ", error)
-        return
+        return false
     }
 
     button.classList.add("copied")
-    announce("Copied to clipboard")
+    announce(message)
 
     clearTimeout(resetTimers.get(button))
     resetTimers.set(
@@ -83,6 +86,7 @@ export async function copyWithFeedback(
             resetTimers.delete(button)
         }, FEEDBACK_DURATION),
     )
+    return true
 }
 
 export function handleCopyClick({ target }: MouseEvent): void {

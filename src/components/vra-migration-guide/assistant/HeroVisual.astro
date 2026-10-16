@@ -1,0 +1,316 @@
+---
+import { Image } from "astro:assets"
+import cubes from "../assets/assistant-cubes.png"
+
+const RUN = [
+    { mark: "✓", tone: "ok", text: "Sanitized 1 vRO package and 1 vRA export" },
+    { mark: "✓", tone: "ok", text: "Mapped 4 workflows and 39 actions" },
+    { mark: "✓", tone: "ok", text: "Planned 2 waves" },
+    { mark: "→", tone: "next", text: "Brief written to ./kestra-assessment" },
+]
+
+const SUMMARY =
+    "The Migration Assistant run in a terminal: it sanitizes the export, maps 4 workflows and 39 actions, plans 2 waves and writes a brief. The brief shows that 59 of 59 elements have a path to Kestra and 47 are ready now."
+---
+
+<div class="hero-visual" role="img" aria-label={SUMMARY}>
+    <div class="stage" aria-hidden="true">
+        <div class="glow"></div>
+        <Image
+            src={cubes}
+            alt=""
+            widths={[480, 960]}
+            sizes="(min-width: 1200px) 390px, 70vw"
+            loading="eager"
+            class="cubes"
+        />
+
+        <div class="terminal">
+            <div class="title-bar">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <span class="path">~/vra-exports</span>
+            </div>
+            <div class="lines">
+                <p><span class="prompt">$</span> kestra-migrate init</p>
+                <p class="muted">
+                    Config written to ~/.kestra-migrate/config.yaml
+                </p>
+                <p class="gap">
+                    <span class="prompt">$</span> kestra-migrate vra run ./lb-usecase
+                </p>
+                {
+                    RUN.map((line) => (
+                        <p>
+                            <span class={line.tone}>{line.mark}</span>{" "}
+                            {line.text}
+                        </p>
+                    ))
+                }
+                <p class="gap-sm">
+                    <span class="prompt">$</span>
+                    <span class="cursor"></span>
+                </p>
+            </div>
+        </div>
+
+        <div class="brief">
+            <div class="brief-head">
+                <strong>Migration brief: lb-usecase</strong>
+                <span>kestra-assessment/index.html</span>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <strong>59 of 59</strong>
+                    <span>have a path to Kestra</span>
+                </div>
+                <div class="stat">
+                    <strong>47 of 59</strong>
+                    <span>are ready now</span>
+                </div>
+            </div>
+            <div class="tags">
+                <span class="tag direct">Direct · 47</span>
+                <span class="tag redesign">Redesign · 12</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    @use "/src/assets/styles/color-palette" as *;
+
+    // Mock-up colours: $term-* and $brief-* in src/assets/styles/_variable.scss.
+
+    // Everything is laid out on the 568 × 439 Figma frame; --u is one Figma
+    // pixel at the current width, so the mock-up scales as one piece.
+    .hero-visual {
+        container-type: inline-size;
+        width: 100%;
+    }
+
+    .stage {
+        --u: calc(100cqw / 568);
+        position: relative;
+        aspect-ratio: 568 / 439;
+        font-family: $font-family-sans-serif;
+    }
+
+    .glow {
+        position: absolute;
+        top: calc(-30 * var(--u));
+        right: calc(-10 * var(--u));
+        width: calc(260 * var(--u));
+        height: calc(200 * var(--u));
+        border-radius: 50%;
+        background: radial-gradient(
+            closest-side,
+            rgba($base-primary-300, 0.45),
+            transparent
+        );
+        filter: blur(calc(18 * var(--u)));
+        mix-blend-mode: color-dodge;
+    }
+
+    .cubes {
+        position: absolute;
+        z-index: 2;
+        top: calc(-46 * var(--u));
+        left: calc(233 * var(--u));
+        width: calc(390 * var(--u));
+        height: calc(157 * var(--u));
+        object-fit: cover;
+        transform: rotate(7.11deg);
+        pointer-events: none;
+    }
+
+    .terminal {
+        position: absolute;
+        z-index: 1;
+        top: calc(10 * var(--u));
+        left: 0;
+        width: calc(540 * var(--u));
+        height: calc(340 * var(--u));
+        overflow: hidden;
+        border: 1px solid $term-border;
+        border-radius: calc(9 * var(--u));
+        background:
+            radial-gradient(
+                calc(300 * var(--u)) calc(160 * var(--u)) at 83.5% 94.4%,
+                $term-glow,
+                transparent
+            ),
+            $term-bg;
+        box-shadow:
+            calc(30 * var(--u)) calc(17 * var(--u)) calc(24 * var(--u))
+                rgba($term-shadow, 0.05),
+            calc(97 * var(--u)) calc(55 * var(--u)) calc(58 * var(--u))
+                rgba($term-shadow, 0.09),
+            calc(197 * var(--u)) calc(112 * var(--u)) calc(334 * var(--u))
+                rgba($term-shadow, 0.16);
+    }
+
+    .title-bar {
+        display: flex;
+        align-items: center;
+        gap: calc(26 * var(--u));
+        height: calc(37 * var(--u));
+        padding-left: calc(14 * var(--u));
+        border-bottom: 1px solid $dark-border-strong;
+        background: $term-bar;
+    }
+
+    .dots {
+        display: flex;
+        gap: calc(6 * var(--u));
+
+        i {
+            width: calc(10 * var(--u));
+            height: calc(10 * var(--u));
+            border-radius: 50%;
+            background: $term-dot;
+        }
+    }
+
+    .path {
+        font-size: calc(12 * var(--u));
+        color: $term-muted;
+    }
+
+    .lines {
+        padding: calc(19 * var(--u)) calc(20 * var(--u)) 0;
+        font-family: $font-family-monospace;
+        font-size: calc(13 * var(--u));
+        line-height: calc(22 * var(--u));
+        color: $term-text;
+
+        p {
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .gap {
+            margin-top: calc(8 * var(--u));
+        }
+
+        .gap-sm {
+            margin-top: calc(4 * var(--u));
+        }
+    }
+
+    .prompt,
+    .muted {
+        color: $term-muted;
+    }
+
+    .ok {
+        color: $term-ok;
+    }
+
+    .next {
+        color: $term-next;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: calc(8 * var(--u));
+        height: calc(15 * var(--u));
+        vertical-align: middle;
+        background: $term-next;
+    }
+
+    .brief {
+        position: absolute;
+        z-index: 3;
+        top: calc(240 * var(--u));
+        left: calc(140 * var(--u));
+        width: calc(430 * var(--u));
+        height: calc(186 * var(--u));
+        padding: calc(18 * var(--u)) calc(22 * var(--u));
+        border: 1px solid transparent;
+        border-radius: calc(12 * var(--u));
+        background:
+            linear-gradient($brief-bg, $brief-bg) padding-box,
+            linear-gradient(
+                    115deg,
+                    $dark-border-strong,
+                    $brief-edge-mid 39%,
+                    $brief-edge-end
+                )
+                border-box;
+        box-shadow: 0 calc(4 * var(--u)) calc(14 * var(--u)) rgba($black, 0.75);
+    }
+
+    .brief-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: calc(12 * var(--u));
+
+        strong {
+            font-size: calc(13 * var(--u));
+            font-weight: 700;
+            color: $white;
+        }
+
+        span {
+            font-size: calc(11 * var(--u));
+            color: $term-muted;
+        }
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: calc(10 * var(--u));
+        margin-top: calc(14 * var(--u));
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        gap: calc(4 * var(--u));
+        height: calc(70 * var(--u));
+        padding: calc(8 * var(--u)) calc(13 * var(--u));
+        border: 1px solid $brief-stat-border;
+        border-radius: calc(8 * var(--u));
+        background: $brief-stat-bg;
+
+        strong {
+            font-size: calc(28 * var(--u));
+            font-weight: 700;
+            line-height: 1.2;
+            color: $white;
+        }
+
+        span {
+            font-size: calc(12 * var(--u));
+            color: $brief-label;
+        }
+    }
+
+    .tags {
+        display: flex;
+        gap: calc(8 * var(--u));
+        margin-top: calc(16 * var(--u));
+    }
+
+    .tag {
+        padding: calc(6 * var(--u)) calc(12 * var(--u));
+        border: 1px solid;
+        border-radius: 999px;
+        font-size: calc(11.5 * var(--u));
+        font-weight: 600;
+        line-height: 1;
+
+        &.direct {
+            border-color: $term-ok-border;
+            color: $term-ok;
+        }
+
+        &.redesign {
+            border-color: $brief-tag-border;
+            color: $brief-tag-text;
+        }
+    }
+</style>

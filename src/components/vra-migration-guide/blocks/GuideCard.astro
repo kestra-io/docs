@@ -1,0 +1,64 @@
+---
+interface Props {
+    kicker?: string
+    title?: string
+}
+
+const { kicker, title } = Astro.props
+---
+
+<div class="guide-card">
+    {kicker && <p class="kicker">{kicker}</p>}
+    {title && <p class="title">{title}</p>}
+    <slot />
+</div>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .guide-card {
+        padding: 2rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-primary);
+        box-shadow: $box-shadow-sm;
+        font-size: $font-size-md;
+        line-height: 1.5rem;
+        color: var(--ks-content-secondary);
+
+        > :global(:last-child) {
+            margin-bottom: 0;
+        }
+
+        :global(p) {
+            margin-bottom: 1rem;
+        }
+
+        :global(blockquote) {
+            @include guide-quote(":global(p)");
+            margin: 0 0 1rem;
+            padding: 1rem;
+            border: 0;
+
+            :global(em) {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .kicker {
+        margin: 0 0 1rem;
+        font-size: $font-size-2xl;
+        font-weight: 600;
+        line-height: 2.375rem;
+        color: var(--ks-icon-color);
+    }
+
+    .title {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.5rem;
+        letter-spacing: -0.1px;
+        color: var(--ks-content-primary);
+    }
+</style>

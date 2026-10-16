@@ -1,0 +1,175 @@
+---
+import { Code } from "astro-expressive-code/components"
+import SectionTitle from "~/components/security/SectionTitle.astro"
+
+const TREE = `my-estate/
+├─ lb-usecase.package
+└─ vra-export/`
+
+const RUN = `$ kestra-migrate init
+$ kestra-migrate vra run ./my-estate`
+
+const ANSWERS = `- id: auth.avi-controller
+  question: How do the flows sign in to Avi?
+  suggested: basic authentication, as today`
+---
+
+<section class="how-it-works">
+    <div class="container">
+        <SectionTitle title="How it works">
+            It takes three steps, all on your machine.
+        </SectionTitle>
+
+        <ol>
+            <li>
+                <div>
+                    <span class="step">1</span>
+                    <h3>Export</h3>
+                    <p>
+                        A vRO administrator exports a .package from the
+                        Orchestrator client. If vRA starts your workflows,
+                        export the vRA content from VMware Build Tools as well,
+                        so the brief can see what triggers them. Put both in one
+                        folder.
+                    </p>
+                </div>
+                <Code code={TREE} lang="text" frame="none" class="dark" />
+            </li>
+            <li>
+                <div>
+                    <span class="step">2</span>
+                    <h3>Run</h3>
+                    <p>
+                        The first time, init creates a config file in your home
+                        folder where you choose your model and settings. Then
+                        run sanitizes the export, maps every workflow and the
+                        systems it touches, and writes the brief to a
+                        kestra-assessment folder next to the exports.
+                    </p>
+                </div>
+                <Code code={RUN} lang="bash" frame="none" class="dark" />
+            </li>
+            <li>
+                <div>
+                    <span class="step">3</span>
+                    <h3>Answer and run again</h3>
+                    <p>
+                        When the exports can't answer something, such as how
+                        often a workflow runs or what else starts it, the tool
+                        writes the question to answers.yaml, with a suggested
+                        answer where the code points to one. Fill in the answers
+                        and run the same command again. When there are no open
+                        questions left, the plan is final.
+                    </p>
+                </div>
+                <Code code={ANSWERS} lang="yaml" frame="none" class="dark" />
+            </li>
+        </ol>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    .how-it-works {
+        @include squared-grid-backdrop;
+        @include assistant-section(var(--ks-background-secondary));
+    }
+
+    .container {
+        @include guide-container;
+    }
+
+    ol {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        margin: 1rem 0 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2rem;
+        padding: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-body);
+        box-shadow: $calc-shadow-surface;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    .step {
+        padding: 0.125rem 0.5rem;
+        border-radius: 6px;
+        background: color-mix(
+            in srgb,
+            var(--blue-300) 10%,
+            var(--ks-background-body)
+        );
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 1.25rem;
+        color: var(--blue-400);
+
+        :global(html.dark) & {
+            color: var(--blue-300);
+        }
+    }
+
+    h3 {
+        margin: 0;
+        font-size: $font-size-2xl;
+        font-weight: 600;
+        line-height: 2.375rem;
+    }
+
+    // Expressive Code renders the blocks. `class="dark"` keeps them on the
+    // dark theme in both site themes; the variables restate Figma's box
+    // (background, no border, radius, type size) over the theme defaults.
+    // `:root` outranks Expressive Code's own `:root:not(.dark) .expressive-code.dark`
+    // rule in light mode, and the frame plugin paints `--ec-frm-edBg`.
+    :global(:root) li :global(.expressive-code.dark) {
+        --ec-codeBg: #{$dark-bg-input};
+        --ec-frm-edBg: #{$dark-bg-input};
+        --ec-brdCol: transparent;
+        --ec-brdRad: #{$border-radius-lg};
+        --ec-codeFontSize: #{$font-size-xs};
+        --ec-codeLineHt: 1.5rem;
+        // markdown.scss restates these for every code block without a
+        // `.dark`/`.light` class; `class="dark"` opts out of that rule, so
+        // the font, the flat frame and the "Copied!" colour are restated here.
+        --ec-codeFontFml: var(--font-family-jetbrains-mono);
+        --ec-frm-frameBoxShdCssVal: none;
+        --ec-frm-tooltipSuccessBg: var(--ks-background-button-primary);
+        min-height: 105px;
+
+        :global(pre) {
+            margin: 0;
+        }
+
+        // No language badge on these three: Figma shows a bare box.
+        :global(pre[data-language])::before {
+            display: none;
+        }
+    }
+</style>

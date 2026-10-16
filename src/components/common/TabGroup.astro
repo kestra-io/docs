@@ -1,0 +1,216 @@
+---
+interface Tab {
+    label: string
+    kicker?: string
+}
+
+interface Props {
+    id: string
+    label: string
+    tabs: Tab[]
+    variant?: "tabs" | "stages" | "segmented"
+    theme?: "light" | "dark"
+    flush?: boolean
+    selected?: number
+}
+
+const {
+    id,
+    label,
+    tabs,
+    variant = "tabs",
+    theme = "light",
+    flush = false,
+    selected = 1,
+} = Astro.props
+---
+
+<div
+    class:list={["ks-tabs", variant, { dark: theme === "dark", flush }]}
+    data-ks-tabs
+    {id}
+>
+    <div class="tablist" role="tablist" aria-label={label}>
+        {
+            tabs.map((tab, i) => (
+                <button
+                    type="button"
+                    role="tab"
+                    id={`${id}-tab-${i + 1}`}
+                    aria-controls={`${id}-panel-${i + 1}`}
+                    aria-selected={i + 1 === selected ? "true" : "false"}
+                    tabindex={i + 1 === selected ? 0 : -1}
+                >
+                    {tab.kicker && <small>{tab.kicker}</small>}
+                    <span>{tab.label}</span>
+                </button>
+            ))
+        }
+    </div>
+    <slot />
+</div>
+
+<script>
+    function tabOf(target: EventTarget | null): HTMLButtonElement | null {
+        const tab = (target as Element | null)?.closest?.("[role=tab]")
+        const list = tab?.parentElement
+        if (!list?.classList.contains("tablist")) return null
+        if (!list.parentElement?.hasAttribute("data-ks-tabs")) return null
+        return tab as HTMLButtonElement
+    }
+
+    function tabsBeside(tab: HTMLButtonElement): HTMLButtonElement[] {
+        return Array.from(
+            tab.parentElement!.querySelectorAll<HTMLButtonElement>(
+                ":scope > [role=tab]",
+            ),
+        )
+    }
+
+    function select(tab: HTMLButtonElement, focus = false) {
+        for (const t of tabsBeside(tab)) {
+            const on = t === tab
+            t.setAttribute("aria-selected", on ? "true" : "false")
+            t.tabIndex = on ? 0 : -1
+            const panel = document.getElementById(
+                t.getAttribute("aria-controls") ?? "",
+            )
+            if (panel) panel.hidden = !on
+        }
+        if (focus) tab.focus()
+    }
+
+    document.addEventListener("click", (e) => {
+        const tab = tabOf(e.target)
+        if (tab) select(tab)
+    })
+
+    document.addEventListener("keydown", (e) => {
+        const tab = tabOf(e.target)
+        if (!tab) return
+        const tabs = tabsBeside(tab)
+        const i = tabs.indexOf(tab)
+        const n = tabs.length
+        const next =
+            e.key === "ArrowRight"
+                ? (i + 1) % n
+                : e.key === "ArrowLeft"
+                  ? (i - 1 + n) % n
+                  : e.key === "Home"
+                    ? 0
+                    : e.key === "End"
+                      ? n - 1
+                      : null
+        if (next === null) return
+        e.preventDefault()
+        select(tabs[next], true)
+    })
+</script>
+
+<style lang="scss">
+    .ks-tabs {
+        margin: 1.5rem 0;
+
+        > .tablist {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+
+            > [role="tab"] {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.6rem 0.9rem;
+                border: 1px solid var(--ks-border-secondary);
+                border-radius: $border-radius-lg;
+                background: var(--ks-background-body);
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                text-align: left;
+
+                small {
+                    font-size: $font-size-xs;
+                    font-weight: 600;
+                    letter-spacing: 0.05em;
+                    color: inherit;
+                }
+
+                span {
+                    font-weight: 600;
+                }
+
+                &[aria-selected="true"] {
+                    border-color: var(--ks-border-active);
+                    color: var(--ks-content-primary);
+
+                    small {
+                        color: var(--ks-content-link);
+                    }
+                }
+
+                &:focus-visible {
+                    outline: 2px solid var(--ks-border-active);
+                    outline-offset: 2px;
+                }
+            }
+        }
+
+        &.stages > .tablist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        &.segmented > .tablist > [role="tab"] {
+            border-radius: 999px;
+            padding: 0.4rem 0.9rem;
+        }
+
+        &.flush {
+            margin: 0;
+
+            :global(.ks-tab-panel) {
+                padding: 0;
+                border: 0;
+            }
+        }
+
+        &.dark {
+            > .tablist {
+                gap: 0.625rem;
+                margin-bottom: 4rem;
+
+                @include media-breakpoint-down(lg) {
+                    margin-bottom: 2rem;
+                }
+
+                > [role="tab"] {
+                    align-items: center;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid $dark-border-strong;
+                    border-radius: 6px;
+                    background: $dark-bg-control;
+                    font-size: 1.25rem;
+                    line-height: 1.75rem;
+                    text-align: center;
+                    color: $dark-text-secondary;
+
+                    @include media-breakpoint-down(md) {
+                        font-size: 1rem;
+                    }
+
+                    &[aria-selected="true"] {
+                        border-color: $dark-accent;
+                        background: $dark-raised;
+                        box-shadow: 2px 3px 16px rgba($dark-accent, 0.1);
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+</style>

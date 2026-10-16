@@ -1,0 +1,472 @@
+---
+import { Image } from "astro:assets"
+import bookMockup from "./assets/book-mockup.png"
+import { DOWNLOAD_DIALOG_TARGET } from "./download"
+
+interface CardButton {
+    label: string
+    modalTarget: string
+    variant?: "primary" | "secondary"
+}
+
+// Defaults render the migration guide's hero: the book card on the right.
+// Other pages pass their own pill, a `deck` slot for a deck with links, an
+// `actions` slot under it, and either a `visual` slot that replaces the book
+// card or `card={false}` for a single-column hero.
+interface Props {
+    title: string
+    deck?: string
+    inside?: string[]
+    meta?: string[]
+    pill?: string
+    card?: boolean
+    cardText?: string
+    cardButtons?: CardButton[]
+    codeHints?: boolean
+}
+
+const CODE_HINTS = [
+    { text: "System.log(...)", left: 51, top: 35, size: 18.6, opacity: 0.2 },
+    {
+        text: "Server.findAllForType(...)",
+        left: 88,
+        top: 186,
+        size: 18.6,
+        opacity: 0.5,
+    },
+    {
+        text: "System.getModule(...)",
+        left: 91,
+        top: 382,
+        size: 12.6,
+        opacity: 0.5,
+    },
+    { text: "inputProperties", left: 93, top: 533, size: 18.6, opacity: 0.5 },
+]
+
+const {
+    title,
+    deck = "",
+    inside = [],
+    meta = [],
+    pill = "Migration guide · Infrastructure Automation",
+    card = true,
+    cardText = "The full guide is on this page, or download the PDF to share with your team (form required)",
+    cardButtons = [
+        {
+            label: "Download the PDF",
+            modalTarget: DOWNLOAD_DIALOG_TARGET,
+            variant: "secondary",
+        },
+    ],
+    codeHints = false,
+} = Astro.props
+
+const hasVisual = Astro.slots.has("visual")
+---
+
+<section class:list={["guide-hero surface-dark", { "no-meta": !meta.length }]}>
+    {
+        codeHints && (
+            <div class="code-hints" aria-hidden="true">
+                {CODE_HINTS.map((hint) => (
+                    <span
+                        style={{
+                            left: `${hint.left}%`,
+                            top: `calc(var(--header-h) + ${hint.top}px)`,
+                            fontSize: `${hint.size}px`,
+                            opacity: hint.opacity,
+                        }}
+                    >
+                        {hint.text}
+                    </span>
+                ))}
+            </div>
+        )
+    }
+    <div class="container">
+        <div
+            class:list={[
+                "hero-grid",
+                {
+                    "has-visual": hasVisual,
+                    "single-column": !card && !hasVisual,
+                },
+            ]}
+        >
+            <div class="hero-main">
+                <p class="pill">{pill}</p>
+                <h1>{title}</h1>
+                <p class="deck"><slot name="deck">{deck}</slot></p>
+                {
+                    inside.length > 0 && (
+                        <>
+                            <h2 class="inside-title">What's inside</h2>
+                            <ul class="inside-list">
+                                {inside.map((item) => (
+                                    <li>{item}</li>
+                                ))}
+                            </ul>
+                        </>
+                    )
+                }
+                {
+                    Astro.slots.has("actions") && (
+                        <div class="main-actions">
+                            <slot name="actions" />
+                        </div>
+                    )
+                }
+            </div>
+            {
+                hasVisual ? (
+                    <div class="hero-visual">
+                        <slot name="visual" />
+                    </div>
+                ) : (
+                    card && (
+                        <div class="hero-card">
+                            <div class="book-wrap" aria-hidden="true">
+                                <Image
+                                    src={bookMockup}
+                                    alt=""
+                                    loading="eager"
+                                    class="book-img"
+                                />
+                            </div>
+                            <p>{cardText}</p>
+                            {cardButtons.map(
+                                ({
+                                    label,
+                                    modalTarget,
+                                    variant = "secondary",
+                                }) => (
+                                    <button
+                                        type="button"
+                                        class={`btn btn-${variant}`}
+                                        data-modal-target={modalTarget}
+                                    >
+                                        {label}
+                                    </button>
+                                ),
+                            )}
+                        </div>
+                    )
+                )
+            }
+        </div>
+        {
+            meta.length > 0 && (
+                <ul class="meta">
+                    {meta.map((item) => (
+                        <li>{item}</li>
+                    ))}
+                </ul>
+            )
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+    @use "/src/assets/styles/color-palette" as *;
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    .guide-hero {
+        --header-h: var(--top-bar-height, 67px);
+        position: relative;
+        margin-top: calc(-1 * var(--header-h));
+        padding: calc(var(--header-h) + 5.5rem) 0 1.5rem;
+        overflow: clip;
+        background: linear-gradient(
+            91.15deg,
+            $hero-ink 19.11%,
+            $hero-ink-deep 35.38%,
+            $hero-teal 51.65%,
+            $hero-teal-deep 57.7%,
+            $black 127.58%
+        );
+        color: $white;
+
+        @include media-breakpoint-down(lg) {
+            padding: calc(var(--header-h) + 3rem) 0 1rem;
+        }
+
+        &.no-meta {
+            padding-bottom: 3.75rem;
+        }
+    }
+
+    .code-hints {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+
+        @include media-breakpoint-down(xl) {
+            display: none;
+        }
+
+        span {
+            position: absolute;
+            transform: translateX(-50%);
+            font-family: $font-family-monospace;
+            line-height: 1.43;
+            white-space: nowrap;
+            color: $white;
+            filter: blur(2px);
+            mix-blend-mode: overlay;
+        }
+    }
+
+    .container {
+        @include guide-container;
+    }
+
+    .hero-grid {
+        display: grid;
+        // minmax(0, …) so a long unbreakable line in a slot, such as a
+        // command, scrolls instead of widening the column past the screen.
+        grid-template-columns: minmax(0, 1fr);
+        gap: 3rem;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+            align-items: center;
+            gap: 4rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: minmax(0, 1fr) 520px;
+        }
+
+        @include media-breakpoint-up(xxl) {
+            grid-template-columns: minmax(0, 1fr) 555px;
+        }
+
+        &.has-visual {
+            @include media-breakpoint-up(xl) {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 568px);
+            }
+        }
+
+        &.single-column {
+            grid-template-columns: minmax(0, 56rem);
+        }
+    }
+
+    .main-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.125rem;
+        margin-top: 0.625rem;
+    }
+
+    .hero-visual {
+        width: 100%;
+        max-width: 568px;
+        margin-inline: auto;
+    }
+
+    .pill {
+        display: inline-block;
+        margin-bottom: 0.75rem;
+        padding: 0.125rem 0.75rem;
+        border: 1px solid $hero-pill-border;
+        border-radius: 999px;
+        box-shadow: 3px 3px 0 $hero-pill-shadow;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        line-height: 1.5rem;
+        color: $white;
+        text-shadow: 0 4px 0 rgba($black, 0.25);
+    }
+
+    h1 {
+        margin-bottom: 1rem;
+        font-size: clamp(2.25rem, 4.2vw, 4rem);
+        font-weight: 600;
+        line-height: 1.09;
+        letter-spacing: -0.02em;
+        color: $white;
+    }
+
+    .deck {
+        margin-bottom: 1rem;
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+        color: $white;
+
+        :global(a) {
+            color: $base-primary-200;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+
+    .inside-title {
+        margin: 0 0 1rem;
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5rem;
+        color: $white;
+    }
+
+    .inside-list {
+        display: grid;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            position: relative;
+            padding-left: 2.5rem;
+            font-size: $font-size-md;
+            line-height: 1.5rem;
+            color: $white;
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 1.5rem;
+                height: 1.5rem;
+                background-color: $base-primary-300;
+                mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E")
+                    center / contain no-repeat;
+            }
+        }
+    }
+
+    .hero-card {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 555px;
+        aspect-ratio: 1;
+        margin: 5rem auto 0;
+        padding: 0 2rem 1.25rem;
+        border-radius: 20px;
+        text-align: center;
+
+        @include media-breakpoint-up(lg) {
+            margin: 0;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+        }
+
+        &::before {
+            inset: 0;
+            border-radius: inherit;
+            background: rgba($white, 0.2);
+            box-shadow: inset 0 0 0 1px rgba($white, 0.12);
+            mask-image: linear-gradient(to bottom, transparent 10%, $black 55%);
+        }
+
+        &::after {
+            inset: -30px;
+            padding: 30px;
+            background: rgba($white, 0.2) content-box;
+            filter: blur(15px);
+            mask-image: linear-gradient(to bottom, $black 15%, transparent 55%);
+        }
+
+        p {
+            position: relative;
+            max-width: 23rem;
+            margin: 0;
+            font-size: $font-size-md;
+            font-weight: 600;
+            line-height: 1.5rem;
+            color: $white;
+        }
+
+        .btn {
+            position: relative;
+            min-width: 11.25rem;
+            min-height: 3.5rem;
+            padding: 0.5rem 1.375rem;
+            border-radius: $border-radius-lg;
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+        }
+
+        .btn-secondary {
+            @include btn-secondary-light-surface;
+        }
+    }
+
+    .book-wrap {
+        position: absolute;
+        left: 50%;
+        top: -30%;
+        width: 123%;
+        transform: translateX(-49%);
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            top: -22%;
+            width: 90%;
+        }
+
+        @include media-breakpoint-down(md) {
+            top: -16%;
+            width: 72%;
+        }
+
+        .book-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem 0;
+        margin: 2.5rem 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: $font-size-sm;
+        line-height: 1.25rem;
+        color: $base-grey-200;
+
+        li {
+            padding: 0 1.125rem;
+            border-left: 1px solid $base-grey-200;
+
+            &:first-child {
+                border-left: 0;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            li {
+                padding: 0;
+                border-left: 0;
+            }
+        }
+    }
+</style>

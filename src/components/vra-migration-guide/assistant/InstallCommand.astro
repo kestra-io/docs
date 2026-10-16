@@ -1,0 +1,139 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    command: string
+    note?: string
+}
+
+const { command, note } = Astro.props
+---
+
+<div class="install-command">
+    <div class="command">
+        <span class="prompt" aria-hidden="true">$</span>
+        <code>{command}</code>
+        <button
+            type="button"
+            class="copy-btn"
+            title="Copy command"
+            aria-label="Copy install command"
+            data-install-copy
+        >
+            <Icon name="mdi:content-copy" class="icon-copy" />
+            <Icon name="mdi:check" class="icon-check" />
+        </button>
+    </div>
+    {note && <p class="note">{note}</p>}
+</div>
+
+<script>
+    import { copyWithFeedback } from "~/utils/code-copy"
+
+    // Copies the command as shown, so there is one source for it.
+    function wireInstallCopy() {
+        for (const button of document.querySelectorAll<HTMLButtonElement>(
+            "[data-install-copy]",
+        )) {
+            if (button.dataset.wired) continue
+            button.dataset.wired = "true"
+            button.addEventListener("click", () => {
+                const command = button
+                    .closest(".install-command")
+                    ?.querySelector("code")
+                void copyWithFeedback(
+                    button,
+                    command?.textContent?.trim() ?? "",
+                )
+            })
+        }
+    }
+
+    wireInstallCopy()
+    document.addEventListener("astro:page-load", wireInstallCopy)
+</script>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    @use "/src/assets/styles/color-palette" as *;
+
+    .command {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 100%;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        border: 1px solid $dark-border-strong;
+        border-radius: $border-radius-lg;
+        background: $dark-bg-input;
+        font-family: $font-family-monospace;
+        font-size: 1rem;
+        line-height: 1.75rem;
+    }
+
+    .prompt {
+        color: $base-grey-400;
+    }
+
+    code {
+        min-width: 0;
+        overflow-x: auto;
+        padding: 0;
+        background: none;
+        font-size: inherit;
+        white-space: nowrap;
+        color: $base-grey-200;
+    }
+
+    .copy-btn {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border: 1px solid $dark-raised;
+        border-radius: $border-radius;
+        background: $dark-bg-control;
+        color: $dark-text-muted;
+        cursor: pointer;
+
+        &:hover {
+            color: $white;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
+        }
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            pointer-events: none;
+        }
+
+        :global(.icon-check) {
+            display: none;
+        }
+
+        &:global(.copied) {
+            :global(.icon-copy) {
+                display: none;
+            }
+
+            :global(.icon-check) {
+                display: inline-block;
+                color: $copied-green;
+            }
+        }
+    }
+
+    .note {
+        margin: 0.5rem 0 0;
+        font-size: $font-size-sm;
+        line-height: 1.25rem;
+        color: $dark-text-secondary;
+    }
+</style>
