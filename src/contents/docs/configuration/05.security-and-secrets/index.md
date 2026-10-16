@@ -216,6 +216,7 @@ This group includes:
 - invitation expiration
 - password rules
 - server basic auth
+- gRPC basic auth between workers and controllers
 - deletion of configuration files
 
 Server and endpoint hardening examples:
@@ -237,6 +238,29 @@ endpoints:
       username: your-user
       password: your-password
 ```
+
+### gRPC basic authentication
+
+Require a shared username and password on the gRPC channel between workers and the Worker Controller. This applies to the open-source edition only. Enterprise Edition ignores these properties and uses [TLS and worker authentication](../../security-hardening/index.md#tls-and-worker-authentication-ee) instead.
+
+```yaml
+kestra:
+  grpc:
+    basic-auth:
+      enabled: true
+      username: kestra-worker
+      password: ${KESTRA_GRPC_PASSWORD}
+```
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `kestra.grpc.basic-auth.enabled` | `false` | Require the credentials on every gRPC call to the controller, except health checks. |
+| `kestra.grpc.basic-auth.username` | — | Username that workers present and controllers expect. Required when `enabled` is `true`. |
+| `kestra.grpc.basic-auth.password` | — | Password that workers present and controllers expect. Required when `enabled` is `true`. |
+
+Set identical values on every worker and on every server that runs a controller, including webserver and standalone servers started without `--no-controller`. If `enabled` is `true` and `username` or `password` is missing or blank, the controller or worker fails to start with an error that includes `Property kestra.grpc.basic-auth.username is required when gRPC basic authentication is enabled.`
+
+Changing the credentials requires restarting the controllers and the workers. The channel stays plaintext, so the credentials are readable to anyone who can capture its traffic. See [Basic authentication (OSS)](../../security-hardening/index.md#basic-authentication-oss) for the security model.
 
 ### Instance Owner
 
@@ -423,7 +447,7 @@ kestra:
         window: PT1H
 ```
 
-See [Passwordless (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) for setup prerequisites and full property details.
+See [Passwordless (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-one-time-password) for setup prerequisites and full property details.
 
 ## Related docs
 
