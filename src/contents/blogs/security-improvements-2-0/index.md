@@ -21,12 +21,12 @@ We also changed where security starts: in 2.0, workers no longer connect to the 
 
 In 1.x, every worker needed database credentials. It read its jobs and wrote its results directly to the repository. A compromised worker, or a worker in a network you did not fully trust, was one hop away from the table holding every execution and every flow.
 
-In 2.0, [workers never open a database connection](/docs/administrator-guide/security-hardening#worker-isolation). They connect outbound to a Controller over gRPC, receive jobs, and stream logs and results back. The database repositories are excluded from the worker classpath, so this is not a configuration you can get wrong; the code is not there.
+In 2.0, [workers never open a database connection](/docs/security-hardening#worker-isolation). They connect outbound to a Controller over gRPC, receive jobs, and stream logs and results back. The database repositories are excluded from the worker classpath, so this is not a configuration you can get wrong; the code is not there.
 
 A few consequences:
 
 - **Secrets are decrypted on read.** In 1.x, secret values could appear in plaintext in the persisted execution and on the wire to the worker. In 2.0, secrets stay encrypted on the job queue and on the wire, the worker decrypts them at the moment of use, and the plaintext is never written into the Execution. Masking is applied longest-first so a secret that is a prefix of another cannot leak through the shorter match.
-- **The channel can be encrypted and authenticated.** Whatever the edition, the stream carries no database credentials and secrets stay encrypted on it. The transport itself is plaintext by default. [TLS and mutual TLS are available on Enterprise Edition](/docs/administrator-guide/security-hardening#transport-security). With mTLS, a worker without a valid certificate is refused at the handshake. Enterprise also adds JWT-based worker authentication (`kestra.ee.worker.auth.enabled`, off by default) with registration tokens; setup is in the [gRPC TLS/mTLS configuration](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
+- **The channel can be encrypted and authenticated.** Whatever the edition, the stream carries no database credentials and secrets stay encrypted on it. The transport itself is plaintext by default. [TLS and mutual TLS are available on Enterprise Edition](/docs/security-hardening#transport-security). With mTLS, a worker without a valid certificate is refused at the handshake. Enterprise also adds JWT-based worker authentication (`kestra.ee.worker.auth.enabled`, off by default) with registration tokens; setup is in the [gRPC TLS/mTLS configuration](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
 - **Worker calls are internal calls.** Worker gRPC traffic is flagged as internal, so IAM does not treat it as a user API call.
 
 In practice, this is what lets you run a worker in a restricted network, an air-gapped site or another region. If that worker is compromised, the attacker has the jobs it was given, not your database.
@@ -64,7 +64,7 @@ Port 8081 exposes health, metrics, loggers and the worker and scheduler endpoint
 | `endpoints.worker.sensitive`, `endpoints.scheduler.sensitive` | `false` | `true` |
 | docker-compose `8081:8081` | exposed | commented out |
 
-This is a breaking change, documented in [management endpoint hardening](/docs/migration-guide/v2.0.0/management-endpoint-hardening). If your monitoring scrapes `/metrics` or your load balancer reads health details, it now needs credentials through `endpoints.all.basic-auth`, or the port needs to stay on the internal network ([management endpoint access](/docs/administrator-guide/security-hardening#management-endpoint-access)). Malformed Authorization headers on that port return 401 instead of 500.
+This is a breaking change, documented in [management endpoint hardening](/docs/migration-guide/v2.0.0/management-endpoint-hardening). If your monitoring scrapes `/metrics` or your load balancer reads health details, it now needs credentials through `endpoints.all.basic-auth`, or the port needs to stay on the internal network ([management endpoint access](/docs/security-hardening#management-endpoint-access)). Malformed Authorization headers on that port return 401 instead of 500.
 
 ## CSRF
 
@@ -96,7 +96,7 @@ Login state is read from a server-issued flag cookie next to the HttpOnly sessio
 
 Kestra runs arbitrary HTTP calls by design. On a cloud VM, that meant a flow author could point an HTTP task at `169.254.169.254` and read the instance's credentials.
 
-2.0 adds [global allow and deny lists](/docs/administrator-guide/security-hardening#http-task-url-filtering) for the HTTP plugin tasks (`Request`, `Download`, `SseRequest`, `Trigger`) and the `http()` Pebble function:
+2.0 adds [global allow and deny lists](/docs/security-hardening#http-task-url-filtering) for the HTTP plugin tasks (`Request`, `Download`, `SseRequest`, `Trigger`) and the `http()` Pebble function:
 
 ```yaml
 kestra:
@@ -110,7 +110,7 @@ kestra:
         - http://127.0.0.1
 ```
 
-Both lists are empty by default; nothing is filtered until you configure them. The allow list is checked first, and a URI that matches both is blocked. Matching is prefix-based, not glob or CIDR: `http://10.` blocks `http://10.0.0.1/admin` but not the same host over HTTPS. This should be combined with network controls: deny link-local ranges at the VPC or firewall level, place workers in a subnet with no route to metadata services, and route egress through a proxy that can enforce the same list. The [security hardening guide](/docs/administrator-guide/security-hardening) describes the full setup.
+Both lists are empty by default; nothing is filtered until you configure them. The allow list is checked first, and a URI that matches both is blocked. Matching is prefix-based, not glob or CIDR: `http://10.` blocks `http://10.0.0.1/admin` but not the same host over HTTPS. This should be combined with network controls: deny link-local ranges at the VPC or firewall level, place workers in a subnet with no route to metadata services, and route egress through a proxy that can enforce the same list. The [security hardening guide](/docs/security-hardening) describes the full setup.
 
 ## Uploads and user-supplied input
 
@@ -127,7 +127,7 @@ kestra:
       max-entry-size: 104857600
 ```
 
-It is disabled by default and both limits are required when enabled. Set them from the largest legitimate archives your users upload; see [ZIP bomb protection](/docs/administrator-guide/security-hardening#zip-bomb-protection).
+It is disabled by default and both limits are required when enabled. Set them from the largest legitimate archives your users upload; see [ZIP bomb protection](/docs/security-hardening#zip-bomb-protection).
 
 **ReDoS.** [User-supplied regexes are protected against catastrophic backtracking](/docs/configuration/security-and-secrets#regex-timeout) with a timeout, `kestra.regex.timeout`, defaulting to ten seconds. `REGEX` query and dashboard filters are rejected up front when they contain nested quantifiers or ambiguous alternation. The UI had two of its own: the topology parser and the Pebble expression highlighter no longer hang on a crafted flow source.
 
@@ -143,13 +143,13 @@ It is disabled by default and both limits are required when enabled. Set them fr
 
 Most of the above is on by default. These are not, and are worth doing before the instance is used in production:
 
-1. Set `kestra.server.basic-auth` before the first start, or use OIDC, LDAP or SAML on Enterprise. On a fresh installation with no `basic-auth` configured, the Setup page is publicly reachable and the first person to reach it sets the credentials; see [credential initialization](/docs/administrator-guide/security-hardening#credential-initialization).
+1. Set `kestra.server.basic-auth` before the first start, or use OIDC, LDAP or SAML on Enterprise. On a fresh installation with no `basic-auth` configured, the Setup page is publicly reachable and the first person to reach it sets the credentials; see [credential initialization](/docs/security-hardening#credential-initialization).
 2. Enable TLS, preferably mTLS, on the worker channel before a worker runs outside your trusted network.
 3. Configure the HTTP deny list with link-local and loopback ranges, and an allow list if your flows only call known hosts.
 4. Enable ZIP-bomb protection with limits that fit your imports.
 5. Give your monitoring credentials for the management port, or keep the port internal, and check that nothing broke after the upgrade.
 
-On Enterprise, also configure the [plugin allow list](/docs/administrator-guide/security-hardening#plugin-restrictions-ee) and restrict the `Process` task runner in multi-tenant or untrusted environments, since it runs directly on the worker host without a container.
+On Enterprise, also configure the [plugin allow list](/docs/security-hardening#plugin-restrictions-ee) and restrict the `Process` task runner in multi-tenant or untrusted environments, since it runs directly on the worker host without a container.
 
 ## Conclusion
 
@@ -157,6 +157,6 @@ The 2.0 cycle fixed timing and existence oracles, moved passwords to bcrypt, add
 
 If you find something, the [security policy](https://github.com/kestra-io/kestra/security/policy) explains how to report it.
 
-The [security hardening guide](/docs/administrator-guide/security-hardening) lists every configuration key mentioned here, and the [2.0 migration guide](/docs/migration-guide/v2.0.0) covers the default changes that can affect an upgrade.
+The [security hardening guide](/docs/security-hardening) lists every configuration key mentioned here, and the [2.0 migration guide](/docs/migration-guide/v2.0.0) covers the default changes that can affect an upgrade.
 
 If you have any questions, reach out via [Slack](/slack) or open a GitHub issue.

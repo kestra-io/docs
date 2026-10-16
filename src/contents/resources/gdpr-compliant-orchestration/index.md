@@ -103,7 +103,7 @@ Implementing GDPR-compliant orchestration requires a holistic approach that addr
 
 ### Addressing Compliance Across Diverse Data Infrastructures
 
-Many organizations operate in complex hybrid or multi-cloud environments, making consistent policy enforcement difficult. Data residency and sovereignty are key concerns under GDPR.
+Many organizations operate in complex hybrid or multi-cloud environments, making consistent policy enforcement difficult. [Data residency](/resources/infrastructure/data-residency) and sovereignty are key concerns under GDPR.
 
 Kestra’s architecture is designed for this reality. As a self-hosted platform, it can be deployed anywhere—on-premises, in a private cloud on Kubernetes, or even in air-gapped environments. This gives you complete control over where your data is processed, ensuring it never leaves a specific geographic region if required. This is particularly crucial for industries like [healthcare](https://kestra.io/use-cases/healthcare), which have similar strict data handling requirements. For larger organizations, Kestra’s support for [multi-tenancy](https://kestra.io/docs/architecture/multi-tenancy) and [worker isolation](https://kestra.io/docs/enterprise/governance/worker-isolation) ensures that data processing for different business units or clients is strictly segregated, preventing data leakage and unauthorized access. This level of control is essential for any [infrastructure automation](https://kestra.io/infra-automation) strategy.
 
