@@ -22,7 +22,7 @@ import Git from "vue-material-design-icons/Git.vue"
 import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
 
 import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
-import LeroyMerlinLogoImg from "~/assets/trusted-companies/LeroyMerlin.svg"
+import LeroyMerlinLogoImg from "~/assets/companies/leroy-merlin.svg"
 import GorgiasLogoImg from "~/assets/trusted-companies/Gorgias.svg"
 import AuchanLogoImg from "~/assets/trusted-companies/Auchan.svg"
 import DecathlonLogoImg from "~/assets/trusted-companies/Decathlon.svg"
@@ -1107,7 +1107,7 @@ const FAQ = [
     }
 
     // ── Hero logo strip ──────────────────────────────────────────────
-    // 7 logos, 4+3 grid at md+, 2-col stack on mobile. Per-logo
+    // 7 logos, 5+2 grid at md+, 2-col stack on mobile. Per-logo
     // sizing tuned to each SVG's aspect ratio.
     .hero-logos {
         display: flex;
@@ -1131,19 +1131,29 @@ const FAQ = [
         }
 
         &__row {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
             align-items: center;
-            justify-content: center;
+            justify-items: center;
             column-gap: 2rem;
             row-gap: 1.5rem;
             width: 100%;
             max-width: 48rem;
             margin: 0 auto;
 
+            > * { grid-column: span 2; }
+
+            // Center the 2-logo second row under the 5-logo first row
+            > :nth-child(6) { grid-column: 4 / span 2; }
+
             @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, 1fr);
                 column-gap: 1.5rem;
-                row-gap: 1.5rem;
+
+                > *,
+                > :nth-child(6) { grid-column: auto; }
+
+                > :last-child:nth-child(odd) { grid-column: 1 / -1; }
             }
         }
 
