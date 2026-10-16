@@ -104,7 +104,13 @@ const SECTIONS = getSections(totalPlugins)
                                                             ? "icon-check"
                                                             : "icon-cross"
                                                     }
+                                                    aria-hidden="true"
                                                 />
+                                                <span class="visually-hidden">
+                                                    {val === "check"
+                                                        ? "Included"
+                                                        : "Not included"}
+                                                </span>
                                             </td>
                                         ))}
                                     </tr>
@@ -147,10 +153,16 @@ const SECTIONS = getSections(totalPlugins)
                                 {row.values.map((val) => (
                                     <td class="col-plan">
                                         {val === "check" ? (
-                                            <Icon
-                                                name="mdi:check-bold"
-                                                class="icon-check"
-                                            />
+                                            <>
+                                                <Icon
+                                                    name="mdi:check-bold"
+                                                    class="icon-check"
+                                                    aria-hidden="true"
+                                                />
+                                                <span class="visually-hidden">
+                                                    Included
+                                                </span>
+                                            </>
                                         ) : (
                                             val
                                         )}
