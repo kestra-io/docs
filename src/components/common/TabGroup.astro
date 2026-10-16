@@ -1,7 +1,4 @@
 ---
-// An ARIA tablist with keyboard support (arrows, Home, End). Each TabPanel
-// inside it names the same `id` as its `group`. One delegated listener
-// serves every group on the page.
 interface Tab {
     label: string
     kicker?: string
@@ -11,11 +8,8 @@ interface Props {
     id: string
     label: string
     tabs: Tab[]
-    /** `stages` lays the tabs out as a 2/4 grid; `segmented` makes pills. */
     variant?: "tabs" | "stages" | "segmented"
-    /** `dark` is the look for a dark section, in both themes. */
     theme?: "light" | "dark"
-    /** No outer margin and no padding or border on the panels. */
     flush?: boolean
     selected?: number
 }

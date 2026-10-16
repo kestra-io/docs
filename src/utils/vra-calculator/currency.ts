@@ -35,7 +35,6 @@ export function currencyFromLocale(
     if (!first) return "EUR"
     const region = regionOf(first)
     if (region === "US") return "USD"
-    // "UK" is not an ISO region code, but some systems report it.
     if (region === "GB" || region === "UK") return "GBP"
     return "EUR"
 }

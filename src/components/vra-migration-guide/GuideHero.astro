@@ -177,8 +177,6 @@ const hasVisual = Astro.slots.has("visual")
         position: relative;
         margin-top: calc(-1 * var(--header-h));
         padding: calc(var(--header-h) + 5.5rem) 0 1.5rem;
-        // Clip both ways: the terminal's long Figma drop shadow would
-        // otherwise spill into the section below.
         overflow: clip;
         background: linear-gradient(
             91.15deg,
@@ -343,8 +341,6 @@ const hasVisual = Astro.slots.has("visual")
         }
     }
 
-    // The guide's book card: a frosted panel with Figma's progressive blur,
-    // drawn as a blurred copy (top) cross-fading into a crisp copy (bottom).
     .hero-card {
         position: relative;
         isolation: isolate;

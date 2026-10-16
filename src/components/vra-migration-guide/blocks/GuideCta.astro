@@ -9,8 +9,6 @@ interface Props {
     variant?: "primary" | "secondary"
 }
 
-// A link opens a page; a modal target opens the download dialog through the
-// global `data-modal-target` handler (src/scripts/modal.ts).
 const CTAS: Record<Kind, { label: string; href?: string; modal?: string }> = {
     talk: { label: "Talk to our team", href: "/demo" },
     calc: {
