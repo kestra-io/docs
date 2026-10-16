@@ -4,7 +4,7 @@ info:
   license:
     name: Apache 2.0
     url: https://raw.githubusercontent.com/kestra-io/kestra/master/LICENSE
-  version: 2.0.4
+  version: 2.0.6
 tags:
 - name: Flows
   description: Flows API
@@ -6004,6 +6004,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BulkResponse'
+        '400':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
         '401':
           description: Authentication required
           content:
@@ -14595,6 +14601,10 @@ components:
           type: string
         description:
           type: string
+        aliases:
+          type: array
+          items:
+            type: string
     PluginArtifact:
       type: object
       properties:

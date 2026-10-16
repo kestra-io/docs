@@ -1,6 +1,5 @@
-// Comparison tolerances for the visual-regression suite, shared with
-// scripts/visual-diff-report.mjs so the report's pixel counts mean the same
-// thing as the numbers that decided a baseline needed rewriting.
+// Comparison tolerances for scripts/visual-diff-report.mjs: a pair within
+// maxDiffPixelRatio counts as noise between two captures, not a change.
 //
 // threshold and antialiasing restate odiff's own defaults. They are written
 // out because the report has to pass them explicitly to get the same result.
