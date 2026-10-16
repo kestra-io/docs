@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/flow.svg
 version: "0.21.0"
 ---
 
-The `finally` block defines tasks that always run at the end of a flow — whether the execution succeeds, fails, or is killed — making it the right place for cleanup and resource teardown.
+The `finally` block defines tasks that always run at the end of a flow, whether the execution succeeds, fails, or is killed.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/os9_WY4-9o8?si=cB0c1HksxZtDQ5GB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -17,16 +17,15 @@ The `finally` block defines tasks that always run at the end of a flow — wheth
 
 `finally` and `errors` both run near the end of a flow, but serve different purposes:
 
-- Use `finally` for cleanup and teardown that must happen every time, regardless of outcome.
-- Use `errors` for failure-specific handling such as alerts, remediation, or fallback actions.
+`finally` runs regardless of execution outcome; `errors` runs only when a task or the flow fails.
 
 `finally` tasks run while the execution is still `RUNNING`. If you need to react to a specific terminal state (`SUCCESS`, `FAILED`, etc.), use [`afterExecution`](../20.afterexecution/index.md) instead. For failure-specific handling including local handlers inside flowable tasks, see the [`errors` documentation](../11.errors/index.md).
 
 ## Examples
 
-### Cleanup after a failed task
+### Failure path example
 
-One task is designed to fail and the `errors` block sends an alert. The `finally` task runs regardless — here it logs a message, but in practice it would shut down any resources the flow started:
+One task is designed to fail and the `errors` block sends an alert. The `finally` task runs regardless: here it logs a message, but in practice it would shut down any resources the flow started:
 
 ```yaml
 id: finally_example
@@ -48,7 +47,7 @@ finally:
     message: cleaning up resources
 ```
 
-### Cleanup after a successful task
+### Success path example
 
 When the task succeeds, `errors` is skipped but `finally` still runs:
 
