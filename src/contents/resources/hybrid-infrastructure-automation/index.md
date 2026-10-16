@@ -124,7 +124,7 @@ The future of hybrid automation will be shaped by several trends. AI-driven auto
 
 Kestra provides a declarative, open-source orchestration platform that serves as the unified control plane for hybrid infrastructure. By defining all workflows as code in simple YAML files, Kestra enables platform teams to apply GitOps principles to their entire automation landscape.
 
-Its language-agnostic architecture allows you to run any script, container, or binary, whether it's Python on a Kubernetes cluster, PowerShell on a Windows server, or a COBOL program on an AS/400. With an extensive library of over 1,400 plugins, Kestra integrates natively with the tools you already use, from Terraform and Ansible to ServiceNow and cloud provider APIs.
+Its language-agnostic architecture allows you to run any script, container, or binary, whether it's Python on a Kubernetes cluster, PowerShell on a Windows server, or a COBOL program on an AS/400. With an extensive library of {totalPlugins}+ plugins, Kestra integrates natively with the tools you already use, from Terraform and Ansible to ServiceNow and cloud provider APIs.
 
 For instance, a single Kestra workflow can orchestrate a complex process:
 1.  A ServiceNow ticket triggers a workflow via webhook.
@@ -150,7 +150,7 @@ tasks:
   # ... more tasks for apply, configure, and close ticket
 ```
 
-This declarative model provides a consistent, auditable, and version-controlled way to manage automation across any environment. Kestra can be deployed on Kubernetes, as a standalone binary, or in air-gapped environments, providing the flexibility needed for complex hybrid and regulated industries. This approach has enabled [Fortune 500 enterprises to replace legacy tools like VMware Aria Automation](https://kestra.io/customers/fortune-500-company), cutting provisioning times from months to days. Similarly, [Crédit Agricole used Kestra to unify fragmented scripts](https://kestra.io/customers/credit-agricole) into a single, secure control plane. With [Enterprise-grade features](https://kestra.io/enterprise), Kestra scales to meet the most demanding governance and security requirements.
+This declarative model provides a consistent, auditable, and version-controlled way to manage automation across any environment. Kestra can be deployed on Kubernetes, as a standalone binary, or in air-gapped environments, providing the flexibility needed for complex hybrid and regulated industries. This approach has enabled [Fortune 500 enterprises to replace legacy tools like VMware Aria Automation](https://kestra.io/stories/fortune-500-company), cutting provisioning times from months to days. Similarly, [Crédit Agricole used Kestra to unify fragmented scripts](https://kestra.io/stories/credit-agricole) into a single, secure control plane. With [Enterprise-grade features](https://kestra.io/enterprise), Kestra scales to meet the most demanding governance and security requirements.
 
 ## Conclusion: Embracing the Automated Hybrid Future
 

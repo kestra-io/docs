@@ -179,7 +179,7 @@ No tool exists in a vacuum. The right automation software must seamlessly integr
 
 ## Kestra: Your Declarative Control Plane for Unified Automation
 
-Kestra is designed to solve the fragmentation problem by providing a single, declarative control plane for all your automation needs. With over 1,700 plugins and a vibrant open-source community with 27,000+ GitHub stars, the platform is built for extensibility and reliability, having executed over 2 billion workflows in 2025 alone.
+Kestra is designed to solve the fragmentation problem by providing a single, declarative control plane for all your automation needs. With {totalPlugins}+ plugins and a vibrant open-source community with 27,000+ GitHub stars, the platform is built for extensibility and reliability, having executed over 2 billion workflows in 2025 alone.
 
 By treating workflows as YAML-based configuration, Kestra brings the best practices of DevOps and GitOps to every process. This approach ensures that all workflows—whether for [data engineering](/data), [AI/ML pipelines](/ai-automation), or [infrastructure automation](/infra-automation)—are versionable, auditable, and easy to review.
 

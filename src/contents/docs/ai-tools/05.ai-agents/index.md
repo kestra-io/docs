@@ -129,6 +129,48 @@ These outputs can then be passed on as notifications or system messages to exter
 
 Each task using the AI Agent requires the `provider` property. To avoid repeating it on every task, use a [Policy](../../07.enterprise/02.governance/policies/index.md) with an `Add` rule to inject the `provider` block into all `AIAgent` tasks across a namespace — this is an Enterprise Edition and Cloud feature. For your provider API key, store it as a [Secret](../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`.
 
+### Provider fallback
+
+Use `io.kestra.plugin.ai.provider.Fallback` to try multiple chat providers in order. The task attempts each provider in sequence and moves to the next on connection failures, timeouts, and retriable errors such as HTTP 5xx and 429 responses. Authentication failures, invalid request errors, guardrail violations, tool execution errors, and response-processing failures stop execution without advancing to the next provider.
+
+```yaml
+id: agent_with_fallback
+namespace: company.ai
+
+inputs:
+  - id: prompt
+    type: STRING
+
+tasks:
+  - id: agent
+    type: io.kestra.plugin.ai.agent.AIAgent
+    systemMessage: You are a helpful assistant. Answer clearly and concisely.
+    prompt: "{{ inputs.prompt }}"
+    provider:
+      type: io.kestra.plugin.ai.provider.Fallback
+      providers:
+        - type: io.kestra.plugin.ai.provider.OpenAI
+          modelName: gpt-5-mini
+          apiKey: "{{ secret('OPENAI_API_KEY') }}"
+        - type: io.kestra.plugin.ai.provider.GoogleGemini
+          modelName: gemini-2.5-flash
+          apiKey: "{{ secret('GEMINI_API_KEY') }}"
+```
+
+Set `modelName` on each nested provider. Connection properties such as `baseUrl`, `clientPem`, and `caPem` also belong on the nested provider, not on `Fallback` directly.
+
+Each provider receives the full configured timeout independently. With N providers all timing out, total execution time can approach N times the timeout before the task fails. When all providers fail, the task throws with a message listing each provider and its failure type.
+
+Each attempt is logged:
+
+```
+INFO  Attempting chat request with provider OPEN_AI [model=gpt-4o-mini] (1/2)
+WARN  Skipping provider OPEN_AI [model=gpt-4o-mini] after provider-side failure of type ConnectException
+INFO  Attempting chat request with provider GOOGLE_AI_GEMINI [model=gemini-2.5-flash] (2/2)
+```
+
+`Fallback` supports chat tasks only. Using it with image generation or embedding tasks throws an error.
+
 ## Agent tools
 
 The AI Agent can be extended with **tools** — capabilities the LLM can choose to invoke at runtime to complete its task. Tools are listed under the `tools` property of an `AIAgent` task.
@@ -238,6 +280,74 @@ Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprot
 - [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/streamablehttpmcpclient) — connects to an MCP server over HTTP streaming.
 
 The [Kestra Python MCP server](https://github.com/kestra-io/mcp-server-python) is an example of an external MCP server you can connect to from a Kestra AI Agent task using one of the clients above.
+
+## Docker Agent
+
+[Docker Agent](https://docs.docker.com/ai/docker-agent/) is a multi-agent framework where specialized agents, defined in a YAML configuration file, collaborate and delegate work. The `io.kestra.plugin.docker.Agent` task runs a Docker Agent team from a Kestra flow, so you can schedule agent workloads, chain them after upstream tasks, and capture results as a `ScriptOutput`.
+
+The task requires a Docker task runner and accepts model provider credentials through the inherited `env` property. Model strings use the `provider/model-name` format: `openai/` with `OPENAI_API_KEY` for OpenAI, or `google/` with `GOOGLE_API_KEY` for Google Gemini.
+
+**OpenAI:**
+
+```yaml
+id: docker_agent_openai
+namespace: company.ai
+
+triggers:
+  - id: every_morning
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 7 * * *"
+
+tasks:
+  - id: daily_digest
+    type: io.kestra.plugin.docker.Agent
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      user: root
+    env:
+      OPENAI_API_KEY: "{{ secret('OPENAI_API_KEY') }}"
+    prompt: "Write a short digest of yesterday's failed deployments."
+    agentConfig: |
+      agents:
+        root:
+          model: openai/gpt-4o-mini
+          instruction: You write concise operations digests.
+```
+
+**Google Gemini:**
+
+```yaml
+id: docker_agent_gemini
+namespace: company.ai
+
+triggers:
+  - id: every_morning
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 7 * * *"
+
+tasks:
+  - id: daily_digest
+    type: io.kestra.plugin.docker.Agent
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      user: root
+    env:
+      GOOGLE_API_KEY: "{{ secret('GOOGLE_API_KEY') }}"
+    prompt: "Write a short digest of yesterday's failed deployments."
+    agentConfig: |
+      agents:
+        root:
+          model: google/gemini-3.5-flash-lite
+          instruction: You write concise operations digests.
+```
+
+The `agentConfig` property accepts inline YAML (as above), a relative path to an existing file in the working directory, or a `kestra://` internal storage URI. When using a relative path, the file must exist in the working directory before the `Agent` task starts — stage it with a `WorkingDirectory` task and an earlier write or download step.
+
+:::alert{type="info"}
+Docker Agent prints a startup banner to stderr. Kestra captures stderr as ERROR-level log entries, so those lines appear red in the execution logs even when the task succeeds. The agent's actual output appears at INFO level.
+:::
+
+For all properties and outputs, see the [Docker Agent plugin reference](/plugins/plugin-docker/cli/agent).
 
 ## Execution details
 

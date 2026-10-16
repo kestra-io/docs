@@ -10,8 +10,10 @@ import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Faq from "~/components/common/Faq.vue"
 import ResourceCtaPair from "~/components/resources/ResourceCtaPair.vue"
+import LivePluginCount from "~/components/content/LivePluginCount.astro"
 import ResourceList from "~/components/resources/ResourceList.astro"
 import type { ResourceListItem } from "~/components/resources/getResources"
+import { resolveTotalPluginsPlaceholder } from "~/utils/plugins/pluginCount"
 
 interface Props {
     post: CollectionEntry<"resources">
@@ -81,7 +83,7 @@ const jsonLinkedData = {
     description: metaDescription,
 }
 
-const faqItems = page.faq ?? []
+const faqItems = await resolveTotalPluginsPlaceholder(page.faq ?? [])
 const faqSchema =
     faqItems.length > 0
         ? {
@@ -147,7 +149,9 @@ const faqSchema =
                 </div>
             </div>
             <div class="bd-content">
-                <Content />
+                <LivePluginCount body={post.body}>
+                    <Content />
+                </LivePluginCount>
                 {page.cta && (
                     <ResourceCtaPair
                         client:load

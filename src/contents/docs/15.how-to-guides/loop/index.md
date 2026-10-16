@@ -94,7 +94,7 @@ tasks:
 
 ## Run iterations in parallel
 
-Set `concurrencyLimit` to a positive integer to cap how many iterations run at once. Setting it to `0` removes the cap entirely — only do this for small datasets where you understand the resource implications.
+By default (`concurrencyLimit: 0`), all iterations run in parallel and workers regulate throughput. Set `concurrencyLimit` to a positive integer to cap how many iterations run at once, which is useful for heavy workloads or when order matters. Any value set on the task or via a [policy](../../07.enterprise/02.governance/policies/index.md) takes precedence over the default.
 
 ```yaml
 id: loop_parallel

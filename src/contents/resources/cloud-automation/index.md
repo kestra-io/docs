@@ -111,7 +111,7 @@ tasks:
 - **Hybrid Integration:** The workflow orchestrates tasks across an on-premises VMware vCenter instance and Google Cloud Platform via CLI execution.
 - **Secure Secret Management:** All credentials are securely injected at runtime via `{{ secret('...') }}` rather than hardcoded into the configuration.
 
-For organizations transitioning from rigid legacy setups, this level of control provides a clear path forward, mirroring successful migrations achieved by enterprises replacing aging automation layers as highlighted in our case study on [securing hybrid cloud automation](/customers/fortune-500-company). To explore how to unify your entire operational landscape, visit our [infrastructure automation platform overview](/infra-automation).
+For organizations transitioning from rigid legacy setups, this level of control provides a clear path forward, mirroring successful migrations achieved by enterprises replacing aging automation layers as highlighted in our case study on [securing hybrid cloud automation](/stories/fortune-500-company). To explore how to unify your entire operational landscape, visit our [infrastructure automation platform overview](/infra-automation).
 
 ## Where Cloud Automation Pays Off: Key Use Cases
 

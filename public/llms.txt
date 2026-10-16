@@ -77,9 +77,9 @@ Use this section when a flow needs to store or retrieve data that lives outside 
 
 - [Internal storage](https://kestra.io/docs/concepts/storage.md): Kestra's built-in file system for passing large files between tasks; tasks return internal storage URIs as output attributes (e.g. `uri`)
 - [Namespace files](https://kestra.io/docs/concepts/namespace-files.md): Scripts, configs, and SQL files stored at the namespace level and available to all flows in that namespace via `WorkingDirectory` or `{{ namespaceFiles }}`
-- [KV Store](https://kestra.io/docs/concepts/kv-store.md): Persistent key-value pairs scoped to a namespace; read with `{{ kv('key') }}`, written via tasks or the API — use for shared state and counters
+- [KV Store](https://kestra.io/docs/concepts/kv-store.md): Persistent key-value pairs scoped to a namespace; read with `{{ kv('key') }}`, written via tasks or the API; use for shared state and counters
 - [Secrets](https://kestra.io/docs/concepts/secret.md): Encrypted values referenced with `{{ secret('NAME') }}`; stored in Kestra or delegated to an external secrets manager
-- [Backfill](https://kestra.io/docs/concepts/backfill.md): Re-execute a scheduled trigger over a past date range to reprocess historical data
+- [Backfill](https://kestra.io/docs/workflow-components/triggers/schedule-trigger.md#using-backfill): Re-execute a scheduled trigger over a past date range to reprocess historical data
 
 ## Best practices
 
@@ -150,8 +150,9 @@ Use this section for questions about installing, configuring, or running a Kestr
 
 - [Installation](https://kestra.io/docs/installation.md): Docker, Docker Compose, Kubernetes (AWS EKS, GCP GKE, Azure AKS), and VM deployment guides
 - [Configuration reference](https://kestra.io/docs/configuration.md): All server configuration options — datasource, storage, queue, auth, encryption, plugins, and telemetry
-- [Administrator guide](https://kestra.io/docs/administrator-guide.md): Production operations — monitoring, HA, SSL, security hardening, backup, purging, and troubleshooting
+- [Administrator guide](https://kestra.io/docs/administrator-guide.md): Production operations — monitoring, HA, SSL, backup, purging, and troubleshooting
 - [Performance](https://kestra.io/docs/performance.md): Benchmarks, JVM tuning, and infrastructure sizing guidance
+- [Security hardening](https://kestra.io/docs/security-hardening.md): Credential initialization, network and worker isolation, transport security, HTTP URL filtering, and endpoint protection
 - [Migration guide](https://kestra.io/docs/migration-guide.md): Breaking changes and upgrade notes across Kestra versions
 
 ## Extending Kestra
@@ -198,7 +199,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Prometheus Metrics for Kestra: Reference and /prometheus Endpoint](https://kestra.io/docs/administrator-guide/prometheus-metrics.md)
 - [Purge Executions, Logs, and Files in Kestra](https://kestra.io/docs/administrator-guide/purge.md): Scheduled purge patterns for executions, logs, KV pairs, namespace files, and orphaned execution storage; includes the isolated-worker-group cleanup pattern using PurgeStorage
 - [Software and Hardware Requirements to Run Kestra](https://kestra.io/docs/administrator-guide/requirements.md)
-- [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/administrator-guide/security-hardening.md)
 - [Server Heartbeats and Job Recovery in Kestra](https://kestra.io/docs/administrator-guide/server-lifecycle.md)
 - [Service Instance Metrics in Kestra – Expose via the Webserver](https://kestra.io/docs/administrator-guide/service-instance-metrics.md)
 - [SSL/TLS Configuration: Enable HTTPS for Kestra](https://kestra.io/docs/administrator-guide/ssl-configuration.md)
@@ -245,14 +245,13 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Secrets Management in Kestra: Avoid Accidental Exposure](https://kestra.io/docs/best-practices/secrets-management.md)
 - [Kestra Brand Assets: Logos and Visual Identity](https://kestra.io/docs/brand-assets.md)
 - [Core Concepts in Kestra: Architecture and Templating](https://kestra.io/docs/concepts.md)
-- [Backfill in Kestra: Replay Missed Schedules](https://kestra.io/docs/concepts/backfill.md)
 - [Blueprints in Kestra: Reusable Workflow Templates](https://kestra.io/docs/concepts/blueprints.md)
 - [Caching in Kestra: Speed Up Repeated Tasks](https://kestra.io/docs/concepts/caching.md)
 - [File Access in Kestra: Local and Namespace Files](https://kestra.io/docs/concepts/file-access.md)
 - [KV Store in Kestra: Persist Shared State](https://kestra.io/docs/concepts/kv-store.md)
 - [Namespace Files in Kestra: Manage Project Assets](https://kestra.io/docs/concepts/namespace-files.md)
 - [Pebble Templating in Kestra: Dynamic Variables](https://kestra.io/docs/concepts/pebble.md)
-- [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/concepts/replay.md)
+- [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/how-to-guides/replay.md)
 - [Flow Revisions in Kestra: Versioning and Rollbacks](https://kestra.io/docs/concepts/revision.md)
 - [Secrets in Kestra: Store Sensitive Values Securely](https://kestra.io/docs/concepts/secret.md)
 - [Data Storage in Kestra: How Task Data Is Managed](https://kestra.io/docs/concepts/storage.md)
@@ -291,7 +290,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [LDAP Authentication in Kestra: Directory Login](https://kestra.io/docs/enterprise/auth/sso/ldap.md)
 - [Set Up Microsoft OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/microsoft-oidc.md)
 - [Set Up Okta OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/okta.md)
-- [Cloud & Enterprise FAQ: Licensing and Configuration](https://kestra.io/docs/enterprise/ee-faq.md)
 - [Governance in Kestra Enterprise: Security and Control](https://kestra.io/docs/enterprise/governance.md)
 - [Allowed & Restricted Plugins in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/allowed-plugins.md)
 - [Assets in Kestra: Track Lineage and Metadata](https://kestra.io/docs/enterprise/governance/assets.md)
@@ -312,7 +310,10 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Maintenance Mode in Kestra Enterprise: Safe Upgrades](https://kestra.io/docs/enterprise/instance/maintenance-mode.md)
 - [Versioned Plugins in Kestra Enterprise: Multi-Version](https://kestra.io/docs/enterprise/instance/versioned-plugins.md)
 - [Instance Owner Console in Kestra Enterprise](https://kestra.io/docs/enterprise/instance/instance-owner.md)
-- [Kestra Cloud: Getting Started](https://kestra.io/docs/enterprise/cloud-getting-started.md): Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
+- [Kestra Cloud](https://kestra.io/docs/enterprise/cloud.md): Landing section for Kestra Cloud onboarding, compute billing, and task run counting.
+- [Kestra Cloud: Getting Started](https://kestra.io/docs/enterprise/cloud/getting-started.md): Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
+- [Kestra Cloud Compute](https://kestra.io/docs/enterprise/cloud/cloud-compute.md): Which task types use Kestra Cloud compute, what is measured per attempt, and how to bring your own runner.
+- [Kestra Cloud Task Runs](https://kestra.io/docs/enterprise/cloud/task-runs.md): What a task run is, which ones are counted toward Cloud usage, and how loops, subflows, and retries affect the count.
 - [Enterprise Edition in Kestra: Architecture and Setup](https://kestra.io/docs/enterprise/overview.md)
 - [Enterprise Features in Kestra: High-Availability](https://kestra.io/docs/enterprise/overview/enterprise-edition.md)
 - [Migrate from OSS to Kestra Enterprise Edition](https://kestra.io/docs/enterprise/overview/migrate-from-oss.md)
@@ -394,6 +395,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Manage Python Dependencies in Kestra](https://kestra.io/docs/how-to-guides/python-dependencies.md)
 - [Manage Python Dependencies with uv in Kestra](https://kestra.io/docs/how-to-guides/python-uv.md)
 - [Realtime Triggers in Kestra: Kafka, SQS, Pub/Sub](https://kestra.io/docs/how-to-guides/realtime-triggers.md)
+- [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/how-to-guides/replay.md)
 - [Build SecOps Workflows with Kestra](https://kestra.io/docs/how-to-guides/secops-with-kestra.md)
 - [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
 - [Install Only Selected Plugins in Kestra OSS](https://kestra.io/docs/how-to-guides/selected-plugin-installation.md)
@@ -573,6 +575,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Script Outputs & Metrics: Send Data Back to Kestra](https://kestra.io/docs/scripts/outputs-metrics.md)
 - [Task Runners in Scripts: Control Execution Environment](https://kestra.io/docs/scripts/task-runners.md)
 - [Working Directory Task – Share Files Across Scripts](https://kestra.io/docs/scripts/working-directory.md)
+- [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/security-hardening.md)
 - [Task Runners in Kestra: Offload & Isolate Compute](https://kestra.io/docs/task-runners.md)
 - [Task Runner Benefits: Resource Control & Flexibility](https://kestra.io/docs/task-runners/benefits.md)
 - [Task Runner Capabilities & Supported Plugins in Kestra](https://kestra.io/docs/task-runners/overview.md)
@@ -580,6 +583,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Task Runner Types – Choose the Right Execution Backend](https://kestra.io/docs/task-runners/types.md)
 - [AWS Batch Task Runner – Run Tasks on ECS Fargate, EC2, or EKS](https://kestra.io/docs/task-runners/types/aws-batch-task-runner.md)
 - [AWS EC2 Task Runner – Run Tasks Natively on EC2 Instances](https://kestra.io/docs/task-runners/types/aws-ec2-task-runner.md)
+- [AWS Lambda MicroVM Task Runner – Run Tasks on ARM64 MicroVMs](https://kestra.io/docs/task-runners/types/aws-lambdamicrovm-task-runner.md)
 - [Azure Batch Task Runner: Run Tasks on Azure Containers](https://kestra.io/docs/task-runners/types/azure-batch-task-runner.md)
 - [Azure Virtual Machine Task Runner – Run Tasks Natively on Azure VMs](https://kestra.io/docs/task-runners/types/azure-virtualmachine-task-runner.md)
 - [Docker Task Runner – Run Tasks in Containers](https://kestra.io/docs/task-runners/types/docker-task-runner.md)
@@ -683,7 +687,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Workflow SLAs in Kestra – Assert Duration Targets](https://kestra.io/docs/workflow-components/sla.md)
 - [Execution States in Kestra: Full Lifecycle Guide](https://kestra.io/docs/workflow-components/states.md)
 - [Subflows in Kestra – Modularize and Reuse Flows](https://kestra.io/docs/workflow-components/subflows.md)
-- [Task Cache in Kestra – Reuse Expensive Results](https://kestra.io/docs/workflow-components/task-cache.md)
 - [Tasks in Kestra – Define Steps in a Flow](https://kestra.io/docs/workflow-components/tasks.md)
 - [Flowable Tasks in Kestra: Control Flow Logic](https://kestra.io/docs/workflow-components/tasks/flowable-tasks.md)
 - [Runnable Tasks in Kestra – Execute Workloads](https://kestra.io/docs/workflow-components/tasks/runnable-tasks.md)

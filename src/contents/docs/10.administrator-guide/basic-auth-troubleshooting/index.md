@@ -22,7 +22,7 @@ Since Basic Authentication is now required, the `enabled` flag is ignored and sh
 
 For production deployments, set a valid email address and a strong password in the configuration file.
 
-If you use the Setup page to create credentials, the password must satisfy the password policy configured under `kestra.security.basic-auth`. See [Security and Secrets configuration](../../configuration/05.security-and-secrets/index.md) for the available password policy settings.
+Whether you use the Setup page or the configuration file, the username must be a valid email address, and the password must be at least 8 characters with at least one uppercase letter, one lowercase letter, and one digit. Neither can exceed 256 characters. In the open-source edition these rules are fixed; the configurable [password policy](../../configuration/05.security-and-secrets/index.md#invitation-expiration-and-password-rules) under `kestra.security.basic-auth` applies only to the Enterprise Edition.
 
 There are four possible scenarios for existing users.
 
