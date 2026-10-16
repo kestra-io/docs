@@ -39,9 +39,9 @@ outputs:
 
 ## Purging large output files
 
-If a flow generates large output files that are not needed after execution, you can use the [io.kestra.plugin.core.storage.PurgeExecutionFiles](/plugins/core/storage/io.kestra.plugin.core.storage.purgeexecutionfiles) task to delete those files from internal storage.
+If a flow generates large output files that are not needed after execution, you can use the [io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles](/plugins/core/storage/io.kestra.plugin.core.storage.purgecurrentexecutionfiles) task to delete those files from internal storage.
 
-In the example below, the flow downloads a large file from an HTTP API and uploads it to an S3 bucket. Once the file is uploaded, it’s no longer needed locally, so the `PurgeExecutionFiles` task is used to remove it from internal storage.
+In the example below, the flow downloads a large file from an HTTP API and uploads it to an S3 bucket. Once the file is uploaded, it’s no longer needed locally, so the `PurgeCurrentExecutionFiles` task is used to remove it from internal storage.
 
 ```yaml
 id: extractLoadPurge
