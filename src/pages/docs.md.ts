@@ -16,7 +16,7 @@ export const GET: APIRoute = async () => {
         return new Response("Not found", { status: 404 })
     }
 
-    return new Response(`# ${doc.data.title}\n\n${doc.body}`, {
+    return new Response(`# ${doc.data.h1 ?? doc.data.title}\n\n${doc.body}`, {
         status: 200,
         headers: {
             "Content-Type": "text/markdown; charset=utf-8",
