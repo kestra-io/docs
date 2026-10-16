@@ -1,0 +1,88 @@
+---
+import Layout from "~/components/layout.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import Intro from "~/components/partners/Intro.astro"
+import Benefits from "~/components/partners/Benefits.astro"
+import PartnerDirectory from "~/components/partners/PartnerDirectory.vue"
+import PartnerCta from "~/components/partners/PartnerCta.astro"
+import { PARTNERS } from "~/components/partners/partners"
+import ConapiLogo from "~/assets/landing/partners/conapi-logo-small.svg?raw"
+import AshisutoLogo from "~/assets/landing/partners/ashisuto-logo.svg?raw"
+
+const title =
+    "Kestra Consulting Partners: Consulting Firms and Systems Integrators"
+const description =
+    "Search the consulting firms and systems integrators who sell, implement and support Kestra, by country and service. Or join the program."
+
+const partners = PARTNERS.filter((p) => p.type === "Consulting").map((p) => ({
+    name: p.name,
+    logo: p.logo.src,
+    kind: p.kind,
+    country: p.country,
+    region: p.region,
+    description: p.description,
+    services: p.services,
+    href: p.href,
+}))
+
+const FILTERS: { key: "kind" | "region" | "services"; label: string }[] = [
+    { key: "kind", label: "Partner type" },
+    { key: "region", label: "Region" },
+    { key: "services", label: "Services" },
+]
+
+const BENEFITS = [
+    {
+        title: "Deal registration and co-selling",
+        text: "Register the opportunities you bring, protect them, and work them with the Kestra sales team. Margin on Enterprise and Cloud, and a partner manager who knows your accounts.",
+    },
+    {
+        title: "Enablement and a sandbox Enterprise Edition",
+        text: "Training for your engineers, a full Enterprise Edition to build and demo on, and priority routing to our support and solution engineers when a customer project needs it.",
+    },
+    {
+        title: "A listing buyers actually use",
+        text: "Your firm in the directory above, searchable by country and service, with the partner badge and co-marketing material to back it up.",
+    },
+    {
+        title: "Joint customer stories",
+        text: "When a project lands, we publish it together. Ntico, Conapi and Ashisuto already have their own pages on kestra.io.",
+    },
+]
+
+const QUOTES = [
+    {
+        quote: "Our clients need to connect legacy systems to modern automation without throwing everything away. This integration protects existing infrastructure while enriching APIs with Kestra data. It's the practical path to modernization our customers have been asking for.",
+        author: "Stefan Fritz - CEO, Conapi",
+        smallLogoSvg: ConapiLogo,
+    },
+    {
+        quote: "Our collaboration with Kestra enables us to bring the stability and operational ease that Japan's top-tier enterprises require. As a bridge between Kestra's world-class engineering team and local business needs, we help organizations adopt Kestra with confidence.",
+        author: "Hideki Itaki - Director, Innovation & Marketing Co-Creation Lab at Ashisuto",
+        smallLogoSvg: AshisutoLogo,
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Consulting Partners">
+    <Intro
+        title="Find a consulting partner"
+        text="Consulting firms and systems integrators who sell, implement and support Kestra. Search by country and service, or join the program and deliver Kestra to your own customers."
+        ctaText="Become a consulting partner"
+        ctaHref="/partners/apply?track=consulting"
+    />
+    <PartnerDirectory
+        client:load
+        id="directory"
+        partners={partners}
+        filters={FILTERS}
+        searchPlaceholder="Search by name, country or service"
+    />
+    <Benefits
+        title="What consulting partners get"
+        intro="The program exists so that a partner can sell and deliver Kestra without us in the room, and still have us one message away when it matters."
+        benefits={BENEFITS}
+    />
+    <Quotes quotes={QUOTES} />
+    <PartnerCta track="consulting" />
+</Layout>

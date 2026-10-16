@@ -1,0 +1,74 @@
+---
+import Link from "~/components/common/Link.astro"
+
+interface Props {
+    track?: "consulting" | "technology"
+}
+
+const { track } = Astro.props
+
+const COPY = {
+    consulting: {
+        title: "Sell and deliver Kestra with us",
+        text: "Three steps, five minutes. Tell us who you are and where you work, and the partnerships team replies within five business days.",
+        cta: "Apply as a consulting partner",
+    },
+    technology: {
+        title: "Ship your integration with us",
+        text: "Three steps, five minutes. Tell us what you build and where the integration stands, and the plugin team replies within five business days.",
+        cta: "Apply as a technology partner",
+    },
+    default: {
+        title: "Become a Kestra partner",
+        text: "Three steps, five minutes. Pick your track, tell us about your company, and the partnerships team replies within five business days.",
+        cta: "Apply now",
+    },
+}
+
+const copy = COPY[track ?? "default"]
+const href = track ? `/partners/apply?track=${track}` : "/partners/apply"
+---
+
+<section class="partner-cta" id="form">
+    <div class="container">
+        <div class="box">
+            <div>
+                <h2>{copy.title}</h2>
+                <p>{copy.text}</p>
+            </div>
+            <Link href={href} class="btn btn-primary">{copy.cta}</Link>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .partner-cta {
+        padding: 4rem 0;
+        background: var(--ks-background-body);
+
+        .box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--ks-border-secondary);
+            background: var(--ks-background-primary);
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            margin: 0 0 0.5rem;
+        }
+
+        p {
+            margin: 0;
+            max-width: 56ch;
+            color: var(--ks-content-secondary);
+        }
+    }
+</style>

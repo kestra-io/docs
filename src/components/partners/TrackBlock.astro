@@ -1,0 +1,99 @@
+---
+import Link from "~/components/common/Link.astro"
+import { PARTNERS, type PartnerType } from "./partners"
+
+interface Props {
+    type: PartnerType
+    title: string
+    text: string
+    href: string
+    cta: string
+    reverse?: boolean
+}
+
+const { type, title, text, href, cta, reverse = false } = Astro.props
+const partners = PARTNERS.filter((p) => p.type === type)
+---
+
+<section class="track">
+    <div class="container">
+        <div
+            class:list={[
+                "row",
+                "g-5",
+                "align-items-center",
+                { "flex-lg-row-reverse": reverse },
+            ]}
+        >
+            <div class="col-12 col-lg-5">
+                <h2>{title}</h2>
+                <p>{text}</p>
+                <Link href={href} class="btn btn-primary">{cta}</Link>
+            </div>
+            <div class="col-12 col-lg-7">
+                <ul class="logos" aria-label={`${title} logos`}>
+                    {
+                        partners.map((partner) => (
+                            <li>
+                                <img
+                                    src={partner.logo.src}
+                                    alt={partner.name}
+                                    loading="lazy"
+                                />
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .track {
+        padding: 3.5rem 0;
+
+        h2 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin: 0 0 1rem;
+        }
+
+        p {
+            color: var(--ks-content-secondary);
+            line-height: 1.6;
+            margin: 0 0 1.5rem;
+        }
+
+        .logos {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            li {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 84px;
+                padding: 1rem 1.25rem;
+                border-radius: 8px;
+                background: #f7f7f7;
+                border: 1px solid var(--ks-border-secondary);
+            }
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+</style>
