@@ -4,6 +4,7 @@ description: "Orchestrate Nutanix from one flow: crash- or app-consistent recove
 tool:
   name: "Nutanix"
   pluginClass: "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
+  category: "Infrastructure"
   color: "#024DA1"
 
 hero:

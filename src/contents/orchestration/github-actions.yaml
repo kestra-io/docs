@@ -4,6 +4,7 @@ description: "Dispatch GitHub Actions workflows from cron, S3, Kafka, or any HTT
 tool:
   name: "GitHub Actions"
   pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+  category: "Infrastructure"
   color: "#2088FF"
 
 hero:

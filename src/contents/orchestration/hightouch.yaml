@@ -4,6 +4,7 @@ description: "Run the Airbyte to dbt to Hightouch chain in one flow, gate activa
 tool:
   name: "Hightouch"
   pluginClass: "io.kestra.plugin.hightouch.Sync"
+  category: "Data"
   color: "#d1f05d"
 
 hero:

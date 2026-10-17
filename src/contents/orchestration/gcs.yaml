@@ -4,6 +4,7 @@ description: "Fire a flow when objects land in GCS, load them into BigQuery, run
 tool:
   name: "GCS"
   pluginClass: "io.kestra.plugin.gcp.gcs.Upload"
+  category: "Cloud"
   color: "#4285F4"
 
 hero:
