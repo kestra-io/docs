@@ -4,6 +4,7 @@ description: "Drive DigitalOcean droplets, managed databases, DNS, firewalls, an
 tool:
   name: "DigitalOcean"
   pluginClass: "io.kestra.plugin.digitalocean.droplet.Create"
+  category: "Cloud"
   color: "#0080FF"
 
 hero:

@@ -4,6 +4,7 @@ description: "Push flows, dashboards, and Namespace Files to any Git provider. S
 tool:
   name: "Git"
   pluginClass: "io.kestra.plugin.git.NamespaceSync"
+  category: "Infrastructure"
   color: "#F1502F"
 
 hero:

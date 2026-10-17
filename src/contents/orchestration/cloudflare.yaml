@@ -4,6 +4,7 @@ description: "Drive Cloudflare DNS, CDN purges, WAF rules, and Workers KV from u
 tool:
   name: "Cloudflare"
   pluginClass: "io.kestra.plugin.cloudflare.dns.records.Upsert"
+  category: "Cloud"
   color: "#F38020"
 
 hero:

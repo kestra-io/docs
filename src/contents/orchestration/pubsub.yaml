@@ -4,6 +4,7 @@ description: "Start one execution per Pub/Sub message, micro-batch events into B
 tool:
   name: "Pub/Sub"
   pluginClass: "io.kestra.plugin.gcp.pubsub.Publish"
+  category: "Data"
   color: "#4285F4"
 
 hero:
