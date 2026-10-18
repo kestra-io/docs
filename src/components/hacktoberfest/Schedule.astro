@@ -200,6 +200,15 @@ const EVENTS = [
             color: var(--ks-content-secondary);
             font-size: $font-size-sm;
             line-height: 20px;
+
+            :global(a) {
+                color: var(--ks-content-link);
+                text-decoration: underline;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
         }
 
         @include media-breakpoint-down(xl) {
