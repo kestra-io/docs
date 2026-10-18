@@ -941,3 +941,20 @@ tasks:
 The `io.kestra.plugin.ee.dashboard.data.Assets` data source builds charts over the asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range; they always reflect the current state of your inventory.
 
 See [Assets (EE and Cloud only)](../../../09.ui/00.dashboard/index.md#assets-ee-and-cloud-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.
+
+
+## Assets vs. Plugin Artifacts
+
+It is common to compare **Assets** with **[Plugin Artifacts](/docs/plugin-developer-guide/plugin-ui)**, as both can represent relationship structures such as DAGs or dependency graphs:
+
+| Characteristic | Asset (Enterprise) | Plugin Artifact |
+| --- | --- | --- |
+| **Lifecycle** | **Persistent**: Tracked and stored historically across all executions | **Volatile**: Rendered dynamically within a single execution or flow view |
+| **Scope** | Platform-wide data catalog and governance lineage across pipelines | Execution-scoped visual feedback developed by a plugin author |
+| **Target Audience** | Data governance teams, compliance, and enterprise architects | Engineers debugging or monitoring individual flow executions |
+
+### Worked Example: dbt Lineage in Assets vs. Dependencies Artifact
+
+When orchestrating dbt in Kestra:
+- **dbt Lineage in Assets**: Tracks your persistent data models, seeds, and marts over time, recording which flows write to or read from given database tables across the platform.
+- **dbt Plugin Artifact**: Generates an ephemeral dependency graph widget rendered directly within the execution tab for inspecting the exact manifest compiled during that specific run.
