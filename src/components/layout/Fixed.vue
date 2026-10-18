@@ -67,8 +67,8 @@
     #fixed-container {
         position: fixed;
         z-index: 9999;
-        bottom: 10px;
-        right: 10px;
+        bottom: 24px;
+        right: 24px;
         transform: translateX(0);
         transition: all ease 0.2s;
         .text-end {
