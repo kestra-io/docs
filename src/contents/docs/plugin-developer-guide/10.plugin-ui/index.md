@@ -756,3 +756,21 @@ This is useful for tasks that carry large or structured payloads (SQL queries, s
 :::alert{type="info"}
 `additionalProperties` values are static — they are evaluated at build time and embedded in the manifest. They cannot reference runtime task values.
 :::
+
+
+## Plugin Artifacts vs. Assets
+
+While both **Plugin Artifacts** and **[Assets](/docs/enterprise/governance/assets)** can visualize and surface metadata (for instance, dependency graphs in data transformation workflows), they serve fundamentally different purposes:
+
+| Feature | Plugin Artifact | Asset |
+| --- | --- | --- |
+| **Edition** | Open-Source (OSS) & Enterprise Edition (EE) | Enterprise Edition (EE) & Cloud |
+| **Nature** | **Volatile**: Executed and rendered within specific execution or flow views, tied to workflow run context | **Persistent**: Centrally stored, versioned, and tracked continuously across executions over time |
+| **Location** | Flow topology, execution logs, and run detail tabs | Dedicated **Assets** governance dashboard |
+| **Built by** | Plugin developer via Vue.js, Module Federation, and `@kestra-io/artifact-sdk` | Native platform governance feature automatically captured across data integrations |
+
+### Worked Example: dbt Lineage vs. dbt Artifact
+
+Consider running a dbt pipeline using the `plugin-dbt` integration:
+- **Plugin Artifact (Volatile)**: The dbt plugin can render a **dependencies graph artifact** inside the execution topology. This gives immediate, run-specific visual feedback to the engineer debugging that specific pipeline execution. Once the execution view is closed, this visualization is tied to that specific execution run.
+- **Asset (Persistent)**: The **Assets** interface indexes the models, sources, and marts produced by dbt into the persistent enterprise lineage graph. Stakeholders can inspect how tables and downstream consumers evolve across weeks or months across the entire organization, even between disconnected workflows.
