@@ -141,6 +141,39 @@ New releases are announced through:
 ![release_notification_github](./release_notifications_github.png)
 
 
+
+## Upgrading Workers and Controllers (gRPC Protocol & Compatibility)
+
+Starting with Kestra 2.0, Workers connect to the Controller via an internal client/server protocol backed by **gRPC**. Because the gRPC protocol contract defines task submission, heartbeat streaming, and execution status reporting, mismatched versions between Workers and Controllers can cause connectivity and execution dispatch failures.
+
+### Recommended Upgrade Procedure
+
+To prevent protocol desynchronization:
+1. **The Safe Default**: Stop all Workers and Controllers together, apply the version upgrade across all services, and then start them on the same new version.
+2. **Graceful Drain First**: Allow Workers to finish in-flight task runs (governed by `terminationGracePeriodSeconds` in Kubernetes) so running data workloads complete cleanly.
+3. **Upgrade Controllers and Workers to the Exact Same Version**: Deploy the new release image simultaneously across both the control plane (Controllers) and data plane (Workers).
+
+### Version Compatibility & Remote Workers / Worker Groups
+
+Remote Workers and Worker Groups are frequently distributed across disparate Kubernetes clusters, clouds, or on-premises servers managed by different teams.
+
+- **Strict Parity Required**: Running Workers and Controllers on different versions—even across patch releases if internal protobuf/gRPC schemas evolved—is not supported.
+- **Coordinated Upgrades**: When planning upgrades for remote worker groups, ensure that remote worker deployments are updated in lockstep with the primary control plane.
+- **Rollback Strategy**: If an upgrade fails or needs to be rolled back, roll back both the Controller and Workers together to their prior identical version.
+
+### Identifying Version Mismatch Issues
+
+If a Worker and Controller run on mismatched versions, you may observe logs similar to:
+- `io.grpc.StatusRuntimeException: UNIMPLEMENTED: Method not found`
+- `io.grpc.StatusRuntimeException: UNAVAILABLE: Connection refused / handshake failure`
+- `Worker failed to register with Controller: protocol mismatch`
+
+**Resolution**: Verify the exact Docker image tag or binary version on both the Worker and Controller pods/nodes. Align both components to the same version and restart the services.
+
+### Protocol Announcements in Release Notes
+
+Any changes to the internal Worker/Controller communication protocol or gRPC contract are announced under the **Breaking Changes** or **Architecture** sections of the [Kestra Release Notes](https://github.com/kestra-io/kestra/releases). Always check these notes prior to upgrading distributed architectures.
+
 ## Database migrations
 
 There are two types of database migrations: automatic and manual.
