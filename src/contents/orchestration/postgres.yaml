@@ -178,7 +178,7 @@ quotes:
   - quote: "Our goal is for Kestra to become the go-to solution across the organization whenever data wrangling and complex pipeline orchestration are needed."
     author: "Rémi Sultan, AI/ML Lead at Gravitee"
     logoFile: "gravitee"
-    storyLink: "/customers/gravitee"
+    storyLink: "/stories/gravitee"
     kpis:
       - name: "reduction of pipeline maintenance time"
         value: "50%"
@@ -187,7 +187,7 @@ quotes:
   - quote: "Kestra allowed us to move from fragmented automation to a unified control plane: secure, scalable, and manageable by all our teams."
     author: "Julien Legrand, Data Product Owner at Crédit Agricole"
     logoFile: "credit-agricole"
-    storyLink: "/customers/credit-agricole"
+    storyLink: "/stories/credit-agricole"
     kpis:
       - name: "data teams unified"
         value: "7"

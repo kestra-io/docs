@@ -111,8 +111,11 @@ tasks:
     then:
       - id: grant-access
         type: io.kestra.plugin.scripts.shell.Commands
+        env:
+          SOFTWARE: "{{ trigger.body.software }}"
+          REQUESTER: "{{ trigger.body.requester }}"
         commands:
-          - echo "Granting access to {{ trigger.body.software }} for {{ trigger.body.requester }}"
+          - echo "Granting access to $SOFTWARE for $REQUESTER"
           # In a real scenario, this would be an API call or script to the identity provider
     else:
       - id: log-denial

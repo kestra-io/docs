@@ -6,7 +6,7 @@ sidebarTitle: Disabled flag
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-The `disabled` property is a boolean that skips a flow, task, or trigger without removing it — useful for debugging without deleting YAML.
+The `disabled` property is a boolean that skips a flow, task, or trigger without removing it, useful for debugging without deleting YAML.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FcDsU1YIToI?si=xc5fuRlIDaWNUjWn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -14,7 +14,7 @@ The `disabled` property is a boolean that skips a flow, task, or trigger without
 
 ## Disabled flow
 
-A disabled flow will not execute and its triggers are automatically ignored — you do not need to disable each trigger separately.
+A disabled flow will not execute and its triggers are automatically ignored; you do not need to disable each trigger separately.
 
 When you disable a flow from the UI, Kestra writes `disabled: true` into the flow source and saves a new revision. This means a redeploy or git sync that does not include `disabled: true` will re-enable the flow. If you manage flows as code, add `disabled: true` to the YAML in your repository rather than using the UI toggle, so the disabled state survives future deploys.
 
@@ -54,10 +54,10 @@ The parent flow immediately fails with the error: `Cannot execute a flow which i
 
 ![Gantt view of a failed execution showing the error Cannot execute a flow which is disabled](./disabled-subflow-error.png)
 
-The same error occurs when triggering via API — the execution is created then immediately marked as failed:
+The same error occurs when triggering via API: the execution is created then immediately marked as failed:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/main/executions/trigger/company.team/parent_runs_disabled_flow
+curl -X POST http://localhost:8080/api/v1/main/executions/company.team/parent_runs_disabled_flow
 ```
 
 ## Disabled trigger
@@ -82,9 +82,11 @@ triggers:
 
 No scheduled executions are created while the trigger is disabled. To re-enable it, set `disabled: false` or remove the property entirely.
 
+When you re-enable a Schedule trigger from the **Triggers** tab, a dialog asks how to handle the schedules missed while it was disabled: **Do not recover missed schedules**, or follow the trigger's [`recoverMissedSchedules`](../07.triggers/01.schedule-trigger/index.md#recover-missed-schedules) setting. The `PUT /api/v1/{tenant}/triggers/set-disabled` API skips missed schedules unless the request sets `recoverMissedSchedules: true`. Disabling a realtime trigger also stops its running instance.
+
 ## Disabled task
 
-You can disable a single task to skip it without deleting it — useful when isolating a failure during debugging:
+You can disable a single task to skip it without deleting it, useful when isolating a failure during debugging:
 
 ```yaml
 id: myflow
