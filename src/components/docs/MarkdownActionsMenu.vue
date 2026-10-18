@@ -40,6 +40,8 @@
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
     import Github from "vue-material-design-icons/Github.vue"
+    import ChatGptIcon from "~/components/icons/ChatGptIcon.vue"
+    import ClaudeIcon from "~/components/icons/ClaudeIcon.vue"
     import { useMarkdownActions } from "~/composables/useMarkdownActions"
     import { useDropdown } from "~/composables/useDropdown"
     import type { MarkdownActionDefinition, MarkdownActionId } from "~/utils/markdown-actions"
@@ -80,12 +82,12 @@
             : actions,
     )
 
-    const actionIcons: Record<MarkdownActionId, typeof ContentCopy> = {
+    const actionIcons: Record<MarkdownActionId, any> = {
         edit: Github,
         copy: ContentCopy,
         view: FileDocumentOutline,
-        chatgpt: OpenInNew,
-        claude: OpenInNew,
+        chatgpt: ChatGptIcon,
+        claude: ClaudeIcon,
     }
 
     const triggerIcon = computed(() => (copied.value ? Check : ContentCopy))
