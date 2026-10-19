@@ -57,7 +57,10 @@ const {
         </div>
     </div>
 
-    <div class="logos" data-usal="fade-u delay-150 duration-500 ease-out">
+    <div
+        class:list={["logos", { dense: companies && companies.length > 7 }]}
+        data-usal="fade-u delay-150 duration-500 ease-out"
+    >
         <p>Trusted in production by:</p>
         <LogoBar {companies} />
     </div>
@@ -224,6 +227,15 @@ const {
             padding-bottom: 3.75rem;
             :global(.logo-carousel) {
                 margin: 2.75rem 0 0;
+            }
+        }
+        /* LogoBar's gaps are sized for seven logos; more would overflow the
+         * row on desktop, so tighten the gap and let it wrap. */
+        /* Prefixed with the container to outrank LogoBar's own gap rules. */
+        &.dense :global(.companies-container .companies) {
+            @include media-breakpoint-up(lg) {
+                flex-wrap: wrap;
+                gap: 1.5rem;
             }
         }
         p {
