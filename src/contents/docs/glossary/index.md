@@ -22,7 +22,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
     <span id="plugin-artifact"></span>
     - [Plugin artifact](#plugin-artifact) - the installable binary of a [plugin](#plugin), identified by Maven coordinates (`groupId:artifactId:version`) when installed with `kestra plugins install` or from the UI. See [plugins](../05.workflow-components/02.plugins/index.md).
 <span id="assets-lineage"></span>
-- [Assets & Lineage](#assets-lineage) - [Assets](../07.enterprise/02.governance/01.assets/index.md) keep a live inventory of the resources your workflows interact with, such as database tables, files, or datasets. Lineage tracks how those assets connect to each other across workflow runs — which execution created or modified each one — and can be shipped to providers like OpenLineage.
+- [Assets & Lineage](#assets-lineage) - [Assets](../07.enterprise/02.governance/01.assets/index.md) keep a live record of the resources your flows read and write, such as database tables, files, or virtual machines. Lineage records which flows and executions read and wrote each asset and how assets depend on each other, and can be exported to OpenLineage tools.
 
 ## B
 
