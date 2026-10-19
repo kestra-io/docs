@@ -4,7 +4,8 @@ import { openModal } from "~/utils/modal"
 // Closing is declarative too, as fallbacks for browsers without invoker
 // commands or `closedby="any"`: a `command="close"` button closes its
 // `commandfor` dialog, and a click on a common/Dialog.astro shell's own scrim
-// or on the `.modal-dialog` gutter around its `.modal-content` closes it.
+// closes it (the `.modal-dialog` gutter has `pointer-events: none`, so such
+// clicks land on the dialog element itself).
 // Other overlays keep their own scrim handling.
 document.addEventListener("click", (event) => {
     const target = event.target instanceof Element ? event.target : null
@@ -26,10 +27,5 @@ document.addEventListener("click", (event) => {
     }
 
     const dialog = target.closest<HTMLDialogElement>("dialog.ks-dialog")
-    if (
-        dialog?.open &&
-        (target === dialog || target.classList.contains("modal-dialog"))
-    ) {
-        dialog.close()
-    }
+    if (dialog?.open && target === dialog) dialog.close()
 })

@@ -61,6 +61,11 @@ const BADGES = [
         display: flex;
         flex-direction: column;
         gap: 1.625rem;
+        // A flex item of the hero's action row: without this its minimum
+        // width is the nowrap install command, and at phone widths the
+        // buttons and badges get clipped instead of wrapping.
+        flex: 1 1 100%;
+        min-width: 0;
     }
 
     .buttons {

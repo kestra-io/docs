@@ -22,7 +22,7 @@
                 type="button"
                 class="chip"
                 :aria-pressed="showCustom"
-                :aria-controls="`${id}-custom`"
+                :aria-controls="showCustom ? `${id}-custom` : undefined"
                 @click="customMode = true"
             >
                 Custom

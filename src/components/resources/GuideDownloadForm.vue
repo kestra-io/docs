@@ -162,9 +162,18 @@
                 { email, firstname, lastname, jobtitle, kuid },
             ])
 
-            const { ip } = await $fetch<{ ip: string }>(
-                "https://api.ipify.org?format=json",
-            )
+            // The IP only enriches the HubSpot context; a blocked lookup
+            // (ad blockers, proxies) must not stop the submission.
+            let ip: string | undefined
+            try {
+                ip = (
+                    await $fetch<{ ip: string }>(
+                        "https://api.ipify.org?format=json",
+                    )
+                ).ip
+            } catch {
+                ip = undefined
+            }
 
             const payload = {
                 fields: [

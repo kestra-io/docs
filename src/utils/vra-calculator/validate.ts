@@ -39,12 +39,17 @@ export const WARNINGS = Object.freeze({
         "With no renewal cost entered, there is nothing for the migration to pay back against.",
 })
 
+const DECIMAL = /^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i
+
 /**
  * The reference's `val()`: blank (`""`, `null`, `undefined`) and anything that
  * is not a finite number become null.
  */
 export function toNumber(value: InputValue | undefined): number | null {
     if (value === "" || value === null || value === undefined) return null
+    // Only decimal notation: `Number()` would also accept "0x1F" or "0b11"
+    // from a crafted share link, which a number input cannot display.
+    if (typeof value === "string" && !DECIMAL.test(value.trim())) return null
     const n = Number(value)
     return Number.isFinite(n) ? n : null
 }

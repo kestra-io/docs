@@ -9,7 +9,7 @@ interface Props {
 const { label, variant = "note" } = Astro.props
 ---
 
-<aside class={`guide-callout ${variant}`}>
+<div class={`guide-callout ${variant}`}>
     <p class:list={["label", { "visually-hidden": variant === "lesson" }]}>
         {label}
     </p>
@@ -21,7 +21,7 @@ const { label, variant = "note" } = Astro.props
         )
     }
     <slot />
-</aside>
+</div>
 
 <style lang="scss">
     .guide-callout {

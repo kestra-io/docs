@@ -8,8 +8,7 @@ import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astr
 import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 
-const title =
-    "vRA Migration Payback Calculator: What Leaving Costs and When It Pays Back"
+const title = "vRA Migration Payback Calculator: When Leaving vRA Pays Back"
 const description =
     "Put your own vRA renewal, workflow counts and migration rates into the calculator and get the month the move to Kestra pays for itself."
 
@@ -58,6 +57,7 @@ const TIPS = [
         <div class="container">
             <InteractiveFrame
                 title="Payback calculator"
+                titleAs="h2"
                 subtitle="Three steps: the renewal you avoid, what getting out costs, and what you would spend on Kestra."
             >
                 <Fragment slot="note"

@@ -9,9 +9,9 @@
                     :aria-labelledby="`${idPrefix}-step-1`"
                 >
                     <div class="card-head">
-                        <h4 :id="`${idPrefix}-step-1`">
+                        <h3 :id="`${idPrefix}-step-1`">
                             The renewal you're avoiding
-                        </h4>
+                        </h3>
                         <span class="step" aria-label="Step 1 of 3">1/3</span>
                         <CurrencySelect
                             :id="`${idPrefix}-cur`"
@@ -80,9 +80,9 @@
                     :aria-labelledby="`${idPrefix}-step-2`"
                 >
                     <div class="card-head">
-                        <h4 :id="`${idPrefix}-step-2`">
+                        <h3 :id="`${idPrefix}-step-2`">
                             What the migration costs
-                        </h4>
+                        </h3>
                         <span class="step" aria-label="Step 2 of 3">2/3</span>
                     </div>
                     <p class="intro">
@@ -212,9 +212,9 @@
                     :aria-labelledby="`${idPrefix}-step-3`"
                 >
                     <div class="card-head">
-                        <h4 :id="`${idPrefix}-step-3`">
+                        <h3 :id="`${idPrefix}-step-3`">
                             What you'd spend on Kestra
-                        </h4>
+                        </h3>
                         <span class="step" aria-label="Step 3 of 3">3/3</span>
                     </div>
                     <div class="grid-2 top">
@@ -375,7 +375,7 @@
         gap: 0.5rem 1rem;
         padding-bottom: 1rem;
 
-        h4 {
+        h3 {
             margin: 0;
             font-size: 1rem;
             font-weight: 600;

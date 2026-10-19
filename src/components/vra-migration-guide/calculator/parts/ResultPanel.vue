@@ -17,10 +17,7 @@
             <div v-if="breakEven.length" class="break-even">
                 <p><RichText :parts="breakEven" /></p>
                 <p class="reference-note">
-                    <a
-                        href="https://kestra.io/customers/fortune-500-company"
-                        target="_blank"
-                        rel="noopener"
+                    <a href="/stories/fortune-500-company"
                         >A Fortune 500 manufacturer that replaced vRA</a
                     >
                     reports licensing 90% below Aria Automation.

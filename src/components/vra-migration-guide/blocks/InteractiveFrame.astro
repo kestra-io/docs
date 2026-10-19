@@ -2,15 +2,17 @@
 interface Props {
     title?: string
     subtitle?: string
+    /** Element for the title: a heading when the frame opens a page section. */
+    titleAs?: "p" | "h2" | "h3"
 }
 
-const { title, subtitle } = Astro.props
+const { title, subtitle, titleAs: Title = "p" } = Astro.props
 ---
 
 <div class="interactive-frame">
     <div class="frame-head">
         <div>
-            {title && <p class="frame-title">{title}</p>}
+            {title && <Title class="frame-title">{title}</Title>}
             {subtitle && <p class="frame-subtitle">{subtitle}</p>}
             {
                 Astro.slots.has("note") && (

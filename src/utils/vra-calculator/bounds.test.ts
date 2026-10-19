@@ -69,6 +69,14 @@ describe("upper bounds", () => {
         expect(run({ rate: "NaN" }).errors).toEqual([MESSAGES.rate])
     })
 
+    it("rejects hex, binary and octal strings a share link could carry", () => {
+        expect(run({ total: "0x1F" }).errors).toEqual([MESSAGES.total])
+        expect(run({ total: "0b11" }).errors).toEqual([MESSAGES.total])
+        expect(run({ rate: "0o17" }).errors).toEqual([MESSAGES.rate])
+        expect(run({ total: "1e3" }).errors).toEqual([])
+        expect(run({ today: "12.5" }).errors).toEqual([])
+    })
+
     it("stays finite with every bounded field at its limit at once", () => {
         const inputs = resolveInputs({
             total: MAX.workflows,

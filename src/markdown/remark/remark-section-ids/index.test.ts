@@ -107,6 +107,23 @@ describe("remarkSectionIds", () => {
         ])
     })
 
+    it("suffixes a repeated section number instead of duplicating the id", () => {
+        const tree = {
+            type: "root",
+            children: [
+                heading(3, text("3.1.1 The parts")),
+                heading(3, text("3.1.1 The parts, again")),
+                heading(3, text("3.1.2 The shape")),
+            ],
+        }
+        run(tree, { sectionIds: true })
+        expect(tree.children.map(idOf)).toEqual([
+            "section-3-1-1",
+            "section-3-1-1-2",
+            "section-3-1-2",
+        ])
+    })
+
     it("gives the same result when run twice", () => {
         const tree: Node = {
             type: "root",

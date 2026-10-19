@@ -38,12 +38,18 @@ function wrapChapterNumber(node) {
 export default function remarkSectionIds() {
     return function (tree, file) {
         if (file.data?.astro?.frontmatter?.sectionIds !== true) return
+        // Two headings with the same number would otherwise share an id;
+        // the second gets a `-2` suffix, as rehype-slug does for slugs.
+        const seen = new Map()
         visit(tree, "heading", (node) => {
-            const id = sectionId(textOf(node))
-            if (!id) return
+            const base = sectionId(textOf(node))
+            if (!base) return
             const data = node.data || (node.data = {})
             const properties = data.hProperties || (data.hProperties = {})
             if (properties.id) return
+            const count = (seen.get(base) ?? 0) + 1
+            seen.set(base, count)
+            const id = count === 1 ? base : `${base}-${count}`
             properties.id = id
             if (node.depth === 2) wrapChapterNumber(node)
         })

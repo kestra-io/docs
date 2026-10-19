@@ -17,8 +17,14 @@ const FIGURES = import.meta.glob<ImageMetadata>(
 // airflow-2-eol-whitepaper.md.ts. The entry sets `href`, which excludes it
 // from the per-topic endpoint, so it needs its own. The body is MDX, so the
 // component markup is stripped and the calculators point to the web page.
+/** An FAQ answer as markdown: anchors become links, other tags are dropped. */
+function faqAnswer(html: string): string {
+    return html
+        .replace(/<a\s+href="([^"]+)"[^>]*>([^<]*)<\/a>/g, "[$2]($1)")
+        .replace(/<[^>]+>/g, "")
+}
+
 export const GET: APIRoute = async ({ site, url }) => {
-    const PAGE = new URL("/resources/migration/vra", site).href
     const post = await getEntry("resources", "vra-migration-guide")
     if (!post) return new Response("Not found", { status: 404 })
     const source = await resolveTotalPluginsPlaceholder(
@@ -34,7 +40,14 @@ export const GET: APIRoute = async ({ site, url }) => {
     )
     const body = mdxToMarkdown(source, {
         replacements: {
-            CalculatorPayback: `_Interactive: work out your payback in the calculator at ${PAGE}#section-7-2._`,
+            // The CTA buttons, as plain links so the mirror still points at the
+            // calculator, the Migration Assistant page and the team.
+            GuideCta: ({ kind }) =>
+                ({
+                    calc: `_Interactive: work out your payback in the calculator at ${new URL("/resources/migration/vra/payback", site).href}._`,
+                    assistant: `_Get the Migration Assistant for vRA: ${new URL("/resources/migration/vra/assistant", site).href}_`,
+                    talk: `_Talk to our team: ${new URL("/demo", site).href}_`,
+                })[kind] ?? "",
             Verdict: ({ kind }) =>
                 `**${VERDICT_LABELS[kind as keyof typeof VERDICT_LABELS] ?? kind}**`,
         },
@@ -43,8 +56,14 @@ export const GET: APIRoute = async ({ site, url }) => {
 
     const startHere = mdxToMarkdown(startHereSource)
     const handouts = mdxToMarkdown(handoutsSource)
+    // The FAQ lives in the front-matter (rendered by the page and its JSON-LD),
+    // so the mirror writes it out too. Answers may hold in-page links.
+    const faq = (post.data.faq ?? [])
+        .map(({ question, answer }) => `**${question}**\n\n${faqAnswer(answer)}`)
+        .join("\n\n")
+    const questions = faq ? `\n## Questions\n\n${faq}\n` : ""
     return new Response(
-        `# ${post.data.title}\n\n${startHere}\n${body}\n${handouts}`,
+        `# ${post.data.title}\n\n${startHere}\n${body}\n${handouts}${questions}`,
         {
             status: 200,
             headers: { "Content-Type": "text/markdown; charset=utf-8" },
