@@ -301,7 +301,7 @@ const organizationSchema = {
                     <Search
                         randomAiQuestions={randomAiQuestions}
                         docsLatest={docsLatest}
-                        client:load
+                        client:only="vue"
                     />
                     {hasAnnounce ? (
                         <Announce
