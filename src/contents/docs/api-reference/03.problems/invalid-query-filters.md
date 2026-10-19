@@ -71,6 +71,6 @@ DELETE /api/v1/main/executions/delete/by-query?filters[namespace][EQUALS]=compan
 Unauthenticated requests to by-query endpoints return `401` before the filter check runs, so a `400 invalid-query-filters` response always means the request was authenticated.
 :::
 
-For the full list of available fields and operators per resource type, see [Query filter reference](../query-filters.md).
+For the full list of available fields and operators per resource type, see [Query filter reference](../04.query-filters.md).
 
 For the members every problem document carries, see [Problem Details](./index.md).

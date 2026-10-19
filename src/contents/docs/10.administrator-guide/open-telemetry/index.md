@@ -75,7 +75,7 @@ tasks:
           pass  # spans here appear as children of the Kestra task span
 ```
 
-`TRACEPARENT` is recognized by all major OTel SDKs and works the same way for Node.js, Bash, and any other script type. The variable is also usable in HTTP task headers and any other [expression-capable property](../../expressions/index.md#default-execution-context-variables).
+`TRACEPARENT` is recognized by all major OTel SDKs and works the same way for Node.js, Bash, and any other script type. The variable is also usable in HTTP task headers and any other [expression-capable property](../../expressions/01.context/index.mdx#default-execution-context-variables).
 
 ### Example: Jaeger with Docker Compose
 
@@ -132,14 +132,14 @@ kestra:
   traces:
     root: DEFAULT
     categories:
-      io.kestra.core.runners.Executor: DISABLED
+      io.kestra.executor.DefaultExecutor: DISABLED
 ```
 
 #### Supported categories
 
 | Category                               | Description                                       |
 |----------------------------------------|---------------------------------------------------|
-| `io.kestra.core.runners.Executor`      | Spans for each message in the execution queue     |
+| `io.kestra.executor.DefaultExecutor`   | Spans for each message in the execution queue     |
 | `io.kestra.core.runners.Worker`        | Spans for each runnable task execution            |
 | `io.kestra.plugin.core.flow.Subflow`   | Spans for each `Subflow` task execution           |
 | `io.kestra.plugin.core.flow.Loop` | Spans for each `Loop` sub-execution     |

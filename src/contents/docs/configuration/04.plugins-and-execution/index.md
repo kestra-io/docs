@@ -264,7 +264,7 @@ kestra:
 | `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must match at least one entry or the task fails. |
 | `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
 
-For security guidance and matching behavior, see [HTTP task URL filtering](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering).
+For security guidance and matching behavior, see [HTTP task URL filtering](../../security-hardening/index.md#http-task-url-filtering).
 
 Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
 
