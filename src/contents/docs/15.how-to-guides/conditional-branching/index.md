@@ -87,7 +87,7 @@ Within the flow:
         - `SECOND`: Executes two tasks (`second1` and `second2`), both returning their task ID and start time.
         - `THIRD`: Runs a sequence of tasks where the `failed` task triggers an error and executes the `error1` task, which logs an error message.
     - `defaults`: If the input doesn't match any cases, it runs the `default` task and emits the task ID and start time.
-- `outputs`: Exposes `values.result` from one of the executed tasks (`first`, `second1`, `third1`, or `default`). The `THIRD` branch intentionally fails; the fallback text describes that branch.
+- `outputs`: Exposes `values.result` from `first`, `second1`, or `default`, depending on the executed branch. If the `THIRD` branch fails, the expression falls back to `The THIRD branch failed`.
 
 ## Example 2: Conditional branching with Kestra’s website status
 

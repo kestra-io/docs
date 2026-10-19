@@ -68,12 +68,19 @@ tasks:
 
   - id: human-review
     type: io.kestra.plugin.core.flow.Pause
-    description: "Please review the AI-generated blog post draft. You can edit the content below. Click 'Resume' to approve or 'Kill' to reject."
+    description: "Please review the AI-generated blog post draft. Edit the reviewed content in the Resume form, then click 'Resume' to approve or 'Kill' to reject."
+    onResume:
+      - id: reviewed_content
+        type: STRING
+        displayName: Reviewed content
+        description: Review and edit the draft before approving it.
+        defaults: "{{ outputs['generate-draft'].content }}"
+        required: true
 
   - id: reviewed-content
     type: io.kestra.plugin.core.output.OutputValues
     values:
-      result: "{{ outputs['generate-draft'].content }}"
+      result: "{{ outputs['human-review'].onResume.reviewed_content }}"
 
   - id: log-approved-content
     type: io.kestra.plugin.core.log.Log
@@ -89,6 +96,8 @@ triggers:
   - id: api-trigger
     type: io.kestra.plugin.core.trigger.Webhook
 ```
+
+The Resume form is pre-filled with the AI-generated draft. The reviewer can edit `reviewed_content` before approving it; downstream tasks read the submitted value from `outputs['human-review'].onResume.reviewed_content`.
 
 This Kestra flow demonstrates several governance principles in action:
 
