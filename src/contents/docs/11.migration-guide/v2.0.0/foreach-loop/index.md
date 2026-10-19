@@ -328,12 +328,13 @@ tasks:
     values: ["a", "b", "c"]
     tasks:
       - id: process
-        type: io.kestra.plugin.core.debug.Return
-        format: "processed {{ taskrun.value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "processed {{ taskrun.value }}"
 
   - id: summary
     type: io.kestra.plugin.core.log.Log
-    message: "Results: {{ outputs.process | jq('[.[].value]') }}"
+    message: "Results: {{ outputs.process | jq('[.[].values.result]') }}"
 ```
 
 **After**
@@ -346,11 +347,12 @@ tasks:
     outputs:
       - id: result
         type: STRING
-        value: "{{ outputs.process.value }}"
+        value: "{{ outputs.process.values.result }}"
     tasks:
       - id: process
-        type: io.kestra.plugin.core.debug.Return
-        format: "processed {{ item.value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "processed {{ item.value }}"
 
   - id: summary
     type: io.kestra.plugin.core.log.Log
@@ -444,13 +446,14 @@ inputs:
 
 tasks:
   - id: process
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ inputs.batch_uri }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ inputs.batch_uri }}"
 
 outputs:
   - id: uri
     type: STRING
-    value: "{{ outputs.process.value }}"
+    value: "{{ outputs.process.values.result }}"
 ```
 
 The child flow surfaces its result through a flow-level `outputs:` declaration. The parent collects all result URIs with `loopOutputs(outputs.per_batch.outputs, 'result_uri')` and passes them to `Concat`.

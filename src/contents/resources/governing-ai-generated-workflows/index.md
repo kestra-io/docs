@@ -69,10 +69,11 @@ tasks:
   - id: human-review
     type: io.kestra.plugin.core.flow.Pause
     description: "Please review the AI-generated blog post draft. You can edit the content below. Click 'Resume' to approve or 'Kill' to reject."
-    tasks:
-      - id: reviewed-content
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ outputs['generate-draft'].content }}"
+
+  - id: reviewed-content
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ outputs['generate-draft'].content }}"
 
   - id: log-approved-content
     type: io.kestra.plugin.core.log.Log
@@ -82,7 +83,7 @@ tasks:
       Timestamp: {{ execution.startDate }}
       Reviewer: {{ execution.userId }}
       ---
-      {{ outputs['human-review']['reviewed-content'] }}
+      {{ outputs['reviewed-content'].values.result }}
 
 triggers:
   - id: api-trigger

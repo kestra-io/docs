@@ -31,8 +31,8 @@ description: |
 
 tasks:
   - id: out
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | toJson }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "Webhook received"
 
 
 triggers:
@@ -57,7 +57,7 @@ With this information, you can test your flow by running the following command i
 curl http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
 ```
 
-You can also copy the formed Webhook URL from the **Triggers** tab.
+You can also copy the formed Webhook URL from the **Triggers** tab. Log only non-sensitive fields when inspecting a webhook; the full trigger may contain credentials in headers or parameters.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -84,8 +84,8 @@ description: |
 
 tasks:
   - id: out
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | toJson }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "Webhook received"
 
 triggers:
   - id: webhook_trigger
