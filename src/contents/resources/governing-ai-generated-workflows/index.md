@@ -88,7 +88,7 @@ tasks:
       ---
       Approved Content for Publication
       Timestamp: {{ execution.startDate }}
-      Reviewer: {{ execution.userId }}
+      Reviewer: {{ outputs['human-review'].resumed.by ?? 'Not recorded' }}
       ---
       {{ outputs['reviewed-content'].values.result }}
 
