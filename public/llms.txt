@@ -129,6 +129,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 **Governance**
 - [Tenants](https://kestra.io/docs/enterprise/governance/tenants.md): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
 - [Infrastructure Tenant](https://kestra.io/docs/enterprise/governance/tenants/types/infrastructure.md): Purpose-built tenant type for infrastructure self-service — Catalog home, Requests history, Deployments screen, Inventory, day-2 actions, and asset lifecycle management
+- [App templates](https://kestra.io/docs/enterprise/governance/app-templates.md): Create a flow and the app that runs it from one reusable template, in a namespace chosen at use time; use it to publish self-service catalog entries with fixed platform choices
 - [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs.md): Immutable record of all user and system actions across the platform
 - [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager.md): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
 - [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management.md): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
@@ -296,6 +297,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Set Up Okta OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/okta.md)
 - [Governance in Kestra Enterprise: Security and Control](https://kestra.io/docs/enterprise/governance.md)
 - [Allowed & Restricted Plugins in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/allowed-plugins.md)
+- [App Templates in Kestra: Self-Service Flows and Apps](https://kestra.io/docs/enterprise/governance/app-templates.md)
 - [Assets in Kestra: Track Lineage and Metadata](https://kestra.io/docs/enterprise/governance/assets.md)
 - [Audit Logs in Kestra: Governance and Compliance](https://kestra.io/docs/enterprise/governance/audit-logs.md)
 - [Custom Blueprints in Kestra Enterprise: Templates](https://kestra.io/docs/enterprise/governance/custom-blueprints.md)
