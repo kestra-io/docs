@@ -45,7 +45,7 @@ When `values` contains objects, each `item.value` is a JSON string. Use `fromJso
 
 ## Nested loops
 
-To iterate over multiple dimensions, nest `Loop` tasks. The inner loop accesses the outer loop's value with `{{ item.parent.value }}`. For three or more levels, `{{ item.parents[1].value }}` is the grandparent — `item.parents[0]` is the same as `item.parent`.
+To iterate over multiple dimensions, nest `Loop` tasks. The inner loop accesses the outer loop's value with `{{ item.parent.value }}`. For three or more levels, use `item.parents`, which lists the enclosing loops from the outermost inward. `{{ item.parents[0].value }}` is the outermost loop.
 
 ```yaml
 id: loop_nested

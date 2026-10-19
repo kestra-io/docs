@@ -104,7 +104,7 @@ Inside a [Loop](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md
 | `{{ item.key }}` | Map key of the current iteration; only set when `values` is a map |
 | `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
 | `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
-| `{{ item.parents[n].value }}` | Value of the nth ancestor loop, counting from innermost (`[0]` = immediate parent) |
+| `{{ item.parents[n].value }}` | Value of the nth enclosing loop, counting from the outermost (`[0]` = outermost loop; the last element is the same as `item.parent`) |
 
 Because `item` is bound to the loop execution rather than individual task runs, flowable tasks nested inside a `Loop` (such as `If` or `Parallel`) can access `item` directly without any `parent.` prefix.
 
