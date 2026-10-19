@@ -503,6 +503,8 @@ In the no-code editor, a `Grid` is added like any other block. Select it to edit
 
 Apps can also be built using the no-code editor. Every block, property, and configuration option available in YAML is fully supported visually. Changes made in the no-code editor are immediately reflected in the code view, and vice versa — teams can switch between approaches at any time without losing the underlying YAML definition.
 
+To create an app together with the flow it runs from a reusable template, see [App templates](../../02.governance/app-templates/index.md).
+
 ---
 
 ## App catalog
