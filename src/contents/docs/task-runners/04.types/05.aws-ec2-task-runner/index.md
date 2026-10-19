@@ -355,6 +355,38 @@ Three requirements apply when monitoring is enabled:
 - The image must provide `/bin/sh`, `gzip`, and `chmod`. The instance must also have a writable `$TMPDIR` (default `/tmp`). Standard AMIs (Amazon Linux, Ubuntu) satisfy all requirements.
 - An explicit `commands` list is required. kotlp wraps the command you supply; it cannot wrap an image entrypoint.
 
+## Security hardening
+
+### No public IP
+
+Set `associatePublicIp: false` to launch the instance without a public IPv4 address. When set, `subnetId` is required. The instance must still reach AWS Systems Manager to register and receive commands — provide a NAT gateway or a `ssm`, `ssmmessages`, and `ec2messages` VPC endpoint bundle, otherwise the SSM Agent never registers and the run times out. If `bucket` is set, S3 must also be reachable. If `streamLogs: true` (the default), the subnet must also reach CloudWatch Logs (a `logs` VPC endpoint or NAT gateway), otherwise the command hangs until `waitUntilCompletion` expires; set `streamLogs: false` to avoid this requirement.
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Ec2
+  accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+  secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+  region: "{{ secret('AWS_REGION') }}"
+  amiId: "{{ secret('EC2_AMI_ID') }}"
+  instanceType: t3.micro
+  iamInstanceProfile: kestra-ec2-ssm-profile
+  subnetId: "{{ secret('PRIVATE_SUBNET_ID') }}"
+  securityGroupIds:
+    - "{{ secret('SG_ID') }}"
+  associatePublicIp: false
+  requireImdsv2: true
+  # No `logs` VPC endpoint or NAT in this subnet, so disable CloudWatch log streaming
+  streamLogs: false
+```
+
+### IMDSv2
+
+Set `requireImdsv2: true` to enforce session-token (IMDSv2) requests on the instance metadata service. The SSM Agent supports IMDSv2, but software in your task that still calls IMDSv1 will fail. With the default hop limit of 1, a `docker run` started by your task cannot fetch instance profile credentials (e.g. for `aws s3`); raise the hop limit on the AMI or launch template if you need that.
+
+### Secure Boot
+
+Secure Boot is not a runner property — choose an AMI that already has UEFI Secure Boot enabled via `amiId`.
+
 ## Key properties
 
 | Property | Required | Default | Description |
@@ -366,6 +398,8 @@ Three requirements apply when monitoring is enabled:
 | `subnetId` | No | — | Subnet to launch into. Defaults to the account's default VPC subnet. |
 | `securityGroupIds` | No | — | Security group IDs. Defaults to the subnet's default security group. |
 | `spotMaxPrice` | No | — | Max hourly Spot price in USD. When set, launches a Spot instance. |
+| `associatePublicIp` | No | subnet default | Whether to assign a public IPv4 address. Leave unset to inherit the subnet's `MapPublicIpOnLaunch` setting. Set to `false` to launch without a public IP; the instance must still reach SSM via a NAT gateway or VPC endpoints (`ssm`, `ssmmessages`, `ec2messages`), otherwise the SSM Agent never registers and the run times out. When `bucket` is set, S3 must also be reachable. When `streamLogs: true` (the default), CloudWatch Logs must be reachable (a `logs` VPC endpoint or NAT gateway), otherwise the command hangs until `waitUntilCompletion` expires; set `streamLogs: false` to avoid this. Set to `true` to force a public IP; the subnet needs a route to an internet gateway. When set (either value), `subnetId` is required. |
+| `requireImdsv2` | No | `false` | When `true`, enforces IMDSv2 (session-token) on the instance metadata service. The SSM Agent supports IMDSv2, but software in your task that still calls IMDSv1 will fail. With the default hop limit of 1, a `docker run` started by your task cannot fetch instance profile credentials (e.g. for `aws s3`); raise the hop limit on the AMI or launch template if you need that. |
 | `streamLogs` | No | `true` | Poll CloudWatch Logs for live output. Requires additional [instance profile permissions](#iam-instance-profile-requirements). |
 | `waitUntilCompletion` | No | `PT1H` | Maximum time to wait for the SSM command to finish. |
 | `completionCheckInterval` | No | `PT5S` | How often to poll SSM for command completion. Increase (e.g. `PT1M`) for long-running tasks to reduce API calls if you hit rate limits. |

@@ -3,7 +3,7 @@
         <div class="stories-inner">
             <div class="filter-bar">
                 <span class="stories-count">
-                    {{ filteredStories.length }} customer
+                    {{ filteredStories.length }}
                     {{ filteredStories.length === 1 ? "story" : "stories" }}
                 </span>
                 <div class="filters">

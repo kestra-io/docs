@@ -110,7 +110,7 @@ const quotes = [
             { value: "100+", name: "users empowered" },
             { value: "4,000+", name: "API pulls / week" },
         ],
-        storyLink: "/customers/jpmorgan-chase",
+        storyLink: "/stories/jpmorgan-chase",
     },
 ]
 
@@ -651,10 +651,10 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Used by regulated teams across banking, insurance, investment, payments &amp; fintech</span>
                     <div class="hero-logos__row">
-                        <a href="/customers/jpmorgan-chase" aria-label="Read the JPMorgan Chase cybersecurity orchestration story">
+                        <a href="/stories/jpmorgan-chase" aria-label="Read the JPMorgan Chase cybersecurity orchestration story">
                             <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item" />
                         </a>
-                        <a href="/customers/credit-agricole" aria-label="Read the Crédit Agricole customer story">
+                        <a href="/stories/credit-agricole" aria-label="Read the Crédit Agricole story">
                             <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item" />
                         </a>
                         <Image src={BloombergLogoImg} alt="Bloomberg" class="hero-logos__item" />
@@ -1443,14 +1443,6 @@ const FAQ = [
         border: 1px solid var(--ks-border-secondary);
         border-radius: 10px;
         box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-
-        &:hover {
-            border-color: $fs-yellow;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
-        }
-
         &__icon {
             font-size: 1.375rem;
             color: $fs-yellow-deep;

@@ -135,7 +135,7 @@ tasks:
 
 ### Concurrent execution
 
-The `concurrencyLimit` property carries over unchanged. Update only the task type and the expressions inside child tasks.
+The `concurrencyLimit` property carries over unchanged when set explicitly. However, note that `Loop` now defaults to `concurrencyLimit: 0` (unlimited parallel). If your `ForEach` task relied on sequential execution without an explicit value, add `concurrencyLimit: 1` to the migrated `Loop` task to preserve that behavior. Any value set on the task or via a policy takes precedence over the default.
 
 **Before**
 

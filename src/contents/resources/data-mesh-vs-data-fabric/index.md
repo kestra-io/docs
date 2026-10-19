@@ -34,7 +34,7 @@ Before comparing Data Mesh and Data Fabric, it's essential to define each concep
 
 Data Mesh is a socio-technical approach to data architecture that emphasizes decentralization and domain-oriented ownership. It treats data as a product, with each business domain responsible for owning and delivering its data products to the rest of the organization. This model moves away from monolithic data lakes and warehouses managed by a central data team, aiming to solve the scalability and agility bottlenecks that often arise in large, complex organizations.
 
-The core idea is to apply the principles of modern distributed software engineering to the data world. By empowering domain teams who are closest to the data, a [data mesh architecture](/resources/data/data-mesh-architecture) promotes greater accountability, quality, and speed in data delivery. A successful implementation, like the one at [Leroy Merlin France, which increased data production by 900%](/customers/leroy-merlin-france), demonstrates the potential of this approach when supported by the right [data orchestration](/resources/data/data-orchestration) tools.
+The core idea is to apply the principles of modern distributed software engineering to the data world. By empowering domain teams who are closest to the data, a [data mesh architecture](/resources/data/data-mesh-architecture) promotes greater accountability, quality, and speed in data delivery. A successful implementation, like the one at [Leroy Merlin France, which increased data production by 900%](/stories/leroy-merlin-france), demonstrates the potential of this approach when supported by the right [data orchestration](/resources/data/data-orchestration) tools.
 
 ### What is Data Fabric?
 

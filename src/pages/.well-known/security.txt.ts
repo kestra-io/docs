@@ -5,11 +5,12 @@ export const GET: APIRoute = async () => {
     expires.setUTCFullYear(expires.getUTCFullYear() + 2, 7, 26)
     expires.setUTCHours(0, 0, 0, 0)
 
-    const body = `Contact: https://github.com/kestra-io/kestra/security/advisories/new
+    const body = `Contact: mailto:security@kestra.io
+Contact: https://github.com/kestra-io/kestra/security/advisories/new
 Expires: ${expires.toISOString()}
 Preferred-Languages: en
 Canonical: https://kestra.io/.well-known/security.txt
-Policy: https://kestra.io/docs/releases
+Policy: https://kestra.io/security
 `
 
     return new Response(body, {

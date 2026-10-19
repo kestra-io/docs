@@ -12,7 +12,7 @@ The `description` property accepts [Markdown](https://en.wikipedia.org/wiki/Mark
   <iframe src="https://www.youtube.com/embed/coxJhDSRqvg?si=9vX7yl7iD5-R-pFz" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Flow descriptions support full Markdown — headings, lists, bold, code spans, and more:
+Flow descriptions support full Markdown: headings, lists, bold, code spans, and more:
 
 ```yaml
 id: data-engineering-pipeline-demo

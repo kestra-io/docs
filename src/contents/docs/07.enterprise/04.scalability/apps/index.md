@@ -445,7 +445,7 @@ The App Catalog lists all available apps in a tenant. Filter by name, type, name
 
 ![apps_catalog](./apps_catalog.png)
 
-Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with at least `APP: VIEW` permission in that tenant can reach this URL.
+Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with `APP: LIST` permission on at least one namespace in that tenant can reach this URL.
 
 The catalog page requires authentication, so it is never publicly accessible. Users see only the apps they are permitted to see based on their RBAC permissions. You can limit visibility to specific groups by setting the `groups` property in the `access` block:
 
@@ -517,7 +517,23 @@ From within flows, you can generate app URLs using the Enterprise-only `appLink`
 
 ## App access and RBAC permissions
 
-Each app has an `access` block that controls who can open and submit it.
+Each app has an `access` block that controls who can open and submit it. App permissions come from the `APP` resource on the app's namespace, not from the flow the app runs.
+
+### How apps, flows, and namespaces relate
+
+An app belongs to one namespace and runs one flow in that same namespace. The app's `namespace` property sets both: Kestra looks up `flowId` in the app's namespace, so an app cannot target a flow in another namespace. To build an app for a flow in `company.team`, create the app in `company.team`.
+
+Kestra checks only `APP` permissions when someone builds or uses an app. It does not check `FLOW` or `EXECUTION` permissions:
+
+- A user with `APP: CREATE` on a namespace can build an app for any flow in that namespace, including flows they cannot view.
+- A user with `APP: EXECUTE` on a namespace can open that namespace's `PRIVATE` apps and start executions of their flows without any `FLOW` or `EXECUTION` permission.
+- Anyone with the URL can open a `PUBLIC` app and start executions of its flow.
+
+This separation lets you give business users or partners an app without giving them access to the flow's code or the rest of the Kestra UI. The app limits what its users can reach: through the app, they see only executions of the app's flow, executions of subflows those executions started, or the single execution set in the app's `executionId` property.
+
+:::alert{type="warning"}
+Granting `APP: CREATE` on a namespace lets a user wrap any flow in that namespace in a `PUBLIC` app, which anyone can then run. Grant it as carefully as you would grant `EXECUTION: CREATE`.
+:::
 
 ### Public access
 
@@ -549,11 +565,33 @@ This makes the `PRIVATE` + `groups` combination useful when you want to allow a 
 
 The `APP` resource controls who can create, view, update, or delete apps within a tenant. It can be scoped to specific namespaces. `APP: EXECUTE`, `APP: ACCESS_FILES`, and `APP: ACCESS_LOGS` govern the ability to submit requests through an app and access its artifacts; the remaining `APP` actions govern the ability to build and manage apps.
 
+Previewing an app in the editor requires `APP: CREATE` from a role assigned at the tenant level, not scoped to a namespace. A user whose `APP: CREATE` is scoped to specific namespaces can save apps in those namespaces but cannot preview them.
+
+### Permissions reference
+
+Each action below checks only the listed `APP` permission. No action checks `FLOW` or `EXECUTION` permissions.
+
+| Action | Required permission | Scope |
+|---|---|---|
+| Open the App Catalog | `APP: LIST` | Any namespace in the tenant |
+| See a `PRIVATE` app in the catalog | `APP: EXECUTE`, plus membership in a listed group if `groups` is set | The app's namespace |
+| View an app's source | `APP: VIEW` | The app's namespace |
+| Create or import an app | `APP: CREATE` | The app's namespace |
+| Preview an app in the editor | `APP: CREATE` | Tenant-wide role |
+| Update, enable, or disable an app | `APP: UPDATE` | The app's namespace |
+| Delete an app | `APP: DELETE` | The app's namespace |
+| Open or submit a `PRIVATE` app | `APP: EXECUTE`, plus membership in a listed group if `groups` is set | The app's namespace |
+| Preview or download files from a `PRIVATE` app | `APP: ACCESS_FILES` | The app's namespace |
+| Download logs from a `PRIVATE` app | `APP: ACCESS_LOGS` | The app's namespace |
+| Open or submit a `PUBLIC` app | None | Not applicable |
+
 ---
 
 ## App executions
 
 Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system.app` and a value of `yourAppId`. For example, to filter all executions created by the `computeResourcesForm` app, you can search for `system.app:computeResourcesForm` in the label filter.
+
+App executions also carry `system.from: app`. When a signed-in user submits the app, the execution carries `system.username` with that user's username. Executions from anonymous users of a `PUBLIC` app have no `system.username` label. Because running an app requires no `FLOW` or `EXECUTION` permission, use these labels to audit who started executions through apps.
 
 For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you observe, troubleshoot, and manage app executions just as you would any other workflow execution.
 
@@ -627,7 +665,8 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
+| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
+| `Image`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `source`: URL or `data:` URI<br> - `altText`<br> - `title`<br> - `style`: custom CSS      | `- type: io.kestra.plugin.ee.apps.core.blocks.Image`<br> &nbsp;&nbsp;&nbsp;&nbsp;`source: "https://example.com/logo.png"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`altText: "Company logo"`                                                       |
 | `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `url`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.core.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT60S"`                                                                         |
 | `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm`                                                                                                                                                               |
 | `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm`                                                                                                                                                               |
@@ -636,17 +675,23 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 | `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`    |
 | `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
+| `ExecutionAssets`        | SUCCESS, FAILURE                                                         | - `filter`: include, exclude (asset types)                                                   | `- type: io.kestra.plugin.ee.apps.execution.blocks.Assets`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- io.kestra.plugin.ee.assets.VM` |
 | `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
 | `Loading`                | RUNNING                                                                  | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
-| `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
+| `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
 | `Button`                 | SUCCESS, FAILURE                                                        | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
 | `TaskOutputs`            | RUNNING, PAUSE, RESUME, SUCCESS                                         | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
-### Dynamic content in the OPEN state
+### Pebble expressions in Markdown blocks
 
-The `Markdown` block's `content` property is a Pebble template. When the layout includes a `CreateExecutionForm`, `{{ inputs.<id> }}` is available in the render context and updates live as the user interacts with the form — useful for context-sensitive descriptions that react to dropdown changes.
+The `Markdown` block's `content` property is a Pebble template. `{{ inputs.<id> }}` is available in the render context across all layout stages.
 
-For example, given a flow with a `product` SELECT input, the app below renders the current selection inline:
+On the `OPEN` stage, when the layout includes a `CreateExecutionForm`, `{{ inputs.<id> }}` updates live as the user interacts with the form, useful for context-sensitive descriptions that react to dropdown changes. Before the user interacts with the form, it resolves to each input's default value.
+
+On all other stages (CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE), `{{ inputs.* }}` references the execution's submitted values.
+
+For example, given a flow with a `product` SELECT input, the app below renders the current selection inline on OPEN and confirms it on SUCCESS:
 
 ```yaml
 id: software_request_form
@@ -668,16 +713,63 @@ layout:
 
   - on: SUCCESS
     blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "Access granted for: **{{ inputs.product }}**"
       - type: io.kestra.plugin.ee.apps.core.blocks.Alert
         style: SUCCESS
         content: Your request has been submitted.
 ```
 
-Before the user interacts with the form, `{{ inputs.* }}` resolves to each input's default value. In other states (RUNNING, SUCCESS, FAILURE), `{{ inputs.* }}` references the execution's submitted values.
-
 :::alert{type="info"}
 When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
 :::
+
+### Embedding namespace file images
+
+`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
+
+To embed a namespace file image in a block, convert it to a `data:` URI using the [`read()`](../../../expressions/04.functions/02.data-access/index.mdx#read) function and the `base64encode` filter:
+
+```yaml
+# Image block
+- type: io.kestra.plugin.ee.apps.core.blocks.Image
+  source: "data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }}"
+  altText: "Report chart"
+
+# Markdown block
+- type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+  content: |
+    ![Report chart](data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }})
+```
+
+:::alert{type="warning"}
+`read()` decodes the file as UTF-8 text, so this approach only works for **SVG** images. Binary formats such as PNG, JPEG, and GIF are corrupted by the UTF-8 decode and will not render.
+:::
+
+To read from a different namespace, pass the `namespace` argument: `read('nsfile:///logo.svg', namespace='other.namespace')`.
+
+### Assets emitted by an execution
+
+The `Assets` block lists the assets an execution emitted or updated, one row per asset, with its ID, display name, type and metadata. Use it in self-service provisioning flows where the resource the requester asked for is tracked as an asset rather than a flow output.
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "## Your virtual machine is ready"
+
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Assets
+      filter:
+        include:
+          - io.kestra.plugin.ee.assets.VM
+```
+
+- Only assets the execution **emitted or updated** are listed. Assets it merely read as inputs are left out.
+- `filter` matches the asset **type**, so a single Terraform apply or dbt build emitting dozens of assets can be narrowed to the ones the app user cares about. `include` keeps only the listed types, `exclude` drops them.
+- The reserved metadata keys get a column of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. Every other metadata key gets a plain column.
+- The asset ID links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace, and is plain text for everyone else. The table itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors.
+- The block is available on `SUCCESS` and `FAILURE`. On failure, a partially provisioned resource is often what explains what went wrong.
+- When the execution emitted no asset, the block says so instead of rendering an empty table.
 
 ### File preview and download
 
@@ -692,3 +784,24 @@ By default, file preview shows the first 100 rows. You can change this server-si
 ### Log download
 
 The `ExecutionLogs` block renders an inline log viewer. When a `Logs` block is present in the layout, users can also download the full log file directly from the app. Log download is only available for `Execution`-type apps that include a `Logs` block in their layout.
+
+### Execution progress as a Gantt chart
+
+The `Gantt` block shows a simplified version of the execution Gantt view: one bar per task run, with its state and duration, nested under its parent task. Use it on long-running flows, so app users who cannot log in to Kestra can follow the progress instead of a loading indicator.
+
+```yaml
+- on: RUNNING
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "Provisioning is in progress, please keep this window open."
+
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Gantt
+      filter:
+        exclude:
+          - technical_step
+```
+
+- On a `RUNNING` layout, the chart updates as the execution progresses, without any extra configuration.
+- The block shows only task IDs, states and durations. It shows no logs, outputs, iteration values or task actions, so a public app can show it to anonymous visitors.
+- `filter` matches the task ID. `include` keeps only the listed tasks, `exclude` drops them, which is useful to hide technical steps the app user does not need to follow.
+- The block is available on `RUNNING`, `PAUSE`, `RESUME`, `SUCCESS` and `FAILURE`. Add it to `SUCCESS` and `FAILURE` too to keep the final timings visible once the execution ends.
