@@ -18,3 +18,5 @@
   to: "/videos$1"
 - regexp: "^/hacktoberfest$"
   to: "/hacktober"
+- regexp: "^/customers/?$"
+  to: "/stories"

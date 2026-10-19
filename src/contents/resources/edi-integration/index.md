@@ -44,7 +44,7 @@ Effective EDI integration drives significant business value across multiple dime
 *   **Accuracy:** By removing manual keying, EDI drastically reduces the risk of human error in orders, invoices, and shipping information, leading to fewer disputes and chargebacks.
 *   **Speed:** Transactions that once took days to process via mail or fax can be completed in minutes. This accelerates fulfillment, improves cash flow, and enables more agile supply chain management.
 *   **Stronger Partnerships:** Many large retailers and manufacturers mandate EDI compliance for their suppliers. Reliable integration strengthens these relationships and opens doors to new business opportunities.
-*   **Compliance:** EDI helps businesses meet the complex B2B compliance requirements of their trading partners, avoiding penalties and ensuring smooth operations. For example, global sportswear leader [FILA orchestrates complex ERP and supply-chain workflows](/customers/fila) across continents, a task that relies on standardized data exchange.
+*   **Compliance:** EDI helps businesses meet the complex B2B compliance requirements of their trading partners, avoiding penalties and ensuring smooth operations. For example, global sportswear leader [FILA orchestrates complex ERP and supply-chain workflows](/stories/fila) across continents, a task that relies on standardized data exchange.
 
 ## The Operational Mechanics of EDI Workflows
 
@@ -175,7 +175,7 @@ A few things are worth noticing in this orchestrated flow:
 *   **Event-Driven Automation:** The `sftp.Trigger` automatically starts the workflow the moment a new file arrives, eliminating polling delays.
 *   **State Management:** Kestra automatically moves the processed file, preventing duplicate processing and keeping the inbound directory clean.
 *   **Isolated Processing:** The Python script for parsing runs in a dedicated Docker container, ensuring dependencies are managed cleanly and don't conflict with other workflows.
-*   **Resilience:** The `errors` block ensures that if any step fails—from downloading the file to calling the ERP API—an immediate alert is sent to Slack with full context, enabling rapid troubleshooting. This is essential for mission-critical e-commerce integrations like those managed by [Víssimo](/customers/vissimo-group).
+*   **Resilience:** The `errors` block ensures that if any step fails—from downloading the file to calling the ERP API—an immediate alert is sent to Slack with full context, enabling rapid troubleshooting. This is essential for mission-critical e-commerce integrations like those managed by [Víssimo](/stories/vissimo-group).
 
 ### EDI vs. API: Complementary, Not Competing
 

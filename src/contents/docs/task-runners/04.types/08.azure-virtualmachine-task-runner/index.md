@@ -18,7 +18,7 @@ Use the Azure VM task runner when your workload cannot or should not run inside 
 - **Existing VM reuse** when you have a pre-configured VM you want to target without creating new infrastructure per run
 - **Network-sensitive workloads** that must run inside a specific VNet subnet without any public endpoint
 
-For containerized workloads on Azure, use the [Azure Batch task runner](../06.azure-batch-task-runner/index.md) instead.
+For containerized workloads on Azure, use the [Azure Batch task runner](../07.azure-batch-task-runner/index.md) instead.
 
 ## How it works
 

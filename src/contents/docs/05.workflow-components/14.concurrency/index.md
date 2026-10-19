@@ -116,7 +116,7 @@ The **Concurrency Limits** page under **Tenant** in the sidebar lists every flow
 
 ## Concurrent trigger executions
 
-Any [Trigger](../07.triggers/index.mdx) type supports concurrent executions through the `allowConcurrent` property. By default, `allowConcurrent: false`; if a trigger fires while a previous execution is still running, the new execution is skipped.
+Any [Trigger](../07.triggers/index.mdx) type supports concurrent executions through the `allowConcurrent` property. By default, `allowConcurrent: false`: while an execution from the trigger is still running, the trigger stays locked and creates no new execution until that execution ends.
 
 ```yaml
 id: sleep_concurrent
