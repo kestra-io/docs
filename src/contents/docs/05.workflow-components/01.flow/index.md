@@ -69,7 +69,7 @@ tasks:
   - id: hello
     type: io.kestra.plugin.core.log.Log
     description: "Log the input value passed at execution time."
-    message: "Hello, {{ inputs.['my-value'] }}!"
+    message: "Hello, {{ inputs['my-value'] }}!"
 
   - id: date
     type: io.kestra.plugin.core.output.OutputValues

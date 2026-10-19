@@ -45,6 +45,7 @@ describe("workflow output examples", () => {
 
     it("exports the date and loop results through OutputValues", () => {
         const date = yamlBlocks("docs/05.workflow-components/01.flow/index.md")[0]
+        expect(date.tasks.find((task: any) => task.id === "hello").message).toBe("Hello, {{ inputs['my-value'] }}!")
         expect(date.tasks.find((task: any) => task.id === "date").type).toBe(outputValues)
         expect(date.outputs[0].value).toBe("{{ outputs.date.values.result }}")
 
