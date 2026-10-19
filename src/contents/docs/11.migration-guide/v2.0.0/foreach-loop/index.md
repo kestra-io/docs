@@ -36,7 +36,7 @@ The table below maps every `ForEach` expression to its `Loop` equivalent. The se
 | `taskrun.iteration` | `item.index` | Zero-based in both |
 | `parent.taskrun.value` | `item.value` | No prefix needed; `item` is accessible from any depth inside a Loop sub-execution, including inside `If` or `Parallel` |
 | `parents[0].taskrun.value` | `item.parent.value` | Only when inside the inner Loop of two nested Loops. When used inside a nested flowable (If, Parallel) within a single Loop, use `item.value` instead |
-| `parents[1].taskrun.value` | `item.parents[1].value` | One level further up |
+| `parents[1].taskrun.value` | `item.parents[0].value` (three nested Loops) | `item.parents` counts from the outermost loop, the reverse of ForEach `parents`. Count from the outermost loop to pick the index |
 | `outputs.task_id[taskrun.value].value` | `outputs.task_id.value` | Inside the iteration; task outputs are scoped to the current sub-execution |
 | `outputs.foreach_id[value].field` (after the loop) | `outputs.loop_id.outputs[n].outputs.output_id` (by index) or `loopOutputs(outputs.loop_id.outputs, 'output_id')` (all values as a list) | Outside the loop; outputs are now a list; key-based access by value string is no longer supported |
 
@@ -167,7 +167,7 @@ tasks:
 
 ### Nested loops
 
-Nested loops work the same structurally. The change is how you reference outer loop values: `item.parent.value` replaces `parents[0].taskrun.value`, and for deeper hierarchies `item.parents[n]` replaces `parents[n+1].taskrun.value`.
+Nested loops work the same structurally. The change is how you reference outer loop values: `item.parent.value` replaces `parents[0].taskrun.value`. For deeper hierarchies, `item.parents` counts from the outermost loop, the reverse of ForEach `parents`. In three nested loops, `parents[1].taskrun.value` becomes `item.parents[0].value`.
 
 **Before**
 
