@@ -34,8 +34,18 @@ const TABS = [
         label: "Your answers",
         title: "Open questions, answered",
         text: "Open questions in plain words, with suggested answers.",
+        callouts: [
+            "The open questions for you to answer",
+            "Suggested answers where we could imply them",
+            "Rerun the assistant after answering",
+        ],
         image: answers,
         alt: "The answers.yaml file the Migration Assistant writes: open questions about the non-production vCenter, Avi and F5 endpoints, then suggested answers for the vRO plugin list, how flows call Avi, how they sign in and whether they check its certificate.",
+        markers: [
+            { left: 2.5, top: 17 },
+            { left: 2.5, top: 70 },
+            { left: 59, top: 8.5 },
+        ],
         // The file is drawn with its own window bar, so no browser frame.
         frame: false,
     },
@@ -58,17 +68,37 @@ const TABS = [
     },
     {
         label: "Waves",
-        title: "Two waves",
-        text: "Two waves, with what each one needs before it starts.",
+        title: "The plan, in two waves",
+        text: "What moves together, and what each wave needs before it starts.",
+        callouts: [
+            "Wave 1 moves the 4 workflows together, since they share state",
+            "Wave 2 moves the catalog item and cloud template",
+            "Each follow-up wave lists what it needs before it can start",
+        ],
         image: waves,
         alt: "The two waves in the brief: Wave 1 holds the four load-balancer workflows with all 30 entry criteria met, and Wave 2 replaces vRA's app, flow and resources, starting once Wave 1 is migrated and verified, with 15 of 16 criteria met.",
+        markers: [
+            { left: 2.5, top: 17 },
+            { left: 2.5, top: 56 },
+            { left: 2.5, top: 86 },
+        ],
     },
     {
         label: "One Workflow",
-        title: "One workflow up close",
+        title: "One workflow, end to end",
         text: "What one workflow does, what starts it and what it touches.",
+        callouts: [
+            "What it does, in plain words",
+            "What starts it in vRA",
+            "The systems it touches, and the Kestra plugin for each",
+        ],
         image: workflow,
         alt: "The brief's page for the LB - Create Load Balancer workflow: a Convert verdict with readiness amber and spec confidence high, a flowchart of its items, and the model-written purpose and decisions.",
+        markers: [
+            { left: 0.5, top: 7 },
+            { left: 47.5, top: 33 },
+            { left: 75.5, top: 16.5 },
+        ],
     },
 ]
 const SELECTED = 1
@@ -134,12 +164,26 @@ const GROUP = "assistant-example"
                                 </div>
                                 <div class="shot">
                                     {tab.frame === false ? (
-                                        <Image
-                                            src={tab.image}
-                                            alt={tab.alt}
-                                            widths={[720, 1080, 1440]}
-                                            sizes="(min-width: 1200px) 723px, 90vw"
-                                        />
+                                        <div class="marked">
+                                            <Image
+                                                src={tab.image}
+                                                alt={tab.alt}
+                                                widths={[720, 1080, 1440]}
+                                                sizes="(min-width: 1200px) 723px, 90vw"
+                                            />
+                                            {tab.markers?.map((m, n) => (
+                                                <span
+                                                    class="marker"
+                                                    aria-hidden="true"
+                                                    style={{
+                                                        left: `${m.left}%`,
+                                                        top: `${m.top}%`,
+                                                    }}
+                                                >
+                                                    {n + 1}
+                                                </span>
+                                            ))}
+                                        </div>
                                     ) : (
                                         <BrowserFrame path="kestra-assessment / index.html">
                                             <div class="marked">
