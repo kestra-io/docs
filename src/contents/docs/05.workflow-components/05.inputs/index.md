@@ -101,10 +101,27 @@ Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510),
 | `prefill` | Initial value shown in the UI that can be cleared to `null`. Unlike `defaults`, a cleared prefill resolves to `null`. |
 | `displayName` | Label shown in the UI instead of the `id`. |
 | `description` | Markdown description displayed in the UI. |
+| `descriptionDisplayMode` | How the `description` is displayed: `TEXT` (default) renders it between the label and the field, `TOOLTIP` renders it as a hoverable help icon next to the label. |
 | `validator` | Regex pattern for `STRING` and `SECRET` types. |
 | `expression` | Pebble expression used to populate `SELECT` and `MULTISELECT` values dynamically, e.g. `{{ kv('MY_LIST') }}`. |
 | `dependsOn` | Makes this input conditional on other inputs being provided or matching a `condition`. |
 | `autoSelectFirst` | Auto-selects the first value in `SELECT`/`MULTISELECT` lists as the default. |
+
+### Description display mode
+
+Long descriptions make forms unwieldy. Set `descriptionDisplayMode: TOOLTIP` to keep the form compact and show the description only when the user hovers the help icon next to the label. This applies to the Execute modal and to [Apps](../../07.enterprise/04.scalability/apps/index.md) forms.
+
+```yaml
+inputs:
+  - id: environment
+    type: SELECT
+    displayName: Environment
+    description: The target environment for deploying VMs. Pick `prod` only after the change was approved.
+    descriptionDisplayMode: TOOLTIP
+    values:
+      - dev
+      - prod
+```
 
 ## Input validation
 
