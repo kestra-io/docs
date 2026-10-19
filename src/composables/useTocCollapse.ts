@@ -1,4 +1,4 @@
-import { computed, ref } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useMediaQuery } from "@vueuse/core"
 
 /**
@@ -10,7 +10,16 @@ import { useMediaQuery } from "@vueuse/core"
 export function useTocCollapse() {
     const expanded = ref(false)
     const belowLg = useMediaQuery("(max-width: 991.98px)")
-    const collapsed = computed(() => belowLg.value && !expanded.value)
+    // The server cannot know the viewport, so `collapsed` stays false until
+    // the component is mounted; otherwise the first client render disagrees
+    // with the server-rendered `inert` attribute below lg.
+    const mounted = ref(false)
+    onMounted(() => {
+        mounted.value = true
+    })
+    const collapsed = computed(
+        () => mounted.value && belowLg.value && !expanded.value,
+    )
     const close = () => {
         expanded.value = false
     }

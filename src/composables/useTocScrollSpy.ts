@@ -70,7 +70,9 @@ export function useTocScrollSpy(
         if (!container) return
         nextTick(() => {
             const list = document.querySelector(container)
-            const link = list?.querySelector<HTMLElement>(`a[href="#${id}"]`)
+            const link = list?.querySelector<HTMLElement>(
+                `a[href="#${CSS.escape(id)}"]`,
+            )
             if (!list || !link) return
             const cRect = list.getBoundingClientRect()
             const lRect = link.getBoundingClientRect()
@@ -110,7 +112,7 @@ export function useTocScrollSpy(
             else break
         }
         if (current) setActive(current)
-    }, 100)
+    }, 100, true)
 
     useEventListener("scroll", handleScroll)
     onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))

@@ -5,7 +5,6 @@ export {
     SHARE_PARAM,
     STORAGE_KEY,
     TOOL_SHARE_RANGE,
-    isPresetMultiple,
     resolveInputs,
 } from "./defaults"
 export { toNumber } from "./validate"

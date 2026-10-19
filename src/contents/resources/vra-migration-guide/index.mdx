@@ -50,7 +50,7 @@ import Verdict from "~/components/vra-migration-guide/blocks/Verdict.astro"
 Teams leave vRA for several reasons, and most have more than one in play. The two that come up most often are both about who controls your automation.
 
 <GuideCards columns={2}>
-<GuideCard title="Pricing and Packaging">
+<GuideCard title="Pricing and Packaging" level={4}>
 
 vRA is no longer sold as a product on its own. It is part of VMware Cloud Foundation, licensed per core on subscription, so the automation layer is now priced as part of the hypervisor. [Gartner expects](https://www.theregister.com/2024/08/26/vmware_explore_preview/) most VMware customers' bills to grow by 200 to 500 percent at their next renewal.
 
@@ -59,7 +59,7 @@ As an engineer at one Fortune 500 manufacturer put it before they replaced it:
 > _We're using Aria Automation, that's a massive cost, the cost doesn't justify it anymore._
 
 </GuideCard>
-<GuideCard title="Dependence on VMware's Roadmap">
+<GuideCard title="Dependence on VMware's Roadmap" level={4}>
 
 What your automation can reach is decided by VMware. Several vRO plugins were deprecated in VCF 9, and recently native AWS, Azure and GCP management were also deprecated and switched off by default. The Git integration needs a vRA licence. Only a handful of built-in plugins reach outside VMware, so every other integration is a library you write and then maintain yourself.
 

@@ -152,6 +152,24 @@ describe("zero and boundary inputs", () => {
         expect(finite(p)).toBe(true)
         expect(p.paybackStatus).not.toBe("within-horizon")
     })
+
+    it("treats an exact break-even as paid back, not as float noise", () => {
+        // The renewal avoided over the horizon equals the migration cost to
+        // the cent; the 24-term monthly sum alone lands at -2e-11.
+        const p = run({
+            today: 209500,
+            mult: 1,
+            other: 0,
+            renew: 12,
+            horizon: 2,
+            kestra: 0,
+            rate: 100,
+        }).payback!
+        expect(p.migrationCost).toBe(p.avoided)
+        expect(p.net).toBe(0)
+        expect(p.paybackMonth).toBe(24)
+        expect(p.paybackStatus).toBe("within-horizon")
+    })
 })
 
 describe("breakEven", () => {

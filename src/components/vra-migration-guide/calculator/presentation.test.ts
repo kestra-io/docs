@@ -4,25 +4,18 @@ import { compute } from "~/utils/vra-calculator/compute"
 import { GOLDEN } from "~/utils/vra-calculator/__fixtures__/golden"
 import referenceCopy from "./__fixtures__/reference-copy.json"
 import {
-    PENDING_HEADLINE,
     PLACEHOLDER,
     avoidedLine,
     breakEvenLine,
     carefulCounts,
     complementPercent,
     costLine,
-    effortBars,
-    effortLine,
     funnelCounts,
     headline,
     netLine,
     paybackChart,
-    reductionLine,
     renewalLine,
-    toolShareLabel,
     viewMessages,
-    yearBars,
-    yearsTitle,
     type Rich,
 } from "./presentation"
 
@@ -77,19 +70,16 @@ describe("funnel copy matches the reference", () => {
 
 describe("payback copy matches the reference", () => {
     it.each(cases)("%s", (_name, { state, copy }) => {
-        const { funnel, payback } = compute(state)
+        const { payback } = compute(state)
         const s = copy.payback
         const cur = state.cur
 
-        expect(toolShareLabel(state.tool)).toBe(slot(s, "toolOut"))
         expect((s.head as { text: string }).text).toBe(headline(payback))
-        if (funnel)
-            expect(toHtml(effortLine(funnel))).toBe(slot(s, "effortLine"))
 
         if (!payback) {
-            expect(headline(payback)).toBe(PENDING_HEADLINE)
+            expect(headline(payback)).toBe("Fix the inputs to see a payback.")
             expect(slot(s, "renewLine")).toBe(PLACEHOLDER)
-            for (const key of ["anchor", "sub", "solve", "bars", "years"]) {
+            for (const key of ["anchor", "sub", "solve"]) {
                 expect(slot(s, key)).toBe("")
             }
             return
@@ -101,41 +91,6 @@ describe("payback copy matches the reference", () => {
         expect(toHtml(breakEvenLine(payback, cur))).toBe(
             slot(s, "solve").split("<br>")[0],
         )
-
-        const bars = [
-            ...slot(s, "bars").matchAll(
-                /<span>([^<]*)<\/span><b>([^<]*)<\/b><\/div><div class="kvc-track"><div class="kvc-fill" style="width:([^%]+)%/g,
-            ),
-        ].map((m) => ({ label: m[1], hours: m[2], percent: Number(m[3]) }))
-        expect(
-            effortBars(payback).map(({ label, hours, percent }) => ({
-                label,
-                hours,
-                percent,
-            })),
-        ).toEqual(bars)
-
-        const reduction = /<p class="kvc-mini">(.*)<\/p>$/.exec(slot(s, "bars"))
-        expect(toHtml(reductionLine(payback, cur))).toBe(
-            reduction ? reduction[1] : "",
-        )
-
-        const years = slot(s, "years")
-        expect(
-            years.startsWith(`<p class="kvc-label">${yearsTitle(payback)}</p>`),
-        ).toBe(true)
-        const rows = [
-            ...years.matchAll(
-                /<span>(Year \d+)<\/span>.*?left:([^%]+)%;width:([^%]+)%;.*?<span class="kvc-yval (kvc-pos|kvc-neg)">([^<]*)<\/span>/g,
-            ),
-        ].map((m) => ({
-            label: m[1],
-            left: Number(m[2]),
-            width: Number(m[3]),
-            positive: m[4] === "kvc-pos",
-            value: m[5],
-        }))
-        expect(yearBars(payback, cur)).toEqual(rows)
     })
 })
 

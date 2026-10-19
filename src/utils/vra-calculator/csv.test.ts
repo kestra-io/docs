@@ -46,7 +46,7 @@ describe("buildCsvFile", () => {
     it("prefixes the BOM and takes the date from a Date", () => {
         const file = buildCsvFile(
             resolveInputs(),
-            new Date("2026-10-19T08:00:00Z"),
+            new Date(2026, 9, 19, 8),
         )
         expect(
             file.startsWith(

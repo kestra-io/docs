@@ -8,7 +8,11 @@ export const CSV_FILENAME = "vra-kestra-payback.csv"
 export const CSV_BOM = "﻿"
 
 function isoDate(date: Date | string): string {
-    return typeof date === "string" ? date : date.toISOString().slice(0, 10)
+    if (typeof date === "string") return date
+    // The visitor's calendar date, not UTC's: an export just after midnight
+    // should carry the day they see.
+    const pad = (n: number) => String(n).padStart(2, "0")
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 }
 
 /**

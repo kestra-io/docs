@@ -2,14 +2,17 @@
 interface Props {
     kicker?: string
     title?: string
+    /** Heading level of the title: 3 under a chapter, 4 under a section. */
+    level?: 3 | 4
 }
 
-const { kicker, title } = Astro.props
+const { kicker, title, level = 3 } = Astro.props
+const Title = level === 4 ? "h4" : "h3"
 ---
 
 <div class="guide-card">
     {kicker && <p class="kicker">{kicker}</p>}
-    {title && <p class="title">{title}</p>}
+    {title && <Title class="title">{title}</Title>}
     <slot />
 </div>
 

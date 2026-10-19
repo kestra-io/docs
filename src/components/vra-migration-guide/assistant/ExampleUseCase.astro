@@ -1,6 +1,9 @@
 ---
 import { Image } from "astro:assets"
+import answers from "../assets/assistant-brief-answers.png"
 import translation from "../assets/assistant-brief-translation.png"
+import waves from "../assets/assistant-brief-waves.png"
+import workflow from "../assets/assistant-brief-workflow.png"
 import TabGroup from "~/components/common/TabGroup.astro"
 import TabPanel from "~/components/common/TabPanel.astro"
 import BrowserFrame from "./BrowserFrame.astro"
@@ -31,6 +34,10 @@ const TABS = [
         label: "Your answers",
         title: "Open questions, answered",
         text: "Open questions in plain words, with suggested answers.",
+        image: answers,
+        alt: "The answers.yaml file the Migration Assistant writes: open questions about the non-production vCenter, Avi and F5 endpoints, then suggested answers for the vRO plugin list, how flows call Avi, how they sign in and whether they check its certificate.",
+        // The file is drawn with its own window bar, so no browser frame.
+        frame: false,
     },
     {
         label: "Translation",
@@ -53,14 +60,18 @@ const TABS = [
         label: "Waves",
         title: "Two waves",
         text: "Two waves, with what each one needs before it starts.",
+        image: waves,
+        alt: "The two waves in the brief: Wave 1 holds the four load-balancer workflows with all 30 entry criteria met, and Wave 2 replaces vRA's app, flow and resources, starting once Wave 1 is migrated and verified, with 15 of 16 criteria met.",
     },
     {
         label: "One Workflow",
         title: "One workflow up close",
         text: "What one workflow does, what starts it and what it touches.",
+        image: workflow,
+        alt: "The brief's page for the LB - Create Load Balancer workflow: a Convert verdict with readiness amber and spec confidence high, a flowchart of its items, and the model-written purpose and decisions.",
     },
 ]
-const SELECTED = 2
+const SELECTED = 1
 const GROUP = "assistant-example"
 ---
 
@@ -95,7 +106,7 @@ const GROUP = "assistant-example"
                 id={GROUP}
                 label="The brief for the load balancer"
                 variant="stages"
-                theme="dark"
+                surface="dark"
                 flush
                 selected={SELECTED}
                 tabs={TABS.map((tab, i) => ({
@@ -122,8 +133,15 @@ const GROUP = "assistant-example"
                                     )}
                                 </div>
                                 <div class="shot">
-                                    <BrowserFrame path="kestra-assessment / index.html">
-                                        {tab.image ? (
+                                    {tab.frame === false ? (
+                                        <Image
+                                            src={tab.image}
+                                            alt={tab.alt}
+                                            widths={[720, 1080, 1440]}
+                                            sizes="(min-width: 1200px) 723px, 90vw"
+                                        />
+                                    ) : (
+                                        <BrowserFrame path="kestra-assessment / index.html">
                                             <div class="marked">
                                                 <Image
                                                     src={tab.image}
@@ -144,12 +162,8 @@ const GROUP = "assistant-example"
                                                     </span>
                                                 ))}
                                             </div>
-                                        ) : (
-                                            <div class="placeholder">
-                                                Screenshot to come
-                                            </div>
-                                        )}
-                                    </BrowserFrame>
+                                        </BrowserFrame>
+                                    )}
                                 </div>
                             </div>
                         </TabPanel>
@@ -164,7 +178,7 @@ const GROUP = "assistant-example"
                 run the Migration Assistant on them before you run it on your
                 own.
             </p>
-            <a class="btn btn-secondary btn-lg" href={downloadHref}
+            <a class="btn btn-secondary btn-lg" href={downloadHref} download
                 >Download the use case files</a
             >
         </div>
@@ -353,14 +367,6 @@ const GROUP = "assistant-example"
     .marker {
         position: absolute;
         @include marker-pill;
-    }
-
-    .placeholder {
-        display: grid;
-        place-items: center;
-        aspect-ratio: 721 / 376;
-        font-size: $font-size-sm;
-        color: $dark-text-secondary;
     }
 
     .download {

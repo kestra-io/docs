@@ -1,6 +1,11 @@
 <template>
-    <div class="result-panel" aria-live="polite">
-        <p class="headline" :class="{ pending: !payback }">{{ title }}</p>
+    <div class="result-panel">
+        <!-- Only the headline is announced; the rest changes with it. -->
+        <p
+            class="headline"
+            :class="{ pending: !payback }"
+            aria-live="polite"
+        >{{ title }}</p>
         <template v-if="payback">
             <p class="summary">
                 <template v-if="avoided.length">

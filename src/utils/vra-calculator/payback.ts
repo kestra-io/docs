@@ -7,6 +7,10 @@ import type {
 } from "./types"
 import type { PaybackValues } from "./validate"
 
+// A monthly position closer to zero than this (in currency units) is zero:
+// the only way to land there is floating-point noise around a break-even.
+const ZERO_TOLERANCE = 1e-6
+
 /**
  * Splits `total` across buckets in proportion to `weights`, as whole numbers
  * that add up to `total` (largest remainder first). Near-duplicates follow
@@ -103,8 +107,14 @@ export function computePayback(
             (m > start ? avoided / 12 : 0) -
             kestraAnnual / 12 -
             (m <= spread ? migrationCost / spread : 0)
-        cumulative.push(run)
-        if (paybackMonth === null && run >= 0 && m > start) paybackMonth = m
+        // An exact break-even lands a few trillionths off zero after the
+        // monthly sum; that noise must not flip the payback month or the
+        // sign of the net position.
+        const position = Math.abs(run) < ZERO_TOLERANCE ? 0 : run
+        cumulative.push(position)
+        if (paybackMonth === null && position >= 0 && m > start) {
+            paybackMonth = m
+        }
     }
 
     const cash = { avoided, renewInMonths: start, migrationCost }

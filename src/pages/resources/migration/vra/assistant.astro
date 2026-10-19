@@ -23,7 +23,6 @@ const description =
     "The Kestra Migration Assistant is a free, open-source tool that assesses your VMware vRA and vRO workflows on your machine and plans the migration to Kestra."
 
 const GUIDE_HREF = "/resources/migration/vra"
-const GUIDE_INTRO_HREF = "/resources/migration/vra"
 const ROI_CALCULATOR_HREF = "/resources/migration/vra/payback"
 const GITHUB_HREF = "https://github.com/kestra-io/migration-assistant"
 const WEBINAR_HREF = "#"
@@ -92,17 +91,15 @@ const faqItems = [
         <HeroVisual slot="visual" />
     </GuideHero>
 
-    <WhatItDoes
-        guideHref={GUIDE_HREF}
-        guideIntroHref={GUIDE_INTRO_HREF}
-        calculatorHref={ROI_CALCULATOR_HREF}
-    />
+    <WhatItDoes guideHref={GUIDE_HREF} calculatorHref={ROI_CALCULATOR_HREF} />
 
     <HowItWorks />
 
     <SecurityPosture />
 
-    <ExampleUseCase downloadHref="#" />
+    <ExampleUseCase
+        downloadHref="/kestra-migration-assistant-sample-vra-load-balancer.zip"
+    />
 
     <GetItCards githubHref={GITHUB_HREF} helpTarget={HELP_DIALOG_TARGET} />
 

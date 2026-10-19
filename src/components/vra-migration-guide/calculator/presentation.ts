@@ -34,17 +34,6 @@ export function complementPercent(value: InputValue): InputValue {
     return n === null ? value : String(Math.round((100 - n) * 1e4) / 1e4)
 }
 
-export function effortLine(f: FunnelResult): Rich {
-    return [
-        strong(formatCount(f.scope)),
-        " workflows need to migrate and will become ",
-        strong(formatCount(f.distinct)),
-        " distinct flows in Kestra. Out of those, ",
-        strong(formatCount(f.wrappers)),
-        " are wrappers and migrate for free.",
-    ]
-}
-
 export function carefulCounts(f: FunnelResult | null) {
     return {
         careful: f ? formatCount(f.careful) : PLACEHOLDER,
@@ -81,7 +70,7 @@ export function avoidedLine(p: PaybackResult, cur: Currency): Rich {
     ]
 }
 
-export const PENDING_HEADLINE = "Fix the inputs to see a payback."
+const PENDING_HEADLINE = "Fix the inputs to see a payback."
 
 export function headline(p: PaybackResult | null): string {
     if (!p) return PENDING_HEADLINE
@@ -141,80 +130,11 @@ export function breakEvenLine(p: PaybackResult, cur: Currency): Rich {
     ]
 }
 
-export interface EffortBar {
-    label: string
-    hours: string
-    percent: number
-    variant: "naive" | "manual" | "tool"
-}
-
-export function effortBars(p: PaybackResult): EffortBar[] {
-    const max = Math.max(p.naiveHours, p.manualHours, p.hours, 1)
-    const bar = (
-        label: string,
-        value: number,
-        variant: EffortBar["variant"],
-    ): EffortBar => ({
-        label,
-        hours: `${formatCount(value)} h`,
-        percent: (value / max) * 100,
-        variant,
-    })
-    return [
-        bar(
-            "Every vRO workflow converted by hand, one at a time",
-            p.naiveHours,
-            "naive",
-        ),
-        bar(
-            "After retiring, grouping near-duplicates and calling wrappers",
-            p.manualHours,
-            "manual",
-        ),
-        bar(`With the Migration Assistant at ${p.toolPct}%`, p.hours, "tool"),
-    ]
-}
-
-export function reductionLine(p: PaybackResult, cur: Currency): Rich {
-    if (!(p.reductionPct > 0)) return []
-    return [
-        `${p.reductionPct}% less than converting every workflow by hand. At ${formatMoney(p.rate, cur)} an hour, that is savings of `,
-        strong(formatMoney(p.saved, cur)),
-        ".",
-    ]
-}
-
-export interface YearBar {
-    label: string
-    value: string
-    positive: boolean
-    left: number
-    width: number
-}
-
 export function yearsTitle(p: PaybackResult): string {
     return (
         "Cumulative position against renewing" +
         (p.kestraBlank ? " (before Kestra licensing)" : "")
     )
-}
-
-export function yearBars(p: PaybackResult, cur: Currency): YearBar[] {
-    const max = Math.max(...p.yearly.map(Math.abs), 1)
-    return p.yearly.map((v, i) => {
-        const width = (Math.abs(v) / max) * 50
-        return {
-            label: `Year ${i + 1}`,
-            value: formatMoney(v, cur),
-            positive: v >= 0,
-            left: v >= 0 ? 50 : 50 - width,
-            width,
-        }
-    })
-}
-
-export function toolShareLabel(value: InputValue): string {
-    return `${toNumber(value) || 0}%`
 }
 
 // The calculator asks for the share of workflows still in use, the complement

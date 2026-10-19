@@ -9,7 +9,8 @@ interface Props {
     label: string
     tabs: Tab[]
     variant?: "tabs" | "stages" | "segmented"
-    theme?: "light" | "dark"
+    /** "dark" for a group sitting on a surface that stays dark in both themes. */
+    surface?: "light" | "dark"
     flush?: boolean
     selected?: number
 }
@@ -19,14 +20,14 @@ const {
     label,
     tabs,
     variant = "tabs",
-    theme = "light",
+    surface = "light",
     flush = false,
     selected = 1,
 } = Astro.props
 ---
 
 <div
-    class:list={["ks-tabs", variant, { dark: theme === "dark", flush }]}
+    class:list={["ks-tabs", variant, { "on-dark": surface === "dark", flush }]}
     data-ks-tabs
     {id}
 >
@@ -179,7 +180,7 @@ const {
             }
         }
 
-        &.dark {
+        &.on-dark {
             > .tablist {
                 gap: 0.625rem;
                 margin-bottom: 4rem;

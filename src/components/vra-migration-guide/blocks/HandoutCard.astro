@@ -11,7 +11,7 @@ const { id, appendix, title, pdfHref } = Astro.props
 
 <div class="handout-card" id={id}>
     <p class="appendix">{appendix}</p>
-    <p class="title">{title}</p>
+    <h3 class="title">{title}</h3>
     <slot />
     {
         pdfHref ? (

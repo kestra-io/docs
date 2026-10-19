@@ -6,11 +6,10 @@ import BrowserFrame from "./BrowserFrame.astro"
 
 interface Props {
     guideHref: string
-    guideIntroHref: string
     calculatorHref: string
 }
 
-const { guideHref, guideIntroHref, calculatorHref } = Astro.props
+const { guideHref, calculatorHref } = Astro.props
 ---
 
 <section class="what-it-does">
@@ -82,7 +81,7 @@ const { guideHref, guideIntroHref, calculatorHref } = Astro.props
                     you, starting from the brief.
                 </p>
                 <p>
-                    Still deciding? Read the <a href={guideIntroHref}
+                    Still deciding? Read the <a href={guideHref}
                         >introduction to the guide</a
                     > or try the <a href={calculatorHref}>payback calculator</a
                     >.

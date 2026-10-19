@@ -122,52 +122,16 @@ $gutters: (
 
 // Figma values with no token in _color-palette.scss (that file is generated;
 // ask design to add these there, then delete them here). Plain values only.
+// Used by shared components; the vRA pages' own palette lives in
+// src/components/vra-migration-guide/_shared.scss.
 //
-// Dark surfaces that stay dark in both themes: terminal mock-ups, code boxes,
-// browser frames (Figma's ks/* dark theme).
-$dark-bg-input: #111115;
+// Dark surfaces that stay dark in both themes (Figma's ks/* dark theme),
+// as common/TabGroup.astro draws them.
 $dark-bg-control: #23252e;
 $dark-raised: #2e2e3c; // ks/bg-hover-elevated and ks/border-default
 $dark-border-strong: #424256;
-$dark-border-subtle: #424242;
 $dark-text-secondary: #adadbf;
-$dark-text-muted: #7e7e9b;
-$dark-link: #cdb6fb;
-$dark-section-bg: #1a1c22;
 $dark-accent: #9869f7;
 $copied-green: #6bd37a; // the "copied" check on copy buttons
-
-// Resource guide hero gradient and pill.
-$hero-ink: #121215;
-$hero-ink-deep: #030709;
-$hero-teal: #1e4557;
-$hero-teal-deep: #19546d;
-$hero-pill-border: #a77af6;
-$hero-pill-shadow: rgba(173, 41, 250, 0.2);
-
-// Screenshot stage backdrop.
-$stage-top: #81bdd4;
-$stage-bottom: #e8e8f9;
-
-// Terminal and brief mock-up (Migration Assistant hero).
-$term-bg: #0d0d12;
-$term-bar: #131319;
-$term-border: #53dbf6;
-$term-glow: rgba(91, 236, 255, 0.82);
-$term-shadow: #2d9ac3;
-$term-dot: #3a3a44;
-$term-muted: #8a8a98;
-$term-text: #e4e4ec;
-$term-ok: #4ade80;
-$term-ok-border: #22c55e;
-$term-next: #c9a7ff;
-$brief-bg: #16161c;
-$brief-stat-bg: #1e1e25;
-$brief-stat-border: #2a2a32;
-$brief-label: #a8a8b6;
-$brief-tag-text: #c9c9d4;
-$brief-tag-border: #4a4a55;
-$brief-edge-mid: #52ccde;
-$brief-edge-end: #9191bc;
 
 @import "breakpoints";

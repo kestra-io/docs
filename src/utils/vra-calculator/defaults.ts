@@ -63,9 +63,3 @@ export function resolveInputs(source?: Partial<CalcInputs> | null): CalcInputs {
     }
     return out as unknown as CalcInputs
 }
-
-export function isPresetMultiple(value: unknown): boolean {
-    const n =
-        typeof value === "string" && value.trim() !== "" ? Number(value) : value
-    return RENEWAL_MULTIPLE_PRESETS.some((preset) => preset === n)
-}

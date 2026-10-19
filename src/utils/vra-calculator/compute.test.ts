@@ -4,7 +4,6 @@ import { compute } from "./compute"
 import {
     DEFAULTS,
     INPUT_KEYS,
-    isPresetMultiple,
     resolveInputs,
 } from "./defaults"
 import type { CalcInputs, CalcResult } from "./types"
@@ -81,10 +80,6 @@ describe("defaults", () => {
 
     it("default the renewal multiple to the 3x chip", () => {
         expect(DEFAULTS.mult).toBe(3)
-        expect(isPresetMultiple(DEFAULTS.mult)).toBe(true)
-        expect(isPresetMultiple("5")).toBe(true)
-        expect(isPresetMultiple(3.5)).toBe(false)
-        expect(isPresetMultiple("")).toBe(false)
     })
 
     it("resolveInputs keeps present keys, blank or not, and fills the rest", () => {

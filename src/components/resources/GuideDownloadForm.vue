@@ -14,45 +14,45 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="firstname">First name</label>
+                    <label :for="`${uid}-firstname`">First name</label>
                     <input
                         name="firstname"
                         type="text"
                         class="form-control"
-                        id="firstname"
+                        :id="`${uid}-firstname`"
                         required
                     />
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="lastname">Last name</label>
+                    <label :for="`${uid}-lastname`">Last name</label>
                     <input
                         name="lastname"
                         type="text"
                         class="form-control"
-                        id="lastname"
+                        :id="`${uid}-lastname`"
                         required
                     />
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="email">Company email</label>
+                    <label :for="`${uid}-email`">Company email</label>
                     <input
                         name="email"
                         type="email"
                         class="form-control"
-                        id="email"
+                        :id="`${uid}-email`"
                         required
                     />
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="jobtitle">Job title</label>
+                    <label :for="`${uid}-jobtitle`">Job title</label>
                     <input
                         name="jobtitle"
                         type="text"
                         class="form-control"
-                        id="jobtitle"
+                        :id="`${uid}-jobtitle`"
                         required
                     />
                 </div>
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, useTemplateRef } from "vue"
+    import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
@@ -129,6 +129,9 @@
     )
 
     const gtm = useGtm()
+    // Per-instance ids: a page can hold this form twice (a hero and a
+    // dialog), and each label must point at its own input.
+    const uid = useId()
     const formRef = useTemplateRef<HTMLFormElement>("download-form")
 
     const message = ref("")
