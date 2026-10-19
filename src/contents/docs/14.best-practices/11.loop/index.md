@@ -58,9 +58,9 @@ tasks:
 
 Task outputs inside a loop are not visible outside it by default. Declare an `outputs:` block on the Loop task to surface values. Choose `fetchType` based on data volume:
 
-- `AUTO` — default, switches automatically based on whether `values` is a URI
-- `FETCH` — collects all iteration results inline (suitable for small iteration counts)
-- `STORE` — writes results to internal storage and exposes a URI (preferred for large iteration counts)
+- `AUTO`: default, switches automatically based on whether `values` is a URI
+- `FETCH`: collects all iteration results inline (suitable for small iteration counts)
+- `STORE`: writes each iteration's outputs to an ION file in internal storage and keeps only its `uri` (preferred for large iteration counts). `loopOutputs()` cannot read declared output IDs in this mode.
 
 After the loop:
 - `outputs.<loop_id>.outputs` is a list of per-iteration results
@@ -224,7 +224,7 @@ tasks:
 Key points:
 
 - The Loop output declares type `STRING` even though the value is a file URI. `loopOutputs()` extracts strings, and `Concat` accepts a list of URI strings.
-- `fetchType: FETCH` keeps the per-iteration output objects in memory so `loopOutputs()` can read them immediately after the loop. Use `STORE` instead if you have hundreds of iterations.
+- `fetchType: FETCH` keeps the per-iteration output objects in memory so `loopOutputs()` can read them immediately after the loop. Keep `FETCH` for this pattern: with `STORE`, each iteration's outputs are replaced by a file `uri`, and `loopOutputs()` returns `null` for `data`.
 - The final `reduce` task re-aggregates because the same key (e.g. a customer) may appear in multiple chunks. The two-pass structure — per-chunk aggregate then cross-chunk reduce — is the canonical map-reduce pattern.
 
 ## Handle per-iteration failures
@@ -253,6 +253,34 @@ tasks:
         type: io.kestra.plugin.core.log.Log
         message: "Loop finished (with or without failures)"
 ```
+
+## Stop the loop early with `breakWhen`
+
+Set `breakWhen` to stop starting new iterations once a condition holds. Kestra evaluates the expression after each iteration finishes and counts the remaining iterations as `SKIPPED`. The following example stops at the first failed iteration:
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    concurrencyLimit: 1
+    values: ["ok", "fail", "ok", "ok"]
+    transmitFailed: false
+    breakWhen: "{{ iteration.state == 'FAILED' }}"
+    tasks:
+      - id: maybe_fail
+        type: io.kestra.plugin.core.flow.If
+        condition: '{{ item.value == "fail" }}'
+        then:
+          - id: do_fail
+            type: io.kestra.plugin.core.execution.Fail
+```
+
+Two settings make this work:
+
+- `concurrencyLimit: 1`: Kestra checks `breakWhen` only while some iterations have not started yet. With the default `0`, every iteration starts at once and `breakWhen` has no effect.
+- `transmitFailed: false`: with the default `true`, the first failed iteration fails the loop before Kestra evaluates `breakWhen`.
+
+For the full list of variables available in `breakWhen`, see [Stop early with `breakWhen`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#stop-early-with-breakwhen).
 
 ## Use Loop + Subflow for isolated per-batch execution
 
@@ -311,6 +339,8 @@ tasks:
 - Do not use `taskrun.value` or `taskrun.iteration` — use `item.value` and `item.index`.
 - Do not access `item.value.field` directly on object values — use `fromJson(item.value).field`.
 - Do not expect loop outputs to be visible downstream without declaring an `outputs:` block.
+- Do not expect duplicate list values to run twice. Kestra drops duplicate elements from a list or JSON array.
+- Do not use `breakWhen` with the default `concurrencyLimit: 0`. Every iteration starts at once, so the condition never stops anything.
 - Do not use `outputs.task_id[item.value]` inside a loop — sibling outputs are accessed with plain `outputs.task_id.attribute`.
 - For very large datasets, set an explicit `concurrencyLimit` to cap parallelism. The default unlimited behavior can overwhelm workers if iterations are resource-intensive.
 
