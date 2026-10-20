@@ -1,15 +1,11 @@
 ---
-import Link from "~/components/common/Link.astro"
-
-interface Props {
-    /** The guide's payback calculator. */
-    calculatorHref: string
-}
-
-const { calculatorHref } = Astro.props
+/* The guide's payback calculator, embedded so a paid visitor can run their
+ * numbers without leaving the page. Its proof-of-concept button lands on this
+ * page's form, and the case-study link is dropped to keep exits off. */
+import CalculatorPayback from "~/components/vra-migration-guide/calculator/CalculatorPayback.vue"
 ---
 
-<section class="payback">
+<section class="payback" id="payback">
     <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
         <h2>What leaving vRA costs, and when it pays back</h2>
         <p>
@@ -17,12 +13,26 @@ const { calculatorHref } = Astro.props
             pays it back. The calculator works out both sides from your own
             workflow counts, rates and renewal date.
         </p>
-        <Link
-            href={calculatorHref}
-            class="cta"
-            text="Open the payback calculator"
-        />
     </div>
+
+    <details
+        class="calculator"
+        data-usal="fade-u delay-100 duration-500 ease-out"
+    >
+        <summary class="cta">
+            <span class="when-closed">Calculate my payback</span>
+            <span class="when-open">Hide the calculator</span>
+        </summary>
+        <div class="calculator-body">
+            <CalculatorPayback
+                client:visible
+                idPrefix="lp-calc-payback"
+                shareAnchor="payback"
+                pocHref="#contact-sales"
+                storyHref={null}
+            />
+        </div>
+    </details>
 
     <figure class="quote" data-usal="fade-u delay-150 duration-500 ease-out">
         <span class="quote-mark" aria-hidden="true">&ldquo;</span>
@@ -92,8 +102,40 @@ const { calculatorHref } = Astro.props
         }
     }
 
-    .payback :global(.cta) {
-        display: inline-flex;
+    .calculator {
+        max-width: 1140px;
+        margin: 2rem auto 0;
+        /* The calculator's result panel sticks under the campaign header, not
+         * the site header it was built for. */
+        --calc-sticky-top: calc(var(--top-bar-height, 80px) + 1rem);
+    }
+
+    .calculator-body {
+        margin-top: 2rem;
+        text-align: left;
+    }
+
+    summary.cta {
+        list-style: none;
+        cursor: pointer;
+        &::-webkit-details-marker {
+            display: none;
+        }
+    }
+
+    .when-open,
+    .calculator[open] .when-closed {
+        display: none;
+    }
+
+    .calculator[open] .when-open {
+        display: inline;
+    }
+
+    .cta {
+        display: flex;
+        width: fit-content;
+        margin-inline: auto;
         align-items: center;
         justify-content: center;
         min-width: 160px;
@@ -106,6 +148,7 @@ const { calculatorHref } = Astro.props
         font-size: $font-size-lg;
         font-weight: 700;
         text-decoration: none;
+        user-select: none;
         box-shadow:
             inset 0 0 14px 0 #be62ff,
             2px 2px 5.5px rgba(0, 0, 0, 0.1);
@@ -164,3 +207,17 @@ const { calculatorHref } = Astro.props
         font-weight: 300;
     }
 </style>
+
+<script>
+    /* A shared calculator link carries #payback: open the calculator so the
+     * recipient lands on the numbers rather than on a closed toggle. */
+    function openSharedCalculator() {
+        if (window.location.hash !== "#payback") return
+        document
+            .querySelector<HTMLDetailsElement>(".payback .calculator")
+            ?.setAttribute("open", "")
+    }
+
+    openSharedCalculator()
+    document.addEventListener("astro:page-load", openSharedCalculator)
+</script>
