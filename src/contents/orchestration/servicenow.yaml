@@ -4,6 +4,7 @@ description: "Read ServiceNow change requests, run the matching runbook, update 
 tool:
   name: "ServiceNow"
   pluginClass: "io.kestra.plugin.servicenow.Post"
+  category: "Business"
   color: "#62D84E"
 
 hero:

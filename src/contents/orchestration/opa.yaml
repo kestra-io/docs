@@ -4,6 +4,7 @@ description: "Evaluate Rego policies before destructive flow steps. Upload from 
 tool:
   name: "OPA"
   pluginClass: "io.kestra.plugin.ee.opa.policy.Evaluate"
+  category: "Infrastructure"
   color: "#7E7CD5"
 
 hero:

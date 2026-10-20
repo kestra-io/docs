@@ -4,6 +4,7 @@ description: "Build, scan with Trivy, sign with Cosign, and promote the same sha
 tool:
   name: "Docker"
   pluginClass: "io.kestra.plugin.docker.Build"
+  category: "Infrastructure"
   color: "#2496ED"
 
 hero:
