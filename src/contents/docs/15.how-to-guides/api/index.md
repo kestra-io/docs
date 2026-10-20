@@ -281,8 +281,9 @@ namespace: company.team
 
 tasks:
   - id: hello
-    type: io.kestra.plugin.core.debug.Return
-    format: "This is an output"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "This is an output"
 
 ```
 
@@ -327,7 +328,9 @@ Fetching execution `59uQXHbkMy5YwHEDom72Xv` now shows the output payload:
                 }
             ],
             "outputs": {
-                "value": "This is an output"
+                "values": {
+                    "result": "This is an output"
+                }
             },
             "state": {
                 "current": "SUCCESS",

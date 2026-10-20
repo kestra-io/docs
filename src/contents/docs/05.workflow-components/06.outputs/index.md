@@ -28,13 +28,16 @@ namespace: company.team
 
 tasks:
   - id: produce_output
-    type: io.kestra.plugin.core.debug.Return
-    format: my output {{ execution.id }}
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: my output {{ execution.id }}
 
   - id: use_output
     type: io.kestra.plugin.core.log.Log
-    message: The previous task output is {{ outputs.produce_output.value }}
+    message: "The previous task output is {{ outputs.produce_output.values.result }}"
 ```
+
+Use [OutputValues](/plugins/core/output/io.kestra.plugin.core.output.outputvalues) to emit named values for downstream tasks. Access each entry with `outputs.<task_id>.values.<key>`.
 
 File outputs are previewable and downloadable from the execution's **Input/Output** tab; any output can be inspected and debugged using the built-in expression evaluator on the same tab. See [Outputs](../../03.tutorial/03.outputs/index.md) in the tutorial.
 
@@ -73,13 +76,14 @@ namespace: company.team
 
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: this is a task output used as a final flow output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: this is a task output used as a final flow output
 
 outputs:
   - id: final
     type: STRING
-    value: "{{ outputs.mytask.value }}"
+    value: "{{ outputs.mytask.values.result }}"
 ```
 
 Supported output types: `ARRAY`, `BOOLEAN`, `DATE`, `DATETIME`, `DURATION`, `EMAIL`, `ENUM`, `FILE`, `FLOAT`, `INT`, `JSON`, `MULTISELECT`, `SECRET`, `STRING`, `TIME`, `URI`, `YAML`.
@@ -121,18 +125,20 @@ inputs:
 
 tasks:
   - id: main
-    type: io.kestra.plugin.core.debug.Return
-    format: Hello World!
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: Hello World!
     runIf: "{{ inputs.run_task }}"
 
   - id: fallback
-    type: io.kestra.plugin.core.debug.Return
-    format: fallback output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: fallback output
 
 outputs:
   - id: flow_output
     type: STRING
-    value: "{{ tasks.main.state != 'SKIPPED' ? outputs.main.value : outputs.fallback.value }}"
+    value: "{{ tasks.main.state != 'SKIPPED' ? outputs.main.values.result : outputs.fallback.values.result }}"
 ```
 
 ## Encrypted outputs
