@@ -190,24 +190,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Gemini orchestration."
-  lead: "Production-ready flows. Copy the YAML, drop in your API key, ship it."
   items:
     - name: "Structured decision"
       blueprintId: "ai-check-weather-gemini"
       title: "Turn a natural-language question into a structured go/no-go decision"
       description: "<code>StructuredOutputCompletion</code> answers with a JSON schema instead of prose. An <code>If</code> task branches on the boolean field, then posts to <a href='/plugins/plugin-slack'>Slack</a> and blocks time on a Google Calendar when the answer says to act."
-      href: "/blueprints"
     - name: "Multi-model routing"
       blueprintId: "ai-model-router"
       title: "Route each prompt to the best-fit model across four providers"
       description: "A cheap classifier tags every prompt, then a <code>Switch</code> sends reasoning prompts to Gemini, coding prompts to Claude, and search prompts to Perplexity, falling back to a cost-efficient default for everything else."
-      href: "/blueprints"
     - name: "Multimodal extraction"
-      blueprintId: "gemini-multimodal-receipt-extraction"
       title: "Extract structured expense data from receipt images"
       description: "Watches an S3 inbox for receipt photos, describes each one with <code>MultimodalCompletion</code>, reshapes the answer into typed JSON with a second <code>StructuredOutputCompletion</code> call, and posts the result to Google Chat."
-      href: "/blueprints"
-
+      blueprintId: "gemini-multimodal-receipt-extraction"
 comparison:
   title: "Kestra vs the orchestration alternatives Gemini teams evaluate"
   subtitle: "Gemini's API answers one prompt at a time. The alternatives below are what teams reach for to turn that into a production pipeline with retries, fan-out, and history."

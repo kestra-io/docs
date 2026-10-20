@@ -7,11 +7,7 @@ interface BlueprintItem {
     name: string
     title: string
     description: string
-    code?: string
-    plugins?: string[]
-    href?: string
-    blueprintId?: string
-    blueprintPlaceholder?: boolean
+    blueprintId: string
     render?: { source: string; graph: unknown } | null
 }
 
@@ -95,31 +91,21 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
                                             <span class="code-caption">
                                                 {bp.title}
                                             </span>
-                                            {(bp.blueprintId || bp.href) && (
-                                                <a
-                                                    class="code-link"
-                                                    href={
-                                                        bp.blueprintId
-                                                            ? `/blueprints/${bp.blueprintId}`
-                                                            : bp.href
-                                                    }
-                                                >
-                                                    Open blueprint
-                                                    <Icon
-                                                        name="mdi:chevron-right"
-                                                        width={14}
-                                                        height={14}
-                                                    />
-                                                </a>
-                                            )}
+                                            <a
+                                                class="code-link"
+                                                href={`/blueprints/${bp.blueprintId}`}
+                                            >
+                                                Open blueprint
+                                                <Icon
+                                                    name="mdi:chevron-right"
+                                                    width={14}
+                                                    height={14}
+                                                />
+                                            </a>
                                         </div>
-                                        {bp.render?.source || bp.code ? (
+                                        {bp.render?.source ? (
                                             <Snippets
-                                                code={
-                                                    bp.render?.source ??
-                                                    bp.code ??
-                                                    ""
-                                                }
+                                                code={bp.render.source}
                                                 lang="yaml"
                                             />
                                         ) : (
@@ -161,10 +147,7 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
                                                     client:only="vue"
                                                     flowGraph={bp.render.graph}
                                                     source={bp.render.source}
-                                                    id={
-                                                        bp.blueprintId ||
-                                                        `orch-${idx}`
-                                                    }
+                                                    id={bp.blueprintId}
                                                 />
                                             </div>
                                         </div>
