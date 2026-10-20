@@ -30,28 +30,9 @@ const description =
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/vra-migration"
 
-/* Both forms ask the same two qualifying questions. The HubSpot contact
- * properties named here must exist before the page takes traffic. */
-const formProps = {
-    submitLabel: "Get my migration estimate",
-    extraFields: [
-        {
-            type: "select",
-            name: "vro-workflows",
-            property: "vro_workflow_count",
-            placeholder: "Number of vRO workflows",
-            options: ["Under 100", "100–500", "500–2,000", "2,000+"],
-        },
-        {
-            type: "month-year",
-            name: "vra-renewal",
-            property: "vra_renewal_date",
-            monthPlaceholder: "Renewal month",
-            yearPlaceholder: "Renewal year",
-            years: [2026, 2027, 2028, 2029, 2030],
-        },
-    ],
-}
+/* Same HubSpot form as /lp/workflow-orchestration; only the button reads
+ * differently. */
+const formProps = { submitLabel: "Get my migration estimate" }
 
 const reasons = [
     {
