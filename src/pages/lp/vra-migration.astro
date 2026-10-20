@@ -14,6 +14,7 @@ import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.
 import Translation from "~/components/lp/vra-migration/Translation.astro"
 import Proof from "~/components/lp/vra-migration/Proof.astro"
 import Payback from "~/components/lp/vra-migration/Payback.astro"
+import Assistant from "~/components/lp/vra-migration/Assistant.astro"
 
 import SelfServiceIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
 import DayTwoIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
@@ -24,7 +25,7 @@ import IntegrationsIcon from "~/components/lp/vra-migration/assets/automate-inte
  * utm_content. The organic page for the topic is the migration guide. */
 const title = "Migrate off VMware vRA and vRO"
 const description =
-    "Kestra replaces vRealize Automation (Aria Automation) and vRO with one governed orchestration platform on your own infrastructure. Keep your Terraform, Ansible and scripts."
+    "Kestra replaces vRealize Automation (Aria Automation) and vRealize Orchestrator (vRO) with one governed orchestration platform on your own infrastructure. Keep your Terraform, Ansible and scripts."
 
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/vra-migration"
@@ -56,8 +57,8 @@ const formProps = {
 const reasons = [
     {
         kicker: "Pricing",
-        title: "vRA now ships inside VMware Cloud Foundation, priced per core.",
-        body: "Per-core subscriptions mean renewals land at several times the old bill.",
+        title: "Since Broadcom's licensing changes, vRA ships only inside VMware Cloud Foundation.",
+        body: "Priced per core on subscription, so renewals land at several times the old bill.",
         icon: "mdi:cash-multiple",
     },
     {
@@ -69,7 +70,7 @@ const reasons = [
     {
         kicker: "Skills",
         title: "vRO JavaScript skills are rare.",
-        body: "Every workflow change goes through the same few people.",
+        body: "Every workflow change waits on the same few people. Kestra flows are YAML any engineer can read, with the logic in Python, PowerShell or Ansible.",
         icon: "mdi:account-group-outline",
     },
 ]
@@ -104,16 +105,16 @@ const stages = [
 const automations = [
     {
         Glyph: SelfServiceIcon,
-        title: "Self-service provisioning",
+        title: "Self-service VM provisioning",
         items: [
-            "Catalog form for the request",
+            "Self-service portal form for the request",
             "VM build",
             "Post-install by server type and site",
         ],
     },
     {
         Glyph: DayTwoIcon,
-        title: "Day-2 operations",
+        title: "Day-2 runbooks",
         items: ["Patching", "Snapshots", "Certificate rotation", "Resizing"],
     },
     {
@@ -134,6 +135,7 @@ const automations = [
             "Active Directory",
             "Microsoft Teams",
             "vCenter",
+            "Terraform and Ansible",
         ],
     },
 ]
@@ -150,7 +152,12 @@ const ctaBullets = [
 const faqItems = [
     {
         question: "Do we have to leave vSphere?",
-        answer: "No. Kestra runs with vSphere and VCF today, and with any hypervisor you move to.",
+        answer: "No. Kestra runs with vSphere and VCF today, and with Nutanix, Proxmox or any hypervisor you move to.",
+    },
+    {
+        question:
+            "We run vSphere on-prem and other tools in the cloud. Can one platform cover both?",
+        answer: "Yes. The same flows call vCenter on-prem and your cloud APIs, Terraform and Ansible, with one audit trail and one access model.",
     },
     {
         question: "Can vRA and Kestra run side by side?",
@@ -171,7 +178,11 @@ const faqItems = [
     },
     {
         question: "How long does a migration take?",
-        answer: "It depends on the estate. The assessment gives you the wave plan and the dates.",
+        answer: "It depends on the estate. The assessment gives you the wave plan and the dates. A Fortune 500 manufacturer replaced vRA and vRO in about twelve months, with both running side by side until each wave was verified.",
+    },
+    {
+        question: "Do you help teams moving off vRA and vRO?",
+        answer: 'Yes. The <a href="/resources/migration/vra">vRA migration guide</a> covers the method stage by stage, and the open-source <a href="/resources/migration/vra/assistant">Migration Assistant</a> reads your vRO package on your own machine and writes the migration brief.',
     },
 ]
 ---
@@ -206,8 +217,8 @@ const faqItems = [
                 infrastructure. Keep your Terraform, Ansible and scripts. Retire
                 the vRA licence at renewal.<br />
                 <strong
-                    >Runs with vSphere today, and with whatever you move to
-                    next.</strong
+                    >Runs with vSphere today, and with Nutanix, Proxmox or
+                    whatever you move to next.</strong
                 >
             </Fragment>
             <Fragment slot="form-sub">
@@ -221,6 +232,7 @@ const faqItems = [
             sub="Kestra runs alongside vRA until each wave is verified."
             steps={stages}
         />
+        <Assistant />
         <Translation />
         <Features />
         <Stack
