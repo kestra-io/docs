@@ -15,18 +15,20 @@ export function tierFromEmployees(value: string): Tier {
     return "T3"
 }
 
+export function isAmericasTimezone() {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone.startsWith("America")
+}
+
 export function getGeoMeetingUrl() {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    if (timezone.startsWith("America")) {
-        return LUKE_MEETING_LINK
-    } else {
-        return DAVID_MEETING_LINK
-    }
+    return isAmericasTimezone() ? LUKE_MEETING_LINK : DAVID_MEETING_LINK
 }
 
 export function getMeetingUrl(tier?: Tier) {
     if (tier === "T1") {
         return getGeoMeetingUrl()
+    }
+    if (tier === "T2" && isAmericasTimezone()) {
+        return LUKE_MEETING_LINK
     }
     return CONNOR_MEETING_LINK
 }

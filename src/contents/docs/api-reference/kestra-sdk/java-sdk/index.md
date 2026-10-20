@@ -602,7 +602,7 @@ Create, run, and fetch results for unit test suites.
 
 ### Create a test suite
 
-A test suite targets one flow (`flowId`) and lists its `testCases`. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
+A test suite targets one flow (`flowId`) and lists its `testCases`. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.output.OutputValues` that emits it under `values.result`.
 
 ```java
 public class TestSuitesExamples {
@@ -619,7 +619,7 @@ public class TestSuitesExamples {
                   inputs:
                     inputA: "Hi there"
                 assertions:
-                  - value: "{{ outputs.return.value }}"
+                  - value: "{{ outputs.return.values.result }}"
                     equalTo: "Hi there"
             """;
         var suite = KestraClients.INSTANCE.testSuites().createTestSuite(tenant, body);

@@ -34,7 +34,7 @@ tasks:
 
 Most tasks expose output values accessible as `outputs.<task_id>.<output_name>`. The available outputs for each task are listed in its plugin documentation.
 
-This example reads the `value` output of the `Return` task in a downstream `Log` task:
+This example reads the `values.result` output of the `OutputValues` task in a downstream `Log` task:
 
 ```yaml
 id: input_string
@@ -46,12 +46,13 @@ inputs:
 
 tasks:
   - id: say_hello
-    type: io.kestra.plugin.core.debug.Return
-    format: "Hello 👋, my name is {{ inputs.name }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Hello 👋, my name is {{ inputs.name }}"
 
   - id: can_you_repeat
     type: io.kestra.plugin.core.log.Log
-    message: '{{ outputs.say_hello.value }}'
+    message: '{{ outputs.say_hello.values.result }}'
 ```
 
 ## Dynamically render a task with `TemplatedTask`
@@ -116,8 +117,8 @@ namespace: company.team
 
 tasks:
   - id: return_date
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}'
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}"
 
 triggers:
   - id: schedule

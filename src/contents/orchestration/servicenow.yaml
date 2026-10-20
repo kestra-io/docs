@@ -95,7 +95,7 @@ useCases:
           pluginClass: "io.kestra.plugin.servicenow.Get"
         - node: "calculate severity"
           label: "from CI impact"
-          pluginClass: "io.kestra.plugin.core.debug.Return"
+          pluginClass: "io.kestra.plugin.core.output.OutputValues"
         - node: "open incident"
           label: "servicenow.Post"
           pluginClass: "io.kestra.plugin.servicenow.Post"
