@@ -6,6 +6,15 @@ import { RESOURCE_PATH } from "../remark/remark-custom-elements/resource-cta.mjs
 
 type Placement = "mid" | "end"
 
+/** Front-matter `resourceCtaOverride`, as written (no schema defaults yet). */
+export interface CtaOverride {
+    href: string
+    label: string
+    tagline?: string
+    taglineEnd?: string
+    action?: string
+}
+
 // Pages with fewer h2s are too short for a mid-article CTA.
 export const MIN_H2_FOR_MID_CTA = 4
 
@@ -60,8 +69,21 @@ const button = (
         [text(label)],
     )
 
-/** Turn `node` into the Get Started / Book a Demo pair, as static HTML. */
-function fillCta(node: Element, placement: Placement, tag?: ResourceTag) {
+const overrideTagline = (placement: Placement, override?: CtaOverride) =>
+    placement === "end"
+        ? (override?.taglineEnd ?? override?.tagline)
+        : override?.tagline
+
+/**
+ * Turn `node` into the Get Started / Book a Demo pair, as static HTML.
+ * `override` swaps the primary button and, when set, the tagline.
+ */
+function fillCta(
+    node: Element,
+    placement: Placement,
+    tag?: ResourceTag,
+    override?: CtaOverride,
+) {
     const taglines = TAGLINES[placement]
     node.tagName = "div"
     node.properties = {
@@ -70,24 +92,39 @@ function fillCta(node: Element, placement: Placement, tag?: ResourceTag) {
     }
     node.children = [
         element("p", { className: ["resource-cta-text"] }, [
-            text((tag && taglines[tag]) ?? taglines.default),
+            text(
+                overrideTagline(placement, override) ??
+                    (tag && taglines[tag]) ??
+                    taglines.default,
+            ),
         ]),
         element("div", { className: ["resource-cta-actions"] }, [
-            button(
-                placement,
-                "/get-started",
-                "btn-primary",
-                "Get Started",
-                "get_started",
-            ),
+            override
+                ? button(
+                      placement,
+                      override.href,
+                      "btn-primary",
+                      override.label,
+                      override.action ?? "guide",
+                  )
+                : button(
+                      placement,
+                      "/get-started",
+                      "btn-primary",
+                      "Get Started",
+                      "get_started",
+                  ),
             button(placement, "/demo", "btn-secondary", "Book a Demo", "demo"),
         ]),
     ]
     return node
 }
 
-const newCta = (placement: Placement, tag?: ResourceTag) =>
-    fillCta(element("div", {}, []), placement, tag)
+const newCta = (
+    placement: Placement,
+    tag?: ResourceTag,
+    override?: CtaOverride,
+) => fillCta(element("div", {}, []), placement, tag, override)
 
 /**
  * Injects the Get Started / Book a Demo pair into /resources articles:
@@ -104,11 +141,13 @@ export default function rehypeResourceCta() {
         // Pages that place their own CTAs opt out with `resourceCta: false`.
         if (frontmatter?.resourceCta === false) return
         const tag = frontmatter?.tag as ResourceTag | undefined
+        const override = frontmatter?.resourceCtaOverride as
+            CtaOverride | undefined
 
         let pinned = false
         visit(tree, "element", (node) => {
             if (node.properties.dataResourceCta !== "mid") return
-            fillCta(node, "mid", tag)
+            fillCta(node, "mid", tag, override)
             pinned = true
             return SKIP
         })
@@ -118,11 +157,11 @@ export default function rehypeResourceCta() {
         )
         if (!pinned && h2Indexes.length >= MIN_H2_FOR_MID_CTA) {
             const target = h2Indexes[Math.ceil(h2Indexes.length / 2)]
-            tree.children.splice(target, 0, newCta("mid", tag))
+            tree.children.splice(target, 0, newCta("mid", tag, override))
         }
 
         if (!frontmatter?.cta) {
-            tree.children.push(newCta("end", tag))
+            tree.children.push(newCta("end", tag, override))
         }
     }
 }
