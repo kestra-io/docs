@@ -25,16 +25,17 @@ tasks:
     type: io.kestra.plugin.core.flow.Sequential
     tasks:
       - id: first_task
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ task.id }} > {{ taskrun.startDate }}"
 
       - id: second_task
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ outputs.first_task.value }}"
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ outputs.first_task.values.result }}"
 
   - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
 For more details, check out the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
@@ -55,16 +56,16 @@ tasks:
     concurrent: 2
     tasks:
       - id: branch_1
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ taskrun.startDate }}"
 
       - id: branch_2
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.id }}"
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ taskrun.id }}"
 
   - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
 `Sequential` nested inside `Parallel` branches runs multi-step sequences concurrently:
@@ -371,11 +372,12 @@ tasks:
     outputs:
       - id: result
         type: STRING
-        value: "{{ outputs.process.value }}"
+        value: "{{ outputs.process.values.result }}"
     tasks:
       - id: process
-        type: io.kestra.plugin.core.debug.Return
-        format: "processed {{ item.value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "processed {{ item.value }}"
 
   - id: summary
     type: io.kestra.plugin.core.log.Log
@@ -578,12 +580,12 @@ tasks:
       - id: ko
         type: io.kestra.plugin.core.execution.Fail
       - id: next
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ taskrun.startDate }}"
 
   - id: end
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
 For more details, refer to the [AllowFailure Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.allowfailure).
