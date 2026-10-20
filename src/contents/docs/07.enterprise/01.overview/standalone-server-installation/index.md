@@ -87,7 +87,7 @@ Secret plugins must be downloaded from the Kestra registry using the same creden
 
 ## S3-compatible internal storage
 
-To use S3-compatible object storage (AWS S3, MinIO, Ceph, SeaweedFS, Garage), install the storage plugin:
+To use S3-compatible object storage (AWS S3, Ceph, SeaweedFS, Garage), install the storage plugin:
 
 ```shell
 kestra plugins install io.kestra.storage:storage-minio:LATEST

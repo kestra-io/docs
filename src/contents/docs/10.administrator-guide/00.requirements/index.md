@@ -42,10 +42,10 @@ MySQL deployments must have the **time zone tables loaded**. If the time zone da
 
 | Kestra Edition    | Storage Provider   | Required version          | Note                             |
 |-------------------|--------------------|---------------------------|----------------------------------|
-| OSS/Enterprise    | MinIO              | >=8                       |                                  |
 | OSS/Enterprise    | Google Cloud GCS   | N/A                       |                                  |
 | OSS/Enterprise    | AWS S3             | N/A                       |                                  |
 | OSS/Enterprise    | Azure Blob Storage | N/A                       |                                  |
+| OSS/Enterprise    | S3-compatible      | N/A                       | Use the `minio` storage type     |
 
 
 ## Hardware requirements

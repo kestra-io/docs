@@ -41,12 +41,12 @@ Local storage behavior differs between standalone and distributed deployments:
 - ✅ **Distributed on shared storage**: OK when all instances can mount it read-write at once (in Kubernetes, `ReadWriteMany`), though this is rarely available
 - ❌ **Host storage sharing**: NOT recommended — difficult to achieve reliably
 
-When shared read-write storage (`ReadWriteMany`) is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
+When shared read-write storage (`ReadWriteMany`) is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage).
 :::
 
 Scalable alternatives are available as plugins:
 
-- [Storage MinIO](https://github.com/kestra-io/storage-minio) — for [AWS S3](https://aws.amazon.com/s3/) and any S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
+- [Storage MinIO](https://github.com/kestra-io/storage-minio) — for [AWS S3](https://aws.amazon.com/s3/) and any S3-compatible object storage (Ceph, SeaweedFS, Garage).
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) — for [Google Cloud Storage](https://cloud.google.com/storage).
 - [Storage Azure](https://github.com/kestra-io/storage-azure) — for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 - [Storage Cloudflare](https://github.com/kestra-io/storage-cloudflare) — for [Cloudflare R2](https://www.cloudflare.com/products/r2/).

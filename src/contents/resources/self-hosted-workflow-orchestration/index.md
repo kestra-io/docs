@@ -18,7 +18,7 @@ faq:
   - question: "Can self-hosted orchestrators scale to enterprise needs?"
     answer: "Yes, modern self-hosted orchestrators like Kestra are built for enterprise scale, offering features like distributed execution, worker groups, and high availability. They can handle billions of executions, integrate with external databases and messaging queues, and support multi-tenancy for large organizations."
   - question: "What is the typical infrastructure for a self-hosted orchestrator?"
-    answer: "A typical self-hosted setup involves a containerization platform like Docker or Kubernetes, a persistent metadata database (e.g., PostgreSQL, MySQL), and an object storage solution (e.g., S3, MinIO) for task outputs. For enterprise scale, additional components like Kafka or Elasticsearch might be used for distributed queues and logging."
+    answer: "A typical self-hosted setup involves a containerization platform like Docker or Kubernetes, a persistent metadata database (e.g., PostgreSQL, MySQL), and an object storage solution (e.g., Amazon S3 or a self-hosted S3-compatible store) for task outputs. For enterprise scale, additional components like Kafka or Elasticsearch might be used for distributed queues and logging."
 ---
 
 In an era where data privacy and infrastructure control are paramount, many organizations are rethinking their approach to workflow orchestration. While managed services offer convenience, they often come at the cost of flexibility, vendor lock-in, and reduced visibility into critical operations. For engineering teams that demand full sovereignty over their automation, self-hosted workflow orchestration emerges as a powerful alternative.
