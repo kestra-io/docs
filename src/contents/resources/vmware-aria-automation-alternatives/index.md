@@ -24,6 +24,8 @@ The landscape of cloud infrastructure automation is in flux, with many organizat
 
 This evolving environment has spurred a significant search for viable alternatives. The leading alternatives to VMware Aria Automation in 2026 include Kestra, Red Hat Ansible Automation Platform, HPE [Morpheus](/resources/infrastructure/morpheus-alternatives) Enterprise Software, Quali Torque, AWS Step Functions, and HashiCorp Terraform Cloud. Each offers distinct approaches to infrastructure automation, ranging from declarative orchestration to comprehensive cloud management and platform engineering. This article will delve into why exploring these alternatives is crucial now, how we evaluated them, and provide a detailed comparison to help you choose the best fit for your organization's unique needs. Teams reassessing Aria frequently reconsider the underlying platform at the same time; our guide to [VMware cloud alternatives](/resources/infrastructure/vmware-cloud-alternatives) covers that broader migration.
 
+Already decided to leave Aria Automation? Our [vRA to Kestra migration guide](/resources/migration/vra) shows how teams move off vRA and vRO in four stages, with vRA running until each wave is verified, and includes a payback calculator for your own numbers.
+
 ## Why explore alternatives to VMware Aria Automation?
 
 The primary catalyst for seeking alternatives is the industry disruption following Broadcom's acquisition of VMware. This event has created significant uncertainty, with users reporting concerns over substantial price increases, shifts in product bundling, and questions about the future quality of support. For many, the predictable, long-term partnership they had with VMware is now in question, making it a prudent time to assess the market for more stable, cost-effective, and flexible solutions.
@@ -48,9 +50,9 @@ Kestra is an open-source, event-driven orchestration platform that uses a declar
 
 Its language-agnostic architecture allows you to orchestrate the tools you already use, whether it's [Terraform](/orchestration/terraform), [Ansible](/orchestration/ansible), Python scripts, or shell commands — and to drive open hypervisor stacks like [Proxmox VE](/orchestration/proxmox) or [Nutanix AHV](/orchestration/nutanix) end to end. This makes it a powerful choice for unifying disparate automation scripts and cron jobs into a governed, auditable system. Workflows are managed as code, aligning perfectly with [GitOps principles for infrastructure automation](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code).
 
-At a Fortune 500 mining leader, Kestra replaced VMware vRA, reducing infrastructure provisioning times from six months to just six days. This demonstrates its capacity to handle complex, enterprise-grade automation with greater speed and flexibility. Kestra can be deployed anywhere—on Kubernetes, VMs, or even air-gapped environments—providing true multi-cloud and hybrid flexibility.
+At a Fortune 500 manufacturer, Kestra replaced VMware vRA, cutting licensing costs by 90% and delivery time from six months to six days. This demonstrates its capacity to handle complex, enterprise-grade automation with greater speed and flexibility. Kestra can be deployed anywhere—on Kubernetes, VMs, or even air-gapped environments—providing true multi-cloud and hybrid flexibility.
 
-**Best for:** Organizations seeking a unified, vendor-agnostic control plane to orchestrate infrastructure, data, and AI workflows with a developer-first, declarative approach. Explore the [Kestra infrastructure automation platform](https://kestra.io/infra-automation) to learn more.
+**Best for:** Organizations seeking a unified, vendor-agnostic control plane to orchestrate infrastructure, data, and AI workflows with a developer-first, declarative approach. Explore the [Kestra infrastructure automation platform](https://kestra.io/infra-automation), or read the [vRA migration guide](/resources/migration/vra).
 
 ## 2. Red Hat Ansible Automation Platform: Enterprise-Grade IT Automation
 
