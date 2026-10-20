@@ -31,6 +31,12 @@ const Title = `h${level}` as const
             margin-bottom: 0;
         }
 
+        // Outranks the global `.bd-content p`, which would paint the body
+        // primary.
+        :global(p) {
+            color: inherit;
+        }
+
         :global(blockquote) {
             @include guide-quote(":global(p)");
             padding: 1rem;

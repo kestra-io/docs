@@ -11,7 +11,7 @@ import handoutsSource from "~/components/vra-migration-guide/ReferenceHandouts.m
 
 /** The guide's figures, keyed by the relative path the MDX uses. */
 const FIGURES = import.meta.glob<ImageMetadata>(
-    "../../../contents/resources/vra-migration-guide/*.png",
+    "../../../contents/resources/vra-migration-guide/*.webp",
     { eager: true, import: "default" },
 )
 

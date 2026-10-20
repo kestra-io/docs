@@ -72,7 +72,6 @@
 <script setup lang="ts">
     import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
-    import { useGtm } from "@gtm-support/vue-gtm"
     import identify from "~/utils/identify"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
@@ -108,7 +107,6 @@
         { name: "jobtitle", label: "Job title" },
     ]
 
-    const gtm = useGtm()
     // Per-instance ids: a page can hold this form twice (a hero and a
     // dialog), and each label must point at its own input.
     const uid = useId()
@@ -172,7 +170,9 @@
 
             posthog.capture(props.event)
             hsq.push(["trackCustomBehavioralEvent", { name: props.event }])
-            gtm?.trackEvent({
+            // Straight to the data layer: the vue-gtm plugin is created with
+            // `enabled: false`, so its trackEvent never reaches GTM.
+            ;(window.dataLayer = window.dataLayer || []).push({
                 event: props.event,
                 noninteraction: false,
             })
