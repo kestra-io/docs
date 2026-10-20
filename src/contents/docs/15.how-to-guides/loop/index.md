@@ -41,11 +41,11 @@ Inside each iteration:
 
 After execution, the Gantt view shows a separate task group for each author.
 
-When `values` contains objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to access fields — `item.value.field` does not work.
+When `values` contains objects, each `item.value` is a JSON string by default. Use `fromJson(item.value).field` to access fields, or set `parseValues: true` on the Loop task to read them as `item.value.field`. For details, see [Read object fields with `parseValues`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#read-object-fields-with-parsevalues).
 
 ## Nested loops
 
-To iterate over multiple dimensions, nest `Loop` tasks. The inner loop accesses the outer loop's value with `{{ item.parent.value }}`. For three or more levels, `{{ item.parents[1].value }}` is the grandparent — `item.parents[0]` is the same as `item.parent`.
+To iterate over multiple dimensions, nest `Loop` tasks. The inner loop accesses the outer loop's value with `{{ item.parent.value }}`. For three or more levels, use `item.parents`, which lists the enclosing loops from the outermost inward. `{{ item.parents[0].value }}` is the outermost loop.
 
 ```yaml
 id: loop_nested

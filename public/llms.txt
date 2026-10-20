@@ -129,6 +129,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 **Governance**
 - [Tenants](https://kestra.io/docs/enterprise/governance/tenants.md): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
 - [Infrastructure Tenant](https://kestra.io/docs/enterprise/governance/tenants/types/infrastructure.md): Purpose-built tenant type for infrastructure self-service — Catalog home, Requests history, Deployments screen, Inventory, day-2 actions, and asset lifecycle management
+- [App templates](https://kestra.io/docs/enterprise/governance/app-templates.md): Create a flow and the app that runs it from one reusable template, in a namespace chosen at use time; use it to publish self-service catalog entries with fixed platform choices
 - [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs.md): Immutable record of all user and system actions across the platform
 - [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager.md): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
 - [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management.md): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
@@ -151,8 +152,9 @@ Use this section for questions about installing, configuring, or running a Kestr
 
 - [Installation](https://kestra.io/docs/installation.md): Docker, Docker Compose, Kubernetes (AWS EKS, GCP GKE, Azure AKS), and VM deployment guides
 - [Configuration reference](https://kestra.io/docs/configuration.md): All server configuration options — datasource, storage, queue, auth, encryption, plugins, and telemetry
-- [Administrator guide](https://kestra.io/docs/administrator-guide.md): Production operations — monitoring, HA, SSL, security hardening, backup, purging, and troubleshooting
+- [Administrator guide](https://kestra.io/docs/administrator-guide.md): Production operations — monitoring, HA, SSL, backup, purging, and troubleshooting
 - [Performance](https://kestra.io/docs/performance.md): Benchmarks, JVM tuning, and infrastructure sizing guidance
+- [Security hardening](https://kestra.io/docs/security-hardening.md): Credential initialization, network and worker isolation, transport security, HTTP URL filtering, and endpoint protection
 - [Migration guide](https://kestra.io/docs/migration-guide.md): Breaking changes and upgrade notes across Kestra versions
 
 ## Extending Kestra
@@ -199,7 +201,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Prometheus Metrics for Kestra: Reference and /prometheus Endpoint](https://kestra.io/docs/administrator-guide/prometheus-metrics.md)
 - [Purge Executions, Logs, and Files in Kestra](https://kestra.io/docs/administrator-guide/purge.md): Scheduled purge patterns for executions, logs, KV pairs, namespace files, and orphaned execution storage; includes the isolated-worker-group cleanup pattern using PurgeStorage
 - [Software and Hardware Requirements to Run Kestra](https://kestra.io/docs/administrator-guide/requirements.md)
-- [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/administrator-guide/security-hardening.md)
 - [Server Heartbeats and Job Recovery in Kestra](https://kestra.io/docs/administrator-guide/server-lifecycle.md)
 - [Service Instance Metrics in Kestra – Expose via the Webserver](https://kestra.io/docs/administrator-guide/service-instance-metrics.md)
 - [SSL/TLS Configuration: Enable HTTPS for Kestra](https://kestra.io/docs/administrator-guide/ssl-configuration.md)
@@ -225,6 +226,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Python SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/python-sdk.md)
 - [Open Source API Reference for Kestra](https://kestra.io/docs/api-reference/open-source.md)
 - [Problem details](https://kestra.io/docs/api-reference/problems.md)
+- [Query filter reference – Fields and operators for API list and by-query endpoints](https://kestra.io/docs/api-reference/query-filters.md)
 - [Architecture in Kestra: Components and Deployment Models](https://kestra.io/docs/architecture.md)
 - [Data Storage Components in Kestra Architecture](https://kestra.io/docs/architecture/data-components.md)
 - [Kestra Deployment Architectures: Postgres, AMQP, and Kafka](https://kestra.io/docs/architecture/deployment-architecture.md)
@@ -254,6 +256,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [KV Store in Kestra: Persist Shared State](https://kestra.io/docs/concepts/kv-store.md)
 - [Namespace Files in Kestra: Manage Project Assets](https://kestra.io/docs/concepts/namespace-files.md)
 - [Pebble Templating in Kestra: Dynamic Variables](https://kestra.io/docs/concepts/pebble.md)
+- [Plugin Artifacts and Assets in Kestra: Data vs Display](https://kestra.io/docs/concepts/plugin-artifacts-vs-assets.md)
 - [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/how-to-guides/replay.md)
 - [Flow Revisions in Kestra: Versioning and Rollbacks](https://kestra.io/docs/concepts/revision.md)
 - [Secrets in Kestra: Store Sensitive Values Securely](https://kestra.io/docs/concepts/secret.md)
@@ -295,6 +298,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Set Up Okta OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/okta.md)
 - [Governance in Kestra Enterprise: Security and Control](https://kestra.io/docs/enterprise/governance.md)
 - [Allowed & Restricted Plugins in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/allowed-plugins.md)
+- [App Templates in Kestra: Self-Service Flows and Apps](https://kestra.io/docs/enterprise/governance/app-templates.md)
 - [Assets in Kestra: Track Lineage and Metadata](https://kestra.io/docs/enterprise/governance/assets.md)
 - [Audit Logs in Kestra: Governance and Compliance](https://kestra.io/docs/enterprise/governance/audit-logs.md)
 - [Custom Blueprints in Kestra Enterprise: Templates](https://kestra.io/docs/enterprise/governance/custom-blueprints.md)
@@ -586,6 +590,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Task Runners in Scripts: Control Execution Environment](https://kestra.io/docs/scripts/task-runners.md)
 - [Working Directory Task – Share Files Across Scripts](https://kestra.io/docs/scripts/working-directory.md)
 - [Read the Execution Context from Your Scripts](https://kestra.io/docs/scripts/execution-context.md)
+- [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/security-hardening.md)
 - [Task Runners in Kestra: Offload & Isolate Compute](https://kestra.io/docs/task-runners.md)
 - [Task Runner Benefits: Resource Control & Flexibility](https://kestra.io/docs/task-runners/benefits.md)
 - [Task Runner Capabilities & Supported Plugins in Kestra](https://kestra.io/docs/task-runners/overview.md)

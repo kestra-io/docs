@@ -39,7 +39,7 @@ tasks:
         message: "region={{ item.value }} index={{ item.index }}"
 ```
 
-When iterating over JSON objects, `item.value` is a JSON string. Use `fromJson(item.value).field` to access properties — `item.value.field` does not work.
+When iterating over JSON objects, set `parseValues: true` so that `item.value` is a map and you can read fields with `item.value.field`. Without it, `item.value` is a JSON string and every expression needs `fromJson(item.value).field`.
 
 ```yaml
 tasks:
@@ -48,19 +48,22 @@ tasks:
     values:
       - {"id": 101, "email": "a@example.com"}
       - {"id": 102, "email": "b@example.com"}
+    parseValues: true
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "User {{ fromJson(item.value).id }} -> {{ fromJson(item.value).email }}"
+        message: "User {{ item.value.id }} -> {{ item.value.email }}"
 ```
+
+Only JSON objects are parsed. Arrays, numbers, and plain strings stay strings. For the full behavior, see [Read object fields with `parseValues`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#read-object-fields-with-parsevalues).
 
 ## Expose outputs explicitly
 
 Task outputs inside a loop are not visible outside it by default. Declare an `outputs:` block on the Loop task to surface values. Choose `fetchType` based on data volume:
 
-- `AUTO` — default, switches automatically based on whether `values` is a URI
-- `FETCH` — collects all iteration results inline (suitable for small iteration counts)
-- `STORE` — writes results to internal storage and exposes a URI (preferred for large iteration counts)
+- `AUTO`: default, switches automatically based on whether `values` is a URI
+- `FETCH`: collects all iteration results inline (suitable for small iteration counts)
+- `STORE`: writes each iteration's outputs to an ION file in internal storage and keeps only its `uri` (preferred for large iteration counts). `loopOutputs()` cannot read declared output IDs in this mode.
 
 After the loop:
 - `outputs.<loop_id>.outputs` is a list of per-iteration results
@@ -224,7 +227,7 @@ tasks:
 Key points:
 
 - The Loop output declares type `STRING` even though the value is a file URI. `loopOutputs()` extracts strings, and `Concat` accepts a list of URI strings.
-- `fetchType: FETCH` keeps the per-iteration output objects in memory so `loopOutputs()` can read them immediately after the loop. Use `STORE` instead if you have hundreds of iterations.
+- `fetchType: FETCH` keeps the per-iteration output objects in memory so `loopOutputs()` can read them immediately after the loop. Keep `FETCH` for this pattern: with `STORE`, each iteration's outputs are replaced by a file `uri`, and `loopOutputs()` returns `null` for `data`.
 - The final `reduce` task re-aggregates because the same key (e.g. a customer) may appear in multiple chunks. The two-pass structure — per-chunk aggregate then cross-chunk reduce — is the canonical map-reduce pattern.
 
 ## Handle per-iteration failures
@@ -256,10 +259,7 @@ tasks:
 
 ## Stop the loop early with `breakWhen`
 
-:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
-:::
-
-Set `breakWhen` to a Pebble expression evaluated after each iteration. When it returns a truthy value, the loop stops and marks remaining iterations as `SKIPPED`.
+Set `breakWhen` to stop starting new iterations once a condition holds. Kestra evaluates the expression after each iteration finishes and counts the remaining iterations as `SKIPPED`. The following example stops at the first failed iteration:
 
 ```yaml
 tasks:
@@ -278,9 +278,12 @@ tasks:
             type: io.kestra.plugin.core.execution.Fail
 ```
 
-Inside `breakWhen`, use `iteration.state` for the completed iteration's final state, `iteration.outputs` for its declared outputs, and `iteration.executionId` for its execution ID.
+Two settings make this work:
 
-Set `concurrencyLimit: 1` when using `breakWhen`. With parallel iterations running simultaneously, the break condition is evaluated per iteration as it finishes, so later iterations may already be running when an earlier one triggers the break.
+- `concurrencyLimit: 1`: Kestra checks `breakWhen` only while some iterations have not started yet. With the default `0`, every iteration starts at once and `breakWhen` has no effect.
+- `transmitFailed: false`: with the default `true`, the first failed iteration fails the loop before Kestra evaluates `breakWhen`.
+
+For the full list of variables available in `breakWhen`, see [Stop early with `breakWhen`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#stop-early-with-breakwhen).
 
 ## Use Loop + Subflow for isolated per-batch execution
 
@@ -337,8 +340,11 @@ tasks:
 ## Common mistakes to avoid
 
 - Do not use `taskrun.value` or `taskrun.iteration` — use `item.value` and `item.index`.
-- Do not access `item.value.field` directly on object values — use `fromJson(item.value).field`.
+- Do not access `item.value.field` on object values unless the Loop sets `parseValues: true`. Without it, use `fromJson(item.value).field`.
+- Do not keep `fromJson(item.value)` after you set `parseValues: true`. `fromJson()` fails on a map.
 - Do not expect loop outputs to be visible downstream without declaring an `outputs:` block.
+- Do not expect duplicate list values to run twice. Kestra drops duplicate elements from a list or JSON array.
+- Do not use `breakWhen` with the default `concurrencyLimit: 0`. Every iteration starts at once, so the condition never stops anything.
 - Do not use `outputs.task_id[item.value]` inside a loop — sibling outputs are accessed with plain `outputs.task_id.attribute`.
 - For very large datasets, set an explicit `concurrencyLimit` to cap parallelism. The default unlimited behavior can overwhelm workers if iterations are resource-intensive.
 
