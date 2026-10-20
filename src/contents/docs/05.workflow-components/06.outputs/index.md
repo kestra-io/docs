@@ -34,7 +34,7 @@ tasks:
 
   - id: use_output
     type: io.kestra.plugin.core.log.Log
-    message: The previous task output is {{ outputs.produce_output.values.result }}
+    message: "The previous task output is {{ outputs.produce_output.values.result }}"
 ```
 
 Use [OutputValues](/plugins/core/output/io.kestra.plugin.core.output.outputvalues) to emit named values for downstream tasks. Access each entry with `outputs.<task_id>.values.<key>`.

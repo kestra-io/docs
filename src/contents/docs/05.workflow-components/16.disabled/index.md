@@ -99,7 +99,7 @@ tasks:
 
   - id: disabled
     type: io.kestra.plugin.core.log.Log
-    message: this task will be skipped
+    message: "this task will be skipped"
     disabled: true
 ```
 
