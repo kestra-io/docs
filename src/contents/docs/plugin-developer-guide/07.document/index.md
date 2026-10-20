@@ -213,12 +213,12 @@ To use the JSON Schema in Visual Studio Code (VSCode), follow these steps:
 ```json
 {
   "yaml.schemas": {
-    "https://your-kestra-instance.com/api/v1/main/schemas/flow.json": "/*.yaml"
+    "https://your-kestra-instance.com/api/v1/plugins/schemas/flow": "/*.yaml"
   }
 }
 ```
 
-Replace `https://your-kestra-instance.com/api/v1/main/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
+Replace `https://your-kestra-instance.com/api/v1/plugins/schemas/flow` with the actual URL of your Kestra JSON Schema.
 
 ### Example of Using JSON Schema in Flow Editor
 
@@ -240,7 +240,7 @@ When you open this flow in the editor, the JSON Schema will validate the structu
 The JSON Schema for Kestra flows is available at the following URL:
 
 ```plaintext
-https://your-kestra-instance.com/api/v1/main/schemas/flow.json
+https://your-kestra-instance.com/api/v1/plugins/schemas/flow
 ```
 
 Replace `https://your-kestra-instance.com` with the actual URL of your Kestra instance.

@@ -101,7 +101,7 @@ Only Instance Owner users can install versioned plugins with the API. To install
 With Kestra username and password:
 
 ```bash
-curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
+curl -X POST http://0.0.0.0:8080/api/v1/instance/versioned-plugins/install \
 -u 'admin@kestra.io:kestra' \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
@@ -110,7 +110,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 With API Token:
 
 ```bash
-curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
+curl -X POST http://0.0.0.0:8080/api/v1/instance/versioned-plugins/install \
 -H "Authorization: Bearer YOUR-API-TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
@@ -119,7 +119,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
 To uninstall a versioned plugin, use the following DELETE request:
 
 ```bash
-curl -X DELETE http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/uninstall \
+curl -X DELETE http://0.0.0.0:8080/api/v1/instance/versioned-plugins/uninstall \
 -u 'admin@kestra.io:kestra' \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
@@ -128,7 +128,7 @@ curl -X DELETE http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/uninstall \
 To check for all available versions of a plugin, you can use the following API request to resolve:
 
 ```bash
-curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/resolve \
+curl -X POST http://0.0.0.0:8080/api/v1/instance/versioned-plugins/resolve \
 -u 'admin@kestra.io:kestra' \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
@@ -137,7 +137,7 @@ curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/resolve \
 If you want to install a newer plugin version, use the install request with the specified version or use `LATEST` instead of the version number. This creates a second, separate installation of the plugin, so you can keep using an old version in production flows and test using the newer version in development.
 
 ```bash
-curl -X POST http://0.0.0.0:8080/api/v1/cluster/versioned-plugins/install \
+curl -X POST http://0.0.0.0:8080/api/v1/instance/versioned-plugins/install \
 -u 'admin@kestra.io:kestra' \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:LATEST"]}'

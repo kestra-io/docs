@@ -28,7 +28,7 @@ export const navigationTree = {
         // "Worker Groups",
         "Best Practices",
     ],
-    "Manage Kestra": ["Administrator Guide", "Migration Guide", "Performance"],
+    "Manage Kestra": ["Administrator Guide", "Migration Guide", "Performance", "Security"],
     "Reference Docs": [
         "Releases & LTS Policy",
         "Configuration",

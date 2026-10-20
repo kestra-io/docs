@@ -120,8 +120,9 @@ tasks:
     condition: "{{ outputs['assess-1_6_5']['vars']['result'] == outputs.getConfiguration.value }}"
     then:
       - id: compliant-1_6_5
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ vars.COMPLIANT }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ vars.COMPLIANT }}"
     else:
       - id: doRemediate
         type: io.kestra.plugin.core.flow.If
@@ -137,18 +138,20 @@ tasks:
               - sudo chown root:root $(readlink -e /etc/issue)
               - sudo chmod u-x,go-wx $(readlink -e /etc/issue)
           - id: remediateResult-1_6_5
-            type: io.kestra.plugin.core.debug.Return
-            format: "{{ vars.COMPLIANT }}"
+            type: io.kestra.plugin.core.output.OutputValues
+            values:
+              result: "{{ vars.COMPLIANT }}"
         else:
           - id: not-compliant-1_6_5
-            type: io.kestra.plugin.core.debug.Return
-            format: "{{ vars.NOT_COMPLIANT }}"
+            type: io.kestra.plugin.core.output.OutputValues
+            values:
+              result: "{{ vars.NOT_COMPLIANT }}"
 
 ## Return output for the parent flow
 outputs:
   - id: complianceStatus-1_6_5
     type: STRING
-    value: "{{ outputs['compliant-1_6_5']['value'] ?? outputs['remediateResult-1_6_5']['value'] ?? outputs['not-compliant-1_6_5']['value'] ?? 'Error' }}"
+    value: "{{ outputs['compliant-1_6_5']['values']['result'] ?? outputs['remediateResult-1_6_5']['values']['result'] ?? outputs['not-compliant-1_6_5']['values']['result'] ?? 'Error' }}"
 ```
 
 Repeat the same pattern for controls **1.6.4** and **1.6.6**.
