@@ -28,8 +28,9 @@ tasks:
     values: "{{ trigger.rows }}"
     tasks:
       - id: return
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ fromJson(item.value) }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ fromJson(item.value) }}"
 
 triggers:
   - id: query_trigger

@@ -59,13 +59,14 @@ inputs:
 
 tasks:
   - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: "Subflow: {{ inputs.debug }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Subflow: {{ inputs.debug }}"
 
 outputs:
   - id: subflow_output
     type: STRING
-    value: "{{ outputs.return.value }}"
+    value: "{{ outputs.return.values.result }}"
 ```
 
 ## KV Store

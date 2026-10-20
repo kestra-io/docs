@@ -190,7 +190,11 @@ Tags are useful when secrets are selected by metadata rather than by one fixed p
 
 ### Secret cache
 
-Caching reduces repeated secret-manager calls for frequently used values:
+:::alert{type="info"}
+Secret caching applies to [external secrets managers](../../07.enterprise/02.governance/secrets-manager/index.md), available in Enterprise Edition and Kestra Cloud.
+:::
+
+Caching reduces repeated calls to the secrets manager for frequently used values. The cache is enabled by default:
 
 ```yaml
 kestra:
@@ -199,9 +203,11 @@ kestra:
       enabled: true
       maximum-size: 1000
       expire-after-write: 60s
+      negative-cache-enabled: false
+      negative-cache-ttl: 45s
 ```
 
-Use a cache when executions hit the same secret names repeatedly, but keep TTLs conservative if secret rotation happens often.
+Keep `expire-after-write` short if secret rotation happens often. Set `negative-cache-enabled: true` to also cache lookups that find no secret, which avoids repeated queries for parent namespaces that don't hold the secret. See [Secret caching](../../07.enterprise/02.governance/secrets-manager/index.md#secret-caching) for how each setting behaves.
 
 ![Secrets UI Configuration](../is-secrets-configuration.png)
 
