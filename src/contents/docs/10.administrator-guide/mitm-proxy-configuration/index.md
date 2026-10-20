@@ -106,7 +106,7 @@ common:
         -Dhttp.proxyPort=8000
         -Dhttps.proxyHost=your.proxy.net
         -Dhttps.proxyPort=8000
-        -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|kestra-minio
+        -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|your.object-storage.domain.com
 ```
 
 **Docker Compose**

@@ -377,7 +377,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
 - [Loop Over a List of Values](https://kestra.io/docs/how-to-guides/loop.md)
 - [Safeguard Microservices with Unit Tests](https://kestra.io/docs/how-to-guides/microservices-unit-tests.md)
-- [Configure Local MinIO Storage for Kestra](https://kestra.io/docs/how-to-guides/minio.md)
 - [Configure Monitoring with Grafana and Prometheus](https://kestra.io/docs/how-to-guides/monitoring.md)
 - [MultipleCondition Listener in Kestra: How It Works](https://kestra.io/docs/how-to-guides/multiplecondition-listener.md)
 - [Namespace Variables vs. KV Store in Kestra](https://kestra.io/docs/how-to-guides/namespace-variables-vs-kvstore.md)

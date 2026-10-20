@@ -246,7 +246,7 @@ Common options include:
 - `s3files`
 - `gcs`
 - `azure`
-- `minio`
+- `minio` for any S3-compatible object store
 - other object-storage-compatible backends
 
 The default local storage is fine for local testing but not for every production topology. The important distinction is whether every Kestra component can see the same files.
@@ -342,7 +342,7 @@ kestra:
 
 #### S3-compatible endpoints
 
-The `s3` backend targets Amazon S3 by default. Set `endpoint` to point that same backend at another S3-compatible object store, for example Backblaze B2, Cloudflare R2, or MinIO. Some endpoints also require `force-path-style: true`; MinIO deployments can alternatively use the dedicated [`type: minio`](#minio--s3-compatible) backend.
+The `s3` backend targets Amazon S3 by default. Set `endpoint` to point that same backend at another S3-compatible object store, for example Backblaze B2, Cloudflare R2, or Ceph. Some endpoints also require `force-path-style: true`. Self-hosted S3-compatible stores can alternatively use the dedicated [`type: minio`](#s3-compatible-storage) backend.
 
 ```yaml
 kestra:
@@ -555,9 +555,13 @@ Connection string and shared key auth carry full data-plane access inherently an
 
 ---
 
-### MinIO / S3-compatible
+### S3-compatible storage
 
-Use `type: minio` for MinIO and any S3-compatible object storage — including Ceph, SeaweedFS S3 API, Garage, and Outscale OOS.
+Use `type: minio` for any S3-compatible object storage, such as Ceph RGW, SeaweedFS, Garage, Versity S3 Gateway, or Outscale OOS. The type name comes from the MinIO Java client library the backend uses. It does not require a MinIO server.
+
+:::alert{type="warning"}
+The open source MinIO server is no longer maintained: its repository was archived in April 2026 and MinIO no longer publishes community Docker images. If you run Kestra on a MinIO server, plan a move to another S3-compatible store. The `minio` storage type keeps working with the new endpoint.
+:::
 
 #### Minimum configuration
 
@@ -566,7 +570,7 @@ kestra:
   storage:
     type: minio
     minio:
-      endpoint: my.minio.domain.com
+      endpoint: s3.example.com
       port: 9000
       secure: false
       access-key: ${AWS_ACCESS_KEY_ID}
@@ -583,7 +587,7 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `endpoint` | string | No | — | MinIO or S3-compatible server hostname or URL. |
+| `endpoint` | string | No | — | S3-compatible server hostname or URL. |
 | `port` | integer | No | `0` | Server port. Default `0` uses the standard port for the chosen scheme. |
 | `secure` | boolean | No | `false` | Use TLS for the connection. |
 | `access-key` | string | No | — | Access key ID. |
@@ -591,7 +595,7 @@ kestra:
 | `region` | string | No | — | Region to include in request signing. |
 | `bucket` | string | No | — | Bucket name. |
 | `part-size` | size | No | `5MB` | Multipart upload part size. Minimum 5 MiB. |
-| `vhost` | boolean | No | `false` | Enable virtual-hosted style bucket URLs. Set to `true` when MinIO uses `MINIO_DOMAIN`. |
+| `vhost` | boolean | No | `false` | Enable virtual-hosted style bucket URLs (`bucket.endpoint`). Leave `false` for path-style addressing. |
 | `ca-pem` | string | No | — | CA certificate PEM for custom TLS trust. |
 | `client-pem` | string | No | — | Client certificate PEM for mutual TLS. |
 | `http-connect-timeout` | duration | No | — | HTTP connection timeout. |
@@ -601,11 +605,11 @@ kestra:
 | `proxy-configuration` | object | No | — | HTTP proxy settings (host, port, type, username, password). |
 | `ssl-options` | object | No | — | Advanced SSL/TLS options (protocols, cipher suites, trust manager). |
 
-If MinIO uses `MINIO_DOMAIN`, set `vhost: true` and point `endpoint` at the base domain rather than `bucket.domain`.
+If your object store requires virtual-hosted style addressing, set `vhost: true` and point `endpoint` at the base domain rather than `bucket.domain`.
 
 #### Permissions
 
-Create a MinIO policy that grants the access key read/write access to the bucket, then attach it via `mc admin policy attach`:
+Grant the access key read and write access to the bucket. On stores that accept AWS-style IAM policies, use a policy like the following:
 
 ```json
 {
@@ -625,7 +629,7 @@ Create a MinIO policy that grants the access key read/write access to the bucket
 }
 ```
 
-For Ceph RGW, SeaweedFS, or other S3-compatible backends, apply the equivalent bucket ACL or user policy through that system's admin interface.
+If your store does not accept IAM policies, apply the equivalent bucket ACL or user permissions through its admin interface.
 
 ---
 
@@ -709,7 +713,7 @@ kestra:
 | `endpoint` | string | No | — | Explicit OBS or S3-compatible endpoint URL. Takes precedence over `region`. |
 | `security-token` | string | No | — | Security token for temporary AK/SK credentials. |
 | `path` | string | No | — | Object key prefix within the bucket. |
-| `path-style-access` | boolean | No | `false` | Use path-style bucket addressing. Required for MinIO and most S3-compatible endpoints. |
+| `path-style-access` | boolean | No | `false` | Use path-style bucket addressing. Required for most S3-compatible endpoints. |
 
 #### Permissions
 
