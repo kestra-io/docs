@@ -32,7 +32,7 @@ const faqItems = [
     },
     {
         question: "Which models does it work with?",
-        answer: "It uses one model for everything, connected through a Claude Code login, an Anthropic API key, or any OpenAI-compatible endpoint, including Azure OpenAI and Amazon Bedrock through a proxy. The default is [model TBC], and the README lists the models we've tested. Keys never go in the config file.",
+        answer: "It uses one model for everything, connected through a Claude Code login, an Anthropic API key, or any OpenAI-compatible endpoint, including Azure OpenAI and Amazon Bedrock through a proxy. The default is Claude Opus 5.5 (claude-opus-5-5), and the README lists the models we've tested. Keys never go in the config file.",
     },
     {
         question: "Do I need the vRA export?",
@@ -98,3 +98,35 @@ const faqItems = [
         form={HELP_REQUEST}
     />
 </Layout>
+
+<script>
+    import {
+        WEBINAR_HREF_EU,
+        WEBINAR_HREF_US,
+    } from "~/components/vra-migration-guide/assistant/links"
+    import { isAmericasTimezone } from "~/composables/useMeeting"
+
+    // Visitors in the Americas get the US session of the webinar, the same
+    // split the demo forms make. The banner is a Vue island, so its link is
+    // swapped once it has hydrated; the "Next steps" link is plain HTML.
+    function pickWebinarSession() {
+        if (!isAmericasTimezone()) return
+        for (const link of document.querySelectorAll<HTMLAnchorElement>(
+            `a[href="${WEBINAR_HREF_EU}"]`,
+        )) {
+            const island = link.closest("astro-island")
+            if (island?.hasAttribute("ssr")) {
+                new MutationObserver((_, observer) => {
+                    if (island.hasAttribute("ssr")) return
+                    link.href = WEBINAR_HREF_US
+                    observer.disconnect()
+                }).observe(island, { attributes: true })
+            } else {
+                link.href = WEBINAR_HREF_US
+            }
+        }
+    }
+
+    pickWebinarSession()
+    document.addEventListener("astro:page-load", pickWebinarSession)
+</script>
