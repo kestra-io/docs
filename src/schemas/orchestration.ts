@@ -24,23 +24,6 @@ const pillarsSchema = z.object({
     items: z.array(pillarSchema),
 })
 
-const flowNodeSchema = z.object({
-    label: z.string(),
-    sublabel: z.string().optional(),
-    pluginClass: z.string().optional(),
-    icon: z.string().optional(),
-})
-
-const flowDiagramSchema = z.object({
-    source: flowNodeSchema,
-    workflow: z.object({
-        label: z.string(),
-        sublabel: z.string().optional(),
-    }),
-    tools: z.array(flowNodeSchema).min(2).max(5),
-    outcome: flowNodeSchema,
-})
-
 const useCaseStepSchema = z.object({
     node: z.string(),
     label: z.string().optional(),
@@ -91,17 +74,11 @@ const blueprintSchema = z.object({
     name: z.string(),
     title: z.string(),
     description: z.string(),
-    code: z.string().optional(),
-    plugins: z.array(z.string()).optional(),
-    href: z.string().optional(),
-    flowDiagram: flowDiagramSchema.optional(),
-    blueprintId: z.string().optional(),
-    blueprintPlaceholder: z.boolean().optional(),
+    blueprintId: z.string(),
 })
 
 const blueprintsSchema = z.object({
     title: z.string(),
-    lead: z.string(),
     items: z.array(blueprintSchema),
 })
 
@@ -170,6 +147,7 @@ export const orchestrationSchema = z.object({
     tool: z.object({
         name: z.string(),
         pluginClass: z.string(),
+        category: z.enum(["Infrastructure", "Cloud", "Data", "Business", "AI"]),
         color: z.string().optional(),
     }),
     hero: heroSchema,
