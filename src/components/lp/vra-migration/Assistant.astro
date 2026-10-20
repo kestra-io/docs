@@ -1,0 +1,195 @@
+---
+/* Stage 1 made concrete: what the Migration Assistant hands back. The visual
+ * is the guide's own sample brief, in the same browser frame the assistant
+ * page uses. The CTA stays on this page: the paid visitor books the run with
+ * us rather than leaving for the tool's page (the FAQ links to it). */
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+
+import BrowserFrame from "~/components/vra-migration-guide/assistant/BrowserFrame.astro"
+import brief from "~/components/vra-migration-guide/assets/assistant-brief-front.png"
+
+const points = [
+    "What each workflow does, what starts it and which systems it calls",
+    "Whether a Kestra plugin already covers each of those systems",
+    "Retire, merge, keep as a wrapper, convert or rebuild, workflow by workflow",
+    "A migration plan in waves, ordered by risk and dependency",
+]
+---
+
+<section class="assistant">
+    <div class="inner">
+        <div class="copy" data-usal="fade-r delay-0 duration-500 ease-out">
+            <p class="kicker">Stage 1, on your own machine</p>
+            <h2>See what's inside your vRO package</h2>
+            <p class="lead-copy">
+                The open-source Kestra Migration Assistant reads your vRealize
+                Orchestrator package and vRA export locally, sends nothing to
+                Kestra, and writes a migration brief you open in a browser.
+            </p>
+            <ul class="points">
+                {
+                    points.map((point) => (
+                        <li>
+                            <Icon
+                                name="mdi:check-circle-outline"
+                                class="check"
+                            />
+                            <span>{point}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+            <a href="#contact-sales" class="cta">Run it with us</a>
+        </div>
+
+        <figure
+            class="visual"
+            data-usal="fade-l delay-100 duration-500 ease-out"
+        >
+            <BrowserFrame path="kestra-assessment / index.html">
+                <Image
+                    src={brief}
+                    alt="A Migration Assistant brief: what the vRA estate holds, the recommendation to convert, and how each vRA and vRO element maps to Kestra"
+                    widths={[640, 1280]}
+                    sizes="(min-width: 992px) 600px, 92vw"
+                    loading="lazy"
+                />
+            </BrowserFrame>
+            <figcaption>
+                A sample brief, generated from one vRO package and one vRA
+                export.
+            </figcaption>
+        </figure>
+    </div>
+</section>
+
+<style lang="scss">
+    .assistant {
+        position: relative;
+        overflow: clip;
+        padding: 5rem 1rem;
+        background-color: var(--lp-bg-dark);
+        background-image: radial-gradient(
+            60% 55% at 85% 50%,
+            rgba(109, 40, 217, 0.45) 0%,
+            rgba(17, 17, 21, 0) 75%
+        );
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        max-width: 1140px;
+        margin-inline: auto;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            gap: 3rem;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 440px;
+        }
+    }
+
+    .kicker {
+        margin: 0;
+        color: var(--lp-purple-mid);
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    h2 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1.0417;
+        letter-spacing: -0.045rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .lead-copy {
+        margin: 0;
+        color: var(--lp-content-dark-secondary);
+        font-size: 1.125rem;
+        line-height: 1.5;
+    }
+
+    .points {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-size: $font-size-md;
+            line-height: 1.5;
+        }
+    }
+
+    .check {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        margin-top: 0.125rem;
+        color: var(--lp-purple-mid);
+    }
+
+    .cta {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        justify-content: center;
+        min-width: 160px;
+        height: 50px;
+        padding: 0.5rem 1.25rem;
+        border: 1px solid #ffffff;
+        border-radius: 8px;
+        background-color: var(--lp-purple);
+        color: #ffffff;
+        font-size: $font-size-lg;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow:
+            inset 0 0 14px 0 #be62ff,
+            2px 2px 5.5px rgba(0, 0, 0, 0.1);
+        &:hover {
+            background-color: #7737fe;
+        }
+    }
+
+    .visual {
+        min-width: 0;
+        margin: 0;
+
+        :global(img) {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        figcaption {
+            margin-top: 0.75rem;
+            color: var(--lp-content-muted);
+            font-size: $font-size-sm;
+            text-align: center;
+        }
+    }
+</style>
