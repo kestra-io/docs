@@ -199,7 +199,7 @@ testimonials:
         name: Faster workflow creation
       - value: "0"
         name: Pipeline failures
-    storyLink: "/customers/apple"
+    storyLink: "/stories/apple"
 
 platformStrengths:
   title: Kestra Is Built for the Workflows That Run Your Business

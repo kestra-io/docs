@@ -90,8 +90,9 @@ namespace: company.team
 
 tasks:
   - id: pass_output
-    type: io.kestra.plugin.core.debug.Return
-    format: hello
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: hello
 
   - id: py_outputs
     type: io.kestra.plugin.scripts.python.Script
@@ -111,7 +112,7 @@ tasks:
   - id: take_inputs
     type: io.kestra.plugin.core.log.Log
     message: |
-      data from previous tasks: {{ outputs.pass_output.value }} and {{ outputs.py_outputs.vars.mykey }}
+      data from previous tasks: {{ outputs.pass_output.values.result }} and {{ outputs.py_outputs.vars.mykey }}
 
   - id: check_output_file
     type: io.kestra.plugin.scripts.shell.Commands

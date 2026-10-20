@@ -121,20 +121,21 @@ tasks:
                 content: "{{ trigger.body | jq('.prompt') }}"
       
       - id: get_response
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ outputs.call_openai_expensive.choices[0].message.content || outputs.call_gemini_cheap.choices[0].message.content }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ outputs.call_openai_expensive.choices[0].message.content || outputs.call_gemini_cheap.choices[0].message.content }}"
 
       - id: cache_new_response
         type: io.kestra.plugin.core.kv.Set
         namespace: llm-cache
         key: "{{ trigger.body | jq('.prompt') | hash('md5') }}"
-        value: "{{ outputs.get_response.value }}"
+        value: "{{ outputs.get_response.values.result }}"
 
       - id: return_new_response
         type: io.kestra.plugin.core.http.Request
         uri: "{{ trigger.body | jq('.responseUrl') }}"
         method: POST
-        body: "{{ outputs.get_response.value }}"
+        body: "{{ outputs.get_response.values.result }}"
 
 triggers:
   - id: webhook

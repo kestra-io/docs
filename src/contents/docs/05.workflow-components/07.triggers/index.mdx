@@ -117,7 +117,7 @@ triggers:
 
 ### Concurrency
 
-By default, each trigger allows only one active execution at a time. If an execution is still running when the next trigger fires, the new execution is queued rather than started immediately. Manual executions from the UI or API are not subject to this limit; they always start regardless of trigger state.
+By default, each trigger allows only one active execution at a time. While an execution from the trigger is still running, the trigger stays locked and creates no new execution; evaluation resumes once that execution ends. Manual executions from the UI or API are not subject to this limit; they always start regardless of trigger state.
 
 To allow multiple concurrent executions from the same trigger, set `allowConcurrent: true` on the trigger.
 
@@ -201,7 +201,7 @@ To avoid a source code change, use the **Enabled** toggle in the UI instead.
 
 ### Disabling a trigger from the UI
 
-Triggers are enabled or disabled from the **Triggers** tab of the flow editor. See [Disabled](../../16.disabled/index.md) for details.
+Triggers are enabled or disabled from the **Triggers** tab of the flow editor. See [Disabled](../16.disabled/index.md) for details.
 
 If a trigger is locked due to an execution in progress, the **Unlock trigger** button is available in the Triggers tab. Manually unlocking a trigger may result in duplicate executions.
 
@@ -215,11 +215,11 @@ From **Tenant → Triggers** you can bulk manage trigger state:
 
 - **Toggle**: enable or disable one or more triggers without editing the flow code.
 - **Unlock**: clear the “locked” state if a trigger is stuck waiting on a long-running execution (use carefully, as this may create duplicate executions).
-- **Delete trigger**: remove the trigger definition so it behaves as if newly created. This is useful when you need to reset trigger state or force a fresh evaluation window.
+- **Delete trigger**: remove the trigger's stored state, including its lock, next evaluation date, and any backfill. The trigger definition in the flow is unchanged. For a realtime trigger, deleting the state also stops its running instance.
 
 ![triggers_administration](./triggers-administration.png)
 
-Deleting a trigger is different from deleting a backfill: removing a backfill only cancels pending catch-up runs, while deleting a trigger resets the trigger entity itself. Use **Delete backfill** to stop scheduled replays and **Delete trigger** to rebuild the trigger state.
+Deleting a trigger is different from deleting a backfill: removing a backfill only cancels pending catch-up runs, while deleting a trigger removes its stored state. Use **Delete backfill** to stop scheduled replays.
 
 ## Troubleshooting a trigger from the UI
 
