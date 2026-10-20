@@ -176,7 +176,7 @@ const faqItems = [
 ]
 ---
 
-<Layout {title} {description} noindex bareChrome>
+<Layout {title} {description} noindex bareChrome forceTheme="light">
     <div class="lp-workflow-orchestration">
         <LpHeader showGithub={false} />
         <Hero
@@ -235,7 +235,7 @@ const faqItems = [
             bullets={ctaBullets}
             {formProps}
         />
-        <Payback calculatorHref="/resources/migration/vra/payback" />
+        <Payback />
         <Faq items={faqItems} />
         <ClosingBanner
             heading="Bring your vRA renewal quote"
