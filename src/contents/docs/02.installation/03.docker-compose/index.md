@@ -109,7 +109,7 @@ Alternatively, you can use a Docker network. By default, your Kestra container i
 
 A better approach may be to create a new network such as `kestra_net` and add your services to it. Then add that network to the `networks` section of the `kestra` service. With this configuration, you can access your exposed ports through `localhost`.
 
-The example below shows how you can add `iceberg-rest`, `minio`, and `mc` (i.e., MinIO client) to your Kestra Docker Compose file.
+The example below adds an Iceberg REST catalog (`iceberg-rest`) backed by [SeaweedFS](https://github.com/seaweedfs/seaweedfs), a self-hosted S3-compatible object store, to your Kestra Docker Compose file. A one-off `create-bucket` container creates the `warehouse` bucket, which both the catalog and Kestra internal storage use.
 
 :::collapse{title="Example"}
 
@@ -118,6 +118,8 @@ volumes:
   postgres-data:
     driver: local
   kestra-data:
+    driver: local
+  seaweedfs-data:
     driver: local
 
 networks:
@@ -150,44 +152,33 @@ services:
         - AWS_REGION=us-east-1
         - CATALOG_WAREHOUSE=s3://warehouse/
         - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
-        - CATALOG_S3_ENDPOINT=http://minio:9000
+        - CATALOG_S3_ENDPOINT=http://seaweedfs:8333
+        - CATALOG_S3_PATH__STYLE__ACCESS=true
       networks:
         kestra_net:
 
-  minio:
-      image: minio/minio
-      container_name: minio
-      environment:
-        - MINIO_ROOT_USER=admin
-        - MINIO_ROOT_PASSWORD=password
-        - MINIO_DOMAIN=minio
-      networks:
-        kestra_net:
-          aliases:
-            - warehouse.minio
-      ports:
-        - 9001:9001
-        - 9000:9000
-      command: ["server", "/data", "--console-address", ":9001"]
-
-  mc:
-      depends_on:
-        - minio
-      image: minio/mc
-      container_name: mc
-      networks:
-        kestra_net:
+  seaweedfs:
+      image: chrislusf/seaweedfs
+      command: server -dir=/data -s3 -s3.port=8333
       environment:
         - AWS_ACCESS_KEY_ID=admin
         - AWS_SECRET_ACCESS_KEY=password
-        - AWS_REGION=us-east-1
+      volumes:
+        - seaweedfs-data:/data
+      networks:
+        kestra_net:
+      ports:
+        - 8333:8333
+
+  create-bucket:
+      depends_on:
+        - seaweedfs
+      image: chrislusf/seaweedfs
+      networks:
+        kestra_net:
       entrypoint: >
         /bin/sh -c "
-        until (/usr/bin/mc config host add minio http://minio:9000 admin password) do echo '...waiting...' && sleep 1; done;
-        /usr/bin/mc rm -r --force minio/warehouse;
-        /usr/bin/mc mb minio/warehouse;
-        /usr/bin/mc policy set public minio/warehouse;
-        tail -f /dev/null
+        until echo 's3.bucket.create -name warehouse' | weed shell -master=seaweedfs:9333; do echo '...waiting...' && sleep 2; done
         "
 
   kestra:
@@ -214,15 +205,15 @@ services:
           kestra:
             server:
               basic-auth:
-                username: admin
-                password: kestra
+                username: admin@kestra.io
+                password: Admin1234!
             repository:
               type: postgres
             storage:
               type: minio
               minio:
-                endpoint: http://minio
-                port: 9000
+                endpoint: http://seaweedfs
+                port: 8333
                 access-key: admin
                 secret-key: password
                 region: us-east-1
@@ -244,6 +235,8 @@ services:
       networks:
         kestra_net:
 ```
+
+Kestra connects to SeaweedFS through the `minio` storage type, which is Kestra's generic backend for S3-compatible object storage. See [S3-compatible storage](../../configuration/02.runtime-and-storage/index.md#s3-compatible-storage) for all options.
 :::
 
 Finally, you can use `host` network mode for the `kestra` service. This makes the container use your host network, so it can reach all exposed ports. In that case, change `services.kestra.environment.KESTRA_CONFIGURATION.datasources.postgres.url` to `jdbc:postgresql://localhost:5432/kestra`. This is the easiest way to reach all ports, but it can be a security risk.
@@ -275,8 +268,8 @@ services:
         kestra:
           server:
             basic-auth:
-              username: admin
-              password: kestra
+              username: admin@kestra.io
+              password: Admin1234!
           anonymous-usage-report:
             enabled: true
           repository:
@@ -395,8 +388,8 @@ services:
         kestra:
           server:
             basic-auth:
-              username: "admin@kestra.io"
-              password: kestra
+              username: admin@kestra.io
+              password: Admin1234!
           repository:
             type: postgres
           storage:

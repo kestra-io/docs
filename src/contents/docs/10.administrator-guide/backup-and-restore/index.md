@@ -207,4 +207,4 @@ Kestra's internal storage can be a local filesystem or object storage.
 
 - **Local filesystem**: back up and restore the storage directory with your standard filesystem tools.
 - **Managed object storage**: enable cross-region replication (often sufficient for DR) or use the provider's backup tooling.
-- **Self-hosted object storage (e.g., MinIO)**: use a tool like [Restic](https://blog.min.io/back-up-restic-minio/) and/or configure replication.
+- **Self-hosted object storage (e.g., Ceph or SeaweedFS)**: use a tool like [Restic](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#amazon-s3) and/or configure replication.
