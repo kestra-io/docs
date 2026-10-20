@@ -251,7 +251,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [KV Store in Kestra: Persist Shared State](https://kestra.io/docs/concepts/kv-store.md)
 - [Namespace Files in Kestra: Manage Project Assets](https://kestra.io/docs/concepts/namespace-files.md)
 - [Pebble Templating in Kestra: Dynamic Variables](https://kestra.io/docs/concepts/pebble.md)
-- [Plugin Artifacts vs Assets in Kestra](https://kestra.io/docs/concepts/plugin-artifacts-vs-assets.md)
 - [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/how-to-guides/replay.md)
 - [Flow Revisions in Kestra: Versioning and Rollbacks](https://kestra.io/docs/concepts/revision.md)
 - [Secrets in Kestra: Store Sensitive Values Securely](https://kestra.io/docs/concepts/secret.md)

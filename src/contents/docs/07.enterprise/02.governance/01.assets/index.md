@@ -482,8 +482,6 @@ tasks:
 
 The dependencies graph shows how assets relate to each other across your workflows. Open an asset and select the **Dependencies** tab.
 
-This graph spans every flow and execution that touches an asset. Some plugins also ship their own view of a single task run in the execution topology. See [Plugin artifacts vs assets](../../../06.concepts/plugin-artifacts-vs-assets/index.md) for how the two differ.
-
 ### Tree and DAG layouts
 
 Two layout modes are available via the toggle in the graph toolbar:

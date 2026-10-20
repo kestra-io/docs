@@ -17,10 +17,6 @@ Tasks in Kestra produce structured outputs and have rich configuration. But the 
 
 Plugin artifacts let you close this gap without forking Kestra's core. A `topology-details` component can show a formatted query, estimated cost, or job metadata inline in the flow topology. A `topology-task-modal` component can give a task runner a full-screen view of each infrastructure phase. This keeps the core UI generic and lets each plugin deliver the right experience for its domain.
 
-:::alert{type="info"}
-A plugin artifact displays one task run. To record the resources a task creates or reads so users can track them across flows and executions, emit [assets](../../07.enterprise/02.governance/01.assets/index.md) instead, or as well. See [Plugin artifacts vs assets](../../06.concepts/plugin-artifacts-vs-assets/index.md).
-:::
-
 ## Architecture
 
 Plugin artifacts are built as **Vue.js micro-frontends** using [Module Federation](https://module-federation.io/). The plugin's `ui/` directory compiles to a federated JavaScript module, which is bundled into the plugin JAR under `src/main/resources/plugin-ui/`. At runtime, the Kestra host app discovers and loads these modules dynamically — no static linking required.

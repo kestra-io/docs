@@ -105,7 +105,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 <span id="plugin"></span>
 - [Plugin](#plugin) - the building blocks of tasks in Kestra that offer integrations to different systems and functionality. [Plugins](../05.workflow-components/02.plugins/index.md) power every task and trigger in Kestra. Each plugin is distributed as a JAR identified by Maven coordinates (`groupId:artifactId:version`).
 <span id="plugin-artifact"></span>
-- [Plugin artifact](#plugin-artifact) - a UI component that a plugin ships to display a task in the Kestra UI, such as a query summary or a progress stepper in the topology view. A plugin artifact renders data from one task run; to track resources across flows and executions, use [Assets](../07.enterprise/02.governance/01.assets/index.md). See [Develop Plugin Artifacts](../plugin-developer-guide/10.plugin-ui/index.md).
+- [Plugin artifact](#plugin-artifact) - a UI component that a plugin adds to a slot in the Kestra UI, such as a task node in the topology view, to display that plugin's data, for example a query summary or a progress stepper. See [Develop Plugin Artifacts](../plugin-developer-guide/10.plugin-ui/index.md).
 
 ## R
 
