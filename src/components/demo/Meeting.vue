@@ -424,6 +424,7 @@
                             :id="`${uid}-${field.name}`"
                             :name="field.name"
                             class="form-control"
+                            :class="{ optional: !field.required }"
                             :required="field.required"
                         >
                             <option value="" disabled selected>
