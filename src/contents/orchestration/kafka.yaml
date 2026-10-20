@@ -4,6 +4,7 @@ description: "Start a flow per Kafka record or on batched pulls, stream events i
 tool:
   name: "Kafka"
   pluginClass: "io.kestra.plugin.kafka.Consume"
+  category: "Data"
   color: "#00bfa5"
 
 hero:

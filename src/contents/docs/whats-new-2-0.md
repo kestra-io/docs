@@ -99,7 +99,7 @@ New controls for what flows can access and how they are governed.
 
 ### HTTP task URL filtering
 
-[HTTP task filtering](./10.administrator-guide/security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
+[HTTP task filtering](./security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
 
 ---
 

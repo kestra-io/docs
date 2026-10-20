@@ -101,8 +101,33 @@ jobs:
           # preview, so a cross-ref fallback would never match anything.
           restore-keys: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
 
+      # A restored content store can reference files that a merge to main since
+      # renamed or renumbered (e.g. ImageNotFound for a moved image), failing the
+      # build although the commit itself is fine. The next step retries clean.
       - name: Build
+        id: build
+        continue-on-error: true
         run: npm run build
+
+      # Only a build that ran on a restored cache is retried: without one, the
+      # failure is the commit's own and is reported as is.
+      - name: Rebuild without the restored cache
+        if: steps.build.outcome == 'failure'
+        env:
+          CACHE_MATCHED_KEY: ${{ steps.astro-cache.outputs.cache-matched-key }}
+        run: |
+          if [ -z "$CACHE_MATCHED_KEY" ]; then
+            echo "::error title=Build failed::The build failed without a restored cache (see the Build step)."
+            exit 1
+          fi
+          echo "::warning title=Restored cache discarded::The build failed on the cache restored from $CACHE_MATCHED_KEY. Rebuilt from scratch."
+          if [ "$GITHUB_REF" = "refs/heads/main" ] && [ -n "$SLACK_WEBHOOK_URL" ]; then
+            jq -cn --arg text ":warning: docs deploy <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|#$GITHUB_RUN_NUMBER> failed to build on the restored Astro cache and is rebuilding from scratch. See the step \"Build\"." '{text: $text}' \
+              | curl -sS -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL" \
+              || echo "::warning::Slack notification failed; continuing"
+          fi
+          rm -rf dist node_modules/.astro
+          npm run build
 
       # A page restored from a stale incremental cache links CSS/JS hashes this
       # build no longer emits. Catch it here rather than as a 404 in production.
