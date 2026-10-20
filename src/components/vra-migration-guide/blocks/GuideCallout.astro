@@ -45,9 +45,16 @@ const { label, variant = "note" } = Astro.props
         line-height: 1.5rem;
         color: var(--ks-content-secondary);
 
+        // Outranks the global `.bd-content p`, which would paint the note
+        // primary; the label keeps the primary colour on purpose.
+        :global(p) {
+            color: inherit;
+        }
+
         .label {
             font-size: 1.25rem;
             letter-spacing: -0.1px;
+            color: var(--ks-content-primary);
         }
     }
 
