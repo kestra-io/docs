@@ -22,8 +22,6 @@ import CardGrid from "~/components/card/CardGrid.astro"
 import SplitBadgeCard from "~/components/card/SplitBadgeCard.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
 
-import { Icon } from "astro-icon/components"
-
 import Hero from "~/components/orchestrate/Hero.astro"
 import OrchPattern from "~/components/orchestrate/OrchPattern.astro"
 import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
@@ -35,7 +33,10 @@ import {
     fetchTotalPluginsCount,
     replaceTotalPluginsPlaceholder,
 } from "~/utils/plugins/pluginCount"
-import { resolveBlueprintRenders, fetchToolBlueprintCount } from "~/utils/blueprints/orchestrationBlueprints"
+import {
+    resolveBlueprintRenders,
+    fetchToolBlueprintCount,
+} from "~/utils/blueprints/orchestrationBlueprints"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
 import GraviteeLogo from "~/contents/customer-stories/when-your-api-writes-its-own-docs-with-kestra/logo.svg?raw"
