@@ -145,8 +145,8 @@ variables:
 
 tasks:
   - id: print_variable
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ vars.my_variable }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ vars.my_variable }}"
 ```
 
 Use inputs with `inputs.*`:
@@ -161,19 +161,22 @@ inputs:
 
 tasks:
   - id: myTask
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ inputs.myInput }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.myInput }}"
 ```
 
 ## Secrets, credentials, namespace variables, and outputs
 
-Use `secret()` to inject secret values at runtime:
+Use `secret()` to inject secret values directly into the task property that needs them. Keep secrets out of logs and task outputs:
 
 ```yaml
 tasks:
   - id: myTask
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ secret('MY_SECRET') }}"
+    type: io.kestra.plugin.core.http.Request
+    method: GET
+    uri: https://api.example.com/v1/ping
+    headers:
+      Authorization: "Bearer {{ secret('MY_SECRET') }}"
 ```
 
 Use `credential()` in Enterprise Edition to inject a short-lived token from a managed [Credential](/docs/enterprise/auth/credentials):
@@ -184,9 +187,8 @@ tasks:
     type: io.kestra.plugin.core.http.Request
     method: GET
     uri: https://api.example.com/v1/ping
-    auth:
-      type: BEARER
-      token: "{{ credential('my_oauth') }}"
+    headers:
+      Authorization: "Bearer {{ credential('my_oauth') }}"
 ```
 
 `credential()` returns the short-lived token only. The credential itself is managed in the Kestra UI.
@@ -201,13 +203,15 @@ Use namespace variables in Enterprise Edition with `namespace.*`. To set them up
 Reference namespace variables in expressions using dot notation:
 
 ```yaml
-format: "{{ namespace.github.token }}"
+headers:
+  Authorization: "Bearer {{ namespace.github.token }}"
 ```
 
 If a namespace variable itself contains Pebble, evaluate it with `render()`:
 
 ```yaml
-format: "{{ render(namespace.github.token) }}"
+headers:
+  Authorization: "Bearer {{ render(namespace.github.token) }}"
 ```
 
 Use outputs with `outputs.taskId.attribute`:
