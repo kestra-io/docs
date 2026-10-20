@@ -184,6 +184,11 @@ const faqItems = [
         question: "Do you help teams moving off vRA and vRO?",
         answer: 'Yes. The <a href="/resources/migration/vra">vRA migration guide</a> covers the method stage by stage, and the open-source <a href="/resources/migration/vra/assistant">Migration Assistant</a> reads your vRO package on your own machine and writes the migration brief.',
     },
+    {
+        question:
+            "We already use Kestra. How do we assess our vRO workflows ourselves?",
+        answer: 'Run the <a href="/resources/migration/vra/assistant">Kestra Migration Assistant for vRA</a>, a free, open-source command-line tool. It reads your vRO package, and optionally your vRA export, on your own machine, sends nothing to Kestra, and writes a brief: what each workflow does and what it calls, which Kestra plugins cover those systems, whether each element converts directly or needs a redesign, and a plan in waves. It can use a model you host, or none at all, so it also runs air-gapped. The conversion itself is then done in Kestra, starting from the brief.',
+    },
 ]
 ---
 
