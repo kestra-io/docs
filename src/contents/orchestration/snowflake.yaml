@@ -4,6 +4,7 @@ description: "Load files to Snowflake stages, run COPY and incremental MERGE ups
 tool:
   name: "Snowflake"
   pluginClass: "io.kestra.plugin.jdbc.snowflake.Query"
+  category: "Data"
   color: "#29b5e8"
 
 hero:

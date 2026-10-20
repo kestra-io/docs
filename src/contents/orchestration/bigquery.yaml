@@ -4,6 +4,7 @@ description: "Load BigQuery on GCS arrivals or Pub/Sub events, refresh only the 
 tool:
   name: "BigQuery"
   pluginClass: "io.kestra.plugin.gcp.bigquery.Query"
+  category: "Data"
   color: "#4285f4"
 
 hero:

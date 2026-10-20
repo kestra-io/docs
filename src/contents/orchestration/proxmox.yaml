@@ -4,6 +4,7 @@ description: "Drive Proxmox VE from one flow: VMware-to-Proxmox migrations, node
 tool:
   name: "Proxmox"
   pluginClass: "io.kestra.plugin.proxmox.vm.Create"
+  category: "Infrastructure"
   color: "#E57000"
 
 hero:

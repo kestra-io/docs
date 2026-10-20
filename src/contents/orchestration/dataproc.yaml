@@ -4,6 +4,7 @@ description: "Submit Spark and PySpark jobs to Dataproc Serverless on a schedule
 tool:
   name: "Dataproc"
   pluginClass: "io.kestra.plugin.gcp.dataproc.batches.SparkSubmit"
+  category: "Data"
   color: "#4285F4"
 
 hero:

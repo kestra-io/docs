@@ -4,6 +4,7 @@ description: "Trigger Airbyte syncs from any event, chain them with dbt and reve
 tool:
   name: "Airbyte"
   pluginClass: "io.kestra.plugin.airbyte.connections.Sync"
+  category: "Data"
   color: "#615EFF"
 
 hero:
