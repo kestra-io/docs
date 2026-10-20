@@ -1,23 +1,17 @@
 ---
 import { Icon } from "astro-icon/components"
-
-interface Props {
-    guideHref: string
-    webinarHref: string
-}
-
-const { guideHref, webinarHref } = Astro.props
+import { GUIDE_HREF, WEBINAR_HREF } from "./links"
 
 const STEPS = [
     {
         title: "Read the vRA migration guide",
         text: "For the method behind the brief, and for the parts of the estate the tool doesn't read, such as the ITSM catalog, Terraform and Ansible, and the CMDB.",
-        href: guideHref,
+        href: GUIDE_HREF,
     },
     {
         title: "Join the webinar",
         text: "On November 4 and 5 to see the Migration Assistant run end to end.",
-        href: webinarHref,
+        href: WEBINAR_HREF,
     },
 ]
 ---
@@ -25,7 +19,7 @@ const STEPS = [
 <section class="next-steps">
     <div class="container">
         <h2>Next steps</h2>
-        <ul>
+        <ul class="list-unstyled">
             {
                 STEPS.map((step) => (
                     <li>
@@ -54,12 +48,16 @@ const STEPS = [
         @include guide-container;
     }
 
-    h2 {
-        margin: 0 0 2rem;
+    h2,
+    strong {
         font-size: 1.25rem;
         font-weight: 700;
         line-height: 1.5rem;
         letter-spacing: -0.005em;
+    }
+
+    h2 {
+        margin: 0 0 2rem;
     }
 
     ul {
@@ -67,8 +65,6 @@ const STEPS = [
         grid-template-columns: minmax(0, 1fr);
         gap: 1rem;
         margin: 0;
-        padding: 0;
-        list-style: none;
 
         @include media-breakpoint-up(lg) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -80,13 +76,8 @@ const STEPS = [
         align-items: center;
         gap: 2rem;
         height: 100%;
-        padding: 2rem;
-        border: 1px solid var(--ks-border-primary);
-        border-radius: $border-radius-lg;
-        background: var(--ks-background-body);
-        box-shadow: $calc-shadow-elevated;
+        @include calc-card;
         color: inherit;
-        text-decoration: none;
         transition: border-color 0.2s;
         @include guide-focus-ring;
 
@@ -97,38 +88,29 @@ const STEPS = [
                 transform: translateX(4px);
             }
         }
-    }
 
-    .copy {
-        display: flex;
-        flex: 1;
-        align-self: stretch;
-        flex-direction: column;
-        gap: 0.5rem;
+        .copy {
+            display: flex;
+            flex: 1;
+            align-self: stretch;
+            flex-direction: column;
+            gap: 0.5rem;
 
-        strong {
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1.5rem;
-            letter-spacing: -0.005em;
+            span {
+                color: var(--ks-content-secondary);
+            }
         }
 
-        span {
-            font-size: 1rem;
-            line-height: 1.5rem;
-            color: var(--ks-content-secondary);
-        }
-    }
+        .arrow {
+            flex-shrink: 0;
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--ks-content-link);
+            transition: transform 0.2s;
 
-    .arrow {
-        flex-shrink: 0;
-        width: 1.25rem;
-        height: 1.25rem;
-        color: var(--ks-content-link);
-        transition: transform 0.2s;
-
-        @media (prefers-reduced-motion: reduce) {
-            transition: none;
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+            }
         }
     }
 </style>

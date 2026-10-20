@@ -1,13 +1,8 @@
 ---
 import { Icon } from "astro-icon/components"
+import { HELP_DIALOG_TARGET } from "../download"
 import InstallCommand from "./InstallCommand.astro"
-
-interface Props {
-    githubHref: string
-    helpTarget: string
-}
-
-const { githubHref, helpTarget } = Astro.props
+import { GITHUB_HREF } from "./links"
 
 const BADGES = [
     { icon: "mdi:code-tags", label: "Apache 2.0" },
@@ -19,8 +14,8 @@ const BADGES = [
 <div class="hero-actions">
     <div class="buttons">
         <a
-            class="btn btn-primary btn-lg github-button"
-            href={githubHref}
+            class="btn btn-primary btn-lg"
+            href={GITHUB_HREF}
             target="_blank"
             rel="noopener"
         >
@@ -30,7 +25,7 @@ const BADGES = [
         <button
             type="button"
             class="btn btn-secondary btn-lg"
-            data-modal-target={helpTarget}
+            data-modal-target={HELP_DIALOG_TARGET}
         >
             Need help running it?
         </button>
@@ -41,11 +36,11 @@ const BADGES = [
         note="Python 3.10 or later. No Python? Run the container image instead."
     />
 
-    <ul class="badges">
+    <ul class="badges list-unstyled">
         {
             BADGES.map((badge) => (
                 <li>
-                    <Icon name={badge.icon} class="badge-icon" />
+                    <Icon name={badge.icon} class="icon" />
                     {badge.label}
                 </li>
             ))
@@ -61,9 +56,8 @@ const BADGES = [
         display: flex;
         flex-direction: column;
         gap: 1.625rem;
-        // A flex item of the hero's action row: without this its minimum
-        // width is the nowrap install command, and at phone widths the
-        // buttons and badges get clipped instead of wrapping.
+        // Otherwise its min width is the nowrap install command, and phone
+        // widths clip the buttons and badges instead of wrapping them.
         flex: 1 1 100%;
         min-width: 0;
     }
@@ -74,20 +68,11 @@ const BADGES = [
         gap: 1.125rem;
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            min-width: 11.25rem;
-        }
+            @include assistant-icon-button;
 
-        .btn-secondary {
-            --ks-border-button-secondary: #{$dark-text-secondary};
-        }
-
-        .icon {
-            width: 1.125rem;
-            height: 1.125rem;
+            &.btn-secondary {
+                --ks-border-button-secondary: #{$dark-text-secondary};
+            }
         }
     }
 
@@ -97,8 +82,6 @@ const BADGES = [
         align-items: center;
         gap: 0.5rem 0;
         margin: 0;
-        padding: 0;
-        list-style: none;
         font-size: $font-size-sm;
         line-height: 1.25rem;
         color: $base-grey-200;
@@ -126,11 +109,11 @@ const BADGES = [
                 border-left: 0;
             }
         }
-    }
 
-    .badge-icon {
-        width: 1rem;
-        height: 1rem;
-        color: $dark-link;
+        .icon {
+            width: 1rem;
+            height: 1rem;
+            color: $dark-link;
+        }
     }
 </style>

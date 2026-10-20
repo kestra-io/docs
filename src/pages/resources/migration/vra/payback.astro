@@ -8,10 +8,6 @@ import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astr
 import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 
-const title = "vRA Migration Payback Calculator: When Leaving vRA Pays Back"
-const description =
-    "Put your own vRA renewal, workflow counts and migration rates into the calculator and get the month the move to Kestra pays for itself."
-
 const TIPS = [
     {
         title: "Run it twice",
@@ -29,8 +25,8 @@ const TIPS = [
 ---
 
 <Layout
-    {title}
-    {description}
+    title="vRA Migration Payback Calculator: What Leaving Costs and When It Pays Back"
+    description="Put your own vRA renewal, workflow counts and migration rates into the calculator and get the month the move to Kestra pays for itself."
     breadcrumbTitle="Payback calculator"
     headerTheme="lightText"
 >
@@ -67,7 +63,6 @@ const TIPS = [
                 >
                 <CalculatorPayback
                     client:load
-                    idPrefix="vra-calc-payback"
                     shareAnchor="calculator"
                     pocHref="/demo"
                 />
@@ -77,10 +72,8 @@ const TIPS = [
 
     <section class="calc-tips">
         <div class="container">
-            <div class="tips-head">
-                <h2>Before it goes in front of finance</h2>
-            </div>
-            <ul class="tips">
+            <h2>Before it goes in front of finance</h2>
+            <ul class="tips list-unstyled">
                 {
                     TIPS.map((tip) => (
                         <li>
@@ -93,7 +86,8 @@ const TIPS = [
         </div>
     </section>
 
-    <div class="calc-cta">
+    {/* A direct div child of main picks up the global overflow-x clip. */}
+    <div>
         <SeeHow
             imgSrc={shapesImage}
             cta={{ text: "Book a Demo", href: "/demo" }}
@@ -128,26 +122,15 @@ const TIPS = [
         padding: 3.5rem 0 4rem;
         background: var(--ks-background-secondary);
 
-        .tips-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-
         h2 {
             font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 600;
             letter-spacing: -0.015em;
-            margin: 0;
+            margin: 0 0 2rem;
             text-wrap: balance;
         }
 
         h3 {
             font-size: $font-size-lg;
-            font-weight: 600;
             margin: 0;
         }
 
@@ -156,26 +139,20 @@ const TIPS = [
             color: var(--ks-content-secondary);
             line-height: 1.6;
         }
-    }
 
-    .tips {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        gap: 1.5rem;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        .tips {
+            margin: 0;
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 
-        li {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            padding-top: 1rem;
-            border-top: 2px solid var(--ks-border-active);
+            li {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding-top: 1rem;
+                border-top: 2px solid var(--ks-border-active);
+            }
         }
-    }
-
-    .calc-cta {
-        overflow-x: clip;
     }
 </style>

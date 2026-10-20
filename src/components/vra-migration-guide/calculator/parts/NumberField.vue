@@ -1,5 +1,5 @@
 <template>
-    <div class="number-field" :class="{ compact }">
+    <div class="number-field" :class="{ compact: hideLabel }">
         <div v-if="!hideLabel" class="label-row">
             <span>
                 <label class="form-label" :for="id">{{ label }}</label>
@@ -18,15 +18,16 @@
                 :class="{ 'is-invalid': invalid }"
                 type="number"
                 inputmode="decimal"
-                :value="modelValue ?? ''"
+                :value="model ?? ''"
                 :min="min"
                 :max="max"
                 :step="step"
-                :placeholder="placeholder"
                 :aria-label="hideLabel ? label : undefined"
                 :aria-invalid="invalid || undefined"
                 :aria-describedby="hint ? `${id}-hint` : undefined"
-                @input="onInput"
+                @input="
+                    model = ($event.target as HTMLInputElement).value.trim()
+                "
             />
             <span v-if="suffix" class="adornment suffix" aria-hidden="true">{{
                 suffix
@@ -37,36 +38,26 @@
 </template>
 
 <script setup lang="ts">
-    import type { InputValue } from "~/utils/vra-calculator"
     import InfoTip from "./InfoTip.vue"
+    import type { InputValue } from "~/utils/vra-calculator"
 
     withDefaults(
         defineProps<{
             id: string
-            modelValue: InputValue
             label?: string
             hint?: string
             invalid?: boolean
             min?: number
             max?: number
             step?: number
-            placeholder?: string
             prefix?: string
             suffix?: string
             hideLabel?: boolean
-            compact?: boolean
         }>(),
         { min: 0, step: 1 },
     )
 
-    const emit = defineEmits<{ "update:modelValue": [value: string] }>()
-
-    function onInput(event: Event) {
-        emit(
-            "update:modelValue",
-            (event.target as HTMLInputElement).value.trim(),
-        )
-    }
+    const model = defineModel<InputValue>({ required: true })
 </script>
 
 <style scoped lang="scss">
@@ -87,16 +78,16 @@
         flex-direction: column;
         justify-content: flex-end;
         margin-bottom: 0.5rem;
-    }
 
-    .form-label {
-        @include calc-form-label;
-        display: inline;
-        margin: 0;
-    }
+        .form-label {
+            @include calc-form-label;
+            display: inline;
+            margin: 0;
+        }
 
-    .info {
-        margin-left: 0.375rem;
+        .info {
+            margin-left: 0.375rem;
+        }
     }
 
     .control {
@@ -106,10 +97,6 @@
     .form-control {
         @include calc-form-field;
         font-variant-numeric: tabular-nums;
-
-        &::placeholder {
-            color: var(--ks-content-tertiary);
-        }
     }
 
     .prefixed .form-control {

@@ -1,136 +1,109 @@
-import { computed, effectScope, reactive, ref, watch } from "vue"
+import { computed, effectScope, onMounted, reactive, watch } from "vue"
+import { useMounted, useStorage, type StorageLike } from "@vueuse/core"
 import {
-    CSV_FILENAME,
+    SHARE_PARAM,
     STORAGE_KEY,
-    buildCsvFile,
     compute,
     currencyFromLocale,
     decodeShareState,
     encodeShareState,
     resolveInputs,
     type CalcInputs,
+    type CalcResult,
     type InputKey,
+    type NumericInputKey,
 } from "~/utils/vra-calculator"
-import {
-    readShareParam,
-    readStored,
-    withShareParam,
-    withoutShareParam,
-    writeStored,
-    type BrowserEnv,
-} from "./browser"
+
+/** What the server renders: the engine defaults. */
+const SSR_INPUTS: Readonly<CalcInputs> = Object.freeze(resolveInputs())
+const SSR_RESULT: CalcResult = compute(SSR_INPUTS)
 
 /**
- * One calculator state for every view on the page. Astro hydrates each island
- * as its own Vue app, but they import the same module, so a module-level
- * store is what the 3.2.2 and 7.2 views share.
- *
- * The store starts at the engine defaults and never reads the browser on its
- * own: `hydrate()` is called from `onMounted` (see useCalculator.ts) with the
- * browser environment. Precedence on the first hydrate: a `?kvc=` share link,
- * then saved state, then the defaults with the visitor's locale currency.
- *
- * Storage holds the state in the share-link encoding, so saved values go
- * through the same sanitizing decoder as links. State equal to the defaults is
- * not stored at all, so a reset (or never touching the calculator) leaves
- * nothing behind.
+ * Module-level, so every island on the page shares it. Saves in the share-link
+ * encoding, and saves nothing while the state equals the defaults.
  */
-export function createCalculatorStore() {
+export function createCalculatorStore(storage?: StorageLike) {
     const inputs = reactive<CalcInputs>(resolveInputs())
     const result = computed(() => compute(inputs))
-    const hydrated = ref(false)
-
-    let env: BrowserEnv | null = null
-    const persistence = effectScope(true)
+    let hydrated = false
 
     /** Defaults, with the currency picked from the visitor's locale. */
     function baseline(overrides?: Partial<CalcInputs> | null): CalcInputs {
-        const cur = currencyFromLocale(env?.locales())
-        return resolveInputs({ cur, ...overrides })
+        const locale = navigator.languages?.[0] ?? navigator.language
+        return resolveInputs({ cur: currencyFromLocale(locale), ...overrides })
     }
 
-    function assign(next: CalcInputs) {
-        Object.assign(inputs, next)
-    }
-
-    function save() {
-        if (!env) return
-        const encoded = encodeShareState(inputs)
-        const isDefault = encoded === encodeShareState(baseline())
-        writeStored(env.storage, STORAGE_KEY, isDefault ? null : encoded)
+    /** Loads saved state, then saves every change. */
+    function persist() {
+        const saved = useStorage<string | null>(STORAGE_KEY, null, storage, {
+            onError: () => {},
+        })
+        Object.assign(inputs, baseline(decodeShareState(saved.value)))
+        watch(inputs, () => {
+            const encoded = encodeShareState(inputs)
+            const isDefault = encoded === encodeShareState(baseline())
+            saved.value = isDefault ? null : encoded
+        })
     }
 
     /**
-     * Applies a `?kvc=` link if the URL has one, then removes it from the URL:
-     * the state now lives in storage, and a later reload or a copied page URL
-     * must not bring back numbers the visitor has since changed. An unreadable
-     * link is removed and ignored.
+     * Loads and starts saving state on the first call. Every call applies a
+     * `?kvc=` link and strips it, so a reload never brings back stale numbers.
      */
-    function applyShareLink(): boolean {
-        if (!env) return false
-        const href = env.href()
-        const param = readShareParam(href)
-        if (param === null) return false
-        env.replaceUrl(withoutShareParam(href))
+    function hydrate() {
+        // Detached, so saving outlives the island that hydrated first.
+        if (!hydrated) effectScope(true).run(persist)
+        hydrated = true
+        const url = new URL(location.href)
+        const param = url.searchParams.get(SHARE_PARAM)
+        if (param === null) return
+        url.searchParams.delete(SHARE_PARAM)
+        history.replaceState(history.state, "", url)
         const shared = decodeShareState(param)
-        if (!shared) return false
-        assign(baseline(shared))
-        save()
-        return true
+        if (shared) Object.assign(inputs, baseline(shared))
     }
 
-    /**
-     * Connects the store to the browser. The first call loads saved state and
-     * starts saving changes; every call picks up a `?kvc=` link in the URL,
-     * so arriving on the page through ClientRouter with a link still works.
-     */
-    function hydrate(browserEnv: BrowserEnv | null) {
-        if (!browserEnv) return
-        if (!hydrated.value) {
-            env = browserEnv
-            assign(
-                baseline(
-                    decodeShareState(readStored(env.storage, STORAGE_KEY)),
-                ),
-            )
-            persistence.run(() => watch(inputs, save, { deep: true }))
-            hydrated.value = true
-        }
-        applyShareLink()
-    }
-
-    function setInput<K extends InputKey>(key: K, value: CalcInputs[K]) {
+    function update<K extends InputKey>(key: K, value: CalcInputs[K]) {
         inputs[key] = value
     }
 
-    function shareUrl(anchor?: string): string | null {
-        if (!env) return null
-        return withShareParam(env.href(), encodeShareState(inputs), anchor)
+    function shareUrl(anchor: string): string {
+        const url = new URL(location.href)
+        url.searchParams.set(SHARE_PARAM, encodeShareState(inputs))
+        url.hash = anchor
+        return url.toString()
     }
 
-    function csvFile(generatedOn: Date) {
-        return {
-            filename: CSV_FILENAME,
-            content: buildCsvFile(inputs, generatedOn),
-        }
-    }
-
-    function dispose() {
-        persistence.stop()
-    }
-
-    return {
-        inputs,
-        result,
-        hydrate,
-        setInput,
-        shareUrl,
-        csvFile,
-        /** Stops the storage watcher; for tests that build many stores. */
-        dispose,
-    }
+    return { inputs, result, hydrate, update, shareUrl }
 }
 
 export type CalculatorStore = ReturnType<typeof createCalculatorStore>
 
 export const calculatorStore = createCalculatorStore()
+
+/**
+ * Renders the SSR snapshot until mounted, even if the store is already live,
+ * so hydration never mismatches; then hydrates the store and goes live.
+ */
+export function useCalculator(store: CalculatorStore = calculatorStore) {
+    const ready = useMounted()
+    onMounted(store.hydrate)
+
+    const inputs = computed<Readonly<CalcInputs>>(() =>
+        ready.value ? store.inputs : SSR_INPUTS,
+    )
+    const result = computed<CalcResult>(() =>
+        ready.value ? store.result.value : SSR_RESULT,
+    )
+
+    function field(key: NumericInputKey) {
+        return {
+            modelValue: inputs.value[key],
+            invalid: !!result.value.invalid[key],
+            "onUpdate:modelValue": (value: CalcInputs[typeof key]) =>
+                store.update(key, value),
+        }
+    }
+
+    return { ...store, inputs, result, ready, field }
+}

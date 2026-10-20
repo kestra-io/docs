@@ -1,18 +1,12 @@
 ---
 import { Image } from "astro:assets"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import BrowserFrame from "./BrowserFrame.astro"
 import answers from "../assets/assistant-brief-answers.png"
 import translation from "../assets/assistant-brief-translation.png"
 import waves from "../assets/assistant-brief-waves.png"
 import workflow from "../assets/assistant-brief-workflow.png"
-import TabGroup from "~/components/common/TabGroup.astro"
-import TabPanel from "~/components/common/TabPanel.astro"
-import BrowserFrame from "./BrowserFrame.astro"
-
-interface Props {
-    downloadHref: string
-}
-
-const { downloadHref } = Astro.props
 
 const PARTS = [
     {
@@ -47,7 +41,7 @@ const TABS = [
             { left: 59, top: 8.5 },
         ],
         // The file is drawn with its own window bar, so no browser frame.
-        frame: false,
+        Frame: Fragment,
     },
     {
         label: "Translation",
@@ -119,7 +113,7 @@ const GROUP = "assistant-example"
                     proposed two waves.
                 </p>
             </div>
-            <ul class="parts">
+            <ul class="parts list-unstyled">
                 {
                     PARTS.map((part) => (
                         <li>
@@ -144,7 +138,7 @@ const GROUP = "assistant-example"
                 }))}
             >
                 {
-                    TABS.map((tab, i) => (
+                    TABS.map(({ Frame = BrowserFrame, ...tab }, i) => (
                         <TabPanel
                             group={GROUP}
                             index={i + 1}
@@ -154,61 +148,31 @@ const GROUP = "assistant-example"
                                 <div class="copy">
                                     <h3>{tab.title}</h3>
                                     <p>{tab.text}</p>
-                                    {tab.callouts && (
-                                        <ol class="callouts">
-                                            {tab.callouts.map((callout) => (
-                                                <li>{callout}</li>
-                                            ))}
-                                        </ol>
-                                    )}
+                                    <ol class="callouts list-unstyled">
+                                        {tab.callouts.map((callout) => (
+                                            <li>{callout}</li>
+                                        ))}
+                                    </ol>
                                 </div>
-                                <div class="shot">
-                                    {tab.frame === false ? (
-                                        <div class="marked">
-                                            <Image
-                                                src={tab.image}
-                                                alt={tab.alt}
-                                                widths={[720, 1080, 1440]}
-                                                sizes="(min-width: 1200px) 723px, 90vw"
-                                            />
-                                            {tab.markers?.map((m, n) => (
-                                                <span
-                                                    class="marker"
-                                                    aria-hidden="true"
-                                                    style={{
-                                                        left: `${m.left}%`,
-                                                        top: `${m.top}%`,
-                                                    }}
-                                                >
-                                                    {n + 1}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <BrowserFrame path="kestra-assessment / index.html">
-                                            <div class="marked">
-                                                <Image
-                                                    src={tab.image}
-                                                    alt={tab.alt}
-                                                    widths={[720, 1080, 1440]}
-                                                    sizes="(min-width: 1200px) 723px, 90vw"
-                                                />
-                                                {tab.markers?.map((m, n) => (
-                                                    <span
-                                                        class="marker"
-                                                        aria-hidden="true"
-                                                        style={{
-                                                            left: `${m.left}%`,
-                                                            top: `${m.top}%`,
-                                                        }}
-                                                    >
-                                                        {n + 1}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                        </BrowserFrame>
-                                    )}
-                                </div>
+                                <Frame path="kestra-assessment / index.html">
+                                    <div class="marked">
+                                        <Image
+                                            src={tab.image}
+                                            alt={tab.alt}
+                                            widths={[720, 1080, 1440]}
+                                            sizes="(min-width: 1200px) 723px, 90vw"
+                                        />
+                                        {tab.markers.map(({ left, top }, n) => (
+                                            <span
+                                                class="marker"
+                                                aria-hidden="true"
+                                                style={`left:${left}%;top:${top}%`}
+                                            >
+                                                {n + 1}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </Frame>
                             </div>
                         </TabPanel>
                     ))
@@ -222,8 +186,10 @@ const GROUP = "assistant-example"
                 run the Migration Assistant on them before you run it on your
                 own.
             </p>
-            <a class="btn btn-secondary btn-lg" href={downloadHref} download
-                >Download the use case files</a
+            <a
+                class="btn btn-secondary btn-lg"
+                href="/kestra-migration-assistant-sample-vra-load-balancer.zip"
+                download>Download the use case files</a
             >
         </div>
     </div>
@@ -232,19 +198,15 @@ const GROUP = "assistant-example"
 <style lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
 
-    @mixin marker-pill {
-        flex-shrink: 0;
-        padding: 0.125rem 0.5rem;
-        border-radius: 999px;
-        background: $dark-accent;
-        font-size: $font-size-sm;
-        font-weight: 600;
-        line-height: 1.25rem;
-        color: $white;
+    @mixin dark-card {
+        border: 1px solid $dark-raised;
+        border-radius: $border-radius-lg;
+        background: $dark-raised;
+        box-shadow: 0 8px 12px rgba($black, 0.65);
     }
 
     .example {
-        @include assistant-section($dark-section-bg, $white, $dark-raised);
+        @include assistant-section(#1a1c22, $white, $dark-raised);
     }
 
     .container {
@@ -274,26 +236,24 @@ const GROUP = "assistant-example"
         flex-direction: column;
         gap: 1rem;
 
+        .eyebrow {
+            font-size: $font-size-lg;
+            font-weight: 700;
+            line-height: 1.75rem;
+            color: $dark-link;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2.25rem, 4vw, 3rem);
+            line-height: 1.04;
+            letter-spacing: -0.015em;
+        }
+
         > p:last-child {
             font-size: $font-size-lg;
             line-height: 1.75rem;
         }
-    }
-
-    .eyebrow {
-        font-size: $font-size-lg;
-        font-weight: 700;
-        line-height: 1.75rem;
-        color: $dark-link;
-    }
-
-    h2 {
-        margin: 0;
-        font-size: clamp(2.25rem, 4vw, 3rem);
-        font-weight: 600;
-        line-height: 1.04;
-        letter-spacing: -0.015em;
-        color: $white;
     }
 
     .parts {
@@ -301,8 +261,6 @@ const GROUP = "assistant-example"
         grid-template-columns: minmax(0, 1fr);
         gap: 1rem;
         margin: 0;
-        padding: 0;
-        list-style: none;
 
         @include media-breakpoint-up(md) {
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -313,23 +271,13 @@ const GROUP = "assistant-example"
             flex-direction: column;
             gap: 1rem;
             padding: 2rem;
-            border: 1px solid $dark-raised;
-            border-radius: $border-radius-lg;
-            background: $dark-raised;
-            box-shadow: 0 8px 12px rgba($black, 0.65);
+            @include dark-card;
         }
 
         h3 {
             margin: 0;
             font-size: 1.25rem;
-            font-weight: 600;
             line-height: 1.75rem;
-            color: $white;
-        }
-
-        p {
-            font-size: 1rem;
-            line-height: 1.5rem;
         }
     }
 
@@ -359,7 +307,6 @@ const GROUP = "assistant-example"
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        color: $white;
 
         @include media-breakpoint-up(xl) {
             padding: 2rem 0 2rem 2rem;
@@ -368,49 +315,38 @@ const GROUP = "assistant-example"
         h3 {
             margin: 0;
             font-size: 1.5rem;
-            font-weight: 600;
             line-height: 1.75rem;
             letter-spacing: -0.005em;
-            color: $white;
         }
 
-        > p {
-            font-size: 1rem;
-            line-height: 1.5rem;
-        }
-    }
-
-    .callouts {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin: 1.5rem 0 0;
-        padding: 0;
-        list-style: none;
-        counter-reset: callout;
-
-        li {
+        .callouts {
             display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            font-size: 1rem;
-            line-height: 1.5rem;
-            counter-increment: callout;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0 0;
+            counter-reset: callout;
 
-            &::before {
-                content: counter(callout);
-                @include marker-pill;
+            li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.5rem;
+                counter-increment: callout;
+
+                &::before {
+                    content: counter(callout);
+                    @include marker-pill;
+                }
             }
         }
     }
 
     .marked {
         position: relative;
-    }
 
-    .marker {
-        position: absolute;
-        @include marker-pill;
+        .marker {
+            position: absolute;
+            @include marker-pill;
+        }
     }
 
     .download {
@@ -419,10 +355,7 @@ const GROUP = "assistant-example"
         align-items: flex-start;
         gap: 1rem 2rem;
         padding: 1rem 2rem;
-        border: 1px solid $dark-raised;
-        border-radius: $border-radius-lg;
-        background: $dark-raised;
-        box-shadow: 0 8px 12px rgba($black, 0.65);
+        @include dark-card;
 
         @include media-breakpoint-up(lg) {
             flex-direction: row;

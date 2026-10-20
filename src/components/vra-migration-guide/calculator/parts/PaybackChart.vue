@@ -4,7 +4,11 @@
             <span>{{ title }}</span>
             <span>{{ chart.caption }}</span>
         </figcaption>
-        <div class="plot" role="img" :aria-label="summary">
+        <div
+            class="plot"
+            role="img"
+            :aria-label="`${title}, ${chart.caption.toLowerCase()}. ${headline(payback)}`"
+        >
             <svg
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
@@ -56,17 +60,13 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import type { PaybackResult } from "~/utils/vra-calculator"
     import { headline, paybackChart, yearsTitle } from "../presentation"
+    import type { PaybackResult } from "~/utils/vra-calculator"
 
-    const props = defineProps<{ payback: PaybackResult }>()
+    const { payback } = defineProps<{ payback: PaybackResult }>()
 
-    const chart = computed(() => paybackChart(props.payback))
-    const title = computed(() => yearsTitle(props.payback))
-    const summary = computed(
-        () =>
-            `${title.value}, ${chart.value.caption.toLowerCase()}. ${headline(props.payback)}`,
-    )
+    const chart = computed(() => paybackChart(payback))
+    const title = computed(() => yearsTitle(payback))
 </script>
 
 <style scoped lang="scss">
@@ -101,53 +101,49 @@
             width: 100%;
             height: 100%;
             overflow: visible;
+
+            > * {
+                vector-effect: non-scaling-stroke;
+            }
         }
-    }
 
-    .area {
-        fill: var(--ks-background-purple-light);
-    }
+        .area {
+            fill: var(--ks-background-purple-light);
+        }
 
-    .line,
-    .zero,
-    .renewal {
-        fill: none;
-        vector-effect: non-scaling-stroke;
-    }
+        .line {
+            fill: none;
+            stroke: var(--ks-content-link);
+            stroke-width: 1.5;
+            stroke-linejoin: round;
+        }
 
-    .line {
-        stroke: var(--ks-content-link);
-        stroke-width: 1.5;
-        stroke-linejoin: round;
-    }
+        .zero {
+            stroke: var(--ks-border-secondary);
+        }
 
-    .zero {
-        stroke: var(--ks-border-secondary);
-        stroke-width: 1;
-    }
+        .renewal {
+            stroke: var(--ks-content-tertiary);
+            stroke-dasharray: 2 3;
+        }
 
-    .renewal {
-        stroke: var(--ks-content-tertiary);
-        stroke-width: 1;
-        stroke-dasharray: 2 3;
-    }
+        .renewal-label {
+            position: absolute;
+            top: -1.1rem;
+            transform: translateX(0.25rem);
+            font-size: $font-size-xxs;
+            color: var(--ks-content-secondary);
+        }
 
-    .renewal-label {
-        position: absolute;
-        top: -1.1rem;
-        transform: translateX(0.25rem);
-        font-size: 0.625rem;
-        color: var(--ks-content-secondary);
-    }
-
-    .point {
-        position: absolute;
-        width: 0.6rem;
-        height: 0.6rem;
-        border: 2px solid var(--ks-content-link);
-        border-radius: 50%;
-        background: var(--ks-background-body);
-        transform: translate(-50%, -50%);
+        .point {
+            position: absolute;
+            width: 0.6rem;
+            height: 0.6rem;
+            border: 2px solid var(--ks-content-link);
+            border-radius: 50%;
+            background: var(--ks-background-body);
+            transform: translate(-50%, -50%);
+        }
     }
 
     .ticks {
@@ -160,7 +156,7 @@
         li {
             position: absolute;
             transform: translateX(-50%);
-            font-size: 0.625rem;
+            font-size: $font-size-xxs;
             color: var(--ks-content-secondary);
             white-space: nowrap;
 

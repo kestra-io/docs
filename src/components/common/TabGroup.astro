@@ -1,13 +1,8 @@
 ---
-interface Tab {
-    label: string
-    kicker?: string
-}
-
 interface Props {
     id: string
     label: string
-    tabs: Tab[]
+    tabs: { label: string; kicker?: string }[]
     variant?: "tabs" | "stages" | "segmented"
     /** "dark" for a group sitting on a surface that stays dark in both themes. */
     surface?: "light" | "dark"
@@ -52,59 +47,53 @@ const {
 </div>
 
 <script>
-    function tabOf(target: EventTarget | null): HTMLButtonElement | null {
-        const tab = (target as Element | null)?.closest?.("[role=tab]")
-        const list = tab?.parentElement
-        if (!list?.classList.contains("tablist")) return null
-        if (!list.parentElement?.hasAttribute("data-ks-tabs")) return null
-        return tab as HTMLButtonElement
-    }
-
-    function tabsBeside(tab: HTMLButtonElement): HTMLButtonElement[] {
-        return Array.from(
-            tab.parentElement!.querySelectorAll<HTMLButtonElement>(
+    /** The tab under `target` and the tabs beside it. */
+    function tabsAt(target: EventTarget | null) {
+        const tab =
+            target instanceof Element &&
+            target.closest<HTMLButtonElement>(
+                "[data-ks-tabs] > .tablist > [role=tab]",
+            )
+        if (!tab) return
+        const tabs = [
+            ...tab.parentElement!.querySelectorAll<HTMLButtonElement>(
                 ":scope > [role=tab]",
             ),
-        )
+        ]
+        return { tab, tabs, i: tabs.indexOf(tab), n: tabs.length }
     }
 
-    function select(tab: HTMLButtonElement, focus = false) {
-        for (const t of tabsBeside(tab)) {
-            const on = t === tab
-            t.setAttribute("aria-selected", on ? "true" : "false")
-            t.tabIndex = on ? 0 : -1
+    function select(tab: HTMLButtonElement, tabs: HTMLButtonElement[]) {
+        for (const t of tabs) {
+            t.setAttribute("aria-selected", String(t === tab))
+            t.tabIndex = t === tab ? 0 : -1
             const panel = document.getElementById(
                 t.getAttribute("aria-controls") ?? "",
             )
-            if (panel) panel.hidden = !on
+            if (panel) panel.hidden = t !== tab
         }
-        if (focus) tab.focus()
     }
 
     document.addEventListener("click", (e) => {
-        const tab = tabOf(e.target)
-        if (tab) select(tab)
+        const at = tabsAt(e.target)
+        if (at) select(at.tab, at.tabs)
     })
 
     document.addEventListener("keydown", (e) => {
-        const tab = tabOf(e.target)
-        if (!tab) return
-        const tabs = tabsBeside(tab)
-        const i = tabs.indexOf(tab)
-        const n = tabs.length
-        const next =
-            e.key === "ArrowRight"
-                ? (i + 1) % n
-                : e.key === "ArrowLeft"
-                  ? (i - 1 + n) % n
-                  : e.key === "Home"
-                    ? 0
-                    : e.key === "End"
-                      ? n - 1
-                      : null
-        if (next === null) return
+        const at = tabsAt(e.target)
+        if (!at) return
+        const { tabs, i, n } = at
+        const moves: Record<string, number> = {
+            ArrowRight: (i + 1) % n,
+            ArrowLeft: (i - 1 + n) % n,
+            Home: 0,
+            End: n - 1,
+        }
+        const next = moves[e.key]
+        if (next === undefined) return
         e.preventDefault()
-        select(tabs[next], true)
+        select(tabs[next], tabs)
+        tabs[next].focus()
     })
 </script>
 
@@ -134,7 +123,6 @@ const {
                     font-size: $font-size-xs;
                     font-weight: 600;
                     letter-spacing: 0.05em;
-                    color: inherit;
                 }
 
                 span {

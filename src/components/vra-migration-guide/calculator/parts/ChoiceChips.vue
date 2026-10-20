@@ -31,13 +31,12 @@
         <NumberField
             v-if="showCustom"
             :id="`${id}-custom`"
+            v-model="model"
             class="custom"
-            :model-value="modelValue"
             :label="customLabel"
             :invalid="invalid"
             :min="customMin"
             :step="customStep"
-            @update:model-value="emit('update:modelValue', $event)"
         />
         <p v-if="hint" class="hint">{{ hint }}</p>
     </fieldset>
@@ -52,16 +51,12 @@
     const props = withDefaults(
         defineProps<{
             id: string
-            modelValue: InputValue
             label: string
             presets: readonly number[]
             format?: (preset: number) => string
-            /**
-             * Label of the free-entry field, shown for a value that is not a
-             * preset. Without it, such a value has no field.
-             */
+            /** Free-entry field label; without it a non-preset has no field. */
             customLabel?: string
-            /** Whether the visitor can pick Custom, or only see a value set elsewhere. */
+            /** Offer Custom, or only show a value set elsewhere. */
             customChip?: boolean
             customMin?: number
             customStep?: number
@@ -76,12 +71,14 @@
         },
     )
 
-    const emit = defineEmits<{
-        "update:modelValue": [value: number | string]
-    }>()
+    const model = defineModel<InputValue>({ required: true })
 
+    /**
+     * Keeps a field opened by a non-preset value open while the visitor types
+     * ("1" on the way to "10"), until they pick a chip.
+     */
     const customMode = ref(false)
-    const selected = computed(() => toNumber(props.modelValue))
+    const selected = computed(() => toNumber(model.value))
     const isPreset = computed(() =>
         props.presets.some((preset) => preset === selected.value),
     )
@@ -89,8 +86,6 @@
         () => !!props.customLabel && (customMode.value || !isPreset.value),
     )
 
-    // Once a non-preset value opens the field, keep it open while the visitor
-    // types (e.g. through "1" on the way to "10") until they pick a chip.
     watch(
         isPreset,
         (preset) => {
@@ -101,17 +96,14 @@
 
     function choose(preset: number) {
         customMode.value = false
-        emit("update:modelValue", preset)
+        model.value = preset
     }
 </script>
 
 <style scoped lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
     .choice-chips {
-        margin: 0 0 1rem;
-        padding: 0;
-        border: 0;
-        min-width: 0;
+        margin-bottom: 1rem;
     }
 
     .label-row {
@@ -120,12 +112,10 @@
         gap: 0.375rem;
         float: none;
         width: auto;
-        margin-bottom: 0.5rem;
-        padding: 0;
-    }
 
-    .form-label {
-        @include calc-form-label;
+        .form-label {
+            @include calc-form-label;
+        }
     }
 
     .chips {

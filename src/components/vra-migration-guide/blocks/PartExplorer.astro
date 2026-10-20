@@ -18,49 +18,32 @@ const { count, legendId, id } = Astro.props
 </div>
 
 <script>
-    type Found<T extends HTMLElement> = { root: HTMLElement; el: T }
-
-    function find<T extends HTMLElement>(
-        target: EventTarget | null,
-        selector: string,
-    ): Found<T> | null {
-        const el = (target as Element | null)?.closest?.(selector) as T | null
-        const root = el?.closest<HTMLElement>("[data-part-explorer]")
-        return el && root ? { root, el } : null
-    }
-
-    const buttonsOf = (root: HTMLElement) =>
-        Array.from(root.querySelectorAll<HTMLButtonElement>(".part-button"))
-
-    function openPart(root: HTMLElement, index: number, focus = false) {
-        const buttons = buttonsOf(root)
-        buttons.forEach((b, i) =>
-            b.setAttribute("aria-expanded", i === index ? "true" : "false"),
+    /** Opens the clicked part, or the next or previous one on ArrowDown/Up. */
+    function openPart(e: Event) {
+        const button =
+            e.target instanceof Element &&
+            e.target.closest<HTMLElement>(".part-button")
+        const root = button && button.closest("[data-part-explorer]")
+        if (!button || !root) return
+        const buttons = [...root.querySelectorAll<HTMLElement>(".part-button")]
+        const n = buttons.length
+        let i = buttons.indexOf(button)
+        if (e instanceof KeyboardEvent) {
+            if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return
+            e.preventDefault()
+            i = (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n
+        }
+        buttons.forEach((b, j) =>
+            b.setAttribute("aria-expanded", String(i === j)),
         )
         root.querySelectorAll<HTMLElement>(".part-panel").forEach(
-            (p, i) => (p.hidden = i !== index),
+            (p, j) => (p.hidden = i !== j),
         )
-        if (focus) buttons[index].focus()
+        if (e instanceof KeyboardEvent) buttons[i].focus()
     }
 
-    document.addEventListener("click", (e) => {
-        const button = find<HTMLButtonElement>(e.target, ".part-button")
-        if (button)
-            openPart(button.root, buttonsOf(button.root).indexOf(button.el))
-    })
-
-    document.addEventListener("keydown", (e) => {
-        const button = find<HTMLButtonElement>(e.target, ".part-button")
-        if (!button || (e.key !== "ArrowDown" && e.key !== "ArrowUp")) return
-        e.preventDefault()
-        const n = buttonsOf(button.root).length
-        const i = buttonsOf(button.root).indexOf(button.el)
-        openPart(
-            button.root,
-            (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n,
-            true,
-        )
-    })
+    document.addEventListener("click", openPart)
+    document.addEventListener("keydown", openPart)
 </script>
 
 <style lang="scss">

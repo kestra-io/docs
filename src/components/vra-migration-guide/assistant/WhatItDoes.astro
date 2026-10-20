@@ -1,18 +1,12 @@
 ---
-import SectionTitle from "~/components/security/SectionTitle.astro"
 import { Image } from "astro:assets"
-import briefFront from "../assets/assistant-brief-front.png"
+import SectionTitle from "~/components/security/SectionTitle.astro"
 import BrowserFrame from "./BrowserFrame.astro"
-
-interface Props {
-    guideHref: string
-    calculatorHref: string
-}
-
-const { guideHref, calculatorHref } = Astro.props
+import { GUIDE_HREF } from "./links"
+import briefFront from "../assets/assistant-brief-front.png"
 ---
 
-<section class="what-it-does">
+<section class="overview">
     <div class="container">
         <div class="intro-row">
             <div class="intro">
@@ -20,14 +14,14 @@ const { guideHref, calculatorHref } = Astro.props
                 <p>
                     The Migration Assistant runs the assessment for moving off
                     VMware vRA and vRO to Kestra. It covers the workflow half of
-                    Stage 1 in the <a href={guideHref}>vRA migration guide</a>:
+                    Stage 1 in the <a href={GUIDE_HREF}>vRA migration guide</a>:
                     it reads your vRO package and vRA export, works out what's
                     in the estate, and writes a brief you open in a browser.
                 </p>
             </div>
             <div class="covers">
                 <h3>The brief covers</h3>
-                <ul>
+                <ul class="list-unstyled">
                     <li>
                         <strong
                             >What each workflow does and what starts it</strong
@@ -81,9 +75,10 @@ const { guideHref, calculatorHref } = Astro.props
                     you, starting from the brief.
                 </p>
                 <p>
-                    Still deciding? Read the <a href={guideHref}
+                    Still deciding? Read the <a href={GUIDE_HREF}
                         >introduction to the guide</a
-                    > or try the <a href={calculatorHref}>payback calculator</a
+                    > or try the <a href="/resources/migration/vra/payback"
+                        >payback calculator</a
                     >.
                 </p>
             </figcaption>
@@ -94,7 +89,7 @@ const { guideHref, calculatorHref } = Astro.props
 <style lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
 
-    .what-it-does {
+    .overview {
         @include assistant-section(var(--ks-background-body));
     }
 
@@ -103,9 +98,17 @@ const { guideHref, calculatorHref } = Astro.props
     }
 
     a {
-        color: inherit;
+        color: var(--ks-content-link);
         text-decoration: underline;
         text-underline-offset: 3px;
+    }
+
+    .intro a {
+        color: inherit;
+    }
+
+    strong {
+        font-weight: 600;
     }
 
     .intro-row {
@@ -124,51 +127,43 @@ const { guideHref, calculatorHref } = Astro.props
         line-height: 1.75rem;
     }
 
-    h3 {
-        margin: 0 0 1rem;
-        font-size: $font-size-lg;
-        font-weight: 700;
-        line-height: 1.75rem;
-        color: var(--ks-content-link);
-    }
-
-    ul {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 1rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-
-        @include media-breakpoint-up(md) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-    }
-
-    li {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        padding: 1rem;
-        border: 1px solid var(--ks-border-primary);
-        border-radius: $border-radius-lg;
-        background: var(--ks-background-body);
-        box-shadow: $calc-shadow-elevated;
-
-        strong {
+    .covers {
+        h3 {
+            margin: 0 0 1rem;
             font-size: $font-size-lg;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.75rem;
-        }
-
-        span {
-            font-size: $font-size-sm;
-            line-height: 1.25rem;
-            color: var(--ks-content-secondary);
-        }
-
-        a {
             color: var(--ks-content-link);
+        }
+
+        ul {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1rem;
+            margin: 0;
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            @include calc-card;
+            padding: 1rem;
+
+            strong {
+                font-size: $font-size-lg;
+                line-height: 1.75rem;
+            }
+
+            span {
+                font-size: $font-size-sm;
+                line-height: 1.25rem;
+                color: var(--ks-content-secondary);
+            }
         }
     }
 
@@ -181,7 +176,7 @@ const { guideHref, calculatorHref } = Astro.props
         overflow: hidden;
         padding: 3.52% 15% 0;
         border-radius: 1rem;
-        background: linear-gradient(to bottom, $stage-top 1%, $stage-bottom);
+        background: linear-gradient(to bottom, #81bdd4 1%, #e8e8f9);
 
         @include media-breakpoint-down(md) {
             aspect-ratio: 4 / 3;
@@ -195,8 +190,6 @@ const { guideHref, calculatorHref } = Astro.props
         gap: 1rem;
         margin-top: 1rem;
         padding-inline: 1.25rem;
-        font-size: 1rem;
-        line-height: 1.5rem;
 
         @include media-breakpoint-up(xl) {
             flex-direction: row;
@@ -208,16 +201,8 @@ const { guideHref, calculatorHref } = Astro.props
             margin: 0;
         }
 
-        strong {
-            font-weight: 600;
-        }
-
         p + p {
             flex: 0 1 auto;
-
-            a {
-                color: var(--ks-content-link);
-            }
         }
     }
 </style>

@@ -8,12 +8,13 @@ const RUN = [
     { mark: "✓", tone: "ok", text: "Planned 2 waves" },
     { mark: "→", tone: "next", text: "Brief written to ./kestra-assessment" },
 ]
-
-const SUMMARY =
-    "The Migration Assistant run in a terminal: it sanitizes the export, maps 4 workflows and 39 actions, plans 2 waves and writes a brief. The brief shows that 59 of 59 elements have a path to Kestra and 47 are ready now."
 ---
 
-<div class="hero-visual" role="img" aria-label={SUMMARY}>
+<div
+    class="hero-visual"
+    role="img"
+    aria-label="The Migration Assistant run in a terminal: it sanitizes the export, maps 4 workflows and 39 actions, plans 2 waves and writes a brief. The brief shows that 59 of 59 elements have a path to Kestra and 47 are ready now."
+>
     <div class="stage" aria-hidden="true">
         <div class="glow"></div>
         <Image
@@ -54,7 +55,7 @@ const SUMMARY =
         </div>
 
         <div class="brief">
-            <div class="brief-head">
+            <div class="head">
                 <strong>Migration brief: lb-usecase</strong>
                 <span>kestra-assessment/index.html</span>
             </div>
@@ -77,13 +78,10 @@ const SUMMARY =
 </div>
 
 <style lang="scss">
-    @use "/src/components/vra-migration-guide/shared" as *;
     @use "/src/assets/styles/color-palette" as *;
 
-    // Mock-up colours: $term-* and $brief-* in src/assets/styles/_variable.scss.
-
-    // Everything is laid out on the 568 × 439 Figma frame; --u is one Figma
-    // pixel at the current width, so the mock-up scales as one piece.
+    // Laid out on a 568 × 439 frame; --u is one frame pixel at the current
+    // width, so the mock-up scales as one piece.
     .hero-visual {
         container-type: inline-size;
         width: 100%;
@@ -132,91 +130,91 @@ const SUMMARY =
         width: calc(540 * var(--u));
         height: calc(340 * var(--u));
         overflow: hidden;
-        border: 1px solid $term-border;
+        border: 1px solid #53dbf6;
         border-radius: calc(9 * var(--u));
         background:
             radial-gradient(
                 calc(300 * var(--u)) calc(160 * var(--u)) at 83.5% 94.4%,
-                $term-glow,
+                rgba(91, 236, 255, 0.82),
                 transparent
             ),
-            $term-bg;
+            #0d0d12;
         box-shadow:
             calc(30 * var(--u)) calc(17 * var(--u)) calc(24 * var(--u))
-                rgba($term-shadow, 0.05),
+                rgba(#2d9ac3, 0.05),
             calc(97 * var(--u)) calc(55 * var(--u)) calc(58 * var(--u))
-                rgba($term-shadow, 0.09),
+                rgba(#2d9ac3, 0.09),
             calc(197 * var(--u)) calc(112 * var(--u)) calc(334 * var(--u))
-                rgba($term-shadow, 0.16);
-    }
+                rgba(#2d9ac3, 0.16);
 
-    .title-bar {
-        display: flex;
-        align-items: center;
-        gap: calc(26 * var(--u));
-        height: calc(37 * var(--u));
-        padding-left: calc(14 * var(--u));
-        border-bottom: 1px solid $dark-border-strong;
-        background: $term-bar;
-    }
-
-    .dots {
-        display: flex;
-        gap: calc(6 * var(--u));
-
-        i {
-            width: calc(10 * var(--u));
-            height: calc(10 * var(--u));
-            border-radius: 50%;
-            background: $term-dot;
-        }
-    }
-
-    .path {
-        font-size: calc(12 * var(--u));
-        color: $term-muted;
-    }
-
-    .lines {
-        padding: calc(19 * var(--u)) calc(20 * var(--u)) 0;
-        font-family: $font-family-monospace;
-        font-size: calc(13 * var(--u));
-        line-height: calc(22 * var(--u));
-        color: $term-text;
-
-        p {
-            margin: 0;
-            white-space: nowrap;
+        .title-bar {
+            display: flex;
+            align-items: center;
+            gap: calc(26 * var(--u));
+            height: calc(37 * var(--u));
+            padding-left: calc(14 * var(--u));
+            border-bottom: 1px solid $dark-border-strong;
+            background: #131319;
         }
 
-        .gap {
-            margin-top: calc(8 * var(--u));
+        .dots {
+            display: flex;
+            gap: calc(6 * var(--u));
+
+            i {
+                width: calc(10 * var(--u));
+                height: calc(10 * var(--u));
+                border-radius: 50%;
+                background: #3a3a44;
+            }
         }
 
-        .gap-sm {
-            margin-top: calc(4 * var(--u));
+        .path {
+            font-size: calc(12 * var(--u));
+            color: #8a8a98;
         }
-    }
 
-    .prompt,
-    .muted {
-        color: $term-muted;
-    }
+        .lines {
+            padding: calc(19 * var(--u)) calc(20 * var(--u)) 0;
+            font-family: $font-family-monospace;
+            font-size: calc(13 * var(--u));
+            line-height: calc(22 * var(--u));
+            color: #e4e4ec;
 
-    .ok {
-        color: $term-ok;
-    }
+            p {
+                margin: 0;
+                white-space: nowrap;
+            }
 
-    .next {
-        color: $term-next;
-    }
+            .gap {
+                margin-top: calc(8 * var(--u));
+            }
 
-    .cursor {
-        display: inline-block;
-        width: calc(8 * var(--u));
-        height: calc(15 * var(--u));
-        vertical-align: middle;
-        background: $term-next;
+            .gap-sm {
+                margin-top: calc(4 * var(--u));
+            }
+
+            .prompt,
+            .muted {
+                color: #8a8a98;
+            }
+
+            .ok {
+                color: #4ade80;
+            }
+
+            .next {
+                color: #c9a7ff;
+            }
+
+            .cursor {
+                display: inline-block;
+                width: calc(8 * var(--u));
+                height: calc(15 * var(--u));
+                vertical-align: middle;
+                background: #c9a7ff;
+            }
+        }
     }
 
     .brief {
@@ -230,87 +228,83 @@ const SUMMARY =
         border: 1px solid transparent;
         border-radius: calc(12 * var(--u));
         background:
-            linear-gradient($brief-bg, $brief-bg) padding-box,
-            linear-gradient(
-                    115deg,
-                    $dark-border-strong,
-                    $brief-edge-mid 39%,
-                    $brief-edge-end
-                )
+            linear-gradient(#16161c, #16161c) padding-box,
+            linear-gradient(115deg, $dark-border-strong, #52ccde 39%, #9191bc)
                 border-box;
         box-shadow: 0 calc(4 * var(--u)) calc(14 * var(--u)) rgba($black, 0.75);
-    }
-
-    .brief-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: calc(12 * var(--u));
 
         strong {
-            font-size: calc(13 * var(--u));
             font-weight: 700;
             color: $white;
         }
 
-        span {
-            font-size: calc(11 * var(--u));
-            color: $term-muted;
-        }
-    }
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: calc(12 * var(--u));
 
-    .stats {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: calc(10 * var(--u));
-        margin-top: calc(14 * var(--u));
-    }
+            strong {
+                font-size: calc(13 * var(--u));
+            }
 
-    .stat {
-        display: flex;
-        flex-direction: column;
-        gap: calc(4 * var(--u));
-        height: calc(70 * var(--u));
-        padding: calc(8 * var(--u)) calc(13 * var(--u));
-        border: 1px solid $brief-stat-border;
-        border-radius: calc(8 * var(--u));
-        background: $brief-stat-bg;
-
-        strong {
-            font-size: calc(28 * var(--u));
-            font-weight: 700;
-            line-height: 1.2;
-            color: $white;
+            span {
+                font-size: calc(11 * var(--u));
+                color: #8a8a98;
+            }
         }
 
-        span {
-            font-size: calc(12 * var(--u));
-            color: $brief-label;
-        }
-    }
-
-    .tags {
-        display: flex;
-        gap: calc(8 * var(--u));
-        margin-top: calc(16 * var(--u));
-    }
-
-    .tag {
-        padding: calc(6 * var(--u)) calc(12 * var(--u));
-        border: 1px solid;
-        border-radius: 999px;
-        font-size: calc(11.5 * var(--u));
-        font-weight: 600;
-        line-height: 1;
-
-        &.direct {
-            border-color: $term-ok-border;
-            color: $term-ok;
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: calc(10 * var(--u));
+            margin-top: calc(14 * var(--u));
         }
 
-        &.redesign {
-            border-color: $brief-tag-border;
-            color: $brief-tag-text;
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: calc(4 * var(--u));
+            height: calc(70 * var(--u));
+            padding: calc(8 * var(--u)) calc(13 * var(--u));
+            border: 1px solid #2a2a32;
+            border-radius: calc(8 * var(--u));
+            background: #1e1e25;
+
+            strong {
+                font-size: calc(28 * var(--u));
+                line-height: 1.2;
+            }
+
+            span {
+                font-size: calc(12 * var(--u));
+                color: #a8a8b6;
+            }
+        }
+
+        .tags {
+            display: flex;
+            gap: calc(8 * var(--u));
+            margin-top: calc(16 * var(--u));
+        }
+
+        .tag {
+            padding: calc(6 * var(--u)) calc(12 * var(--u));
+            border: 1px solid;
+            border-radius: 999px;
+            font-size: calc(11.5 * var(--u));
+            font-weight: 600;
+            line-height: 1;
+
+            &.direct {
+                border-color: #22c55e;
+                color: #4ade80;
+            }
+
+            &.redesign {
+                border-color: #4a4a55;
+                color: #c9c9d4;
+            }
         }
     }
 </style>

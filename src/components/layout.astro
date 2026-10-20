@@ -51,11 +51,8 @@ interface Props {
      */
     bareChrome?: boolean
     hideFloatingActions?: boolean
-    /**
-     * A banner for this page only, with the same fields as an entry in
-     * annonces.yml. Without it, the homepage shows annonces.yml and other
-     * pages show no banner.
-     */
+    /** A page-only banner shaped like an annonces.yml entry. Without it, only
+     *  the homepage shows a banner (from annonces.yml). */
     banner?: {
         tag?: string
         linkText?: string
@@ -320,18 +317,14 @@ const organizationSchema = {
                         docsLatest={docsLatest}
                         client:only="vue"
                     />
-                    {props.banner ? (
+                    {hasAnnounce ? (
                         // Its own persist name, so client-side navigation
                         // doesn't carry the homepage banner onto this page.
                         <Announce
                             client:load
-                            transition:persist="page-banner"
-                            content={announceContent}
-                        />
-                    ) : hasAnnounce ? (
-                        <Announce
-                            client:load
-                            transition:persist
+                            transition:persist={
+                                props.banner ? "page-banner" : "announce"
+                            }
                             content={announceContent}
                         />
                     ) : (

@@ -8,7 +8,7 @@
             aria-controls="guideTocContents"
             @click="expanded = !expanded"
         >
-            <span class="label">On this page</span>
+            <span>On this page</span>
             <span class="chevron" aria-hidden="true">
                 <ChevronUp v-if="expanded" />
                 <ChevronDown v-else />
@@ -20,28 +20,21 @@
             class="toc-collapse"
             :class="{ open: expanded }"
         >
-            <div class="toc-collapse-inner" :inert="collapsed">
+            <div class="inner" :inert="collapsed">
                 <p class="title d-none d-lg-block">On this page</p>
                 <nav aria-label="On this page">
                     <ul class="groups">
                         <li
-                            v-for="group in tree"
+                            v-for="group in toc.tree"
                             :key="group.id"
-                            class="group"
                             :class="{ open: openGroup === group.id }"
                         >
                             <a
-                                :href="`#${group.id}`"
+                                v-bind="link(group.id)"
                                 class="level-1"
-                                :class="linkClass(group.id)"
-                                :aria-current="
-                                    activeId === group.id
-                                        ? 'location'
-                                        : undefined
-                                "
                                 @click.prevent="onNavigate(group.id)"
                             >
-                                <span class="text">{{ group.text }}</span>
+                                <span>{{ group.text }}</span>
                                 <span class="chevron" aria-hidden="true">
                                     <ChevronDown
                                         v-if="openGroup === group.id"
@@ -56,14 +49,8 @@
                                     :class="{ open: openSub === sub.id }"
                                 >
                                     <a
-                                        :href="`#${sub.id}`"
+                                        v-bind="link(sub.id)"
                                         class="level-2"
-                                        :class="linkClass(sub.id)"
-                                        :aria-current="
-                                            activeId === sub.id
-                                                ? 'location'
-                                                : undefined
-                                        "
                                         @click.prevent="onNavigate(sub.id)"
                                         >{{ sub.text }}</a
                                     >
@@ -73,15 +60,11 @@
                                             :key="kid.id"
                                         >
                                             <a
-                                                :href="`#${kid.id}`"
+                                                v-bind="link(kid.id)"
                                                 class="level-3"
-                                                :class="linkClass(kid.id)"
-                                                :aria-current="
-                                                    activeId === kid.id
-                                                        ? 'location'
-                                                        : undefined
+                                                @click.prevent="
+                                                    onNavigate(kid.id)
                                                 "
-                                                @click.prevent="onNavigate(kid.id)"
                                                 >{{ kid.text }}</a
                                             >
                                         </li>
@@ -106,44 +89,58 @@
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import { useTocCollapse } from "~/composables/useTocCollapse"
     import { useTocScrollSpy } from "~/composables/useTocScrollSpy"
-    import { buildTocTree, type TocLink } from "./toc"
+    import type { TocLink } from "~/utils/plugins/types"
+
+    type TocNode = TocLink & { children: TocNode[] }
 
     const props = defineProps<{ links: TocLink[] }>()
 
-    const tree = computed(() => buildTocTree(props.links))
-    const { expanded, belowLg, collapsed } = useTocCollapse()
+    /** h2 > h3 > h4 tree, and the group and sub each link opens, in one pass. */
+    const toc = computed(() => {
+        const tree: TocNode[] = []
+        const parents = new Map<string, { group: string; sub?: string }>()
+        let group: TocNode | undefined
+        let sub: TocNode | undefined
+        for (const link of props.links) {
+            const node = { ...link, children: [] }
+            if (link.depth <= 2 || !group) {
+                tree.push((group = node))
+                sub = undefined
+            } else if (link.depth === 3 || !sub) {
+                group.children.push((sub = node))
+            } else {
+                sub.children.push(node)
+            }
+            parents.set(link.id, { group: group.id, sub: sub?.id })
+        }
+        return { tree, parents }
+    })
+    const { expanded, collapsed, close } = useTocCollapse()
     const { activeId, navigateTo } = useTocScrollSpy(
         () => props.links.map((link) => link.id),
-        { container: ".guide-toc .toc-collapse-inner" },
+        { container: ".guide-toc .inner" },
     )
 
-    const parents = computed(() => {
-        const map = new Map<string, { group: string; sub?: string }>()
-        for (const group of tree.value) {
-            map.set(group.id, { group: group.id })
-            for (const sub of group.children) {
-                map.set(sub.id, { group: group.id, sub: sub.id })
-                for (const kid of sub.children) {
-                    map.set(kid.id, { group: group.id, sub: sub.id })
-                }
-            }
-        }
-        return map
-    })
     const openGroup = computed(
-        () => parents.value.get(activeId.value)?.group ?? "",
+        () => toc.value.parents.get(activeId.value)?.group ?? "",
     )
-    const openSub = computed(() => parents.value.get(activeId.value)?.sub ?? "")
+    const openSub = computed(
+        () => toc.value.parents.get(activeId.value)?.sub ?? "",
+    )
 
-    function linkClass(id: string) {
-        if (id === activeId.value) return "active"
-        if (id === openGroup.value || id === openSub.value) return "trail"
-        return ""
+    function link(id: string) {
+        const active = id === activeId.value
+        const trail = id === openGroup.value || id === openSub.value
+        return {
+            href: `#${id}`,
+            class: active ? "active" : trail ? "trail" : "",
+            "aria-current": active ? ("location" as const) : undefined,
+        }
     }
 
     function onNavigate(id: string) {
         navigateTo(id)
-        if (belowLg.value) expanded.value = false
+        close()
     }
 </script>
 
@@ -187,7 +184,7 @@
         grid-template-rows: 0fr;
         transition: grid-template-rows 0.25s ease;
 
-        .toc-collapse-inner {
+        .inner {
             overflow: hidden;
             min-height: 0;
         }
@@ -199,7 +196,7 @@
         @include media-breakpoint-up(lg) {
             display: block;
 
-            .toc-collapse-inner {
+            .inner {
                 max-height: calc(100vh - 140px - var(--announce-height, 0px));
                 overflow-y: auto;
                 padding-right: 0.25rem;
@@ -226,10 +223,7 @@
         font-size: $font-size-sm;
         line-height: 1.25rem;
 
-        &:hover {
-            color: var(--ks-content-link);
-        }
-
+        &:hover,
         &.trail,
         &.active {
             color: var(--ks-content-link);
@@ -258,6 +252,14 @@
     .kids {
         margin: 0 0.6875rem;
         border-left: 1px solid var(--ks-border-secondary);
+
+        @include media-breakpoint-up(lg) {
+            display: none;
+
+            .open > & {
+                display: block;
+            }
+        }
     }
 
     .kids {
@@ -271,18 +273,6 @@
 
     .level-3 {
         font-size: $font-size-xs;
-    }
-
-    @include media-breakpoint-up(lg) {
-        .subs,
-        .kids {
-            display: none;
-        }
-
-        .group.open > .subs,
-        .subs > li.open > .kids {
-            display: block;
-        }
     }
 
     .footer {

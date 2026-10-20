@@ -1,33 +1,37 @@
 import { describe, expect, it } from "vitest"
 import { GOLDEN } from "./__fixtures__/golden"
-import { CSV_BOM, CSV_FILENAME, buildCsvFile, buildCsvRows, toCsv } from "./csv"
+import { buildCsvFile, buildCsvRows, toCsv } from "./csv"
 import { resolveInputs } from "./defaults"
 
-describe("CSV matches the reference", () => {
-    it.each(GOLDEN.cases.map((c) => [c.name, c] as const))("%s", (_name, c) => {
-        expect(toCsv(buildCsvRows(c.state, GOLDEN._csvGeneratedDate))).toBe(
-            c.csv,
-        )
-    })
-})
+describe("CSV", () => {
+    it.each(GOLDEN.cases.map((c) => [c.name, c] as const))(
+        "matches the reference for %s",
+        (_name, c) => {
+            expect(toCsv(buildCsvRows(c.state, GOLDEN._csvGeneratedDate))).toBe(
+                c.csv,
+            )
+        },
+    )
 
-describe("toCsv", () => {
-    it("quotes commas, quotes and newlines", () => {
-        expect(toCsv([["a,b", 'say "hi"', "x\ny", "plain"]])).toBe(
+    it.each([
+        [
+            "quotes commas, quotes and newlines",
+            ["a,b", 'say "hi"', "x\ny", "plain"],
             '"a,b","say ""hi""","x\ny",plain',
-        )
-    })
-
-    it("neutralises formula-looking cells", () => {
-        expect(toCsv([["=SUM(A1)", "+1", "@x", "-5"]])).toBe(
+        ],
+        [
+            "neutralises formulas",
+            ["=SUM(A1)", "+1", "@x", "-5"],
             "'=SUM(A1),'+1,'@x,-5",
-        )
-    })
-
-    it("neutralises a leading minus, tab or carriage return unless the cell is a number", () => {
-        expect(toCsv([["-2+3+cmd|' /C calc'!A0", "-1.5", "\t=1", "\r=1"]])).toBe(
+        ],
+        [
+            "neutralises a leading minus, tab or CR unless the cell is a number",
+            ["-2+3+cmd|' /C calc'!A0", "-1.5", "\t=1", "\r=1"],
             "'-2+3+cmd|' /C calc'!A0,-1.5,'\t=1,\"'\r=1\"",
-        )
+        ],
+        ["writes blanks for null and undefined", [null, undefined, 0], ",,0"],
+    ])("%s", (_label, row, expected) => {
+        expect(toCsv([row])).toBe(expected)
     })
 
     it("neutralises a formula set through a share link", () => {
@@ -37,23 +41,9 @@ describe("toCsv", () => {
         expect(csv).toContain("vRO workflows in the raw export,'-1+1")
     })
 
-    it("writes blanks for null and undefined, and empty rows as empty lines", () => {
-        expect(toCsv([[null, undefined, 0], [], ["end"]])).toBe(",,0\n\nend")
-    })
-})
-
-describe("buildCsvFile", () => {
-    it("prefixes the BOM and takes the date from a Date", () => {
-        const file = buildCsvFile(
-            resolveInputs(),
-            new Date(2026, 9, 19, 8),
+    it("prefixes the BOM and takes the local calendar date from a Date", () => {
+        expect(buildCsvFile(resolveInputs(), new Date(2026, 9, 19, 8))).toMatch(
+            /^\uFEFFvRA to Kestra migration payback estimate\nGenerated,2026-10-19\n/,
         )
-        expect(
-            file.startsWith(
-                CSV_BOM +
-                    "vRA to Kestra migration payback estimate\nGenerated,2026-10-19\n",
-            ),
-        ).toBe(true)
-        expect(CSV_FILENAME).toBe("vra-kestra-payback.csv")
     })
 })

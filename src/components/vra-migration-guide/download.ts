@@ -1,6 +1,4 @@
-// The gated PDF of the full guide. Every "Download the PDF" button opens the
-// dialog in DownloadDialog.astro through the global `data-modal-target`
-// handler (src/scripts/modal.ts).
+/** The gated PDF dialog, opened via `data-modal-target` (scripts/modal.ts). */
 export const DOWNLOAD_DIALOG_ID = "guide-download"
 export const DOWNLOAD_DIALOG_TARGET = `#${DOWNLOAD_DIALOG_ID}`
 
@@ -12,8 +10,10 @@ export const GUIDE_DOWNLOAD = {
     event: "vra_migration_guide_download",
 }
 
-// The Migration Assistant's "Get help running it" request. Same dialog and
-// form as the PDF, without the download. The HubSpot form is not created yet.
+/**
+ * The Migration Assistant's help request: the same dialog and form, without the
+ * download. Its HubSpot form is not created yet.
+ */
 export const HELP_DIALOG_ID = "migration-assistant-help"
 export const HELP_DIALOG_TARGET = `#${HELP_DIALOG_ID}`
 

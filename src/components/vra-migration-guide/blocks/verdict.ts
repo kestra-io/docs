@@ -1,5 +1,4 @@
-// The four verdicts of the estate framework (section 3.1.1), shared by the
-// Verdict chip and the markdown endpoint.
+/** The four verdicts of the estate framework (section 3.1.1). */
 export type VerdictKind = "replace" | "integrate" | "keep" | "retire"
 
 export const VERDICT_LABELS: Record<VerdictKind, string> = {

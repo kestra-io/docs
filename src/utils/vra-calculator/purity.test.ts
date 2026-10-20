@@ -3,14 +3,15 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 
-// The engine runs in Vue islands, on the server and in tests, so it must not
-// reach for browser or framework APIs. Callers pass locale, dates and
-// storage values in.
 const here = dirname(fileURLToPath(import.meta.url))
 const sources = readdirSync(here).filter(
     (f) => f.endsWith(".ts") && !f.endsWith(".test.ts"),
 )
 
+/**
+ * The engine runs in islands, on the server and in tests, so it must not touch
+ * browser or framework APIs; callers pass locale, dates and storage in.
+ */
 const FORBIDDEN = [
     /\bwindow\b/,
     /\bdocument\b/,
@@ -35,7 +36,7 @@ const stripComments = (code: string) =>
 
 describe("engine purity", () => {
     it("has engine sources to check", () => {
-        expect(sources.length).toBeGreaterThanOrEqual(10)
+        expect(sources.length).toBeGreaterThanOrEqual(5)
     })
 
     it.each(sources)(

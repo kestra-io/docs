@@ -17,29 +17,24 @@ const { kind } = Astro.props
     .verdict {
         @include guide-chip;
         gap: 0.35rem;
-        color: var(--ks-content-primary);
     }
 
     .dot {
         width: 0.5rem;
         height: 0.5rem;
         border-radius: 50%;
-        background: currentColor;
-    }
 
-    .verdict-replace .dot {
-        background: var(--ks-content-link);
-    }
+        $colors: (
+            replace: link,
+            integrate: alert-info,
+            keep: alert-success,
+            retire: tertiary,
+        );
 
-    .verdict-integrate .dot {
-        background: var(--ks-content-alert-info);
-    }
-
-    .verdict-keep .dot {
-        background: var(--ks-content-alert-success);
-    }
-
-    .verdict-retire .dot {
-        background: var(--ks-content-tertiary);
+        @each $kind, $color in $colors {
+            .verdict-#{$kind} & {
+                background: var(--ks-content-#{$color});
+            }
+        }
     }
 </style>

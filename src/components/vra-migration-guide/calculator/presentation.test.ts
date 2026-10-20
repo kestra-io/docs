@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest"
 import { formatCount } from "~/utils/vra-calculator"
 import { compute } from "~/utils/vra-calculator/compute"
 import { GOLDEN } from "~/utils/vra-calculator/__fixtures__/golden"
-import referenceCopy from "./__fixtures__/reference-copy.json"
 import {
     PLACEHOLDER,
     avoidedLine,
@@ -18,11 +17,13 @@ import {
     viewMessages,
     type Rich,
 } from "./presentation"
+import referenceCopy from "./__fixtures__/reference-copy.json"
 
-// reference-copy.json holds what the reference's render() wrote into each
-// slot for every golden case (recorded from the same reference file as
-// ~/utils/vra-calculator/__fixtures__/reference-golden.json).
 type Slots = Record<string, string | { text: string; className: string }>
+/**
+ * What the reference's render() wrote into each slot per golden case, recorded
+ * from the same reference file as reference-golden.json.
+ */
 const COPY = referenceCopy as unknown as {
     _referenceSha256: string
     cases: { name: string; payback: Slots; funnel: Slots }[]

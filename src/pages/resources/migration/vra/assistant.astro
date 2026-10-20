@@ -11,21 +11,15 @@ import SecurityPosture from "~/components/vra-migration-guide/assistant/Security
 import ExampleUseCase from "~/components/vra-migration-guide/assistant/ExampleUseCase.astro"
 import GetItCards from "~/components/vra-migration-guide/assistant/GetItCards.astro"
 import NextSteps from "~/components/vra-migration-guide/assistant/NextSteps.astro"
+import {
+    GUIDE_HREF,
+    WEBINAR_HREF,
+} from "~/components/vra-migration-guide/assistant/links"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
 import {
     HELP_DIALOG_ID,
-    HELP_DIALOG_TARGET,
     HELP_REQUEST,
 } from "~/components/vra-migration-guide/download"
-
-const title = "VMware vRA and vRO Migration Tool | Kestra"
-const description =
-    "The Kestra Migration Assistant is a free, open-source tool that assesses your VMware vRA and vRO workflows on your machine and plans the migration to Kestra."
-
-const GUIDE_HREF = "/resources/migration/vra"
-const ROI_CALCULATOR_HREF = "/resources/migration/vra/payback"
-const GITHUB_HREF = "https://github.com/kestra-io/migration-assistant"
-const WEBINAR_HREF = "#"
 
 const faqItems = [
     {
@@ -56,8 +50,8 @@ const faqItems = [
 ---
 
 <Layout
-    {title}
-    {description}
+    title="VMware vRA and vRO Migration Tool | Kestra"
+    description="The Kestra Migration Assistant is a free, open-source tool that assesses your VMware vRA and vRO workflows on your machine and plans the migration to Kestra."
     breadcrumbTitle="Kestra Migration Assistant for vRA"
     headerTheme="lightText"
     banner={{
@@ -83,29 +77,18 @@ const faqItems = [
                 href={GUIDE_HREF}>vRA migration guide</a
             >.
         </Fragment>
-        <HeroActions
-            slot="actions"
-            githubHref={GITHUB_HREF}
-            helpTarget={HELP_DIALOG_TARGET}
-        />
+        <HeroActions slot="actions" />
         <HeroVisual slot="visual" />
     </GuideHero>
 
-    <WhatItDoes guideHref={GUIDE_HREF} calculatorHref={ROI_CALCULATOR_HREF} />
-
+    <WhatItDoes />
     <HowItWorks />
-
     <SecurityPosture />
+    <ExampleUseCase />
+    <GetItCards />
+    <NextSteps />
 
-    <ExampleUseCase
-        downloadHref="/kestra-migration-assistant-sample-vra-load-balancer.zip"
-    />
-
-    <GetItCards githubHref={GITHUB_HREF} helpTarget={HELP_DIALOG_TARGET} />
-
-    <NextSteps guideHref={GUIDE_HREF} webinarHref={WEBINAR_HREF} />
-
-    <div class="ma-faq" id="faq">
+    <div id="faq" style="scroll-margin-top: 100px">
         <Faq title="Questions that come up" items={faqItems} client:visible />
     </div>
 
@@ -115,9 +98,3 @@ const faqItems = [
         form={HELP_REQUEST}
     />
 </Layout>
-
-<style lang="scss">
-    .ma-faq {
-        scroll-margin-top: 100px;
-    }
-</style>

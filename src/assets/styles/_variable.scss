@@ -120,18 +120,13 @@ $gutters: (
     5: $spacer * 3,
 );
 
-// Figma values with no token in _color-palette.scss (that file is generated;
-// ask design to add these there, then delete them here). Plain values only.
-// Used by shared components; the vRA pages' own palette lives in
-// src/components/vra-migration-guide/_shared.scss.
-//
-// Dark surfaces that stay dark in both themes (Figma's ks/* dark theme),
-// as common/TabGroup.astro draws them.
+// Colours with no token in the generated _color-palette.scss; the dark-* ones
+// stay dark in both themes. The vRA pages' own palette is in their _shared.scss.
 $dark-bg-control: #23252e;
-$dark-raised: #2e2e3c; // ks/bg-hover-elevated and ks/border-default
+$dark-raised: #2e2e3c;
 $dark-border-strong: #424256;
 $dark-text-secondary: #adadbf;
 $dark-accent: #9869f7;
-$copied-green: #6bd37a; // the "copied" check on copy buttons
+$copied-green: #6bd37a;
 
 @import "breakpoints";

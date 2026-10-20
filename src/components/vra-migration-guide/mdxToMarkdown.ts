@@ -1,121 +1,97 @@
-// Plain markdown from the guide's MDX, for the /resources/migration/vra.md
-// endpoint. The body keeps its prose, lists and tables; the component
-// wrappers around them are dropped, and what a wrapper carried in its
-// attributes is written back as markdown: a `title`, `label` or `status`
-// becomes a bold line, `stats` a list, a `caption` an italic line and a
-// `quote` a blockquote after the wrapped content. Named components can be
-// replaced outright, for instance the calculators by a line pointing to the
-// web page.
+import type { Nodes, Parent, RootContent } from "mdast"
+import type { MdxJsxFlowElement, MdxJsxTextElement } from "mdast-util-mdx-jsx"
+import remarkGfm from "remark-gfm"
+import remarkMdx from "remark-mdx"
+import remarkParse from "remark-parse"
+import remarkStringify from "remark-stringify"
+import { unified } from "unified"
+import { SKIP, visit } from "unist-util-visit"
 
-export type Attributes = Record<string, string>
-export type Replacement = string | ((attributes: Attributes) => string)
+type Attributes = Record<string, string>
 
-export interface MdxToMarkdownOptions {
-    /** Component name to what replaces its tag; its closing tag is dropped. */
-    replacements?: Record<string, Replacement>
-    /** Relative image path, as written in the MDX, to the URL it is served at. */
+interface MdxToMarkdownOptions {
+    /** Component name to the markdown that replaces it and its content. */
+    replacements?: Record<string, string | ((attributes: Attributes) => string)>
+    /** Image path as written in the MDX, to the URL it is served at. */
     images?: Record<string, string>
 }
 
-const EXPRESSION = "\\{(?:[^{}]|\\{(?:[^{}]|\\{[^{}]*\\})*\\})*\\}"
-
-const JSX_TAG = new RegExp(
-    `<\\/?([A-Z][A-Za-z0-9.]*)((?:\\s+[A-Za-z:-]+(?:=(?:"[^"]*"|'[^']*'|${EXPRESSION}))?)*)\\s*\\/?>`,
-    "g",
-)
-
-const ATTRIBUTE = new RegExp(
-    `([A-Za-z:-]+)(?:=(?:"([^"]*)"|'([^']*)'|(${EXPRESSION})))?`,
-    "g",
-)
-
-// `[{ value: "30×", label: "faster delivery" }, …]` from a `stats` expression.
+/** A `{ value, label }` entry in a `stats` expression. */
 const STAT = /value:\s*"([^"]*)",\s*label:\s*"([^"]*)"/g
 
-function parseAttributes(source: string): Attributes {
-    const attributes: Attributes = {}
-    for (const match of source.matchAll(ATTRIBUTE)) {
-        const [, name, double, single, expression] = match
-        attributes[name] = double ?? single ?? expression ?? ""
-    }
-    return attributes
+/** Markdown written before a wrapper's content. */
+function opening({ title, label, status, stats = "" }: Attributes) {
+    const heading = title ?? label ?? status
+    const items = [...stats.matchAll(STAT)].map(([, v, l]) => `- **${v}** ${l}`)
+    return [heading && `**${heading}**`, items.join("\n")]
 }
 
-// What the opening tag becomes.
-function opening(attributes: Attributes): string {
-    const lines: string[] = []
-    const heading =
-        attributes.title ?? attributes.label ?? attributes.status
-    if (heading) lines.push(`**${heading}**`)
-    if (attributes.stats) {
-        const stats = [...attributes.stats.matchAll(STAT)].map(
-            ([, value, label]) => `- **${value}** ${label}`,
-        )
-        if (stats.length > 0) lines.push("", ...stats)
-    }
-    return lines.join("\n")
+/** Markdown written after a wrapper's content. */
+function closing({ caption, quote, quoteBy, storyHref }: Attributes) {
+    const by = quoteBy && storyHref ? `[${quoteBy}](${storyHref})` : quoteBy
+    return [
+        caption && `_${caption}_`,
+        quote && `> ${quote}${by ? `\n> — ${by}` : ""}`,
+    ]
 }
 
-// What follows the wrapped content, written at the closing tag.
-function closing(attributes: Attributes): string {
-    const lines: string[] = []
-    if (attributes.caption) lines.push(`_${attributes.caption}_`)
-    if (attributes.quote) {
-        const by = attributes.quoteBy
-            ? attributes.storyHref
-                ? `[${attributes.quoteBy}](${attributes.storyHref})`
-                : attributes.quoteBy
-            : ""
-        lines.push(`> ${attributes.quote}`, ...(by ? [`> — ${by}`] : []))
-    }
-    return lines.join("\n")
-}
-
+/**
+ * Strips the component wrappers from the guide's MDX and writes their `title`,
+ * `stats`, `caption` and `quote` attributes back as markdown.
+ */
 export function mdxToMarkdown(
     body: string,
     { replacements = {}, images = {} }: MdxToMarkdownOptions = {},
 ): string {
-    // Open wrappers, innermost last, so a closing tag can write what its
-    // opening tag deferred.
-    const open: { name: string; trailer: string }[] = []
+    const processor = unified()
+        .use(remarkParse)
+        .use(remarkMdx)
+        .use(remarkGfm, { tablePipeAlign: false })
+        .use(remarkStringify, { bullet: "-", emphasis: "_", rule: "-" })
+    const tree = processor.parse(body)
+
+    visit(tree, (node: Nodes, index, parent: Parent | undefined) => {
+        if (node.type === "image") node.url = images[node.url] ?? node.url
+        if (!parent || index === undefined || !node.type.startsWith("mdx"))
+            return
+        const {
+            name,
+            attributes = [],
+            children = [],
+        } = node as Partial<MdxJsxFlowElement | MdxJsxTextElement>
+        const props: Attributes = Object.fromEntries(
+            attributes.map((a) => [
+                "name" in a ? a.name : "",
+                typeof a.value === "string" ? a.value : (a.value?.value ?? ""),
+            ]),
+        )
+        const replacement = name ? replacements[name] : undefined
+        const html = (value?: string) =>
+            value ? [{ type: "html", value } as RootContent] : []
+        const nodes = !node.type.startsWith("mdxJsx")
+            ? [] // imports and expressions
+            : replacement !== undefined
+                ? html(
+                    typeof replacement === "function"
+                        ? replacement(props)
+                        : replacement,
+                )
+                : name === "a"
+                    ? [{ type: "link", url: props.href, children } as RootContent]
+                    : [
+                        ...opening(props).flatMap(html),
+                        ...children,
+                        ...closing(props).flatMap(html),
+                    ]
+        parent.children.splice(index, 1, ...nodes)
+        return [SKIP, index]
+    })
 
     return (
-        body
-            .replace(/^(?:import|export)\s.*$/gm, "")
-            .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
-            .replace(/<\/?Fragment(?:\s[^>]*)?>/g, "")
-            .replace(/<\/?mark>/g, "")
-            .replace(JSX_TAG, (tag, name: string, source: string) => {
-                if (tag.startsWith("</")) {
-                    if (name in replacements) return ""
-                    let trailer = ""
-                    while (open.length > 0) {
-                        const wrapper = open.pop()!
-                        if (wrapper.name === name) {
-                            trailer = wrapper.trailer
-                            break
-                        }
-                    }
-                    return trailer
-                }
-                const attributes = parseAttributes(source)
-                const selfClosing = tag.endsWith("/>")
-                if (name in replacements) {
-                    const replacement = replacements[name]
-                    return typeof replacement === "function"
-                        ? replacement(attributes)
-                        : replacement
-                }
-                if (!selfClosing) {
-                    open.push({ name, trailer: closing(attributes) })
-                }
-                return opening(attributes)
-            })
-            .replace(/<a href="([^"]+)">([^<]*)<\/a>/g, "[$2]($1)")
-            .replace(/\]\((\.\/[^)]+)\)/g, (match, path: string) =>
-                path in images ? `](${images[path]})` : match,
-            )
-            .replace(/\n{3,}/g, "\n\n")
-            .trim() + "\n"
+        processor
+            .stringify(tree)
+            // Conventional `---` delimiter rows; intraword `_` needs no escape.
+            .replace(/^\|[-:| ]+\|$/gm, (row) => row.replace(/-+/g, "---"))
+            .replace(/(\w)\\_(?=\w)/g, "$1_")
     )
 }

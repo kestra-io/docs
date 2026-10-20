@@ -51,13 +51,8 @@ function announce(message: string): void {
 
 const resetTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>()
 
-/**
- * Copy `text` and confirm it on `button`: a `copied` class for the icon swap,
- * plus a live-region announcement for screen readers. Shared by the injected
- * markdown copy buttons, the get-started hero and the vRA pages so all stay in
- * step. Resolves to whether the text was copied, so a caller can offer a
- * fallback when the browser blocks the clipboard.
- */
+/** Copy `text`, mark `button` `.copied` and announce it to screen readers.
+ *  Resolves to whether it copied, so callers can fall back when blocked. */
 export async function copyWithFeedback(
     button: HTMLElement,
     text: string,

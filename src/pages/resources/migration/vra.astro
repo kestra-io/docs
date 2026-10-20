@@ -17,7 +17,6 @@ import ReferenceHandouts, {
 import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
 import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
-import { tocLinks } from "~/components/vra-migration-guide/toc"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
@@ -28,19 +27,22 @@ const { Content, headings } = await render(post)
 const page = post.data
 const totalPlugins = await fetchTotalPluginsCount()
 
-const title = page.metaTitle ?? page.title
 const description = page.metaDescription ?? page.description
 
 const faqItems = page.faq ?? []
 
-const links = [
-    ...tocLinks(startHereHeadings()),
-    ...tocLinks(headings),
-    ...tocLinks(handoutHeadings()),
-    ...(faqItems.length > 0
-        ? [{ text: "Questions", id: "faq", depth: 2 }]
-        : []),
-]
+// h2, h3 and numbered h4 ("3.2.2 ...") headings
+const links = [...startHereHeadings(), ...headings, ...handoutHeadings()]
+    .filter(
+        ({ depth, text }) =>
+            depth === 2 ||
+            depth === 3 ||
+            (depth === 4 && /^\d+\.\d+\.\d+\s/.test(text)),
+    )
+    .map(({ depth, slug, text }) => ({ text, id: slug, depth }))
+    .concat(
+        faqItems.length > 0 ? [{ text: "Questions", id: "faq", depth: 2 }] : [],
+    )
 
 const INSIDE = [
     "The six parts of a vRA estate, and a framework for deciding what happens to each one before you convert a single workflow",
@@ -87,7 +89,7 @@ const jsonLinkedData = {
 ---
 
 <Layout
-    {title}
+    title={page.metaTitle ?? page.title}
     {description}
     breadcrumbTitle={page.title}
     headerTheme="lightText"
@@ -115,18 +117,18 @@ const jsonLinkedData = {
             type="application/ld+json"
             set:html={JSON.stringify(jsonLinkedData)}
         />
-        {faqItems.length > 0 && <SchemaFAQ items={faqItems} />}
+        <SchemaFAQ items={faqItems} />
     </Fragment>
     <GuideHero
         title={page.title}
-        deck={page.description ?? ""}
+        deck={page.description}
         inside={INSIDE}
         meta={META}
         codeHints
     />
     <GuideBand><StartHere /></GuideBand>
     <section class="guide-content">
-        <TwoColumnStickyLayout client:load>
+        <TwoColumnStickyLayout>
             <div slot="sidebar" class="guide-sidebar">
                 <GuideToc client:load links={links}>
                     <Fragment slot="footer">
@@ -163,7 +165,8 @@ const jsonLinkedData = {
             </div>
         )
     }
-    <div class="guide-cta">
+    {/* A direct div child of main picks up the global overflow-x clip. */}
+    <div>
         <SeeHow
             imgSrc={shapesImage}
             cta={{ text: "Book a Demo", href: "/demo" }}
@@ -188,47 +191,46 @@ const jsonLinkedData = {
         padding: 0 0 2rem;
     }
 
+    .guide-content,
+    :global(.guide-band) {
+        // Direct children only, so card and panel titles keep their own sizes.
+        :global(.bd-content) {
+            > :global(h2) {
+                font-size: clamp(2rem, 1.25rem + 2vw, #{$font-size-4xl});
+                line-height: 1.15;
+                letter-spacing: -0.015em;
+            }
+
+            > :global(h3) {
+                font-size: clamp(1.375rem, 1rem + 1vw, #{$font-size-2xl});
+                line-height: 1.3;
+                letter-spacing: -0.01em;
+            }
+
+            > :global(p),
+            > :global(ul > li),
+            > :global(ol > li) {
+                font-size: $font-size-lg;
+                line-height: 1.75rem;
+            }
+
+            > :global(ol > li + li) {
+                margin-top: 1rem;
+            }
+        }
+    }
+
     .guide-sidebar {
         display: flex;
         flex-direction: column;
         gap: 2rem;
+
         @include media-breakpoint-down(lg) {
             gap: 1rem;
         }
     }
 
-    .guide-content :global(.bd-content h2),
-    :global(.guide-band .bd-content h2) {
-        font-size: clamp(2.25rem, 4vw, 3rem);
-        font-weight: 600;
-        line-height: 1.05;
-        letter-spacing: -0.015em;
-    }
-
-    .guide-content :global(.bd-content h3) {
-        font-size: clamp(1.75rem, 3vw, 2.125rem);
-        font-weight: 600;
-        line-height: 1.3;
-        letter-spacing: -0.01em;
-    }
-
-    .guide-content :global(.bd-content > p),
-    .guide-content :global(.bd-content > ul > li),
-    .guide-content :global(.bd-content > ol > li),
-    :global(.guide-band .bd-content > p) {
-        font-size: $font-size-lg;
-        line-height: 1.75rem;
-    }
-
-    .guide-content :global(.bd-content > ol > li + li) {
-        margin-top: 1rem;
-    }
-
     .guide-faq {
         scroll-margin-top: 100px;
-    }
-
-    .guide-cta {
-        overflow-x: clip;
     }
 </style>

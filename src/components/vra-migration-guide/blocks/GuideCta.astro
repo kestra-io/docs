@@ -5,11 +5,10 @@ type Kind = "talk" | "pdf" | "calc" | "assistant"
 
 interface Props {
     kind: Kind
-    label?: string
     variant?: "primary" | "secondary"
 }
 
-const CTAS: Record<Kind, { label: string; href?: string; modal?: string }> = {
+const CTAS: Record<Kind, { label: string; href?: string }> = {
     talk: { label: "Talk to our team", href: "/demo" },
     calc: {
         label: "Work out your payback",
@@ -19,30 +18,19 @@ const CTAS: Record<Kind, { label: string; href?: string; modal?: string }> = {
         label: "Get the Kestra Migration Assistant for vRA",
         href: "/resources/migration/vra/assistant",
     },
-    pdf: { label: "Download the PDF", modal: DOWNLOAD_DIALOG_TARGET },
+    pdf: { label: "Download the PDF" },
 }
 
-const { kind, label, variant = "primary" } = Astro.props
-const cta = CTAS[kind]
-const className = `btn btn-${variant}`
+const { kind, variant = "primary" } = Astro.props
+const { label, href } = CTAS[kind]
+const Tag = href ? "a" : "button"
+const attrs = href
+    ? { href }
+    : { type: "button" as const, "data-modal-target": DOWNLOAD_DIALOG_TARGET }
 ---
 
 <p class="guide-cta">
-    {
-        cta.href ? (
-            <a class={className} href={cta.href}>
-                {label ?? cta.label}
-            </a>
-        ) : (
-            <button
-                type="button"
-                class={className}
-                data-modal-target={cta.modal}
-            >
-                {label ?? cta.label}
-            </button>
-        )
-    }
+    <Tag class={`btn btn-${variant}`} {...attrs}>{label}</Tag>
 </p>
 
 <style lang="scss">

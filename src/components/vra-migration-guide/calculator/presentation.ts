@@ -10,24 +10,21 @@ import {
 } from "~/utils/vra-calculator"
 import { MESSAGES } from "~/utils/vra-calculator/validate"
 
-// Display copy and chart geometry for the calculator views, worded as in the
-// reference's render(). Numbers all come from the engine; this module only
-// formats them and lays them out. Copy is returned as rich-text parts rather
-// than HTML so the views never need v-html.
-
-export type Tone = "pos" | "neg"
-export type RichPart = string | { strong: string; tone?: Tone }
+type Tone = "pos" | "neg"
+type RichPart = string | { strong: string; tone?: Tone }
+/** Copy as rich-text parts rather than HTML, so the views never need v-html. */
 export type Rich = RichPart[]
 
-const strong = (text: string | number, tone?: Tone): RichPart =>
-    tone ? { strong: String(text), tone } : { strong: String(text) }
+const strong = (text: string | number, tone?: Tone): RichPart => ({
+    strong: String(text),
+    tone,
+})
 
 export const PLACEHOLDER = "—"
 
 /**
- * The share "executed in the last 12 months" is the complement of the stored
- * `dormant` share. Rounded to four decimals so the round trip through floating
- * point gives back what was typed (0.1 -> 99.9 -> 0.1, not 0.0999…).
+ * The "executed" share is the complement of `dormant`, rounded to four
+ * decimals so a typed 0.1 round-trips instead of becoming 0.0999….
  */
 export function complementPercent(value: InputValue): InputValue {
     const n = toNumber(value)
@@ -137,19 +134,13 @@ export function yearsTitle(p: PaybackResult): string {
     )
 }
 
-// The calculator asks for the share of workflows still in use, the complement
-// of the engine's "not executed" input, so its error says so too. The engine
-// keeps the reference's wording.
-export const MESSAGE_OVERRIDES: Readonly<Record<string, string>> =
-    Object.freeze({
-        [MESSAGES.dormant]:
-            "The share still in use has to be between 0 and 100 percent.",
-    })
+/** The view asks for the share still in use, so its dormant error says so. */
+const MESSAGE_OVERRIDES: Readonly<Record<string, string>> = Object.freeze({
+    [MESSAGES.dormant]:
+        "The share still in use has to be between 0 and 100 percent.",
+})
 
-/**
- * Messages to show above the calculator: every error and the warnings, each
- * once (one per invalid effort-hour field otherwise).
- */
+/** Each message once: the engine repeats the effort-hours error per field. */
 export function viewMessages(result: CalcResult) {
     const unique = (list: string[]) => [...new Set(list)]
     return {
@@ -164,7 +155,7 @@ export function funnelCounts(f: FunnelResult | null) {
     return {
         scope: n(f?.scope),
         distinct: n(f?.distinct),
-        // Shown as a deduction from the unique flows, but never as "-0".
+        /** A deduction from the unique flows, but never "-0". */
         wrappers: !f
             ? PLACEHOLDER
             : f.wrappers > 0
@@ -184,18 +175,13 @@ export function costLine(p: PaybackResult, cur: Currency): Rich {
     ]
 }
 
-export interface ChartTick {
-    label: string
-    x: number
-}
-
-export interface PaybackChart {
+interface PaybackChart {
     line: string
     area: string
     zeroY: number
     renewalX: number | null
     point: { x: number; y: number } | null
-    ticks: ChartTick[]
+    ticks: { label: string; x: number }[]
     caption: string
 }
 
@@ -209,8 +195,7 @@ export function paybackChart(p: PaybackResult): PaybackChart {
     const x = (m: number) => round((m / months) * 100)
     const y = (v: number) => round(((top - v) / range) * 100)
 
-    const points = series.map((v, m) => `${x(m)},${y(v)}`)
-    const line = `M${points.join(" L")}`
+    const line = `M${series.map((v, m) => `${x(m)},${y(v)}`).join(" L")}`
     const zeroY = y(0)
     const inHorizon = (m: number | null): m is number =>
         m !== null && m > 0 && m <= months

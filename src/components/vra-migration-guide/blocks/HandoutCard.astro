@@ -3,7 +3,7 @@ interface Props {
     id: string
     appendix: string
     title: string
-    pdfHref?: string
+    pdfHref: string
 }
 
 const { id, appendix, title, pdfHref } = Astro.props
@@ -13,15 +13,7 @@ const { id, appendix, title, pdfHref } = Astro.props
     <p class="appendix">{appendix}</p>
     <h3 class="title">{title}</h3>
     <slot />
-    {
-        pdfHref ? (
-            <a class="btn btn-sm btn-secondary" href={pdfHref}>
-                Download the PDF
-            </a>
-        ) : (
-            <p class="pending">PDF coming soon</p>
-        )
-    }
+    <a class="btn btn-sm btn-secondary" href={pdfHref}>Download the PDF</a>
 </div>
 
 <style lang="scss">
@@ -49,13 +41,5 @@ const { id, appendix, title, pdfHref } = Astro.props
     .title {
         margin: 0 0 0.5rem;
         font-size: 1rem;
-        font-weight: 600;
-        color: var(--ks-content-primary);
-    }
-
-    .pending {
-        margin: auto 0 0;
-        font-size: $font-size-xs;
-        color: var(--ks-content-tertiary);
     }
 </style>

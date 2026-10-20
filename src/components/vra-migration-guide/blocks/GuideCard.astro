@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { kicker, title, level = 3 } = Astro.props
-const Title = level === 4 ? "h4" : "h3"
+const Title = `h${level}` as const
 ---
 
 <div class="guide-card">
@@ -24,7 +24,6 @@ const Title = level === 4 ? "h4" : "h3"
         border-radius: $border-radius-lg;
         background: var(--ks-background-primary);
         box-shadow: $box-shadow-sm;
-        font-size: $font-size-md;
         line-height: 1.5rem;
         color: var(--ks-content-secondary);
 
@@ -32,13 +31,8 @@ const Title = level === 4 ? "h4" : "h3"
             margin-bottom: 0;
         }
 
-        :global(p) {
-            margin-bottom: 1rem;
-        }
-
         :global(blockquote) {
             @include guide-quote(":global(p)");
-            margin: 0 0 1rem;
             padding: 1rem;
             border: 0;
 
@@ -49,19 +43,19 @@ const Title = level === 4 ? "h4" : "h3"
     }
 
     .kicker {
-        margin: 0 0 1rem;
-        font-size: $font-size-2xl;
+        margin: 0 0 0.75rem;
+        font-size: $font-size-lg;
         font-weight: 600;
-        line-height: 2.375rem;
+        line-height: 1.5rem;
+        font-variant-numeric: tabular-nums;
         color: var(--ks-icon-color);
     }
 
     .title {
-        margin: 0 0 1rem;
+        margin: 0 0 0.75rem;
         font-size: 1.25rem;
-        font-weight: 700;
-        line-height: 1.5rem;
-        letter-spacing: -0.1px;
-        color: var(--ks-content-primary);
+        line-height: 1.75rem;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
     }
 </style>

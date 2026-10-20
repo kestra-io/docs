@@ -1,8 +1,8 @@
 ---
 interface Props {
-    title?: string
-    subtitle?: string
-    /** Element for the title: a heading when the frame opens a page section. */
+    title: string
+    subtitle: string
+    /** A heading when the frame opens a page section. */
     titleAs?: "p" | "h2" | "h3"
 }
 
@@ -12,8 +12,8 @@ const { title, subtitle, titleAs: Title = "p" } = Astro.props
 <div class="interactive-frame">
     <div class="frame-head">
         <div>
-            {title && <Title class="frame-title">{title}</Title>}
-            {subtitle && <p class="frame-subtitle">{subtitle}</p>}
+            <Title class="frame-title">{title}</Title>
+            <p class="frame-subtitle">{subtitle}</p>
             {
                 Astro.slots.has("note") && (
                     <p class="frame-subtitle">
@@ -59,11 +59,9 @@ const { title, subtitle, titleAs: Title = "p" } = Astro.props
 
     .frame-tag {
         @include guide-chip;
+        @include guide-eyebrow($uppercase: true);
         flex: none;
         border-color: var(--ks-border-active);
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--ks-content-link);
     }
 
     .frame-body > :global(:first-child) {

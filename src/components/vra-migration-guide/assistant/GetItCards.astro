@@ -1,14 +1,9 @@
 ---
-import SectionTitle from "~/components/security/SectionTitle.astro"
 import { Icon } from "astro-icon/components"
+import SectionTitle from "~/components/security/SectionTitle.astro"
+import { HELP_DIALOG_TARGET } from "../download"
 import InstallCommand from "./InstallCommand.astro"
-
-interface Props {
-    githubHref: string
-    helpTarget: string
-}
-
-const { githubHref, helpTarget } = Astro.props
+import { GITHUB_HREF } from "./links"
 ---
 
 <section class="get-it">
@@ -40,7 +35,7 @@ const { githubHref, helpTarget } = Astro.props
                     </p>
                     <p>
                         <strong>Source and documentation</strong> are at <a
-                            href={githubHref}
+                            href={GITHUB_HREF}
                             target="_blank"
                             rel="noopener">kestra-io/migration-assistant</a
                         > on GitHub.
@@ -48,7 +43,7 @@ const { githubHref, helpTarget } = Astro.props
                 </div>
                 <a
                     class="btn btn-primary btn-lg github-button"
-                    href={githubHref}
+                    href={GITHUB_HREF}
                     target="_blank"
                     rel="noopener"
                 >
@@ -70,7 +65,7 @@ const { githubHref, helpTarget } = Astro.props
                 <button
                     type="button"
                     class="btn btn-secondary btn-lg"
-                    data-modal-target={helpTarget}
+                    data-modal-target={HELP_DIALOG_TARGET}
                 >
                     Need help running it?
                 </button>
@@ -88,16 +83,7 @@ const { githubHref, helpTarget } = Astro.props
     }
 
     .github-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        min-width: 11.25rem;
-
-        .icon {
-            width: 1.125rem;
-            height: 1.125rem;
-        }
+        @include assistant-icon-button;
     }
 
     .container {
@@ -124,11 +110,8 @@ const { githubHref, helpTarget } = Astro.props
         flex-direction: column;
         align-items: flex-start;
         gap: 2rem;
-        padding: 2rem;
-        border: 1px solid var(--ks-border-primary);
+        @include calc-card;
         border-radius: 1rem;
-        background: var(--ks-background-body);
-        box-shadow: $calc-shadow-elevated;
 
         @include media-breakpoint-down(md) {
             padding: 1.5rem;
@@ -143,64 +126,62 @@ const { githubHref, helpTarget } = Astro.props
                 flex: 1;
             }
         }
-    }
 
-    .head {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-
-        > p {
-            font-size: 1rem;
-            line-height: 1.5rem;
+        .head {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
-    }
 
-    .pill {
-        padding: 0.125rem 0.5rem;
-        border-radius: 6px;
-        background: color-mix(in srgb, var(--ks-content-link) 14%, transparent);
-        font-size: 1.25rem;
-        font-weight: 700;
-        line-height: 1.5rem;
-        letter-spacing: -0.005em;
-        color: var(--ks-content-link);
-    }
-
-    h3 {
-        margin: 0;
-        font-size: $font-size-2xl;
-        font-weight: 600;
-        line-height: 2.375rem;
-    }
-
-    .install {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        max-width: 100%;
-    }
-
-    .install p,
-    .small p {
-        font-size: $font-size-sm;
-        line-height: 1.25rem;
-    }
-
-    strong {
-        font-weight: 600;
-    }
-
-    .small {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-
-        a {
+        .pill {
+            padding: 0.125rem 0.5rem;
+            border-radius: 6px;
+            background: color-mix(
+                in srgb,
+                var(--ks-content-link) 14%,
+                transparent
+            );
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.5rem;
+            letter-spacing: -0.005em;
             color: var(--ks-content-link);
-            text-decoration: underline;
-            text-underline-offset: 3px;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: $font-size-2xl;
+            line-height: 2.375rem;
+        }
+
+        .install {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            max-width: 100%;
+        }
+
+        .small {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            a {
+                color: var(--ks-content-link);
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+        }
+
+        .install p,
+        .small p {
+            font-size: $font-size-sm;
+            line-height: 1.25rem;
+        }
+
+        strong {
+            font-weight: 600;
         }
     }
 </style>

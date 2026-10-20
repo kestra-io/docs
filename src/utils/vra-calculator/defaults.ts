@@ -1,16 +1,8 @@
-import type { CalcInputs, InputKey } from "./types"
+import type { Currency } from "./format"
 
-/**
- * Starting assumptions. Hour rates are manual conversion hours. Wrappers
- * migrate at no cost. The Migration Assistant share reduces medium
- * first-of-a-kind hours; complex work stays at the manual rate. The 55% share
- * is a placeholder with no measured source: the UI tells the visitor to
- * replace it with the share measured in their proof of concept.
- *
- * `cur` is the fallback only: the UI picks the visitor's currency with
- * `currencyFromLocale` before first render.
- */
-export const DEFAULTS: Readonly<CalcInputs> = Object.freeze({
+export type InputValue = number | string | null
+
+const VALUES = {
     total: 400,
     dormant: 15,
     dupes: 50,
@@ -18,7 +10,7 @@ export const DEFAULTS: Readonly<CalcInputs> = Object.freeze({
     complex: 20,
     tool: 55,
     rate: 100,
-    cur: "EUR",
+    cur: "EUR" as Currency,
     today: 500000,
     mult: 3,
     other: 0,
@@ -29,7 +21,17 @@ export const DEFAULTS: Readonly<CalcInputs> = Object.freeze({
     hp2: 40,
     hv1: 1,
     hv2: 3,
-})
+}
+
+export type InputKey = keyof typeof VALUES
+export type NumericInputKey = Exclude<InputKey, "cur">
+export type CalcInputs = Record<NumericInputKey, InputValue> & { cur: Currency }
+
+/**
+ * The 55% tool share is an unmeasured placeholder the UI asks visitors to
+ * replace. `cur` is a fallback until `currencyFromLocale` runs.
+ */
+export const DEFAULTS: Readonly<CalcInputs> = Object.freeze(VALUES)
 
 export const INPUT_KEYS = Object.keys(DEFAULTS) as InputKey[]
 
@@ -45,21 +47,14 @@ export const MAX = Object.freeze({
     hours: 10_000,
 })
 
-export const PAYBACK_SEARCH_MONTHS = 180
-
 export const STORAGE_KEY = "kestra-vra-calc-v1"
 
 export const SHARE_PARAM = "kvc"
 
 /**
- * Fills every key missing from `source` with its default, the way the
- * reference's `load()` does. Keys present in `source` are kept as they are,
- * including blank or invalid values, so validation can report them.
+ * Fills missing keys with defaults, like the reference's `load()`. Present keys
+ * are kept as-is, blank or invalid, so validation can report them.
  */
 export function resolveInputs(source?: Partial<CalcInputs> | null): CalcInputs {
-    const out = {} as Record<InputKey, unknown>
-    for (const key of INPUT_KEYS) {
-        out[key] = source && key in source ? source[key] : DEFAULTS[key]
-    }
-    return out as unknown as CalcInputs
+    return { ...DEFAULTS, ...source }
 }

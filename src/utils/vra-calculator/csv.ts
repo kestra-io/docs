@@ -1,170 +1,139 @@
+import dayjs from "dayjs"
 import { compute } from "./compute"
-import type { CalcInputs } from "./types"
+import type { CalcInputs } from "./defaults"
 
-export type CsvCell = string | number | boolean | null | undefined
-export type CsvRow = CsvCell[]
+type CsvRow = (string | number | boolean | null | undefined)[]
 
 export const CSV_FILENAME = "vra-kestra-payback.csv"
-export const CSV_BOM = "﻿"
 
-function isoDate(date: Date | string): string {
-    if (typeof date === "string") return date
-    // The visitor's calendar date, not UTC's: an export just after midnight
-    // should carry the day they see.
-    const pad = (n: number) => String(n).padStart(2, "0")
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
-}
-
-/**
- * The reference's `csvRows()`: inputs as entered, then the derived counts,
- * effort and cash sections once they are valid. `generatedOn` is passed in so
- * the output is deterministic; the caller passes today's date.
- */
+/** The reference's `csvRows()`; `generatedOn` is passed in to stay pure. */
 export function buildCsvRows(
     inputs: CalcInputs,
     generatedOn: Date | string,
 ): CsvRow[] {
-    const { funnel, payback } = compute(inputs)
-    const rows: CsvRow[] = []
-    rows.push(["vRA to Kestra migration payback estimate"])
-    rows.push(["Generated", isoDate(generatedOn)])
-    rows.push(["Currency", inputs.cur])
-    rows.push([])
-    rows.push(["Renewal"])
-    rows.push(["Annual vRA and vRO spend today", inputs.today])
-    rows.push(["Renewal multiple", inputs.mult])
-    if (payback)
-        rows.push(["Annual cost at renewal", Math.round(payback.renewalCost)])
-    rows.push(["Other annual costs", inputs.other])
-    rows.push(["Months until renewal", inputs.renew])
-    rows.push([])
-    rows.push(["Workflows"])
-    rows.push(["vRO workflows in the raw export", inputs.total])
-    rows.push(["Not executed in 12 months (%)", inputs.dormant])
-    rows.push(["Near-duplicates of another workflow (%)", inputs.dupes])
-    rows.push(["Wrappers with no logic of their own (%)", inputs.wrappers])
+    const { funnel, payback: p } = compute(inputs)
+    const rows: CsvRow[] = [
+        ["vRA to Kestra migration payback estimate"],
+        // The visitor's calendar date, not UTC's, so a late-night export keeps
+        // the day they see.
+        ["Generated", dayjs(generatedOn).format("YYYY-MM-DD")],
+        ["Currency", inputs.cur],
+        [],
+        ["Renewal"],
+        ["Annual vRA and vRO spend today", inputs.today],
+        ["Renewal multiple", inputs.mult],
+    ]
+    if (p) rows.push(["Annual cost at renewal", Math.round(p.renewalCost)])
+    rows.push(
+        ["Other annual costs", inputs.other],
+        ["Months until renewal", inputs.renew],
+        [],
+        ["Workflows"],
+        ["vRO workflows in the raw export", inputs.total],
+        ["Not executed in 12 months (%)", inputs.dormant],
+        ["Near-duplicates of another workflow (%)", inputs.dupes],
+        ["Wrappers with no logic of their own (%)", inputs.wrappers],
+    )
     if (funnel) {
-        rows.push(["Migrate to Kestra", funnel.scope])
-        rows.push(["Distinct flows in Kestra", funnel.distinct])
-        rows.push(["Near-duplicates", funnel.variants])
-        rows.push(["Wrappers", funnel.wrappers])
-        rows.push(["Need careful migration", funnel.careful])
-    }
-    if (payback) {
-        const [dW, dM, dC] = payback.distinctByBucket
-        const [vW, vM, vC] = payback.variantsByBucket
-        rows.push([])
-        rows.push([
-            "Effort",
-            "Distinct flows",
-            "Near-duplicates",
-            "Hours by hand, first",
-            "Hours by hand, each near-duplicate",
-            "Hours",
-        ])
-        rows.push(["Wrappers", dW, vW, 0, 0, 0])
-        rows.push([
-            "Medium",
-            dM,
-            vM,
-            inputs.hp1,
-            inputs.hv1,
-            Math.round(payback.hoursByBucket[1]),
-        ])
-        rows.push([
-            "Complex",
-            dC,
-            vC,
-            inputs.hp2,
-            inputs.hv2,
-            Math.round(payback.hoursByBucket[2]),
-        ])
-        rows.push(["Complex share of careful migrations (%)", inputs.complex])
-        rows.push([
-            "Migration Assistant share (%)",
-            inputs.tool,
-            "Applied to medium first-of-a-kind hours",
-        ])
-        rows.push([
-            "Every workflow by hand, hours",
-            Math.round(payback.naiveHours),
-        ])
-        rows.push([
-            "After rationalization, by hand, hours",
-            Math.round(payback.manualHours),
-        ])
-        rows.push(["With the Migration Assistant, hours", Math.round(payback.hours)])
-        rows.push(["Blended hourly rate", payback.rate])
-        rows.push(["Migration cost", Math.round(payback.migrationCost)])
-        rows.push([
-            "Saved against converting every workflow by hand",
-            Math.round(payback.saved),
-        ])
-        rows.push([])
-        rows.push([
-            "Kestra licence and hosting, a year",
-            payback.kestraBlank ? "Not entered" : payback.kestraAnnual,
-        ])
-        rows.push(["Planning horizon, years", payback.horizonYears])
-        rows.push(["Payback month", payback.paybackMonth ?? "Beyond 15 years"])
-        rows.push([
-            "Position after the horizon" +
-                (payback.kestraBlank ? " (before Kestra licensing)" : ""),
-            Math.round(payback.net),
-        ])
-        if (payback.kestraBlank && payback.breakEven !== null) {
-            rows.push([
-                "Highest Kestra price that still saves, a year",
-                Math.round(payback.breakEven),
-            ])
-        }
-        rows.push([])
-        rows.push(["Year", "Cumulative position against renewing"])
-        payback.yearly.forEach((value, i) =>
-            rows.push(["Year " + (i + 1), Math.round(value)]),
+        rows.push(
+            ["Migrate to Kestra", funnel.scope],
+            ["Distinct flows in Kestra", funnel.distinct],
+            ["Near-duplicates", funnel.variants],
+            ["Wrappers", funnel.wrappers],
+            ["Need careful migration", funnel.careful],
         )
     }
-    rows.push([])
-    rows.push([
-        "Estimate from starting assumptions. The licence already paid is treated as sunk; the saving is the renewal not signed.",
-    ])
-    rows.push(["Hours are engineering effort, not a schedule."])
+    if (p) {
+        const [dW, dM, dC] = p.distinctByBucket
+        const [vW, vM, vC] = p.variantsByBucket
+        const [, hM, hC] = p.hoursByBucket.map(Math.round)
+        rows.push(
+            [],
+            [
+                "Effort",
+                "Distinct flows",
+                "Near-duplicates",
+                "Hours by hand, first",
+                "Hours by hand, each near-duplicate",
+                "Hours",
+            ],
+            ["Wrappers", dW, vW, 0, 0, 0],
+            ["Medium", dM, vM, inputs.hp1, inputs.hv1, hM],
+            ["Complex", dC, vC, inputs.hp2, inputs.hv2, hC],
+            ["Complex share of careful migrations (%)", inputs.complex],
+            [
+                "Migration Assistant share (%)",
+                inputs.tool,
+                "Applied to medium first-of-a-kind hours",
+            ],
+            ["Every workflow by hand, hours", Math.round(p.naiveHours)],
+            [
+                "After rationalization, by hand, hours",
+                Math.round(p.manualHours),
+            ],
+            ["With the Migration Assistant, hours", Math.round(p.hours)],
+            ["Blended hourly rate", p.rate],
+            ["Migration cost", Math.round(p.migrationCost)],
+            [
+                "Saved against converting every workflow by hand",
+                Math.round(p.saved),
+            ],
+            [],
+            [
+                "Kestra licence and hosting, a year",
+                p.kestraBlank ? "Not entered" : p.kestraAnnual,
+            ],
+            ["Planning horizon, years", p.horizonYears],
+            ["Payback month", p.paybackMonth ?? "Beyond 15 years"],
+            [
+                "Position after the horizon" +
+                    (p.kestraBlank ? " (before Kestra licensing)" : ""),
+                Math.round(p.net),
+            ],
+        )
+        if (p.kestraBlank && p.breakEven !== null) {
+            rows.push([
+                "Highest Kestra price that still saves, a year",
+                Math.round(p.breakEven),
+            ])
+        }
+        rows.push(
+            [],
+            ["Year", "Cumulative position against renewing"],
+            ...p.yearly.map((value, i) => [
+                "Year " + (i + 1),
+                Math.round(value),
+            ]),
+        )
+    }
+    rows.push(
+        [],
+        [
+            "Estimate from starting assumptions. The licence already paid is treated as sunk; the saving is the renewal not signed.",
+        ],
+        ["Hours are engineering effort, not a schedule."],
+    )
     return rows
-}
-
-// A cell a spreadsheet would run as a formula. Inputs reach the CSV as
-// entered, and a share link can set them to any short string, so a leading
-// "-" counts too unless the whole cell is a plain number like "-5".
-function isFormula(v: string): boolean {
-    if (/^[=+@\t\r]/.test(v)) return true
-    return v.startsWith("-") && !Number.isFinite(Number(v))
 }
 
 /**
- * Serializes rows the way the reference does: formula-looking cells are
- * prefixed with ' so spreadsheets do not run them, and cells with a quote,
- * comma or newline are quoted.
+ * Formula-like cells get a ' prefix. Inputs reach the CSV as typed, share links
+ * included, so a leading "-" is a formula too unless the cell is a number.
  */
+function csvCell(cell: CsvRow[number]): string {
+    let v = String(cell ?? "")
+    if (/^[=+@\t\r]/.test(v) || (v[0] === "-" && !Number.isFinite(Number(v))))
+        v = "'" + v
+    return /[",\n\r]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v
+}
+
 export function toCsv(rows: CsvRow[]): string {
-    return rows
-        .map((row) =>
-            row
-                .map((cell) => {
-                    let v =
-                        cell === null || cell === undefined ? "" : String(cell)
-                    if (isFormula(v)) v = "'" + v
-                    return /[",\n\r]/.test(v)
-                        ? '"' + v.replace(/"/g, '""') + '"'
-                        : v
-                })
-                .join(","),
-        )
-        .join("\n")
+    return rows.map((row) => row.map(csvCell).join(",")).join("\n")
 }
 
 export function buildCsvFile(
     inputs: CalcInputs,
     generatedOn: Date | string,
 ): string {
-    return CSV_BOM + toCsv(buildCsvRows(inputs, generatedOn))
+    return "\uFEFF" + toCsv(buildCsvRows(inputs, generatedOn))
 }

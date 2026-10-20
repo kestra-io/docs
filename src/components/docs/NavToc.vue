@@ -94,7 +94,8 @@
 
 <script setup lang="ts">
     import { useTocCollapse } from "~/composables/useTocCollapse"
-    import { useTocScrollSpy, type TocLink } from "~/composables/useTocScrollSpy"
+    import { useTocScrollSpy } from "~/composables/useTocScrollSpy"
+    import type { TocLink } from "~/utils/plugins/types"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"

@@ -4,11 +4,11 @@ import posthog from "posthog-js"
 // ResourceCtaPair: PostHog, GTM and HubSpot behavioural events.
 document.addEventListener(
     "click",
-    (e) => {
-        const link = (e.target as Element | null)?.closest<HTMLElement>(
+    ({ target }) => {
+        if (!(target instanceof Element)) return
+        const event = target.closest<HTMLElement>(
             "[data-resource-cta] a[data-event]",
-        )
-        const event = link?.dataset.event
+        )?.dataset.event
         if (!event) return
 
         posthog.capture(event)

@@ -7,7 +7,6 @@
                 class="cell-input"
                 label="vRO workflows in the raw export"
                 hide-label
-                compact
             />
             <p class="text"><strong>vRO workflows</strong></p>
         </li>
@@ -21,7 +20,6 @@
                 suffix="%"
                 :max="100"
                 hide-label
-                compact
                 @update:model-value="active['onUpdate:modelValue']"
             />
             <p class="text">
@@ -37,7 +35,6 @@
                 suffix="%"
                 :max="99"
                 hide-label
-                compact
             />
             <p class="text">
                 <strong>{{ counts.distinct }}</strong> unique Kestra flows
@@ -56,7 +53,6 @@
                 suffix="%"
                 :max="100"
                 hide-label
-                compact
             />
             <p class="text">
                 <strong>{{ counts.wrappers }}</strong> wrappers
@@ -74,21 +70,21 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import type { FunnelResult } from "~/utils/vra-calculator"
     import { complementPercent, funnelCounts } from "../presentation"
-    import type { useCalculator } from "../useCalculator"
     import NumberField from "./NumberField.vue"
+    import type { FunnelResult } from "~/utils/vra-calculator"
+    import type { useCalculator } from "../calculatorStore"
 
-    const props = defineProps<{
+    const { field, funnel } = defineProps<{
         idPrefix: string
         field: ReturnType<typeof useCalculator>["field"]
         funnel: FunnelResult | null
     }>()
 
-    const counts = computed(() => funnelCounts(props.funnel))
+    const counts = computed(() => funnelCounts(funnel))
 
     const active = computed(() => {
-        const dormant = props.field("dormant")
+        const dormant = field("dormant")
         return {
             modelValue: complementPercent(dormant.modelValue),
             invalid: dormant.invalid,
@@ -103,7 +99,6 @@
 <style scoped lang="scss">
     @use "/src/components/vra-migration-guide/shared" as *;
     .funnel-table {
-        margin: 0 0 1rem;
         padding: 0;
         list-style: none;
         border: 1px solid var(--ks-border-secondary);
@@ -131,23 +126,24 @@
 
             .cell-input {
                 text-align: center;
-                font-size: 1rem;
                 font-variant-numeric: tabular-nums;
             }
         }
     }
 
-    .cell-input :deep(.form-control) {
-        padding-inline: 0.5rem;
-        text-align: center;
-    }
+    .cell-input {
+        :deep(.form-control) {
+            padding-inline: 0.5rem;
+            text-align: center;
+        }
 
-    .cell-input :deep(.suffixed .form-control) {
-        padding-right: 1.5rem;
-    }
+        :deep(.suffixed .form-control) {
+            padding-right: 1.5rem;
+        }
 
-    .cell-input :deep(.suffix) {
-        right: 0.5rem;
+        :deep(.suffix) {
+            right: 0.5rem;
+        }
     }
 
     .text {
@@ -157,10 +153,10 @@
         strong {
             font-variant-numeric: tabular-nums;
         }
-    }
 
-    .sub {
-        display: block;
-        @include calc-hint;
+        .sub {
+            display: block;
+            @include calc-hint;
+        }
     }
 </style>

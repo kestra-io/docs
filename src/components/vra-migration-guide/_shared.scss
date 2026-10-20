@@ -1,53 +1,8 @@
 @use "/src/assets/styles/variable" as *;
 
-// Mixins and the palette shared by the vRA guide, the payback calculator and
-// the Migration Assistant pages. The tokens shared with other components
-// (`$dark-bg-control`, `$dark-raised`, `$dark-border-strong`,
-// `$dark-text-secondary`, `$dark-accent`, `$copied-green`) stay in
-// src/assets/styles/_variable.scss.
-
-// Figma values with no token in _color-palette.scss. Plain values only.
-//
-// Dark surfaces that stay dark in both themes: terminal mock-ups, code boxes,
-// browser frames (Figma's ks/* dark theme).
+// Dark surfaces of the vRA mock-ups, with no token in _color-palette.scss.
 $dark-bg-input: #111115;
-$dark-border-subtle: #424242;
-$dark-text-muted: #7e7e9b;
 $dark-link: #cdb6fb;
-$dark-section-bg: #1a1c22;
-
-// Resource guide hero gradient and pill.
-$hero-ink: #121215;
-$hero-ink-deep: #030709;
-$hero-teal: #1e4557;
-$hero-teal-deep: #19546d;
-$hero-pill-border: #a77af6;
-$hero-pill-shadow: rgba(173, 41, 250, 0.2);
-
-// Screenshot stage backdrop.
-$stage-top: #81bdd4;
-$stage-bottom: #e8e8f9;
-
-// Terminal and brief mock-up (Migration Assistant hero).
-$term-bg: #0d0d12;
-$term-bar: #131319;
-$term-border: #53dbf6;
-$term-glow: rgba(91, 236, 255, 0.82);
-$term-shadow: #2d9ac3;
-$term-dot: #3a3a44;
-$term-muted: #8a8a98;
-$term-text: #e4e4ec;
-$term-ok: #4ade80;
-$term-ok-border: #22c55e;
-$term-next: #c9a7ff;
-$brief-bg: #16161c;
-$brief-stat-bg: #1e1e25;
-$brief-stat-border: #2a2a32;
-$brief-label: #a8a8b6;
-$brief-tag-text: #c9c9d4;
-$brief-tag-border: #4a4a55;
-$brief-edge-mid: #52ccde;
-$brief-edge-end: #9191bc;
 
 @mixin guide-eyebrow($color: var(--ks-content-link), $uppercase: false) {
     font-size: $font-size-xs;
@@ -60,8 +15,6 @@ $brief-edge-end: #9191bc;
     }
 }
 
-// Figma's 1320px content width, with a side margin below that. Shared by the
-// hero and the Migration Assistant sections so they line up.
 @mixin guide-container {
     position: relative;
     max-width: calc(1320px + 2 * 1.5rem);
@@ -91,9 +44,8 @@ $brief-edge-end: #9191bc;
     white-space: nowrap;
 }
 
-// A pull quote on the purple-light surface with coloured curly quotes. The
-// caller sets the padding. `$p` is the paragraph selector: `:global(p)` when
-// the paragraphs come from a slot, as in GuideCard.
+// A pull quote; the caller sets the padding. `$p` is the paragraph selector,
+// `:global(p)` when the paragraphs come from a slot.
 @mixin guide-quote($p: "p") {
     border-radius: 9px;
     background: var(--ks-background-purple-light);
@@ -118,9 +70,8 @@ $brief-edge-end: #9191bc;
     }
 }
 
-// The site's squared grid (the same SVG as layout/Squared.vue), faded in
-// behind a section heading. Apply to the section; its `.container` must be
-// positioned so it paints above the grid.
+// Apply to the section; its `.container` must be positioned so it paints
+// above the grid.
 @mixin squared-grid-backdrop {
     position: relative;
     overflow: hidden;
@@ -145,7 +96,6 @@ $brief-edge-end: #9191bc;
     --ks-form-border-color: var(--ks-border-secondary);
     min-height: 2.5rem;
     border-radius: $border-radius;
-    font-family: inherit;
     font-size: 1rem;
 
     &::-webkit-inner-spin-button,
@@ -176,14 +126,6 @@ $brief-edge-end: #9191bc;
     color: var(--ks-content-secondary);
 }
 
-@mixin calc-derived {
-    margin: 0;
-    padding: 1rem;
-    border-radius: $border-radius;
-    background: var(--ks-background-secondary);
-    font-size: $font-size-sm;
-}
-
 $calc-shadow-surface: 0 2px 8px rgba(58, 29, 109, 0.05);
 $calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
 
@@ -193,15 +135,6 @@ $calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
     border-radius: $border-radius-lg;
     background: var(--ks-background-body);
     box-shadow: $calc-shadow-elevated;
-}
-
-@mixin calc-step-badge {
-    padding: 0 0.625rem;
-    border-radius: 999px;
-    background: var(--ks-background-secondary);
-    font-size: $font-size-sm;
-    color: var(--ks-content-secondary);
-    font-variant-numeric: tabular-nums;
 }
 
 @mixin calc-link-button {
@@ -219,7 +152,6 @@ $calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
     }
 }
 
-// The Migration Assistant's full-width sections.
 @mixin assistant-section(
     $background,
     $color: var(--ks-content-primary),
@@ -234,4 +166,29 @@ $calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
     @include media-breakpoint-down(lg) {
         padding: 3.5rem 0;
     }
+}
+
+@mixin assistant-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-width: 11.25rem;
+
+    .icon {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+}
+
+// The numbered pin on the assistant's screenshots and their callouts.
+@mixin marker-pill {
+    flex-shrink: 0;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: $dark-accent;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: $white;
 }

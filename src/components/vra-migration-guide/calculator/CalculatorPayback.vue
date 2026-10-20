@@ -2,7 +2,21 @@
     <div class="calculator-payback" :aria-busy="!ready">
         <div class="layout">
             <div class="inputs">
-                <CalculatorMessages v-bind="messages" />
+                <div class="messages" aria-live="polite">
+                    <template
+                        v-for="(list, tone) in viewMessages(result)"
+                        :key="tone"
+                    >
+                        <p
+                            v-for="message in list"
+                            :key="message"
+                            class="message"
+                            :class="tone"
+                        >
+                            {{ message }}
+                        </p>
+                    </template>
+                </div>
 
                 <section
                     class="step-card"
@@ -13,12 +27,25 @@
                             The renewal you're avoiding
                         </h3>
                         <span class="step" aria-label="Step 1 of 3">1/3</span>
-                        <CurrencySelect
-                            :id="`${idPrefix}-cur`"
-                            class="currency"
-                            :model-value="inputs.cur"
-                            @update:model-value="update('cur', $event)"
-                        />
+                        <fieldset class="currency">
+                            <legend class="visually-hidden">Currency</legend>
+                            <label
+                                v-for="code in ['USD', 'EUR', 'GBP'] as const"
+                                :key="code"
+                            >
+                                <input
+                                    class="visually-hidden"
+                                    type="radio"
+                                    :name="`${idPrefix}-cur`"
+                                    :value="code"
+                                    :checked="inputs.cur === code"
+                                    @change="update('cur', code)"
+                                />
+                                <span
+                                    >{{ currencySymbol(code) }} {{ code }}</span
+                                >
+                            </label>
+                        </fieldset>
                     </div>
                     <div class="grid-2">
                         <NumberField
@@ -115,10 +142,11 @@
                             :max="100"
                         >
                             <template #info>
-                                Of the {{ careful }} workflows that need careful
-                                conversion. Complex is code nobody fully
-                                understands, or behavior that should be
-                                redesigned.
+                                Of the
+                                {{ carefulCounts(result.funnel).careful }}
+                                workflows that need careful conversion. Complex
+                                is code nobody fully understands, or behavior
+                                that should be redesigned.
                             </template>
                         </NumberField>
                         <NumberField
@@ -182,7 +210,6 @@
                                                 :label="`${row.label}, first of a kind`"
                                                 :step="0.5"
                                                 hide-label
-                                                compact
                                             />
                                         </td>
                                         <td class="num">
@@ -192,7 +219,6 @@
                                                 :label="`${row.label}, each near-duplicate`"
                                                 :step="0.5"
                                                 hide-label
-                                                compact
                                             />
                                         </td>
                                     </tr>
@@ -230,7 +256,7 @@
                             :id="`${idPrefix}-horizon`"
                             v-bind="field('horizon')"
                             label="Planning horizon"
-                            :presets="HORIZON_PRESETS"
+                            :presets="[1, 3, 5]"
                             :format="
                                 (years) =>
                                     `${years} year${years === 1 ? '' : 's'}`
@@ -252,15 +278,7 @@
                     :poc-href="pocHref"
                 >
                     <template #actions>
-                        <CsvDownloadButton
-                            :get-file="() => csvFile(new Date())"
-                            :disabled="!ready"
-                            :blocked="result.errors.length > 0"
-                        />
-                        <ShareLinkButton
-                            :get-url="() => shareUrl(shareAnchor)"
-                            :disabled="!ready"
-                        />
+                        <ResultActions :share-anchor="shareAnchor" />
                     </template>
                 </ResultPanel>
             </aside>
@@ -275,15 +293,13 @@
         TOOL_SHARE_RANGE,
         currencySymbol,
     } from "~/utils/vra-calculator"
-    import CalculatorMessages from "./parts/CalculatorMessages.vue"
+    import { useCalculator } from "./calculatorStore"
     import ChoiceChips from "./parts/ChoiceChips.vue"
-    import CsvDownloadButton from "./parts/CsvDownloadButton.vue"
-    import CurrencySelect from "./parts/CurrencySelect.vue"
     import FunnelTable from "./parts/FunnelTable.vue"
     import NumberField from "./parts/NumberField.vue"
+    import ResultActions from "./parts/ResultActions.vue"
     import ResultPanel from "./parts/ResultPanel.vue"
     import RichText from "./parts/RichText.vue"
-    import ShareLinkButton from "./parts/ShareLinkButton.vue"
     import {
         PLACEHOLDER,
         carefulCounts,
@@ -291,29 +307,20 @@
         renewalLine,
         viewMessages,
     } from "./presentation"
-    import { useCalculator } from "./useCalculator"
 
-    withDefaults(
-        defineProps<{
-            idPrefix?: string
-            shareAnchor?: string
-            pocHref?: string
-        }>(),
-        {
-            idPrefix: "vra-calc-payback",
-            shareAnchor: "section-7-2",
-            pocHref: "#section-8-2",
-        },
-    )
+    const {
+        idPrefix = "vra-calc-payback",
+        shareAnchor = "section-7-2",
+        pocHref = "#section-8-2",
+    } = defineProps<{
+        idPrefix?: string
+        shareAnchor?: string
+        pocHref?: string
+    }>()
 
-    const { inputs, result, field, update, ready, shareUrl, csvFile } =
-        useCalculator()
+    const { inputs, result, field, update, ready } = useCalculator()
 
-    const messages = computed(() => viewMessages(result.value))
-    const careful = computed(() => carefulCounts(result.value.funnel).careful)
     const symbol = computed(() => currencySymbol(inputs.value.cur))
-
-    const HORIZON_PRESETS = [1, 3, 5] as const
 
     const effortRows = [
         { label: "Medium", first: "hp1", variant: "hv1" },
@@ -329,6 +336,10 @@
         border-radius: $border-radius-lg;
         background: var(--ks-background-secondary);
         color: var(--ks-content-primary);
+
+        :deep(a:not(.btn)) {
+            color: var(--ks-content-link);
+        }
     }
 
     .layout {
@@ -347,10 +358,6 @@
         flex-direction: column;
         gap: 0.5rem;
         container-type: inline-size;
-    }
-
-    .calculator-payback :deep(a:not(.btn)) {
-        color: var(--ks-content-link);
     }
 
     .result {
@@ -378,34 +385,85 @@
         h3 {
             margin: 0;
             font-size: 1rem;
-            font-weight: 600;
             color: inherit;
+        }
+
+        .step {
+            padding: 0 0.625rem;
+            border-radius: 999px;
+            background: var(--ks-background-secondary);
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            font-variant-numeric: tabular-nums;
         }
     }
 
-    .step {
-        @include calc-step-badge;
+    .currency {
+        display: inline-flex;
+        gap: 0.125rem;
+        margin-left: auto;
+        padding: 0.25rem;
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-secondary);
+
+        span {
+            display: block;
+            padding: 0.125rem 0.625rem;
+            border-radius: $border-radius;
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        input:checked + span {
+            background: var(--ks-background-body);
+            box-shadow: $calc-shadow-surface;
+            color: var(--ks-content-primary);
+            font-weight: 600;
+        }
+
+        input:focus-visible + span {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 1px;
+        }
     }
 
-    .currency {
-        margin-left: auto;
+    .messages:empty {
+        display: none;
+    }
+
+    .message {
+        margin: 0 0 0.5rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid currentColor;
+        border-radius: $border-radius;
+        font-size: $font-size-sm;
+
+        &.errors {
+            color: var(--ks-content-alert-danger);
+            background: var(--ks-background-alert-danger);
+        }
+
+        &.warnings {
+            color: var(--ks-content-alert-warning);
+            background: var(--ks-background-alert-warning);
+        }
     }
 
     .intro {
         margin: 0 0 1rem;
-        font-size: 1rem;
     }
 
-    .grid-2,
-    .grid-3 {
-        display: grid;
-        grid-template-columns: 1fr;
-        column-gap: 1rem;
-    }
+    @each $columns in 2, 3 {
+        .grid-#{$columns} {
+            display: grid;
+            grid-template-columns: 1fr;
+            column-gap: 1rem;
 
-    .grid-2 {
-        @container (min-width: 28rem) {
-            grid-template-columns: 1fr 1fr;
+            @container (min-width: 28rem) {
+                grid-template-columns: repeat($columns, 1fr);
+            }
         }
     }
 
@@ -413,15 +471,11 @@
         align-items: start;
     }
 
-    .grid-3 {
-        @container (min-width: 28rem) {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
     .derived {
-        @include calc-derived;
-        font-size: 1rem;
+        margin: 0;
+        padding: 1rem;
+        border-radius: $border-radius;
+        background: var(--ks-background-secondary);
     }
 
     .hint {
@@ -433,7 +487,6 @@
         margin-top: 1rem;
 
         summary {
-            cursor: pointer;
             font-size: $font-size-sm;
             color: var(--ks-content-secondary);
         }

@@ -1,25 +1,13 @@
 ---
-import Dialog from "~/components/common/Dialog.astro"
 import GuideDownloadForm from "~/components/resources/GuideDownloadForm.vue"
-import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD } from "./download"
+import { DOWNLOAD_DIALOG_ID, GUIDE_DOWNLOAD, HELP_REQUEST } from "./download"
 
-// The props GuideDownloadForm takes; the defaults are the guide PDF.
-interface FormConfig {
-    hubspotFormId: string
-    guideUrl?: string
-    submissionIdentifier: string
-    pageUri: string
-    event: string
-    title?: string
-    submitLabel?: string
-    thankYouTitle?: string
-    thankYouText?: string
-}
-
+/** A `dialog.modal` holding the gated form. Open it with
+ *  `data-modal-target="#id"`; src/scripts/modal.ts opens and closes it. */
 interface Props {
     id?: string
     label?: string
-    form?: FormConfig
+    form?: typeof GUIDE_DOWNLOAD | typeof HELP_REQUEST
 }
 
 const {
@@ -29,13 +17,51 @@ const {
 } = Astro.props
 ---
 
-<Dialog {id} {label} class="download-dialog" width="560px">
-    <GuideDownloadForm client:idle {...form} />
-</Dialog>
+<dialog
+    class="modal ks-dialog"
+    {id}
+    aria-label={label}
+    closedby="any"
+    style="--ks-modal-width: 560px"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button
+                type="button"
+                class="btn-close"
+                commandfor={id}
+                command="close"
+                aria-label="Close">X</button
+            >
+            <GuideDownloadForm client:idle {...form} />
+        </div>
+    </div>
+</dialog>
 
 <style lang="scss">
+    .modal-dialog {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - var(--ks-modal-margin) * 2);
+    }
+
     // The form draws its own border, so the modal content draws none.
-    :global(.download-dialog .modal-content) {
+    .modal-content {
         border: 0;
+    }
+
+    .btn-close {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        z-index: 2;
+        border: 0;
+        background: transparent;
+        color: var(--ks-content-secondary);
+        font-size: $font-size-md;
+
+        &:hover {
+            color: var(--ks-content-primary);
+        }
     }
 </style>

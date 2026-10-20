@@ -1,9 +1,5 @@
-// Typed access to reference-golden.json: outputs recorded by running the
-// reference calculator, unmodified, in a Node vm sandbox on 2026-09-28 (see
-// `_source` and `_referenceSha256` in the JSON). Result objects keep the
-// reference's own field names; compute.test.ts maps the port onto them.
 import golden from "./reference-golden.json"
-import type { CalcInputs } from "../types"
+import type { CalcInputs } from "../defaults"
 
 export interface ReferenceResult {
     err: string[]
@@ -22,6 +18,10 @@ export interface GoldenCase {
     csv: string
 }
 
+/**
+ * Outputs recorded from the unmodified reference calculator (see `_source`);
+ * results keep its field names, which compute.test.ts maps onto the port.
+ */
 export const GOLDEN = golden as unknown as {
     _source: string
     _referenceSha256: string

@@ -37,14 +37,8 @@
         defineProps<{
             title?: string
             placement?: Placement
-            /**
-             * `hover` shows on hover and focus (the schema badges): a
-             * `role="tooltip"` the trigger is described by. `click` is a
-             * disclosure: it toggles on click, closes on outside click or
-             * Escape, takes pointer events so it can hold a link, and is a
-             * `role="note"` the caller's button controls through the
-             * `panelId` slot prop.
-             */
+            /** `hover`: a tooltip on hover and focus. `click`: a disclosure
+             *  that closes on outside click or Escape and can hold a link. */
             trigger?: "hover" | "click"
             /** Extra class on the tooltip panel, for a caller's own sizing. */
             contentClass?: string
@@ -62,8 +56,8 @@
     const visible = ref(false)
     const tooltipId = useId()
 
-    // Built on first show: schema pages render hundreds of these, and an
-    // unopened tooltip should cost nothing.
+    /** Built on first show: schema pages render hundreds of these, and an
+     *  unopened tooltip should cost nothing. */
     let popper: Instance | undefined
 
     // `eventListeners` is on by default and attaches scroll/resize handlers to
@@ -93,21 +87,23 @@
         popper?.setOptions(options(false))
     }
 
-    const toggle = () => (visible.value ? hide() : show())
-
-    // Not `props.trigger` in the template: the `trigger` template ref above
-    // shadows the prop there.
+    /** Not `props.trigger` in the template: the `trigger` ref shadows it. */
     const interactive = computed(() => props.trigger === "click")
 
     const handlers = computed(() =>
-        props.trigger === "click"
-            ? { click: toggle }
-            : { mouseenter: show, mouseleave: hide, focusin: show, focusout: hide },
+        interactive.value
+            ? { click: () => (visible.value ? hide() : show()) }
+            : {
+                  mouseenter: show,
+                  mouseleave: hide,
+                  focusin: show,
+                  focusout: hide,
+              },
     )
 
     // Only click mode listens on the document; the schema pages mount
     // hundreds of hover tooltips, and each would otherwise add two listeners.
-    if (props.trigger === "click") {
+    if (interactive.value) {
         onClickOutside(content, hide, { ignore: [trigger] })
         onKeyStroke("Escape", hide)
     }
