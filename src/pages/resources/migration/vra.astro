@@ -187,50 +187,7 @@ const jsonLinkedData = {
 </Layout>
 
 <style lang="scss">
-    .guide-content {
-        padding: 0 0 2rem;
-    }
+    @use "/src/components/vra-migration-guide/shared" as *;
 
-    .guide-content,
-    :global(.guide-band) {
-        // Direct children only, so card and panel titles keep their own sizes.
-        :global(.bd-content) {
-            > :global(h2) {
-                font-size: clamp(2rem, 1.25rem + 2vw, #{$font-size-4xl});
-                line-height: 1.15;
-                letter-spacing: -0.015em;
-            }
-
-            > :global(h3) {
-                font-size: clamp(1.375rem, 1rem + 1vw, #{$font-size-2xl});
-                line-height: 1.3;
-                letter-spacing: -0.01em;
-            }
-
-            > :global(p),
-            > :global(ul > li),
-            > :global(ol > li) {
-                font-size: $font-size-lg;
-                line-height: 1.75rem;
-            }
-
-            > :global(ol > li + li) {
-                margin-top: 1rem;
-            }
-        }
-    }
-
-    .guide-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-
-        @include media-breakpoint-down(lg) {
-            gap: 1rem;
-        }
-    }
-
-    .guide-faq {
-        scroll-margin-top: 100px;
-    }
+    @include guide-page;
 </style>

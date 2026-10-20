@@ -1,0 +1,416 @@
+---
+title: "Migrating off Pipedream Workflows"
+description: "Pipedream Workflows shuts down on March 31, 2027, and the data goes on April 30. This guide covers what to export now, what the export leaves behind, how each Pipedream concept maps to a Kestra flow, and how to run the result on Kestra Cloud with nothing to host, in weeks rather than the months your last migration took."
+metaTitle: "Migrate from Pipedream Workflows to Kestra Cloud | Kestra"
+metaDescription: "Pipedream Workflows shuts down on March 31, 2027. Export your workflows as JSON, map triggers, code steps and data stores to Kestra, and run them on Kestra Cloud in weeks, not months."
+tag: migration
+date: 2026-10-21
+href: /resources/migration/pipedream
+sectionIds: true
+resourceCta: false
+faq:
+  - question: "Is Pipedream shutting down?"
+    answer: 'Pipedream Workflows and String are. Pipedream''s own documentation states both shut down on March 31, 2027, that Workflows is in maintenance mode with no new signups, and that all Workflows data, including credentials and OAuth tokens, is deleted by April 30, 2027. Pipedream Connect, the integration layer for AI agents, continues. See <a href="#section-1-1">1.1</a>.'
+  - question: "Can I import the Pipedream JSON export directly into Kestra?"
+    answer: 'Not as a one-click import; the two schemas differ in how outputs, conditions and credentials are expressed. The export is the specification you convert from. The AI Copilot in Kestra Cloud, or an MCP-connected assistant, turns a workflow JSON into a first-draft flow that a developer reviews. Most webhook-and-code workflows convert in under an hour once the pattern is set. See <a href="#section-5-1">5.1</a>.'
+  - question: "Do my code steps need rewriting?"
+    answer: 'No. Node.js, Python and Bash code runs as is in a Script task. The only edit is how the step exports its result: <code>return</code> becomes <code>Kestra.outputs()</code>. Go steps run in a container runner with Go installed. See <a href="#section-3-2">3.2</a>.'
+  - question: "What happens to my connected accounts?"
+    answer: 'They do not migrate. The export keeps only an internal <code>authProvisionId</code>. You re-authorize each app with your own OAuth client or API token and store it in Kestra''s secret manager, scoped to a namespace. You then own the grant. See <a href="#section-5-2">5.2</a>.'
+  - question: "What about API calls that take minutes?"
+    answer: 'Kestra Cloud has no platform-level step timeout that cuts a multi-minute call. Set <code>timeout</code> per task to the value you want; executions that run for hours are normal. On your own remote task runners there is no limit at all.'
+  - question: "How does concurrency work?"
+    answer: 'You set a concurrency limit per flow. Executions beyond it queue by default, or fail or cancel if you prefer. Peak concurrency on a typical Pipedream estate is under ten; one worker group covers it.'
+  - question: "How is Kestra Cloud priced compared to credits?"
+    answer: 'By task runs and the compute they use, visible per flow in the dashboard, with an allowance included in the base plan. There is no 30-second credit slice, and tasks running on your own AWS, GCP or Azure runners consume your cloud account, not Kestra compute. <a href="/demo">Talk to the team</a> with your monthly step count for an exact plan.'
+  - question: "Can non-developers use it?"
+    answer: 'Yes. Platform users build flows; Apps expose a flow as a branded form so a business owner can trigger it and watch it run without opening the editor. Role-based access keeps finance flows visible only to the people who should see them.'
+  - question: "Is there an open-source option?"
+    answer: 'Yes. Kestra''s core is Apache 2.0 and runs with Docker Compose. See <a href="#section-7-2">7.2</a>.'
+  - question: "What if Kestra shuts down a product too?"
+    answer: 'Your flows are YAML in your Git repository and the engine is open source. You would keep running them self-hosted the next day. That is the difference between an open core and a proprietary workspace.'
+---
+
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import GuideCallout from "~/components/vra-migration-guide/blocks/GuideCallout.astro"
+import CaseStudy from "~/components/vra-migration-guide/blocks/CaseStudy.astro"
+import GuideCta from "~/components/vra-migration-guide/blocks/GuideCta.astro"
+import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
+
+## 1. Why Pipedream users are moving, and what to move to
+
+### 1.1 The shutdown
+
+Pipedream Workflows and String stop on March 31, 2027; all Workflows data, including credentials and OAuth tokens, is deleted by April 30, 2027. Workflows is in maintenance mode, closed to new signups and subscriptions, with no new features. Subscriptions are cancelled on the shutdown date with a prorated refund. Pipedream Connect, the integration layer for AI agents, continues; that is where the company is going ([Pipedream's notice](https://pipedream.com/docs/workflows)).
+
+| Date | What happens |
+| --- | --- |
+| Now | Workflows in maintenance mode; signups and subscriptions closed; export tool available |
+| March 31, 2027 | Workflows and String stop running; subscriptions cancelled with prorated refund |
+| April 30, 2027 | All Workflows data deleted, including connected-account credentials and OAuth tokens |
+
+The practical consequence is a project with a fixed end date and a hard floor: every workflow that matters has to be running somewhere else by the end of March, and anything you have not exported by the end of April is gone.
+
+<GuideCallout variant="lesson" label="The lesson">
+<Fragment slot="statement">Your integration vendor should <mark>not own</mark> your workflows.</Fragment>
+
+Pipedream held the logic, the tokens and the history inside its workspace. The next platform should keep working, and stay readable, when the vendor changes course.
+
+</GuideCallout>
+
+### 1.2 Choosing what to move to
+
+Ask three questions of every option on your shortlist, including Kestra.
+
+1. **Does it run your code, or only its own connectors?** Most Pipedream estates lean on Node.js and Python steps. A no-code tool makes you rewrite that logic into blocks; a code-only tool makes you rebuild the connectors. You want both in one place.
+
+2. **Who holds the credentials?** In Pipedream, OAuth grants lived inside Pipedream's workspace, which is why they cannot be exported. If the next platform does the same, the next migration costs the same.
+
+3. **How hard would it be to leave?** Where do definitions live, can you read them without the product, and can you run the engine yourself if the commercial relationship ends? Pipedream failed all three, which is why this migration is as much work as it is.
+
+The two usual landing points for Pipedream users are n8n, for workflows that are mostly connectors with little code, and Kestra, for workflows that are mostly code and API calls with a few connectors. Many teams split their estate between the two and a cloud function.
+
+### 1.3 Why Kestra Cloud
+
+**It runs your code as is.** Node.js, Python and Bash steps copy into script tasks with one change to how they return results. Go runs in a container. The {props.totalPlugins}+ plugins cover the data, infrastructure and notification systems most code steps call, and an HTTP task covers the rest.
+
+**You own the credentials.** Secrets live in a managed secret manager scoped by namespace, referenced from flows and never in Git. You re-enter them once, with your own OAuth clients and API tokens, and they are portable from then on.
+
+**It is managed, and it is open.** [Kestra Cloud](/cloud) is run by the team that builds Kestra: hosting, scaling, upgrades, SSO, RBAC, audit logs, Apps and remote runners, with a 14-day trial and no credit card. The core underneath is Apache 2.0 and the flows are YAML in your repository. If a vendor retires a product again, you keep running the same flows self-hosted the next day.
+
+**The economics are legible.** No credits per 30-second slice and no memory tuning per workflow. Task runs and compute are visible per flow in the dashboard, and tasks on your own AWS, GCP or Azure runners cost nothing on the Kestra side.
+
+| What you had in Pipedream | What you get in Kestra Cloud |
+| --- | --- |
+| Nothing to host | Hosting, scaling, upgrades and backups handled; 14-day trial, no credit card |
+| Code steps in Node, Python, Go, Bash | Script tasks in any language, plus {props.totalPlugins}+ plugins |
+| Credits per 30-second slice, memory tuned per workflow | Task runs plus compute, visible per flow; no per-step arithmetic |
+| Compute locked to Pipedream | Remote task runners on your own AWS, GCP or Azure at no extra licence cost |
+| Workspace-level access, a few developer seats | Custom roles; namespaces isolate finance flows from the rest |
+| No Git sync for workflows with actions | Git sync for every flow; dev and prod environments with review-based promotion |
+| Short event history on lower tiers | Executions, logs, metrics and audit logs retained per plan; SOC 2 Type 2, GDPR |
+| Developers only in the UI | Apps: branded forms so business owners trigger and monitor flows |
+| Platform-enforced step timeouts | Long-running API calls and multi-hour executions; timeout is yours to set |
+| Product in maintenance mode | Active roadmap, AI Copilot included, direct line to the team |
+
+<GuideCta kind="cloud" />
+
+### 1.4 What your security and finance reviewers will ask
+
+The questions that stall a Pipedream migration come from the finance owner and the security reviewer, not from the workflow list: who can see the finance flows, how long the audit trail is kept, whether SSO is SAML or OIDC, where the data runs, and what the contract says. Kestra Cloud answers them with namespace-scoped RBAC, audit logs, SSO, SOC 2 Type 2 and GDPR attestations on the [Trust Center](https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604), a DPA, and remote runners that keep execution inside your own cloud account.
+
+## 2. The migration in four stages
+
+The four stages below are the sequence teams leaving Pipedream are following now. The first two take days, not weeks.
+
+<InteractiveFrame title="The four stages" subtitle="Select a stage to see what you do and what you end up with">
+<TabGroup id="pd-stages" label="The four stages" variant="stages" tabs={[{ kicker: "STAGE 1", label: "Assess" }, { kicker: "STAGE 2", label: "Trial" }, { kicker: "STAGE 3", label: "Migrate" }, { kicker: "STAGE 4", label: "Exit" }]}>
+<TabPanel group="pd-stages" index={1}>
+
+**Stage 1 - Assess**
+
+- **What you do:** Export every project, decide what happens to each part of the estate, triage the workflow list.
+- **What you end up with:** A Git repository of exports, a verdict table, a ranked conversion backlog.
+
+[Go to Section 3](#section-3)
+
+</TabPanel>
+<TabPanel group="pd-stages" index={2}>
+
+**Stage 2 - Trial**
+
+- **What you do:** Convert two or three real workflows on a Kestra Cloud trial, including one hard one.
+- **What you end up with:** Working flows, measured hours per workflow, a sizing for your plan.
+
+[Go to Section 4](#section-4)
+
+</TabPanel>
+<TabPanel group="pd-stages" index={3}>
+
+**Stage 3 - Migrate**
+
+- **What you do:** Convert by pattern in waves, reconnect credentials, shadow-run against Pipedream.
+- **What you end up with:** Production flows, wave by wave, with Pipedream still serving.
+
+[Go to Section 5](#section-5)
+
+</TabPanel>
+<TabPanel group="pd-stages" index={4}>
+
+**Stage 4 - Exit**
+
+- **What you do:** Repoint triggers, retire each Pipedream workflow, cancel the subscription.
+- **What you end up with:** An empty Pipedream account before March 31.
+
+[Go to Section 6](#section-6)
+
+</TabPanel>
+</TabGroup>
+</InteractiveFrame>
+
+### 2.1 Pipedream keeps running until each wave is cut over
+
+Nothing in Pipedream changes until the Kestra flow has handled real events. Every wave stays reversible until you disable its Pipedream trigger, and the subscription keeps running until the last one. The cost of the overlap is your team's time, not licence: the Pipedream subscription is already paid through March.
+
+### 2.2 One migration in progress
+
+<CaseStudy status="MIGRATING, CUTOVER BEFORE MARCH 2027">
+
+**A global nonprofit** runs 16 Pipedream projects and 62 workflows: finance file processing from Box into NetSuite, staff and account-code syncs across Workday, Google Workspace and Monday, reimbursement intake. The team found Kestra the evening of the announcement, had a Cloud trial running within two weeks, and set a target of weeks for a migration that had taken seven months the last time they changed platforms.
+
+A few workflows went to AWS Lambda because they belonged with an existing application; the rest are converting by pattern. Their questions about memory, timeouts, concurrency and pricing shaped sections 3 to 6 and the FAQ.
+
+</CaseStudy>
+
+## 3. Stage 1, Assess: what moves, and what you export
+
+### 3.1 What moves, what stays
+
+A Pipedream workflow bundles three things most platforms separate: an endpoint that receives events, a runtime for your code, and a catalog of pre-built actions with managed auth. The systems around it (NetSuite, Box, Google Workspace, Slack, your database, AWS) stay where they are. What moves is the orchestration layer and the glue code written for it.
+
+Split your estate into five parts and give each one a verdict: **replace** (Kestra takes it over), **re-enter** (the export does not carry it, you recreate it), **keep** (the system stays and gets called), **retire** (nothing replaces it).
+
+| Part of the estate | In Pipedream | Verdict | Where it ends up in Kestra |
+| --- | --- | --- | --- |
+| Triggers | HTTP, timer, email, form, app event sources | Replace | Webhook trigger, Schedule trigger, polling triggers, flow triggers |
+| Workflow logic | Linear steps, if/else, switch, loops, delay, end | Replace | Flow (YAML) with If, Switch, Loop, Pause, Fail tasks |
+| Code steps | Node.js, Python, Go, Bash with step exports | Replace | Script tasks with declared outputs; Go via a container runner |
+| Pre-built actions | 3,000 app components with connected accounts | Replace or keep | Plugins for the systems you orchestrate; HTTP Request task for the rest |
+| Connected accounts and secrets | OAuth tokens, secret props, env vars | Re-enter | Secret manager scoped by namespace |
+| State and files | Data Stores, File Stores, event history | Re-enter or retire | KV Store for state, namespace files and internal storage for files; history starts fresh |
+| Credits and compute | Credits per 30-second slice, memory tuned per workflow | Retire | Task runs plus compute, or your own task runners |
+
+The difference between the Pipedream model and Kestra is who owns the integration: Pipedream held your tokens inside its workspace, Kestra reads them from a secret manager you control.
+
+### 3.2 Pipedream to Kestra: concept mapping
+
+Every Pipedream construct has a Kestra equivalent, and most of them keep the same shape. The differences that cost time are three: outputs are declared instead of returned, control flow is a task rather than a step type, and credentials live outside the flow.
+
+| Pipedream | Kestra | What changes |
+| --- | --- | --- |
+| Workflow | Flow (YAML file in a namespace) | Versioned in Git, deployable with the CLI or Git sync |
+| Project / folder | Namespace (hierarchical) | RBAC and secrets scoped per namespace |
+| HTTP / Webhook trigger | `io.kestra.plugin.core.trigger.Webhook` | URL built from a key you set; `{{ trigger.body }}` holds the payload |
+| Timer trigger | `io.kestra.plugin.core.trigger.Schedule` | Same cron syntax; backfill and timezone built in |
+| App event source | Plugin trigger or polling trigger | Polling interval you set; webhook from the source where supported |
+| Code step (Node.js, Python, Bash) | `io.kestra.plugin.scripts.*` Script task | Code copied as is; outputs declared with `Kestra.outputs()` |
+| Code step (Go) | Commands task in a container with Go installed | Docker task runner, or your own runner |
+| `steps.name.$return_value` | `{{ outputs.name.vars.key }}` | Outputs are explicit; nothing is passed implicitly |
+| Pre-built action | Plugin task (Slack, HTTP, S3, databases, dbt, Airbyte…) | Props become YAML properties |
+| Action with no Kestra plugin | `io.kestra.plugin.core.http.Request` | Same REST call, auth from a secret |
+| if/else, switch | `io.kestra.plugin.core.flow.If`, `Switch` | Condition is a Pebble expression |
+| Loop over items | `io.kestra.plugin.core.flow.Loop` | Items from an output; `{{ item.value }}` |
+| Delay step | `io.kestra.plugin.core.flow.Sleep` or `Pause` | Pause also handles human approval |
+| `$.flow.exit()` | `io.kestra.plugin.core.execution.Fail` or `Exit` | Explicit end state |
+| Data Store | KV Store | Namespaced key-value, read with `{{ kv('key') }}` |
+| File Store | Namespace files and internal storage | Files passed between tasks as URIs, not copied in memory |
+| Environment variables | Flow `variables:` or KV Store | Secrets never go here |
+| Secret prop / connected account | Secret manager, `{{ secret('NAME') }}` | Re-entered per namespace; never in Git |
+| Event history | Executions, logs, metrics, Gantt | Retention set by plan |
+| Workflow settings (memory, timeout) | Task runner size, `timeout` per task | Memory is per task, not per workflow |
+| Credits per 30-second slice | Task runs plus compute | No per-step credit arithmetic |
+
+<GuideCallout variant="note" label="Why memory behaves differently">
+
+In Pipedream, every step exports its result into shared memory and the stack grows with each step, which is why text-processing workflows end up needing 5 to 16 GB. In Kestra, large outputs are written to internal storage and passed as URIs, and each task declares what it emits. A 40-step workflow does not carry 40 copies of the same data.
+
+</GuideCallout>
+
+### 3.3 Export your workflows today
+
+Export before you decide anything else. The export is the only record of your workflow logic that survives April 30, and Pipedream never offered Git sync for workflows that use pre-built actions, so for most teams this is the first backup they have ever had.
+
+1. Open the project in the Pipedream dashboard and select **Settings** in the left navigation.
+2. Click **Export Workflows** at the bottom of the settings panel. Pipedream builds the archive in the background.
+3. Download `project_export-<project_id>.zip` from the project's **File Store** (your plan must include File Stores).
+4. Repeat for every project. One export holds at most 500 workflows or 256 MB; if `truncated` is `true` in `manifest.json`, move workflows to another project and export again.
+5. Commit the archives to a Git repository. This is your source of truth for the migration.
+
+**What the archive contains.** One JSON file per deployed workflow (schema `workflow.json/2026.01`) with its triggers, steps in order, code for code steps, component key and version for actions, configured props and control-flow branches. `manifest.json` lists every workflow with a status (`exported`, `skipped_never_deployed`, `skipped_export_limit`) and a `warnings` list naming each prop you will have to re-enter.
+
+**What it does not contain**, and what you must collect separately:
+
+| Missing from the export | Where to get it | Where it goes in Kestra |
+| --- | --- | --- |
+| Secret prop values, basic auth and bearer tokens (`<redacted>`) | Your password manager or the API provider | Secret manager |
+| Connected accounts (only an `authProvisionId` remains) | Re-authorize each app (OAuth client, API key) | Secret manager, plugin credentials |
+| Environment variables | Pipedream workspace settings, copy by hand | Flow variables or KV Store |
+| Data Store contents | Chunked-export action or dashboard download | KV Store |
+| File Store files | Download from the File Store | Namespace files or your object storage |
+| Event history and logs | Not exportable; keep screenshots of monthly volumes for sizing | Executions start fresh |
+| Code of private multi-file components | Your own source repository | Namespace files or a custom plugin |
+
+Source: [Pipedream export documentation](https://pipedream.com/docs/workflows/export-workflows).
+
+While you are in the dashboard, note two numbers the export will not give you: steps executed per month and peak concurrent executions. Pipedream's API does not aggregate them, so page through the event history for a representative month and sum the step counts. Both numbers size your Kestra Cloud plan.
+
+### 3.4 Triage before you convert
+
+The raw count from `manifest.json` is always higher than the real work. Three passes get you to a defensible number in an afternoon.
+
+| Pass | Rule | Outcome |
+| --- | --- | --- |
+| Retire what nobody runs | Not executed in the last 90 days, or `skipped_never_deployed` in the manifest | Out of scope |
+| Group near-duplicates | Copies per environment, region or business unit become one flow with inputs | One flow, several inputs |
+| Separate wrappers | Workflows that only receive a webhook and forward it, or call one API with no logic | A webhook trigger plus one HTTP Request task, no conversion effort |
+
+Then rank what is left by two criteria, and convert in that order:
+
+1. **Business criticality**: finance processing, HR sync and anything with a month-end deadline go first, because they need a full cycle of testing before March.
+2. **Conversion cost**: count the code steps and the actions without a Kestra plugin. A workflow with 40 steps and a NetSuite call is a week; a timer plus one Python step is an hour.
+
+For each remaining workflow, record four things in your tracker: trigger type, number of code steps, external systems called, and whether it writes to a Data Store. Those four columns decide the pattern you convert it with.
+
+**Decide your fallback now.** Workflows at the bottom of the list may not make the deadline. Agree with the business owner whether each one gets a manual procedure for a month or is simply switched off, so nobody discovers a gap on April 1.
+
+## 4. Stage 2, Trial: prove the pattern on Kestra Cloud in 14 days
+
+The trial is self-service, it starts the day you request access, and the instance you build in is the one you keep if you go ahead.
+
+**Before it starts**, agree on three things with the people who own the workflows: which two or three workflows you convert, what "it works" means for each one (same output as Pipedream on the same input), and who reviews the result.
+
+**Choose the workflows** from the triaged backlog in [3.4](#section-3-4):
+
+1. One difficult workflow you would run in production: many steps, a long external call, a Data Store. A happy-path webhook proves nothing.
+2. One the business owner recognizes: a finance file, a staff sync.
+3. One scheduled workflow, so the trial covers timers as well as webhooks.
+
+**What the trial proves**
+
+| Question | How you answer it in 14 days |
+| --- | --- |
+| Does our code run as is? | Copy the Node.js or Python step into a script task; count the lines you changed |
+| Do the integrations hold? | Call the real NetSuite, Box or Google endpoint from a flow with a secret from the secret manager |
+| What does a workflow cost to convert? | Record hands-on hours per workflow; that rate times your backlog is the migration estimate |
+| Does memory behave? | Run the heaviest workflow and read the task metrics; compare with the GB you allocated in Pipedream |
+| What will the plan cost? | Read task runs per execution in the dashboard, multiply by your monthly volume, and send the number to the team |
+
+The AI Copilot, Playground, dev and prod tenants, Apps, SSO and RBAC are all on during the trial, so the finance owner can be given a read-only role on day one and the trial doubles as the security review. Trials run 14 days by default; teams that share feedback get longer.
+
+<GuideCta kind="cloud" />
+
+<GuideCta kind="talk" variant="secondary" />
+
+## 5. Stage 3, Migrate: convert by pattern, with Pipedream still running
+
+### 5.1 Convert a workflow
+
+The most common Pipedream pattern is an HTTP trigger, a code step that reshapes the payload, a call to a business system, and a notification. In Pipedream that is four steps and a connected account. In Kestra it is one flow, and the code step is copied almost unchanged.
+
+**Before (Pipedream, from the export)**: an `http` trigger, a Node.js step `transform` that returns `{ invoice_id, amount, vendor }`, a NetSuite action configured with a connected account, and a Slack `send_message` action.
+
+**After (Kestra flow)**:
+
+```yaml
+id: invoice_intake
+namespace: finance.intake
+description: Replaces the Pipedream "Invoice intake" workflow (p_abc123).
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('INVOICE_WEBHOOK_KEY') }}"
+
+tasks:
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    script: |
+      from kestra import Kestra
+      import json
+      body = json.loads('{{ trigger.body | json }}')
+      # code copied from the Pipedream step; only the export changes
+      Kestra.outputs({
+          "invoice_id": body["id"],
+          "amount": round(float(body["total"]), 2),
+          "vendor": body["vendor"]["name"],
+      })
+
+  - id: post_to_netsuite
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://{{ secret('NETSUITE_ACCOUNT') }}.suitetalk.api.netsuite.com/services/rest/record/v1/vendorBill"
+    method: POST
+    contentType: application/json
+    headers:
+      Authorization: "Bearer {{ secret('NETSUITE_TOKEN') }}"
+    body: |
+      {
+        "tranId": "{{ outputs.transform.vars.invoice_id }}",
+        "total": {{ outputs.transform.vars.amount }}
+      }
+    options:
+      readTimeout: PT10M
+
+  - id: notify
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    payload: |
+      {"text": "Invoice {{ outputs.transform.vars.invoice_id }} from {{ outputs.transform.vars.vendor }} posted to NetSuite"}
+
+errors:
+  - id: alert
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    payload: |
+      {"text": "Invoice intake failed: {{ execution.id }}"}
+```
+
+Three things to notice. The Python code is the Pipedream step with `return` replaced by `Kestra.outputs()`. The NetSuite call carries a 10-minute read timeout because NetSuite sometimes takes eight minutes to answer, and Kestra has no platform limit that cuts it off. The `errors` block replaces the per-step error handling you built by hand.
+
+**Convert with the AI Copilot.** Kestra Cloud includes an AI Copilot that generates and edits flow YAML from a prompt. Paste a workflow's JSON from the export, ask for the equivalent flow, and review the result; nothing is deployed without a human. For bulk work, expose your Kestra instance as an MCP server (Tenant → MCP servers) and drive the conversion from Claude or ChatGPT with the export folder open. Treat the output as a first draft: conditions, loops and code-step outputs are where the two dialects differ most, and those are what the review checks.
+
+**Convert by pattern, not by workflow.** Most of a Pipedream estate is five patterns: webhook → code → API, timer → fetch → load, file arrives → process → notify, poll an app → sync records, and approval chains. Build one clean flow per pattern, store it as a blueprint in your namespace, and convert the rest by changing inputs and secrets.
+
+### 5.2 Reconnect credentials, secrets and state
+
+This is the step teams underestimate, because in Pipedream it was a button. Every connected account was an OAuth grant held in Pipedream's workspace, and none of it travels. The `warnings` list in `manifest.json` is your checklist.
+
+1. **List the apps.** From the export, collect every distinct app prop and `authProvisionId`. Group them by system: one NetSuite, one Box, one Google Workspace account usually serve many workflows.
+2. **Create credentials where you own them.** For OAuth apps, register your own OAuth client (Google, Box, Slack) or generate an API token (NetSuite, Mailgun, Monday). You now own the grant, which is what makes the next migration cheap.
+3. **Store them in the Kestra secret manager**, scoped to the namespace that needs them. Finance secrets live under `finance.*`, visible only to the roles you assign. Reference them in flows with `{{ secret('NAME') }}`; nothing lands in Git.
+4. **Move state.** Export each Data Store and load it into the KV Store with a one-off flow. Replace `$.service.db` calls in code with `{{ kv('key') }}` reads and `io.kestra.plugin.core.kv.Set` writes.
+5. **Move files.** Download File Store contents you still need and put them in your own object storage or as namespace files. Flows reference them by URI; large files never sit in memory between tasks.
+6. **Replace environment variables** with flow `variables:` for non-sensitive values and secrets for the rest.
+
+For the systems where Pipedream offered a pre-built component and Kestra does not yet have a plugin (NetSuite is the usual example), you have two options: an HTTP Request task with the REST call and a token from the secret manager, or a custom plugin versioned and installed in your Cloud instance. The first takes an hour and covers most cases; the second is worth it when ten flows share the same calls.
+
+<GuideCallout variant="note" label="Wrap before replacing">
+
+A useful intermediate step is to point a copy of the source system's webhook at a Kestra flow that only logs the payload. Once the trigger path works, add the tasks. Each change can then be tested separately.
+
+</GuideCallout>
+
+## 6. Stage 4, Exit: test, promote, cut over, cancel
+
+Run both platforms side by side for each wave, and switch the trigger last. Nothing in Pipedream changes until the Kestra flow has processed real events.
+
+1. **Build in the non-production tenant.** Kestra Cloud includes a dev and a prod environment. Convert, run the flow with the Playground on sample payloads, and check inputs, outputs and logs on the execution page.
+2. **Write a test per critical flow.** Flow tests mock task outputs and assert the result, so a month-end finance flow can be validated in October, not in January when the real file lands.
+3. **Shadow run.** Point a copy of the webhook at Kestra (or let the Schedule trigger run in parallel) while Pipedream keeps serving. Compare outputs for a few cycles.
+4. **Promote to production** with the review step, then repoint the source system's webhook or disable the Pipedream trigger. The Pipedream workflow stays available as a rollback until you delete it.
+5. **Repeat per wave**, critical flows first. Keep each wave reversible until its Pipedream side is switched off.
+
+Plan backwards from March 31, 2027. A realistic schedule for a 60-workflow estate: export and triage in week 1, patterns and credentials in weeks 2 to 3, conversion waves in weeks 4 to 12, buffer and month-end validation in the last month. Cancel the Pipedream subscription once the last wave is in production; annual subscribers get a prorated refund on request.
+
+After cutover, switch on what Pipedream never gave you: Git sync so every flow is backed up and reviewed, SLA and failure notifications to Slack or PagerDuty, and the dashboards that show task runs per flow per month, which is the number you could not get from Pipedream's credits view.
+
+## 7. Getting started
+
+### 7.1 Start the Cloud trial with your export in hand
+
+Request access to Kestra Cloud, pick the two or three workflows from [Section 4](#section-4), and build them. Send the team your integration list and your monthly step count, and we will tell you which plugins cover it and what the plan looks like before you commit.
+
+<GuideCta kind="cloud" />
+
+<GuideCta kind="talk" variant="secondary" />
+
+### 7.2 Start on open source, move to Cloud
+
+If you want to test the conversion pattern before talking to anyone, the open-source edition runs the same flows. Pull the Docker Compose file, rebuild two workflows from your export (one webhook-driven, one scheduled) and measure the hours each took. That rate, multiplied across your triaged backlog, is your migration estimate.
+
+```bash
+curl -o docker-compose.yml https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+docker compose up -d
+```
+
+The open-source edition stops where a Pipedream migration crosses into operations: SSO, role-based access per namespace, the managed secret manager, audit logs, Apps for business users, dev-to-prod promotion and someone else running the upgrades. Those are what you were paying Pipedream for, and they are what [Kestra Cloud](/cloud) provides. The flows you wrote on open source move to Cloud unchanged; most teams run the trial on Cloud from the start and skip the self-hosted step entirely. The [open-source vs. Cloud and Enterprise comparison](/docs/oss-vs-paid) lists the full split.
