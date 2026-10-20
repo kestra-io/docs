@@ -1212,7 +1212,7 @@ kestra:
 
 ### Secret caching
 
-For cloud-backed secrets managers, enable caching to reduce the number of API calls per execution.
+Kestra caches the secrets it reads from the configured secrets manager, which reduces the number of API calls per execution. The cache is enabled by default:
 
 ```yaml
 kestra:
@@ -1221,13 +1221,23 @@ kestra:
       enabled: true
       maximum-size: 1000
       expire-after-write: 60s
+      negative-cache-enabled: false
+      negative-cache-ttl: 45s
 ```
 
 | Property | Description |
 |---|---|
-| `cache.enabled` | Enable caching (default `false`). |
-| `cache.maximum-size` | Maximum number of cached secret entries. |
-| `cache.expire-after-write` | TTL for each cache entry after creation. |
+| `cache.enabled` | Cache secrets read from the secrets manager (default `true`). |
+| `cache.maximum-size` | Maximum number of cached secret entries (default `1000`). |
+| `cache.expire-after-write` | How long a secret stays cached after it is read (default `60s`). |
+| `cache.negative-cache-enabled` | Also cache lookups that found no secret (default `false`). |
+| `cache.negative-cache-ttl` | How long a lookup that found no secret stays cached (default `45s`). |
+
+#### Caching missing secrets
+
+To resolve a secret, Kestra looks in the flow's namespace first, then in each parent namespace up to the root. By default, Kestra caches only the secrets it finds, so every resolution queries the secrets manager again for each namespace that doesn't hold the secret. With Vault, for example, this shows up as repeated `404` responses. Set `negative-cache-enabled: true` to cache those misses as well.
+
+Each Kestra server keeps its own cache in memory. Creating, updating, or deleting a secret through Kestra clears its cached entries on the server that handles the change. A change made anywhere else, on another server or directly in the secrets manager, takes effect once the cached entry expires: after `expire-after-write` for a cached secret, or after `negative-cache-ttl` for a cached miss. Keep `negative-cache-ttl` short if you create secrets directly in the secrets manager and need them to be usable right away.
 
 ### Secret isolation
 

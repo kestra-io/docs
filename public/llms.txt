@@ -150,8 +150,9 @@ Use this section for questions about installing, configuring, or running a Kestr
 
 - [Installation](https://kestra.io/docs/installation.md): Docker, Docker Compose, Kubernetes (AWS EKS, GCP GKE, Azure AKS), and VM deployment guides
 - [Configuration reference](https://kestra.io/docs/configuration.md): All server configuration options — datasource, storage, queue, auth, encryption, plugins, and telemetry
-- [Administrator guide](https://kestra.io/docs/administrator-guide.md): Production operations — monitoring, HA, SSL, security hardening, backup, purging, and troubleshooting
+- [Administrator guide](https://kestra.io/docs/administrator-guide.md): Production operations — monitoring, HA, SSL, backup, purging, and troubleshooting
 - [Performance](https://kestra.io/docs/performance.md): Benchmarks, JVM tuning, and infrastructure sizing guidance
+- [Security hardening](https://kestra.io/docs/security-hardening.md): Credential initialization, network and worker isolation, transport security, HTTP URL filtering, and endpoint protection
 - [Migration guide](https://kestra.io/docs/migration-guide.md): Breaking changes and upgrade notes across Kestra versions
 
 ## Extending Kestra
@@ -198,7 +199,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Prometheus Metrics for Kestra: Reference and /prometheus Endpoint](https://kestra.io/docs/administrator-guide/prometheus-metrics.md)
 - [Purge Executions, Logs, and Files in Kestra](https://kestra.io/docs/administrator-guide/purge.md): Scheduled purge patterns for executions, logs, KV pairs, namespace files, and orphaned execution storage; includes the isolated-worker-group cleanup pattern using PurgeStorage
 - [Software and Hardware Requirements to Run Kestra](https://kestra.io/docs/administrator-guide/requirements.md)
-- [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/administrator-guide/security-hardening.md)
 - [Server Heartbeats and Job Recovery in Kestra](https://kestra.io/docs/administrator-guide/server-lifecycle.md)
 - [Service Instance Metrics in Kestra – Expose via the Webserver](https://kestra.io/docs/administrator-guide/service-instance-metrics.md)
 - [SSL/TLS Configuration: Enable HTTPS for Kestra](https://kestra.io/docs/administrator-guide/ssl-configuration.md)
@@ -222,6 +222,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [JavaScript SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/javascript-sdk.md)
 - [Python SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/python-sdk.md)
 - [Open Source API Reference for Kestra](https://kestra.io/docs/api-reference/open-source.md)
+- [Query filter reference – Fields and operators for API list and by-query endpoints](https://kestra.io/docs/api-reference/query-filters.md)
 - [Architecture in Kestra: Components and Deployment Models](https://kestra.io/docs/architecture.md)
 - [Data Storage Components in Kestra Architecture](https://kestra.io/docs/architecture/data-components.md)
 - [Kestra Deployment Architectures: Postgres, AMQP, and Kafka](https://kestra.io/docs/architecture/deployment-architecture.md)
@@ -376,7 +377,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
 - [Loop Over a List of Values](https://kestra.io/docs/how-to-guides/loop.md)
 - [Safeguard Microservices with Unit Tests](https://kestra.io/docs/how-to-guides/microservices-unit-tests.md)
-- [Configure Local MinIO Storage for Kestra](https://kestra.io/docs/how-to-guides/minio.md)
 - [Configure Monitoring with Grafana and Prometheus](https://kestra.io/docs/how-to-guides/monitoring.md)
 - [MultipleCondition Listener in Kestra: How It Works](https://kestra.io/docs/how-to-guides/multiplecondition-listener.md)
 - [Namespace Variables vs. KV Store in Kestra](https://kestra.io/docs/how-to-guides/namespace-variables-vs-kvstore.md)
@@ -554,6 +554,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Document Your Kestra Plugin with Annotations](https://kestra.io/docs/plugin-developer-guide/document.md)
 - [Develop a Kestra File Renderer Plugin](https://kestra.io/docs/plugin-developer-guide/file-renderer.md)
 - [Gradle Configuration for Kestra Plugins](https://kestra.io/docs/plugin-developer-guide/gradle.md)
+- [Develop Plugin Artifacts](https://kestra.io/docs/plugin-developer-guide/plugin-ui.md)
 - [Build and Publish a Kestra Plugin](https://kestra.io/docs/plugin-developer-guide/publish.md)
 - [Set Up for Kestra Plugin Development](https://kestra.io/docs/plugin-developer-guide/setup.md)
 - [Develop a Kestra Task Plugin](https://kestra.io/docs/plugin-developer-guide/task.md)
@@ -575,6 +576,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Script Outputs & Metrics: Send Data Back to Kestra](https://kestra.io/docs/scripts/outputs-metrics.md)
 - [Task Runners in Scripts: Control Execution Environment](https://kestra.io/docs/scripts/task-runners.md)
 - [Working Directory Task – Share Files Across Scripts](https://kestra.io/docs/scripts/working-directory.md)
+- [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/security-hardening.md)
 - [Task Runners in Kestra: Offload & Isolate Compute](https://kestra.io/docs/task-runners.md)
 - [Task Runner Benefits: Resource Control & Flexibility](https://kestra.io/docs/task-runners/benefits.md)
 - [Task Runner Capabilities & Supported Plugins in Kestra](https://kestra.io/docs/task-runners/overview.md)

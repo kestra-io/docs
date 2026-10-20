@@ -254,7 +254,7 @@
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
     import { searchResultHref, searchScope } from "~/utils/versionedDocs"
-    import { openModal } from "~/utils/modal"
+    import { isEventInModal, openModal } from "~/utils/modal"
 
     export default {
         props: {
@@ -458,6 +458,8 @@
 
                     document.getElementById("header-search-button").click()
                 }
+
+                if (!isEventInModal(this.$refs.modal, e)) return
 
                 if (e.key === "ArrowUp") {
                     this.selectedIndex =

@@ -144,8 +144,8 @@ id: read_non_existing_kv_pair
 namespace: company.team
 tasks:
   - id: log_key_from_another_namespace
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ kv('non_existing_key', errorOnMissing=false) }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ kv('non_existing_key', errorOnMissing=false) }}"
 ```
 
 ### Read KV pairs with the `Get` task

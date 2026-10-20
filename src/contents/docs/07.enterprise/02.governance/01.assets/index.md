@@ -480,7 +480,7 @@ tasks:
 
 ## Explore the dependencies graph
 
-The dependencies graph shows how assets relate to each other across your workflows. Open it from the **Graph** tab.
+The dependencies graph shows how assets relate to each other across your workflows. Open an asset and select the **Dependencies** tab.
 
 ### Tree and DAG layouts
 
@@ -511,7 +511,7 @@ The expected cadence is derived from the [Schedule](/plugins/core/trigger/io.kes
 Use the **Group by** selector to cluster nodes into labeled buckets:
 
 - **dataset**: groups assets by the `dataset` field in the asset's schema metadata.
-- **producer**: groups assets by the plugin artifact: the fourth segment of the producing task type's FQCN (e.g., `jdbc`, `dbt`, `aws`).
+- **producer**: groups assets by the plugin that produced them, using the fourth segment of the producing task type's FQCN (e.g., `jdbc`, `dbt`, `aws`).
 
 Selected groups appear as chips in a row below the toolbar. Hovering a chip fades unrelated nodes; clicking pins the group so it stays highlighted. Click the chip again or click an empty area of the canvas to release it. Flow nodes appear in their own bucket and are not merged into asset groups.
 

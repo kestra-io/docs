@@ -130,8 +130,8 @@ tasks:
       Write-Output '::{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}::'
 
   - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ outputs.powershell_outputs_task.vars.test }}'
+    type: io.kestra.plugin.core.log.Log
+    message: '{{ outputs.powershell_outputs_task.vars.test }}'
 ```
 
 _This example works for both [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script) and [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands)._
