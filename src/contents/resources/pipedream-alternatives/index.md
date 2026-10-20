@@ -106,7 +106,7 @@ Every Pipedream construct has a Kestra equivalent, most of them in the open-sour
 
 ## What gets better on the way over
 
-A forced migration is also the moment to stop living with the workarounds. Four come up in nearly every Pipedream estate.
+A forced migration is also the moment to stop living with the workarounds. Six come up in nearly every Pipedream estate.
 
 **Loops.** Pipedream has no loop step, so iterating over records means a loop inside one code step, where one bad record fails the whole run, or a workflow that calls itself. In Kestra a `Loop` is a task: each item runs the same tasks with its own logs, retries and status, and a failed item can be replayed alone.
 
@@ -116,13 +116,17 @@ A forced migration is also the moment to stop living with the workarounds. Four 
 
 **Errors and environments.** Pipedream teams often build their own error router to send failures to the right people. In Kestra the `errors` block, a flow trigger on failed executions, and log exporters to tools such as Datadog do that as configuration. Flows live in Git, promote from dev to prod, and can be tested before they run for real.
 
+**Access and audit.** Finance, HR and payroll workflows are often the ones Pipedream ran, and they need tighter control than a shared workspace gives. In Kestra each team's flows live in a namespace, and Kestra Cloud and Enterprise add SSO, role-based access per namespace, and audit logs of who changed or ran what.
+
+**People who are not developers.** Pipedream let analysts make small changes and watch runs. In Kestra, business users can work in the no-code editor, follow executions and usage on dashboards, or launch a process from a form built with [Apps](/docs/enterprise/scalability/apps) without touching the flow itself.
+
 ## Four tests for any Pipedream alternative
 
 Most tools that come up in a Pipedream replacement search are strong in one slice of what Pipedream did. Ask four questions of each.
 
 1. **Does it run your code as code?** Pipedream steps are Node.js, Python, Go and Bash. An alternative that only offers a visual builder means rewriting that logic.
 2. **Can the control flow grow?** Loops, branches, waits, approvals and calls to other workflows should be native, not workarounds.
-3. **How hard is it to leave?** Where do definitions live, can you read them without the product, and could you run it yourself if the vendor changed course? This is the test Pipedream just failed.
+3. **How hard is it to leave?** Where do definitions live, can you read them without the product, and could you run it yourself if the vendor changed course? Could you rebuild your business logic from a backup if you had to? This is the test Pipedream just failed.
 4. **Can more than one team use it?** Integrations rarely stay integrations; the same platform ends up running data loads, finance processes and infrastructure tasks.
 
 | Dimension | Zapier / Make | n8n | Temporal | Windmill | Kestra |
@@ -221,7 +225,7 @@ The flows are the same YAML in all three, so starting on Kestra Cloud does not l
 
 **1. Save and inventory (now).** Export every project and keep the ZIPs outside Pipedream. In the same pass, copy environment variable names and values, list every connected account and the app it belongs to, dump the data stores you still need, download File Store files and event history you need for audits, and write down every external system that sends to a `*.m.pipedream.net` URL. The manifest's warnings tell you which steps and props will need attention.
 
-**2. Triage.** The first workflow count is always larger than the real work. Three passes shrink it. The figures are illustrative, not a benchmark; plug in your own export.
+**2. Triage.** Many teams came to Pipedream through a migration of their own, often from Workato, and remember it taking months. This one has to take weeks, and triage is what makes that possible. The first workflow count is always larger than the real work. Three passes shrink it. The figures are illustrative, not a benchmark; plug in your own export.
 
 | Pass | Rule | Illustrative estate |
 |---|---|---|

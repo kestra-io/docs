@@ -219,6 +219,7 @@ decisionGuide:
       - "Your workflows loop over records, call slow APIs, or run code that outgrew a single step."
       - "You want flows in Git with dev and prod environments, tests and CI/CD."
       - "Failures should route to the right team automatically, with logs you can actually read."
+      - "Finance or HR workflows need SSO, role-based access and audit logs, not a shared workspace."
       - "You want a managed platform like Pipedream today, with the option to self-host later so the next acquisition can't switch your automation off."
   competitor:
     title: "Consider Staying on Pipedream When"
