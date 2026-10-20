@@ -18,13 +18,18 @@ faq:
     answer: "Every *.m.pipedream.net endpoint stops answering when Workflows shuts down on March 31, 2027. Each system that sends to it, such as Stripe, GitHub, a form tool or an internal app, has to be pointed at a new URL. In Kestra each flow gets its own webhook URL with a secret key. Cut over one sender at a time, with the Kestra flow already running in parallel."
   - question: "How long does a Pipedream migration take?"
     answer: "Less than the deadline suggests if you triage first. Most estates contain workflows nobody runs, copies that differ by one value, and thin wrappers around a single API call. Retiring and merging those leaves the workflows with real logic, and those convert at a steady rate once the first few are done. Work the plan backwards from March 31, 2027, with the riskiest workflows in the first wave and a buffer before the April 30 deletion."
+resourceCtaOverride:
+  href: /resources/migration/pipedream
+  label: Read the migration guide
+  tagline: "Moving off Pipedream Workflows before March 31?"
+  taglineEnd: "Export, map, convert, cut over: the full Pipedream migration guide."
 ---
 
 Pipedream Workflows, the serverless product for connecting APIs with triggers, code steps and pre-built actions, is being retired. Pipedream was acquired by Workday, and Workflows is now in maintenance mode: no new signups, no new features, and a hard stop on **March 31, 2027**. A month later, on **April 30, 2027**, all Workflows data is permanently deleted, including the credentials and OAuth tokens of every connected account.
 
 That changes the usual "Pipedream alternatives" question. It is no longer whether to move, but where to, and how to get every workflow, secret and webhook across before the data is gone. This page covers what the shutdown removes, what the export does and does not give you, how the alternatives compare for the workflows teams actually built on Pipedream, and a four-stage plan that finishes before the deadline.
 
-> **TL;DR:** Pipedream Workflows stops on March 31, 2027 and deletes all data, credentials included, on April 30. The export gives you workflow structure as JSON, not secrets, env vars, data stores or OAuth connections, so save those first. Kestra runs the same triggers and code steps as declarative YAML and adds native loops, retries, Git and observability. Kestra Cloud keeps the hosted model you had on Pipedream; if you prefer to self-host, Kestra Open Source (Apache 2.0) and Enterprise run the same flows on your own infrastructure.
+> **TL;DR:** Pipedream Workflows stops on March 31, 2027 and deletes all data, credentials included, on April 30. The export gives you workflow structure as JSON, not secrets, env vars, data stores or OAuth connections, so save those first. Kestra runs the same triggers and code steps as declarative YAML and adds native loops, retries, Git and observability. Kestra Cloud keeps the hosted model you had on Pipedream; if you prefer to self-host, Kestra Open Source (Apache 2.0) and Enterprise run the same flows on your own infrastructure. If you have already decided to move, go straight to the [Pipedream migration guide](/resources/migration/pipedream): export, concept mapping, a worked conversion and the cutover plan.
 
 ## The shutdown timeline
 
@@ -36,6 +41,8 @@ That changes the usual "Pipedream alternatives" question. It is no longer whethe
 | After | Pipedream Connect, its API, MCP servers and API proxy, continues. | If you use Connect for AI agents, that part can stay. |
 
 The dates come from Pipedream's own [shutdown notice](https://pipedream.com/docs/workflows). Monthly subscribers can cancel early in account settings; annual subscribers contact Pipedream support for an early, prorated cancellation.
+
+::resource-cta
 
 ## What the export gives you, and what it leaves behind
 
@@ -223,6 +230,8 @@ The flows are the same YAML in all three, so starting on Kestra Cloud does not l
 
 ## A four-stage plan that finishes before March 31
 
+The plan below is the short version. The [Pipedream migration guide](/resources/migration/pipedream) runs each stage in detail, with the export checklist, the Pipedream-to-Kestra mapping table, a full worked conversion and what to test before you repoint a webhook.
+
 **1. Save and inventory (now).** Export every project and keep the ZIPs outside Pipedream. In the same pass, copy environment variable names and values, list every connected account and the app it belongs to, dump the data stores you still need, download File Store files and event history you need for audits, and write down every external system that sends to a `*.m.pipedream.net` URL. The manifest's warnings tell you which steps and props will need attention.
 
 **2. Triage.** Many teams came to Pipedream through a migration of their own, often from Workato, and remember it taking months. This one has to take weeks, and triage is what makes that possible. The first workflow count is always larger than the real work. Three passes shrink it. The figures are illustrative, not a benchmark; plug in your own export.
@@ -249,6 +258,6 @@ Give the rest a verdict: convert as-is, rebuild because the Pipedream version wa
 1. Export every Pipedream project this week, and save the secrets, env vars, data stores and webhook senders the export leaves out.
 2. [Request Kestra Cloud access](/cloud) for a managed setup like the one you had on Pipedream, or start Kestra Open Source with [Docker Compose](/docs/installation/docker-compose) if you prefer to self-host, and have the people doing the migration take the free courses on [Kestra Academy](https://kestra.io/academy).
 3. Convert two or three real workflows first: one webhook-triggered, one scheduled, and the most complex one you have. Measure the hours each took; that rate, across your triage count, is the estimate.
-4. Plan the waves backwards from March 31, 2027, and [talk to us](/demo) if you want help with the conversion or a review of the plan.
+4. Plan the waves backwards from March 31, 2027 with the [migration guide](/resources/migration/pipedream), and [talk to us](/demo) if you want help with the conversion or a review of the plan.
 
 Pipedream Workflows keeps running until the shutdown, so every wave stays reversible until you disable its Pipedream side. The goal is to make that the last migration your automation ever has to make.
