@@ -118,7 +118,7 @@ namespace: company.team
 tasks:
   - id: return_date
     type: io.kestra.plugin.core.log.Log
-    message: "{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}"
+    message: "{{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}"
 
 triggers:
   - id: schedule
