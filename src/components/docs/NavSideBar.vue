@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed, onMounted, provide, ref, type PropType } from "vue"
+    import { computed, provide, ref, watch, type PropType } from "vue"
     import { useMediaQuery } from "@vueuse/core"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Keyboard from "vue-material-design-icons/Keyboard.vue"
@@ -130,10 +130,9 @@
 
     // Though `transition:persist`ed, this island's props DO refresh on
     // client-side navigations (persist-props defaults to false; verified on a
-    // prod build) — only the onMounted activeSlug sync below doesn't re-run.
-    // The URL read is simply the same value without depending on prop-update
-    // timing mid-transition. Full navigation on purpose: versioned targets
-    // are served by the middleware, outside the prerendered routes.
+    // prod build). The URL read is simply the same value without depending on
+    // prop-update timing mid-transition. Full navigation on purpose: versioned
+    // targets are served by the middleware, outside the prerendered routes.
     // The probe makes this async: only the most recent selection may navigate,
     // or a slower earlier probe would win the location assignment.
     let switchSeq = 0
@@ -146,9 +145,13 @@
         }
     }
 
-    onMounted(() => {
-        activeSlug.value = props.slug || ""
-    })
+    watch(
+        () => props.slug,
+        (slug) => {
+            activeSlug.value = slug || ""
+        },
+        { immediate: true },
+    )
 
     const disabledPages = [
         "/docs/terraform/data-sources",
