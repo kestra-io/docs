@@ -141,13 +141,22 @@ const resourcesSchema = z.object({
     items: z.array(resourceItemSchema),
 })
 
+/** Tool categories, in the order the /orchestration filter tabs show them. */
+export const ORCHESTRATION_CATEGORIES = [
+    "Infrastructure",
+    "Cloud",
+    "Data",
+    "Business",
+    "AI",
+] as const
+
 export const orchestrationSchema = z.object({
     title: z.string(),
     description: z.string(),
     tool: z.object({
         name: z.string(),
         pluginClass: z.string(),
-        category: z.enum(["Infrastructure", "Cloud", "Data", "Business", "AI"]),
+        category: z.enum(ORCHESTRATION_CATEGORIES),
         color: z.string().optional(),
     }),
     hero: heroSchema,
