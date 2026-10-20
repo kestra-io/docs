@@ -4,6 +4,7 @@ description: "Trigger Fabric notebooks, data pipelines, and Spark jobs on any ev
 tool:
   name: "Microsoft Fabric"
   pluginClass: "io.kestra.plugin.microsoft.fabric.data.engineering.RunPipeline"
+  category: "Data"
   color: "#0094e5"
 
 hero:

@@ -4,6 +4,7 @@ description: "Add retries, model-version fallback, concurrency limits, and full 
 tool:
   name: "Gemini"
   pluginClass: "io.kestra.plugin.gemini.ChatCompletion"
+  category: "AI"
   color: "#1BA1E3"
 
 hero:

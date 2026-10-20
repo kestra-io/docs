@@ -4,6 +4,7 @@ description: "Open GitLab issues on failure, raise merge requests from automatio
 tool:
   name: "GitLab"
   pluginClass: "io.kestra.plugin.gitlab.issues.Create"
+  category: "Infrastructure"
   color: "#fc6d26"
 
 hero:

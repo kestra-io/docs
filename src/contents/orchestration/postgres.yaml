@@ -4,6 +4,7 @@ description: "Bulk-load files with COPY, run transactional multi-statement loads
 tool:
   name: "Postgres"
   pluginClass: "io.kestra.plugin.jdbc.postgresql.Query"
+  category: "Data"
   color: "#336791"
 
 hero:

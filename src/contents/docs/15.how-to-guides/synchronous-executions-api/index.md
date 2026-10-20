@@ -21,13 +21,14 @@ id: myflow
 namespace: company.team
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: hello from kestra
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: hello from kestra
 
 outputs:
   - id: mydata
     type: STRING
-    value: "{{ outputs.mytask.value }}"
+    value: "{{ outputs.mytask.values.result }}"
     description: return some data
 ```
 

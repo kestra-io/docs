@@ -4,6 +4,7 @@ description: "Drive Ansible flows from NetBox device and site lists. Auto-alloca
 tool:
   name: "NetBox"
   pluginClass: "io.kestra.plugin.ee.netbox.device.List"
+  category: "Infrastructure"
   color: "#00A99D"
 
 hero:

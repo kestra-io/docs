@@ -4,6 +4,7 @@ description: "Consume a Redis list as a real-time trigger, warm and invalidate c
 tool:
   name: "Redis"
   pluginClass: "io.kestra.plugin.redis.string.Set"
+  category: "Data"
   color: "#FF4438"
 
 hero:

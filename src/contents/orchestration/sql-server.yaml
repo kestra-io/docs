@@ -4,6 +4,7 @@ description: "Trigger SQL Server queries on events instead of Agent cron jobs, b
 tool:
   name: "SQL Server"
   pluginClass: "io.kestra.plugin.jdbc.sqlserver.Query"
+  category: "Data"
   color: "#ee352c"
 
 hero:

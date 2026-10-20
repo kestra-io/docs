@@ -4,6 +4,7 @@ description: "Query CSV and Parquet in place, schedule and persist DuckDB runs, 
 tool:
   name: "DuckDB"
   pluginClass: "io.kestra.plugin.jdbc.duckdb.Query"
+  category: "Data"
   color: "#FFF100"
 
 hero:

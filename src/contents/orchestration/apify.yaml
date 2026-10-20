@@ -4,6 +4,7 @@ description: "Run Apify actors on a schedule, wait for the dataset, enforce cost
 tool:
   name: "Apify"
   pluginClass: "io.kestra.plugin.apify.actor.Run"
+  category: "Data"
   color: "#20A34E"
 
 hero:
