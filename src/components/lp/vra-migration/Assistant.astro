@@ -6,9 +6,11 @@
  * step with assistant-brief-front.png. The CTA stays on this page: the paid
  * visitor books the run with us rather than leaving for the tool's page (the
  * FAQ links to it). */
+import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 
 import BrowserFrame from "~/components/vra-migration-guide/assistant/BrowserFrame.astro"
+import cubes from "~/components/vra-migration-guide/assets/assistant-cubes.png"
 
 const mapping = [
     {
@@ -76,6 +78,15 @@ const points = [
             class="visual"
             data-usal="fade-l delay-100 duration-500 ease-out"
         >
+            <Image
+                src={cubes}
+                alt=""
+                aria-hidden="true"
+                widths={[480, 960]}
+                sizes="(min-width: 992px) 420px, 260px"
+                loading="lazy"
+                class="cubes"
+            />
             <BrowserFrame path="kestra-assessment / index.html">
                 <div class="brief">
                     <p class="brief-title">Migration brief: lb-usecase</p>
@@ -247,10 +258,31 @@ const points = [
     }
 
     .visual {
+        position: relative;
         flex: 1 1 auto;
         min-width: 0;
         margin: 0;
+    }
 
+    /* The assistant page's cubes, breaking out of the frame's top-right
+     * corner. The PNG is mostly transparent margin, so the offsets place its
+     * ink, not its box. The section clips, so the overhang never scrolls. */
+    .visual :global(.cubes) {
+        position: absolute;
+        z-index: 2;
+        top: -60px;
+        right: -40px;
+        width: 240px;
+        height: auto;
+        pointer-events: none;
+        @include media-breakpoint-up(lg) {
+            top: -100px;
+            right: -110px;
+            width: 420px;
+        }
+    }
+
+    .visual {
         figcaption {
             margin-top: 0.75rem;
             color: var(--lp-content-muted);

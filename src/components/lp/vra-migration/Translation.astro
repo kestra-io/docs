@@ -1,6 +1,8 @@
 ---
 import { Icon } from "astro-icon/components"
 
+import KestraMark from "./assets/kestra-mark.svg"
+
 /* A condensed cut of the guide's capability map (Appendix A). Keep the rows in
  * step with it: the map is what the sales team hands the architect. */
 const rows = [
@@ -59,7 +61,12 @@ const rows = [
                 <th scope="col" class="arrow-col">
                     <span class="visually-hidden">becomes</span>
                 </th>
-                <th scope="col">Kestra</th>
+                <th scope="col">
+                    <span class="brand">
+                        <KestraMark class="kestra-mark" aria-hidden="true" />
+                        Kestra
+                    </span>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -130,6 +137,20 @@ const rows = [
         font-weight: 600;
         line-height: 1.5;
         text-align: left;
+    }
+
+    .brand {
+        display: inline-flex;
+        vertical-align: middle;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Not `.mark`: Bootstrap styles that class as a highlight. */
+    .kestra-mark {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
     }
 
     tbody th,
