@@ -158,60 +158,106 @@ Each task type can expose custom metrics that will be also exposed on Prometheus
 
 #### Worker
 
+All Worker metrics except `worker.killed.count` are tagged with `worker_group`.
+
 |Metrics|Type|Description|
 |-|-|-|
+|worker.job.thread|`GAUGE`|Number of Worker threads|
+|worker.max.concurrency|`GAUGE`|Maximum number of jobs the Worker can hold: running threads plus jobs waiting in its buffer|
 |worker.running.count|`GAUGE`|Number of tasks currently running|
+|worker.pending.count|`GAUGE`|Number of tasks waiting for a free Worker thread|
+|worker.abandoned.count|`GAUGE`|Number of jobs past their deadline that still hold a Worker thread|
+|worker.queued.duration|`TIMER`|Time a task waited inside the Worker before running|
 |worker.started.count|`COUNTER`|Count of tasks started|
-|worker.retried.count|`COUNTER`|Count of tasks retried|
 |worker.ended.count|`COUNTER`|Count of tasks completed|
 |worker.ended.duration|`TIMER`|Duration of tasks completed|
-|worker.job.running|`GAUGE`|Count of currently running worker jobs|
-|worker.job.pending|`GAUGE`|Count of currently pending worker jobs|
-|worker.job.thread|`GAUGE`|Total worker job thread count|
+|worker.timeout.count|`COUNTER`|Count of tasks and polling trigger evaluations that timed out|
+|worker.killed.count|`COUNTER`|Count of execution kill events received|
+|worker.trigger.started.count|`COUNTER`|Count of trigger evaluations started|
+|worker.trigger.ended.count|`COUNTER`|Count of trigger evaluations completed|
+|worker.trigger.error.count|`COUNTER`|Count of trigger evaluations that failed|
+|worker.trigger.execution.count|`COUNTER`|Count of triggers evaluated|
+|worker.trigger.duration|`TIMER`|Duration of trigger evaluations|
+|worker.trigger.running.count|`GAUGE`|Number of triggers currently evaluating|
+|worker.queue.size|`GAUGE`|Number of items in an internal Worker buffer, tagged by buffer `name` (for example `workerjob`)|
+|worker.queue.remaining.capacity|`GAUGE`|Remaining capacity of an internal Worker buffer, tagged by buffer `name`|
+|worker.queue.enqueued|`COUNTER`|Count of items added to an internal Worker buffer|
+|worker.queue.dequeued|`COUNTER`|Count of items taken from an internal Worker buffer|
 
 :::alert{type="info"}
-The `worker.job.pending`, `worker.job.running`, and `worker.job.thread` metrics are intended for autoscaling [worker servers](../../08.architecture/02.server-components/index.md#worker).
+The `worker.job.thread`, `worker.max.concurrency`, `worker.running.count`, and `worker.pending.count` metrics are intended for autoscaling [worker servers](../../08.architecture/02.server-components/index.md#worker).
 :::
 
 #### Executor
 
 |Metrics|Type|Description|
 |-|-|-|
-|executor.taskrun.next.count|`COUNTER`|Count of tasks found|
-|executor.execution.end.count|`COUNTER`|Count of completed executions|
-|executor.taskrun.ended.duration|`TIMER`|Duration of tasks completed|
-|executor.workertaskresult.count|`COUNTER`|Count of task results sent by a worker|
 |executor.execution.started.count|`COUNTER`|Count of executions started|
 |executor.execution.end.count|`COUNTER`|Count of executions completed|
 |executor.execution.duration|`TIMER`|Duration of executions completed|
+|executor.execution.message.process|`TIMER`|Duration of processing a single execution message|
+|executor.execution.queued.count|`COUNTER`|Count of executions queued by a [concurrency limit](../../05.workflow-components/14.concurrency/index.md)|
+|executor.execution.popped.count|`COUNTER`|Count of queued executions released from the queue|
+|executor.execution.delay.created.count|`COUNTER`|Count of delays created for retries, pauses, and `LoopUntil` waits|
+|executor.execution.delay.ended.count|`COUNTER`|Count of delays that ended and resumed an execution|
+|executor.taskrun.created.count|`COUNTER`|Count of task runs created|
+|executor.taskrun.ended.count|`COUNTER`|Count of task runs completed|
+|executor.taskrun.ended.duration|`TIMER`|Duration of task runs completed|
 |executor.flowable.execution.count|`COUNTER`|Count of flowable tasks executed|
-|executor.execution.popped.count|`COUNTER`|Count of executions popped|
-|executor.execution.queued.count|`COUNTER`|Count of executions queued|
-|executor.thread.count|`COUNTER`|Count of executor threads|
+|executor.killed.count|`COUNTER`|Count of kill requests received, tagged by `execution_killed_type`|
+|executor.sla.expired.count|`COUNTER`|Count of `MAX_DURATION` [SLAs](../../05.workflow-components/18.sla/index.md) that expired|
+|executor.sla.violation.count|`COUNTER`|Count of SLA violations of any type|
+|executor.quota.exceeded.total|`COUNTER`|Count of exceeded [quotas](../../05.workflow-components/21.quotas/index.md) (Enterprise Edition)|
+|executor.worker.job.resubmit.count|`COUNTER`|Count of worker jobs resubmitted after a worker stopped responding|
+|executor.worker.job.orphan.count|`COUNTER`|Count of running worker jobs reclaimed from a worker that left the cluster|
+|executor.processing.flow.trigger.duration|`TIMER`|Duration of evaluating [Flow triggers](../../05.workflow-components/07.triggers/02.flow-trigger/index.md)|
+|executor.loop.delay.duration|`TIMER`|Duration of one pass of the delay loop that resumes retries and pauses|
+|executor.loop.sla.duration|`TIMER`|Duration of one pass of the SLA monitoring loop|
+|executor.thread.count|`GAUGE`|Number of executor threads|
 
 #### Indexer
 
-|Metrics|Type| Description                               |
-|-|-|-------------------------------------------|
-|indexer.count|`COUNTER`| Count of index requests sent to a repository      |
-|indexer.duration|`DURATION`| Duration of index requests sent to a repository |
-
-#### Scheduler
-
-|Metrics|Type| Description                                                                                         |
-|-|-|-----------------------------------------------------------------------------------------------------|
-|scheduler.trigger.count|`COUNTER`| Count of triggers                                                                                   |
-|scheduler.evaluate.running.count|`COUNTER`| Evaluation of triggers actually running |
-|scheduler.evaluate.duration|`TIMER`| Duration of trigger evaluation                                                                      |
-
-#### JDBC Queue
+Indexer metrics are tagged with `type`, the class name of the indexed record. They are emitted by every server that runs an indexer, including the webserver and standalone servers, which embed one by default.
 
 |Metrics|Type|Description|
 |-|-|-|
-|queue.big_message.count|`COUNTER`|Count of big messages|
-|queue.produce.count|`COUNTER`|Count of produced messages|
-|queue.receive.duration|`TIMER`|Duration to receive and consume a batch of messages|
-|queue.poll.size|`GAUGE`|Size of a poll to the queue (message batch size)|
+|indexer.request.count|`COUNTER`|Count of non-empty batches of records received|
+|indexer.request.duration|`TIMER`|Duration of writing a batch of records to the repository|
+|indexer.message.in.count|`COUNTER`|Count of records received|
+|indexer.message.out.count|`COUNTER`|Count of records stored|
+
+#### Scheduler
+
+|Metrics|Type|Description|
+|-|-|-|
+|scheduler.loop.count|`COUNTER`|Count of evaluation loops|
+|scheduler.evaluate.count|`COUNTER`|Count of triggers evaluated|
+|scheduler.evaluation.loop.duration|`TIMER`|Duration of one trigger evaluation loop|
+|scheduler.trigger.count|`COUNTER`|Count of executions started by the Scheduler|
+|scheduler.trigger.delay.duration|`TIMER`|Delay between a trigger's scheduled date and its evaluation. Backfills are excluded.|
+|scheduler.trigger.evaluation.duration|`TIMER`|Duration of evaluating a schedulable trigger, tagged by `trigger_type`|
+|scheduler.execution.lock.duration|`TIMER`|Time a trigger stays locked waiting for its execution to end|
+|scheduler.execution.missing.duration|`TIMER`|Time a locked trigger waits for an execution that the Executor has not started|
+|scheduler.eventloop.thread.max|`GAUGE`|Maximum number of event-loop threads|
+|scheduler.assigned.vnodes.count|`GAUGE`|Number of virtual nodes assigned to the Scheduler|
+|scheduler.eventloop.tick.duration|`TIMER`|Duration of one event-loop tick, tagged by `thread-id`|
+|scheduler.eventloop.event.received.total|`COUNTER`|Count of events received by the event loop, tagged by `thread-id`|
+|scheduler.eventloop.event.process.duration|`TIMER`|Duration of processing one event in the event loop, tagged by `thread-id`|
+
+#### Queue
+
+These metrics apply to every queue backend. Unless noted, they are tagged with `queue_name`.
+
+|Metrics|Type|Description|
+|-|-|-|
+|queue.message.emitted.total|`COUNTER`|Count of messages emitted|
+|queue.message.big.total|`COUNTER`|Count of messages over the message protection limit, tagged by `class_name`|
+|queue.consume.duration|`TIMER`|Duration of consuming a single message|
+|queue.consume.batch.duration|`TIMER`|Duration of consuming a batch of messages|
+|queue.subscribers.active|`GAUGE`|Number of active queue subscribers|
+|queue.subscribers.paused.total|`COUNTER`|Count of queue subscriber pauses|
+|queue.subscribers.resumed.total|`COUNTER`|Count of queue subscriber resumes|
+|queue.message.lag|`GAUGE`|Number of worker jobs not yet consumed, tagged by `worker_queue`. Reported by the webserver or standalone server only when `kestra.metric.queue.lag.enabled` is `true`.|
 
 ### Other metrics
 
@@ -1948,11 +1994,11 @@ Share your dashboard with [the community](/slack). Below is an example Grafana d
 
 Kestra exposes internal endpoints on the management port (8081 by default) to provide status corresponding to the [server type](../../08.architecture/02.server-components/index.md):
 
-* `/worker`: will expose all currently running tasks on this worker.
-* `/scheduler`: will expose all currently scheduled flows on this scheduler with the next date.
-* `/kafkastreams`: will expose all [Kafka Streams](https://kafka.apache.org/documentation/streams/) states and aggregated store lag.
-* `/kafkastreams/{clientId}/lag`: will expose details lag for a `clientId`.
-* `/kafkastreams/{clientId}/metrics`: will expose details metrics for a `clientId`.
+* `/worker`: exposes the tasks and triggers currently running on this worker. Available on worker and standalone servers. This endpoint is sensitive by default.
+* `/scheduler`: exposes the triggers this scheduler can evaluate now, with their next evaluation date. Available on scheduler and standalone servers. This endpoint is sensitive by default.
+* `/version`: returns the Kestra version, revision, build date, and server type.
+
+To open `/worker` or `/scheduler` without authentication, see [Management Endpoint Hardening](../../11.migration-guide/v2.0.0/management-endpoint-hardening/index.md).
 
 ## Other Micronaut default endpoints
 
@@ -1967,7 +2013,7 @@ Since Kestra is based on [Micronaut](https://micronaut.io), the [default Microna
 You can disable some endpoints following the above Micronaut configuration.
 
 :::alert{type="warning"}
-The management port is unauthenticated by default. Do not expose port `8081` outside your internal network. See [Management endpoint access](../security-hardening/index.md#management-endpoint-access) for hardening guidance.
+The management port is unauthenticated by default. Do not expose port `8081` outside your internal network. See [Management endpoint access](../../security-hardening/index.md#management-endpoint-access) for hardening guidance.
 :::
 
 ## Debugging techniques
