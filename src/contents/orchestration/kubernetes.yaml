@@ -4,6 +4,7 @@ description: "Run heavy Pods inside the cluster as flow steps. Server-side apply
 tool:
   name: "Kubernetes"
   pluginClass: "io.kestra.plugin.kubernetes.core.PodCreate"
+  category: "Infrastructure"
   color: "#326CE5"
 
 hero:

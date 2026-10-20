@@ -4,6 +4,7 @@ description: "Drive ansible-playbook from cron and events, gate wave promotion, 
 tool:
   name: "Ansible"
   pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+  category: "Infrastructure"
   color: "#EE0000"
 
 hero:

@@ -150,6 +150,7 @@ export const orchestrationSchema = z.object({
     tool: z.object({
         name: z.string(),
         pluginClass: z.string(),
+        category: z.enum(["Infrastructure", "Cloud", "Data", "Business", "AI"]),
         color: z.string().optional(),
     }),
     hero: heroSchema,

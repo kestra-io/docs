@@ -4,6 +4,7 @@ description: "Schedule Terraform plans for drift detection, gate plan to apply w
 tool:
   name: "Terraform"
   pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+  category: "Infrastructure"
   color: "#7B42BC"
 
 hero:

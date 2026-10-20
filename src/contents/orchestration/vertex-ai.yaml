@@ -4,6 +4,7 @@ description: "Run Gemini models on Vertex AI as governed pipeline steps: batch-e
 tool:
   name: "Vertex AI"
   pluginClass: "io.kestra.plugin.gcp.vertexai.ChatCompletion"
+  category: "AI"
   color: "#4285F4"
 
 hero:

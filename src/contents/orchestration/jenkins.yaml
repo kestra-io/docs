@@ -4,6 +4,7 @@ description: "Trigger Jenkins jobs from webhooks or schedules, chain them with T
 tool:
   name: "Jenkins"
   pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+  category: "Infrastructure"
   color: "#D33833"
 
 hero:

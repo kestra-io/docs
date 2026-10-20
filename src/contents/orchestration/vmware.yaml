@@ -4,6 +4,7 @@ description: "Orchestrate vSphere from one flow: vCenter event triggers, snapsho
 tool:
   name: "VMware"
   pluginClass: "io.kestra.plugin.ee.vmware.vcenter.CreateVm"
+  category: "Infrastructure"
   color: "#00B135"
 
 hero:

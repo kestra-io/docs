@@ -4,6 +4,7 @@ description: "Trigger on Blob and Event Hub arrivals, stream Service Bus message
 tool:
   name: "Azure"
   pluginClass: "io.kestra.plugin.azure.cli.AzCLI"
+  category: "Cloud"
   color: "#0078d4"
 
 hero:

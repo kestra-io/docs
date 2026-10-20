@@ -4,6 +4,7 @@ description: "Wrap every dbt build with event triggers, approval gates between l
 tool:
   name: "dbt Core"
   pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+  category: "Data"
   color: "#FF694A"
 
 hero:

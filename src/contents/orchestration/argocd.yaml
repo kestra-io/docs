@@ -4,6 +4,7 @@ description: "Trigger argocd app sync on CI completions or image pushes. Add app
 tool:
   name: "Argo CD"
   pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+  category: "Infrastructure"
   color: "#EF7B4D"
 
 hero:

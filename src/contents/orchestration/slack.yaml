@@ -4,6 +4,7 @@ description: "Connect Slack to dbt, Terraform, Argo CD, AWS, Snowflake, and the 
 tool:
   name: "Slack"
   pluginClass: "io.kestra.plugin.slack.app.chats.Post"
+  category: "Business"
   color: "#E01E5A"
 
 hero:

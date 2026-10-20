@@ -4,6 +4,7 @@ description: "Trigger S3, Lambda, Glue, EMR, DynamoDB, Athena from one flow. Nat
 tool:
   name: "AWS"
   pluginClass: "io.kestra.plugin.aws.cli.AwsCLI"
+  category: "Cloud"
   color: "#FF9900"
 
 hero:
