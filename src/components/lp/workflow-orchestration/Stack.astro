@@ -21,6 +21,8 @@ interface Props {
         title: string
         items: string[]
     }[]
+    /** Rendered glyph size in px; thin-stroke icons read better smaller. */
+    glyphSize?: number
 }
 
 const totalPlugins = await fetchTotalPluginsCount()
@@ -72,10 +74,11 @@ const {
     heading = "Unified Orchestration Across Your Stack",
     sub = `API-first, with ${totalPlugins}+ plugins for your databases, clouds, and internal systems`,
     columns = defaultColumns,
+    glyphSize = 120,
 } = Astro.props
 ---
 
-<section class="stack">
+<section class="stack" style={`--glyph-size: ${glyphSize}px`}>
     <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
         <h2>{heading}</h2>
         {sub && <p>{sub}</p>}
@@ -236,8 +239,8 @@ const {
     }
 
     .glyph {
-        width: 120px;
-        height: 120px;
+        width: var(--glyph-size, 120px);
+        height: var(--glyph-size, 120px);
     }
 
     .check {
