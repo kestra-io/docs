@@ -178,7 +178,7 @@ services:
         kestra_net:
       entrypoint: >
         /bin/sh -c "
-        until echo 's3.bucket.create -name warehouse' | weed shell -master=seaweedfs:9333; do echo '...waiting...' && sleep 2; done
+        until echo 's3.bucket.list' | weed shell -master=seaweedfs:9333 | grep -qw warehouse || echo 's3.bucket.create -name warehouse' | weed shell -master=seaweedfs:9333 | grep -q 'created bucket'; do echo '...waiting...' && sleep 2; done
         "
 
   kestra:
