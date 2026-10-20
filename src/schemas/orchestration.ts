@@ -24,8 +24,6 @@ const pillarsSchema = z.object({
     items: z.array(pillarSchema),
 })
 
-
-
 const useCaseStepSchema = z.object({
     node: z.string(),
     label: z.string().optional(),
@@ -77,7 +75,6 @@ const blueprintSchema = z.object({
     title: z.string(),
     description: z.string(),
     blueprintId: z.string(),
-    render: z.object({ source: z.string(), graph: z.unknown() }).nullable().optional(),
 })
 
 const blueprintsSchema = z.object({
