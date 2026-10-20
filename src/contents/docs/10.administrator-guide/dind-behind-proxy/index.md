@@ -21,7 +21,7 @@ Create a file `daemon.json`:
     "proxies": {
         "http-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
         "https-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
-        "no-proxy": "localhost,127.0.0.1,.svc,.cluster.local,your.nexus.domain.com,kestra-minio"
+        "no-proxy": "localhost,127.0.0.1,.svc,.cluster.local,your.nexus.domain.com,your.object-storage.domain.com"
     }
 }
 ```
