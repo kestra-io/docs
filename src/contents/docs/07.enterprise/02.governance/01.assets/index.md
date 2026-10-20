@@ -25,6 +25,7 @@ Assets are captured automatically when tasks declare `assets.inputs` or `assets.
 - Shipping metadata to lineage providers (e.g., OpenLineage).
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
 - Monitoring assets and their state.
+- Showing plugin data, such as test results, on asset cards through [plugin artifacts](../../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 ## Asset definition
 
@@ -672,6 +673,10 @@ Click a node to open the details panel on the right side of the graph. The panel
 - Recent runs, each linked to its execution page.
 
 Double-click a node to navigate to that asset's detail page. Clicking an empty area of the canvas closes the panel and releases any pinned group.
+
+### Plugin footers on asset cards
+
+A plugin can add a footer below an asset's card, for example to show test results that its tasks stored in the asset's metadata. The footer is a plugin artifact, and it shows the asset's latest metadata. See [Plugin artifacts and assets](../../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 ## Locking assets
 
