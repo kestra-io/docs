@@ -21,51 +21,6 @@
     const meetingUrl = ref<string>()
     const formRef = useTemplateRef("demo-form")
 
-    /**
-     * A qualifying question a landing page adds under the standard fields.
-     * Each one is written to its own HubSpot contact property, which must
-     * exist in HubSpot before the page ships.
-     */
-    type ExtraField =
-        | {
-              type: "select"
-              name: string
-              /** HubSpot contact property the answer is written to. */
-              property: string
-              placeholder: string
-              options: string[]
-              required?: boolean
-          }
-        | {
-              /**
-               * A month and a year side by side, sent as `YYYY-MM-01` so it
-               * fits a HubSpot date property. Optional by design: both halves
-               * or neither.
-               */
-              type: "month-year"
-              name: string
-              property: string
-              monthPlaceholder: string
-              yearPlaceholder: string
-              /** Literal, not derived from today, so SSR and hydration agree. */
-              years: number[]
-          }
-
-    const MONTHS = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ]
-
     const props = withDefaults(
         defineProps<{
             routePath: string
@@ -76,47 +31,12 @@
              */
             variant?: "demo" | "plain"
             submitLabel?: string
-            extraFields?: ExtraField[]
         }>(),
         {
             variant: "demo",
             submitLabel: "Let's Talk",
-            extraFields: () => [],
         },
     )
-
-    /** HubSpot fields for the page's qualifying questions, or a validation
-     * message when a month-year pair is only half filled in. */
-    function readExtraFields(form: HTMLFormElement) {
-        const fields: { objectTypeId: string; name: string; value: string }[] =
-            []
-        for (const field of props.extraFields) {
-            if (field.type === "select") {
-                const value = form[field.name].value
-                if (value)
-                    fields.push({
-                        objectTypeId: "0-1",
-                        name: field.property,
-                        value,
-                    })
-                continue
-            }
-            const month = form[`${field.name}-month`].value
-            const year = form[`${field.name}-year`].value
-            if (!month && !year) continue
-            if (!month || !year)
-                return {
-                    fields,
-                    error: "Please choose both the month and the year, or leave both empty.",
-                }
-            fields.push({
-                objectTypeId: "0-1",
-                name: field.property,
-                value: `${year}-${month}-01`,
-            })
-        }
-        return { fields, error: undefined }
-    }
 
     const hubSpotFormId = "d8175470-14ee-454d-afc4-ce8065dee9f2"
 
@@ -143,13 +63,6 @@
         const jobtitle = form["job-title"].value
         const clickId = getStoredClickId()
 
-        const extra = readExtraFields(form)
-        if (extra.error) {
-            valid.value = false
-            message.value = extra.error
-            return
-        }
-
         hsq.push([
             "identify",
             {
@@ -174,7 +87,6 @@
                     name: COMPANY_SIZE_PROPERTY,
                     value: emp,
                 },
-                ...extra.fields,
                 {
                     objectTypeId: "0-1",
                     name: "kuid",
@@ -412,86 +324,6 @@
                     </select>
                 </div>
 
-                <template v-for="field in extraFields" :key="field.name">
-                    <div v-if="field.type === 'select'" class="col-12">
-                        <label
-                            :for="`${uid}-${field.name}`"
-                            class="form-label mb-0"
-                        >
-                            {{ field.placeholder }}
-                        </label>
-                        <select
-                            :id="`${uid}-${field.name}`"
-                            :name="field.name"
-                            class="form-control"
-                            :class="{ optional: !field.required }"
-                            :required="field.required"
-                        >
-                            <option value="" disabled selected>
-                                {{ field.placeholder
-                                }}{{ field.required ? " *" : "" }}
-                            </option>
-                            <option
-                                v-for="option in field.options"
-                                :key="option"
-                                :value="option"
-                            >
-                                {{ option }}
-                            </option>
-                        </select>
-                    </div>
-                    <template v-else>
-                        <div class="col-md-6 col-12">
-                            <label
-                                :for="`${uid}-${field.name}-month`"
-                                class="form-label mb-0"
-                            >
-                                {{ field.monthPlaceholder }}
-                            </label>
-                            <select
-                                :id="`${uid}-${field.name}-month`"
-                                :name="`${field.name}-month`"
-                                class="form-control optional"
-                            >
-                                <option value="" selected>
-                                    {{ field.monthPlaceholder }}
-                                </option>
-                                <option
-                                    v-for="(month, index) in MONTHS"
-                                    :key="month"
-                                    :value="String(index + 1).padStart(2, '0')"
-                                >
-                                    {{ month }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <label
-                                :for="`${uid}-${field.name}-year`"
-                                class="form-label mb-0"
-                            >
-                                {{ field.yearPlaceholder }}
-                            </label>
-                            <select
-                                :id="`${uid}-${field.name}-year`"
-                                :name="`${field.name}-year`"
-                                class="form-control optional"
-                            >
-                                <option value="" selected>
-                                    {{ field.yearPlaceholder }}
-                                </option>
-                                <option
-                                    v-for="year in field.years"
-                                    :key="year"
-                                    :value="String(year)"
-                                >
-                                    {{ year }}
-                                </option>
-                            </select>
-                        </div>
-                    </template>
-                </template>
-
                 <div class="col-12 mt-3">
                     <small class="agree">
                         By submitting this form, you agree to our
@@ -602,10 +434,7 @@
                 background-position: right 0.625rem center;
                 background-size: 1.25rem 1.25rem;
 
-                /* An optional select is never :invalid, so its empty
-                 * placeholder state needs its own hook to read as one. */
-                &:invalid,
-                &.optional:has(option[value=""]:checked) {
+                &:invalid {
                     color: var(--ks-secondary-color);
                 }
             }
