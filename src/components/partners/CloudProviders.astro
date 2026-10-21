@@ -41,6 +41,10 @@ const CLOUDS = [
     },
 ]
 
+// the cards repeat the logos of the table, so their gradient ids get a prefix to stay unique
+const cardLogo = (svg: string) =>
+    svg.replace(/id="/g, 'id="card-').replace(/url\(#/g, "url(#card-")
+
 // each row of the comparison: what it is, and how it reads for one cloud
 const ROWS = [
     { label: "Tasks and triggers", note: "In the plugin group" },
@@ -127,6 +131,43 @@ const ROWS = [
             </table>
         </div>
 
+        <!-- on phones, one card per cloud instead of a table that scrolls sideways -->
+        <ul class="cloud-cards">
+            {
+                CLOUDS.map((cloud) => (
+                    <li class="cloud-card">
+                        <span class="cloud-head">
+                            <span
+                                class="logo"
+                                set:html={cardLogo(cloud.logo)}
+                            />
+                            {cloud.name}
+                        </span>
+                        <dl>
+                            <div>
+                                <dt>{ROWS[0].label}</dt>
+                                <dd>
+                                    <strong class="big">{cloud.tasks}</strong>
+                                    <small>{cloud.services}</small>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>{ROWS[1].label}</dt>
+                                <dd>{cloud.storage}</dd>
+                            </div>
+                            <div>
+                                <dt>{ROWS[2].label}</dt>
+                                <dd>{cloud.secrets}</dd>
+                            </div>
+                        </dl>
+                        <Link href={cloud.href} class="more">
+                            {cloud.cta}
+                        </Link>
+                    </li>
+                ))
+            }
+        </ul>
+
         <p class="anywhere">
             <span class="logo" set:html={homeRoofSVG} />
             Not on one of these? Kestra runs on any Kubernetes cluster, Docker host
@@ -171,6 +212,60 @@ const ROWS = [
             overflow-x: auto;
             border: 1px solid var(--clouds-border);
             border-radius: 0.8125rem;
+
+            @include media-breakpoint-down(md) {
+                display: none;
+            }
+        }
+
+        .cloud-cards {
+            display: none;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            @include media-breakpoint-down(md) {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .cloud-card {
+            padding: 1.25rem;
+            border: 1px solid var(--clouds-border);
+            border-radius: 0.8125rem;
+
+            .cloud-head {
+                margin-bottom: 1rem;
+            }
+
+            dl {
+                margin: 0 0 1rem;
+            }
+
+            div {
+                padding: 0.75rem 0;
+                border-top: 1px solid var(--clouds-border);
+            }
+
+            dt {
+                margin-bottom: 0.25rem;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: var(--ks-content-tertiary);
+            }
+
+            dd {
+                margin: 0;
+                font-weight: 500;
+                color: var(--ks-content-primary);
+            }
+
+            .big {
+                display: block;
+                font-size: 1.5rem;
+            }
         }
 
         table {
