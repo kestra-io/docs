@@ -51,6 +51,7 @@ interface Props {
      */
     bareChrome?: boolean
     hideFloatingActions?: boolean
+    lang?: string
 }
 
 const props = Astro.props
@@ -155,7 +156,7 @@ const organizationSchema = {
 }
 ---
 
-<html lang="en" class:list={{ "no-animation": DISABLE_USAL }}>
+<html lang={props.lang ?? "en"} class:list={{ "no-animation": DISABLE_USAL }}>
     <head>
         <script is:inline>
             ;(function () {

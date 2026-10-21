@@ -15,6 +15,7 @@ import bitovi from "./assets/bitovi.svg"
 import jlcp from "./assets/jlcp.svg"
 import landeranalytics from "./assets/landeranalytics.avif"
 import digitalocean from "./assets/digitalocean.svg"
+import modeo from "./assets/modeo.svg"
 
 export type PartnerType = "Technology" | "Consulting"
 
@@ -78,6 +79,18 @@ export const PARTNERS: Partner[] = [
         description:
             "Snowflake's platform enables a wide range of workloads including data warehousing, data lakes, and data engineering.",
         href: "https://www.snowflake.com/",
+    },
+    {
+        name: "Modeo",
+        kind: "Consulting firm",
+        country: "France",
+        region: "Europe",
+        services: ["Data engineering", "Data strategy", "Legacy modernization"],
+        logo: modeo,
+        type: "Consulting",
+        description:
+            "Independent data and AI consultancy in Paris that designs and industrializes modern, sovereign Data Platforms and DataOps with Kestra.",
+        href: "/partners/modeo",
     },
     {
         name: "Converteo",

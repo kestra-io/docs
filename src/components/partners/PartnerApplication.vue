@@ -50,7 +50,7 @@
 
                                 <div v-if="form.track" class="form-group">
                                     <span class="label">
-                                        {{ form.track === "consulting" ? "Which tracks are you applying for? Pick all that apply." : "What do you build? Pick all that apply." }}
+                                        {{ form.track === "consulting" ? "Your areas of expertise. Pick all that apply." : "What do you build? Pick all that apply." }}
                                         <span class="required-field">*</span>
                                     </span>
                                     <div class="checks">
@@ -167,8 +167,8 @@
     const TRACKS = [
         {
             id: "consulting" as Track,
-            title: "Solution, Services or Reseller",
-            text: "You demo, deliver, operate or sell Kestra for your clients. Pick one track or several on the next question.",
+            title: "Consulting and services partner",
+            text: "Consulting firm, systems integrator, managed service provider or reseller. You deliver or sell Kestra for your clients.",
         },
         {
             id: "technology" as Track,
@@ -177,7 +177,7 @@
         },
     ]
     const KINDS: Record<Track, string[]> = {
-        consulting: ["Solution partner", "Services partner", "Reseller partner"],
+        consulting: ["Data engineering and analytics", "Infrastructure and DevOps", "Cloud and Kubernetes", "AI and machine learning", "Business process automation", "Legacy scheduler migration"],
         technology: ["Cloud provider", "Data platform", "Data integration", "Infrastructure or DevOps tool", "AI or model provider", "Other ISV"],
     }
     const EXPERIENCES: Record<Track, string[]> = {
@@ -186,9 +186,12 @@
     }
     const REGIONS = ["Europe", "North America", "Latin America", "Asia-Pacific", "Middle East and Africa"]
     const HUBSPOT_VALUES: Record<string, string> = {
-        "Solution partner": "solution",
-        "Services partner": "services",
-        "Reseller partner": "reseller",
+        "Data engineering and analytics": "data",
+        "Infrastructure and DevOps": "infrastructure_devops",
+        "Cloud and Kubernetes": "cloud_kubernetes",
+        "AI and machine learning": "ai_ml",
+        "Business process automation": "business_automation",
+        "Legacy scheduler migration": "legacy_migration",
         "Cloud provider": "cloud",
         "Data platform": "data_platform",
         "Data integration": "data_integration",
@@ -246,7 +249,7 @@
     const validateStep = (): string => {
         if (step.value === 0) {
             if (!form.track) return "Choose the partner track that matches you."
-            if (form.kind.length === 0) return "Pick at least one partner type."
+            if (form.kind.length === 0) return form.track === "consulting" ? "Pick at least one area of expertise." : "Pick at least one partner type."
         }
         if (step.value === 1) {
             if (!form.company || !form.website) return "Company name and website are required."
@@ -298,7 +301,7 @@
                     company("name", form.company),
                     company("website", form.website),
                     company("partner_track", form.track),
-                    company("partner_type", form.kind.map((k) => HUBSPOT_VALUES[k]).join(";")),
+                    company(form.track === "consulting" ? "partner_expertise" : "partner_type", form.kind.map((k) => HUBSPOT_VALUES[k]).join(";")),
                     company("partner_regions", form.regions.map((r) => HUBSPOT_VALUES[r]).join(";")),
                     company("partner_experience", HUBSPOT_VALUES[form.experience]),
                     company("partner_plan", form.plan),
