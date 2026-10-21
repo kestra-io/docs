@@ -21,7 +21,7 @@ As we explain in our guide on [modern infrastructure automation](https://kestra.
 
 Virtualization workflows are no exception.
 
- VMware vRealize Automation (vRA) or Aria Automation, while powerful, these systems often become rigid automation silos where operational logic is difficult to evolve, integrate with modern pipelines, or extend beyond the VMware ecosystem.
+ VMware vRealize Automation (vRA), now Aria Automation, is powerful, but it often becomes a rigid automation silo where operational logic is difficult to evolve, integrate with modern pipelines, or extend beyond the VMware ecosystem.
 
 Kestra takes a different approach. Instead of locking automation inside a virtualization portal, VMware operations become **workflow steps in a broader orchestration platform**, where VM lifecycle management, infrastructure automation, and application workflows can all run together.
 
@@ -47,6 +47,8 @@ The VMware plugin brings VM lifecycle management **directly into Kestra workflow
 - Integrate VM operations with the rest of the platform stack
 
 Instead of automating VMware in isolation, teams can now treat it as **one component of a larger orchestration workflow**.
+
+If you are planning to replace vRA and vRO rather than extend them, our [vRA to Kestra migration guide](/resources/migration/vra?utm_source=blog&utm_medium=cta&utm_campaign=vra_guide&utm_content=inline) covers the full migration, from inventorying your estate to retiring vRA at renewal.
 
 ## VM Lifecycle Management with vCenter and ESXi
 
@@ -184,6 +186,8 @@ This is a key step toward **treating infrastructure as orchestrated workflows ra
 VMware becomes just another orchestrated component in your platform workflows.
 
 👉 Explore the [VMware plugin](https://kestra.io/plugins/plugin-ee-vmware) and start orchestrating your vSphere environments with Kestra.
+
+👉 Moving off vRA and vRO entirely? Read the [vRA to Kestra migration guide](/resources/migration/vra?utm_source=blog&utm_medium=cta&utm_campaign=vra_guide&utm_content=closing).
 
 Have questions or feedback? Join our [Slack community](https://kestra.io/slack) or open [an issue on GitHub](https://github.com/kestra-io/kestra).
 

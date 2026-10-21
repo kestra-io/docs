@@ -1,0 +1,24 @@
+import GuideCards from "./blocks/GuideCards.astro"
+import HandoutCard from "./blocks/HandoutCard.astro"
+
+## Reference handouts
+
+The three handouts are separate downloads, written to be handed to someone who will not read the whole guide: the object-by-object translation for the architect doing the mapping, and the deployment and security documents for the teams that run the review.
+
+<GuideCards columns={3}>
+<HandoutCard id="appendix-a" appendix="HANDOUT" title="The capability map" pdfHref="https://hs.kestra.io/hubfs/kestra-vmware-migration-capability-map.pdf">
+
+One row per thing in the vRA and vRO world, what it becomes in Kestra, and which edition you need. Grouped by the six parts, with Direct and Redesign marking how each one converts.
+
+</HandoutCard>
+<HandoutCard id="appendix-b" appendix="HANDOUT" title="Deployment options" pdfHref="https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf">
+
+Where Kestra runs, backends, components, restricted network zones, HA and sizing, and the named gaps, including what an air-gapped install needs before anything starts.
+
+</HandoutCard>
+<HandoutCard id="appendix-c" appendix="HANDOUT" title="The security overview" pdfHref="https://hs.kestra.io/hubfs/kestra-security-overview-enterprise-edition.pdf">
+
+Kestra Enterprise's security and compliance posture, written for the reviewer: the SOC 2 Type 2 and GDPR audit, self-hosted and air-gapped deployment, where your data lives, and the controls for identity, secrets, audit, tenant isolation and transport.
+
+</HandoutCard>
+</GuideCards>

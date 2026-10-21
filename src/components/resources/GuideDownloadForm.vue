@@ -1,7 +1,7 @@
 <template>
-    <div class="download-form-container">
+    <div class="guide-form">
         <div v-if="!submitted" class="download-form">
-            <h3 class="form-title">Download the Free Guide</h3>
+            <h3 class="form-title">{{ title }}</h3>
 
             <form
                 class="row"
@@ -13,46 +13,19 @@
                     {{ message }}
                 </div>
 
-                <div class="col-md-6 mb-2">
-                    <label for="firstname">First name</label>
+                <div
+                    v-for="field in FIELDS"
+                    :key="field.name"
+                    :class="[field.half ? 'col-md-6' : 'col-12', 'mb-2']"
+                >
+                    <label :for="`${uid}-${field.name}`">{{
+                        field.label
+                    }}</label>
                     <input
-                        name="firstname"
-                        type="text"
+                        :id="`${uid}-${field.name}`"
+                        :name="field.name"
+                        :type="field.name === 'email' ? 'email' : 'text'"
                         class="form-control"
-                        id="firstname"
-                        required
-                    />
-                </div>
-
-                <div class="col-md-6 mb-2">
-                    <label for="lastname">Last name</label>
-                    <input
-                        name="lastname"
-                        type="text"
-                        class="form-control"
-                        id="lastname"
-                        required
-                    />
-                </div>
-
-                <div class="col-12 mb-2">
-                    <label for="email">Company email</label>
-                    <input
-                        name="email"
-                        type="email"
-                        class="form-control"
-                        id="email"
-                        required
-                    />
-                </div>
-
-                <div class="col-12 mb-2">
-                    <label for="jobtitle">Job title</label>
-                    <input
-                        name="jobtitle"
-                        type="text"
-                        class="form-control"
-                        id="jobtitle"
                         required
                     />
                 </div>
@@ -63,7 +36,7 @@
                         class="btn btn-primary w-100"
                         :disabled="submitting"
                     >
-                        {{ submitting ? "Sending..." : "Download the guide" }}
+                        {{ submitting ? "Sending..." : submitLabel }}
                     </button>
                 </div>
 
@@ -79,12 +52,12 @@
         </div>
 
         <div v-else class="thank-you" data-usal="zoomin">
-            <h3 class="thank-you-title">Thanks — your guide is ready.</h3>
-            <p class="thank-you-text">
-                A copy is on its way to your inbox. You can also download it
-                directly below.
+            <h3 class="title">{{ thankYouTitle }}</h3>
+            <p v-if="thankYouText" class="text">
+                {{ thankYouText }}
             </p>
             <a
+                v-if="guideUrl"
                 :href="guideUrl"
                 target="_blank"
                 rel="noopener"
@@ -97,23 +70,54 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, useTemplateRef } from "vue"
+    import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
-    import { useGtm } from "@gtm-support/vue-gtm"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
 
-    const gtm = useGtm()
+    /** Defaults are the guide download; without `guideUrl` it is a plain
+     *  request with no download link after submit. */
+    const props = withDefaults(
+        defineProps<{
+            hubspotFormId: string
+            guideUrl?: string
+            submissionIdentifier: string
+            pageUri: string
+            event: string
+            title?: string
+            submitLabel?: string
+            thankYouTitle?: string
+            thankYouText?: string
+            withCompany?: boolean
+        }>(),
+        {
+            guideUrl: undefined,
+            withCompany: false,
+            title: "Download the Free Guide",
+            submitLabel: "Download the guide",
+            thankYouTitle: "Thanks — your guide is ready.",
+            thankYouText:
+                "A copy is on its way to your inbox. You can also download it directly below.",
+        },
+    )
+
+    const FIELDS = [
+        { name: "firstname", label: "First name", half: true },
+        { name: "lastname", label: "Last name", half: true },
+        { name: "email", label: "Company email" },
+        ...(props.withCompany ? [{ name: "company", label: "Company" }] : []),
+        { name: "jobtitle", label: "Job title" },
+    ]
+
+    // Per-instance ids: a page can hold this form twice (a hero and a
+    // dialog), and each label must point at its own input.
+    const uid = useId()
     const formRef = useTemplateRef<HTMLFormElement>("download-form")
 
     const message = ref("")
     const submitted = ref(false)
     const submitting = ref(false)
-
-    const HUBSPOT_FORM_ID = "e1706097-e681-441a-8306-7e715e9daa9a"
-
-    const guideUrl = "/airflow-2-eol-whitepaper.pdf"
 
     const onSubmit = async () => {
         const form = formRef.value
@@ -126,53 +130,53 @@
         message.value = ""
 
         try {
-            const formDataObj = new FormData(form)
-            const email = formDataObj.get("email") as string
-            const firstname = formDataObj.get("firstname") as string
-            const lastname = formDataObj.get("lastname") as string
-            const jobtitle = formDataObj.get("jobtitle") as string
+            const { email, firstname, lastname, company, jobtitle } =
+                Object.fromEntries(new FormData(form)) as Record<string, string>
             const kuid = localStorage.getItem("KUID") || ""
 
-            const hsq = ((window as any)._hsq = (window as any)._hsq || [])
+            const hsq = (window._hsq ??= [])
             hsq.push([
                 "identify",
-                { email, firstname, lastname, jobtitle, kuid },
+                { email, firstname, lastname, company, jobtitle, kuid },
             ])
 
-            const { ip } = await $fetch<{ ip: string }>(
+            // The IP only enriches the HubSpot context; a blocked lookup must
+            // not stop the submission.
+            const ip = await $fetch<{ ip: string }>(
                 "https://api.ipify.org?format=json",
             )
+                .then((res) => res.ip)
+                .catch(() => undefined)
 
-            const payload = {
-                fields: [
-                    { objectTypeId: "0-1", name: "firstname", value: firstname },
-                    { objectTypeId: "0-1", name: "lastname", value: lastname },
-                    { objectTypeId: "0-1", name: "email", value: email },
-                    { objectTypeId: "0-1", name: "jobtitle", value: jobtitle },
-                    {
-                        objectTypeId: "0-1",
-                        name: "form_submission_identifier",
-                        value: "Airflow 2 EOL Whitepaper",
-                    },
-                    { objectTypeId: "0-1", name: "kuid", value: kuid },
-                ],
+            const fields = {
+                firstname,
+                lastname,
+                email,
+                ...(props.withCompany ? { company } : {}),
+                jobtitle,
+                form_submission_identifier: props.submissionIdentifier,
+                kuid,
+            }
+            await submitHubspotForm(props.hubspotFormId, {
+                fields: Object.entries(fields).map(([name, value]) => ({
+                    objectTypeId: "0-1",
+                    name,
+                    value,
+                })),
                 context: {
                     hutk: getHubspotTracking() || undefined,
                     ipAddress: ip,
-                    pageUri: "resources/airflow-2-eol-whitepaper",
+                    pageUri: props.pageUri,
                     pageName: document.title,
                 },
-            }
+            })
 
-            await submitHubspotForm(HUBSPOT_FORM_ID, payload)
-
-            posthog.capture("airflow_2_eol_whitepaper_download")
-            hsq.push([
-                "trackCustomBehavioralEvent",
-                { name: "airflow_2_eol_whitepaper_download" },
-            ])
-            gtm?.trackEvent({
-                event: "airflow_2_eol_whitepaper_download",
+            posthog.capture(props.event)
+            hsq.push(["trackCustomBehavioralEvent", { name: props.event }])
+            // Straight to the data layer: the vue-gtm plugin is created with
+            // `enabled: false`, so its trackEvent never reaches GTM.
+            ;(window.dataLayer = window.dataLayer || []).push({
+                event: props.event,
                 noninteraction: false,
             })
             identify(email)
@@ -193,7 +197,7 @@
 </script>
 
 <style scoped lang="scss">
-    .download-form-container {
+    .guide-form {
         width: 100%;
     }
 
@@ -225,7 +229,6 @@
             font-size: $font-size-sm;
             margin-bottom: 0.375rem;
             color: var(--ks-content-primary);
-
         }
 
         .alert-danger {
@@ -241,7 +244,6 @@
             color: var(--ks-content-primary);
             font-size: $font-size-sm;
             border-radius: 4px;
-            width: 100%;
 
             &:focus {
                 border-color: var(--ks-border-active);
@@ -278,14 +280,14 @@
     .thank-you {
         text-align: center;
 
-        .thank-you-title {
+        .title {
             font-size: $font-size-xl;
             font-weight: 600;
             margin: 0 0 0.75rem;
             color: var(--ks-content-primary);
         }
 
-        .thank-you-text {
+        .text {
             color: var(--ks-content-secondary);
             font-size: $font-size-sm;
             margin: 0 0 1.5rem;

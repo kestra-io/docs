@@ -1,0 +1,210 @@
+---
+import { Image } from "astro:assets"
+import SectionTitle from "~/components/security/SectionTitle.astro"
+import BrowserFrame from "./BrowserFrame.astro"
+import { GUIDE_HREF } from "./links"
+import briefFront from "../assets/assistant-brief-front.webp"
+---
+
+<section class="overview">
+    <div class="container">
+        <div class="intro-row">
+            <div class="intro">
+                <SectionTitle title="What it does" />
+                <p>
+                    The Migration Assistant runs the assessment for moving off
+                    VMware vRA and vRO to Kestra. It covers the workflow half of
+                    <a href={`${GUIDE_HREF}#section-3`}
+                        >Stage 1 of the vRA migration guide</a
+                    >:
+                    it reads your vRO package and vRA export, works out what's
+                    in the estate, and writes a brief you open in a browser.
+                </p>
+            </div>
+            <div class="covers">
+                <h3>The brief covers</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <strong
+                            >What each workflow does and what starts it</strong
+                        >
+                        <span
+                            >Including the catalog items, cloud templates and
+                            event subscriptions in the vRA export.</span
+                        >
+                    </li>
+                    <li>
+                        <strong>Which systems each workflow touches</strong>
+                        <span
+                            >And whether a <a href="/plugins">Kestra plugin</a> already
+                            exists for each one.</span
+                        >
+                    </li>
+                    <li>
+                        <strong>A recommendation for each workflow</strong>
+                        <span
+                            >Retire, merge into another, treat as a wrapper,
+                            convert, or rebuild, with the reason next to it.</span
+                        >
+                    </li>
+                    <li>
+                        <strong>A migration plan in waves</strong>
+                        <span
+                            >Ordered by risk and dependency, with what each wave
+                            needs before it starts.</span
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <figure>
+            <div class="stage">
+                <BrowserFrame path="kestra-assessment / index.html">
+                    <Image
+                        src={briefFront}
+                        alt="The front page of the migration brief for the load balancer example: the next step, what's in the estate, and the recommendation to convert, with 50 of 59 elements on a path to Kestra before the open questions are answered."
+                        widths={[640, 960, 1280, 1848]}
+                        sizes="(min-width: 1416px) 924px, 70vw"
+                    />
+                </BrowserFrame>
+            </div>
+            <figcaption>
+                <p>
+                    <strong>The front page leads with what to do next.</strong> The
+                    tool stops at the plan: converting the workflows, testing them
+                    and verifying each wave before cutover is work Kestra does with
+                    you, starting from the brief.
+                </p>
+                <p>
+                    Still deciding? Read the <a href={GUIDE_HREF}
+                        >introduction to the guide</a
+                    > or try the <a href="/resources/migration/vra/payback"
+                        >payback calculator</a
+                    >.
+                </p>
+            </figcaption>
+        </figure>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    .overview {
+        @include assistant-section(var(--ks-background-body));
+    }
+
+    .container {
+        @include guide-container;
+    }
+
+    a {
+        color: var(--ks-content-link);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .intro a {
+        color: inherit;
+    }
+
+    strong {
+        font-weight: 600;
+    }
+
+    .intro-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: minmax(0, 521px) minmax(0, 1fr);
+        }
+    }
+
+    .intro p {
+        margin: 1rem 0 0;
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+    }
+
+    .covers {
+        h3 {
+            margin: 0 0 1rem;
+            font-size: $font-size-lg;
+            font-weight: 700;
+            line-height: 1.75rem;
+            color: var(--ks-content-link);
+        }
+
+        ul {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1rem;
+            margin: 0;
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            @include calc-card;
+            padding: 1rem;
+
+            strong {
+                font-size: $font-size-lg;
+                line-height: 1.75rem;
+            }
+
+            span {
+                font-size: $font-size-sm;
+                line-height: 1.25rem;
+                color: var(--ks-content-secondary);
+            }
+        }
+    }
+
+    figure {
+        margin: 4rem 0 0;
+    }
+
+    .stage {
+        aspect-ratio: 1320 / 675;
+        overflow: hidden;
+        padding: 3.52% 15% 0;
+        border-radius: 1rem;
+        background: linear-gradient(to bottom, #81bdd4 1%, #e8e8f9);
+
+        @include media-breakpoint-down(md) {
+            aspect-ratio: 4 / 3;
+            padding-inline: 6%;
+        }
+    }
+
+    figcaption {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding-inline: 1.25rem;
+
+        @include media-breakpoint-up(xl) {
+            flex-direction: row;
+            gap: 4rem;
+        }
+
+        p {
+            flex: 1;
+            margin: 0;
+        }
+
+        p + p {
+            flex: 0 1 auto;
+        }
+    }
+</style>

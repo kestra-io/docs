@@ -19,6 +19,14 @@ hero:
 
 nutshell: "Replace Nutanix Self-Service (Calm) and X-Play with a workflow engine that listens to schedules or migration waves, handles crash- or app-consistent recovery points with cross-cluster DR replication, and chains AHV with <a href='/orchestration/vmware'>VMware</a>, <a href='/orchestration/ansible'>Ansible</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the Calm catalog license; cut VMware-to-AHV cutover risk to per-VM waves with rollback."
 
+guideCta:
+  eyebrow: "Migration guide"
+  title: "Leaving vRA and vRO in the same move?"
+  description: "The vRA to Kestra migration guide covers replacing them without tying your automation to the new platform."
+  cta:
+    label: "Read the guide"
+    href: "/resources/migration/vra"
+
 pillars:
   title: "Around every AHV operation, across every cluster."
   subtitle: "What Kestra wraps around your Nutanix clusters: how migrations from VMware land in waves, what gets a recovery point first, who approves an LCM upgrade, and where the audit lives. Prism Central and your AHV hosts stay in place. The Calm / Self-Service catalog gets replaced."
@@ -313,6 +321,10 @@ resources:
       title: "Nutanix plugin reference"
       description: "Every AHV and snapshot task, every parameter, with copy-ready YAML examples."
       href: "/plugins/plugin-ee-nutanix"
+    - kind: "how-to"
+      title: "Migrating off VMware vRA and vRO"
+      description: "Four stages from assessing your estate to retiring vRA at renewal, with vRA running until each wave is verified."
+      href: "/resources/migration/vra"
 
 seeHow:
   title: "Ready to orchestrate Nutanix day-2 ops?"
