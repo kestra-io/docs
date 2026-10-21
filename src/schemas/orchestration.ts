@@ -158,6 +158,7 @@ export const orchestrationSchema = z.object({
     blueprints: blueprintsSchema,
     comparison: comparisonSchema,
     postCompareCta: postCompareCtaSchema.optional(),
+    guideCta: postCompareCtaSchema.optional(),
     faq: z.array(faqItemSchema),
     seeHow: seeHowSchema,
     resources: resourcesSchema.optional(),

@@ -1,0 +1,78 @@
+---
+interface Props {
+    count: number
+    legendId?: string
+    id?: string
+}
+
+const { count, legendId, id } = Astro.props
+---
+
+<div class="part-explorer" data-part-explorer>
+    <div class="legend" id={legendId}>
+        <slot name="legend" />
+    </div>
+    <div class="parts" id={id} style={`--parts: ${count}`}>
+        <slot />
+    </div>
+</div>
+
+<script>
+    /** Opens the clicked part, or the next or previous one on ArrowDown/Up. */
+    function openPart(e: Event) {
+        const button =
+            e.target instanceof Element &&
+            e.target.closest<HTMLElement>(".part-button")
+        const root = button && button.closest("[data-part-explorer]")
+        if (!button || !root) return
+        const buttons = [...root.querySelectorAll<HTMLElement>(".part-button")]
+        const n = buttons.length
+        let i = buttons.indexOf(button)
+        if (e instanceof KeyboardEvent) {
+            if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return
+            e.preventDefault()
+            i = (i + (e.key === "ArrowDown" ? 1 : n - 1)) % n
+        }
+        buttons.forEach((b, j) =>
+            b.setAttribute("aria-expanded", String(i === j)),
+        )
+        root.querySelectorAll<HTMLElement>(".part-panel").forEach(
+            (p, j) => (p.hidden = i !== j),
+        )
+        if (e instanceof KeyboardEvent) buttons[i].focus()
+    }
+
+    document.addEventListener("click", openPart)
+    document.addEventListener("keydown", openPart)
+</script>
+
+<style lang="scss">
+    .part-explorer {
+        margin: 1.5rem 0;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        overflow: hidden;
+    }
+
+    .legend {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-secondary);
+        font-size: $font-size-sm;
+
+        :global(p:last-child),
+        :global(ul:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    .parts {
+        display: grid;
+        grid-template-columns: 1fr;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: minmax(12rem, 16rem) 1fr;
+            grid-template-rows: repeat(var(--parts), auto) 1fr;
+        }
+    }
+</style>

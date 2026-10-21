@@ -1,0 +1,377 @@
+---
+import { Image } from "astro:assets"
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import BrowserFrame from "./BrowserFrame.astro"
+import answers from "../assets/assistant-brief-answers.webp"
+import translation from "../assets/assistant-brief-translation.webp"
+import waves from "../assets/assistant-brief-waves.webp"
+import workflow from "../assets/assistant-brief-workflow.webp"
+
+const PARTS = [
+    {
+        title: "vRA",
+        text: "A Service Broker catalog item with a 13-field request form, a cloud template that creates the machines and their network, and five event subscriptions.",
+    },
+    {
+        title: "vRO",
+        text: "Four workflows (create, add machine, remove machine, delete), with 39 actions, four configuration elements and three resource elements behind them.",
+    },
+    {
+        title: "Targets",
+        text: "An F5 BIG-IP or an Avi load balancer, picked on the request form, and vCenter through the cloud template.",
+    },
+]
+
+const TABS = [
+    {
+        label: "Your answers",
+        title: "Open questions, answered",
+        text: "Open questions in plain words, with suggested answers.",
+        callouts: [
+            "The open questions for you to answer",
+            "Suggested answers where we could imply them",
+            "Rerun the assistant after answering",
+        ],
+        image: answers,
+        alt: "The answers.yaml file the Migration Assistant writes: open questions about the non-production vCenter, Avi and F5 endpoints, then suggested answers for the vRO plugin list, how flows call Avi, how they sign in and whether they check its certificate.",
+        markers: [
+            { left: 2.5, top: 17 },
+            { left: 2.5, top: 70 },
+            { left: 59, top: 8.5 },
+        ],
+        // The file is drawn with its own window bar, so no browser frame.
+        Frame: Fragment,
+    },
+    {
+        label: "Translation",
+        title: "How each part maps to Kestra",
+        text: "Each part of the service, what it becomes in Kestra, and whether it converts directly or needs a redesign. Shown after the open questions were answered.",
+        callouts: [
+            "Every element has a path to Kestra",
+            "Direct converts one for one",
+            "Redesign is where vRA itself goes away",
+        ],
+        image: translation,
+        alt: "The brief's recommendation to convert: 59 of 59 elements have a path to Kestra and 47 are ready now, with a table of each vRA and vRO part, what it becomes in Kestra, and whether it converts directly or needs a redesign.",
+        markers: [
+            { left: 14.4, top: 18.9 },
+            { left: 80, top: 49.8 },
+            { left: 80, top: 74.4 },
+        ],
+    },
+    {
+        label: "Waves",
+        title: "The plan, in two waves",
+        text: "What moves together, and what each wave needs before it starts.",
+        callouts: [
+            "Wave 1 moves the 4 workflows together, since they share state",
+            "Wave 2 moves the catalog item and cloud template",
+            "Each follow-up wave lists what it needs before it can start",
+        ],
+        image: waves,
+        alt: "The two waves in the brief: Wave 1 holds the four load-balancer workflows with all 30 entry criteria met, and Wave 2 replaces vRA's app, flow and resources, starting once Wave 1 is migrated and verified, with 15 of 16 criteria met.",
+        markers: [
+            { left: 2.5, top: 17 },
+            { left: 2.5, top: 56 },
+            { left: 2.5, top: 86 },
+        ],
+    },
+    {
+        label: "One Workflow",
+        title: "One workflow, end to end",
+        text: "What one workflow does, what starts it and what it touches.",
+        callouts: [
+            "What it does, in plain words",
+            "What starts it in vRA",
+            "The systems it touches, and the Kestra plugin for each",
+        ],
+        image: workflow,
+        alt: "The brief's page for the LB - Create Load Balancer workflow: a Convert verdict with readiness amber and spec confidence high, a flowchart of its items, and the model-written purpose and decisions.",
+        markers: [
+            { left: 0.5, top: 7 },
+            { left: 47.5, top: 33 },
+            { left: 75.5, top: 16.5 },
+        ],
+    },
+]
+const SELECTED = 1
+const GROUP = "assistant-example"
+---
+
+<section class="example surface-dark">
+    <div class="container">
+        <div class="intro-row">
+            <div class="intro">
+                <p class="eyebrow">Example</p>
+                <h2>A self-service load balancer</h2>
+                <p>
+                    A load balancer ordered from the vRA catalog that stays in
+                    sync as machines come and go. The brief recommended
+                    converting rather than rebuilding. It mapped F5 to Kestra's
+                    F5 plugin and Avi to HTTP tasks on Avi's REST API, and
+                    proposed two waves.
+                </p>
+            </div>
+            <ul class="parts list-unstyled">
+                {
+                    PARTS.map((part) => (
+                        <li>
+                            <h3>{part.title}</h3>
+                            <p>{part.text}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        <div class="tabs-panel">
+            <TabGroup
+                id={GROUP}
+                label="The brief for the load balancer"
+                variant="stages"
+                surface="dark"
+                flush
+                selected={SELECTED}
+                tabs={TABS.map((tab, i) => ({
+                    label: `${i + 1}. ${tab.label}`,
+                }))}
+            >
+                {
+                    TABS.map(({ Frame = BrowserFrame, ...tab }, i) => (
+                        <TabPanel
+                            group={GROUP}
+                            index={i + 1}
+                            selected={SELECTED}
+                        >
+                            <div class="panel">
+                                <div class="copy">
+                                    <h3>{tab.title}</h3>
+                                    <p>{tab.text}</p>
+                                    <ol class="callouts list-unstyled">
+                                        {tab.callouts.map((callout) => (
+                                            <li>{callout}</li>
+                                        ))}
+                                    </ol>
+                                </div>
+                                <Frame path="kestra-assessment / index.html">
+                                    <div class="marked">
+                                        <Image
+                                            src={tab.image}
+                                            alt={tab.alt}
+                                            widths={[720, 1080, 1440]}
+                                            sizes="(min-width: 1200px) 723px, 90vw"
+                                        />
+                                        {tab.markers.map(({ left, top }, n) => (
+                                            <span
+                                                class="marker"
+                                                aria-hidden="true"
+                                                style={`left:${left}%;top:${top}%`}
+                                            >
+                                                {n + 1}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </Frame>
+                            </div>
+                        </TabPanel>
+                    ))
+                }
+            </TabGroup>
+        </div>
+
+        <div class="download">
+            <p>
+                The vRO package and vRA export are free to download, so you can
+                run the Migration Assistant on them before you run it on your
+                own.
+            </p>
+            <a
+                class="btn btn-secondary btn-lg"
+                href="/kestra-migration-assistant-sample-vra-load-balancer.zip"
+                download>Download the use case files</a
+            >
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    @mixin dark-card {
+        border: 1px solid $dark-raised;
+        border-radius: $border-radius-lg;
+        background: $dark-raised;
+        box-shadow: 0 8px 12px rgba($black, 0.65);
+    }
+
+    .example {
+        @include assistant-section(#1a1c22, $white, $dark-raised);
+    }
+
+    .container {
+        @include guide-container;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .intro-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: minmax(0, 472px) minmax(0, 1fr);
+            padding-inline: 2rem;
+        }
+    }
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .eyebrow {
+            font-size: $font-size-lg;
+            font-weight: 700;
+            line-height: 1.75rem;
+            color: $dark-link;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2.25rem, 4vw, 3rem);
+            line-height: 1.04;
+            letter-spacing: -0.015em;
+        }
+
+        > p:last-child {
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+        }
+    }
+
+    .parts {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        margin: 0;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 2rem;
+            @include dark-card;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+    }
+
+    .tabs-panel {
+        overflow: hidden;
+        padding: 2rem;
+        border: 1px solid $dark-raised;
+        border-radius: 1rem;
+        background: $dark-bg-input;
+
+        @include media-breakpoint-down(md) {
+            padding: 1rem;
+        }
+    }
+
+    .panel {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 723px);
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        @include media-breakpoint-up(xl) {
+            padding: 2rem 0 2rem 2rem;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            line-height: 1.75rem;
+            letter-spacing: -0.005em;
+        }
+
+        .callouts {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0 0;
+            counter-reset: callout;
+
+            li {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.5rem;
+                counter-increment: callout;
+
+                &::before {
+                    content: counter(callout);
+                    @include marker-pill;
+                }
+            }
+        }
+    }
+
+    .marked {
+        position: relative;
+
+        .marker {
+            position: absolute;
+            @include marker-pill;
+        }
+    }
+
+    .download {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem 2rem;
+        padding: 1rem 2rem;
+        @include dark-card;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        p {
+            max-width: 49rem;
+            font-size: $font-size-lg;
+            line-height: 1.75rem;
+        }
+
+        .btn {
+            flex-shrink: 0;
+            --ks-border-button-secondary: #{$dark-text-secondary};
+        }
+    }
+</style>

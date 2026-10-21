@@ -2,20 +2,18 @@
     <span
         ref="trigger"
         v-bind="$attrs"
-        :aria-describedby="visible ? tooltipId : undefined"
-        @mouseenter="show"
-        @mouseleave="hide"
-        @focusin="show"
-        @focusout="hide"
+        :aria-describedby="visible && !interactive ? tooltipId : undefined"
+        v-on="handlers"
     >
-        <slot name="default" />
+        <slot name="default" :visible="visible" :panel-id="tooltipId" />
     </span>
     <span
         v-show="visible"
         :id="tooltipId"
         ref="content"
         class="ks-tooltip"
-        role="tooltip"
+        :class="[{ 'is-interactive': interactive }, contentClass]"
+        :role="interactive ? 'note' : 'tooltip'"
     >
         <slot name="content">
             {{ title }}
@@ -24,17 +22,32 @@
 </template>
 
 <script lang="ts" setup>
-    import { nextTick, onBeforeUnmount, ref, useId, useTemplateRef } from "vue"
-    import { createPopper, type Instance } from "@popperjs/core"
+    import {
+        computed,
+        nextTick,
+        onBeforeUnmount,
+        ref,
+        useId,
+        useTemplateRef,
+    } from "vue"
+    import { onClickOutside, onKeyStroke } from "@vueuse/core"
+    import { createPopper, type Instance, type Placement } from "@popperjs/core"
 
     const props = withDefaults(
         defineProps<{
             title?: string
-            placement?: "top" | "right" | "bottom" | "left"
+            placement?: Placement
+            /** `hover`: a tooltip on hover and focus. `click`: a disclosure
+             *  that closes on outside click or Escape and can hold a link. */
+            trigger?: "hover" | "click"
+            /** Extra class on the tooltip panel, for a caller's own sizing. */
+            contentClass?: string
         }>(),
         {
             title: undefined,
             placement: "top",
+            trigger: "hover",
+            contentClass: undefined,
         },
     )
 
@@ -43,8 +56,8 @@
     const visible = ref(false)
     const tooltipId = useId()
 
-    // Built on first hover: schema pages render hundreds of these, and an
-    // unopened tooltip should cost nothing.
+    /** Built on first show: schema pages render hundreds of these, and an
+     *  unopened tooltip should cost nothing. */
     let popper: Instance | undefined
 
     // `eventListeners` is on by default and attaches scroll/resize handlers to
@@ -69,8 +82,30 @@
     }
 
     const hide = () => {
+        if (!visible.value) return
         visible.value = false
         popper?.setOptions(options(false))
+    }
+
+    /** Not `props.trigger` in the template: the `trigger` ref shadows it. */
+    const interactive = computed(() => props.trigger === "click")
+
+    const handlers = computed(() =>
+        interactive.value
+            ? { click: () => (visible.value ? hide() : show()) }
+            : {
+                  mouseenter: show,
+                  mouseleave: hide,
+                  focusin: show,
+                  focusout: hide,
+              },
+    )
+
+    // Only click mode listens on the document; the schema pages mount
+    // hundreds of hover tooltips, and each would otherwise add two listeners.
+    if (interactive.value) {
+        onClickOutside(content, hide, { ignore: [trigger] })
+        onKeyStroke("Escape", hide)
     }
 
     onBeforeUnmount(() => popper?.destroy())
@@ -89,5 +124,9 @@
         text-align: left;
         word-wrap: break-word;
         pointer-events: none;
+
+        &.is-interactive {
+            pointer-events: auto;
+        }
     }
 </style>

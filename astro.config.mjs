@@ -22,6 +22,7 @@ import { resolveRelativeDocLink } from "./src/markdown/remark/resolve-doc-link.t
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
+import remarkSectionIds from "./src/markdown/remark/remark-section-ids/index.mjs"
 import remarkGlossaryLinks from "./src/markdown/remark/remark-glossary-links/index.ts"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
@@ -85,6 +86,8 @@ export default defineConfig({
                 remarkClassname,
                 remarkDirective,
                 remarkCustomElements,
+                // opt-in `section-…` heading ids (frontmatter `sectionIds: true`)
+                remarkSectionIds,
                 // when internal docs links we point to real files
                 // while in the docs generated we want to point to urls with generated ids
                 // @ts-expect-error bad types in astro
