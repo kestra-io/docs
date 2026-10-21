@@ -15,6 +15,7 @@ import Translation from "~/components/lp/vra-migration/Translation.astro"
 import Proof from "~/components/lp/vra-migration/Proof.astro"
 import Payback from "~/components/lp/vra-migration/Payback.astro"
 import Assistant from "~/components/lp/vra-migration/Assistant.astro"
+import HeroActions from "~/components/lp/vra-migration/HeroActions.astro"
 
 import SelfServiceIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
 import DayTwoIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
@@ -30,8 +31,8 @@ const description =
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/vra-migration"
 
-/* Same HubSpot form as /lp/workflow-orchestration; only the button reads
- * differently. */
+/* The call form lower on the page (#contact-sales): same HubSpot form as
+ * /lp/workflow-orchestration; only the button reads differently. */
 const formProps = { submitLabel: "Get my migration estimate" }
 
 const reasons = [
@@ -192,7 +193,6 @@ const faqItems = [
         <Hero
             {routePath}
             formTitle="Bring your vRA renewal quote."
-            {formProps}
             companies={[
                 "bundesagentur",
                 "itzbund",
@@ -220,10 +220,9 @@ const faqItems = [
                     whatever you move to next.</strong
                 >
             </Fragment>
-            <Fragment slot="form-sub">
-                We map your environment and estimate the migration in a 30-minute
-                call.
-            </Fragment>
+            {/* Empty: the call line sits between the two buttons. */}
+            <Fragment slot="form-sub"></Fragment>
+            <HeroActions slot="form" {routePath} />
         </Hero>
         <script is:inline>
             /* Echo the searched product and intent in the headline. The G_VRA

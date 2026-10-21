@@ -1,0 +1,92 @@
+---
+/* The hero card's actions: the gated guide PDF first, the call second. The
+ * dialog is the guide page's own (same HubSpot form and fields); only the
+ * pageUri differs, so HubSpot records this page as the one the lead converted
+ * on. The call form stays lower on the page, at #contact-sales. */
+import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import {
+    DOWNLOAD_DIALOG_TARGET,
+    GUIDE_DOWNLOAD,
+} from "~/components/vra-migration-guide/download"
+
+interface Props {
+    /** Passed to HubSpot as the originating page URI. */
+    routePath: string
+}
+
+const { routePath } = Astro.props
+const form = { ...GUIDE_DOWNLOAD, pageUri: routePath.replace(/^\//, "") }
+---
+
+<div class="actions">
+    <button
+        type="button"
+        class="primary"
+        data-modal-target={DOWNLOAD_DIALOG_TARGET}
+    >
+        Get the migration guide (PDF)
+    </button>
+    <p>
+        Or book a 30-minute call, and we'll map your environment and estimate
+        the migration with you.
+    </p>
+    <a href="#contact-sales" class="secondary">Book a 30-minute call</a>
+</div>
+
+<DownloadDialog {form} />
+
+<style lang="scss">
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding-top: 1.25rem;
+
+        p {
+            margin: 0;
+            color: var(--lp-content-on-card);
+            font-size: $font-size-md;
+            line-height: 1.5;
+        }
+    }
+
+    /* The page's purple CTA, as on "Run it with us". */
+    .primary,
+    .secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 50px;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-size: $font-size-md;
+        text-align: center;
+        @include media-breakpoint-up(sm) {
+            font-size: $font-size-lg;
+        }
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .primary {
+        border: 1px solid #ffffff;
+        background-color: var(--lp-purple);
+        color: #ffffff;
+        box-shadow:
+            inset 0 0 14px 0 #be62ff,
+            2px 2px 5.5px rgba(0, 0, 0, 0.1);
+        &:hover {
+            background-color: #7737fe;
+        }
+    }
+
+    .secondary {
+        border: 1px solid var(--lp-purple);
+        background-color: #ffffff;
+        color: var(--lp-purple);
+        &:hover {
+            background-color: var(--lp-purple-light);
+        }
+    }
+</style>
