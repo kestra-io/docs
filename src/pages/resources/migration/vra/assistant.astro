@@ -108,11 +108,12 @@ const faqItems = [
 
     // Visitors in the Americas get the US session of the webinar, the same
     // split the demo forms make. The banner is a Vue island, so its link is
-    // swapped once it has hydrated; the "Next steps" link is plain HTML.
+    // swapped once it has hydrated. "Next steps" links each session by name,
+    // so its links are left alone.
     function pickWebinarSession() {
         if (!isAmericasTimezone()) return
         for (const link of document.querySelectorAll<HTMLAnchorElement>(
-            `a[href="${WEBINAR_HREF_EU}"]`,
+            `a[href="${WEBINAR_HREF_EU}"]:not([data-webinar-session])`,
         )) {
             const island = link.closest("astro-island")
             if (island?.hasAttribute("ssr")) {
