@@ -276,6 +276,7 @@
                     :payback="result.payback"
                     :currency="inputs.cur"
                     :poc-href="pocHref"
+                    :story-href="storyHref"
                 >
                     <template #actions>
                         <ResultActions :share-anchor="shareAnchor" />
@@ -312,10 +313,12 @@
         idPrefix = "vra-calc-payback",
         shareAnchor = "section-7-2",
         pocHref = "#section-8-2",
+        storyHref = "/stories/fortune-500-company",
     } = defineProps<{
         idPrefix?: string
         shareAnchor?: string
         pocHref?: string
+        storyHref?: string | null
     }>()
 
     const { inputs, result, field, update, ready } = useCalculator()
@@ -363,7 +366,11 @@
     .result {
         @container (min-width: 52rem) {
             position: sticky;
-            top: calc(100px + var(--announce-height, 0px));
+            /* A page with its own header height overrides the offset. */
+            top: var(
+                --calc-sticky-top,
+                calc(100px + var(--announce-height, 0px))
+            );
         }
     }
 
