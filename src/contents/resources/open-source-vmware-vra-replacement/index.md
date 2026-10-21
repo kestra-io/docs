@@ -200,9 +200,9 @@ A [Fortune 500 industrial company replaced VMware Aria Automation with Kestra](/
 
 Start with real workflows, not a feature checklist.
 
-1. Export the estate and run the Kestra Migration Assistant to get the brief and the three-pass count.
+1. Export the estate and [start with an assessment](/resources/migration/vra/assistant): the Kestra Migration Assistant gives you the brief and the three-pass count.
 2. Install Kestra Open Source with [Docker Compose](/docs/installation/docker-compose) and rebuild two or three workflows from the brief: one provisioning flow, one Day 2 action and one scheduled check, including at least one difficult workflow you would run in production.
 3. Measure the hours each one took. That rate, multiplied across your pattern counts, is the migration estimate.
 4. When the test needs the catalog, the inventory, native vSphere access or RBAC, run a proof of concept on Enterprise against the same workflows.
 
-The vSphere estate keeps running throughout. Every wave stays reversible until the vRA side of it is switched off, and the [VMware orchestration overview](/orchestration/vmware) shows how flows call vCenter, snapshots and events once the engine underneath has changed.
+The vSphere estate keeps running throughout. Every wave stays reversible until the vRA side of it is switched off, and the [VMware orchestration overview](/orchestration/vmware) shows how flows call vCenter, snapshots and events once the engine underneath has changed. For the full method, from the first assessment to retiring vRA wave by wave, see [how to migrate off vRA](/resources/migration/vra).

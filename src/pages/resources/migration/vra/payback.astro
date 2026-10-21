@@ -1,0 +1,159 @@
+---
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
+import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
+import CalculatorPayback from "~/components/vra-migration-guide/calculator/CalculatorPayback.vue"
+import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import DemoDialog from "~/components/vra-migration-guide/DemoDialog.astro"
+import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
+import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
+
+const TIPS = [
+    {
+        title: "Run it twice",
+        text: "Once with low assumptions and once with high. The result should be a range, not a single number.",
+    },
+    {
+        title: "Label every rate",
+        text: "A proof of concept gives you measured rates. The rest are estimates, and a reviewer should see which is which.",
+    },
+    {
+        title: "Count a saving only when the payment stops",
+        text: "If vRA is part of a VCF bundle you keep buying for the hypervisor, confirm with procurement that the invoice actually drops.",
+    },
+]
+---
+
+<Layout
+    title="vRA Migration Payback Calculator: When Leaving vRA Pays Back"
+    description="Put your own vRA renewal, workflow counts and migration rates into the calculator and get the month the move to Kestra pays for itself."
+    breadcrumbTitle="Payback calculator"
+    headerTheme="lightText"
+>
+    <GuideHero
+        pill="Payback calculator · VMware vRA migration"
+        title="What leaving vRA costs, and when it pays back."
+        card={false}
+    >
+        <Fragment slot="deck">
+            The migration is the investment. What pays it back is the vRA and
+            vRO renewal you do not sign. Enter your renewal, your workflow
+            counts and your rates, and get the month the move to Kestra pays for
+            itself.
+        </Fragment>
+        <Fragment slot="actions">
+            <a class="btn btn-primary" href="#calculator"
+                >Work out your payback</a
+            >
+            <a class="btn btn-secondary" href="/demo">Book a Demo</a>
+        </Fragment>
+    </GuideHero>
+
+    <section class="calc-body" id="calculator">
+        <div class="container">
+            <InteractiveFrame
+                title="Payback calculator"
+                titleAs="h2"
+                subtitle="Three steps: the renewal you avoid, what getting out costs, and what you would spend on Kestra."
+            >
+                <Fragment slot="note"
+                    >Start from your vRO export count. The three rationalization
+                    passes from the guide, retire, group, separate wrappers, are
+                    built into step 2.</Fragment
+                >
+                <CalculatorPayback
+                    client:load
+                    shareAnchor="calculator"
+                    pocHref="/demo"
+                />
+            </InteractiveFrame>
+        </div>
+    </section>
+
+    <section class="calc-tips">
+        <div class="container">
+            <h2>Before it goes in front of finance</h2>
+            <ul class="tips list-unstyled">
+                {
+                    TIPS.map((tip) => (
+                        <li>
+                            <h3>{tip.title}</h3>
+                            <p>{tip.text}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </section>
+
+    {/* A direct div child of main picks up the global overflow-x clip. */}
+    <div>
+        <SeeHow
+            imgSrc={shapesImage}
+            cta={{ text: "Book a Demo", href: "/demo" }}
+        >
+            <Fragment slot="title"
+                >Turn the estimate into a measured rate</Fragment
+            >
+            A proof of concept on two or three of your own workflows replaces the
+            estimated rates with measured ones and gets you a Kestra quote. Bring
+            your result and we scope it with you.
+            <Fragment slot="footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-modal-target={DOWNLOAD_DIALOG_TARGET}
+                >
+                    Download the migration guide
+                </button>
+            </Fragment>
+        </SeeHow>
+    </div>
+    <DownloadDialog />
+    <DemoDialog routePath="/resources/migration/vra/payback" />
+</Layout>
+
+<style lang="scss">
+    .calc-body {
+        padding: 2rem 0 3rem;
+    }
+
+    .calc-tips {
+        padding: 3.5rem 0 4rem;
+        background: var(--ks-background-secondary);
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            letter-spacing: -0.015em;
+            margin: 0 0 2rem;
+            text-wrap: balance;
+        }
+
+        h3 {
+            font-size: $font-size-lg;
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+            color: var(--ks-content-secondary);
+            line-height: 1.6;
+        }
+
+        .tips {
+            margin: 0;
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+            li {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding-top: 1rem;
+                border-top: 2px solid var(--ks-border-active);
+            }
+        }
+    }
+</style>

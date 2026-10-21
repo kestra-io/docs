@@ -93,20 +93,14 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, nextTick, ref, onUnmounted } from "vue"
-    import { useEventListener, useMediaQuery, useScroll, useThrottleFn } from "@vueuse/core"
+    import { useTocCollapse } from "~/composables/useTocCollapse"
+    import { useTocScrollSpy } from "~/composables/useTocScrollSpy"
+    import type { TocLink } from "~/utils/plugins/types"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
     import MarkdownActionsMenu from "~/components/docs/MarkdownActionsMenu.vue"
     import type { MarkdownActionId } from "~/utils/markdown-actions"
-
-    export interface TocLink {
-        id: string
-        depth: number
-        text: string
-        children?: TocLink[]
-    }
 
     const props = withDefaults(
         defineProps<{
@@ -127,113 +121,27 @@
         }
     )
 
-    const { y: scrollY } = useScroll(typeof window !== "undefined" ? window : undefined)
-    const tableOfContentsExpanded = ref(false)
+    const {
+        expanded: tableOfContentsExpanded,
+        collapsed,
+        close: closeToc,
+    } = useTocCollapse()
 
-    // `overflow: hidden` on the 0fr grid clips the panel but leaves its links
-    // focusable. Above lg the panel is always shown while the flag stays
-    // false, so the viewport is part of the condition.
-    const belowLg = useMediaQuery("(max-width: 991.98px)")
-    const collapsed = computed(() => belowLg.value && !tableOfContentsExpanded.value)
-    const activeLinkId = ref("")
-    const isManualScrolling = ref(false)
-    let manualScrollTimer: ReturnType<typeof setTimeout> | undefined
-
-    const getFixedHeaderOffset = () => {
-        const selectors = [
-            "header",
-            ".site-header",
-            ".navbar",
-            ".topbar",
-            ".bd-title",
-            ".page-header"
-        ]
-        for (const sel of selectors) {
-            const el = document.querySelector(sel) as HTMLElement | null
-            if (el) {
-                const style = window.getComputedStyle(el)
-                const isFixed = ["fixed", "sticky"].includes(style.position) ||
-                               Math.round(el.getBoundingClientRect().top) === 0
-                if (isFixed) return el.getBoundingClientRect().height
-            }
-        }
-        return 160
-    }
-
-    const scrollToElement = (id: string) => {
-        const element = document.getElementById(id)
-        if (!element) return
-
-        const offset = getFixedHeaderOffset()
-        const rectTop = element.getBoundingClientRect().top + window.pageYOffset
-        const top = Math.max(0, rectTop - offset - 8)
-
-        window.scrollTo({ top, behavior: "smooth" })
-    }
-
-    const updateActiveLink = (id: string) => {
-        if (activeLinkId.value === id) return
-        activeLinkId.value = id
-
-        nextTick(() => {
-            const container = document.querySelector("#nav-toc")
-            const link = document.querySelector(`#nav-toc a.active`) as HTMLElement
-
-            if (container && link) {
-                const cRect = container.getBoundingClientRect()
-                const lRect = link.getBoundingClientRect()
-
-                if (lRect.top < cRect.top || lRect.bottom > cRect.bottom) {
-                    link.scrollIntoView({ block: "nearest" })
-                }
-            }
-        })
-    }
+    const { activeId: activeLinkId, navigateTo } = useTocScrollSpy(
+        () =>
+            (props.links ?? []).flatMap((l) => [
+                l.id,
+                ...(l.children ?? []).map((c) => c.id),
+            ]),
+        { container: "#nav-toc" },
+    )
 
     const menuNavigate = (e: Event) => {
-        const id = (e.currentTarget as HTMLAnchorElement).getAttribute("href")?.substring(1)
-        if (!id) return
-        isManualScrolling.value = true
-        if (manualScrollTimer) clearTimeout(manualScrollTimer)
-        scrollToElement(id)
-        updateActiveLink(id)
-        try {
-            history.pushState(null, "", `#${id}`)
-            window.dispatchEvent(new Event("hashchange"))
-        } catch {
-            if (window?.location) window.location.hash = id
-        }
-        manualScrollTimer = setTimeout(() => isManualScrolling.value = false, 1000)
+        const id = (e.currentTarget as HTMLAnchorElement)
+            .getAttribute("href")
+            ?.substring(1)
+        if (id) navigateTo(id)
     }
-
-    const closeToc = () => {
-        tableOfContentsExpanded.value = false
-    }
-
-    const handleScroll = useThrottleFn(() => {
-        if (isManualScrolling.value || scrollY.value === 0) {
-            if (scrollY.value === 0) activeLinkId.value = ""
-            return
-        }
-
-        const offset = getFixedHeaderOffset() + 20
-        const allLinks = props.links?.flatMap(l => [l, ...(l.children || [])]) || []
-
-        let currentActive = ""
-        for (const link of allLinks) {
-            const el = document.getElementById(link.id)
-            if (el && el.getBoundingClientRect().top <= offset) {
-                currentActive = link.id
-            } else if (el) {
-                break
-            }
-        }
-
-        if (currentActive) updateActiveLink(currentActive)
-    }, 100)
-
-    useEventListener("scroll", handleScroll)
-    onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))
 </script>
 
 <style lang="scss" scoped>
