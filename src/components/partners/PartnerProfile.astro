@@ -1,0 +1,578 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import Link from "~/components/common/Link.astro"
+import PartnerCard from "./PartnerCard.vue"
+import { listPartners, PARTNERS } from "./partners"
+
+/**
+ * The partner profile: a header with the partner's identity and contacts, the
+ * story and expertise in a main column, the facts in a sticky side card, and
+ * other partners of the same track. One visual at most, never one per section.
+ */
+interface Expertise {
+    /** an mdi icon name, e.g. "mdi:source-branch" */
+    icon: string
+    title: string
+    text: string
+}
+
+interface Props {
+    /** the partner's name, as in partners.ts, for its logo, tags and related partners */
+    name: string
+    tagline: string
+    about: string
+    /** at most one image, shown under the about text */
+    visual?: { src: ImageMetadata; alt: string }
+    expertiseTitle: string
+    expertise: Expertise[]
+    quote?: { text: string; author: string; role: string }
+    facts: { label: string; value: string }[]
+    contact: { text: string; href: string }
+    /** a short pitch shown above the contact button of the side card */
+    closing?: { title: string; text: string }
+    website?: string
+    lang?: "en" | "fr"
+}
+
+const {
+    name,
+    tagline,
+    about,
+    visual,
+    expertiseTitle,
+    expertise,
+    quote,
+    facts,
+    contact,
+    closing,
+    website,
+    lang = "en",
+} = Astro.props
+
+const LABELS = {
+    en: {
+        about: "About",
+        glance: "At a glance",
+        services: "Services",
+        website: "Website",
+        related: "Other partners",
+        partners: "Partners",
+        all: "See all partners",
+    },
+    fr: {
+        about: "À propos",
+        glance: "En bref",
+        services: "Services",
+        website: "Site web",
+        related: "Autres partenaires",
+        partners: "Partenaires",
+        all: "Voir tous les partenaires",
+    },
+}
+const t = LABELS[lang]
+
+const partner = PARTNERS.find((p) => p.name === name)!
+const related = listPartners(partner.type)
+    .filter((p) => p.name !== name)
+    .slice(0, 3)
+---
+
+<header class="profile-head">
+    <div class="container">
+        <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="/partners">{t.partners}</a>
+            <span aria-hidden="true">/</span>
+            <a href={`/partners/find?type=${partner.type}`}>{partner.type}</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{partner.name}</span>
+        </nav>
+        <div class="identity">
+            <div class="logo">
+                <Image src={partner.logo} alt={partner.name} />
+            </div>
+            <div class="who">
+                <h1>{partner.name}</h1>
+                <p class="tagline">{tagline}</p>
+                <ul class="tags">
+                    <li class="tag kind">{partner.kind}</li>
+                    <li class="tag">{partner.country}</li>
+                    <li class="tag">{partner.region}</li>
+                </ul>
+            </div>
+            <div class="actions">
+                <a
+                    href={contact.href}
+                    class="btn btn-primary"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    {contact.text}
+                </a>
+                {
+                    website && (
+                        <a
+                            href={website}
+                            class="btn btn-secondary"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            {t.website}
+                        </a>
+                    )
+                }
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="profile-body">
+    <div class="container">
+        <div class="layout">
+            <div class="main">
+                <section>
+                    <h2>{t.about}</h2>
+                    <p class="about" set:html={about} />
+                    {
+                        visual && (
+                            <Image
+                                src={visual.src}
+                                alt={visual.alt}
+                                class="visual"
+                            />
+                        )
+                    }
+                </section>
+
+                <section>
+                    <h2>{expertiseTitle}</h2>
+                    <ul class="expertise">
+                        {
+                            expertise.map((item) => (
+                                <li>
+                                    <span class="icon">
+                                        <Icon name={item.icon} />
+                                    </span>
+                                    <h3>{item.title}</h3>
+                                    <p>{item.text}</p>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </section>
+
+                {
+                    quote && (
+                        <div class="quote">
+                            <figure>
+                                <blockquote
+                                    set:html={`<span class="qmark">“</span>${quote.text}<span class="qmark">”</span>`}
+                                />
+                                <figcaption>
+                                    <strong>{quote.author}</strong>,{" "}
+                                    {quote.role}
+                                </figcaption>
+                            </figure>
+                        </div>
+                    )
+                }
+            </div>
+
+            <aside class="side">
+                <div class="glance">
+                    <h2>{t.glance}</h2>
+                    <dl>
+                        {
+                            facts.map((fact) => (
+                                <div>
+                                    <dt>{fact.label}</dt>
+                                    <dd>{fact.value}</dd>
+                                </div>
+                            ))
+                        }
+                        <div>
+                            <dt>{t.services}</dt>
+                            <dd>
+                                <ul class="tags">
+                                    {
+                                        partner.services.map((s) => (
+                                            <li class="tag">{s}</li>
+                                        ))
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    </dl>
+                    <slot name="side" />
+                    {
+                        closing && (
+                            <div class="pitch">
+                                <p>{closing.text}</p>
+                            </div>
+                        )
+                    }
+                    <a
+                        href={contact.href}
+                        class="btn btn-secondary w-100"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        {contact.text}
+                    </a>
+                </div>
+            </aside>
+        </div>
+
+        {
+            related.length > 0 && (
+                <section class="related">
+                    <div class="related-head">
+                        <h2>{t.related}</h2>
+                        <Link href={`/partners/find?type=${partner.type}`}>
+                            {t.all}
+                        </Link>
+                    </div>
+                    <div class="row">
+                        {related.map((p) => (
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <PartnerCard partner={p} />
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .profile-head {
+        padding: 3rem 0 2.5rem;
+        background: var(--ks-background-secondary);
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        .crumbs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: $font-size-sm;
+            color: var(--ks-content-tertiary);
+
+            a {
+                color: var(--ks-content-secondary);
+                text-decoration: none;
+
+                &:hover {
+                    color: var(--ks-content-link);
+                }
+            }
+
+            [aria-current] {
+                color: var(--ks-content-primary);
+                font-weight: 600;
+            }
+        }
+
+        .identity {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1.75rem;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: auto minmax(0, 1fr);
+
+                .actions {
+                    grid-column: 1 / -1;
+                }
+            }
+        }
+
+        // partner logos are drawn for light backgrounds, so the tile stays white
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 7rem;
+            height: 7rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            background: #fff;
+            border: 1px solid var(--ks-border-primary);
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+            @include media-breakpoint-down(md) {
+                width: 4.5rem;
+                height: 4.5rem;
+                padding: 0.625rem;
+            }
+        }
+
+        h1 {
+            margin: 0 0 0.375rem;
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            margin: 0 0 0.875rem;
+            max-width: 60ch;
+            color: var(--ks-content-secondary);
+            line-height: 1.55;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .tag {
+        padding: 0.125rem 0.625rem;
+        border-radius: 2rem;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        background: var(--ks-background-body);
+        border: 1px solid var(--ks-border-primary);
+        color: var(--ks-content-secondary);
+
+        &.kind {
+            border-color: transparent;
+            background: var(--ks-background-blue-light);
+            color: var(--ks-content-alert-info);
+        }
+    }
+
+    .profile-body {
+        padding: 3.5rem 0 4rem;
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 20rem;
+            gap: 3rem;
+            align-items: start;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        h2 {
+            margin: 0 0 1rem;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .about {
+            margin: 0;
+            color: var(--ks-content-secondary);
+            line-height: 1.7;
+        }
+
+        .visual {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 22rem;
+            margin-top: 1.75rem;
+            object-fit: cover;
+            border-radius: 0.8125rem;
+        }
+    }
+
+    // each expertise is a short card with an icon, not a section with its own picture
+    .expertise {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        li {
+            padding: 1.25rem;
+            border-radius: 0.8125rem;
+            background: var(--ks-background-secondary);
+        }
+
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            margin-bottom: 0.875rem;
+            border-radius: 0.5rem;
+            background: var(--ks-background-body);
+            border: 1px solid var(--ks-border-primary);
+            color: var(--ks-content-link);
+
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: $font-size-md;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    // the case study quote: the framed card, its panel in light violet
+    .quote {
+        padding: 0.375rem;
+        border-radius: 1rem;
+        border: 1px solid var(--ks-border-primary);
+
+        figure {
+            margin: 0;
+            padding: 2.5rem 2.75rem;
+            border-radius: 0.75rem;
+            background: var(--ks-background-purple-light);
+
+            @include media-breakpoint-down(md) {
+                padding: 1.75rem 1.5rem;
+            }
+        }
+
+        blockquote {
+            margin: 0 0 1rem;
+            font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+            font-weight: 600;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
+            color: var(--ks-content-primary);
+        }
+
+        :global(.qmark) {
+            color: var(--ks-content-link);
+        }
+
+        figcaption {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+
+            strong {
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+
+    // the facts stay in view while the story scrolls
+    .side {
+        position: sticky;
+        top: calc(5.5rem + var(--announce-height, 0px));
+
+        @include media-breakpoint-down(lg) {
+            position: static;
+        }
+    }
+
+    .glance {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        padding: 1.5rem;
+        border-radius: 0.8125rem;
+        border: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+
+        h2 {
+            margin: 0;
+            font-size: $font-size-md;
+        }
+
+        dl {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 0;
+        }
+
+        dt {
+            margin-bottom: 0.25rem;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--ks-content-tertiary);
+        }
+
+        .pitch {
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--ks-border-primary);
+
+            p {
+                margin: 0;
+                font-size: $font-size-sm;
+                line-height: 1.5;
+                color: var(--ks-content-secondary);
+            }
+        }
+
+        dd {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.5;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .related {
+        margin-top: 4rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid var(--ks-border-primary);
+
+        .related-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+
+            h2 {
+                margin: 0;
+            }
+        }
+
+        .row > * {
+            padding-inline: 8px;
+        }
+    }
+</style>
