@@ -41,6 +41,11 @@ const TIPS = [
             investment and includes costs up front. What pays it back is the
             renewal you do not sign. Enter your renewal, workflow counts and
             rates to see when the move to Kestra pays off.
+            <span class="source"
+                >Built from the <a href="/resources/migration/vra"
+                    >vRA to Kestra migration guide</a
+                >.</span
+            >
         </Fragment>
         <Fragment slot="actions">
             <a class="btn btn-primary" href="#calculator"
@@ -52,11 +57,6 @@ const TIPS = [
 
     <section class="calc-body" id="calculator">
         <div class="container">
-            <p class="source">
-                Built from the <a href="/resources/migration/vra"
-                    >vRA to Kestra migration guide</a
-                >.
-            </p>
             <InteractiveFrame
                 title="Payback calculator"
                 titleAs="h2"
@@ -120,17 +120,13 @@ const TIPS = [
 </Layout>
 
 <style lang="scss">
+    .source {
+        display: block;
+        margin-top: 0.75rem;
+    }
+
     .calc-body {
         padding: 2rem 0 3rem;
-
-        .source {
-            margin: 0 0 1.5rem;
-            color: var(--ks-content-secondary);
-
-            a {
-                color: var(--ks-content-link);
-            }
-        }
     }
 
     .calc-tips {
