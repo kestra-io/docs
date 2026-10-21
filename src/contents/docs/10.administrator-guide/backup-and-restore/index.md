@@ -94,10 +94,6 @@ The restore command checks the archive's Kestra version against the running inst
 - `--to-tenant`: restore a tenant backup into a different tenant. Rewrites every record's tenant ID to the target tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive. When the source tenant still exists on the instance, the restore also fails if the backup contains executions, test runs or cases; see [Copy a tenant within the same instance](#copy-a-tenant-within-the-same-instance).
 - `--resources`: restore only specific resource types (same names as `create`).
 
-:::alert{type="warning"}
-To initialize a new tenant from another tenant on the same instance, create the backup without `--include-data`. Execution IDs are not scoped to a tenant, so executions restored into another tenant on the same instance collide with the source tenant's executions.
-:::
-
 The CLI logs a summary when complete:
 
 ```plaintext
