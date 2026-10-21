@@ -2,9 +2,14 @@
 export const DOWNLOAD_DIALOG_ID = "guide-download"
 export const DOWNLOAD_DIALOG_TARGET = `#${DOWNLOAD_DIALOG_ID}`
 
+/** The demo form dialog: every in-page link to /demo on the vRA pages opens it. */
+export const DEMO_DIALOG_ID = "book-demo"
+export const DEMO_DIALOG_TARGET = `#${DEMO_DIALOG_ID}`
+
 export const GUIDE_DOWNLOAD = {
     hubspotFormId: "3b11593b-4c99-4ad4-960d-1297e5087478",
-    guideUrl: "/vra-migration-guide.pdf",
+    guideUrl: "https://hs.kestra.io/hubfs/kestra-vmware-vra-migration-guide.pdf",
+    withCompany: true,
     submissionIdentifier: "vRA Migration Guide",
     pageUri: "resources/migration/vra",
     event: "vra_migration_guide_download",
@@ -21,6 +26,7 @@ export const HELP_REQUEST = {
     hubspotFormId: "3b11593b-4c99-4ad4-960d-1297e5087478",
     submissionIdentifier: "Migration Assistant vRA help",
     pageUri: "resources/migration/vra/assistant",
+    withCompany: true,
     event: "migration_assistant_vra_help_request",
     title: "Get Help Running It",
     submitLabel: "Request help",

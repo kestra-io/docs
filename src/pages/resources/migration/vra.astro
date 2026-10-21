@@ -16,6 +16,7 @@ import ReferenceHandouts, {
 } from "~/components/vra-migration-guide/ReferenceHandouts.mdx"
 import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import DemoDialog from "~/components/vra-migration-guide/DemoDialog.astro"
 import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
@@ -184,6 +185,7 @@ const jsonLinkedData = {
         </SeeHow>
     </div>
     <DownloadDialog />
+    <DemoDialog routePath="/resources/migration/vra" />
 </Layout>
 
 <style lang="scss">

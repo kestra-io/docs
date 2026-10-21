@@ -5,6 +5,7 @@ import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
 import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
 import CalculatorPayback from "~/components/vra-migration-guide/calculator/CalculatorPayback.vue"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import DemoDialog from "~/components/vra-migration-guide/DemoDialog.astro"
 import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 
@@ -110,6 +111,7 @@ const TIPS = [
         </SeeHow>
     </div>
     <DownloadDialog />
+    <DemoDialog routePath="/resources/migration/vra/payback" />
 </Layout>
 
 <style lang="scss">
