@@ -22,7 +22,7 @@ faq:
   - question: "How does concurrency work?"
     answer: 'You set a concurrency limit per flow, per namespace or per tenant. Executions beyond it queue by default, or fail or cancel if you prefer. A trigger starts one execution at a time unless you set <code>allowConcurrent: true</code> on it, which webhook-driven flows usually need. Before the trial, note the concurrency setting and the busiest hour of each busy Pipedream workflow (see <a href="#section-3-3">3.3</a>) and set the limit from those numbers.'
   - question: "How is Kestra Cloud priced compared to credits?"
-    answer: 'By task runs and the compute they use, with an allowance included in the base plan, reported in your instance''s usage view and on each execution. There is no 30-second credit slice. Every task that does work counts as a task run, whatever runner it uses; tasks you send to your own AWS, GCP or Azure runners use your cloud account''s compute, not Kestra Cloud compute. <a href="/demo">Talk to the team</a> with your monthly step count for an exact plan.'
+    answer: 'By task runs, plus compute time for scripts that run on the Kestra Cloud task runner. There is no 30-second credit slice: a task run is one run of one task, and loops, conditions and triggers are not counted. Tasks you send to your own AWS, GCP or Azure runners still count as task runs, but their compute is billed by your cloud provider, not by Kestra Cloud. <a href="/demo">Talk to the team</a> with your monthly step count and we will size your plan.'
   - question: "Can non-developers use it?"
     answer: 'Yes. Platform users build flows; Apps expose a flow as a branded form so a business owner can trigger it and watch it run without opening the editor. Role-based access keeps finance flows visible only to the people who should see them.'
   - question: "Is there an open-source option?"
@@ -79,15 +79,15 @@ For workflows that are mostly connectors with little code, a connector-first too
 
 **It is managed, and it is open.** [Kestra Cloud](/cloud) is run by the team that builds Kestra: hosting, scaling, upgrades, backups, SSO, RBAC, audit logs, Apps and remote runners, with a 14-day trial and no credit card. The core underneath is Apache 2.0 and the flows are YAML in your repository. If a vendor retires a product again, you keep running the same flows self-hosted the next day.
 
-**The economics are legible.** No credits per 30-second slice and no memory tuning per workflow. Task runs and compute are reported in your instance, and tasks you send to your own AWS, GCP or Azure runners use your cloud account's compute, not Kestra Cloud compute.
+**The economics are legible.** No credits per 30-second slice and no memory tuning per workflow. Plugin tasks such as an HTTP call, a Slack message or a database query count as one task run and use no compute time; only script tasks that run on the Kestra Cloud task runner add compute. Send scripts to your own AWS, GCP or Azure runners and that compute is billed by your cloud provider, not by Kestra Cloud. Task runs and compute are reported in your instance.
 
 | What you had in Pipedream | What you get in Kestra Cloud |
 | --- | --- |
 | Nothing to host | Hosting, scaling, upgrades and backups handled; 14-day trial, no credit card |
 | Code steps in Node, Python, Go, Bash | Script tasks in any language, plus {props.totalPlugins}+ plugins |
-| Credits per 30-second slice, memory tuned per workflow | Task runs plus compute, reported in your instance; no per-step arithmetic |
+| Credits per 30-second slice, memory tuned per workflow | Task runs, plus compute for scripts on the Kestra Cloud runner; no 30-second slices or memory tiers |
 | Compute locked to Pipedream | Remote task runners on your own AWS, GCP or Azure; their compute is billed by your cloud provider |
-| Workspace-level access, a few developer seats | Custom roles; namespaces isolate finance flows from the rest |
+| Workspace-level access for everyone | Unlimited users with custom roles; namespaces isolate finance flows from the rest |
 | GitHub Sync per project, if you set it up | Git sync for every flow; dev and prod namespaces, promoted after review |
 | Short event history on lower tiers | Executions, logs, metrics and audit logs retained per plan; SOC 2 Type 2, GDPR |
 | Developers only in the UI | Apps: branded forms so business owners trigger and monitor flows |
@@ -211,7 +211,7 @@ Every Pipedream construct has a Kestra equivalent, and most of them keep the sam
 | Secret prop / connected account | Secret manager, `{{ secret('NAME') }}` | Re-entered per namespace; never in Git |
 | Event history | Executions, logs, metrics, Gantt | Retention set by plan |
 | Workflow settings (memory, timeout) | Task runner size, `timeout` per task | Memory is per task, not per workflow |
-| Credits per 30-second slice | Task runs plus compute | No per-step credit arithmetic |
+| Credits per 30-second slice | Task runs plus compute | Counted per task run, not per 30-second slice |
 
 <GuideCallout variant="note" label="Why memory behaves differently">
 
