@@ -1,6 +1,8 @@
 ---
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import ModeoLogo from "~/components/partners/assets/modeo.svg?raw"
 
 import PartnerBanner from "~/components/partners/PartnerBanner.astro"
 import Capability from "~/components/partners/Capability.astro"
@@ -39,6 +41,14 @@ const banner = {
         },
     ],
 }
+
+const quotes = [
+    {
+        quote: "Kestra est devenue la solution d'orchestration de référence que nous proposons aux entreprises que nous accompagnons. Sa simplicité de prise en main et de maintenance ainsi que l'étendue de ses fonctionnalités en font une solution extrêmement performante pour orchestrer des pipelines data.",
+        author: "Matthieu Rousseau - Fondateur, Modeo",
+        smallLogoSvg: ModeoLogo,
+    },
+]
 
 const capabilities = {
     title: "Modeo : l'expertise Data Platform, orchestrée avec Kestra",
@@ -87,6 +97,7 @@ const capabilities = {
         image={banner.image}
         features={banner.features}
     />
+    <Quotes {quotes} />
     <Capability
         title={capabilities.title}
         capabilities={capabilities.items}

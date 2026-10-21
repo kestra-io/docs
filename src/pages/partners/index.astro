@@ -7,6 +7,8 @@ import PartnerCta from "~/components/partners/PartnerCta.astro"
 import CloudProviders from "~/components/partners/CloudProviders.astro"
 import FeaturedPartners from "~/components/partners/FeaturedPartners.astro"
 import PartnerPair from "~/components/partners/PartnerPair.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import ModeoLogo from "~/components/partners/assets/modeo.svg?raw"
 
 const title = "Kestra Partners"
 const description =
@@ -59,6 +61,14 @@ const BENEFITS = [
     {
         title: "Co-marketing",
         text: "A joint announcement, content and events.",
+    },
+]
+
+const QUOTES = [
+    {
+        quote: "Kestra has become the orchestration solution we recommend to the companies we work with. It is simple to adopt and to maintain, and the breadth of its features makes it an extremely capable solution for orchestrating data pipelines.",
+        author: "Matthieu Rousseau - Founder, <strong>Modeo</strong>",
+        smallLogoSvg: ModeoLogo,
     },
 ]
 ---
@@ -115,6 +125,8 @@ const BENEFITS = [
         />
 
         <CloudProviders />
+
+        <Quotes quotes={QUOTES} />
 
         <Benefits
             title="Join the program"
