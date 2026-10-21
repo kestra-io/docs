@@ -125,9 +125,9 @@ Beyond Proxmox, there is a rich ecosystem of open-source virtualization technolo
 | Tool | License | Deployment Model | Primary Use Case | Key Strengths | Key Limitations | Kestra Integration |
 |---|---|---|---|---|---|---|
 | **Kestra** | Open-Source (Apache 2.0) & Enterprise | Self-hosted, Cloud | Universal Orchestration | Vendor-agnostic, declarative YAML, event-driven, hybrid-cloud native | Not a hypervisor | Manages any hypervisor/cloud API |
-| **Nutanix AHV** | Commercial | On-prem, Hybrid Cloud | Hyperconverged Infrastructure | Simplified management, integrated stack, strong hybrid capabilities | Tightly coupled with Nutanix hardware/software | Native Nutanix plugin (Enterprise), plus APIs |
+| **Nutanix AHV** | Commercial | On-prem, Hybrid Cloud | Hyperconverged Infrastructure | Simplified management, integrated stack, strong hybrid capabilities | Tightly coupled with Nutanix hardware/software | [Native Nutanix plugin](/plugins/plugin-ee-nutanix) (Enterprise), plus APIs |
 | **Microsoft Hyper-V**| Commercial (Bundled) | On-prem | Windows-centric Virtualization | Cost-effective for Microsoft shops, deep OS integration | Less flexible outside Windows ecosystem | Via PowerShell, APIs |
-| **Proxmox VE** | Open-Source (AGPLv3) | On-prem | All-in-one Virtualization | Cost-free, KVM & LXC support, feature-rich web UI | Community-based support model | Native Proxmox plugin, plus API |
+| **Proxmox VE** | Open-Source (AGPLv3) | On-prem | All-in-one Virtualization | Cost-free, KVM & LXC support, feature-rich web UI | Community-based support model | [Native Proxmox plugin](/plugins/plugin-proxmox), plus API |
 | **Red Hat OpenShift**| Commercial | On-prem, Hybrid Cloud | Container & VM Unification | Kubernetes-native, unified dev/ops, strong hybrid story | Complex, high resource requirements | Via Kubernetes plugin, APIs |
 | **Public Cloud (AWS, etc.)**| Pay-as-you-go | Public Cloud | IaaS & Managed Services | Scalability, no hardware management, broad service ecosystem | Potential for vendor lock-in, data egress costs | Native cloud plugins (AWS, GCP, Azure) |
 
