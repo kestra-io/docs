@@ -35,7 +35,7 @@ const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
     <div class="container">
         <div class="frame">
             <div class="panel">
-                <h2>{copy.title}<span class="dot">.</span></h2>
+                <h2>{copy.title}.</h2>
                 <p>{copy.text}</p>
                 <div class="actions">
                     <Link href={href} class="btn btn-primary">{copy.cta}</Link>
@@ -110,10 +110,6 @@ const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
             line-height: 1.08;
             color: inherit;
             text-wrap: balance;
-
-            .dot {
-                color: #fe0071;
-            }
         }
 
         p {
