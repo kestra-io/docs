@@ -83,12 +83,8 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 **Restore options:**
 
 - `--encryption-key`: decryption key. Falls back to the instance key if omitted; fails if neither is available.
-- `--to-tenant`: restore a tenant backup into a different tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive.
+- `--to-tenant`: restore a tenant backup into a different tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive. To copy a tenant within the same instance, see [Copy a tenant within the same instance](#copy-a-tenant-within-the-same-instance).
 - `--resources`: restore only specific resource types (same names as `create`).
-
-:::alert{type="warning"}
-To initialize a new tenant from another tenant on the same instance, create the backup without `--include-data`. Execution IDs are not scoped to a tenant, so executions restored into another tenant on the same instance collide with the source tenant's executions.
-:::
 
 Starting the restore process from the command line will display the following logs which include backup information and a restore summary.
 
@@ -99,6 +95,21 @@ Starting the restore process from the command line will display the following lo
 2024-09-17 16:41:07,182 INFO  restore      io.kestra.ee.backup.BackupService Restore summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, USER: 1, TRIGGER: 2]
 Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
 ```
+
+### Copy a tenant within the same instance
+
+To initialize a new tenant from an existing one on the same instance, create the target tenant, back up the source tenant without `--include-data`, and restore with `--to-tenant` and an explicit `--resources` list:
+
+```bash
+kestra tenants create staging staging
+kestra backups create TENANT --tenant main
+kestra backups restore kestra:///backups/tenants/main/backup-20240917163312.kestra --to-tenant staging \
+  --resources APP,BANNER,BINDING,BLUEPRINT,CREDENTIAL,DASHBOARD,FLOW,GROUP,INVITATION,KV_STORE,NAMESPACE,NAMESPACE_FILE,ROLE,SECRET,SECURITY_INTEGRATION,TEMPLATE,TENANT_ACCESS,TEST,TRIGGER
+```
+
+:::alert{type="warning"}
+Leave out `EXECUTION`, `TEST_RUN` and `TENANT` when the source tenant still exists on the instance. Executions and test runs are stored under their own ID, so restoring them into another tenant moves them out of the source tenant. Restoring `TENANT` overwrites the source tenant instead of creating the target, which is why you create the target tenant first.
+:::
 
 ### Example: Backup and restore inside Docker
 
