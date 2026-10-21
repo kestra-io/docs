@@ -3,7 +3,20 @@
  * only the first estate has finished migrating, and a paid page must not imply
  * otherwise. Figures for the first card are the public ones from
  * /customers/fortune-500-company. */
-const cases = [
+interface Case {
+    status: string
+    title: string
+    stats: { value: string; label: string }[]
+    body: string
+}
+
+interface Props {
+    heading?: string
+    sub?: string
+    cases?: Case[]
+}
+
+const vraCases: Case[] = [
     {
         status: "Migration complete",
         title: "Fortune 500 manufacturer, off Aria Automation across IT and OT",
@@ -38,15 +51,24 @@ const cases = [
         body: "The assessment sized several thousand workflows spread across instances and tied to an established service catalog.",
     },
 ]
+
+const {
+    heading = "Enterprise vRA estates, at every stage",
+    sub = "From assessment to completed migration.",
+    cases = vraCases,
+} = Astro.props
+
+// Fewer cards keep their width instead of stretching across the row.
+const columns = Math.min(cases.length, 3)
 ---
 
 <section class="proof">
     <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
-        <h2>Enterprise vRA estates, at every stage</h2>
-        <p>From assessment to completed migration.</p>
+        <h2>{heading}</h2>
+        <p>{sub}</p>
     </div>
 
-    <div class="cards">
+    <div class="cards" style={`--columns: ${columns}`}>
         {
             cases.map((item, index) => (
                 <article
@@ -106,10 +128,10 @@ const cases = [
     .cards {
         display: grid;
         gap: 1rem;
-        max-width: 1145px;
+        max-width: max(calc(1145px * var(--columns) / 3), 760px);
         margin-inline: auto;
         @include media-breakpoint-up(md) {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(var(--columns), 1fr);
         }
     }
 

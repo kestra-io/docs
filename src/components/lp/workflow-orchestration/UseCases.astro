@@ -72,12 +72,14 @@ const {
         </div>
 
         <div class="form-card" id="contact-sales">
-            <Meeting
-                {routePath}
-                variant="plain"
-                {...formProps}
-                client:visible
-            />
+            <slot name="form">
+                <Meeting
+                    {routePath}
+                    variant="plain"
+                    {...formProps}
+                    client:visible
+                />
+            </slot>
         </div>
     </div>
 </section>
