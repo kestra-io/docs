@@ -37,10 +37,10 @@ const TIPS = [
         card={false}
     >
         <Fragment slot="deck">
-            The migration is the investment. What pays it back is the vRA and
-            vRO renewal you do not sign. Enter your renewal, your workflow
-            counts and your rates, and get the month the move to Kestra pays for
-            itself.
+            The migration is the investment. What pays it back is the VMware
+            Aria Automation (vRA) and Orchestrator (vRO) renewal you do not
+            sign. Enter your renewal, your workflow counts and your rates, and
+            get the month the move to Kestra pays for itself.
         </Fragment>
         <Fragment slot="actions">
             <a class="btn btn-primary" href="#calculator"
@@ -52,6 +52,11 @@ const TIPS = [
 
     <section class="calc-body" id="calculator">
         <div class="container">
+            <p class="source">
+                Built from the <a href="/resources/migration/vra"
+                    >vRA to Kestra migration guide</a
+                >.
+            </p>
             <InteractiveFrame
                 title="Payback calculator"
                 titleAs="h2"
@@ -117,6 +122,15 @@ const TIPS = [
 <style lang="scss">
     .calc-body {
         padding: 2rem 0 3rem;
+
+        .source {
+            margin: 0 0 1.5rem;
+            color: var(--ks-content-secondary);
+
+            a {
+                color: var(--ks-content-link);
+            }
+        }
     }
 
     .calc-tips {
