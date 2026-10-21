@@ -38,15 +38,19 @@ export function useTocScrollSpy(
         activeId.value = id
         if (!container) return
         nextTick(() => {
-            const list = document.querySelector(container)
+            const list = document.querySelector<HTMLElement>(container)
             const link = list?.querySelector<HTMLElement>(
                 `a[href="#${CSS.escape(id)}"]`,
             )
             if (!list || !link) return
+            if (!["auto", "scroll"].includes(getComputedStyle(list).overflowY))
+                return
             const cRect = list.getBoundingClientRect()
             const lRect = link.getBoundingClientRect()
-            if (lRect.top < cRect.top || lRect.bottom > cRect.bottom) {
-                link.scrollIntoView({ block: "nearest" })
+            if (lRect.top < cRect.top) {
+                list.scrollTop += lRect.top - cRect.top
+            } else if (lRect.bottom > cRect.bottom) {
+                list.scrollTop += lRect.bottom - cRect.bottom
             }
         })
     }
