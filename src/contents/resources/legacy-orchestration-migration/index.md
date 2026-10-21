@@ -167,13 +167,17 @@ Kestra's flexibility makes it an ideal destination for migrations from a wide ra
 
 These traditional workload automation tools are powerful but often complex and expensive. Migrating to Kestra offers a path to a more agile, developer-friendly model. The migration can be incremental: use Kestra's SSH or script tasks to trigger existing jobs on the legacy system, then gradually rewrite them as native Kestra flows. This approach allows you to modernize without disrupting decades of established business logic.
 
+### Migrating from VMware vRA and vRO
+
+vRA and vRO tie infrastructure automation to one hypervisor vendor, and their JavaScript dialect is maintained by a shrinking pool of engineers. Migrating to Kestra keeps vSphere, Terraform, Ansible, and your ITSM in place and replaces the workflow engine between them. A Fortune 500 manufacturer completed this migration, cutting licensing costs by 90% and delivery time from six months to six days. Our [vRA to Kestra migration guide](/resources/migration/vra) covers inventory, proof of concept, pattern-based waves, and the business case.
+
 ### Modernizing from Apache Airflow
 
 With Airflow 2.x now end-of-life, many teams are evaluating their options. While upgrading to Airflow 3.0 is one path, it's also an opportunity to address the operational overhead and Python-centric limitations of Airflow. Kestra offers a compelling alternative for [enterprise Airflow users](https://kestra.io/blogs/enterprise-airflow-alternatives). Its declarative YAML approach is easier to manage, and its polyglot nature supports diverse teams. Kestra's Airflow plugin even allows you to [trigger and monitor existing DAGs](https://kestra.io/blogs/2024-10-22-orchestrate-dags-with-kestra), providing a seamless migration path.
 
 ### Orchestrating Databricks Workflows and other cloud-native tools
 
-Platform-specific orchestrators like [Databricks Workflows](https://kestra.io/vs/databricks-workflows) or [Azure Data Factory](https://kestra.io/vs/azure-data-factory) are effective within their ecosystems but struggle to manage tasks outside of it. Kestra acts as a universal control plane, orchestrating your Databricks jobs alongside your ingestion tools, infrastructure provisioning, and business applications. This provides a unified view and control over your entire end-to-end process. A Fortune 500 mining company successfully used Kestra to replace a vendor-locked automation tool, reducing infrastructure provisioning time from months to days.
+Platform-specific orchestrators like [Databricks Workflows](https://kestra.io/vs/databricks-workflows) or [Azure Data Factory](https://kestra.io/vs/azure-data-factory) are effective within their ecosystems but struggle to manage tasks outside of it. Kestra acts as a universal control plane, orchestrating your Databricks jobs alongside your ingestion tools, infrastructure provisioning, and business applications. This provides a unified view and control over your entire end-to-end process.
 
 ## Post-migration optimization and management
 

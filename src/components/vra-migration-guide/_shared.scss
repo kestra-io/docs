@@ -1,0 +1,194 @@
+@use "/src/assets/styles/variable" as *;
+
+// Dark surfaces of the vRA mock-ups, with no token in _color-palette.scss.
+$dark-bg-input: #111115;
+$dark-link: #cdb6fb;
+
+@mixin guide-eyebrow($color: var(--ks-content-link), $uppercase: false) {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: $color;
+
+    @if $uppercase {
+        text-transform: uppercase;
+    }
+}
+
+@mixin guide-container {
+    position: relative;
+    max-width: calc(1320px + 2 * 1.5rem);
+    padding-inline: 1.5rem;
+
+    @include media-breakpoint-up(lg) {
+        max-width: calc(1320px + 2 * 3rem);
+        padding-inline: 3rem;
+    }
+}
+
+@mixin guide-focus-ring($offset: 2px) {
+    &:focus-visible {
+        outline: 2px solid var(--ks-border-active);
+        outline-offset: $offset;
+    }
+}
+
+@mixin guide-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--ks-border-secondary);
+    border-radius: 999px;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+// A pull quote; the caller sets the padding. `$p` is the paragraph selector,
+// `:global(p)` when the paragraphs come from a slot.
+@mixin guide-quote($p: "p") {
+    border-radius: 9px;
+    background: var(--ks-background-purple-light);
+    font-size: $font-size-lg;
+    line-height: 1.75rem;
+    color: var(--ks-content-primary);
+
+    #{$p} {
+        margin: 0;
+
+        &::before {
+            content: "“ ";
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+
+        &::after {
+            content: "”";
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+    }
+}
+
+// Apply to the section; its `.container` must be positioned so it paints
+// above the grid.
+@mixin squared-grid-backdrop {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -15rem;
+        left: 50%;
+        width: 1720px;
+        height: 786px;
+        transform: translateX(-50%);
+        background: url("~/assets/squared-grid.svg") no-repeat top center /
+            1720px auto;
+        pointer-events: none;
+    }
+}
+
+@mixin calc-form-field {
+    --ks-form-bg: var(--ks-background-input);
+    --ks-form-color: var(--ks-content-primary);
+    --ks-form-border-color: var(--ks-border-secondary);
+    min-height: 2.5rem;
+    border-radius: $border-radius;
+    font-size: 1rem;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    &[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+}
+
+@mixin calc-form-label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--ks-content-primary);
+}
+
+@mixin calc-hint {
+    font-size: $font-size-xs;
+    color: var(--ks-content-secondary);
+}
+
+@mixin calc-status {
+    font-size: $font-size-sm;
+    color: var(--ks-content-secondary);
+}
+
+$calc-shadow-surface: 0 2px 8px rgba(58, 29, 109, 0.05);
+$calc-shadow-elevated: 0 8px 24px rgba(58, 29, 109, 0.08);
+
+@mixin calc-card {
+    padding: 2rem;
+    border: 1px solid var(--ks-border-primary);
+    border-radius: $border-radius-lg;
+    background: var(--ks-background-body);
+    box-shadow: $calc-shadow-elevated;
+}
+
+@mixin calc-link-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: $font-size-sm;
+    color: var(--ks-content-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:disabled {
+        color: var(--ks-content-tertiary);
+        text-decoration: none;
+    }
+}
+
+@mixin assistant-section(
+    $background,
+    $color: var(--ks-content-primary),
+    $border: var(--ks-border-primary),
+    $padding: 5.625rem 0
+) {
+    padding: $padding;
+    border-bottom: 1px solid $border;
+    background: $background;
+    color: $color;
+
+    @include media-breakpoint-down(lg) {
+        padding: 3.5rem 0;
+    }
+}
+
+@mixin assistant-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-width: 11.25rem;
+
+    .icon {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+}
+
+// The numbered pin on the assistant's screenshots and their callouts.
+@mixin marker-pill {
+    flex-shrink: 0;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: $dark-accent;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: $white;
+}

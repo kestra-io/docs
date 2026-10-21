@@ -51,6 +51,15 @@ interface Props {
      */
     bareChrome?: boolean
     hideFloatingActions?: boolean
+    /** A page-only banner shaped like an annonces.yml entry. Without it, only
+     *  the homepage shows a banner (from annonces.yml). */
+    banner?: {
+        tag?: string
+        linkText?: string
+        text?: string
+        tail?: string
+        href: string
+    }
 }
 
 const props = Astro.props
@@ -118,7 +127,12 @@ const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
-const hasAnnounce = isHomepage && annonces.length > 0
+const announceContent = props.banner
+    ? [props.banner]
+    : isHomepage
+      ? annonces
+      : []
+const hasAnnounce = announceContent.length > 0
 
 const websiteSchema = isHomepage
     ? {
@@ -304,10 +318,14 @@ const organizationSchema = {
                         client:only="vue"
                     />
                     {hasAnnounce ? (
+                        // Its own persist name, so client-side navigation
+                        // doesn't carry the homepage banner onto this page.
                         <Announce
                             client:load
-                            transition:persist
-                            content={annonces}
+                            transition:persist={
+                                props.banner ? "page-banner" : "announce"
+                            }
+                            content={announceContent}
                         />
                     ) : (
                         ""

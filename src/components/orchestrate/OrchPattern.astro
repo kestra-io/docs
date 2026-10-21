@@ -1,4 +1,5 @@
 ---
+import CalloutCard from "~/components/common/CalloutCard.astro"
 import { Icon } from "astro-icon/components"
 import Snippets from "~/components/common/SnippetsIsland.astro"
 import Topology from "~/components/blueprints/Topology.client.vue"
@@ -14,6 +15,12 @@ interface BlueprintItem {
 interface Props {
     heading?: string
     nutshell?: string
+    callout?: {
+        eyebrow?: string
+        title: string
+        description: string
+        cta: { label: string; href: string }
+    }
     blueprints: BlueprintItem[]
     toolColor?: string
     toolName?: string
@@ -23,6 +30,7 @@ interface Props {
 const {
     heading,
     nutshell,
+    callout,
     blueprints,
     toolColor,
     toolName,
@@ -41,6 +49,7 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
         <div class="pattern-head">
             {heading && <h2 class="pattern-title">{heading}</h2>}
             {nutshell && <p class="nutshell" set:html={nutshell} />}
+            {callout && <CalloutCard class="pattern-callout" {...callout} />}
 
             {
                 hasTabs && (
@@ -306,6 +315,10 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
         @include media-breakpoint-down(md) {
             font-size: 1.625rem;
         }
+    }
+
+    :global(.pattern-callout) {
+        margin-top: 1.5rem;
     }
 
     .nutshell {

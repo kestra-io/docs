@@ -65,6 +65,11 @@ describe("rehypeResourceCta", () => {
         expect(html).toContain('data-resource-cta="mid"')
     })
 
+    it("injects nothing when front-matter resourceCta is false", async () => {
+        const html = await render(sections(6), RESOURCE, { resourceCta: false })
+        expect(html).not.toContain("data-resource-cta")
+    })
+
     it("picks the tagline from the resource tag", async () => {
         const html = await render(sections(6), RESOURCE, { tag: "data" })
         expect(html).toContain("Ready to orchestrate your data pipelines?")
