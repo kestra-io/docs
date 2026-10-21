@@ -146,13 +146,10 @@
                 font-size: $font-size-xs;
                 font-weight: 600;
 
-                // the partner type comes first, in the success colours
+                // the partner type comes first, in light blue
                 &.kind {
-                    background: var(--ks-background-tag-success);
-                    color: var(
-                        --ks-content-tag-success,
-                        var(--ks-content-primary)
-                    );
+                    background: var(--ks-background-blue-light);
+                    color: var(--ks-content-alert-info);
                 }
             }
         }

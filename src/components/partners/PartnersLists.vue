@@ -5,6 +5,21 @@
             <aside class="sidebar" aria-label="Filters">
                 <div class="sidebar-head">
                     <h6 class="sidebar-title">Filters</h6>
+                    <!-- on small screens the groups fold behind this button -->
+                    <button
+                        type="button"
+                        class="toggle btn btn-sm btn-secondary"
+                        :aria-expanded="filtersOpen"
+                        aria-controls="partner-filters"
+                        @click="filtersOpen = !filtersOpen"
+                    >
+                        <Tune />
+                        Filters
+                        <span v-if="activeCount" class="badge-count">{{
+                            activeCount
+                        }}</span>
+                        <ChevronDown :class="{ open: filtersOpen }" />
+                    </button>
                     <button
                         v-if="activeCount"
                         type="button"
@@ -14,31 +29,37 @@
                         Clear ({{ activeCount }})
                     </button>
                 </div>
-                <fieldset
-                    v-for="filter in props.filters"
-                    :key="filter.key"
-                    class="group"
+                <div
+                    id="partner-filters"
+                    class="groups"
+                    :class="{ open: filtersOpen }"
                 >
-                    <legend class="group-title">{{ filter.label }}</legend>
-                    <div class="list">
-                        <label
-                            v-for="option in options[filter.key]"
-                            :key="option.value"
-                            class="item"
-                        >
-                            <input
-                                class="input"
-                                type="checkbox"
-                                :value="option.value"
-                                v-model="selected[filter.key]"
-                            />
-                            <span class="label">
-                                {{ option.value }}
-                                <small>{{ option.count }}</small>
-                            </span>
-                        </label>
-                    </div>
-                </fieldset>
+                    <fieldset
+                        v-for="filter in props.filters"
+                        :key="filter.key"
+                        class="group"
+                    >
+                        <legend class="group-title">{{ filter.label }}</legend>
+                        <div class="list">
+                            <label
+                                v-for="option in options[filter.key]"
+                                :key="option.value"
+                                class="item"
+                            >
+                                <input
+                                    class="input"
+                                    type="checkbox"
+                                    :value="option.value"
+                                    v-model="selected[filter.key]"
+                                />
+                                <span class="label">
+                                    {{ option.value }}
+                                    <small>{{ option.count }}</small>
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
             </aside>
 
             <div class="content">
@@ -124,6 +145,8 @@
 
     import Close from "vue-material-design-icons/Close.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
+    import Tune from "vue-material-design-icons/Tune.vue"
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import CustomSelect from "~/components/common/CustomSelect.vue"
     import PartnerCard from "./PartnerCard.vue"
     import type { ListPartner } from "./partners"
@@ -142,6 +165,7 @@
 
     const searchQuery = ref("")
     const sortBy = ref("A-Z")
+    const filtersOpen = ref(false)
     const sortOptions = [
         { value: "A-Z", label: "Name A-Z" },
         { value: "Z-A", label: "Name Z-A" },
@@ -304,6 +328,61 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 0.75rem;
+
+            // the title on wide screens, the fold button on small ones
+            @include media-breakpoint-down(lg) {
+                justify-content: flex-start;
+
+                .sidebar-title {
+                    display: none;
+                }
+            }
+        }
+
+        .toggle {
+            display: none;
+            align-items: center;
+            gap: 0.375rem;
+
+            @include media-breakpoint-down(lg) {
+                display: inline-flex;
+            }
+
+            :deep(svg) {
+                width: 1rem;
+                height: 1rem;
+            }
+
+            .open :deep(svg),
+            :deep(.open svg) {
+                transform: rotate(180deg);
+            }
+
+            .badge-count {
+                min-width: 1.25rem;
+                padding: 0 0.375rem;
+                border-radius: 1rem;
+                font-size: $font-size-xs;
+                line-height: 1.25rem;
+                background: var(--ks-content-link);
+                color: #fff;
+            }
+        }
+
+        .groups {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+                gap: 1rem;
+
+                &.open {
+                    display: flex;
+                }
+            }
         }
 
         &-title {

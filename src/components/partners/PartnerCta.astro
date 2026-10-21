@@ -27,6 +27,8 @@ const COPY = {
 
 const copy = COPY[track ?? "default"]
 const href = track ? `/partners/apply?track=${track}` : "/partners/apply"
+// "Find a partner" only where there is somewhere else to find one
+const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
 ---
 
 <section class="partner-cta" id="form">
@@ -38,7 +40,7 @@ const href = track ? `/partners/apply?track=${track}` : "/partners/apply"
                 <div class="actions">
                     <Link href={href} class="btn btn-primary">{copy.cta}</Link>
                     {
-                        !track && (
+                        showFind && (
                             <a href="/partners/find" class="btn btn-secondary">
                                 Find a partner
                             </a>
