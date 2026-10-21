@@ -50,8 +50,23 @@ interface Props {
      * and keep exit paths off the page.
      */
     bareChrome?: boolean
+    /**
+     * Pin the page to one theme whatever the visitor's setting. Campaign pages
+     * pin "light" so components built on the theme-aware --ks-* tokens match
+     * the page's fixed palette.
+     */
+    forceTheme?: "light" | "dark"
     hideFloatingActions?: boolean
     lang?: string
+    /** A page-only banner shaped like an annonces.yml entry. Without it, only
+     *  the homepage shows a banner (from annonces.yml). */
+    banner?: {
+        tag?: string
+        linkText?: string
+        text?: string
+        tail?: string
+        href: string
+    }
 }
 
 const props = Astro.props
@@ -119,7 +134,12 @@ const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
-const hasAnnounce = isHomepage && annonces.length > 0
+const announceContent = props.banner
+    ? [props.banner]
+    : isHomepage
+      ? annonces
+      : []
+const hasAnnounce = announceContent.length > 0
 
 const websiteSchema = isHomepage
     ? {
@@ -156,15 +176,22 @@ const organizationSchema = {
 }
 ---
 
-<html lang={props.lang ?? "en"} class:list={{ "no-animation": DISABLE_USAL }}>
+<html
+    lang={props.lang ?? "en"}
+    class:list={{ "no-animation": DISABLE_USAL }}
+    data-force-theme={props.forceTheme}
+>
     <head>
         <script is:inline>
             ;(function () {
+                var forced =
+                    document.documentElement.getAttribute("data-force-theme")
                 var theme = localStorage.getItem("theme") || "system"
-                var dark =
-                    theme === "dark" ||
-                    (theme === "system" &&
-                        matchMedia("(prefers-color-scheme: dark)").matches)
+                var dark = forced
+                    ? forced === "dark"
+                    : theme === "dark" ||
+                      (theme === "system" &&
+                          matchMedia("(prefers-color-scheme: dark)").matches)
                 document.documentElement.classList.add(dark ? "dark" : "light")
             })()
         </script>
@@ -305,10 +332,14 @@ const organizationSchema = {
                         client:only="vue"
                     />
                     {hasAnnounce ? (
+                        // Its own persist name, so client-side navigation
+                        // doesn't carry the homepage banner onto this page.
                         <Announce
                             client:load
-                            transition:persist
-                            content={annonces}
+                            transition:persist={
+                                props.banner ? "page-banner" : "announce"
+                            }
+                            content={announceContent}
                         />
                     ) : (
                         ""

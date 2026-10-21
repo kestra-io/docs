@@ -6,11 +6,14 @@ import Meeting from "~/components/demo/Meeting.vue"
 interface Props {
     /** Passed to HubSpot as the originating page URI. */
     routePath: string
+    /** Each line renders on its own row. */
+    headingLines?: string[]
+    bullets?: { text: string; strong: boolean }[]
+    /** Forwarded to the form, e.g. its button label. */
+    formProps?: Record<string, unknown>
 }
 
-const { routePath } = Astro.props
-
-const bullets = [
+const defaultBullets = [
     {
         text: "We'll discuss your requirements for security, scale, and language-agnostic support.",
         strong: true,
@@ -24,13 +27,27 @@ const bullets = [
         strong: false,
     },
 ]
+
+const {
+    routePath,
+    headingLines = ["See it on", "your use cases"],
+    bullets = defaultBullets,
+    formProps = {},
+} = Astro.props
 ---
 
 <section class="use-cases">
     <div class="inner">
         <div class="copy">
             <h2 data-usal="fade-r delay-0 duration-500 ease-out">
-                See it on<br />your use cases
+                {
+                    headingLines.map((line, index) => (
+                        <>
+                            {index > 0 && <br />}
+                            {line}
+                        </>
+                    ))
+                }
             </h2>
             <ul
                 class="bullets"
@@ -55,7 +72,12 @@ const bullets = [
         </div>
 
         <div class="form-card" id="contact-sales">
-            <Meeting {routePath} variant="plain" client:visible />
+            <Meeting
+                {routePath}
+                variant="plain"
+                {...formProps}
+                client:visible
+            />
         </div>
     </div>
 </section>

@@ -42,6 +42,7 @@
         infrastructure: infraBg,
         business: businessBg,
         orchestration: orchestrationBg,
+        migration: whitepapersBg,
         whitepapers: whitepapersBg,
     }
 

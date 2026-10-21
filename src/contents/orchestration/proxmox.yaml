@@ -17,7 +17,15 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Run Proxmox like vCenter without the Broadcom tax: a workflow engine that listens to cron or VM state changes, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a>. Drop the vRA subscription; prove backups restore monthly."
+nutshell: "Run Proxmox like vCenter without the Broadcom tax: a workflow engine that listens to cron or VM state changes, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a>. Keep your automation independent of the hypervisor, and prove backups restore monthly."
+
+guideCta:
+  eyebrow: "Migration guide"
+  title: "Leaving vRA along with vSphere?"
+  description: "The vRA to Kestra migration guide covers moving your automation while the hypervisor underneath changes."
+  cta:
+    label: "Read the guide"
+    href: "/resources/migration/vra"
 
 pillars:
   title: "Around every VM, every container, every node."
@@ -313,6 +321,10 @@ resources:
       title: "Proxmox plugin reference"
       description: "Every Proxmox task (VM, LXC, snapshot, backup, cluster, network, task, template) with copy-ready YAML examples."
       href: "/plugins/plugin-proxmox"
+    - kind: "how-to"
+      title: "Migrating off VMware vRA and vRO"
+      description: "Four stages from assessing your estate to retiring vRA at renewal, with vRA running until each wave is verified."
+      href: "/resources/migration/vra"
 
 seeHow:
   title: "Ready to orchestrate VMware exits and Proxmox day-2 ops?"

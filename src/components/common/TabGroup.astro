@@ -1,0 +1,205 @@
+---
+interface Props {
+    id: string
+    label: string
+    tabs: { label: string; kicker?: string }[]
+    variant?: "tabs" | "stages" | "segmented"
+    /** "dark" for a group sitting on a surface that stays dark in both themes. */
+    surface?: "light" | "dark"
+    flush?: boolean
+    selected?: number
+}
+
+const {
+    id,
+    label,
+    tabs,
+    variant = "tabs",
+    surface = "light",
+    flush = false,
+    selected = 1,
+} = Astro.props
+---
+
+<div
+    class:list={["ks-tabs", variant, { "on-dark": surface === "dark", flush }]}
+    data-ks-tabs
+    {id}
+>
+    <div class="tablist" role="tablist" aria-label={label}>
+        {
+            tabs.map((tab, i) => (
+                <button
+                    type="button"
+                    role="tab"
+                    id={`${id}-tab-${i + 1}`}
+                    aria-controls={`${id}-panel-${i + 1}`}
+                    aria-selected={i + 1 === selected ? "true" : "false"}
+                    tabindex={i + 1 === selected ? 0 : -1}
+                >
+                    {tab.kicker && <small>{tab.kicker}</small>}
+                    <span>{tab.label}</span>
+                </button>
+            ))
+        }
+    </div>
+    <slot />
+</div>
+
+<script>
+    /** The tab under `target` and the tabs beside it. */
+    function tabsAt(target: EventTarget | null) {
+        const tab =
+            target instanceof Element &&
+            target.closest<HTMLButtonElement>(
+                "[data-ks-tabs] > .tablist > [role=tab]",
+            )
+        if (!tab) return
+        const tabs = [
+            ...tab.parentElement!.querySelectorAll<HTMLButtonElement>(
+                ":scope > [role=tab]",
+            ),
+        ]
+        return { tab, tabs, i: tabs.indexOf(tab), n: tabs.length }
+    }
+
+    function select(tab: HTMLButtonElement, tabs: HTMLButtonElement[]) {
+        for (const t of tabs) {
+            t.setAttribute("aria-selected", String(t === tab))
+            t.tabIndex = t === tab ? 0 : -1
+            const panel = document.getElementById(
+                t.getAttribute("aria-controls") ?? "",
+            )
+            if (panel) panel.hidden = t !== tab
+        }
+    }
+
+    document.addEventListener("click", (e) => {
+        const at = tabsAt(e.target)
+        if (at) select(at.tab, at.tabs)
+    })
+
+    document.addEventListener("keydown", (e) => {
+        const at = tabsAt(e.target)
+        if (!at) return
+        const { tabs, i, n } = at
+        const moves: Record<string, number> = {
+            ArrowRight: (i + 1) % n,
+            ArrowLeft: (i - 1 + n) % n,
+            Home: 0,
+            End: n - 1,
+        }
+        const next = moves[e.key]
+        if (next === undefined) return
+        e.preventDefault()
+        select(tabs[next], tabs)
+        tabs[next].focus()
+    })
+</script>
+
+<style lang="scss">
+    .ks-tabs {
+        margin: 1.5rem 0;
+
+        > .tablist {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+
+            > [role="tab"] {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.6rem 0.9rem;
+                border: 1px solid var(--ks-border-secondary);
+                border-radius: $border-radius-lg;
+                background: var(--ks-background-body);
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                text-align: left;
+
+                small {
+                    font-size: $font-size-xs;
+                    font-weight: 600;
+                    letter-spacing: 0.05em;
+                }
+
+                span {
+                    font-weight: 600;
+                }
+
+                &[aria-selected="true"] {
+                    border-color: var(--ks-border-active);
+                    color: var(--ks-content-primary);
+
+                    small {
+                        color: var(--ks-content-link);
+                    }
+                }
+
+                &:focus-visible {
+                    outline: 2px solid var(--ks-border-active);
+                    outline-offset: 2px;
+                }
+            }
+        }
+
+        &.stages > .tablist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        &.segmented > .tablist > [role="tab"] {
+            border-radius: 999px;
+            padding: 0.4rem 0.9rem;
+        }
+
+        &.flush {
+            margin: 0;
+
+            :global(.ks-tab-panel) {
+                padding: 0;
+                border: 0;
+            }
+        }
+
+        &.on-dark {
+            > .tablist {
+                gap: 0.625rem;
+                margin-bottom: 4rem;
+
+                @include media-breakpoint-down(lg) {
+                    margin-bottom: 2rem;
+                }
+
+                > [role="tab"] {
+                    align-items: center;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid $dark-border-strong;
+                    border-radius: 6px;
+                    background: $dark-bg-control;
+                    font-size: 1.25rem;
+                    line-height: 1.75rem;
+                    text-align: center;
+                    color: $dark-text-secondary;
+
+                    @include media-breakpoint-down(md) {
+                        font-size: 1rem;
+                    }
+
+                    &[aria-selected="true"] {
+                        border-color: $dark-accent;
+                        background: $dark-raised;
+                        box-shadow: 2px 3px 16px rgba($dark-accent, 0.1);
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+</style>
