@@ -115,7 +115,7 @@ Choosing the right platform depends on your team's primary focus and long-term s
 
 *   **For AI and ML platform teams,** the need is for a language-agnostic platform that can orchestrate heterogeneous tasks, from data preparation to GPU-based model training and serving. Kestra's ability to run any code in any container, combined with its new agentic orchestration features, makes it a future-proof choice for the [AI automation stack](https://kestra.io/ai-automation).
 
-*   **For small teams getting started,** ease of deployment and a strong open-source community are key. Kestra's Apache 2.0 open-source edition can be spun up quickly with Docker, offering a fast path to value without initial license costs.
+*   **For small teams getting started,** ease of deployment and a strong open-source community are key. Kestra's Apache 2.0 open-source edition can be spun up quickly with Docker, offering a fast path to value without initial license costs. Our guide to the [open-source options](/resources/infrastructure/open-source-vmware-vra-replacement) for replacing vRA shows what they take over and where they stop.
 
 ## Conclusion
 
