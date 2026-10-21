@@ -1,24 +1,12 @@
 // @ts-nocheck
 /* eslint-disable */
-// Hairline figure, drawn with the hairline-create skill. Edit the body, not the wrapper.
 export default function define(HL, hairline) {
-/**
- * Plugins: the Kestra block on a baseplate, with four plugin bricks docked
- * against its sides, studs on their tops. At rest the near-right brick hangs
- * above its slot, on its way in. The pointer picks a brick: it unplugs, sliding
- * out and up from the block, while the others seat home, staggered outwards
- * from it round the block. The slider is how far a brick comes out.
- *
- * The pattern: one of many. Tweens, a stagger by distance, and a hit test on
- * each brick's docked pose, which never moves.
- */
 const {
   Cam, circ, facing, fit, open, poly, prism, proj, ringAt, rings, rrect,
   tset, tval, tween, unproj, disposer, flatDot, mk, place, pointer, put, register, solid,
 } = HL;
 
 const PL = 92, PB = 5, K = 15, KH = 30, BH = 16, NEAR = 46, FAR = 66, HALF = 12, SR = 3.2, SH = 3.2;
-/** The Kestra mark laid on a top face: six rounded pixels in a pyramid and the dot under them. s is world units per unit of the 600 mark. */
 const PIX = [[300, 147], [223, 224], [377, 224], [146, 301], [300, 301], [454, 301]];
 function logo(P, s, z) {
   const w = (u, v) => { const du = (u - 300) * s, dv = (v - 300) * s; return [(du + dv) / Math.SQRT2, (dv - du) / Math.SQRT2]; };
@@ -27,7 +15,6 @@ function logo(P, s, z) {
   return { pix, dot: poly(circ(44 * s, 16).map((q) => P(q.u + dx, q.v + dy, z))) };
 }
 
-/** The point a fraction f along a route of world [x, y] points. */
 function along(pts, f) {
   const seglen = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1]));
   let d = f * seglen.reduce((a, b) => a + b, 0);
@@ -40,11 +27,9 @@ function along(pts, f) {
 
 const shift = (ring, dx, dy) => ring.map((q) => ({ ...q, u: q.u + dx, v: q.v + dy }));
 
-/** Docking directions round the block, in paint order: the two far sides first. */
 const DIRS = [[-1, 0], [0, -1], [1, 0], [0, 1]];
 const WAITING = 2, REST_OUT = [0, 0, 1, 0];
 
-/** Brick i pushed out by `out` (0 docked, 1 at the slider's reach), as world boxes: body and four studs. */
 function brick(d, gap, z) {
   const [dx, dy] = d, a0 = NEAR + gap, a1 = FAR + gap;
   const span = (lo, hi) => (dx ? [dx > 0 ? lo : -hi, -HALF, dx > 0 ? hi : -lo, HALF] : [-HALF, dy > 0 ? lo : -hi, HALF, dy > 0 ? hi : -lo]);
@@ -65,7 +50,6 @@ function mount({ stage, svg, read }, value) {
   const [pr, pi] = rings(-PL, -PL, PL, PL, 12, 2.2);
   put(solid(g), prism(P, front, pr, pi, -PB, 0));
 
-  // the traces: data comes in from the plate's edge, through each brick, and on into the block
   const route = (d) => [[d[0] * (PL - 5) + d[1] * 6, d[1] * (PL - 5) - d[0] * 6], [d[0] * K + d[1] * 6, d[1] * K - d[0] * 6]];
   const traces = DIRS.map((d) => mk("path", { d: open(route(d).map(([x, y]) => P(x, y, 0))), class: "nf dash" }, g));
   const pg = mk("g", {}, g);
@@ -73,7 +57,6 @@ function mount({ stage, svg, read }, value) {
   const ph = DIRS.map((_, i) => i / 4);
   let act = -2;
 
-  // each brick: its slot, dashed on the plate and still, then its body and studs, which move
   const bricks = DIRS.map((d, i) => {
     const bg = mk("g", {}, g);
     const h = brick(d, 0, 0), [hr] = rings(h.x0, h.y0, h.x1, h.y1, 4, 1.2);
@@ -82,7 +65,6 @@ function mount({ stage, svg, read }, value) {
     return { d, bg, body, studs, out: tween(REST_OUT[i]), drawn: NaN, home: h };
   });
 
-  // the block, between the far bricks and the near ones, with its pixel mark on top
   const [kr, ki] = rings(-K, -K, K, K, 5, 1.4);
   const block = solid(g);
   put(block, prism(P, front, kr, ki, 0, KH));
@@ -99,7 +81,6 @@ function mount({ stage, svg, read }, value) {
     q.studs.forEach(([x, y], k) => put(b.studs[k], prism(P, front, shift(circ(SR, 14), x, y), shift(circ(SR - 0.9, 14), x, y), q.z + BH, q.z + BH + SH)));
   }
 
-  // data flows in through every brick that is plugged; a brick out of its slot cuts its trace
   const B = register(stage, (dt, now) => {
     bricks.forEach((b, i) => {
       const t = tval(b.out, now);
@@ -115,7 +96,6 @@ function mount({ stage, svg, read }, value) {
   });
   bag.add(B.unregister);
 
-  /** The brick whose docked pose is nearest the pointer, tested at its foot, middle and top; -1 over the block. */
   function hit([x, y]) {
     let best = -1, bd = 14;
     bricks.forEach((b, i) => {
@@ -132,7 +112,6 @@ function mount({ stage, svg, read }, value) {
     const now = performance.now(), from = a >= 0 ? a : act >= 0 ? act : WAITING;
     act = a;
     bricks.forEach((b, i) => {
-      // distance round the block, so the stagger spreads both ways from the brick touched
       const ring = Math.min(Math.abs(i - from), 4 - Math.abs(i - from));
       tset(b.out, a < 0 ? REST_OUT[i] : i === a ? 1 : 0, now, ring * 50);
       b.body.sil.classList.toggle("hi", i === a);

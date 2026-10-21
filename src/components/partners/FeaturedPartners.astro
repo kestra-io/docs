@@ -6,7 +6,6 @@ interface Featured {
     text: string
     href: string
     cta: string
-    /** the partner's brand colour, for the glow that lights its card */
     color: string
 }
 
@@ -117,7 +116,6 @@ const cards = featured.map((f) => ({
             }
         }
 
-        // the whole card is the panel, lit by the partner's colour
         .partner-card {
             display: block;
             height: 100%;
@@ -152,7 +150,6 @@ const cards = featured.map((f) => ({
                 ),
                 var(--ks-background-secondary);
 
-            // a stronger glow that rises on hover
             &::before {
                 content: "";
                 position: absolute;
@@ -168,7 +165,6 @@ const cards = featured.map((f) => ({
             }
         }
 
-        // partner logos are drawn for light backgrounds, so they sit on a white chip
         .logo {
             display: flex;
             align-items: center;
@@ -195,10 +191,7 @@ const cards = featured.map((f) => ({
             line-height: 1.4;
         }
 
-        // the site's link arrow, which stretches when the card is hovered;
-        // it stays inline so it follows the last word when the link wraps
         .more {
-            // same size, weight and colour as the other links on the page
             font-size: $font-size-sm;
             font-weight: 600;
             color: var(--ks-content-link);

@@ -1,11 +1,9 @@
 <template>
-    <!-- the /plugins listing, for partners: every filter group in the sidebar, a search, a sort and the cards -->
     <section class="lists">
         <div class="container-xxl">
             <aside class="sidebar" aria-label="Filters">
                 <div class="sidebar-head">
                     <h6 class="sidebar-title">Filters</h6>
-                    <!-- on small screens the groups fold behind this button -->
                     <button
                         type="button"
                         class="toggle btn btn-sm btn-secondary"
@@ -175,7 +173,6 @@
     const valuesOf = (p: ListPartner, key: FilterKey): string[] =>
         key === "services" ? p.services : [p[key]]
 
-    // one list of ticked values per filter group
     const selected = reactive<Record<FilterKey, string[]>>({
         type: [],
         kind: [],
@@ -183,7 +180,6 @@
         services: [],
     })
 
-    // each group's values with how many partners have them, most common first
     const options = computed(() => {
         const out = {} as Record<FilterKey, { value: string; count: number }[]>
         for (const { key } of props.filters) {
@@ -199,7 +195,6 @@
         return out
     })
 
-    // any ticked value within a group, every group, and every word of the search
     const filtered = computed(() => {
         const tokens = searchQuery.value
             .toLowerCase()
@@ -255,7 +250,6 @@
         searchQuery.value = ""
     }
 
-    // the filters live in the URL, so a filtered list can be shared
     onMounted(() => {
         const params = new URLSearchParams(window.location.search)
         searchQuery.value = params.get("q") ?? ""
@@ -286,7 +280,6 @@
 </script>
 
 <style lang="scss" scoped>
-    // the layout and sidebar of /plugins (ListsLayout), with checkbox groups instead of one radio list
     section.lists {
         padding: 1.875rem 0.75rem;
         border-bottom: 1px solid var(--ks-border-secondary);
@@ -330,7 +323,6 @@
             justify-content: space-between;
             gap: 0.75rem;
 
-            // the title on wide screens, the fold button on small ones
             @include media-breakpoint-down(lg) {
                 justify-content: flex-start;
 
@@ -481,7 +473,6 @@
                     color: var(--ks-content-tertiary);
                 }
 
-                // on small screens each value is a pill, as on /plugins
                 @include media-breakpoint-down(lg) {
                     padding: 0.25rem 0.875rem;
                     border: 1px solid var(--ks-border-secondary);
@@ -514,7 +505,6 @@
         }
     }
 
-    // the dark banner of /plugins, with soft glows instead of the plugin artwork
     .top-bar {
         display: flex;
         flex-direction: column;
@@ -606,7 +596,6 @@
                 color: var(--ks-content-tertiary);
             }
 
-            // on small screens the button takes its own line, so the search keeps its width
             @include media-breakpoint-down(md) {
                 flex-basis: 100%;
                 padding: 0.35rem 0.25rem 0.25rem 0;

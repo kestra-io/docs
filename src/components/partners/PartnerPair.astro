@@ -3,7 +3,6 @@ import { PARTNERS } from "./partners"
 import kestraMark from "~/assets/landing/partners/kestra-mark.svg?raw"
 
 interface Props {
-    /** one partner's name, to show only that logo; without it the tile cycles through every partner */
     name?: string
 }
 
@@ -30,7 +29,6 @@ const shown = name ? PARTNERS.filter((p) => p.name === name) : PARTNERS
 </div>
 
 <script>
-    // one partner logo after another in the right tile, only while it is on screen
     document.querySelectorAll<HTMLElement>(".pair .partner").forEach((tile) => {
         const items = [...tile.querySelectorAll("li")]
         if (
@@ -53,8 +51,6 @@ const shown = name ? PARTNERS.filter((p) => p.name === name) : PARTNERS
 </script>
 
 <style lang="scss">
-    // Kestra × a partner on a grid whose cell is one tile: the Kestra tile
-    // fills a cell, the × sits in the next, the partner spans two
     .pair {
         --cell: 88px;
         --line: rgba(200, 190, 255, 0.16);
@@ -70,9 +66,6 @@ const shown = name ? PARTNERS.filter((p) => p.name === name) : PARTNERS
             --cell: 72px;
         }
 
-        // the grid starts a whole number of cells before the pair, so every line
-        // runs along a tile edge; like the features hero, it is wide, a few cells
-        // are filled a shade lighter, and it fades out towards the edges
         &::before,
         &::after {
             content: "";
@@ -167,7 +160,6 @@ const shown = name ? PARTNERS.filter((p) => p.name === name) : PARTNERS
         }
     }
 
-    // partner logos are drawn for light backgrounds, so this tile is white
     .partner {
         width: calc(2 * var(--cell));
         background: #fff;

@@ -27,7 +27,6 @@ const COPY = {
 
 const copy = COPY[track ?? "default"]
 const href = track ? `/partners/apply?track=${track}` : "/partners/apply"
-// "Find a partner" only where there is somewhere else to find one
 const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
 ---
 
@@ -57,14 +56,12 @@ const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
         padding: 4rem 0 5rem;
         background: var(--ks-background-body);
 
-        // the framed card of the other blocks: a light border, a thin gap, then the panel
         .frame {
             padding: 0.375rem;
             border-radius: 1.25rem;
             border: 1px solid var(--ks-border-primary);
         }
 
-        // a dark panel lit from the top by violet and blue glows, the same in both themes
         .panel {
             position: relative;
             overflow: hidden;
@@ -126,7 +123,6 @@ const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
             justify-content: center;
             flex-wrap: wrap;
 
-            // white on the glow, the outlined one turns white on hover
             :global(.btn-primary) {
                 --ks-btn-bg: #fff;
                 --ks-btn-color: #0e0e10;
@@ -135,7 +131,6 @@ const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
                 --ks-background-button-primary: #fff;
                 --ks-background-button-primary-hover: #e9e9ee;
                 background: #fff;
-                // the global .btn-primary forces white text
                 color: #0e0e10 !important;
                 border-color: #fff;
                 box-shadow: none;

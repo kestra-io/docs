@@ -67,11 +67,9 @@ const partners = PARTNERS.filter((p) => p.type === type)
 </section>
 
 <style lang="scss">
-    // the framed card of the infrastructure page: a light border, a thin gap, then the grey panel
     .track {
         padding: 0.8rem 0;
 
-        // the run of cards gets air above and below, not between
         &:not(.track + .track) {
             padding-top: 1.5rem;
         }
@@ -117,7 +115,6 @@ const partners = PARTNERS.filter((p) => p.type === type)
             }
         }
 
-        // who the track gathers: its partners' logos on one line along the bottom, small and greyed out
         .members {
             display: flex;
             flex-wrap: wrap;
@@ -127,7 +124,6 @@ const partners = PARTNERS.filter((p) => p.type === type)
             margin: 0;
             padding: 1.25rem 1.5rem 1.5rem;
             list-style: none;
-            // a hairline that reads on the grey panel in both themes
             border-top: 1px solid
                 color-mix(in srgb, var(--ks-content-primary) 8%, transparent);
 
@@ -137,7 +133,6 @@ const partners = PARTNERS.filter((p) => p.type === type)
                 padding: 1.25rem 3.5rem 1.5rem;
             }
 
-            // logos give up width before the line overflows
             li {
                 display: flex;
                 align-items: center;

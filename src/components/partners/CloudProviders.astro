@@ -41,11 +41,9 @@ const CLOUDS = [
     },
 ]
 
-// the cards repeat the logos of the table, so their gradient ids get a prefix to stay unique
 const cardLogo = (svg: string) =>
     svg.replace(/id="/g, 'id="card-').replace(/url\(#/g, "url(#card-")
 
-// each row of the comparison: what it is, and how it reads for one cloud
 const ROWS = [
     { label: "Tasks and triggers", note: "In the plugin group" },
     { label: "Internal storage", note: "For outputs and namespace files" },
@@ -131,7 +129,6 @@ const ROWS = [
             </table>
         </div>
 
-        <!-- on phones, one card per cloud instead of a table that scrolls sideways -->
         <ul class="cloud-cards">
             {
                 CLOUDS.map((cloud) => (
@@ -181,7 +178,6 @@ const ROWS = [
         --clouds-border: var(--ks-border-default, #e9e9ee);
 
         padding: 5rem 0;
-        // white, so it doesn't run into the grey "Join the program" block below
         background: var(--ks-background-body);
 
         :global(html.dark) & {
@@ -207,7 +203,6 @@ const ROWS = [
             }
         }
 
-        // one comparison instead of three cards that say the same thing three times
         .table-wrap {
             overflow-x: auto;
             border: 1px solid var(--clouds-border);

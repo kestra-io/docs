@@ -12,7 +12,6 @@
 </script>
 
 <template>
-    <!-- the plugin card of /plugins, with a partner's logo, type, services and location -->
     <a
         :href="props.partner.href"
         :target="external ? '_blank' : undefined"
@@ -92,7 +91,6 @@
             margin-bottom: 1rem;
         }
 
-        // wider than the plugin icon tile: partner logos are mostly wordmarks
         .icon-content {
             width: 96px;
             height: 60px;
@@ -146,7 +144,6 @@
                 font-size: $font-size-xs;
                 font-weight: 600;
 
-                // the partner type comes first, in light blue
                 &.kind {
                     background: var(--ks-background-blue-light);
                     color: var(--ks-content-alert-info);
