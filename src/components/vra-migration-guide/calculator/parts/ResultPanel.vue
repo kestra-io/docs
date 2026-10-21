@@ -15,8 +15,11 @@
             <div v-if="breakEven.length" class="break-even">
                 <p><RichText :parts="breakEven" /></p>
                 <p class="reference-note">
-                    <a href="/stories/fortune-500-company"
+                    <a v-if="storyHref" :href="storyHref"
                         >A Fortune 500 manufacturer that replaced vRA</a
+                    >
+                    <template v-else
+                        >A Fortune 500 manufacturer that replaced vRA</template
                     >
                     reports licensing 90% below Aria Automation.
                 </p>
@@ -47,10 +50,16 @@
     import RichText from "./RichText.vue"
     import type { Currency, PaybackResult } from "~/utils/vra-calculator"
 
-    const { payback, currency } = defineProps<{
+    const {
+        payback,
+        currency,
+        storyHref = "/stories/fortune-500-company",
+    } = defineProps<{
         payback: PaybackResult | null
         currency: Currency
         pocHref: string
+        /** Null renders the reference as plain text, for pages that keep exits off. */
+        storyHref?: string | null
     }>()
 
     const avoided = computed(() =>

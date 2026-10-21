@@ -1,12 +1,22 @@
 ---
 import Link from "~/components/common/Link.astro"
+
+interface Props {
+    heading?: string
+    sub?: string
+}
+
+const {
+    heading = "Bring your own list of questions",
+    sub = "We'll go through them against your own architecture.",
+} = Astro.props
 ---
 
 <section class="closing">
     <div class="banner" data-usal="fade-u delay-50 duration-500 ease-out">
         <div class="copy">
-            <h2>Bring your own list of questions</h2>
-            <p>We'll go through them against your own architecture.</p>
+            <h2>{heading}</h2>
+            <p>{sub}</p>
         </div>
         <Link href="/demo" class="cta" text="Book a demo" />
     </div>

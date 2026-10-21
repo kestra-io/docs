@@ -5,42 +5,64 @@ import LogoBar from "~/components/home/LogoBar.astro"
 interface Props {
     /** Passed to HubSpot as the originating page URI. */
     routePath: string
+    formTitle?: string
+    /** Forwarded to the form, e.g. its button label. */
+    formProps?: Record<string, unknown>
+    /** Logo order for the strip under the hero. */
+    companies?: string[]
 }
 
-const { routePath } = Astro.props
+/* The headline, lead and form subtitle are slots with this page's copy as the
+ * fallback, so another campaign can reuse the hero with its own words. */
+const {
+    routePath,
+    formTitle = "Discuss your orchestration strategy",
+    formProps = {},
+    companies,
+} = Astro.props
 ---
 
 <section class="lp-hero">
     <div class="container-fluid inner">
         <div class="copy">
             <h1 data-usal="fade-r delay-0 duration-500 ease-out">
-                Unified <span class="grad grad-a">Workflow</span>{" "}
-                <span class="grad grad-b">Orchestration</span> Platform for{" "}
-                <br class="wrap" />the AI era.
+                <slot name="title">
+                    Unified <span class="grad grad-a">Workflow</span>{" "}
+                    <span class="grad grad-b">Orchestration</span> Platform for <br
+                        class="wrap"
+                    />the AI era.
+                </slot>
             </h1>
             <p
                 class="lead-copy"
                 data-usal="fade-r delay-100 duration-500 ease-out"
             >
-                Build, run, and govern every workflow across data,
-                infrastructure, agent, and business processes.<br />
-                <strong>Any language, on your own infrastructure.</strong>
+                <slot name="lead">
+                    Build, run, and govern every workflow across data,
+                    infrastructure, agent, and business processes.<br />
+                    <strong>Any language, on your own infrastructure.</strong>
+                </slot>
             </p>
         </div>
 
         <div class="form-card">
-            <h2>Discuss your orchestration strategy</h2>
+            <h2>{formTitle}</h2>
             <p class="form-sub">
-                Your Architecture is Unique.<br />
-                Your Challenges are Specific.
+                <slot name="form-sub">
+                    Your Architecture is Unique.<br />
+                    Your Challenges are Specific.
+                </slot>
             </p>
-            <Meeting {routePath} variant="plain" client:idle />
+            <Meeting {routePath} variant="plain" {...formProps} client:idle />
         </div>
     </div>
 
-    <div class="logos" data-usal="fade-u delay-150 duration-500 ease-out">
+    <div
+        class:list={["logos", { dense: companies && companies.length > 7 }]}
+        data-usal="fade-u delay-150 duration-500 ease-out"
+    >
         <p>Trusted in production by:</p>
-        <LogoBar />
+        <LogoBar {companies} />
     </div>
 </section>
 
@@ -110,7 +132,9 @@ const { routePath } = Astro.props
 
     /* The design breaks the headline before "the AI era."; below lg the
      * narrower column wraps better on its own. */
-    .wrap {
+    /* :global because slotted headlines are authored in the page, outside this
+     * component's style scope. */
+    .lp-hero :global(.wrap) {
         display: none;
         @include media-breakpoint-up(lg) {
             display: inline;
@@ -120,18 +144,18 @@ const { routePath } = Astro.props
     /* Two gradients rather than one: in the design each highlighted word
      * carries the fill across its own width, so "Workflow" runs blue to
      * periwinkle and "Orchestration" cyan to blue. */
-    .grad {
+    .lp-hero :global(.grad) {
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         color: transparent;
     }
 
-    .grad-a {
+    .lp-hero :global(.grad-a) {
         background-image: linear-gradient(90deg, #1ba0ff 0%, #8fb0fa 100%);
     }
 
-    .grad-b {
+    .lp-hero :global(.grad-b) {
         background-image: linear-gradient(90deg, #16ffff 0%, #1ba0ff 100%);
     }
 
@@ -148,7 +172,7 @@ const { routePath } = Astro.props
             max-width: 571px;
             font-size: 1.5rem;
         }
-        strong {
+        :global(strong) {
             font-weight: 600;
         }
     }
@@ -203,6 +227,15 @@ const { routePath } = Astro.props
             padding-bottom: 3.75rem;
             :global(.logo-carousel) {
                 margin: 2.75rem 0 0;
+            }
+        }
+        /* LogoBar's gaps are sized for seven logos; more would overflow the
+         * row on desktop, so tighten the gap and let it wrap. */
+        /* Prefixed with the container to outrank LogoBar's own gap rules. */
+        &.dense :global(.companies-container .companies) {
+            @include media-breakpoint-up(lg) {
+                flex-wrap: wrap;
+                gap: 1.5rem;
             }
         }
         p {
