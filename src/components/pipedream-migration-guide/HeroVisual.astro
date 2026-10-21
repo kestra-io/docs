@@ -1,0 +1,302 @@
+---
+import { Image } from "astro:assets"
+import cloud from "~/components/cloud/assets/cloud.webp"
+
+// The worked conversion from section 5.1, trimmed to its outline.
+const FLOW = [
+    { key: "triggers" },
+    { indent: "  - ", key: "id", value: "webhook" },
+    { indent: "    ", key: "type", type: "io.kestra.plugin.core.trigger.Webhook" },
+    { key: "tasks" },
+    { indent: "  - ", key: "id", value: "transform" },
+    { indent: "    ", key: "type", type: "io.kestra.plugin.scripts.python.Script" },
+    { indent: "  - ", key: "id", value: "post_to_netsuite" },
+    { indent: "    ", key: "type", type: "io.kestra.plugin.core.http.Request" },
+    { indent: "  - ", key: "id", value: "notify" },
+    { indent: "    ", key: "type", type: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook" },
+    { key: "errors" },
+    { indent: "  - ", key: "id", value: "alert" },
+    { indent: "    ", key: "type", type: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook" },
+]
+
+// Rows of the concept mapping in section 3.2.
+const MAPPING = [
+    ["HTTP trigger", "Webhook trigger"],
+    ["Node.js or Python step", "Script task"],
+    ["Connected account", "secret()"],
+] as const
+---
+
+<div
+    class="hero-visual"
+    role="img"
+    aria-label="A Pipedream invoice workflow rebuilt as one Kestra flow: a webhook trigger, a Python script task, an HTTP request to NetSuite and a Slack notification, with a Slack alert on failure. A card maps Pipedream's HTTP trigger, code steps and connected accounts to Kestra's webhook trigger, script tasks and secrets."
+>
+    <div class="stage" aria-hidden="true">
+        <div class="glow"></div>
+        <Image src={cloud} alt="" loading="eager" class="cloud" />
+
+        <div class="editor">
+            <div class="title-bar">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <span class="path">finance.intake / invoice_intake.yaml</span>
+            </div>
+            <div class="lines">
+                {
+                    FLOW.map(({ indent = "", key, value, type }) => (
+                        <p>
+                            <span class="punct">{indent}</span>
+                            <span class="key">{key}</span>
+                            <span class="punct">:</span>
+                            {value && <span class="value"> {value}</span>}
+                            {type && <span class="type"> {type}</span>}
+                        </p>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="mapping">
+            <div class="head">
+                <strong>Pipedream → Kestra</strong>
+                <span>from your export</span>
+            </div>
+            <ul class="rows">
+                {
+                    MAPPING.map(([from, to]) => (
+                        <li>
+                            <span class="from">{from}</span>
+                            <span class="arrow">→</span>
+                            <span class="to">{to}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+            <div class="tags">
+                <span class="tag direct">4 steps → 1 flow</span>
+                <span class="tag neutral">Logic copied as is</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    // Same 568 × 439 frame as the vRA assistant's hero: --u is one frame
+    // pixel at the current width, so the mock-up scales as one piece.
+    .hero-visual {
+        container-type: inline-size;
+        width: 100%;
+    }
+
+    .stage {
+        --u: calc(100cqw / 568);
+        position: relative;
+        aspect-ratio: 568 / 468;
+        font-family: $font-family-sans-serif;
+    }
+
+    .glow {
+        position: absolute;
+        top: calc(-40 * var(--u));
+        right: calc(-20 * var(--u));
+        width: calc(240 * var(--u));
+        height: calc(220 * var(--u));
+        border-radius: 50%;
+        background: radial-gradient(
+            closest-side,
+            rgba($base-primary-300, 0.45),
+            transparent
+        );
+        filter: blur(calc(18 * var(--u)));
+        mix-blend-mode: color-dodge;
+    }
+
+    // The /cloud visual, mirrored so it leans towards the editor.
+    .cloud {
+        position: absolute;
+        z-index: 2;
+        top: calc(-70 * var(--u));
+        right: calc(-24 * var(--u));
+        width: calc(190 * var(--u));
+        height: auto;
+        transform: scaleX(-1) rotate(-6deg);
+        pointer-events: none;
+    }
+
+    .editor {
+        position: absolute;
+        z-index: 1;
+        top: calc(10 * var(--u));
+        left: 0;
+        width: calc(540 * var(--u));
+        height: calc(352 * var(--u));
+        overflow: hidden;
+        border: 1px solid #53dbf6;
+        border-radius: calc(9 * var(--u));
+        background:
+            radial-gradient(
+                calc(300 * var(--u)) calc(160 * var(--u)) at 83.5% 94.4%,
+                rgba(91, 236, 255, 0.82),
+                transparent
+            ),
+            #0d0d12;
+        box-shadow:
+            calc(30 * var(--u)) calc(17 * var(--u)) calc(24 * var(--u))
+                rgba(#2d9ac3, 0.05),
+            calc(97 * var(--u)) calc(55 * var(--u)) calc(58 * var(--u))
+                rgba(#2d9ac3, 0.09),
+            calc(197 * var(--u)) calc(112 * var(--u)) calc(334 * var(--u))
+                rgba(#2d9ac3, 0.16);
+
+        .title-bar {
+            display: flex;
+            align-items: center;
+            gap: calc(26 * var(--u));
+            height: calc(37 * var(--u));
+            padding-left: calc(14 * var(--u));
+            border-bottom: 1px solid $dark-border-strong;
+            background: #131319;
+        }
+
+        .dots {
+            display: flex;
+            gap: calc(6 * var(--u));
+
+            i {
+                width: calc(10 * var(--u));
+                height: calc(10 * var(--u));
+                border-radius: 50%;
+                background: #3a3a44;
+            }
+        }
+
+        .path {
+            font-size: calc(12 * var(--u));
+            color: #8a8a98;
+        }
+
+        .lines {
+            padding: calc(16 * var(--u)) calc(20 * var(--u)) 0;
+            font-family: $font-family-monospace;
+            font-size: calc(13 * var(--u));
+            line-height: calc(22 * var(--u));
+            color: #e4e4ec;
+
+            p {
+                margin: 0;
+                white-space: pre;
+            }
+
+            .key {
+                color: #c9a7ff;
+            }
+
+            .punct {
+                color: #8a8a98;
+            }
+
+            .value {
+                color: #e4e4ec;
+            }
+
+            .type {
+                color: #4ade80;
+            }
+        }
+    }
+
+    .mapping {
+        position: absolute;
+        z-index: 3;
+        top: calc(242 * var(--u));
+        left: calc(140 * var(--u));
+        width: calc(430 * var(--u));
+        padding: calc(18 * var(--u)) calc(22 * var(--u));
+        border: 1px solid transparent;
+        border-radius: calc(12 * var(--u));
+        background:
+            linear-gradient(#16161c, #16161c) padding-box,
+            linear-gradient(115deg, $dark-border-strong, #52ccde 39%, #9191bc)
+                border-box;
+        box-shadow: 0 calc(4 * var(--u)) calc(14 * var(--u)) rgba($black, 0.75);
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: calc(12 * var(--u));
+
+            strong {
+                font-size: calc(13 * var(--u));
+                font-weight: 700;
+                color: $white;
+            }
+
+            span {
+                font-size: calc(11 * var(--u));
+                color: #8a8a98;
+            }
+        }
+
+        .rows {
+            display: grid;
+            gap: calc(6 * var(--u));
+            margin: calc(12 * var(--u)) 0 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                align-items: center;
+                gap: calc(10 * var(--u));
+                padding: calc(7 * var(--u)) calc(12 * var(--u));
+                border: 1px solid #2a2a32;
+                border-radius: calc(8 * var(--u));
+                background: #1e1e25;
+                font-size: calc(12 * var(--u));
+                line-height: 1.3;
+            }
+
+            .from {
+                color: #a8a8b6;
+            }
+
+            .arrow {
+                color: #c9a7ff;
+            }
+
+            .to {
+                font-weight: 600;
+                color: $white;
+            }
+        }
+
+        .tags {
+            display: flex;
+            gap: calc(8 * var(--u));
+            margin-top: calc(14 * var(--u));
+        }
+
+        .tag {
+            padding: calc(6 * var(--u)) calc(12 * var(--u));
+            border: 1px solid;
+            border-radius: 999px;
+            font-size: calc(11.5 * var(--u));
+            font-weight: 600;
+            line-height: 1;
+
+            &.direct {
+                border-color: #22c55e;
+                color: #4ade80;
+            }
+
+            &.neutral {
+                border-color: #4a4a55;
+                color: #c9c9d4;
+            }
+        }
+    }
+</style>
