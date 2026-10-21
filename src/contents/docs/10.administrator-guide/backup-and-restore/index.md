@@ -83,7 +83,7 @@ kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 **Restore options:**
 
 - `--encryption-key`: decryption key. Falls back to the instance key if omitted; fails if neither is available.
-- `--to-tenant`: restore a tenant backup into a different tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive. To copy a tenant within the same instance, see [Copy a tenant within the same instance](#copy-a-tenant-within-the-same-instance).
+- `--to-tenant`: restore a tenant backup into a different tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive. When the source tenant still exists on the instance, the restore also fails if the backup contains executions or test runs; see [Copy a tenant within the same instance](#copy-a-tenant-within-the-same-instance).
 - `--resources`: restore only specific resource types (same names as `create`).
 
 Starting the restore process from the command line will display the following logs which include backup information and a restore summary.
@@ -107,9 +107,13 @@ kestra backups restore kestra:///backups/tenants/main/backup-20240917163312.kest
   --resources APP,BANNER,BINDING,BLUEPRINT,CREDENTIAL,DASHBOARD,FLOW,GROUP,INVITATION,KV_STORE,NAMESPACE,NAMESPACE_FILE,ROLE,SECRET,SECURITY_INTEGRATION,TEMPLATE,TENANT_ACCESS,TEST,TRIGGER
 ```
 
-:::alert{type="warning"}
-Leave out `EXECUTION`, `TEST_RUN` and `TENANT` when the source tenant still exists on the instance. Executions and test runs are stored under their own ID, so restoring them into another tenant moves them out of the source tenant. Restoring `TENANT` overwrites the source tenant instead of creating the target, which is why you create the target tenant first.
-:::
+While the source tenant exists on the instance, Kestra refuses to restore `EXECUTION` and `TEST_RUN` into another tenant. The check runs before anything is written, and the error lists the resources to exclude:
+
+```plaintext
+Cannot restore EXECUTION into tenant 'staging' while the source tenant 'main' still exists on this instance. Exclude them from the restored resources, or restore the backup on another instance.
+```
+
+Leave `TENANT` out of `--resources` and create the target tenant first: restoring `TENANT` with `--to-tenant` overwrites the source tenant instead of creating the target. Restoring into another instance, or restoring the backup of a deleted tenant, is not affected.
 
 ### Example: Backup and restore inside Docker
 
