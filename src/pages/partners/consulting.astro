@@ -1,11 +1,10 @@
 ---
 import Layout from "~/components/layout.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Intro from "~/components/partners/Intro.astro"
 import Benefits from "~/components/partners/Benefits.astro"
-import PartnerDirectory from "~/components/partners/PartnerDirectory.vue"
+import PartnersLists from "~/components/partners/PartnersLists.vue"
 import PartnerCta from "~/components/partners/PartnerCta.astro"
-import { PARTNERS } from "~/components/partners/partners"
+import { listPartners } from "~/components/partners/partners"
 import ConapiLogo from "~/assets/landing/partners/conapi-logo-small.svg?raw"
 import AshisutoLogo from "~/assets/landing/partners/ashisuto-logo.svg?raw"
 
@@ -14,16 +13,7 @@ const title =
 const description =
     "Search the consulting firms and systems integrators who sell, implement and support Kestra, by country and service. Or join the program."
 
-const partners = PARTNERS.filter((p) => p.type === "Consulting").map((p) => ({
-    name: p.name,
-    logo: p.logo.src,
-    kind: p.kind,
-    country: p.country,
-    region: p.region,
-    description: p.description,
-    services: p.services,
-    href: p.href,
-}))
+const partners = listPartners("Consulting")
 
 const FILTERS: { key: "kind" | "region" | "services"; label: string }[] = [
     { key: "kind", label: "Partner type" },
@@ -65,18 +55,15 @@ const QUOTES = [
 ---
 
 <Layout {title} {description} breadcrumbTitle="Consulting Partners">
-    <Intro
-        title="Find a consulting partner"
-        text="Partners who demo, deliver, operate and sell Kestra for their clients. Search by country and service, or join the program as a Solution, Services or Reseller partner."
-        ctaText="Become a consulting partner"
-        ctaHref="/partners/apply?track=consulting"
-    />
-    <PartnerDirectory
+    <PartnersLists
         client:load
-        id="directory"
         partners={partners}
         filters={FILTERS}
+        title="Find a consulting partner"
+        subtitle="Partners who demo, deliver, operate and sell Kestra for their clients. Search by country and service, or join the program as a Solution, Services or Reseller partner."
         searchPlaceholder="Search by name, country or service"
+        ctaText="Become a consulting partner"
+        ctaHref="/partners/apply?track=consulting"
     />
     <Benefits
         title="What partners get"

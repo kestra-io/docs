@@ -1,12 +1,11 @@
 ---
 import Layout from "~/components/layout.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Intro from "~/components/partners/Intro.astro"
 import Benefits from "~/components/partners/Benefits.astro"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
-import PartnerDirectory from "~/components/partners/PartnerDirectory.vue"
+import PartnersLists from "~/components/partners/PartnersLists.vue"
 import PartnerCta from "~/components/partners/PartnerCta.astro"
-import { PARTNERS } from "~/components/partners/partners"
+import { listPartners } from "~/components/partners/partners"
 import dltLogo from "~/components/partners/assets/dltLogo.svg?raw"
 import airbyteLogo from "~/components/partners/assets/airbyte.svg?raw"
 
@@ -15,16 +14,7 @@ const title =
 const description =
     "The cloud, data and infrastructure platforms Kestra integrates with, searchable by category, and how to become a technology partner with a plugin in the catalog."
 
-const partners = PARTNERS.filter((p) => p.type === "Technology").map((p) => ({
-    name: p.name,
-    logo: p.logo.src,
-    kind: p.kind,
-    country: p.country,
-    region: p.region,
-    description: p.description,
-    services: p.services,
-    href: p.href,
-}))
+const partners = listPartners("Technology")
 
 const FILTERS: { key: "kind" | "region" | "services"; label: string }[] = [
     { key: "kind", label: "Category" },
@@ -65,18 +55,15 @@ const QUOTES = [
 ---
 
 <Layout {title} {description} breadcrumbTitle="Technology Partners">
-    <Intro
-        title="Technology partners"
-        text="Kestra integrates with all major cloud providers and the data and infrastructure platforms teams run on them. Each one has an integration in the plugin catalog. Ship yours and reach every team orchestrating with Kestra."
-        ctaText="Become a technology partner"
-        ctaHref="/partners/apply?track=technology"
-    />
-    <PartnerDirectory
+    <PartnersLists
         client:load
-        id="directory"
         partners={partners}
         filters={FILTERS}
+        title="Technology partners"
+        subtitle="Kestra integrates with all major cloud providers and the data and infrastructure platforms teams run on them. Each one has an integration in the plugin catalog. Ship yours and reach every team orchestrating with Kestra."
         searchPlaceholder="Search by name, category or capability"
+        ctaText="Become a technology partner"
+        ctaHref="/partners/apply?track=technology"
     />
     <PluginsBlock />
     <Benefits

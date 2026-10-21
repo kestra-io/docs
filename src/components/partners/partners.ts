@@ -30,6 +30,18 @@ export interface Partner {
     href: string
 }
 
+/** A partner as the list pages pass it to the browser: the logo is a URL. */
+export type ListPartner = Omit<Partner, "logo"> & { logo: string }
+
+/** The partners of one track, or of both, ready for the list pages. */
+export const listPartners = (type?: PartnerType): ListPartner[] =>
+    PARTNERS.filter((p) => !type || p.type === type).map(
+        ({ logo, ...rest }) => ({
+            ...rest,
+            logo: logo.src,
+        }),
+    )
+
 export const PARTNERS: Partner[] = [
     {
         name: "DigitalOcean",
