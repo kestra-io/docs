@@ -7,7 +7,7 @@ interface Benefit {
 interface Props {
     title: string
     intro: string
-    label: string
+    label?: string
     benefits: Benefit[]
 }
 
@@ -22,7 +22,7 @@ const { title, intro, label, benefits } = Astro.props
                 <p class="intro">{intro}</p>
             </div>
             <div class="col-12 col-lg-7">
-                <p class="label">{label}</p>
+                {label && <p class="label">{label}</p>}
                 <ul>
                     {
                         benefits.map((b) => (
