@@ -198,8 +198,10 @@ const cards = featured.map((f) => ({
         // the site's link arrow, which stretches when the card is hovered;
         // it stays inline so it follows the last word when the link wraps
         .more {
-            color: var(--ks-content-color-highlight);
-            font-weight: bold;
+            // same size, weight and colour as the other links on the page
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-link);
             text-wrap: balance;
 
             .arrow-icon {

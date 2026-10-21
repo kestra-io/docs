@@ -64,96 +64,100 @@ const BENEFITS = [
 ---
 
 <Layout {title} {description}>
-    <section class="hero">
-        <div class="container">
-            <h1>
-                Become a<br />Kestra partner<span class="dot">.</span>
-            </h1>
-            <div class="pair-wrap">
-                <PartnerPair />
+    <div class="partners-page">
+        <section class="hero">
+            <div class="container">
+                <h1>
+                    Become a<br />Kestra partner<span class="dot">.</span>
+                </h1>
+                <div class="pair-wrap">
+                    <PartnerPair />
+                </div>
+                <p>
+                    Kestra orchestrates data, infrastructure, applications and
+                    AI for enterprises on every continent. Partners deliver it,
+                    sell it and build on it.
+                </p>
+                <div class="actions">
+                    <Link href="/partners/apply" class="btn btn-primary"
+                        >Become a partner</Link
+                    >
+                    <a href="/partners/consulting" class="btn btn-secondary"
+                        >Find a partner</a
+                    >
+                </div>
             </div>
-            <p>
-                Kestra orchestrates data, infrastructure, applications and AI
-                for enterprises on every continent. Partners deliver it, sell it
-                and build on it.
-            </p>
-            <div class="actions">
-                <Link href="/partners/apply" class="btn btn-primary"
-                    >Become a partner</Link
-                >
-                <a href="/partners/consulting" class="btn btn-secondary"
-                    >Find a partner</a
-                >
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <FeaturedPartners
-        title="See how leading partners are building with Kestra"
-        featured={FEATURED}
-    />
+        <FeaturedPartners
+            title="See how leading partners are building with Kestra"
+            featured={FEATURED}
+        />
 
-    <TrackBlock
-        type="Consulting"
-        title="Consulting Partners"
-        text="Partners who demo, deliver, operate and sell Kestra for their clients, searchable by country and service. Certified partners are listed here and introduced to customers."
-        href="/partners/consulting"
-        cta="Find a consulting partner"
-        figure="deploy"
-    />
+        <TrackBlock
+            type="Consulting"
+            title="Consulting Partners"
+            text="Partners who demo, deliver, operate and sell Kestra for their clients, searchable by country and service. Certified partners are listed here and introduced to customers."
+            href="/partners/consulting"
+            cta="Find a consulting partner"
+            figure="deploy"
+        />
 
-    <TrackBlock
-        type="Technology"
-        title="Technology Partners"
-        text="Cloud, data and infrastructure platforms with a Kestra integration. Listed in the plugin catalog, launched together, and reachable by every team orchestrating with Kestra."
-        href="/partners/technology"
-        cta="See technology partners"
-        figure="plugins"
-        reverse
-    />
+        <TrackBlock
+            type="Technology"
+            title="Technology Partners"
+            text="Cloud, data and infrastructure platforms with a Kestra integration. Listed in the plugin catalog, launched together, and reachable by every team orchestrating with Kestra."
+            href="/partners/technology"
+            cta="See technology partners"
+            figure="plugins"
+            reverse
+        />
 
-    <CloudProviders />
+        <CloudProviders />
 
-    <Benefits
-        title="Join the program"
-        intro="For consulting firms, systems integrators, managed service providers and resellers. Get certified on Kestra Academy, and we list you and introduce you to customers."
-        label="What partners get"
-        benefits={BENEFITS}
-    />
+        <Benefits
+            title="Join the program"
+            intro="For consulting firms, systems integrators, managed service providers and resellers. Get certified on Kestra Academy, and we list you and introduce you to customers."
+            label="What partners get"
+            benefits={BENEFITS}
+        />
 
-    <PartnerCta />
+        <PartnerCta />
+    </div>
 </Layout>
 
 <style lang="scss">
     @use "/src/assets/styles/color-palette" as *;
 
+    // this page uses more of a wide screen than the rest of the site
+    .partners-page :global(.container) {
+        @include media-breakpoint-up(xxl) {
+            max-width: 1320px;
+        }
+    }
+
     .hero {
         position: relative;
         overflow: hidden;
         padding: 6rem 1rem 7rem;
-        // the glows of the call to action at the bottom of the page, softer
+        // the grey of the features hero, with a few soft violet and blue glows
         background:
             radial-gradient(
-                ellipse 50% 55% at 50% 0%,
-                rgba(146, 72, 220, 0.55),
+                ellipse 45% 50% at 50% 0%,
+                rgba(146, 72, 220, 0.32),
                 transparent 70%
             ),
             radial-gradient(
-                ellipse 40% 60% at 8% 30%,
-                rgba(58, 64, 220, 0.4),
+                ellipse 35% 55% at 6% 40%,
+                rgba(58, 64, 220, 0.18),
                 transparent 70%
             ),
             radial-gradient(
-                ellipse 40% 60% at 92% 30%,
-                rgba(58, 64, 220, 0.4),
+                ellipse 35% 55% at 94% 40%,
+                rgba(58, 64, 220, 0.18),
                 transparent 70%
             ),
-            radial-gradient(
-                ellipse 80% 70% at 50% 55%,
-                rgba(72, 52, 180, 0.35),
-                transparent 80%
-            ),
-            #{$base-grey-800};
+            #212125;
         color: #fff;
         text-align: center;
 

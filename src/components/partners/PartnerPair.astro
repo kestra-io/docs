@@ -49,7 +49,7 @@ import kestraMark from "~/assets/landing/partners/kestra-mark.svg?raw"
     // fills a cell, the × sits in the next, the partner spans two
     .pair {
         --cell: 88px;
-        --line: rgba(160, 140, 255, 0.4);
+        --line: rgba(200, 190, 255, 0.16);
 
         position: relative;
         isolation: isolate;
@@ -62,26 +62,61 @@ import kestraMark from "~/assets/landing/partners/kestra-mark.svg?raw"
             --cell: 72px;
         }
 
-        // the grid starts on the pair's own top-left corner, so every line runs along a tile edge
-        &::before {
+        // the grid starts a whole number of cells before the pair, so every line
+        // runs along a tile edge; like the features hero, it is wide, a few cells
+        // are filled a shade lighter, and it fades out towards the edges
+        &::before,
+        &::after {
             content: "";
             position: absolute;
             z-index: -1;
-            top: calc(-2 * var(--cell));
-            left: calc(-6 * var(--cell));
-            width: calc(16 * var(--cell));
-            height: calc(5 * var(--cell));
+            top: calc(-3 * var(--cell));
+            left: calc(-9 * var(--cell));
+            width: calc(22 * var(--cell));
+            height: calc(7 * var(--cell));
             pointer-events: none;
+            mask-image: radial-gradient(
+                ellipse 50% 55% at 50% 50%,
+                #000 30%,
+                transparent 85%
+            );
+        }
+
+        &::before {
             background-image:
                 linear-gradient(var(--line) 1px, transparent 1px),
                 linear-gradient(90deg, var(--line) 1px, transparent 1px);
             background-size: var(--cell) var(--cell);
             background-position: 0 0;
-            mask-image: radial-gradient(
-                ellipse 45% 50% at 50% 50%,
-                #000 25%,
-                transparent 80%
-            );
+        }
+
+        &::after {
+            --fill: rgba(255, 255, 255, 0.045);
+
+            background-image:
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill)),
+                linear-gradient(var(--fill), var(--fill));
+            background-size: var(--cell) var(--cell);
+            background-repeat: no-repeat;
+            background-position:
+                calc(3 * var(--cell)) calc(1 * var(--cell)),
+                calc(6 * var(--cell)) calc(4 * var(--cell)),
+                calc(15 * var(--cell)) calc(2 * var(--cell)),
+                calc(17 * var(--cell)) calc(4 * var(--cell)),
+                calc(2 * var(--cell)) calc(5 * var(--cell)),
+                calc(19 * var(--cell)) calc(1 * var(--cell)),
+                calc(7 * var(--cell)) calc(0 * var(--cell)),
+                calc(14 * var(--cell)) calc(6 * var(--cell)),
+                calc(11 * var(--cell)) calc(0 * var(--cell)),
+                calc(20 * var(--cell)) calc(5 * var(--cell));
         }
 
         .cell {
