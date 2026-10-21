@@ -210,3 +210,5 @@
   to: "/docs/scripts"
 - regexp: "^/docs/how-to-guides/rust(/.*)?$"
   to: "/docs/scripts"
+- regexp: "^/docs/administrator-guide/security-hardening(\\.md|/.*)?$"
+  to: "/docs/security-hardening"

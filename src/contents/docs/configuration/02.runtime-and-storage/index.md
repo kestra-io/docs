@@ -39,7 +39,7 @@ kestra:
   allocated-cpu-cores: 2
 ```
 
-This is useful when you want to limit how aggressively Kestra allocates worker, scheduler, and queue-related threads without changing container limits or host-level CPU settings.
+This is useful when you want to limit how aggressively Kestra allocates Executor, Scheduler, system worker, and queue-related threads without changing container limits or host-level CPU settings. It doesn't change the default thread count of a Worker, which you set with the Worker's `--thread` option.
 
 ## Database and datasources
 

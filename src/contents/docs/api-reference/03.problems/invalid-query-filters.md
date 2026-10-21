@@ -17,7 +17,7 @@ The `filters` on a list endpoint could not be parsed, or they reference somethin
 - The `filters[...]` syntax is malformed.
 - The field is one the endpoint does not support filtering on.
 - The operator does not apply to that field's type.
-- A mutating by-query endpoint (`DELETE`, `POST`, or `PUT` on a `.../by-query` path) received a filter as a flat query parameter — for example `?namespace=x` — instead of the `filters[...]` form.
+- A mutating by-query endpoint (`DELETE`, `POST`, or `PUT` on a `.../by-query` path) received a filter as a flat query parameter, such as `?namespace=x`, instead of the `filters[...]` form.
 
 The last case applies to bulk endpoints for executions, flows, and triggers (delete, kill, restart, replay, change-status, labels, pause/resume, unqueue, force-run, enable/disable, and similar). Read-only exports (`GET .../export/by-query`) are not affected.
 
@@ -54,7 +54,7 @@ Check the field and the operator against the filters the endpoint documents. An 
 For the flat-parameter case, rewrite the call to use the `filters[<field>][<op>]=<value>` form. For example:
 
 ```
-# Legacy form — rejected on mutating by-query endpoints
+# Legacy form: rejected on mutating by-query endpoints
 DELETE /api/v1/main/executions/delete/by-query?namespace=company.team
 
 # Correct form
@@ -71,6 +71,6 @@ DELETE /api/v1/main/executions/delete/by-query?filters[namespace][EQUALS]=compan
 Unauthenticated requests to by-query endpoints return `401` before the filter check runs, so a `400 invalid-query-filters` response always means the request was authenticated.
 :::
 
-For the full list of available fields and operators per resource type, see [Query filter reference](../query-filters.md).
+For the full list of available fields and operators per resource type, see [Query filter reference](../04.query-filters.md).
 
 For the members every problem document carries, see [Problem Details](./index.md).

@@ -13,7 +13,7 @@ Kestra 2.0 is a major release introducing AI-native orchestration, redesigned go
   <iframe src="https://www.youtube.com/embed/UYR8a2inCqc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-For breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx). For a hands-on walkthrough with real command output, see the [migration tutorial](./11.migration-guide/v2.0.0/migration-tutorial/index.mdx).
+For breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx). For a hands-on walkthrough with real command output, see the [migration tutorial](./11.migration-guide/v2.0.0/00.migration-tutorial/index.mdx).
 
 ## AI
 
@@ -99,7 +99,7 @@ New controls for what flows can access and how they are governed.
 
 ### HTTP task URL filtering
 
-[HTTP task filtering](./10.administrator-guide/security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
+[HTTP task filtering](./security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
 
 ---
 

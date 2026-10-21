@@ -15,7 +15,7 @@ When a tenant's type is set to `INFRASTRUCTURE`, all users in that tenant see a 
 
 - **Home**: Catalog (instead of Dashboards)
 - **Self-Service** sidebar group: Catalog, Requests, Deployments, Inventory, Cases, Dashboards
-- **Automation**, **Infrastructure**, and **Tenant** sidebar groups remain below, giving access to flows, executions, namespaces, and all standard settings
+- **Automation**, **Infrastructure**, and **Tenant** sidebar groups remain below, giving access to flows, executions, namespaces, and all standard settings. **Automation** starts with **Templates**, where you manage [app templates](../../../app-templates/index.md) that publish new catalog entries.
 
 Everything available in a `DEFAULT` tenant is still accessible. The Infrastructure layout surfaces the most relevant screens first.
 
@@ -207,6 +207,7 @@ When an Infrastructure tenant is created, Kestra seeds it with an example enviro
 - Flows: provisioning policy, allowed regions, VM provisioning, database/environment/bucket requests, resize, decommission, and a lease watchdog trigger
 - Apps: four self-service catalog entries (provision VM, request database, environment, and bucket)
 - A dashboard: Infrastructure Overview
+- An [app template](../../../app-templates/index.md): **New application environment**, which creates a flow and the catalog app that runs it
 - A bootstrap flow (`setup_demo_environment`) that runs once on creation to populate demo inventory
 
 The bootstrap flow triggers one execution to populate the Inventory with example deployments. Nothing is fetched from the network. The bundle ships inside the JAR.

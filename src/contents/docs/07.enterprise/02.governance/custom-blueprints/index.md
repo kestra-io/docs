@@ -30,6 +30,8 @@ Platform teams build templates once; business users instantiate them by filling 
 
 **How it works:** Templated Blueprints use [Pebble templating](../../../06.concepts/06.pebble/index.md), with custom delimiters to avoid conflicts with Kestra expressions.
 
+To create a flow and the app that runs it from one template, use [app templates](../app-templates/index.md) instead.
+
 ### Define Template Arguments
 
 Template arguments define the inputs users must provide. To add them to your Blueprint, use the `extend` key with a `templateArguments` section:
