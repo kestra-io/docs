@@ -8,9 +8,14 @@ import GithubButton from "~/components/layout/GithubButton.vue"
 interface Props {
     /** Off on enterprise campaigns, where an open-source signal is off-message. */
     showGithub?: boolean
+    /** The single header CTA; defaults to the sales form further down. */
+    cta?: { text: string; href: string }
 }
 
-const { showGithub = true } = Astro.props
+const {
+    showGithub = true,
+    cta = { text: "Contact Sales", href: "#contact-sales" },
+} = Astro.props
 ---
 
 <header class="lp-header">
@@ -19,7 +24,7 @@ const { showGithub = true } = Astro.props
     </a>
     <div class="actions">
         {showGithub && <GithubButton linked={false} client:idle />}
-        <a href="#contact-sales" class="btn-solid">Contact Sales</a>
+        <a href={cta.href} class="btn-solid">{cta.text}</a>
     </div>
 </header>
 

@@ -3,9 +3,17 @@ import { Icon } from "astro-icon/components"
 
 import KestraMark from "./assets/kestra-mark.svg"
 
+interface Props {
+    heading?: string
+    sub?: string
+    /** Header of the left column, the system being left. */
+    fromLabel?: string
+    rows?: { from: string; to: string }[]
+}
+
 /* A condensed cut of the guide's capability map (Appendix A). Keep the rows in
  * step with it: the map is what the sales team hands the architect. */
-const rows = [
+const vraRows = [
     {
         from: "Service Broker catalog items and request forms",
         to: "Kestra Apps as the self-service form, or your ITSM portal calling Kestra",
@@ -43,21 +51,25 @@ const rows = [
         to: "A human approval step in the flow, or your ITSM approval",
     },
 ]
+
+const {
+    heading = "What vRA and vRO become in Kestra",
+    sub = "A starting map. Many objects are retired or merged before anything is converted.",
+    fromLabel = "vRA / vRO",
+    rows = vraRows,
+} = Astro.props
 ---
 
 <section class="translation">
     <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
-        <h2>What vRA and vRO become in Kestra</h2>
-        <p>
-            A starting map. Many objects are retired or merged before anything
-            is converted.
-        </p>
+        <h2>{heading}</h2>
+        <p>{sub}</p>
     </div>
 
     <table data-usal="fade-u delay-100 duration-500 ease-out">
         <thead>
             <tr>
-                <th scope="col">vRA / vRO</th>
+                <th scope="col">{fromLabel}</th>
                 <th scope="col" class="arrow-col">
                     <span class="visually-hidden">becomes</span>
                 </th>
