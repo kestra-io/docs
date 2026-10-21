@@ -19,14 +19,14 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label :for="`${uid}-firstname`"
+                    <label :for="fieldId('firstname')"
                         >First name <span class="required">*</span></label
                     >
                     <input
                         name="firstname"
                         type="text"
                         class="form-control"
-                        :id="`${uid}-firstname`"
+                        :id="fieldId('firstname')"
                         :placeholder="
                             variant === 'plain' ? 'First name *' : undefined
                         "
@@ -35,14 +35,14 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label :for="`${uid}-lastname`"
+                    <label :for="fieldId('lastname')"
                         >Last name <span class="required">*</span></label
                     >
                     <input
                         name="lastname"
                         type="text"
                         class="form-control"
-                        :id="`${uid}-lastname`"
+                        :id="fieldId('lastname')"
                         :placeholder="
                             variant === 'plain' ? 'Last name *' : undefined
                         "
@@ -51,14 +51,14 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label :for="`${uid}-email`"
+                    <label :for="fieldId('email')"
                         >Company Email <span class="required">*</span></label
                     >
                     <input
                         name="email"
                         type="email"
                         class="form-control"
-                        :id="`${uid}-email`"
+                        :id="fieldId('email')"
                         :placeholder="
                             variant === 'plain' ? 'Company email *' : undefined
                         "
@@ -67,14 +67,14 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label :for="`${uid}-jobtitle`"
+                    <label :for="fieldId('jobtitle')"
                         >Job title <span class="required">*</span></label
                     >
                     <input
                         name="jobtitle"
                         type="text"
                         class="form-control"
-                        :id="`${uid}-jobtitle`"
+                        :id="fieldId('jobtitle')"
                         :placeholder="
                             variant === 'plain' ? 'Job title *' : undefined
                         "
@@ -83,14 +83,14 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label :for="`${uid}-employees`"
+                    <label :for="fieldId('employees')"
                         >Number of employees
                         <span class="required">*</span></label
                     >
                     <select
                         name="employees"
                         class="form-control"
-                        :id="`${uid}-employees`"
+                        :id="fieldId('employees')"
                         required
                     >
                         <option value="" disabled selected>
@@ -109,14 +109,14 @@
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label :for="`${uid}-use_case_context`"
+                    <label :for="fieldId('use_case_context')"
                         >What are you planning to orchestrate?
                         <span class="required">*</span></label
                     >
                     <textarea
                         name="use_case_context"
                         class="form-control"
-                        :id="`${uid}-use_case_context`"
+                        :id="fieldId('use_case_context')"
                         :placeholder="
                             variant === 'plain'
                                 ? 'What are you planning to orchestrate? *'
@@ -187,8 +187,11 @@
         submitLabel?: string
     }>()
 
-    // Per-instance ids, so two forms on one page keep their labels apart.
+    // /cloud keeps its plain field ids; the plain variant prefixes them per
+    // instance, so the two forms on an /lp/* page keep their labels apart.
     const uid = useId()
+    const fieldId = (name: string) =>
+        variant === "plain" ? `${uid}-${name}` : name
 
     const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("cloud-form")
