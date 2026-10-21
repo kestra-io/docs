@@ -879,6 +879,7 @@ The `Chart` block displays a [dashboard](../../../09.ui/00.dashboard/index.md) c
 - `chart` is a verbatim `io.kestra.plugin.core.dashboard.chart.*` definition with the same properties and the same chart types as in a dashboard.
 - `chartOptions.width` is ignored, the width of the chart comes from the app layout. Use a `Grid` block to place several charts side by side.
 - Like in a dashboard, the chart covers the last 7 days unless its `where` filters say otherwise.
+- The block shows at most 1000 rows. A `Table` chart pages through them.
 - The data is read for the tenant of the app, using the data sources of dashboards such as `Executions`, `Flows`, `Triggers` or `Metrics`, with the permissions of the viewer. A user of a private app sees only the data they are allowed to see, and an anonymous visitor of a public app gets no data from a source protected by namespace permissions such as `Executions`. Use charts in private apps.
 - When the query fails, for example on a timeout, the block renders as empty and the rest of the app keeps working.
 
