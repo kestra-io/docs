@@ -163,7 +163,6 @@
     import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
-    import { useGtm } from "@gtm-support/vue-gtm"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
     import {
@@ -193,7 +192,6 @@
     const fieldId = (name: string) =>
         variant === "plain" ? `${uid}-${name}` : name
 
-    const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("cloud-form")
 
     const message = ref("")
@@ -308,7 +306,12 @@
             try {
                 posthog.capture("cloud_form")
                 hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }])
-                gtm?.trackEvent({ event: "cloud_form", noninteraction: false })
+                // Straight to the data layer: the vue-gtm plugin is created with
+                // `enabled: false`, so its trackEvent never reaches GTM.
+                ;(window.dataLayer = window.dataLayer || []).push({
+                    event: "cloud_form",
+                    noninteraction: false,
+                })
                 identify(email)
             } catch (analyticsError) {
                 console.error("Cloud form analytics error", analyticsError)
