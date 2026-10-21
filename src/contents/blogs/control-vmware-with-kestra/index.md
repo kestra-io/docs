@@ -48,7 +48,7 @@ The VMware plugin brings VM lifecycle management **directly into Kestra workflow
 
 Instead of automating VMware in isolation, teams can now treat it as **one component of a larger orchestration workflow**.
 
-If you are planning to replace vRA and vRO rather than extend them, our [vRA to Kestra migration guide](/resources/migration/vra?utm_source=blog&utm_medium=cta&utm_campaign=vra_guide&utm_content=inline) covers the full migration, from inventorying your estate to retiring vRA at renewal.
+If you are planning to replace vRA and vRO rather than extend them, our [vRA to Kestra migration guide](/resources/migration/vra) covers the full migration, from inventorying your estate to retiring vRA at renewal.
 
 ## VM Lifecycle Management with vCenter and ESXi
 
@@ -187,7 +187,7 @@ VMware becomes just another orchestrated component in your platform workflows.
 
 👉 Explore the [VMware plugin](https://kestra.io/plugins/plugin-ee-vmware) and start orchestrating your vSphere environments with Kestra.
 
-👉 Moving off vRA and vRO entirely? Read the [vRA to Kestra migration guide](/resources/migration/vra?utm_source=blog&utm_medium=cta&utm_campaign=vra_guide&utm_content=closing).
+👉 Moving off vRA and vRO entirely? Read the [vRA to Kestra migration guide](/resources/migration/vra).
 
 Have questions or feedback? Join our [Slack community](https://kestra.io/slack) or open [an issue on GitHub](https://github.com/kestra-io/kestra).
 
