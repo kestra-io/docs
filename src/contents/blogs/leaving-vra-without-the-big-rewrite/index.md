@@ -31,6 +31,7 @@ The Migration Assistant takes your exported vRO packages and vRA content and pro
 These are recommendations for your engineers to review. The result is a plan your team can inspect, correct and sign off on before committing to the migration.
 
 ![Migration brief showing the recommendation for a single vRO workflow](./assistant-brief-workflow.webp)
+*From the brief for the sample load balancer use case, a vRA catalog item and four vRO workflows you can download and assess yourself.*
 
 ## There's Less to Migrate Than Your Export Suggests
 
@@ -96,6 +97,7 @@ Two decisions affect the migration scope: where users request infrastructure, an
 ## Migrate One Wave at a Time
 
 ![Migration brief showing workflows grouped into migration waves](./assistant-brief-waves.webp)
+*The two waves the brief proposes for the same sample load balancer use case.*
 
 Once your team has reviewed the brief, we work with your engineers on the conversion and verification, which are separate from the open-source assessment. vRA and Kestra run side by side for the whole migration, and each workflow runs on one platform at a time. When the first wave is done, Kestra runs those workflows while vRA keeps running the ones still waiting for later waves.
 
@@ -129,7 +131,7 @@ To run the open-source assessment on your own export, or see a sample migration 
 
 **→ [Get the Kestra Migration Assistant for vRA](/resources/migration/vra/assistant)**
 
-You can also see the Migration Assistant in action, from a vRO export and migration brief to a converted flow tested in the VMware Migration Lab. I'm hosting the European session, and my colleague Parham Parvizi is hosting the Americas session, both with live Q&A:
+You can also see the Migration Assistant in action, starting from the [sample vRO and vRA export](/kestra-migration-assistant-sample-vra-load-balancer.zip) (free to download) and its [migration brief](/resources/migration/vra/assistant), through to a converted flow tested in the VMware Migration Lab. I'm hosting the European session, and my colleague Parham Parvizi is hosting the Americas session, both with live Q&A:
 
 - **Europe:** Wednesday, November 4 at 2 PM CET (8 AM ET)
 - **Americas:** Thursday, November 5 at 11 AM PT
