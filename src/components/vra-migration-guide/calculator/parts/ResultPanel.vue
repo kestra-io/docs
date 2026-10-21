@@ -53,12 +53,11 @@
     const {
         payback,
         currency,
-        pocHref = "#section-8-1",
         storyHref = "/stories/fortune-500-company",
     } = defineProps<{
         payback: PaybackResult | null
         currency: Currency
-        pocHref?: string
+        pocHref: string
         /** Null renders the reference as plain text, for pages that keep exits off. */
         storyHref?: string | null
     }>()
