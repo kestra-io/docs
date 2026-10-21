@@ -137,7 +137,7 @@
                         <NumberField
                             :id="`${idPrefix}-complex`"
                             v-bind="field('complex')"
-                            label="Share that's complex"
+                            label="Complex (%)"
                             suffix="%"
                             :max="100"
                         >
@@ -153,6 +153,10 @@
                             :id="`${idPrefix}-tool`"
                             v-bind="field('tool')"
                             label="Converted by the Migration Assistant"
+                            :label-link="{
+                                text: 'Migration Assistant',
+                                href: '/resources/migration/vra/assistant',
+                            }"
                             suffix="%"
                             :min="TOOL_SHARE_RANGE.min"
                             :max="TOOL_SHARE_RANGE.max"
