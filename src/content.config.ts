@@ -234,6 +234,18 @@ export const collections = {
                 href: z.string().optional(),
                 sectionIds: z.boolean().optional(),
                 resourceCta: z.boolean().optional(),
+                // Replaces Get Started in the injected CTA pair (Book a Demo
+                // stays secondary). Taglines fall back to the tag defaults.
+                resourceCtaOverride: z
+                    .object({
+                        href: z.string(),
+                        label: z.string(),
+                        tagline: z.string().optional(),
+                        taglineEnd: z.string().optional(),
+                        // `resource_<placement>_cta_<action>_click`
+                        action: z.string().default("guide"),
+                    })
+                    .optional(),
                 faq: z
                     .array(
                         z.object({
