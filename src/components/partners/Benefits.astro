@@ -1,6 +1,4 @@
 ---
-import { Icon } from "astro-icon/components"
-
 interface Benefit {
     title: string
     text: string
@@ -9,10 +7,11 @@ interface Benefit {
 interface Props {
     title: string
     intro: string
+    label: string
     benefits: Benefit[]
 }
 
-const { title, intro, benefits } = Astro.props
+const { title, intro, label, benefits } = Astro.props
 ---
 
 <section class="benefits">
@@ -20,18 +19,16 @@ const { title, intro, benefits } = Astro.props
         <div class="row g-5 align-items-start">
             <div class="col-12 col-lg-5">
                 <h2>{title}</h2>
-                <p>{intro}</p>
+                <p class="intro">{intro}</p>
             </div>
             <div class="col-12 col-lg-7">
+                <p class="label">{label}</p>
                 <ul>
                     {
                         benefits.map((b) => (
                             <li>
-                                <Icon name="mdi:check-circle-outline" />
-                                <div>
-                                    <h3>{b.title}</h3>
-                                    <p>{b.text}</p>
-                                </div>
+                                <h3>{b.title}</h3>
+                                <p>{b.text}</p>
                             </li>
                         ))
                     }
@@ -43,8 +40,18 @@ const { title, intro, benefits } = Astro.props
 
 <style lang="scss">
     .benefits {
+        --benefits-border: var(--ks-border-default, #e9e9ee);
+
         padding: 5rem 0;
-        background: var(--ks-background-secondary);
+        border-top: 1px solid var(--benefits-border);
+        border-bottom: 1px solid var(--benefits-border);
+        background: var(--ks-background-secondary)
+            url("~/assets/landing/partners/benefits-grid.svg") no-repeat top
+            center / 1900px auto;
+
+        :global(html.dark) & {
+            --benefits-border: var(--ks-border-default, #2e2e3c);
+        }
 
         h2 {
             font-size: clamp(1.75rem, 3vw, 2.25rem);
@@ -54,38 +61,50 @@ const { title, intro, benefits } = Astro.props
             text-wrap: balance;
         }
 
-        p {
+        .intro {
             margin: 0;
-            color: var(--ks-content-secondary);
-            line-height: 1.6;
+            font-size: $font-size-md;
+            line-height: 1.65;
+        }
+
+        .label {
+            margin: 0 0 1rem;
+            font-weight: 600;
+            color: var(--ks-content-link);
         }
 
         ul {
             list-style: none;
             padding: 0;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: 1fr;
+            }
         }
 
         li {
-            display: flex;
-            gap: 0.875rem;
-            align-items: flex-start;
-
-            svg {
-                flex: 0 0 auto;
-                width: 1.5rem;
-                height: 1.5rem;
-                margin-top: 0.1rem;
-                color: var(--ks-content-link);
-            }
+            padding: 1.25rem 1.25rem 1.5rem;
+            border-radius: 8px;
+            background: var(--ks-background-body);
+            border: 1px solid var(--benefits-border);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 
             h3 {
-                font-size: $font-size-md;
+                font-size: $font-size-lg;
                 font-weight: 600;
-                margin: 0 0 0.25rem;
+                line-height: 1.4;
+                margin: 0 0 0.5rem;
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                line-height: 1.6;
             }
         }
     }

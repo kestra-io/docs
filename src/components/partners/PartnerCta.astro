@@ -1,5 +1,5 @@
 ---
-import Link from "~/components/common/Link.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
 
 interface Props {
     track?: "consulting" | "technology"
@@ -29,46 +29,9 @@ const copy = COPY[track ?? "default"]
 const href = track ? `/partners/apply?track=${track}` : "/partners/apply"
 ---
 
-<section class="partner-cta" id="form">
-    <div class="container">
-        <div class="box">
-            <div>
-                <h2>{copy.title}</h2>
-                <p>{copy.text}</p>
-            </div>
-            <Link href={href} class="btn btn-primary">{copy.cta}</Link>
-        </div>
-    </div>
-</section>
-
-<style lang="scss">
-    .partner-cta {
-        padding: 4rem 0;
-        background: var(--ks-background-body);
-
-        .box {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-            flex-wrap: wrap;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid var(--ks-border-secondary);
-            background: var(--ks-background-primary);
-            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
-        }
-
-        h2 {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 600;
-            margin: 0 0 0.5rem;
-        }
-
-        p {
-            margin: 0;
-            max-width: 56ch;
-            color: var(--ks-content-secondary);
-        }
-    }
-</style>
+<div id="form">
+    <SeeHow cta={{ text: copy.cta, href }}>
+        <Fragment slot="title">{copy.title}</Fragment>
+        {copy.text}
+    </SeeHow>
+</div>

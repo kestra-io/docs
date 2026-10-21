@@ -1,6 +1,6 @@
 ---
-import Link from "~/components/common/Link.astro"
 import { PARTNERS, type PartnerType } from "./partners"
+import HairlineFigure from "./HairlineFigure.astro"
 
 interface Props {
     type: PartnerType
@@ -9,49 +9,102 @@ interface Props {
     href: string
     cta: string
     reverse?: boolean
+    figure?: "deploy" | "plugins"
 }
 
-const { type, title, text, href, cta, reverse = false } = Astro.props
+const { type, title, text, href, cta, reverse = false, figure } = Astro.props
 const partners = PARTNERS.filter((p) => p.type === type)
 ---
 
 <section class="track">
     <div class="container">
-        <div
-            class:list={[
-                "row",
-                "g-5",
-                "align-items-center",
-                { "flex-lg-row-reverse": reverse },
-            ]}
-        >
-            <div class="col-12 col-lg-5">
-                <h2>{title}</h2>
-                <p>{text}</p>
-                <Link href={href} class="btn btn-primary">{cta}</Link>
-            </div>
-            <div class="col-12 col-lg-7">
-                <ul class="logos" aria-label={`${title} logos`}>
+        <div class="frame">
+            <div class:list={["inner", { reverse }]}>
+                <div class="content">
+                    <h2>{title}</h2>
+                    <p>{text}</p>
+                    <a href={href} class="btn btn-secondary">{cta}</a>
+                </div>
+                <div class="visual">
                     {
-                        partners.map((partner) => (
-                            <li>
-                                <img
-                                    src={partner.logo.src}
-                                    alt={partner.name}
-                                    loading="lazy"
-                                />
-                            </li>
-                        ))
+                        figure ? (
+                            <HairlineFigure name={figure} />
+                        ) : (
+                            <ul class="logos" aria-label={`${title} logos`}>
+                                {partners.map((partner) => (
+                                    <li>
+                                        <img
+                                            src={partner.logo.src}
+                                            alt={partner.name}
+                                            loading="lazy"
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        )
                     }
-                </ul>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <style lang="scss">
+    // the framed card of the infrastructure page: a light border, a thin gap, then the grey panel
     .track {
-        padding: 3.5rem 0;
+        padding: 0.8rem 0;
+
+        // the run of cards gets air above and below, not between
+        &:not(.track + .track) {
+            padding-top: 4rem;
+        }
+
+        &:not(:has(+ .track)) {
+            padding-bottom: 4rem;
+        }
+
+        .frame {
+            border: 1px solid var(--ks-border-primary);
+            padding: 0.375rem;
+            border-radius: 0.8125rem;
+            background: none;
+        }
+
+        .inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 2rem 1.5rem;
+            border-radius: 0.5625rem;
+            background: var(--ks-background-secondary);
+
+            @include media-breakpoint-up(lg) {
+                flex-direction: row;
+                gap: 3rem;
+                padding: 1.5rem 2rem 1.5rem 3.5rem;
+
+                &.reverse {
+                    flex-direction: row-reverse;
+                    padding: 1.5rem 3.5rem 1.5rem 2rem;
+                }
+            }
+        }
+
+        .content {
+            @include media-breakpoint-up(lg) {
+                flex: 0 0 38%;
+            }
+        }
+
+        .visual {
+            flex: 1;
+            width: 100%;
+
+            :global(.hairline-figure) {
+                --hairline-plate: var(--ks-background-secondary);
+            }
+        }
 
         h2 {
             font-size: clamp(1.75rem, 3vw, 2.25rem);
