@@ -152,7 +152,7 @@
                         <NumberField
                             :id="`${idPrefix}-tool`"
                             v-bind="field('tool')"
-                            label="Handled by the AI migration tool"
+                            label="Converted by the Migration Assistant"
                             suffix="%"
                             :min="TOOL_SHARE_RANGE.min"
                             :max="TOOL_SHARE_RANGE.max"
