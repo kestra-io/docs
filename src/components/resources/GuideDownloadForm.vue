@@ -89,9 +89,11 @@
             submitLabel?: string
             thankYouTitle?: string
             thankYouText?: string
+            withCompany?: boolean
         }>(),
         {
             guideUrl: undefined,
+            withCompany: false,
             title: "Download the Free Guide",
             submitLabel: "Download the guide",
             thankYouTitle: "Thanks — your guide is ready.",
@@ -104,6 +106,7 @@
         { name: "firstname", label: "First name", half: true },
         { name: "lastname", label: "Last name", half: true },
         { name: "email", label: "Company email" },
+        ...(props.withCompany ? [{ name: "company", label: "Company" }] : []),
         { name: "jobtitle", label: "Job title" },
     ]
 
@@ -127,15 +130,14 @@
         message.value = ""
 
         try {
-            const { email, firstname, lastname, jobtitle } = Object.fromEntries(
-                new FormData(form),
-            ) as Record<string, string>
+            const { email, firstname, lastname, company, jobtitle } =
+                Object.fromEntries(new FormData(form)) as Record<string, string>
             const kuid = localStorage.getItem("KUID") || ""
 
             const hsq = (window._hsq ??= [])
             hsq.push([
                 "identify",
-                { email, firstname, lastname, jobtitle, kuid },
+                { email, firstname, lastname, company, jobtitle, kuid },
             ])
 
             // The IP only enriches the HubSpot context; a blocked lookup must
@@ -150,6 +152,7 @@
                 firstname,
                 lastname,
                 email,
+                ...(props.withCompany ? { company } : {}),
                 jobtitle,
                 form_submission_identifier: props.submissionIdentifier,
                 kuid,
