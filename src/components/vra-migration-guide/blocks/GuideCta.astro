@@ -1,7 +1,7 @@
 ---
 import { DOWNLOAD_DIALOG_TARGET } from "../download"
 
-type Kind = "talk" | "pdf" | "calc" | "assistant"
+type Kind = "talk" | "pdf" | "calc" | "assistant" | "cloud"
 
 interface Props {
     kind: Kind
@@ -19,6 +19,7 @@ const CTAS: Record<Kind, { label: string; href?: string }> = {
         href: "/resources/migration/vra/assistant",
     },
     pdf: { label: "Download the PDF" },
+    cloud: { label: "Start your Cloud trial", href: "/cloud" },
 }
 
 const { kind, variant = "primary" } = Astro.props
