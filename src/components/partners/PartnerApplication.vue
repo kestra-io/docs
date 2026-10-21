@@ -7,7 +7,7 @@
                         <div v-if="done" class="received" role="status">
                             <CheckCircleOutline class="icon" />
                             <h2>Application received</h2>
-                            <p>Thanks {{ form.firstname }}. We will reach out to you within five business days.</p>
+                            <p>Thanks {{ form.firstname }}. We will answer within a week.</p>
                             <a :href="trackHref" class="btn btn-secondary">Back to {{ trackLabel }}</a>
                         </div>
 
@@ -50,7 +50,7 @@
 
                                 <div v-if="form.track" class="form-group">
                                     <span class="label">
-                                        {{ form.track === "consulting" ? "Which describe you? Pick all that apply." : "What do you build? Pick all that apply." }}
+                                        {{ form.track === "consulting" ? "Which tracks are you applying for? Pick all that apply." : "What do you build? Pick all that apply." }}
                                         <span class="required-field">*</span>
                                     </span>
                                     <div class="checks">
@@ -167,8 +167,8 @@
     const TRACKS = [
         {
             id: "consulting" as Track,
-            title: "Consulting partner",
-            text: "Consulting firm or systems integrator. You sell, implement and support Kestra for your customers.",
+            title: "Solution, Services or Reseller",
+            text: "You demo, deliver, operate or sell Kestra for your clients. Pick one track or several on the next question.",
         },
         {
             id: "technology" as Track,
@@ -177,7 +177,7 @@
         },
     ]
     const KINDS: Record<Track, string[]> = {
-        consulting: ["Consulting firm", "Systems integrator"],
+        consulting: ["Solution partner", "Services partner", "Reseller partner"],
         technology: ["Cloud provider", "Data platform", "Data integration", "Infrastructure or DevOps tool", "AI or model provider", "Other ISV"],
     }
     const EXPERIENCES: Record<Track, string[]> = {
@@ -186,8 +186,9 @@
     }
     const REGIONS = ["Europe", "North America", "Latin America", "Asia-Pacific", "Middle East and Africa"]
     const HUBSPOT_VALUES: Record<string, string> = {
-        "Consulting firm": "consulting",
-        "Systems integrator": "integrator",
+        "Solution partner": "solution",
+        "Services partner": "services",
+        "Reseller partner": "reseller",
         "Cloud provider": "cloud",
         "Data platform": "data_platform",
         "Data integration": "data_integration",

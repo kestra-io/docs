@@ -10,26 +10,28 @@ import HeroIcon from "~/assets/landing/partners/icon-partner.svg?raw"
 
 const title = "Kestra Partners"
 const description =
-    "Sell, deliver or integrate with Kestra. Find a partner near you, or join the program as a consulting or technology partner."
+    "Demo, deliver or sell Kestra, or integrate with it. Join the program as a Solution, Services or Reseller partner, or as a technology partner, and get certified in 30 days."
 
 const BENEFITS = [
     {
-        title: "Sell with us",
-        text: "Register deals, co-sell with the Kestra sales team and earn margin on Enterprise and Cloud, with a partner manager who knows your pipeline.",
+        title: "Your own Kestra Cloud tenant",
+        text: "To train your team, run demos and build labs.",
     },
     {
-        title: "Deliver with our engineers behind you",
-        text: "Enablement, a sandbox Enterprise Edition, priority routing to support and a direct line to the people who build Kestra.",
+        title: "Enablement",
+        text: "Kestra Academy, the partner playbooks, Solutions Engineering sessions and a shared Slack channel.",
     },
     {
-        title: "Grow your pipeline",
-        text: "A listing in the partner directory, the partner badge, co-marketing material and joint customer stories that bring the next customer to you.",
+        title: "Listing and introductions",
+        text: "Once certified, a listing on kestra.io and introductions to customers in your region.",
     },
     {
-        title: "Shape what we build",
-        text: "Early access to features and plugin APIs, and a seat in the conversations that decide the roadmap.",
+        title: "Co-marketing",
+        text: "A joint announcement, content and events.",
     },
 ]
+---
+
 ---
 
 <Layout {title} {description}>
@@ -39,8 +41,8 @@ const BENEFITS = [
             <h1>Become a Kestra partner</h1>
             <p>
                 Kestra orchestrates data, infrastructure, applications and AI
-                for enterprises on every continent. Partners sell it, deliver it
-                and build on it. Pick the track that matches what you do.
+                for enterprises on every continent. Partners deliver it, sell it
+                and build on it.
             </p>
             <div class="actions">
                 <Link href="/partners/apply" class="btn btn-primary"
@@ -53,16 +55,10 @@ const BENEFITS = [
         </div>
     </Squared>
 
-    <Benefits
-        title="Let's orchestrate together"
-        intro="Kestra is open source, language-agnostic and runs anywhere, so partners meet customers where they already are. We partner with the firms that deliver Kestra and the technologies it runs with, and we give both the same thing: a program with real resources behind it."
-        benefits={BENEFITS}
-    />
-
     <TrackBlock
         type="Consulting"
         title="Consulting Partners"
-        text="Consulting firms and systems integrators who sell, implement and support Kestra for their customers. Listed in a directory buyers search by country and service."
+        text="Partners who demo, deliver, operate and sell Kestra for their clients, searchable by country and service. Certified partners are listed here and introduced to customers."
         href="/partners/consulting"
         cta="Find a consulting partner"
     />
@@ -77,6 +73,12 @@ const BENEFITS = [
     />
 
     <CloudProviders />
+
+    <Benefits
+        title="Join the program"
+        intro="For consulting firms, systems integrators, managed service providers and resellers. Get certified on Kestra Academy, and we list you and introduce you to customers."
+        benefits={BENEFITS}
+    />
 
     <PartnerCta />
 </Layout>

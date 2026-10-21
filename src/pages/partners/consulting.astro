@@ -33,20 +33,20 @@ const FILTERS: { key: "kind" | "region" | "services"; label: string }[] = [
 
 const BENEFITS = [
     {
-        title: "Deal registration and co-selling",
-        text: "Register the opportunities you bring, protect them, and work them with the Kestra sales team. Margin on Enterprise and Cloud, and a partner manager who knows your accounts.",
+        title: "A Kestra Cloud tenant",
+        text: "Your own tenant with Enterprise features, issued with the welcome kit, for training, demos and labs. Services partners can request a self-hosted Enterprise licence.",
     },
     {
-        title: "Enablement and a sandbox Enterprise Edition",
-        text: "Training for your engineers, a full Enterprise Edition to build and demo on, and priority routing to our support and solution engineers when a customer project needs it.",
+        title: "Enablement",
+        text: "Academy access for your team, the sales playbook and program guide, Solutions Engineering sessions, and a shared Slack channel with your Kestra contact.",
     },
     {
-        title: "A listing buyers actually use",
-        text: "Your firm in the directory above, searchable by country and service, with the partner badge and co-marketing material to back it up.",
+        title: "A listing customers use",
+        text: "Once certified, your firm appears in the directory above with the certified badge, searchable by country and service.",
     },
     {
-        title: "Joint customer stories",
-        text: "When a project lands, we publish it together. Ntico, Conapi and Ashisuto already have their own pages on kestra.io.",
+        title: "Introductions and co-marketing",
+        text: "Introductions to opportunities in your region and specialty, a joint announcement, content and events.",
     },
 ]
 
@@ -67,7 +67,7 @@ const QUOTES = [
 <Layout {title} {description} breadcrumbTitle="Consulting Partners">
     <Intro
         title="Find a consulting partner"
-        text="Consulting firms and systems integrators who sell, implement and support Kestra. Search by country and service, or join the program and deliver Kestra to your own customers."
+        text="Partners who demo, deliver, operate and sell Kestra for their clients. Search by country and service, or join the program as a Solution, Services or Reseller partner."
         ctaText="Become a consulting partner"
         ctaHref="/partners/apply?track=consulting"
     />
@@ -79,8 +79,8 @@ const QUOTES = [
         searchPlaceholder="Search by name, country or service"
     />
     <Benefits
-        title="What consulting partners get"
-        intro="The program exists so that a partner can sell and deliver Kestra without us in the room, and still have us one message away when it matters."
+        title="What partners get"
+        intro="Registered partners get the tools to learn and demo Kestra. Certified partners are listed here and introduced to customers."
         benefits={BENEFITS}
     />
     <Quotes quotes={QUOTES} />
