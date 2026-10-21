@@ -23,9 +23,9 @@ import IntegrationsIcon from "~/components/lp/vra-migration/assets/automate-inte
 
 /* Paid traffic only: every ad group lands here and is told apart by its
  * utm_content. The organic page for the topic is the migration guide. */
-const title = "Migrate off VMware vRA and vRO"
+const title = "Migrate off VMware vRA, Aria and VCF Automation"
 const description =
-    "Kestra replaces vRealize Automation (Aria Automation) and vRealize Orchestrator (vRO) with one governed orchestration platform on your own infrastructure. Keep your Terraform, Ansible and scripts."
+    "Kestra replaces vRealize Automation (now Aria Automation and VCF Automation) and vRealize Orchestrator (vRO) with one governed orchestration platform on your own infrastructure. Keep your Terraform, Ansible and scripts."
 
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/vra-migration"
@@ -38,13 +38,13 @@ const reasons = [
     {
         kicker: "Pricing",
         title: "Since Broadcom's licensing changes, vRA ships only inside VMware Cloud Foundation.",
-        body: "Priced per core on subscription, so renewals land at several times the old bill.",
+        body: "Priced per core on subscription, so the bill tracks your hypervisor estate. Gartner expects renewals 200 to 500% higher.",
         icon: "mdi:cash-multiple",
     },
     {
         kicker: "Roadmap",
         title: "Your automation only reaches what VMware supports.",
-        body: "And that list is shrinking.",
+        body: "And that list is shrinking: VCF Automation 9.1.1 disables native AWS, Azure and GCP endpoints by default.",
         icon: "mdi:map-marker-path",
     },
     {
@@ -85,9 +85,10 @@ const stages = [
 const automations = [
     {
         Glyph: SelfServiceIcon,
-        title: "Self-service VM provisioning",
+        title: "Self-service portal and VM provisioning",
         items: [
-            "Self-service portal form for the request",
+            "Request form in Kestra Apps or your ITSM portal",
+            "Approval before the build",
             "VM build",
             "Post-install by server type and site",
         ],
@@ -131,13 +132,26 @@ const ctaBullets = [
 
 const faqItems = [
     {
+        question:
+            "Are vRealize Automation, Aria Automation and VCF Automation the same product?",
+        answer: "Yes. VMware vRealize Automation (vRA) was renamed VMware Aria Automation, then VCF Automation in VMware Cloud Foundation 9. vRealize Orchestrator (vRO) became Aria Automation Orchestrator and now ships inside VCF Automation. The migration method is the same whichever name your version carries.",
+    },
+    {
+        question: "Is Kestra a vRA alternative or a vRO replacement?",
+        answer: "Both. Kestra replaces the vRO workflow engine with flows and subflows, and the vRA front end with Kestra Apps for the self-service catalog and Kestra Assets for the deployment inventory. If your catalog lives in ServiceNow or another ITSM portal, it can stay there and call Kestra.",
+    },
+    {
+        question: "How is vRA priced since Broadcom?",
+        answer: 'vRA is no longer sold on its own. It ships inside VMware Cloud Foundation, licensed per core on subscription, so the automation bill tracks the size of the hypervisor estate rather than how much you automate. Gartner expects most VMware customers\' bills to grow by 200 to 500 percent at their next renewal, <a href="https://www.theregister.com/2024/08/26/vmware_explore_preview/" target="_blank" rel="noopener">as reported by The Register</a>. The calculator above sets that renewal against the cost of migrating.',
+    },
+    {
         question: "Do we have to leave vSphere?",
         answer: "No. Kestra runs with vSphere and VCF today, and with Nutanix, Proxmox or any hypervisor you move to.",
     },
     {
         question:
-            "We run vSphere on-prem and other tools in the cloud. Can one platform cover both?",
-        answer: "Yes. The same flows call vCenter on-prem and your cloud APIs, Terraform and Ansible, with one audit trail and one access model.",
+            "We run vSphere on-prem and workloads in AWS, Azure or GCP. Can one platform cover both?",
+        answer: 'Yes. The same flows call vCenter on-prem and the AWS, Azure and GCP APIs, Terraform and Ansible, with one audit trail and one access model. That matters since VCF Automation 9.1.1 <a href="https://knowledge.broadcom.com/external/article/448993" target="_blank" rel="noopener">disables native public cloud endpoints by default</a>.',
     },
     {
         question: "Can vRA and Kestra run side by side?",
@@ -197,10 +211,11 @@ const faqItems = [
                 time.
             </Fragment>
             <Fragment slot="lead">
-                Kestra replaces vRealize Automation (Aria Automation) and vRO
-                with one governed orchestration platform on your own
-                infrastructure. Keep your Terraform, Ansible and scripts. Retire
-                the vRA licence at renewal.<br />
+                Kestra replaces vRealize Automation (now Aria Automation and VCF
+                Automation) and vRealize Orchestrator (vRO) with one governed
+                orchestration platform on your own infrastructure. Keep your
+                Terraform, Ansible and scripts. Retire the vRA licence at
+                renewal.<br />
                 <strong
                     >Runs with vSphere today, and with Nutanix, Proxmox or
                     whatever you move to next.</strong
@@ -211,7 +226,54 @@ const faqItems = [
                 call.
             </Fragment>
         </Hero>
-        <Platform heading="Why teams are leaving vRA" cards={reasons} />
+        <script is:inline>
+            /* Echo the searched product and intent in the headline. The G_VRA
+             * final URL suffix passes the keyword as utm_term; the term is only
+             * matched against, never written, and without it the static
+             * headline above stays. */
+            ;(() => {
+                const term = (
+                    new URLSearchParams(location.search).get("utm_term") || ""
+                ).toLowerCase()
+                const h1 = document.querySelector(".lp-hero h1")
+                if (!term || !h1) return
+                const isVro = /orchestrator|\bvro\b/.test(term)
+                const product = /aria/.test(term)
+                    ? "Aria Automation"
+                    : isVro
+                      ? "vRO"
+                      : /vcf|cloud foundation/.test(term)
+                        ? "VCF Automation"
+                        : /vrealize/.test(term)
+                          ? "vRealize Automation"
+                          : "VMware vRA"
+                /* Clone a server-rendered span so the scoped gradient styles,
+                 * keyed on Astro's data-astro-cid attribute, still apply. */
+                const span = (variant, text) => {
+                    const el = h1.querySelector(".grad").cloneNode(false)
+                    el.className = `grad grad-${variant}`
+                    el.textContent = text
+                    return el.outerHTML
+                }
+                const a = (text) => span("a", text)
+                const b = (text) => span("b", text)
+                if (/pric|licens|cost|renewal/.test(term)) {
+                    h1.innerHTML = `Retire the ${a(`${product} licence`)} at ${b("renewal")}, one workflow at a time.`
+                } else if (/alternative|replacement/.test(term)) {
+                    h1.innerHTML = `The ${a(product === "VMware vRA" ? "vRA and vRO" : product)} ${b("alternative")} on your own infrastructure.`
+                } else if (/self.?service|portal/.test(term)) {
+                    h1.innerHTML = `Replace the ${a("VMware")} ${b("self-service portal")}, one workflow at a time.`
+                } else if (product !== "VMware vRA") {
+                    h1.innerHTML = isVro
+                        ? `Migrate off ${a("VMware")} ${b("vRO")}, one workflow at a time.`
+                        : `Migrate off ${a(product)} and ${b("vRO")}, one workflow at a time.`
+                }
+            })()
+        </script>
+        <Platform
+            heading="Why teams look for a vRA alternative"
+            cards={reasons}
+        />
         <Migration
             heading="Leave vRA in four stages, with vRA still running"
             sub="Kestra runs alongside vRA until each wave is verified."
@@ -222,7 +284,7 @@ const faqItems = [
         <Features />
         <Stack
             heading="What teams automate after vRA"
-            sub={null}
+            sub="The VMware automation that ran in vRA and vRO, rebuilt as flows that also reach beyond vSphere."
             columns={automations}
             glyphSize={72}
         />
