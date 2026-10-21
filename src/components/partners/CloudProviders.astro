@@ -11,34 +11,41 @@ const CLOUDS = [
         logo: awsSVG,
         href: "/plugins/plugin-aws",
         cta: "Explore the AWS plugin",
-        facts: [
-            "60+ tasks and triggers: S3, Lambda, Glue, Athena, EMR, SQS, SNS, EventBridge, Kinesis, Bedrock and more.",
-            "S3 as Kestra's internal storage for outputs and namespace files.",
-            "AWS Secrets Manager as the secrets backend in the Enterprise Edition.",
-        ],
+        tasks: "60+",
+        services:
+            "S3, Lambda, Glue, Athena, EMR, SQS, SNS, EventBridge, Kinesis, Bedrock and more",
+        storage: "S3",
+        secrets: "AWS Secrets Manager",
     },
     {
         name: "Azure",
         logo: azureSVG,
         href: "/plugins/plugin-azure",
         cta: "Explore the Azure plugin",
-        facts: [
-            "80+ tasks and triggers: Blob Storage, Data Factory, Synapse, Functions, Event Hubs, Service Bus, Batch, AI Foundry and more.",
-            "Blob Storage as Kestra's internal storage for outputs and namespace files.",
-            "Azure Key Vault as the secrets backend in the Enterprise Edition.",
-        ],
+        tasks: "80+",
+        services:
+            "Blob Storage, Data Factory, Synapse, Functions, Event Hubs, Service Bus, Batch, AI Foundry and more",
+        storage: "Blob Storage",
+        secrets: "Azure Key Vault",
     },
     {
         name: "Google Cloud",
         logo: googleSVG,
         href: "/plugins/plugin-gcp",
         cta: "Explore the Google Cloud plugin",
-        facts: [
-            "80+ tasks and triggers: BigQuery, Cloud Storage, Pub/Sub, Dataproc, Dataflow, Vertex AI, Cloud Functions, GKE and more.",
-            "Cloud Storage as Kestra's internal storage for outputs and namespace files.",
-            "Google Secret Manager as the secrets backend in the Enterprise Edition.",
-        ],
+        tasks: "80+",
+        services:
+            "BigQuery, Cloud Storage, Pub/Sub, Dataproc, Dataflow, Vertex AI, Cloud Functions, GKE and more",
+        storage: "Cloud Storage",
+        secrets: "Google Secret Manager",
     },
+]
+
+// each row of the comparison: what it is, and how it reads for one cloud
+const ROWS = [
+    { label: "Tasks and triggers", note: "In the plugin group" },
+    { label: "Internal storage", note: "For outputs and namespace files" },
+    { label: "Secrets backend", note: "In the Enterprise Edition" },
 ]
 ---
 
@@ -52,28 +59,74 @@ const CLOUDS = [
                 to the data and services they orchestrate.
             </p>
         </div>
-        <div class="row g-4">
-            {
-                CLOUDS.map((cloud) => (
-                    <div class="col-12 col-lg-4">
-                        <article class="cloud">
-                            <div class="head">
-                                <span class="logo" set:html={cloud.logo} />
-                                <h3>{cloud.name}</h3>
-                            </div>
-                            <ul>
-                                {cloud.facts.map((fact) => (
-                                    <li>{fact}</li>
-                                ))}
-                            </ul>
-                            <Link href={cloud.href} class="more">
-                                {cloud.cta}
-                            </Link>
-                        </article>
-                    </div>
-                ))
-            }
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"
+                            ><span class="sr-only">Capability</span></th
+                        >
+                        {
+                            CLOUDS.map((cloud) => (
+                                <th scope="col">
+                                    <span class="cloud-head">
+                                        <span
+                                            class="logo"
+                                            set:html={cloud.logo}
+                                        />
+                                        {cloud.name}
+                                    </span>
+                                </th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            {ROWS[0].label}
+                            <small>{ROWS[0].note}</small>
+                        </th>
+                        {
+                            CLOUDS.map((cloud) => (
+                                <td>
+                                    <strong class="big">{cloud.tasks}</strong>
+                                    <small>{cloud.services}</small>
+                                </td>
+                            ))
+                        }
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            {ROWS[1].label}
+                            <small>{ROWS[1].note}</small>
+                        </th>
+                        {CLOUDS.map((cloud) => <td>{cloud.storage}</td>)}
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            {ROWS[2].label}
+                            <small>{ROWS[2].note}</small>
+                        </th>
+                        {CLOUDS.map((cloud) => <td>{cloud.secrets}</td>)}
+                    </tr>
+                    <tr class="links">
+                        <th scope="row"><span class="sr-only">Plugin</span></th>
+                        {
+                            CLOUDS.map((cloud) => (
+                                <td>
+                                    <Link href={cloud.href} class="more">
+                                        {cloud.cta}
+                                    </Link>
+                                </td>
+                            ))
+                        }
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
         <p class="anywhere">
             <span class="logo" set:html={homeRoofSVG} />
             Not on one of these? Kestra runs on any Kubernetes cluster, Docker host
@@ -113,64 +166,83 @@ const CLOUDS = [
             }
         }
 
-        .cloud {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1.5rem;
-            border-radius: 0.8125rem;
+        // one comparison instead of three cards that say the same thing three times
+        .table-wrap {
+            overflow-x: auto;
             border: 1px solid var(--clouds-border);
-            background: var(--ks-background-body);
+            border-radius: 0.8125rem;
+        }
 
-            .head {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-            }
+        table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
 
-            h3 {
-                font-size: $font-size-lg;
-                font-weight: 600;
-                margin: 0;
-                color: var(--ks-content-primary);
-            }
+        th,
+        td {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--clouds-border);
+        }
 
-            ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                display: flex;
-                flex-direction: column;
-                gap: 0.625rem;
-            }
+        tr:last-child > * {
+            border-bottom: 0;
+        }
 
-            li {
-                position: relative;
-                padding-left: 1rem;
-                font-size: $font-size-sm;
-                line-height: 1.5;
-                color: var(--ks-content-secondary);
+        thead th {
+            background: var(--ks-background-secondary);
+        }
 
-                &::before {
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    top: 0.6em;
-                    width: 5px;
-                    height: 5px;
-                    border-radius: 50%;
-                    background: var(--ks-content-tertiary);
-                }
-            }
+        tbody th {
+            width: 22%;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
 
-            .more {
-                margin-top: auto;
-                font-size: $font-size-sm;
-                font-weight: 600;
-                color: var(--ks-content-link);
-                text-decoration: none;
-            }
+        td {
+            font-size: $font-size-md;
+            font-weight: 500;
+            color: var(--ks-content-primary);
+        }
+
+        small {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: $font-size-xs;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ks-content-tertiary);
+        }
+
+        .big {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+
+        .cloud-head {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        .links td {
+            padding-top: 1rem;
+            padding-bottom: 1.25rem;
+        }
+
+        :global(.more) {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-link);
         }
 
         .logo {
@@ -178,17 +250,25 @@ const CLOUDS = [
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
+            width: 48px;
+            height: 48px;
             border-radius: 10px;
-            // a light chip so the logo still stands out on the white card
-            background: #f7f7f7;
+            background: #fff;
             color: #232f3e;
 
             :global(svg) {
-                width: 38px;
-                height: 38px;
+                width: 30px;
+                height: 30px;
             }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
         }
 
         .anywhere {
@@ -202,6 +282,7 @@ const CLOUDS = [
             .logo {
                 width: 36px;
                 height: 36px;
+                background: #f7f7f7;
 
                 :global(svg) {
                     width: 20px;
