@@ -1,0 +1,63 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Lander Analytics & Kestra: Data Science Workflows, Orchestrated"
+const description =
+    "Lander Analytics is a data science consulting firm advancing innovation in the open source data community, offering consulting and advisory services, infrastructure setup, and training for data-driven organizations."
+
+const about =
+    "Founded in New York in 2011 by Jared Lander, Lander Analytics helps organizations get value from their data with open source tools. With Kestra, the team recommends, deploys, maintains and upgrades orchestration for its clients, including on Kubernetes and in air-gapped environments."
+
+const facts = [
+    { label: "Headquarters", value: "New York City, United States" },
+    {
+        label: "Kestra expertise",
+        value: "Data science workflows, Kubernetes deployments, training",
+    },
+    { label: "Profile", value: "Data science consulting firm founded in 2011" },
+]
+
+const expertise = [
+    {
+        icon: "mdi:chart-bell-curve",
+        title: "Data science pipelines",
+        text: "Model training, scoring and reporting workflows orchestrated with Kestra, in R, Python or SQL.",
+    },
+    {
+        icon: "mdi:kubernetes",
+        title: "Kubernetes and air-gapped deployments",
+        text: "Installation, sizing and upgrades of Kestra on Kubernetes, including fully air-gapped environments.",
+    },
+    {
+        icon: "mdi:school-outline",
+        title: "Training",
+        text: "Hands-on training so data teams can build and run their own flows.",
+    },
+    {
+        icon: "mdi:wrench-outline",
+        title: "Maintenance and upgrades",
+        text: "Ongoing support to keep Kestra deployments healthy as usage grows.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Lander Analytics">
+    <PartnerProfile
+        name="Lander Analytics"
+        tagline={description}
+        {about}
+        expertiseTitle="Lander Analytics: open source data science, orchestrated with Kestra"
+        {expertise}
+        {facts}
+        contact={{
+            text: "Contact Lander Analytics",
+            href: "https://www.landeranalytics.com/",
+        }}
+        closing={{
+            title: "Work with Lander Analytics",
+            text: "Bringing orchestration to your data science team? Lander Analytics can set it up and train your people.",
+        }}
+        website="https://www.landeranalytics.com/"
+    />
+</Layout>

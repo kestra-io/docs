@@ -100,7 +100,7 @@ export const PARTNERS: Partner[] = [
         type: "Consulting",
         description:
             "Converteo is a leading consulting firm specializing in data strategy and digital transformation.",
-        href: "https://www.converteo.com/",
+        href: "/partners/converteo",
     },
     {
         name: "Terraform",
@@ -148,7 +148,7 @@ export const PARTNERS: Partner[] = [
         type: "Consulting",
         description:
             "Davidson is a technology and management consulting firm focused on innovation and digital solutions.",
-        href: "https://www.davidson.fr/",
+        href: "/partners/davidson",
     },
     {
         name: "Airbyte",
@@ -172,7 +172,7 @@ export const PARTNERS: Partner[] = [
         type: "Consulting",
         description:
             "Hanalytics specializes in data analytics and business intelligence solutions for modern organizations.",
-        href: "https://hanalytics.io/",
+        href: "/partners/hanalytics",
     },
     {
         name: "dlthub",
@@ -232,7 +232,7 @@ export const PARTNERS: Partner[] = [
         type: "Consulting",
         description:
             "Bitovi is a digital product consultancy helping teams design, build, and scale web apps, DevOps, and data infrastructure.",
-        href: "https://www.bitovi.com/",
+        href: "/partners/bitovi",
     },
     {
         name: "JLCP",
@@ -244,7 +244,7 @@ export const PARTNERS: Partner[] = [
         type: "Consulting",
         description:
             "JLCP is a Brazilian systems integration consultancy delivering data engineering and automation solutions for enterprises.",
-        href: "https://jlcp.com.br/",
+        href: "/partners/jlcp",
     },
     {
         name: "Lander Analytics",
@@ -256,6 +256,6 @@ export const PARTNERS: Partner[] = [
         type: "Consulting",
         description:
             "Lander Analytics is a systems integration and data consultancy specializing in analytics, machine learning, and data engineering.",
-        href: "https://www.landeranalytics.com/",
+        href: "/partners/lander-analytics",
     },
 ]

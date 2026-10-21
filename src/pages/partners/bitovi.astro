@@ -1,0 +1,63 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Bitovi & Kestra: Migration and Production Readiness"
+const description =
+    "Bitovi helps engineering teams design, migrate and run workflow platforms in production, now with Kestra."
+
+const about =
+    "Founded in 2005, Bitovi is a US software consulting company with deep experience in workflow engineering, from architecture to large migrations. As a Kestra partner, Bitovi helps teams adopt Kestra, move to Kestra 2.0 and keep it reliable at scale."
+
+const facts = [
+    { label: "Headquarters", value: "United States" },
+    {
+        label: "Kestra expertise",
+        value: "Migration to Kestra 2.0, production readiness, workflow engineering",
+    },
+    { label: "Profile", value: "Software consulting firm founded in 2005" },
+]
+
+const expertise = [
+    {
+        icon: "mdi:swap-horizontal",
+        title: "Migration to Kestra 2.0",
+        text: "An audit of your 1.x estate, infrastructure, flows and code, then an upgrade plan run with your team.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "Production-readiness audits",
+        text: "A review of sizing, cost, reliability and operations before your Kestra workloads become critical.",
+    },
+    {
+        icon: "mdi:account-hard-hat-outline",
+        title: "Embedded engineers",
+        text: "Bitovi engineers join your team to set up Kestra, build the first flows and hand over the know-how.",
+    },
+    {
+        icon: "mdi:sitemap-outline",
+        title: "Workflow architecture",
+        text: "Experience designing and migrating large workflow platforms for enterprise clients, brought to Kestra.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Bitovi">
+    <PartnerProfile
+        name="Bitovi"
+        tagline={description}
+        {about}
+        expertiseTitle="Bitovi: workflow engineering, applied to Kestra"
+        {expertise}
+        {facts}
+        contact={{
+            text: "Contact Bitovi",
+            href: "https://www.bitovi.com/contact",
+        }}
+        closing={{
+            title: "Work with Bitovi",
+            text: "Planning a move to Kestra 2.0 or a production rollout? Bitovi's engineers can help.",
+        }}
+        website="https://www.bitovi.com/"
+    />
+</Layout>
