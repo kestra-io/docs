@@ -3,7 +3,15 @@ import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import Link from "~/components/common/Link.astro"
 import PartnerCard from "./PartnerCard.vue"
+import PluginCard from "~/components/plugins/PluginCard.vue"
 import { listPartners, PARTNERS } from "./partners"
+import { $fetchApiCached } from "~/utils/fetch"
+import {
+    filterPluginsWithoutDeprecated,
+    type Plugin,
+} from "~/utils/plugins/plugin"
+import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
+import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
 
 /**
  * The partner profile: a header with the partner's identity and contacts, the
@@ -29,6 +37,10 @@ interface Props {
     quote?: { text: string; author: string; role: string }
     facts: { label: string; value: string }[]
     contact: { text: string; href: string }
+    /** a second, quieter button in the header */
+    secondary?: { text: string; href: string }
+    /** plugin names (e.g. "plugin-digitalocean"), shown as their catalog cards in the side card */
+    plugins?: string[]
     /** a short pitch shown above the contact button of the side card */
     closing?: { title: string; text: string }
     website?: string
@@ -45,6 +57,8 @@ const {
     quote,
     facts,
     contact,
+    secondary,
+    plugins = [],
     closing,
     website,
     lang = "en",
@@ -56,6 +70,7 @@ const LABELS = {
         glance: "At a glance",
         services: "Services",
         website: "Website",
+        plugin: "Kestra plugin",
         related: "Other partners",
         partners: "Partners",
         all: "See all partners",
@@ -65,6 +80,7 @@ const LABELS = {
         glance: "En bref",
         services: "Services",
         website: "Site web",
+        plugin: "Plugin Kestra",
         related: "Autres partenaires",
         partners: "Partenaires",
         all: "Voir tous les partenaires",
@@ -73,6 +89,35 @@ const LABELS = {
 const t = LABELS[lang]
 
 const partner = PARTNERS.find((p) => p.name === name)!
+// links leaving kestra.io open in a new tab
+const external = (href: string) =>
+    /^https?:\/\//.test(href) ? { target: "_blank", rel: "noopener" } : {}
+
+// the plugin cards of the catalog, from the same API as /plugins
+const pluginCards = plugins.length
+    ? await (async () => {
+          const raw = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
+          const info = await $fetchApiCached(`/plugins/pluginsInformation`)
+          const live = filterPluginsWithoutDeprecated(raw)
+          const rootGroups = new Set(
+              live.filter((p) => !p.subGroup).map((p) => p.group),
+          )
+          const roots = live.filter(
+              (p) => plugins.includes(p.name) && !p.subGroup,
+          )
+          return prunePluginsForCards(
+              roots,
+              info.byPlugin,
+              buildPluginUrlIndex(raw),
+              rootGroups,
+          ).map((c) => ({
+              ...c,
+              elementCounts: c.elementCounts ?? 0,
+              blueprints: c.blueprints ?? 0,
+          }))
+      })()
+    : []
+
 const related = listPartners(partner.type)
     .filter((p) => p.name !== name)
     .slice(0, 3)
@@ -104,8 +149,7 @@ const related = listPartners(partner.type)
                 <a
                     href={contact.href}
                     class="btn btn-primary"
-                    target="_blank"
-                    rel="noopener"
+                    {...external(contact.href)}
                 >
                     {contact.text}
                 </a>
@@ -118,6 +162,17 @@ const related = listPartners(partner.type)
                             rel="noopener"
                         >
                             {t.website}
+                        </a>
+                    )
+                }
+                {
+                    secondary && (
+                        <a
+                            href={secondary.href}
+                            class="btn btn-secondary"
+                            {...external(secondary.href)}
+                        >
+                            {secondary.text}
                         </a>
                     )
                 }
@@ -144,6 +199,22 @@ const related = listPartners(partner.type)
                     }
                 </section>
 
+                {
+                    quote && (
+                        <div class="quote">
+                            <figure>
+                                <blockquote
+                                    set:html={`<span class="qmark">“</span>${quote.text}<span class="qmark">”</span>`}
+                                />
+                                <figcaption>
+                                    <strong>{quote.author}</strong>,{" "}
+                                    {quote.role}
+                                </figcaption>
+                            </figure>
+                        </div>
+                    )
+                }
+
                 <section>
                     <h2>{expertiseTitle}</h2>
                     <ul class="expertise">
@@ -160,22 +231,6 @@ const related = listPartners(partner.type)
                         }
                     </ul>
                 </section>
-
-                {
-                    quote && (
-                        <div class="quote">
-                            <figure>
-                                <blockquote
-                                    set:html={`<span class="qmark">“</span>${quote.text}<span class="qmark">”</span>`}
-                                />
-                                <figcaption>
-                                    <strong>{quote.author}</strong>,{" "}
-                                    {quote.role}
-                                </figcaption>
-                            </figure>
-                        </div>
-                    )
-                }
             </div>
 
             <aside class="side">
@@ -203,6 +258,16 @@ const related = listPartners(partner.type)
                             </dd>
                         </div>
                     </dl>
+                    {
+                        pluginCards.length > 0 && (
+                            <div class="plugins">
+                                <p class="plugins-title">{t.plugin}</p>
+                                {pluginCards.map((card) => (
+                                    <PluginCard plugin={card} />
+                                ))}
+                            </div>
+                        )
+                    }
                     <slot name="side" />
                     {
                         closing && (
@@ -214,8 +279,7 @@ const related = listPartners(partner.type)
                     <a
                         href={contact.href}
                         class="btn btn-secondary w-100"
-                        target="_blank"
-                        rel="noopener"
+                        {...external(contact.href)}
                     >
                         {contact.text}
                     </a>
@@ -532,6 +596,22 @@ const related = listPartners(partner.type)
             text-transform: uppercase;
             letter-spacing: 0.04em;
             color: var(--ks-content-tertiary);
+        }
+
+        // the catalog's own plugin card, as on /plugins
+        .plugins {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+
+            .plugins-title {
+                margin: 0;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: var(--ks-content-tertiary);
+            }
         }
 
         .pitch {
