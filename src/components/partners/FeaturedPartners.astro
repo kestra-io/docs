@@ -1,21 +1,21 @@
 ---
-import { Icon } from "astro-icon/components"
 import { PARTNERS } from "./partners"
 
 interface Featured {
     name: string
     text: string
     href: string
+    cta: string
+    /** the partner's brand colour, for the glow that lights its card */
+    color: string
 }
 
 interface Props {
     title: string
     featured: Featured[]
-    href: string
-    cta: string
 }
 
-const { title, featured, href, cta } = Astro.props
+const { title, featured } = Astro.props
 const cards = featured.map((f) => ({
     ...f,
     logo: PARTNERS.find((p) => p.name === f.name)!.logo,
@@ -26,24 +26,49 @@ const cards = featured.map((f) => ({
     <div class="container">
         <div class="head">
             <h2>{title}</h2>
-            <a href={href} class="btn btn-secondary">{cta}</a>
         </div>
         <ul>
             {
                 cards.map((card) => (
                     <li>
-                        <a href={card.href} class="partner-card">
-                            <div class="logo">
-                                <img
-                                    src={card.logo.src}
-                                    alt={card.name}
-                                    loading="lazy"
-                                />
-                            </div>
-                            <p>{card.text}</p>
-                            <span class="more">
-                                Learn more
-                                <Icon name="mdi:arrow-right" />
+                        <a
+                            href={card.href}
+                            class="partner-card"
+                            style={`--brand: ${card.color}`}
+                        >
+                            <span class="inner">
+                                <span class="logo">
+                                    <img
+                                        src={card.logo.src}
+                                        alt={card.name}
+                                        loading="lazy"
+                                    />
+                                </span>
+                                <p>{card.text}</p>
+                                <span class="more">
+                                    {card.cta}
+                                    <svg
+                                        viewBox="0 0 6 9"
+                                        fill="none"
+                                        class="arrow-icon"
+                                        aria-hidden="true"
+                                    >
+                                        <g class="arrow-head">
+                                            <path
+                                                d="M1 1C4.5 4 5 4.38484 5 4.5C5 4.61516 4.5 5 1 8"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                            />
+                                        </g>
+                                        <g class="arrow-body">
+                                            <path
+                                                d="M3.5 4.5H0"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                            />
+                                        </g>
+                                    </svg>
+                                </span>
                             </span>
                         </a>
                     </li>
@@ -55,7 +80,7 @@ const cards = featured.map((f) => ({
 
 <style lang="scss">
     .featured {
-        padding: 4rem 0 5rem;
+        padding: 4rem 0 2rem;
 
         .head {
             display: flex;
@@ -80,11 +105,11 @@ const cards = featured.map((f) => ({
             margin: 0;
             padding: 0;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 1.5rem;
 
             @include media-breakpoint-down(lg) {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             @include media-breakpoint-down(sm) {
@@ -92,51 +117,120 @@ const cards = featured.map((f) => ({
             }
         }
 
+        // the whole card is the panel, lit by the partner's colour
         .partner-card {
-            display: flex;
-            flex-direction: column;
+            display: block;
             height: 100%;
             color: inherit;
             text-decoration: none;
+            transition: transform 400ms cubic-bezier(0.32, 0.72, 0, 1);
 
-            &:hover .more {
-                text-decoration: underline;
+            &:hover {
+                transform: translateY(-4px);
+
+                .inner::before {
+                    opacity: 1;
+                }
             }
         }
 
+        .inner {
+            position: relative;
+            isolation: isolate;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 21rem;
+            padding: 1.5rem;
+            overflow: hidden;
+            border-radius: 0.8125rem;
+            background:
+                radial-gradient(
+                    ellipse 90% 60% at 100% 0%,
+                    color-mix(in srgb, var(--brand) 28%, transparent),
+                    transparent 70%
+                ),
+                var(--ks-background-secondary);
+
+            // a stronger glow that rises on hover
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: -1;
+                background: radial-gradient(
+                    ellipse 110% 80% at 100% 0%,
+                    color-mix(in srgb, var(--brand) 40%, transparent),
+                    transparent 75%
+                );
+                opacity: 0;
+                transition: opacity 400ms ease;
+            }
+        }
+
+        // partner logos are drawn for light backgrounds, so they sit on a white chip
         .logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 9.25rem;
-            padding: 1.5rem 1.75rem;
-            border-radius: 8px;
-            background: #f7f7f7;
-            border: 1px solid var(--ks-border-default, #e9e9ee);
+            height: 4.5rem;
+            padding: 0.875rem 1.125rem;
+            border-radius: 0.75rem;
+            background: #fff;
+            box-shadow: 0 6px 20px
+                color-mix(in srgb, var(--brand) 18%, transparent);
 
             img {
-                max-width: 100%;
-                max-height: 100%;
+                height: 100%;
+                max-width: 9rem;
                 object-fit: contain;
             }
         }
 
         p {
-            flex: 1;
-            margin: 1.25rem 0 1rem;
+            margin: auto 0 1rem;
+            padding-top: 2rem;
+            font-size: $font-size-lg;
             font-weight: 600;
-            line-height: 1.45;
+            line-height: 1.4;
         }
 
+        // the site's link arrow, which stretches when the card is hovered;
+        // it stays inline so it follows the last word when the link wraps
         .more {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: var(--ks-content-link);
+            color: var(--ks-content-color-highlight);
+            font-weight: bold;
+            text-wrap: balance;
 
-            svg {
-                width: 1rem;
-                height: 1rem;
+            .arrow-icon {
+                display: inline-block;
+                overflow: visible;
+                width: 12px;
+                height: 12px;
+                margin-left: 0.3rem;
+                vertical-align: -0.05em;
+            }
+
+            .arrow-head {
+                transition: transform 100ms ease-in-out;
+            }
+
+            .arrow-body {
+                opacity: 0;
+                transition:
+                    transform 100ms ease-in-out,
+                    opacity 100ms ease-in-out;
+            }
+        }
+
+        .partner-card:hover .more {
+            .arrow-head {
+                transform: translateX(3px);
+            }
+
+            .arrow-body {
+                opacity: 1;
+                transform: scaleX(2);
             }
         }
     }

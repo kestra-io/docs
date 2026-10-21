@@ -19,31 +19,48 @@ const partners = PARTNERS.filter((p) => p.type === type)
 <section class="track">
     <div class="container">
         <div class="frame">
-            <div class:list={["inner", { reverse }]}>
-                <div class="content">
-                    <h2>{title}</h2>
-                    <p>{text}</p>
-                    <a href={href} class="btn btn-secondary">{cta}</a>
+            <div class="panel">
+                <div class:list={["inner", { reverse }]}>
+                    <div class="content">
+                        <h2>{title}</h2>
+                        <p>{text}</p>
+                        <a href={href} class="btn btn-secondary">{cta}</a>
+                    </div>
+                    <div class="visual">
+                        {
+                            figure ? (
+                                <HairlineFigure name={figure} />
+                            ) : (
+                                <ul class="logos" aria-label={`${title} logos`}>
+                                    {partners.map((partner) => (
+                                        <li>
+                                            <img
+                                                src={partner.logo.src}
+                                                alt={partner.name}
+                                                loading="lazy"
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+                            )
+                        }
+                    </div>
                 </div>
-                <div class="visual">
-                    {
-                        figure ? (
-                            <HairlineFigure name={figure} />
-                        ) : (
-                            <ul class="logos" aria-label={`${title} logos`}>
-                                {partners.map((partner) => (
-                                    <li>
-                                        <img
-                                            src={partner.logo.src}
-                                            alt={partner.name}
-                                            loading="lazy"
-                                        />
-                                    </li>
-                                ))}
-                            </ul>
-                        )
-                    }
-                </div>
+                {
+                    figure && (
+                        <ul class="members" aria-label={title}>
+                            {partners.map((partner) => (
+                                <li>
+                                    <img
+                                        src={partner.logo.src}
+                                        alt={partner.name}
+                                        loading="lazy"
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    )
+                }
             </div>
         </div>
     </div>
@@ -56,7 +73,7 @@ const partners = PARTNERS.filter((p) => p.type === type)
 
         // the run of cards gets air above and below, not between
         &:not(.track + .track) {
-            padding-top: 4rem;
+            padding-top: 1.5rem;
         }
 
         &:not(:has(+ .track)) {
@@ -70,14 +87,17 @@ const partners = PARTNERS.filter((p) => p.type === type)
             background: none;
         }
 
+        .panel {
+            border-radius: 0.5625rem;
+            background: var(--ks-background-secondary);
+        }
+
         .inner {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1.5rem;
             padding: 2rem 1.5rem;
-            border-radius: 0.5625rem;
-            background: var(--ks-background-secondary);
 
             @include media-breakpoint-up(lg) {
                 flex-direction: row;
@@ -97,13 +117,52 @@ const partners = PARTNERS.filter((p) => p.type === type)
             }
         }
 
+        // who the track gathers: its partners' logos on one line along the bottom, small and greyed out
+        .members {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem 1.5rem;
+            margin: 0;
+            padding: 1.25rem 1.5rem 1.5rem;
+            list-style: none;
+            // a hairline that reads on the grey panel in both themes
+            border-top: 1px solid
+                color-mix(in srgb, var(--ks-content-primary) 8%, transparent);
+
+            @include media-breakpoint-up(lg) {
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                padding: 1.25rem 3.5rem 1.5rem;
+            }
+
+            // logos give up width before the line overflows
+            li {
+                display: flex;
+                align-items: center;
+                flex: 0 1 auto;
+                min-width: 0;
+                height: 1.375rem;
+            }
+
+            img {
+                height: 100%;
+                max-width: min(6.5rem, 100%);
+                object-fit: contain;
+                filter: grayscale(1);
+                opacity: 0.55;
+
+                :global(html.dark) & {
+                    filter: grayscale(1) brightness(0) invert(1);
+                    opacity: 0.5;
+                }
+            }
+        }
+
         .visual {
             flex: 1;
             width: 100%;
-
-            :global(.hairline-figure) {
-                --hairline-plate: var(--ks-background-secondary);
-            }
         }
 
         h2 {

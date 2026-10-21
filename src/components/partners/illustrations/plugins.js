@@ -17,7 +17,7 @@ const {
   tset, tval, tween, unproj, disposer, flatDot, mk, place, pointer, put, register, solid,
 } = HL;
 
-const PL = 72, PB = 5, K = 15, KH = 30, BH = 16, NEAR = 25, FAR = 45, HALF = 12, SR = 3.2, SH = 3.2;
+const PL = 92, PB = 5, K = 15, KH = 30, BH = 16, NEAR = 46, FAR = 66, HALF = 12, SR = 3.2, SH = 3.2;
 /** The Kestra mark laid on a top face: six rounded pixels in a pyramid and the dot under them. s is world units per unit of the 600 mark. */
 const PIX = [[300, 147], [223, 224], [377, 224], [146, 301], [300, 301], [454, 301]];
 function logo(P, s, z) {
@@ -57,7 +57,7 @@ function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let reach = value;
 
-  const C = Cam(45, 0.5, 1.72);
+  const C = Cam(45, 0.5, 1.32);
   fit(C, [[-PL, -PL, -PB], [PL, PL, -PB], [PL, -PL, -PB], [-PL, PL, -PB], [-K, -K, KH], [FAR + 14, HALF, BH + SH + 26], [-FAR - 14, -HALF, BH + SH + 26]], 200, 166);
   const P = proj(C), front = facing(C);
 

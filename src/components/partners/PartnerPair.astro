@@ -1,0 +1,158 @@
+---
+import { PARTNERS } from "./partners"
+import kestraMark from "~/assets/landing/partners/kestra-mark.svg?raw"
+---
+
+<div class="pair" aria-hidden="true">
+    <div class="tile kestra" set:html={kestraMark} />
+    <span class="cell">
+        <svg class="times" viewBox="0 0 20 20">
+            <path d="M3 3L17 17M17 3L3 17"></path>
+        </svg>
+    </span>
+    <ul class="tile partner">
+        {
+            PARTNERS.map((partner, i) => (
+                <li class:list={{ on: i === 0 }}>
+                    <img src={partner.logo.src} alt="" loading="lazy" />
+                </li>
+            ))
+        }
+    </ul>
+</div>
+
+<script>
+    // one partner logo after another in the right tile, only while it is on screen
+    document.querySelectorAll<HTMLElement>(".pair .partner").forEach((tile) => {
+        const items = [...tile.querySelectorAll("li")]
+        if (
+            items.length < 2 ||
+            matchMedia("(prefers-reduced-motion: reduce)").matches
+        )
+            return
+        let i = 0
+        let timer: ReturnType<typeof setInterval> | undefined
+        const next = () => {
+            items[i].classList.remove("on")
+            i = (i + 1) % items.length
+            items[i].classList.add("on")
+        }
+        new IntersectionObserver(([entry]) => {
+            clearInterval(timer)
+            if (entry.isIntersecting) timer = setInterval(next, 2200)
+        }).observe(tile)
+    })
+</script>
+
+<style lang="scss">
+    // Kestra × a partner on a grid whose cell is one tile: the Kestra tile
+    // fills a cell, the × sits in the next, the partner spans two
+    .pair {
+        --cell: 88px;
+        --line: rgba(160, 140, 255, 0.4);
+
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        width: calc(4 * var(--cell));
+        height: var(--cell);
+        margin: 0 auto;
+
+        @include media-breakpoint-down(sm) {
+            --cell: 72px;
+        }
+
+        // the grid starts on the pair's own top-left corner, so every line runs along a tile edge
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: calc(-2 * var(--cell));
+            left: calc(-6 * var(--cell));
+            width: calc(16 * var(--cell));
+            height: calc(5 * var(--cell));
+            pointer-events: none;
+            background-image:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px);
+            background-size: var(--cell) var(--cell);
+            background-position: 0 0;
+            mask-image: radial-gradient(
+                ellipse 45% 50% at 50% 50%,
+                #000 25%,
+                transparent 80%
+            );
+        }
+
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--cell);
+        }
+
+        .times {
+            width: 18px;
+            height: 18px;
+            stroke: rgba(255, 255, 255, 0.7);
+            stroke-width: 1.5;
+            fill: none;
+        }
+    }
+
+    .tile {
+        position: relative;
+        flex: none;
+        width: var(--cell);
+        height: var(--cell);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 8px 30px rgba(10, 6, 40, 0.5);
+    }
+
+    .kestra {
+        background: #1a1030;
+        padding: calc(var(--cell) * 0.14);
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    }
+
+    // partner logos are drawn for light backgrounds, so this tile is white
+    .partner {
+        width: calc(2 * var(--cell));
+        background: #fff;
+        overflow: hidden;
+
+        li {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 22px;
+            opacity: 0;
+            transform: translateY(14px) scale(0.92);
+            transition:
+                opacity 500ms ease,
+                transform 600ms cubic-bezier(0.32, 0.72, 0, 1);
+
+            &.on {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    }
+</style>
