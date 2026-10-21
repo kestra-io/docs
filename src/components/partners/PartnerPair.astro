@@ -1,6 +1,14 @@
 ---
 import { PARTNERS } from "./partners"
 import kestraMark from "~/assets/landing/partners/kestra-mark.svg?raw"
+
+interface Props {
+    /** one partner's name, to show only that logo; without it the tile cycles through every partner */
+    name?: string
+}
+
+const { name } = Astro.props
+const shown = name ? PARTNERS.filter((p) => p.name === name) : PARTNERS
 ---
 
 <div class="pair" aria-hidden="true">
@@ -12,7 +20,7 @@ import kestraMark from "~/assets/landing/partners/kestra-mark.svg?raw"
     </span>
     <ul class="tile partner">
         {
-            PARTNERS.map((partner, i) => (
+            shown.map((partner, i) => (
                 <li class:list={{ on: i === 0 }}>
                     <img src={partner.logo.src} alt="" loading="lazy" />
                 </li>
