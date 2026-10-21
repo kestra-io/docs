@@ -345,8 +345,8 @@ tasks:
       }
     timeout: PT15M
     options:
-      readTimeout: PT10M
-      readIdleTimeout: PT10M
+      timeout:
+        readIdleTimeout: PT10M
 
   - id: notify
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
@@ -363,7 +363,7 @@ errors:
 Five things to notice:
 
 1. **Input and return.** The Python code is the body of the Pipedream step's `handler`. It reads the payload from `{{ trigger.body }}` instead of `pd.steps["trigger"]["event"]["body"]`, and `return` becomes `Kestra.outputs()`. The `kestra` package that provides `Kestra.outputs()` is not in the default Python image, so the task lists it under `dependencies`.
-2. **Slow API.** The NetSuite call allows ten minutes to read and to sit idle (the idle default is five minutes), because NetSuite sometimes takes several minutes to answer. The task `timeout` caps the whole call.
+2. **Slow API.** The NetSuite call may sit idle for ten minutes while it waits for a response (the default is five minutes), because NetSuite sometimes takes several minutes to answer. The task `timeout` caps the whole call.
 3. **Concurrency.** The trigger sets `allowConcurrent: true`, so an invoice that arrives during a slow call starts its own execution.
 4. **Errors.** The `errors` block replaces the per-step error handling you built by hand.
 5. **Token.** The static `NETSUITE_TOKEN` secret keeps the example short. In production, fetch a fresh token in the flow (see [5.2](#section-5-2)).

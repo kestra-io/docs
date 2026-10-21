@@ -6,17 +6,33 @@ import cloud from "~/components/cloud/assets/cloud.webp"
 const FLOW = [
     { key: "triggers" },
     { indent: "  - ", key: "id", value: "webhook" },
-    { indent: "    ", key: "type", type: "io.kestra.plugin.core.trigger.Webhook" },
+    {
+        indent: "    ",
+        key: "type",
+        type: "io.kestra.plugin.core.trigger.Webhook",
+    },
     { key: "tasks" },
     { indent: "  - ", key: "id", value: "transform" },
-    { indent: "    ", key: "type", type: "io.kestra.plugin.scripts.python.Script" },
+    {
+        indent: "    ",
+        key: "type",
+        type: "io.kestra.plugin.scripts.python.Script",
+    },
     { indent: "  - ", key: "id", value: "post_to_netsuite" },
     { indent: "    ", key: "type", type: "io.kestra.plugin.core.http.Request" },
     { indent: "  - ", key: "id", value: "notify" },
-    { indent: "    ", key: "type", type: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook" },
+    {
+        indent: "    ",
+        key: "type",
+        type: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook",
+    },
     { key: "errors" },
     { indent: "  - ", key: "id", value: "alert" },
-    { indent: "    ", key: "type", type: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook" },
+    {
+        indent: "    ",
+        key: "type",
+        type: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook",
+    },
 ]
 
 // Rows of the concept mapping in section 3.2.
@@ -83,8 +99,8 @@ const MAPPING = [
 <style lang="scss">
     @use "/src/assets/styles/color-palette" as *;
 
-    // Same 568 × 439 frame as the vRA assistant's hero: --u is one frame
-    // pixel at the current width, so the mock-up scales as one piece.
+    // The vRA assistant hero's 568px-wide frame, 468px tall here: --u is one
+    // frame pixel at the current width, so the mock-up scales as one piece.
     .hero-visual {
         container-type: inline-size;
         width: 100%;
