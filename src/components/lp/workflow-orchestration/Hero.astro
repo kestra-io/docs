@@ -53,7 +53,14 @@ const {
                     Your Challenges are Specific.
                 </slot>
             </p>
-            <Meeting {routePath} variant="plain" {...formProps} client:idle />
+            <slot name="form">
+                <Meeting
+                    {routePath}
+                    variant="plain"
+                    {...formProps}
+                    client:idle
+                />
+            </slot>
         </div>
     </div>
 
