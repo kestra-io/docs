@@ -486,6 +486,7 @@ const related = listPartners(partner.type)
                 content: "";
                 position: absolute;
                 inset: -22.222% -16.667%;
+                pointer-events: none;
                 background:
                     linear-gradient(var(--panel-line) 1px, transparent 1px) 0
                         0 / 100% 7.692%,
@@ -618,6 +619,8 @@ const related = listPartners(partner.type)
         }
 
         .top-row {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
