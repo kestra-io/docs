@@ -186,14 +186,16 @@ const columns = Math.min(cases.length, 3)
         border-bottom: 1px solid var(--lp-border);
     }
 
+    /* A fixed figure column, so every label starts at the same x, and the
+     * label sits on the figure's baseline, even when it wraps. */
     .stat {
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 5.25rem minmax(0, 1fr);
+        align-items: baseline;
         gap: 0.625rem;
     }
 
     dt {
-        flex-shrink: 0;
         color: var(--lp-purple);
         font-size: 1.25rem;
         font-weight: 700;
@@ -204,9 +206,8 @@ const columns = Math.min(cases.length, 3)
     dd {
         margin: 0;
         color: var(--lp-content-secondary);
-        font-family: $font-family-monospace;
-        font-size: $font-size-xs;
-        line-height: 1.33;
+        font-size: $font-size-sm;
+        line-height: 1.35;
     }
 
     .body {

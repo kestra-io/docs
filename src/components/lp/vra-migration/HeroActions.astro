@@ -30,7 +30,6 @@ const form = {
 <Meeting {routePath} variant="plain" {...formProps} client:idle />
 
 <div class="pdf">
-    <span class="or">or, if you prefer to read first</span>
     <button type="button" data-modal-target={DOWNLOAD_DIALOG_TARGET}>
         Get the migration guide (PDF)
     </button>
@@ -40,27 +39,22 @@ const form = {
 
 <style lang="scss">
     .pdf {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
         margin-top: 0.75rem;
 
-        .or {
-            color: var(--lp-content-muted);
-            font-size: $font-size-sm;
-            text-align: center;
-        }
-
+        /* Same box and type as the call form's submit button above it, so the
+         * two asks read as a pair; outlined so the call stays the first. */
         button {
-            min-height: 48px;
-            padding: 0.5rem 1rem;
+            width: 100%;
+            min-height: 52px;
+            padding: 0.875rem 1.75rem;
             border: 1px solid var(--lp-purple);
             border-radius: 8px;
             background-color: #ffffff;
             color: var(--lp-purple);
-            font-size: $font-size-md;
+            font-size: 1.25rem;
             font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.00625rem;
             cursor: pointer;
             &:hover {
                 background-color: var(--lp-purple-light);

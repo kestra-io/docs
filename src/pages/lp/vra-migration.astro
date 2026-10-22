@@ -39,21 +39,21 @@ const formProps = { submitLabel: "Get my migration estimate" }
 const reasons = [
     {
         kicker: "Pricing",
-        title: "Since Broadcom's licensing changes, vRA ships only inside VMware Cloud Foundation.",
-        body: "Priced per core on subscription, so the bill tracks your hypervisor footprint. Gartner expects renewals 200 to 500% higher.",
+        title: "No expensive renewals at term.",
+        body: "Kestra isn't sold inside a hypervisor bundle or priced per execution: the bill follows how widely you deploy it, not your VMware renewal.",
         icon: "mdi:cash-multiple",
     },
     {
-        kicker: "Roadmap",
-        title: "Your automation only reaches what VMware supports.",
-        body: "And that list is shrinking: VCF Automation 9.1.1 disables native AWS, Azure and GCP endpoints by default.",
-        icon: "mdi:map-marker-path",
+        kicker: "Open by design",
+        title: "Orchestrate your whole infrastructure, not just VMware.",
+        body: "vSphere, Nutanix, Proxmox, the public clouds, Terraform, Ansible and your ITSM from one place. VCF Automation 9.1.1 disables native AWS, Azure and GCP endpoints by default.",
+        icon: "mdi:lock-open-variant-outline",
     },
     {
-        kicker: "Skills",
-        title: "vRO JavaScript skills are rare.",
-        body: "Every workflow change waits on the same few people. Kestra flows are YAML any engineer can read, with the logic in Python, PowerShell or Ansible.",
-        icon: "mdi:account-group-outline",
+        kicker: "Any language, declarative",
+        title: "Bring any language. Declare the workflow.",
+        body: "Flows are YAML any engineer can read and review in Git, with the logic in Python, PowerShell, Shell or Ansible, instead of vRO JavaScript only a few people can change.",
+        icon: "mdi:code-braces",
     },
 ]
 
@@ -213,8 +213,8 @@ const faqItems = [
             <Fragment slot="lead">
                 Kestra replaces vRealize Automation (now Aria Automation and VCF
                 Automation) and vRealize Orchestrator (vRO) with one governed
-                orchestration platform on your own infrastructure. Keep your
-                Terraform, Ansible and scripts. Retire the vRA licence at
+                orchestration platform on your own infrastructure.<br />
+                Keep your Terraform, Ansible and scripts. Retire the vRA licence at
                 renewal.<br />
                 <strong
                     >Runs with vSphere today, and with Nutanix, Proxmox or
@@ -271,17 +271,18 @@ const faqItems = [
                 }
             })()
         </script>
-        <Platform
-            heading="Why teams look for a vRA alternative"
-            cards={reasons}
-        />
         <Migration
             heading="Leave vRA in four stages, with vRA still running"
             sub="Kestra runs alongside vRA until each wave is verified."
             steps={stages}
         />
-        <GuideOffer />
+        <Platform
+            heading="Switch to orchestration without lock-in"
+            cards={reasons}
+        />
         <Translation />
+        <Proof />
+        <GuideOffer />
         <Assistant />
         <Features />
         <Stack
@@ -290,7 +291,6 @@ const faqItems = [
             columns={automations}
             glyphSize={72}
         />
-        <Proof />
         <UseCases
             {routePath}
             headingLines={["See it on your", "own vRO workflows"]}
