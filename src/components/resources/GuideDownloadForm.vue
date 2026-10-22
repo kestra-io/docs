@@ -65,6 +65,14 @@
             >
                 Download the guide
             </a>
+            <button
+                v-if="followUpHref"
+                type="button"
+                class="btn btn-secondary w-100 follow-up"
+                @click="followUp"
+            >
+                {{ followUpLabel }}
+            </button>
         </div>
     </div>
 </template>
@@ -75,6 +83,7 @@
     import identify from "~/utils/identify"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
+    import { getStoredClickId } from "~/scripts/gclid"
 
     /** Defaults are the guide download; without `guideUrl` it is a plain
      *  request with no download link after submit. */
@@ -90,9 +99,15 @@
             thankYouTitle?: string
             thankYouText?: string
             withCompany?: boolean
+            /** An in-page anchor offered after submit, e.g. the call form,
+             *  so the download is not the end of the visit. */
+            followUpHref?: string
+            followUpLabel?: string
         }>(),
         {
             guideUrl: undefined,
+            followUpHref: undefined,
+            followUpLabel: "Book a 30-minute call",
             withCompany: false,
             title: "Download the Free Guide",
             submitLabel: "Download the guide",
@@ -148,6 +163,9 @@
                 .then((res) => res.ip)
                 .catch(() => undefined)
 
+            // Same Google Ads click id as the demo form, so HubSpot can tie a
+            // guide lead back to its ad click for offline conversions.
+            const clickId = getStoredClickId()
             const fields = {
                 firstname,
                 lastname,
@@ -156,6 +174,7 @@
                 jobtitle,
                 form_submission_identifier: props.submissionIdentifier,
                 kuid,
+                ...(clickId ? { hs_google_click_id: clickId.value } : {}),
             }
             await submitHubspotForm(props.hubspotFormId, {
                 fields: Object.entries(fields).map(([name, value]) => ({
@@ -193,6 +212,12 @@
         } finally {
             submitting.value = false
         }
+    }
+
+    /** Closes the dialog the form sits in, then jumps to the anchor. */
+    function followUp(event: MouseEvent) {
+        ;(event.currentTarget as HTMLElement).closest("dialog")?.close()
+        if (props.followUpHref) window.location.hash = props.followUpHref
     }
 </script>
 
@@ -292,5 +317,9 @@
             font-size: $font-size-sm;
             margin: 0 0 1.5rem;
         }
+    }
+
+    .follow-up {
+        margin-top: 0.5rem;
     }
 </style>

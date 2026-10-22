@@ -16,6 +16,7 @@ import Proof from "~/components/lp/vra-migration/Proof.astro"
 import Payback from "~/components/lp/vra-migration/Payback.astro"
 import Assistant from "~/components/lp/vra-migration/Assistant.astro"
 import HeroActions from "~/components/lp/vra-migration/HeroActions.astro"
+import GuideOffer from "~/components/lp/vra-migration/GuideOffer.astro"
 
 import SelfServiceIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
 import DayTwoIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
@@ -220,9 +221,11 @@ const faqItems = [
                     whatever you move to next.</strong
                 >
             </Fragment>
-            {/* Empty: the call line sits between the two buttons. */}
-            <Fragment slot="form-sub"></Fragment>
-            <HeroActions slot="form" {routePath} />
+            <Fragment slot="form-sub">
+                We map your environment and estimate the migration in a
+                30-minute call.
+            </Fragment>
+            <HeroActions slot="form" {routePath} {formProps} />
         </Hero>
         <script is:inline>
             /* Echo the searched product and intent in the headline. The G_VRA
@@ -277,6 +280,7 @@ const faqItems = [
             sub="Kestra runs alongside vRA until each wave is verified."
             steps={stages}
         />
+        <GuideOffer />
         <Translation />
         <Assistant />
         <Features />

@@ -1,8 +1,10 @@
 ---
-/* The hero card's actions: the gated guide PDF first, the call second. The
- * dialog is the guide page's own (same HubSpot form and fields); only the
- * pageUri differs, so HubSpot records this page as the one the lead converted
- * on. The call form stays lower on the page, at #contact-sales. */
+/* The hero card: the call form stays the primary ask, with the gated guide PDF
+ * as a lighter second option under it. The dialog is the guide page's own
+ * (same HubSpot form and fields); only the pageUri differs, so HubSpot records
+ * this page as the one the lead converted on. After the download, the dialog
+ * offers the call (#contact-sales) so the PDF is not the end of the visit. */
+import Meeting from "~/components/demo/Meeting.vue"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
 import {
     DOWNLOAD_DIALOG_TARGET,
@@ -12,81 +14,104 @@ import {
 interface Props {
     /** Passed to HubSpot as the originating page URI. */
     routePath: string
+    /** Forwarded to the call form, e.g. its button label. */
+    formProps?: Record<string, unknown>
 }
 
-const { routePath } = Astro.props
-const form = { ...GUIDE_DOWNLOAD, pageUri: routePath.replace(/^\//, "") }
+const { routePath, formProps = {} } = Astro.props
+const form = {
+    ...GUIDE_DOWNLOAD,
+    pageUri: routePath.replace(/^\//, ""),
+    followUpHref: "#contact-sales",
+    followUpLabel: "Book a 30-minute call",
+}
 ---
 
-<div class="actions">
-    <button
-        type="button"
-        class="primary"
-        data-modal-target={DOWNLOAD_DIALOG_TARGET}
-    >
+<Meeting {routePath} variant="plain" {...formProps} client:idle />
+
+<div class="pdf">
+    <span class="or">or, if you prefer to read first</span>
+    <button type="button" data-modal-target={DOWNLOAD_DIALOG_TARGET}>
         Get the migration guide (PDF)
     </button>
-    <p>
-        Or book a 30-minute call, and we'll map your environment and estimate
-        the migration with you.
-    </p>
-    <a href="#contact-sales" class="secondary">Book a 30-minute call</a>
 </div>
 
 <DownloadDialog {form} />
 
 <style lang="scss">
-    .actions {
+    .pdf {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        padding-top: 1.25rem;
+        align-items: stretch;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
 
-        p {
-            margin: 0;
-            color: var(--lp-content-on-card);
+        .or {
+            color: var(--lp-content-muted);
+            font-size: $font-size-sm;
+            text-align: center;
+        }
+
+        button {
+            min-height: 48px;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--lp-purple);
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: var(--lp-purple);
             font-size: $font-size-md;
-            line-height: 1.5;
-        }
-    }
-
-    /* The page's purple CTA, as on "Run it with us". */
-    .primary,
-    .secondary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        min-height: 50px;
-        padding: 0.5rem 1.25rem;
-        border-radius: 8px;
-        font-size: $font-size-md;
-        text-align: center;
-        @include media-breakpoint-up(sm) {
-            font-size: $font-size-lg;
-        }
-        font-weight: 700;
-        text-decoration: none;
-    }
-
-    .primary {
-        border: 1px solid #ffffff;
-        background-color: var(--lp-purple);
-        color: #ffffff;
-        box-shadow:
-            inset 0 0 14px 0 #be62ff,
-            2px 2px 5.5px rgba(0, 0, 0, 0.1);
-        &:hover {
-            background-color: #7737fe;
-        }
-    }
-
-    .secondary {
-        border: 1px solid var(--lp-purple);
-        background-color: #ffffff;
-        color: var(--lp-purple);
-        &:hover {
-            background-color: var(--lp-purple-light);
+            font-weight: 700;
+            cursor: pointer;
+            &:hover {
+                background-color: var(--lp-purple-light);
+            }
         }
     }
 </style>
+
+<script>
+    /* A visitor who started the call form and then asks for the PDF should not
+     * type the same details twice: carry what the hero form already holds into
+     * the download dialog (empty fields only), then focus the first field left
+     * to fill, usually Company, which the call form does not ask for. */
+    const FIELD_MAP: Record<string, string> = {
+        "first-name": "firstname",
+        "last-name": "lastname",
+        email: "email",
+        "job-title": "jobtitle",
+    }
+
+    function prefillGuideDialog(event: Event) {
+        const trigger = (event.target as Element | null)?.closest(
+            '[data-modal-target="#guide-download"]',
+        )
+        if (!trigger) return
+        const source = document.querySelector<HTMLFormElement>(
+            ".lp-hero .meeting-plain form",
+        )
+        const target = document.querySelector<HTMLFormElement>(
+            "#guide-download form",
+        )
+        if (!source || !target) return
+
+        for (const [from, to] of Object.entries(FIELD_MAP)) {
+            const value = (
+                source.elements.namedItem(from) as HTMLInputElement | null
+            )?.value.trim()
+            const input = target.elements.namedItem(
+                to,
+            ) as HTMLInputElement | null
+            if (value && input && !input.value) input.value = value
+        }
+
+        // After the dialog opens, so the focus is not lost to it.
+        requestAnimationFrame(() => {
+            const firstEmpty = [
+                ...target.querySelectorAll<HTMLInputElement>("input"),
+            ].find((input) => !input.value)
+            firstEmpty?.focus()
+        })
+    }
+
+    document.addEventListener("click", prefillGuideDialog, true)
+</script>
