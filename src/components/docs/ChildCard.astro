@@ -64,7 +64,8 @@ const children = await Promise.all(
                     !line.trim().startsWith("import "),
             )
         const lastSlash = doc.id.lastIndexOf("/")
-        const basePath = lastSlash >= 0 ? doc.id.substring(0, lastSlash) : doc.id
+        const basePath =
+            lastSlash >= 0 ? doc.id.substring(0, lastSlash) : doc.id
         const description =
             doc.data.description ??
             (firstLine
@@ -76,8 +77,7 @@ const children = await Promise.all(
                                   ? basePath + "/" + url
                                   : url
                               const newUrl =
-                                  "/docs/" +
-                                  generateId({ entry: resolvedPath })
+                                  "/docs/" + generateId({ entry: resolvedPath })
                               return "[" + text + "](" + newUrl + ")"
                           }
                           return match
