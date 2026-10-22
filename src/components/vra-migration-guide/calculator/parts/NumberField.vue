@@ -1,12 +1,16 @@
 <template>
     <div class="number-field" :class="{ compact: hideLabel }">
         <div v-if="!hideLabel" class="label-row">
-            <span>
-                <label class="form-label" :for="id">{{ label }}</label>
-                <InfoTip v-if="$slots.info" class="info" :label="label">
-                    <slot name="info" />
-                </InfoTip>
-            </span>
+            <label class="form-label" :for="id"
+                >{{ labelParts.head
+                }}<span class="label-tail"
+                    ><a v-if="labelLink" :href="labelLink.href">{{
+                        labelParts.tail
+                    }}</a
+                    ><template v-else>{{ labelParts.tail }}</template
+                    ><InfoTip v-if="$slots.info" class="info" :label="label">
+                        <slot name="info" /> </InfoTip></span
+            ></label>
         </div>
         <div class="control" :class="{ prefixed: prefix, suffixed: suffix }">
             <span v-if="prefix" class="adornment prefix" aria-hidden="true">{{
@@ -22,7 +26,7 @@
                 :min="min"
                 :max="max"
                 :step="step"
-                :aria-label="hideLabel ? label : undefined"
+                :aria-label="label"
                 :aria-invalid="invalid || undefined"
                 :aria-describedby="hint ? `${id}-hint` : undefined"
                 @input="
@@ -38,10 +42,11 @@
 </template>
 
 <script setup lang="ts">
+    import { computed } from "vue"
     import InfoTip from "./InfoTip.vue"
     import type { InputValue } from "~/utils/vra-calculator"
 
-    withDefaults(
+    const props = withDefaults(
         defineProps<{
             id: string
             label?: string
@@ -53,11 +58,25 @@
             prefix?: string
             suffix?: string
             hideLabel?: boolean
+            /** Links the end of the label, which must match `text`. */
+            labelLink?: { text: string; href: string }
         }>(),
         { min: 0, step: 1 },
     )
 
     const model = defineModel<InputValue>({ required: true })
+
+    // The info icon stays on the line of the label's last word (or its
+    // linked end), so it never wraps onto a line of its own.
+    const labelParts = computed(() => {
+        const label = props.label ?? ""
+        const linked = props.labelLink?.text
+        const cut =
+            linked && label.endsWith(linked)
+                ? label.length - linked.length
+                : label.lastIndexOf(" ") + 1
+        return { head: label.slice(0, cut), tail: label.slice(cut) }
+    })
 </script>
 
 <style scoped lang="scss">
@@ -76,13 +95,25 @@
         display: flex;
         flex: 1 0 auto;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: flex-start;
         margin-bottom: 0.5rem;
 
         .form-label {
             @include calc-form-label;
             display: inline;
             margin: 0;
+        }
+
+        .label-tail {
+            white-space: nowrap;
+
+            a {
+                color: var(--ks-content-link);
+            }
+
+            :deep(.ks-tooltip) {
+                white-space: normal;
+            }
         }
 
         .info {
