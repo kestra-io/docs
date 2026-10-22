@@ -1,11 +1,14 @@
 ---
-// The Kestra mark drawn in characters on a dark field. Each diamond keeps
-// its own color; a slow wave runs across the glyphs and the pointer
-// scrambles the ones it passes over.
+// The Kestra mark drawn as flows on a dark field. Every row of every
+// diamond is a flow: a trigger, pipes and tasks, and an end. Executions run
+// along them from a to b, light the pipe and finish with a check; the
+// pointer triggers the flows it passes over. Each diamond keeps its color.
 ---
 
 <div class="ascii-mark" data-ascii-mark>
-    <canvas role="img" aria-label="The Kestra logo drawn in characters"
+    <canvas
+        role="img"
+        aria-label="The Kestra logo drawn as flows running from trigger to end"
     ></canvas>
 </div>
 
@@ -13,8 +16,12 @@
     import markUrl from "~/assets/landing/partners/kestra-mark.svg?url"
 
     const COLS = 44
-    const RAMP = " .:-=+*%#@"
-    const NOISE = "01<>{}[]/\\|+=*#"
+    const TRIGGER = "●"
+    const PIPE = "─"
+    const TASK = "◇"
+    const END = "■"
+    const SUCCESS = "✓"
+    const HOLD = 700 // ms the finished flow stays lit
 
     type Cell = {
         x: number
@@ -23,8 +30,44 @@
         g: number
         b: number
         a: number
-        glyph: string
-        until: number
+    }
+
+    type Lane = {
+        cells: Cell[]
+        speed: number // cells per ms
+        start: number
+        rest: number
+    }
+
+    // Contiguous runs of a row inside one diamond become one flow.
+    function lanes(cells: Cell[]): Lane[] {
+        const rows = new Map<number, Cell[]>()
+        for (const c of cells) {
+            if (c.a < 0.35) continue
+            if (!rows.has(c.y)) rows.set(c.y, [])
+            rows.get(c.y)!.push(c)
+        }
+        const out: Lane[] = []
+        for (const row of rows.values()) {
+            row.sort((a, b) => a.x - b.x)
+            let run: Cell[] = []
+            const flush = () => {
+                if (run.length >= 3)
+                    out.push({
+                        cells: run,
+                        speed: 0.012 + Math.random() * 0.012,
+                        start: -Math.random() * 4000,
+                        rest: 400 + Math.random() * 2600,
+                    })
+                run = []
+            }
+            for (const c of row) {
+                if (run.length && c.x !== run[run.length - 1].x + 1) flush()
+                run.push(c)
+            }
+            flush()
+        }
+        return out
     }
 
     // Rasterize the SVG to one pixel per character and keep the covered cells.
@@ -86,8 +129,6 @@
                     g: data[i + 1],
                     b: data[i + 2],
                     a,
-                    glyph: "",
-                    until: 0,
                 })
             }
         }
@@ -102,7 +143,7 @@
             const reduced = matchMedia(
                 "(prefers-reduced-motion: reduce)",
             ).matches
-            const cells = await sample()
+            const flows = lanes(await sample())
             const font = getComputedStyle(root).fontFamily
 
             let size = 0
@@ -116,7 +157,7 @@
             new ResizeObserver(resize).observe(canvas)
             resize()
 
-            // Pointer position in cell units, or null when away.
+            // Pointing at a flow that is resting starts it right away.
             let pointer: { x: number; y: number } | null = null
             canvas.addEventListener("pointermove", (e) => {
                 const rect = canvas.getBoundingClientRect()
@@ -127,6 +168,12 @@
             })
             canvas.addEventListener("pointerleave", () => (pointer = null))
 
+            const glyphOf = (i: number, n: number, done: boolean) => {
+                if (i === 0) return TRIGGER
+                if (i === n - 1) return done ? SUCCESS : END
+                return i % 6 === 3 ? TASK : PIPE
+            }
+
             const draw = (time: number) => {
                 if (!size) return
                 const W = size * dpr
@@ -136,51 +183,81 @@
                 ctx.textAlign = "center"
                 ctx.textBaseline = "middle"
 
-                for (const c of cells) {
-                    // A diagonal wave lifts and dims the glyphs in turn.
-                    const wave = reduced
-                        ? 0.6
-                        : 0.5 +
-                          0.5 * Math.sin(time * 0.0018 - (c.x + c.y) * 0.16)
-                    let level = c.a * (0.45 + 0.55 * wave)
+                for (const lane of flows) {
+                    const n = lane.cells.length
+                    const run = n / lane.speed
+                    let t = time - lane.start
 
-                    let near = 0
-                    if (pointer) {
-                        const d = Math.hypot(c.x - pointer.x, c.y - pointer.y)
-                        near = Math.max(0, 1 - d / 7)
-                        level = Math.min(1, level + near * 0.6)
+                    // Resting flows under the pointer run again at once.
+                    const resting = t > run + HOLD
+                    if (
+                        pointer &&
+                        resting &&
+                        Math.abs(pointer.y - (lane.cells[0].y + 0.5)) < 1.5 &&
+                        pointer.x >= lane.cells[0].x - 1 &&
+                        pointer.x <= lane.cells[n - 1].x + 2
+                    ) {
+                        lane.start = time
+                        t = 0
+                    } else if (t > run + HOLD + lane.rest) {
+                        lane.start = time
+                        lane.rest = 400 + Math.random() * 2600
+                        t = 0
                     }
 
-                    // Now and then a glyph flickers to a random symbol; the
-                    // pointer makes it happen all around it.
-                    if (!reduced && time > c.until) {
-                        const odds = 0.004 + near * 0.35
-                        c.glyph =
-                            Math.random() < odds
-                                ? NOISE[(Math.random() * NOISE.length) | 0]
-                                : ""
-                        c.until = time + 90 + Math.random() * 260
-                    }
+                    const head = reduced ? -1 : t * lane.speed
+                    const done = !reduced && t >= run && t < run + HOLD
+                    const fade = done ? 1 - (t - run) / HOLD : 0
 
-                    const glyph =
-                        c.glyph ||
-                        RAMP[
-                            Math.min(
-                                RAMP.length - 1,
-                                Math.max(
-                                    1,
-                                    Math.round(level * (RAMP.length - 1)),
-                                ),
+                    lane.cells.forEach((c, i) => {
+                        // Idle pipe, the trail behind an execution, its head,
+                        // and the whole flow glowing as it completes.
+                        let alpha = 0.28
+                        let lift = 0
+                        if (done) {
+                            alpha = 0.28 + 0.72 * fade
+                            lift = 0.35 * fade
+                        } else if (head >= 0 && i <= head && t < run) {
+                            const behind = head - i
+                            alpha = 0.5 + 0.5 * Math.exp(-behind / 5)
+                            lift = behind < 1 ? 1 : 0.4 * Math.exp(-behind / 3)
+                        }
+                        const r = Math.round(c.r + (255 - c.r) * lift)
+                        const g = Math.round(c.g + (255 - c.g) * lift)
+                        const b = Math.round(c.b + (255 - c.b) * lift)
+                        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`
+                        const glyph = glyphOf(i, n, done)
+                        const cx = (c.x + 0.5) * cell
+                        const cy = (c.y + 0.5) * cell
+                        // Pipes are drawn as strokes so they join from cell to
+                        // cell; nodes get a stub on each side that reaches them.
+                        const thick = Math.max(1, cell * 0.1)
+                        if (glyph === PIPE) {
+                            ctx.fillRect(
+                                c.x * cell,
+                                cy - thick / 2,
+                                cell,
+                                thick,
                             )
-                        ]
-
-                    // Peaks of the wave whiten the diamond's own color.
-                    const lift = Math.max(0, wave - 0.7) * 1.6 + near * 0.5
-                    const r = Math.round(c.r + (255 - c.r) * lift)
-                    const g = Math.round(c.g + (255 - c.g) * lift)
-                    const b = Math.round(c.b + (255 - c.b) * lift)
-                    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.35 + 0.65 * level})`
-                    ctx.fillText(glyph, (c.x + 0.5) * cell, (c.y + 0.5) * cell)
+                            return
+                        }
+                        const gap = cell * 0.32
+                        if (i > 0)
+                            ctx.fillRect(
+                                c.x * cell,
+                                cy - thick / 2,
+                                cell / 2 - gap,
+                                thick,
+                            )
+                        if (i < n - 1)
+                            ctx.fillRect(
+                                cx + gap,
+                                cy - thick / 2,
+                                cell / 2 - gap,
+                                thick,
+                            )
+                        ctx.fillText(glyph, cx, cy)
+                    })
                 }
             }
 

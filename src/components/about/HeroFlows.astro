@@ -1,0 +1,158 @@
+---
+// A faint field of flows behind the hero: thin pipes with task nodes, and
+// now and then an execution running along one of them. It echoes the
+// ASCII mark and stays out of the way of the copy.
+---
+
+<canvas class="hero-flows" aria-hidden="true" data-hero-flows></canvas>
+
+<script>
+    const GAP = 44 // px between lanes
+    const PULSES = 7
+
+    type Lane = { y: number; nodes: number[] }
+    type Pulse = { lane: number; x: number; speed: number; length: number }
+
+    document
+        .querySelectorAll<HTMLCanvasElement>("[data-hero-flows]")
+        .forEach((canvas) => {
+            const ctx = canvas.getContext("2d")!
+            const reduced = matchMedia(
+                "(prefers-reduced-motion: reduce)",
+            ).matches
+
+            let W = 0
+            let H = 0
+            let dpr = 1
+            let lanes: Lane[] = []
+            let pulses: Pulse[] = []
+
+            const layout = () => {
+                dpr = Math.min(2, devicePixelRatio || 1)
+                W = canvas.clientWidth
+                H = canvas.clientHeight
+                canvas.width = W * dpr
+                canvas.height = H * dpr
+                lanes = []
+                for (let y = GAP / 2; y < H; y += GAP) {
+                    const nodes: number[] = []
+                    let x = 40 + Math.random() * 160
+                    while (x < W) {
+                        nodes.push(x)
+                        x += 120 + Math.random() * 220
+                    }
+                    lanes.push({ y, nodes })
+                }
+                pulses = Array.from({ length: PULSES }, () => spawn(true))
+            }
+
+            function spawn(anywhere = false): Pulse {
+                return {
+                    lane: (Math.random() * lanes.length) | 0,
+                    x: anywhere ? Math.random() * W : -120 - Math.random() * W,
+                    speed: 0.05 + Math.random() * 0.08,
+                    length: 60 + Math.random() * 80,
+                }
+            }
+
+            let last = 0
+            const draw = (time: number) => {
+                const dt = last ? Math.min(48, time - last) : 16
+                last = time
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+                ctx.clearRect(0, 0, W, H)
+
+                // Pipes and resting task nodes.
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.05)"
+                ctx.lineWidth = 1
+                ctx.beginPath()
+                for (const lane of lanes) {
+                    ctx.moveTo(0, lane.y + 0.5)
+                    ctx.lineTo(W, lane.y + 0.5)
+                }
+                ctx.stroke()
+
+                const lit = new Map<string, number>()
+                if (!reduced) {
+                    for (const p of pulses) {
+                        p.x += p.speed * dt
+                        if (p.x - p.length > W) Object.assign(p, spawn())
+                        const lane = lanes[p.lane]
+                        if (!lane) continue
+                        const grad = ctx.createLinearGradient(
+                            p.x - p.length,
+                            0,
+                            p.x,
+                            0,
+                        )
+                        grad.addColorStop(0, "rgba(167, 150, 255, 0)")
+                        grad.addColorStop(1, "rgba(203, 188, 255, 0.55)")
+                        ctx.fillStyle = grad
+                        ctx.fillRect(p.x - p.length, lane.y - 0.5, p.length, 2)
+                        // Nodes just passed by an execution glow for a moment.
+                        for (const x of lane.nodes) {
+                            const behind = p.x - x
+                            if (behind >= 0 && behind < 160)
+                                lit.set(`${p.lane}:${x}`, 1 - behind / 160)
+                        }
+                    }
+                }
+
+                for (let li = 0; li < lanes.length; li++) {
+                    const lane = lanes[li]
+                    for (const x of lane.nodes) {
+                        const glow = lit.get(`${li}:${x}`) ?? 0
+                        const s = 3.5
+                        ctx.save()
+                        ctx.translate(x, lane.y + 0.5)
+                        ctx.rotate(Math.PI / 4)
+                        ctx.fillStyle = "#111114"
+                        ctx.fillRect(-s, -s, s * 2, s * 2)
+                        ctx.strokeStyle = `rgba(203, 188, 255, ${0.12 + 0.6 * glow})`
+                        ctx.strokeRect(-s, -s, s * 2, s * 2)
+                        ctx.restore()
+                    }
+                }
+            }
+
+            new ResizeObserver(() => {
+                layout()
+                draw(performance.now())
+            }).observe(canvas)
+
+            if (reduced) return
+
+            let running = false
+            const loop = (time: number) => {
+                if (!running) return
+                draw(time)
+                requestAnimationFrame(loop)
+            }
+            new IntersectionObserver(([entry]) => {
+                const was = running
+                running = entry.isIntersecting
+                if (running && !was) {
+                    last = 0
+                    requestAnimationFrame(loop)
+                }
+            }).observe(canvas)
+        })
+</script>
+
+<style lang="scss">
+    // Fainter under the copy on the left, a little stronger toward the mark.
+    .hero-flows {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        mask-image: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.35) 0%,
+            rgba(0, 0, 0, 0.5) 45%,
+            #000 75%,
+            rgba(0, 0, 0, 0.6) 100%
+        );
+    }
+</style>
