@@ -35,30 +35,39 @@ const PRINCIPLES = [
                 to, and how we work with the people who run it.
             </p>
         </header>
-        <ol>
-            {
-                PRINCIPLES.map((p, i) => (
-                    <li>
-                        <span class="index">
-                            {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <h3>{p.title}</h3>
-                        <p>{p.text}</p>
-                    </li>
-                ))
-            }
-        </ol>
     </div>
+    <ol>
+        {
+            PRINCIPLES.map((p, i) => (
+                <li>
+                    <span class="index">{String(i + 1).padStart(2, "0")}</span>
+                    <h3>{p.title}</h3>
+                    <p>{p.text}</p>
+                </li>
+            ))
+        }
+    </ol>
 </section>
 
 <style lang="scss">
     @use "./style/section" as *;
 
+    // Full width: the columns and their rules run to both edges of the
+    // screen and down to the bottom of the section.
     .principles {
-        @include section;
+        --rule: 1px solid rgba(99, 27, 255, 0.16);
+
+        padding: 7.5rem 0 0;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 4.5rem;
+        }
+
         border-top: 1px solid var(--ks-border-primary);
         border-bottom: 1px solid var(--ks-border-primary);
-        background: var(--ks-background-secondary);
+        // The one light violet wash of the page: the principles stand out
+        // as what Kestra believes.
+        background: var(--ks-background-purple-light);
     }
 
     header {
@@ -67,7 +76,7 @@ const PRINCIPLES = [
         justify-content: space-between;
         align-items: flex-end;
         gap: 1.5rem 4rem;
-        margin-bottom: 4rem;
+        margin-bottom: 3.5rem;
 
         p {
             @include lead;
@@ -92,7 +101,7 @@ const PRINCIPLES = [
         padding: 0;
         display: grid;
         grid-template-columns: repeat(5, minmax(0, 1fr));
-        border-top: 1px solid var(--ks-border-secondary);
+        border-top: var(--rule);
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: 1fr;
@@ -100,25 +109,21 @@ const PRINCIPLES = [
     }
 
     li {
-        padding: 2rem 1.5rem 0;
-
-        &:first-child {
-            padding-left: 0;
-        }
+        padding: 2.75rem clamp(1.25rem, 2.2vw, 2.75rem) 6rem;
 
         & + li {
-            border-left: 1px solid var(--ks-border-secondary);
+            border-left: var(--rule);
         }
 
         @include media-breakpoint-down(lg) {
             display: grid;
             grid-template-columns: 4rem minmax(0, 1fr);
             gap: 0.25rem 1rem;
-            padding: 1.5rem 0;
+            padding: 1.5rem 1rem;
 
             & + li {
                 border-left: 0;
-                border-top: 1px solid var(--ks-border-secondary);
+                border-top: var(--rule);
             }
 
             .index {
@@ -134,7 +139,7 @@ const PRINCIPLES = [
         font-weight: 500;
         letter-spacing: -0.04em;
         line-height: 1;
-        color: var(--ks-content-color-highlight);
+        color: var(--ks-content-primary);
 
         @include media-breakpoint-down(lg) {
             margin: 0;

@@ -127,28 +127,10 @@ const storyHref = (company?: string) => {
     @use "/src/assets/styles/color-palette" as *;
     @use "./style/section" as *;
 
-    // A dark grain field behind the logos. The site tokens are redefined
-    // here so text, rules and logos switch to light ink on it.
     .customers {
-        --ks-content-primary: #fff;
-        --ks-content-secondary: rgba(255, 255, 255, 0.88);
-        --ks-content-tertiary: rgba(255, 255, 255, 0.5);
-        --ks-content-link: #{$base-primary-300};
-        --ks-border-primary: rgba(255, 255, 255, 0.6);
-        --ks-border-secondary: rgba(255, 255, 255, 0.8);
-        --ks-background-secondary: rgba(255, 255, 255, 0.06);
-        --ks-background-body: #1c1429;
-
         @include section;
-        color: var(--ks-content-primary);
-        background:
-            linear-gradient(rgba(14, 9, 22, 0.55), rgba(14, 9, 22, 0.55)),
-            #1c1429 url("./assets/grain-background.jpg") center / cover
-                no-repeat;
-
-        h2 {
-            color: inherit;
-        }
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
     }
 
     header {
