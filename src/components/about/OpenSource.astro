@@ -1,0 +1,102 @@
+---
+const LINKS = [
+    { label: "GitHub", href: "https://github.com/kestra-io/kestra" },
+    { label: "Slack community", href: "/slack" },
+    {
+        label: "Contributing guide",
+        href: "/docs/contribute-to-kestra/contributing",
+    },
+    { label: "Kestra Hacktober", href: "/hacktober" },
+    { label: "Kestra Academy", href: "https://academy.kestra.io" },
+]
+---
+
+<section class="open-source">
+    <div class="container">
+        <div>
+            <span class="eyebrow">Open source</span>
+            <h2>Open source,<br />by conviction.</h2>
+            <p>
+                Kestra has been open source since its first commit. The engine,
+                the plugins and the roadmap are public. Thousands of engineers
+                run it, contribute to it and shape it every month, and that
+                community is the foundation of everything we build.
+            </p>
+        </div>
+        <ul>
+            {
+                LINKS.map((l) => (
+                    <li>
+                        <a href={l.href}>
+                            {l.label}
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .open-source {
+        @include section;
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+
+        .container {
+            display: grid;
+            grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+            gap: 3rem 5rem;
+            align-items: end;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    p {
+        @include lead;
+        max-width: 620px;
+        font-size: $font-size-lg;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid var(--ks-border-primary);
+    }
+
+    li {
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    a {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 0;
+        font-size: $font-size-lg;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+        text-decoration: none;
+        transition:
+            color 0.2s ease,
+            padding 0.2s ease;
+
+        &:hover {
+            padding-left: 0.5rem;
+        }
+    }
+</style>

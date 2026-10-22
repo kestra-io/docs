@@ -1,0 +1,176 @@
+---
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const NUMBERS = [
+    {
+        value: "30,000",
+        suffix: "+",
+        label: "GitHub stars",
+        text: "One of the most followed orchestration projects on GitHub, open source from the first commit.",
+        href: "https://github.com/kestra-io/kestra",
+        cta: "Star the project",
+    },
+    {
+        value: totalPlugins,
+        suffix: "+",
+        label: "Plugins",
+        text: "Every database, cloud, warehouse, queue and SaaS your teams already use, reachable from one flow.",
+        href: "/plugins",
+        cta: "Browse the plugins",
+    },
+    {
+        value: "$36",
+        suffix: "M",
+        label: "Raised",
+        text: "Including a $25M Series A led by RTP Global in 2026, to build orchestration as its own infrastructure category.",
+        href: "/newsroom",
+        cta: "Read the announcement",
+    },
+]
+---
+
+<section class="numbers">
+    <div class="container">
+        {
+            NUMBERS.map((n) => (
+                <div class="row">
+                    <div class="text">
+                        <h2>{n.label}</h2>
+                        <p>{n.text}</p>
+                        <a href={n.href}>{n.cta}</a>
+                    </div>
+                    <p class="figure">
+                        <span class="arrow" aria-hidden="true">
+                            ↑
+                        </span>
+                        <span class="value" data-count={n.value}>
+                            {n.value}
+                        </span>
+                        <span class="suffix">{n.suffix}</span>
+                    </p>
+                </div>
+            ))
+        }
+    </div>
+</section>
+
+<script>
+    // Count up to each figure the first time it scrolls into view.
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
+    const io = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return
+                io.unobserve(entry.target)
+                const el = entry.target as HTMLElement
+                const final = el.dataset.count!
+                const prefix = final.match(/^\D*/)![0]
+                const end = Number(final.replace(/\D/g, ""))
+                const format = new Intl.NumberFormat("en-US")
+                const start = performance.now()
+                const step = (now: number) => {
+                    const t = Math.min(1, (now - start) / 1400)
+                    const eased = 1 - Math.pow(1 - t, 3)
+                    el.textContent =
+                        prefix + format.format(Math.round(end * eased))
+                    if (t < 1) requestAnimationFrame(step)
+                    else el.textContent = final
+                }
+                requestAnimationFrame(step)
+            })
+        },
+        { threshold: 0.6 },
+    )
+    if (!reduced)
+        document
+            .querySelectorAll<HTMLElement>(".numbers [data-count]")
+            .forEach((el) => io.observe(el))
+</script>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .numbers {
+        background: var(--ks-background-secondary);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        gap: 2rem 4rem;
+        align-items: center;
+        padding: 5rem 0;
+
+        & + .row {
+            border-top: 1px solid var(--ks-border-secondary);
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            padding: 3.5rem 0;
+        }
+    }
+
+    h2 {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 3.6vw, 2.75rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+    }
+
+    .text p {
+        max-width: 440px;
+        margin: 0 0 1.25rem;
+        font-size: $font-size-lg;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+
+    a {
+        @include text-link;
+        &::after {
+            content: " →";
+        }
+    }
+
+    .figure {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        margin: 0;
+        font-variant-numeric: tabular-nums;
+        color: var(--ks-content-primary);
+        white-space: nowrap;
+
+        @include media-breakpoint-down(lg) {
+            justify-content: flex-start;
+        }
+
+        .arrow {
+            margin: 0.35em 0.15em 0 0;
+            font-size: clamp(1.5rem, 3vw, 2.75rem);
+            line-height: 1;
+            color: var(--ks-content-color-highlight);
+        }
+
+        .value {
+            font-size: clamp(4.5rem, 11vw, 10rem);
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+        }
+
+        .suffix {
+            align-self: flex-end;
+            margin-left: 0.15em;
+            font-size: clamp(2rem, 4vw, 3.75rem);
+            font-weight: 500;
+            line-height: 1;
+            color: var(--ks-content-secondary);
+        }
+    }
+</style>

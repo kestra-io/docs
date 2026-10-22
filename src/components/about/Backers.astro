@@ -1,0 +1,190 @@
+---
+import rtpGlobal from "~/assets/teams/rtpglobal.svg"
+import alven from "~/assets/teams/alven-new.svg"
+import isai from "~/assets/teams/isai-new.svg"
+import axeleo from "~/assets/teams/axeleo-new.svg"
+import bpifrance from "~/assets/teams/bpifrance.svg?raw"
+import hautsDeFrance from "~/assets/teams/hauts-de-france.svg?raw"
+import bnpParibas from "~/assets/teams/bnp-paribas.svg?raw"
+import cic from "~/assets/teams/cic.svg?raw"
+import caisseEpargne from "~/assets/teams/caisse-epargne.svg?raw"
+
+const INVESTORS = [
+    { name: "RTP Global", logo: rtpGlobal, href: "https://rtp.vc" },
+    { name: "Alven", logo: alven, href: "https://www.alven.co" },
+    { name: "Isai", logo: isai, href: "https://isai.vc" },
+    { name: "Axeleo Capital", logo: axeleo, href: "https://www.axc.vc" },
+]
+
+// Dark brand blues vanish on the dark theme; draw them with the text color.
+const mono = (svg: string, color: string) =>
+    svg.replaceAll(`fill:${color}`, "fill:currentColor")
+
+const PUBLIC = [
+    { name: "Bpifrance", svg: bpifrance },
+    {
+        name: "Région Hauts-de-France",
+        svg: mono(hautsDeFrance, "#0050a3"),
+    },
+    { name: "BNP Paribas", svg: bnpParibas },
+    { name: "CIC", svg: mono(cic, "#254aa5") },
+    { name: "Caisse d'Épargne", svg: caisseEpargne },
+]
+---
+
+<section class="backers">
+    <div class="container">
+        <header>
+            <span class="eyebrow">Investors</span>
+            <h2>Backed by people who<br />built great infrastructure.</h2>
+        </header>
+
+        <ul class="investors">
+            {
+                INVESTORS.map((i) => (
+                    <li>
+                        <a
+                            href={i.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img src={i.logo.src} alt={i.name} loading="lazy" />
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <p class="angels">
+            And by the founders of Algolia, Datadog, dbt Labs, Airbyte,
+            Platform.sh, Hugging Face, Talend, Strapi and Collibra.
+        </p>
+
+        <ul class="public" aria-label="Public and banking partners">
+            {
+                PUBLIC.map((p) => (
+                    <li title={p.name}>
+                        <span class="logo" set:html={p.svg} />
+                        <span class="visually-hidden">{p.name}</span>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .backers {
+        @include section;
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-secondary);
+    }
+
+    header {
+        max-width: 720px;
+        margin: 0 auto 3rem;
+        text-align: center;
+    }
+
+    .angels {
+        @include lead;
+        margin: 2rem auto 0;
+        text-align: center;
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+    }
+
+    .investors {
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--ks-border-secondary);
+        border-bottom: 1px solid var(--ks-border-secondary);
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 128px;
+
+            & + li {
+                border-left: 1px solid var(--ks-border-secondary);
+            }
+
+            @include media-breakpoint-down(md) {
+                &:nth-child(3) {
+                    border-left: 0;
+                }
+
+                &:nth-child(n + 3) {
+                    border-top: 1px solid var(--ks-border-secondary);
+                }
+            }
+        }
+
+        a {
+            display: flex;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        img {
+            width: 140px;
+            max-width: 100%;
+            height: 48px;
+            object-fit: contain;
+
+            :global(html.dark) & {
+                filter: invert(1);
+            }
+        }
+    }
+
+    .public {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem;
+        margin-top: 2.5rem;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        li {
+            display: flex;
+            justify-content: center;
+            color: var(--ks-content-secondary);
+        }
+
+        .logo {
+            display: flex;
+            width: 100%;
+            max-width: 112px;
+            height: 44px;
+
+            :global(svg) {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+</style>

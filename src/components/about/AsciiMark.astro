@@ -1,0 +1,219 @@
+---
+// The Kestra mark drawn in characters on a dark field. Each diamond keeps
+// its own color; a slow wave runs across the glyphs and the pointer
+// scrambles the ones it passes over.
+---
+
+<div class="ascii-mark" data-ascii-mark>
+    <canvas role="img" aria-label="The Kestra logo drawn in characters"
+    ></canvas>
+</div>
+
+<script>
+    import markUrl from "~/assets/landing/partners/kestra-mark.svg?url"
+
+    const COLS = 44
+    const RAMP = " .:-=+*%#@"
+    const NOISE = "01<>{}[]/\\|+=*#"
+
+    type Cell = {
+        x: number
+        y: number
+        r: number
+        g: number
+        b: number
+        a: number
+        glyph: string
+        until: number
+    }
+
+    // Rasterize the SVG to one pixel per character and keep the covered cells.
+    async function sample(): Promise<Cell[]> {
+        const img = new Image()
+        img.src = markUrl
+        await img.decode()
+        // Find the drawing's bounds first, so the mark fills the grid.
+        const probe = document.createElement("canvas")
+        probe.width = probe.height = 256
+        const pctx = probe.getContext("2d", { willReadFrequently: true })!
+        pctx.drawImage(img, 0, 0, 256, 256)
+        const px = pctx.getImageData(0, 0, 256, 256).data
+        let x0 = 256,
+            y0 = 256,
+            x1 = 0,
+            y1 = 0
+        for (let i = 3; i < px.length; i += 4) {
+            if (px[i] < 8) continue
+            const p = (i - 3) / 4
+            const x = p % 256
+            const y = (p / 256) | 0
+            x0 = Math.min(x0, x)
+            y0 = Math.min(y0, y)
+            x1 = Math.max(x1, x)
+            y1 = Math.max(y1, y)
+        }
+        const side = Math.max(x1 - x0, y1 - y0) * 1.06
+        const cx = (x0 + x1) / 2
+        const cy = (y0 + y1) / 2
+        const k = img.naturalWidth / 256
+
+        const off = document.createElement("canvas")
+        off.width = COLS
+        off.height = COLS
+        const octx = off.getContext("2d", { willReadFrequently: true })!
+        octx.drawImage(
+            img,
+            (cx - side / 2) * k,
+            (cy - side / 2) * k,
+            side * k,
+            side * k,
+            0,
+            0,
+            COLS,
+            COLS,
+        )
+        const data = octx.getImageData(0, 0, COLS, COLS).data
+        const cells: Cell[] = []
+        for (let y = 0; y < COLS; y++) {
+            for (let x = 0; x < COLS; x++) {
+                const i = (y * COLS + x) * 4
+                const a = data[i + 3] / 255
+                if (a < 0.08) continue
+                cells.push({
+                    x,
+                    y,
+                    r: data[i],
+                    g: data[i + 1],
+                    b: data[i + 2],
+                    a,
+                    glyph: "",
+                    until: 0,
+                })
+            }
+        }
+        return cells
+    }
+
+    document
+        .querySelectorAll<HTMLElement>("[data-ascii-mark]")
+        .forEach(async (root) => {
+            const canvas = root.querySelector("canvas")!
+            const ctx = canvas.getContext("2d")!
+            const reduced = matchMedia(
+                "(prefers-reduced-motion: reduce)",
+            ).matches
+            const cells = await sample()
+            const font = getComputedStyle(root).fontFamily
+
+            let size = 0
+            let dpr = 1
+            const resize = () => {
+                dpr = Math.min(2, devicePixelRatio || 1)
+                size = canvas.clientWidth
+                canvas.width = size * dpr
+                canvas.height = size * dpr
+            }
+            new ResizeObserver(resize).observe(canvas)
+            resize()
+
+            // Pointer position in cell units, or null when away.
+            let pointer: { x: number; y: number } | null = null
+            canvas.addEventListener("pointermove", (e) => {
+                const rect = canvas.getBoundingClientRect()
+                pointer = {
+                    x: ((e.clientX - rect.left) / rect.width) * COLS,
+                    y: ((e.clientY - rect.top) / rect.height) * COLS,
+                }
+            })
+            canvas.addEventListener("pointerleave", () => (pointer = null))
+
+            const draw = (time: number) => {
+                if (!size) return
+                const W = size * dpr
+                const cell = W / COLS
+                ctx.clearRect(0, 0, W, W)
+                ctx.font = `600 ${cell * 1.05}px ${font}`
+                ctx.textAlign = "center"
+                ctx.textBaseline = "middle"
+
+                for (const c of cells) {
+                    // A diagonal wave lifts and dims the glyphs in turn.
+                    const wave = reduced
+                        ? 0.6
+                        : 0.5 +
+                          0.5 * Math.sin(time * 0.0018 - (c.x + c.y) * 0.16)
+                    let level = c.a * (0.45 + 0.55 * wave)
+
+                    let near = 0
+                    if (pointer) {
+                        const d = Math.hypot(c.x - pointer.x, c.y - pointer.y)
+                        near = Math.max(0, 1 - d / 7)
+                        level = Math.min(1, level + near * 0.6)
+                    }
+
+                    // Now and then a glyph flickers to a random symbol; the
+                    // pointer makes it happen all around it.
+                    if (!reduced && time > c.until) {
+                        const odds = 0.004 + near * 0.35
+                        c.glyph =
+                            Math.random() < odds
+                                ? NOISE[(Math.random() * NOISE.length) | 0]
+                                : ""
+                        c.until = time + 90 + Math.random() * 260
+                    }
+
+                    const glyph =
+                        c.glyph ||
+                        RAMP[
+                            Math.min(
+                                RAMP.length - 1,
+                                Math.max(
+                                    1,
+                                    Math.round(level * (RAMP.length - 1)),
+                                ),
+                            )
+                        ]
+
+                    // Peaks of the wave whiten the diamond's own color.
+                    const lift = Math.max(0, wave - 0.7) * 1.6 + near * 0.5
+                    const r = Math.round(c.r + (255 - c.r) * lift)
+                    const g = Math.round(c.g + (255 - c.g) * lift)
+                    const b = Math.round(c.b + (255 - c.b) * lift)
+                    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.35 + 0.65 * level})`
+                    ctx.fillText(glyph, (c.x + 0.5) * cell, (c.y + 0.5) * cell)
+                }
+            }
+
+            if (reduced) {
+                draw(0)
+                new ResizeObserver(() => draw(0)).observe(canvas)
+                return
+            }
+
+            let running = false
+            const loop = (time: number) => {
+                if (!running) return
+                draw(time)
+                requestAnimationFrame(loop)
+            }
+            new IntersectionObserver(([entry]) => {
+                const was = running
+                running = entry.isIntersecting
+                if (running && !was) requestAnimationFrame(loop)
+            }).observe(canvas)
+        })
+</script>
+
+<style lang="scss">
+    .ascii-mark {
+        width: 100%;
+        max-width: 480px;
+        font-family: var(--bs-font-monospace);
+
+        canvas {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1;
+        }
+    }
+</style>

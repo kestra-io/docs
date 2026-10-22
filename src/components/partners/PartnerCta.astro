@@ -3,9 +3,16 @@ import Link from "~/components/common/Link.astro"
 
 interface Props {
     track?: "services" | "technology"
+    /** Replaces the partner copy, for pages outside the program. */
+    custom?: {
+        title: string
+        text: string
+        cta: string
+        href: string
+    }
 }
 
-const { track } = Astro.props
+const { track, custom } = Astro.props
 
 const COPY = {
     services: {
@@ -25,12 +32,15 @@ const COPY = {
     },
 }
 
-const copy = COPY[track ?? "default"]
-const href = track ? `/partners/apply?track=${track}` : "/partners/apply"
-const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
+const copy = custom ?? COPY[track ?? "default"]
+const href =
+    custom?.href ??
+    (track ? `/partners/apply?track=${track}` : "/partners/apply")
+const showFind =
+    !custom && !track && !Astro.url.pathname.startsWith("/partners/find")
 ---
 
-<section class="partner-cta" id="form">
+<section class="partner-cta" id={custom ? undefined : "form"}>
     <div class="container">
         <div class="frame">
             <div class="panel">
