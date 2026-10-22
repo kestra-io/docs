@@ -243,6 +243,8 @@ tasks:
 A FORM cannot contain another FORM. `defaults` and `prefill` belong on individual child inputs, not on the FORM itself.
 :::
 
+A `FORM` also accepts [`descriptionDisplayMode: TOOLTIP`](#description-display-mode), which shows its description as a help icon next to the group title in the wizard instead of a text block, in the Execute modal and in Apps.
+
 When triggering a flow with FORM inputs via the API, use flat dotted field names:
 
 ```bash
