@@ -302,11 +302,18 @@ const OFFICES = [
                     for (const link of links) {
                         const t = (time * link.speed + link.offset) % 1
                         for (const pos of [t, 1 - ((t + 0.5) % 1)]) {
-                            const v =
-                                link.pts[
-                                    Math.round(pos * (link.pts.length - 1))
-                                ]
-                            const p = px(v[0], v[1], v[2])
+                            // Glide between the two arc samples around the
+                            // pulse, so it moves continuously.
+                            const f = pos * (link.pts.length - 1)
+                            const i = Math.min(link.pts.length - 2, f | 0)
+                            const k = f - i
+                            const a = link.pts[i]
+                            const b = link.pts[i + 1]
+                            const p = px(
+                                a[0] + (b[0] - a[0]) * k,
+                                a[1] + (b[1] - a[1]) * k,
+                                a[2] + (b[2] - a[2]) * k,
+                            )
                             if (!visible(p)) continue
                             const sx = c + p[0] * R
                             const sy = c - p[1] * R
