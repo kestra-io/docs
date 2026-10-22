@@ -36,7 +36,7 @@ The Indexer reads each record type from the queue in batches and saves each batc
 
 With a JDBC queue, each poll locks the rows it reads and skips rows locked by another reader, so several Indexers can run side by side and share the work.
 
-A record that can't be read from the queue is logged as an error and skipped.
+A record that can't be deserialized is logged as an error and skipped. A record that is read but can't be saved stops the Indexer by default, as described in [When a record can't be saved](#when-a-record-cant-be-saved).
 
 ## When the Indexer falls behind or stops
 
@@ -97,7 +97,7 @@ Any server that runs an Indexer publishes these metrics, including Webservers an
 
 To skip records while you investigate a failure, start the server that runs the Indexer with one of these comma-separated lists:
 
-- `--ignore-queue-records`: skips queue records with the given keys before they are processed.
-- `--ignore-indexer-records`: skips indexer records with the given keys.
+- `--ignore-queue-records`: skips queue records with the given keys before they are processed. The `controller`, `indexer`, `webserver`, and `standalone` server commands accept it.
+- `--ignore-indexer-records`: skips indexer records with the given keys just before they are saved. The `indexer`, `webserver`, and `standalone` server commands accept it.
 
 Logs and metrics get a new random key each time, so neither flag can target a specific log or metric record. Both flags work for execution statistics, and in Enterprise Edition for audit logs and asset lineage events.

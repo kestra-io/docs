@@ -26,11 +26,11 @@ Kill Switches are managed under **Instance Owner → Instance → Kill Switch**.
 
 | Type | Behavior |
 |------|----------|
-| **KILL** | Kills running executions after the current task completes; any remaining tasks in the execution will not run. New executions are transitioned to `KILLED` state instantly. |
-| **CANCEL** | Blocks new executions; lets current task runs finish before marking the execution `CANCELLED`. |
-| **IGNORE** | Ignores all messages for matching executions—use as a last resort when an execution cannot be killed or cancelled. |
+| **KILL** | Kills running executions: Workers stop their running tasks, and remaining tasks don't run. New executions are saved as `KILLED` without running. |
+| **CANCEL** | Marks running executions `CANCELLED` immediately, without stopping tasks already running on Workers; their results are discarded. New executions are saved as `CANCELLED` without running. |
+| **IGNORE** | Ignores all messages for matching executions. Use it as a last resort when an execution can't be killed or canceled. |
 
-For **KILL** and **CANCEL**, executions receive a [system label](../../../06.concepts/system-labels/index.md) identifying which Kill Switch applied.
+Matching executions receive the `system.killSwitch` [system label](../../../06.concepts/system-labels/index.md), set to the action applied: `killed` or `cancelled`. New executions that match **IGNORE** are labeled `ignored`.
 
 ### Scope
 

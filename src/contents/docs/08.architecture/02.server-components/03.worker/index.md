@@ -18,6 +18,8 @@ A Worker runs three kinds of jobs:
 - **[Polling triggers](../../../05.workflow-components/07.triggers/04.polling-trigger/index.md)**, which check an external system on an interval.
 - **[Realtime triggers](../../../05.workflow-components/07.triggers/05.realtime-trigger/index.md)**, which hold a connection open and react to events as they arrive.
 
+A realtime trigger keeps one Worker thread for as long as it runs. A Worker with eight threads and three realtime triggers has five threads left for tasks and polling triggers. Size the thread count for both, as described in [Scaling](#scaling).
+
 The Worker decides nothing about what runs next. The Executor dispatches runnable tasks and the [Scheduler](../05.scheduler/index.md) dispatches trigger evaluations, both through the Worker Controller. A Worker never connects to the queue or the database for its work.
 
 Kestra has two kinds of Workers:
@@ -106,6 +108,8 @@ In [maintenance mode](../../../07.enterprise/05.instance/maintenance-mode/index.
 Add Workers to increase how many tasks run at once. Workers connect to the Worker Controller over gRPC (port `50051` by default), so they can run anywhere that can reach it, including other networks and regions. See [performance tuning](../../../performance/performance-tuning/index.md#worker) for sizing guidance.
 
 The default thread count depends on the processors available to the JVM. `kestra.allocated-cpu-cores` doesn't change it.
+
+Each running realtime trigger holds a thread and a slot of the Worker's capacity until it stops. Set `--thread` to the number of realtime triggers you expect on the Worker plus the number of tasks you want to run at once. The `worker.trigger.running.count` metric includes running realtime triggers.
 
 ### Configuration
 

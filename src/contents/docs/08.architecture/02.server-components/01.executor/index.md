@@ -8,20 +8,29 @@ icon: /src/contents/docs/icons/architecture.svg
 
 The Executor is the server component that moves every execution from start to finish.
 
-It decides which task runs next, sends runnable tasks to [Workers](../03.worker/index.md) through the [Worker Controller](../02.worker-controller/index.md), runs flowable tasks itself, and applies the rules a flow declares: concurrency limits, retries, pauses, SLAs, and kills. Each section below links to the page that documents how to configure the feature.
+It decides which task runs next, sends runnable tasks to [Workers](../03.worker/index.md) through the [Worker Controller](../02.worker-controller/index.md), runs flowable tasks itself, starts subflows, and evaluates [Flow triggers](../../../05.workflow-components/07.triggers/02.flow-trigger/index.md). It also applies the rules a flow declares: concurrency limits, quotas, retries, pauses, SLAs, and kills. Each section below links to the page that documents how to configure the feature.
 
 ## What the Executor does
 
 Every change to an execution reaches the Executor as a message on the [queue](../../01.main-components/index.md#queue): a new execution, a task result from a Worker, a kill request, a child execution ending. For each message, the Executor loads the execution, works out its next state, and publishes what must happen next.
 
-The Executor treats the two kinds of [tasks](../../../05.workflow-components/01.tasks/index.mdx) differently:
+When a message changes the execution, the Executor saves it and sends itself an event that the execution changed. Processing that event can change the execution again, which produces another event. This loop continues until a pass leaves the execution unchanged, so one message can move an execution through several steps.
+
+The Executor treats three kinds of [tasks](../../../05.workflow-components/01.tasks/index.mdx) differently:
 
 - **Runnable tasks**, such as a script or a query, are sent to a Worker. Their task run moves to `SUBMITTED` until a Worker picks it up.
-- **Flowable tasks**, such as `Parallel`, `If`, or `Subflow`, run inside the Executor. They only decide which tasks run next, so their task run moves straight to `RUNNING`.
+- **Flowable tasks**, such as `Parallel`, `If`, or `Loop`, run inside the Executor. They only decide which tasks run next, so their task run moves straight to `RUNNING`.
+- **`Subflow` tasks** also run inside the Executor, which creates their child execution and moves the task run to `RUNNING`. See [Subflows](#subflows-and-flow-triggers).
 
-Messages for the same execution are applied one at a time, in order, while different executions are processed in parallel. A duplicate task result is ignored.
+Messages for the same execution are applied one at a time, in order, while different executions are processed in parallel. A duplicate or outdated task result is ignored, so a result delivered twice doesn't run the next tasks twice.
 
 Each Executor process also runs an embedded **system Worker**. It serves a reserved queue that system tasks always use: the `PurgeExecutions`, `PurgeFlows`, `PurgeLogs`, and `PurgeStorage` tasks, and the Enterprise Edition `PurgeAuditLogs`, log shipper, and `AssetShipper` tasks.
+
+### Only the Executor writes executions
+
+The Executor is the only component that creates or updates executions. Other components send it a command and let it apply the change. This includes creating an execution from the API, a Schedule trigger, or a Webhook trigger, and every action on an existing execution: restart, replay, pause, resume, resume from a breakpoint, force run, unqueue, changing a task run's state, and updating labels or status. A kill is sent as a separate kill request, which the Executor also applies.
+
+Deleting an execution and running the `PurgeExecutions` task are the exceptions: they remove executions from the repository directly.
 
 ## How an execution moves forward
 
@@ -34,19 +43,17 @@ When an execution is created, the Executor checks it before running anything:
 As tasks complete, the Executor picks the next ones:
 
 - A task whose `runIf` evaluates to false becomes `SKIPPED` and never reaches a Worker. If `runIf` can't be rendered, the task run fails.
-- When a [breakpoint](../../../05.workflow-components/17.states/index.md) matches a task, that task run and the execution move to `BREAKPOINT` and nothing more is dispatched until you resume.
+- When a [breakpoint](../../../05.workflow-components/17.states/index.md) matches a task, that task run and the execution move to `BREAKPOINT` and nothing more is dispatched until you resume. Breakpoints are what the [Playground](../../../09.ui/10.playground/index.md) uses to run a flow one task at a time.
 
 :::alert{type="info"}
 In Enterprise Edition, the Executor routes each runnable task to a [worker group](../04.worker-group/index.md), resolving the selector from the task, then the flow, its namespaces, and the tenant. If no worker group matches, the task fails. If the worker group has no running Workers, its [fallback](../../../07.enterprise/04.scalability/worker-group/index.md#fallback-options) decides whether the task waits, fails, is canceled, or runs on the default Workers.
 :::
 
-A single update can move an execution through several states at once, for example from `PAUSED` to `RUNNING` to `SUCCESS`. A [Flow trigger](../../../05.workflow-components/07.triggers/02.flow-trigger/index.md) that listens for any of those states fires once for each.
-
-## Concurrency limits and quotas
+## Concurrency limits, SLAs, and quotas
 
 Before a new or restarted execution runs, the Executor admits it in this order:
 
-1. It registers the execution's [SLAs](../../../05.workflow-components/18.sla/index.md).
+1. It registers a monitor for each time-based [SLA](../../../05.workflow-components/18.sla/index.md), such as a maximum duration.
 2. It checks [quotas](../../../05.workflow-components/21.quotas/index.md).
 3. It checks [concurrency limits](../../../05.workflow-components/14.concurrency/index.md).
 
@@ -60,7 +67,12 @@ Quotas count executions in fixed time windows aligned to UTC. For example, a `PT
 Quotas, and namespace and tenant concurrency limits, are available in Enterprise Edition. In the open-source edition, concurrency limits apply per flow, and a flow that declares `quotas` is rejected when you save it.
 :::
 
-[Loop](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) iterations skip SLA registration and concurrency limits.
+The Executor evaluates [SLAs](../../../05.workflow-components/18.sla/index.md) in two ways:
+
+- `MAX_DURATION` is measured from the start of the execution by the monitor registered at admission, and checked about once per second.
+- `EXECUTION_ASSERTION` is checked each time the Executor processes an update to the running execution.
+
+An SLA that can't be evaluated counts as violated, and the reason is logged. When an SLA is violated, its [`behavior`](../../../05.workflow-components/18.sla/index.md#sla-behavior) applies: `FAIL` or `CANCEL` sets the last running task run and the execution to `FAILED` or `CANCELLED` and kills the rest of the execution, including its children. `NONE` only adds the SLA's labels. If several SLAs are violated in the same update, only the first changes the execution.
 
 ## Retries, pauses, and waits
 
@@ -76,7 +88,7 @@ Retry policies apply to runnable tasks and to `Subflow`. If the execution is bei
 
 A [`Pause`](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#pause) task with a `pauseDuration` moves the execution to the state set by its `behavior` when the duration ends. With only a `timeout`, the task fails when the timeout ends. A pause that was already resumed or killed isn't resumed again by its timer.
 
-## Subflows, loops, and Flow triggers
+## Subflows and Flow triggers
 
 The Executor coordinates executions that start other executions.
 
@@ -84,17 +96,9 @@ The Executor coordinates executions that start other executions.
 
 **Execution depth.** Each `Subflow` task or Flow trigger in a chain adds one level of depth, up to `kestra.execution.depth.max-depth` (default `100`). Past the limit, a `Subflow` task fails with an error, and a Flow trigger is skipped with a warning in the upstream execution's logs. The limit stops chains that would otherwise trigger each other forever.
 
-**[Loops](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop).**
+**[Flow triggers](../../../05.workflow-components/07.triggers/02.flow-trigger/index.md).** When an execution changes state, the Executor evaluates every Flow trigger against the latest revision of each flow. It skips disabled flows and triggers, draft revisions, flows that can't be parsed, and test and playground executions. A flow never triggers itself. If a trigger's condition can't be rendered, the trigger doesn't fire: a warning appears in the upstream execution's logs and an error in the downstream flow's logs.
 
-- A `Loop` runs one iteration per value, up to `concurrencyLimit` at a time (`0`, the default, means no limit). An empty list of values succeeds immediately.
-- Iterations have no flow outputs, run no `afterExecution` tasks, and don't fire Flow triggers.
-- With `transmitFailed: true` (the default), the first iteration that fails ends the loop.
-- `breakWhen` stops the loop early, and the iterations it never started are counted as `SKIPPED`.
-- A pause inside an iteration pauses the parent `Loop` task.
-- Restarting a failed loop restarts only the iteration that failed.
-- If the list of values shrinks between iterations, the parent execution fails.
-
-**[Flow triggers](../../../05.workflow-components/07.triggers/02.flow-trigger/index.md).** When an execution changes state, the Executor evaluates every Flow trigger against the latest revision of each flow. It skips disabled flows and triggers, draft revisions, flows that can't be parsed, test and playground executions, and loop iterations. A flow never triggers itself. If a trigger's condition can't be rendered, the trigger doesn't fire: a warning appears in the upstream execution's logs and an error in the downstream flow's logs.
+A single update can move an execution through several states at once, for example from `PAUSED` to `RUNNING` to `SUCCESS`. A Flow trigger that listens for any of those states fires once for each.
 
 ## Kills and fail-fast
 
@@ -105,11 +109,25 @@ When you kill an execution, it moves to `KILLING`:
 - A `PAUSED` execution is resumed and then killed.
 - The Executor tells Workers to stop the task runs they are running. The execution moves to `KILLED` once every task run has finished.
 
-A kill also stops the executions that the killed execution started: subflows, running or paused loop iterations, and running executions started by a Flow trigger that listens to it.
+Once the execution is killed, only its [`afterExecution`](../../../05.workflow-components/20.afterexecution/index.md) tasks still run. Its `errors` and `finally` tasks don't.
+
+A kill also stops the executions that the killed execution started: subflows, and running executions started by a Flow trigger that listens to it.
+
+### Kill switch
 
 :::alert{type="info"}
-In Enterprise Edition, executions stopped by the [kill switch](../../../07.enterprise/05.instance/kill-switch/index.md#kill-switch-types) are labeled with `system.killSwitch`.
+The kill switch is available in Enterprise Edition.
 :::
+
+A [kill switch](../../../07.enterprise/05.instance/kill-switch/index.md) stops executions without killing them one by one. It targets a tenant, a namespace and its child namespaces, a flow, or a list of execution IDs, for a time window. The Executor checks every message it receives against the active kill switches and applies the matching one's type:
+
+- `KILL` kills the execution, as described above, and labels it `system.killSwitch: killed`.
+- `CANCEL` sets the execution to `CANCELLED` right away and labels it `system.killSwitch: cancelled`. Results from tasks that were still running are discarded.
+- `IGNORE` stops processing the execution and only logs it. A new execution that matches is saved with the label `system.killSwitch: ignored`.
+
+A new execution that matches `KILL` or `CANCEL` is saved directly as `KILLED` or `CANCELLED`, without running.
+
+### Fail-fast
 
 `Parallel` and `Dag` can also stop their own tasks early with `onChildFailure`. When a child fails with no retry left, `CANCEL` or `FAIL` interrupts every task still running under that `Parallel` or `Dag`, at any depth, and gives them that state. The `Parallel` or `Dag` itself still ends `FAILED`, and its `errors` and `finally` tasks still run. The accepted values are `CONTINUE`, `CANCEL`, and `FAIL`:
 
@@ -118,23 +136,14 @@ In Enterprise Edition, executions stopped by the [kill switch](../../../07.enter
 | `Parallel` | `FAIL` | The first failure stops the other branches. |
 | `Dag` | `CONTINUE` | Other tasks keep running after a failure. |
 
-## SLAs
-
-The Executor evaluates [SLAs](../../../05.workflow-components/18.sla/index.md) in two ways:
-
-- `MAX_DURATION` is measured from the start of the execution and checked about once per second.
-- `EXECUTION_ASSERTION` is checked each time the execution's state changes.
-
-An SLA that can't be evaluated counts as violated, and the reason is logged. When an SLA is violated, its [`behavior`](../../../05.workflow-components/18.sla/index.md#sla-behavior) applies: `FAIL` or `CANCEL` sets the last running task run and the execution to `FAILED` or `CANCELLED` and kills the rest of the execution, including its children. `NONE` only adds the SLA's labels. If several SLAs are violated in the same update, only the first changes the execution. Loop iterations are exempt from SLAs.
-
 ## When an execution ends
 
 When an execution reaches a final state, the Executor finishes it in this order:
 
 1. Fires the Flow triggers that listen for that state.
 2. Releases the execution's concurrency slots and starts the next queued execution.
-3. Reports the result to the parent execution, for a subflow or a loop iteration.
-4. Clears the execution's pending SLA checks.
+3. Reports the result to the parent execution, for a subflow.
+4. Clears the execution's pending SLA monitors.
 5. Releases the trigger lock, so a [Schedule trigger](../../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) can start its next execution.
 6. Publishes the final state to the UI and to notifications.
 

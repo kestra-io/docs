@@ -12,9 +12,11 @@ It is the only component that serves user traffic. It also receives webhook call
 
 ## What the Webserver does
 
+The Webserver listens on port `8080` by default. Change it with `micronaut.server.port` or the `--port` option of any `kestra server` command. To serve Kestra under a path such as `/kestra`, set `micronaut.server.context-path`; the UI follows it. See [reverse proxy configuration](../../../10.administrator-guide/webserver-url/index.md#reverse-proxy-configuration).
+
 The Webserver serves:
 
-- The REST API under `/api/v1/{tenant}/...`. In the open-source edition, a request without a tenant, such as `/api/v1/flows/search`, is served as the `main` tenant. See the [API reference](../../../api-reference/index.mdx).
+- The REST API under `/api/v1/{tenant}/...`. In the open-source edition, a request without a tenant, such as `/api/v1/flows/search`, is served as the `main` tenant, which is the only allowed tenant. A request for any other tenant returns `400`. See the [API reference](../../../api-reference/index.mdx).
 - The UI under `/ui`, and the OpenAPI specification under `/swagger`.
 - Live update streams for executions and logs.
 - [Webhook trigger](../../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) calls.
@@ -31,7 +33,7 @@ To run those components separately, start the Webserver with `--no-indexer` or `
 
 ## How execution actions work
 
-The Webserver doesn't change executions itself. When you create, restart, replay, pause, resume, kill, or relabel an execution, the Webserver sends a command to the [Executor](../01.executor/index.md) and waits for the Executor to apply it. Creating an execution works the same way: the execution is saved by the Executor, not by the Webserver.
+The Webserver doesn't change executions itself, because only the [Executor](../01.executor/index.md#only-the-executor-writes-executions) writes them. When you create, restart, replay, pause, resume, kill, or relabel an execution, the Webserver sends a command or a kill request to the Executor and waits for the Executor to apply it. Creating an execution works the same way: the execution is saved by the Executor, not by the Webserver.
 
 - A single action waits up to `kestra.async-operations.wait-timeout` (default `PT30S`) for the Executor. If the Executor doesn't respond in time, the API returns `504 Gateway Timeout`.
 - A bulk action, such as one sent to a `by-ids` or `by-query` endpoint, returns `202 Accepted` immediately with an operation ID and the number of executions it targets.
@@ -41,6 +43,13 @@ A few operations write directly to the repository instead of going through the E
 
 - Deleting an execution. By default, this also deletes its logs, metrics, and internal storage files.
 - Creating, updating, and deleting flows.
+
+## Trigger actions
+
+The Webserver doesn't change trigger state either, because only the [Scheduler](../05.scheduler/index.md#only-the-scheduler-writes-trigger-state) writes it. When you unlock, restart, enable, disable, or delete a trigger, or create, pause, resume, or delete a backfill, the Webserver sends an event to the Scheduler:
+
+- An action on a single trigger waits up to `kestra.async-operations.wait-timeout` for the Scheduler. It returns `504 Gateway Timeout` if the Scheduler doesn't respond in time, and `409 Conflict` if the action can't be applied, for example when the Scheduler reports a failure or you unlock a trigger that isn't locked.
+- A bulk action, such as one sent to a `by-triggers` or `by-query` endpoint, returns `202 Accepted` immediately with an operation ID and the number of triggers it targets.
 
 ## Live updates
 

@@ -64,7 +64,7 @@ In Enterprise Edition, the Worker Controller also routes jobs to the Workers of 
 
 ### Kills
 
-When an execution is killed, the Worker Controller forwards the kill to every connected Worker, so the Worker running the task stops it. For the next 24 hours, it also stops tasks of that execution before they reach a Worker and reports them as `KILLED`, unless the task run was forced to execute.
+When an execution is killed, the Worker Controller forwards the kill to every connected Worker, so the Worker running the task stops it. For the next 24 hours, it also stops tasks of that execution before they reach a Worker and reports them as `KILLED`. Only tasks in an [`afterExecution`](../../../05.workflow-components/20.afterexecution/index.md) block still run on a killed execution.
 
 ### Payload size limits
 

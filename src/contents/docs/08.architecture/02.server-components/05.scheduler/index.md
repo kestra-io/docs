@@ -20,6 +20,15 @@ The Scheduler keeps a state for each trigger it handles: when it should next be 
 
 Other triggers don't go through the Scheduler. The Executor evaluates [Flow triggers](../../../05.workflow-components/07.triggers/02.flow-trigger/index.md) when an upstream execution changes state, and the [Webserver](../07.webserver/index.md) evaluates [Webhook triggers](../../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) when a request arrives.
 
+### Only the Scheduler writes trigger state
+
+The Scheduler is the only component that changes trigger state. Other components send it an event and let it apply the change:
+
+- Saving or deleting a flow creates, updates, or deletes its triggers.
+- Actions from the UI or API, such as unlocking, restarting, enabling, disabling, or deleting a trigger, and creating, pausing, or deleting a backfill. The [Webserver](../07.webserver/index.md#trigger-actions) sends these.
+- The Executor reports when an execution started by a trigger ends, and when a Worker running a trigger stops responding.
+- The Worker Controller reports the result of each polling or realtime trigger evaluation.
+
 ## How triggers are evaluated
 
 The Scheduler checks its triggers on a one-second loop. A trigger is evaluated when its next evaluation date is reached:
@@ -116,5 +125,7 @@ Each Scheduler evaluates triggers on up to `max(4, allocated CPU cores)` threads
 The Scheduler publishes metrics under `kestra.scheduler.*`, including triggers fired, evaluation and scheduling-delay timers, how long triggers stay locked, and the number of virtual nodes each Scheduler owns. See the [Scheduler metrics](../../../10.administrator-guide/03.monitoring/index.md#scheduler) for the full list.
 
 The `/scheduler` management endpoint, on port `8081` of a Scheduler or standalone server, lists the triggers due for evaluation. It is sensitive by default. See [management endpoint hardening](../../../11.migration-guide/v2.0.0/management-endpoint-hardening/index.md).
+
+Trigger logs aren't attached to an execution, because no execution exists while a trigger is evaluated. They appear in the trigger's row on the flow's **Triggers** tab and in the flow's **Logs** tab.
 
 To find a trigger that has stopped firing, check its logs in the flow's **Triggers** tab, then check whether it is locked or disabled. See [troubleshooting a trigger from the UI](../../../05.workflow-components/07.triggers/index.mdx#troubleshooting-a-trigger-from-the-ui).
