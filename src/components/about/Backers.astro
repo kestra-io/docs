@@ -45,7 +45,7 @@ const PUBLIC: Backer[] = [
                                 rel="noopener noreferrer"
                             >
                                 <span class="logo" set:html={b.svg} />
-                                <span class="name">{b.name}</span>
+                                <span class="visually-hidden">{b.name}</span>
                             </a>
                         </li>
                     ))
@@ -184,9 +184,8 @@ const PUBLIC: Backer[] = [
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1.5rem;
             width: 100%;
-            height: 220px;
+            height: 180px;
             text-decoration: none;
             color: inherit;
             transition: background 0.2s ease;
@@ -196,7 +195,7 @@ const PUBLIC: Backer[] = [
             }
 
             @include media-breakpoint-down(md) {
-                height: 180px;
+                height: 140px;
             }
         }
 
@@ -204,12 +203,6 @@ const PUBLIC: Backer[] = [
             width: 60%;
             max-width: 160px;
             height: 64px;
-        }
-
-        .name {
-            font-size: $font-size-sm;
-            font-weight: 600;
-            color: var(--ks-content-secondary);
         }
     }
 
@@ -248,9 +241,9 @@ const PUBLIC: Backer[] = [
         }
 
         .logo {
-            width: 60%;
-            max-width: 140px;
-            height: 44px;
+            width: 50%;
+            max-width: 110px;
+            height: 32px;
         }
     }
 </style>

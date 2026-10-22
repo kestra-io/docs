@@ -11,7 +11,9 @@ import HeroFlows from "./HeroFlows.astro"
             <span class="eyebrow">About Kestra</span>
             <h1>
                 Kestra is the unified<br />orchestration platform<span
-                    class="dot">.</span
+                    class="brand-dot"
+                    aria-hidden="true"></span><span class="visually-hidden"
+                    >.</span
                 >
             </h1>
             <div class="cols">
@@ -88,9 +90,13 @@ import HeroFlows from "./HeroFlows.astro"
         color: inherit;
         text-wrap: balance;
 
-        .dot {
-            margin-left: -0.08em;
-            color: #fe0071;
+        // The square dot of the Kestra wordmark.
+        .brand-dot {
+            display: inline-block;
+            width: 0.15em;
+            height: 0.15em;
+            margin-left: 0.05em;
+            background: #fe0071;
         }
     }
 

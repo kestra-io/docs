@@ -53,6 +53,12 @@ const description =
         overflow-x: clip;
         background: var(--ks-background-body);
 
+        // The dark theme has no lighter border token; the page's hairlines
+        // use a gray halfway between it and the background.
+        :global(html.dark) & {
+            --ks-border-primary: #2c2b31;
+        }
+
         :global(.container) {
             @include media-breakpoint-up(xxl) {
                 max-width: 1320px;
