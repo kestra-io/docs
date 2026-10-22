@@ -26,8 +26,10 @@ const PRINCIPLES = [
 <section class="principles">
     <div class="container">
         <header>
-            <span class="eyebrow">What we believe</span>
-            <h2>Principles we build to.</h2>
+            <div>
+                <span class="eyebrow">What we believe</span>
+                <h2>Principles we build to.</h2>
+            </div>
             <p>
                 Five principles decide how Kestra is designed, what we say no
                 to, and how we work with the people who run it.
@@ -57,16 +59,20 @@ const PRINCIPLES = [
         border-top: 1px solid var(--ks-border-primary);
         border-bottom: 1px solid var(--ks-border-primary);
         background: var(--ks-background-secondary);
+    }
 
-        .container {
-            display: grid;
-            grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-            gap: 4rem;
+    header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1.5rem 4rem;
+        margin-bottom: 4rem;
 
-            @include media-breakpoint-down(lg) {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-            }
+        p {
+            @include lead;
+            max-width: 420px;
+            margin: 0;
         }
     }
 
@@ -78,48 +84,66 @@ const PRINCIPLES = [
         @include title;
     }
 
-    header p {
-        @include lead;
-        max-width: 420px;
-    }
-
+    // Five columns read side by side, split by hairlines; they stack on
+    // smaller screens.
     ol {
         list-style: none;
         margin: 0;
         padding: 0;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         border-top: 1px solid var(--ks-border-secondary);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
     }
 
     li {
-        display: grid;
-        grid-template-columns: 3rem minmax(0, 12rem) minmax(0, 1fr);
-        gap: 1.5rem;
-        align-items: baseline;
-        padding: 1.5rem 0;
-        border-bottom: 1px solid var(--ks-border-secondary);
+        padding: 2rem 1.5rem 0;
 
-        &:last-child {
-            border-bottom: 0;
+        &:first-child {
+            padding-left: 0;
         }
 
-        @include media-breakpoint-down(md) {
-            grid-template-columns: 2.5rem minmax(0, 1fr);
-            gap: 0.25rem 1rem;
+        & + li {
+            border-left: 1px solid var(--ks-border-secondary);
+        }
 
-            p {
-                grid-column: 2;
+        @include media-breakpoint-down(lg) {
+            display: grid;
+            grid-template-columns: 4rem minmax(0, 1fr);
+            gap: 0.25rem 1rem;
+            padding: 1.5rem 0;
+
+            & + li {
+                border-left: 0;
+                border-top: 1px solid var(--ks-border-secondary);
+            }
+
+            .index {
+                grid-row: span 2;
             }
         }
     }
 
     .index {
-        font-family: var(--bs-font-monospace);
-        font-size: $font-size-sm;
+        display: block;
+        margin-bottom: 2.5rem;
+        font-size: clamp(2.5rem, 4vw, 3.5rem);
+        font-weight: 500;
+        letter-spacing: -0.04em;
+        line-height: 1;
         color: var(--ks-content-color-highlight);
+
+        @include media-breakpoint-down(lg) {
+            margin: 0;
+            font-size: 2rem;
+        }
     }
 
     h3 {
-        margin: 0;
+        margin: 0 0 0.75rem;
         font-size: $font-size-lg;
         font-weight: 600;
     }

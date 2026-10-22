@@ -1,35 +1,44 @@
 ---
+import { Icon } from "astro-icon/components"
+
 const LINKS = [
-    { label: "GitHub", href: "https://github.com/kestra-io/kestra" },
-    { label: "Slack community", href: "/slack" },
+    {
+        label: "GitHub",
+        href: "https://github.com/kestra-io/kestra",
+        icon: "mdi:github",
+    },
+    { label: "Slack community", href: "/slack", icon: "mdi:slack" },
     {
         label: "Contributing guide",
         href: "/docs/contribute-to-kestra/contributing",
+        icon: "mdi:source-branch",
     },
-    { label: "Kestra Hacktober", href: "/hacktober" },
-    { label: "Kestra Academy", href: "https://academy.kestra.io" },
+    { label: "Kestra Hacktober", href: "/hacktober", icon: "mdi:pumpkin" },
+    {
+        label: "Kestra Academy",
+        href: "https://academy.kestra.io",
+        icon: "mdi:school-outline",
+    },
 ]
 ---
 
 <section class="open-source">
     <div class="container">
-        <div>
-            <span class="eyebrow">Open source</span>
-            <h2>Open source,<br />by conviction.</h2>
-            <p>
-                Kestra has been open source since its first commit. The engine,
-                the plugins and the roadmap are public. Thousands of engineers
-                run it, contribute to it and shape it every month, and that
-                community is the foundation of everything we build.
-            </p>
-        </div>
+        <span class="eyebrow">Open source</span>
+        <h2>Open source,<br />by conviction.</h2>
+        <p>
+            Kestra has been open source since its first commit. The engine, the
+            plugins and the roadmap are public. Thousands of engineers run it,
+            contribute to it and shape it every month, and that community is the
+            foundation of everything we build.
+        </p>
         <ul>
             {
                 LINKS.map((l) => (
                     <li>
                         <a href={l.href}>
+                            <Icon name={l.icon} />
                             {l.label}
-                            <span aria-hidden="true">→</span>
                         </a>
                     </li>
                 ))
@@ -41,21 +50,12 @@ const LINKS = [
 <style lang="scss">
     @use "./style/section" as *;
 
+    // Centered, with the community links as a row of pills: a different
+    // rhythm from the split sections around it.
     .open-source {
         @include section;
-        border-top: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
-
-        .container {
-            display: grid;
-            grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-            gap: 3rem 5rem;
-            align-items: end;
-
-            @include media-breakpoint-down(lg) {
-                grid-template-columns: 1fr;
-            }
-        }
+        text-align: center;
     }
 
     .eyebrow {
@@ -68,35 +68,44 @@ const LINKS = [
 
     p {
         @include lead;
-        max-width: 620px;
-        font-size: $font-size-lg;
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     ul {
         list-style: none;
-        margin: 0;
+        margin: 3rem 0 0;
         padding: 0;
-        border-top: 1px solid var(--ks-border-primary);
-    }
-
-    li {
-        border-bottom: 1px solid var(--ks-border-primary);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
     }
 
     a {
-        display: flex;
-        justify-content: space-between;
-        padding: 1rem 0;
-        font-size: $font-size-lg;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1.125rem;
+        border-radius: 999px;
+        border: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-body);
         font-weight: 600;
         color: var(--ks-content-primary);
         text-decoration: none;
         transition:
-            color 0.2s ease,
-            padding 0.2s ease;
+            border-color 0.2s ease,
+            background 0.2s ease;
 
         &:hover {
-            padding-left: 0.5rem;
+            border-color: var(--ks-content-primary);
+            background: var(--ks-background-secondary);
+        }
+
+        :global(svg) {
+            width: 1.25rem;
+            height: 1.25rem;
         }
     }
 </style>
