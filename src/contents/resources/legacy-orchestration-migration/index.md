@@ -169,7 +169,7 @@ These traditional workload automation tools are powerful but often complex and e
 
 ### Migrating from VMware vRA and vRO
 
-vRA and vRO tie infrastructure automation to one hypervisor vendor, and their JavaScript dialect is maintained by a shrinking pool of engineers. Migrating to Kestra keeps vSphere, Terraform, Ansible, and your ITSM in place and replaces the workflow engine between them. A Fortune 500 manufacturer completed this migration, cutting licensing costs by 90% and delivery time from six months to six days. Our [vRA to Kestra migration guide](/resources/migration/vra) covers inventory, proof of concept, pattern-based waves, and the business case.
+vRA and vRO tie infrastructure automation to one hypervisor vendor, and their JavaScript dialect is maintained by a shrinking pool of engineers. Migrating to Kestra keeps vSphere, Terraform, Ansible, and your ITSM in place and replaces the workflow engine between them. A [Fortune 500 manufacturer](/stories/fortune-500-company) completed this migration, cutting licensing costs by 90% and delivery time from six months to six days. Our [vRA to Kestra migration guide](/resources/migration/vra) covers inventory, proof of concept, pattern-based waves, and the business case.
 
 ### Modernizing from Apache Airflow
 

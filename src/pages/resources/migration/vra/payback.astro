@@ -37,10 +37,15 @@ const TIPS = [
         card={false}
     >
         <Fragment slot="deck">
-            The migration is the investment. What pays it back is the vRA and
-            vRO renewal you do not sign. Enter your renewal, your workflow
-            counts and your rates, and get the month the move to Kestra pays for
-            itself.
+            Moving off VMware Aria Automation (vRA) and Orchestrator (vRO) is an
+            investment and includes costs up front. What pays it back is the
+            renewal you do not sign. Enter your renewal, workflow counts and
+            rates to see when the move to Kestra pays off.
+            <span class="source"
+                >Built from the <a href="/resources/migration/vra"
+                    >vRA to Kestra migration guide</a
+                >.</span
+            >
         </Fragment>
         <Fragment slot="actions">
             <a class="btn btn-primary" href="#calculator"
@@ -115,6 +120,11 @@ const TIPS = [
 </Layout>
 
 <style lang="scss">
+    .source {
+        display: block;
+        margin-top: 0.75rem;
+    }
+
     .calc-body {
         padding: 2rem 0 3rem;
     }

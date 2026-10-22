@@ -156,13 +156,6 @@
             max-height: 100%;
             min-width: 250px;
             z-index: 10;
-            border: 0;
-            border-left-width: 1px;
-            border-style: solid;
-            border-image: linear-gradient(to bottom, #181818, #5c5c5c, #181818) 1 100%;
-            html.light & {
-                border-image: linear-gradient(to bottom, #e5e5e5, #9c9c9c, #e5e5e5) 1 100%;
-            }
         }
         &::-webkit-scrollbar {
             display: none;
@@ -198,10 +191,8 @@
                 background: transparent;
             }
             &::-webkit-scrollbar-thumb {
-                background: var(--ks-content-color-highlight);
-                &:hover {
-                    background: var(--ks-border-active);
-                }
+                border-radius: 5px;
+                background: var(--ks-border-primary);
             }
             a {
                 display: block;

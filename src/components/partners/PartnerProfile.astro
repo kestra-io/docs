@@ -1,0 +1,1018 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import Link from "~/components/common/Link.astro"
+import PartnerCard from "./PartnerCard.vue"
+import PluginCard from "~/components/plugins/PluginCard.vue"
+import Related from "~/components/blueprints/Related.astro"
+import kestraMark from "~/assets/landing/partners/kestra-mark.svg?raw"
+import { listPartners, PARTNERS } from "./partners"
+import { $fetchApiCached, $fetchApiCachedOptional } from "~/utils/fetch"
+import {
+    filterPluginsWithoutDeprecated,
+    type Plugin,
+} from "~/utils/plugins/plugin"
+import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
+import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
+
+interface Expertise {
+    icon: string
+    title: string
+    text: string
+}
+
+interface Props {
+    name: string
+    tagline: string
+    about: string
+    visual?: { src: ImageMetadata; alt: string }
+    expertiseTitle: string
+    expertise: Expertise[]
+    quote?: { text: string; author: string; role: string }
+    facts: { label: string; value: string }[]
+    contact: { text: string; href: string }
+    secondary?: { text: string; href: string }
+    plugins?: string[]
+    blueprints?: { query: string; title: string }
+    closing?: { title: string; text: string }
+    website?: string
+    lang?: "en" | "fr"
+    languages?: { code: string; label: string; href: string }[]
+    languageNote?: string
+}
+
+const {
+    name,
+    tagline,
+    about,
+    visual,
+    expertiseTitle,
+    expertise,
+    quote,
+    facts,
+    contact,
+    secondary,
+    plugins = [],
+    blueprints,
+    closing,
+    website,
+    lang = "en",
+    languages = [],
+    languageNote,
+} = Astro.props
+
+const LABELS = {
+    en: {
+        about: "About",
+        services: "Services",
+        website: "Website",
+        plugin: "Kestra plugin",
+        related: "Other partners",
+        partners: "Partners",
+        all: "See all partners",
+        badge: "Partner",
+    },
+    fr: {
+        about: "À propos",
+        services: "Services",
+        website: "Site web",
+        plugin: "Plugin Kestra",
+        related: "Autres partenaires",
+        partners: "Partenaires",
+        all: "Voir tous les partenaires",
+        badge: "Partenaire",
+    },
+}
+const t = LABELS[lang]
+
+const partner = PARTNERS.find((p) => p.name === name)!
+const external = (href: string) =>
+    /^https?:\/\//.test(href) ? { target: "_blank", rel: "noopener" } : {}
+
+const pluginCards = plugins.length
+    ? await (async () => {
+          const raw = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
+          const info = await $fetchApiCached(`/plugins/pluginsInformation`)
+          const live = filterPluginsWithoutDeprecated(raw)
+          const rootGroups = new Set(
+              live.filter((p) => !p.subGroup).map((p) => p.group),
+          )
+          const roots = live.filter(
+              (p) => plugins.includes(p.name) && !p.subGroup,
+          )
+          return prunePluginsForCards(
+              roots,
+              info.byPlugin,
+              buildPluginUrlIndex(raw),
+              rootGroups,
+          ).map((c) => ({
+              ...c,
+              elementCounts: c.elementCounts ?? 0,
+              blueprints: c.blueprints ?? 0,
+          }))
+      })()
+    : []
+
+const blueprintItems = blueprints
+    ? ((
+          await $fetchApiCachedOptional<{ results: Blueprint[] }>(
+              `/blueprints/versions/latest?q=${encodeURIComponent(blueprints.query)}&size=20`,
+          )
+      )?.results ?? [])
+    : []
+
+const blueprintTags = blueprintItems.length
+    ? ((await $fetchApiCachedOptional<BlueprintTag[]>(
+          "/blueprints/versions/latest/tags",
+      )) ?? [])
+    : []
+
+const related = listPartners(partner.type)
+    .filter((p) => p.name !== name)
+    .slice(0, 3)
+---
+
+<div class="partner-profile">
+    <header class="profile-head">
+        <div class="container">
+            <div class="top-row">
+                <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="/partners">{t.partners}</a>
+                    <span aria-hidden="true">/</span>
+                    <a href={`/partners/find?type=${partner.type}`}
+                        >{partner.type}</a
+                    >
+                    <span aria-hidden="true">/</span>
+                    <span aria-current="page">{partner.name}</span>
+                </nav>
+                {
+                    languages.length > 1 && (
+                        <div class="lang-switch">
+                            {languageNote && (
+                                <span class="lang-note">{languageNote}</span>
+                            )}
+                            <ul aria-label="Language">
+                                {languages.map((l) => (
+                                    <li>
+                                        <a
+                                            href={l.href}
+                                            hreflang={l.code}
+                                            lang={l.code}
+                                            aria-current={
+                                                l.code === lang
+                                                    ? "true"
+                                                    : undefined
+                                            }
+                                        >
+                                            {l.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )
+                }
+            </div>
+            <div class="hero-grid">
+                <div class="identity">
+                    <div class="who">
+                        <h1>{partner.name}</h1>
+                        <p class="tagline">{tagline}</p>
+                        <ul class="tags">
+                            <li class="tag kind">{partner.kind}</li>
+                            <li class="tag">{partner.country}</li>
+                            <li class="tag">{partner.region}</li>
+                        </ul>
+                    </div>
+                    <div class="actions">
+                        <a
+                            href={contact.href}
+                            class="btn btn-primary"
+                            {...external(contact.href)}
+                        >
+                            {contact.text}
+                        </a>
+                        {
+                            website && (
+                                <a
+                                    href={website}
+                                    class="btn btn-secondary"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    {t.website}
+                                </a>
+                            )
+                        }
+                        {
+                            secondary && (
+                                <a
+                                    href={secondary.href}
+                                    class="btn btn-secondary"
+                                    {...external(secondary.href)}
+                                >
+                                    {secondary.text}
+                                </a>
+                            )
+                        }
+                    </div>
+                </div>
+                <div class="link-panel" aria-hidden="true">
+                    <svg viewBox="0 0 480 360" class="wire">
+                        <path
+                            id="partner-wire"
+                            class="track"
+                            d="M200 140 H228 Q240 140 240 152 V208 Q240 220 252 220 H280"
+                        ></path>
+                        <circle class="dot" r="4.5" opacity="0">
+                            <animateMotion
+                                dur="3.2s"
+                                repeatCount="indefinite"
+                                keyPoints="0;1"
+                                keyTimes="0;1"
+                                calcMode="spline"
+                                keySplines="0.45 0 0.55 1"
+                            >
+                                <mpath href="#partner-wire"></mpath>
+                            </animateMotion>
+                            <animate
+                                attributeName="opacity"
+                                values="0;1;1;0"
+                                keyTimes="0;0.15;0.85;1"
+                                dur="3.2s"
+                                repeatCount="indefinite"></animate>
+                        </circle>
+                        <circle class="dot theirs" r="4.5" opacity="0">
+                            <animateMotion
+                                dur="3.2s"
+                                begin="1.6s"
+                                repeatCount="indefinite"
+                                keyPoints="1;0"
+                                keyTimes="0;1"
+                                calcMode="spline"
+                                keySplines="0.45 0 0.55 1"
+                            >
+                                <mpath href="#partner-wire"></mpath>
+                            </animateMotion>
+                            <animate
+                                attributeName="opacity"
+                                values="0;1;1;0"
+                                keyTimes="0;0.15;0.85;1"
+                                dur="3.2s"
+                                begin="1.6s"
+                                repeatCount="indefinite"></animate>
+                        </circle>
+                        <circle class="port" cx="200" cy="140" r="4"></circle>
+                        <circle class="port theirs" cx="280" cy="220" r="4"
+                        ></circle>
+                    </svg>
+                    <div class="node kestra" set:html={kestraMark} />
+                    <div class="node logo">
+                        <span class="badge">{t.badge}</span>
+                        <Image src={partner.logo} alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="profile-body">
+        <div class="container">
+            <div class="layout">
+                <div class="main">
+                    <section>
+                        <h2>{t.about}</h2>
+                        <p class="about" set:html={about} />
+                        {
+                            visual && (
+                                <Image
+                                    src={visual.src}
+                                    alt={visual.alt}
+                                    class="visual"
+                                />
+                            )
+                        }
+                    </section>
+
+                    {
+                        quote && (
+                            <div class="quote">
+                                <figure>
+                                    <blockquote
+                                        set:html={`<span class="qmark">“</span>${quote.text}<span class="qmark">”</span>`}
+                                    />
+                                    <figcaption>
+                                        <strong>{quote.author}</strong>,{" "}
+                                        {quote.role}
+                                    </figcaption>
+                                </figure>
+                            </div>
+                        )
+                    }
+
+                    <section>
+                        <h2>{expertiseTitle}</h2>
+                        <ul class="expertise">
+                            {
+                                expertise.map((item) => (
+                                    <li>
+                                        <span class="icon">
+                                            <Icon name={item.icon} />
+                                        </span>
+                                        <h3>{item.title}</h3>
+                                        <p>{item.text}</p>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </section>
+                </div>
+
+                <aside class="side">
+                    <div class="glance">
+                        <dl>
+                            {
+                                facts.map((fact) => (
+                                    <div>
+                                        <dt>{fact.label}</dt>
+                                        <dd>{fact.value}</dd>
+                                    </div>
+                                ))
+                            }
+                            <div>
+                                <dt>{t.services}</dt>
+                                <dd>
+                                    <ul class="tags">
+                                        {
+                                            partner.services.map((s) => (
+                                                <li class="tag">{s}</li>
+                                            ))
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                        </dl>
+                        {
+                            pluginCards.length > 0 && (
+                                <div class="plugins">
+                                    <p class="plugins-title">{t.plugin}</p>
+                                    {pluginCards.map((card) => (
+                                        <PluginCard plugin={card} />
+                                    ))}
+                                </div>
+                            )
+                        }
+                        <slot name="side" />
+                        {
+                            closing && (
+                                <div class="pitch">
+                                    <p>{closing.text}</p>
+                                </div>
+                            )
+                        }
+                        <a
+                            href={contact.href}
+                            class="btn btn-secondary w-100"
+                            {...external(contact.href)}
+                        >
+                            {contact.text}
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    {
+        blueprintItems.length > 0 && blueprints && (
+            <Related
+                id="partner-blueprints"
+                title={blueprints.title}
+                relatedBlueprints={blueprintItems}
+                tags={blueprintTags}
+            />
+        )
+    }
+
+    <section class="profile-related">
+        <div class="container">
+            {
+                related.length > 0 && (
+                    <section class="related">
+                        <div class="related-head">
+                            <h2>{t.related}</h2>
+                            <Link href={`/partners/find?type=${partner.type}`}>
+                                {t.all}
+                            </Link>
+                        </div>
+                        <div class="row">
+                            {related.map((p) => (
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <PartnerCard partner={p} />
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )
+            }
+        </div>
+    </section>
+</div>
+
+<style lang="scss">
+    .partner-profile :global(.container) {
+        @include media-breakpoint-up(xxl) {
+            max-width: 1320px;
+        }
+    }
+
+    .profile-head {
+        --head-top: #f6f4fb;
+        --head-bg: #fff;
+        position: relative;
+        overflow: hidden;
+        padding: 2rem 1rem 3.5rem;
+        background: linear-gradient(180deg, var(--head-top), var(--head-bg));
+        color: var(--ks-content-primary);
+
+        :global(html.dark) & {
+            --head-top: #2a2833;
+            --head-bg: #212125;
+            color: #fff;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--ks-border-primary) 25%,
+                var(--ks-border-primary) 75%,
+                transparent
+            );
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) min(36rem, 46%);
+            align-items: center;
+            gap: 3rem;
+            margin-top: 1.5rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        .link-panel {
+            --panel-bg: #fff;
+            --panel-line: rgba(14, 14, 16, 0.07);
+            --panel-track: rgba(14, 14, 16, 0.25);
+            --panel-node-border: #e9e9ee;
+            position: relative;
+            aspect-ratio: 4 / 3;
+
+            &::before {
+                content: "";
+                position: absolute;
+                inset: -22.222% -16.667%;
+                pointer-events: none;
+                background:
+                    linear-gradient(var(--panel-line) 1px, transparent 1px) 0
+                        0 / 100% 7.692%,
+                    linear-gradient(
+                            90deg,
+                            var(--panel-line) 1px,
+                            transparent 1px
+                        )
+                        0 0 / 6.25% 100%;
+                mask-image: radial-gradient(
+                    ellipse 50% 50% at 50% 50%,
+                    #000 35%,
+                    transparent 100%
+                );
+            }
+
+            :global(html.dark) & {
+                --panel-bg: #212125;
+                --panel-line: rgba(255, 255, 255, 0.07);
+                --panel-track: rgba(255, 255, 255, 0.3);
+                --panel-node-border: rgba(255, 255, 255, 0.16);
+            }
+
+            @include media-breakpoint-down(lg) {
+                max-width: 36rem;
+            }
+
+            @include media-breakpoint-down(md) {
+                display: none;
+            }
+        }
+
+        .wire {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            fill: none;
+
+            .track {
+                stroke: var(--panel-track);
+                stroke-width: 2;
+                stroke-dasharray: 4 6;
+            }
+
+            .dot {
+                fill: #9248dc;
+
+                &.theirs {
+                    fill: #65a5ff;
+                }
+            }
+
+            .port {
+                fill: var(--panel-bg);
+                stroke: #9248dc;
+                stroke-width: 2;
+
+                &.theirs {
+                    stroke: #65a5ff;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .dot {
+                    display: none;
+                }
+            }
+        }
+
+        .node {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25%;
+            height: 33.333%;
+            border-radius: 1.25rem;
+            border: 1px solid var(--panel-node-border);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+
+            :global(html.dark) & {
+                box-shadow: 0 14px 34px rgba(10, 6, 40, 0.45);
+            }
+        }
+
+        .kestra {
+            left: 16.667%;
+            top: 22.222%;
+            padding: 7%;
+            background: #1a1030;
+
+            :global(svg) {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .logo {
+            left: 58.333%;
+            top: 44.444%;
+            padding: 0.75rem;
+            background: #fff;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .badge {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 0.125rem 0.5rem;
+            border-radius: 2rem;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            white-space: nowrap;
+            background: var(--ks-background-blue-light);
+            color: var(--ks-content-alert-info);
+            border: 1px solid var(--panel-bg);
+
+            :global(html.dark) & {
+                background: #1f2b4d;
+                color: #b8d2ff;
+            }
+        }
+
+        .top-row {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem 1.5rem;
+        }
+
+        .lang-switch {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 0.75rem;
+            font-size: $font-size-sm;
+
+            ul {
+                display: flex;
+                margin: 0;
+                padding: 0.1875rem;
+                list-style: none;
+                border: 1px solid var(--ks-border-primary);
+                border-radius: 999px;
+                background: var(--ks-background-primary);
+            }
+
+            a {
+                display: block;
+                padding: 0.25rem 0.75rem;
+                border-radius: 999px;
+                color: var(--ks-content-secondary);
+                font-weight: 600;
+                text-decoration: none;
+
+                &:hover {
+                    color: var(--ks-content-primary);
+                }
+
+                &[aria-current="true"] {
+                    background: var(--ks-content-link);
+                    color: #fff;
+                }
+
+                &:focus-visible {
+                    outline: 2px solid var(--ks-content-link);
+                    outline-offset: 2px;
+                }
+            }
+        }
+
+        .lang-note {
+            color: var(--ks-content-secondary);
+        }
+
+        .crumbs {
+            display: flex;
+            gap: 0.5rem;
+            font-size: $font-size-sm;
+            color: var(--ks-content-tertiary);
+
+            a {
+                color: var(--ks-content-secondary);
+                text-decoration: none;
+
+                &:hover {
+                    color: var(--ks-content-primary);
+                }
+            }
+
+            [aria-current] {
+                color: var(--ks-content-primary);
+                font-weight: 600;
+            }
+
+            :global(html.dark) & {
+                color: rgba(255, 255, 255, 0.45);
+
+                a {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+
+                a:hover,
+                [aria-current] {
+                    color: #fff;
+                }
+            }
+        }
+
+        h1 {
+            margin: 0 0 0.75rem;
+            font-size: clamp(2.25rem, 5vw, 3.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: inherit;
+        }
+
+        .tagline {
+            max-width: 640px;
+            margin: 0 0 1.25rem;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+
+            :global(html.dark) & {
+                color: rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .tags {
+            margin-bottom: 1.75rem;
+        }
+
+        :global(html.dark) & .tag {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.16);
+            color: rgba(255, 255, 255, 0.8);
+
+            &.kind {
+                background: rgba(101, 165, 255, 0.2);
+                color: #dbe0ff;
+            }
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            :global(html.dark) & .btn-secondary {
+                --ks-content-primary: #fff;
+                --ks-background-button-secondary: transparent;
+                --ks-content-btn-secondary-hover: #0e0e10;
+                --ks-background-button-secondary-hover: #fff;
+                border-color: #fff;
+            }
+        }
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.375rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .tag {
+        padding: 0.125rem 0.625rem;
+        border-radius: 2rem;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        background: var(--ks-background-body);
+        border: 1px solid var(--ks-border-primary);
+        color: var(--ks-content-secondary);
+
+        &.kind {
+            border-color: transparent;
+            background: var(--ks-background-blue-light);
+            color: var(--ks-content-alert-info);
+        }
+    }
+
+    .profile-body {
+        padding: 3.5rem 0 4rem;
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 20rem;
+            gap: 3rem;
+            align-items: start;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        h2 {
+            margin: 0 0 1rem;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .about {
+            margin: 0;
+            color: var(--ks-content-secondary);
+            line-height: 1.7;
+        }
+
+        .visual {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 22rem;
+            margin-top: 1.75rem;
+            object-fit: cover;
+            border-radius: 0.8125rem;
+        }
+    }
+
+    .expertise {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        li {
+            padding: 1.25rem;
+            border-radius: 0.8125rem;
+            background: var(--ks-background-secondary);
+        }
+
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            margin-bottom: 0.875rem;
+            border-radius: 0.5rem;
+            background: var(--ks-background-body);
+            border: 1px solid var(--ks-border-primary);
+            color: var(--ks-content-link);
+
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: $font-size-md;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .quote {
+        padding: 0.375rem;
+        border-radius: 1rem;
+        border: 1px solid var(--ks-border-primary);
+
+        figure {
+            margin: 0;
+            padding: 2.5rem 2.75rem;
+            border-radius: 0.75rem;
+            background: var(--ks-background-purple-light);
+
+            @include media-breakpoint-down(md) {
+                padding: 1.75rem 1.5rem;
+            }
+        }
+
+        blockquote {
+            margin: 0 0 1rem;
+            font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+            font-weight: 600;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
+            color: var(--ks-content-primary);
+        }
+
+        :global(.qmark) {
+            color: var(--ks-content-link);
+        }
+
+        figcaption {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+
+            strong {
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+
+    .side {
+        position: sticky;
+        top: calc(5.5rem + var(--announce-height, 0px));
+
+        @include media-breakpoint-down(lg) {
+            position: static;
+        }
+    }
+
+    // laid out like the plugin page sidebar: no frame, sections split by thin rules
+    .glance {
+        display: flex;
+        flex-direction: column;
+
+        dl {
+            display: contents;
+        }
+
+        // no title above, so the first section needs no rule
+        dl > div:first-child {
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        dl > div,
+        .plugins,
+        .pitch {
+            padding: 1rem 0;
+            border-top: 1px solid var(--ks-border-primary);
+        }
+
+        dt,
+        .plugins-title {
+            margin: 0 0 0.5rem;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        dd {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+
+        // the category tags of the plugin page
+        .tags {
+            gap: 0.5rem;
+        }
+
+        .tag {
+            padding: 0.125rem 0.5rem;
+            border: 0;
+            border-radius: 40px;
+            background: var(--ks-background-tag-category);
+            color: var(--ks-content-tag-category);
+        }
+
+        .plugins {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+
+            .plugins-title {
+                margin: 0;
+            }
+        }
+
+        .pitch p {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .related-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+
+        h2 {
+            margin: 0;
+        }
+    }
+
+    .profile-related {
+        padding-bottom: 4rem;
+    }
+
+    .related {
+        padding-top: 2.5rem;
+        border-top: 1px solid var(--ks-border-primary);
+
+        .row > * {
+            padding-inline: 8px;
+        }
+    }
+</style>
