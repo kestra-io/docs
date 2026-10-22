@@ -79,7 +79,7 @@ Worker Groups enable scenarios such as GPU workloads, OS-specific execution, inf
 To route a task to a specific queue, set `workerSelector.tags` on the task definition with the tags matching the target Worker Queue. Tasks without a `workerSelector` run on the default queue.
 
 :::alert{type="info"}
-Worker Groups are available in Kestra Enterprise Edition and Kestra Cloud.
+Worker Groups are available in Kestra Enterprise Edition only, not in Kestra Cloud.
 :::
 
 ## Scheduler
