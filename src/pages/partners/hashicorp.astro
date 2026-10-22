@@ -1,0 +1,76 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "HashiCorp & Kestra: Terraform and Vault, Orchestrated"
+const description =
+    "Manage Kestra with the official Terraform provider, run Terraform plan and apply as governed steps in a flow, and read secrets from HashiCorp Vault."
+
+const facts = [
+    {
+        label: "Partnership",
+        value: "Partner-tier provider on the Terraform Registry",
+    },
+    {
+        label: "Provider",
+        value: "kestra-io/kestra, 1.1M+ downloads",
+    },
+    {
+        label: "Integrations",
+        value: "Terraform provider, TerraformCLI task, HashiCorp Vault secrets backend",
+    },
+]
+
+const quote = {
+    text: "Kestra's declarative model and Terraform integration gave us exactly what we needed to build customer-specific pipelines, automate deployment, and monitor everything reliably.",
+    author: "Lirav Duvshani",
+    role: "CEO/Data Architect, DataFlooder (Sopht)",
+}
+
+const expertise = [
+    {
+        icon: "mdi:file-code-outline",
+        title: "Kestra itself, declared in Terraform",
+        text: "The official provider manages flows, namespaces, namespace files, KV pairs, secrets, users, groups, roles, service accounts, apps and worker groups. Foundation Data declares its entire Kestra Cloud environment this way and deploys it from Git.",
+    },
+    {
+        icon: "mdi:source-pull",
+        title: "One git push for infrastructure and flows",
+        text: "Leroy Merlin France deploys its warehouse resources and its Kestra flows through the same Terraform pipeline. Shipping a new pipeline went from days of coordination across four teams to a single push, the same day.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "Terraform runs with an approval gate",
+        text: "The TerraformCLI task runs plan and apply as steps in a flow. Kestra schedules drift checks, pauses between plan and apply for a named reviewer, and chains Ansible or Argo CD after the apply.",
+    },
+    {
+        icon: "mdi:key-chain-variant",
+        title: "Secrets stay in HashiCorp Vault",
+        text: "Kestra Enterprise reads secrets directly from Vault, including read-only secrets that teams keep managing in Vault. Crédit Agricole runs Kestra with Vault handling secret rotation at scale.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="HashiCorp">
+    <PartnerProfile
+        name="HashiCorp"
+        tagline="Terraform declares infrastructure as code and Vault keeps the secrets. Kestra brings the same model to orchestration: flows, namespaces and permissions live in Terraform, Terraform runs become governed steps in a flow, and credentials stay in Vault."
+        about="Kestra's <a href='https://registry.terraform.io/providers/kestra-io/kestra/latest'>Terraform provider</a> is a partner-tier provider on the Terraform Registry. It manages Kestra resources from flows and namespaces to users, roles and worker groups, so a Kestra instance is versioned and promoted like the rest of the infrastructure."
+        expertiseTitle="HashiCorp + Kestra: everything as code, from infrastructure to workflows"
+        expertise={expertise}
+        quote={quote}
+        facts={facts}
+        plugins={["plugin-terraform"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        secondary={{ text: "Provider docs", href: "/docs/terraform" }}
+        blueprints={{
+            query: "terraform",
+            title: '<span class="highlight">Terraform</span> Blueprints',
+        }}
+        closing={{
+            title: "Manage Kestra and your infrastructure the same way",
+            text: "Start with the provider docs, or orchestrate your Terraform runs from a blueprint below.",
+        }}
+        website="https://www.hashicorp.com/partners/tech/kestra-technologies?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

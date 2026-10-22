@@ -49,16 +49,17 @@ namespace: company.team
 
 tasks:
   - id: generate
-    type: io.kestra.plugin.core.debug.Return
-    format: |
-      [
-        {"name": "alpha", "value": 1},
-        {"name": "bravo", "value": 2}
-      ]
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: |
+        [
+          {"name": "alpha", "value": 1},
+          {"name": "bravo", "value": 2}
+        ]
 
   - id: loop
     type: io.kestra.plugin.core.flow.Loop
-    values: "{{ fromJson(outputs.generate.value) }}"
+    values: "{{ fromJson(outputs.generate.values.result) }}"
     tasks:
       - id: log_filtered
         type: io.kestra.plugin.core.log.Log

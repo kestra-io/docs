@@ -71,7 +71,7 @@ The global regulatory environment is a complex patchwork of national and regiona
 
 GDPR is the most influential data privacy regulation globally, and it is often misread as a residency law. It is not: GDPR does not require personal data to stay in the EU. What it regulates is [transfers outside the European Economic Area](https://www.edpb.europa.eu/sme-data-protection-guide/international-data-transfers_en). A transfer is allowed when the destination has an [adequacy decision](https://commission.europa.eu/law/law-topic/data-protection/international-dimension-data-protection/adequacy-decisions_en) from the European Commission, or when the organization puts safeguards in place, such as standard contractual clauses plus a transfer impact assessment.
 
-In practice, many companies still choose EU hosting, because it removes the transfer question entirely and is easier to explain to customers and auditors. That choice is a design decision, not a legal obligation, and it only works if every copy of the data, including backups, logs, and intermediate files, stays in the EU as well.
+In practice, many companies still choose EU hosting, because it removes the transfer question entirely and is easier to explain to customers and auditors. That choice is a design decision, not a legal obligation, and it only works if every copy of the data, including backups, logs, and intermediate files, stays in the EU as well. The rest of GDPR, such as retention limits, erasure requests, and audit trails, is covered in [GDPR compliant orchestration](/resources/infrastructure/gdpr-compliant-orchestration).
 
 ### The regulatory landscape in the United States
 
@@ -120,7 +120,7 @@ Kestra can run self-hosted in the region or private cloud of your choice, so the
 - **Tenants with dedicated storage and secrets:** each [tenant](/docs/enterprise/governance/tenants) can use its own internal storage bucket and secrets backend, for example one tenant per region. See [multi-tenancy orchestration](/resources/infrastructure/multi-tenancy-orchestration) for the isolation models.
 - **Policies:** a [policy](/docs/enterprise/governance/policies) can add the regional selector to every task in a namespace, so the rule is enforced by the platform instead of by each flow author.
 
-Public-sector organizations use this kind of setup when control over location is non-negotiable: [Dataport](/customers/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud with Kestra, a government-grade orchestration control plane.
+Public-sector organizations use this kind of setup when control over location is non-negotiable: [Dataport](/stories/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud with Kestra, a government-grade orchestration control plane.
 
 ### Example: Enforcing regional storage constraints in YAML
 

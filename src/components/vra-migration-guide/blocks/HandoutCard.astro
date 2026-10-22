@@ -1,0 +1,44 @@
+---
+interface Props {
+    id: string
+    appendix: string
+    title: string
+    pdfHref: string
+}
+
+const { id, appendix, title, pdfHref } = Astro.props
+---
+
+<div class="handout-card" id={id}>
+    <p class="appendix">{appendix}</p>
+    <h3 class="title">{title}</h3>
+    <slot />
+    <a class="btn btn-sm btn-secondary" href={pdfHref}>Download the PDF</a>
+</div>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .handout-card {
+        display: flex;
+        flex-direction: column;
+        padding: 1.1rem 1.2rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+        font-size: $font-size-sm;
+
+        .btn {
+            align-self: flex-start;
+            margin-top: auto;
+        }
+    }
+
+    .appendix {
+        @include guide-eyebrow;
+        margin: 0 0 0.35rem;
+    }
+
+    .title {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+    }
+</style>

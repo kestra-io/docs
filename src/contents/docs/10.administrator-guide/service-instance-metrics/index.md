@@ -15,7 +15,15 @@ The `kestra.metrics.sharedServiceInstanceMetrics` configuration lets you define 
 
 ## How it works
 
-The webserver runs a background task that polls the service instance repository every 30 seconds. For each running service instance whose type is listed in `sharedServiceInstanceMetrics`, it collects the configured metrics, sums the values across all instances of that type, and registers the results as Micrometer gauges. The webserver itself is excluded from this aggregation.
+A server started with `kestra server webserver` runs a background task that polls the service instance repository every 30 seconds. The task does not run on standalone servers. For each running service instance whose type is listed in `sharedServiceInstanceMetrics`, it collects the configured metrics, sums the values across all instances of that type, and registers the results as Micrometer gauges. Instances of the webserver's own type are excluded, so a `WEBSERVER` entry has no effect.
+
+Only metrics that a service includes in its heartbeat can be collected:
+
+| Service type | Metrics available |
+|---|---|
+| `WORKER` | `kestra.worker.job.thread`, `kestra.worker.max.concurrency`, `kestra.worker.running.count`, `kestra.worker.queue.size`, `kestra.worker.queue.remaining.capacity`, `kestra.worker.tasks.rate` |
+| `EXECUTOR` | `kestra.executor.thread.count` |
+| `CONTROLLER` | `kestra.controller.capacity.subscription.allocated`, `kestra.controller.capacity.subscription.used`, `kestra.controller.capacity.shared.allocated`, `kestra.controller.capacity.shared.used`, `kestra.controller.worker.group.job.inflight` |
 
 Metric tags are preserved, so you can still filter by dimensions such as `worker_group`.
 
@@ -34,9 +42,21 @@ kestra:
         - kestra.worker.job.pending
         - kestra.worker.job.thread
         - kestra.worker.job.running
+      WEBSERVER:
+        - kestra.queue.message.lag.count
 ```
 
-You can extend or replace these entries to expose any metric listed in the [Alerting and Monitoring](../03.monitoring/index.md) reference.
+Of these defaults, only `kestra.worker.job.thread` matches a published metric. To re-expose Worker capacity for autoscaling, replace the `WORKER` list with metrics from the table above:
+
+```yaml
+kestra:
+  metrics:
+    sharedServiceInstanceMetrics:
+      WORKER:
+        - kestra.worker.job.thread
+        - kestra.worker.max.concurrency
+        - kestra.worker.running.count
+```
 
 :::alert{type="info"}
 Metric names must include the prefix (e.g. `kestra.`) as configured in `kestra.metrics.prefix`.
@@ -46,8 +66,8 @@ Metric names must include the prefix (e.g. `kestra.`) as configured in `kestra.m
 
 | Property | Type | Description |
 |---|---|---|
-| `kestra.metrics.sharedServiceInstanceMetrics` | `Map<ServiceType, List<String>>` | Maps each service type to the metric names to collect and expose via the webserver. Defaults to an empty map. |
-| Key | `ServiceType` | One of `EXECUTOR`, `INDEXER`, `SCHEDULER`, `WEBSERVER`, `WORKER` |
+| `kestra.metrics.sharedServiceInstanceMetrics` | `Map<ServiceType, List<String>>` | Maps each service type to the metric names to collect and expose via the webserver. Defaults to the values shown above. |
+| Key | `ServiceType` | One of `EXECUTOR`, `INDEXER`, `SCHEDULER`, `WEBSERVER`, `WORKER`, `SYSTEM_WORKER`, `CONTROLLER` |
 | Value | List of `String` | Fully-qualified metric names to collect from instances of that type, including the configured prefix |
 
 ## Related
