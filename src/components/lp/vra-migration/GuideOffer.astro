@@ -1,0 +1,175 @@
+---
+/* The gated migration guide, offered in its own block right after the four
+ * stages it details. "What's inside" mirrors the guide page's list. The
+ * button opens the page's single download dialog (rendered by HeroActions). */
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+
+import bookMockup from "~/components/vra-migration-guide/assets/book-mockup.webp"
+import { DOWNLOAD_DIALOG_TARGET } from "~/components/vra-migration-guide/download"
+
+const inside = [
+    "The six parts of a vRA environment, and what happens to each one before a single workflow is converted",
+    "How to inventory, rationalize and classify vRO workflows into a few repeatable patterns",
+    "The four stages, from assessment and a measured proof of concept to ending the licence at renewal",
+    "A payback calculator: what leaving costs, and the month the move pays for itself",
+]
+---
+
+<section class="guide-offer">
+    <div class="inner">
+        <div class="cover" data-usal="fade-r delay-0 duration-500 ease-out">
+            <Image
+                src={bookMockup}
+                alt="The VMware vRA migration guide"
+                widths={[360, 720]}
+                sizes="(min-width: 992px) 360px, 70vw"
+                loading="lazy"
+            />
+        </div>
+
+        <div class="copy" data-usal="fade-l delay-100 duration-500 ease-out">
+            <h2>The vRA migration guide</h2>
+            <p class="lead-copy">
+                The full method behind this page, written for the team that runs
+                vRA and the people who sign off the move.
+            </p>
+            <ul class="points">
+                {
+                    inside.map((point) => (
+                        <li>
+                            <Icon
+                                name="mdi:check-circle-outline"
+                                class="check"
+                            />
+                            <span>{point}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+            <p class="meta">
+                Four enterprise VMware environments behind the method · Three
+                handouts for review teams
+            </p>
+            <button
+                type="button"
+                class="cta"
+                data-modal-target={DOWNLOAD_DIALOG_TARGET}
+            >
+                Get the guide (PDF)
+            </button>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .guide-offer {
+        padding: 5rem 1rem;
+        background-color: var(--lp-purple-light);
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+        max-width: 1040px;
+        margin-inline: auto;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            gap: 4rem;
+        }
+    }
+
+    .cover {
+        flex: 0 0 auto;
+        width: min(300px, 70vw);
+        @include media-breakpoint-up(lg) {
+            width: 360px;
+        }
+
+        :global(img) {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        min-width: 0;
+    }
+
+    h2 {
+        margin: 0;
+        color: var(--lp-content-primary);
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1.0417;
+        letter-spacing: -0.045rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .lead-copy {
+        margin: 0;
+        color: var(--lp-content-secondary);
+        font-size: 1.125rem;
+        line-height: 1.5;
+    }
+
+    .points {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: var(--lp-content-primary);
+            font-size: $font-size-md;
+            line-height: 1.5;
+        }
+    }
+
+    .check {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        margin-top: 0.125rem;
+        color: var(--lp-purple);
+    }
+
+    .meta {
+        margin: 0;
+        color: var(--lp-content-muted);
+        font-size: $font-size-sm;
+    }
+
+    .cta {
+        align-self: flex-start;
+        min-width: 160px;
+        height: 50px;
+        padding: 0.5rem 1.25rem;
+        border: 1px solid #ffffff;
+        border-radius: 8px;
+        background-color: var(--lp-purple);
+        color: #ffffff;
+        font-size: $font-size-lg;
+        font-weight: 700;
+        box-shadow:
+            inset 0 0 14px 0 #be62ff,
+            2px 2px 5.5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        &:hover {
+            background-color: #7737fe;
+        }
+    }
+</style>
