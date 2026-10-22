@@ -81,8 +81,8 @@ tasks:
     type: io.kestra.plugin.core.flow.Sequential
     tasks:
       - id: t1
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ taskrun.startDate }}"
       - id: t2
         type: io.kestra.plugin.core.flow.Sequential
         tasks:
@@ -90,8 +90,8 @@ tasks:
             type: io.kestra.plugin.core.execution.Fail
         errors:
           - id: error-t1
-            type: io.kestra.plugin.core.debug.Return
-            format: "Error in {{ task.id }}"
+            type: io.kestra.plugin.core.log.Log
+            message: "Error in {{ task.id }}"
 ```
 
 ## `allowFailure` and `allowWarning` properties
@@ -110,16 +110,16 @@ description: Allows a task failure and continues downstream; execution finishes 
 
 tasks:
   - id: first
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 
   - id: allow_failure
     type: io.kestra.plugin.core.execution.Fail
     allowFailure: true
 
   - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
 `allowWarning` works the same way, but the execution finishes in a `SUCCESS` state even if warnings occur:
@@ -132,8 +132,8 @@ description: Allows a task warning and continues downstream; execution finishes 
 
 tasks:
   - id: first
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 
   - id: allow_warning
     type: io.kestra.plugin.scripts.python.Script

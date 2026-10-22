@@ -63,7 +63,7 @@ Traditionally, underwriting relied on broad demographic categories. Predictive m
 
 ### Optimizing Claims Processing and Fraud Detection
 
-By analyzing patterns in historical claims data, predictive models can identify claims that have a high probability of being fraudulent. This allows insurers to flag suspicious claims for manual review, significantly reducing losses. The same detection pattern runs outside insurance too: in cybersecurity analytics, [JPMorgan Chase](/customers/jpmorgan-chase) orchestrates thousands of API pulls a week across billions of rows to surface threats. Models can also predict the likely cost of a claim early in the process, enabling better reserve management and faster, more accurate settlements.
+By analyzing patterns in historical claims data, predictive models can identify claims that have a high probability of being fraudulent. This allows insurers to flag suspicious claims for manual review, significantly reducing losses. The same detection pattern runs outside insurance too: in cybersecurity analytics, [JPMorgan Chase](/stories/jpmorgan-chase) orchestrates thousands of API pulls a week across billions of rows to surface threats. Models can also predict the likely cost of a claim early in the process, enabling better reserve management and faster, more accurate settlements.
 
 ### Personalizing Customer Experiences and Retention Strategies
 
@@ -247,7 +247,7 @@ Despite the clear benefits, implementation can be challenging. Hurdles include l
 
 ### Companies Leading with Predictive Analytics
 
-Many established insurers like Allstate, Liberty Mutual, and Nationwide have heavily invested in predictive analytics capabilities. Tech-forward companies are using it to power their entire business model. The same orchestration layer is in production in other regulated industries: [CAGIP, Crédit Agricole's IT production arm](/customers/credit-agricole), runs infrastructure operations and data workflows across more than 100 clusters, and [Gravitee](/customers/gravitee) combines orchestration and AI to generate API documentation and optimize its ML workflows.
+Many established insurers like Allstate, Liberty Mutual, and Nationwide have heavily invested in predictive analytics capabilities. Tech-forward companies are using it to power their entire business model. The same orchestration layer is in production in other regulated industries: [CAGIP, Crédit Agricole's IT production arm](/stories/credit-agricole), runs infrastructure operations and data workflows across more than 100 clusters, and [Gravitee](/stories/gravitee) combines orchestration and AI to generate API documentation and optimize its ML workflows.
 
 ## Related Concepts
 

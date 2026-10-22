@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger flows automatically in response to web-based events.
 
-A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) start new executions in Kestra. Each webhook URL requires a secret `key`. Store the key value in [Kestra Secrets](../../../07.enterprise/02.governance/secrets/index.md) and reference it from the trigger definition; never hardcode a key directly in the flow YAML. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL.
+A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) start new executions in Kestra. Each webhook URL requires a secret `key`. Store the key value in [Kestra Secrets](../../../06.concepts/04.secret/index.md) and reference it from the trigger definition; never hardcode a key directly in the flow YAML. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -155,6 +155,35 @@ triggers:
 
 Stored bytes are scoped to the execution and purged with it. If no execution is created (for example, because a `when` condition vetoed the request), stored bytes are cleaned up automatically.
 
+## Pass request data to scripts through environment variables
+
+Anyone who has the webhook URL can call it without signing in to Kestra; the `key` is the only check. Treat everything the caller sends (`trigger.body`, `trigger.headers`, `trigger.parameters`, `trigger.formFields`) as untrusted input.
+
+In script tasks, Kestra renders expressions in `commands`, `beforeCommands`, `script`, and `interpreter` before the interpreter runs, so a request value written there becomes part of the code. With the shell `Commands` task below, a body of `{"name": "$(id)"}` runs the `id` command, even inside double quotes:
+
+```yaml
+# Unsafe: the request body becomes shell code
+- id: greet
+  type: io.kestra.plugin.scripts.shell.Commands
+  commands:
+    - echo "Hello {{ trigger.body.name }}"
+```
+
+Pass the value through `env` instead. The interpreter receives it as data and never parses it as code:
+
+```yaml
+- id: greet
+  type: io.kestra.plugin.scripts.shell.Commands
+  env:
+    NAME: "{{ trigger.body.name }}"
+  commands:
+    - echo "Hello $NAME"
+```
+
+The same applies to other languages: in a Python `Script`, read the value with `os.environ["NAME"]` rather than writing `{{ trigger.body.name }}` into the script. To pass a whole JSON body, set `BODY: "{{ trigger.body | toJson }}"` and parse it in the script. Never wrap request data in the `render()` function, which evaluates any expression the caller sends.
+
+See [Security hardening](../../../security-hardening/index.md#webhook-endpoints) for how to protect the webhook endpoint itself.
+
 ## Filtering webhook executions with `when`
 
 Use the `when` property to conditionally fire the trigger based on the request body or headers. The `when` value is a [Pebble expression](../../../expressions/index.mdx) evaluated against the incoming request. If the expression evaluates to a falsy value, Kestra ignores the request and no execution is created.
@@ -217,13 +246,14 @@ namespace: company.team
 
 tasks:
   - id: make_payload
-    type: io.kestra.plugin.core.debug.Return
-    format: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
 
 outputs:
   - id: greeting
     type: STRING
-    value: "{{ outputs.make_payload.value }}"
+    value: "{{ outputs.make_payload.values.result }}"
 
 triggers:
   - id: webhook

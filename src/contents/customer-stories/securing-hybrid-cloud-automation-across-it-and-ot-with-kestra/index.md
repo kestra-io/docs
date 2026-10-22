@@ -118,6 +118,8 @@ Or as one engineer described the experience:
 > “Everything come from the UI with dynamic dropdown and then the magic green button and off we go.”
 > 
 
-## What’s next
+## Where they are now
 
-The rollout is intentionally phased. The company expects a transition period where both the legacy orchestrator and Kestra coexist while workflows migrate and remaining management interfaces are realigned to their target OT tenancies. But the direction is clear: Kestra is **becoming the control plane pattern for hybrid cloud automations** that must operate safely across multiple OT environments.
+The rollout ran in phases, with the legacy orchestrator and Kestra running side by side while workflows moved and management interfaces were realigned to their target OT tenancies. The migration was completed in April 2026, roughly twelve months after the proof of concept began. Kestra is now **the control plane pattern for hybrid cloud automations** that must operate safely across multiple OT environments.
+
+The approach they followed, from inventorying the estate to retiring vRA, is written up in our [vRA to Kestra migration guide](/resources/migration/vra).

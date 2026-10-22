@@ -54,8 +54,8 @@ namespace: company.team
 
 tasks:
   - id: t1
-    type: io.kestra.plugin.core.debug.Return
-    format: |
+    type: io.kestra.plugin.core.log.Log
+    message: |
       Lorem Ipsum is simply dummy text of the printing
       .....
       500 lines later
@@ -69,8 +69,8 @@ namespace: company.team
 
 tasks:
   - id: t1
-    type: io.kestra.plugin.core.debug.Return
-    format: "[[> lorem.txt]]"
+    type: io.kestra.plugin.core.log.Log
+    message: "[[> lorem.txt]]"
 ```
 
 Then, create a local file named `lorem.txt` containing your text.

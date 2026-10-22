@@ -76,7 +76,7 @@ triggers:
 This runs at `12:00` on the last day of every month, including shorter months like February.
 
 :::alert{type="warning"}
-Schedules cannot **overlap**, meaning concurrent schedule executions are not allowed. If the previous schedule is not ended when the next one must start, the scheduler will wait until the end of the previous one. The same applies during backfills.
+By default, schedules don't **overlap**. With `allowConcurrent: false`, the default, the trigger stays locked while its execution runs and creates no new execution until that execution ends. The same applies during backfills. Set `allowConcurrent: true` to let executions from this trigger overlap.
 :::
 
 :::alert{type="info"}
@@ -177,16 +177,18 @@ Delete a backfill from **Tenant → Triggers**. Select the trigger and remove th
 
 ![Tenant Triggers view with a trigger selected and Delete backfills action highlighted in the toolbar](./delete-backfills.png)
 
-Deleting a backfill only cancels the scheduled catch-up executions. This is different from **Delete trigger**, which clears the trigger state itself (effectively recreating the trigger so it starts evaluating from the current time). Use **Delete backfill** to stop pending replays, and **Delete trigger** when you need to reset a stuck trigger or start it fresh.
+Deleting a backfill only cancels the scheduled catch-up executions. This is different from **Delete trigger**, which removes the trigger's stored state, including its lock, next evaluation date, and any backfill. Use **Delete backfill** to stop pending replays. To release a trigger locked by an execution, see [unlocking triggers](../index.mdx#unlocking-enabling-and-disabling-triggers).
 
 #### Trigger backfill via API
 
-Use the `PUT /api/v1/{tenant}/triggers` endpoint with a `backfill` body. `start` is required; `end` defaults to the current time if omitted. Use `inputs` to pass flow inputs and `labels` to tag the resulting executions for tracking.
+Use the `PUT /api/v1/{tenant}/triggers/backfill/create` endpoint with a `backfill` body. `start` is required; `end` defaults to the current time if omitted. Use `inputs` to pass flow inputs and `labels` to tag the resulting executions for tracking.
+
+A trigger can have only one backfill at a time. Creating a second backfill on the same trigger returns `409 Conflict`; delete the existing backfill first. Pause, resume, and delete a backfill with `PUT /api/v1/{tenant}/triggers/backfill/pause`, `PUT /api/v1/{tenant}/triggers/backfill/unpause`, and `POST /api/v1/{tenant}/triggers/backfill/delete`.
 
 **cURL:**
 
 ```sh
-curl -X PUT http://localhost:8080/api/v1/main/triggers \
+curl -X PUT http://localhost:8080/api/v1/main/triggers/backfill/create \
   -H "Authorization: Bearer $KESTRA_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -212,7 +214,7 @@ curl -X PUT http://localhost:8080/api/v1/main/triggers \
 import requests, json
 
 response = requests.put(
-    "http://localhost:8080/api/v1/main/triggers",
+    "http://localhost:8080/api/v1/main/triggers/backfill/create",
     headers={"Content-Type": "application/json"},
     data=json.dumps({
         "namespace": "company.team",

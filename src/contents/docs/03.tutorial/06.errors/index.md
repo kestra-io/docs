@@ -186,8 +186,8 @@ tasks:
 
 errors:
   - id: will_never_run
-    type: io.kestra.plugin.core.debug.Return
-    format: This will never be executed as retries will fix the issue
+    type: io.kestra.plugin.core.log.Log
+    message: "This will never be executed as retries will fix the issue."
 ```
 
 ### Adding a retry configuration to our tutorial workflow

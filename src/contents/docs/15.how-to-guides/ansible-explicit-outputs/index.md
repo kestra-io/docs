@@ -9,7 +9,7 @@ description: Use the bundled kestra Ansible module and outputsMode EXPLICIT to d
 
 By default, the [AnsibleCLI](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli) task captures the full result payload from every Ansible module on every host, including `module_args` and raw return values. If your playbooks handle credentials, connection strings, or host-specific secrets, that raw output lands in Kestra's internal storage where it is visible to anyone with execution access.
 
-Setting `outputsMode: EXPLICIT` changes this behavior. Only the values you declare with the bundled `kestra` Ansible module appear in `vars.outputs`. Everything else in `vars.playbooks` is reduced to a status flag (`changed: true/false`), preserving play-level observability without leaking host data.
+Setting `outputsMode: EXPLICIT` changes this behavior. Every per-host result in `playbooks` is reduced to a status flag (`changed: true/false`, plus `msg` for failed or unreachable hosts), preserving play-level observability without leaking host data. Only the values you declare with the bundled `kestra` Ansible module are exposed, under `vars.outputs`.
 
 ## How it works
 
@@ -17,7 +17,7 @@ When `outputsMode: EXPLICIT` is set, the AnsibleCLI task passes `KESTRA_OUTPUTS_
 
 1. Collects outputs only from `kestra` module calls — `kestra: outputs: { key: value }` in your playbook.
 2. Merges all declared outputs into a single flat dict (last write wins across hosts and module calls).
-3. Replaces each host's full result payload in `vars.playbooks` with `{"changed": <bool>}`. Failures and unreachable hosts also retain `msg`.
+3. Replaces each host's full result payload in `playbooks` with `{"changed": <bool>}`. Failures and unreachable hosts also retain `msg`.
 4. Preserves task status (ok, failed, skipped, unreachable) so you can still inspect play health.
 
 The `kestra` module is bundled with the plugin and injected automatically — no extra installation is needed.
@@ -94,7 +94,7 @@ Do not call the `kestra` module inside an Ansible `loop:`. Ansible aggregates lo
 
 ## Access outputs downstream
 
-Declared outputs are available under `vars.outputs` exactly as in `ALL` mode:
+Declared outputs are available under `outputs.<task_id>.vars.outputs`:
 
 ```yaml
 - id: next_task
@@ -106,34 +106,83 @@ Where `run_playbook` is the `id` of your `AnsibleCLI` task and `app_version` is 
 
 ## Output structure: ALL vs EXPLICIT
 
-The shape of `vars.outputs` differs between the two modes.
+Both modes share the same `vars.outputs` shape — a flat map of keys declared via `kestra: outputs:` (empty if none were declared). The difference is what each host keeps in `playbooks`, where `hosts` is a list of `{host, status, result}` entries.
 
-**ALL mode** (default): a list of per-host result dicts — each entry contains the full Ansible result object for that host.
-
-```json
-[
-  {
-    "host": "web-01",
-    "ok": {
-      "changed": true,
-      "stdout": "1.4.2",
-      "module_args": { ... }
-    }
-  }
-]
-```
-
-**EXPLICIT mode**: a flat dict of the keys you declared — merged across all hosts and `kestra` module calls.
+**ALL mode** (default): each host's `result` is the Ansible result payload. With the default `resultsStorage: STORE`, `playbooks` holds a light result (`changed`, `failed`, `skipped`, `unreachable`, `rc`, `msg`), and the full result, including `stdout`, is in the file at `resultsUri`.
 
 ```json
 {
-  "app_version": "1.4.2",
-  "db_host": "pg-prod.internal"
+  "vars": {
+    "outputs": {
+      "app_version": "1.4.2"
+    }
+  },
+  "playbooks": [
+    {
+      "plays": [
+        {
+          "tasks": [
+            {
+              "name": "Gather app version",
+              "hosts": [
+                { "host": "web-01", "status": "ok", "result": { "changed": true, "rc": 0 } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 ```
 
-:::alert{type="warning"}
-Switching between `ALL` and `EXPLICIT` changes the type of `vars.outputs` from a list to a dict. Update any downstream expressions that iterate over the list if you migrate an existing flow.
+**EXPLICIT mode**: each host's `result` is replaced with `{"changed": <bool>}` (plus `msg` for failed or unreachable hosts). `vars.outputs` still contains only the declared `kestra` module values.
+
+```json
+{
+  "vars": {
+    "outputs": {
+      "app_version": "1.4.2"
+    }
+  },
+  "playbooks": [
+    {
+      "plays": [
+        {
+          "tasks": [
+            {
+              "name": "Gather app version",
+              "hosts": [
+                { "host": "web-01", "status": "ok", "result": { "changed": true } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+By default, full per-host results are offloaded to a file at `resultsUri` (`resultsStorage: STORE`), and `playbooks` keeps a light result per host. Set `resultsStorage: INLINE` to keep the full results in `playbooks`, for example when a downstream task templates `stdout`. See [`resultsStorage` and `resultsUri`](#resultsstorage-and-resultsuri) for details and size limits.
+
+## `resultsStorage` and `resultsUri`
+
+By default (`resultsStorage: STORE`), AnsibleCLI writes the full per-host Ansible results to a file in internal storage, available at `outputs.<task_id>.resultsUri`. `playbooks` keeps a light result per host: `changed`, `failed`, `skipped`, `unreachable`, `rc`, `msg` (cut to 1 KB) and, for failed or unreachable hosts, the last 1 KB of `stderr`. The output of `debug` tasks is kept inline. Read the full results downstream with `{{ read(outputs.<task_id>.resultsUri) }}`.
+
+Set `resultsStorage: INLINE` to keep full results inside `playbooks` directly. Use this when a downstream task templates `stdout` or other fields that are not in the light result. Inline results count toward `maxOutputsSize` (default 10 MB), so large playbooks with many hosts can hit that limit.
+
+```yaml
+tasks:
+  - id: run_playbook
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    resultsStorage: INLINE
+    outputsMode: EXPLICIT
+    ...
+```
+
+:::alert{type="info"}
+`stdout_lines` and `stderr_lines` fields are no longer included in host results. To work with output line-by-line, split `stdout` on newlines downstream. `stdout` is only inline with `resultsStorage: INLINE`, for example: `{{ outputs.run_playbook.playbooks[0].plays[0].tasks[0].hosts[0].result.stdout | split('\n') }}`. Otherwise, read it from the `resultsUri` file.
 :::
 
 ## Multi-host output merging
@@ -210,20 +259,34 @@ tasks:
     outputsMode: EXPLICIT
     ansibleConfig: |
       [defaults]
-      library = ./library
-      stdout_callback = kestra_logger
+      callback_plugins  = ./callback_plugins
       callbacks_enabled = kestra_logger
+      stdout_callback   = ansible.builtin.null
+      library           = ./library
     commands:
       - ansible-playbook -i hosts playbook.yml
 ```
 
 :::alert{type="warning"}
-The exact `ansibleConfig` lines required alongside `library = ./library` depend on how the plugin configures the callback. Confirm the required fields in a test run before deploying to production. A missing callback line will silently fall back to `ALL` mode behavior.
+`kestra_logger` is an aggregate callback and must be listed under `callbacks_enabled`, not `stdout_callback`. Setting `stdout_callback = ansible.builtin.null` suppresses the default per-host output renderer, which would otherwise produce output that `outputsMode: EXPLICIT` cannot redact.
 :::
+
+## Upgrading from plugin-ansible v1.x
+
+Plugin-ansible v2.0.0 changed the output shape. Flows that read AnsibleCLI outputs downstream will need updating.
+
+| What changed | Old expression | New expression |
+|---|---|---|
+| `vars.playbooks` removed | `outputs.<id>.vars.playbooks[...]` | `outputs.<id>.playbooks[...]` |
+| `vars.outputs` in ALL mode no longer holds raw host results | `outputs.<id>.vars.outputs[0].host` | `outputs.<id>.playbooks[0].plays[0].tasks[0].hosts[0].host` (payload under `.result`, or read `resultsUri`). `vars.outputs` now holds the `kestra` module values in both modes |
+| Full per-host results offloaded by default | `outputs.<id>.playbooks[...].hosts[0].result.stdout` | `{{ read(outputs.<id>.resultsUri) }}` or set `resultsStorage: INLINE` |
+| `stdout_lines` / `stderr_lines` removed | `outputs.<id>.playbooks[...].hosts[0].result.stdout_lines` | Split `result.stdout` on newlines downstream |
+
+`maxOutputsSize` now measures the whole serialized task output rather than just the playbooks payload. If tasks start failing with an oversized output error, raise `maxOutputsSize`, switch to `resultsStorage: STORE`, or use `outputsMode: EXPLICIT`.
 
 ## What EXPLICIT mode does not protect
 
-`outputsMode: EXPLICIT` controls the `vars.outputs` payload. It does not affect:
+`outputsMode: EXPLICIT` controls what is stripped from each host's `result` in `playbooks`. It does not affect:
 
 - **Ansible verbose logging** (`-v`, `-vv`, etc.) — verbose output still appears in task logs.
 - **`log_path`** in `ansible.cfg` — if set, Ansible writes its full log to that path.
