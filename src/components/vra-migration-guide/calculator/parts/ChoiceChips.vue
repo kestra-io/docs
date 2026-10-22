@@ -1,10 +1,13 @@
 <template>
     <fieldset class="choice-chips">
         <legend class="label-row">
-            <span class="form-label">{{ label }}</span>
-            <InfoTip v-if="$slots.info" :label="label">
-                <slot name="info" />
-            </InfoTip>
+            <span class="form-label"
+                >{{ labelHead
+                }}<span class="label-tail"
+                    >{{ labelTail
+                    }}<InfoTip v-if="$slots.info" class="info" :label="label">
+                        <slot name="info" /> </InfoTip></span
+            ></span>
         </legend>
         <div class="chips">
             <button
@@ -71,6 +74,13 @@
         },
     )
 
+    const labelHead = computed(() =>
+        props.label.slice(0, props.label.lastIndexOf(" ") + 1),
+    )
+    const labelTail = computed(() =>
+        props.label.slice(props.label.lastIndexOf(" ") + 1),
+    )
+
     const model = defineModel<InputValue>({ required: true })
 
     /**
@@ -115,6 +125,19 @@
 
         .form-label {
             @include calc-form-label;
+        }
+
+        // Keeps the info icon on the line of the label's last word.
+        .label-tail {
+            white-space: nowrap;
+
+            :deep(.ks-tooltip) {
+                white-space: normal;
+            }
+        }
+
+        .info {
+            margin-left: 0.375rem;
         }
     }
 
