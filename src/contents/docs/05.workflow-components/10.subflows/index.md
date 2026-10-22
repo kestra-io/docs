@@ -83,7 +83,7 @@ tasks:
 | `labels`               | Labels assigned to the subflow                                             |
 | `outputs` (deprecated) | Passes subflow outputs to the parent flow. Use [flow outputs](../06.outputs/index.md#pass-data-between-flows-using-flow-outputs) instead. |
 | `revision`             | The subflow revision to execute (defaults to the latest)                   |
-| `scheduleDate`         | Schedule subflow execution on a specific date rather than immediately.      |
+| `scheduleDate`         | Schedule subflow execution on a specific date rather than immediately. To move the date before the execution starts, [reschedule it via the API](../03.execution/index.md#schedule-and-reschedule-an-execution). |
 | `transmitFailed`       | If true, parent flow fails on subflow failure (requires `wait` to be true). |
 | `wait`                 | If true, parent flow waits for subflow completion (default: true).         |
 

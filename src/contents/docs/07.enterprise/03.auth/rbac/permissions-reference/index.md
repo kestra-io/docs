@@ -120,7 +120,7 @@ Notes
 - `EXPORT`: export execution data as CSV.
 - `UNQUEUE`: move a queued execution out of the queue.
 - `FORCE_RUN`: force a paused or queued execution to run immediately.
-- `UPDATE`: change the state of a task run within an execution.
+- `UPDATE`: change the state of an execution or of a task run within it, and reschedule an execution that has not started.
 
 **Endpoints**
 
@@ -214,6 +214,7 @@ UPDATE
 - `POST /api/v1/{tenant}/executions/change-status/by-ids`
 - `POST /api/v1/{tenant}/executions/change-status/by-query`
 - `POST /api/v1/{tenant}/executions/{executionId}/actions/state`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/reschedule`
 
 Notes
 - Webhook execution endpoints are authorized by webhook key only; RBAC is not checked.
