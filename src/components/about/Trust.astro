@@ -105,6 +105,12 @@ const ITEMS = [
     // Placeholder blocks until the illustrations are designed.
     .tile {
         aspect-ratio: 1;
+
+        // Squares get too tall at full width on phones.
+        @include media-breakpoint-down(sm) {
+            aspect-ratio: 2 / 1;
+        }
+
         margin-bottom: 1.25rem;
         border-radius: 8px;
         background: #111114;

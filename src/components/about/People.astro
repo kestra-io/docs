@@ -159,6 +159,10 @@ const LEADERS = [
         font-size: $font-size-xl;
         font-weight: 600;
         letter-spacing: -0.015em;
+
+        @include media-breakpoint-down(sm) {
+            font-size: $font-size-lg;
+        }
     }
 
     .role {

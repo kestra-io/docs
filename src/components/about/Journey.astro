@@ -73,12 +73,20 @@ const MILESTONES = [
         padding: 1.5rem 1.5rem 2rem;
         border-radius: 8px;
         background: var(--ks-background-secondary);
+
+        @include media-breakpoint-down(md) {
+            padding: 1.25rem 1.25rem 1.5rem;
+        }
     }
 
     .year {
         display: block;
         margin-bottom: 1rem;
         font-size: $font-size-xl;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 0.5rem;
+        }
         font-weight: 600;
         color: var(--ks-content-primary);
     }

@@ -244,9 +244,28 @@ const storyHref = (company?: string) => {
                 border-color: var(--ks-content-primary);
             }
 
+            // On touch screens the whole cell opens the story; a small arrow
+            // in the corner says so.
             @media (hover: none) {
+                inset: 0;
+                left: 0;
+                bottom: 0;
+                padding: 0;
+                border: 0;
+                border-radius: 0;
+                background: none;
+                font-size: 0;
                 opacity: 1;
-                transform: translate(-50%, 0);
+                transform: none;
+
+                &::after {
+                    content: "↗";
+                    position: absolute;
+                    top: 0.5rem;
+                    right: 0.625rem;
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-tertiary);
+                }
             }
         }
 
