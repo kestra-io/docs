@@ -35,7 +35,7 @@ const NUMBERS = [
     <div class="container">
         {
             NUMBERS.map((n) => (
-                <div class="row">
+                <div class="stat">
                     <div class="text">
                         <h2>{n.label}</h2>
                         <p>{n.text}</p>
@@ -83,10 +83,19 @@ const NUMBERS = [
         },
         { threshold: 0.6 },
     )
-    if (!reduced)
+    // Runs on every page arrival: the site swaps pages client side.
+    function init() {
         document
-            .querySelectorAll<HTMLElement>(".numbers [data-count]")
-            .forEach((el) => io.observe(el))
+            .querySelectorAll<HTMLElement>(
+                ".numbers [data-count]:not([data-ready])",
+            )
+            .forEach((el) => {
+                el.dataset.ready = "true"
+                if (!reduced) io.observe(el)
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
 </script>
 
 <style lang="scss">
@@ -97,14 +106,14 @@ const NUMBERS = [
         border-bottom: 1px solid var(--ks-border-primary);
     }
 
-    .row {
+    .stat {
         display: grid;
         grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
         gap: 2rem 4rem;
         align-items: center;
         padding: 5rem 0;
 
-        & + .row {
+        & + .stat {
             border-top: 1px solid var(--ks-border-secondary);
         }
 
