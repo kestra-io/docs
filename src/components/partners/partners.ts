@@ -7,7 +7,7 @@ import airbyte from "./assets/airbyte.svg"
 import davidson from "./assets/davidson.svg"
 import snowflake from "./assets/snowflake.svg"
 import converteo from "./assets/converteo.svg"
-import terraform from "./assets/terraform.svg"
+import hashicorp from "./assets/hashicorp.svg"
 import databricks from "./assets/databricks.svg"
 import hanalytics from "./assets/hanalytics.svg"
 import motherduck from "./assets/motherduck.svg"
@@ -76,7 +76,7 @@ export const PARTNERS: Partner[] = [
         type: "Technology",
         description:
             "Snowflake's platform enables a wide range of workloads including data warehousing, data lakes, and data engineering.",
-        href: "https://www.snowflake.com/",
+        href: "/partners/snowflake",
     },
     {
         name: "Modeo",
@@ -103,16 +103,16 @@ export const PARTNERS: Partner[] = [
         href: "/partners/converteo",
     },
     {
-        name: "Terraform",
+        name: "HashiCorp",
         kind: "Infrastructure",
         country: "United States",
         region: "North America",
-        services: ["Infrastructure as code"],
-        logo: terraform,
+        services: ["Infrastructure as code", "Secrets management"],
+        logo: hashicorp,
         type: "Technology",
         description:
-            "Terraform lets you provision and version infrastructure as code. With Kestra, you can orchestrate Terraform runs reliably in automated workflows.",
-        href: "https://www.terraform.io/",
+            "Manage Kestra with the official Terraform provider, run Terraform plan and apply as governed steps in a flow, and read secrets from HashiCorp Vault.",
+        href: "/partners/hashicorp",
     },
     {
         name: "Databricks",
@@ -124,7 +124,7 @@ export const PARTNERS: Partner[] = [
         type: "Technology",
         description:
             "Databricks provides a unified analytics platform for data engineering, data science, and machine learning.",
-        href: "https://www.databricks.com/",
+        href: "/partners/databricks",
     },
     {
         name: "Dremio",
@@ -136,7 +136,7 @@ export const PARTNERS: Partner[] = [
         type: "Technology",
         description:
             "Dremio is the easy and open data lakehouse platform that delivers self-service analytics and data management.",
-        href: "https://www.dremio.com/",
+        href: "/partners/dremio",
     },
     {
         name: "Davidson",
@@ -160,7 +160,7 @@ export const PARTNERS: Partner[] = [
         type: "Technology",
         description:
             "Airbyte is an open-source data integration platform that helps you move data from any source to any destination.",
-        href: "https://airbyte.com/",
+        href: "/partners/airbyte",
     },
     {
         name: "Hanalytics",
@@ -175,7 +175,7 @@ export const PARTNERS: Partner[] = [
         href: "/partners/hanalytics",
     },
     {
-        name: "dlthub",
+        name: "dltHub",
         kind: "Data integration",
         country: "Germany",
         region: "Europe",
@@ -184,7 +184,7 @@ export const PARTNERS: Partner[] = [
         type: "Technology",
         description:
             "dlthub provides declarative data loading tools to build robust and scalable data pipelines.",
-        href: "https://dlthub.com/",
+        href: "/partners/dlthub",
     },
     {
         name: "MotherDuck",
@@ -196,7 +196,7 @@ export const PARTNERS: Partner[] = [
         type: "Technology",
         description:
             "MotherDuck is a serverless data platform built on DuckDB, designed for performant and simple data analytics.",
-        href: "https://motherduck.com/",
+        href: "/partners/motherduck",
     },
     {
         name: "Ntico",
