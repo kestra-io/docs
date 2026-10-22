@@ -2,75 +2,78 @@
 import Layout from "~/components/layout.astro"
 import PartnerProfile from "~/components/partners/PartnerProfile.astro"
 
-const title =
-    "Modeo & Kestra : Data Platforms modernes et orchestration DataOps"
+const title = "Modeo & Kestra: Modern Data Platforms and DataOps Orchestration"
 const description =
-    "Modeo, cabinet indépendant 100 % data et IA, conçoit et industrialise des Data Platforms modernes et souveraines avec Kestra pour orchestrer l'ensemble des flux de données."
+    "Modeo, an independent data and AI consultancy, designs and industrializes modern, sovereign Data Platforms with Kestra orchestrating every data flow."
 
 const facts = [
-    { label: "Siège", value: "Paris, France" },
+    { label: "Headquarters", value: "Paris, France" },
     {
-        label: "Expertise Kestra",
-        value: "Orchestration de Data Platforms et DataOps",
+        label: "Kestra expertise",
+        value: "Data Platform orchestration and DataOps",
     },
     {
-        label: "Profil",
-        value: "Cabinet indépendant 100 % data et IA : plus de 30 data & AI engineers et plus de 100 Data Platforms construites",
+        label: "Profile",
+        value: "Independent 100% data and AI consultancy: 30+ data and AI engineers and 100+ Data Platforms built",
     },
 ]
 
 const quote = {
-    text: "Kestra est devenue la solution d'orchestration de référence que nous proposons aux entreprises que nous accompagnons. Sa simplicité de prise en main et de maintenance ainsi que l'étendue de ses fonctionnalités en font une solution extrêmement performante pour orchestrer des pipelines data.",
+    text: "Kestra has become the orchestration solution we recommend by default to the companies we work with. It is easy to adopt and maintain, and its breadth of features makes it extremely effective for orchestrating data pipelines.",
     author: "Matthieu Rousseau",
-    role: "Fondateur, Modeo",
+    role: "Founder, Modeo (translated from French)",
 }
 
 const expertise = [
     {
         icon: "mdi:sitemap-outline",
-        title: "Audit et architecture Data",
-        text: "Modeo audite l'infrastructure existante, recense les contraintes (souveraineté, RGPD, coûts, empreinte carbone) et compare plusieurs scénarios d'architecture, brique par brique, de l'ingestion à l'activation. Kestra y tient le rôle d'orchestrateur central : un seul endroit pour déclencher, superviser et relancer tous les traitements.",
+        title: "Data audit and architecture",
+        text: "Modeo audits the existing infrastructure, maps the constraints (sovereignty, GDPR, cost, carbon footprint) and compares architecture scenarios component by component, from ingestion to activation. Kestra is the central orchestrator: one place to trigger, monitor and rerun every job.",
     },
     {
         icon: "mdi:database-cog-outline",
-        title: "Data Platforms de bout en bout",
-        text: "Ingestion, entrepôt de données, transformation SQL avec dbt, observabilité : Modeo construit la plateforme complète et confie à Kestra la synchronisation des chargements et des transformations. Les flows sont déclarés en YAML, versionnés dans Git et déclenchés par planification ou par événement.",
+        title: "End-to-end Data Platforms",
+        text: "Ingestion, data warehouse, SQL transformation with dbt, observability: Modeo builds the full platform and hands Kestra the coordination of loads and transformations. Flows are declared in YAML, versioned in Git and triggered on a schedule or by events.",
     },
     {
         icon: "mdi:source-branch",
-        title: "DataOps et industrialisation",
-        text: "CI/CD générique, projets templates, tests de qualité et monitoring des flux : Modeo standardise la façon dont les équipes data travaillent. Avec Kestra, chaque pipeline suit le même cycle de revue et de déploiement, et l'ajout d'une nouvelle source devient une tâche standard plutôt qu'un projet.",
+        title: "DataOps and industrialization",
+        text: "Generic CI/CD, template projects, quality tests and flow monitoring: Modeo standardizes how data teams work. With Kestra, every pipeline follows the same review and deployment cycle, and adding a new source becomes a routine task rather than a project.",
     },
     {
         icon: "mdi:swap-horizontal",
-        title: "Migration des stacks legacy",
-        text: "Scripts cron, ETL vieillissants, orchestrateurs hérités : Modeo cartographie les cas d'usage et les migre par étapes vers des flows Kestra. La méthode est celle de ses migrations de Data Platform : audit, migration cas d'usage par cas d'usage et continuité de service pendant la bascule.",
+        title: "Legacy stack migration",
+        text: "Cron scripts, aging ETL, legacy orchestrators: Modeo maps the use cases and migrates them step by step to Kestra flows, with the same method it uses for Data Platform migrations: audit, migration one use case at a time, and service continuity during the switch.",
     },
     {
         icon: "mdi:school-outline",
-        title: "Formation et autonomie des équipes",
-        text: "Formations, ateliers pratiques et offre de service data : Modeo rend les équipes autonomes sur la plateforme et sur Kestra, pour qu'elles lancent leurs nouveaux cas d'usage sans dépendre d'un prestataire.",
+        title: "Training and team autonomy",
+        text: "Training, hands-on workshops and a data service offer: Modeo makes teams autonomous on the platform and on Kestra, so they launch new use cases without depending on a contractor.",
     },
 ]
 ---
 
-<Layout {title} {description} lang="fr" breadcrumbTitle="Modeo">
+<Layout {title} {description} breadcrumbTitle="Modeo">
     <PartnerProfile
-        lang="fr"
+        languages={[
+            { code: "en", label: "English", href: "/partners/modeo" },
+            { code: "fr", label: "Français", href: "/partners/modeo/fr" },
+        ]}
+        languageNote="Modeo works with customers in French."
         name="Modeo"
-        tagline="Modeo conçoit, déploie et fait évoluer des Data Platforms modernes et souveraines, avec Kestra pour orchestrer l'ensemble des flux."
-        about="Fondé par Matthieu Rousseau, expert en Data Engineering et DataOps, Modeo accompagne grands groupes, ETI, PME et start-ups, de l'audit à la mise en production. Kestra, orchestrateur open source né en France, s'intègre naturellement dans les stacks souveraines que Modeo défend avec la French Data Stack."
-        expertiseTitle="Modeo : l'expertise Data Platform, orchestrée avec Kestra"
+        tagline="Modeo designs, deploys and evolves modern, sovereign Data Platforms, with Kestra orchestrating every data flow."
+        about="Founded by Matthieu Rousseau, an expert in Data Engineering and DataOps, Modeo works with large enterprises, mid-size companies, SMBs and start-ups, from audit to production. Kestra, an open source orchestrator born in France, fits naturally into the sovereign stacks Modeo champions with the French Data Stack."
+        expertiseTitle="Modeo: Data Platform expertise, orchestrated with Kestra"
         expertise={expertise}
         quote={quote}
         facts={facts}
         contact={{
-            text: "Contacter Modeo",
+            text: "Contact Modeo",
             href: "https://modeo.ai/contact?utm_source=kestra&utm_medium=referral&utm_campaign=partners",
         }}
         closing={{
-            title: "Contacter Modeo",
-            text: "Vous voulez moderniser votre Data Platform ou industrialiser vos pipelines avec Kestra ? Les data engineers de Modeo vous accompagnent.",
+            title: "Contact Modeo",
+            text: "Want to modernize your Data Platform or industrialize your pipelines with Kestra? Modeo's data engineers can help.",
         }}
         website="https://www.modeo.ai/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
     />

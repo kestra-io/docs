@@ -37,6 +37,8 @@ interface Props {
     closing?: { title: string; text: string }
     website?: string
     lang?: "en" | "fr"
+    languages?: { code: string; label: string; href: string }[]
+    languageNote?: string
 }
 
 const {
@@ -55,6 +57,8 @@ const {
     closing,
     website,
     lang = "en",
+    languages = [],
+    languageNote,
 } = Astro.props
 
 const LABELS = {
@@ -131,15 +135,44 @@ const related = listPartners(partner.type)
 <div class="partner-profile">
     <header class="profile-head">
         <div class="container">
-            <nav class="crumbs" aria-label="Breadcrumb">
-                <a href="/partners">{t.partners}</a>
-                <span aria-hidden="true">/</span>
-                <a href={`/partners/find?type=${partner.type}`}
-                    >{partner.type}</a
-                >
-                <span aria-hidden="true">/</span>
-                <span aria-current="page">{partner.name}</span>
-            </nav>
+            <div class="top-row">
+                <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="/partners">{t.partners}</a>
+                    <span aria-hidden="true">/</span>
+                    <a href={`/partners/find?type=${partner.type}`}
+                        >{partner.type}</a
+                    >
+                    <span aria-hidden="true">/</span>
+                    <span aria-current="page">{partner.name}</span>
+                </nav>
+                {
+                    languages.length > 1 && (
+                        <div class="lang-switch">
+                            {languageNote && (
+                                <span class="lang-note">{languageNote}</span>
+                            )}
+                            <ul aria-label="Language">
+                                {languages.map((l) => (
+                                    <li>
+                                        <a
+                                            href={l.href}
+                                            hreflang={l.code}
+                                            lang={l.code}
+                                            aria-current={
+                                                l.code === lang
+                                                    ? "true"
+                                                    : undefined
+                                            }
+                                        >
+                                            {l.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )
+                }
+            </div>
             <div class="hero-grid">
                 <div class="identity">
                     <div class="who">
@@ -582,6 +615,59 @@ const related = listPartners(partner.type)
                 background: #1f2b4d;
                 color: #b8d2ff;
             }
+        }
+
+        .top-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem 1.5rem;
+        }
+
+        .lang-switch {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 0.75rem;
+            font-size: $font-size-sm;
+
+            ul {
+                display: flex;
+                margin: 0;
+                padding: 0.1875rem;
+                list-style: none;
+                border: 1px solid var(--ks-border-primary);
+                border-radius: 999px;
+                background: var(--ks-background-primary);
+            }
+
+            a {
+                display: block;
+                padding: 0.25rem 0.75rem;
+                border-radius: 999px;
+                color: var(--ks-content-secondary);
+                font-weight: 600;
+                text-decoration: none;
+
+                &:hover {
+                    color: var(--ks-content-primary);
+                }
+
+                &[aria-current="true"] {
+                    background: var(--ks-content-link);
+                    color: #fff;
+                }
+
+                &:focus-visible {
+                    outline: 2px solid var(--ks-content-link);
+                    outline-offset: 2px;
+                }
+            }
+        }
+
+        .lang-note {
+            color: var(--ks-content-secondary);
         }
 
         .crumbs {
