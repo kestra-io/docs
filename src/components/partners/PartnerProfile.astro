@@ -60,7 +60,6 @@ const {
 const LABELS = {
     en: {
         about: "About",
-        glance: "At a glance",
         services: "Services",
         website: "Website",
         plugin: "Kestra plugin",
@@ -71,7 +70,6 @@ const LABELS = {
     },
     fr: {
         about: "À propos",
-        glance: "En bref",
         services: "Services",
         website: "Site web",
         plugin: "Plugin Kestra",
@@ -299,7 +297,6 @@ const related = listPartners(partner.type)
 
                 <aside class="side">
                     <div class="glance">
-                        <h2>{t.glance}</h2>
                         <dl>
                             {
                                 facts.map((fact) => (
@@ -837,34 +834,54 @@ const related = listPartners(partner.type)
         }
     }
 
+    // laid out like the plugin page sidebar: no frame, sections split by thin rules
     .glance {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
-        padding: 1.5rem;
-        border-radius: 0.8125rem;
-        border: 1px solid var(--ks-border-primary);
-        background: var(--ks-background-body);
-
-        h2 {
-            margin: 0;
-            font-size: $font-size-md;
-        }
 
         dl {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 0;
+            display: contents;
         }
 
-        dt {
-            margin-bottom: 0.25rem;
-            font-size: $font-size-xs;
+        // no title above, so the first section needs no rule
+        dl > div:first-child {
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        dl > div,
+        .plugins,
+        .pitch {
+            padding: 1rem 0;
+            border-top: 1px solid var(--ks-border-primary);
+        }
+
+        dt,
+        .plugins-title {
+            margin: 0 0 0.5rem;
+            font-size: $font-size-sm;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--ks-content-tertiary);
+            color: var(--ks-content-primary);
+        }
+
+        dd {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+
+        // the category tags of the plugin page
+        .tags {
+            gap: 0.5rem;
+        }
+
+        .tag {
+            padding: 0.125rem 0.5rem;
+            border: 0;
+            border-radius: 40px;
+            background: var(--ks-background-tag-category);
+            color: var(--ks-content-tag-category);
         }
 
         .plugins {
@@ -874,31 +891,14 @@ const related = listPartners(partner.type)
 
             .plugins-title {
                 margin: 0;
-                font-size: $font-size-xs;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.04em;
-                color: var(--ks-content-tertiary);
             }
         }
 
-        .pitch {
-            padding-top: 1.25rem;
-            border-top: 1px solid var(--ks-border-primary);
-
-            p {
-                margin: 0;
-                font-size: $font-size-sm;
-                line-height: 1.5;
-                color: var(--ks-content-secondary);
-            }
-        }
-
-        dd {
+        .pitch p {
             margin: 0;
             font-size: $font-size-sm;
             line-height: 1.5;
-            color: var(--ks-content-primary);
+            color: var(--ks-content-secondary);
         }
     }
 

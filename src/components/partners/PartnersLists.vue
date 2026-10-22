@@ -390,8 +390,12 @@
             background: none;
             font-size: $font-size-xs;
             font-weight: 600;
-            color: var(--ks-content-link);
+            color: var(--ks-content-tertiary);
             cursor: pointer;
+
+            &:hover {
+                color: var(--ks-content-primary);
+            }
         }
 
         .group {
