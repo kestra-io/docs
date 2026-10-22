@@ -2,42 +2,42 @@
 import Layout from "~/components/layout.astro"
 import PartnerProfile from "~/components/partners/PartnerProfile.astro"
 
-const title = "Bitovi & Kestra: Migration and Production Readiness"
+const title = "Bitovi & Kestra: A Partner Across Your Kestra Journey"
 const description =
-    "Bitovi helps engineering teams design, migrate and run workflow platforms in production, now with Kestra."
+    "Bitovi is a US engineering consultancy that supports teams across their whole Kestra journey, from training to resilient production."
 
 const about =
-    "Founded in 2005, Bitovi is a US software consulting company with deep experience in workflow engineering, from architecture to large migrations. As a Kestra partner, Bitovi helps teams adopt Kestra, move to Kestra 2.0 and keep it reliable at scale."
+    "Founded in 2005, Bitovi is a delivery-led software consultancy: the engineers who build with clients are also the ones who advise them. Bitovi has years of hands-on work with workflow platforms such as Temporal, and brings that experience to Kestra, from first setup to resilient production."
 
 const facts = [
     { label: "Headquarters", value: "United States" },
     {
         label: "Kestra expertise",
-        value: "Migration to Kestra 2.0, production readiness, workflow engineering",
+        value: "Training and enablement, production-readiness audits, embedded engineers",
     },
-    { label: "Profile", value: "Software consulting firm founded in 2005" },
+    { label: "Profile", value: "Engineering consultancy founded in 2005" },
 ]
 
 const expertise = [
     {
-        icon: "mdi:swap-horizontal",
-        title: "Migration to Kestra 2.0",
-        text: "An audit of your 1.x estate, infrastructure, flows and code, then an upgrade plan run with your team.",
+        icon: "mdi:school-outline",
+        title: "Training and enablement",
+        text: "Bitovi gets your team productive on Kestra, from first flows to the patterns that keep them maintainable. Sessions are led by engineers who use Kestra in client work, not by a separate training team.",
     },
     {
         icon: "mdi:shield-check-outline",
         title: "Production-readiness audits",
-        text: "A review of sizing, cost, reliability and operations before your Kestra workloads become critical.",
+        text: "A review of your setup, infrastructure and code, with a clear plan for what to change. Depending on your goals, the focus is cost optimization, or high availability, disaster recovery and recovery paths.",
     },
     {
         icon: "mdi:account-hard-hat-outline",
         title: "Embedded engineers",
-        text: "Bitovi engineers join your team to set up Kestra, build the first flows and hand over the know-how.",
+        text: "Resident architects join your team for DevOps or development work. They set Kestra up for stability, build alongside your engineers and leave the know-how in place when they step out.",
     },
     {
         icon: "mdi:sitemap-outline",
-        title: "Workflow architecture",
-        text: "Experience designing and migrating large workflow platforms for enterprise clients, brought to Kestra.",
+        title: "Workflow platform experience",
+        text: "Years of hands-on work with workflow engines such as Temporal help Bitovi place Kestra where it fits best in your stack, and connect it to the tools you already run.",
     },
 ]
 ---
@@ -47,7 +47,7 @@ const expertise = [
         name="Bitovi"
         tagline={description}
         {about}
-        expertiseTitle="Bitovi: workflow engineering, applied to Kestra"
+        expertiseTitle="Bitovi: a partner across your Kestra journey"
         {expertise}
         {facts}
         contact={{
@@ -56,7 +56,7 @@ const expertise = [
         }}
         closing={{
             title: "Work with Bitovi",
-            text: "Planning a move to Kestra 2.0 or a production rollout? Bitovi's engineers can help.",
+            text: "Want a partner across your Kestra journey, from training to production? Bitovi's engineers can help.",
         }}
         website="https://www.bitovi.com/"
     />
