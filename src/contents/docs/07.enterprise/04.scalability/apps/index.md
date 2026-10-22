@@ -695,7 +695,17 @@ Both fields are optional:
 - Omit `endDate` and the app never expires.
 - Omit `expiration` entirely and the app stays active indefinitely.
 
-Expiration is evaluated against the server clock at the moment a user opens or submits the app.
+`startDate` and `endDate` accept any of these formats:
+
+| Format | Example | Read as |
+|--------|---------|---------|
+| Date | `"2025-06-30"` | Midnight (00:00) at the start of that day, in the server time zone |
+| Date-time without offset | `"2025-06-30T23:59:59"` | The server time zone |
+| Date-time with offset | `"2025-06-30T23:59:59+02:00"` or `"2025-06-30T23:59:59Z"` | The given offset |
+
+A plain date as `endDate` ends the window at the start of that day. To keep an app available through the whole of a day, use a date-time such as `"2025-06-30T23:59:59Z"`.
+
+Expiration is evaluated against the server clock at the moment a user opens or submits the app. When someone opens an app after its `endDate`, they see a "This app has expired" page instead of the app.
 
 ---
 
