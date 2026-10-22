@@ -108,6 +108,10 @@ const ITEMS = [
         margin-bottom: 1.25rem;
         border-radius: 8px;
         background: #111114;
+
+        :global(html.dark) & {
+            background: var(--ks-border-primary);
+        }
     }
 
     h3 {

@@ -152,6 +152,12 @@ const PUBLIC: Backer[] = [
             width: 100%;
             height: 100%;
         }
+
+        // The logo files are drawn for light backgrounds: on the dark theme
+        // they turn into light monochrome marks.
+        :global(html.dark) & {
+            filter: grayscale(1) invert(1);
+        }
     }
 
     .investors {
