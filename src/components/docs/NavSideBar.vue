@@ -11,7 +11,7 @@
                 <Menu /> Documentation Menu
             </button>
             <div v-if="versionOptions.length > 1" class="version-switcher">
-                <span class="docs-label">Docs</span>
+                <span class="version-label">Version</span>
                 <span class="separator" aria-hidden="true">·</span>
                 <span class="current-version">{{ displayedVersion }}</span>
                 <ChevronDown class="caret" aria-hidden="true" />
@@ -264,7 +264,12 @@
             display: inline-flex;
             align-items: center;
             gap: calc($spacer * 0.375);
-            margin-bottom: calc($spacer * 0.75);
+            // The sidebar scrolls, so it clips anything drawn outside its
+            // box: the padding makes room for the focus ring inside the
+            // switcher, and the negative margin keeps the text aligned.
+            padding: calc($spacer * 0.25);
+            margin-left: calc($spacer * -0.25);
+            margin-bottom: calc($spacer * 0.5);
             font-size: $font-size-base;
             color: var(--ks-content-tertiary);
             @include media-breakpoint-down(lg) {
@@ -291,7 +296,7 @@
             }
             &:has(select:focus-visible) {
                 outline: 2px solid var(--ks-border-active);
-                outline-offset: 2px;
+                outline-offset: -2px;
                 border-radius: calc($spacer * 0.25);
             }
         }
