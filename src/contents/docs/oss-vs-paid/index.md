@@ -78,7 +78,7 @@ Customers’ feature requests are prioritized over those from open-source users.
 
 **Stick with Open-Source if:**
 - You’re an individual or a team that doesn't need SSO, RBAC, or multi-tenant isolation
-- Your team can operate and support the deployment in-house
+- Community support through Slack and GitHub meets your needs
 - Your team has minimal compliance requirements
 - A shared login and secrets supplied as environment variables meet your security requirements
 
