@@ -4,7 +4,12 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-const cards = [
+interface Props {
+    heading?: string
+    cards?: { kicker: string; title: string; body: string; icon: string }[]
+}
+
+const defaultCards = [
     {
         kicker: "Control",
         title: "One control plane for data, infra, AI, and business processes.",
@@ -24,12 +29,15 @@ const cards = [
         icon: "mdi:cube-outline",
     },
 ]
+
+const {
+    heading = "One platform. Every workflow. Your infrastructure.",
+    cards = defaultCards,
+} = Astro.props
 ---
 
 <section class="platform">
-    <h2 data-usal="fade-u delay-50 duration-500 ease-out">
-        One platform. Every workflow. Your infrastructure.
-    </h2>
+    <h2 data-usal="fade-u delay-50 duration-500 ease-out">{heading}</h2>
 
     <div class="cards">
         {

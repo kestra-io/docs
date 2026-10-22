@@ -43,6 +43,8 @@ Workers are the primary horizontal scaling target. Additional replicas increase 
 
 The Executor and Scheduler are coordinating roles; two or three replicas provide redundancy. Both are idempotent: if one fails, queue messages are redelivered and picked up by a healthy instance automatically.
 
+Scheduler replicas share trigger evaluation by splitting flows across virtual nodes (16 by default, set with `kestra.scheduler.vnodes`). The Executor's liveness check assigns those virtual nodes to the running Schedulers and reassigns them when a Scheduler joins or leaves, so schedules only run while at least one Executor is running.
+
 At least two Webserver replicas behind a load balancer keep the API and UI available if one instance fails.
 
 :::alert{type="info"}
@@ -53,7 +55,7 @@ Ensure the underlying host system is tuned for high availability. For example, a
 
 Every running server registers itself with the cluster and emits a heartbeat on a fixed interval (default: every 3 seconds). The Executor reviews all registered instances on a scheduled tick (default: every 10 seconds). See [Server lifecycle](../server-lifecycle/index.md) for the full state machine and recovery behavior.
 
-When a Worker misses its heartbeats beyond the configured timeout (default: 1 minute), the Executor marks it as failed and releases its in-flight jobs back onto the queue for a healthy Worker to pick up. For other server roles (Executor, Scheduler, Webserver), recovery works differently: these components are idempotent, so queue messages are redelivered and reprocessed by a healthy instance without explicit orphan recovery.
+When a Worker misses its heartbeats beyond the configured timeout (default: 1 minute), the Executor marks it as failed. Whether its in-flight jobs go back onto the queue for a healthy Worker depends on that Worker's [`worker-task-restart-strategy`](../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts): with `NEVER`, they are not re-dispatched. For other server roles (Executor, Scheduler, Webserver), recovery works differently: these components are idempotent, so queue messages are redelivered and reprocessed by a healthy instance without explicit orphan recovery.
 
 To tune the liveness model:
 
@@ -77,13 +79,13 @@ In a distributed deployment, all server roles must have access to the same inter
 
 Without shared storage, task outputs written by a Worker on one host are not reachable by the Executor or Webserver on another.
 
-For a full list of supported backends (including Cloudflare R2, Huawei OBS, Ceph, MinIO, and others), see [Internal Storage](../../08.architecture/data-components/index.md).
+For a full list of supported backends (including Cloudflare R2, Huawei OBS, Ceph, and others), see [Internal Storage](../../08.architecture/data-components/index.md).
 
 ## Load balancing
 
-A load balancer in front of multiple Webserver replicas is the only network-facing surface; the Executor, Scheduler, Worker Controller, and Workers are never reachable from outside the cluster.
+Put a load balancer in front of the Webserver replicas: the Webserver is the only role that serves API and UI traffic. Workers connect to the Worker Controller's gRPC port (`50051` by default), so that port must be reachable from wherever Workers run. Webserver and standalone servers start an embedded Worker Controller unless you pass `--no-controller`.
 
-Load balancer health checks point to the Webserver's [`/health` endpoint](../03.monitoring/index.md#kestra-endpoints).
+Point load balancer health checks at the Webserver's [`/health` endpoint](../03.monitoring/index.md#kestra-endpoints) on the management port (`8081`), or at the unauthenticated `/ping` endpoint on the application port (`8080`).
 
 ## Queue backend and scale
 

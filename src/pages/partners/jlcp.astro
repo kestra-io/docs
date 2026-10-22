@@ -1,0 +1,60 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "JLCP & Kestra: Automation, Observability and AI in Brazil"
+const description =
+    "JLCP helps organizations transform technology into a competitive advantage, with automation, observability and AI strategies that make operations more efficient, predictable and scalable."
+
+const about =
+    "JLCP connects systems, data and processes to automate critical activities, reduce operational complexity and generate insights that support real-time business decisions. With experience in complex enterprise environments, JLCP builds modern, data-driven operations powered by automation and AI, and is Kestra's partner in Brazil."
+
+const facts = [
+    { label: "Headquarters", value: "São Paulo, Brazil" },
+    {
+        label: "Kestra expertise",
+        value: "Automation, observability, AI workflows",
+    },
+    { label: "Profile", value: "Technology company founded in 2015" },
+]
+
+const expertise = [
+    {
+        icon: "mdi:robot-outline",
+        title: "Automation and AI workflows",
+        text: "Kestra flows that automate critical operations, with AI steps where they help.",
+    },
+    {
+        icon: "mdi:monitor-eye",
+        title: "Observability meets orchestration",
+        text: "Long experience with Zabbix and Datadog, connected to Kestra flows that act on alerts and metrics.",
+    },
+    {
+        icon: "mdi:git",
+        title: "GitOps from day one",
+        text: "An open source GitOps boilerplate for Kestra that standardizes how flows are deployed.",
+    },
+    {
+        icon: "mdi:map-marker-radius-outline",
+        title: "Local delivery",
+        text: "Implementation and support for enterprises across Brazil, in Portuguese.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="JLCP">
+    <PartnerProfile
+        name="JLCP"
+        tagline={description}
+        {about}
+        expertiseTitle="JLCP: enterprise automation for Brazil, built on Kestra"
+        {expertise}
+        {facts}
+        contact={{ text: "Contact JLCP", href: "https://jlcp.com.br/" }}
+        closing={{
+            title: "Work with JLCP",
+            text: "Bringing Kestra to your operations in Brazil? JLCP's team can help.",
+        }}
+        website="https://jlcp.com.br/"
+    />
+</Layout>

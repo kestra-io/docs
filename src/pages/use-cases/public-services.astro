@@ -110,7 +110,7 @@ const quotes = [
             { value: "3 weeks", name: "to validate compliance" },
             { value: "0", name: "external dependencies" },
         ],
-        storyLink: "/customers/dataport",
+        storyLink: "/stories/dataport",
     },
 ]
 
@@ -489,7 +489,7 @@ tasks:
 const FAQ = [
     {
         question: "Can Kestra orchestrate VMware lifecycle, vSphere, vCenter, and ESXi without a portal layer above it?",
-        answer: "Yes. The native VMware plugin orchestrates the full VM lifecycle (provision, snapshot, clone, template, restore, power state) across vCenter and ESXi. Event-driven triggers react to vCenter lifecycle events. The point is to replace the brittle automation UI layer (Aria, vRealize Automation) while keeping the virtualization substrate intact. No big-bang rewrite, no rip-and-replace.",
+        answer: "Yes. The native VMware plugin orchestrates the full VM lifecycle (provision, snapshot, clone, template, restore, power state) across vCenter and ESXi. Event-driven triggers react to vCenter lifecycle events. The point is to replace the brittle automation UI layer (Aria, vRealize Automation) while keeping the virtualization substrate intact. No big-bang rewrite, no rip-and-replace. The <a href='/resources/migration/vra'>vRA to Kestra migration guide</a> covers the method, including fully air-gapped estates.",
     },
     {
         question: "How does Kestra fit alongside legacy automation suites like VMware Aria, vRealize Automation, vRO, Rundeck, HP Operations Orchestration, Control-M, and Autosys?",
@@ -654,7 +654,7 @@ const FAQ = [
                     <span class="hero-logos__label">Trusted by public administrations, institutions &amp; public-service IT operators</span>
                     <div class="hero-logos__row">
                         <Image src={COELogoImg} alt="Council of Europe" class="hero-logos__item hero-logos__item--coe" />
-                        <a href="/customers/dataport" aria-label="Read the Dataport government-grade orchestration story">
+                        <a href="/stories/dataport" aria-label="Read the Dataport government-grade orchestration story">
                             <Image src={DataportLogoImg} alt="Dataport" class="hero-logos__item hero-logos__item--dataport" />
                         </a>
                         <Image src={ITZBundLogoImg} alt="ITZBund" class="hero-logos__item hero-logos__item--itzbund" />

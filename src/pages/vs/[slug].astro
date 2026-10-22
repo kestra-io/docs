@@ -14,6 +14,7 @@ import VsTestimonial from "~/components/versus/VsTestimonial.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
+import CalloutCard from "~/components/common/CalloutCard.astro"
 import Faq from "~/components/common/Faq.vue"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
@@ -79,6 +80,7 @@ const {
     seeHowTitle,
     seeHowBody,
     secondaryCta,
+    guideCta,
     logoFile,
     imgFile,
 } = replaceTotalPluginsPlaceholder(entry.data, totalPlugins)
@@ -90,7 +92,6 @@ const imgFilename = imgFile ?? slug
 const competitorLogo = getRawSvg(logoFilename)
 const competitorMonogram = getRawSvg(`${slug}-monograme`)
 const competitorImg = getImgSvg(imgFilename)
-
 ---
 
 <VsLayout {title} description={shortDescription} {commonQuestions}>
@@ -102,6 +103,15 @@ const competitorImg = getImgSvg(imgFilename)
         }}
         secondaryCta={secondaryCta}
     />
+    {
+        guideCta && (
+            <section class="vs-guide-cta">
+                <div class="container">
+                    <CalloutCard {...guideCta} />
+                </div>
+            </section>
+        )
+    }
     <Philosophy
         {...philosophy}
         competitor={{
@@ -169,3 +179,9 @@ const competitorImg = getImgSvg(imgFilename)
         {seeHowBody}
     </SeeHow>
 </VsLayout>
+
+<style lang="scss">
+    .vs-guide-cta {
+        padding: 2rem 0 0;
+    }
+</style>

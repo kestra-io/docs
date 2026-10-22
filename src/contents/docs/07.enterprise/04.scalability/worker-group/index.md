@@ -22,9 +22,9 @@ Three building blocks define the routing model:
 
 | Building block | Role |
 |---|---|
-| **Worker** | A process that runs tasks; joins a group by presenting a registration token and locally enforces its capacity allocation |
+| **Worker** | A process that runs tasks; joins a group by presenting a registration token. The Worker Controller enforces its capacity allocation |
 | **Worker Group** | A named pool of workers that subscribes to queues and holds capacity reservation settings |
-| **Worker Queue** | A routing lane identified by a tag set; tasks declare `workerSelector.tags` to target a queue |
+| **Worker Queue** | A routing lane with an id and a set of tags; tasks declare `workerSelector.tags` to target a queue |
 
 The routing path flows from task requirements down to infrastructure:
 
@@ -43,7 +43,7 @@ Add `workerSelector` to any task to route it to a matching Worker Queue. The `wo
 
 | Property | Description | Default |
 |---|---|---|
-| `tags` | List of RFC 1123 labels (max 20) identifying the required Worker Queue | — |
+| `tags` | List of RFC 1123 labels (max 20, each up to 64 characters) identifying the required Worker Queue | — |
 | `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
 | `fallback` | Behavior when no worker is available for the matched queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
 
@@ -67,16 +67,16 @@ tasks:
 
 Kestra routes the task to a Worker Queue whose tag set includes all declared tags (or any, when `match: ANY`). Any Worker Group subscribed to that queue may execute the task.
 
-If `workerSelector` is absent or all tags resolve to null, the task routes to the default queue.
+If no level declares a `workerSelector` with tags, the task routes to the default queue. An empty `tags` list counts as no selector, so resolution continues to the next level.
 
 ### Fallback options
 
 | Value | Behavior |
 |---|---|
-| `FAIL` | Fail the task run immediately if no worker is available (default) |
-| `WAIT` | Hold the task in `CREATED` state until a worker becomes available |
-| `CANCEL` | Cancel the task gracefully; the execution is marked `KILLED` |
-| `IGNORE` | Drop the tag requirement and route to the default Worker Queue instead |
+| `FAIL` | Fail the task run immediately and log an error (default) |
+| `WAIT` | Send the task to the matched queue anyway, where it waits as `SUBMITTED` until a worker connects. An info log records the wait |
+| `CANCEL` | Set the task run to `CANCELLED` and log the reason |
+| `IGNORE` | Drop the tag requirement and route to the default Worker Queue instead, with no log |
 
 `IGNORE` is useful when the target infrastructure is optional — the task proceeds on any available worker rather than failing when the specialized pool is unavailable.
 
@@ -86,14 +86,16 @@ If `workerSelector` is absent or all tags resolve to null, the task routes to th
 `fallback` only applies when a matching Worker Queue exists but has no live worker right now. If no queue matches the tags at all, the task fails immediately regardless of the `fallback` value — that is a configuration error, not a capacity gap.
 :::
 
+Triggers that run on workers follow the same rules with one difference: when no queue matches, or the fallback is `FAIL` or `CANCEL`, Kestra skips that trigger evaluation and logs the reason instead of failing anything. With `WAIT`, the trigger evaluation is sent to the matched queue.
+
 ### Namespace and tenant-level routing defaults
 
-Instead of adding `workerSelector` to every task, set a default selector at the namespace or tenant level. Kestra resolves the selector most-specific-first — task, then flow, then the nearest namespace ancestor, then the tenant — and stops at the first level that declares one.
+Instead of adding `workerSelector` to every task, set a default selector at the namespace or tenant level. Kestra resolves the selector most-specific-first: task, then flow, then the nearest namespace ancestor, then the tenant. It stops at the first level that declares tags.
 
 Set a namespace-level default in the namespace settings:
 
 ```yaml
-workerSelector:
+defaultWorkerSelector:
   tags: [eu]
   fallback: WAIT
 ```
@@ -147,7 +149,7 @@ Two ids are reserved and never created manually:
 - `default` — the global default queue; receives tasks with no `workerSelector`
 - `system` — the in-process system worker
 
-Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 63 characters.
+Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 64 characters.
 
 ### Creating Worker Queues
 
@@ -167,7 +169,7 @@ Worker Group ids must follow RFC 1123 label format.
 
 ### The default group
 
-One group always exists and cannot be deleted: the `default` group. It subscribes to the `default` queue and receives all tasks that have no `workerSelector`. Workers that start without a registration token join the default group automatically.
+One group always exists and cannot be deleted: the `default` group. It subscribes to the `default` queue and receives all tasks that have no `workerSelector`. When worker authentication is disabled, every worker joins the default group. When it is enabled, a worker that starts without a registration token is rejected.
 
 :::alert{type="warning"}
 Keep at least one worker running in the default group to ensure tasks without a `workerSelector` always have somewhere to execute.
@@ -193,14 +195,14 @@ Manage subscriptions through the UI or the subscriptions API:
 
 ## Capacity reservation
 
-Reserved capacity is a per-worker floor guarantee, not a fleet-wide quota. Remaining slots beyond reserved percentages form a shared pool available to all of that worker's subscriptions.
+Reserved capacity is a per-worker floor guarantee, not a fleet-wide quota. The Worker Controller enforces it for each connected worker. Remaining slots beyond reserved percentages form a shared pool available to all of that worker's subscriptions.
 
 **Example**: a worker with 16 slots subscribing to two queues at 50% and 25% reserves 8 slots for queue A and 4 slots for queue B, with 4 slots in the shared pool.
 
 ### Interaction modes
 
-- **STRICT** — idle reserved slots remain exclusive to this subscription and are never lent to other work
-- **ELASTIC** — idle reserved slots may be lent to other `ELASTIC` subscriptions on the same worker when the subscription has spare capacity
+- **STRICT**: idle reserved slots remain exclusive to this subscription and are never lent to other work
+- **ELASTIC**: idle reserved slots may be lent to any other subscription on the same worker, whatever that subscription's mode
 
 In both modes, tasks also draw from the shared pool once reserved slots are busy. Lent slots are not preempted — a busy lender may temporarily dip below its floor until borrowed work completes.
 
@@ -214,7 +216,7 @@ Worker authentication must be enabled server-side before registration tokens hav
 
 Workers join a group by presenting a registration token generated for that group. The token is stored as a hash and shown only once at creation — copy it immediately.
 
-On first connect, the worker exchanges the registration token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically before it expires. Revoking or deleting a token immediately invalidates credentials for any workers that registered with it; those workers fail closed once their current access token expires.
+On first connect, the worker exchanges the registration token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically before it expires. Revoking or deleting a token, or deleting its Worker Group, disconnects the workers that registered with it immediately. They cannot reconnect until they register with a new token.
 
 ### Generating a registration token
 
@@ -228,7 +230,7 @@ In the Worker Groups UI, select a group and generate a token from the **Tokens**
 
 ### Server-side configuration
 
-Enable worker authentication on your webserver or standalone Kestra instance:
+Enable worker authentication on every Kestra server except workers, including any dedicated Worker Controller:
 
 ```yaml
 kestra:
@@ -236,7 +238,7 @@ kestra:
     worker:
       auth:
         enabled: true
-        jwt-signing-key: "{{ a strong shared secret, >= 32 bytes }}"
+        jwt-signing-key: "{{ a strong shared secret, >= 32 bytes }}"  # optional, defaults to kestra.encryption.secret-key
         access-token-lifetime: PT5M    # optional, default PT5M
         refresh-token-lifetime: P7D    # optional, default P7D
 ```
@@ -251,7 +253,7 @@ kestra:
     name: gpu-pool-1                       # optional display name
     auth:
       registration-token: "{{ token generated for the target group }}"
-      credentials-path: /var/kestra/worker/.auth/worker-credentials.json  # default: /tmp/kestra/worker/.auth/...
+      credentials-path: /var/kestra/worker/.auth/worker-credentials.json  # default: ${java.io.tmpdir}/kestra/worker/auth/worker-credentials.json
       refresh-buffer: PT60S               # how early to refresh the access token before it expires
     controllers:
       type: STATIC
@@ -272,7 +274,7 @@ The endpoint `host` and `port` must be separate YAML keys. A single `host:port` 
 | Type | When to use |
 |---|---|
 | `STATIC` | Fixed controller addresses — explicit `host`/`port` list |
-| `DNS` | Kubernetes or any environment where controllers are reachable by a stable DNS name; resolves SRV or A records on an interval |
+| `DNS` | Kubernetes or any environment where controllers are reachable by a stable DNS name; resolves A and AAAA records on an interval |
 | `STORAGE` | Dynamic, cross-cloud deployments; controllers self-register in internal storage and workers list the registry |
 
 For Kubernetes, use `type: DNS` with a service hostname:
@@ -284,8 +286,7 @@ kestra:
       type: DNS
       dns:
         hostname: kestra-controller.kestra.svc.cluster.local
-        record-type: SRV      # or A if no SRV records
-        default-port: 50051   # used with A records only
+        default-port: 50051   # port used for every resolved address
         refresh-interval: PT30S
 ```
 
@@ -334,7 +335,7 @@ kestra:
             - worker-queue-id: etl
 ```
 
-Workers already retry registration until their token is known to the controller, so all services can start concurrently. Workers converge as soon as the webserver has applied the configuration.
+Workers already retry registration until their token is known to the controller, so all services can start concurrently. Workers converge as soon as a Kestra server has applied the configuration.
 
 ### Secret handling
 
@@ -372,7 +373,7 @@ A rogue instance cannot self-authorize by changing configuration: declarative se
 
 ### Which server roles apply it
 
-Only the webserver and standalone server roles apply `kestra.ee.setup` at startup. Worker processes never apply it — a worker must not be able to create the group or the token it authenticates against.
+Every Kestra server except workers applies `kestra.ee.setup` at startup. Worker processes never apply it, because a worker must not be able to create the group or the token it authenticates against.
 
 ### Validation
 
@@ -489,19 +490,21 @@ Reserved percentages are live-configurable via the API. Changes propagate to all
 
 ### Zero-downtime worker upgrades
 
-Run two Worker Groups subscribed to the same queues simultaneously. Reduce the old group's reservation to 0% to drain it of new work, bring up the new group, verify it is healthy, then delete the old group. At no point does the queue go unserved.
+Run two Worker Groups subscribed to the same queues simultaneously. Bring up the new group and verify it is healthy, then stop the old group's workers so their running tasks finish within the termination grace period, and delete the old group. At no point does the queue go unserved.
+
+Deleting a group that still has running workers returns a `409` error unless you pass `?force=true`. Force deletion revokes those workers' credentials, and their in-flight tasks can be lost.
 
 For guidance on when to use Worker Groups versus Task Runners for compute-intensive scripting workloads, see [Task Runners vs Worker Groups](../../../task-runners/03.task-runners-vs-worker-groups/index.md).
 
 ## Worker shutdown and task continuity
 
-When a worker process stops — whether from a deployment, a crash, or a manual restart — any tasks it was running may be interrupted. The `worker-task-restart-strategy` setting controls what happens to those tasks cluster-wide:
+When a worker process stops, whether from a deployment, a crash, or a manual restart, any tasks it was running may be interrupted. Each worker's `worker-task-restart-strategy` setting controls what happens to its tasks:
 
 | Strategy | Behavior |
 |---|---|
 | `AFTER_TERMINATION_GRACE_PERIOD` | The worker stops accepting new work and waits up to the grace period for in-flight tasks to finish; any tasks still running at that point are re-dispatched to another worker (default) |
-| `IMMEDIATELY` | Interrupted tasks are re-dispatched immediately to another worker without waiting |
-| `NEVER` | Interrupted tasks fail permanently and are not re-dispatched |
+| `IMMEDIATELY` | Interrupted tasks are re-dispatched to another worker as soon as the worker is detected as disconnected |
+| `NEVER` | Interrupted tasks are not re-dispatched and stay `RUNNING` |
 
 Configure these in `application.yml` on each worker:
 
@@ -520,7 +523,7 @@ During the grace period, the worker stops accepting new jobs but lets running ta
 
 ## Monitoring
 
-Metrics scoped to a group carry a `worker_group` tag; metrics scoped to a queue also carry a `worker_queue` tag. The configurable metrics prefix (default `kestra`) is prepended before export.
+Metrics scoped to a group carry a `worker_group` tag, and metrics scoped to a queue carry a `worker_queue` tag. The configurable metrics prefix (default `kestra`) is prepended before export.
 
 ### Controller metrics
 
@@ -528,9 +531,9 @@ Published by the controller process — the server-side view of fleet capacity a
 
 | Metric | Type | Tags | Description |
 |---|---|---|---|
-| `controller.worker.active` | gauge | `worker_group`, `worker_queue` | Workers currently subscribed to a queue |
+| `controller.worker.active` | gauge | `worker_queue` | Workers currently subscribed to a queue |
 | `controller.worker.active.all` | gauge | — | Total workers connected to this controller |
-| `controller.permits.available` | gauge | `worker_group`, `worker_queue` | Remaining advertised capacity across subscribed workers |
+| `controller.permits.available` | gauge | `worker_queue` | Remaining advertised capacity across subscribed workers |
 | `controller.permits.available.all` | gauge | — | Remaining capacity across all connected workers |
 | `controller.job.inflight` | gauge | `worker_queue` | In-flight jobs for a queue |
 | `controller.worker.group.job.inflight` | gauge | `worker_group` | In-flight jobs across workers in a group |
@@ -538,14 +541,14 @@ Published by the controller process — the server-side view of fleet capacity a
 | `controller.capacity.subscription.used` | gauge | `worker_group`, `worker_queue` | Reserved slots currently in use |
 | `controller.capacity.shared.allocated` | gauge | `worker_group` | Shared (unreserved) slots allocated |
 | `controller.capacity.shared.used` | gauge | `worker_group` | Shared slots currently in use |
-| `controller.job.dispatched.total` | counter | `worker_queue` | Total jobs dispatched to workers |
+| `controller.job.dispatched.total` | counter | `worker_group`, `worker_queue` | Total jobs dispatched to workers |
 | `controller.job.requeued.total` | counter | `worker_queue` | Jobs re-queued because no worker had capacity |
 | `controller.job.killed.total` | counter | `worker_queue` | Jobs short-circuited by the pre-dispatch kill check |
-| `controller.job.dispatch.failed.total` | counter | `worker_queue` | Dispatch attempts that failed on send |
-| `controller.worker.registered.total` | counter | — | Worker-queue subscription registrations |
-| `controller.worker.unregistered.total` | counter | — | Worker-queue subscription removals |
-| `controller.subscription.paused.total` | counter | — | Queue subscription pause transitions |
-| `controller.subscription.resumed.total` | counter | — | Queue subscription resume transitions |
+| `controller.job.dispatch.failed.total` | counter | `worker_group`, `worker_queue` | Dispatch attempts that failed: a send error, a failure to save the running state, or a payload above the worker's message size limit |
+| `controller.worker.registered.total` | counter | `worker_group`, `worker_queue` | Worker-queue subscription registrations |
+| `controller.worker.unregistered.total` | counter | `worker_group`, `worker_queue` | Worker-queue subscription removals |
+| `controller.subscription.paused.total` | counter | `worker_queue` | Queue subscription pause transitions |
+| `controller.subscription.resumed.total` | counter | `worker_queue` | Queue subscription resume transitions |
 
 ### Worker metrics
 
@@ -554,10 +557,11 @@ Published by each worker process — the worker-side view of capacity and throug
 | Metric | Type | Description |
 |---|---|---|
 | `worker.job.thread` | gauge | Configured thread count (maximum concurrent jobs) |
-| `worker.max.concurrency` | gauge | Maximum in-flight capacity: threads + buffered jobs |
+| `worker.max.concurrency` | gauge | Maximum in-flight capacity: threads + buffered jobs (`kestra.worker.job-buffer-size`, which defaults to the thread count) |
 | `worker.running.count` | gauge | Tasks currently executing |
 | `worker.pending.count` | gauge | Tasks waiting for a free thread slot |
-| `worker.queue.size` | gauge | Items currently held in a buffer (job, result, log, or metric) |
+| `worker.abandoned.count` | gauge | Jobs the worker stopped waiting for, such as a polling trigger past its timeout, that still hold a thread |
+| `worker.queue.size` | gauge | Items currently held in a buffer, identified by the `name` tag (for example `workerjob`) |
 | `worker.queue.remaining.capacity` | gauge | Free slots in the inbound job buffer — equals the worker's advertised permit count |
 | `worker.queued.duration` | timer | Time a task spent waiting before a thread was available |
 | `worker.started.count` | counter | Total tasks started |
@@ -574,7 +578,7 @@ Published by each worker process — the worker-side view of capacity and throug
 | `worker.trigger.execution.count` | counter | Executions produced by triggers on this worker |
 | `worker.trigger.duration` | timer | Trigger evaluation duration |
 
-When `worker.running.count` consistently equals `worker.job.thread` and `worker.pending.count` is non-zero, that worker is fully saturated — scale by adding more workers to the group or increasing the thread count. When `worker.queue.remaining.capacity` on the `job` buffer approaches zero, the worker's local inbound buffer is full.
+When `worker.running.count` consistently equals `worker.job.thread` and `worker.pending.count` is non-zero, that worker is fully saturated. Scale by adding more workers to the group or increasing the thread count. When `worker.queue.remaining.capacity` with `name=workerjob` approaches zero, the worker's local inbound buffer is full.
 
 The live capacity snapshot is also available via the API:
 

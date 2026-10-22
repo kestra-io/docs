@@ -1,0 +1,63 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Bitovi & Kestra: A Partner Across Your Kestra Journey"
+const description =
+    "Bitovi is a US engineering consultancy that supports teams across their whole Kestra journey, from training to resilient production."
+
+const about =
+    "Founded in 2005, Bitovi is a delivery-led software consultancy: the engineers who build with clients are also the ones who advise them. Bitovi has years of hands-on work with workflow platforms such as Temporal, and brings that experience to Kestra, from first setup to resilient production."
+
+const facts = [
+    { label: "Headquarters", value: "United States" },
+    {
+        label: "Kestra expertise",
+        value: "Training and enablement, production-readiness audits, embedded engineers",
+    },
+    { label: "Profile", value: "Engineering consultancy founded in 2005" },
+]
+
+const expertise = [
+    {
+        icon: "mdi:school-outline",
+        title: "Training and enablement",
+        text: "Bitovi gets your team productive on Kestra, from first flows to the patterns that keep them maintainable. Sessions are led by engineers who use Kestra in client work, not by a separate training team.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "Production-readiness audits",
+        text: "A review of your setup, infrastructure and code, with a clear plan for what to change. Depending on your goals, the focus is cost optimization, or high availability, disaster recovery and recovery paths.",
+    },
+    {
+        icon: "mdi:account-hard-hat-outline",
+        title: "Embedded engineers",
+        text: "Resident architects join your team for DevOps or development work. They set Kestra up for stability, build alongside your engineers and leave the know-how in place when they step out.",
+    },
+    {
+        icon: "mdi:sitemap-outline",
+        title: "Workflow platform experience",
+        text: "Years of hands-on work with workflow engines such as Temporal help Bitovi place Kestra where it fits best in your stack, and connect it to the tools you already run.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Bitovi">
+    <PartnerProfile
+        name="Bitovi"
+        tagline={description}
+        {about}
+        expertiseTitle="Bitovi: a partner across your Kestra journey"
+        {expertise}
+        {facts}
+        contact={{
+            text: "Contact Bitovi",
+            href: "https://www.bitovi.com/contact",
+        }}
+        closing={{
+            title: "Work with Bitovi",
+            text: "Want a partner across your Kestra journey, from training to production? Bitovi's engineers can help.",
+        }}
+        website="https://www.bitovi.com/"
+    />
+</Layout>

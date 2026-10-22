@@ -1,0 +1,73 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Davidson & Kestra: Consulting and Orchestration at Scale"
+const description =
+    "Davidson is a management consulting and technology firm with more than 2,000 consultants across Europe and the Middle East."
+
+const about =
+    "Founded in 2005, Davidson works in France, Switzerland, Belgium, Spain, Germany and the United Arab Emirates, across cloud infrastructure, telecommunications, data and AI, smart factories, healthcare and finance. Davidson trained a dedicated team on Kestra and delivers it from technical assistance to structured proofs of concept."
+
+const facts = [
+    { label: "Headquarters", value: "Boulogne-Billancourt, France" },
+    {
+        label: "Kestra expertise",
+        value: "Cloud infrastructure, data and AI, industrial automation",
+    },
+    {
+        label: "Profile",
+        value: "Consulting and technology firm founded in 2005",
+    },
+]
+
+const quote = {
+    text: "By partnering with Kestra, we gain access to scalable and customizable capabilities that will allow us to fully leverage all the market opportunities.",
+    author: "Nicolas Lecaplain",
+    role: "Business Unit Director, Davidson",
+}
+
+const expertise = [
+    {
+        icon: "mdi:certificate-outline",
+        title: "Certified consultants",
+        text: "Eighteen consultants certified on Kestra within 60 days of the partnership's start.",
+    },
+    {
+        icon: "mdi:flask-outline",
+        title: "From assistance to proofs of concept",
+        text: "Engagements that range from technical assistance to structured proofs of concept.",
+    },
+    {
+        icon: "mdi:cloud-outline",
+        title: "Cloud and infrastructure automation",
+        text: "Kestra flows that provision and operate cloud and on-premises infrastructure.",
+    },
+    {
+        icon: "mdi:factory",
+        title: "Data, AI and industry",
+        text: "Orchestration for data, AI and smart-factory projects across regulated sectors.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Davidson">
+    <PartnerProfile
+        name="Davidson"
+        tagline={description}
+        {about}
+        expertiseTitle="Davidson: certified Kestra consultants, at scale"
+        {expertise}
+        {quote}
+        {facts}
+        contact={{
+            text: "Contact Davidson",
+            href: "https://www.davidson.group/",
+        }}
+        closing={{
+            title: "Work with Davidson",
+            text: "Rolling out Kestra across teams or sites? Davidson's consultants can help.",
+        }}
+        website="https://www.davidson.group/"
+    />
+</Layout>
