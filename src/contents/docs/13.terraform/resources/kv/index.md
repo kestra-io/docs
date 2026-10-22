@@ -23,6 +23,7 @@ Manages a Kestra Key-Value pair.
 
 ### Optional
 
+- `description` (String) An optional description for the Key-Value pair. Printable ASCII only, single line, up to 4096 bytes. Only applied by Kestra versions that support KV descriptions (2.1.0 or later).
 - `type` (String) The type of the value. If not provided, we will try to deduce the type based on the value. Useful in case you provide numbers, booleans, dates or json that you want to be stored as string. Accepted values are: STRING, NUMBER, BOOLEAN, DATETIME, DATE, DURATION, JSON.
 
 ### Read-Only
