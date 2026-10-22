@@ -69,6 +69,8 @@ n8n is an open-source workflow automation tool that allows users to connect APIs
 
 Pipedream is a low-code integration platform that allows developers to connect APIs, write custom code (Node.js, Python, Go, PHP), and build serverless workflows quickly. It bridges the gap between no-code tools and custom development.
 
+> **Pipedream Workflows is shutting down.** It stops on March 31, 2027 and is closed to new signups. If your workflows run on it today, the [Pipedream migration guide](/resources/migration/pipedream) covers the export, the move and the cutover.
+
 -   **Developer Experience:** Designed for developers, it offers a seamless experience for writing, deploying, and debugging code snippets within a workflow.
 -   **Event-Driven:** It has strong, native support for webhooks, HTTP requests, and scheduled events as triggers.
 -   **Rich Integration Ecosystem:** Provides thousands of pre-built integrations and component templates for popular SaaS applications.
