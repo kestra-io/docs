@@ -3,7 +3,7 @@ export const SECURITY_OVERVIEW_PDF_URL =
     "https://hs.kestra.io/hubfs/kestra-security-overview-enterprise-edition.pdf"
 export const SECURITY_EMAIL = "security@kestra.io"
 export const ADVISORIES_URL = "https://github.com/kestra-io/kestra/security/advisories"
-export const HARDENING_GUIDE_URL = "/docs/administrator-guide/security-hardening"
+export const HARDENING_GUIDE_URL = "/docs/security-hardening"
 export const DEPLOYMENT_ARCHITECTURE_URL = "/docs/architecture/deployment-architecture"
 export const SECURITY_AND_SECRETS_URL = "/docs/configuration/security-and-secrets"
 
@@ -228,7 +228,7 @@ export const TRUST_LINKS: TrustLink[][] = [
         { label: "Trust Center", text: "kestra.io/trust", href: TRUST_CENTER_URL },
         {
             label: "Security hardening guide",
-            text: "kestra.io/docs/administrator-guide/security-hardening",
+            text: "kestra.io/docs/security-hardening",
             href: HARDENING_GUIDE_URL,
         },
         {

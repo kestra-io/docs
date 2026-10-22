@@ -57,7 +57,7 @@ The parent flow immediately fails with the error: `Cannot execute a flow which i
 The same error occurs when triggering via API: the execution is created then immediately marked as failed:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/main/executions/trigger/company.team/parent_runs_disabled_flow
+curl -X POST http://localhost:8080/api/v1/main/executions/company.team/parent_runs_disabled_flow
 ```
 
 ## Disabled trigger
@@ -81,6 +81,8 @@ triggers:
 ```
 
 No scheduled executions are created while the trigger is disabled. To re-enable it, set `disabled: false` or remove the property entirely.
+
+When you re-enable a Schedule trigger from the **Triggers** tab, a dialog asks how to handle the schedules missed while it was disabled: **Do not recover missed schedules**, or follow the trigger's [`recoverMissedSchedules`](../07.triggers/01.schedule-trigger/index.md#recover-missed-schedules) setting. The `PUT /api/v1/{tenant}/triggers/set-disabled` API skips missed schedules unless the request sets `recoverMissedSchedules: true`. Disabling a realtime trigger also stops its running instance.
 
 ## Disabled task
 

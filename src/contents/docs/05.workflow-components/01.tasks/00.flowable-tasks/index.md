@@ -156,7 +156,7 @@ For more details, check out the [If Task documentation](/plugins/core/flow/io.ke
 
 The `Loop` task iterates over a set of values and runs child tasks for each item in an isolated sub-execution with its own context.
 
-`values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file.
+`values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file. When `values` is a list or a JSON array string, Kestra drops duplicate elements, so `["a", "b", "a"]` runs two iterations.
 
 ```yaml
 id: loop-basic
@@ -177,17 +177,17 @@ Inside each iteration, use the `item` variable to access the iteration context:
 | Expression | Description |
 |---|---|
 | `{{ item.index }}` | Zero-based iteration index |
-| `{{ item.value }}` | Current iteration value |
+| `{{ item.value }}` | Current iteration value; a string, or a map when the Loop sets `parseValues: true` |
 | `{{ item.key }}` | Current map key when `values` is a map; not set for list or URI values |
 | `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
 | `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
-| `{{ item.parents[n].value }}` | Value of the nth ancestor loop, counting from innermost |
+| `{{ item.parents[n].value }}` | Value of the nth enclosing loop, counting from the outermost (`[0]` = outermost loop) |
 
 For more details on `item`, see [loop iteration context](../../../expressions/01.context/index.mdx#loop-iteration-context) in the expressions reference.
 
 #### Iterating over objects
 
-When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields; `item.value.field` does not work.
+When `values` contains a list of objects, each `item.value` is a JSON string by default. Use `fromJson(item.value).field` to read fields, or set [`parseValues: true`](#read-object-fields-with-parsevalues) to read them as `item.value.field`.
 
 ```yaml
 id: parallel_tasks_example
@@ -212,6 +212,41 @@ tasks:
         type: io.kestra.plugin.core.log.Log
         message: "User {{ fromJson(item.value).id }} -> {{ fromJson(item.value).email }}"
 ```
+
+#### Read object fields with `parseValues`
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `parseValues: true` to parse each value as a JSON object before the iteration starts. `item.value` is then a map, so `item.value.field` works in every task inside the loop, in the Loop `outputs` block, and in `breakWhen`.
+
+```yaml
+id: loop-parse-values
+namespace: company.team
+
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - { id: 101, email: "a@example.com" }
+      - { id: 102, email: "b@example.com" }
+    parseValues: true
+    outputs:
+      - id: user_id
+        type: INT
+        value: "{{ item.value.id }}"
+    tasks:
+      - id: log_user
+        type: io.kestra.plugin.core.log.Log
+        message: "User {{ item.value.id }} -> {{ item.value.email }}"
+```
+
+Keep the following in mind when you set `parseValues: true`:
+
+- Only JSON objects become maps. If a value is a JSON array, a number, a plain string, or invalid JSON, `item.value` stays a string and Kestra logs a warning. The iteration still runs.
+- Remove `fromJson(item.value)` from the loop. `fromJson()` expects a string, so it fails when `item.value` is a map.
+- In nested loops, `item.parent.value` and `item.parents[n].value` follow the `parseValues` setting of the loop they come from.
+- Kestra still stores each value as a string. The `item.value` recorded in the Loop's `outputs` stays a string.
 
 #### Concurrent execution
 
@@ -292,11 +327,49 @@ tasks:
         message: "Loop completed (with or without failures)"
 ```
 
+#### Stop early with `breakWhen`
+
+Set `breakWhen` to a Pebble expression that Kestra evaluates after each iteration finishes. When the expression is truthy (`true`, a non-empty string, or a non-zero number), the loop starts no new iterations and counts the remaining ones as `SKIPPED` in `terminatedIterations`.
+
+In addition to `item`, the expression can read the iteration that just finished:
+
+| Variable | Description |
+|---|---|
+| `iteration.executionId` | Execution ID of the iteration |
+| `iteration.state` | Final state of the iteration, such as `SUCCESS` or `FAILED` |
+| `iteration.outputs` | Values declared in the Loop `outputs` block for that iteration |
+
+The following example fetches pages one at a time and stops after the first page that reports no more data:
+
+```yaml
+id: loop-break-when
+namespace: company.team
+
+tasks:
+  - id: fetch_pages
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3, 4, 5]
+    concurrencyLimit: 1
+    breakWhen: "{{ iteration.outputs.has_more == false }}"
+    outputs:
+      - id: has_more
+        type: BOOL
+        value: "{{ outputs.fetch.value | number < 3 }}"
+    tasks:
+      - id: fetch
+        type: io.kestra.plugin.core.debug.Return
+        format: "{{ item.value }}"
+```
+
+Kestra checks `breakWhen` only while some iterations have not started yet. With the default `concurrencyLimit: 0`, every iteration starts at once, so `breakWhen` has no effect. Set `concurrencyLimit: 1` to check the condition before each new iteration starts.
+
+To stop on a failed iteration, set `transmitFailed: false` and check `iteration.state`. With the default `transmitFailed: true`, the first failed iteration fails the loop before Kestra evaluates `breakWhen`.
+
 #### Nested loops
 
 Loops can be nested to any depth. Because `item` is bound to the loop execution rather than individual task runs, flowable tasks nested inside a loop can access `item` directly without a `parent.` prefix.
 
-`item.parents[0]` is the immediate parent loop (same as `item.parent`), `item.parents[1]` is the next outer loop, and so on.
+`item.parents` lists the enclosing loops from the outermost inward. `item.parents[0]` is the outermost loop, and the last element is the immediate parent, the same as `item.parent`.
 
 ```yaml
 tasks:
@@ -314,7 +387,7 @@ tasks:
             tasks:
               - id: log
                 type: io.kestra.plugin.core.log.Log
-                message: "bucket={{ item.parents[1].value }} year={{ item.parent.value }} month={{ item.value }}"
+                message: "bucket={{ item.parents[0].value }} year={{ item.parent.value }} month={{ item.value }}"
 ```
 
 #### Loop outputs
@@ -350,9 +423,13 @@ The loop also exposes monitoring outputs regardless of whether `outputs` is decl
 |---|---|
 | `iterationCount` | Total number of iterations |
 | `runningIterations` | Iterations still in progress |
-| `terminatedIterations` | Iterations that have finished |
+| `terminatedIterations` | Count of finished iterations per final state, for example `{"SUCCESS": 2, "SKIPPED": 2}` |
 
-The `fetchType` property controls how iteration outputs are collected: `FETCH` returns them inline in the execution context (suitable for small iteration counts), `STORE` writes them to internal storage and exposes a URI (preferred for large iteration counts), and `AUTO` (the default) chooses based on whether `values` is a URI.
+The `fetchType` property controls how iteration outputs are collected:
+
+- `FETCH` keeps each iteration's declared outputs inline in the execution context. Use it for small iteration counts.
+- `STORE` writes each iteration's declared outputs to an ION file in internal storage. Each entry in `outputs.<loop_id>.outputs` then holds only a `uri` to that file, so `loopOutputs()` returns `null` for your declared output IDs. Use it for large iteration counts.
+- `AUTO` (the default) uses `STORE` when `values` is a URI and `FETCH` otherwise.
 
 #### Processing large files
 
@@ -458,7 +535,7 @@ tasks:
       iteration_count = {{ outputs.process_items.iterationCount }}
 
       # outputs.process_items.outputs is a list of iteration results:
-      # [{"item": {"value": "1", "iteration": 1}, "outputs": {"squared": 1}}, ...]
+      # [{"item": {"value": "1", "iteration": 0}, "outputs": {"squared": 1}}, ...]
       all_outputs = {{ outputs.process_items.outputs | toJson }}
 
       squared_values = [iteration["outputs"]["squared"] for iteration in all_outputs]
@@ -470,39 +547,10 @@ tasks:
       Kestra.outputs({"total": sum(squared_values)})
 ```
 
-`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results: each entry contains an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. To access the first iteration's output in an expression, use `outputs.process_items.outputs[0].outputs.squared`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`.
+`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results: each entry contains an `item` object (`value`, the zero-based `iteration`, and `key` when `values` is a map) and an `outputs` map of the declared output values. To access the first iteration's output in an expression, use `outputs.process_items.outputs[0].outputs.squared`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`.
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
 
-#### Early exit
-
-:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
-:::
-
-Set `breakWhen` to a Pebble expression to stop the loop early. After each iteration completes, the expression is evaluated; when it returns a truthy value (`true`, a non-empty string, a non-zero number), the loop stops and remaining iterations are marked `SKIPPED`.
-
-```yaml
-tasks:
-  - id: loop
-    type: io.kestra.plugin.core.flow.Loop
-    concurrencyLimit: 1
-    values: ["value 1", "value 2", "value 3"]
-    breakWhen: "{{ iteration.state == 'FAILED' }}"
-    tasks:
-      - id: process
-        type: io.kestra.plugin.core.log.Log
-        message: "Processing {{ item.value }}"
-```
-
-Inside `breakWhen`, these variables are available in addition to the standard `item.*` context:
-
-| Variable | Description |
-|---|---|
-| `iteration.executionId` | Execution ID of the iteration that just completed |
-| `iteration.state` | Final state of that execution (e.g. `SUCCESS`, `FAILED`) |
-| `iteration.outputs` | Output map of the iteration's declared outputs |
-
-Set `concurrencyLimit: 1` when using `breakWhen`. With parallel iterations running simultaneously, the break condition is evaluated per iteration as it finishes, so later iterations may already be running when an earlier one triggers the break.
 
 ### LoopUntil
 

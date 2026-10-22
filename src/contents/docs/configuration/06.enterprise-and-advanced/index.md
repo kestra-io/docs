@@ -457,7 +457,6 @@ These settings cover the advanced repository and queue stack used in Enterprise 
 - Elasticsearch repository settings
 - Kafka client and topic settings
 - Kafka message protection
-- indexer behavior
 
 Use this section when you are running the Kafka plus Elasticsearch architecture instead of a JDBC-only deployment.
 
@@ -607,26 +606,9 @@ Client loggers have a heavy performance impact. Use them only for short-lived de
 
 Shared-cluster deployments often also need prefixes or dedicated topic names to avoid collisions with other tenants or environments.
 
-To reject oversized Kafka messages early:
+To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
 
-```yaml
-kestra:
-  kafka:
-    message-protection:
-      enabled: true
-      limit: 1048576
-```
-
-Indexer settings control batch indexing from Kafka into Elasticsearch:
-
-```yaml
-kestra:
-  indexer:
-    batch-size: 500
-    batch-duration: PT1S
-```
-
-If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
+The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
 ## Redis, AMQP, GCP Pub/Sub, and NATS queue backends
 
@@ -639,8 +621,8 @@ These properties apply to all queue backends:
 | Property | Description | Default |
 |---|---|---|
 | `kestra.queue.prefix` | Name prefix added to every queue. Use this when multiple Kestra clusters share one backend to prevent stream collisions. | — |
-| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `false` |
-| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | — |
+| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `true` |
+| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | `1048576` (1 MiB) |
 
 ```yaml
 kestra:
