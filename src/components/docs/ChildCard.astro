@@ -63,12 +63,12 @@ const children = await Promise.all(
                     !line.startsWith("#") &&
                     !line.trim().startsWith("import "),
             )
-        const basePath = doc.id.replace(/\\/[^/]+$/, "")
+        const basePath = doc.id.substring(0, doc.id.lastIndexOf("/"))
         const description =
             doc.data.description ??
             (firstLine
                 ? firstLine.replace(
-                      /\\[([^\\]]+)\\]\\(([^)]+)\\)/g,
+                      /\[([^\]]+)\]\(([^)]+)\)/g,
                       (match, text, url) => {
                           if (url.startsWith(".")) {
                               const resolvedPath = basePath
