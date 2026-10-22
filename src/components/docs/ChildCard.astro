@@ -8,9 +8,14 @@ interface Props {
     title?: string
     directory?: string
     reverse?: boolean
+    items?: Array<{
+        id: string
+        title?: string
+        path?: string
+    }>
 }
 
-const { title, directory, reverse = false } = Astro.props
+const { title, directory, reverse = false, items } = Astro.props
 
 const currentPage =
     directory ??
@@ -22,54 +27,70 @@ const contentPath = currentPage.replace("/docs/", "")
 
 const docs = await getCollection("docs")
 
-const children = await Promise.all(
-    docs
-        .filter(
-            (doc) =>
-                doc.id.startsWith(`${contentPath}/`) &&
-                !doc.id.slice(contentPath.length + 1).includes("/"),
-        )
-        .sort((a, b) => {
-            const cmp = a.filePath && b.filePath
-                ? a.filePath.localeCompare(b.filePath)
-                : a.id.localeCompare(b.id)
-            return reverse ? -cmp : cmp
-        })
-        .map(async (doc) => {
-            const firstLine = doc.body
-                ?.split("\n")
-                .find(
-                    (line) =>
-                        line.trim().length > 0 &&
-                        !line.startsWith("#") &&
-                        !line.trim().startsWith("import "),
-                )
-            const basePath = doc.id.replace(/\/[^/]+$/, "")
-            const description =
-                doc.data.description ??
-                (firstLine
-                    ? firstLine.replace(
-                          /\[([^\]]+)\]\(([^)]+)\)/g,
-                          (match, text, url) => {
-                              if (url.startsWith(".")) {
-                                  const resolvedPath = basePath
-                                      ? `${basePath}/${url}`
-                                      : url
-                                  const newUrl = `/docs/${generateId({ entry: resolvedPath })}`
-                                  return `[${text}](${newUrl})`
-                              }
-                              return match
-                          },
-                      )
-                    : "")
+const cardDocs = items
+    ? items.map((item) => {
+          const doc = docs.find((entry) => entry.id === item.id)
+          if (!doc) {
+              throw new Error(
+                  "ChildCard could not find a documentation page with id: " +
+                      item.id,
+              )
+          }
+          return { doc, item }
+      })
+    : docs
+          .filter(
+              (doc) =>
+                  doc.id.startsWith(contentPath + "/") &&
+                  !doc.id.slice(contentPath.length + 1).includes("/"),
+          )
+          .sort((a, b) => {
+              const cmp =
+                  a.filePath && b.filePath
+                      ? a.filePath.localeCompare(b.filePath)
+                      : a.id.localeCompare(b.id)
+              return reverse ? -cmp : cmp
+          })
+          .map((doc) => ({ doc, item: undefined }))
 
-            return {
-                title: doc.data.sidebarTitle ?? doc.data.title,
-                description,
-                path: `/docs/${doc.id}`,
-                release: doc.data.release,
-            }
-        }),
+const children = await Promise.all(
+    cardDocs.map(async ({ doc, item }) => {
+        const firstLine = doc.body
+            ?.split("\n")
+            .find(
+                (line) =>
+                    line.trim().length > 0 &&
+                    !line.startsWith("#") &&
+                    !line.trim().startsWith("import "),
+            )
+        const basePath = doc.id.replace(/\\/[^/]+$/, "")
+        const description =
+            doc.data.description ??
+            (firstLine
+                ? firstLine.replace(
+                      /\\[([^\\]]+)\\]\\(([^)]+)\\)/g,
+                      (match, text, url) => {
+                          if (url.startsWith(".")) {
+                              const resolvedPath = basePath
+                                  ? basePath + "/" + url
+                                  : url
+                              const newUrl =
+                                  "/docs/" +
+                                  generateId({ entry: resolvedPath })
+                              return "[" + text + "](" + newUrl + ")"
+                          }
+                          return match
+                      },
+                  )
+                : "")
+
+        return {
+            title: item?.title ?? doc.data.sidebarTitle ?? doc.data.title,
+            description,
+            path: item?.path ?? "/docs/" + doc.id,
+            release: doc.data.release,
+        }
+    }),
 )
 ---
 
