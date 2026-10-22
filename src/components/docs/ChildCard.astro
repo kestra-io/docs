@@ -63,7 +63,8 @@ const children = await Promise.all(
                     !line.startsWith("#") &&
                     !line.trim().startsWith("import "),
             )
-        const basePath = doc.id.substring(0, doc.id.lastIndexOf("/"))
+        const lastSlash = doc.id.lastIndexOf("/")
+        const basePath = lastSlash >= 0 ? doc.id.substring(0, lastSlash) : doc.id
         const description =
             doc.data.description ??
             (firstLine
