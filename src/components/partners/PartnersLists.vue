@@ -78,7 +78,7 @@
                             @click="searchQuery = ''"
                             title="Clear search"
                         />
-                        <div class="cta-wrapper">
+                        <div v-if="props.ctaHref" class="cta-wrapper">
                             <span class="or-text">or</span>
                             <a
                                 :href="props.ctaHref"
@@ -157,8 +157,8 @@
         title: string
         subtitle: string
         searchPlaceholder: string
-        ctaText: string
-        ctaHref: string
+        ctaText?: string
+        ctaHref?: string
     }>()
 
     const searchQuery = ref("")
@@ -515,31 +515,41 @@
         padding: 4rem 2.625rem;
         border-radius: $border-radius-lg;
         color: $white;
+        // Kestra among partner logos on the right; a fade from the left keeps the
+        // text readable when the panel narrows and the logos slide under it
         background:
-            radial-gradient(
-                ellipse 45% 70% at 100% 0%,
-                rgba(146, 72, 220, 0.45),
-                transparent 70%
-            ),
-            radial-gradient(
-                ellipse 35% 60% at 80% 100%,
-                rgba(58, 64, 220, 0.3),
-                transparent 70%
-            ),
-            #212125;
+            linear-gradient(90deg, #28282c 40%, rgba(40, 40, 44, 0) 70%),
+            url("./illustrations/find-bg.webp") right center / cover no-repeat
+                #28282c;
 
         @include media-breakpoint-down(lg) {
             padding: 2rem 1.5rem;
             order: -1;
         }
 
+        // on phones, as on the plugins page, only the edge of the logos peeks in on the right
+        @include media-breakpoint-down(md) {
+            background: url("./illustrations/find-bg.webp") 55% center / cover
+                no-repeat #28282c;
+        }
+
         h1 {
             margin-bottom: 0.5rem;
         }
 
+        // the panel stays dark in both themes, so the text is a light tone, not a theme token
         > p {
             margin-bottom: 2rem;
-            color: var(--ks-content-tertiary);
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        // keep the text and search on the dark side, clear of the logos
+        > * {
+            max-width: min(34rem, 52%);
+
+            @include media-breakpoint-down(md) {
+                max-width: none;
+            }
         }
     }
 
@@ -548,11 +558,15 @@
         flex-wrap: wrap;
         align-items: center;
         width: 100%;
-        padding: 0.25rem 0.35rem 0.25rem 1rem;
+        padding: 0.25rem 1rem;
         background: var(--ks-background-input);
         border: 1px solid var(--ks-border-secondary);
         border-radius: $border-radius-lg;
-        max-width: 612px;
+        max-width: min(26rem, 52%);
+
+        @include media-breakpoint-down(md) {
+            max-width: none;
+        }
 
         .search-icon {
             color: var(--ks-content-tertiary);
@@ -563,7 +577,7 @@
 
         input {
             flex: 1;
-            min-height: 2.5rem;
+            min-height: 3rem;
             border: none;
             outline: none;
             color: var(--ks-content-primary);
@@ -587,6 +601,11 @@
             &:hover {
                 color: var(--ks-content-primary);
             }
+        }
+
+        // a button inside the field sits closer to its edge
+        &:has(.cta-wrapper) {
+            padding-right: 0.35rem;
         }
 
         .cta-wrapper {
