@@ -21,12 +21,29 @@
                     <label :for="`${uid}-${field.name}`">{{
                         field.label
                     }}</label>
-                    <input
+                    <select
+                        v-if="field.options"
                         :id="`${uid}-${field.name}`"
                         :name="field.name"
-                        :type="field.name === 'email' ? 'email' : 'text'"
+                        class="form-select form-control"
+                        :required="!field.optional"
+                    >
+                        <option value="">Select...</option>
+                        <option
+                            v-for="option in field.options"
+                            :key="option.value"
+                            :value="option.value"
+                        >
+                            {{ option.label }}
+                        </option>
+                    </select>
+                    <input
+                        v-else
+                        :id="`${uid}-${field.name}`"
+                        :name="field.name"
+                        :type="field.type ?? (field.name === 'email' ? 'email' : 'text')"
                         class="form-control"
-                        required
+                        :required="!field.optional"
                     />
                 </div>
 
@@ -87,6 +104,15 @@
 
     /** Defaults are the guide download; without `guideUrl` it is a plain
      *  request with no download link after submit. */
+    export type GuideFormField = {
+        name: string
+        label: string
+        half?: boolean
+        type?: "text" | "email" | "date"
+        options?: { value: string; label: string }[]
+        optional?: boolean
+    }
+
     const props = withDefaults(
         defineProps<{
             hubspotFormId: string
@@ -103,12 +129,14 @@
              *  so the download is not the end of the visit. */
             followUpHref?: string
             followUpLabel?: string
+            extraFields?: GuideFormField[]
         }>(),
         {
             guideUrl: undefined,
             followUpHref: undefined,
             followUpLabel: "Book a 30-minute call",
             withCompany: false,
+            extraFields: () => [],
             title: "Download the Free Guide",
             submitLabel: "Download the guide",
             thankYouTitle: "Thanks — your guide is ready.",
@@ -117,12 +145,13 @@
         },
     )
 
-    const FIELDS = [
+    const FIELDS: GuideFormField[] = [
         { name: "firstname", label: "First name", half: true },
         { name: "lastname", label: "Last name", half: true },
         { name: "email", label: "Company email" },
         ...(props.withCompany ? [{ name: "company", label: "Company" }] : []),
         { name: "jobtitle", label: "Job title" },
+        ...props.extraFields,
     ]
 
     // Per-instance ids: a page can hold this form twice (a hero and a
@@ -145,8 +174,11 @@
         message.value = ""
 
         try {
-            const { email, firstname, lastname, company, jobtitle } =
-                Object.fromEntries(new FormData(form)) as Record<string, string>
+            const values = Object.fromEntries(new FormData(form)) as Record<
+                string,
+                string
+            >
+            const { email, firstname, lastname, company, jobtitle } = values
             const kuid = localStorage.getItem("KUID") || ""
 
             const hsq = (window._hsq ??= [])
@@ -167,11 +199,11 @@
             // guide lead back to its ad click for offline conversions.
             const clickId = getStoredClickId()
             const fields = {
-                firstname,
-                lastname,
-                email,
-                ...(props.withCompany ? { company } : {}),
-                jobtitle,
+                ...Object.fromEntries(
+                    FIELDS.map(({ name }) => [name, values[name]]).filter(
+                        ([, value]) => value,
+                    ),
+                ),
                 form_submission_identifier: props.submissionIdentifier,
                 kuid,
                 ...(clickId ? { hs_google_click_id: clickId.value } : {}),
