@@ -68,7 +68,8 @@
                         <Magnify class="search-icon" />
                         <input
                             v-model="searchQuery"
-                            type="text"
+                            type="search"
+                            @keydown.esc="searchQuery = ''"
                             :placeholder="props.searchPlaceholder"
                             :aria-label="props.searchPlaceholder"
                         />
@@ -90,24 +91,15 @@
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center justify-content-between">
-                    <p class="count">
-                        {{ filtered.length }} of
-                        {{ props.partners.length }} partners
-                    </p>
-                    <CustomSelect
-                        v-model="sortBy"
-                        :options="sortOptions"
-                        label="Sort by:"
-                        id="sortSelect"
-                    />
-                </div>
+                <p class="count" aria-live="polite">
+                    {{ filtered.length }} of {{ props.partners.length }} partners
+                </p>
 
                 <div class="row">
-                    <template v-if="sorted.length">
+                    <template v-if="filtered.length">
                         <div
                             class="col-lg-4 col-md-6 mb-3"
-                            v-for="partner in sorted"
+                            v-for="partner in filtered"
                             :key="partner.name"
                         >
                             <PartnerCard :partner="partner" />
@@ -145,11 +137,10 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Tune from "vue-material-design-icons/Tune.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import CustomSelect from "~/components/common/CustomSelect.vue"
     import PartnerCard from "./PartnerCard.vue"
     import type { ListPartner } from "./partners"
 
-    type FilterKey = "type" | "kind" | "region" | "services"
+    type FilterKey = "type" | "region" | "expertise"
 
     const props = defineProps<{
         partners: ListPartner[]
@@ -162,22 +153,15 @@
     }>()
 
     const searchQuery = ref("")
-    const sortBy = ref("A-Z")
     const filtersOpen = ref(false)
-    const sortOptions = [
-        { value: "A-Z", label: "Name A-Z" },
-        { value: "Z-A", label: "Name Z-A" },
-        { value: "country", label: "Country" },
-    ]
 
     const valuesOf = (p: ListPartner, key: FilterKey): string[] =>
-        key === "services" ? p.services : [p[key]]
+        key === "expertise" ? p.expertise : [p[key]]
 
     const selected = reactive<Record<FilterKey, string[]>>({
         type: [],
-        kind: [],
         region: [],
-        services: [],
+        expertise: [],
     })
 
     const options = computed(() => {
@@ -195,48 +179,42 @@
         return out
     })
 
+    const score = (p: ListPartner, tokens: string[]) => {
+        const name = p.name.toLowerCase()
+        const tags = [p.type, p.country, p.region, ...p.expertise]
+            .join(" ")
+            .toLowerCase()
+        const text = p.description.toLowerCase()
+        let total = 0
+        for (const t of tokens) {
+            if (name.startsWith(t)) total += 4
+            else if (name.includes(t)) total += 3
+            else if (tags.includes(t)) total += 2
+            else if (text.includes(t)) total += 1
+            else return 0
+        }
+        return total
+    }
+
     const filtered = computed(() => {
         const tokens = searchQuery.value
             .toLowerCase()
             .split(/\s+/)
             .filter(Boolean)
-        return props.partners.filter((p) => {
-            for (const { key } of props.filters) {
-                const want = selected[key]
-                if (
-                    want.length &&
-                    !valuesOf(p, key).some((v) => want.includes(v))
-                ) {
-                    return false
-                }
-            }
-            const haystack = [
-                p.name,
-                p.type,
-                p.kind,
-                p.country,
-                p.region,
-                p.description,
-                ...p.services,
-            ]
-                .join(" ")
-                .toLowerCase()
-            return tokens.every((t) => haystack.includes(t))
-        })
-    })
-
-    const sorted = computed(() => {
-        const list = [...filtered.value]
-        if (sortBy.value === "Z-A")
-            return list.sort((a, b) => b.name.localeCompare(a.name))
-        if (sortBy.value === "country") {
-            return list.sort(
-                (a, b) =>
-                    a.country.localeCompare(b.country) ||
-                    a.name.localeCompare(b.name),
+        return props.partners
+            .filter((p) =>
+                props.filters.every(({ key }) => {
+                    const want = selected[key]
+                    return (
+                        !want.length ||
+                        valuesOf(p, key).some((v) => want.includes(v))
+                    )
+                }),
             )
-        }
-        return list.sort((a, b) => a.name.localeCompare(b.name))
+            .map((p) => ({ p, s: tokens.length ? score(p, tokens) : 1 }))
+            .filter(({ s }) => s > 0)
+            .sort((a, b) => b.s - a.s || a.p.name.localeCompare(b.p.name))
+            .map(({ p }) => p)
     })
 
     const activeCount = computed(
@@ -253,7 +231,6 @@
     onMounted(() => {
         const params = new URLSearchParams(window.location.search)
         searchQuery.value = params.get("q") ?? ""
-        sortBy.value = params.get("sort") ?? "A-Z"
         for (const { key } of props.filters) {
             selected[key] = params.get(key)?.split(",").filter(Boolean) ?? []
         }
@@ -262,7 +239,6 @@
     watchDebounced(
         [
             searchQuery,
-            sortBy,
             () => props.filters.map(({ key }) => selected[key].join(",")),
         ],
         () => {
@@ -270,7 +246,6 @@
             const set = (k: string, v: string) =>
                 v ? url.searchParams.set(k, v) : url.searchParams.delete(k)
             set("q", searchQuery.value)
-            set("sort", sortBy.value === "A-Z" ? "" : sortBy.value)
             for (const { key } of props.filters)
                 set(key, selected[key].join(","))
             window.history.replaceState(window.history.state, "", url)

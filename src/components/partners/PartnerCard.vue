@@ -32,13 +32,13 @@
                 </div>
             </div>
             <div class="categories">
-                <span class="category-tag kind">{{ props.partner.kind }}</span>
+                <span class="category-tag kind">{{ props.partner.type }}</span>
                 <span
-                    v-for="service in props.partner.services"
-                    :key="service"
+                    v-for="area in props.partner.expertise"
+                    :key="area"
                     class="category-tag"
                 >
-                    {{ service }}
+                    {{ area }}
                 </span>
             </div>
             <div class="footer">

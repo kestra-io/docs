@@ -4,20 +4,19 @@ import PartnersLists from "~/components/partners/PartnersLists.vue"
 import PartnerCta from "~/components/partners/PartnerCta.astro"
 import { listPartners } from "~/components/partners/partners"
 
-const title = "Find a Kestra Partner: Consulting and Technology Partners"
+const title = "Find a Kestra Partner: Services and Technology Partners"
 const description =
-    "Search every Kestra partner, consulting firms, systems integrators and technology platforms, by track, region and service."
+    "Search every Kestra partner, from consulting firms, integrators and resellers to technology platforms, by type, expertise and region."
 
 const partners = listPartners()
 
 const FILTERS: {
-    key: "type" | "kind" | "region" | "services"
+    key: "type" | "region" | "expertise"
     label: string
 }[] = [
-    { key: "type", label: "Track" },
-    { key: "kind", label: "Category" },
+    { key: "type", label: "Partner type" },
+    { key: "expertise", label: "Expertise" },
     { key: "region", label: "Region" },
-    { key: "services", label: "Services" },
 ]
 ---
 
@@ -27,8 +26,8 @@ const FILTERS: {
         partners={partners}
         filters={FILTERS}
         title="Find a partner"
-        subtitle="Consulting firms and systems integrators who deliver Kestra, and the technology platforms it integrates with."
-        searchPlaceholder="Search by name, country or service"
+        subtitle="Services partners who deliver and sell Kestra, and the technology platforms it integrates with."
+        searchPlaceholder="Search by name, country or expertise"
     />
     <PartnerCta />
 </Layout>
