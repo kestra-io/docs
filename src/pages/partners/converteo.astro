@@ -1,0 +1,70 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Converteo & Kestra: Data and AI Consulting, Orchestrated"
+const description =
+    "Converteo is a Paris-based data and AI consulting firm that turns data into business, marketing and sales performance."
+
+const about =
+    "Founded in 2007, Converteo brings together more than 400 consultants and experts in data, AI and technology. Converteo was one of Kestra's first consulting partners and uses Kestra in the data transformation projects it delivers for its clients."
+
+const facts = [
+    { label: "Headquarters", value: "Paris, France" },
+    {
+        label: "Kestra expertise",
+        value: "Data transformation, modern data stack integration",
+    },
+    { label: "Profile", value: "Data and AI consulting firm founded in 2007" },
+]
+
+const quote = {
+    text: "Kestra offers an elegant solution to the pain points we face in the data transformation projects of our customers: monitoring, management, and maintenance of large-scale data flow. What sets Kestra apart is not only its open-source community but also its seamless integration with modern data stack tools like Airbyte.",
+    author: "Charles Letaillieur",
+    role: "Senior Manager, Converteo",
+}
+
+const expertise = [
+    {
+        icon: "mdi:compass-outline",
+        title: "Data strategy",
+        text: "Data and AI programs aligned with business, marketing and sales goals.",
+    },
+    {
+        icon: "mdi:database-sync-outline",
+        title: "Modern data stack delivery",
+        text: "Ingestion with tools like Airbyte, then transformation and orchestration in Kestra.",
+    },
+    {
+        icon: "mdi:monitor-dashboard",
+        title: "Data flows you can run",
+        text: "Large-scale data flows that stay easy to monitor, manage and maintain.",
+    },
+    {
+        icon: "mdi:chart-line",
+        title: "Marketing and sales performance",
+        text: "Reliable data delivered to the marketing and sales teams that act on it.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Converteo">
+    <PartnerProfile
+        name="Converteo"
+        tagline={description}
+        {about}
+        expertiseTitle="Converteo: data and AI programs, orchestrated with Kestra"
+        {expertise}
+        {quote}
+        {facts}
+        contact={{
+            text: "Contact Converteo",
+            href: "https://converteo.com/en/contact/?utm_source=kestra&utm_medium=referral&utm_campaign=partners",
+        }}
+        closing={{
+            title: "Work with Converteo",
+            text: "Building a data and AI program on a modern stack? Converteo's consultants can help.",
+        }}
+        website="https://converteo.com/en/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>
