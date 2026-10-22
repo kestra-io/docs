@@ -4,13 +4,13 @@ h1: Route Tasks to Specific Workers by Hardware or Region
 description: Manage workloads with Kestra Worker Groups. Target specific workers for tasks based on hardware, region, or security requirements for optimized execution.
 sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: ">= 2.0.0"
 ---
 
 Worker Groups route tasks to the right machines in your fleet. A Worker Group is a named, token-authenticated pool of workers that subscribes to one or more Worker Queues — tag-based routing lanes that tasks declare requirements against. The result is flexible many-to-many routing: GPU machines and spot instances can serve the same queue, or a single group can cover multiple queues with per-queue capacity guarantees.
 
-Worker Groups are an Enterprise Edition feature. In the open-source edition, all work runs in a single implicit default pool.
+Worker Groups are available in Enterprise Edition and Kestra Cloud. In the open-source edition, all work runs in a single implicit default pool.
 
 ## Getting started
 

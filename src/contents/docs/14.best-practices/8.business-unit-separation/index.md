@@ -24,10 +24,6 @@ You can configure dedicated resources for each tenant:
 - Dedicated worker groups (e.g., a pool of workers used exclusively by a specific tenant)
 - Flows, executions, and logs are **isolated** between tenants by default
 
-:::alert{type="info"}
-Worker groups are not yet available in Kestra Cloud; they are supported only in Kestra Enterprise Edition.
-:::
-
 ### Use cases for tenants
 
 - **Customer separation**: For multi-tenant SaaS setups requiring strict isolation between customers, assign each customer its own tenant rather than a dedicated namespace.
