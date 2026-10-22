@@ -9,16 +9,15 @@ import ConapiLogo from "~/assets/landing/partners/conapi-logo-small.svg?raw"
 import AshisutoLogo from "~/assets/landing/partners/ashisuto-logo.svg?raw"
 
 const title =
-    "Kestra Consulting Partners: Consulting Firms and Systems Integrators"
+    "Kestra Services Partners: Consulting Firms, Integrators and Resellers"
 const description =
-    "Search the consulting firms and systems integrators who sell, implement and support Kestra, by country and service. Or join the program."
+    "Search the consulting firms, systems integrators, managed service providers and resellers who deliver and sell Kestra, by country and expertise. Or join the program."
 
-const partners = listPartners("Consulting")
+const partners = listPartners("Services")
 
-const FILTERS: { key: "kind" | "region" | "services"; label: string }[] = [
-    { key: "kind", label: "Partner type" },
+const FILTERS: { key: "region" | "expertise"; label: string }[] = [
+    { key: "expertise", label: "Expertise" },
     { key: "region", label: "Region" },
-    { key: "services", label: "Services" },
 ]
 
 const BENEFITS = [
@@ -54,14 +53,14 @@ const QUOTES = [
 ]
 ---
 
-<Layout {title} {description} breadcrumbTitle="Consulting Partners">
+<Layout {title} {description} breadcrumbTitle="Services Partners">
     <PartnersLists
         client:load
         partners={partners}
         filters={FILTERS}
-        title="Find a consulting partner"
-        subtitle="Partners who demo, deliver, operate and sell Kestra for their clients. Search by country and service, or join the program as a Solution, Services or Reseller partner."
-        searchPlaceholder="Search by name, country or service"
+        title="Find a services partner"
+        subtitle="Consulting firms, systems integrators, managed service providers and resellers who deliver and sell Kestra. Search by country and expertise, or join the program."
+        searchPlaceholder="Search by name, country or expertise"
     />
     <Benefits
         title="What partners get"
@@ -69,5 +68,5 @@ const QUOTES = [
         benefits={BENEFITS}
     />
     <Quotes quotes={QUOTES} />
-    <PartnerCta track="consulting" />
+    <PartnerCta track="services" />
 </Layout>
