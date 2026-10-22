@@ -93,6 +93,27 @@ tasks:
             message: "step 2b"
 ```
 
+When a branch fails with no retry left, `Parallel` interrupts the other branches that are still running and sets them to `FAILED`. The `onChildFailure` property controls this behavior:
+
+- `FAIL` (default): interrupt the running branches and set them to `FAILED`.
+- `CANCEL`: interrupt the running branches and set them to `CANCELLED`.
+- `CONTINUE`: let the running branches finish.
+
+With any value, the `Parallel` task ends in `FAILED` and its `errors` and `finally` tasks run. In the following example, `long_running` finishes its full minute even though `fails_fast` fails:
+
+```yaml
+  - id: parallel
+    type: io.kestra.plugin.core.flow.Parallel
+    onChildFailure: CONTINUE
+    tasks:
+      - id: fails_fast
+        type: io.kestra.plugin.core.execution.Fail
+
+      - id: long_running
+        type: io.kestra.plugin.core.flow.Sleep
+        duration: PT1M
+```
+
 For more details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
@@ -898,5 +919,7 @@ tasks:
 ```
 
 In this example, `task2` and `task3` run in parallel after `task1` completes, and `task4` starts once both finish.
+
+`DAG` handles a failed task the same way as [`Parallel`](#parallel). By default, it interrupts the other tasks that are still running and sets them to `FAILED`. Set `onChildFailure` to `CANCEL` to set them to `CANCELLED` instead, or to `CONTINUE` to let them finish.
 
 For more details, refer to the [DAG Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.dag).
