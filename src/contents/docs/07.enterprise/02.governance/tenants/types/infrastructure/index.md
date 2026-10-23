@@ -70,7 +70,7 @@ Changing the expiry updates only the deployment's `ttl`, not the underlying infr
 
 Day-2 actions are flows attached to a deployment that can be run directly from its page. Common actions include resizing a resource or decommissioning it. The execution is stamped with the asset ID it was started from, linking it back to the deployment in the Deployments screen.
 
-Attach day-2 actions to a deployment by declaring `assetActions` on the asset in `assets.outputs`. Each action names a flow by namespace and flow ID and provides a label for the button shown on the deployment's page:
+Attach day-2 actions to a deployment by declaring `assetActions` on the asset in `assets.outputs`. Each action names a flow by namespace and flow ID and provides a label for the button shown on the deployment's page. To limit when an action can run, or to run one through the API, see [Asset actions](../../../01.assets/01.declare-assets/index.md#asset-actions). For example:
 
 ```yaml
 assets:
@@ -177,7 +177,7 @@ The response lists asset IDs under `created`, `updated`, and `skipped`, which ma
 
 ## Asset lifecycle properties
 
-The `status`, `ttl`, and `owner` fields are top-level properties on any asset declaration — not entries in the `metadata` map. They apply to all asset types, not just Deployments. Kestra stores them internally under the `system.` prefix (`system.status`, `system.ttl`, `system.owner`), which is the form used in dashboard queries and filter expressions.
+The `status`, `ttl`, and `owner` fields are top-level properties on any asset declaration, not entries in the `metadata` map, and they apply to every asset type. See [Lifecycle fields](../../../01.assets/01.declare-assets/index.md#lifecycle-fields) for their formats and the `system.` keys used in queries.
 
 Set lifecycle properties as top-level fields in a task's `assets.outputs` declaration:
 
@@ -242,6 +242,4 @@ Kestra creates the tenant, seeds the example environment (unless disabled), and 
 
 The following capabilities are planned and not yet available:
 
-- Auto-emission of assets by Terraform, Ansible, and cloud provider plugins. Assets must be declared explicitly in tasks.
-- Declaring relationships between assets (for example, recording that a resource belongs to a deployment without a flow that reads one and writes the other).
-- An App screen that shows the assets its execution produced.
+- Auto-emission of assets by Terraform and cloud provider plugins. Declare those resources explicitly in tasks. Ansible and Helm tasks can [emit assets automatically](../../../01.assets/01.declare-assets/index.md#plugins-that-emit-assets).

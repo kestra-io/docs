@@ -29,11 +29,13 @@ Select an asset to open its detail page. It has three tabs:
 
 | Tab | Shows |
 | --- | --- |
-| **Overview** | Description, metadata (**Asset Values**), **Upstream Assets**, **Downstream Assets**, and the **Flows** that read or write the asset. Shows the lock holder and expiry when the asset is locked. |
+| **Overview** | Description, lifecycle status, TTL and owner, metadata (**Asset Values** and **Custom metadata**), **Actions**, **Part Of** and **Parts**, **Related Assets**, **Upstream Assets**, **Downstream Assets**, and the **Flows** that read or write the asset. Shows the lock holder and expiry when the asset is locked. |
 | **Executions** | Every execution that used the asset as an input or an output, linked to the execution page |
 | **Dependencies** | The dependencies graph centered on the asset |
 
-Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger).
+Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger). Deleting a parent asset detaches its parts by default. See [Relations](#relations).
+
+To run an [asset action](../01.declare-assets/index.md#asset-actions), select **Actions** on the **Overview** tab and pick the action. Running an action needs `ASSET:UPDATE` on the asset and `FLOW:EXECUTE` on the action flow's namespace.
 
 ### Plugin footers on asset cards
 
@@ -41,7 +43,7 @@ A plugin can add a footer below an asset's card, for example to show test result
 
 ## Explore the dependencies graph
 
-The **Dependencies** tab draws assets and flows as nodes. An edge from an asset to a flow means the flow reads the asset. An edge from a flow to an asset means the flow writes it. An edge between two assets means a task read the first and wrote the second.
+The **Dependencies** tab draws assets and flows as nodes. An edge from an asset to a flow means the flow reads the asset. An edge from a flow to an asset means the flow writes it. An edge between two assets means a task read the first and wrote the second. The graph also shows **Part of** edges from an asset to its parent and **Related** edges between related assets. Edge labels name each relation: **Produces**, **Consumed by**, **Upstream of**, **Part of**, and **Related**. When a parent has many parts, the graph shows the first ones and lets you load more.
 
 ### Layouts
 
@@ -88,6 +90,27 @@ Hover a group to fade the other nodes. Select it to keep it highlighted, and sel
 
 Select a node to open a side panel with the asset's name and ID, its freshness state, when it was last written, its type, the task type that produced it (**Plugins**), its `system`, and its recent runs linked to their executions. Double-click a node to open its detail page.
 
+## Relations
+
+Kestra stores how assets connect as relations. Flows create most of them: lineage relations come from task inputs and outputs, and `partOf` and `related` declarations create **Part of** and **Related** relations. See [Relate assets](../01.declare-assets/index.md#relate-assets).
+
+| Relation | Direction | Created by |
+| --- | --- | --- |
+| Produces | Flow to asset | A flow writing the asset |
+| Consumed by | Asset to flow | A flow reading the asset |
+| Upstream of | Asset to asset | A task reading one asset and writing another |
+| Part of | Asset to its parent asset | `partOf`, or the API |
+| Related | Between two assets, no direction | `related`, or the API |
+
+To remove a relation that a flow derived, delete it through the API. Kestra remembers the removal, so later runs of the flow don't recreate it. A relation that a flow declares comes back the next time the flow declares it.
+
+When you delete an asset that has parts, choose what happens to them with the `children` parameter of the delete endpoints:
+
+| `children` | Effect |
+| --- | --- |
+| `DETACH` | The parts stay and lose their parent. This is the default. |
+| `DELETE` | The parts and all their descendants are deleted too. The delete fails without changes if any of them is locked or you can't delete it. |
+
 ## Lock an asset
 
 A lock blocks writes to an asset for a limited time. Reads are never blocked. Use locks to protect a resource during maintenance or while one execution changes it.
@@ -121,16 +144,23 @@ The Assets API is available at `/api/v1/{tenant}/assets`. Create and update requ
 | `PUT /assets/{id}` | Update an existing asset with the same [update rules](../01.declare-assets/index.md#update-rules) as a flow write. Returns 404 if it doesn't exist. | `ASSET:UPDATE` |
 | `GET /assets/{id}` | Get one asset | `ASSET:VIEW` |
 | `GET /assets/search` | Search assets with query filters | `ASSET:LIST` |
-| `GET /assets/{id}/dependencies` | Get the dependencies graph of one asset | `ASSET:VIEW` |
-| `DELETE /assets/{id}` | Delete one asset | `ASSET:DELETE` |
-| `DELETE /assets/by-ids` | Delete several assets by ID | `ASSET:DELETE` |
-| `DELETE /assets/by-query` | Delete assets that match query filters. Add `purge=true` to hard-delete. | `ASSET:DELETE` |
+| `PATCH /assets/{id}` | Update `description`, `displayName`, or `metadata` with a JSON body. Metadata keys are merged into the stored metadata. | `ASSET:UPDATE` |
+| `POST /assets/bulk` | Create or update many assets from YAML documents separated by `---`. Add `dryRun=true` to preview. See [Import through the API](../../tenants/types/infrastructure/index.md#import-through-the-api). | `ASSET:CREATE`, and `ASSET:UPDATE` to update existing assets |
+| `GET /assets/{id}/dependencies` | Get the dependencies graph of one asset. Filter with `kinds`, and use `expandAll` and `hubCursor` to page through large parents. | `ASSET:VIEW` |
+| `GET /assets/{id}/relations` | List an asset's relations. Filter by `kind` and `direction` (`OUTBOUND`, `INBOUND`, or `BOTH`). | `ASSET:VIEW` |
+| `GET /assets/{id}/relations/summary` | Summarize an asset's relations by kind | `ASSET:VIEW` |
+| `POST /assets/{id}/relations` | Add a relation with a JSON body of `kind`, `direction`, `targetId`, and optional `targetNamespace` and `role` | `ASSET:UPDATE`, and `VIEW` on the other end |
+| `DELETE /assets/{id}/relations/{uid}` | Remove a relation | `ASSET:DELETE`, or `ASSET:UPDATE` for a parent link |
+| `PUT /assets/{id}/parent` | Set the parent with a JSON body of `parentId` and optional `namespace` and `role` | `ASSET:UPDATE`, and `VIEW` on the parent |
+| `DELETE /assets/{id}/parent` | Remove the parent | `ASSET:UPDATE` |
+| `POST /assets/{id}/actions/run` | Run an attached [asset action](../01.declare-assets/index.md#asset-actions). The JSON body names the action's `namespace` and `flowId`, and can pass `inputs` and `labels`. Returns 409 if the action's conditions don't hold. | `ASSET:UPDATE`, and `FLOW:EXECUTE` on the action flow |
+| `DELETE /assets/{id}` | Delete one asset. Set `children` to `DETACH` or `DELETE` for its parts. | `ASSET:DELETE` |
+| `DELETE /assets/by-ids` | Delete several assets by ID. Accepts `children`. | `ASSET:DELETE` |
+| `DELETE /assets/by-query` | Delete assets that match query filters. Add `purge=true` to hard-delete. Accepts `children`. | `ASSET:DELETE` |
 | `POST /assets/{id}/lock` | Lock an asset | `ASSET:LOCK` |
 | `DELETE /assets/{id}/lock` | Unlock an asset | `ASSET:UNLOCK` |
 | `GET /assets/usages/search` | Search the usage records that link assets to executions | `ASSET:LIST` |
 | `DELETE /assets/usages/by-query` | Hard-delete usage records | `ASSET:DELETE` |
-| `GET /assets/lineage-events/search` | Search lineage events | `ASSET:LIST` |
-| `DELETE /assets/lineage-events/by-query` | Hard-delete lineage events | `ASSET:DELETE` |
 
 For namespaced assets, the permission must cover the asset's namespace. This request registers a table that no flow manages:
 
@@ -153,7 +183,7 @@ For request and response schemas, see the [Enterprise API reference](../../../..
 
 ## Automate with kestractl
 
-`kestractl assets` wraps the same endpoints:
+`kestractl assets` covers creating, inspecting, and deleting assets. Use the API for relations, actions, `PATCH`, and bulk import.
 
 ```bash
 # Register an asset from a YAML file

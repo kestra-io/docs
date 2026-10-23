@@ -144,6 +144,9 @@ When a task writes an asset that already exists, Kestra merges the new declarati
 | `namespace` | A declared namespace replaces the stored one. An omitted namespace keeps the stored one. |
 | `displayName`, `description` | A declared value replaces the stored one. An omitted value keeps the stored one. |
 | `metadata` | Merged key by key. Declared keys replace stored keys. Keys you don't declare are kept. A flow can't remove a key; to remove one, edit the asset in the UI or through the API. |
+| `partOf` | A declared parent replaces the stored one. An omitted `partOf` keeps the stored parent. |
+| `related` | Declared relations are added. Removing an entry from the list doesn't remove the relation; remove it through the API. |
+| `assetActions` | A declared list replaces the stored list. An omitted list keeps the stored one. |
 
 Each write updates the asset's `updated` timestamp and emits an `UPDATED` event, even when no field changed.
 
@@ -181,6 +184,57 @@ assets:
       type: io.kestra.plugin.ee.assets.Table
 ```
 
+## Relate assets
+
+Lineage edges come from what tasks read and write. To record other connections, add `partOf` and `related` to an output asset:
+
+| Field | Description |
+| --- | --- |
+| `partOf` | One parent asset, such as the deployment a VM belongs to. Creates a **Part of** relation. |
+| `related` | Up to 50 assets connected without a direction, such as a VM and its load balancer. Creates **Related** relations. |
+
+Each entry takes an `id`, an optional `namespace`, and an optional `role` of up to 100 characters that describes the connection:
+
+```yaml
+outputs:
+  - id: web-01
+    type: io.kestra.plugin.ee.assets.VM
+    partOf:
+      id: deploy-prod-eu
+      role: primary
+    related:
+      - id: lb-prod-eu
+        role: backend
+```
+
+The parent shows **web-01** under **Parts**, and the dependencies graph draws **Part of** and **Related** edges. To change relations without a flow, or to remove them, use the [relations API](../03.manage-assets/index.md#relations).
+
+## Asset actions
+
+Asset actions attach flows to an asset so users can run them from the asset's page, for example to resize or decommission a resource. Declare them with `assetActions` on an output asset. Each action names a flow by `namespace` and `flowId`, with an optional button `label`:
+
+```yaml
+outputs:
+  - id: web-01
+    type: io.kestra.plugin.ee.assets.VM
+    status: active
+    assetActions:
+      - namespace: company.infra
+        flowId: resize_vm
+        label: Resize
+      - namespace: company.infra
+        flowId: decommission_vm
+        label: Decommission
+        when:
+          - field: status
+            operator: EQUAL_TO
+            value: active
+```
+
+An action can carry up to 20 `when` conditions on `status`, `namespace`, or `metadata.<key>`, and it only runs while all of them hold. Each condition has a `field`, an `operator`, and a `value`. The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_CONTAINS`, `STARTS_WITH`, `ENDS_WITH`, `PREFIX`, `REGEX`, `GREATER_THAN`, `GREATER_THAN_OR_EQUAL_TO`, `LESS_THAN`, `LESS_THAN_OR_EQUAL_TO`, `IS_NULL`, and `IS_NOT_NULL`. `IN` and `NOT_IN` take a list as `value`. An asset without a `status` counts as `active`. An asset can have up to 100 actions.
+
+Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/types/infrastructure/index.md#day-2-actions) on a deployment's page.
+
 ## Built-in asset types
 
 | Type | Common metadata keys |
@@ -189,7 +243,8 @@ assets:
 | `io.kestra.plugin.ee.assets.Dataset` | `system`, `location`, `format` |
 | `io.kestra.plugin.ee.assets.File` | `system`, `path` |
 | `io.kestra.plugin.ee.assets.VM` | `provider`, `region`, `state` |
-| `io.kestra.core.models.assets.External` | None. Kestra assigns this type to placeholders created from untyped inputs. |
+| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/types/infrastructure/index.md) lists under **Deployments**. |
+| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs. You can't declare it as a type. |
 
 The metadata keys are conventions. Kestra stores them in `metadata` like any other key, and the [dependencies graph](../03.manage-assets/index.md#explore-the-dependencies-graph) uses `system` and `schema` for grouping.
 

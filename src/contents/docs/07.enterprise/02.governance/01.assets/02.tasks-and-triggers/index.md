@@ -1,7 +1,7 @@
 ---
 title: "Asset Tasks, Triggers, and Functions Reference"
 h1: Asset Triggers, Tasks, Functions, and Exporters
-description: Reference for Kestra asset triggers (EventTrigger, FreshnessTrigger), asset tasks (Set, List, Delete, PurgeAssets, Acquire, Release), the assets() Pebble function, and AssetShipper exporters.
+description: Reference for Kestra asset triggers (EventTrigger, FreshnessTrigger, TtlTrigger), asset tasks (Set, List, Delete, PurgeAssets, Acquire, Release), the assets() Pebble function, and AssetShipper exporters.
 sidebarTitle: Tasks and Triggers
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -22,7 +22,7 @@ For how to attach assets to a task, see the [asset declaration reference](../01.
 | [`Set`](#set) | Task | `io.kestra.plugin.kestra.ee.assets.Set` | Create an asset as its own step |
 | [`List`](#list) | Task | `io.kestra.plugin.kestra.ee.assets.List` | Query assets during an execution |
 | [`Delete`](#delete) | Task | `io.kestra.plugin.kestra.ee.assets.Delete` | Delete an asset |
-| [`PurgeAssets`](#purgeassets) | Task | `io.kestra.plugin.kestra.ee.assets.PurgeAssets` | Hard-delete old assets, usages, and lineage events |
+| [`PurgeAssets`](#purgeassets) | Task | `io.kestra.plugin.kestra.ee.assets.PurgeAssets` | Hard-delete old assets and asset usage records |
 | [`Acquire`](#acquire-and-release) | Task | `io.kestra.plugin.kestra.ee.locks.Acquire` | Lock an asset against writes from other executions |
 | [`Release`](#acquire-and-release) | Task | `io.kestra.plugin.kestra.ee.locks.Release` | Release a lock this execution holds |
 | [`assets()`](#assets-pebble-function) | Pebble function | — | Look up assets inside any expression, including dynamic inputs |
@@ -368,7 +368,7 @@ tasks:
 
 ## PurgeAssets
 
-[`io.kestra.plugin.kestra.ee.assets.PurgeAssets`](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) hard-deletes assets, asset usage records, and lineage events older than a cutoff date. Locked assets are skipped.
+[`io.kestra.plugin.kestra.ee.assets.PurgeAssets`](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) hard-deletes assets and asset usage records older than a cutoff date. Locked assets are skipped.
 
 The [purge reference](../../../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) lists every property and the filter combinations each record type supports. For retention strategy, see [Purging data](../../../../14.best-practices/11.purging-data/index.md#when-to-purge-assets-and-lineage).
 
@@ -443,7 +443,7 @@ message: "{{ assets(id='reports.weekly_csv') | jq('.[0].metadata.path') | first 
 
 ## AssetShipper
 
-[`io.kestra.plugin.ee.assets.AssetShipper`](/plugins/core/asset-ee/io.kestra.plugin.ee.assets.assetshipper) exports asset lineage events to one or more destinations. Each lineage event describes one task run: the flow and task, the execution, the run state, and the input and output assets.
+[`io.kestra.plugin.ee.assets.AssetShipper`](/plugins/core/asset-ee/io.kestra.plugin.ee.assets.assetshipper) exports asset lineage to one or more destinations. Kestra rebuilds one lineage event per task run from the history it records when tasks read and write assets. Each event describes the flow and task, the execution, the run state, and the input and output assets.
 
 The task runs incrementally. On its first run, it exports events from the last `lookbackPeriod`. It then stores the timestamp of the last exported event in the KV Store and continues from there on the next run. Schedule it with a [`Schedule` trigger](../../../../05.workflow-components/07.triggers/01.schedule-trigger/index.md).
 
@@ -453,8 +453,8 @@ The task runs incrementally. On its first run, it exports events from the last `
 | `lookbackPeriod` | `P1D` | How far back the first run looks when no offset is stored. |
 | `offsetKey` | — | Prefix of the KV Store key that stores the offset. Set it when several `AssetShipper` tasks must keep separate offsets. |
 | `flowNamespace`, `flowId`, `taskId` | — | Only export events from this namespace, flow, or task. |
-| `assetNamespace`, `assetTypes` | — | Only export events that involve assets in this namespace or of these types. |
-| `delete` | `false` | Delete the exported records after export. |
+| `assetNamespace`, `assetTypes` | — | Only export history for assets in this exact namespace or of these types. Assets that don't match are left out of each event. |
+| `delete` | `false` | Delete the exported history after export. Usage records are kept. |
 
 Outputs: `size` (number of events exported), `endFetchedDate`, and `outputs` (one entry per exporter).
 

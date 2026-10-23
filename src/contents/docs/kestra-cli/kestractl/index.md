@@ -614,21 +614,18 @@ kestractl assets delete <id>
 # Show an asset's dependency graph
 kestractl assets dependencies <id>
 kestractl assets dependencies <id> --expand-all --output json
-kestractl assets dependencies <id> --destination-only --output json
 
 # Bulk-delete assets by IDs or by query filters
 kestractl assets delete-by-ids id1 id2 id3
 kestractl assets delete-by-query --namespace my.namespace
 kestractl assets delete-by-query --filter NAMESPACE:EQUALS:my.namespace --purge
 
-# Inspect and manage lineage events
-kestractl assets lineage-events list --output json
-kestractl assets lineage-events delete-by-query --namespace my.namespace
-
 # Inspect and manage asset usages
 kestractl assets usages list --output json
 kestractl assets usages delete-by-query --namespace my.namespace
 ```
+
+Kestra 2.1 removed asset lineage events, so the `assets lineage-events` commands and the `--destination-only` flag of `assets dependencies` don't work against a 2.1 server. To manage asset relations, asset actions, or bulk imports, use the [Assets API](../../07.enterprise/02.governance/01.assets/03.manage-assets/index.md#automate-with-the-api).
 
 ## Blueprints
 
