@@ -1,0 +1,249 @@
+---
+import rtpGlobal from "~/assets/teams/rtpglobal.svg?raw"
+import alven from "~/assets/teams/alven-new.svg?raw"
+import isai from "~/assets/teams/isai-new.svg?raw"
+import axeleo from "~/assets/teams/axeleo-new.svg?raw"
+import bpifrance from "~/assets/teams/bpifrance.svg?raw"
+import hautsDeFrance from "~/assets/teams/hauts-de-france.svg?raw"
+import bnpParibas from "~/assets/teams/bnp-paribas.svg?raw"
+import cic from "~/assets/teams/cic.svg?raw"
+import caisseEpargne from "~/assets/teams/caisse-epargne.svg?raw"
+
+type Backer = { name: string; svg: string; href?: string }
+
+const INVESTORS: Backer[] = [
+    { name: "RTP Global", svg: rtpGlobal, href: "https://rtp.vc" },
+    { name: "Alven", svg: alven, href: "https://www.alven.co" },
+    { name: "Isai", svg: isai, href: "https://isai.vc" },
+    { name: "Axeleo Capital", svg: axeleo, href: "https://www.axc.vc" },
+]
+
+const PUBLIC: Backer[] = [
+    { name: "Bpifrance", svg: bpifrance },
+    { name: "Région Hauts-de-France", svg: hautsDeFrance },
+    { name: "BNP Paribas", svg: bnpParibas },
+    { name: "CIC", svg: cic },
+    { name: "Caisse d'Épargne", svg: caisseEpargne },
+]
+---
+
+<section class="backers">
+    <div class="container">
+        <div class="grid">
+            <header>
+                <span class="eyebrow">Investors</span>
+                <h2>Backed by people who<br />built great infrastructure.</h2>
+            </header>
+
+            <ul class="investors">
+                {
+                    INVESTORS.map((b) => (
+                        <li>
+                            <a
+                                href={b.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <span class="logo" set:html={b.svg} />
+                                <span class="visually-hidden">{b.name}</span>
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+
+            <p class="angels">
+                And by the founders of Algolia, Datadog, dbt Labs, Airbyte,
+                Platform.sh, Hugging Face, Talend, Strapi and Collibra.
+            </p>
+
+            <ul class="public" aria-label="Public and banking partners">
+                {
+                    PUBLIC.map((b) => (
+                        <li title={b.name}>
+                            <span class="logo" set:html={b.svg} />
+                            <span class="visually-hidden">{b.name}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    // No outer padding: the grid meets the sections above and below, and
+    // the next section's top border closes it.
+    .backers {
+        background: var(--ks-background-body);
+    }
+
+    // One grid of hairlines holds the whole section: a frame, a band per
+    // row, and a cell per logo.
+    // The horizontal rules run on to the edges of the screen; the frame
+    // stays at the width of the content.
+    .grid {
+        --line: var(--ks-border-primary);
+        --rule: 1px solid var(--line);
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        > * {
+            position: relative;
+        }
+
+        > *::before {
+            content: "";
+            position: absolute;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        > *::before {
+            top: 0;
+        }
+    }
+
+    header {
+        padding: 4rem 1.5rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: 3rem 1rem;
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #131316;
+
+        :global(svg) {
+            width: 100%;
+            height: 100%;
+        }
+
+        // The logo files are drawn for light backgrounds: on the dark theme
+        // they turn into light monochrome marks.
+        :global(html.dark) & {
+            filter: grayscale(1) invert(1);
+        }
+    }
+
+    .investors {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+
+        li + li {
+            border-left: var(--rule);
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            li:nth-child(3) {
+                border-left: 0;
+            }
+
+            li:nth-child(n + 3) {
+                border-top: var(--rule);
+            }
+        }
+
+        a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 180px;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s ease;
+
+            &:hover {
+                background: var(--ks-background-secondary);
+            }
+
+            @include media-breakpoint-down(md) {
+                height: 140px;
+            }
+        }
+
+        .logo {
+            width: 60%;
+            max-width: 160px;
+            height: 64px;
+        }
+    }
+
+    .angels {
+        @include lead;
+        margin: 0;
+        padding: 2rem 1.5rem;
+        text-align: center;
+    }
+
+    .public {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+
+        li {
+            height: 140px;
+
+            & + li {
+                border-left: var(--rule);
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            li:nth-child(odd) {
+                border-left: 0;
+            }
+
+            li:nth-child(n + 3) {
+                border-top: var(--rule);
+            }
+
+            li {
+                height: 110px;
+            }
+        }
+
+        .logo {
+            width: 50%;
+            max-width: 110px;
+            height: 32px;
+        }
+    }
+</style>

@@ -1,0 +1,74 @@
+<section class="why">
+    <div class="container">
+        <header>
+            <span class="eyebrow">Why we exist</span>
+            <h2>Every team automated<br />its own corner.</h2>
+        </header>
+        <div class="text">
+            <p>
+                Kestra started as an answer to a problem its founders had lived:
+                every team in a company automating its own corner with its own
+                tool, and nobody able to see the whole. Data had its scheduler,
+                infrastructure its scripts, operations its runbooks. When
+                something broke between them, no one owned it.
+            </p>
+            <p>
+                We built one place where all of it runs, is versioned, and can
+                be audited. The engine is Apache 2.0 and developed in public.
+                Kestra Enterprise and Kestra Cloud fund that work, and bring the
+                governance, scale and support that large organizations need.
+            </p>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .why {
+        @include section;
+        background: var(--ks-background-body);
+
+        .container {
+            display: grid;
+            grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+            gap: 4rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    }
+
+    header {
+        align-self: start;
+        position: sticky;
+        top: 7rem;
+
+        @include media-breakpoint-down(lg) {
+            position: static;
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    .text {
+        p {
+            margin: 0 0 1.5rem;
+            font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+
+            &:first-child {
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+</style>

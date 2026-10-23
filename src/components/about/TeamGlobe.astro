@@ -1,0 +1,608 @@
+---
+// Where the team works from. The two headquarters get a ring; every other
+// place is a plain dot.
+const PLACES = [
+    { code: "FR", name: "France", lat: 46.6, lon: 2.4, hq: true },
+    { code: "US", name: "United States", lat: 39.5, lon: -98.4, hq: true },
+    { code: "IN", name: "India", lat: 21.1, lon: 78.9 },
+    { code: "DE", name: "Germany", lat: 51.2, lon: 10.4 },
+    { code: "GB", name: "United Kingdom", lat: 52.8, lon: -1.6 },
+    { code: "ES", name: "Spain", lat: 40.2, lon: -3.7 },
+    { code: "AT", name: "Austria", lat: 47.6, lon: 14.1 },
+    { code: "IE", name: "Ireland", lat: 53.2, lon: -8 },
+    { code: "IT", name: "Italy", lat: 42.8, lon: 12.6 },
+    { code: "RS", name: "Serbia", lat: 44, lon: 20.9 },
+    { code: "SI", name: "Slovenia", lat: 46.1, lon: 14.8 },
+]
+
+const OFFICES = [
+    {
+        focus: "US",
+        country: "United States",
+        name: "Kestra Technologies Inc.",
+        text: "Go-to-market, field engineering and customer success for the Americas.",
+    },
+    {
+        focus: "FR",
+        country: "France",
+        name: "Kestra Technologies SAS",
+        text: "Where Kestra was born. Engineering, product and our European teams.",
+    },
+    {
+        country: "Remote",
+        name: "Distributed teams",
+        text: "Engineering, field and go-to-market teams across North America, Europe and India.",
+    },
+]
+---
+
+<section class="presence" data-team-globe>
+    <div class="container">
+        <div class="text">
+            <span class="eyebrow">Global presence</span>
+            <h2>Two homes,<br />one company.</h2>
+            <p class="intro">
+                Kestra runs around the clock for our customers, and so do we.
+            </p>
+
+            <ul class="offices">
+                {
+                    OFFICES.map((o) => (
+                        <li data-focus={o.focus} tabindex="0">
+                            <span class="country">{o.country}</span>
+                            <h3>{o.name}</h3>
+                            <p>{o.text}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        <div class="globe">
+            <canvas
+                role="img"
+                aria-label={`A globe with the Kestra team in ${PLACES.map((p) => p.name).join(", ")}`}
+            ></canvas>
+        </div>
+    </div>
+
+    <script
+        is:inline
+        type="application/json"
+        data-places
+        set:html={JSON.stringify(PLACES)}
+    />
+</section>
+
+<script>
+    import { LAND_MASK, LAND_STEP } from "./globe-land"
+    import markUrl from "~/assets/landing/partners/kestra-mark.svg?url"
+
+    type Place = {
+        code: string
+        name: string
+        lat: number
+        lon: number
+        hq?: boolean
+    }
+    type Vec = [number, number, number]
+
+    const RAD = Math.PI / 180
+    const ROW = 1.5 // degrees between dot rows, and between dots on a row
+
+    const toVec = (lat: number, lon: number): Vec => [
+        Math.cos(lat * RAD) * Math.sin(lon * RAD),
+        Math.sin(lat * RAD),
+        Math.cos(lat * RAD) * Math.cos(lon * RAD),
+    ]
+
+    function landDots(): Float32Array {
+        const bits = Uint8Array.from(atob(LAND_MASK), (c) => c.charCodeAt(0))
+        const w = 360 / LAND_STEP
+        const isLand = (lat: number, lon: number) => {
+            const j = Math.floor((90 - lat) / LAND_STEP)
+            const i = Math.floor((lon + 180) / LAND_STEP) % w
+            const k = j * w + i
+            return (bits[k >> 3] >> (k & 7)) & 1
+        }
+        const out: number[] = []
+        for (let lat = -58; lat <= 84; lat += ROW) {
+            const n = Math.round((360 * Math.cos(lat * RAD)) / ROW)
+            for (let k = 0; k < n; k++) {
+                const lon = -180 + ((k + 0.5) * 360) / n
+                if (isLand(lat, lon)) out.push(...toVec(lat, lon))
+            }
+        }
+        return new Float32Array(out)
+    }
+
+    // The Kestra mark laid on the ocean as dots, between the two
+    // headquarters: sampled from the logo, one dot per cell.
+    const MARK = { lat: 30, lon: -40, span: 36, cells: 25 }
+
+    async function markDots(): Promise<{ v: Vec; color: string }[]> {
+        const img = new Image()
+        img.src = markUrl
+        await img.decode()
+        const n = MARK.cells
+        const off = document.createElement("canvas")
+        off.width = off.height = n
+        const octx = off.getContext("2d", { willReadFrequently: true })!
+        // The SVG has a margin around the drawing; crop it.
+        const w = img.naturalWidth
+        octx.drawImage(img, w * 0.15, w * 0.13, w * 0.7, w * 0.7, 0, 0, n, n)
+        const data = octx.getImageData(0, 0, n, n).data
+        const out: { v: Vec; color: string }[] = []
+        const scale = 1 / Math.cos(MARK.lat * RAD)
+        for (let y = 0; y < n; y++) {
+            for (let x = 0; x < n; x++) {
+                const i = (y * n + x) * 4
+                if (data[i + 3] < 90) continue
+                const lat = MARK.lat + (0.5 - (y + 0.5) / n) * MARK.span
+                const lon = MARK.lon + ((x + 0.5) / n - 0.5) * MARK.span * scale
+                out.push({
+                    v: toVec(lat, lon),
+                    color: `rgb(${data[i]}, ${data[i + 1]}, ${data[i + 2]})`,
+                })
+            }
+        }
+        return out
+    }
+
+    // A great circle between two places, lifted off the ground in the middle.
+    function arc(a: Vec, b: Vec, steps = 40): Vec[] {
+        const dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+        const omega = Math.acos(Math.min(1, Math.max(-1, dot)))
+        const lift = 0.04 + omega * 0.12
+        const pts: Vec[] = []
+        for (let s = 0; s <= steps; s++) {
+            const t = s / steps
+            const ka = Math.sin((1 - t) * omega) / Math.sin(omega)
+            const kb = Math.sin(t * omega) / Math.sin(omega)
+            const h = 1 + lift * Math.sin(Math.PI * t)
+            pts.push([
+                (a[0] * ka + b[0] * kb) * h,
+                (a[1] * ka + b[1] * kb) * h,
+                (a[2] * ka + b[2] * kb) * h,
+            ])
+        }
+        return pts
+    }
+
+    // Runs on every page arrival: the site swaps pages client side, so
+    // a module script alone would only wire the first visit.
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>(
+                "[data-team-globe]:not([data-ready])",
+            )
+            .forEach((root) => {
+                root.dataset.ready = "true"
+                const canvas = root.querySelector("canvas")!
+                const ctx = canvas.getContext("2d")!
+                const places: Place[] = JSON.parse(
+                    root.querySelector("[data-places]")!.textContent!,
+                )
+                const reduced = matchMedia(
+                    "(prefers-reduced-motion: reduce)",
+                ).matches
+                const dots = landDots()
+                let mark: { v: Vec; color: string }[] = []
+                markDots().then((m) => (mark = m))
+                const at = Object.fromEntries(
+                    places.map((p) => [p.code, toVec(p.lat, p.lon)]),
+                )
+
+                // Everyone talks to France, and a few teams talk to each other directly.
+                const pairs: [string, string][] = [
+                    ...places
+                        .filter((p) => p.code !== "FR")
+                        .map((p): [string, string] => ["FR", p.code]),
+                    ["US", "IN"],
+                    ["US", "GB"],
+                    ["DE", "IN"],
+                ]
+                const links = pairs.map(([a, b], i) => ({
+                    a,
+                    b,
+                    pts: arc(at[a], at[b]),
+                    speed: 0.00012 + (i % 5) * 0.00002,
+                    offset: (i * 0.37) % 1,
+                }))
+
+                let colors = { dot: "", accent: "", link: "", text: "" }
+                let font = ""
+                const readStyle = () => {
+                    const s = getComputedStyle(root)
+                    colors = {
+                        dot: s.getPropertyValue("--globe-dot").trim(),
+                        accent: s.getPropertyValue("--globe-accent").trim(),
+                        link: s.getPropertyValue("--globe-link").trim(),
+                        text: s.getPropertyValue("--globe-text").trim(),
+                    }
+                    font = s.fontFamily
+                }
+                readStyle()
+                new MutationObserver(readStyle).observe(
+                    document.documentElement,
+                    {
+                        attributes: true,
+                        attributeFilter: ["class"],
+                    },
+                )
+
+                let size = 0
+                let dpr = 1
+                const resize = () => {
+                    dpr = Math.min(1.5, devicePixelRatio || 1)
+                    size = canvas.clientWidth
+                    canvas.width = size * dpr
+                    canvas.height = size * dpr
+                }
+                new ResizeObserver(resize).observe(canvas)
+                resize()
+
+                // View: the longitude and latitude facing the reader.
+                let lon0 = -5
+                let lat0 = 30
+                let target: { lon: number; lat: number } | null = null
+                let dragging: {
+                    x: number
+                    y: number
+                    lon: number
+                    lat: number
+                } | null = null
+
+                // Dots fade toward the rim; drawing them in a few alpha bands keeps
+                // the canvas work to a handful of fills per frame.
+                const BANDS = 5
+                const bands = Array.from({ length: BANDS }, () => new Path2D())
+
+                let prev = 0
+                const draw = (time: number) => {
+                    if (!size) return
+                    // Easing follows elapsed time, so motion is the same at any
+                    // refresh rate.
+                    const dt = Math.min(64, prev ? time - prev : 16)
+                    prev = time
+                    const ease = (rate: number) =>
+                        1 - Math.pow(1 - rate, dt / 16)
+                    if (target && !dragging) {
+                        lon0 += (target.lon - lon0) * ease(0.08)
+                        lat0 += (target.lat - lat0) * ease(0.08)
+                    } else if (!dragging && !reduced) {
+                        // Sway between the Americas and India so the team stays in view.
+                        const goal = -5 + 55 * Math.sin(time * 0.00007)
+                        lon0 += (goal - lon0) * ease(0.03)
+                        lat0 += (30 - lat0) * ease(0.03)
+                    }
+
+                    const cl = Math.cos(lon0 * RAD)
+                    const sl = Math.sin(lon0 * RAD)
+                    const ct = Math.cos(lat0 * RAD)
+                    const st = Math.sin(lat0 * RAD)
+                    const W = size * dpr
+                    const R = W * 0.44
+                    const c = W / 2
+
+                    const px = (x: number, y: number, z: number) => {
+                        const z1 = x * sl + z * cl
+                        return [
+                            x * cl - z * sl,
+                            y * ct - z1 * st,
+                            y * st + z1 * ct,
+                        ]
+                    }
+
+                    ctx.clearRect(0, 0, W, W)
+
+                    for (let b = 0; b < BANDS; b++) bands[b] = new Path2D()
+                    const d = 1.8 * dpr
+                    const h = d / 2
+                    for (let i = 0; i < dots.length; i += 3) {
+                        const x = dots[i]
+                        const y = dots[i + 1]
+                        const z = dots[i + 2]
+                        const z1 = x * sl + z * cl
+                        const zz = y * st + z1 * ct
+                        if (zz <= 0) continue
+                        const sx = c + (x * cl - z * sl) * R
+                        const sy = c - (y * ct - z1 * st) * R
+                        bands[Math.min(BANDS - 1, (zz * BANDS) | 0)].rect(
+                            sx - h,
+                            sy - h,
+                            d,
+                            d,
+                        )
+                    }
+                    ctx.fillStyle = colors.dot
+                    for (let b = 0; b < BANDS; b++) {
+                        ctx.globalAlpha = 0.18 + (0.82 * (b + 1)) / BANDS
+                        ctx.fill(bands[b])
+                    }
+                    ctx.globalAlpha = 1
+
+                    // The mark follows the globe, fading toward the rim.
+                    const md = 2.2 * dpr
+                    for (const m of mark) {
+                        const p = px(m.v[0], m.v[1], m.v[2])
+                        if (p[2] <= 0) continue
+                        ctx.globalAlpha = 0.45 + 0.55 * p[2]
+                        ctx.fillStyle = m.color
+                        ctx.fillRect(
+                            c + p[0] * R - md / 2,
+                            c - p[1] * R - md / 2,
+                            md,
+                            md,
+                        )
+                    }
+                    ctx.globalAlpha = 1
+
+                    const visible = (p: number[]) =>
+                        p[2] > 0 || p[0] * p[0] + p[1] * p[1] > 1
+
+                    // Links, then the pulses travelling both ways along them.
+                    ctx.lineWidth = 1.25 * dpr
+                    ctx.strokeStyle = colors.link
+                    ctx.beginPath()
+                    for (const link of links) {
+                        let pen = false
+                        for (const v of link.pts) {
+                            const p = px(v[0], v[1], v[2])
+                            if (!visible(p)) {
+                                pen = false
+                                continue
+                            }
+                            const sx = c + p[0] * R
+                            const sy = c - p[1] * R
+                            if (pen) ctx.lineTo(sx, sy)
+                            else ctx.moveTo(sx, sy)
+                            pen = true
+                        }
+                    }
+                    ctx.stroke()
+
+                    ctx.fillStyle = colors.accent
+                    if (!reduced) {
+                        ctx.beginPath()
+                        for (const link of links) {
+                            const t = (time * link.speed + link.offset) % 1
+                            for (const pos of [t, 1 - ((t + 0.5) % 1)]) {
+                                // Glide between the two arc samples around the
+                                // pulse, so it moves continuously.
+                                const f = pos * (link.pts.length - 1)
+                                const i = Math.min(link.pts.length - 2, f | 0)
+                                const k = f - i
+                                const a = link.pts[i]
+                                const b = link.pts[i + 1]
+                                const p = px(
+                                    a[0] + (b[0] - a[0]) * k,
+                                    a[1] + (b[1] - a[1]) * k,
+                                    a[2] + (b[2] - a[2]) * k,
+                                )
+                                if (!visible(p)) continue
+                                const sx = c + p[0] * R
+                                const sy = c - p[1] * R
+                                ctx.moveTo(sx + 2.2 * dpr, sy)
+                                ctx.arc(sx, sy, 2.2 * dpr, 0, Math.PI * 2)
+                            }
+                        }
+                        ctx.fill()
+                    }
+
+                    ctx.font = `600 ${12 * dpr}px ${font}`
+                    for (const place of places) {
+                        const v = at[place.code]
+                        const p = px(v[0], v[1], v[2])
+                        if (p[2] <= 0.05) continue
+                        const sx = c + p[0] * R
+                        const sy = c - p[1] * R
+                        const r = (place.hq ? 5 : 3) * dpr
+
+                        if (place.hq && !reduced) {
+                            const k =
+                                (time / 2600 +
+                                    (place.code === "US" ? 0.5 : 0)) %
+                                1
+                            ctx.strokeStyle = colors.accent
+                            ctx.lineWidth = 1 * dpr
+                            ctx.globalAlpha = (1 - k) * 0.5
+                            ctx.beginPath()
+                            ctx.arc(sx, sy, r + k * 18 * dpr, 0, Math.PI * 2)
+                            ctx.stroke()
+                            ctx.globalAlpha = 1
+                        }
+
+                        ctx.fillStyle = colors.accent
+                        ctx.beginPath()
+                        ctx.arc(sx, sy, r, 0, Math.PI * 2)
+                        ctx.fill()
+
+                        if (place.hq) {
+                            ctx.fillStyle = colors.text
+                            ctx.fillText(
+                                place.name,
+                                sx + r + 6 * dpr,
+                                sy + 4 * dpr,
+                            )
+                        }
+                    }
+                }
+
+                let running = false
+                const loop = (time: number) => {
+                    if (!running || !canvas.isConnected) return
+                    draw(time)
+                    requestAnimationFrame(loop)
+                }
+                new IntersectionObserver(([entry]) => {
+                    const was = running
+                    running = entry.isIntersecting
+                    if (running && !was) requestAnimationFrame(loop)
+                }).observe(canvas)
+                draw(0)
+
+                // Pointing at an office turns the globe to it.
+                root.querySelectorAll<HTMLElement>("[data-focus]").forEach(
+                    (el) => {
+                        const place = places.find(
+                            (p) => p.code === el.dataset.focus,
+                        )
+                        if (!place) return
+                        const enter = () => {
+                            target = {
+                                lon: place.lon,
+                                lat: Math.min(45, place.lat),
+                            }
+                            if (reduced) requestAnimationFrame(draw)
+                        }
+                        const leave = () => {
+                            target = null
+                            if (reduced) requestAnimationFrame(draw)
+                        }
+                        el.addEventListener("pointerenter", enter)
+                        el.addEventListener("pointerleave", leave)
+                        el.addEventListener("focus", enter)
+                        el.addEventListener("blur", leave)
+                    },
+                )
+
+                canvas.addEventListener("pointerdown", (e) => {
+                    dragging = {
+                        x: e.clientX,
+                        y: e.clientY,
+                        lon: lon0,
+                        lat: lat0,
+                    }
+                    target = null
+                    canvas.setPointerCapture(e.pointerId)
+                })
+                canvas.addEventListener("pointermove", (e) => {
+                    if (!dragging) return
+                    const k = 180 / size
+                    lon0 = dragging.lon - (e.clientX - dragging.x) * k
+                    lat0 = Math.max(
+                        -60,
+                        Math.min(
+                            70,
+                            dragging.lat + (e.clientY - dragging.y) * k,
+                        ),
+                    )
+                    if (reduced) requestAnimationFrame(draw)
+                })
+                const release = () => (dragging = null)
+                canvas.addEventListener("pointerup", release)
+                canvas.addEventListener("pointercancel", release)
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+    @use "./style/section" as *;
+
+    .presence {
+        --globe-dot: #7d7b94;
+        --globe-accent: #{$base-primary-500};
+        --globe-link: rgba(99, 27, 255, 0.45);
+        --globe-text: #{$base-grey-800};
+
+        @include section;
+        // The team photos follow right under the globe.
+        padding-bottom: 3rem;
+        overflow: hidden;
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+
+        :global(html.dark) & {
+            --globe-dot: #8d8aa8;
+            --globe-accent: #{$base-primary-300};
+            --globe-link: rgba(167, 150, 255, 0.45);
+            --globe-text: #fff;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+            gap: 2rem 4rem;
+            align-items: center;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    .intro {
+        @include lead;
+    }
+
+    .offices {
+        list-style: none;
+        margin: 2.5rem 0 0;
+        padding: 0;
+        border-top: 1px solid var(--ks-border-primary);
+
+        li {
+            padding: 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--ks-border-primary);
+            outline: none;
+
+            &:last-child {
+                border-bottom: 0;
+            }
+            transition: background 0.2s ease;
+
+            &[data-focus]:hover,
+            &:focus-visible {
+                background: var(--ks-background-secondary);
+            }
+
+            &:focus-visible {
+                box-shadow: inset 0 0 0 2px var(--ks-content-color-highlight);
+            }
+        }
+
+        .country {
+            font-size: $font-size-sm;
+            color: var(--ks-content-tertiary);
+        }
+
+        h3 {
+            margin: 0.25rem 0 0.375rem;
+            font-size: $font-size-lg;
+            font-weight: 600;
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-sm;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .globe canvas {
+        display: block;
+        width: 100%;
+        max-width: 680px;
+        aspect-ratio: 1;
+        margin: 0 auto;
+        cursor: grab;
+        touch-action: pan-y;
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+</style>

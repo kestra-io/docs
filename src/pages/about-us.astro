@@ -1,57 +1,74 @@
 ---
 import Layout from "~/components/layout.astro"
-import Orchestrate from "~/components/company/Orchestrate.astro"
-import Mission from "~/components/company/Mission.astro"
-import Team from "~/components/company/Team.astro"
-import Investors from "~/components/company/Investors.astro"
-import Life from "~/components/company/Life.astro"
-import SeeHow from "~/components/common/SeeHow.astro"
-import assets from "~/assets/landing/assets.webp"
+import AboutHero from "~/components/about/AboutHero.astro"
+import WhyWeExist from "~/components/about/WhyWeExist.astro"
+import Numbers from "~/components/about/Numbers.astro"
+import Customers from "~/components/about/Customers.astro"
+import Principles from "~/components/about/Principles.astro"
+import OpenSource from "~/components/about/OpenSource.astro"
+import Journey from "~/components/about/Journey.astro"
+import People from "~/components/about/People.astro"
+import Life from "~/components/about/Life.astro"
+import TeamGlobe from "~/components/about/TeamGlobe.astro"
+import Trust from "~/components/about/Trust.astro"
+import Backers from "~/components/about/Backers.astro"
+import Contact from "~/components/about/Contact.astro"
+import PartnerCta from "~/components/partners/PartnerCta.astro"
+import careersPhoto from "~/components/about/assets/team-35.jpg"
 
-const title = "About Us: Our Team, Values and Investors"
+const title = "About Kestra Technologies: Founders, Team & Investors"
 const description =
-    "Meet the team, values and investors behind Kestra: the Open Source Declarative orchestration platform for data, infrastructure, applications and AI agents."
+    "Kestra Technologies builds Kestra, the open-source unified orchestration platform. Founded in 2021 by Emmanuel Darras and Ludovic Dehon, backed by RTP Global."
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} {description} headerTheme="darkHeader" headerBg="#111114">
     <div class="about-us">
-        <Orchestrate />
-        <Mission />
-        <Team />
-        <Investors />
+        <AboutHero />
+        <WhyWeExist />
+        <Numbers />
+        <Customers />
+        <Principles />
+        <OpenSource />
+        <Journey />
+        <People />
+        <TeamGlobe />
         <Life />
-        <SeeHow
-            cta={{
-                text: "Download Logo Pack",
-                href: "/kestra-logo-kit.zip",
-                download: "kestra-logo-kit.zip"
+        <Trust />
+        <Backers />
+        <Contact />
+        <PartnerCta
+            custom={{
+                title: "Work on the control plane",
+                text: "Engineering, field and go-to-market roles, remote across North America and Europe. We hire people who love open source and want to build infrastructure the world runs on.",
+                cta: "See open roles",
+                href: "/careers",
+                image: careersPhoto,
             }}
-            imgSrc={assets}
-        >
-            <Fragment slot="title">Brand assets</Fragment>
-            For Media Inquiries and Exclusive Insights, Reach Out to Our Press Team
-            at <a href="mailto:press@kestra.io">press@kestra.io</a>
-        </SeeHow>
+        />
     </div>
 </Layout>
 
 <style lang="scss">
     .about-us {
-        position: relative;
-        min-height: 100vh;
-        // clip, not hidden: hidden on one axis computes the other to auto,
-        // making this a ~15000px scroll container WebKit fails to repaint.
         overflow-x: clip;
+        background: var(--ks-background-body);
 
-        &::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(106.32deg, #000000 28.36%, #0F1A2E 79.51%);
-            z-index: -1;
+        // The dark theme has no lighter border token; the page's hairlines
+        // use a gray halfway between it and the background.
+        :global(html.dark) & {
+            --ks-border-primary: #2c2b31;
+        }
+
+        :global(.container) {
+            @include media-breakpoint-up(xxl) {
+                max-width: 1320px;
+            }
+
+            // A comfortable gutter on phones.
+            @include media-breakpoint-down(md) {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
         }
     }
 </style>

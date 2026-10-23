@@ -1,0 +1,104 @@
+---
+const MILESTONES = [
+    {
+        year: "2019",
+        text: "Kestra is created as a modern replacement for legacy schedulers. The first commit is open source.",
+    },
+    {
+        year: "2023",
+        text: "A community, a plugin catalog, the first enterprise customers, and a first funding round.",
+    },
+    {
+        year: "2024",
+        text: "An $8M seed. The catalog passes a thousand plugins and Kestra runs in every industry it set out to serve.",
+    },
+    {
+        year: "2026",
+        text: 'A $25M Series A led by RTP Global. <a href="/two-zero">Kestra 2.0</a> ships a rebuilt engine and the first long-term support release.',
+    },
+]
+---
+
+<section class="journey">
+    <div class="container">
+        <span class="eyebrow">Our journey</span>
+        <h2>How it all started.</h2>
+        <ol>
+            {
+                MILESTONES.map((m) => (
+                    <li>
+                        <span class="year">{m.year}</span>
+                        <p set:html={m.text} />
+                    </li>
+                ))
+            }
+        </ol>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .journey {
+        @include section;
+        background: var(--ks-background-body);
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    ol {
+        list-style: none;
+        margin: 3rem 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    li {
+        padding: 1.5rem 1.5rem 2rem;
+        border-radius: 8px;
+        background: var(--ks-background-secondary);
+
+        @include media-breakpoint-down(md) {
+            padding: 1.25rem 1.25rem 1.5rem;
+        }
+    }
+
+    .year {
+        display: block;
+        margin-bottom: 1rem;
+        font-size: $font-size-xl;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 0.5rem;
+        }
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    p {
+        margin: 0;
+        font-size: $font-size-md;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+
+        :global(a) {
+            @include text-link;
+        }
+    }
+</style>

@@ -1,0 +1,246 @@
+---
+import { Icon } from "astro-icon/components"
+
+const LINKS = [
+    {
+        label: "GitHub",
+        href: "https://github.com/kestra-io/kestra",
+        icon: "mdi:github",
+    },
+    { label: "Slack community", href: "/slack", icon: "mdi:slack" },
+    {
+        label: "Contributing guide",
+        href: "/docs/contribute-to-kestra/contributing",
+        icon: "mdi:source-branch",
+    },
+    { label: "Kestra Hacktober", href: "/hacktober", icon: "mdi:pumpkin" },
+    {
+        label: "Kestra Academy",
+        href: "https://academy.kestra.io",
+        icon: "mdi:school-outline",
+    },
+]
+
+// A decorative contribution graph fills the section; the browser draws it
+// (see the script below), since it is only decoration. Not real data.
+const DAYS = 48
+---
+
+<section class="open-source">
+    <div class="activity" aria-hidden="true" data-activity>
+        <div class="weeks" style={`--days: ${DAYS}`} data-days={DAYS}></div>
+    </div>
+
+    <div class="container">
+        <div class="panel">
+            <span class="eyebrow">Open source</span>
+            <h2>Open source,<br />by conviction.</h2>
+            <p>
+                Kestra has been open source since its first commit. The engine,
+                the plugins and the roadmap are public. Thousands of engineers
+                run it, contribute to it and shape it every month, and that
+                community is the foundation of everything we build.
+            </p>
+            <ul>
+                {
+                    LINKS.map((l) => (
+                        <li>
+                            <a href={l.href}>
+                                <Icon name={l.icon} />
+                                {l.label}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+    const CELL = 17 // px, a square and its gap in the background grid
+
+    const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    function initGrid(root: HTMLElement) {
+        const weeks = root.querySelector<HTMLElement>(".weeks")!
+        const days = Number(weeks.dataset.days)
+        // Wide enough for this screen, edge to edge.
+        const count = Math.ceil(window.innerWidth / CELL) + 2
+
+        let seed = 7
+        const next = () => (seed = (seed * 16807) % 2147483647) / 2147483647
+        const cells: HTMLElement[] = []
+        const fragment = document.createDocumentFragment()
+        for (let i = 0; i < count * days; i++) {
+            const r = next()
+            const level = r < 0.74 ? 0 : r < 0.91 ? 1 : r < 0.98 ? 2 : 3
+            const span = document.createElement("span")
+            span.className = `l${level}`
+            cells.push(span)
+            fragment.append(span)
+        }
+        weeks.append(fragment)
+        if (reduced()) return
+
+        // Now and then a cell lights up like a commit; a few of them glow.
+        const timer = setInterval(() => {
+            if (!root.isConnected) return clearInterval(timer)
+            const cell = cells[(Math.random() * cells.length) | 0]
+            // Rarely, the red square of the logo.
+            const r = Math.random()
+            const kind = r < 0.05 ? "brand" : r < 0.28 ? "glow" : "lit"
+            cell.classList.add(kind)
+            setTimeout(() => cell.classList.remove(kind), 1600)
+        }, 120)
+    }
+
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>("[data-activity]:not([data-ready])")
+            .forEach((root) => {
+                root.dataset.ready = "true"
+                initGrid(root)
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+    @use "./style/section" as *;
+
+    // A dark contribution graph fills the section, "kestra." set in its
+    // squares; the content sits on top in white.
+    .open-source {
+        @include section;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        text-align: center;
+        background: #111114;
+
+        .container {
+            position: relative;
+        }
+    }
+
+    .panel {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 4.5rem 3rem;
+
+        @include media-breakpoint-down(md) {
+            padding: 3rem 1.25rem;
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+        color: $base-primary-300;
+    }
+
+    h2 {
+        @include title;
+        color: inherit;
+    }
+
+    p {
+        @include lead;
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    ul {
+        list-style: none;
+        margin: 2.5rem 0 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem 2rem;
+    }
+
+    // Plain text links with a small icon, like the other links on the page.
+    a {
+        @include text-link;
+        --ks-content-primary: #fff;
+        --ks-border-secondary: rgba(255, 255, 255, 0.4);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    }
+
+    // Edge to edge, cleared behind the copy for legibility.
+    .activity {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        mask-image: radial-gradient(
+            ellipse 34% 40% at 50% 52%,
+            transparent 30%,
+            #000 100%
+        );
+    }
+
+    .weeks {
+        --cell: 13px;
+
+        flex: none;
+        display: grid;
+        grid-template-rows: repeat(var(--days), var(--cell));
+        grid-auto-flow: column;
+        grid-auto-columns: var(--cell);
+        gap: 4px;
+
+        // The cells are added by the script, so they need a global selector.
+        :global(span) {
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.03);
+            transition:
+                background 0.6s ease,
+                box-shadow 0.6s ease;
+
+            &.l1 {
+                background: rgba(99, 27, 255, 0.14);
+            }
+
+            &.l2 {
+                background: rgba(99, 27, 255, 0.24);
+            }
+
+            &.l3 {
+                background: rgba(122, 61, 255, 0.36);
+            }
+
+            &.lit {
+                background: rgba(167, 150, 255, 0.5);
+                transition-duration: 0.15s;
+            }
+
+            &.glow {
+                background: rgba(203, 188, 255, 0.75);
+                box-shadow: 0 0 8px 1px rgba(167, 150, 255, 0.35);
+                transition-duration: 0.15s;
+            }
+
+            &.brand {
+                background: #fe0071;
+                box-shadow: 0 0 8px 1px rgba(254, 0, 113, 0.35);
+                transition-duration: 0.15s;
+            }
+        }
+    }
+</style>

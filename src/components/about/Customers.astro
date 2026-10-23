@@ -1,0 +1,278 @@
+---
+import jpmorgan from "~/assets/teams/jpmorgan.svg?raw"
+import bloomberg from "~/assets/landing/infrastructure/companies/bloomberg.svg?raw"
+import amdocs from "~/assets/landing/infrastructure/companies/amdocs.svg?raw"
+import tsystems from "~/assets/companies/t-system.svg?raw"
+import leroyMerlin from "~/assets/companies/leroy-merlin.svg?raw"
+import fila from "~/assets/companies/fila.svg?raw"
+import xiaomi from "~/assets/landing/infrastructure/companies/xiaomi.svg?raw"
+import acxiom from "~/assets/companies/acxiom.svg?raw"
+import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
+import councilOfEurope from "~/components/enterprise/assets/logos/COE.svg?raw"
+import itzbund from "~/components/enterprise/assets/logos/ITZ.svg?raw"
+import { getCollection } from "astro:content"
+import { toSlug } from "~/utils/stories"
+
+// Some of these logos are drawn in white only; paint them with the text
+// color so they read in both themes.
+const mono = (svg: string) =>
+    svg.replace(/fill="(#fff|#ffffff|white)"/gi, 'fill="currentColor"')
+// Logos in brand colors or shades of gray: every fill takes the text color.
+// Trim the empty margin some logo files carry around the drawing.
+const crop = (svg: string, viewBox: string) => {
+    const [, , w, h] = viewBox.split(" ")
+    return svg
+        .replace(/viewBox="[^"]+"/, `viewBox="${viewBox}"`)
+        .replace(/<svg([^>]*?) width="[^"]+"/, `<svg$1 width="${w}"`)
+        .replace(/<svg([^>]*?) height="[^"]+"/, `<svg$1 height="${h}"`)
+}
+
+// Masks keep their own fills, or they would hide the drawing.
+const flat = (svg: string) => {
+    const [head, body] = svg.includes("</mask>")
+        ? [
+              svg.slice(0, svg.lastIndexOf("</mask>")),
+              svg.slice(svg.lastIndexOf("</mask>")),
+          ]
+        : ["", svg]
+    return head + body.replace(/fill="(?!none)[^"]+"/gi, 'fill="currentColor"')
+}
+
+// `story` is the company name of a customer story, when there is one.
+const CUSTOMERS: {
+    name: string
+    svg?: string
+    story?: string
+    tall?: boolean
+}[] = [
+    { name: "JPMorgan", svg: mono(jpmorgan), story: "JPMorgan Chase" },
+    { name: "Bloomberg", svg: mono(bloomberg) },
+    { name: "Amdocs", svg: mono(amdocs), story: "Amdocs" },
+    { name: "T-Systems", svg: tsystems },
+    { name: "Leroy Merlin", svg: leroyMerlin, story: "Leroy Merlin France" },
+    {
+        name: "Crédit Agricole",
+        svg: flat(creditAgricole),
+        story: "Crédit Agricole",
+    },
+    { name: "Fila", svg: fila, story: "Fila" },
+    { name: "Xiaomi", svg: mono(xiaomi) },
+    { name: "Acxiom", svg: acxiom, story: "Acxiom" },
+    {
+        name: "Council of Europe",
+        svg: crop(mono(councilOfEurope), "29 6.5 76.6 61.7"),
+        tall: true,
+    },
+    {
+        name: "ITZBund",
+        svg: crop(flat(itzbund), "25.3 11.3 85.3 52.4"),
+        tall: true,
+    },
+]
+
+const stories = await getCollection("customerStories")
+const storyHref = (company?: string) => {
+    const entry = company && stories.find((e) => e.data.companyName === company)
+    return entry ? `/stories/${toSlug(entry)}` : undefined
+}
+---
+
+<section class="customers">
+    <div class="container">
+        <header>
+            <span class="eyebrow">In production at</span>
+            <h2>The workloads that<br />cannot fail.</h2>
+            <p>
+                Banks, telecoms, retailers, manufacturers and public
+                administrations run their critical workflows on Kestra, on one
+                platform, with the audit trail their regulators ask for.
+            </p>
+        </header>
+        <ul class="logos" aria-label="Customers">
+            {
+                CUSTOMERS.map((c) => {
+                    const href = storyHref(c.story)
+                    return (
+                        <li title={c.name}>
+                            {c.svg ? (
+                                <>
+                                    <span
+                                        class:list={["logo", { tall: c.tall }]}
+                                        set:html={c.svg}
+                                    />
+                                    <span class="visually-hidden">
+                                        {c.name}
+                                    </span>
+                                </>
+                            ) : (
+                                <span class="word">{c.name}</span>
+                            )}
+                            {href && (
+                                <a class="story" href={href}>
+                                    Read the story →
+                                </a>
+                            )}
+                        </li>
+                    )
+                })
+            }
+            <li class="more">
+                <a href="/stories">See all customer stories →</a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+    @use "./style/section" as *;
+
+    .customers {
+        @include section;
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    header {
+        max-width: 760px;
+        margin: 0 auto 3.5rem;
+        text-align: center;
+
+        p {
+            @include lead;
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    .logos {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--ks-border-primary);
+        border-left: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            padding: 1.25rem;
+            border-right: 1px solid var(--ks-border-primary);
+            border-bottom: 1px solid var(--ks-border-primary);
+            color: var(--ks-content-primary);
+            transition:
+                color 0.2s ease,
+                background 0.2s ease;
+
+            &:hover {
+                color: var(--ks-content-primary);
+                background: var(--ks-background-secondary);
+            }
+
+            @include media-breakpoint-down(md) {
+                height: 96px;
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 136px;
+            height: 44px;
+
+            &.tall {
+                height: 64px;
+            }
+
+            :global(svg) {
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+            }
+        }
+
+        .word {
+            font-size: $font-size-lg;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-align: center;
+        }
+
+        .more a {
+            @include text-link;
+        }
+
+        // Customers with a story show a small button when pointed at.
+        .story {
+            position: absolute;
+            left: 50%;
+            bottom: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 999px;
+            border: 1px solid var(--ks-border-secondary);
+            background: var(--ks-background-body);
+            font-size: $font-size-xs;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translate(-50%, 4px);
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease,
+                border-color 0.2s ease;
+
+            &:hover {
+                border-color: var(--ks-content-primary);
+            }
+
+            // On touch screens the whole cell opens the story; a small arrow
+            // in the corner says so.
+            @media (hover: none) {
+                inset: 0;
+                left: 0;
+                bottom: 0;
+                padding: 0;
+                border: 0;
+                border-radius: 0;
+                background: none;
+                font-size: 0;
+                opacity: 1;
+                transform: none;
+
+                &::after {
+                    content: "↗";
+                    position: absolute;
+                    top: 0.5rem;
+                    right: 0.625rem;
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-tertiary);
+                }
+            }
+        }
+
+        li:hover .story,
+        .story:focus-visible {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+    }
+</style>
