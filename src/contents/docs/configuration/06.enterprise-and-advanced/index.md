@@ -478,9 +478,9 @@ To reject oversized messages early, use `kestra.queue.message-protection`, descr
 
 The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
-## Redis, AMQP, and GCP Pub/Sub queue backends
+## Redis and AMQP queue backends
 
-Redis, AMQP (RabbitMQ), and GCP Pub/Sub are Enterprise Edition queue backends, alongside Kafka which is covered above. All three use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All three require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis and AMQP (RabbitMQ) are Enterprise Edition queue backends, alongside Kafka which is covered above. Both use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. Both require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -586,49 +586,6 @@ Kestra creates the virtual host at startup if it does not already exist, using t
 | `kestra.amqp.client.management.request-timeout` | HTTP request timeout for management API calls. | `PT10S` |
 
 For TLS-secured brokers, use `amqps://` in the URL. The management API port automatically switches to `management.tls-port` when the scheme is `amqps://`.
-
-### GCP Pub/Sub
-
-Set `kestra.queue.type: gcp-pubsub` and configure the client under `kestra.gcp-pubsub.client`.
-
-Minimal configuration:
-
-```yaml
-kestra:
-  queue:
-    type: gcp-pubsub
-  gcp-pubsub:
-    client:
-      project-id: my-gcp-project
-```
-
-Without a `service-account`, Kestra uses [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials): Workload Identity on GKE, the GCE metadata server, or `GOOGLE_APPLICATION_CREDENTIALS` in the environment.
-
-With an explicit service account key:
-
-```yaml
-kestra:
-  queue:
-    type: gcp-pubsub
-  gcp-pubsub:
-    client:
-      project-id: my-gcp-project
-      service-account: |
-        { "type": "service_account", ... }
-```
-
-#### Configuration reference
-
-| Property | Description | Default |
-|---|---|---|
-| `kestra.gcp-pubsub.client.project-id` | GCP project ID. Required. | — |
-| `kestra.gcp-pubsub.client.service-account` | Service account JSON key. Falls back to ADC when omitted. | — |
-| `kestra.gcp-pubsub.client.ack-deadline` | Acknowledgment deadline per message. | `PT10S` |
-| `kestra.gcp-pubsub.client.compression-enabled` | Enable gRPC message compression for Pub/Sub calls. | `true` |
-| `kestra.gcp-pubsub.client.compression-bytes-threshold` | Minimum message size in bytes before compression applies. | `10` |
-| `kestra.gcp-pubsub.client.exactly-once-delivery` | Enable exactly-once delivery on subscriptions. | `true` |
-| `kestra.gcp-pubsub.client.message-ordering` | Enable message ordering on subscriptions. | `true` |
-| `kestra.gcp-pubsub.client.message-retention-duration` | How long Pub/Sub retains unacknowledged messages. Leave unset to use the Pub/Sub subscription default. | — |
 
 ## MCP server cache
 
