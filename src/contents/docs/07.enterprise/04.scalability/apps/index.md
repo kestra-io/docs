@@ -611,6 +611,10 @@ When an app is set to `PUBLIC`, anyone with the URL can open the form and submit
 For `PUBLIC` apps, execution IDs exposed through file download or log links are encrypted so that anonymous users cannot reference executions outside the app.
 :::
 
+:::alert{type="warning"}
+A `Chart` block on a `PUBLIC` app shows no data from sources protected by namespace permissions, such as `Executions`, because anonymous visitors have no permission to read them. Use charts in `PRIVATE` apps. See [Dashboard charts](#dashboard-charts).
+:::
+
 ### Private access for using apps
 
 When an app is set to `PRIVATE`, only users with `APP: EXECUTE` permission on the app's namespace can open or submit it. `PRIVATE` apps are also only visible in the App Catalog to users with `APP: EXECUTE` — they do not appear for users who only hold `APP: LIST` or `APP: VIEW`. You can further narrow access to specific IAM groups using the `groups` field:
