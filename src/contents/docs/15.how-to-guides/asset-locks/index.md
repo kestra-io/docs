@@ -122,8 +122,8 @@ If it runs while `patch_db_server` holds the lock, the `refresh` task ends in `W
 To stop every flow from changing a resource during manual maintenance, lock it as a user:
 
 1. Open the asset from the **Assets** list.
-2. Select **Lock**, choose a duration from 5 minutes to 24 hours or **Custom**, and confirm.
-3. When the maintenance is done, select **Unlock**.
+2. Open the **⋮** menu, select **Lock**, choose a duration from 5 minutes to 24 hours or **Custom**, and confirm.
+3. When the maintenance is done, open the **⋮** menu and select **Unlock**.
 
 A user lock blocks writes from every execution, including executions you start yourself. `Acquire` tasks fail with HTTP 423 until the lock ends.
 

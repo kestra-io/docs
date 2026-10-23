@@ -33,7 +33,7 @@ Select an asset to open its detail page. It has three tabs:
 | **Executions** | Every execution that used the asset as an input or an output, linked to the execution page |
 | **Dependencies** | The dependencies graph centered on the asset |
 
-Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. Use **Delete** to delete the asset, which emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger).
+Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger).
 
 ## Explore the dependencies graph
 
@@ -41,10 +41,15 @@ The **Dependencies** tab draws assets and flows as nodes. An edge from an asset 
 
 ### Layouts
 
-Switch between two layouts in the graph toolbar:
+Switch between two layouts with the **Tree** and **DAG** toggle in the graph toolbar.
 
-- **DAG** places nodes left to right by dependency depth. The layout is the same on every load, so use it for screenshots and reviews.
-- **Tree** uses a force-directed layout that spreads dense graphs out.
+**DAG** places nodes left to right by dependency depth, with the flows that read and write the assets in the first column. Each asset node shows its type, how long ago it was last written, and its freshness. The layout is the same on every load, so use it for screenshots and reviews.
+
+![The Dependencies tab in DAG layout, showing two External source tables feeding staging and mart tables and a weekly revenue file, with the selected fct_orders node's details in the side panel](./dependencies-graph-dag.png)
+
+**Tree** uses a force-directed layout that spreads dense graphs out. It draws nodes as icons without labels, and highlights the edges connected to the selected node.
+
+![The same graph in Tree layout, with the edges around the selected fct_orders node highlighted](./dependencies-graph-tree.png)
 
 ### Freshness states
 
@@ -77,7 +82,7 @@ Hover a group to fade the other nodes. Select it to keep it highlighted, and sel
 
 ### Node details
 
-Select a node to open a side panel with the asset's ID, type, status, metadata, and recent runs linked to their executions. Double-click a node to open its detail page.
+Select a node to open a side panel with the asset's name and ID, its freshness state, when it was last written, its type, the task type that produced it (**Plugins**), its `system`, and its recent runs linked to their executions. Double-click a node to open its detail page.
 
 ## Lock an asset
 
@@ -90,7 +95,7 @@ There are two kinds of lock:
 | Execution | The [`Acquire` task](../02.tasks-and-triggers/index.md#acquire-and-release), or the API with an execution ID | Writes from every other execution, the UI, and the API. The owning execution can still write, and each write extends the lock. |
 | User | The UI, or the API without an execution ID | Writes from every execution, including executions the locking user starts, and edits by other users through the UI and the API. The user who holds the lock can still edit and delete the asset. |
 
-To lock an asset in the UI, select **Lock** on its detail page and choose a duration from 5 minutes to 24 hours, or **Custom** for any ISO 8601 duration. The detail page then shows who holds the lock and until when, with the banner *You might be seeing outdated metadata as this asset is currently locked for writing.* Select **Unlock** to release it. A user with the `UNLOCK` permission can release any lock, whatever its owner.
+To lock an asset in the UI, open the **⋮** menu on its detail page, select **Lock**, and choose a duration from 5 minutes to 24 hours, or **Custom** for any ISO 8601 duration. The detail page then shows who holds the lock and until when, with the banner *You might be seeing outdated metadata as this asset is currently locked for writing.* Select **Unlock** to release it. A user with the `UNLOCK` permission can release any lock, whatever its owner.
 
 How a lock affects each write path:
 

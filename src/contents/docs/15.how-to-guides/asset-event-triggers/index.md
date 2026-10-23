@@ -161,7 +161,7 @@ triggers:
       - DELETED
 ```
 
-To test it, delete an asset from its detail page in the UI. Replace the `Log` task with a database insert or a notification task to keep a permanent audit trail.
+To test it, open an asset in the UI and select **Delete** from the **⋮** menu. Replace the `Log` task with a database insert or a notification task to keep a permanent audit trail.
 
 ## Next steps
 
