@@ -41,6 +41,9 @@ import { DEPLOYMENTS } from "./securityData"
                                 </div>
                             ))}
                         </dl>
+                        <a href={deployment.link.href} class="card-link">
+                            {deployment.link.text} →
+                        </a>
                     </article>
                 ))
             }
@@ -147,6 +150,20 @@ import { DEPLOYMENTS } from "./securityData"
     dd {
         margin: 0;
         color: var(--ks-content-primary);
+    }
+
+    .card-link {
+        margin-top: auto;
+        padding-top: 0.5rem;
+        color: var(--ks-content-link);
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 20px;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
     .note {
