@@ -1,0 +1,1068 @@
+---
+title: "Migrate from Apache Airflow to Kestra"
+description: "A concept-by-concept mapping from Airflow 2 and 3 to Kestra 2.0, three DAGs converted side by side, and a seven-step playbook to run both platforms in parallel until the last DAG is cut over. It says what moves as is, what has to be re-expressed, and what has no direct equivalent."
+metaTitle: "Migrate from Airflow to Kestra: Concept Mapping & Playbook"
+metaDescription: "Airflow 2 is end of life since April 22, 2026. Map each Airflow concept to Kestra 2.0, run both side by side, and cut over DAG by DAG with a 7-step playbook."
+tag: migration
+date: 2026-10-23
+href: /resources/migration/airflow
+# Numbered headings get stable ids ("3.2 ..." -> #section-3-2); the FAQ and
+# the markdown variant deep-link into them. See src/markdown/remark/remark-section-ids.
+sectionIds: true
+# The guide places its own CTAs (GuideCta), so the generic injected pair is off.
+resourceCta: false
+faq:
+  - question: "Do I have to rewrite my Python code to leave Airflow?"
+    answer: 'No. The business logic inside a <code>PythonOperator</code> or a <code>@task</code> function runs in a Kestra Script task as it is, in its own container with its own declared dependencies. What you remove is the Airflow layer around it: the imports, the <code>**context</code> argument, and the XCom calls, which become declared outputs or output files. Code that is already decoupled from Airflow, such as scripts called from a <code>BashOperator</code>, moves unchanged. See <a href="#section-5">Section 5</a>.'
+  - question: "Can I run Airflow and Kestra side by side during the migration?"
+    answer: 'Yes, and the playbook assumes you will. New workflows start in Kestra; the DAGs that have not moved yet keep running in Airflow and Kestra triggers them through the Airflow plugin (<code>io.kestra.plugin.airflow.dags.TriggerDagRun</code>), waits for the run and alerts if it misses its deadline. Each DAG is cut over on its own, after a double-run window where both outputs are compared. See <a href="#section-7-3">7.3</a> and <a href="#section-9-4">9.4</a>.'
+  - question: "How do XCom, Connections and Variables map to Kestra?"
+    answer: 'XCom becomes outputs: small values are declared with <code>Kestra.outputs()</code> and read as <code>outputs.&lt;task&gt;.vars.*</code>; files are declared in <code>outputFiles</code> and passed to the next task through <code>inputFiles</code>, with no size limit. Connections become connection properties on the task that needs them, with credentials read through <code>secret()</code>. Variables become flow <code>variables</code>, the KV Store, or typed inputs. See <a href="#section-6">Section 6</a>.'
+  - question: "What replaces sensors?"
+    answer: 'Polling triggers. An S3, SQL or file sensor that occupied a worker slot while it waited becomes a trigger that polls on an interval and starts the flow when the condition is true (<code>io.kestra.plugin.aws.s3.Trigger</code>, <code>io.kestra.plugin.jdbc.postgresql.Trigger</code>, and script triggers for anything custom). <code>ExternalTaskSensor</code> becomes a Flow trigger with <code>dependsOn</code> and a <code>window.deadline</code>. Waiting inside a running flow is <code>LoopUntil</code>. Webhook, Kafka and queue events use realtime triggers instead of polling. See <a href="#section-3-5">3.5</a>.'
+  - question: "How does Kestra handle catchup and backfills?"
+    answer: 'The default is the inverse of Airflow. A Schedule trigger recovers every missed run by default (<code>recoverMissedSchedules: ALL</code>), so a DAG with <code>catchup=False</code> must set <code>recoverMissedSchedules: NONE</code> (or <code>LAST</code> to run only the most recent one). Backfills over a date range are started from the UI or the API on the trigger, with one active backfill per trigger; to rerun specific executions, use Replay. See <a href="#section-3-2">3.2</a>.'
+  - question: "Is there a tool that converts Airflow DAGs to Kestra flows?"
+    answer: 'There is an AI-assisted path, not a one-click importer. The <code>migrate-airflow-kestra</code> agent skill runs in Claude Code, Cursor, Windsurf or Codex, extracts each task into a namespace file, generates the flow against the live plugin schema and validates it with <code>kestractl</code>. It handles sequential and parallel <code>@task</code> DAGs well; sensors, branching, pools and dynamic task mapping need a human review against the mapping in this guide. See <a href="#section-9-5">9.5</a>.'
+  - question: "How long does an Airflow to Kestra migration take?"
+    answer: 'It depends on the DAG inventory, not on the DAG count. A DAG with five sequential Python tasks converts in under an hour; one with custom operators, sensors, dynamic mapping and direct metadata-database access takes days. Score each DAG on the complexity grid in <a href="#section-9-1">9.1</a>, convert two or three representative ones during the pilot, and use the measured time per DAG as your estimate. We do not publish an average because the spread between estates is too wide to be useful.'
+  - question: "Is Kestra open source, and which features need Enterprise?"
+    answer: 'The core is Apache 2.0, and everything in the concept mapping marked OSS runs on it: flows, every trigger type, Loop, Subflow, retries, SLAs, concurrency limits, namespaces and the full plugin catalog. Role-based access control, SSO and SCIM, external secrets managers, tenants, Worker Groups, the Kubernetes and cloud task runners, unit tests, Assets and Policies are Enterprise or Cloud. The open-source edition has a single Basic Auth account and stores secrets as environment variables. See <a href="#section-10">Section 10</a>.'
+---
+
+import TabGroup from "~/components/common/TabGroup.astro"
+import TabPanel from "~/components/common/TabPanel.astro"
+import GuideCallout from "~/components/vra-migration-guide/blocks/GuideCallout.astro"
+import GuideCard from "~/components/vra-migration-guide/blocks/GuideCard.astro"
+import GuideCards from "~/components/vra-migration-guide/blocks/GuideCards.astro"
+import CaseStudy from "~/components/vra-migration-guide/blocks/CaseStudy.astro"
+import GuideCta from "~/components/vra-migration-guide/blocks/GuideCta.astro"
+import InteractiveFrame from "~/components/vra-migration-guide/blocks/InteractiveFrame.astro"
+
+## 1. Airflow to Kestra concept mapping
+
+Every Airflow concept has a place in Kestra, and most have a direct equivalent; the table below maps them row by row, with the edition each one needs. Three changes cost more thinking than the rest, and they come up in every migration.
+
+<GuideCards columns={3}>
+<GuideCard kicker="SHIFT 1" title="Parallelism becomes explicit" level={4}>
+
+Airflow infers what can run in parallel from the `>>` graph. Kestra declares it: tasks in a list run in order, and you wrap the ones that should run together in `Parallel`, or describe a real graph with `Dag` and `dependsOn`. The plan is visible before anything runs.
+
+</GuideCard>
+<GuideCard kicker="SHIFT 2" title="XCom disappears" level={4}>
+
+Tasks do not push and pull values from a shared store. Small values are declared as outputs and read as `outputs.<task>.vars.*`; files are declared in `outputFiles` and handed to the next task through `inputFiles`. This is the largest conceptual change, and the one that touches the most code.
+
+</GuideCard>
+<GuideCard kicker="SHIFT 3" title="Catchup inverts" level={4}>
+
+A Kestra schedule recovers every missed run by default (`recoverMissedSchedules: ALL`). A DAG that set `catchup=False` needs `recoverMissedSchedules: NONE`, or the first deploy replays history.
+
+</GuideCard>
+</GuideCards>
+
+### 1.1 The mapping
+
+Edition: **OSS** runs on the open-source edition; **EE** needs Kestra Enterprise; **Cloud** is Kestra Cloud. Links go to the Kestra 2.0 documentation.
+
+| Airflow | Kestra 2.0 | Notes | Edition |
+| --- | --- | --- | --- |
+| DAG (`.py` file) | [Flow](/docs/workflow-components/flow) (YAML: `id`, `namespace`, `tasks`, `triggers`) | The plan is inspectable without executing it; `dag_id` becomes `id` | OSS |
+| `dags/` folder, one deployment per team | [Namespace](/docs/workflow-components/namespace) (hierarchical, `company.team`) | Carries files, KV, secrets and inherited settings; isolated tenants in EE | OSS; tenants EE |
+| Task | Task (an item of `tasks`) | Runnable tasks do work, flowable tasks control flow | OSS |
+| Operator, provider package | [Plugin task type](/docs/workflow-components/plugins), such as `io.kestra.plugin.jdbc.postgresql.Query` | No `pip install` of providers; plugins ship with the platform ({props.totalPlugins}+ today) | OSS |
+| `PythonOperator`, `@task` | `io.kestra.plugin.scripts.python.Script` (inline) or `.Commands` (files) | Plain Python, no decorator; `dependencies:` per task, each in its own container | OSS |
+| `BashOperator` | `io.kestra.plugin.scripts.shell.Commands` | | OSS |
+| `KubernetesPodOperator` | `io.kestra.plugin.kubernetes.core.PodCreate`, or any script task with the Kubernetes task runner | `PodCreate` is OSS; the [Kubernetes task runner](/docs/task-runners/types/kubernetes-task-runner) is EE/Cloud | OSS; runner EE/Cloud |
+| `SQLExecuteQueryOperator`, `SnowflakeOperator`, … | `io.kestra.plugin.jdbc.<database>.Query` | One SQL statement per `Query` task since 1.1 | OSS |
+| `HttpOperator` | `io.kestra.plugin.core.http.Request` | Retries, headers and auth options built in | OSS |
+| dbt (Cosmos, `DbtRunOperator`) | `io.kestra.plugin.dbt.cli.DbtCLI` | `--select` and `--exclude` pass through; manifest stored in the KV Store | OSS |
+| `SlackWebhookOperator`, `email_on_failure` | `io.kestra.plugin.slack.notifications.SlackIncomingWebhook` and equivalents | Used in `errors:` for failure alerts | OSS |
+| Sensor (`S3KeySensor`, `SqlSensor`, `FileSensor`) | [Polling trigger](/docs/workflow-components/triggers/polling-trigger) (`aws.s3.Trigger`, `jdbc.<database>.Trigger`, script triggers), `LoopUntil` inside a flow | The trigger starts the flow when the condition holds, instead of occupying a slot | OSS |
+| `ExternalTaskSensor`, cross-DAG dependency | [Flow trigger](/docs/workflow-components/triggers/flow-trigger) with `dependsOn`, `mode`, `window` | `window.deadline` is the dependency SLA | OSS |
+| `TriggerDagRunOperator`, SubDAG | [Subflow](/docs/workflow-components/subflows) (`wait`, `transmitFailed`, `inputs`) | Subflows keep their own execution and history | OSS |
+| Datasets, Assets (data-aware scheduling) | Flow triggers on outputs or labels; Kestra Assets with freshness and lineage | Assets are EE | OSS; Assets EE |
+| `schedule`, `schedule_interval`, timetable | [Schedule trigger](/docs/workflow-components/triggers/schedule-trigger) (`cron`, `@daily`, `timezone`) | Several triggers per flow; `schedule=None` is simply no trigger | OSS |
+| Custom timetables (business days, holidays) | `Schedule` plus `when:` with `isPublicHoliday()`, `isLastWorkingDay()`, `isDayWeekInMonth()` | [Date functions](/docs/expressions/functions/dates) | OSS |
+| `catchup=True` / `False` | `recoverMissedSchedules: ALL` (default) / `NONE` / `LAST` | The default inverts: Kestra recovers everything unless told otherwise | OSS |
+| Backfill (`airflow dags backfill`) | Backfill from the UI or API on the trigger; Replay for specific runs | One active backfill per trigger | OSS |
+| `start_date`, `end_date` | No direct equivalent; backfill from a date, or `disabled: true` on the trigger | See [1.2](#section-1-2) | — |
+| `{{ ds }}`, `{{ logical_date }}`, macros | Pebble: `{{ trigger.date }}`, `{{ trigger.date ?? execution.startDate \| date("yyyy-MM-dd") }}`, `{{ now() }}` | The `??` form also works on manual runs | OSS |
+| XCom | `outputs.<task>.vars.*` for values, `outputFiles` and `inputFiles` for files | [Outputs](/docs/workflow-components/outputs) | OSS |
+| Variables | Flow `variables`, [KV Store](/docs/concepts/kv-store), inputs | | OSS |
+| Params, `dag_run.conf` | Typed [inputs](/docs/workflow-components/inputs) (STRING, INT, SELECT, FILE, JSON, FORM) with a generated form | Reusable inputs across a namespace are EE | OSS |
+| Connections, hooks | Connection properties on the task plus `{{ secret('KEY') }}`; EE Credentials for refreshed OAuth tokens | No separate hook object | OSS; Credentials EE/Cloud |
+| Secrets backend (Vault, AWS Secrets Manager) | [External secrets manager](/docs/enterprise/governance/secrets-manager), per namespace or tenant | OSS stores secrets as base64 environment variables | EE |
+| `default_args` (retries, owner) | `retry` and `timeout` per task, or on a `Sequential`/`Parallel` parent to inherit; EE Policies for namespace-wide defaults | `pluginDefaults` no longer exists in 2.0 | OSS; Policies EE |
+| `retries`, `retry_delay`, `retry_exponential_backoff` | [`retry`](/docs/workflow-components/retries): `type` constant/exponential/random, `maxAttempts`, `interval`, `maxDuration` | `maxAttempts` counts the first attempt: `retries: 2` is `maxAttempts: 3` | OSS |
+| `execution_timeout` | `timeout: PT10M` on the task | | OSS |
+| `dagrun_timeout`, SLA, `sla_miss_callback` | Flow-level [`sla`](/docs/workflow-components/sla) (`MAX_DURATION`, `EXECUTION_ASSERTION`) with `behavior` and labels | Alert from a Flow trigger on the `sla: miss` label | OSS |
+| `max_active_runs` | Flow-level [`concurrency`](/docs/workflow-components/concurrency) (`limit`, `behavior: QUEUE/CANCEL/FAIL`) | Also at namespace and tenant level | OSS |
+| `max_active_tasks` | `Parallel.concurrent`, `Dag.concurrent`, `Loop.concurrencyLimit` | | OSS |
+| Pools | No pool object; namespace or tenant concurrency limits, Worker Groups with reserved capacity, Quotas | See [1.2](#section-1-2) | partial OSS; Worker Groups EE |
+| `priority_weight` | No per-task priority; EE priority lanes through Worker Groups | See [1.2](#section-1-2) | EE |
+| `queue` (Celery) | `workerSelector.tags` routed to a [Worker Group](/docs/enterprise/scalability/worker-group) | | EE |
+| `trigger_rule` | `errors`, `finally`, `afterExecution`, `allowFailure`, `runIf`, `onChildFailure` | No single property; see the sub-table in [4.5](#section-4-5) | OSS |
+| `depends_on_past` | No direct equivalent; `concurrency.limit: 1` plus a Flow trigger on the previous execution approximates it | See [1.2](#section-1-2) | — |
+| `@task.branch`, `BranchPythonOperator` | `io.kestra.plugin.core.flow.If`, `Switch` | | OSS |
+| `ShortCircuitOperator` | `runIf:` on a task, or `If` | | OSS |
+| `>>`, `set_upstream` | List order; `Parallel` for fan-out; `Dag` with `dependsOn` for a real graph | | OSS |
+| TaskGroup | `Sequential` or `Parallel` to group; `Subflow` to reuse | | OSS |
+| Dynamic task mapping (`.expand()`) | [`Loop`](/docs/workflow-components/tasks/flowable-tasks) (`values`, `concurrencyLimit`, `outputs`) | `ForEach` was removed in 2.0; do not copy it from older examples | OSS |
+| Deferrable operators, triggerer | Polling and realtime triggers; tasks that wait (`TriggerDagRun` with `wait: true`) | No separate triggerer process | OSS |
+| `on_failure_callback`, `on_success_callback` | `errors:`, `afterExecution:`, or a Flow trigger on `FAILED` / `SUCCESS` states | | OSS |
+| Human approval (custom in Airflow) | `io.kestra.plugin.core.flow.Pause` with `onResume` inputs | | OSS |
+| Executors (Local, Celery, Kubernetes) | Workers; [task runners](/docs/task-runners) choose where a task's process runs | Process and Docker runners OSS; Kubernetes, AWS Batch, Google Batch, Azure Batch, Cloud Run EE/Cloud | OSS; remote runners EE/Cloud |
+| DAG tests (`dag.test()`, pytest) | [Unit tests](/docs/enterprise/governance/unit-tests) for flows | | EE |
+| RBAC, auth manager | Per-action [RBAC](/docs/enterprise/auth/rbac), SSO, SCIM, service accounts, audit logs | OSS has one Basic Auth account | EE |
+| git-sync, CI/CD | `io.kestra.plugin.git.SyncFlows`, GitHub Actions, Terraform provider; Promote between instances | Promote is EE | OSS; Promote EE |
+| REST API, CLI | Kestra API and SDKs; [`kestractl`](/docs/kestra-cli/kestractl) | | OSS |
+| DAG versioning (Airflow 3) | Revision history with diff and rollback; draft flows | | OSS |
+| Airflow UI (Grid, Graph, Gantt) | Topology, Gantt, centralized logs, outputs, no-code editor | | OSS |
+
+### 1.2 What has no direct equivalent
+
+Four Airflow settings have no object in Kestra that does the same job. Each has a pattern that covers the usual intent, and the pattern is what you should write down in the inventory for every DAG that uses them.
+
+<GuideCards columns={2}>
+<GuideCard title="depends_on_past" level={4}>
+
+Nothing on a trigger says "skip if the previous run failed". Set `concurrency.limit: 1` so runs never overlap, and if the next run must wait for the previous one to succeed, chain it with a Flow trigger on `states: [SUCCESS]` instead of a schedule. If the intent was to stop a broken pipeline from piling up runs, `stopAfter: [FAILED]` on the Schedule trigger disables it after a failure until someone fixes it.
+
+</GuideCard>
+<GuideCard title="Pools" level={4}>
+
+There is no pool object with a slot count shared across DAGs. Concurrency limits exist per flow, per namespace and per tenant, so a limit on the namespace that holds every flow talking to the warehouse plays the role of a warehouse pool. For hardware isolation, Worker Groups with reserved capacity (EE) route tasks to dedicated workers.
+
+</GuideCard>
+<GuideCard title="priority_weight" level={4}>
+
+Tasks are not prioritized inside a queue. In EE, "priority lanes" are several Worker Groups with reserved capacity, and a `workerSelector` tag sends critical tasks to the lane that always has room. In OSS, give critical flows their own namespace with its own concurrency limit.
+
+</GuideCard>
+<GuideCard title="trigger_rule" level={4}>
+
+`all_success` is the default in both platforms. The other rules map to a combination of `errors`, `finally`, `afterExecution`, `allowFailure` and `runIf`, and sometimes to a different flow shape. The sub-table in [4.5](#section-4-5) gives the mapping per rule.
+
+</GuideCard>
+</GuideCards>
+
+`start_date` and `end_date` also have no equivalent on the trigger: a schedule starts when the flow is deployed, and you backfill from an earlier date if needed. Deferrable operators and the triggerer have no counterpart either, because polling triggers do not hold a worker slot in the first place.
+
+## 2. Operators become plugin tasks
+
+An Airflow operator is a Python class installed with a provider package; a Kestra task is a plugin type named in YAML, shipped with the platform and versioned independently of the core. The code you wrote inside operators moves into script tasks; the operators you only configured move into plugin tasks with the same parameters.
+
+### 2.1 The common operators
+
+<TabGroup id="af-operators" label="Operator conversions" variant="segmented" tabs={[{ label: "BashOperator" }, { label: "KubernetesPodOperator" }, { label: "SQL operators" }]}>
+<TabPanel group="af-operators" index={1}>
+
+```python
+run_report = BashOperator(
+    task_id="run_report",
+    bash_command="python /opt/reports/daily.py --date {{ ds }}",
+    env={"API_KEY": "{{ var.value.api_key }}"},
+)
+```
+
+```yaml
+- id: run_report
+  type: io.kestra.plugin.scripts.shell.Commands
+  namespaceFiles:
+    enabled: true
+    include:
+      - reports/daily.py
+  env:
+    API_KEY: "{{ secret('API_KEY') }}"
+  commands:
+    - python reports/daily.py --date {{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}
+```
+
+The script comes from [namespace files](/docs/concepts/namespace-files) or a Git clone rather than a path on the worker, because the task runs in a container by default. The `??` fallback makes the date expression work on manual runs too.
+
+</TabPanel>
+<TabPanel group="af-operators" index={2}>
+
+```python
+train = KubernetesPodOperator(
+    task_id="train",
+    namespace="ml",
+    image="registry.internal/train:1.4",
+    cmds=["python", "train.py"],
+    get_logs=True,
+)
+```
+
+```yaml
+- id: train
+  type: io.kestra.plugin.kubernetes.core.PodCreate
+  namespace: ml
+  spec:
+    containers:
+      - name: train
+        image: registry.internal/train:1.4
+        command: ["python", "train.py"]
+    restartPolicy: Never
+```
+
+`PodCreate` is open source and streams the pod logs into the execution. If the goal was only to run a script on the cluster rather than to control the pod spec, keep the script task and set the Kubernetes task runner on it (Enterprise and Cloud).
+
+</TabPanel>
+<TabPanel group="af-operators" index={3}>
+
+```python
+load = SQLExecuteQueryOperator(
+    task_id="load",
+    conn_id="warehouse",
+    sql="INSERT INTO fact_orders SELECT * FROM stg_orders WHERE day = '{{ ds }}'",
+)
+```
+
+```yaml
+- id: load
+  type: io.kestra.plugin.jdbc.postgresql.Query
+  url: "{{ secret('WAREHOUSE_URL') }}"
+  username: "{{ secret('WAREHOUSE_USER') }}"
+  password: "{{ secret('WAREHOUSE_PASSWORD') }}"
+  sql: |
+    INSERT INTO fact_orders
+    SELECT * FROM stg_orders
+    WHERE day = '{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}'
+```
+
+The connection moves onto the task. A `Query` task runs one statement; a multi-statement script becomes several tasks or a `Queries` task where the plugin offers one.
+
+</TabPanel>
+</TabGroup>
+
+### 2.2 Custom operators and hooks
+
+A custom operator is usually one of two things. If it wraps an API call or a transformation, the method body becomes a Script task or an HTTP Request task, and the operator class goes away. If it is a reusable integration that several teams depend on, the equivalent is a [custom plugin](/docs/plugin-developer-guide) in Java, or more simply a Subflow with inputs that other flows call. Hooks disappear: the connection logic lives in the plugin task.
+
+Anything that read the Airflow metadata database directly, which Airflow 3 also forbids, has to be rewritten against the Kestra API or dropped. Put those operators in their own column of the inventory; they are the ones that set the pace of the migration.
+
+## 3. Scheduling: schedule, catchup and backfill
+
+A Kestra flow can carry several triggers, and a Schedule trigger is one of them, so a DAG that was "scheduled daily but also started by hand" becomes a flow with a Schedule trigger and a form of typed inputs. Three behaviours differ from Airflow and each has caught a team out.
+
+### 3.1 The schedule itself
+
+```yaml
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * *"
+    timezone: America/New_York
+    recoverMissedSchedules: NONE
+```
+
+`cron` accepts the same five-field expressions and the same nicknames (`@daily`, `@hourly`). Set `timezone` explicitly so the schedule does not depend on the server. Changing the trigger `id` starts a new schedule from now, which is the safe way to reset one.
+
+### 3.2 Catchup inverts, and backfill is a separate action
+
+When a schedule is deployed, or an instance was down, Kestra recovers every missed occurrence by default. That is `catchup=True` behaviour, and it is the opposite of the `catchup=False` most DAGs carry. Set `recoverMissedSchedules: NONE` to skip missed runs, or `LAST` to run only the most recent one. The value can also be set globally in the plugin configuration so new flows inherit it.
+
+A backfill over a date range is started from the UI, on the flow's Triggers tab, or through the API, with optional inputs and labels; one backfill can be active per trigger, and it can be paused or deleted. To rerun specific executions rather than a range, use Replay on the execution.
+
+### 3.3 Business timetables become a `when` condition
+
+Custom timetables, which take a Python class in Airflow, are a cron plus a condition in Kestra:
+
+```yaml
+triggers:
+  - id: first_monday
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 11 * * 1"
+    when: "{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}"
+
+  - id: month_end_close
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * MON-FRI"
+    when: "{{ isLastWorkingDay(trigger.date) }}"
+```
+
+`isPublicHoliday()`, `isWeekend()` and `dayOfWeek()` cover the other common cases. `when:` replaces the `conditions:` block of earlier Kestra versions; the 2.0 form is the one to use.
+
+### 3.4 Datasets and `ExternalTaskSensor` become Flow triggers
+
+A DAG that waited on another DAG becomes a flow triggered by the upstream flow's execution state, with a deadline that plays the role of the SLA:
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - namespace: company.team
+        flowId: stg_sales
+        states: [SUCCESS]
+      - namespace: company.team
+        flowId: stg_marketing
+        states: [SUCCESS]
+    window:
+      deadline: "09:00:00"
+      timezone: Europe/Paris
+```
+
+`mode: ANY` or `AT_LEAST` relax the "all upstream must succeed" rule, and `inputs:` passes upstream outputs down, which is what a Dataset carried in Airflow. Kestra Assets (Enterprise) add freshness checks and lineage on top.
+
+### 3.5 Sensors become polling triggers
+
+A sensor occupied a worker slot, or a triggerer, while it waited. A polling trigger runs on the scheduler side at an interval and creates an execution only when something is there:
+
+```yaml
+triggers:
+  - id: watch_landing
+    type: io.kestra.plugin.aws.s3.Trigger
+    bucket: data-landing
+    prefix: orders/
+    interval: PT5M
+    filter: FILES
+    action: MOVE
+    moveTo:
+      key: processed/orders/
+    region: eu-west-1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+```
+
+The matched objects arrive in `{{ trigger.objects }}` already downloaded to internal storage, and `action: MOVE` prevents double processing. A `SqlSensor` becomes `io.kestra.plugin.jdbc.<database>.Trigger` with `sql` and `afterSQL`; anything custom becomes a Python or Shell script trigger. For events that should not be polled, such as a webhook, a Kafka topic or an SQS queue, realtime triggers react in milliseconds. Waiting for a condition inside a flow that is already running is `LoopUntil`.
+
+### 3.6 Templates and macros
+
+Jinja macros become Pebble expressions. `{{ ds }}` is `{{ trigger.date | date("yyyy-MM-dd") }}`; `{{ data_interval_start }}` is `{{ trigger.previous }}`; `{{ run_id }}` is `{{ execution.id }}`. Write `{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd") }}` where a flow can also be started by hand, because `trigger` is only defined when a trigger created the execution. The `{{ var.value.x }}` and `{{ conn.x }}` macros become `{{ vars.x }}`, `{{ kv('x') }}` and `{{ secret('X') }}`.
+
+## 4. Control flow: dependencies, branching and dynamic tasks
+
+Airflow expresses control flow in Python between operators; Kestra expresses it with flowable tasks that wrap other tasks. The shapes are the same, the syntax is declarative, and in two places the semantics differ: parallelism is explicit, and `trigger_rule` is several properties rather than one.
+
+### 4.1 `>>` becomes list order, `Parallel` or `Dag`
+
+Tasks in a flow run in the order they are listed. Two independent branches go inside a `Parallel`; a graph where a task waits on two others is a `Dag`:
+
+```yaml
+tasks:
+  - id: graph
+    type: io.kestra.plugin.core.flow.Dag
+    tasks:
+      - task:
+          id: extract
+          type: io.kestra.plugin.core.log.Log
+          message: extract
+      - task:
+          id: transform_a
+          type: io.kestra.plugin.core.log.Log
+          message: transform a
+        dependsOn: [extract]
+      - task:
+          id: transform_b
+          type: io.kestra.plugin.core.log.Log
+          message: transform b
+        dependsOn: [extract]
+      - task:
+          id: publish
+          type: io.kestra.plugin.core.log.Log
+          message: publish
+        dependsOn: [transform_a, transform_b]
+```
+
+Since 2.0, a failure inside a `Parallel` or `Dag` interrupts the other running branches by default (`onChildFailure`); set `onChildFailure: CONTINUE` to keep the Airflow behaviour of letting siblings finish.
+
+### 4.2 TaskGroups and SubDAGs
+
+A `TaskGroup` that only organised the graph becomes a `Sequential` or `Parallel` block with an `id`, which also gives it a node in the topology view. A SubDAG, which Airflow 3 removed, becomes a `Subflow`: a separate flow with its own inputs, execution history and retries, called with `wait: true` so the parent waits and `transmitFailed: true` so a failure propagates.
+
+### 4.3 Branching
+
+```yaml
+- id: route
+  type: io.kestra.plugin.core.flow.If
+  condition: "{{ outputs.check.vars.row_count > 0 }}"
+  then:
+    - id: load
+      type: io.kestra.plugin.core.log.Log
+      message: loading {{ outputs.check.vars.row_count }} rows
+  else:
+    - id: skip
+      type: io.kestra.plugin.core.log.Log
+      message: nothing to load
+```
+
+`@task.branch` that returned one of several task ids becomes a `Switch` on `value:` with a `cases:` map and a `defaults:` list. `ShortCircuitOperator` becomes `runIf:` on the task that should be skipped.
+
+### 4.4 Dynamic task mapping becomes `Loop`
+
+`.expand()` over a list computed at runtime is a `Loop` over an expression. Each iteration runs as an isolated sub-execution, `item.value` is the current element, and `concurrencyLimit` bounds the fan-out:
+
+```yaml
+tasks:
+  - id: list_partitions
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - kestra
+    script: |
+      from kestra import Kestra
+      Kestra.outputs({"partitions": ["2026-10-01", "2026-10-02", "2026-10-03"]})
+
+  - id: per_partition
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.list_partitions.vars.partitions }}"
+    concurrencyLimit: 4
+    tasks:
+      - id: process
+        type: io.kestra.plugin.scripts.shell.Commands
+        commands:
+          - echo "processing partition {{ item.value }}"
+```
+
+Two things differ from `.expand()`. Outputs of an iteration are not visible after the loop unless you declare them in the Loop's `outputs:` block, and `transmitFailed: false` lets the loop finish when one iteration fails. If you find `ForEach` or `ForEachItem` in an example, it predates 2.0: the [migration note](/docs/migration-guide/v2.0.0/foreach-loop) explains the replacement.
+
+### 4.5 `trigger_rule`, rule by rule
+
+| `trigger_rule` | What it meant | Kestra |
+| --- | --- | --- |
+| `all_success` | Run when every upstream task succeeded | Default behaviour |
+| `all_failed` / `one_failed` | Run when upstream failed | Put the task in `errors:` of the flow, or of the `Sequential` that holds the upstream tasks |
+| `all_done` | Run regardless of the outcome | `finally:` on the flow or flowable task, or `afterExecution:` for work after the final state |
+| `none_failed` / `none_failed_min_one_success` | Continue when upstream tasks were skipped but not failed | `allowFailure: true` on the upstream task that may fail; `runIf:` on the downstream one |
+| `one_success` | Run as soon as one upstream branch succeeded | A `Parallel` with `onChildFailure: CONTINUE`, then `runIf: "{{ outputs.a.state == 'SUCCESS' or outputs.b.state == 'SUCCESS' }}"` on the downstream task |
+| `none_skipped` | Run only if nothing was skipped | `runIf:` checking the branch outputs |
+| `always` | Run unconditionally | `finally:` |
+
+Conversion tools that reduce every rule to `allowFailure: true` lose the distinction between "continue past a failure" and "run on failure". Review each DAG that sets a rule other than the default by hand.
+
+### 4.6 Retries, timeouts and SLAs
+
+```yaml
+- id: call_api
+  type: io.kestra.plugin.core.http.Request
+  uri: https://api.example.com/orders
+  timeout: PT10M
+  retry:
+    type: exponential
+    maxAttempts: 3
+    interval: PT30S
+    maxInterval: PT5M
+```
+
+`maxAttempts` includes the first attempt, so Airflow's `retries: 2` is `maxAttempts: 3`. `retry_exponential_backoff=True` is `type: exponential`; `retry_delay` is `interval`. `execution_timeout` is `timeout` on the task. `dagrun_timeout` is a flow-level SLA:
+
+```yaml
+sla:
+  - id: max_duration
+    type: MAX_DURATION
+    duration: PT8H
+    behavior: CANCEL
+    labels:
+      sla: miss
+```
+
+A system flow with a Flow trigger on `labels: {sla: miss}` replaces `sla_miss_callback`, which Airflow 3 removed.
+
+### 4.7 Concurrency
+
+`max_active_runs=1` is `concurrency: {limit: 1, behavior: QUEUE}` at the root of the flow; `CANCEL` and `FAIL` are the alternatives when queuing is wrong. `max_active_tasks` is `concurrent` on a `Parallel` or `Dag`, or `concurrencyLimit` on a `Loop`. A trigger does not start a new execution while the previous one it started is still running unless `allowConcurrent: true` is set, which webhook-driven flows usually need.
+
+## 5. Reuse your Python
+
+Moving to Kestra does not rewrite your business logic; it moves the orchestration around it. The honest version of that sentence is: code that was already independent of Airflow moves unchanged, and code that leaned on the Airflow context needs a small edit.
+
+### 5.1 Where the code goes
+
+<GuideCards columns={2}>
+<GuideCard title="Inline, for short functions" level={4}>
+
+A `@task` of ten lines becomes a `io.kestra.plugin.scripts.python.Script` with the code in `script:`. Dependencies are declared per task in `dependencies:` and installed in that task's container, so two tasks can need different versions of the same library.
+
+</GuideCard>
+<GuideCard title="Namespace files, for a project" level={4}>
+
+Scripts live next to the flow as [namespace files](/docs/concepts/namespace-files), edited in the UI, synced from Git or pushed with `kestractl nsfiles upload`. A `io.kestra.plugin.scripts.python.Commands` task includes them and runs `python scripts/<task>.py`. This is what the migration skill generates.
+
+</GuideCard>
+<GuideCard title="A Git clone, for an existing repository" level={4}>
+
+The repository you already have stays where it is. A `WorkingDirectory` wraps a `git.Clone` and the script task that runs from it; nothing is copied into Kestra.
+
+</GuideCard>
+<GuideCard title="Your own image" level={4}>
+
+If the environment is already a container, set `containerImage` on the script task and skip `dependencies`. The task runner (Docker by default) pulls it.
+
+</GuideCard>
+</GuideCards>
+
+```yaml
+id: reports_from_git
+namespace: company.analytics
+
+tasks:
+  - id: workdir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/example/analytics-jobs
+        branch: main
+      - id: run
+        type: io.kestra.plugin.scripts.python.Commands
+        dependencies:
+          - pandas
+          - requests
+        commands:
+          - python jobs/daily_report.py
+        outputFiles:
+          - report.csv
+```
+
+### 5.2 What to remove from each function
+
+- `from airflow...` imports and the `@task` decorator.
+- The `**context` argument and reads from `context["ds"]`, `context["ti"]`; pass those values as command-line arguments, environment variables or an `inputFiles` entry, rendered from `{{ trigger.date }}` or `{{ inputs.x }}`.
+- `ti.xcom_push()` and `xcom_pull()`: return values through `Kestra.outputs({...})` from the `kestra` package, or write a file and declare it in `outputFiles`.
+- `Variable.get()` and `BaseHook.get_connection()`: read from environment variables that the task sets from `{{ secret('X') }}` or `{{ kv('x') }}`.
+
+The shared Python environment that held dbt, your scripts and every provider on the same worker also goes away. Each task declares what it needs, which is usually what teams that struggled with dependency conflicts on Airflow workers were after.
+
+## 6. Connections, Variables, secrets and XCom
+
+Airflow kept Connections, Variables and XCom in its metadata database and resolved them at runtime. Kestra keeps the connection on the task that uses it, the secret in a store scoped to a namespace, and the data in outputs and internal storage.
+
+### 6.1 Connections
+
+A Connection's host, login and password become properties of the plugin task, with the sensitive parts read through `{{ secret('KEY') }}`. There is no connection registry to migrate; export the Connections you still use, create one secret per sensitive field in the target namespace, and reference them. Enterprise and Cloud add [Credentials](/docs/enterprise/auth/credentials), which keep an OAuth token refreshed and expose it as `{{ credential('name') }}`.
+
+### 6.2 Secrets in the open-source edition
+
+In OSS, a secret is an environment variable prefixed `SECRET_` with a base64 value, read with `secret()`. It is not encrypted at rest, has no access control and no audit trail. Teams that used an external secrets backend on Airflow (Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault) get the same in Enterprise through the [secrets manager integration](/docs/enterprise/governance/secrets-manager), per namespace or tenant, read-only where the vault stays the source of truth. Decide which edition you need before the pilot, because this is the difference teams notice first.
+
+### 6.3 Variables and Params
+
+| Airflow | Kestra | When |
+| --- | --- | --- |
+| `Variable.get("x")` set once per environment | Flow `variables:` and `{{ vars.x }}` | The value belongs to the flow |
+| Variables written by one DAG and read by another | [KV Store](/docs/concepts/kv-store): `{{ kv('x') }}` and `io.kestra.plugin.core.kv.Set` | Shared state across flows in a namespace |
+| `params`, `dag_run.conf` | Typed `inputs:` with defaults, validation and a generated form | Values given at run time |
+
+### 6.4 XCom
+
+Small values: the task calls `Kestra.outputs({"row_count": 1200})` and the next one reads `{{ outputs.check.vars.row_count }}`. Files: the task writes to its working directory, declares the name in `outputFiles`, and the next task maps it in `inputFiles`:
+
+```yaml
+tasks:
+  - id: extract
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - kestra
+      - requests
+    script: |
+      import json, requests
+      from kestra import Kestra
+
+      products = requests.get("https://dummyjson.com/products?limit=100").json()["products"]
+      with open("products.json", "w") as f:
+          json.dump(products, f)
+      Kestra.outputs({"count": len(products)})
+    outputFiles:
+      - products.json
+
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - pandas
+    inputFiles:
+      products.json: "{{ outputs.extract.outputFiles['products.json'] }}"
+    script: |
+      import pandas as pd
+      df = pd.read_json("products.json")
+      print(df.groupby("category")["price"].mean())
+```
+
+Files go through internal storage, so the size limit that made teams serialise DataFrames into XCom, or reach for a custom XCom backend, does not apply.
+
+## 7. Side-by-side examples
+
+Three DAGs, converted in full and validated against the Kestra 2.0 schema. The first is the shape most data teams have; the second is a sensor-driven file pipeline; the third is the coexistence pattern the playbook relies on.
+
+### 7.1 A daily Python analytics pipeline
+
+Two levels of parallelism, pandas, and XCom between every stage. The Airflow version is the DummyJSON products pipeline from the [AI-assisted migration walkthrough](/blogs/airflow-to-kestra-migration-with-ai), trimmed to its structure.
+
+<TabGroup id="af-example-1" label="Daily analytics pipeline" variant="segmented" tabs={[{ label: "Airflow DAG" }, { label: "Kestra flow" }]}>
+<TabPanel group="af-example-1" index={1}>
+
+```python
+from airflow import DAG
+from airflow.decorators import task
+import pandas as pd, requests
+
+default_args = {"owner": "analytics", "retries": 2}
+
+with DAG(dag_id="dummyjson_products_pipeline", schedule="@daily",
+         catchup=False, default_args=default_args):
+
+    @task()
+    def fetch_all_products() -> list[dict]:
+        ...  # paginated GET, returns a list (serialised to XCom)
+
+    @task()
+    def fetch_categories() -> list[str]:
+        ...
+
+    @task()
+    def compute_category_stats(products: list[dict]) -> list[dict]:
+        df = pd.DataFrame(products)
+        ...
+
+    @task()
+    def compute_brand_stats(products: list[dict]) -> list[dict]:
+        ...
+
+    @task()
+    def build_executive_summary(cat_stats, brand_stats) -> dict:
+        ...
+
+    products = fetch_all_products()
+    categories = fetch_categories()
+    cat_stats = compute_category_stats(products)
+    brand_stats = compute_brand_stats(products)
+    build_executive_summary(cat_stats, brand_stats)
+```
+
+</TabPanel>
+<TabPanel group="af-example-1" index={2}>
+
+```yaml
+id: dummyjson_products_pipeline
+namespace: company.analytics
+description: Fetch products from DummyJSON, transform with pandas, produce analytics
+
+tasks:
+  # Stage 1: parallel fetch (Airflow inferred this from the graph)
+  - id: fetch_data
+    type: io.kestra.plugin.core.flow.Parallel
+    tasks:
+      - id: fetch_all_products
+        type: io.kestra.plugin.scripts.python.Commands
+        namespaceFiles:
+          enabled: true
+          include:
+            - scripts/fetch_all_products.py
+        dependencies:
+          - requests
+        commands:
+          - python scripts/fetch_all_products.py
+        outputFiles:
+          - products.json
+        retry:
+          type: constant
+          maxAttempts: 3
+          interval: PT30S
+
+      - id: fetch_categories
+        type: io.kestra.plugin.scripts.python.Commands
+        namespaceFiles:
+          enabled: true
+          include:
+            - scripts/fetch_categories.py
+        dependencies:
+          - requests
+        commands:
+          - python scripts/fetch_categories.py
+        outputFiles:
+          - categories.json
+        retry:
+          type: constant
+          maxAttempts: 3
+          interval: PT30S
+
+  # Stage 2: parallel analytics, each reading the file instead of an XCom
+  - id: compute_analytics
+    type: io.kestra.plugin.core.flow.Parallel
+    tasks:
+      - id: compute_category_stats
+        type: io.kestra.plugin.scripts.python.Commands
+        namespaceFiles:
+          enabled: true
+          include:
+            - scripts/compute_category_stats.py
+        inputFiles:
+          products.json: "{{ outputs.fetch_all_products.outputFiles['products.json'] }}"
+        dependencies:
+          - pandas
+        commands:
+          - python scripts/compute_category_stats.py
+        outputFiles:
+          - category_stats.json
+
+      - id: compute_brand_stats
+        type: io.kestra.plugin.scripts.python.Commands
+        namespaceFiles:
+          enabled: true
+          include:
+            - scripts/compute_brand_stats.py
+        inputFiles:
+          products.json: "{{ outputs.fetch_all_products.outputFiles['products.json'] }}"
+        dependencies:
+          - pandas
+        commands:
+          - python scripts/compute_brand_stats.py
+        outputFiles:
+          - brand_stats.json
+
+  # Stage 3: fan-in
+  - id: build_executive_summary
+    type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
+      include:
+        - scripts/build_executive_summary.py
+    inputFiles:
+      category_stats.json: "{{ outputs.compute_category_stats.outputFiles['category_stats.json'] }}"
+      brand_stats.json: "{{ outputs.compute_brand_stats.outputFiles['brand_stats.json'] }}"
+    dependencies:
+      - pandas
+    commands:
+      - python scripts/build_executive_summary.py
+    outputFiles:
+      - executive_summary.json
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+    recoverMissedSchedules: NONE   # catchup=False
+```
+
+</TabPanel>
+</TabGroup>
+
+What changed, line by line: each `@task` body became `scripts/<task>.py` with the Airflow imports removed and `return` replaced by writing a JSON file; the two fan-outs became explicit `Parallel` blocks; `retries: 2` became `maxAttempts: 3`; `catchup=False` became `recoverMissedSchedules: NONE`. Deploy it with the CLI:
+
+```bash
+for f in scripts/*.py; do
+  kestractl nsfiles upload company.analytics "$f" "scripts/$(basename "$f")" --allow-missing-namespace --override
+done
+kestractl flows validate flow.yaml
+kestractl flows create flow.yaml --override
+```
+
+### 7.2 A sensor-driven file pipeline
+
+An `S3KeySensor` waiting for a file, a `BashOperator` that processes it, and a Slack message on failure.
+
+<TabGroup id="af-example-2" label="Sensor-driven pipeline" variant="segmented" tabs={[{ label: "Airflow DAG" }, { label: "Kestra flow" }]}>
+<TabPanel group="af-example-2" index={1}>
+
+```python
+with DAG(dag_id="orders_landing", schedule="*/5 * * * *", catchup=False,
+         max_active_runs=1,
+         default_args={"on_failure_callback": notify_slack}):
+
+    wait_for_file = S3KeySensor(
+        task_id="wait_for_file",
+        bucket_name="data-landing",
+        bucket_key="orders/*.csv",
+        wildcard_match=True,
+        poke_interval=60,
+        timeout=60 * 60,
+    )
+
+    process = BashOperator(
+        task_id="process",
+        bash_command="python /opt/jobs/process_orders.py --input {{ ti.xcom_pull('wait_for_file') }}",
+    )
+
+    wait_for_file >> process
+```
+
+</TabPanel>
+<TabPanel group="af-example-2" index={2}>
+
+```yaml
+id: orders_landing
+namespace: company.data
+
+concurrency:
+  limit: 1
+  behavior: QUEUE
+
+tasks:
+  - id: process
+    type: io.kestra.plugin.scripts.shell.Commands
+    namespaceFiles:
+      enabled: true
+      include:
+        - jobs/process_orders.py
+    inputFiles:
+      orders.csv: "{{ trigger.objects | jq('.[].uri') | first }}"
+    commands:
+      - python jobs/process_orders.py --input orders.csv
+    outputFiles:
+      - "*.parquet"
+
+errors:
+  - id: notify_slack
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    messageText: "Flow {{ flow.namespace }}.{{ flow.id }} failed, execution {{ execution.id }}"
+
+triggers:
+  - id: watch_landing
+    type: io.kestra.plugin.aws.s3.Trigger
+    bucket: data-landing
+    prefix: orders/
+    regexp: ".*\\.csv"
+    interval: PT1M
+    filter: FILES
+    action: MOVE
+    moveTo:
+      key: processed/orders/
+    region: eu-west-1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+```
+
+</TabPanel>
+</TabGroup>
+
+The schedule disappears: the sensor's "poke every minute" becomes the trigger's `interval`, and the flow only exists as an execution when a file is there. The sensor's `timeout` has no counterpart because nothing is waiting. `max_active_runs=1` became `concurrency.limit: 1`; the failure callback became the `errors:` block; the file that `xcom_pull` fetched is already in `{{ trigger.objects }}`.
+
+### 7.3 Coexistence: Kestra triggers an Airflow DAG and holds it to a deadline
+
+During the migration, the DAGs that have not moved yet keep running in Airflow, and Kestra is the control plane that starts them, waits, and alerts. This is the [`airflow-dag-run-sla-gate` blueprint](/blueprints), reduced to its core.
+
+```yaml
+id: airflow_dag_sla_gate
+namespace: company.migration
+
+inputs:
+  - id: dag_id
+    type: STRING
+    defaults: legacy_orders_pipeline
+  - id: max_minutes
+    type: INT
+    defaults: 30
+
+tasks:
+  - id: run_dag
+    type: io.kestra.plugin.airflow.dags.TriggerDagRun
+    baseUrl: "{{ secret('AIRFLOW_BASE_URL') }}"
+    dagId: "{{ inputs.dag_id }}"
+    wait: true
+    pollFrequency: PT5S
+    maxDuration: "PT{{ inputs.max_minutes }}M"
+    options:
+      auth:
+        type: BASIC
+        username: "{{ secret('AIRFLOW_USERNAME') }}"
+        password: "{{ secret('AIRFLOW_PASSWORD') }}"
+    body:
+      conf:
+        source: kestra
+        execution: "{{ execution.id }}"
+
+  - id: duration_minutes
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ ((outputs.run_dag.ended | timestamp) - (outputs.run_dag.started | timestamp)) / 60 }}"
+
+  - id: report
+    type: io.kestra.plugin.core.log.Log
+    message: "DAG {{ outputs.run_dag.dagId }} run {{ outputs.run_dag.dagRunId }} finished {{ outputs.run_dag.state }} in {{ outputs.duration_minutes.value }} minutes"
+
+errors:
+  - id: alert
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    messageText: "Airflow DAG {{ inputs.dag_id }} failed or exceeded {{ inputs.max_minutes }} minutes (Kestra execution {{ execution.id }})"
+
+triggers:
+  - id: nightly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"
+    recoverMissedSchedules: NONE
+```
+
+The plugin calls the Airflow REST API, so it works against Airflow 2 and 3, MWAA, Cloud Composer and Astronomer alike; a Bearer token in `headers.authorization` replaces basic auth where needed. The DAG's own schedule is paused once Kestra owns it, so there is one scheduler per pipeline, and the Kestra execution carries the run's duration, state and logs next to the flows that have already moved.
+
+<GuideCta kind="talk" />
+
+## 8. Already refactoring for Airflow 3?
+
+If you are mid-way through the Airflow 3 upgrade, much of the work overlaps with a migration: both remove SubDAGs, both make you touch every DAG that reads the metadata database, and both change how schedules and templates behave. The table puts the two work streams next to each other.
+
+| Airflow 2 to 3 upgrade | Airflow to Kestra migration |
+| --- | --- |
+| Reach 2.7 or later first (2.11 recommended), run `airflow config update --fix`, migrate the metadata database | No database migration: a new Kestra instance, Airflow untouched during the transition |
+| Remove every direct read of the metadata database, refactor custom operators | Business code moves into scripts or plugin tasks; custom operators become script or HTTP tasks |
+| Review every schedule: `schedule=None` by default, `catchup` default changes, timetables | Rewrite each schedule as a Schedule trigger; several triggers per flow allowed |
+| SubDAGs to TaskGroups or Assets; SLAs to Deadline Alerts (experimental) | SubDAGs to `Subflow`; SLAs to the native `sla` block |
+| Move imports to `airflow.sdk`, operators to `providers-standard`, integrations to REST API v2 | Plugins are managed by the platform; integrations use the Kestra API |
+| On MWAA or Cloud Composer: a new environment built side by side anyway | A new instance built side by side, with Kestra driving the remaining DAGs through `TriggerDagRun` |
+
+On a managed service you are building a new environment either way, which is the moment to decide what that environment is. The [Airflow 2 end-of-life guide](/resources/airflow-2-eol-whitepaper) weighs the two paths; [Airflow 3 vs Airflow 2](/blogs/airflow-3-vs-airflow-2) lists what changed in detail. What Airflow 3 does well is worth stating: the new UI, DAG versioning, Assets and the Task SDK are real improvements, and a Python-native team that is happy with the model has a sound reason to upgrade.
+
+## 9. The migration playbook
+
+Seven steps, run as a Strangler Fig: Kestra grows around Airflow until nothing is left inside. Each step has an output you can show, and none of them requires a freeze on production.
+
+<InteractiveFrame title="The seven steps" subtitle="Select a step to see what you do and what you end up with">
+<TabGroup id="af-steps" label="The seven steps" variant="stages" tabs={[{ kicker: "STEP 1", label: "Inventory" }, { kicker: "STEP 2", label: "Pilot" }, { kicker: "STEP 3", label: "New first" }, { kicker: "STEP 4", label: "Coexist" }, { kicker: "STEP 5", label: "Waves" }, { kicker: "STEP 6", label: "Cut over" }, { kicker: "STEP 7", label: "Decommission" }]}>
+<TabPanel group="af-steps" index={1}>
+
+**Step 1 - Inventory**
+
+- **What you do:** List every DAG with its operators, sensors, connections, variables, pools, SLAs and custom code; score each one on the complexity grid.
+- **What you end up with:** A ranked backlog, with the DAGs to retire removed.
+
+[Go to 9.1](#section-9-1)
+
+</TabPanel>
+<TabPanel group="af-steps" index={2}>
+
+**Step 2 - Pilot**
+
+- **What you do:** Convert two or three representative DAGs, including one hard one, and run them against production data.
+- **What you end up with:** Working flows and a measured time per DAG.
+
+[Go to 9.2](#section-9-2)
+
+</TabPanel>
+<TabPanel group="af-steps" index={3}>
+
+**Step 3 - New first**
+
+- **What you do:** Every new workflow is built in Kestra from this point on.
+- **What you end up with:** Airflow stops growing.
+
+[Go to 9.3](#section-9-3)
+
+</TabPanel>
+<TabPanel group="af-steps" index={4}>
+
+**Step 4 - Coexist**
+
+- **What you do:** Kestra triggers the remaining DAGs, waits for them and alerts on deadline misses.
+- **What you end up with:** One control plane and one place to look when something fails.
+
+[Go to 9.4](#section-9-4)
+
+</TabPanel>
+<TabPanel group="af-steps" index={5}>
+
+**Step 5 - Migrate in waves**
+
+- **What you do:** Convert by pattern, schedules first, sensors next, with the AI skill for the simple DAGs and a review for the rest.
+- **What you end up with:** Production flows, wave by wave, Airflow still serving the rest.
+
+[Go to 9.5](#section-9-5)
+
+</TabPanel>
+<TabPanel group="af-steps" index={6}>
+
+**Step 6 - Cut over per pipeline**
+
+- **What you do:** Run both for a fixed window, compare outputs, then pause the DAG.
+- **What you end up with:** Equivalence proven for each pipeline, with a rollback window.
+
+[Go to 9.6](#section-9-6)
+
+</TabPanel>
+<TabPanel group="af-steps" index={7}>
+
+**Step 7 - Decommission**
+
+- **What you do:** Retire the Airflow environment on the date the contract or the infrastructure allows.
+- **What you end up with:** No Airflow.
+
+[Go to 9.7](#section-9-7)
+
+</TabPanel>
+</TabGroup>
+</InteractiveFrame>
+
+### 9.1 Inventory
+
+List every DAG and, for each one, the operators and provider packages it uses, its sensors, the Connections and Variables it reads, pools and `priority_weight`, `trigger_rule` values other than the default, SLAs and callbacks, custom operators and any direct access to the metadata database. Classify each DAG as simple, medium, complex or retire. Everything that has not run in the last ninety days is a retire candidate, and a surprising share of most inventories is.
+
+| Signal | Simple | Medium | Complex |
+| --- | --- | --- | --- |
+| Tasks | Up to 10 | 10 to 30 | More than 30 |
+| Operators | `Python`, `Bash`, SQL, HTTP | Provider operators with a Kestra plugin | Custom operators, metadata-database access |
+| Dependencies | Linear or one fan-out | `TaskGroup`, branching | Dynamic task mapping, cross-DAG sensors |
+| Scheduling | Cron, `catchup=False` | Timetable, backfill in use | `depends_on_past`, pools, `priority_weight` |
+| Data passing | None or files | XCom values | Custom XCom backend, large XCom payloads |
+
+The grid is what the pilot measures against: convert one DAG per column, time each, and the rest of the backlog has an estimate with a basis.
+
+### 9.2 Pilot
+
+Pick a pipeline that is low risk and visible, and one that is hard, and convert both. The hard one is the point: it tells you which patterns in [Section 4](#section-4) your estate relies on and whether the team is comfortable with them. Run the converted flows against production inputs on a Kestra instance next to Airflow, compare the outputs, and write down the hours each took. Teams that skipped the hard DAG in the pilot found it in wave three, when the schedule had already been promised.
+
+### 9.3 New first
+
+From the pilot onward, every new workflow starts in Kestra. This costs nothing, stops the Airflow estate from growing while you migrate it, and lets people learn the model on work they own rather than on a conversion. It is also what most teams ask for first: a place where the next pipeline does not have to be a DAG.
+
+### 9.4 Coexist
+
+Kestra becomes the control plane for the DAGs that have not moved yet, using the flow in [7.3](#section-7-3): it triggers the DAG through the REST API, waits, records duration and state, and alerts when a run misses its deadline. Pause the DAG's own schedule once Kestra owns it so there is one scheduler per pipeline. Dependencies between a migrated flow and a legacy DAG go the same way: the flow triggers the DAG and waits, or the DAG's last task calls the Kestra API to start the flow. The [`airflow-trigger-dag`](/blueprints) and `airflow-dag-run-sla-gate` blueprints are the starting points.
+
+### 9.5 Migrate in waves
+
+Port first, improve later. Convert by pattern rather than by team: all the cron-driven Python DAGs in one wave, the sensor-driven ones in the next, the dynamic-mapping and cross-DAG ones last. Keep each wave small enough to cut over inside two weeks.
+
+For the simple and medium DAGs, the [`migrate-airflow-kestra` agent skill](/docs/ai-tools/agent-skills) does the mechanical part. Installed with `npx skills add kestra-io/agent-skills`, it runs in Claude Code, Cursor, Windsurf or Codex, reads the DAG, extracts each `@task` into `scripts/<task>.py`, generates the flow against the live plugin schema rather than from memory, validates it with `kestractl flows validate` and deploys it. The [walkthrough](/blogs/airflow-to-kestra-migration-with-ai) shows a full run. Its limits are the ones you would expect: it is built for `@task`-style DAGs with sequential and parallel structure, and sensors, branching, pools and dynamic task mapping need a human review against [Section 4](#section-4). Check the `catchup` and retry translation on every generated flow. The `kestra-flow-hardening` skill then reviews retries, timeouts, alerting and idempotence on the result.
+
+<CaseStudy status="MIGRATED IN WAVES" quote="Kestra made the data mesh possible. We produce far more data now, and deliver it nearly 10 times faster." quoteBy="Julien Henrion, CDO, Leroy Merlin" storyHref="/stories/leroy-merlin-france">
+
+**Leroy Merlin**, a global home-improvement retailer with over 24,000 employees, initially attempted to use Airflow for its Google Cloud migration and hit three walls: unstable architecture under simple benchmark tests, heavy infrastructure overhead, and total dependence on code, where a single poorly written DAG could stall the platform. They [pivoted to Kestra](/stories/leroy-merlin-france) using exactly this incremental path: new cloud projects started on Kestra first, legacy systems ran in parallel, then event-driven flows took over the processing load.
+
+</CaseStudy>
+
+### 9.6 Cut over per pipeline
+
+For each pipeline, run the DAG and the flow side by side for a fixed window, typically five to ten scheduled runs, and compare the outputs: row counts, checksums or a diff of the produced files. Write the comparison into the flow itself as a last task where you can, so the evidence is in the execution. When the window closes clean, pause the DAG, keep it deployable for a rollback period, and move the alerting to the flow. Prove equivalence rather than asking for trust: it is what turns the cut-over from a judgement call into a checklist item.
+
+### 9.7 Decommission
+
+Retire the Airflow environment when the last DAG has passed its rollback window. On MWAA, Cloud Composer or Astronomer, line the date up with the renewal or the billing cycle, and plan the wave order backwards from it. Export the metadata database for audit purposes before you turn it off; the run history does not migrate, and the Kestra history starts at the cut-over.
+
+<GuideCta kind="talk" />
+
+## 10. What you get in each edition
+
+Everything in the mapping marked OSS runs on the open-source edition, which is what the pilot usually runs on. Several things migrants expect from a managed Airflow are Enterprise or Cloud features, and it is better to know that before the security review than after.
+
+| Capability | Open source | Enterprise | Cloud |
+| --- | --- | --- | --- |
+| Flows, every trigger type, Loop, Subflow, retries, SLAs, concurrency | Yes | Yes | Yes |
+| Plugin catalog ({props.totalPlugins}+ tasks and triggers) | Yes | Yes, plus versioned plugins | Yes |
+| Namespaces, namespace files, KV Store | Yes | Yes | Yes |
+| Task runners | Process, Docker | Kubernetes, AWS Batch, Google Batch, Azure Batch, Cloud Run, VMs | Kestra Cloud runner and remote runners on your AWS, GCP or Azure |
+| Authentication | One Basic Auth account | SSO (OIDC, LDAP), SCIM, service accounts, API tokens | SSO, service accounts, API tokens |
+| Access control | None | Per-action RBAC, audit logs | RBAC, audit logs |
+| Secrets | Environment variables, base64 | External secrets manager (Vault, AWS, GCP, Azure), per namespace or tenant | Managed secrets scoped by namespace |
+| Multi-team isolation | Namespaces | Tenants with dedicated storage and secrets | Namespaces and roles |
+| Workers | One default pool | Worker Groups with reserved capacity and priority lanes | Managed |
+| Testing and governance | Revision history | Unit tests, Policies, Assets with lineage, Promote between instances | Included where available |
+| Human-in-the-loop | `Pause` with inputs | Plus Apps (self-service forms) and Cases | Plus Apps |
+| Hosting | Yours: Docker, Helm, binary; on-prem or air-gapped | Yours, with high-availability backends (Kafka, Redis) | Hosting, scaling, upgrades and backups by Kestra |
+
+The [edition comparison](/docs/oss-vs-paid) is the reference; [Kestra Cloud](/cloud) describes the managed option. Nothing here is a price, and nothing about what the migration costs depends on the edition except the features above.
+
+## 11. Pitfalls
+
+Each of these has produced a surprise in a real migration. Most are a one-line fix once you know they exist.
+
+1. **`catchup=False` was not translated.** The first deploy replays every missed schedule since the cron's last occurrence. Set `recoverMissedSchedules: NONE` on every Schedule trigger converted from a `catchup=False` DAG.
+2. **Retries off by one.** `retries: 2` means three attempts in Airflow; `maxAttempts: 2` means two in Kestra. Translate `retries: n` to `maxAttempts: n + 1`.
+3. **`ForEach` copied from an old example.** It was removed in 2.0 and the flow will not parse. Use `Loop`, and declare `outputs:` on it if anything after the loop needs the iteration results.
+4. **`conditions:` on triggers.** The 1.x syntax; 2.0 uses `when:` on the trigger and `dependsOn` on Flow triggers.
+5. **A failure in `Parallel` now interrupts the siblings.** 2.0 default. Set `onChildFailure: CONTINUE` where the DAG relied on the other branches completing.
+6. **Every `trigger_rule` became `allowFailure: true`.** That keeps the flow going past a failure, which is not what `one_failed` or `all_done` meant. Use the table in [4.5](#section-4-5).
+7. **One statement per `Query` task.** A SQL file with several statements, run through one operator, becomes several tasks or a `Queries` task.
+8. **Namespace concurrency plus subflows can deadlock.** A parent waiting on a queued subflow holds a slot the subflow needs. Set the limit above the number of concurrent parents, use `behavior: FAIL`, or `wait: false`.
+9. **Enterprise features assumed in open source.** RBAC, SSO, external secrets, tenants, the Kubernetes task runner and unit tests are not in OSS. Decide the edition before the pilot.
+10. **`trigger.date` on a manual run.** It is undefined when nobody triggered the flow. Use `{{ trigger.date ?? execution.startDate }}` in anything that can be started by hand or by backfill.
+11. **Loop outputs scoped to the iteration.** Tasks after a `Loop` cannot read `outputs.<task>` from inside it; declare the values in the Loop's `outputs:` and read `outputs.<loop>.outputs`.
+12. **Secrets in OSS are environment variables.** Fine for a pilot; not an audit-ready secret store. If Airflow used a secrets backend, that is an Enterprise requirement, not a later improvement.

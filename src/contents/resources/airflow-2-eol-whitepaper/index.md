@@ -22,7 +22,7 @@ faq:
 
 Apache Airflow 2 reached end-of-life on **April 22, 2026**. The 2.x line no longer receives security patches, bug fixes, or provider updates. If you are still running it, the deferral period is over — the only question left is what to do next.
 
-On the surface, it looks like a question of whether to upgrade. The actual question is whether to keep betting on the same architectural model. Airflow 3 is a better Airflow, but it does not change the architecture — and for many teams, that distinction is the whole decision. This guide walks through what actually changed in Airflow 3, where the Airflow model hits structural limits, and how to evaluate the alternative: orchestration as a declarative layer, decoupled from execution.
+On the surface, it looks like a question of whether to upgrade. The actual question is whether to keep betting on the same architectural model. Airflow 3 is a better Airflow, but it does not change the architecture — and for many teams, that distinction is the whole decision. This guide walks through what actually changed in Airflow 3, where the Airflow model hits structural limits, and how to evaluate the alternative: orchestration as a declarative layer, decoupled from execution. If you have already decided to move, the [Airflow to Kestra migration guide](/resources/migration/airflow) picks up where this one ends, with the concept mapping and the cut-over playbook.
 
 Airflow's design made sense in 2014, when Python dominated data teams and batch pipelines were the primary use case. As organizations have grown more heterogeneous, the constraints of the workflow-as-code model have become structural bottlenecks:
 
@@ -211,7 +211,7 @@ Migration is often framed as an all-or-nothing rewrite. That framing is misleadi
 3. **Phase 2:** complex workflows remain in Airflow, triggered by Kestra when needed.
 4. **Phase 3:** Airflow is decommissioned once confidence is established.
 
-Production stays stable and feature delivery continues throughout. Parallel operation is an accepted, intentional state — the goal is not to eliminate overlap immediately but to ensure it shrinks rather than becoming permanent.
+Production stays stable and feature delivery continues throughout. Parallel operation is an accepted, intentional state — the goal is not to eliminate overlap immediately but to ensure it shrinks rather than becoming permanent. The [migration guide](/resources/migration/airflow) turns these phases into a seven-step playbook, with the Airflow-to-Kestra concept mapping and three DAGs converted side by side.
 
 AI-assisted translation acts as a force multiplier here. Airflow DAGs are structured artifacts that AI can analyze mechanically: task structure, dependencies, and control flow translate from Python to YAML automatically, and engineers review, confirm correctness, and adjust edge cases. In practice this makes migration review-driven rather than rewrite-driven, reducing the most tedious parts of the work by 60–70%. See [how AI-assisted Airflow migration works in practice](/blogs/airflow-to-kestra-migration-with-ai).
 

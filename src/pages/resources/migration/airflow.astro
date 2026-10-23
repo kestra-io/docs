@@ -1,0 +1,249 @@
+---
+import { getEntry, render } from "astro:content"
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Link from "~/components/common/Link.astro"
+import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
+import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
+import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
+import StartHere, {
+    getHeadings as startHereHeadings,
+} from "~/components/airflow-migration-guide/StartHere.mdx"
+import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
+
+const post = await getEntry("resources", "airflow-migration-guide")
+if (!post) throw new Error("resources/airflow-migration-guide entry missing")
+const { Content, headings } = await render(post)
+const page = post.data
+const totalPlugins = await fetchTotalPluginsCount()
+
+const description = page.metaDescription ?? page.description
+const faqItems = page.faq ?? []
+
+// h2, h3 and numbered h4 headings, same rule as the vRA guide
+const links = [...startHereHeadings(), ...headings]
+    .filter(
+        ({ depth, text }) =>
+            depth === 2 ||
+            depth === 3 ||
+            (depth === 4 && /^\d+\.\d+\.\d+\s/.test(text)),
+    )
+    .map(({ depth, slug, text }) => ({ text, id: slug, depth }))
+    .concat(
+        faqItems.length > 0 ? [{ text: "Questions", id: "faq", depth: 2 }] : [],
+    )
+
+const INSIDE = [
+    "A concept-by-concept mapping from Airflow 2 and 3 to Kestra 2.0, with the edition each row needs and the four settings that have no direct equivalent",
+    "How operators, schedules, sensors, XCom, Connections and trigger rules are re-expressed, with validated 2.0 YAML for each",
+    "Three DAGs converted side by side: a daily Python pipeline, a sensor-driven file pipeline and the coexistence flow that lets Kestra drive the DAGs you have not moved yet",
+    "A seven-step playbook, from inventory and pilot to running both platforms in parallel and cutting over one pipeline at a time",
+]
+
+const updated = page.lastUpdated ?? page.date
+const META = [
+    "Written for Kestra 2.0",
+    "Every YAML block validated against the 2.0 schema",
+    ...(updated
+        ? [
+              `Updated ${new Date(updated).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "UTC",
+              })}`,
+          ]
+        : []),
+]
+
+const pageUrl = Astro.url.href
+
+// TechArticle: same shape as the vRA guide's Article node, typed for a
+// technical guide.
+const jsonLinkedData = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    headline: page.title,
+    image: [`${Astro.url.origin}/og-image.png`],
+    author: { "@id": "https://kestra.io/#organization" },
+    ...(page.date ? { datePublished: page.date } : {}),
+    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
+    publisher: {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description,
+    proficiencyLevel: "Expert",
+    dependencies: "Apache Airflow 2 or 3, Kestra 2.0",
+}
+
+// HowTo: the seven steps of the playbook (Section 9), one per numbered
+// sub-section, so each step deep-links into the page.
+const PLAYBOOK_STEPS = [
+    {
+        name: "Inventory",
+        text: "List every DAG with its operators, sensors, connections, variables, pools, SLAs and custom code; score each one on the complexity grid and remove the DAGs to retire.",
+        anchor: "section-9-1",
+    },
+    {
+        name: "Pilot",
+        text: "Convert two or three representative DAGs, including one hard one, run them against production data on a Kestra instance next to Airflow, and measure the time per DAG.",
+        anchor: "section-9-2",
+    },
+    {
+        name: "New first",
+        text: "Build every new workflow in Kestra from this point on, so the Airflow estate stops growing while it is migrated.",
+        anchor: "section-9-3",
+    },
+    {
+        name: "Coexist",
+        text: "Let Kestra trigger the DAGs that have not moved yet through the Airflow plugin, wait for them and alert on deadline misses, with one scheduler per pipeline.",
+        anchor: "section-9-4",
+    },
+    {
+        name: "Migrate in waves",
+        text: "Convert by pattern, schedules first and sensors next, using the migrate-airflow-kestra agent skill for simple DAGs and a human review for sensors, branching, pools and dynamic mapping.",
+        anchor: "section-9-5",
+    },
+    {
+        name: "Cut over per pipeline",
+        text: "Run the DAG and the flow side by side for a fixed window, compare the outputs, then pause the DAG and keep it deployable for a rollback period.",
+        anchor: "section-9-6",
+    },
+    {
+        name: "Decommission",
+        text: "Retire the Airflow environment once the last DAG has passed its rollback window, lined up with the renewal or billing date on managed services.",
+        anchor: "section-9-7",
+    },
+]
+
+const howToData = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "The Airflow to Kestra migration playbook",
+    description:
+        "Seven steps to migrate from Apache Airflow to Kestra while both platforms run side by side, from inventory to decommissioning.",
+    step: PLAYBOOK_STEPS.map((step, index) => ({
+        "@type": "HowToStep",
+        position: index + 1,
+        name: step.name,
+        text: step.text,
+        url: `${pageUrl.split("#")[0]}#${step.anchor}`,
+    })),
+}
+---
+
+<Layout
+    title={page.metaTitle ?? page.title}
+    {description}
+    breadcrumbTitle={page.title}
+    headerTheme="lightText"
+>
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        {
+            page.date && (
+                <meta
+                    property="article:published_time"
+                    content={new Date(page.date).toISOString()}
+                />
+            )
+        }
+        {
+            page.lastUpdated && (
+                <meta
+                    property="article:modified_time"
+                    content={new Date(page.lastUpdated).toISOString()}
+                />
+            )
+        }
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(howToData)}
+        />
+        <SchemaFAQ items={faqItems} />
+    </Fragment>
+    {
+        /* No PDF card and no visual: the actions carry the CTAs. */
+    }
+    <GuideHero
+        title={page.title}
+        deck={page.description}
+        inside={INSIDE}
+        meta={META}
+        pill="Migration guide · Data Orchestration"
+        card={false}
+    >
+        <Fragment slot="actions">
+            <a class="btn btn-primary btn-lg" href="/demo">Talk to our team</a>
+            <a class="btn btn-secondary btn-lg" href="/docs/quickstart"
+                >Install Kestra in five minutes</a
+            >
+        </Fragment>
+    </GuideHero>
+    <GuideBand><StartHere /></GuideBand>
+    <section class="guide-content">
+        <TwoColumnStickyLayout>
+            <div slot="sidebar" class="guide-sidebar">
+                <GuideToc client:load links={links}>
+                    <Fragment slot="footer">
+                        <a class="btn btn-primary" href="/demo">Talk to our team</a>
+                        <a href="/docs/quickstart">Install Kestra</a>
+                    </Fragment>
+                </GuideToc>
+            </div>
+            <div class="bd-content">
+                <Content totalPlugins={totalPlugins} />
+            </div>
+        </TwoColumnStickyLayout>
+    </section>
+    {
+        faqItems.length > 0 && (
+            <div class="guide-faq" id="faq">
+                <Faq
+                    title="Questions that come up"
+                    items={faqItems}
+                    client:visible
+                />
+            </div>
+        )
+    }
+    {/* A direct div child of main picks up the global overflow-x clip. */}
+    <div>
+        <SeeHow
+            imgSrc={shapesImage}
+            cta={{ text: "Book a Demo", href: "/demo" }}
+        >
+            <Fragment slot="title">Next steps</Fragment>
+            Pick one DAG you know well, convert it with the mapping above, and
+            run it next to Airflow. If you want a second pair of eyes on the
+            inventory or the hard DAGs before the pilot, talk to us with your
+            DAG count and the patterns you rely on.
+            <Fragment slot="footer">
+                <Link
+                    href="/blogs/airflow-to-kestra-migration-with-ai"
+                    class="btn btn-secondary">See the AI-assisted conversion</Link
+                >
+            </Fragment>
+        </SeeHow>
+    </div>
+</Layout>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    @include guide-page;
+</style>

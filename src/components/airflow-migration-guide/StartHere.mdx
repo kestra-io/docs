@@ -1,0 +1,28 @@
+import GuideCard from "../vra-migration-guide/blocks/GuideCard.astro"
+import GuideCards from "../vra-migration-guide/blocks/GuideCards.astro"
+
+## Start here
+
+**Who this is for:** the engineer who owns an Airflow deployment and has decided, or is close to deciding, to move it to Kestra. Airflow 2 reached end of life on April 22, 2026, so you may be weighing this against the Airflow 3 upgrade, or you may have already made the call and want to know how much of your code moves as is. Either way, you need the same three things: a mapping, a working conversion, and an order of operations.
+
+The approach in this guide starts with three ideas:
+
+<GuideCards columns={3}>
+<GuideCard kicker="01" title="You translate the orchestration layer, not the business logic">
+
+Dependencies, schedules, retries, sensors and notifications move from Python DAG code to declarative YAML. The Python, SQL, dbt and shell that do the actual work keep running as they are, once you remove the Airflow imports and the XCom calls that tied them to the scheduler.
+
+</GuideCard>
+<GuideCard kicker="02" title="Not every Airflow concept has a one-to-one equivalent">
+
+Most do, and the mapping in Section 1 covers them row by row. A few do not: `depends_on_past`, pools, `priority_weight` and the finer `trigger_rule` values are modelled differently in Kestra, and this guide says so rather than hiding it behind a conversion table.
+
+</GuideCard>
+<GuideCard kicker="03" title="This is a method, not a brochure">
+
+It comes from Airflow migrations we run with teams, from the questions they ask on calls, and from the Kestra 2.0 documentation. Every YAML block uses 2.0 syntax and was validated against the 2.0 schema. It gives you the mapping, three full conversions, and a seven-step playbook to run Airflow and Kestra side by side until the last DAG is cut over.
+
+</GuideCard>
+</GuideCards>
+
+It also sets out what you get in the open-source edition and what needs Enterprise or Cloud, so that nobody discovers the difference after the pilot. If you are still deciding whether to upgrade or migrate, the [Airflow 2 end-of-life guide](/resources/airflow-2-eol-whitepaper) covers that question; this guide starts where it ends.
