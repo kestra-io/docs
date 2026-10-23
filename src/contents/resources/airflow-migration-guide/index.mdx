@@ -30,9 +30,77 @@ faq:
     answer: '<code>depends_on_past</code>, pools and <code>priority_weight</code>. Model <code>depends_on_past</code> with a Flow trigger on the previous execution or an executions query task; model pools with flow-level <code>concurrency</code> and, in Enterprise, Worker Groups.'
 ---
 
+import GuideCallout from "~/components/vra-migration-guide/blocks/GuideCallout.astro"
+import GuideCard from "~/components/vra-migration-guide/blocks/GuideCard.astro"
+import GuideCards from "~/components/vra-migration-guide/blocks/GuideCards.astro"
 import GuideCta from "~/components/vra-migration-guide/blocks/GuideCta.astro"
 
-## 1. Concept mapping: Airflow 2/3 → Kestra 2.0
+## 1. Why teams leave Airflow, and what to move to
+
+### 1.1 Why teams leave Airflow: the model, not the version
+
+Airflow 2 reaching end of life on April 22, 2026 is what put the question on the table for many teams. It is rarely the reason they decide. The reasons that come up in migration calls are older than the deadline, and most teams have more than one in play.
+
+<GuideCards columns={2}>
+<GuideCard title="Every pipeline is a Python program" level={4}>
+
+A DAG is executable code that the scheduler parses and runs. You cannot see what was supposed to run, only what did. Authoring stays with the engineers who know Python and Airflow's internals, and the SQL, dbt, shell and API work that most pipelines actually do ends up wrapped in `PythonOperator` because there is no other place for it. Analysts, platform engineers and the business teams who depend on the output can watch a run in the UI, but they cannot own one.
+
+</GuideCard>
+<GuideCard title="Operating it grows faster than the value" level={4}>
+
+Scheduler, webserver, workers, metadata database, triggerer, and in Airflow 3 a separate API server and DAG processor: each one is tuned, patched and upgraded. Every provider and every DAG dependency lands in the same Python environment on the same workers, so one team's upgrade is everyone's conflict. As the DAG count grows, parse time and database contention grow with it, and the platform team spends its time on the orchestrator rather than on the pipelines.
+
+</GuideCard>
+</GuideCards>
+
+As a senior engineering manager at [Apple's ML team](/stories/apple) put it before they moved:
+
+> _Apache Airflow is complex and has been challenging to manage, with significant operational overhead._
+
+<GuideCallout variant="lesson" label="Both point to the same lesson">
+<Fragment slot="statement">Orchestration should be a layer you can <mark>read</mark>, not a program you have to run.</Fragment>
+
+The dependencies, schedules, retries and alerts of a pipeline are configuration. When they are expressed as data rather than code, anyone can review them, diff them and change them without redeploying, and the business logic underneath can be written in whatever language fits.
+
+</GuideCallout>
+
+<GuideCallout variant="aside" label="Two other reasons usually show up alongside them">
+
+- **Teams and isolation.** One Airflow serves one team well. The usual answer to a second team is a second deployment, with its own scheduler, database, upgrade cycle and access model, because hard boundaries inside a single instance are limited. Managed services make this a line on the invoice per environment.
+- **Events and visibility.** Airflow was built schedule-first. Waiting for a file, a message or an upstream system means a sensor holding a worker slot, or a deferrable operator and a triggerer to run it. When something fails, the logs are per task instance, and reconstructing what happened across a run is the on-call engineer's job.
+
+</GuideCallout>
+
+### 1.2 Choosing what to move to
+
+The decision, then, is what replaces the orchestration layer. If you are still building the shortlist, the [landscape of Airflow alternatives](/resources/data/airflow-alternatives) compares the candidates side by side, and [Kestra vs Airflow](/vs/airflow) goes feature by feature. Here are three questions to ask of every option on it, including Kestra:
+
+1. **Does it run your work, or only Python?** Several of the obvious candidates are Python frameworks like Airflow is. They fix real problems with the scheduler and the developer experience, and they keep the same boundary: workflows are code, authored by the people who write that code. If SQL, dbt, shell, Spark, infrastructure and business workflows are part of what you orchestrate, you want them to run as first-class tasks rather than inside a Python wrapper.
+2. **How hard would it be to leave?** Ask where the workflow definitions live, whether you can read them without the product, and whether you can run the engine yourself if the commercial relationship ends. Airflow scores well on the last point and badly on the first two, which is part of why this migration is as much work as it is. Do not sign up for the same trade-off again.
+3. **Is the data team the only one who needs this?** The platform team has a CI pipeline doing more than CI. Somebody is scheduling infrastructure jobs with cron. A business team wants to trigger a process without filing a ticket. It is worth knowing now whether you are choosing a scheduler for the data team or a platform the others could also use. Solving only your own problem is a legitimate answer; discovering in two years that you needed the broader one is a worse outcome.
+
+### 1.3 Why Kestra
+
+Kestra's answers to those questions are below.
+
+**The orchestration plan is declarative, and the business logic is not touched.** A flow is YAML that describes dependencies, schedules, retries, inputs and alerts. It can be read, diffed and reviewed without running anything, edited from the UI or from Git with a revision history, and changed without a redeploy. The Python inside your DAGs runs as it is, in a script task with its own container and its own declared dependencies, next to SQL, dbt, shell, Node, Go and R tasks that no longer need a wrapper. Airflow is for Python engineers; Kestra is for the whole company, and that is a difference of audience rather than a criticism.
+
+**Events are first-class.** Webhooks, S3 and GCS uploads, Kafka and queue messages, database changes, API calls and other flows' executions are triggers declared in YAML, available without limit in the open-source edition. A flow that waits for a file does not hold a worker.
+
+**Other teams can use the same platform.** Namespaces give each team its own flows, files, variables and secrets on one instance, with isolated tenants, role-based access and audit logs in Enterprise. The engine that runs data pipelines also runs infrastructure automation, application workflows and business processes, with the same observability.
+
+Additionally:
+
+- **Integrations are managed by the platform.** {props.totalPlugins}+ plugins ship with Kestra, versioned independently of the core, so there is no `pip install` of providers on workers and no shared environment to keep consistent. Writing your own plugin is a documented engineering task, and anything without a plugin is a script or an HTTP task.
+- **It runs where you need it, and leaves with you.** Docker, Kubernetes, any cloud, on-prem or air-gapped; in Kestra 2.0 the workers connect outbound and no longer need database access. The core is Apache 2.0, the same licence as Airflow, and your flows are YAML in your own repository. Kestra Enterprise is sized by deployment rather than by execution count.
+- **You can prove it before you commit.** The open-source edition installs in minutes. Convert one DAG you know well with the mapping below, run it next to Airflow, compare the outputs. [Section 10](#section-10) turns that into the playbook.
+
+### 1.4 What Airflow still does well
+
+This guide is for teams that have decided to move, so it is worth being clear about what they give up. Airflow has the largest ecosystem in the category: a decade of operators, providers and Stack Overflow answers, a deep talent pool, and a managed experience in Astronomer that many teams rate highly. Airflow 3 brought real improvements, including the new UI, DAG versioning, Assets, human-in-the-loop tasks and the Task SDK, and a Python-native team that is happy with the model has a sound reason to upgrade rather than migrate. Dynamic task generation in Python and local DAG tests are also things some engineers prefer in Airflow. The [decision guide on the comparison page](/vs/airflow) lists when to choose each; [Section 9](#section-9) puts the upgrade and the migration side by side.
+
+## 2. Concept mapping: Airflow 2/3 → Kestra 2.0
 
 Most Airflow concepts map to a Kestra flow property or a core task. The table gives the equivalent, the edition it needs and where the semantics differ. OSS means the Apache 2.0 edition; EE means Enterprise Edition and Kestra Cloud.
 
@@ -65,7 +133,7 @@ Most Airflow concepts map to a Kestra flow property or a core task. The table gi
 | Airflow REST API | Kestra REST API, Terraform provider, CLI, Python/JS/Go SDKs | OSS | — |
 | RBAC, SSO, multi-tenancy | Tenants, action-based RBAC, SSO/OIDC/SCIM | EE | OSS has basic auth only |
 
-## 2. Operators and tasks
+## 3. Operators and tasks
 
 The operators below cover the large majority of DAGs we see in migration calls. Plugin type names are the Kestra 2.0 ones; search the [plugin catalog](/plugins) for the exact property list.
 
@@ -88,7 +156,7 @@ The operators below cover the large majority of DAGs we see in migration calls. 
 | `EmptyOperator` / `DummyOperator` | Usually dropped; `io.kestra.plugin.core.log.Log` if a marker is needed | Topology no longer needs placeholder nodes |
 | Custom operator (`BaseOperator` subclass) | Script task wrapping the same code, or a custom Java plugin | Most custom operators are Python wrappers around an API: run the code, drop the wrapper |
 
-## 3. Scheduling, catchup and assets
+## 4. Scheduling, catchup and assets
 
 Scheduling is where silent behaviour changes hide. Three things differ from Airflow and one of them creates executions you did not ask for.
 
@@ -142,7 +210,7 @@ Airflow's `schedule=[asset_a, asset_b]` (run when both updated) maps to a Flow t
 
 **Sensors.** Replace poke-mode sensors with polling triggers (`io.kestra.plugin.aws.s3.Trigger`, `io.kestra.plugin.jdbc.postgresql.Trigger`, `io.kestra.plugin.fs.sftp.Trigger`…) or `RealtimeTrigger` plugins for queues. A trigger runs on the scheduler, so a flow waiting for a file does not hold a worker, which is the usual reason Airflow deployments run out of slots.
 
-## 4. Control flow: TaskGroups, branching and dynamic task mapping
+## 5. Control flow: TaskGroups, branching and dynamic task mapping
 
 In Airflow, dependencies are inferred from `>>` operators and from the code paths the scheduler executes. In Kestra, the list order is the dependency, and anything that runs in parallel or conditionally is wrapped in a flowable task. Three patterns cover most DAGs.
 
@@ -215,7 +283,7 @@ Subflows have their own executions, logs and retry policy, which Airflow SubDAGs
 
 For mapped tasks over large inputs (Airflow's `expand_kwargs` over thousands of rows), point `Loop` at a file output and combine it with a Subflow per batch so each batch is its own execution; that is also how you reproduce `max_active_tis_per_dag`.
 
-## 5. Reuse your existing Python
+## 6. Reuse your existing Python
 
 You do not rewrite business logic. The Python inside a `PythonOperator` or a `@task` function runs unchanged as a Kestra script task; what disappears is the Airflow import, the operator wrapper and the context dictionary.
 
@@ -253,7 +321,7 @@ You do not rewrite business logic. The Python inside a `PythonOperator` or a `@t
 
 **What you drop.** Airflow-only helpers: `get_current_context()`, `ti.xcom_pull()`, `Variable.get()`, `BaseHook.get_connection()`. Each has a one-line replacement above, and the AI-assisted translation step in the playbook rewrites them mechanically.
 
-## 6. Connections, Variables, secrets and XCom
+## 7. Connections, Variables, secrets and XCom
 
 Airflow bundles endpoint, credentials and extras into a Connection object stored in the metadata database. Kestra separates the three: endpoints are task properties, credentials are secrets, non-sensitive configuration is a variable or a KV Store entry.
 
@@ -284,11 +352,11 @@ In Kestra 2.0, Enterprise Policies can also enforce defaults per namespace (for 
 
 **XCom size.** Airflow serialises XCom values into the metadata database, so teams write custom XCom backends to move DataFrames through S3. Kestra script tasks write files to `outputFiles` and downstream tasks mount them with `inputFiles`; nothing goes through the database, and there is no size limit to tune.
 
-## 7. Side-by-side examples
+## 8. Side-by-side examples
 
 Three DAGs that together use retries, callbacks, branching, mapping and asset-style dependencies. Line counts are similar; what changes is that the Kestra version can be read without running it.
 
-### 7.1 Example 1: scheduled ETL with retries and a failure alert
+### 8.1 Example 1: scheduled ETL with retries and a failure alert
 
 ```python
 # Airflow 2.x
@@ -369,7 +437,7 @@ triggers:
 
 The three `retry` blocks repeat because `default_args` has no OSS equivalent; use YAML anchors, or an Enterprise Policy that adds the block to every task in the namespace.
 
-### 7.2 Example 2: branching and dynamic task mapping
+### 8.2 Example 2: branching and dynamic task mapping
 
 ```python
 # Airflow 2.x
@@ -423,7 +491,7 @@ tasks:
           print("extracting {{ item.value }} (index {{ item.index }})")
 ```
 
-### 7.3 Example 3: dataset-driven downstream DAG
+### 8.3 Example 3: dataset-driven downstream DAG
 
 ```python
 # Airflow 3.x
@@ -458,7 +526,7 @@ triggers:
 
 The upstream flow needs no change. In Enterprise, `ingest_orders` can additionally declare `s3://lake/orders` as an asset output, which gives lineage, freshness alerts and an asset trigger instead of the execution-state trigger above.
 
-## 8. Already refactoring for Airflow 3? Read this before the playbook
+## 9. Already refactoring for Airflow 3? Read this before the playbook
 
 Both paths require touching every DAG. Airflow 3 removes SubDAGs, drops context variables such as `execution_date` and `prev_ds`, moves `BashOperator` and `PythonOperator` into `apache-airflow-providers-standard`, splits the webserver into an API server and a DAG processor, and changes `catchup_by_default` to `False`. That is a controlled rewrite, not a dependency bump. The honest question is which rewrite you want to pay for.
 
@@ -476,7 +544,7 @@ Both paths require touching every DAG. Airflow 3 removes SubDAGs, drops context 
 
 **On "Airflow is free".** Kestra OSS is Apache 2.0 too. The cost that moves is the recurring one: the 0.5–2 FTE most platform teams dedicate to scheduler performance, custom operators and failed-DAG triage. Migration front-loads a defined effort; staying keeps paying that overhead as DAG and team counts grow.
 
-## 9. Migration playbook: seven steps, Airflow stays on until you decide
+## 10. Migration playbook: seven steps, Airflow stays on until you decide
 
 No team we have migrated switched Airflow off on day one. The playbook follows the Strangler Fig pattern described in the whitepaper: new work starts in Kestra, existing DAGs move in order of risk, and Airflow is decommissioned only when its remaining DAGs are the ones nobody wants to touch.
 
@@ -494,7 +562,7 @@ No team we have migrated switched Airflow off on day one. The playbook follows t
 
 <GuideCta kind="talk" />
 
-## 10. Which edition do you need to migrate?
+## 11. Which edition do you need to migrate?
 
 Everything in the concept mapping and the examples runs on Kestra OSS except the rows marked EE. The features below are the ones that decide the edition in migration calls; the first four are what Airflow teams most often cite as missing in Airflow itself.
 
@@ -515,7 +583,7 @@ Everything in the concept mapping and the examples runs on Kestra OSS except the
 
 For a team replacing a single-team Airflow instance, OSS is a complete replacement. For a team replacing Airflow plus the custom RBAC, secrets and multi-tenant tooling built around it, the Enterprise rows are usually the features that tooling was approximating.
 
-## 11. Eight pitfalls we see in translated flows
+## 12. Eight pitfalls we see in translated flows
 
 These come from reviewing AI-generated and hand-written migrations. Each one passes validation and fails in production or in behaviour.
 
