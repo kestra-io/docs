@@ -178,6 +178,8 @@ Kedro is an open-source Python framework for creating reproducible, maintainable
 
 The best choice depends on your team's specific context, skills, and priorities.
 
+If Kestra is the direction, the [Airflow to Kestra migration guide](/resources/migration/airflow) maps each Airflow concept to its Kestra equivalent and covers how to run both side by side during the transition.
+
 - **For Data Engineering Teams:** If your focus is on data asset lineage and you're heavily invested in dbt, **Dagster** is a strong contender. If you need to manage a mix of ETL/ELT, streaming, and data quality jobs across multiple tools and languages, **Kestra**'s unified platform and language-agnostic approach provide more flexibility. Explore more [data engineering resources](https://kestra.io/resources/data).
 - **For Infrastructure & DevOps Teams:** If your entire stack is Kubernetes-native, **Argo Workflows** is the most integrated solution. For teams managing a hybrid environment with a mix of IaC tools (Terraform, Ansible), cloud services, and legacy systems, **Kestra** provides a vendor-neutral control plane to orchestrate them all. See more on [infrastructure automation](https://kestra.io/infra-automation).
 - **For AI & ML Platform Teams:** If you need a standardized framework for building reproducible ML pipelines in Python, **Kedro** is an excellent choice. If you need to orchestrate the entire end-to-end AI lifecycle—from data ingestion and feature engineering to model training, deployment, and monitoring—**Kestra**'s ability to coordinate diverse tools and trigger workflows based on events makes it a more comprehensive solution for [AI automation](https://kestra.io/ai-automation).
