@@ -245,4 +245,37 @@ const howToData = {
     @use "/src/components/vra-migration-guide/shared" as *;
 
     @include guide-page;
+
+    // Narrower, smaller table of contents than the vRA guide: this page has
+    // twelve numbered chapters, so the column gives the room back to the content.
+    .guide-content {
+        :global(.left) {
+            @include media-breakpoint-up(lg) {
+                min-width: 250px;
+                width: 250px;
+                flex: 0 0 250px;
+            }
+        }
+
+        :global(.guide-toc) {
+            :global(.title) {
+                font-size: $font-size-md;
+            }
+
+            :global(a) {
+                font-size: $font-size-xs;
+                line-height: 1.125rem;
+            }
+
+            :global(.level-1) {
+                font-size: $font-size-sm;
+                line-height: 1.375rem;
+            }
+
+            :global(.footer .btn) {
+                font-size: $font-size-sm;
+                line-height: 1.5rem;
+            }
+        }
+    }
 </style>
