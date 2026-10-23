@@ -49,7 +49,7 @@ The `asset-card-footer` slot connects the two. When a task runs, its plugin writ
 Assets, including the `asset-card-footer` slot, are available in Enterprise Edition and Kestra Cloud.
 :::
 
-Asset metadata also drives flows. An [`EventTrigger`](../../07.enterprise/02.governance/01.assets/index.md#operational-automation) can filter on metadata values to start a flow when an asset changes, for example when a test result written to the asset reports a failure.
+Asset metadata also drives flows. An [`EventTrigger`](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#eventtrigger) can filter on metadata values to start a flow when an asset changes, for example when a test result written to the asset reports a failure.
 
 ## Choosing what to build
 

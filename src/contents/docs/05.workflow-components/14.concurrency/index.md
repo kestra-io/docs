@@ -113,7 +113,7 @@ tasks:
 :::alert{type="warning"}
 When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. The `behavior` property does not apply in this case; no new executions start while the trigger is locked.
 
-Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) section.
+Read more in [Unlocking, enabling, and disabling triggers](../07.triggers/index.mdx#unlocking-enabling-and-disabling-triggers).
 :::
 
 ## Evaluation order

@@ -619,7 +619,8 @@ EXECUTE
 **Actions and their meaning**
 - `VIEW` / `LIST`: view assets and their dependency or usage graphs.
 - `CREATE`: create assets.
-- `DELETE`: delete assets.
+- `UPDATE`: edit existing assets.
+- `DELETE`: delete assets and purge their usage and lineage records.
 - `LOCK`: acquire a write lock on an asset (from a flow task or the UI).
 - `UNLOCK`: release a write lock on an asset (from a flow task or the UI). UI unlock is forced regardless of owner.
 
@@ -630,14 +631,20 @@ VIEW / LIST
 - `GET /api/v1/{tenant}/assets/{id}/dependencies`
 - `GET /api/v1/{tenant}/assets/search`
 - `GET /api/v1/{tenant}/assets/usages/search`
+- `GET /api/v1/{tenant}/assets/lineage-events/search`
 
 CREATE
 - `POST /api/v1/{tenant}/assets`
+
+UPDATE
+- `PUT /api/v1/{tenant}/assets/{id}`
 
 DELETE
 - `DELETE /api/v1/{tenant}/assets/{id}`
 - `DELETE /api/v1/{tenant}/assets/by-ids`
 - `DELETE /api/v1/{tenant}/assets/by-query`
+- `DELETE /api/v1/{tenant}/assets/usages/by-query`
+- `DELETE /api/v1/{tenant}/assets/lineage-events/by-query`
 
 LOCK
 - `POST /api/v1/{tenant}/assets/{id}/lock`

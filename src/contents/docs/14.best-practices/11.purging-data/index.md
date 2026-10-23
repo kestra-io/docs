@@ -125,7 +125,7 @@ This is different from purging executions or logs. Asset retention is its own co
 
 Best practice:
 
-- filter by namespace, asset type, or metadata when possible
+- filter by namespace, asset type, or metadata when possible, and turn off usage and lineage purging when you filter by type or metadata, because those records don't support these filters
 - define retention based on operational or compliance requirements
 - purge only the records you intend to remove, especially if you want to keep lineage or usage data longer than the assets themselves
 

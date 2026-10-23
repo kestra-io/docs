@@ -64,7 +64,7 @@ The **TTL & Lease** card on a deployment's page shows when its lease expires. If
 2. Choose **Keep current**, **No expiry**, a preset of 7, 30, 60, or 90 days from now, or **Pick a date and time**. A picked time uses the time zone from your [UI settings](../../../../../09.ui/06.settings/index.md) and defaults to 23:59:59 if you only pick a day. Past dates and times are disabled.
 3. Click **Save**. A confirmation shows the new expiry.
 
-Changing the expiry updates only the deployment's `ttl`, not the underlying infrastructure. To act on the resource when its lease is about to expire or has expired, attach a flow with **On expiring** or **On expired** on the same card. These flows use the [`TtlTrigger`](../../../01.assets/index.md#operational-automation) and can apply to one deployment, to a namespace, or to every deployment in the tenant.
+Changing the expiry updates only the deployment's `ttl`, not the underlying infrastructure. To act on the resource when its lease is about to expire or has expired, attach a flow with **On expiring** or **On expired** on the same card. These flows use the [`TtlTrigger`](../../../01.assets/02.tasks-and-triggers/index.md#ttltrigger) and can apply to one deployment, to a namespace, or to every deployment in the tenant.
 
 ### Day-2 actions
 

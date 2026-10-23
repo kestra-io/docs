@@ -108,7 +108,7 @@ The example bundle ships inside the JAR — no network access is required at ten
 
 ## Asset TTL checks (kestra.assets.ttl-check)
 
-Kestra periodically checks the TTL of every asset to start [`TtlTrigger`](../../07.enterprise/02.governance/01.assets/index.md#operational-automation) flows and to notify asset owners in-app when a TTL is expiring or has expired. The check runs on executor nodes. When several executors run, only one of them checks a given tenant at a time.
+Kestra periodically checks the TTL of every asset to start [`TtlTrigger`](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#ttltrigger) flows and to notify asset owners in-app when a TTL is expiring or has expired. The check runs on executor nodes. When several executors run, only one of them checks a given tenant at a time.
 
 ```yaml
 kestra:

@@ -81,7 +81,7 @@ tasks:
 | `inheritLabels`        | Determines if the subflow inherits labels from the parent (default: false). |
 | `inputs`               | Inputs passed to the subflow                                               |
 | `labels`               | Labels assigned to the subflow                                             |
-| `outputs` (deprecated) | Passes subflow outputs to the parent flow. Use [flow outputs](../06.outputs/index.md#pass-data-between-flows-using-flow-outputs) instead. |
+| `outputs` (deprecated) | Passes subflow outputs to the parent flow. Use [flow outputs](../06.outputs/index.md#flow-outputs) instead. |
 | `revision`             | The subflow revision to execute (defaults to the latest)                   |
 | `scheduleDate`         | Schedule subflow execution on a specific date rather than immediately. To move the date before the execution starts, [reschedule it via the API](../03.execution/index.md#schedule-and-reschedule-an-execution). |
 | `transmitFailed`       | If true, parent flow fails on subflow failure (requires `wait` to be true). |
@@ -90,7 +90,7 @@ tasks:
 
 ## Passing data between parent and child flows
 
-Any flow can emit outputs accessible to the parent flow. For more details and examples, see the [Outputs page](../06.outputs/index.md#pass-data-between-flows-using-flow-outputs).
+Any flow can emit outputs accessible to the parent flow. For more details and examples, see the [Outputs page](../06.outputs/index.md#flow-outputs).
 
 ### Accessing outputs from a subflow execution
 
