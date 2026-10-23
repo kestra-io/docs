@@ -87,6 +87,8 @@ The KV Store is best used for mutable state such as:
 - checkpoints
 - last processed timestamps
 
+KV pairs hold state across executions. To resume a single script task after a retry or restart, use [script checkpoints](../../16.scripts/10.checkpoints/index.md) instead. `PurgeExecutions` deletes those with their execution.
+
 Best practice:
 
 - set TTLs where possible
@@ -123,9 +125,9 @@ This is different from purging executions or logs. Asset retention is its own co
 
 Best practice:
 
-- filter by namespace, asset type, or metadata when possible
+- filter by namespace, asset type, or metadata when possible, and turn off usage purging when you filter by type or metadata, because usage records don't support these filters
 - define retention based on operational or compliance requirements
-- purge only the records you intend to remove, especially if you want to keep lineage or usage data longer than the assets themselves
+- purge only the records you intend to remove, especially if you want to keep usage data longer than the assets themselves
 
 [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) is an Enterprise Edition and Cloud feature.
 

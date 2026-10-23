@@ -30,9 +30,11 @@
              * the parent owns the card — used by the /lp/* landing pages.
              */
             variant?: "demo" | "plain"
+            submitLabel?: string
         }>(),
         {
             variant: "demo",
+            submitLabel: "Let's Talk",
         },
     )
 
@@ -333,7 +335,7 @@
 
                 <div class="col-12 mt-4 d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary w-100">
-                        Let's Talk
+                        {{ submitLabel }}
                     </button>
                 </div>
             </form>

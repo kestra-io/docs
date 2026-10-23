@@ -356,11 +356,23 @@ kestra plugins search jdbc
 
 ## Server commands
 
+Every server command accepts `--port` to set the port to bind.
+
+### `kestra server controller`
+
+Start a Worker Controller, the gRPC endpoint that Workers connect to (port `50051` by default). The webserver and standalone server start an embedded Worker Controller unless you pass `--no-controller`.
+
+**Options**: `--ignore-queue-records` (list)
+
+```bash
+kestra server controller
+```
+
 ### `kestra server executor`
 
 Start the executor.
 
-**Options**: `--ignore-executions` (list)
+**Options**: `-f, --flow-path` and `--tenant` to load flows from a path, and the troubleshooting lists `--ignore-executions`, `--ignore-flows`, `--ignore-namespaces`, `--ignore-tenants`, and `--ignore-queue-records`. Each list is comma-separated.
 
 ```bash
 kestra server executor
@@ -368,7 +380,9 @@ kestra server executor
 
 ### `kestra server indexer`
 
-Start the indexer.
+Start the indexer. The webserver and standalone server start an embedded indexer unless you pass `--no-indexer`.
+
+**Options**: `--ignore-indexer-records` and `--ignore-queue-records` (lists)
 
 ```bash
 kestra server indexer
@@ -378,23 +392,37 @@ kestra server indexer
 
 Start the scheduler.
 
+**Options**: `-t, --max-threads` (maximum threads used to evaluate triggers; defaults to the number of allocated CPU cores, with a minimum of 4)
+
 ```bash
-kestra server scheduler
+kestra server scheduler --max-threads 8
 ```
 
 ### `kestra server standalone`
 
 Start a standalone server (all core services).
 
+**Options**:
+
+- `--worker-thread`: number of worker threads. Defaults to eight times the number of available processors. Set it to `0` to start no worker.
+- `--no-tutorials`, `--no-indexer`, `--no-controller`: don't load tutorial flows, start the embedded indexer, or start the embedded Worker Controller.
+- `-f, --flow-path` and `--tenant`: load flows from a path.
+- `--ignore-executions`, `--ignore-flows`, `--ignore-namespaces`, `--ignore-tenants`, `--ignore-indexer-records`, `--ignore-queue-records`: comma-separated lists to ignore, for troubleshooting only.
+
 ```bash
-kestra server standalone
+kestra server standalone --worker-thread 16
 ```
 
 ### `kestra server webserver`
 
-Start the webserver.
+Start the webserver. By default, it also starts an embedded indexer and an embedded Worker Controller.
 
-**Option**: `--no-tutorials` to disable auto-loading tutorials
+**Options**:
+
+- `--no-tutorials`: don't load tutorial flows.
+- `--no-indexer`: don't start the embedded indexer.
+- `--no-controller`: don't start the embedded Worker Controller.
+- `--ignore-indexer-records`, `--ignore-queue-records`: comma-separated lists to ignore, for troubleshooting only.
 
 ```bash
 kestra server webserver --no-tutorials
@@ -404,7 +432,7 @@ kestra server webserver --no-tutorials
 
 Start a worker.
 
-**Options**: `-t, --thread` (max threads)
+**Options**: `-t, --thread` (maximum worker threads; defaults to eight times the number of available processors)
 
 ```bash
 kestra server worker --thread 16
@@ -420,7 +448,7 @@ kestra server local
 
 ## Kestra with server components in different services
 
-Server components run independently from each other. Most communicate through the queue layer; Workers communicate with the Worker Controller over a bidirectional gRPC stream and never connect to the database directly.
+Server components run independently from each other. Most communicate through the queue layer; Workers communicate with the Worker Controller over a bidirectional gRPC stream and never connect to the database directly. In the example below, the webserver runs the embedded Worker Controller, so the workers point to it on port `50051`.
 
 Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
 
@@ -472,7 +500,7 @@ services:
             basic-auth:
               enabled: false
               username: "admin@kestra.io"
-              password: kestra
+              password: Admin1234!
           repository:
             type: postgres
           storage:
@@ -484,6 +512,13 @@ services:
           tasks:
             tmp-dir:
               path: /tmp/kestra-wd/tmp
+          worker:
+            controllers:
+              static:
+                endpoints:
+                  # Workers connect to the Worker Controller embedded in the webserver
+                  - host: kestra-webserver
+                    port: 50051
     ports:
       - "8082-8083:8081"
     depends_on:

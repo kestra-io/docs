@@ -4,21 +4,18 @@ h1: How to Build Custom Vue.js UI Components for Your Kestra Plugin
 sidebarTitle: Develop Plugin Artifacts
 icon: /src/contents/docs/icons/dev.svg
 description: Build custom Vue.js UI components for your Kestra plugin using Module Federation and the artifact-sdk.
+version: ">= 2.0.0"
 ---
 
 Plugins can ship custom Vue.js frontend components that load directly into the Kestra UI at runtime, without any changes to Kestra core.
 
-This lets you build domain-specific experiences: visualize a query plan in the topology view, render log output in a structured panel, or display task metadata in a rich card. The core UI stays lean; each plugin brings exactly the UI it needs.
-
-:::alert{type="info"}
-Plugin artifacts are available starting in **Kestra 2.0.0**.
-:::
+This lets you build domain-specific experiences in the topology view: summarize a query's cost and job metadata on the task node, show live progress as a stepper, or open a full-screen detail view for a task runner. The core UI stays lean; each plugin brings exactly the UI it needs.
 
 ## Why plugin artifacts?
 
-Tasks in Kestra produce structured outputs and have rich configuration. But the default topology and log views are generic — they show raw YAML and plain text. When a task is query-centric, graph-centric, or data-heavy, that generic view loses signal.
+Tasks in Kestra produce structured outputs and have rich configuration. But the default topology view is generic: a task node shows its type and configuration, not what the task did. When a task is query-centric, graph-centric, or data-heavy, that generic view loses signal.
 
-Plugin artifacts let you close this gap without forking Kestra's core. A `topology-details` component can show a formatted query, estimated cost, or job metadata inline in the flow topology. A `log-details` component can structure log output into a readable table. This keeps the core UI generic and lets each plugin deliver the right experience for its domain.
+Plugin artifacts let you close this gap without forking Kestra's core. A `topology-details` component can show a formatted query, estimated cost, or job metadata inline in the flow topology. A `topology-task-modal` component can give a task runner a full-screen view of each infrastructure phase. This keeps the core UI generic and lets each plugin deliver the right experience for its domain.
 
 ## Architecture
 
@@ -67,6 +64,8 @@ graph LR
 ## Available UI slots
 
 Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Three slots are available in `@kestra-io/artifact-sdk`:
+
+Artifacts can also display data that plugins write to assets. See [Plugin artifacts and assets](../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 ### `topology-details`
 

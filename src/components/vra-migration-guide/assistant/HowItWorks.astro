@@ -1,0 +1,151 @@
+---
+import { Code } from "astro-expressive-code/components"
+import SectionTitle from "~/components/security/SectionTitle.astro"
+
+const STEPS = [
+    {
+        title: "Export",
+        text: "A vRO administrator exports a .package from the Orchestrator client. If vRA starts your workflows, export the vRA content from VMware Build Tools as well, so the brief can see what triggers them. Put both in one folder.",
+        code: `my-estate/
+├─ lb-usecase.package
+└─ vra-export/`,
+        lang: "text",
+    },
+    {
+        title: "Run",
+        text: "The first time, init creates a config file in your home folder where you choose your model and settings. Then run sanitizes the export, maps every workflow and the systems it touches, and writes the brief to a kestra-assessment folder next to the exports.",
+        code: `$ kestra-migrate init
+$ kestra-migrate vra run ./my-estate`,
+        lang: "bash",
+    },
+    {
+        title: "Answer and run again",
+        text: "When the exports can't answer something, such as how often a workflow runs or what else starts it, the tool writes the question to answers.yaml, with a suggested answer where the code points to one. Fill in the answers and run the same command again. When there are no open questions left, the plan is final.",
+        code: `- id: auth.avi-controller
+  question: How do the flows sign in to Avi?
+  suggested: basic authentication, as today`,
+        lang: "yaml",
+    },
+]
+---
+
+<section class="process">
+    <div class="container">
+        <SectionTitle title="How it works">
+            It takes three steps, all on your machine.
+        </SectionTitle>
+
+        <ol class="list-unstyled">
+            {
+                STEPS.map((step, i) => (
+                    <li>
+                        <div>
+                            <span class="step">{i + 1}</span>
+                            <h3>{step.title}</h3>
+                            <p>{step.text}</p>
+                        </div>
+                        <Code
+                            code={step.code}
+                            lang={step.lang}
+                            frame="none"
+                            class="dark"
+                        />
+                    </li>
+                ))
+            }
+        </ol>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    .process {
+        @include squared-grid-backdrop;
+        @include assistant-section(var(--ks-background-secondary));
+    }
+
+    .container {
+        @include guide-container;
+    }
+
+    ol {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        margin: 1rem 0 0;
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2rem;
+        @include calc-card;
+        box-shadow: $calc-shadow-surface;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .step {
+            padding: 0.125rem 0.5rem;
+            border-radius: 6px;
+            background: color-mix(
+                in srgb,
+                var(--blue-300) 10%,
+                var(--ks-background-body)
+            );
+            font-size: $font-size-sm;
+            font-weight: 600;
+            line-height: 1.25rem;
+            color: var(--blue-400);
+
+            :global(html.dark) & {
+                color: var(--blue-300);
+            }
+        }
+
+        h3 {
+            margin: 0;
+            font-size: $font-size-2xl;
+            line-height: 2.375rem;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+
+    // `:root` outranks Expressive Code's `:root:not(.dark) .expressive-code.dark`,
+    // so these dark blocks keep this box in light mode too.
+    :global(:root) li :global(.expressive-code.dark) {
+        --ec-codeBg: #{$dark-bg-input};
+        --ec-frm-edBg: #{$dark-bg-input};
+        --ec-brdCol: transparent;
+        --ec-brdRad: #{$border-radius-lg};
+        --ec-codeFontSize: #{$font-size-xs};
+        --ec-codeLineHt: 1.5rem;
+        // `class="dark"` opts out of markdown.scss's code-block defaults, so
+        // the font, flat frame and "Copied!" colour are restated here.
+        --ec-codeFontFml: var(--font-family-jetbrains-mono);
+        --ec-frm-frameBoxShdCssVal: none;
+        --ec-frm-tooltipSuccessBg: var(--ks-background-button-primary);
+        min-height: 105px;
+
+        :global(pre) {
+            margin: 0;
+        }
+
+        :global(pre[data-language])::before {
+            display: none;
+        }
+    }
+</style>

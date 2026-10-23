@@ -50,7 +50,7 @@ Below is an example showing an `outputs` object with key-value pairs:
   }
 }
 ```
-If using the [Enterprise or Cloud Edition](../../07.enterprise/index.mdx), you can encrypt script task outputs with `::{"encryptedOutputs":{"key":"value"}}::`. For a full example, check out the section in our [Outputs guide](../../05.workflow-components/06.outputs/index.md#encrypted-outputs-from-script-tasks).
+If using the [Enterprise or Cloud Edition](../../07.enterprise/index.mdx), you can encrypt script task outputs with `::{"encryptedOutputs":{"key":"value"}}::`. For a full example, check out the section in our [Outputs guide](../../05.workflow-components/06.outputs/index.md#encrypted-outputs).
 
 Here is the representation of a `metrics` object. It's a **list of dictionaries**:
 
@@ -69,6 +69,8 @@ Here is the representation of a `metrics` object. It's a **list of dictionaries*
 ```
 
 Both outputs and metrics can optionally include a list of tags that expose internal details.
+
+The same `::{}::` syntax also accepts a `checkpoints` object, which saves progress so a retried task can resume where it stopped. See [Checkpoints](../10.checkpoints/index.md).
 
 ### Metric types: `counter` and `timer`
 
@@ -199,11 +201,12 @@ id: outputsInputs
 namespace: company.team
 tasks:
     - id: passOutput
-      type: io.kestra.plugin.core.debug.Return
-      format: "hello world!"
+      type: io.kestra.plugin.core.output.OutputValues
+      values:
+        result: "hello world!"
     - id: takeInput
-      type: io.kestra.plugin.core.debug.Return
-      format: "data from previous task - {{ outputs.passOutput.value }}"
+      type: io.kestra.plugin.core.log.Log
+      message: "data from previous task - {{ outputs.passOutput.values.result }}"
 ```
 
 ### Use cases for `metrics`: numerical values that can be aggregated and visualized across Executions

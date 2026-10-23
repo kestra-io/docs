@@ -25,7 +25,7 @@ The common production path is PostgreSQL for queue and repository, plus an objec
 Queues and repositories must stay compatible:
 
 - in-memory queue with in-memory repository for local testing only
-- JDBC queue with H2, MySQL, or PostgreSQL repository
+- JDBC queue with H2, MySQL, or PostgreSQL repository, in the same database or in a [dedicated queue database](#dedicated-queue-database)
 - Kafka queue with Elasticsearch repository in Enterprise Edition
 
 ## Allocated CPU cores
@@ -39,7 +39,7 @@ kestra:
   allocated-cpu-cores: 2
 ```
 
-This is useful when you want to limit how aggressively Kestra allocates worker, scheduler, and queue-related threads without changing container limits or host-level CPU settings.
+This is useful when you want to limit how aggressively Kestra allocates Executor, Scheduler, system worker, and queue-related threads without changing container limits or host-level CPU settings. It doesn't change the default thread count of a Worker, which you set with the Worker's `--thread` option.
 
 ## Database and datasources
 
@@ -128,6 +128,54 @@ Use H2 for local development. For production, prefer PostgreSQL, or MySQL if Pos
 For PostgreSQL performance issues, consider `random_page_cost=1.1` and `kestra.queue.postgres.disable-seq-scan=true` if queue polling is choosing poor query plans.
 :::
 
+### Dedicated queue database
+
+By default, the JDBC queue shares the repository's database. To move the queue to its own database, add a `kestra.queue.jdbc` block with a connection URL and credentials. Use this to spread load across two database servers, or to pair a repository and a queue that run on different database engines.
+
+The following example keeps the repository in MySQL and runs the queue on a separate PostgreSQL database:
+
+```yaml
+kestra:
+  repository:
+    type: mysql
+  queue:
+    type: postgres
+    jdbc:
+      type: postgres
+      url: jdbc:postgresql://pg-queue:5432/kestra_queue
+      username: kestra
+      password: k3str4
+
+datasources:
+  mysql:
+    url: jdbc:mysql://mysql:3306/kestra
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: kestra
+    password: k3str4
+    dialect: MYSQL
+```
+
+| Property | Description |
+| --- | --- |
+| `kestra.queue.jdbc.type` | Queue database type: `postgres`, `mysql`, or `h2`. Set it to the same value as `kestra.queue.type`. |
+| `kestra.queue.jdbc.url` | JDBC URL of the queue database. When set, Kestra opens a separate connection pool for the queue. |
+| `kestra.queue.jdbc.username` | Queue database username. Required when `url` is set. |
+| `kestra.queue.jdbc.password` | Queue database password. |
+
+Kestra applies these rules at startup:
+
+- Kestra uses a dedicated queue database only when both `type` and `url` are set. If `type` is missing, Kestra ignores the block and keeps the queue in the main database.
+- Kestra never reuses the main datasource credentials for the queue database. If `url` is set without `username`, Kestra fails to start.
+- If `kestra.queue.jdbc.type` differs from `kestra.repository.type` and no `url` is set, Kestra fails to start, because the queue would run SQL for one engine against the other.
+
+Keep `kestra.queue.type` and `kestra.queue.jdbc.type` identical: `kestra.queue.type` selects which queue table schema Kestra creates, and `kestra.queue.jdbc.type` selects the SQL dialect for the connection.
+
+Only the `queues` table moves to the dedicated database. Flows, executions, and Kestra's other state tables stay in the main database. To tune the queue's connection pool, see [Connection pooling and JDBC queue tuning](#connection-pooling-and-jdbc-queue-tuning).
+
+:::alert{type="warning"}
+Kestra records queue schema migrations in the main database and skips any migration already recorded there. It creates the `queues` table in a dedicated database only when the main database has no record of those migrations, such as on a new installation. If you move an existing instance's queue to an empty database, or replace the queue database with an empty one, Kestra fails to start with `relation "queues" does not exist`.
+:::
+
 ## Log data store
 
 By default, execution logs are stored in the same database as flows and executions. In Kestra 2.0+, you can route logs to a separate store by setting `kestra.logs.type`. If this key is not set, logs continue to use the repository backend — no migration needed.
@@ -193,6 +241,19 @@ datasources:
     minimum-idle: 10
 ```
 
+A [dedicated queue database](#dedicated-queue-database) has its own pool, named `kestra-queue-<type>` unless you set `pool-name`. Set its HikariCP options under `kestra.queue.jdbc` instead of `datasources`:
+
+```yaml
+kestra:
+  queue:
+    jdbc:
+      type: postgres
+      url: jdbc:postgresql://pg-queue:5432/kestra_queue
+      username: kestra
+      password: k3str4
+      maximum-pool-size: 20
+```
+
 Rough connection planning:
 
 - standalone server: about 10 connections
@@ -246,7 +307,7 @@ Common options include:
 - `s3files`
 - `gcs`
 - `azure`
-- `minio`
+- `minio` for any S3-compatible object store
 - other object-storage-compatible backends
 
 The default local storage is fine for local testing but not for every production topology. The important distinction is whether every Kestra component can see the same files.
@@ -342,7 +403,7 @@ kestra:
 
 #### S3-compatible endpoints
 
-The `s3` backend targets Amazon S3 by default. Set `endpoint` to point that same backend at another S3-compatible object store, for example Backblaze B2, Cloudflare R2, or MinIO. Some endpoints also require `force-path-style: true`; MinIO deployments can alternatively use the dedicated [`type: minio`](#minio--s3-compatible) backend.
+The `s3` backend targets Amazon S3 by default. Set `endpoint` to point that same backend at another S3-compatible object store, for example Backblaze B2, Cloudflare R2, or Ceph. Some endpoints also require `force-path-style: true`. Self-hosted S3-compatible stores can alternatively use the dedicated [`type: minio`](#s3-compatible-storage) backend.
 
 ```yaml
 kestra:
@@ -555,9 +616,13 @@ Connection string and shared key auth carry full data-plane access inherently an
 
 ---
 
-### MinIO / S3-compatible
+### S3-compatible storage
 
-Use `type: minio` for MinIO and any S3-compatible object storage — including Ceph, SeaweedFS S3 API, Garage, and Outscale OOS.
+Use `type: minio` for any S3-compatible object storage, such as Ceph RGW, SeaweedFS, Garage, Versity S3 Gateway, or Outscale OOS. The type name comes from the MinIO Java client library the backend uses. It does not require a MinIO server.
+
+:::alert{type="warning"}
+The open source MinIO server is no longer maintained: its repository was archived in April 2026 and MinIO no longer publishes community Docker images. If you run Kestra on a MinIO server, plan a move to another S3-compatible store. The `minio` storage type keeps working with the new endpoint.
+:::
 
 #### Minimum configuration
 
@@ -566,7 +631,7 @@ kestra:
   storage:
     type: minio
     minio:
-      endpoint: my.minio.domain.com
+      endpoint: s3.example.com
       port: 9000
       secure: false
       access-key: ${AWS_ACCESS_KEY_ID}
@@ -583,7 +648,7 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `endpoint` | string | No | — | MinIO or S3-compatible server hostname or URL. |
+| `endpoint` | string | No | — | S3-compatible server hostname or URL. |
 | `port` | integer | No | `0` | Server port. Default `0` uses the standard port for the chosen scheme. |
 | `secure` | boolean | No | `false` | Use TLS for the connection. |
 | `access-key` | string | No | — | Access key ID. |
@@ -591,7 +656,7 @@ kestra:
 | `region` | string | No | — | Region to include in request signing. |
 | `bucket` | string | No | — | Bucket name. |
 | `part-size` | size | No | `5MB` | Multipart upload part size. Minimum 5 MiB. |
-| `vhost` | boolean | No | `false` | Enable virtual-hosted style bucket URLs. Set to `true` when MinIO uses `MINIO_DOMAIN`. |
+| `vhost` | boolean | No | `false` | Enable virtual-hosted style bucket URLs (`bucket.endpoint`). Leave `false` for path-style addressing. |
 | `ca-pem` | string | No | — | CA certificate PEM for custom TLS trust. |
 | `client-pem` | string | No | — | Client certificate PEM for mutual TLS. |
 | `http-connect-timeout` | duration | No | — | HTTP connection timeout. |
@@ -601,11 +666,11 @@ kestra:
 | `proxy-configuration` | object | No | — | HTTP proxy settings (host, port, type, username, password). |
 | `ssl-options` | object | No | — | Advanced SSL/TLS options (protocols, cipher suites, trust manager). |
 
-If MinIO uses `MINIO_DOMAIN`, set `vhost: true` and point `endpoint` at the base domain rather than `bucket.domain`.
+If your object store requires virtual-hosted style addressing, set `vhost: true` and point `endpoint` at the base domain rather than `bucket.domain`.
 
 #### Permissions
 
-Create a MinIO policy that grants the access key read/write access to the bucket, then attach it via `mc admin policy attach`:
+Grant the access key read and write access to the bucket. On stores that accept AWS-style IAM policies, use a policy like the following:
 
 ```json
 {
@@ -625,7 +690,7 @@ Create a MinIO policy that grants the access key read/write access to the bucket
 }
 ```
 
-For Ceph RGW, SeaweedFS, or other S3-compatible backends, apply the equivalent bucket ACL or user policy through that system's admin interface.
+If your store does not accept IAM policies, apply the equivalent bucket ACL or user permissions through its admin interface.
 
 ---
 
@@ -709,7 +774,7 @@ kestra:
 | `endpoint` | string | No | — | Explicit OBS or S3-compatible endpoint URL. Takes precedence over `region`. |
 | `security-token` | string | No | — | Security token for temporary AK/SK credentials. |
 | `path` | string | No | — | Object key prefix within the bucket. |
-| `path-style-access` | boolean | No | `false` | Use path-style bucket addressing. Required for MinIO and most S3-compatible endpoints. |
+| `path-style-access` | boolean | No | `false` | Use path-style bucket addressing. Required for most S3-compatible endpoints. |
 
 #### Permissions
 

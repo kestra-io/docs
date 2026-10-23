@@ -13,46 +13,6 @@ import {
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-const CATEGORY_MAP: Record<string, string> = {
-    airbyte: "Data",
-    ansible: "Infrastructure",
-    apify: "Data",
-    argocd: "Infrastructure",
-    aws: "Cloud",
-    azure: "Cloud",
-    bigquery: "Data",
-    cloudflare: "Cloud",
-    dataproc: "Data",
-    digitalocean: "Cloud",
-    docker: "Infrastructure",
-    duckdb: "Data",
-    gcs: "Cloud",
-    git: "Infrastructure",
-    "github-actions": "Infrastructure",
-    gitlab: "Infrastructure",
-    hightouch: "Data",
-    jenkins: "Infrastructure",
-    kafka: "Data",
-    kubernetes: "Infrastructure",
-    "microsoft-fabric": "Data",
-    netbox: "Infrastructure",
-    nutanix: "Infrastructure",
-    opa: "Infrastructure",
-    postgres: "Data",
-    proxmox: "Infrastructure",
-    pubsub: "Data",
-    redis: "Data",
-    servicenow: "Business",
-    slack: "Business",
-    snowflake: "Data",
-    "sql-server": "Data",
-    terraform: "Infrastructure",
-    "vertex-ai": "AI",
-    vmware: "Infrastructure",
-    "dbt-cloud": "Data",
-    "dbt-core": "Data",
-}
-
 const orchestrationEntries = await getCollection("orchestration")
 
 const entries = await Promise.all(
@@ -71,7 +31,7 @@ const entries = await Promise.all(
             return {
                 path: `/orchestration/${entry.id}`,
                 toolName: entry.data.tool.name,
-                category: CATEGORY_MAP[entry.id] ?? "Other",
+                category: entry.data.tool.category,
                 icon,
                 shortDescription: replaceTotalPluginsPlaceholder(
                     entry.data.description,
@@ -162,8 +122,6 @@ const faqItems = [
                                     { active: i === 0 },
                                 ]}
                                 set:html={entry.icon}
-                                data-name={entry.toolName}
-                                data-color={entry.color}
                             />
                         ))
                     }

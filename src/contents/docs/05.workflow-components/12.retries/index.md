@@ -52,8 +52,8 @@ tasks:
 
 errors:
   - id: never_happen
-    type: io.kestra.plugin.core.debug.Return
-    format: "Never happened {{ task.id }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "Never happened {{ task.id }}"
 ```
 
 ### Timeout vs. Max Retry Duration
@@ -112,8 +112,9 @@ tasks:
       interval: PT1S
     tasks:
       - id: get_token
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ now() }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ now() }}"
       - id: call_api
         type: io.kestra.plugin.core.execution.Fail
         errorMessage: "Token expired"
@@ -139,11 +140,12 @@ tasks:
       behavior: RETRY_FLOWABLE
     tasks:
       - id: get_token
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ now() }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ now() }}"
       - id: call_api
         type: io.kestra.plugin.core.execution.Fail
-        errorMessage: "Calling API with {{ outputs.get_token.value }}"
+        errorMessage: "Calling API with {{ outputs.get_token.values.result }}"
 ```
 
 When `call_api` fails, `get_token` runs again on the next attempt, producing a fresh token.
@@ -290,3 +292,5 @@ Flow-level retries also restart Subflows as new executions.
 **Replay** starts a new execution from any task (successful or failed) and assigns it a new execution ID. Previous task outputs are reused from cache when available. Replay is available from the **Actions** menu on the Execution overview page and from task nodes in the **Topology**, **Gantt**, or **Logs** view. See the [Replay documentation](../../15.how-to-guides/replay/index.md).
 
 After a replay, the new execution's Overview tab shows an **Original Execution** field linking back to the source run.
+
+A script task with `durable: true` keeps its [checkpoints](../../16.scripts/10.checkpoints/index.md) across retries and restarts, so it resumes from its last checkpoint. A replay starts a new execution, so the task starts over.

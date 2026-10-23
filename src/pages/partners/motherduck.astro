@@ -1,0 +1,68 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "MotherDuck & Kestra: Orchestration for Cloud DuckDB Analytics"
+const description =
+    "Orchestrate MotherDuck with Kestra: run DuckDB flows against a shared cloud database with one plugin, an md: JDBC URL and a token kept as a Kestra secret."
+
+const facts = [
+    {
+        label: "Same SQL",
+        value: "Develop on local DuckDB, run the same queries on MotherDuck",
+    },
+    {
+        label: "Plugin",
+        value: "plugin-jdbc-duckdb connects to MotherDuck with a jdbc:duckdb:md: URL and a service token",
+    },
+    {
+        label: "Secrets",
+        value: "The MotherDuck token stays in a Kestra secret, never in the flow",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:laptop",
+        title: "Same SQL, laptop to cloud",
+        text: "Prototype a flow on local in-memory DuckDB, then point the same Query task at MotherDuck by changing the JDBC URL. No SQL rewrite.",
+    },
+    {
+        icon: "mdi:key-outline",
+        title: "Tokens stay in secrets",
+        text: "The MotherDuck service token is stored as a Kestra secret and referenced in the JDBC URL, so it never appears in flow code.",
+    },
+    {
+        icon: "mdi:database-check-outline",
+        title: "Results that outlive the run",
+        text: "In-memory DuckDB disappears when the execution ends. Writing to a MotherDuck database keeps tables between runs and shares them with the team.",
+    },
+    {
+        icon: "mdi:calendar-clock",
+        title: "Scheduled and retried loads",
+        text: "Cron schedules, retries and backfills run MotherDuck queries on time, and failed runs replay from the task that broke.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="MotherDuck">
+    <PartnerProfile
+        name="MotherDuck"
+        tagline="MotherDuck is a serverless data platform built on DuckDB. Kestra runs the pipelines that load, transform and query it, with schedules, retries and secrets built in."
+        about="Kestra's DuckDB plugin connects to MotherDuck through an md: connection string and a MotherDuck token, so every DuckDB task and blueprint can run against a shared cloud database. Anna Geller covered the ETL patterns in a guest post on the MotherDuck blog, and <a href='/blogs/duckdb-vs-motherduck'>DuckDB vs. MotherDuck</a> explains when to move a local workload to the cloud."
+        expertiseTitle="MotherDuck + Kestra: cloud DuckDB, orchestrated"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-jdbc-duckdb"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "motherduck",
+            title: '<span class="highlight">MotherDuck</span> Blueprints',
+        }}
+        closing={{
+            title: "Orchestrate your MotherDuck pipelines",
+            text: "Open source and self-hosted. Start from a blueprint below or from the DuckDB plugin docs.",
+        }}
+        website="https://motherduck.com/ecosystem/kestra/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

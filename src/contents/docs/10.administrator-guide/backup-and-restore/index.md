@@ -26,7 +26,7 @@ Perform metadata backup and restore while Kestra is paused to ensure consistency
 
 A metadata backup exports all resource types except execution history. By default, it includes:
 
-apps, banners, bindings, blueprints, credentials, dashboards, flows, groups, invitations, kill switches, KV entries, namespace files, namespaces, roles, secrets (when using a compatible secret backend), security integrations, settings, tenants, tenant accesses, test suites, triggers, users, and worker groups.
+apps, banners, bindings, blueprints, cases (with their templates, linked executions and events), credentials, dashboards, flows, groups, invitations, kill switches, KV entries, namespace files, namespaces, policies, promotion targets, roles, secrets (when using a compatible secret backend), security integrations, settings, tenants, tenant accesses, test suites, triggers, users, worker groups, and worker queues.
 
 Execution data (executions, logs, metrics, audit logs, test runs) is excluded by default due to size. Use `--include-data` to include it.
 
@@ -48,7 +48,7 @@ To back up only specific resource types, use `--resources`:
 kestra backups create FULL --resources FLOW,KV_STORE,SECRET
 ```
 
-Available resource names include: `APP`, `BANNER`, `BINDING`, `BLUEPRINT`, `CREDENTIAL`, `DASHBOARD`, `EXECUTION`, `FLOW`, `GROUP`, `INVITATION`, `KILL_SWITCH`, `KV_STORE`, `LOG`, `METRIC`, `NAMESPACE`, `NAMESPACE_FILE`, `ROLE`, `SECRET`, `SECURITY_INTEGRATION`, `SETTING`, `TENANT`, `TENANT_ACCESS`, `TEST_SUITE`, `TRIGGER`, `USER`, `WORKER_GROUP`.
+Available resource names: `APP`, `AUDIT_LOG`, `BANNER`, `BINDING`, `BLUEPRINT`, `CASE`, `CASE_EVENT`, `CASE_EXECUTION`, `CASE_TEMPLATE`, `CREDENTIAL`, `DASHBOARD`, `EXECUTION`, `FLOW`, `GROUP`, `INVITATION`, `KILL_SWITCH`, `KV_STORE`, `LOG`, `METRIC`, `NAMESPACE`, `NAMESPACE_FILE`, `POLICY`, `PROMOTION_TARGET`, `ROLE`, `SECRET`, `SECURITY_INTEGRATION`, `SETTING`, `TENANT`, `TENANT_ACCESS`, `TEST`, `TEST_RUN`, `TRIGGER_STATE`, `USER`, `WORKER_GROUP`, `WORKER_QUEUE`. `TRIGGER` is a deprecated alias of `TRIGGER_STATE`.
 
 **Backup options:**
 
@@ -84,7 +84,7 @@ The restore command checks the archive's Kestra version against the running inst
 **Restore options:**
 
 - `--encryption-key`: decryption key. Falls back to the instance key if omitted; fails if neither is available.
-- `--to-tenant`: restore a tenant backup into a different tenant. Rewrites every record's tenant ID to the target tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive.
+- `--to-tenant`: restore a tenant backup into a different tenant. Rewrites every record's tenant ID to the target tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive. When the source tenant still exists on the instance, the restore also fails if the backup contains executions, test runs or cases; see [Copy a tenant within the same instance](#copy-a-tenant-within-the-same-instance).
 - `--resources`: restore only specific resource types (same names as `create`).
 
 The CLI logs a summary when complete:
@@ -96,6 +96,25 @@ The CLI logs a summary when complete:
 2024-09-17 16:41:07,182 INFO  restore      io.kestra.ee.backup.BackupService Restore summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, USER: 1, TRIGGER: 2]
 Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
 ```
+
+### Copy a tenant within the same instance
+
+To initialize a new tenant from an existing one on the same instance, create the target tenant, back up the source tenant without `--include-data`, and restore with `--to-tenant`:
+
+```bash
+kestra tenants create staging staging
+kestra backups create TENANT --tenant main
+kestra backups restore kestra:///backups/tenants/main/backup-20240917163312.kestra --to-tenant staging \
+  --resources APP,BANNER,BINDING,BLUEPRINT,CREDENTIAL,DASHBOARD,FLOW,GROUP,INVITATION,KV_STORE,NAMESPACE,NAMESPACE_FILE,POLICY,PROMOTION_TARGET,ROLE,SECRET,SECURITY_INTEGRATION,TENANT_ACCESS,TEST,TRIGGER_STATE
+```
+
+While the source tenant exists on the instance, Kestra refuses to restore `EXECUTION`, `TEST_RUN`, `CASE`, `CASE_TEMPLATE`, `CASE_EXECUTION` and `CASE_EVENT` into another tenant. The check runs before anything is written, and the error lists the resources to exclude:
+
+```plaintext
+Cannot restore CASE_TEMPLATE into tenant 'staging' while the source tenant 'main' still exists on this instance. Exclude them from the restored resources, or restore the backup on another instance.
+```
+
+Every tenant has a default case template, so a restore with the default resources is always refused in this situation: pass `--resources` as above. Restoring into another instance, or restoring the backup of a deleted tenant, is not affected.
 
 ### Example: Backup and restore inside Docker
 
@@ -120,6 +139,8 @@ docker exec your_container bash -c "./kestra backups restore kestra:///backups/f
 ### Backup and restore with the JDBC backend
 
 Use the database's native backup tools to back up and restore Kestra when running the JDBC backend.
+
+If the queue runs on a [dedicated queue database](../../configuration/02.runtime-and-storage/index.md#dedicated-queue-database), back up and restore both databases. Kestra doesn't recreate the `queues` table in an empty queue database, so restoring only the main database leaves Kestra unable to start.
 
 #### PostgreSQL
 
@@ -207,4 +228,4 @@ Kestra's internal storage can be a local filesystem or object storage.
 
 - **Local filesystem**: back up and restore the storage directory with your standard filesystem tools.
 - **Managed object storage**: enable cross-region replication (often sufficient for DR) or use the provider's backup tooling.
-- **Self-hosted object storage (e.g., MinIO)**: use a tool like [Restic](https://blog.min.io/back-up-restic-minio/) and/or configure replication.
+- **Self-hosted object storage (e.g., Ceph or SeaweedFS)**: use a tool like [Restic](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#amazon-s3) and/or configure replication.

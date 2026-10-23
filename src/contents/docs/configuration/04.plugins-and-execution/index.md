@@ -175,11 +175,13 @@ kestra:
       auto-reload-enabled: true
       auto-reload-interval: 60s
       default-version: LATEST
+      worker-access: STORAGE    # EE only: STORAGE (default) or CONTROLLER
 ```
 
 - `remote-storage-enabled`: store managed plugins in internal storage rather than on local disk
 - `auto-reload-enabled` / `auto-reload-interval`: check for updated plugins on a fixed interval
 - `default-version`: controls which plugin version is selected when no explicit version is pinned; accepts `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or a specific version string
+- `worker-access` (EE): controls how workers fetch managed plugin artifacts. Set to `CONTROLLER` when a worker runs with dedicated storage that differs from the deployment's. See [Dedicated-storage workers](../06.enterprise-and-advanced/index.md#dedicated-storage-workers).
 
 ## Execution behavior
 
@@ -264,7 +266,7 @@ kestra:
 | `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must match at least one entry or the task fails. |
 | `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
 
-For security guidance and matching behavior, see [HTTP task URL filtering](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering).
+For security guidance and matching behavior, see [HTTP task URL filtering](../../security-hardening/index.md#http-task-url-filtering).
 
 Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
 

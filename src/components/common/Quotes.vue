@@ -375,6 +375,7 @@
             flex-direction: column;
             align-items: center;
             flex: 1;
+            text-align: center;
 
             .kpi-value {
                 font-size: 2.5rem;

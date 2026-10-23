@@ -10,15 +10,27 @@
             >
                 <Menu /> Documentation Menu
             </button>
-            <div class="ai-button-wrapper mb-2">
-                <button
-                    class="ai-button"
-                    title="Ask Kestra AI"
-                    data-modal-target="#search-ai-modal"
+            <div v-if="versionOptions.length > 1" class="version-switcher">
+                <span class="version-label">Version</span>
+                <span class="separator" aria-hidden="true">·</span>
+                <span class="current-version">{{ displayedVersion }}</span>
+                <ChevronDown class="caret" aria-hidden="true" />
+                <!-- The native select is laid over the label, invisible: it
+                     keeps the keyboard and the system menu on every platform. -->
+                <select
+                    id="docs-version"
+                    aria-label="Documentation version"
+                    @change="onVersionChange"
                 >
-                    <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
-                    Ask Kestra AI
-                </button>
+                    <option
+                        v-for="option in versionOptions"
+                        :key="option.label"
+                        :value="option.version"
+                        :selected="option.selected"
+                    >
+                        {{ option.label }}
+                    </option>
+                </select>
             </div>
             <div
                 class="search"
@@ -37,23 +49,6 @@
                         <span class="command">Ctrl + K</span>
                     </div>
                 </div>
-            </div>
-            <div v-if="versionOptions.length > 1" class="version-select-wrapper mb-2">
-                <label for="docs-version" class="version-label">Version</label>
-                <select
-                    id="docs-version"
-                    class="version-select form-select"
-                    @change="onVersionChange"
-                >
-                    <option
-                        v-for="option in versionOptions"
-                        :key="option.label"
-                        :value="option.version"
-                        :selected="option.selected"
-                    >
-                        {{ option.label }}
-                    </option>
-                </select>
             </div>
             <div
                 class="bd-menu-collapse"
@@ -81,16 +76,16 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed, onMounted, provide, ref, type PropType } from "vue"
+    import { computed, provide, ref, watch, type PropType } from "vue"
     import { useMediaQuery } from "@vueuse/core"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Keyboard from "vue-material-design-icons/Keyboard.vue"
     import Menu from "vue-material-design-icons/Menu.vue"
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import RecursiveNavSidebar, {
         closeSidebarInjectionKey,
         type NavigationItem,
     } from "~/components/docs/RecursiveNavSidebar.vue"
-    import KSAIImg from "./assets/ks-ai.svg"
     import { activeSlug } from "~/utils/store"
     import { versionSelectOptions, resolveVersionSwitchHref } from "~/utils/versionedDocs"
 
@@ -128,12 +123,13 @@
         versionSelectOptions(props.latestVersion, props.knownVersions ?? [], props.currentVersion ?? null),
     )
 
+    const displayedVersion = computed(() => props.currentVersion ?? props.latestVersion)
+
     // Though `transition:persist`ed, this island's props DO refresh on
     // client-side navigations (persist-props defaults to false; verified on a
-    // prod build) — only the onMounted activeSlug sync below doesn't re-run.
-    // The URL read is simply the same value without depending on prop-update
-    // timing mid-transition. Full navigation on purpose: versioned targets
-    // are served by the middleware, outside the prerendered routes.
+    // prod build). The URL read is simply the same value without depending on
+    // prop-update timing mid-transition. Full navigation on purpose: versioned
+    // targets are served by the middleware, outside the prerendered routes.
     // The probe makes this async: only the most recent selection may navigate,
     // or a slower earlier probe would win the location assignment.
     let switchSeq = 0
@@ -146,9 +142,13 @@
         }
     }
 
-    onMounted(() => {
-        activeSlug.value = props.slug || ""
-    })
+    watch(
+        () => props.slug,
+        (slug) => {
+            activeSlug.value = slug || ""
+        },
+        { immediate: true },
+    )
 
     const disabledPages = [
         "/docs/terraform/data-sources",
@@ -250,8 +250,7 @@
                 }
             }
         }
-        .search,
-        .ai-button-wrapper {
+        .search {
             min-width: 209px;
             width: 98%;
             height: 32px;
@@ -260,37 +259,45 @@
                 margin-top: $spacer;
             }
         }
-        .version-select-wrapper {
-            display: flex;
+        .version-switcher {
+            position: relative;
+            display: inline-flex;
             align-items: center;
-            gap: calc($spacer * 0.5);
-            .version-label {
-                color: var(--ks-content-tertiary);
-                font-size: $font-size-sm;
+            gap: calc($spacer * 0.375);
+            // The sidebar scrolls, so it clips anything drawn outside its
+            // box: the padding makes room for the focus ring inside the
+            // switcher, and the negative margin keeps the text aligned.
+            padding: calc($spacer * 0.25);
+            margin-left: calc($spacer * -0.25);
+            margin-bottom: calc($spacer * 0.5);
+            font-size: $font-size-base;
+            color: var(--ks-content-tertiary);
+            @include media-breakpoint-down(lg) {
+                margin-top: $spacer;
             }
-            // .form-select for the caret: the native one is drawn hard against
-            // the border, and Bootstrap's background-image version is inset,
-            // like every other styled select on the site. Only the block padding
-            // is ours, to keep the sidebar control compact.
-            .version-select {
-                flex: 1;
-                padding-block: calc($spacer * 0.25);
-                font-size: $font-size-sm;
+            .current-version {
                 color: var(--ks-content-primary);
-                background-color: var(--ks-background-secondary);
-                border: $block-border;
-                border-radius: calc($spacer * 0.25);
+                font-weight: 600;
+            }
+            .caret {
+                display: inline-flex;
+                transition: color 0.2s ease;
+            }
+            select {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                opacity: 0;
                 cursor: pointer;
             }
-        }
-        .ai-button-wrapper {
-            .ai-button {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                padding-right: 12px;
-                padding-left: 0;
-                min-width: 0;
+            &:hover .caret,
+            &:focus-within .caret {
+                color: var(--ks-content-primary);
+            }
+            &:has(select:focus-visible) {
+                outline: 2px solid var(--ks-border-active);
+                outline-offset: -2px;
+                border-radius: calc($spacer * 0.25);
             }
         }
         .search {

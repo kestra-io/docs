@@ -13,7 +13,7 @@ Kestra Enterprise Edition is built for production workloads with high security a
 
 Kestra Enterprise is an additive overlay on the [Open Source Edition](https://github.com/kestra-io/kestra) — it shares one codebase and preserves all open-source behavior while adding enterprise capabilities on top.
 
-**High availability**: Designed to be highly available and fault-tolerant. Supports **Kafka**, **Redis**, **AMQP**, or **GCP Pub/Sub** as the queue backend, and **Elasticsearch** for the search and read model — eliminating single points of failure and enabling horizontal scaling for large workloads.
+**High availability**: Designed to be highly available and fault-tolerant. Supports **Kafka**, **Redis**, **AMQP**, **GCP Pub/Sub**, or **NATS** as the queue backend, and **Elasticsearch** for the search and read model — eliminating single points of failure and enabling horizontal scaling for large workloads.
 
 **Multi-tenancy**: Separate environments for different teams or projects. Each tenant is fully isolated, with its own access control policies, and can optionally run with Worker Isolation and dedicated worker groups to prevent cross-tenant contention.
 

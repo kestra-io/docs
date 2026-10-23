@@ -108,7 +108,7 @@ The example bundle ships inside the JAR — no network access is required at ten
 
 ## Asset TTL checks (kestra.assets.ttl-check)
 
-Kestra periodically checks the TTL of every asset to start [`TtlTrigger`](../../07.enterprise/02.governance/01.assets/index.md#operational-automation) flows and to notify asset owners in-app when a TTL is expiring or has expired. The check runs on executor nodes. When several executors run, only one of them checks a given tenant at a time.
+Kestra periodically checks the TTL of every asset to start [`TtlTrigger`](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#ttltrigger) flows and to notify asset owners in-app when a TTL is expiring or has expired. The check runs on executor nodes. When several executors run, only one of them checks a given tenant at a time.
 
 ```yaml
 kestra:
@@ -457,7 +457,6 @@ These settings cover the advanced repository and queue stack used in Enterprise 
 - Elasticsearch repository settings
 - Kafka client and topic settings
 - Kafka message protection
-- indexer behavior
 
 Use this section when you are running the Kafka plus Elasticsearch architecture instead of a JDBC-only deployment.
 
@@ -510,15 +509,7 @@ kestra:
 
 Kafka tuning is usually about cluster shape rather than syntax. Partition count limits how much component-level concurrency you can achieve, while replication settings should match your broker topology and HA expectations.
 
-This page also covers:
-
-- SSL-secured Kafka clients
-- default topic partition and replication settings
-- consumer, producer, and stream defaults
-- custom topic names and topic properties
-- consumer and topic prefixes for shared clusters
-- Kafka Streams local state directory
-- message protection for oversized Kafka messages
+Kestra passes `kestra.kafka.client.properties` to its Kafka admin client, producers, and consumers, so set transport and authentication there. Kestra creates a topic for each queue when it first needs one, using the settings under `kestra.kafka.defaults.topic`. These settings apply only when Kestra creates a topic; Kestra does not change topics that already exist.
 
 Representative advanced Kafka settings:
 
@@ -531,15 +522,15 @@ kestra:
         security.protocol: SSL
     defaults:
       topic:
-        partitions: 3
+        partitions: 16
         replication-factor: 3
-    topics:
-      executions:
         properties:
           retention.ms: 604800000
+  queue:
+    type: kafka
 ```
 
-Use client properties for transport and auth, `defaults` for cluster-wide topic behavior, and `topics.*.properties` only when one topic needs behavior that differs from the rest.
+Topic properties under `defaults.topic.properties` apply to every topic Kestra creates.
 
 Full SSL client configuration with keystores:
 
@@ -561,7 +552,7 @@ kestra:
     type: kafka
 ```
 
-Consumer, producer, and stream defaults:
+Kestra ships with these consumer and producer defaults:
 
 ```yaml
 kestra:
@@ -575,62 +566,33 @@ kestra:
       producer:
         properties:
           acks: "all"
-          compression.type: "lz4"
+          compression.type: "zstd"
+          compression.zstd.level: 1
           max.request.size: "10485760"
-      stream:
-        properties:
-          processing.guarantee: "exactly_once"
-          replication.factor: "${kestra.kafka.defaults.topic.replication-factor}"
-          acks: "all"
-          compression.type: "lz4"
-          max.request.size: "10485760"
-          state.dir: "/tmp/kafka-streams"
+          linger.ms: 0
 ```
 
-Client loggers for debugging message flow:
+Set only the properties you want to change. The others keep their defaults. For the latency tradeoff behind `linger.ms: 0`, see [Performance tuning](../../performance/performance-tuning/index.md#the-kafka-backend).
 
-```yaml
-kestra:
-  kafka:
-    client:
-      loggers:
-        - level: INFO
-          type: PRODUCER
-          topic-regexp: "kestra_(executions|workertaskresult)"
-          key-regexp: .*parallel.*
-          value-regexp: .*parallel.*
-```
+| Property | Description | Default |
+|---|---|---|
+| `kestra.kafka.client.properties` | Kafka client properties applied to the admin client, producers, and consumers. `bootstrap.servers` is required. | — |
+| `kestra.kafka.defaults.topic.partitions` | Number of partitions of each topic Kestra creates. | `16` |
+| `kestra.kafka.defaults.topic.replication-factor` | Replication factor of each topic Kestra creates. | `1` |
+| `kestra.kafka.defaults.topic.properties` | Kafka topic configuration applied to each topic Kestra creates. | — |
+| `kestra.kafka.defaults.consumer.properties` | Kafka consumer properties. | See the example above |
+| `kestra.kafka.defaults.producer.properties` | Kafka producer properties. | See the example above |
+| `kestra.server.metrics.kafka.admin` | Export Kafka client metrics for the admin client, producers, and consumers. | `true` |
 
-:::alert{type="warning"}
-Client loggers have a heavy performance impact. Use them only for short-lived debugging sessions.
-:::
+To share one Kafka cluster between several Kestra instances, give each instance a different `kestra.queue.prefix`. The prefix starts every topic name, and Kestra derives consumer group IDs from topic names, so instances don't consume each other's messages.
 
-Shared-cluster deployments often also need prefixes or dedicated topic names to avoid collisions with other tenants or environments.
+To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
 
-To reject oversized Kafka messages early:
-
-```yaml
-kestra:
-  kafka:
-    message-protection:
-      enabled: true
-      limit: 1048576
-```
-
-Indexer settings control batch indexing from Kafka into Elasticsearch:
-
-```yaml
-kestra:
-  indexer:
-    batch-size: 500
-    batch-duration: PT1S
-```
-
-If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
+The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
 ## Redis, AMQP, GCP Pub/Sub, and NATS queue backends
 
-Redis, AMQP (RabbitMQ), GCP Pub/Sub, and NATS are Enterprise Edition queue backends, alongside Kafka which is covered above. All four use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All four require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis, AMQP (RabbitMQ), GCP Pub/Sub, and NATS are Enterprise Edition queue backends, alongside Kafka which is covered above. All four use the same internal queue contracts as the JDBC and Kafka backends. Select a backend with `kestra.queue.type` and configure it under `kestra.queue.<type>`; no producer or consumer code changes. Your Enterprise license must include the backend you select. All four require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -639,8 +601,8 @@ These properties apply to all queue backends:
 | Property | Description | Default |
 |---|---|---|
 | `kestra.queue.prefix` | Name prefix added to every queue. Use this when multiple Kestra clusters share one backend to prevent stream collisions. | — |
-| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `false` |
-| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | — |
+| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `true` |
+| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | `1048576` (1 MiB) |
 
 ```yaml
 kestra:
@@ -655,7 +617,7 @@ Set `prefix` when multiple Kestra clusters share one backend (for example, stagi
 
 ### Redis
 
-Set `kestra.queue.type: redis` and configure the client connection under `kestra.redis.client`.
+Set `kestra.queue.type: redis` and configure the client connection under `kestra.queue.redis`.
 
 Minimal configuration:
 
@@ -663,8 +625,7 @@ Minimal configuration:
 kestra:
   queue:
     type: redis
-  redis:
-    client:
+    redis:
       url: redis://localhost:6379
 ```
 
@@ -674,8 +635,7 @@ With authentication:
 kestra:
   queue:
     type: redis
-  redis:
-    client:
+    redis:
       url: redis://localhost:6379
       username: kestra
       password: "${REDIS_PASSWORD}"
@@ -685,19 +645,20 @@ kestra:
 
 | Property | Description | Default |
 |---|---|---|
-| `kestra.redis.client.url` | Redis connection URI (`redis://` or `rediss://` for TLS). Required. | — |
-| `kestra.redis.client.username` | Redis username. | — |
-| `kestra.redis.client.password` | Redis password. | — |
-| `kestra.redis.client.pool.size` | Maximum connection pool size. | `32` |
-| `kestra.redis.client.pool.min-idle` | Minimum idle connections in the pool. | — |
-| `kestra.redis.client.pool.max-idle` | Maximum idle connections in the pool. | `32` |
-| `kestra.redis.client.pool.connection-acquire-timeout` | Maximum wait time to acquire a connection from the pool. | `PT5S` |
+| `kestra.queue.redis.url` | Redis connection URI (`redis://` or `rediss://` for TLS). Required. | — |
+| `kestra.queue.redis.username` | Redis username. | — |
+| `kestra.queue.redis.password` | Redis password. | — |
+| `kestra.queue.redis.pool.size` | Maximum connection pool size. | `32` |
+| `kestra.queue.redis.pool.min-idle` | Minimum idle connections in the pool. | — |
+| `kestra.queue.redis.pool.max-idle` | Maximum idle connections in the pool. | `32` |
+| `kestra.queue.redis.pool.connection-acquire-timeout` | Maximum wait time to acquire a connection from the pool. | `PT5S` |
+| `kestra.queue.redis.reclaim.enabled` | When a Kestra instance is confirmed dead, move the messages it was processing back to their queues so another instance redelivers them. Runs on the Executor and on standalone servers. | `true` |
 
 Use a `rediss://` scheme in the URL for TLS-secured connections.
 
 ### AMQP (RabbitMQ)
 
-Set `kestra.queue.type: amqp` and configure the client under `kestra.amqp.client`. RabbitMQ is the supported broker.
+Set `kestra.queue.type: amqp` and configure the client under `kestra.queue.amqp`. RabbitMQ is the supported broker.
 
 Minimal configuration:
 
@@ -705,8 +666,7 @@ Minimal configuration:
 kestra:
   queue:
     type: amqp
-  amqp:
-    client:
+    amqp:
       url: amqp://kestra:password@localhost:5672/kestra
 ```
 
@@ -716,30 +676,30 @@ Kestra creates the virtual host at startup if it does not already exist, using t
 
 | Property | Description | Default |
 |---|---|---|
-| `kestra.amqp.client.url` | AMQP broker URI. Required. | — |
-| `kestra.amqp.client.connection-timeout` | TCP connection timeout. | `PT60S` |
-| `kestra.amqp.client.handshake-timeout` | AMQP protocol handshake timeout. | `PT10S` |
-| `kestra.amqp.client.shutdown-timeout` | Socket close timeout on connection shutdown. | `PT10S` |
-| `kestra.amqp.client.channel-rpc-timeout` | Timeout for synchronous channel RPC operations. | `PT10M` |
-| `kestra.amqp.client.requested-heartbeat` | Heartbeat interval requested from the broker. | `PT60S` |
-| `kestra.amqp.client.requested-channel-max` | Maximum channels per connection. | `2047` |
-| `kestra.amqp.client.requested-frame-max` | Maximum AMQP frame size in bytes. `0` means negotiated (typically ~131 KB). | `0` |
-| `kestra.amqp.client.automatic-recovery-enabled` | Automatically reconnect after network failure. | `true` |
-| `kestra.amqp.client.topology-recovery-enabled` | Re-declare exchanges, queues, and bindings after recovery. | `true` |
-| `kestra.amqp.client.network-recovery-interval` | Delay between automatic recovery attempts. | `PT5S` |
-| `kestra.amqp.client.publish-confirm-timeout` | Maximum wait for broker publish confirms before failing a publish. | `PT30S` |
-| `kestra.amqp.client.publish-channel-cache-size` | Number of idle publisher channels cached for reuse. `0` disables caching. | `32` |
-| `kestra.amqp.client.batch-size` | Per-consumer prefetch count and maximum messages processed per batch. | `100` |
-| `kestra.amqp.client.management.port` | HTTP port of the RabbitMQ management API. | `15672` |
-| `kestra.amqp.client.management.tls-port` | HTTPS port of the management API (used when the URL scheme is `amqps://`). | `15671` |
-| `kestra.amqp.client.management.connect-timeout` | HTTP connect timeout for management API calls. | `PT5S` |
-| `kestra.amqp.client.management.request-timeout` | HTTP request timeout for management API calls. | `PT10S` |
+| `kestra.queue.amqp.url` | AMQP broker URI. Required. | — |
+| `kestra.queue.amqp.connection-timeout` | TCP connection timeout. | `PT60S` |
+| `kestra.queue.amqp.handshake-timeout` | AMQP protocol handshake timeout. | `PT10S` |
+| `kestra.queue.amqp.shutdown-timeout` | Socket close timeout on connection shutdown. | `PT10S` |
+| `kestra.queue.amqp.channel-rpc-timeout` | Timeout for synchronous channel RPC operations. | `PT10M` |
+| `kestra.queue.amqp.requested-heartbeat` | Heartbeat interval requested from the broker. | `PT60S` |
+| `kestra.queue.amqp.requested-channel-max` | Maximum channels per connection. | `2047` |
+| `kestra.queue.amqp.requested-frame-max` | Maximum AMQP frame size in bytes. `0` means negotiated (typically ~131 KB). | `0` |
+| `kestra.queue.amqp.automatic-recovery-enabled` | Automatically reconnect after network failure. | `true` |
+| `kestra.queue.amqp.topology-recovery-enabled` | Re-declare exchanges, queues, and bindings after recovery. | `true` |
+| `kestra.queue.amqp.network-recovery-interval` | Delay between automatic recovery attempts. | `PT5S` |
+| `kestra.queue.amqp.publish-confirm-timeout` | Maximum wait for broker publish confirms before failing a publish. | `PT30S` |
+| `kestra.queue.amqp.publish-channel-cache-size` | Number of idle publisher channels cached for reuse. `0` disables caching. | `32` |
+| `kestra.queue.amqp.batch-size` | Per-consumer prefetch count and maximum messages processed per batch. | `100` |
+| `kestra.queue.amqp.management.port` | HTTP port of the RabbitMQ management API. | `15672` |
+| `kestra.queue.amqp.management.tls-port` | HTTPS port of the management API (used when the URL scheme is `amqps://`). | `15671` |
+| `kestra.queue.amqp.management.connect-timeout` | HTTP connect timeout for management API calls. | `PT5S` |
+| `kestra.queue.amqp.management.request-timeout` | HTTP request timeout for management API calls. | `PT10S` |
 
 For TLS-secured brokers, use `amqps://` in the URL. The management API port automatically switches to `management.tls-port` when the scheme is `amqps://`.
 
 ### GCP Pub/Sub
 
-Set `kestra.queue.type: gcp-pubsub` and configure the client under `kestra.gcp-pubsub.client`.
+Set `kestra.queue.type: gcp-pubsub` and configure the client under `kestra.queue.gcp-pubsub`.
 
 Minimal configuration:
 
@@ -747,10 +707,11 @@ Minimal configuration:
 kestra:
   queue:
     type: gcp-pubsub
-  gcp-pubsub:
-    client:
+    gcp-pubsub:
       project-id: my-gcp-project
 ```
+
+Kestra creates the topics and subscriptions it needs. The credentials must allow creating, listing, and deleting topics and subscriptions in the project.
 
 Without a `service-account`, Kestra uses [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials): Workload Identity on GKE, the GCE metadata server, or `GOOGLE_APPLICATION_CREDENTIALS` in the environment.
 
@@ -760,29 +721,49 @@ With an explicit service account key:
 kestra:
   queue:
     type: gcp-pubsub
-  gcp-pubsub:
-    client:
+    gcp-pubsub:
       project-id: my-gcp-project
       service-account: |
         { "type": "service_account", ... }
 ```
 
+When Kestra runs outside Google Cloud, set `endpoint` to a [locational endpoint](https://cloud.google.com/pubsub/docs/reference/service_apis_overview#locational_endpoints) to keep round trips within one region:
+
+```yaml
+kestra:
+  queue:
+    type: gcp-pubsub
+    gcp-pubsub:
+      project-id: my-gcp-project
+      endpoint: europe-west9-pubsub.googleapis.com:443
+```
+
+Kestra includes `kestra.queue.prefix` in topic and subscription names. With Pub/Sub, the prefix must start with a letter, contain only letters, digits, `-`, `_`, `.`, `~`, `+`, and `%`, and not start with `goog`. Kestra fails to start if the prefix, `ack-deadline`, `broadcast-subscription-ttl`, or `endpoint` is outside the range Pub/Sub accepts.
+
+Exactly-once delivery and message ordering are off by default, which matches the at-least-once delivery of the other queue backends. With `message-ordering: true`, messages that share a key arrive in order, but messages with different keys can overtake each other.
+
+Kestra applies `ack-deadline`, `message-ordering`, `exactly-once-delivery`, and `message-retention-duration` only when it creates a subscription. If a subscription already exists with different settings, Kestra logs a warning and leaves the subscription unchanged. To apply new values, delete the subscription so Kestra recreates it, or set a different `kestra.queue.prefix`.
+
 #### Configuration reference
 
 | Property | Description | Default |
 |---|---|---|
-| `kestra.gcp-pubsub.client.project-id` | GCP project ID. Required. | — |
-| `kestra.gcp-pubsub.client.service-account` | Service account JSON key. Falls back to ADC when omitted. | — |
-| `kestra.gcp-pubsub.client.ack-deadline` | Acknowledgment deadline per message. | `PT10S` |
-| `kestra.gcp-pubsub.client.compression-enabled` | Enable gRPC message compression for Pub/Sub calls. | `true` |
-| `kestra.gcp-pubsub.client.compression-bytes-threshold` | Minimum message size in bytes before compression applies. | `10` |
-| `kestra.gcp-pubsub.client.exactly-once-delivery` | Enable exactly-once delivery on subscriptions. | `true` |
-| `kestra.gcp-pubsub.client.message-ordering` | Enable message ordering on subscriptions. | `true` |
-| `kestra.gcp-pubsub.client.message-retention-duration` | How long Pub/Sub retains unacknowledged messages. Leave unset to use the Pub/Sub subscription default. | — |
+| `kestra.queue.gcp-pubsub.project-id` | Google Cloud project that holds the topics and subscriptions. Required. | — |
+| `kestra.queue.gcp-pubsub.service-account` | Service account key as JSON. Falls back to Application Default Credentials when omitted. | — |
+| `kestra.queue.gcp-pubsub.endpoint` | `host:port` of a Pub/Sub locational endpoint, such as `europe-west9-pubsub.googleapis.com:443`. Ignored when `emulator-host` is set. | Global endpoint |
+| `kestra.queue.gcp-pubsub.emulator-host` | `host:port` of a Pub/Sub emulator, reached without TLS or credentials. Use it for local testing. | — |
+| `kestra.queue.gcp-pubsub.ack-deadline` | How long Pub/Sub waits for an acknowledgment before it redelivers a message. Must be between `PT10S` and `PT10M`. | `PT10S` |
+| `kestra.queue.gcp-pubsub.compression-enabled` | Compress published batches. | `false` |
+| `kestra.queue.gcp-pubsub.compression-bytes-threshold` | Batch size in bytes at or above which compression applies. | `240` |
+| `kestra.queue.gcp-pubsub.exactly-once-delivery` | Create subscriptions with exactly-once delivery. The Pub/Sub emulator does not support it. | `false` |
+| `kestra.queue.gcp-pubsub.message-ordering` | Publish and deliver messages that share a key in order. | `false` |
+| `kestra.queue.gcp-pubsub.message-retention-duration` | How long Pub/Sub retains unacknowledged messages. Leave unset to use the Pub/Sub subscription default. | — |
+| `kestra.queue.gcp-pubsub.broadcast-subscription-ttl` | How long an inactive broadcast subscription survives before Pub/Sub deletes it. Must be at least `P1D`. | `P1D` |
+| `kestra.queue.gcp-pubsub.batch-size` | Number of messages a subscriber holds ahead of processing, and the size of a processed batch. | `100` |
 
 ### NATS
 
-Set `kestra.queue.type: nats` and configure the connection under `kestra.nats`. NATS with JetStream enabled is required.
+Set `kestra.queue.type: nats` and configure the connection under `kestra.queue.nats`. NATS with JetStream enabled is required.
 
 Minimal configuration:
 
@@ -790,9 +771,9 @@ Minimal configuration:
 kestra:
   queue:
     type: nats
-  nats:
-    servers:
-      - nats://localhost:4222
+    nats:
+      servers:
+        - nats://localhost:4222
 ```
 
 With token authentication:
@@ -801,10 +782,10 @@ With token authentication:
 kestra:
   queue:
     type: nats
-  nats:
-    servers:
-      - nats://localhost:4222
-    token: "${NATS_TOKEN}"
+    nats:
+      servers:
+        - nats://localhost:4222
+      token: "${NATS_TOKEN}"
 ```
 
 With username and password:
@@ -813,11 +794,11 @@ With username and password:
 kestra:
   queue:
     type: nats
-  nats:
-    servers:
-      - nats://localhost:4222
-    username: kestra
-    password: "${NATS_PASSWORD}"
+    nats:
+      servers:
+        - nats://localhost:4222
+      username: kestra
+      password: "${NATS_PASSWORD}"
 ```
 
 With a credentials file (NKey or JWT):
@@ -826,10 +807,10 @@ With a credentials file (NKey or JWT):
 kestra:
   queue:
     type: nats
-  nats:
-    servers:
-      - nats://nats.example.com:4222
-    credentials-file: /etc/kestra/nats.creds
+    nats:
+      servers:
+        - nats://nats.example.com:4222
+      credentials-file: /etc/kestra/nats.creds
 ```
 
 `token`, `credentials-file`, and `username` are mutually exclusive — set exactly one.
@@ -840,49 +821,49 @@ With TLS:
 kestra:
   queue:
     type: nats
-  nats:
-    servers:
-      - tls://nats.example.com:4222
-    truststore-path: /etc/kestra/truststore.jks
-    truststore-password: "${TRUSTSTORE_PASSWORD}"
+    nats:
+      servers:
+        - tls://nats.example.com:4222
+      truststore-path: /etc/kestra/truststore.jks
+      truststore-password: "${TRUSTSTORE_PASSWORD}"
 ```
 
-For mutual TLS, also set `keystorePath` and `keystorePassword`.
+For mutual TLS, also set `keystore-path` and `keystore-password`.
 
 #### Configuration reference
 
-**Connection (`kestra.nats`)**
+**Connection (`kestra.queue.nats`)**
 
 | Property | Description | Default |
 |---|---|---|
-| `kestra.nats.servers` | List of NATS server URLs to connect to. | `[nats://localhost:4222]` |
-| `kestra.nats.connection-name` | Connection name visible in the NATS server monitoring. | `kestra` |
-| `kestra.nats.credentials-file` | Path to a credentials file (NKey or JWT). Exclusive with `token` and `username`. | — |
-| `kestra.nats.token` | Authentication token. Exclusive with `credentials-file` and `username`. | — |
-| `kestra.nats.username` | Username for user/password authentication. Exclusive with `credentials-file` and `token`. | — |
-| `kestra.nats.password` | Password for user/password authentication. | — |
-| `kestra.nats.truststore-path` | Path to the JKS truststore holding server certificates, for TLS. | — |
-| `kestra.nats.truststore-password` | Truststore password. | — |
-| `kestra.nats.keystore-path` | Path to the JKS keystore holding the client certificate, for mutual TLS. | — |
-| `kestra.nats.keystore-password` | Keystore password. | — |
-| `kestra.nats.jetstream-domain` | JetStream domain. Exclusive with `jetstream-api-prefix`. | — |
-| `kestra.nats.jetstream-api-prefix` | JetStream API prefix. Exclusive with `jetstream-domain`. | — |
-| `kestra.nats.request-timeout` | Timeout for requests to the NATS server. | `PT2S` |
+| `kestra.queue.nats.servers` | List of NATS server URLs to connect to. | `[nats://localhost:4222]` |
+| `kestra.queue.nats.connection-name` | Connection name visible in the NATS server monitoring. | `kestra` |
+| `kestra.queue.nats.credentials-file` | Path to a credentials file (NKey or JWT). Exclusive with `token` and `username`. | — |
+| `kestra.queue.nats.token` | Authentication token. Exclusive with `credentials-file` and `username`. | — |
+| `kestra.queue.nats.username` | Username for user/password authentication. Exclusive with `credentials-file` and `token`. | — |
+| `kestra.queue.nats.password` | Password for user/password authentication. | — |
+| `kestra.queue.nats.truststore-path` | Path to the JKS truststore holding server certificates, for TLS. | — |
+| `kestra.queue.nats.truststore-password` | Truststore password. | — |
+| `kestra.queue.nats.keystore-path` | Path to the JKS keystore holding the client certificate, for mutual TLS. | — |
+| `kestra.queue.nats.keystore-password` | Keystore password. | — |
+| `kestra.queue.nats.jetstream-domain` | JetStream domain. Exclusive with `jetstream-api-prefix`. | — |
+| `kestra.queue.nats.jetstream-api-prefix` | JetStream API prefix. Exclusive with `jetstream-domain`. | — |
+| `kestra.queue.nats.request-timeout` | Timeout for requests to the NATS server. | `PT2S` |
 
-**Queue tuning (`kestra.nats.queues`)**
+**Queue tuning (`kestra.queue.nats.queues`)**
 
 | Property | Description | Default |
 |---|---|---|
-| `kestra.nats.queues.replicas` | Number of stream replicas. Applied only when a stream is first created. | `1` |
-| `kestra.nats.queues.storage` | Stream storage type: `FILE` or `MEMORY`. Applied only when a stream is first created. | `FILE` |
-| `kestra.nats.queues.emit-timeout` | Overall deadline for an emit, including retries. | `PT10S` |
-| `kestra.nats.queues.max-in-flight` | Maximum unacknowledged messages across all queues before emits start waiting. | `500` |
-| `kestra.nats.queues.broadcast-max-age` | How long broadcast stream messages are retained. | `PT1H` |
-| `kestra.nats.queues.fetch-batch-size` | Messages a batch subscriber requests ahead of processing. | `100` |
-| `kestra.nats.queues.fetch-single-size` | Messages a single-message subscriber requests ahead of processing. | `10` |
-| `kestra.nats.queues.fetch-wait` | How long a subscriber waits for a message before checking for pause or close. | `PT1S` |
-| `kestra.nats.queues.ack-wait` | How long the server waits for an acknowledgement before redelivering. | `PT60S` |
-| `kestra.nats.queues.max-ack-pending` | Maximum unacknowledged messages per consumer, shared across all its subscribers. | `1000` |
+| `kestra.queue.nats.queues.replicas` | Number of stream replicas. Applied only when a stream is first created. | `1` |
+| `kestra.queue.nats.queues.storage` | Stream storage type: `FILE` or `MEMORY`. Applied only when a stream is first created. | `FILE` |
+| `kestra.queue.nats.queues.emit-timeout` | Overall deadline for an emit, including retries. | `PT10S` |
+| `kestra.queue.nats.queues.max-in-flight` | Maximum unacknowledged messages across all queues before emits start waiting. | `500` |
+| `kestra.queue.nats.queues.broadcast-max-age` | How long broadcast stream messages are retained. | `PT1H` |
+| `kestra.queue.nats.queues.fetch-batch-size` | Messages a batch subscriber requests ahead of processing. | `100` |
+| `kestra.queue.nats.queues.fetch-single-size` | Messages a single-message subscriber requests ahead of processing. | `10` |
+| `kestra.queue.nats.queues.fetch-wait` | How long a subscriber waits for a message before checking for pause or close. | `PT1S` |
+| `kestra.queue.nats.queues.ack-wait` | How long the server waits for an acknowledgement before redelivering. | `PT60S` |
+| `kestra.queue.nats.queues.max-ack-pending` | Maximum unacknowledged messages per consumer, shared across all its subscribers. | `1000` |
 
 ## MCP server cache
 
