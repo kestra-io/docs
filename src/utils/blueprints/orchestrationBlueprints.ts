@@ -6,14 +6,10 @@ export interface BlueprintRender {
 }
 
 export async function resolveBlueprintRenders<
-    T extends { blueprintId?: string },
+    T extends { blueprintId: string },
 >(items: T[]): Promise<(T & { render?: BlueprintRender })[]> {
     return Promise.all(
         items.map(async (item) => {
-            if (!item.blueprintId) {
-                return item
-            }
-
             const flow = await $fetchApiCachedOptional<{ flow: string }>(
                 buildBlueprintFlowUrl(item.blueprintId),
             )
