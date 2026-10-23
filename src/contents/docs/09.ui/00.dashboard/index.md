@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/ui.svg
 editions: ["EE"]
 ---
 
-The **Dashboards** page displays the default dashboard and any custom dashboards you've created. Switch between them using the hamburger menu — if you have more than 10, use the search bar. The same menu lets you edit or delete dashboards. From any dashboard you can apply and save filters, refresh data, and set an automatic periodic refresh.
+The **Dashboards** page displays the default dashboard and any custom dashboards you've created. Switch between them using the hamburger menu — if you have more than 10, use the search bar. The same menu lets you edit or delete dashboards. From any dashboard you can apply and save filters, refresh data, and set an automatic refresh.
 
 ![Dashboard Main Page](./main_page.png)
 

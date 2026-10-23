@@ -25,7 +25,7 @@ The common production path is PostgreSQL for queue and repository, plus an objec
 Queues and repositories must stay compatible:
 
 - in-memory queue with in-memory repository for local testing only
-- JDBC queue with H2, MySQL, or PostgreSQL repository
+- JDBC queue with H2, MySQL, or PostgreSQL repository, in the same database or in a [dedicated queue database](#dedicated-queue-database)
 - Kafka queue with Elasticsearch repository in Enterprise Edition
 
 ## Allocated CPU cores
@@ -128,6 +128,54 @@ Use H2 for local development. For production, prefer PostgreSQL, or MySQL if Pos
 For PostgreSQL performance issues, consider `random_page_cost=1.1` and `kestra.queue.postgres.disable-seq-scan=true` if queue polling is choosing poor query plans.
 :::
 
+### Dedicated queue database
+
+By default, the JDBC queue shares the repository's database. To move the queue to its own database, add a `kestra.queue.jdbc` block with a connection URL and credentials. Use this to spread load across two database servers, or to pair a repository and a queue that run on different database engines.
+
+The following example keeps the repository in MySQL and runs the queue on a separate PostgreSQL database:
+
+```yaml
+kestra:
+  repository:
+    type: mysql
+  queue:
+    type: postgres
+    jdbc:
+      type: postgres
+      url: jdbc:postgresql://pg-queue:5432/kestra_queue
+      username: kestra
+      password: k3str4
+
+datasources:
+  mysql:
+    url: jdbc:mysql://mysql:3306/kestra
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: kestra
+    password: k3str4
+    dialect: MYSQL
+```
+
+| Property | Description |
+| --- | --- |
+| `kestra.queue.jdbc.type` | Queue database type: `postgres`, `mysql`, or `h2`. Set it to the same value as `kestra.queue.type`. |
+| `kestra.queue.jdbc.url` | JDBC URL of the queue database. When set, Kestra opens a separate connection pool for the queue. |
+| `kestra.queue.jdbc.username` | Queue database username. Required when `url` is set. |
+| `kestra.queue.jdbc.password` | Queue database password. |
+
+Kestra applies these rules at startup:
+
+- Kestra uses a dedicated queue database only when both `type` and `url` are set. If `type` is missing, Kestra ignores the block and keeps the queue in the main database.
+- Kestra never reuses the main datasource credentials for the queue database. If `url` is set without `username`, Kestra fails to start.
+- If `kestra.queue.jdbc.type` differs from `kestra.repository.type` and no `url` is set, Kestra fails to start, because the queue would run SQL for one engine against the other.
+
+Keep `kestra.queue.type` and `kestra.queue.jdbc.type` identical: `kestra.queue.type` selects which queue table schema Kestra creates, and `kestra.queue.jdbc.type` selects the SQL dialect for the connection.
+
+Only the `queues` table moves to the dedicated database. Flows, executions, and Kestra's other state tables stay in the main database. To tune the queue's connection pool, see [Connection pooling and JDBC queue tuning](#connection-pooling-and-jdbc-queue-tuning).
+
+:::alert{type="warning"}
+Kestra records queue schema migrations in the main database and skips any migration already recorded there. It creates the `queues` table in a dedicated database only when the main database has no record of those migrations, such as on a new installation. If you move an existing instance's queue to an empty database, or replace the queue database with an empty one, Kestra fails to start with `relation "queues" does not exist`.
+:::
+
 ## Log data store
 
 By default, execution logs are stored in the same database as flows and executions. In Kestra 2.0+, you can route logs to a separate store by setting `kestra.logs.type`. If this key is not set, logs continue to use the repository backend — no migration needed.
@@ -191,6 +239,19 @@ datasources:
     password: k3str4
     maximum-pool-size: 20
     minimum-idle: 10
+```
+
+A [dedicated queue database](#dedicated-queue-database) has its own pool, named `kestra-queue-<type>` unless you set `pool-name`. Set its HikariCP options under `kestra.queue.jdbc` instead of `datasources`:
+
+```yaml
+kestra:
+  queue:
+    jdbc:
+      type: postgres
+      url: jdbc:postgresql://pg-queue:5432/kestra_queue
+      username: kestra
+      password: k3str4
+      maximum-pool-size: 20
 ```
 
 Rough connection planning:

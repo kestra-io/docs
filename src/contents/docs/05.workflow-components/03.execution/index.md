@@ -200,6 +200,31 @@ kestra:
   url: http://localhost:8080
 ```
 
+### Schedule and reschedule an execution
+
+Pass `scheduleDate` to create an execution that stays in the `CREATED` state until that date:
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/hello_world?scheduleDate=2026-11-01T09:00:00Z"
+```
+
+To move the start of a scheduled execution that has not started yet, call the `reschedule` action with the new date:
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/main/executions/{executionId}/actions/reschedule?scheduleDate=2026-11-02T09:00:00Z"
+```
+
+This works for any scheduled execution, including child executions created by a [Subflow task](../10.subflows/index.md) with `scheduleDate`. The response is the updated execution. If the date uses an offset such as `+02:00`, URL-encode the `+` as `%2B`.
+
+The request fails with:
+
+- `409 Conflict` if the execution has no `scheduleDate`, has left the `CREATED` state, or its scheduled start is being processed at that moment.
+- `422 Unprocessable Entity` if the new `scheduleDate` is not in the future.
+
+:::alert{type="info"}
+In the Enterprise Edition, rescheduling requires the `UPDATE` action on the `EXECUTION` permission. See the [permissions reference](../../07.enterprise/03.auth/rbac/permissions-reference/index.md).
+:::
+
 ### Execute via API in Python
 
 ```python

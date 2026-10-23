@@ -107,6 +107,29 @@ An asset in `outputs` has these fields:
 
 Any other key you add to an output entry is stored in `metadata`. For example, `system: postgres` at the top level of the entry and `metadata.system: postgres` produce the same asset.
 
+### Lifecycle fields
+
+Three more top-level fields describe a resource's lifecycle. Set them directly on the output entry, not inside `metadata`:
+
+| Field | Description |
+| --- | --- |
+| `status` | Lifecycle state of the resource, as any string. Defaults to `active` when absent. |
+| `ttl` | Lease expiry as a UTC instant with milliseconds: `yyyy-MM-dd'T'HH:mm:ss.SSS'Z'`. An empty value means no expiry. Any other format is rejected. |
+| `owner` | Who the resource belongs to. Conventionally `user:<id>` or `group:<id>`. |
+
+Kestra stores these as `system.status`, `system.ttl`, and `system.owner`. Use those keys in dashboard queries and filter expressions. The fields apply to every asset type.
+
+```yaml
+outputs:
+  - id: staging-cluster-eu
+    type: io.kestra.plugin.ee.assets.VM
+    status: active
+    ttl: "2026-12-01T00:00:00.000Z"
+    owner: group:platform
+```
+
+To act before or after `ttl` passes, use a [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger).
+
 ### Identity
 
 Kestra identifies an asset by its `id` within a tenant. The namespace and the type aren't part of the identity. Two declarations with the same `id` always refer to the same asset, even in different namespaces or flows.
@@ -121,6 +144,9 @@ When a task writes an asset that already exists, Kestra merges the new declarati
 | `namespace` | A declared namespace replaces the stored one. An omitted namespace keeps the stored one. |
 | `displayName`, `description` | A declared value replaces the stored one. An omitted value keeps the stored one. |
 | `metadata` | Merged key by key. Declared keys replace stored keys. Keys you don't declare are kept. A flow can't remove a key; to remove one, edit the asset in the UI or through the API. |
+| `partOf` | A declared parent replaces the stored one. An omitted `partOf` keeps the stored parent. |
+| `related` | Declared relations are added. Removing an entry from the list doesn't remove the relation; remove it through the API. |
+| `assetActions` | A declared list replaces the stored list. An omitted list keeps the stored one. |
 
 Each write updates the asset's `updated` timestamp and emits an `UPDATED` event, even when no field changed.
 
@@ -158,6 +184,70 @@ assets:
       type: io.kestra.plugin.ee.assets.Table
 ```
 
+## Relate assets
+
+Lineage edges come from what tasks read and write. To record other connections, add `partOf` and `related` to an output asset:
+
+| Field | Description |
+| --- | --- |
+| `partOf` | One parent asset, such as the deployment a VM belongs to. Creates a **Part of** relation. |
+| `related` | Up to 50 assets connected without a direction, such as a VM and its load balancer. Creates **Related** relations. |
+
+Each entry takes an `id`, an optional `namespace`, and an optional `role` of up to 100 characters that describes the connection:
+
+```yaml
+outputs:
+  - id: web-01
+    type: io.kestra.plugin.ee.assets.VM
+    partOf:
+      id: deploy-prod-eu
+      role: primary
+    related:
+      - id: lb-prod-eu
+        role: backend
+```
+
+The parent shows **web-01** under **Parts**, and the dependencies graph draws **Part of** and **Related** edges. To change relations without a flow, or to remove them, use the [relations API](../03.manage-assets/index.md#relations).
+
+## Asset actions
+
+Asset actions attach flows to an asset so users can run them from the asset's page, for example to resize or decommission a resource. Declare them with `assetActions` on an output asset. Each action names a flow by `namespace` and `flowId`, with an optional button `label`:
+
+```yaml
+outputs:
+  - id: web-01
+    type: io.kestra.plugin.ee.assets.VM
+    status: active
+    assetActions:
+      - namespace: company.infra
+        flowId: resize_vm
+        label: Resize
+      - namespace: company.infra
+        flowId: decommission_vm
+        label: Decommission
+        when:
+          - field: status
+            operator: EQUAL_TO
+            value: active
+      - namespace: company.infra
+        flowId: scale_cluster
+        label: Scale up
+        when:
+          - field: metadata.nodeCount
+            operator: LESS_THAN_OR_EQUAL_TO
+            value: 2
+```
+
+An action can carry up to 20 `when` conditions. Kestra offers the action and lets it run only while all of them hold, and an action without conditions is always offered. Each condition has a `field`, an `operator`, and a `value`.
+
+A condition reads one of the asset's fields: `id`, `namespace`, `type`, `displayName`, `description`, `status`, `ttl`, `owner`, or a metadata key as `metadata.<key>`. Use a dotted path such as `metadata.network.zone` for a nested key.
+
+The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_CONTAINS`, `STARTS_WITH`, `ENDS_WITH`, `PREFIX`, `REGEX`, `GREATER_THAN`, `GREATER_THAN_OR_EQUAL_TO`, `LESS_THAN`, `LESS_THAN_OR_EQUAL_TO`, `IS_NULL`, and `IS_NOT_NULL`. `IN` and `NOT_IN` take a list as `value`, and `IS_NULL` and `IS_NOT_NULL` take no `value`. Text operators compare values as strings and are case-sensitive. The `GREATER_THAN` and `LESS_THAN` operators and their `_OR_EQUAL_TO` variants compare numbers and dates by value. Write dates in ISO 8601, either as a plain date or as a date-time with an offset, such as `2026-12-31T00:00:00Z`.
+
+A field the asset doesn't have, or an empty one, counts as unset, so `NOT_EQUAL_TO`, `NOT_IN`, and `NOT_CONTAINS` hold on it. An asset without a `status` counts as `active`. An asset can have up to 100 actions. To add actions or edit their conditions in the UI, see [Manage assets](../03.manage-assets/index.md#asset-detail-page).
+
+Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/types/infrastructure/index.md#day-2-actions) on a deployment's page.
+
 ## Built-in asset types
 
 | Type | Common metadata keys |
@@ -166,7 +256,8 @@ assets:
 | `io.kestra.plugin.ee.assets.Dataset` | `system`, `location`, `format` |
 | `io.kestra.plugin.ee.assets.File` | `system`, `path` |
 | `io.kestra.plugin.ee.assets.VM` | `provider`, `region`, `state` |
-| `io.kestra.core.models.assets.External` | None. Kestra assigns this type to placeholders created from untyped inputs. |
+| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/types/infrastructure/index.md) lists under **Deployments**. |
+| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs. You can't declare it as a type. |
 
 The metadata keys are conventions. Kestra stores them in `metadata` like any other key, and the [dependencies graph](../03.manage-assets/index.md#explore-the-dependencies-graph) uses `system` and `schema` for grouping.
 
@@ -292,7 +383,11 @@ assets:
 
 An invalid declaration is different. If a rendered asset breaks a [field](#asset-fields) rule, for example an `id` with a space, the task fails regardless of `assetFailureBehavior`.
 
-The value accepts expressions.
+The value accepts expressions. To set it across many tasks without editing each flow, use a [Policy](../../policies/index.md) `Add` rule with `values: {assets: {assetFailureBehavior: FAIL}}`.
+
+:::alert{type="info"}
+If tasks that declare assets start ending in `WARNING`, their asset writes were already failing before this property existed, but silently. Set `assetFailureBehavior: IGNORE` to restore the silent behavior while you fix the cause.
+:::
 
 ## Next steps
 

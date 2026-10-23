@@ -456,6 +456,55 @@ testCases:
 
 When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test fails and reports both the expected and actual states.
 
+## Dynamic input defaults in fixtures
+
+When a flow input uses `dependsOn` with a `defaults` expression that references another input, the fixture only needs to supply the upstream input. The downstream default is rendered automatically from the fixture values, the same way as in a live execution.
+
+The following flow derives `category_label` from `category`:
+
+```yaml
+id: order_lookup
+namespace: company.team
+
+inputs:
+  - id: category
+    type: STRING
+
+  - id: category_label
+    type: STRING
+    dependsOn:
+      inputs:
+        - category
+    defaults: "{{ inputs.category | capitalize }} orders"
+
+tasks:
+  - id: log_label
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing: {{ inputs.category_label }}"
+```
+
+The test supplies only `category`. The `category_label` default is rendered from it and can be asserted directly:
+
+```yaml
+id: order_lookup_tests
+namespace: company.team
+flowId: order_lookup
+
+testCases:
+  - id: label_derived_from_category
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      inputs:
+        category: electronics
+    assertions:
+      - value: "{{ inputs.category_label }}"
+        equalTo: "Electronics orders"
+```
+
+:::alert{type="info"}
+If a fixture input fails validation (for example, a `FILE`-type input whose value is not a valid URI, or a `SECRET`-type input when no encryption key is configured), the test case reports `ERROR` with `Invalid fixture inputs: <reason>` rather than a server error.
+:::
+
 ## Available assertion operators
 
 While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The complete list is as follows:

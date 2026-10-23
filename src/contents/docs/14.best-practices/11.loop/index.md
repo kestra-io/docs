@@ -39,7 +39,7 @@ tasks:
         message: "region={{ item.value }} index={{ item.index }}"
 ```
 
-When iterating over JSON objects, `item.value` is a JSON string. Use `fromJson(item.value).field` to access properties — `item.value.field` does not work.
+When iterating over JSON objects, set `parseValues: true` so that `item.value` is a map and you can read fields with `item.value.field`. Without it, `item.value` is a JSON string and every expression needs `fromJson(item.value).field`.
 
 ```yaml
 tasks:
@@ -48,11 +48,14 @@ tasks:
     values:
       - {"id": 101, "email": "a@example.com"}
       - {"id": 102, "email": "b@example.com"}
+    parseValues: true
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "User {{ fromJson(item.value).id }} -> {{ fromJson(item.value).email }}"
+        message: "User {{ item.value.id }} -> {{ item.value.email }}"
 ```
+
+Only JSON objects are parsed. Arrays, numbers, and plain strings stay strings. For the full behavior, see [Read object fields with `parseValues`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#read-object-fields-with-parsevalues).
 
 ## Expose outputs explicitly
 
@@ -339,7 +342,8 @@ tasks:
 ## Common mistakes to avoid
 
 - Do not use `taskrun.value` or `taskrun.iteration` — use `item.value` and `item.index`.
-- Do not access `item.value.field` directly on object values — use `fromJson(item.value).field`.
+- Do not access `item.value.field` on object values unless the Loop sets `parseValues: true`. Without it, use `fromJson(item.value).field`.
+- Do not keep `fromJson(item.value)` after you set `parseValues: true`. `fromJson()` fails on a map.
 - Do not expect loop outputs to be visible downstream without declaring an `outputs:` block.
 - Do not expect duplicate list values to run twice. Kestra drops duplicate elements from a list or JSON array.
 - Do not use `breakWhen` with the default `concurrencyLimit: 0`. Every iteration starts at once, so the condition never stops anything.

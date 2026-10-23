@@ -431,11 +431,79 @@ The `PAUSE` stage shows the original request inputs (`ExecutionInputs`), the `on
 
 This pattern applies directly to database access requests, sandbox environment creation, firewall rule approvals, SaaS account provisioning, and any other workflow that needs a human gate before it continues.
 
+### Lay out blocks in a grid
+
+Blocks stack in a single column by default. Use the `Grid` block to place blocks side by side, for example `Outputs` next to `Logs`, or a form next to its button.
+
+```yaml
+- type: io.kestra.plugin.ee.apps.core.blocks.Grid
+  columns: 2
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+```
+
+| Property | Applies to | Description |
+| --- | --- | --- |
+| `columns` | `Grid` | The number of columns, from `1` to `12`. Defaults to `1`. |
+| `gap` | `Grid` | The space between cells: `NONE`, `SMALL`, `MEDIUM`, `LARGE` or `EXTRA_LARGE`. Defaults to `MEDIUM`. |
+| `blocks` | `Grid` | The blocks to display. At least one is required. |
+| `span` | every block | The number of columns the block takes in the grid that holds it, from `1` to the `columns` of that grid. Defaults to `1` and is ignored outside a `Grid`. |
+
+Blocks flow from left to right and wrap when the row is full. A `span` larger than the `columns` of its grid is rejected when the app is saved. On a narrow screen, below `40rem` of available width, the grid collapses to a single column and every `span` is ignored.
+
+The example below uses three columns. The second card takes two of them, and the third takes the full row.
+
+```yaml
+- type: io.kestra.plugin.ee.apps.core.blocks.Grid
+  columns: 3
+  gap: LARGE
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "**Card A** - one column"
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      span: 2
+      content: "**Card B** - spans two columns"
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      span: 3
+      content: "**Card C** - spans the full row"
+```
+
+A cell holds exactly one block. To put several blocks in one cell, nest a `Grid` in it. The example below shows a form and its submit button in different cells, with the button and two text blocks grouped in a nested grid.
+
+```yaml
+- type: io.kestra.plugin.ee.apps.core.blocks.Grid
+  columns: 2
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+    - type: io.kestra.plugin.ee.apps.core.blocks.Grid
+      columns: 2
+      gap: SMALL
+      blocks:
+        - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+          content: "Nested cell 1"
+        - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+          content: "Nested cell 2"
+        - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+          span: 2
+          text: Submit
+```
+
+![App with a grid of blocks](./app-grid-block.png)
+
+Blocks inside a grid follow the same rules as top-level blocks. For example, `Outputs` can only be used on the `SUCCESS` and `FAILURE` stages, wherever it sits in the layout.
+
+In the no-code editor, a `Grid` is added like any other block. Select it to edit its `columns` and `gap`, or select a block inside it to edit that block and its `span`. Blocks inside a grid can be duplicated, deleted and reordered within the grid, and the block list shows the nesting.
+
+![Editing a grid in the no-code editor](./app-grid-builder.png)
+
 ---
 
 ## Creating Apps without code
 
 Apps can also be built using the no-code editor. Every block, property, and configuration option available in YAML is fully supported visually. Changes made in the no-code editor are immediately reflected in the code view, and vice versa — teams can switch between approaches at any time without losing the underlying YAML definition.
+
+To create an app together with the flow it runs from a reusable template, see [App templates](../../02.governance/app-templates/index.md).
 
 ---
 
@@ -543,6 +611,10 @@ When an app is set to `PUBLIC`, anyone with the URL can open the form and submit
 For `PUBLIC` apps, execution IDs exposed through file download or log links are encrypted so that anonymous users cannot reference executions outside the app.
 :::
 
+:::alert{type="warning"}
+A `Chart` block on a `PUBLIC` app shows no data from sources protected by namespace permissions, such as `Executions`, because anonymous visitors have no permission to read them. Use charts in `PRIVATE` apps. See [Dashboard charts](#dashboard-charts).
+:::
+
 ### Private access for using apps
 
 When an app is set to `PRIVATE`, only users with `APP: EXECUTE` permission on the app's namespace can open or submit it. `PRIVATE` apps are also only visible in the App Catalog to users with `APP: EXECUTE` — they do not appear for users who only hold `APP: LIST` or `APP: VIEW`. You can further narrow access to specific IAM groups using the `groups` field:
@@ -627,7 +699,17 @@ Both fields are optional:
 - Omit `endDate` and the app never expires.
 - Omit `expiration` entirely and the app stays active indefinitely.
 
-Expiration is evaluated against the server clock at the moment a user opens or submits the app.
+`startDate` and `endDate` accept any of these formats:
+
+| Format | Example | Read as |
+|--------|---------|---------|
+| Date | `"2025-06-30"` | Midnight (00:00) at the start of that day, in the server time zone |
+| Date-time without offset | `"2025-06-30T23:59:59"` | The server time zone |
+| Date-time with offset | `"2025-06-30T23:59:59+02:00"` or `"2025-06-30T23:59:59Z"` | The given offset |
+
+A plain date as `endDate` ends the window at the start of that day. To keep an app available through the whole of a day, use a date-time such as `"2025-06-30T23:59:59Z"`.
+
+Expiration is evaluated against the server clock at the moment a user opens or submits the app. When someone opens an app after its `endDate`, they see a "This app has expired" page instead of the app.
 
 ---
 
@@ -668,7 +750,7 @@ If a layout uses a block on a stage that isn't listed for it, saving the app fai
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
-| `Image`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `source`: URL or `data:` URI<br> - `altText`<br> - `title`<br> - `style`: custom CSS      | `- type: io.kestra.plugin.ee.apps.core.blocks.Image`<br> &nbsp;&nbsp;&nbsp;&nbsp;`source: "https://example.com/logo.png"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`altText: "Company logo"`                                                       |
+| `Image`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `source`: URL or `data:` URI<br> - `altText`<br> - `title`<br> - `style`: custom CSS      | `- type: io.kestra.plugin.ee.apps.core.blocks.Image`<br> &nbsp;&nbsp;&nbsp;&nbsp;`source: "{{ dataURL('nsfile:///logo.svg') }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`altText: "Company logo"`                                                |
 | `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `url`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.core.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT60S"`                                                                         |
 | `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm`                                                                                                                                                               |
 | `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm`                                                                                                                                                               |
@@ -680,6 +762,7 @@ If a layout uses a block on a stage that isn't listed for it, saving the app fai
 | `ExecutionAssets`        | SUCCESS, FAILURE                                                         | - `filter`: include, exclude (asset types)                                                   | `- type: io.kestra.plugin.ee.apps.execution.blocks.Assets`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- io.kestra.plugin.ee.assets.VM` |
 | `ExecutionLogs`          | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
 | `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
+| `Chart`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `chart`: a dashboard chart definition                                                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Chart`<br> &nbsp;&nbsp;&nbsp;&nbsp;`chart:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`id: executions`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: io.kestra.plugin.core.dashboard.chart.Bar` |
 | `Loading`                | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
 | `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
 | `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
@@ -728,31 +811,37 @@ When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/ind
 
 ### Embedding namespace file images
 
-`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
+`nsfile://` URIs resolve in the top-level `thumbnail` field but not in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
 
-To embed a namespace file image in a block, convert it to a `data:` URI using the [`read()`](../../../expressions/04.functions/02.data-access/index.mdx#read) function and the `base64encode` filter:
+Use the [`dataURL()`](../../../expressions/04.functions/02.data-access/index.mdx#dataurl) expression function to convert a namespace file into a `data:` URI the block can render:
 
 ```yaml
 # Image block
 - type: io.kestra.plugin.ee.apps.core.blocks.Image
-  source: "data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }}"
+  source: "{{ dataURL('nsfile:///report.svg') }}"
   altText: "Report chart"
 
 # Markdown block
 - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
   content: |
-    ![Report chart](data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }})
+    ![Report chart]({{ dataURL('nsfile:///report.png') }})
 ```
 
-:::alert{type="warning"}
-`read()` decodes the file as UTF-8 text, so this approach only works for **SVG** images. Binary formats such as PNG, JPEG, and GIF are corrupted by the UTF-8 decode and will not render.
-:::
+`dataURL()` infers the MIME type from the file extension. For files with unrecognized extensions, pass `mimeType` explicitly:
 
-To read from a different namespace, pass the `namespace` argument: `read('nsfile:///logo.svg', namespace='other.namespace')`.
+```twig
+{{ dataURL('nsfile:///report.unknown', mimeType='image/png') }}
+```
+
+To read from a different namespace, pass `namespace`:
+
+```twig
+{{ dataURL('nsfile:///logo.svg', namespace='other.namespace') }}
+```
 
 ### Assets emitted by an execution
 
-The `Assets` block lists the assets an execution emitted or updated, one row per asset, with its ID, display name, type and metadata. Use it in self-service provisioning flows where the resource the requester asked for is tracked as an asset rather than a flow output.
+The `Assets` block lists the assets an execution emitted or updated, with their display name, type, status, lease, owner and metadata. Use it in self-service provisioning flows where the resource the requester asked for is tracked as an asset rather than a flow output.
 
 ```yaml
 - on: SUCCESS
@@ -768,10 +857,16 @@ The `Assets` block lists the assets an execution emitted or updated, one row per
 
 - Only assets the execution **emitted or updated** are listed. Assets it merely read as inputs are left out.
 - `filter` matches the asset **type**, so a single Terraform apply or dbt build emitting dozens of assets can be narrowed to the ones the app user cares about. `include` keeps only the listed types, `exclude` drops them.
-- The reserved metadata keys get a column of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. Every other metadata key gets a plain column.
-- The asset ID links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace, and is plain text for everyone else. The table itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors.
+- Assets and groups follow the order in which the execution emitted them.
+- The layout adapts to the number of assets, so there is nothing to configure:
+  - **One asset** is shown as a summary card with its name, type, status, lease and owner, followed by every metadata key as a label and a value.
+  - **A few assets** (up to 12) get one card each, with the first metadata keys as key facts.
+  - **Many assets** are shown as compact rows that expand to the full details, with a search and filters on type and status. Each group shows its first 10 rows and a button to show the rest.
+- Assets are grouped by the asset they are `partOf`, for example the deployment their resources belong to. The parent is the header of its group, with its own status, lease and owner, and assets without a parent are listed last.
+- The reserved metadata keys have a renderer of their own: `system.status` renders as a status pill, `system.ttl` as a lease countdown and `system.owner` as the owning user or team. Every other metadata key is shown as a plain value, and other `system.` keys are hidden.
+- The asset name links to the asset detail page for viewers holding `ASSET:VIEW` on the asset's namespace. For an asset without a namespace, the viewer needs `ASSET:VIEW` across the tenant. Otherwise, and when the app is opened at a URL without a tenant, the name is plain text. The block itself requires no asset permission beyond app access, so a public app can show it to anonymous visitors. It is read-only: day-2 actions stay on the asset page.
 - The block is available on `SUCCESS` and `FAILURE`. On failure, a partially provisioned resource is often what explains what went wrong.
-- When the execution emitted no asset, the block says so instead of rendering an empty table.
+- When the execution emitted no asset, the block says so instead of rendering an empty block.
 
 ### Execution outputs
 
@@ -871,3 +966,46 @@ The `Gantt` block shows a simplified version of the execution Gantt view: one ba
 - The block shows only task IDs, states and durations. It shows no logs, outputs, iteration values or task actions, so a public app can show it to anonymous visitors.
 - `filter` matches the task ID. `include` keeps only the listed tasks, `exclude` drops them, which is useful to hide technical steps the app user does not need to follow.
 - The block is available on `RUNNING`, `PAUSE`, `RESUME`, `SUCCESS` and `FAILURE`. Add it to `SUCCESS` and `FAILURE` too to keep the final timings visible once the execution ends.
+
+### Dashboard charts
+
+The `Chart` block displays a [dashboard](../../../09.ui/00.dashboard/index.md) chart in an app. Use it when an app surfaces numbers, such as a cost report, a data quality run or a batch summary, that read better as a chart than as a table of rows.
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "## Rows loaded per run"
+
+    - type: io.kestra.plugin.ee.apps.core.blocks.Chart
+      chart:
+        id: rows_loaded
+        type: io.kestra.plugin.core.dashboard.chart.TimeSeries
+        chartOptions:
+          displayName: Rows loaded per run
+          column: date
+        data:
+          type: io.kestra.plugin.core.dashboard.data.Metrics
+          columns:
+            date:
+              field: DATE
+            rows:
+              field: VALUE
+              agg: SUM
+          where:
+            - field: FLOW_ID
+              type: EQUAL_TO
+              value: pg-upgrade
+            - field: NAME
+              type: EQUAL_TO
+              value: rows.loaded
+```
+
+- `chart` is a verbatim `io.kestra.plugin.core.dashboard.chart.*` definition with the same properties and the same chart types as in a dashboard.
+- `chartOptions.width` is ignored, the width of the chart comes from the app layout. Use a `Grid` block to place several charts side by side.
+- Like in a dashboard, the chart covers the last 7 days unless its `where` filters say otherwise.
+- The block shows at most 1000 rows. A `Table` chart pages through them.
+- The data is read for the tenant of the app, using the data sources of dashboards such as `Executions`, `Flows`, `Triggers` or `Metrics`, with the permissions of the viewer. A user of a private app sees only the data they are allowed to see, and an anonymous visitor of a public app gets no data from a source protected by namespace permissions such as `Executions`. Use charts in private apps.
+- When the query fails, for example on a timeout, the block renders as empty and the rest of the app keeps working.
+
+![Chart block in an app](./app-chart-block.png)

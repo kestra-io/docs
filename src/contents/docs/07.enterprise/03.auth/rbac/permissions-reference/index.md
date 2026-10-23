@@ -120,7 +120,7 @@ Notes
 - `EXPORT`: export execution data as CSV.
 - `UNQUEUE`: move a queued execution out of the queue.
 - `FORCE_RUN`: force a paused or queued execution to run immediately.
-- `UPDATE`: change the state of a task run within an execution.
+- `UPDATE`: change the state of an execution or of a task run within it, and reschedule an execution that has not started.
 
 **Endpoints**
 
@@ -214,6 +214,7 @@ UPDATE
 - `POST /api/v1/{tenant}/executions/change-status/by-ids`
 - `POST /api/v1/{tenant}/executions/change-status/by-query`
 - `POST /api/v1/{tenant}/executions/{executionId}/actions/state`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/reschedule`
 
 Notes
 - Webhook execution endpoints are authorized by webhook key only; RBAC is not checked.
@@ -616,10 +617,10 @@ EXECUTE
 **Scope:** Tenant (with namespace checks when the asset has a namespace)
 
 **Actions and their meaning**
-- `VIEW` / `LIST`: view assets and their dependency or usage graphs.
-- `CREATE`: create assets.
-- `UPDATE`: edit existing assets.
-- `DELETE`: delete assets and purge their usage and lineage records.
+- `VIEW` / `LIST`: view assets, their relations, and their dependency or usage graphs.
+- `CREATE`: create assets, including through bulk import.
+- `UPDATE`: edit existing assets, manage their parent and relations, and run their asset actions. Running an action also requires `FLOW:EXECUTE` on the action flow's namespace.
+- `DELETE`: delete assets, their relations, and their usage records.
 - `LOCK`: acquire a write lock on an asset (from a flow task or the UI).
 - `UNLOCK`: release a write lock on an asset (from a flow task or the UI). UI unlock is forced regardless of owner.
 
@@ -630,20 +631,27 @@ VIEW / LIST
 - `GET /api/v1/{tenant}/assets/{id}/dependencies`
 - `GET /api/v1/{tenant}/assets/search`
 - `GET /api/v1/{tenant}/assets/usages/search`
-- `GET /api/v1/{tenant}/assets/lineage-events/search`
+- `GET /api/v1/{tenant}/assets/{id}/relations`
+- `GET /api/v1/{tenant}/assets/{id}/relations/summary`
 
 CREATE
 - `POST /api/v1/{tenant}/assets`
+- `POST /api/v1/{tenant}/assets/bulk` (also requires `UPDATE` to update existing assets)
 
 UPDATE
 - `PUT /api/v1/{tenant}/assets/{id}`
+- `PATCH /api/v1/{tenant}/assets/{id}`
+- `POST /api/v1/{tenant}/assets/{id}/relations`
+- `PUT /api/v1/{tenant}/assets/{id}/parent`
+- `DELETE /api/v1/{tenant}/assets/{id}/parent`
+- `POST /api/v1/{tenant}/assets/{id}/actions/run` (also requires `FLOW:EXECUTE`)
 
 DELETE
 - `DELETE /api/v1/{tenant}/assets/{id}`
 - `DELETE /api/v1/{tenant}/assets/by-ids`
 - `DELETE /api/v1/{tenant}/assets/by-query`
 - `DELETE /api/v1/{tenant}/assets/usages/by-query`
-- `DELETE /api/v1/{tenant}/assets/lineage-events/by-query`
+- `DELETE /api/v1/{tenant}/assets/{id}/relations/{uid}` (`UPDATE` is enough to remove a parent link)
 
 LOCK
 - `POST /api/v1/{tenant}/assets/{id}/lock`
