@@ -39,7 +39,7 @@ If you estimate the migration by multiplying your workflow count by the effort t
 
 - **Near-duplicates.** The same provisioning workflow copied for different environments or business units can become one Kestra flow with different inputs.
 - **Wrappers.** Workflows that mainly invoke an Ansible job, a script or a ServiceNow API are replaced by Kestra flows that call those same systems. The underlying implementation stays where it is.
-- **Integration libraries.** Much of the custom REST code we used to write in vRO isn't needed when a Kestra plugin already supports the operations you use, and the assessment recommends retiring it. Kestra has plugins for systems such as ServiceNow, Infoblox, NetBox and Slack.
+- **Integration libraries.** Much of the custom REST code we used to write in vRO isn't needed when a Kestra plugin already supports the operations you use, and the assessment recommends retiring it. Kestra has plugins for systems such as [ServiceNow](/plugins/plugin-servicenow), [Infoblox](/plugins/plugin-ee-infoblox), NetBox and [Slack](/plugins/plugin-slack).
 
 Unused workflows are a separate check, because an export shows what exists, not what still runs. In our experience, 10 to 20 percent of workflows in a large environment haven't run in twelve months. Check execution history in vRO and have each workflow's owner confirm what's no longer needed before you drop it.
 
@@ -70,7 +70,7 @@ for (var attempt = 1; attempt <= 3; attempt++) {
 }
 ```
 
-In Kestra, the HTTP request and exponential backoff are configured on the task:
+In Kestra, the HTTP request and [exponential backoff](/docs/workflow-components/retries) are configured on the task:
 
 ```yaml
 - id: add_pool_member
@@ -90,7 +90,7 @@ You still need to decide whether a call is safe to repeat, since a retried POST 
 
 ## What Stays and What You Decide
 
-Leaving vRA doesn't mean replacing the systems it orchestrates. vSphere, Terraform, Ansible, ServiceNow, your CMDB, IPAM, DNS and your secrets manager all stay, with Kestra calling them.
+Leaving vRA doesn't mean replacing the systems it orchestrates. [vSphere](/plugins/plugin-ee-vmware), Terraform, Ansible, ServiceNow, your CMDB, IPAM, DNS and your secrets manager all stay, with Kestra calling them.
 
 Two decisions affect the migration scope: where users request infrastructure, and where the record of what was provisioned lives. Most of our customers keep both in their ITSM platform, with Kestra handling orchestration behind it. Others move the catalog or resource inventory into Kestra. Make those decisions before converting workflows, because they determine which parts of the environment change. The [capability map](https://hs.kestra.io/hubfs/kestra-vmware-migration-capability-map.pdf) shows how each part of vRA and vRO maps to Kestra.
 
@@ -119,13 +119,13 @@ The licence is what starts most of these conversations, but the bigger reason to
 
 The business case still has to work for your environment. The [payback calculator](/resources/migration/vra/payback) compares staying and moving with your own numbers, and the proof of concept replaces its assumptions with rates measured on your own workflows. If you're keeping VMware Cloud Foundation, confirm that removing vRA actually lowers your licensing bill.
 
-For one customer's result, a [Fortune 500 manufacturer](/customers/fortune-500-company) that replaced vRA and vRO with Kestra reports licensing costs 90 percent lower than Aria Automation, and automation services that used to take six months to deliver now take six days.
+For one customer's result, a [Fortune 500 manufacturer](/customers/fortune-500-company) that replaced vRA and vRO with Kestra reports licensing costs 90 percent lower than [Aria Automation](/vs/vmware-cloud-foundation), and automation services that used to take six months to deliver now take six days.
 
 ## Where to Start
 
 The vRA migration guide covers the full process, from assessing your environment and deciding what stays, through the proof of concept and payback calculation, to switching vRA off.
 
-**→ [Read the vRA migration guide](/resources/migration/vra)**
+**→ [Read the vRA migration guide](/resources/migration/vra)** (also available as a PDF)
 
 To run the open-source assessment on your own export, or see a sample migration brief first:
 
