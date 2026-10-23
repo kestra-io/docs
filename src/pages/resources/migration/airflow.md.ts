@@ -3,6 +3,7 @@ import { getEntry } from "astro:content"
 import { mdxToMarkdown } from "~/components/vra-migration-guide/mdxToMarkdown"
 import { resolveTotalPluginsPlaceholder } from "~/utils/plugins/pluginCount"
 import startHereSource from "~/components/airflow-migration-guide/StartHere.mdx?raw"
+import nextStepsSource from "~/components/airflow-migration-guide/NextSteps.mdx?raw"
 
 /**
  * The guide's markdown variant. Its entry sets `href`, which excludes it from
@@ -42,7 +43,8 @@ export const GET: APIRoute = async ({ site }) => {
                     })[kind] ?? "",
             },
         }),
-        ...(faq ? [`## Questions\n\n${faq}\n`] : []),
+        ...(faq ? [`## FAQ\n\n${faq}\n`] : []),
+        mdxToMarkdown(nextStepsSource),
     ].join("\n")
 
     return new Response(`# ${post.data.title}\n\n${body}`, {

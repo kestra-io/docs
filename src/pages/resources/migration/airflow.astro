@@ -11,6 +11,9 @@ import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
 import StartHere, {
     getHeadings as startHereHeadings,
 } from "~/components/airflow-migration-guide/StartHere.mdx"
+import NextSteps, {
+    getHeadings as nextStepsHeadings,
+} from "~/components/airflow-migration-guide/NextSteps.mdx"
 import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
@@ -27,6 +30,10 @@ const faqItems = page.faq ?? []
 
 // h2, h3 and numbered h4 headings, same rule as the vRA guide
 const links = [...startHereHeadings(), ...headings]
+    .concat(
+        faqItems.length > 0 ? [{ depth: 2, slug: "faq", text: "FAQ" }] : [],
+    )
+    .concat(nextStepsHeadings())
     .filter(
         ({ depth, text }) =>
             depth === 2 ||
@@ -34,21 +41,18 @@ const links = [...startHereHeadings(), ...headings]
             (depth === 4 && /^\d+\.\d+\.\d+\s/.test(text)),
     )
     .map(({ depth, slug, text }) => ({ text, id: slug, depth }))
-    .concat(
-        faqItems.length > 0 ? [{ text: "Questions", id: "faq", depth: 2 }] : [],
-    )
 
 const INSIDE = [
-    "A concept-by-concept mapping from Airflow 2 and 3 to Kestra 2.0, with the edition each row needs and the four settings that have no direct equivalent",
-    "How operators, schedules, sensors, XCom, Connections and trigger rules are re-expressed, with validated 2.0 YAML for each",
-    "Three DAGs converted side by side: a daily Python pipeline, a sensor-driven file pipeline and the coexistence flow that lets Kestra drive the DAGs you have not moved yet",
-    "A seven-step playbook, from inventory and pilot to running both platforms in parallel and cutting over one pipeline at a time",
+    "A concept-by-concept mapping from Airflow 2 and 3 to Kestra 2.0, with the edition each equivalent needs and the concepts that have no direct one",
+    "Operators, scheduling and catchup, control flow, your existing Python, Connections, Variables, secrets and XCom, each with YAML checked against Kestra 2.0",
+    "Three DAGs translated side by side, an honest comparison with the Airflow 3 upgrade, and the edition matrix",
+    "A seven-step Strangler Fig playbook to run both schedulers side by side until Airflow is empty, and the eight pitfalls we see in translated flows",
 ]
 
 const updated = page.lastUpdated ?? page.date
 const META = [
-    "Written for Kestra 2.0",
-    "Every YAML block validated against the 2.0 schema",
+    "Every YAML snippet targets Kestra 2.0",
+    "Airflow 2 and Airflow 3 DAGs",
     ...(updated
         ? [
               `Updated ${new Date(updated).toLocaleDateString("en-US", {
@@ -88,54 +92,47 @@ const jsonLinkedData = {
 // sub-section, so each step deep-links into the page.
 const PLAYBOOK_STEPS = [
     {
-        name: "Inventory",
-        text: "List every DAG with its operators, sensors, connections, variables, pools, SLAs and custom code; score each one on the complexity grid and remove the DAGs to retire.",
-        anchor: "section-9-1",
+        name: "Inventory the DAG library",
+        text: "Export the list (airflow dags list, or the REST API) with schedule, owner, last run and failure rate from the metadata database. Tag each DAG: active or dead, Python-only or wrapping SQL/shell/API work, uses catchup, uses dynamic mapping, uses custom operators. Dead DAGs (no successful run in 90 days) are not migrated.",
     },
     {
-        name: "Pilot",
-        text: "Convert two or three representative DAGs, including one hard one, run them against production data on a Kestra instance next to Airflow, and measure the time per DAG.",
-        anchor: "section-9-2",
+        name: "Stand up Kestra next to Airflow",
+        text: "Docker Compose or Helm, same VPC, same secrets backend. Load the secrets and KV entries the first batch needs. Mirror Airflow's team structure as namespaces from the start; moving flows between namespaces later is cheap, but permission models built on a single namespace are not.",
     },
     {
-        name: "New first",
-        text: "Build every new workflow in Kestra from this point on, so the Airflow estate stops growing while it is migrated.",
-        anchor: "section-9-3",
+        name: "Build new workflows in Kestra only",
+        text: "From this point, anything new is a flow. This gives the team Kestra fluency on code they own before they touch legacy pipelines, and it stops the Airflow library from growing while you migrate it.",
     },
     {
-        name: "Coexist",
-        text: "Let Kestra trigger the DAGs that have not moved yet through the Airflow plugin, wait for them and alert on deadline misses, with one scheduler per pipeline.",
-        anchor: "section-9-4",
+        name: "Translate the simplest 20 % first",
+        text: "Linear DAGs with cron schedules and no mapping. Run the translation through AI, then review every flow against the pitfalls list. Deploy the flow, keep the DAG paused in Airflow, compare outputs for three runs, then delete the DAG.",
     },
     {
-        name: "Migrate in waves",
-        text: "Convert by pattern, schedules first and sensors next, using the migrate-airflow-kestra agent skill for simple DAGs and a human review for sensors, branching, pools and dynamic mapping.",
-        anchor: "section-9-5",
+        name: "Make the two schedulers talk",
+        text: "Cross-dependencies are what keep parallel runs permanent. From Kestra, trigger a remaining DAG through the Airflow REST API and poll its state. From Airflow, trigger a migrated flow through the Kestra executions API. Every dependency crossing the boundary is logged, so you can see the remaining coupling shrink.",
     },
     {
-        name: "Cut over per pipeline",
-        text: "Run the DAG and the flow side by side for a fixed window, compare the outputs, then pause the DAG and keep it deployable for a rollback period.",
-        anchor: "section-9-6",
+        name: "Move the complex DAGs with a subflow decomposition",
+        text: "Large DAGs with TaskGroups, mapping and branching are split into a parent flow and reusable subflows rather than translated line by line. This is also where custom operators are retired: most are Python wrappers around an API and become a script task or an existing plugin.",
     },
     {
         name: "Decommission",
-        text: "Retire the Airflow environment once the last DAG has passed its rollback window, lined up with the renewal or billing date on managed services.",
-        anchor: "section-9-7",
+        text: "When the remaining DAGs are paused or dead, export Airflow's execution history for audit, keep the metadata database as a read-only archive and remove the scheduler, workers and triggerer. Observability moves to Kestra's execution history and, in Enterprise, to the external log data store and Cases for incident tracking.",
     },
 ]
 
 const howToData = {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "The Airflow to Kestra migration playbook",
+    name: "Migration playbook: seven steps, Airflow stays on until you decide",
     description:
-        "Seven steps to migrate from Apache Airflow to Kestra while both platforms run side by side, from inventory to decommissioning.",
+        "The playbook follows the Strangler Fig pattern: new work starts in Kestra, existing DAGs move in order of risk, and Airflow is decommissioned only when its remaining DAGs are the ones nobody wants to touch.",
     step: PLAYBOOK_STEPS.map((step, index) => ({
         "@type": "HowToStep",
         position: index + 1,
         name: step.name,
         text: step.text,
-        url: `${pageUrl.split("#")[0]}#${step.anchor}`,
+        url: `${pageUrl.split("#")[0]}#section-9`,
     })),
 }
 ---
@@ -188,9 +185,9 @@ const howToData = {
         card={false}
     >
         <Fragment slot="actions">
-            <a class="btn btn-primary btn-lg" href="/demo">Talk to our team</a>
-            <a class="btn btn-secondary btn-lg" href="/docs/quickstart"
-                >Install Kestra in five minutes</a
+            <a class="btn btn-primary btn-lg" href="/docs/quickstart">Try Kestra OSS</a>
+            <a class="btn btn-secondary btn-lg" href="/demo"
+                >Talk to a migration engineer</a
             >
         </Fragment>
     </GuideHero>
@@ -200,8 +197,11 @@ const howToData = {
             <div slot="sidebar" class="guide-sidebar">
                 <GuideToc client:load links={links}>
                     <Fragment slot="footer">
-                        <a class="btn btn-primary" href="/demo">Talk to our team</a>
-                        <a href="/docs/quickstart">Install Kestra</a>
+                        <a class="btn btn-primary" href="/docs/quickstart">Try Kestra OSS</a>
+                        <a class="btn btn-secondary" href="/demo"
+                            >Talk to a migration engineer</a
+                        >
+                        <a href="/resources/airflow-2-eol-whitepaper">Download the EOL whitepaper</a>
                     </Fragment>
                 </GuideToc>
             </div>
@@ -214,28 +214,27 @@ const howToData = {
         faqItems.length > 0 && (
             <div class="guide-faq" id="faq">
                 <Faq
-                    title="Questions that come up"
+                    title="FAQ"
                     items={faqItems}
                     client:visible
                 />
             </div>
         )
     }
+    <GuideBand><NextSteps /></GuideBand>
     {/* A direct div child of main picks up the global overflow-x clip. */}
     <div>
         <SeeHow
             imgSrc={shapesImage}
-            cta={{ text: "Book a Demo", href: "/demo" }}
+            cta={{ text: "Talk to a migration engineer", href: "/demo" }}
         >
-            <Fragment slot="title">Next steps</Fragment>
-            Pick one DAG you know well, convert it with the mapping above, and
-            run it next to Airflow. If you want a second pair of eyes on the
-            inventory or the hard DAGs before the pilot, talk to us with your
-            DAG count and the patterns you rely on.
+            <Fragment slot="title">Start with one DAG</Fragment>
+            Install Kestra next to Airflow, translate one linear DAG with the
+            examples above, and compare three runs. That takes an afternoon and
+            tells you more than any comparison page.
             <Fragment slot="footer">
-                <Link
-                    href="/blogs/airflow-to-kestra-migration-with-ai"
-                    class="btn btn-secondary">See the AI-assisted conversion</Link
+                <Link href="/docs/quickstart" class="btn btn-secondary"
+                    >Try Kestra OSS</Link
                 >
             </Fragment>
         </SeeHow>
