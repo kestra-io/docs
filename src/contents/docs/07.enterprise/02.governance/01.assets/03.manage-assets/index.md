@@ -35,7 +35,9 @@ Select an asset to open its detail page. It has three tabs:
 
 Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger). Deleting a parent asset detaches its parts by default. See [Relations](#relations).
 
-To run an [asset action](../01.declare-assets/index.md#asset-actions), select **Actions** on the **Overview** tab and pick the action. Running an action needs `ASSET:UPDATE` on the asset and `FLOW:EXECUTE` on the action flow's namespace.
+To run an [asset action](../01.declare-assets/index.md#asset-actions), select **Open actions** in the **Actions** card on the **Overview** tab, pick the action, and fill in its inputs. An action whose `when` conditions don't hold is disabled, and the list shows each unmet condition with the asset's current value, for example *status must equal active (currently decommissioned)*. On a destroyed asset, every action is disabled. Running an action needs `ASSET:UPDATE` on the asset and `FLOW:EXECUTE` on the action flow's namespace.
+
+With `ASSET:UPDATE`, select **Manage actions** in the same dialog to edit or remove actions, or select **Add action** to attach a new one. In the dialog, select the flow the action runs and set its **Display name**. The **Availability** section then appears. Select **Add condition** and pick a field, an operator, and a value for each condition. An action without conditions is always offered. The field list includes the asset's metadata keys, and you can type any other key as `metadata.<key>`.
 
 ### Plugin footers on asset cards
 
@@ -142,7 +144,7 @@ The Assets API is available at `/api/v1/{tenant}/assets`. Create and update requ
 | --- | --- | --- |
 | `POST /assets` | Create an asset. Returns 409 if the ID exists. | `ASSET:CREATE` |
 | `PUT /assets/{id}` | Update an existing asset with the same [update rules](../01.declare-assets/index.md#update-rules) as a flow write. Returns 404 if it doesn't exist. | `ASSET:UPDATE` |
-| `GET /assets/{id}` | Get one asset | `ASSET:VIEW` |
+| `GET /assets/{id}` | Get one asset. The response's `actionAvailability` lists, for each asset action, whether its conditions hold and the asset's current value for each unmet one. | `ASSET:VIEW` |
 | `GET /assets/search` | Search assets with query filters | `ASSET:LIST` |
 | `PATCH /assets/{id}` | Update `description`, `displayName`, or `metadata` with a JSON body. Metadata keys are merged into the stored metadata. | `ASSET:UPDATE` |
 | `POST /assets/bulk` | Create or update many assets from YAML documents separated by `---`. Add `dryRun=true` to preview. See [Import through the API](../../tenants/types/infrastructure/index.md#import-through-the-api). | `ASSET:CREATE`, and `ASSET:UPDATE` to update existing assets |

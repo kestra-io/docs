@@ -229,9 +229,22 @@ outputs:
           - field: status
             operator: EQUAL_TO
             value: active
+      - namespace: company.infra
+        flowId: scale_cluster
+        label: Scale up
+        when:
+          - field: metadata.nodeCount
+            operator: LESS_THAN_OR_EQUAL_TO
+            value: 2
 ```
 
-An action can carry up to 20 `when` conditions on `status`, `namespace`, or `metadata.<key>`, and it only runs while all of them hold. Each condition has a `field`, an `operator`, and a `value`. The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_CONTAINS`, `STARTS_WITH`, `ENDS_WITH`, `PREFIX`, `REGEX`, `GREATER_THAN`, `GREATER_THAN_OR_EQUAL_TO`, `LESS_THAN`, `LESS_THAN_OR_EQUAL_TO`, `IS_NULL`, and `IS_NOT_NULL`. `IN` and `NOT_IN` take a list as `value`. An asset without a `status` counts as `active`. An asset can have up to 100 actions.
+An action can carry up to 20 `when` conditions. Kestra offers the action and lets it run only while all of them hold, and an action without conditions is always offered. Each condition has a `field`, an `operator`, and a `value`.
+
+A condition reads one of the asset's fields: `id`, `namespace`, `type`, `displayName`, `description`, `status`, `ttl`, `owner`, or a metadata key as `metadata.<key>`. Use a dotted path such as `metadata.network.zone` for a nested key.
+
+The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_CONTAINS`, `STARTS_WITH`, `ENDS_WITH`, `PREFIX`, `REGEX`, `GREATER_THAN`, `GREATER_THAN_OR_EQUAL_TO`, `LESS_THAN`, `LESS_THAN_OR_EQUAL_TO`, `IS_NULL`, and `IS_NOT_NULL`. `IN` and `NOT_IN` take a list as `value`, and `IS_NULL` and `IS_NOT_NULL` take no `value`. Text operators compare values as strings and are case-sensitive. The `GREATER_THAN` and `LESS_THAN` operators and their `_OR_EQUAL_TO` variants compare numbers and dates by value. Write dates in ISO 8601, either as a plain date or as a date-time with an offset, such as `2026-12-31T00:00:00Z`.
+
+A field the asset doesn't have, or an empty one, counts as unset, so `NOT_EQUAL_TO`, `NOT_IN`, and `NOT_CONTAINS` hold on it. An asset without a `status` counts as `active`. An asset can have up to 100 actions. To add actions or edit their conditions in the UI, see [Manage assets](../03.manage-assets/index.md#asset-detail-page).
 
 Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/types/infrastructure/index.md#day-2-actions) on a deployment's page.
 
