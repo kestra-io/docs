@@ -57,6 +57,7 @@ interface Props {
      */
     forceTheme?: "light" | "dark"
     hideFloatingActions?: boolean
+    lang?: string
     /** A page-only banner shaped like an annonces.yml entry. Without it, only
      *  the homepage shows a banner (from annonces.yml). */
     banner?: {
@@ -176,7 +177,7 @@ const organizationSchema = {
 ---
 
 <html
-    lang="en"
+    lang={props.lang ?? "en"}
     class:list={{ "no-animation": DISABLE_USAL }}
     data-force-theme={props.forceTheme}
 >
