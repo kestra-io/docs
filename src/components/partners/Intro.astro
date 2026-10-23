@@ -2,18 +2,28 @@
 import Link from "~/components/common/Link.astro"
 import Squared from "~/components/layout/Squared.vue"
 import HeroIcon from "~/assets/landing/partners/icon-partner.svg?raw"
+
+interface Props {
+    title?: string
+    text?: string
+    ctaText?: string
+    ctaHref?: string
+}
+
+const {
+    title = "Kestra Partner Ecosystem",
+    text = "Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.",
+    ctaText = "Become a Partner",
+    ctaHref = "#form",
+} = Astro.props
 ---
 
 <Squared>
     <div class="icon" set:html={HeroIcon} role="img" />
     <div class="content">
-        <h1>Kestra Partner Ecosystem</h1>
-        <p>
-            Whether you are building something new, upgrading a legacy stack, or
-            re-platforming, you can trust Kestra and our partner ecosystem to
-            make that journey a success.
-        </p>
-        <Link href="#form" class="btn btn-primary">Become a Partner</Link>
+        <h1>{title}</h1>
+        <p>{text}</p>
+        <Link href={ctaHref} class="btn btn-primary">{ctaText}</Link>
     </div>
 </Squared>
 

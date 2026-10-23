@@ -24,17 +24,19 @@ inputs:
 tasks:
   - id: taskA
     runIf: "{{ inputs.runTask }}"
-    type: io.kestra.plugin.core.debug.Return
-    format: Hello World!
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: Hello World!
 
   - id: taskB
-    type: io.kestra.plugin.core.debug.Return
-    format: Fallback output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: Fallback output
 
 outputs:
   - id: flowOutput
     type: STRING
-    value: "{{ tasks.taskA.state != 'SKIPPED' ? outputs.taskA.value : outputs.taskB.value }}"
+    value: "{{ tasks.taskA.state != 'SKIPPED' ? outputs.taskA.values.result : outputs.taskB.values.result }}"
 ```
 
 ## Purging large output files

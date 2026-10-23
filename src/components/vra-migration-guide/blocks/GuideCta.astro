@@ -1,0 +1,41 @@
+---
+import { DOWNLOAD_DIALOG_TARGET } from "../download"
+
+type Kind = "talk" | "pdf" | "calc" | "assistant" | "cloud"
+
+interface Props {
+    kind: Kind
+    variant?: "primary" | "secondary"
+}
+
+const CTAS: Record<Kind, { label: string; href?: string }> = {
+    talk: { label: "Talk to our team", href: "/demo" },
+    calc: {
+        label: "Work out your payback",
+        href: "/resources/migration/vra/payback",
+    },
+    assistant: {
+        label: "Get the Kestra Migration Assistant for vRA",
+        href: "/resources/migration/vra/assistant",
+    },
+    pdf: { label: "Download the PDF" },
+    cloud: { label: "Start your Cloud trial", href: "/cloud" },
+}
+
+const { kind, variant = "primary" } = Astro.props
+const { label, href } = CTAS[kind]
+const Tag = href ? "a" : "button"
+const attrs = href
+    ? { href }
+    : { type: "button" as const, "data-modal-target": DOWNLOAD_DIALOG_TARGET }
+---
+
+<p class="guide-cta">
+    <Tag class={`btn btn-${variant}`} {...attrs}>{label}</Tag>
+</p>
+
+<style lang="scss">
+    .guide-cta {
+        margin: 1.25rem 0;
+    }
+</style>

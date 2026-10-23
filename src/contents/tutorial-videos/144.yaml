@@ -1,0 +1,7 @@
+title: "Install Plugins Only When You Use them: Auto Install + Download"
+description: "The default image bundles every plugin at its latest version, which pushes it past 3GB. In 2.0 every tag has a -slim twin, so you start from a lean core and plugins auto install when you save a flow that uses them."
+category: "What's New"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=p95rP8pu7bw"
+publicationDate: "2026-09-17T00:00:00.000"
+contentType: "What's New"
