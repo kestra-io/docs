@@ -10,7 +10,7 @@ author:
   role: CEO & Co-founder
 ---
 
-Ten years ago, open source meant people building something together. You opened your code, others showed up, and the product grew out of their contributions. Many of us still picture it that way.
+Ten years ago, open source meant people building something together. You shared your codebase, others showed up, and the product grew out of their contributions. Many of us still picture it that way.
 
 For most organizations today, open source means they can use the software for free. Companies run it to automate their work, and most of them never contribute a line or pay anything. The people behind those projects worked nights and weekends so that a large company somewhere could run its pipelines on their code. I'm fine with that deal, because it's also how good software gets distributed now.
 
@@ -34,9 +34,9 @@ This year changed who writes the contributions.
 
 During [Kestra Hacktober](/hacktober), people outside the team opened almost 5,000 pull requests in three weeks, eleven times more than in October last year. They came from 472 contributors, and 412 of them had never contributed to Kestra before. The merge rate fell from 71% last October to 53%.
 
-Coding assistants removed most of the effort it takes to open a pull request. Most people use them well, to learn faster and to contribute to projects they would never have touched before. The effort moved to the person reviewing the code, and at more than 200 pull requests a day, review is now the bottleneck.
+Coding assistants removed most of the effort it takes to open a pull request. Most people use them well, to learn faster and to contribute to projects they would never have touched before. The effort moved to the person reviewing the code, and at more than 200 pull requests a day, the review is now the bottleneck.
 
-A model knows every language and what a workflow engine usually looks like. It doesn't know why ours is built the way it is: which component owns what, which mechanism already exists two layers down, what must never happen. The engineers who built the product carry that knowledge. When a contribution misses, it's usually because it was written without it our Lead engineer Loïc is going to share more about that in an upcoming article.
+A model knows every language and what a workflow engine usually looks like. It doesn't know why ours is built the way it is: which component owns what, which mechanism already exists two layers down, what must never happen. The engineers who built the product carry that knowledge. When a contribution misses, it's usually because it was written without it. Our Lead engineer Loïc is going to share more about that in an upcoming article.
 
 ## There Is Still a Place for Open Source
 
@@ -48,6 +48,6 @@ Agents make this more pressing. When an AI agent acts in production, companies w
 
 ## Thank You
 
-To the 30,000 people who starred Kestra, everyone who sent a pull request or answered a question in our [Slack](/slack), and every team running Kestra in production: thank you.
+To the 30,000 people who starred Kestra, everyone who sent a pull request or answered a question in our [Slack](/slack), and every team running Kestra in production: **thank you**.
 
 If you want to try it, the [quickstart](/docs/quickstart) is one Docker command, and [Kestra Academy](https://academy.kestra.io) will certify you for free. If you want to contribute, pick a [good first issue](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues) and we'll review it.
