@@ -25,7 +25,7 @@ Moving data between systems is a solved problem: batch, streaming and APIs have 
 
 It works most days. Then a process that spans data, infrastructure, applications and business processes fails, and there is no end-to-end observability or governance. Nobody knows where the problem is, and the person who does is on vacation. Incident handling often exists only on paper or in a phone call.
 
-An executive dashboard shows the failure but can't act on it. An orchestration layer can: it sees the whole process, governs it, and decides what happens next when a step fails.
+An executive dashboard shows the failure but can't act on it. An unified orchestration layer can: it sees the whole process, governs it, and decides what happens next when a step fails.
 
 ## Agents Make It Harder
 
@@ -62,8 +62,8 @@ Kestra separates the control plane, where you define orchestration, from the wor
 
 ## Example: Threat Intelligence at JPMorgan Chase
 
-[JPMorgan Chase's cybersecurity teams](/stories/jpmorgan-chase) use Kestra to collect threat intelligence from dozens of external feeds, such as malicious domains and leaked credentials, analyze it, and deliver it to fraud detection teams and business units in near real time. That is more than 4,000 API pulls a week for over 100 users. Failed pulls are retried, and urgent alerts go out fast.
+[JPMorgan Chase's cybersecurity teams](/stories/jpmorgan-chase) use Kestra to collect threat intelligence from dozens of external feeds, such as malicious domains and leaked credentials, analyze it, and deliver it to fraud detection teams and business units in near real time. The pipeline handles more than 4,000 API pulls a week for over 100 users. Failed pulls are retried, and urgent alerts go out fast.
 
-That's the right order for any project: the business problem first, then the architecture, then the technical details.
+The right order for any project is the business problem first, then the architecture, then the technical details.
 
 Watch the [full episode on Six Five Media](https://www.sixfivemedia.com/content/why-unified-orchestration-is-becoming-its-own-category), or see one execution carry an agent, a human decision and the remediation in the [Kestra 2.0 launch recap](/blogs/kestra-2-0-what-you-actually-get).
