@@ -758,6 +758,7 @@ If a layout uses a block on a stage that isn't listed for it, saving the app fai
 | `ExecutionAssets`        | SUCCESS, FAILURE                                                         | - `filter`: include, exclude (asset types)                                                   | `- type: io.kestra.plugin.ee.apps.execution.blocks.Assets`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- io.kestra.plugin.ee.assets.VM` |
 | `ExecutionLogs`          | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
 | `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
+| `Chart`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `chart`: a dashboard chart definition                                                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Chart`<br> &nbsp;&nbsp;&nbsp;&nbsp;`chart:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`id: executions`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: io.kestra.plugin.core.dashboard.chart.Bar` |
 | `Loading`                | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
 | `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
 | `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
@@ -961,3 +962,46 @@ The `Gantt` block shows a simplified version of the execution Gantt view: one ba
 - The block shows only task IDs, states and durations. It shows no logs, outputs, iteration values or task actions, so a public app can show it to anonymous visitors.
 - `filter` matches the task ID. `include` keeps only the listed tasks, `exclude` drops them, which is useful to hide technical steps the app user does not need to follow.
 - The block is available on `RUNNING`, `PAUSE`, `RESUME`, `SUCCESS` and `FAILURE`. Add it to `SUCCESS` and `FAILURE` too to keep the final timings visible once the execution ends.
+
+### Dashboard charts
+
+The `Chart` block displays a [dashboard](../../../09.ui/00.dashboard/index.md) chart in an app. Use it when an app surfaces numbers, such as a cost report, a data quality run or a batch summary, that read better as a chart than as a table of rows.
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "## Rows loaded per run"
+
+    - type: io.kestra.plugin.ee.apps.core.blocks.Chart
+      chart:
+        id: rows_loaded
+        type: io.kestra.plugin.core.dashboard.chart.TimeSeries
+        chartOptions:
+          displayName: Rows loaded per run
+          column: date
+        data:
+          type: io.kestra.plugin.core.dashboard.data.Metrics
+          columns:
+            date:
+              field: DATE
+            rows:
+              field: VALUE
+              agg: SUM
+          where:
+            - field: FLOW_ID
+              type: EQUAL_TO
+              value: pg-upgrade
+            - field: NAME
+              type: EQUAL_TO
+              value: rows.loaded
+```
+
+- `chart` is a verbatim `io.kestra.plugin.core.dashboard.chart.*` definition with the same properties and the same chart types as in a dashboard.
+- `chartOptions.width` is ignored, the width of the chart comes from the app layout. Use a `Grid` block to place several charts side by side.
+- Like in a dashboard, the chart covers the last 7 days unless its `where` filters say otherwise.
+- The block shows at most 1000 rows. A `Table` chart pages through them.
+- The data is read for the tenant of the app, using the data sources of dashboards such as `Executions`, `Flows`, `Triggers` or `Metrics`, with the permissions of the viewer. A user of a private app sees only the data they are allowed to see, and an anonymous visitor of a public app gets no data from a source protected by namespace permissions such as `Executions`. Use charts in private apps.
+- When the query fails, for example on a timeout, the block renders as empty and the rest of the app keeps working.
+
+![Chart block in an app](./app-chart-block.png)
