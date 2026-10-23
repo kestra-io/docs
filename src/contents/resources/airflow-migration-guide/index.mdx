@@ -39,7 +39,7 @@ import GuideCta from "~/components/vra-migration-guide/blocks/GuideCta.astro"
 
 ### 1.1 Why teams leave Airflow: the model, not the version
 
-Airflow 2 reaching end of life on April 22, 2026 is what put the question on the table for many teams. It is rarely the reason they decide. The reasons that come up in migration calls are older than the deadline, and most teams have more than one in play.
+Teams leave Airflow for two reasons that come up in almost every migration call, and both are about who can own a pipeline and what it costs to keep the platform running.
 
 <GuideCards columns={2}>
 <GuideCard title="Every pipeline is a Python program" level={4}>
@@ -98,7 +98,7 @@ Additionally:
 
 ### 1.4 What Airflow still does well
 
-This guide is for teams that have decided to move, so it is worth being clear about what they give up. Airflow has the largest ecosystem in the category: a decade of operators, providers and Stack Overflow answers, a deep talent pool, and a managed experience in Astronomer that many teams rate highly. Airflow 3 brought real improvements, including the new UI, DAG versioning, Assets, human-in-the-loop tasks and the Task SDK, and a Python-native team that is happy with the model has a sound reason to upgrade rather than migrate. Dynamic task generation in Python and local DAG tests are also things some engineers prefer in Airflow. The [decision guide on the comparison page](/vs/airflow) lists when to choose each; [Section 9](#section-9) puts the upgrade and the migration side by side.
+Airflow keeps the largest ecosystem in the category, a deep talent pool, and a managed experience in Astronomer that many teams rate highly. Airflow 3 brought real improvements: the new UI, DAG versioning, Assets and the Task SDK. A Python-native team that is happy with the model has a sound reason to upgrade rather than migrate; [Section 9](#section-9) puts the two paths side by side.
 
 ## 2. Concept mapping: Airflow 2/3 → Kestra 2.0
 
