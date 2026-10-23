@@ -115,7 +115,7 @@ With any value, the `Parallel` task ends in `FAILED` and its `errors` and `final
         duration: PT1M
 ```
 
-For more task details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
+For more details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
 
