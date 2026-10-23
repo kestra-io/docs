@@ -13,7 +13,16 @@ export const GET: APIRoute = async () => {
     const { title, author, description } = post.data
     const byline = author ? `**Whitepaper · By ${author}**\n\n` : ""
     const intro = description ? `${description}\n\n` : ""
-    const source = await resolveTotalPluginsPlaceholder(post.body ?? "")
+    // The sidebar is an `:::alert` directive in the entry; a plain blockquote
+    // reads better as markdown.
+    const source = (
+        await resolveTotalPluginsPlaceholder(post.body ?? "")
+    ).replace(/^:::alert\{[^}]*\}\n([\s\S]*?)\n:::$/gm, (_, inner: string) =>
+        inner
+            .split("\n")
+            .map((line) => (line ? `> ${line}` : ">"))
+            .join("\n"),
+    )
     const body = `${source.trimEnd()}\n\n${authorMarkdown()}\n`
     return new Response(`# ${title}\n\n${byline}${intro}${body}`, {
         status: 200,

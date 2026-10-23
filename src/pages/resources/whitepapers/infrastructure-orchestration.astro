@@ -78,17 +78,17 @@ const WHO_ITEMS = [
     {
         title: "<span class='persona-tag persona-tag--purple'>Platform and infrastructure automation leads</span>",
         description:
-            "You run Terraform, Ansible, and a patch platform, and the chain between them lives in scripts and in people. You want one control plane above the tools you already trust.",
+            "You run Terraform, Ansible, and a patch platform, and the chain between them lives in scripts and in people. You want one control plane above the tools you already trust, and a way to retire the glue without rewriting what works.",
     },
     {
         title: "<span class='persona-tag persona-tag--blue'>Heads of infrastructure and operations</span>",
         description:
-            "Your automation bill grows with every node the AI buildout adds, and the next renewal may reprice the stack. You want to know which meters you can stop growing and which layer you can retire.",
+            "Every node the AI buildout adds moves a license meter, the next renewal may reprice the stack, and auditors now ask for proof that each change ran as approved. You want to know which costs you can stop growing, and what evidence one control plane gives you.",
     },
     {
-        title: "<span class='persona-tag persona-tag--green'>Security, risk, and compliance owners</span>",
+        title: "<span class='persona-tag persona-tag--green'>Enterprise architects</span>",
         description:
-            "Auditors now ask for proof of process, not proof of policy. You need one record of what ran, who approved it, and what was verified, in the formats your SIEM already reads.",
+            "You own the target architecture. You need a clear boundary between the tools that execute work and the layer that coordinates it, and a way to test which platforms can carry data, application, and agent workloads later.",
     },
 ]
 ---
@@ -141,7 +141,9 @@ const WHO_ITEMS = [
     <CardGrid title="Who this is for" items={WHO_ITEMS} />
 
     <section class="whitepaper-content">
-        <TwoColumnStickyLayout client:load>
+        {/* Static, as on blog and resource pages: hydrating it re-renders the
+            article and drops the click-to-enlarge handlers on its images. */}
+        <TwoColumnStickyLayout>
             <div slot="sidebar" class="whitepaper-sidebar">
                 <ResourceDetails resource={post as any} />
                 <BlogToc client:load links={tocLinks} />
@@ -231,6 +233,31 @@ const WHO_ITEMS = [
 
         @include media-breakpoint-up(md) {
             font-size: 1.375rem;
+        }
+    }
+
+    // The paper's sidebar is an info alert in the entry. The site's alert
+    // style zeroes paragraph margins, which suits one-line notes but packs
+    // these five paragraphs into one block, so the box gets a small label,
+    // a title and normal paragraph spacing here.
+    .whitepaper-content :global(.bd-content .doc-alert) {
+        margin: 2rem 0;
+        padding: 1.5rem 1.5rem 1.5rem 3.5rem;
+
+        :global(p + p) {
+            margin-top: 1rem;
+        }
+
+        :global(p:first-child) {
+            font-size: $font-size-xs;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        :global(p:nth-child(2)) {
+            margin-top: 0.25rem;
+            font-size: 1.125rem;
         }
     }
 

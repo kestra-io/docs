@@ -67,7 +67,7 @@ Each one is excellent within a scope that ends at the tool boundary.
 
 The clearest statement of this comes from IBM, which now owns both Terraform and Ansible Automation Platform. It describes infrastructure automation as operating through three core functions: provisioning, configuration management, and workflow orchestration. No single tool handles all three, IBM says, so organizations build end-to-end toolchains where different tools handle different stages. In practice the toolchain is rarely even one vendor's: it mixes commercial products from several vendors, open source projects, and per-cloud services, and every merger or acquisition adds another set overnight.
 
-The toolchain is the accepted architecture. Nobody designed the seams: the handoffs between tools where a chain breaks and a person fills the gap.
+> The toolchain is the accepted architecture. Nobody designed the seams: the handoffs between tools where a chain breaks and a person fills the gap.
 
 The environment those seams run through keeps getting more complex. In the Flexera 2026 State of the Cloud report, 73 percent of organizations run hybrid environments, rising to 78 percent among enterprises above five thousand employees, and 89 percent use more than one cloud. Flexera's finding on why is the telling one: multi-cloud growth is often not a strategy but an inheritance, driven by mergers, SaaS sprawl, and decentralized teams.
 
@@ -97,17 +97,21 @@ Named concretely, the picture is familiar to anyone who has inventoried an enter
 
 *Figure 2. Representative open source projects and commercial platforms in each category, listed alphabetically.*
 
-> **Sidebar: who owns the automation stack · October 2026**
->
-> The modern infrastructure stack is consolidating underneath the teams using it. Within three years, Chef, Puppet, and HashiCorp all changed hands or changed terms, IBM came to own both Terraform and Ansible Automation Platform, and the most widely deployed private cloud orchestrator stopped being sold on its own.
->
-> IBM completed its 6.4 billion dollar acquisition of HashiCorp on 27 February 2025. The legacy HCP Terraform free plan ended on 31 March 2026, the replacement free tier caps at 500 managed resources, and paid tiers charge between 0.10 and 0.99 dollars per resource per month.
->
-> Chef, owned by Progress since 2020, retires the open source Chef Infra Server in November 2026 in favor of Chef 360, and the Cinc community project is forking it. Puppet, owned by Perforce since 2022, saw its community fork to OpenVox after access to Puppet binaries was restricted.
->
-> VMware Aria Automation, which includes the former vRealize Orchestrator, is no longer available as a standalone product. Broadcom folded the functionality into VMware Cloud Foundation 9 as VCF Automation, and the Aria SaaS services reached end of availability in February 2024. Organizations that used the orchestrator without the full VCF stack now face a bundling decision at renewal. European cloud providers reported post-acquisition price increases of 800 to 1,500 percent to the European Commission, documented in a 2025 report by CISPE's European Cloud Competition Observatory, and Gartner analysts have told the press that enterprise renewal quotes rose by 200 to 500 percent.
->
-> Regulation is moving the other way. The EU published its Open Source Strategy on 3 June 2026 as part of the Technological Sovereignty Package, citing the more than 260 billion euros Europe spends each year on digital technologies from non-EU vendors, and the proposed Cloud and AI Development Act puts open source first in public cloud and AI procurement.
+:::alert{type="info"}
+Sidebar
+
+**Who owns the automation stack · October 2026**
+
+The modern infrastructure stack is consolidating underneath the teams using it. Within three years, Chef, Puppet, and HashiCorp all changed hands or changed terms, IBM came to own both Terraform and Ansible Automation Platform, and the most widely deployed private cloud orchestrator stopped being sold on its own.
+
+IBM completed its 6.4 billion dollar acquisition of HashiCorp on 27 February 2025. The legacy HCP Terraform free plan ended on 31 March 2026, the replacement free tier caps at 500 managed resources, and paid tiers charge between 0.10 and 0.99 dollars per resource per month.
+
+Chef, owned by Progress since 2020, retires the open source Chef Infra Server in November 2026 in favor of Chef 360, and the Cinc community project is forking it. Puppet, owned by Perforce since 2022, saw its community fork to OpenVox after access to Puppet binaries was restricted.
+
+VMware Aria Automation, which includes the former vRealize Orchestrator, is no longer available as a standalone product. Broadcom folded the functionality into VMware Cloud Foundation 9 as VCF Automation, and the Aria SaaS services reached end of availability in February 2024. Organizations that used the orchestrator without the full VCF stack now face a bundling decision at renewal. European cloud providers reported post-acquisition price increases of 800 to 1,500 percent to the European Commission, documented in a 2025 report by CISPE's European Cloud Competition Observatory, and Gartner analysts have told the press that enterprise renewal quotes rose by 200 to 500 percent.
+
+Regulation is moving the other way. The EU published its Open Source Strategy on 3 June 2026 as part of the Technological Sovereignty Package, citing the more than 260 billion euros Europe spends each year on digital technologies from non-EU vendors, and the proposed Cloud and AI Development Act puts open source first in public cloud and AI procurement.
+:::
 
 ## What the coordination gap costs
 
