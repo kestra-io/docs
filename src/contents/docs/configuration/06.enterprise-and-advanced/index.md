@@ -377,15 +377,7 @@ kestra:
 
 Kafka tuning is usually about cluster shape rather than syntax. Partition count limits how much component-level concurrency you can achieve, while replication settings should match your broker topology and HA expectations.
 
-This page also covers:
-
-- SSL-secured Kafka clients
-- default topic partition and replication settings
-- consumer, producer, and stream defaults
-- custom topic names and topic properties
-- consumer and topic prefixes for shared clusters
-- Kafka Streams local state directory
-- message protection for oversized Kafka messages
+Kestra passes `kestra.kafka.client.properties` to its Kafka admin client, producers, and consumers, so set transport and authentication there. Kestra creates a topic for each queue when it first needs one, using the settings under `kestra.kafka.defaults.topic`. These settings apply only when Kestra creates a topic; Kestra does not change topics that already exist.
 
 Representative advanced Kafka settings:
 
@@ -398,15 +390,15 @@ kestra:
         security.protocol: SSL
     defaults:
       topic:
-        partitions: 3
+        partitions: 16
         replication-factor: 3
-    topics:
-      executions:
         properties:
           retention.ms: 604800000
+  queue:
+    type: kafka
 ```
 
-Use client properties for transport and auth, `defaults` for cluster-wide topic behavior, and `topics.*.properties` only when one topic needs behavior that differs from the rest.
+Topic properties under `defaults.topic.properties` apply to every topic Kestra creates.
 
 Full SSL client configuration with keystores:
 
@@ -428,7 +420,7 @@ kestra:
     type: kafka
 ```
 
-Consumer, producer, and stream defaults:
+Kestra ships with these consumer and producer defaults:
 
 ```yaml
 kestra:
@@ -442,37 +434,25 @@ kestra:
       producer:
         properties:
           acks: "all"
-          compression.type: "lz4"
+          compression.type: "zstd"
+          compression.zstd.level: 1
           max.request.size: "10485760"
-      stream:
-        properties:
-          processing.guarantee: "exactly_once"
-          replication.factor: "${kestra.kafka.defaults.topic.replication-factor}"
-          acks: "all"
-          compression.type: "lz4"
-          max.request.size: "10485760"
-          state.dir: "/tmp/kafka-streams"
+          linger.ms: 0
 ```
 
-Client loggers for debugging message flow:
+Set only the properties you want to change. The others keep their defaults. For the latency tradeoff behind `linger.ms: 0`, see [Performance tuning](../../performance/performance-tuning/index.md#the-kafka-backend).
 
-```yaml
-kestra:
-  kafka:
-    client:
-      loggers:
-        - level: INFO
-          type: PRODUCER
-          topic-regexp: "kestra_(executions|workertaskresult)"
-          key-regexp: .*parallel.*
-          value-regexp: .*parallel.*
-```
+| Property | Description | Default |
+|---|---|---|
+| `kestra.kafka.client.properties` | Kafka client properties applied to the admin client, producers, and consumers. `bootstrap.servers` is required. | — |
+| `kestra.kafka.defaults.topic.partitions` | Number of partitions of each topic Kestra creates. | `16` |
+| `kestra.kafka.defaults.topic.replication-factor` | Replication factor of each topic Kestra creates. | `1` |
+| `kestra.kafka.defaults.topic.properties` | Kafka topic configuration applied to each topic Kestra creates. | — |
+| `kestra.kafka.defaults.consumer.properties` | Kafka consumer properties. | See the example above |
+| `kestra.kafka.defaults.producer.properties` | Kafka producer properties. | See the example above |
+| `kestra.server.metrics.kafka.admin` | Export Kafka client metrics for the admin client, producers, and consumers. | `true` |
 
-:::alert{type="warning"}
-Client loggers have a heavy performance impact. Use them only for short-lived debugging sessions.
-:::
-
-Shared-cluster deployments often also need prefixes or dedicated topic names to avoid collisions with other tenants or environments.
+To share one Kafka cluster between several Kestra instances, give each instance a different `kestra.queue.prefix`. The prefix starts every topic name, and Kestra derives consumer group IDs from topic names, so instances don't consume each other's messages.
 
 To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
 
