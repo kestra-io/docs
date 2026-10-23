@@ -290,3 +290,5 @@ Flow-level retries also restart Subflows as new executions.
 **Replay** starts a new execution from any task (successful or failed) and assigns it a new execution ID. Previous task outputs are reused from cache when available. Replay is available from the **Actions** menu on the Execution overview page and from task nodes in the **Topology**, **Gantt**, or **Logs** view. See the [Replay documentation](../../15.how-to-guides/replay/index.md).
 
 After a replay, the new execution's Overview tab shows an **Original Execution** field linking back to the source run.
+
+A script task with `durable: true` keeps its [checkpoints](../../16.scripts/10.checkpoints/index.md) across retries and restarts, so it resumes from its last checkpoint. A replay starts a new execution, so the task starts over.

@@ -70,6 +70,8 @@ Here is the representation of a `metrics` object. It's a **list of dictionaries*
 
 Both outputs and metrics can optionally include a list of tags that expose internal details.
 
+The same `::{}::` syntax also accepts a `checkpoints` object, which saves progress so a retried task can resume where it stopped. See [Checkpoints](../10.checkpoints/index.md).
+
 ### Metric types: `counter` and `timer`
 
 There are two metric types:

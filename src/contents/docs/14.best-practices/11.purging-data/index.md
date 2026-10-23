@@ -87,6 +87,8 @@ The KV Store is best used for mutable state such as:
 - checkpoints
 - last processed timestamps
 
+KV pairs hold state across executions. To resume a single script task after a retry or restart, use [script checkpoints](../../16.scripts/10.checkpoints/index.md) instead. `PurgeExecutions` deletes those with their execution.
+
 Best practice:
 
 - set TTLs where possible
