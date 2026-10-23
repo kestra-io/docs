@@ -1,0 +1,68 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "dltHub & Kestra: Orchestrate dlt Python Data Pipelines"
+const description =
+    "Orchestrate dlt with Kestra: run dlt pipelines with the dlt plugin or in Python script tasks, on schedules or events, with retries, state and alerts built in."
+
+const facts = [
+    {
+        label: "Runs in",
+        value: "Containers or the Kestra worker, with dependencies installed per task",
+    },
+    {
+        label: "Plugin",
+        value: "Run and CLI tasks for dlt pipelines, plus dlt in any Python script task",
+    },
+    {
+        label: "Destinations",
+        value: "Any dlt destination, such as DuckDB, Postgres, BigQuery or Snowflake",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:language-python",
+        title: "Python pipelines in declarative flows",
+        text: "Run an inline dlt script with the Run task, or call the dlt command line with the CLI task, all from a YAML flow.",
+    },
+    {
+        icon: "mdi:database-sync-outline",
+        title: "Incremental loads that survive reruns",
+        text: "dlt stores cursor state in the destination and merges on primary keys, so a Kestra retry never duplicates rows.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "Schema contracts before the load",
+        text: "Freeze a dlt schema contract and the run fails before a new column or changed type reaches the destination.",
+    },
+    {
+        icon: "mdi:bell-ring-outline",
+        title: "Schedules, webhooks and alerts",
+        text: "Start loads on a cron or an incoming webhook, then post row counts or failures to Slack and Discord.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="dltHub">
+    <PartnerProfile
+        name="dltHub"
+        tagline="dltHub builds dlt, the open-source Python library that loads data from APIs, databases and files into well-structured datasets. Kestra schedules, retries and monitors those pipelines alongside the rest of the data stack."
+        about="The <a href='https://kestra.io/plugins/plugin-dlt'>dlt plugin</a> runs dlt pipelines as Kestra tasks, and any dlt script also runs in a Python script task."
+        expertiseTitle="dltHub + Kestra: Python data loading, orchestrated"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-dlt"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "dlt",
+            title: '<span class="highlight">dlt</span> Blueprints',
+        }}
+        closing={{
+            title: "Orchestrate your dlt pipelines",
+            text: "Open source and self-hosted. Start from a blueprint below or from the plugin docs.",
+        }}
+        website="https://dlthub.com/docs/walkthroughs/deploy-a-pipeline/deploy-with-kestra?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

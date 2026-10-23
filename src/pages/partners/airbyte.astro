@@ -1,0 +1,73 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Airbyte & Kestra: Event-Driven Orchestration for Airbyte Syncs"
+const description =
+    "Orchestrate Airbyte with Kestra: trigger Airbyte OSS and Cloud syncs from any event, wait for completion, and chain them into dbt and reverse ETL in one flow."
+
+const facts = [
+    {
+        label: "Deployments",
+        value: "Airbyte OSS and Airbyte Cloud",
+    },
+    {
+        label: "Plugin",
+        value: "Connection syncs and status checks for Airbyte OSS, job syncs for Airbyte Cloud",
+    },
+    {
+        label: "In production",
+        value: "Gorgias chains Airbyte, dbt and Hightouch in Kestra flows",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:lightning-bolt-outline",
+        title: "Syncs that start when the data is ready",
+        text: "A webhook, a file landing in S3 or a schedule fires io.kestra.plugin.airbyte.connections.Sync, so ingestion runs on a real signal instead of a fixed cron.",
+    },
+    {
+        icon: "mdi:timer-sand",
+        title: "Wait for the job to finish",
+        text: "Sync waits for a terminal status by default, and CheckStatus polls a job started elsewhere. The next task only reads fully loaded tables.",
+    },
+    {
+        icon: "mdi:pipe-disconnected",
+        title: "Ingestion, dbt and activation in one flow",
+        text: "Run the Airbyte sync, build dbt models, then trigger Hightouch. A failed dbt step retries on its own without running the sync again.",
+    },
+    {
+        icon: "mdi:source-branch",
+        title: "Many connections in parallel",
+        text: "Fan out syncs with Loop and a concurrency limit, and isolate a broken connector with allowFailure so the rest of the refresh completes.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Airbyte">
+    <PartnerProfile
+        name="Airbyte"
+        tagline="Airbyte is the open source data integration platform with hundreds of connectors. Kestra decides when each sync runs, waits for it to land, and runs everything that comes after it."
+        about="The <a href='/blogs/2023-09-05-2023-kestra-airbyte-technology-partnership'>plugin-airbyte plugin</a> triggers syncs on Airbyte OSS through connections.Sync and on Airbyte Cloud through cloud.jobs.Sync, and turns each connector run into a step of a larger declarative flow."
+        expertiseTitle="Airbyte + Kestra: ingestion, orchestrated end to end"
+        expertise={expertise}
+        quote={{
+            text: "Kestra has been a keystone to design complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our Hightouch reverse-ETL jobs seamlessly.",
+            author: "Antoine Balliet",
+            role: "Senior Data Engineer at Gorgias",
+        }}
+        facts={facts}
+        plugins={["plugin-airbyte"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "airbyte",
+            title: '<span class="highlight">Airbyte</span> Blueprints',
+        }}
+        closing={{
+            title: "Orchestrate your Airbyte syncs",
+            text: "Open source and self-hosted. Start from a blueprint below or from the plugin docs.",
+        }}
+        website="https://docs.airbyte.com/platform/operator-guides/using-kestra-plugin?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>
