@@ -77,12 +77,31 @@ const initConsentModeAndGtm = () => {
     document.head.appendChild(s)
 }
 
+// With <ClientRouter />, document.referrer keeps the landing page's external
+// referrer for the whole visit, so GA4 would report it on every soft
+// navigation. Track the previous page ourselves and send it as page_referrer.
+// (Done here rather than in a GTM Custom JavaScript variable: those need
+// 'unsafe-eval', which our CSP doesn't allow, and silently return undefined.)
+let lastPageUrl: string | undefined
+let pageReferrer: string | undefined = document.referrer || undefined
+
 export const pushPageView = () => {
+    const url = window.location.href?.split("#")[0]
+    // Several pushes for the same page (e.g. consent re-granted) keep the
+    // same referrer instead of pointing the page at itself.
+    if (url !== lastPageUrl) {
+        if (lastPageUrl !== undefined) {
+            pageReferrer = lastPageUrl
+        }
+        lastPageUrl = url
+    }
+
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({
         event: "content-view",
         "content-name": window.location.pathname + window.location.search,
         "content-view-name": window.astroClientConfig?.slug,
+        page_referrer: pageReferrer,
     })
 }
 

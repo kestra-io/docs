@@ -318,6 +318,48 @@ describe("cookieconsent — non-Europe", () => {
     })
 })
 
+// document.referrer stays the landing page's external referrer across soft
+// navigations, so content-view carries the previous page as page_referrer.
+describe("cookieconsent — content-view page_referrer", () => {
+    const setUrl = (path: string) => {
+        globalThis.location = { pathname: path, search: "", href: `https://kestra.io${path}` } as Location
+    }
+    const contentViews = () => window.dataLayer.filter((e: any) => e?.event === "content-view") as any[]
+
+    beforeEach(async () => {
+        ;(document as any).referrer = "https://www.google.com/"
+        setUrl("/docs/quickstart")
+        setTimezone("America/New_York")
+        await loadModule()
+        await firePageLoad()
+    })
+
+    it("uses the external referrer on the landing page", () => {
+        expect(contentViews()).toHaveLength(1)
+        expect(contentViews()[0].page_referrer).toBe("https://www.google.com/")
+    })
+
+    it("uses the previous page on each soft navigation", async () => {
+        setUrl("/pricing")
+        await firePageLoad()
+        setUrl("/enterprise")
+        await firePageLoad()
+        expect(contentViews().map((e) => e.page_referrer)).toEqual([
+            "https://www.google.com/",
+            "https://kestra.io/docs/quickstart",
+            "https://kestra.io/pricing",
+        ])
+    })
+
+    it("keeps the same referrer when the same page is reported twice", async () => {
+        await firePageLoad()
+        expect(contentViews().map((e) => e.page_referrer)).toEqual([
+            "https://www.google.com/",
+            "https://www.google.com/",
+        ])
+    })
+})
+
 describe("cookieconsent — region attribute takes precedence over Intl timezone", () => {
     it("treats the visitor as Europe when the attribute says eu, even with a non-EU timezone", async () => {
         setTimezone("America/New_York")
