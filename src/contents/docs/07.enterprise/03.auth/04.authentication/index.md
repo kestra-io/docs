@@ -77,6 +77,8 @@ micronaut:
 
 See the [Micronaut OIDC configuration guide](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration) for full details. See [Single Sign-On](../sso/index.md) to configure SSO with Google, Microsoft, and other providers.
 
+Kestra also supports SSO with a SAML 2.0 identity provider: see [SAML 2.0](../sso/saml/index.md).
+
 ## Passwordless (One-Time-Password)
 
 Passwordless login lets users sign in without a password. When a user enters their email address, Kestra sends a one-time code to that address. The user enters the code to authenticate.
