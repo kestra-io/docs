@@ -15,6 +15,8 @@ import Translation from "~/components/lp/vra-migration/Translation.astro"
 import Proof from "~/components/lp/vra-migration/Proof.astro"
 import Payback from "~/components/lp/vra-migration/Payback.astro"
 import Assistant from "~/components/lp/vra-migration/Assistant.astro"
+import HeroActions from "~/components/lp/vra-migration/HeroActions.astro"
+import GuideOffer from "~/components/lp/vra-migration/GuideOffer.astro"
 
 import SelfServiceIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
 import DayTwoIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
@@ -30,28 +32,28 @@ const description =
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/vra-migration"
 
-/* Same HubSpot form as /lp/workflow-orchestration; only the button reads
- * differently. */
+/* The call form lower on the page (#contact-sales): same HubSpot form as
+ * /lp/workflow-orchestration; only the button reads differently. */
 const formProps = { submitLabel: "Get my migration estimate" }
 
 const reasons = [
     {
         kicker: "Pricing",
-        title: "Since Broadcom's licensing changes, vRA ships only inside VMware Cloud Foundation.",
-        body: "Priced per core on subscription, so the bill tracks your hypervisor estate. Gartner expects renewals 200 to 500% higher.",
+        title: "No expensive renewals at term.",
+        body: "Kestra isn't sold inside a hypervisor bundle or priced per execution: the bill follows how widely you deploy it, not your VMware renewal.",
         icon: "mdi:cash-multiple",
     },
     {
-        kicker: "Roadmap",
-        title: "Your automation only reaches what VMware supports.",
-        body: "And that list is shrinking: VCF Automation 9.1.1 disables native AWS, Azure and GCP endpoints by default.",
-        icon: "mdi:map-marker-path",
+        kicker: "Open by design",
+        title: "Orchestrate your whole infrastructure, not just VMware.",
+        body: "vSphere, Nutanix, Proxmox, the public clouds, Terraform, Ansible and your ITSM from one place. VCF Automation 9.1.1 disables native AWS, Azure and GCP endpoints by default.",
+        icon: "mdi:lock-open-variant-outline",
     },
     {
-        kicker: "Skills",
-        title: "vRO JavaScript skills are rare.",
-        body: "Every workflow change waits on the same few people. Kestra flows are YAML any engineer can read, with the logic in Python, PowerShell or Ansible.",
-        icon: "mdi:account-group-outline",
+        kicker: "Any language, declarative",
+        title: "Bring any language. Declare the workflow.",
+        body: "Flows are YAML any engineer can read and review in Git, with the logic in Python, PowerShell, Shell or Ansible, instead of vRO JavaScript only a few people can change.",
+        icon: "mdi:code-braces",
     },
 ]
 
@@ -142,7 +144,7 @@ const faqItems = [
     },
     {
         question: "How is vRA priced since Broadcom?",
-        answer: 'vRA is no longer sold on its own. It ships inside VMware Cloud Foundation, licensed per core on subscription, so the automation bill tracks the size of the hypervisor estate rather than how much you automate. Gartner expects most VMware customers\' bills to grow by 200 to 500 percent at their next renewal, <a href="https://www.theregister.com/2024/08/26/vmware_explore_preview/" target="_blank" rel="noopener">as reported by The Register</a>. The calculator above sets that renewal against the cost of migrating.',
+        answer: 'vRA is no longer sold on its own. It ships inside VMware Cloud Foundation, licensed per core on subscription, so the automation bill tracks the size of the hypervisor footprint rather than how much you automate. Gartner expects most VMware customers\' bills to grow by 200 to 500 percent at their next renewal, <a href="https://www.theregister.com/2024/08/26/vmware_explore_preview/" target="_blank" rel="noopener">as reported by The Register</a>. The calculator above sets that renewal against the cost of migrating.',
     },
     {
         question: "Do we have to leave vSphere?",
@@ -159,7 +161,7 @@ const faqItems = [
     },
     {
         question: "Do our vRO workflows have to be rewritten?",
-        answer: "Wrappers are called as they are; the rest is converted or rebuilt, and the Migration Assistant tells you which.",
+        answer: "Wrappers are called as they are; the rest is converted or rebuilt, and the Migration Assistant tells you which. Converted flows are tested against a simulated copy of your environment before they reach yours.",
     },
     {
         question:
@@ -168,11 +170,11 @@ const faqItems = [
     },
     {
         question: "How is Kestra priced?",
-        answer: "Kestra does not price per execution. The model scales with how broadly the platform is deployed rather than how often your workflows run, so adding volume or agent steps does not change the bill. Enterprise pricing depends on deployment scope and support tier, and we walk through it on the call.",
+        answer: "Kestra does not price per execution. The model scales with how broadly the platform is deployed rather than how often your workflows run, so adding volume does not change the bill. Enterprise pricing depends on deployment scope and support tier, and we walk through it on the call.",
     },
     {
         question: "How long does a migration take?",
-        answer: "It depends on the estate. The assessment gives you the wave plan and the dates. A Fortune 500 manufacturer replaced vRA and vRO in about twelve months, with both running side by side until each wave was verified.",
+        answer: "It depends on the environment. The assessment gives you the wave plan and the dates. A Fortune 500 manufacturer replaced vRA and vRO in about twelve months, with both running side by side until each wave was verified.",
     },
     {
         question: "Do you help teams moving off vRA and vRO?",
@@ -192,7 +194,6 @@ const faqItems = [
         <Hero
             {routePath}
             formTitle="Bring your vRA renewal quote."
-            {formProps}
             companies={[
                 "bundesagentur",
                 "itzbund",
@@ -207,14 +208,13 @@ const faqItems = [
         >
             <Fragment slot="title">
                 Migrate off <span class="grad grad-a">VMware vRA</span>{" "}
-                and <span class="grad grad-b">vRO</span>, one workflow at a
-                time.
+                and <span class="grad grad-b">vRO</span>, one wave at a time.
             </Fragment>
             <Fragment slot="lead">
                 Kestra replaces vRealize Automation (now Aria Automation and VCF
                 Automation) and vRealize Orchestrator (vRO) with one governed
-                orchestration platform on your own infrastructure. Keep your
-                Terraform, Ansible and scripts. Retire the vRA licence at
+                orchestration platform on your own infrastructure.<br />
+                Keep your Terraform, Ansible and scripts. Retire the vRA licence at
                 renewal.<br />
                 <strong
                     >Runs with vSphere today, and with Nutanix, Proxmox or
@@ -222,9 +222,10 @@ const faqItems = [
                 >
             </Fragment>
             <Fragment slot="form-sub">
-                We map your estate and estimate the migration in a 30-minute
-                call.
+                We map your environment and estimate the migration in a
+                30-minute call.
             </Fragment>
+            <HeroActions slot="form" {routePath} {formProps} />
         </Hero>
         <script is:inline>
             /* Echo the searched product and intent in the headline. The G_VRA
@@ -270,16 +271,18 @@ const faqItems = [
                 }
             })()
         </script>
-        <Platform
-            heading="Why teams look for a vRA alternative"
-            cards={reasons}
-        />
         <Migration
             heading="Leave vRA in four stages, with vRA still running"
             sub="Kestra runs alongside vRA until each wave is verified."
             steps={stages}
         />
+        <Platform
+            heading="Switch to orchestration without lock-in"
+            cards={reasons}
+        />
         <Translation />
+        <Proof />
+        <GuideOffer />
         <Assistant />
         <Features />
         <Stack
@@ -288,7 +291,6 @@ const faqItems = [
             columns={automations}
             glyphSize={72}
         />
-        <Proof />
         <UseCases
             {routePath}
             headingLines={["See it on your", "own vRO workflows"]}

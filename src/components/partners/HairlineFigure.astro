@@ -1,0 +1,69 @@
+---
+interface Props {
+    name: "deploy" | "plugins"
+}
+
+const { name } = Astro.props
+---
+
+<div class="hairline-figure" data-figure={name}></div>
+
+<script>
+    import HL from "./illustrations/hairline-kernel.js"
+    import deploy from "./illustrations/deploy.js"
+    import plugins from "./illustrations/plugins.js"
+
+    const FIGURES = { deploy, plugins }
+
+    function mountAll() {
+        document
+            .querySelectorAll<HTMLElement>(
+                ".hairline-figure:not([data-hairline])",
+            )
+            .forEach((stage) => {
+                const define =
+                    FIGURES[stage.dataset.figure as keyof typeof FIGURES]
+                if (!define) return
+                define(HL, (figure: any) => {
+                    HL.inject(document)
+                    stage.setAttribute("data-hairline", figure.name)
+                    stage.setAttribute("role", "img")
+                    stage.setAttribute("aria-label", figure.means)
+                    const svg = HL.mk(
+                        "svg",
+                        { viewBox: "0 0 400 320", "aria-hidden": "true" },
+                        stage,
+                    )
+                    figure.mount(
+                        { stage, svg, read: { textContent: "" } },
+                        figure.range[1],
+                    )
+                    HL.tour(stage, figure.tour || HL.LAP)
+                })
+            })
+    }
+
+    mountAll()
+    document.addEventListener("astro:page-load", mountAll)
+</script>
+
+<style lang="scss">
+    .hairline-figure {
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+        --hairline-plate: var(--ks-background-body);
+        --hairline-hi: #8405ff;
+
+        :global(.kpink) {
+            fill: #f62e76;
+        }
+
+        :global(html.dark) & {
+            --hairline-hi: #a796ff;
+            --hairline-edge: #7e7e88;
+            --hairline-mid: #4d4d55;
+            --hairline-lo: #35353b;
+        }
+    }
+</style>
