@@ -71,16 +71,18 @@ tasks:
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/json/orders.json
 
   - id: transform_to_products_name
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
 
   - id: transform_to_uppercase
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(outputs.transform_to_products_name.values.result) | upper }}"
 
   - id: load
     type: io.kestra.plugin.gcp.bigquery.Load
-    from: "{{ outputs.transform_to_uppercase.value }}"
+    from: "{{ outputs.transform_to_uppercase.values.result }}"
     destinationTable: "my_project.my_dataset.my_table"
     format: JSON
 ```
@@ -101,7 +103,7 @@ testCases:
         - id: load
           description: "don't load data into BigQuery"
     assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
+      - value: "{{outputs.transform_to_uppercase.values.result}}"
         isNotNull: true
   - id: extract_should_transform_product_names_to_uppercase_mocked
     type: io.kestra.core.tests.flow.UnitTest
@@ -115,12 +117,13 @@ testCases:
           description: "don't fetch data from API"
         - id: transform_to_products_name
           outputs:
-            value: |
-              [
-                "my-product-1"
-              ]
+            values:
+              result: |
+                [
+                  "my-product-1"
+                ]
     assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
+      - value: "{{outputs.transform_to_uppercase.values.result}}"
         contains: "MY-PRODUCT-1"
 ```
 
@@ -155,12 +158,14 @@ tasks:
     method: GET
 
   - id: transform_to_products_name
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
 
   - id: transform_to_uppercase
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(outputs.transform_to_products_name.values.result) | upper }}"
 
   - id: load_result_to_outgoing_api
     type: io.kestra.plugin.core.log.Log
@@ -232,7 +237,7 @@ testCases:
         - id: load_result_to_outgoing_api
           description: "don't send end output"
     assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
+      - value: "{{outputs.transform_to_uppercase.values.result}}"
         equalTo: "[BOWLER HAT, TRILBY HAT]"
 ```
 

@@ -88,11 +88,12 @@ tasks:
         value: "landing-{{ item.value }}"
       - id: message
         type: STRING
-        value: "{{ outputs.build_message.value }}"
+        value: "{{ outputs.build_message.values.result }}"
     tasks:
       - id: build_message
-        type: io.kestra.plugin.core.debug.Return
-        format: "Load {{ item.value }} into landing-{{ item.value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "Load {{ item.value }} into landing-{{ item.value }}"
 
   - id: log_first
     type: io.kestra.plugin.core.log.Log
@@ -134,11 +135,12 @@ tasks:
     outputs:
       - id: result_uri
         type: STRING
-        value: "{{ outputs.process.value }}"
+        value: "{{ outputs.process.values.result }}"
     tasks:
       - id: process
-        type: io.kestra.plugin.core.debug.Return
-        format: "processed chunk {{ item.index }}: {{ item.value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "processed chunk {{ item.index }}: {{ item.value }}"
 
   - id: summary
     type: io.kestra.plugin.core.log.Log

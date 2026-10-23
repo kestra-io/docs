@@ -114,8 +114,8 @@ tasks:
       Console.WriteLine("::{\"outputs\":{\"test\":\"value\",\"int\":2,\"bool\":true,\"float\":3.65}}::");
 
   - id: use_output
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs.emit_output.vars.test }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.emit_output.vars.test }}"
 ```
 
 All output variables are visible in the **Outputs** tab of the execution.

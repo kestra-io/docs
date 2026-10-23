@@ -102,13 +102,14 @@ namespace: company.team
 
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: this is a task output used as a final flow output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: this is a task output used as a final flow output
 
 outputs:
   - id: final
     type: STRING
-    value: "{{ outputs.mytask.value }}"
+    value: "{{ outputs.mytask.values.result }}"
 ```
 
 Access these outputs in the parent flow:

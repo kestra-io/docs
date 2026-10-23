@@ -139,8 +139,8 @@ tasks:
     values: "{{ trigger.objects | jq('.[].uri') }}"
     tasks:
       - id: handle
-        type: io.kestra.plugin.core.debug.Return
-        format: "Processing file: {{ taskrun.value }}"
+        type: io.kestra.plugin.core.log.Log
+        message: "Processing file: {{ taskrun.value }}"
 
 triggers:
   - id: watch_bucket

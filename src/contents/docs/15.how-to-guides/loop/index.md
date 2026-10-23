@@ -81,11 +81,12 @@ tasks:
     outputs:
       - id: label
         type: STRING
-        value: "{{ outputs.process.value }}"
+        value: "{{ outputs.process.values.result }}"
     tasks:
       - id: process
-        type: io.kestra.plugin.core.debug.Return
-        format: "processed {{ item.value }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "processed {{ item.value }}"
 
   - id: read_outputs
     type: io.kestra.plugin.core.log.Log

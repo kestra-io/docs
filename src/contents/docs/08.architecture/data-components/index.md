@@ -50,7 +50,7 @@ The table below outlines key data components, where they are stored, and their p
   - [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
   - [Cloudflare R2](https://www.cloudflare.com/products/r2/)
   - [Huawei OBS](https://www.huaweicloud.com/en-us/product/obs.html)
-  - Any S3-compatible service (Ceph, SeaweedFS, Garage, MinIO)
+  - Any S3-compatible service (Ceph, SeaweedFS, Garage)
 
 ### Configuring internal storage
 

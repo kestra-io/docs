@@ -24,6 +24,8 @@ Most enterprise IT doesn't live on a single cloud, and it probably never will. R
 
 That's the hybrid cloud — and automating it is where operations teams either scale their impact or drown in manual toil. This guide covers what hybrid cloud automation is, how it differs from general [cloud and infrastructure automation](/resources/infrastructure/automation), the use cases that matter most in practice, and what to look for in a platform.
 
+Running VMware Aria Automation across a hybrid estate and planning to replace it? Our [vRA to Kestra migration guide](/resources/migration/vra) covers the move in four stages, with vRA running until each wave is verified.
+
 ## What Is Hybrid Cloud Automation?
 
 Hybrid cloud automation manages, orchestrates, and optimizes workloads, resources, and services across a mixed environment — public cloud services, private clouds, and on-premises infrastructure — through automated processes. It turns the fragmented reality of modern IT (different consoles, different APIs, different security models) into a consistent operating layer that teams can reason about.
@@ -108,7 +110,7 @@ The filter that matters most: does the platform treat every environment equally,
 | **Red Hat Ansible Automation Platform** | Config management + workflows | ✅ | Playbook-centric; orchestration is a layer on top |
 | **AWS Systems Manager** | AWS + limited hybrid | ❌ | AWS-first; limited for truly mixed environments |
 
-For direct comparisons, see [Kestra vs HPE Morpheus](/vs/morpheus), [Kestra vs VMware Aria Automation](/vs/vmware-cloud-foundation), and the broader [VMware Aria Automation alternatives](/resources/infrastructure/vmware-aria-automation-alternatives) landscape.
+For direct comparisons, see [Kestra vs HPE Morpheus](/vs/morpheus), [Kestra vs VMware Aria Automation](/vs/vmware-cloud-foundation), and the broader [VMware Aria Automation alternatives](/resources/infrastructure/vmware-aria-automation-alternatives) landscape. If you have already decided to leave vRA, the [vRA to Kestra migration guide](/resources/migration/vra) covers the migration itself.
 
 ## The Future of Hybrid Cloud Automation
 

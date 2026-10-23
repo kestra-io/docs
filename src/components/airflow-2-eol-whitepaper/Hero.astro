@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets"
-import DownloadForm from "./DownloadForm.vue"
+import GuideDownloadForm from "~/components/resources/GuideDownloadForm.vue"
 import bookMockup from "./assets/book-mockup.png"
 import heroBg from "./assets/hero-bg.jpg"
 ---
@@ -58,7 +58,14 @@ import heroBg from "./assets/hero-bg.jpg"
                     />
                 </div>
                 <div class="form-wrapper" data-usal="fade-l">
-                    <DownloadForm client:load />
+                    <GuideDownloadForm
+                        client:load
+                        hubspotFormId="e1706097-e681-441a-8306-7e715e9daa9a"
+                        guideUrl="/airflow-2-eol-whitepaper.pdf"
+                        submissionIdentifier="Airflow 2 EOL Whitepaper"
+                        pageUri="resources/airflow-2-eol-whitepaper"
+                        event="airflow_2_eol_whitepaper_download"
+                    />
                 </div>
             </div>
         </div>

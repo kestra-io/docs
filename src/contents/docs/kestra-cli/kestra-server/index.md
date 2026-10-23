@@ -500,7 +500,7 @@ services:
             basic-auth:
               enabled: false
               username: "admin@kestra.io"
-              password: kestra
+              password: Admin1234!
           repository:
             type: postgres
           storage:

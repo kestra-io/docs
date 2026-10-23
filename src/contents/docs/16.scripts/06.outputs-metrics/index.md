@@ -201,11 +201,12 @@ id: outputsInputs
 namespace: company.team
 tasks:
     - id: passOutput
-      type: io.kestra.plugin.core.debug.Return
-      format: "hello world!"
+      type: io.kestra.plugin.core.output.OutputValues
+      values:
+        result: "hello world!"
     - id: takeInput
-      type: io.kestra.plugin.core.debug.Return
-      format: "data from previous task - {{ outputs.passOutput.value }}"
+      type: io.kestra.plugin.core.log.Log
+      message: "data from previous task - {{ outputs.passOutput.values.result }}"
 ```
 
 ### Use cases for `metrics`: numerical values that can be aggregated and visualized across Executions
