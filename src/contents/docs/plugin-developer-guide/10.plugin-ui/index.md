@@ -36,7 +36,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 ```mermaid
 graph LR
     subgraph CORE["Kestra Core"]
-        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal)"]
+        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal\nexecution-artifact)"]
         HOST["Host UI\nconfigureAxios\nkestra:openTaskModal"]
         MFH["Module Federation\nruntime loader"]
     end
@@ -63,7 +63,7 @@ graph LR
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Three slots are available in `@kestra-io/artifact-sdk`:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Four slots are available:
 
 ### `topology-details`
 
@@ -152,6 +152,51 @@ const openTaskModal = inject<(ctx: Record<string, any>) => void>("kestra:openTas
 ```
 
 This slot is the right choice when a task runner (e.g. AWS Batch, Docker, Kubernetes) needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel.
+
+### `execution-artifact`
+
+Renders in the **Artifacts tab** of an execution, next to Overview, Gantt and Logs. Use it for a result a user wants to open full size after a run, such as a model graph, a compiled query or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
+
+The component receives the same props as `topology-details`, without `progress`. The tab only appears when the flow contains at least one task type that declares an artifact, and it shows the number of artifacts as a count. Artifacts are grouped by task, and each one opens in a viewer beside the list.
+
+A task type can ship several artifacts. Each one is its own component, registered as `execution-artifact/<id>`, and every module has its own entry in the manifest:
+
+```ts
+"cli.DbtCLI": [
+  {
+    slotName: "execution-artifact/model-graph",
+    path: "./src/components/ModelGraphArtifact.vue",
+    additionalProperties: { title: "Model graph" },
+  },
+  {
+    slotName: "execution-artifact/compiled-sql",
+    path: "./src/components/CompiledSqlArtifact.vue",
+    additionalProperties: { title: "Compiled SQL" },
+  },
+],
+```
+
+`additionalProperties` is read by the host to build the list:
+
+- **`title`** is the label of the artifact in the tab. It is required.
+- **`description`** is an optional line shown under the title.
+
+To show a line that depends on the run, such as `8 nodes · 8 dependencies`, export `getSubtitle` from the component. It is read again when the execution state changes, so it can use outputs that only exist once the task has run:
+
+```vue
+<script lang="ts">
+export async function getSubtitle({ fetchOutputs }) {
+  const outputs = await fetchOutputs();
+  return outputs.modelCount ? `${outputs.modelCount} models` : undefined;
+}
+</script>
+```
+
+`getSubtitle` receives `{ task, execution, fetchOutputs, fetchMetrics }`. `fetchOutputs` and `fetchMetrics` accept an optional `taskRunId`, and default to the latest run of the task. Return a string, or `undefined` to show only the description.
+
+:::alert{type="warning"}
+A version of `@kestra-io/artifact-sdk` released before this slot rejects the `execution-artifact/<id>` slot name at build time. Use a version that knows the slot.
+:::
 
 ## Tracking live task progress
 
