@@ -168,7 +168,7 @@ The first workflow count from a vRA estate is almost always alarming, because it
 **Assess it on your machine.** The [Kestra Migration Assistant](/resources/migration/vra/assistant) is a free command-line tool under Apache 2.0. It reads the vRO package and, optionally, the vRA export, and writes a migration brief you open in a browser: what each workflow does and what starts it, which systems it touches and whether a Kestra plugin already covers them, a recommendation per workflow (retire, merge into another, treat as a wrapper, convert, or rebuild) and a migration plan in waves ordered by risk and dependency. [Leaving vRA without the big rewrite](/blogs/leaving-vra-without-the-big-rewrite) shows why there is usually less to migrate than the export suggests.
 
 ```bash
-pipx install kestra-migration-assistant
+uv tool install git+https://github.com/kestra-io/migration-assistant@main
 kestra-migrate init
 kestra-migrate vra run ./my-estate
 ```
