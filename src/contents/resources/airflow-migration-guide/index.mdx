@@ -122,6 +122,7 @@ Most Airflow concepts map to a Kestra flow property or a core task. The table gi
 | `TaskGroup` / SubDAG | `io.kestra.plugin.core.flow.Subflow` for reuse; `Sequential` / `Parallel` for grouping | OSS | Subflows are first-class executions with their own history |
 | `BranchPythonOperator` / `ShortCircuitOperator` | `io.kestra.plugin.core.flow.If` / `Switch` | OSS | Branch on a Pebble expression, not on a Python return value |
 | Dynamic task mapping (`.expand()`) | `io.kestra.plugin.core.flow.Loop` with `values`, `concurrencyLimit` | OSS | `ForEach` and `ForEachItem` were removed in 2.0; use `item.value` / `item.index` |
+| DAG Factory YAML (`dag-factory`) | Flow YAML; `io.kestra.plugin.core.flow.Dag` for `dependencies` lists | OSS | No loader DAG; the code lives in the flow or in Namespace Files, not in a `python_callable_file` referenced by name |
 | `retries`, `retry_delay`, `retry_exponential_backoff` | `retry: {type: constant \| exponential \| random, maxAttempts, interval}` | OSS | `maxAttempts` counts the first run: Airflow `retries: 2` = `maxAttempts: 3` |
 | `on_failure_callback` | `errors` block (task- or flow-level), `afterExecution`, `finally` | OSS | Flow-level `errors` runs once per failed execution, not per task |
 | `TriggerDagRunOperator` | `Subflow` task | OSS | `wait: true` to block on the child |
@@ -232,7 +233,7 @@ tasks:
     type: ...
 ```
 
-A `Dag` flowable also exists for graphs that are easier to express with explicit `dependsOn` lists than with nesting; use it for DAGs with many cross-dependencies rather than rewriting them as nested blocks.
+A `Dag` flowable also exists for graphs that are easier to express with explicit `dependsOn` lists than with nesting; use it for DAGs with many cross-dependencies rather than rewriting them as nested blocks. It is also the closest match for DAGs already written in YAML with DAG Factory, whose `dependencies` lists become `dependsOn` almost line for line ([example 4](#section-8-4)).
 
 **TaskGroups and SubDAGs.** A TaskGroup used purely for UI grouping becomes a `Sequential` or `Parallel` block. A TaskGroup factory function or a SubDAG reused across DAGs becomes a Subflow with inputs:
 
@@ -280,6 +281,8 @@ Subflows have their own executions, logs and retry policy, which Airflow SubDAGs
         url: jdbc:postgresql://db.internal:5432/analytics
         sql: "SELECT * FROM orders WHERE region = '{{ item.value }}'"
 ```
+
+Arguments passed with `.partial()` are the same for every iteration, so they are written as plain values in the looped task. When `values` comes from an upstream task, a list of objects arrives one JSON string per iteration: read a field with `{{ fromJson(item.value).name }}`. Each iteration runs as its own execution attached to the parent, so a failed item can be inspected on its own; to use iteration results after the loop, as you would pull a mapped task's XCom list, declare them in the loop's `outputs`.
 
 For mapped tasks over large inputs (Airflow's `expand_kwargs` over thousands of rows), point `Loop` at a file output and combine it with a Subflow per batch so each batch is its own execution; that is also how you reproduce `max_active_tis_per_dag`.
 
@@ -354,7 +357,7 @@ In Kestra 2.0, Enterprise Policies can also enforce defaults per namespace (for 
 
 ## 8. Side-by-side examples
 
-Three DAGs that together use retries, callbacks, branching, mapping and asset-style dependencies. Line counts are similar; what changes is that the Kestra version can be read without running it.
+Four DAGs that together use retries, callbacks, branching, mapping, asset-style dependencies and DAG Factory YAML. Line counts are similar; what changes is that the Kestra version can be read without running it.
 
 ### 8.1 Example 1: scheduled ETL with retries and a failure alert
 
@@ -525,6 +528,105 @@ triggers:
 ```
 
 The upstream flow needs no change. In Enterprise, `ingest_orders` can additionally declare `s3://lake/orders` as an asset output, which gives lineage, freshness alerts and an asset trigger instead of the execution-state trigger above.
+
+### 8.4 Example 4: the same DAG in TaskFlow, in DAG Factory and in Kestra
+
+Astronomer's starter DAG fetches the astronauts currently in space and maps a task over them. Many teams write it with the TaskFlow API; teams that wanted YAML DAGs write it with DAG Factory.
+
+```python
+# Airflow, TaskFlow API
+@dag(schedule="@daily", start_date=datetime(2024, 1, 1), catchup=False,
+     default_args={"retries": 3})
+def example_astronauts():
+    @task
+    def get_astronauts(**context) -> list[dict]:
+        r = requests.get("http://api.open-notify.org/astros.json")
+        r.raise_for_status()
+        context["ti"].xcom_push(key="number_of_people_in_space", value=r.json()["number"])
+        return r.json()["people"]
+
+    @task
+    def print_astronaut_craft(greeting: str, person_in_space: dict) -> None:
+        print(f"{person_in_space['name']} is currently in space flying on the "
+              f"{person_in_space['craft']}! {greeting}")
+
+    print_astronaut_craft.partial(greeting="Hello! :)").expand(
+        person_in_space=get_astronauts()
+    )
+```
+
+```yaml
+# Airflow, DAG Factory: mydag.yaml, plus a loader DAG and one .py file per callable
+mydag:
+  schedule: "@daily"
+  catchup: false
+  default_args:
+    retries: 3
+    start_date: 2025-07-23
+  tasks:
+    get_astronauts:
+      operator: airflow.operators.python.PythonOperator
+      python_callable_name: _get_astronauts
+      python_callable_file: /usr/local/airflow/include/tasks/get_astronauts.py
+    print_astronaut_craft:
+      operator: airflow.operators.python.PythonOperator
+      python_callable_name: _print_astronaut_craft
+      python_callable_file: /usr/local/airflow/include/tasks/print_astronaut_craft.py
+      partial:
+        op_kwargs:
+          greeting: "Hello! :)"
+      expand:
+        op_args: get_astronauts.output
+      dependencies: [get_astronauts]
+```
+
+The DAG Factory file is YAML, but it is only half of the DAG. Function names and file paths are strings that must match the Python files, `get_astronauts.output` is a string nothing validates until the DAG is parsed, and the Airflow UI shows the loader script rather than the workflow. Renaming a function means editing two places.
+
+```yaml
+# Kestra 2.0
+id: example_astronauts
+namespace: company.data
+
+tasks:
+  - id: get_astronauts
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - requests
+      - kestra
+    retry:
+      type: constant
+      interval: PT5M
+      maxAttempts: 4                 # retries: 3 → 4 attempts in total
+    script: |
+      import requests
+      from kestra import Kestra
+
+      r = requests.get("http://api.open-notify.org/astros.json")
+      r.raise_for_status()
+      Kestra.outputs({"number_of_people_in_space": r.json()["number"],
+                      "people": r.json()["people"]})
+
+  - id: print_astronaut_craft
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.get_astronauts.vars.people }}"
+    tasks:
+      - id: greet
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ fromJson(item.value).name }} is currently in space flying on the {{ fromJson(item.value).craft }}! Hello! :)"
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+    recoverMissedSchedules: NONE     # catchup=False
+```
+
+The fetch logic is unchanged apart from the XCom calls, which become one `Kestra.outputs()`. The task IDs, the code and the expression that connects them sit in one file that the editor validates on save. `print_astronaut_craft` only printed a line, so it becomes a `Log` task; a heavier per-item function would be a script task inside the loop. Two variations come up often:
+
+- **The function only calls an API.** `io.kestra.plugin.core.http.Request` replaces it without any Python, and the loop reads `{{ fromJson(outputs.get_astronauts.body).people }}`.
+- **The DAG Factory file has non-linear `dependencies`.** Wrap the tasks in an `io.kestra.plugin.core.flow.Dag` task and copy each list to `dependsOn`. Keep longer callables as Namespace Files run by `io.kestra.plugin.scripts.python.Commands`, so the code is versioned with the flow instead of being referenced by path.
+
+The complete example, with both Airflow versions and several Kestra patterns (single script, subflow, `Dag`), is in the [airflow-to-kestra-migration repository](https://github.com/kestra-io/airflow-to-kestra-migration). Its flows were written before Kestra 2.0: when you reuse them, replace `ForEach` with `Loop`, `taskrun.value` with `item.value` and `maxAttempt` with `maxAttempts`.
 
 ## 9. Already refactoring for Airflow 3? Read this before the playbook
 
