@@ -44,6 +44,25 @@ Returns `true` if the date is the last working day of its month. Working days de
 
 The `date` argument accepts any ISO 8601 date or datetime string. Combine with `isPublicHoliday()` if you also need to exclude public holidays.
 
+## `isLastDayOfMonth()`
+
+Returns `true` if the date is the last calendar day of its month. Weekends and leap days count, so the function returns `true` on Saturday, May 31 and on February 29 in a leap year:
+
+```twig
+{{ isLastDayOfMonth(trigger.date) }}
+```
+
+The `date` argument is required and accepts any ISO 8601 date or datetime string. The function checks the date as written and does not convert it to UTC. `trigger.date` follows the Schedule trigger's `timezone`, so use it rather than `execution.startDate`, which is a UTC instant and can fall on a different calendar day. For example, this task runs only on the last day of the month in the schedule's timezone:
+
+```yaml
+- id: month_end_report
+  type: io.kestra.plugin.core.log.Log
+  runIf: "{{ isLastDayOfMonth(trigger.date) }}"
+  message: Running the month-end report
+```
+
+To schedule the whole flow on the last day of the month, use the `L` day-of-month value in the cron expression instead, for example `cron: "0 11 L * *"`.
+
 ## `dayOfWeek()`
 
 Returns the uppercase day name such as `MONDAY`:
