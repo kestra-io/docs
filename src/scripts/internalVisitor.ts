@@ -12,8 +12,10 @@ const PARAM = "kestra_internal"
 const STORAGE_KEY = "ka_internal"
 const PROPERTY = "is_internal"
 
-// Runs on every astro:page-load, before analytics is set up, so the flag is
-// stored even for a visitor who has not consented to analytics yet.
+// On a full page load the inline copy of this in layout.astro's <head> has
+// already read and stripped the parameter, before ClientRouter and
+// analytics.js see the URL. This one runs on every astro:page-load and covers
+// soft navigations to a URL that carries it. Keep the two in sync.
 export const readInternalFlagFromUrl = () => {
     try {
         if (!window.location.search) return
@@ -22,10 +24,12 @@ export const readInternalFlagFromUrl = () => {
         const value = url.searchParams.get(PARAM)
         if (value === null) return
 
-        if (value === "0") {
-            localStorage.removeItem(STORAGE_KEY)
-        } else {
+        // Any other value (false, no, empty) leaves the flag as it was, but the
+        // parameter is still stripped below.
+        if (value === "1") {
             localStorage.setItem(STORAGE_KEY, "1")
+        } else if (value === "0") {
+            localStorage.removeItem(STORAGE_KEY)
         }
 
         // Keep ClientRouter's history state, only drop the parameter.

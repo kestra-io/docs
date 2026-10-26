@@ -64,6 +64,16 @@ describe("readInternalFlagFromUrl", () => {
         expect(replaceState).toHaveBeenCalledWith({ index: 3 }, "", "/")
     })
 
+    it("only sets the flag for 1, but strips any other value", () => {
+        for (const value of ["false", "no", ""]) {
+            visit(`https://kestra.io/?kestra_internal=${value}`)
+            readInternalFlagFromUrl()
+            expect(isInternalVisitor()).toBe(false)
+        }
+        expect(replaceState).toHaveBeenCalledTimes(3)
+        expect(replaceState).toHaveBeenLastCalledWith({ index: 3 }, "", "/")
+    })
+
     it("leaves the URL and the flag alone when the parameter is absent", () => {
         visit("https://kestra.io/docs?utm_source=newsletter")
         readInternalFlagFromUrl()
