@@ -21,10 +21,11 @@ import IntegrationsIcon from "~/components/lp/vra-migration/assets/automate-inte
 
 /* Paid traffic only: the generic infrastructure-automation campaign lands
  * here, ad groups told apart by utm_content. The organic page for the topic
- * is /infra-automation. */
-const title = "Infrastructure automation, governed from one control plane"
+ * is /infra-automation. The page presents Kestra for Infrastructure by that
+ * name, through its outcomes. */
+const title = "Kestra for Infrastructure | Infrastructure automation"
 const description =
-    "Self-service infrastructure without losing control. Kestra runs your Terraform, Ansible and scripts as governed workflows, with an approval and an audit trail on every request, on your own infrastructure."
+    "Kestra for Infrastructure gives platform teams one place to request, approve, provision, track and retire infrastructure, defined as code and open to any cloud or tool. Faster delivery, lower cost and governance by default."
 
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/infra-automation"
@@ -222,6 +223,10 @@ const ctaBullets = [
 
 const faqItems = [
     {
+        question: "What is Kestra for Infrastructure?",
+        answer: "Kestra Enterprise Edition for platform and infrastructure teams: one place to request, approve, provision, track and retire infrastructure, defined as code and open to any cloud or tool. It is the same Kestra underneath, with the same engine, API and flows, so it runs on the same platform as your data and AI workflows.",
+    },
+    {
         question: "Does Kestra replace Terraform or Ansible?",
         answer: "No. Kestra orchestrates them. Your modules and playbooks run as they are, through the Terraform, OpenTofu and Ansible plugins or a plain shell task, and Kestra adds what sits around them: the order of steps, inputs, approvals, retries, alerts and the audit trail.",
     },
@@ -262,7 +267,7 @@ const faqItems = [
     },
     {
         question: "Which edition do we need?",
-        answer: "Kestra Enterprise. The engine is open source, and the self-service forms, role-based access, SSO, audit logs and worker groups described on this page come with the Enterprise Edition, self-hosted or air-gapped.",
+        answer: "Kestra for Infrastructure is part of Kestra Enterprise Edition, self-hosted or air-gapped. The engine underneath is open source; the self-service forms, role-based access, SSO, audit logs and worker groups described on this page come with the Enterprise Edition.",
     },
     {
         question: "Do we need Kubernetes?",
@@ -295,17 +300,18 @@ const faqItems = [
             ]}
         >
             <Fragment slot="title">
-                <span class="grad grad-a">Infrastructure automation</span>,
-                governed from <span class="grad grad-b">one control plane</span
+                <span class="grad grad-a">Kestra for Infrastructure</span>:
+                self-service without <span class="grad grad-b"
+                    >losing control</span
                 >.
             </Fragment>
             <Fragment slot="lead">
-                Developers request what they need from a form instead of a
-                ticket. Your Ansible, Terraform and scripts run behind it as
-                governed workflows, with an approval and an audit trail on every
-                request.<br />
+                One place for platform teams to request, approve, provision,
+                track and retire infrastructure, defined as code and open to any
+                cloud or tool. Your Ansible, Terraform and scripts run behind
+                it, on the same platform as your data and AI workflows.<br />
                 <strong
-                    >Self-service without losing control. Keep your tools, on
+                    >Faster delivery, lower cost and governance by default, on
                     your own infrastructure, air-gapped included.</strong
                 >
             </Fragment>
@@ -358,11 +364,13 @@ const faqItems = [
                     h1.innerHTML = `${a("Infrastructure orchestration")} from ${b("one control plane")}.`
                 } else if (/terraform|opentofu/.test(term)) {
                     h1.innerHTML = `Run ${a("Terraform")} with approvals, from ${b("one control plane")}.`
+                } else if (/automation/.test(term)) {
+                    h1.innerHTML = `${a("Infrastructure automation")} without ${b("losing control")}.`
                 }
             })()
         </script>
         <Platform
-            heading="Self-service without losing control"
+            heading="Faster delivery, lower cost, governance by default"
             cards={reasons}
         />
         <Translation
@@ -396,8 +404,8 @@ const faqItems = [
         />
         <Faq items={faqItems} />
         <ClosingBanner
-            heading="Bring your most common request"
-            sub="We'll show it running as governed self-service, with its approval and audit trail."
+            heading="Self-service without losing control"
+            sub="Bring your most common request. We'll show it running as governed self-service, with its approval and audit trail."
             cta={{ text: "Book a call", href: "#contact-sales" }}
         />
         <LpFooter />
