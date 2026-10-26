@@ -3,7 +3,7 @@ title: "Connecting AI Agents Is Easy. Governing Them Is the Hard Part."
 metaTitle: "Why Unified Orchestration Is Becoming Its Own Category"
 description: "AI agents can reach any API in minutes. Governing what they do across data, infrastructure, applications and business processes needs one orchestration layer above every tool, model and agent."
 metaDescription: "Kestra's Global Field CTO on why AI agents need a unified orchestration layer: governance across domains, transaction IDs outside the agent, and sovereignty."
-date: 2026-11-13T10:00:00
+date: 2026-10-23T10:00:00
 category: Solutions
 image: ./main.webp
 author:
