@@ -4,6 +4,18 @@
 // paths off the page.
 import LogoWhite from "~/assets/logo-white.svg"
 import GithubButton from "~/components/layout/GithubButton.vue"
+
+interface Props {
+    /** Off on enterprise campaigns, where an open-source signal is off-message. */
+    showGithub?: boolean
+    /** The single header CTA; defaults to the sales form further down. */
+    cta?: { text: string; href: string }
+}
+
+const {
+    showGithub = true,
+    cta = { text: "Contact Sales", href: "#contact-sales" },
+} = Astro.props
 ---
 
 <header class="lp-header">
@@ -11,8 +23,8 @@ import GithubButton from "~/components/layout/GithubButton.vue"
         <LogoWhite />
     </a>
     <div class="actions">
-        <GithubButton linked={false} client:idle />
-        <a href="#contact-sales" class="btn-solid">Contact Sales</a>
+        {showGithub && <GithubButton linked={false} client:idle />}
+        <a href={cta.href} class="btn-solid">{cta.text}</a>
     </div>
 </header>
 

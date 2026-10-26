@@ -55,6 +55,10 @@ A namespace concurrency limit applies to every flow whose namespace matches or i
 
 Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
 
+:::alert{type="warning"}
+Namespace and tenant limits with `behavior: QUEUE` (the default) can deadlock when flows in that scope start [subflows](../10.subflows/index.md) that run in the same scope, including child namespaces. With `wait: true` (the default), a parent execution keeps its slot while it waits, and the subflow execution needs a slot from the same limit. Once every slot is held by an execution waiting on a queued subflow, no execution in the namespace or tenant can start, including flows that don't use subflows. Kestra reports no error or timeout, and the deadlock does not resolve on its own. To prevent or resolve this, see [Parent executions stuck waiting on queued subflows](#parent-executions-stuck-waiting-on-queued-subflows).
+:::
+
 ## `behavior` property
 
 By default, executions that exceed the limit are queued. Set `behavior` to control what happens instead:
@@ -65,7 +69,7 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 
 When using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
 
-Queued executions are picked up on the executor's delay loop interval, configurable via [`kestra.executor.execution-delay-loop-periodicity-ms`](../../../configuration/04.plugins-and-execution/index.md#executor-loop-intervals) (default: 1000ms).
+A queued execution starts when another execution under the same limit ends and releases its slot.
 
 ```yaml
 id: concurrency_limited_flow
@@ -109,7 +113,7 @@ tasks:
 :::alert{type="warning"}
 When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. The `behavior` property does not apply in this case; no new executions start while the trigger is locked.
 
-Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) section.
+Read more in [Unlocking, enabling, and disabling triggers](../07.triggers/index.mdx#unlocking-enabling-and-disabling-triggers).
 :::
 
 ## Evaluation order
@@ -184,3 +188,18 @@ If executions were deleted while running, their concurrency slots can remain occ
 :::alert{type="warning"}
 Do **not** delete executions to free stuck slots; deleted executions still hold concurrency slots. Instead, select stuck executions and click **Kill** to cancel them and release their slots. Use the counter reset only when slots remain stuck after killing all relevant executions.
 :::
+
+### Parent executions stuck waiting on queued subflows
+
+If parent executions stay `RUNNING` on a Subflow task while their subflow executions stay `QUEUED`, a namespace or tenant limit is deadlocked. Each parent holds a slot that its subflow needs, so no execution in that scope starts until a slot frees up. Executions of unrelated flows in the same scope also stay `QUEUED`, and the deadlock does not clear on its own.
+
+On the **Concurrency Limits** page, the running count for the affected namespace or tenant stays at its configured limit, while the number of `QUEUED` executions in that scope keeps growing on the **Executions** page.
+
+To resolve the deadlock, open a queued subflow execution and click **Force run**. A force-run execution starts without taking a concurrency slot. When the subflow completes, its parent completes and releases its slot, and the remaining queued executions start. If the queue does not clear, open a waiting parent execution and click **Kill current and subflows** to release its slot.
+
+To prevent the deadlock, apply one of these changes:
+
+- Set the limit higher than the number of parent executions that can wait on subflows at the same time.
+- Set `behavior` to `FAIL` or `CANCEL`. A subflow execution that exceeds the limit then ends immediately instead of queuing, so the problem surfaces as a failed or cancelled execution.
+- Set `wait: false` on the Subflow task when the parent does not need the subflow's outputs or final state.
+- For a namespace limit, move the subflows to a namespace that the limit does not cover, such as a sibling namespace. Child namespaces count against the parent namespace's limit, so moving subflows into a child namespace does not help.

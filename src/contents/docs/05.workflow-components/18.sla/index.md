@@ -64,7 +64,7 @@ namespace: company.team
 sla:
   - id: assert_output
     type: EXECUTION_ASSERTION
-    assert: "{{ outputs.mytask.value == 'expected output' }}"
+    assert: "{{ outputs.mytask.values.result == 'expected output' }}"
     behavior: FAIL
     labels:
       sla: miss
@@ -72,8 +72,9 @@ sla:
 
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: expected output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: expected output
 ```
 
 ## SLA behavior
@@ -109,4 +110,4 @@ triggers:
         states: [FAILED, WARNING, CANCELLED]
 ```
 
-The interval at which the executor checks for SLA breaches is configurable via [`kestra.executor.monitor-sla-loop-periodicity-ms`](../../../configuration/04.plugins-and-execution/index.md#executor-loop-intervals) (default: 1000ms).
+The interval at which the executor checks for SLA breaches is configurable via [`kestra.executor.monitor-sla-loop-periodicity-ms`](../../configuration/04.plugins-and-execution/index.md#executor-loop-intervals) (default: 1000ms).

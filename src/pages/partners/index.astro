@@ -1,32 +1,225 @@
 ---
 import Layout from "~/components/layout.astro"
+import Link from "~/components/common/Link.astro"
+import Benefits from "~/components/partners/Benefits.astro"
+import TrackBlock from "~/components/partners/TrackBlock.astro"
+import PartnerCta from "~/components/partners/PartnerCta.astro"
+import CloudProviders from "~/components/partners/CloudProviders.astro"
+import FeaturedPartners from "~/components/partners/FeaturedPartners.astro"
+import PartnerPair from "~/components/partners/PartnerPair.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Lists from "~/components/partners/Lists.astro"
-import Intro from "~/components/partners/Intro.astro"
-import Reasons from "~/components/partners/Reasons.astro"
-import PluginsBlock from "~/components/common/PluginsBlock.astro"
-import BecomeAPartner from "~/components/partners/BecomeAPartner.vue"
+import ModeoLogo from "~/components/partners/assets/modeo.svg?raw"
 
 const title = "Kestra Partners"
 const description =
-    "Whether you are building something new, upgrading a legacy stack, or re-platforming, you can trust Kestra and our partner ecosystem to make that journey a success.Discover the team and values behind our mission to empower data-driven organizations worldwide"
+    "Demo, deliver or sell Kestra, or integrate with it. Join the program as a Solution, Services or Reseller partner, or as a technology partner, and get certified in 30 days."
 
-import dltLogo from "~/components/partners/assets/dltLogo.svg?raw"
-
-const DLTQuotes = [
+const FEATURED = [
     {
-        quote: "Kestra and dlt share a vision of simplifying data pipeline creation. Thanks to Kestra's and dlt's declarative interface, you can deploy existing pipelines in seconds or build new ones in minutes, complete with self healing schemas and lineage to increase robustness and trust.",
-        author: "Co-Founder @ <strong>dlthub</strong>",
-        smallLogoSvg: dltLogo
-    }
+        name: "Databricks",
+        text: "Orchestrate Databricks jobs, notebooks and SQL alongside the rest of your stack",
+        href: "/partners/databricks",
+        cta: "See the Databricks partnership",
+        color: "#ff3621",
+    },
+    {
+        name: "Snowflake",
+        text: "Load, transform and query Snowflake data in event-driven workflows",
+        href: "/partners/snowflake",
+        cta: "See the Snowflake partnership",
+        color: "#29b5e8",
+    },
+    {
+        name: "DigitalOcean",
+        text: "Automate droplets, Kubernetes and managed databases across your account",
+        href: "/partners/digitalocean",
+        cta: "See the DigitalOcean partnership",
+        color: "#0080ff",
+    },
+    {
+        name: "HashiCorp",
+        text: "Manage Kestra with Terraform, run plans and applies in flows, and keep secrets in Vault",
+        href: "/partners/hashicorp",
+        cta: "See the HashiCorp partnership",
+        color: "#844fba",
+    },
+]
+
+const BENEFITS = [
+    {
+        title: "Your own Kestra Cloud tenant",
+        text: "To train your team, run demos and build labs.",
+    },
+    {
+        title: "Enablement",
+        text: "Training, the partner playbooks, Solutions Engineering sessions and a shared Slack channel.",
+    },
+    {
+        title: "Listing and introductions",
+        text: "Once certified, a listing on kestra.io and introductions to customers in your region.",
+    },
+    {
+        title: "Co-marketing",
+        text: "A joint announcement, content and events.",
+    },
+]
+
+const QUOTES = [
+    {
+        quote: "Kestra has become the orchestration solution we recommend to the companies we work with. It is simple to adopt and to maintain, and the breadth of its features makes it an extremely capable solution for orchestrating data pipelines.",
+        author: "Matthieu Rousseau - Founder, <strong>Modeo</strong>",
+        smallLogoSvg: ModeoLogo,
+    },
 ]
 ---
 
 <Layout {title} {description}>
-    <Intro />
-    <Lists />
-    <PluginsBlock />
-    <Quotes quotes={DLTQuotes} />
-    <Reasons />
-    <BecomeAPartner routePath={Astro.url.pathname} client:load />
+    <div class="partners-page">
+        <section class="hero">
+            <div class="container">
+                <h1>
+                    Become a<br />Kestra partner<span class="dot">.</span>
+                </h1>
+                <div class="pair-wrap">
+                    <PartnerPair />
+                </div>
+                <p>
+                    Kestra orchestrates data, IT, infrastructure, business
+                    applications and governed AI for all, in enterprises on
+                    every continent. Partners deliver it, sell it and build on
+                    it.
+                </p>
+                <div class="actions">
+                    <Link href="/partners/apply" class="btn btn-primary"
+                        >Become a partner</Link
+                    >
+                    <a href="/partners/find" class="btn btn-secondary"
+                        >Find a partner</a
+                    >
+                </div>
+            </div>
+        </section>
+
+        <FeaturedPartners
+            title="See how leading partners are building with Kestra"
+            featured={FEATURED}
+        />
+
+        <TrackBlock
+            type="Services"
+            title="Services Partners"
+            text="Consulting firms, systems integrators, managed service providers and resellers who deliver and sell Kestra, searchable by country and expertise. Certified partners are listed here and introduced to customers."
+            href="/partners/find?type=Services"
+            cta="Find a services partner"
+            figure="deploy"
+        />
+
+        <TrackBlock
+            type="Technology"
+            title="Technology Partners"
+            text="Cloud, data and infrastructure platforms with a Kestra integration. Listed in the plugin catalog, launched together, and reachable by every team orchestrating with Kestra."
+            href="/partners/find?type=Technology"
+            cta="See technology partners"
+            figure="plugins"
+            reverse
+        />
+
+        <CloudProviders />
+
+        <Quotes quotes={QUOTES} />
+
+        <Benefits
+            title="Join the program"
+            intro="For consulting firms, systems integrators, managed service providers and resellers. Get certified, and we list you and introduce you to customers."
+            label="What partners get"
+            benefits={BENEFITS}
+        />
+
+        <PartnerCta />
+    </div>
 </Layout>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .partners-page :global(.container) {
+        @include media-breakpoint-up(xxl) {
+            max-width: 1320px;
+        }
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 6rem 1rem 7rem;
+        background:
+            radial-gradient(
+                ellipse 45% 50% at 50% 0%,
+                rgba(146, 72, 220, 0.32),
+                transparent 70%
+            ),
+            radial-gradient(
+                ellipse 35% 55% at 6% 40%,
+                rgba(58, 64, 220, 0.18),
+                transparent 70%
+            ),
+            radial-gradient(
+                ellipse 35% 55% at 94% 40%,
+                rgba(58, 64, 220, 0.18),
+                transparent 70%
+            ),
+            #212125;
+        color: #fff;
+        text-align: center;
+
+        .container {
+            position: relative;
+        }
+
+        .pair-wrap {
+            margin: 3rem 0 2.5rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding: 4rem 1rem 5rem;
+        }
+
+        h1 {
+            max-width: none;
+            margin: 0;
+            font-size: clamp(2.75rem, 6vw, 4.5rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            color: inherit;
+
+            .dot {
+                margin-left: -0.12em;
+                color: #fe0071;
+            }
+        }
+
+        p {
+            max-width: 740px;
+            margin: 0 auto 3rem;
+            font-size: $font-size-md;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            .btn-secondary {
+                --ks-content-primary: #fff;
+                --ks-background-button-secondary: transparent;
+                --ks-content-btn-secondary-hover: #{$base-grey-800};
+                --ks-background-button-secondary-hover: #fff;
+                border-color: #fff;
+            }
+        }
+    }
+</style>

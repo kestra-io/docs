@@ -1,0 +1,88 @@
+---
+/**
+ * A note (accent-bordered box), a lesson (a big statement with a <mark>
+ * highlight in the `statement` slot) or an aside (a labelled paragraph).
+ */
+interface Props {
+    label: string
+    variant?: "lesson" | "note" | "aside"
+}
+
+const { label, variant = "note" } = Astro.props
+---
+
+<div class={`guide-callout ${variant}`}>
+    <p class:list={["label", { "visually-hidden": variant === "lesson" }]}>
+        {label}
+    </p>
+    {
+        Astro.slots.has("statement") && (
+            <p class="statement">
+                <slot name="statement" />
+            </p>
+        )
+    }
+    <slot />
+</div>
+
+<style lang="scss">
+    .guide-callout {
+        margin: 2rem 0;
+
+        > :global(:last-child) {
+            margin-bottom: 0;
+        }
+    }
+
+    .label {
+        font-weight: 700;
+    }
+
+    .note {
+        padding: 2rem;
+        border-left: 4px solid var(--ks-border-active);
+        background: var(--ks-background-secondary);
+        line-height: 1.5rem;
+        color: var(--ks-content-secondary);
+
+        // Outranks the global `.bd-content p`, which would paint the note
+        // primary; the label keeps the primary colour on purpose.
+        :global(p) {
+            color: inherit;
+        }
+
+        .label {
+            font-size: 1.25rem;
+            letter-spacing: -0.1px;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .lesson,
+    .aside {
+        font-size: $font-size-lg;
+        line-height: 1.75rem;
+    }
+
+    .lesson {
+        padding: 2rem 0;
+        border-block: 1px solid var(--ks-border-primary);
+    }
+
+    .statement {
+        font-size: clamp(1.75rem, 3vw, 2.25rem);
+        font-weight: 600;
+        line-height: 1.22;
+        letter-spacing: -0.01em;
+
+        :global(mark) {
+            padding: 0;
+            background: none;
+            color: var(--ks-content-link);
+        }
+    }
+
+    .aside .label {
+        font-weight: 600;
+    }
+</style>

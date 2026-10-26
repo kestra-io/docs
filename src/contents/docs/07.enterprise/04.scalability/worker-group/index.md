@@ -466,7 +466,7 @@ kestra:
       worker-access: CONTROLLER        # default: STORAGE; requires Kestra 2.1
 ```
 
-See [Dedicated-storage workers](../../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference. `kestra.namespace-files.worker-access` is available from Kestra 2.0.4; `kestra.kv.worker-access` and `kestra.plugins.management.worker-access` require Kestra 2.1.
+See [Dedicated-storage workers](../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference. `kestra.namespace-files.worker-access` is available from Kestra 2.0.4; `kestra.kv.worker-access` and `kestra.plugins.management.worker-access` require Kestra 2.1.
 
 ## Use cases
 

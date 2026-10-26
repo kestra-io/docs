@@ -246,13 +246,14 @@ namespace: company.team
 
 tasks:
   - id: make_payload
-    type: io.kestra.plugin.core.debug.Return
-    format: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
 
 outputs:
   - id: greeting
     type: STRING
-    value: "{{ outputs.make_payload.value }}"
+    value: "{{ outputs.make_payload.values.result }}"
 
 triggers:
   - id: webhook
@@ -265,44 +266,95 @@ triggers:
 
 - Call the webhook URL with a query parameter (for example `?name=Alice`). The execution runs synchronously because `wait: true` is set.
 - The HTTP response body contains the flow outputs as a JSON object. With the example above, the response includes `"greeting": "Hello Alice!"`.
-- `responseContentType` sets the `Content-Type` header on the response. It does not change how the body is serialized — the body is always the JSON-serialized outputs map when `returnOutputs: true` is set.
+- `responseContentType` sets the `Content-Type` header on the response. It does not change how the body is serialized: the body is always the JSON-serialized outputs map when `returnOutputs: true` is set.
 
-## Return a custom response body
+## Customize the webhook response
 
 :::badge{version=">=2.1" editions="OSS,EE,Cloud"}
 :::
 
-Some callers expect a specific body rather than a JSON object of outputs. Set `responseBody` to send a rendered string as the raw response body. It is rendered once the execution has finished, so it can use the trigger variables (`trigger.body`, `trigger.headers`, `trigger.parameters`) and the outputs of the tasks. `responseBody` requires `wait: true` and cannot be combined with `returnOutputs`.
+Some services only accept a webhook URL after it answers a verification request with a specific status code, header, or body. Use these properties to control what the caller receives:
 
-For example, Microsoft Graph validates a change-notification endpoint by sending a `validationToken` query parameter, and expects the token back as the `text/plain` body:
+| Property | Effect | Default |
+|---|---|---|
+| `responseCode` | HTTP status code of the response. | `200`, or `500` when `wait: true` is set and the execution fails |
+| `responseHeaders` | Map of header names to values added to the response. | No extra headers |
+| `responseBody` | String sent as the response body. Cannot be combined with `returnOutputs`. | The execution details, or the flow outputs with `returnOutputs: true` |
+| `responseContentType` | `Content-Type` header of the response: `application/json` or `text/plain`. A `Content-Type` set in `responseHeaders` takes precedence. | `application/json` |
+
+All four properties apply whether or not the trigger waits for the execution. `responseCode`, `responseHeaders`, and `responseBody` accept expressions:
+
+- Without `wait`, they are rendered as soon as the execution is created, and the caller gets the response right away. Expressions can use the trigger variables (`trigger.body`, `trigger.headers`, `trigger.parameters`) and `execution.id`.
+- With `wait: true`, they are rendered after the execution finishes, so expressions can also use task and flow outputs. Set `wait: true` whenever an expression reads `outputs`.
+
+If an expression cannot be rendered, the webhook responds with `500`.
+
+<!-- TODO(runtime): with wait: false, does a responseCode that reads outputs now fail with 500? Before 2.1 it was ignored on immediate responses. If so, add it to the 2.1 migration notes. -->
+
+### Answer a verification request
+
+Meta (WhatsApp, Instagram, Messenger) verifies a webhook URL with a `GET` request carrying a `hub.challenge` query parameter, and expects the challenge value back as a plain-text body with status `200`. Later event notifications arrive without that parameter:
 
 ```yaml
-id: microsoft_graph_webhook
+id: meta_webhook
 namespace: company.team
 
 tasks:
-  - id: handle_request
+  - id: process_event
     type: io.kestra.plugin.core.log.Log
-    message: "{{ trigger.parameters.validationToken[0] ?? 'notification received' }}"
+    message: "Received Meta webhook event"
 
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
     key: "{{ secret('WEBHOOK_KEY') }}"
-    wait: true
-    responseContentType: text/plain
-    responseBody: "{{ trigger.parameters.validationToken[0] ?? 'notification processed' }}"
+    responseCode: 200
+    responseHeaders:
+      Content-Type: text/plain
+    responseBody: "{{ trigger.parameters['hub.challenge'][0] ?? 'EVENT_RECEIVED' }}"
 ```
 
-- A validation request (`?validationToken=abc123`) gets `abc123` back as the body, with `Content-Type: text/plain`.
-- `responseContentType` sets the `Content-Type` header; without it, the body is sent as `application/json`.
-- `responseCode` still applies, so you can answer with a different status code.
-- If `responseBody` cannot be rendered, the error is logged on the execution and the webhook responds with `500`.
-- With `wait: true`, every call waits for the execution to finish before it gets a response, and Microsoft Graph only waits a few seconds. Keep a flow like this one short, and hand any longer processing to a [subflow](../../10.subflows/index.md) that it does not wait for.
+- A verification request (`?hub.mode=subscribe&hub.challenge=1158201444`) gets `1158201444` back as the body.
+- An event notification gets `EVENT_RECEIVED` back.
+- The trigger does not wait for the execution, so Meta gets its response immediately, however long the flow takes.
+- Meta also sends the verify token you registered as `hub.verify_token`. This flow does not check it; the webhook `key` is what protects the URL.
+
+Microsoft Graph works the same way with a `validationToken` query parameter. Set `responseContentType: text/plain` and `responseBody: "{{ trigger.parameters.validationToken[0] ?? 'notification processed' }}"`.
+
+Set `Content-Type: text/plain`, through `responseHeaders` or `responseContentType`, whenever `responseBody` is not JSON.
+
+<!-- TODO(runtime): confirm how a responseBody string is sent when no Content-Type is set (raw or as a quoted JSON string). The response falls back to Micronaut's application/json default, and the PR tests only cover text/plain. -->
+
+### Return a header to the caller
+
+Asana confirms a new webhook by sending an `X-Hook-Secret` header and expects the same header back in the response. Use `responseHeaders` to echo it:
+
+```yaml
+id: asana_webhook
+namespace: company.team
+
+tasks:
+  - id: process_event
+    type: io.kestra.plugin.core.log.Log
+    message: "Received Asana webhook event"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    responseHeaders:
+      X-Hook-Secret: "{{ trigger.headers['X-Hook-Secret'][0] ?? '' }}"
+```
+
+`trigger.headers` maps each header name to a list of values, so the expression reads the first one. Header names keep the casing the sender used; see [Filtering on headers](#filtering-on-headers). Each response header takes a single value.
+
+<!-- TODO(runtime): confirm Asana accepts the handshake with this flow, and that an empty X-Hook-Secret header on event notifications causes no issue. -->
 
 :::alert{type="warning"}
-The response body is sent to anyone who calls the webhook URL. Do not put secrets in `responseBody`, either directly or through an expression such as `secret()` or `kv()`: it is rendered with the flow's secrets available, and the result is returned to the caller as is.
+The response is sent to anyone who calls the webhook URL. Do not put secrets in `responseBody` or `responseHeaders`, either directly or through an expression such as `secret()` or `kv()`: they are rendered with the flow's secrets available, and the result is returned to the caller as is.
 :::
+
+Request values that end up in the response are not evaluated again, so a caller who sends an expression such as `{{ ... }}` in a parameter gets that text back unchanged.
 
 ## Test a webhook trigger
 

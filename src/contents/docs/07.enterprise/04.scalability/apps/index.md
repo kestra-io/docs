@@ -611,6 +611,10 @@ When an app is set to `PUBLIC`, anyone with the URL can open the form and submit
 For `PUBLIC` apps, execution IDs exposed through file download or log links are encrypted so that anonymous users cannot reference executions outside the app.
 :::
 
+:::alert{type="warning"}
+A `Chart` block on a `PUBLIC` app shows no data from sources protected by namespace permissions, such as `Executions`, because anonymous visitors have no permission to read them. Use charts in `PRIVATE` apps. See [Dashboard charts](#dashboard-charts).
+:::
+
 ### Private access for using apps
 
 When an app is set to `PRIVATE`, only users with `APP: EXECUTE` permission on the app's namespace can open or submit it. `PRIVATE` apps are also only visible in the App Catalog to users with `APP: EXECUTE` — they do not appear for users who only hold `APP: LIST` or `APP: VIEW`. You can further narrow access to specific IAM groups using the `groups` field:
@@ -780,6 +784,8 @@ Once added, open the **Apps Catalog** — a new thumbnail displays on the connec
 
 Each app layout is a list of stage-specific blocks. Each block renders when the execution reaches the matching stage (`OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`). Combine blocks to guide users through the full lifecycle of a request — form on `OPEN`, progress indicator on `RUNNING`, download link and logs on `SUCCESS`.
 
+If a layout uses a block on a stage that isn't listed for it, saving the app fails with `Invalid layout. Block '<type>' is not supported for layout on '<stage>'.`
+
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
@@ -788,17 +794,18 @@ Each app layout is a list of stage-specific blocks. Each block renders when the 
 | `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm`                                                                                                                                                               |
 | `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm`                                                                                                                                                               |
 | `CreateExecutionButton`  | OPEN                                                                     | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "MEDIUM"`                    |
-| `CancelExecutionButton`  | CREATED, RUNNING, PAUSE                                                 | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"`                      |
+| `CancelExecutionButton`  | RUNNING, PAUSE                                                           | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"`                      |
 | `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`    |
-| `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
+| `ExecutionOutputs`       | SUCCESS, FAILURE                                                         | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
 | `ExecutionAssets`        | SUCCESS, FAILURE                                                         | - `filter`: include, exclude (asset types)                                                   | `- type: io.kestra.plugin.ee.apps.execution.blocks.Assets`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- io.kestra.plugin.ee.assets.VM` |
-| `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| `ExecutionLogs`          | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
 | `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
-| `Loading`                | RUNNING                                                                  | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
+| `Chart`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `chart`: a dashboard chart definition                                                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Chart`<br> &nbsp;&nbsp;&nbsp;&nbsp;`chart:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`id: executions`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: io.kestra.plugin.core.dashboard.chart.Bar` |
+| `Loading`                | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
 | `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
-| `Button`                 | SUCCESS, FAILURE                                                        | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
-| `TaskOutputs`            | RUNNING, PAUSE, RESUME, SUCCESS                                         | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
+| `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
+| `TaskOutputs`            | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
 ### Pebble expressions in Markdown blocks
 
@@ -900,6 +907,70 @@ The `Assets` block lists the assets an execution emitted or updated, with their 
 - The block is available on `SUCCESS` and `FAILURE`. On failure, a partially provisioned resource is often what explains what went wrong.
 - When the execution emitted no asset, the block says so instead of rendering an empty block.
 
+### Execution outputs
+
+Two blocks display execution outputs as a table with one row per output. They differ in where the values come from:
+
+| Block | Reads from | Use it when |
+|---|---|---|
+| `Outputs` | The flow's [`outputs` property](../../../05.workflow-components/06.outputs/index.md#flow-outputs) | The flow declares outputs, or you can add them |
+| `TaskOutputs` | Task outputs that you select in the block | You want to show task outputs without changing the flow |
+
+#### Flow outputs with the `Outputs` block
+
+The `Outputs` block shows only flow outputs. Task outputs aren't included. If the flow has no `outputs` property, the block renders nothing and no error is raised.
+
+The following flow downloads a CSV file and exposes it as a flow output:
+
+```yaml
+id: fetch_orders
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+outputs:
+  - id: orders_file
+    type: FILE
+    displayName: Orders CSV
+    value: "{{ outputs.download.uri }}"
+```
+
+An app built on this flow can then show the file on `SUCCESS`:
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
+      filter:
+        include:
+          - orders_file
+```
+
+- Each row is labeled with the output's `displayName`, or with its `id` when no display name is set.
+- `filter` matches the output `id`. `include` keeps only the listed outputs, `exclude` drops them. Without a filter, the block shows every flow output.
+- The block is available on `SUCCESS` and `FAILURE`.
+
+#### Task outputs with the `TaskOutputs` block
+
+The `TaskOutputs` block reads task outputs directly, so the flow doesn't need an `outputs` property. List each value to show in the block's `outputs` property. The following layout shows the same file as the previous example, read from the `download` task:
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs
+      outputs:
+        - displayName: Orders CSV
+          type: FILE
+          value: "{{ outputs.download.uri }}"
+```
+
+- Each entry requires `displayName`, `type`, and `value`. `description` is optional.
+- `value` expressions can reference task outputs only, using `{{ outputs.<task_id>.<property> }}`. Referencing any other variable, such as `inputs`, makes the app fail with an `Application Error` message.
+- The block is available on `PAUSE`, `RESUME`, `SUCCESS`, and `FAILURE`. On `PAUSE`, use it to show intermediate results to an approver before they resume the execution.
+
 ### File preview and download
 
 The `Outputs` and `TaskOutputs` blocks can render file download links for outputs stored in Kestra's internal storage. File preview, metadata, and download are only available when:
@@ -934,3 +1005,46 @@ The `Gantt` block shows a simplified version of the execution Gantt view: one ba
 - The block shows only task IDs, states and durations. It shows no logs, outputs, iteration values or task actions, so a public app can show it to anonymous visitors.
 - `filter` matches the task ID. `include` keeps only the listed tasks, `exclude` drops them, which is useful to hide technical steps the app user does not need to follow.
 - The block is available on `RUNNING`, `PAUSE`, `RESUME`, `SUCCESS` and `FAILURE`. Add it to `SUCCESS` and `FAILURE` too to keep the final timings visible once the execution ends.
+
+### Dashboard charts
+
+The `Chart` block displays a [dashboard](../../../09.ui/00.dashboard/index.md) chart in an app. Use it when an app surfaces numbers, such as a cost report, a data quality run or a batch summary, that read better as a chart than as a table of rows.
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "## Rows loaded per run"
+
+    - type: io.kestra.plugin.ee.apps.core.blocks.Chart
+      chart:
+        id: rows_loaded
+        type: io.kestra.plugin.core.dashboard.chart.TimeSeries
+        chartOptions:
+          displayName: Rows loaded per run
+          column: date
+        data:
+          type: io.kestra.plugin.core.dashboard.data.Metrics
+          columns:
+            date:
+              field: DATE
+            rows:
+              field: VALUE
+              agg: SUM
+          where:
+            - field: FLOW_ID
+              type: EQUAL_TO
+              value: pg-upgrade
+            - field: NAME
+              type: EQUAL_TO
+              value: rows.loaded
+```
+
+- `chart` is a verbatim `io.kestra.plugin.core.dashboard.chart.*` definition with the same properties and the same chart types as in a dashboard.
+- `chartOptions.width` is ignored, the width of the chart comes from the app layout. Use a `Grid` block to place several charts side by side.
+- Like in a dashboard, the chart covers the last 7 days unless its `where` filters say otherwise.
+- The block shows at most 1000 rows. A `Table` chart pages through them.
+- The data is read for the tenant of the app, using the data sources of dashboards such as `Executions`, `Flows`, `Triggers` or `Metrics`, with the permissions of the viewer. A user of a private app sees only the data they are allowed to see, and an anonymous visitor of a public app gets no data from a source protected by namespace permissions such as `Executions`. Use charts in private apps.
+- When the query fails, for example on a timeout, the block renders as empty and the rest of the app keeps working.
+
+![Chart block in an app](./app-chart-block.png)
