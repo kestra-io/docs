@@ -264,6 +264,54 @@ Users can reset their password via the Forgot Password link on the login page. A
 
 ![Instance Owner Change Password](./create-user-password.png)
 
+## Password expiration and reuse
+
+:::badge{version=">=2.1" editions="EE"}
+:::
+
+Kestra can make Basic Auth passwords expire after a set age, and stop users from setting a password they used recently. Both are off by default.
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-max-age: P90D        # How long a password stays valid. Unset by default: passwords never expire
+      password-expiry-warning: P7D  # How long before expiry users are warned. Default: P7D
+      password-history-size: 5      # How many passwords, counting the current one, cannot be reused. Default: 0 (no check)
+```
+
+`password-max-age` must be a positive duration and `password-history-size` cannot be negative; Kestra refuses to start otherwise.
+
+These rules apply to **users** only. Service accounts and API tokens never expire because of `password-max-age` and are not checked against the password history.
+
+### Expired passwords
+
+A password expires `password-max-age` after it was last changed, whoever changed it: the user from their profile or the reset page, or an Instance Owner from the user's detail page.
+
+- **Warning:** during the last `password-expiry-warning` before expiry, a banner at the top of the UI tells the user when their password expires, with a link to their profile to change it.
+- **Login:** a user who signs in with an expired password is not logged in. Kestra sends them to the reset page with a message explaining that their password has expired, where they choose a new one. This link is valid for one hour and does not need the mail service. The attempt is recorded in the audit logs as **Password expired** and does not count toward the [user lockout](#user-lockout) threshold.
+- **Open sessions:** a session opened with the password cannot be refreshed once the password has expired, so it ends when its current access token does.
+
+Expiry only applies to signing in with the password. A user who also signs in through [SSO](../sso/index.md) or a one-time code can keep doing so, and does not see the banner in those sessions.
+
+:::alert{type="info"}
+Kestra only starts tracking a password's age from this version on. A password set before the upgrade is considered changed at the user's next successful password login, so nobody is locked out by the upgrade itself, and the first expiry happens `password-max-age` after that login.
+:::
+
+### Password reuse
+
+With `password-history-size` set to `N`, a new password is rejected if it matches the current password or one of the `N - 1` before it. The check applies everywhere a password is set: the user profile, the reset page, and the user detail page used by an Instance Owner. A rejected password does not change anything, and the user can try another one.
+
+A few things to keep in mind:
+
+- Previous passwords are only recorded from the moment the setting is enabled. When you turn it on, only each user's current password is known, so older ones can be reused once.
+- Lowering `password-history-size` takes effect immediately, and the extra entries are deleted at the user's next password change. Raising it again after that does not bring them back.
+- Each stored password is checked with the same deliberately slow hash as a login, so a large history makes every password change slower. Keep it to a small number, such as 5 to 10.
+
+### Password reset links
+
+A user has at most one pending reset link. Requesting a new one, from **Forgot Password** or by signing in with an expired password, cancels the previous link, and any password change cancels the pending one.
+
 ## RBAC design notes
 
 :::collapse{title="Why is Admin a Role rather than User type?"}
