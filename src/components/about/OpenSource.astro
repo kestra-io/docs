@@ -93,6 +93,36 @@ const DAYS = 48
             cell.classList.add(kind)
             setTimeout(() => cell.classList.remove(kind), 1600)
         }, 120)
+
+        // The pointer leaves a trail of lit cells that fades behind it.
+        const section = root.closest("section")!
+        const timers = new Map<HTMLElement, number>()
+        const light = (col: number, row: number) => {
+            if (row < 0 || row >= days || col < 0 || col >= count) return
+            const cell = cells[col * days + row]
+            cell.classList.add("trail")
+            clearTimeout(timers.get(cell))
+            timers.set(
+                cell,
+                window.setTimeout(() => cell.classList.remove("trail"), 450),
+            )
+        }
+        section.addEventListener("pointermove", (e) => {
+            if (e.pointerType !== "mouse") return
+            const box = weeks.getBoundingClientRect()
+            const col = Math.floor((e.clientX - box.left) / CELL)
+            const row = Math.floor((e.clientY - box.top) / CELL)
+            light(col, row)
+            // A few neighbours too, so the trail has some width.
+            for (const [dx, dy] of [
+                [1, 0],
+                [-1, 0],
+                [0, 1],
+                [0, -1],
+            ]) {
+                if (Math.random() < 0.45) light(col + dx, row + dy)
+            }
+        })
     }
 
     function init() {
@@ -211,9 +241,10 @@ const DAYS = 48
         :global(span) {
             border-radius: 3px;
             background: rgba(255, 255, 255, 0.03);
+            // A slow fade back, so lit cells leave a trail.
             transition:
-                background 0.6s ease,
-                box-shadow 0.6s ease;
+                background 0.9s ease,
+                box-shadow 0.9s ease;
 
             &.l1 {
                 background: rgba(99, 27, 255, 0.14);
@@ -236,6 +267,11 @@ const DAYS = 48
                 background: rgba(203, 188, 255, 0.75);
                 box-shadow: 0 0 8px 1px rgba(167, 150, 255, 0.35);
                 transition-duration: 0.15s;
+            }
+
+            &.trail {
+                background: rgba(167, 150, 255, 0.55);
+                transition-duration: 0.1s;
             }
 
             &.brand {
