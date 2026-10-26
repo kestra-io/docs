@@ -21,17 +21,17 @@ import { GITHUB_HREF } from "./links"
                 </div>
                 <div class="install">
                     <p>
-                        <strong>With Python 3.10 or later,</strong> install it from
-                        PyPI:
+                        <strong>Install it from GitHub with uv,</strong> which
+                        installs Python for you:
                     </p>
                     <InstallCommand
-                        command="pipx install kestra-migration-assistant"
+                        command="uv tool install git+https://github.com/kestra-io/migration-assistant@main"
                     />
                 </div>
                 <div class="small">
                     <p>
-                        <strong>Without Python,</strong> run the container image
-                        <code>ghcr.io/kestra-io/migration-assistant</code>
+                        <strong>Without Python,</strong> run the container image{" "}
+                        <code>ghcr.io/kestra-io/migration-assistant</code>{" "}
                         (linux/amd64 and arm64); the <a
                             href={`${GITHUB_HREF}#in-a-container`}
                             target="_blank"
