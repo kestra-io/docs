@@ -1048,3 +1048,7 @@ The `Chart` block displays a [dashboard](../../../09.ui/00.dashboard/index.md) c
 - When the query fails, for example on a timeout, the block renders as empty and the rest of the app keeps working.
 
 ![Chart block in an app](./app-chart-block.png)
+
+In the no-code editor, a `Chart` block is added like any other block. Select it to choose the type of chart and its data source, such as a `KPI` on `Executions`, then edit the chart's properties, and its `span` inside a `Grid`. Each chart is listed by its name in the block list, for example `Chart · Success ratio`, so several charts in one app can be told apart. The name is the `displayName` of the chart, or its `id` when it has none.
+
+![Editing a chart in the no-code editor](./app-chart-builder.png)
