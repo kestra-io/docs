@@ -43,7 +43,7 @@ This divergence can happen for several reasons:
 *   **Human Error:** A resource is deleted or modified accidentally outside of the standard Terraform workflow.
 *   **Resource Decay:** Cloud providers sometimes make automatic changes to resources, such as updating a managed database version, which may not be reflected in your code.
 
-Understanding the principles of [Infrastructure-as-Code](/resources/infrastructure/what-is-infrastructure-as-code) explains why drift matters so much.
+Understanding the principles of [Infrastructure-as-Code](/resources/infrastructure/everything-as-code) explains why drift matters so much.
 
 ### Why Unmanaged Drift is a Risk
 

@@ -38,7 +38,7 @@ Four components do the heavy lifting in a hybrid automation stack:
 
 - **Orchestration engine** — coordinates workflows across environments with triggers, retries, and dependency management
 - **Configuration management** — [Ansible](/orchestration/ansible), Puppet, Chef, or similar for enforcing desired state on provisioned resources; see [Chef vs Kestra](/resources/infrastructure/chef-alternatives) and [Puppet vs Kestra](/resources/infrastructure/puppet-alternatives) for a comparison of configuration management approaches
-- **Infrastructure as Code** — [Terraform](/orchestration/terraform), Pulumi, CloudFormation for declarative provisioning across clouds and on-prem; learn more about the [what is infrastructure as code](/resources/infrastructure/what-is-infrastructure-as-code) foundations
+- **Infrastructure as Code** — [Terraform](/orchestration/terraform), Pulumi, CloudFormation for declarative provisioning across clouds and on-prem; learn more about the [what is infrastructure as code](/resources/infrastructure/everything-as-code) foundations
 - **Governance layer** — identity, secrets, approvals, audit trails, and policy enforcement across every environment
 - **Control plane** — one place to define, run, and observe the workflows that tie those layers together, the subject of [cloud automation](/resources/infrastructure/cloud-automation)
 

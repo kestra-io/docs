@@ -167,7 +167,7 @@ By automating both detection and response, you create a closed-loop compliance s
 ## Related Concepts
 
 *   **[Governance in Kestra Enterprise](/docs/enterprise/governance):** Explore how features like RBAC, SSO, and Audit Logs provide the foundation for secure and compliant orchestration.
-*   **[Workflow Governance](/resources/infrastructure/workflow-governance):** Understand the principles of managing workflows at scale, ensuring consistency, security, and compliance.
+*   **[Workflow Governance](/resources/ai/ai-governance-workflows):** Understand the principles of managing workflows at scale, ensuring consistency, security, and compliance.
 *   **[Data Retention Automation](/resources/data/data-retention-automation):** Learn how to automate data lifecycle management to comply with privacy and retention policies.
 *   **[Provisioning and Deployment](/use-cases/provisioning-and-deployment):** See how automating infrastructure provisioning ensures that all environments are built to compliant standards from the start.
 

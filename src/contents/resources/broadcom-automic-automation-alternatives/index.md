@@ -150,7 +150,7 @@ Teams focused on reliability, governance, and migrating from legacy systems shou
 
 ### For Platform and DevOps Engineers
 
-Engineers who value automation as code, CI/CD integration, and infrastructure flexibility will gravitate towards declarative, API-first platforms. Kestra's YAML-based workflows and GitOps alignment are ideal for this group. The ability to manage [Kubernetes workflow orchestration](/resources/infrastructure/kubernetes-workflow-orchestration) and plug into the [CI/CD pipeline](/resources/infrastructure/ci-cd-pipeline) are critical decision factors.
+Engineers who value automation as code, CI/CD integration, and infrastructure flexibility will gravitate towards declarative, API-first platforms. Kestra's YAML-based workflows and GitOps alignment are ideal for this group. The ability to manage [Kubernetes workflow orchestration](/resources/infrastructure/kubernetes-workflow-orchestration) and plug into the [CI/CD pipeline](/resources/infrastructure/ci-cd-orchestration) are critical decision factors.
 
 ### For Data and AI Teams
 
