@@ -17,16 +17,26 @@ import landeranalytics from "./assets/landeranalytics.avif"
 import digitalocean from "./assets/digitalocean.svg"
 import modeo from "./assets/modeo.svg"
 
-export type PartnerType = "Technology" | "Consulting"
+export type PartnerType = "Technology" | "Services"
+
+export const EXPERTISE = [
+    "Data",
+    "Infrastructure & DevOps",
+    "Cloud & Kubernetes",
+    "AI & ML",
+    "Business automation",
+    "Legacy migration",
+] as const
+
+export type Expertise = (typeof EXPERTISE)[number]
 
 export interface Partner {
     name: string
     logo: ImageMetadata
     type: PartnerType
-    kind: string
     country: string
     region: string
-    services: string[]
+    expertise: Expertise[]
     description: string
     href: string
 }
@@ -44,10 +54,9 @@ export const listPartners = (type?: PartnerType): ListPartner[] =>
 export const PARTNERS: Partner[] = [
     {
         name: "DigitalOcean",
-        kind: "Cloud",
         country: "United States",
         region: "North America",
-        services: ["Compute & Kubernetes", "Managed databases"],
+        expertise: ["Cloud & Kubernetes"],
         logo: digitalocean,
         type: "Technology",
         description:
@@ -56,22 +65,20 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "Conapi",
-        kind: "Systems integrator",
         country: "Austria",
         region: "Europe",
-        services: ["System integration", "Legacy modernization"],
+        expertise: ["Business automation", "Legacy migration"],
         logo: conapi,
-        type: "Consulting",
+        type: "Services",
         description:
             "Conapi specializes in system integration, connecting legacy systems with modern tools through enterprise integration and API management.",
         href: "/partners/conapi",
     },
     {
         name: "Snowflake",
-        kind: "Data platform",
         country: "United States",
         region: "North America",
-        services: ["Data warehouse", "Data engineering"],
+        expertise: ["Data"],
         logo: snowflake,
         type: "Technology",
         description:
@@ -80,34 +87,31 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "Modeo",
-        kind: "Consulting firm",
         country: "France",
         region: "Europe",
-        services: ["Data engineering", "Data strategy", "Legacy modernization"],
+        expertise: ["Data", "Legacy migration"],
         logo: modeo,
-        type: "Consulting",
+        type: "Services",
         description:
             "Independent data and AI consultancy in Paris that designs and industrializes modern, sovereign Data Platforms and DataOps with Kestra.",
         href: "/partners/modeo",
     },
     {
         name: "Converteo",
-        kind: "Consulting firm",
         country: "France",
         region: "Europe",
-        services: ["Data strategy", "Digital transformation"],
+        expertise: ["Data"],
         logo: converteo,
-        type: "Consulting",
+        type: "Services",
         description:
             "Converteo is a leading consulting firm specializing in data strategy and digital transformation.",
         href: "/partners/converteo",
     },
     {
         name: "HashiCorp",
-        kind: "Infrastructure",
         country: "United States",
         region: "North America",
-        services: ["Infrastructure as code", "Secrets management"],
+        expertise: ["Infrastructure & DevOps"],
         logo: hashicorp,
         type: "Technology",
         description:
@@ -116,10 +120,9 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "Databricks",
-        kind: "Data platform",
         country: "United States",
         region: "North America",
-        services: ["Analytics & BI", "Machine learning"],
+        expertise: ["Data", "AI & ML"],
         logo: databricks,
         type: "Technology",
         description:
@@ -128,10 +131,9 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "Dremio",
-        kind: "Data platform",
         country: "United States",
         region: "North America",
-        services: ["Lakehouse", "Analytics & BI"],
+        expertise: ["Data"],
         logo: dremio,
         type: "Technology",
         description:
@@ -140,22 +142,20 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "Davidson",
-        kind: "Consulting firm",
         country: "France",
         region: "Europe",
-        services: ["Digital transformation", "Technology consulting"],
+        expertise: ["Data", "Infrastructure & DevOps", "AI & ML"],
         logo: davidson,
-        type: "Consulting",
+        type: "Services",
         description:
             "Davidson is a technology and management consulting firm focused on innovation and digital solutions.",
         href: "/partners/davidson",
     },
     {
         name: "Airbyte",
-        kind: "Data integration",
         country: "United States",
         region: "North America",
-        services: ["Data integration"],
+        expertise: ["Data"],
         logo: airbyte,
         type: "Technology",
         description:
@@ -164,22 +164,20 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "Hanalytics",
-        kind: "Consulting firm",
         country: "France",
         region: "Europe",
-        services: ["Analytics & BI", "Data strategy"],
+        expertise: ["Data"],
         logo: hanalytics,
-        type: "Consulting",
+        type: "Services",
         description:
             "Hanalytics specializes in data analytics and business intelligence solutions for modern organizations.",
         href: "/partners/hanalytics",
     },
     {
         name: "dltHub",
-        kind: "Data integration",
         country: "Germany",
         region: "Europe",
-        services: ["Data integration"],
+        expertise: ["Data"],
         logo: dlthub,
         type: "Technology",
         description:
@@ -188,10 +186,9 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "MotherDuck",
-        kind: "Data platform",
         country: "United States",
         region: "North America",
-        services: ["Data warehouse", "Analytics & BI"],
+        expertise: ["Data"],
         logo: motherduck,
         type: "Technology",
         description:
@@ -200,60 +197,55 @@ export const PARTNERS: Partner[] = [
     },
     {
         name: "Ntico",
-        kind: "Systems integrator",
         country: "France",
         region: "Europe",
-        services: ["Data engineering", "Automation"],
+        expertise: ["Data", "Business automation"],
         logo: ntico,
-        type: "Consulting",
+        type: "Services",
         description:
             "Ntico is a data consulting partner focused on delivering high-impact data solutions and insights.",
         href: "/partners/ntico",
     },
     {
         name: "Ashisuto",
-        kind: "Systems integrator",
         country: "Japan",
         region: "Asia-Pacific",
-        services: ["Local support", "Enterprise adoption"],
+        expertise: ["Data", "Legacy migration"],
         logo: ashisuto,
-        type: "Consulting",
+        type: "Services",
         description:
             "Ashisuto is a leading Japanese bridge partner connecting enterprises with Kestra for strategic adoption and local support.",
         href: "/partners/ashisuto",
     },
     {
         name: "Bitovi",
-        kind: "Consulting firm",
         country: "United States",
         region: "North America",
-        services: ["DevOps & infrastructure", "Data engineering"],
+        expertise: ["Infrastructure & DevOps", "Data"],
         logo: bitovi,
-        type: "Consulting",
+        type: "Services",
         description:
             "Bitovi is a digital product consultancy helping teams design, build, and scale web apps, DevOps, and data infrastructure.",
         href: "/partners/bitovi",
     },
     {
         name: "JLCP",
-        kind: "Systems integrator",
         country: "Brazil",
         region: "Latin America",
-        services: ["System integration", "Data engineering", "Automation"],
+        expertise: ["Data", "Business automation"],
         logo: jlcp,
-        type: "Consulting",
+        type: "Services",
         description:
             "JLCP is a Brazilian systems integration consultancy delivering data engineering and automation solutions for enterprises.",
         href: "/partners/jlcp",
     },
     {
         name: "Lander Analytics",
-        kind: "Systems integrator",
         country: "United States",
         region: "North America",
-        services: ["Analytics & BI", "Data engineering", "Machine learning"],
+        expertise: ["Data", "AI & ML"],
         logo: landeranalytics,
-        type: "Consulting",
+        type: "Services",
         description:
             "Lander Analytics is a systems integration and data consultancy specializing in analytics, machine learning, and data engineering.",
         href: "/partners/lander-analytics",

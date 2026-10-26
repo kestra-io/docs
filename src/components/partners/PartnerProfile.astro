@@ -64,7 +64,9 @@ const {
 const LABELS = {
     en: {
         about: "About",
-        services: "Services",
+        expertise: "Expertise",
+        services: "Services partner",
+        technology: "Technology partner",
         website: "Website",
         plugin: "Kestra plugin",
         related: "Other partners",
@@ -74,7 +76,9 @@ const LABELS = {
     },
     fr: {
         about: "À propos",
-        services: "Services",
+        expertise: "Expertise",
+        services: "Partenaire services",
+        technology: "Partenaire technologique",
         website: "Site web",
         plugin: "Plugin Kestra",
         related: "Autres partenaires",
@@ -179,7 +183,13 @@ const related = listPartners(partner.type)
                         <h1>{partner.name}</h1>
                         <p class="tagline">{tagline}</p>
                         <ul class="tags">
-                            <li class="tag kind">{partner.kind}</li>
+                            <li class="tag kind">
+                                {
+                                    partner.type === "Services"
+                                        ? t.services
+                                        : t.technology
+                                }
+                            </li>
                             <li class="tag">{partner.country}</li>
                             <li class="tag">{partner.region}</li>
                         </ul>
@@ -340,11 +350,11 @@ const related = listPartners(partner.type)
                                 ))
                             }
                             <div>
-                                <dt>{t.services}</dt>
+                                <dt>{t.expertise}</dt>
                                 <dd>
                                     <ul class="tags">
                                         {
-                                            partner.services.map((s) => (
+                                            partner.expertise.map((s) => (
                                                 <li class="tag">{s}</li>
                                             ))
                                         }

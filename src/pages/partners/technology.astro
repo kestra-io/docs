@@ -16,9 +16,8 @@ const description =
 
 const partners = listPartners("Technology")
 
-const FILTERS: { key: "kind" | "region" | "services"; label: string }[] = [
-    { key: "kind", label: "Category" },
-    { key: "services", label: "Capabilities" },
+const FILTERS: { key: "expertise"; label: string }[] = [
+    { key: "expertise", label: "Expertise" },
 ]
 
 const BENEFITS = [
@@ -61,7 +60,7 @@ const QUOTES = [
         filters={FILTERS}
         title="Technology partners"
         subtitle="Kestra integrates with all major cloud providers and the data and infrastructure platforms teams run on them. Each one has an integration in the plugin catalog. Ship yours and reach every team orchestrating with Kestra."
-        searchPlaceholder="Search by name, category or capability"
+        searchPlaceholder="Search by name or expertise"
     />
     <PluginsBlock />
     <Benefits

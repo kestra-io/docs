@@ -167,7 +167,7 @@
     const TRACKS = [
         {
             id: "consulting" as Track,
-            title: "Consulting and services partner",
+            title: "Services partner",
             text: "Consulting firm, systems integrator, managed service provider or reseller. You deliver or sell Kestra for your clients.",
         },
         {
@@ -237,12 +237,12 @@
     const kinds = computed(() => (form.track ? KINDS[form.track] : []))
     watch(() => form.track, () => { form.kind = [] })
     const experiences = computed(() => (form.track ? EXPERIENCES[form.track] : []))
-    const trackLabel = computed(() => (form.track === "technology" ? "technology partners" : "consulting partners"))
-    const trackHref = computed(() => (form.track === "technology" ? "/partners/technology" : "/partners/consulting"))
+    const trackLabel = computed(() => (form.track === "technology" ? "technology partners" : "services partners"))
+    const trackHref = computed(() => (form.track === "technology" ? "/partners/technology" : "/partners/services"))
 
     onMounted(() => {
         const fromUrl = new URLSearchParams(window.location.search).get("track")
-        const initial = props.initialTrack ?? (fromUrl === "consulting" || fromUrl === "technology" ? fromUrl : "")
+        const initial = props.initialTrack ?? (fromUrl === "services" || fromUrl === "consulting" ? "consulting" : fromUrl === "technology" ? fromUrl : "")
         if (initial) form.track = initial
     })
 
