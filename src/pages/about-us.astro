@@ -51,6 +51,12 @@ const description =
 </Layout>
 
 <style lang="scss">
+    // The space kept under the fixed header shows when the page bounces at the
+    // top: it takes the hero's colour so no white band opens there.
+    :global(main:has(> .about-us)) {
+        background: #111114;
+    }
+
     .about-us {
         overflow-x: clip;
         background: var(--ks-background-body);
