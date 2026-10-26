@@ -3,7 +3,9 @@
         <div class="real-header"><Header /></div>
         <div class="real-search"><Search :random-ai-questions="questions" /></div>
     <div class="bd-layout">
-        <NavSideBar type="docs" :navigation="nav" slug="docs/intro" />
+        <NavSideBar type="docs" :navigation="nav" :slug="slug" />
+        <button class="harness-navigate" @click="slug = '/docs/third/child-c'">navigate</button>
+        <button class="harness-navigate-sibling" @click="slug = '/docs/second/child-a'">navigate within branch</button>
         <NavToc :links="links" :markdown-body="body" page-path="/docs/intro" page-title="Intro" />
         <div class="blog-toc-host"><BlogToc :links="links" /></div>
         <CustomSelect v-model="selected" :options="options" label="Sort" />
@@ -25,10 +27,16 @@
     import Search from "~/components/layout/Search.vue"
 
     const nav = [{ children: [
-        { title: "First", path: "docs/first", children: [] },
-        { title: "Second", path: "docs/second", children: [] },
-        { title: "Third", path: "docs/third", children: [] },
+        { title: "First", path: "/docs/first", children: [] },
+        { title: "Second", path: "/docs/second", children: [
+            { title: "Child A", path: "/docs/second/child-a", children: [] },
+            { title: "Child B", path: "/docs/second/child-b", children: [] },
+        ] },
+        { title: "Third", path: "/docs/third", children: [
+            { title: "Child C", path: "/docs/third/child-c", children: [] },
+        ] },
     ] }]
+    const slug = ref("/docs/second/child-b")
     const links = [
         { id: "one", depth: 2, text: "Section one" },
         { id: "two", depth: 2, text: "Section two" },

@@ -41,12 +41,12 @@ Local storage behavior differs between standalone and distributed deployments:
 - ✅ **Distributed on shared storage**: OK when all instances can mount it read-write at once (in Kubernetes, `ReadWriteMany`), though this is rarely available
 - ❌ **Host storage sharing**: NOT recommended — difficult to achieve reliably
 
-When shared read-write storage (`ReadWriteMany`) is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
+When shared read-write storage (`ReadWriteMany`) is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage).
 :::
 
 Scalable alternatives are available as plugins:
 
-- [Storage MinIO](https://github.com/kestra-io/storage-minio) — for [AWS S3](https://aws.amazon.com/s3/) and any S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
+- [Storage MinIO](https://github.com/kestra-io/storage-minio) — for [AWS S3](https://aws.amazon.com/s3/) and any S3-compatible object storage (Ceph, SeaweedFS, Garage).
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) — for [Google Cloud Storage](https://cloud.google.com/storage).
 - [Storage Azure](https://github.com/kestra-io/storage-azure) — for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 - [Storage Cloudflare](https://github.com/kestra-io/storage-cloudflare) — for [Cloudflare R2](https://www.cloudflare.com/products/r2/).
@@ -63,9 +63,8 @@ The **queue** is the internal communication channel between Kestra’s server co
 - **Kafka queue** — Enterprise Edition. Higher throughput; pairs with the PostgreSQL or Elasticsearch repository.
 - **Redis queue** — Enterprise Edition.
 - **AMQP queue** — Enterprise Edition.
-- **GCP Pub/Sub queue** — Enterprise Edition.
 
-For configuration details on the JDBC queue backends, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md). For Kafka, Redis, AMQP, and GCP Pub/Sub, see [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#redis-amqp-and-gcp-pubsub-queue-backends).
+For configuration details on the JDBC queue backends, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md). For Kafka, Redis, and AMQP, see [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#redis-and-amqp-queue-backends).
 
 The queue surface covers four delivery families:
 

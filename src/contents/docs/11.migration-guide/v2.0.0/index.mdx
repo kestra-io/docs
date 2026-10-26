@@ -64,6 +64,7 @@ Changes that affect how flows are written or behave at runtime. Review all of th
 | [condition → when (Checks)](./checks-condition-renamed-when) | OSS, EE | The `condition` property on flow-level checks is renamed to `when`. |
 | [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function and `\| json` filter are removed. Replace `json(x)` with `fromJson(x)` and `\| json` with `\| toJson`. `kestra-migrate` rewrites both automatically. |
 | [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. |
+| [Parallel and Dag onChildFailure](./parallel-dag-on-child-failure) | OSS, EE | `Parallel` and `Dag` now interrupt their other running tasks when one task fails. Set `onChildFailure: CONTINUE` to keep the 1.x behavior. `Dag` uses this default from 2.0.8. |
 
 Two additional removals have no dedicated guide. The four tasks `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed from core; replace them with the equivalent tasks from `plugin-kestra`. The `CANCELED` state name (single-L) was never a valid `State.Type` value and is not accepted in `states:` lists on either 1.x or 2.0. `kestra-migrate` rewrites any occurrences to `CANCELLED` (double-L) automatically. Update any external API clients or tooling that sends `CANCELED`.
 

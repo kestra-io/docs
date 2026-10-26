@@ -1,0 +1,68 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Snowflake & Kestra: Orchestration Around the Data Warehouse"
+const description =
+    "Orchestrate Snowflake with Kestra: stage files and load them with COPY INTO, run transactional MERGE upserts, and trigger flows when a Snowflake query returns rows."
+
+const facts = [
+    {
+        label: "Partnership",
+        value: "Snowflake Registered Partner",
+    },
+    {
+        label: "Plugin",
+        value: "Query, Queries, Upload and a polling Trigger in plugin-jdbc-snowflake",
+    },
+    {
+        label: "Trigger",
+        value: "Starts a flow when a polled Snowflake query returns rows",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:tray-arrow-up",
+        title: "Stage loading end to end",
+        text: "Upload pushes a file to a Snowflake stage, then Query runs the COPY INTO. A failed COPY retries without uploading the file again.",
+    },
+    {
+        icon: "mdi:swap-horizontal",
+        title: "Transactional incremental loads",
+        text: "Queries runs the staging COPY, the MERGE and the watermark update as one transaction, so a failure rolls back and no partial batch lands.",
+    },
+    {
+        icon: "mdi:lightning-bolt-outline",
+        title: "Flows that start on data",
+        text: "The Snowflake Trigger polls the warehouse and starts a flow when a query returns rows, then marks them processed with afterSQL.",
+    },
+    {
+        icon: "mdi:cash-multiple",
+        title: "Warehouse cost control",
+        text: "Resume a warehouse, run the workload and suspend it in the same flow. Query tags tie credit usage back to the execution that issued each statement.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Snowflake">
+    <PartnerProfile
+        name="Snowflake"
+        tagline="Snowflake runs the SQL, the warehouse and the stage. Kestra decides when it runs, what feeds it and what runs next, from file arrival to dbt transforms."
+        about="The <a href='https://kestra.io/orchestration/snowflake'>io.kestra.plugin.jdbc.snowflake plugin</a> turns stage uploads, COPY INTO, multi-statement transactions and polling triggers into declarative tasks that chain with Airbyte ingestion and dbt in one flow."
+        expertiseTitle="Snowflake + Kestra: everything around the warehouse, orchestrated"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-jdbc-snowflake"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "snowflake",
+            title: '<span class="highlight">Snowflake</span> Blueprints',
+        }}
+        closing={{
+            title: "Orchestrate your Snowflake pipelines",
+            text: "Open source and self-hosted. Start from a blueprint below or from the plugin docs.",
+        }}
+        website="https://www.snowflake.com/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>
