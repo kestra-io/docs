@@ -282,6 +282,23 @@ describe("cookieconsent — Europe", () => {
         expect(posthogStartRecording).toHaveBeenCalled()
     })
 
+    // A revoke has to outlive soft navigation: PostHog stays bootstrapped after
+    // it, so the next astro:page-load must not read that as consent and opt
+    // the visitor back in.
+    it("keeps PostHog opted out on the next soft navigation after a revoke", async () => {
+        const { onConsent, onChange } = runCookieConsent.mock.calls[0][0]
+        await onConsent({ cookie: { categories: ["analytics"] } })
+        await onChange({ cookie: { categories: [] } })
+        posthogOptIn.mockClear()
+        posthogStartRecording.mockClear()
+
+        await firePageLoad()
+
+        expect(posthogOptIn).not.toHaveBeenCalled()
+        expect(posthogStartRecording).not.toHaveBeenCalled()
+        expect(posthogOptedOut).toBe(true)
+    })
+
     it("never touches PostHog on revoke if analytics was never granted", async () => {
         const { onConsent, onChange } = runCookieConsent.mock.calls[0][0]
         await onConsent({ cookie: { categories: [] } })
