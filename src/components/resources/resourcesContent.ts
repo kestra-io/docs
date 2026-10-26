@@ -67,7 +67,7 @@ const resourceSections: Record<string, Section> = {
             "Step-by-step guides for migrating from legacy automation and orchestration platforms to Kestra: what stays, what moves, in what order, and when it pays back.",
         heading: "Migration Guides",
         subtitle:
-            "Practical playbooks for leaving a legacy platform — what to keep, what to convert, how to stage the work, and how to make the business case with your own numbers.",
+            "Step-by-step playbooks for moving to Kestra from a platform that is being sunset or repriced: what to keep as-is, what to rewrite, how to stage the cutover without breaking production, and how to build the business case from your own run counts and license costs.",
     },
     whitepapers: {
         metaTitle: "Kestra Whitepapers: Orchestration Guides for Engineering Leaders",

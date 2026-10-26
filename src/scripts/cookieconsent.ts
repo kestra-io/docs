@@ -102,6 +102,11 @@ export const enabledAnalytics = async () => {
     }
     analyticsEnabled = true
 
+    // Report the landing page-view before awaiting /config: GTM's GA4
+    // page_view fires on content-view, so a slow or failed /config must not
+    // delay or drop it (it only feeds PostHog and the identify event).
+    pushPageView()
+
     const response = await $fetchApi<{
         posthog: { token: string }
         id: string
@@ -136,8 +141,6 @@ export const enabledAnalytics = async () => {
         noninteraction: true,
         kuid: response.id,
     })
-
-    pushPageView()
 
     localStorage.setItem("KUID", response.id)
 
