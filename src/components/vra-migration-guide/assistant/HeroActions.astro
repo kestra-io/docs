@@ -32,8 +32,8 @@ const BADGES = [
     </div>
 
     <InstallCommand
-        command="pipx install kestra-migration-assistant"
-        note="Python 3.10 or later. No Python? Run the container image instead."
+        command="uv tool install git+https://github.com/kestra-io/migration-assistant@main"
+        note="Needs git and uv, which installs Python for you. No git? Run the container image instead."
     />
 
     <ul class="badges list-unstyled">
