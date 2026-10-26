@@ -3,19 +3,27 @@ import PixelEdges from "./PixelEdges.astro"
 const MILESTONES = [
     {
         year: "2019",
-        text: "Kestra is created as a modern replacement for legacy schedulers. The first commit is open source.",
+        text: "Ludovic Dehon starts Kestra as a solo project to replace Airflow at Leroy Merlin France, where it runs in production.",
+    },
+    {
+        year: "2022",
+        text: 'The <a href="/blogs/2022-02-01-kestra-opensource">first public release</a>. The repository passes 1,000 GitHub stars two months later.',
     },
     {
         year: "2023",
-        text: "A community, a plugin catalog, the first enterprise customers, and a first funding round.",
+        text: 'A <a href="/blogs/2023-10-05-announcing-kestra-funding-to-build-the-universal-open-source-orchestrator">$3M pre-seed</a>, the first hires and the first enterprise customers.',
     },
     {
         year: "2024",
-        text: "An $8M seed. The catalog passes a thousand plugins and Kestra runs in every industry it set out to serve.",
+        text: 'An <a href="/blogs/2024-09-23-kestra-raises-8m-seed">$8M seed</a>. The project passes 10,000 GitHub stars in October.',
+    },
+    {
+        year: "2025",
+        text: '<a href="/blogs/release-1-0">Kestra 1.0</a> ships with AI agents and the first <a href="/blogs/introducing-lts">long-term support</a> release. 20,000 GitHub stars.',
     },
     {
         year: "2026",
-        text: 'A $25M Series A led by RTP Global. <a href="/two-zero">Kestra 2.0</a> ships a rebuilt engine and the first long-term support release.',
+        text: 'A <a href="/blogs/kestra-series-a">$25M Series A</a> led by RTP Global, then <a href="/two-zero">Kestra 2.0</a> and its rebuilt engine. 30,000 GitHub stars.',
     },
 ]
 ---
@@ -23,8 +31,7 @@ const MILESTONES = [
 <section class="journey">
     <PixelEdges />
     <div class="container">
-        <span class="eyebrow">Our journey</span>
-        <h2>How it all started.</h2>
+        <h2>Our journey.</h2>
         <ol>
             {
                 MILESTONES.map((m) => (
@@ -47,10 +54,6 @@ const MILESTONES = [
         background: var(--ks-background-body);
     }
 
-    .eyebrow {
-        @include eyebrow;
-    }
-
     h2 {
         @include title;
     }
@@ -60,7 +63,7 @@ const MILESTONES = [
         margin: 3rem 0 0;
         padding: 0;
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1rem;
 
         @include media-breakpoint-down(lg) {

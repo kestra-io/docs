@@ -2,7 +2,7 @@
 const PRINCIPLES = [
     {
         title: "Declarative",
-        text: "A workflow is a document you can read, review, version and promote, not a program only its author understands.",
+        text: "A workflow is a YAML document the whole team can read, review in a pull request, version and promote.",
     },
     {
         title: "Open",
@@ -18,7 +18,7 @@ const PRINCIPLES = [
     },
     {
         title: "Governed by default",
-        text: "Access control, audit, approvals and policies are part of the platform, because a workflow or an agent acting without them is a liability.",
+        text: "Access control, audit logs, approvals and policies ship with the platform, and apply to agents the same way they apply to workflows.",
     },
 ]
 ---
@@ -31,22 +31,21 @@ const PRINCIPLES = [
                 <h2>Principles we build to.</h2>
             </div>
             <p>
-                Five principles decide how Kestra is designed, what we say no
-                to, and how we work with the people who run it.
+                We use these five to decide what goes into Kestra and what we
+                turn down.
             </p>
         </header>
     </div>
-    <ol>
+    <ul>
         {
-            PRINCIPLES.map((p, i) => (
+            PRINCIPLES.map((p) => (
                 <li>
-                    <span class="index">{String(i + 1).padStart(2, "0")}</span>
                     <h3>{p.title}</h3>
                     <p>{p.text}</p>
                 </li>
             ))
         }
-    </ol>
+    </ul>
 </section>
 
 <style lang="scss">
@@ -95,7 +94,7 @@ const PRINCIPLES = [
 
     // Five columns read side by side, split by hairlines; they stack on
     // smaller screens.
-    ol {
+    ul {
         list-style: none;
         margin: 0;
         padding: 0;
@@ -116,34 +115,12 @@ const PRINCIPLES = [
         }
 
         @include media-breakpoint-down(lg) {
-            display: grid;
-            grid-template-columns: 4rem minmax(0, 1fr);
-            gap: 0.25rem 1rem;
             padding: 1.5rem 1.25rem;
 
             & + li {
                 border-left: 0;
                 border-top: var(--rule);
             }
-
-            .index {
-                grid-row: span 2;
-            }
-        }
-    }
-
-    .index {
-        display: block;
-        margin-bottom: 2.5rem;
-        font-size: clamp(2.5rem, 4vw, 3.5rem);
-        font-weight: 500;
-        letter-spacing: -0.04em;
-        line-height: 1;
-        color: var(--ks-content-primary);
-
-        @include media-breakpoint-down(lg) {
-            margin: 0;
-            font-size: 2rem;
         }
     }
 
