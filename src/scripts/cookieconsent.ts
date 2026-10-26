@@ -28,6 +28,9 @@ const bannerModule = isEurope ? import("./cookieBanner") : null
 // Astro's <ClientRouter /> makes navigation a soft transition, so these
 // guards keep one-time bootstrap idempotent across page loads.
 let analyticsEnabled = false
+// Whether analytics consent currently stands. Separate from analyticsEnabled
+// (PostHog bootstrapped), which stays true after a revoke.
+let analyticsGranted = false
 let marketingEnabled = false
 let consentInitialized = false
 let gtmLoaded = false
@@ -87,6 +90,7 @@ export const pushPageView = () => {
 }
 
 export const enabledAnalytics = async () => {
+    analyticsGranted = true
     // Push a page-view on every navigation (including client-side transitions).
     if (analyticsEnabled) {
         // Re-granting after a withdrawal: opt back in explicitly, since
@@ -169,6 +173,7 @@ export const enabledMarketing = () => {
 // pick the change up. opt_out_capturing() persists, so it also covers the
 // visitor's later visits until they opt back in.
 export const disableAnalytics = () => {
+    analyticsGranted = false
     if (!analyticsEnabled) {
         return
     }
@@ -192,7 +197,7 @@ document.addEventListener("astro:page-load", async () => {
 
     // Consent already handled on an earlier page — just report the page-view.
     if (consentInitialized) {
-        if (analyticsEnabled) {
+        if (analyticsGranted) {
             enabledAnalytics()
         } else {
             // No analytics consent: GTM stays loaded, so this only produces
