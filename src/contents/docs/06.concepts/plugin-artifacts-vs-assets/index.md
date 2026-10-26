@@ -18,7 +18,7 @@ An asset is a record that a plugin's tasks write about a resource, such as a tab
 | What it is | A UI component bundled in a plugin | A record of a resource, with metadata and lineage |
 | Who creates it | The plugin developer, once for the plugin | Tasks that declare or emit assets when they run, or you, from the UI or API |
 | What it holds | Nothing. It displays the data Kestra passes to it. | Metadata, kept until you delete or purge the asset |
-| Where you see it | Slots in the UI: task nodes and task details in the topology, and asset cards in the dependency graph | The **Assets** page, an asset's **Dependencies** tab, and the **Assets** tab of an execution or namespace |
+| Where you see it | Slots in the UI: task nodes and task details in the topology, the **Artifacts** tab of an execution, and asset cards in the dependency graph | The **Assets** page, an asset's **Dependencies** tab, and the **Assets** tab of an execution or namespace |
 | Edition | All editions. A plugin can mark an artifact as Enterprise-only. | Enterprise Edition and Kestra Cloud |
 
 ## Where artifacts appear
@@ -30,6 +30,7 @@ Kestra renders artifacts in slots. A plugin declares which slots its artifacts f
 | `topology-details` | Inside a task's node in the topology: the flow editor, the execution **Topology** tab, and blueprints | The task definition and, in an execution, the task run's outputs, metrics, and live progress |
 | `topology-task-modal` | A full-screen dialog opened from a task node | The same data as `topology-details` |
 | `topology-task-drawer` | The task drawer in the flow editor | The same data as `topology-details` |
+| `execution-artifact` | The **Artifacts** tab of an execution, where a task type can list several artifacts | The same data as `topology-details`, without live progress |
 | `asset-card-footer` | Below an asset's card in the dependency graph | The asset's ID, type, and metadata, and the current tenant |
 
 For the topology slots, Kestra picks the artifact from the task's type, or from its task runner's type when the runner ships its own artifact.

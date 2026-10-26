@@ -36,14 +36,13 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 ```mermaid
 graph LR
     subgraph CORE["Kestra Core"]
-        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal)"]
-        HOST["Host UI\nconfigureAxios\nkestra:openTaskModal"]
+        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal\nexecution-artifact\nasset-card-footer)"]
+        HOST["Host UI\nkestra:openTaskModal"]
         MFH["Module Federation\nruntime loader"]
     end
 
     subgraph NPM["NPM packages"]
         ART["@kestra-io/artifact-sdk\nKnownSlotProps · vite.config\nscaffolder CLI"]
-        SDK["@kestra-io/kestra-sdk\nexecutions · flows\nmetrics · logs"]
     end
 
     subgraph PLUGIN["Plugin"]
@@ -53,19 +52,24 @@ graph LR
     end
 
     SC -->|"types published as"| ART
-    HOST -->|"configures axios for"| SDK
+    HOST -->|"injects slot props into"| VUE
     ART -->|"KnownSlotProps types"| VUE
     ART -->|"MF build config"| VCFG
-    SDK -->|"typed API calls"| VUE
     VUE & VCFG -->|"compiled/bundled into"| JAR
     JAR -->|"loaded at runtime"| MFH
 ```
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Three slots are available in `@kestra-io/artifact-sdk`:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Five slots are available:
 
-Artifacts can also display data that plugins write to assets. See [Plugin artifacts and assets](../../06.concepts/plugin-artifacts-vs-assets/index.md).
+| Slot | Where it renders |
+|---|---|
+| [`topology-details`](#topology-details) | Inside a task node in the execution topology |
+| [`topology-task-drawer`](#topology-task-drawer) | The task drawer in the flow editor |
+| [`topology-task-modal`](#topology-task-modal) | A full-screen dialog opened from a runner-backed task node |
+| [`execution-artifact`](#execution-artifact) | The **Artifacts** tab of an execution |
+| [`asset-card-footer`](#asset-card-footer) | Below an asset's card in the dependency graph |
 
 ### `topology-details`
 
@@ -96,7 +100,12 @@ export const propsSchema = z.object({
 })
 ```
 
-`Task`, `Execution`, and `PagedResultsMetricEntry` are imported from `@kestra-io/kestra-sdk` for typing purposes only — your component doesn't call the SDK to populate these.
+The core contract imports `Task`, `Execution`, and `PagedResultsMetricEntry` from `@kestra-io/kestra-sdk` for typing only. `@kestra-io/artifact-sdk` ships its own structural copies of these types, so your plugin doesn't depend on `@kestra-io/kestra-sdk`.
+
+<!-- TODO: on kestra develop, propsSchema also has `fetchEndpoint(name, params?, query?)` (kestra#21653),
+     which calls the plugin's own PluginEndpoint for the current task run. Document it with plugin endpoints
+     once eng confirms the release it ships in. It is not on releases/v2.1.x as of 2026-10-26. -->
+
 
 - **`task`** is complete — the host merges the graph node's task with the same task parsed out of `source`, so you never need to fetch the flow definition to fill in properties missing from the execution-graph node.
 - **`tenant`** is the current tenant, so you don't need to read it from `localStorage` or resolve it yourself.
@@ -118,15 +127,15 @@ const isFullView = computed(() => attrs.displayMode === "full");
 When `displayMode` is `"full"` the component renders in an expanded drawer; otherwise it renders inline in the compact topology node.
 
 :::alert{type="warning"}
-During certain render phases, `namespace` and `flowId` may arrive as unresolved URL template strings — e.g. `"{namespace}"` instead of `"myteam"`. These strings are truthy in JavaScript, so a plain `if (!props.namespace)` check won't catch them. Always guard with a `startsWith("{")` check before making API calls:
+During certain render phases, `namespace` and `flowId` may arrive as unresolved URL template strings, such as `"{namespace}"` instead of `"myteam"`. These strings are truthy in JavaScript, so a plain `if (!props.namespace)` check doesn't catch them. Guard with a `startsWith("{")` check before you display them or use them to build a link:
 
 ```ts
-async function loadFlowData() {
+const flowRef = computed(() => {
   const ns = props.namespace;
   const fid = props.flowId;
-  if (!ns || ns.startsWith("{") || !fid || fid.startsWith("{")) return;
-  // safe to call SDK
-}
+  if (!ns || ns.startsWith("{") || !fid || fid.startsWith("{")) return undefined;
+  return `${ns}.${fid}`;
+});
 ```
 :::
 
@@ -154,6 +163,65 @@ const openTaskModal = inject<(ctx: Record<string, any>) => void>("kestra:openTas
 ```
 
 This slot is the right choice when a task runner (e.g. AWS Batch, Docker, Kubernetes) needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel.
+
+### `execution-artifact`
+
+<!-- TODO: kestra#21611 merged to kestra develop on 2026-10-23, after releases/v2.1.x was cut, and is not on
+     that branch as of 2026-10-26. Confirm with eng whether it is backported to 2.1 or ships in 2.2 before
+     this section is published. -->
+
+Renders in the **Artifacts** tab of an execution, next to **Overview**, **Gantt**, and **Logs**. Use it for a result that a user opens full size after a run, such as a model graph, a compiled query, or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
+
+The component receives the same props as `topology-details`, without `progress`. The tab appears only when the flow contains at least one task whose type declares an artifact, and its badge shows the number of artifacts. The tab groups artifacts by task and opens the selected one in a viewer beside the list.
+
+A task type can ship several artifacts. Each one is its own component, registered in `vite.config.ts` as `execution-artifact/<id>`, and each gets its own entry in the manifest:
+
+```ts
+"cli.DbtCLI": [
+  {
+    slotName: "execution-artifact/model-graph",
+    path: "./src/components/ModelGraphArtifact.vue",
+    additionalProperties: { title: "Model graph" },
+  },
+  {
+    slotName: "execution-artifact/compiled-sql",
+    path: "./src/components/CompiledSqlArtifact.vue",
+    additionalProperties: { title: "Compiled SQL" },
+  },
+],
+```
+
+The host builds the list from `additionalProperties`:
+
+- **`title`** is the label of the artifact in the tab. It is required.
+- **`description`** is an optional line shown under the title.
+
+The Artifacts tab lists only entries registered as `execution-artifact/<id>` that set `title`. The scaffolder writes `slotName: "execution-artifact"` without an ID, so add one after scaffolding. An entry with no ID or no `title` never appears in the tab.
+
+To show a line that depends on the run, such as `8 nodes · 8 dependencies`, export `getSubtitle` from the component. The host calls it again each time a task run changes state, so it can read outputs that exist only once the task has run:
+
+```vue
+<script lang="ts">
+export async function getSubtitle({ fetchOutputs }) {
+  const outputs = await fetchOutputs();
+  return outputs.modelCount ? `${outputs.modelCount} models` : undefined;
+}
+</script>
+```
+
+`getSubtitle` receives `{ task, execution, fetchOutputs, fetchMetrics }`. `fetchOutputs` and `fetchMetrics` accept an optional `taskRunId` and default to the latest run of the task. Return a string, or `undefined` to show only the description.
+
+:::alert{type="warning"}
+`@kestra-io/artifact-sdk` versions before 0.3.1 reject the `execution-artifact/<id>` slot name at build time. Use 0.3.1 or later.
+:::
+
+### `asset-card-footer`
+
+Renders below an asset's card in the dependency graph. Unlike the other slots, it doesn't receive a task or an execution: it receives the asset's `assetId`, its `assetType`, the `metadata` that the producing task attached to it, and the current `tenant`. The contract is defined in [`ui/packages/slot-contracts/src/asset-card-footer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/asset-card-footer.ts) in Kestra core.
+
+Set `footerHeight` in `additionalProperties` to the number of pixels the footer adds below a card. The graph reserves that space for every card at once, so rows stay aligned.
+
+Assets are available in Enterprise Edition and Kestra Cloud. For how plugins write asset metadata and how this slot displays it, see [Plugin artifacts and assets](../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 ## Tracking live task progress
 
@@ -231,10 +299,9 @@ The CLI will:
 
 1. **Detect your plugin** — reads `settings.gradle[.kts]` to infer the plugin group ID (e.g. `io.kestra.plugin.example`).
 2. **Ask which task** you want to add UI for (e.g. `query.RunQuery`).
-3. **Ask which UI slot** to target (`topology-details` or `topology-task-drawer`).
-4. **Ask whether to add `@kestra-io/kestra-sdk`** as a dependency (default: no — see [Calling the Kestra API](#calling-the-kestra-api) for why a `topology-details`/`topology-task-drawer`/`topology-task-modal` component should almost never need it).
-5. **Show a summary** and ask for confirmation before writing anything.
-6. **Scaffold the `ui/` directory** with all required files and run `npm install`.
+3. **Ask which UI slot** to target. The scaffolder offers each of the [five slots](#available-ui-slots).
+4. **Show a summary** and ask for confirmation before writing anything.
+5. **Scaffold the `ui/` directory** with all required files and run `npm install`.
 
 :::alert{type="info"}
 Node.js ≥ 18 is required. The scaffolder can also be run from inside an existing `ui/` directory if you want to add more components later.
@@ -317,25 +384,43 @@ Pass `taskRunId` to address one iteration of a looped task; omit it to let the h
 
 ## Calling the Kestra API
 
-**A new data need is a new slot prop, not a new SDK call.** The `@kestra-io/kestra-sdk` package exists and other parts of your plugin can depend on it, but a `topology-details`/`topology-task-drawer`/`topology-task-modal` component has no legitimate reason to import it at all: the props above — `task`, `execution`, `tenant`, `fetchOutputs`, `fetchMetrics` — already cover flow definitions, execution state, outputs, and metrics, and there is no remaining case (including rendering task properties for display, see [Pebble expressions](#pebble-expressions-in-task-config) below) where an artifact needs to call `ExecutionAPI`, `FlowAPI`, `OutputsAPI`, `MetricsAPI`, or the expression-rendering endpoint directly. Those endpoints route through the host's authenticated client with no capability scoping, which is exactly what the props exist to avoid. If you find yourself reaching for one of them, it means the slot contract is missing a prop your component needs — raise that, don't work around it.
+**A new data need is a new slot prop, not a new SDK call.** An artifact renders what the host passes to it. The props above, `task`, `execution`, `tenant`, `fetchOutputs`, and `fetchMetrics`, already cover flow definitions, execution state, outputs, and metrics. No case remains where an artifact needs to call the Kestra REST API directly, including rendering task properties for display (see [Pebble expressions](#pebble-expressions-in-task-config) below). A direct call bypasses the permission scoping that the props provide and ties your component to internal API shapes. If your component needs data the props don't provide, the slot contract is missing a prop: raise that instead of working around it.
 
-Don't add `@kestra-io/kestra-sdk` to your `ui/package.json` for one of these three slots. If a build-time CI check exists in your target Kestra version, a runtime import of it under a plugin `ui/` will fail it.
+Don't add `@kestra-io/kestra-sdk` to your `ui/package.json`. The Kestra UI doesn't share it with plugin modules, and `@kestra-io/artifact-sdk` no longer depends on it or offers it in the scaffolder.
 
 ## Pebble expressions in task config
 
-Task configuration is authored with [Pebble expressions](../../expressions/index.mdx): a `sql` property might be `SELECT * FROM {{ vars.dataset }}.users`, a `projectId` might be `{{ inputs.project }}`. The `task` prop your component receives holds these **as written, unrendered** — your component does not resolve them.
+Task configuration is authored with [Pebble expressions](../../expressions/index.mdx): a `sql` property might be `SELECT * FROM {{ vars.dataset }}.users`, and a `projectId` might be `{{ inputs.project }}`. The `task` prop holds these values as written, unrendered. Your component never resolves them, because expressions that call `secret()`, `kv()`, or variables from a real execution can't resolve safely outside one.
 
-Display the raw value as-is:
+Follow these rules for every value your artifact displays:
+
+- **After an execution**, show a value only if it comes from `fetchOutputs`, `fetchMetrics`, or the `execution` prop. Never fall back to `task` for a property that can hold an expression. If the output is missing, for example in an execution from an older plugin version, show `—`.
+- **Before an execution**, in the flow editor or while the task run hasn't finished, no outputs exist yet. Show the raw value from `task`, and mark any value that contains `{{` or `{%` as a template, or show `—`.
+- **Values that can't hold an expression**, such as the plugin `type`, enum-like flags, and hard-coded defaults, can come from `task` in both cases.
 
 ```ts
-const projectId = computed(() => props.task?.projectId as string | undefined);
+const hasExecution = computed(() => !!props.execution?.id);
+const isTemplate = (v?: string) => !!v && /\{[{%]/.test(v);
+
+const projectId = computed(() => {
+  if (hasExecution.value) return (taskOutputs.value.projectId as string | undefined) ?? "—";
+  const raw = props.task?.projectId as string | undefined;
+  if (!raw) return "—";
+  return isTemplate(raw) ? `(template) ${raw}` : raw;
+});
 ```
 
-A user sees `{{ vars.dataset }}` rather than the value it would resolve to. That's the current, intentional behavior — plugin artifacts do not call an expression-rendering endpoint to resolve template strings for display, because doing so is exactly the kind of direct-API-call the props contract exists to replace, and a rendering endpoint is inherently best-effort (functions with side effects like `env()`/`kv()`/`secret()`, and out-of-context variable references, can't safely resolve outside a real execution anyway).
+When an artifact needs to show a resolved value, the task must publish it as an output. Add the value to the task's `Output` class with a `@Schema` description, set it from the value the task actually used at runtime, and read it with [`fetchOutputs`](#fetching-outputs-and-metrics). Publish identifiers only, never credentials: a service account email rather than its key, an ARN rather than an access key.
 
-:::alert{type="info"}
-The fix in progress is architectural, not artifact-side: a task property a user needs to see resolved in an artifact should become a proper task **output** — computed once, server-side, at the point the value is actually known — rather than an artifact re-resolving a template string on the client. Once a given task exposes the value as an output, read it via [`fetchOutputs`](#fetching-outputs-and-metrics) like any other post-execution data, same as everything else in this guide. Until a given plugin's tasks are updated to publish these as outputs, the pre-execution/raw-template value is what your component should show — don't work around it with a client-side rendering call.
-:::
+<!-- TODO: kestra#18884 open decisions. Update this section when they're settled:
+     - Large or sensitive values (BigQuery `sql`, AI `prompt`/`systemMessage`): proposal is not to output them
+       and to keep showing the raw template, labelled as a template.
+     - Failed runs: runner details on failure aren't passed through on 1.3.x/2.0.x/2.1.x (c0e0016abe backport
+       proposed), so outputs-only artifacts show `—` after a failed run except LambdaMicroVm.
+     - Identifiers close to secrets (role ARNs reveal the account ID, Azure subscriptionId): proposal is to
+       publish ARNs and serviceAccountEmail, keep subscriptionId raw and masked.
+     - customAction: an output-based variant instead of `taskProp`, or dropping the option. -->
+
 
 ## Configuring the exposed components
 
@@ -389,7 +474,7 @@ A single task can expose components for multiple slots:
 
 The snippet below is adapted from the BigQuery plugin's topology component. It shows a `topology-details` component that:
 
-- renders project/location before execution — read straight off `task`, which the host already fills in from the flow source
+- renders project and location from `task` before an execution, marking templated values, and from the task outputs after one
 - adds duration and cost estimates after execution, via `fetchMetrics`
 - adds a job-details section fed by `fetchOutputs`
 - uses `displayMode === "full"` to show the rich job-details section only in the expanded drawer
@@ -407,13 +492,6 @@ const props = defineProps<KnownSlotProps["topology-details"]>();
 const attrs = useAttrs();
 const isFullView = computed(() => attrs.displayMode === "full");
 
-const taskId = computed(() => props.task?.id as string | undefined);
-
-// task is already complete — the host merges the graph node's task with the same task
-// parsed out of `source`, so no flow fetch is needed to read config not on the graph node.
-const projectId = computed(() => props.task?.projectId as string | undefined);
-const location = computed(() => props.task?.location as string | undefined);
-
 // Execution state
 const hasExecution = computed(() => !!props.execution?.id);
 const executionId = computed(() => props.execution?.id as string | undefined);
@@ -424,6 +502,18 @@ const taskOutputs = ref<Record<string, unknown>>({});
 watch(executionId, async (id) => {
   taskOutputs.value = id ? await props.fetchOutputs?.() ?? {} : {};
 }, { immediate: true });
+
+// Before an execution, show the definition and mark unrendered Pebble expressions.
+// After one, read only the outputs: the definition may still hold templates.
+const isTemplate = (v?: string) => !!v && /\{[{%]/.test(v);
+const markTemplate = (v?: string) => (v ? (isTemplate(v) ? `(template) ${v}` : v) : "—");
+
+const projectId = computed(() => hasExecution.value
+  ? (taskOutputs.value.projectId as string | undefined) ?? "—"
+  : markTemplate(props.task?.projectId as string | undefined));
+const location = computed(() => hasExecution.value
+  ? (taskOutputs.value.location as string | undefined) ?? "—"
+  : markTemplate(props.task?.location as string | undefined));
 
 // Task metrics, via the lazy fetchMetrics prop — already scoped to this task and execution
 const metrics = ref<Array<{ name: string; value: number }>>([]);
@@ -459,8 +549,8 @@ function formatDuration(ms?: number) {
 <template>
   <div class="details">
     <dl class="grid">
-      <dt>Project</dt><dd>{{ projectId ?? "—" }}</dd>
-      <dt>Location</dt><dd>{{ location ?? "—" }}</dd>
+      <dt>Project</dt><dd>{{ projectId }}</dd>
+      <dt>Location</dt><dd>{{ location }}</dd>
       <template v-if="hasExecution">
         <dt>Duration</dt><dd>{{ formatDuration(durationMs) }}</dd>
         <dt>Est. cost</dt><dd>{{ formatCost(bytesBilled) }}</dd>
@@ -569,7 +659,7 @@ export const PostExecution: Story = {
     },
     // Plain prop fixtures — no transport to stub, since fetchOutputs/fetchMetrics are
     // just functions the host would otherwise inject.
-    fetchOutputs: async () => ({ jobId: "my-project:US.bqjob_r1234", size: 42500 }),
+    fetchOutputs: async () => ({ jobId: "bqjob_r1234", projectId: "my-project", location: "US", size: 42500 }),
     fetchMetrics: async () => ({
       results: [
         { name: "duration", value: 1230, taskId: "run-query" },
@@ -750,7 +840,7 @@ additionalProperties: {
 }
 ```
 
-This is useful for tasks that carry large or structured payloads (SQL queries, scripts, templates) that are better viewed in a dedicated panel than inline in the YAML editor.
+This is useful for tasks that carry large or structured payloads (SQL queries, scripts, templates) that are better viewed in a dedicated panel than inline in the YAML editor. The drawer shows the property as written in the flow, so Pebble expressions in it appear unrendered, including after an execution.
 
 :::alert{type="info"}
 `additionalProperties` values are static — they are evaluated at build time and embedded in the manifest. They cannot reference runtime task values.
