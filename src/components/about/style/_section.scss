@@ -45,6 +45,21 @@
     transition: text-decoration-color 0.2s ease;
 
     &:hover {
-        text-decoration-color: currentColor;
+        text-decoration-color: var(--ks-content-link);
+    }
+
+    @include arrow-nudge;
+}
+
+// The arrow after a link slides forward when the link is pointed at.
+@mixin arrow-nudge {
+    .arrow {
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+
+    &:hover .arrow,
+    &:focus-visible .arrow {
+        transform: translateX(0.25em);
     }
 }

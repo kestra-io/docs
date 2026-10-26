@@ -1,6 +1,7 @@
 ---
 import Layout from "~/components/layout.astro"
 import AboutHero from "~/components/about/AboutHero.astro"
+import Company from "~/components/about/Company.astro"
 import WhyWeExist from "~/components/about/WhyWeExist.astro"
 import Numbers from "~/components/about/Numbers.astro"
 import Customers from "~/components/about/Customers.astro"
@@ -24,6 +25,7 @@ const description =
 <Layout {title} {description} headerTheme="darkHeader" headerBg="#111114">
     <div class="about-us">
         <AboutHero />
+        <Company />
         <WhyWeExist />
         <Numbers />
         <Customers />

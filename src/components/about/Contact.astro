@@ -34,7 +34,9 @@ const CHANNELS = [
                         <h3>{c.title}</h3>
                         <p>{c.text}</p>
                         {c.links.map((l) => (
-                            <a href={l.href}>{l.label} →</a>
+                            <a href={l.href}>
+                                {l.label} <span class="arrow">→</span>
+                            </a>
                         ))}
                     </li>
                 ))

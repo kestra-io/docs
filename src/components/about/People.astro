@@ -3,6 +3,9 @@ import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import manu from "./assets/manu.jpg"
 import ludo from "./assets/ludo.jpg"
+import anna from "./assets/anna.jpg"
+import kai from "./assets/kai.jpg"
+import terry from "./assets/terry.jpg"
 
 const LEADERS = [
     {
@@ -36,6 +39,52 @@ const LEADERS = [
         ],
         photo: ludo,
     },
+    {
+        name: "Anna Geller",
+        role: "Head of Product",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/geller-anna/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/anna-geller",
+            },
+        ],
+        photo: anna,
+    },
+    {
+        name: "Kai Waehner",
+        role: "CTO",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/kaiwaehner/",
+            },
+            {
+                icon: "mdi:web",
+                label: "Website",
+                href: "https://www.kai-waehner.de/",
+            },
+        ],
+        photo: kai,
+    },
+    {
+        name: "Terry Flowers",
+        role: "Head of Sales",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/terryflowers/",
+            },
+        ],
+        photo: terry,
+    },
 ]
 ---
 
@@ -55,12 +104,12 @@ const LEADERS = [
                                 src={l.photo}
                                 alt={l.name}
                                 widths={[480, 720, 960]}
-                                sizes="(min-width: 992px) 320px, 50vw"
+                                sizes="(min-width: 1200px) 250px, (min-width: 768px) 33vw, 50vw"
                             />
                         </figure>
                         <h3>{l.name}</h3>
                         <span class="role">{l.role}</span>
-                        <p>{l.bio}</p>
+                        {l.bio && <p>{l.bio}</p>}
                         <div class="links">
                             {l.links.map((link) => (
                                 <a
@@ -88,15 +137,13 @@ const LEADERS = [
         @include section;
         border-top: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
+    }
 
-        .container {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            gap: 2.5rem 4rem;
+    header {
+        margin-bottom: 3.5rem;
 
-            @include media-breakpoint-down(lg) {
-                grid-template-columns: 1fr;
-            }
+        @include media-breakpoint-down(md) {
+            margin-bottom: 2.5rem;
         }
     }
 
@@ -113,11 +160,16 @@ const LEADERS = [
         margin: 0;
         padding: 0;
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 3rem 1.5rem;
 
-        @include media-breakpoint-down(sm) {
-            gap: 1rem;
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2.5rem 1rem;
         }
     }
 
@@ -156,13 +208,9 @@ const LEADERS = [
 
     h3 {
         margin: 0;
-        font-size: $font-size-xl;
+        font-size: $font-size-lg;
         font-weight: 600;
         letter-spacing: -0.015em;
-
-        @include media-breakpoint-down(sm) {
-            font-size: $font-size-lg;
-        }
     }
 
     .role {
@@ -174,7 +222,7 @@ const LEADERS = [
     }
 
     p {
-        margin: 0.75rem 0;
+        margin: 0.75rem 0 0;
         font-size: $font-size-sm;
         line-height: 1.6;
         color: var(--ks-content-secondary);
@@ -183,6 +231,7 @@ const LEADERS = [
     .links {
         display: flex;
         gap: 0.5rem;
+        margin-top: 0.75rem;
     }
 
     .links a {

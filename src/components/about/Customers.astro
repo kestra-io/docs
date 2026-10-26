@@ -109,7 +109,7 @@ const storyHref = (company?: string) => {
                             )}
                             {href && (
                                 <a class="story" href={href}>
-                                    Read the story →
+                                    Read the story <span class="arrow">→</span>
                                 </a>
                             )}
                         </li>
@@ -117,7 +117,9 @@ const storyHref = (company?: string) => {
                 })
             }
             <li class="more">
-                <a href="/stories">See all customer stories →</a>
+                <a href="/stories">
+                    See all customer stories <span class="arrow">→</span>
+                </a>
             </li>
         </ul>
     </div>
@@ -239,6 +241,8 @@ const storyHref = (company?: string) => {
                 opacity 0.2s ease,
                 transform 0.2s ease,
                 border-color 0.2s ease;
+
+            @include arrow-nudge;
 
             &:hover {
                 border-color: var(--ks-content-primary);

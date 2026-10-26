@@ -39,7 +39,9 @@ const NUMBERS = [
                     <div class="text">
                         <h2>{n.label}</h2>
                         <p>{n.text}</p>
-                        <a href={n.href}>{n.cta}</a>
+                        <a href={n.href}>
+                            {n.cta} <span class="arrow">→</span>
+                        </a>
                     </div>
                     <p class="figure">
                         <span class="arrow" aria-hidden="true">
@@ -146,9 +148,6 @@ const NUMBERS = [
 
     a {
         @include text-link;
-        &::after {
-            content: " →";
-        }
     }
 
     .figure {

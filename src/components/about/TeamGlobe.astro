@@ -118,7 +118,7 @@ const OFFICES = [
 
     // The Kestra mark laid on the ocean as dots, between the two
     // headquarters: sampled from the logo, one dot per cell.
-    const MARK = { lat: 30, lon: -40, span: 36, cells: 25 }
+    const MARK = { lat: 30, lon: -40, span: 40, cells: 25 }
 
     async function markDots(): Promise<{ v: Vec; color: string }[]> {
         const img = new Image()
@@ -128,9 +128,10 @@ const OFFICES = [
         const off = document.createElement("canvas")
         off.width = off.height = n
         const octx = off.getContext("2d", { willReadFrequently: true })!
-        // The SVG has a margin around the drawing; crop it.
+        // The SVG has a margin around the drawing. This crop keeps every
+        // shape whole and lands them on the grid symmetrically.
         const w = img.naturalWidth
-        octx.drawImage(img, w * 0.15, w * 0.13, w * 0.7, w * 0.7, 0, 0, n, n)
+        octx.drawImage(img, w * 0.1, w * 0.11, w * 0.8, w * 0.8, 0, 0, n, n)
         const data = octx.getImageData(0, 0, n, n).data
         const out: { v: Vec; color: string }[] = []
         const scale = 1 / Math.cos(MARK.lat * RAD)
