@@ -3,20 +3,11 @@ import SectionTitle from "~/components/security/SectionTitle.astro"
 
 // Same presentation as How it works on the vRA migration assistant page
 // (vra-migration-guide/assistant/HowItWorks.astro).
-const PERSONAS = [
-    {
-        tag: "Platform and infrastructure automation leads",
-        text: "You run Terraform, Ansible, and a patch platform, and the chain between them lives in scripts and in people. You want one control plane above the tools you already trust, and a way to retire the glue without rewriting what works.",
-    },
-    {
-        tag: "Heads of infrastructure and operations",
-        text: "Every node the AI buildout adds moves a license meter, the next renewal may reprice the stack, and auditors now ask for proof that each change ran as approved. You want to know which costs you can stop growing, and what evidence one control plane gives you.",
-    },
-    {
-        tag: "Enterprise architects",
-        text: "You own the target architecture. You need a clear boundary between the tools that execute work and the layer that coordinates it, and a way to test which platforms can carry data, application, and agent workloads later.",
-    },
-]
+interface Props {
+    personas: { tag: string; text: string }[]
+}
+
+const { personas } = Astro.props
 ---
 
 <section class="who">
@@ -25,7 +16,7 @@ const PERSONAS = [
 
         <ul class="list-unstyled">
             {
-                PERSONAS.map((persona) => (
+                personas.map((persona) => (
                     <li>
                         <span class="tag">{persona.tag}</span>
                         <p>{persona.text}</p>
