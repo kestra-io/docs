@@ -66,6 +66,14 @@ export const vsSchema = z.object({
     seeHowTitle: z.string().optional(),
     seeHowBody: z.string().optional(),
     secondaryCta: z.object({ label: z.string(), href: z.string() }).optional(),
+    guideCta: z
+        .object({
+            eyebrow: z.string().optional(),
+            title: z.string(),
+            description: z.string(),
+            cta: z.object({ label: z.string(), href: z.string() }),
+        })
+        .optional(),
     logoFile: z.string().optional(),
     imgFile: z.string().optional(),
 })

@@ -49,8 +49,6 @@ const { videoId, title, id, class: className, ...rest } = Astro.props
             const trigger = document.querySelector<HTMLElement>(
                 `[command="show-modal"][commandfor="${dialog.id}"]`,
             )
-            const closer =
-                dialog.querySelector<HTMLElement>('[command="close"]')
             if (!container || !trigger) continue
 
             trigger.addEventListener("click", () => {
@@ -73,8 +71,6 @@ const { videoId, title, id, class: className, ...rest } = Astro.props
                 iframe.allowFullscreen = true
                 container.appendChild(iframe)
             })
-
-            closer?.addEventListener("click", () => dialog.close())
 
             dialog.addEventListener("close", () => {
                 const iframe = container.querySelector("iframe")

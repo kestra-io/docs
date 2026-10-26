@@ -61,6 +61,14 @@ const resourceSections: Record<string, Section> = {
         subtitle:
             "Orchestration as a discipline, across every domain — definitions, orchestration types, orchestration vs automation, and why fragmented orchestrators are converging into one control plane.",
     },
+    migration: {
+        metaTitle: "Migration Guides: Moving Your Orchestration to Kestra",
+        metaDescription:
+            "Step-by-step guides for migrating from legacy automation and orchestration platforms to Kestra: what stays, what moves, in what order, and when it pays back.",
+        heading: "Migration Guides",
+        subtitle:
+            "Step-by-step playbooks for moving to Kestra from a platform that is being sunset or repriced: what to keep as-is, what to rewrite, how to stage the cutover without breaking production, and how to build the business case from your own run counts and license costs.",
+    },
     whitepapers: {
         metaTitle: "Kestra Whitepapers: Orchestration Guides for Engineering Leaders",
         metaDescription:

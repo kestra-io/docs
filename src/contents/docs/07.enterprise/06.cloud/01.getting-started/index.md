@@ -121,7 +121,6 @@ In the order most active teams adopt them:
 Common first-week blockers:
 
 - Credentials not reaching a task: [Secrets](../../../06.concepts/04.secret/index.md)
-- A worker that can't reach your network: [Worker Groups](../../04.scalability/worker-group/index.md)
 - Cloud auth or OIDC trust issues: [Credentials](../../03.auth/credentials/index.md)
 
 For help, reach the team at support@kestra.io, in the [Slack community](https://kestra.io/slack), or by replying to your onboarding email.

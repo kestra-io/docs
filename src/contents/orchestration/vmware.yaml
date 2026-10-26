@@ -4,6 +4,7 @@ description: "Orchestrate vSphere from one flow: vCenter event triggers, snapsho
 tool:
   name: "VMware"
   pluginClass: "io.kestra.plugin.ee.vmware.vcenter.CreateVm"
+  category: "Infrastructure"
   color: "#00B135"
 
 hero:
@@ -16,11 +17,19 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace VMware Aria Automation (vRA/vRO) with a workflow engine that listens to vCenter events, handles snapshot-gated change with rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Drop the Broadcom-priced vRA subscription; run per-zone control planes for regulated OT."
+nutshell: "Replace VMware Aria Automation (vRA/vRO) with a workflow engine that listens to vCenter events, handles snapshot-gated change with rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Run it in any cloud, across segmented network zones, or fully air-gapped, and keep your automation independent of Broadcom's pricing."
+
+guideCta:
+  eyebrow: "Migration guide"
+  title: "Leaving vRA and vRO?"
+  description: "This page covers running VMware operations in Kestra. The vRA to Kestra migration guide covers moving your existing estate, from assessment to retiring vRA at renewal."
+  cta:
+    label: "Read the guide"
+    href: "/resources/migration/vra"
 
 pillars:
   title: "Above vCenter, around every VM operation."
-  subtitle: "What Kestra wraps around vSphere: when actions fire, what gets a snapshot first, who approves a delete, and where the audit lives. Your vCenter and ESXi hosts stay in place. The vRA/vRO catalog gets replaced."
+  subtitle: "What Kestra wraps around vSphere: when actions fire, what gets a snapshot first, who approves a delete, and where the audit lives. Your vCenter and ESXi hosts stay in place. vRO is replaced, and the catalog moves to Kestra Apps or stays in your existing portal, such as ServiceNow."
   items:
     - icon: "mdi:lightning-bolt-outline"
       title: "Event triggers on vCenter and ESXi lifecycle"
@@ -33,7 +42,7 @@ pillars:
       description: "After CloneVm finishes, the VM's IP, hostname, and UUID flow into the next task. <a href='/orchestration/ansible'>Ansible</a> joins the domain and installs agents. <a href='/orchestration/servicenow'>ServiceNow</a> gets a new CMDB record. One execution ID across the whole chain, retries scoped to the failing step."
     - icon: "mdi:shield-check-outline"
       title: "Approval gates and self-service forms in front of every destructive action"
-      description: "The Pause task suspends the flow before delete, reset, or template conversion. A Kestra App turns the operation into a typed form: dropdowns for the VM, the snapshot, the datastore, the target environment. Operators submit. RBAC controls who can launch what. Same shape replaces the vRA self-service catalog."
+      description: "The Pause task suspends the flow before delete, reset, or template conversion. A Kestra App turns the operation into a typed form: dropdowns for the VM, the snapshot, the datastore, the target environment. Operators submit. RBAC controls who can launch what. Use the same form as your self-service catalog, or call the flow from your existing portal, such as ServiceNow."
     - icon: "mdi:network-outline"
       title: "Per-zone control plane for multi-domain isolation"
       description: "Kestra runs as a <a href='/enterprise'>self-hosted control plane</a> inside each network zone, with remote workers close to the vSphere endpoint. No external connectivity, no shared control plane across regulated boundaries. One control plane per zone keeps blast radius contained."
@@ -139,7 +148,7 @@ useCases:
     - badge: "Self-service"
       badgeIcon: "mdi:account-multiple-outline"
       title: "Self-service VM operations behind a Kestra App"
-      description: "Replace the vRA service catalog with a typed form. Operators pick the template, datastore, network, and target environment from dropdowns. The same audited flow runs every time: clone, configure, register. RBAC controls who can launch what."
+      description: "Give requesters a typed form instead of a vRA catalog item, or keep the request in your existing portal, such as ServiceNow, and have it call this flow. Operators pick the template, datastore, network, and target environment from dropdowns. The same audited flow runs every time: clone, configure, register. RBAC controls who can launch what."
       flow:
         - node: "Kestra App"
           label: "typed form"
@@ -169,23 +178,19 @@ quotes: []
 
 blueprints:
   title: "Blueprints for VMware orchestration."
-  lead: "One blueprint per use case above. Copy the YAML, point it at your vCenter, ship it."
   items:
     - name: "Provision, configure, register"
       blueprintId: "vmware-provision-configure-register"
       title: "Provision from a vCenter template, configure with Ansible, register in ServiceNow"
       description: "CloneVm deploys a VM from a golden template and emits its IP and hostname. <a href='/plugins/plugin-ansible'>ansible-playbook</a> joins the domain and installs agents, with per-step retries. <a href='/plugins/plugin-servicenow'>ServiceNow.Post</a> lands a fresh CMDB record. Slack confirms when all three steps succeed."
-      href: "/blueprints/vmware-provision-configure-register"
     - name: "Snapshot-gated patching"
       blueprintId: "vmware-safe-patching"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on vCenter, runs the OS update over SSH, probes the application, and restores the snapshot if the probe fails. The snapshot ID is preserved per execution so the rollback always lands on the right state."
-      href: "/blueprints/vmware-safe-patching"
     - name: "Event-driven VM cleanup"
       blueprintId: "vm-event-based-cleanup"
       title: "Event-driven cleanup on vCenter VM removal"
       description: "Listens for VM removal events on vCenter, then runs the offboarding sequence: log the event, remove the DNS A record, delete the Active Directory computer object, and notify CrowdStrike to hide the host. Each removed VM gets its own ForEach iteration."
-      href: "/blueprints/vm-event-based-cleanup"
 comparison:
   title: "Kestra vs VMware orchestration alternatives"
   subtitle: "Kestra orchestrates around vCenter and ESXi. It replaces the vRA/vRO automation layer above them. The competitors below are the cloud automation platforms VMware admins actually evaluate."
@@ -236,7 +241,7 @@ comparison:
     - feature: "Licensing model"
       kestra: "Instance + worker-based"
       values:
-        - "Per-VM + per-user (Broadcom)"
+        - "Per core, inside VMware Cloud Foundation"
         - "Per-workload"
         - "Free (build minutes for cloud)"
     - feature: "Orchestrate beyond VMware"
@@ -258,7 +263,9 @@ faq:
   - question: "Does Kestra replace VMware vCenter and ESXi?"
     answer: "No. vCenter and ESXi continue to run your VMs. Kestra calls the vCenter and ESXi APIs through the <a href='/plugins/plugin-ee-vmware'>VMware plugin</a> to run the operations you used to script: CloneVm, CreateVmSnapshot, RestoreVmFromSnapshot, UpdateVm, and so on. The hypervisor stays where it is. Kestra orchestrates the workflow around it."
   - question: "What about vRealize Automation (vRA) and vRealize Orchestrator (vRO)?"
-    answer: "vRA and vRO (now bundled as VMware Aria Automation) sit above vCenter as the automation and self-service layer. That is the layer Kestra replaces. The vRA service catalog becomes Kestra Apps with typed inputs and RBAC. vRO actions (JavaScript, PowerShell, or Python) become Kestra YAML flows that can still call the same scripts. vCenter and ESXi stay where they are."
+    answer: "vRA and vRO (now bundled as VMware Aria Automation) sit above vCenter as the automation and self-service layer. That is the layer Kestra replaces. The catalog can move to <a href='/docs/enterprise/scalability/apps'>Kestra Apps</a> with typed inputs and RBAC, or stay in your existing portal, such as ServiceNow, with each item calling a Kestra flow. vRO actions (JavaScript, PowerShell, or Python) become Kestra YAML flows that can still call the same scripts. vCenter and ESXi stay where they are."
+  - question: "How do I plan a migration off vRA and vRO?"
+    answer: "Start with an inventory of what you run today. The <a href='/resources/migration/vra'>vRA to Kestra migration guide</a> covers four stages: assess the estate and decide what stays, prove the pattern on two or three real workflows, migrate one pattern group at a time with vRA still running, and retire vRA at renewal. It includes a payback calculator for your own numbers."
   - question: "Does the plugin work with both vCenter-managed clusters and standalone ESXi hosts?"
     answer: "Yes. The plugin ships two task groups: io.kestra.plugin.ee.vmware.vcenter.* for vCenter-managed environments, and io.kestra.plugin.ee.vmware.esxi.* for standalone ESXi hosts. The task names match (CreateVm, StartVm, CreateVmSnapshot, RestoreVmFromSnapshot, and so on), so the same flow shape works against either endpoint. Template and clone operations are vCenter-only."
   - question: "How do the vCenter and ESXi event triggers actually work?"
@@ -292,6 +299,10 @@ resources:
       title: "VMware plugin reference"
       description: "Every vCenter and ESXi task, every event type, every parameter, with copy-ready YAML examples."
       href: "/plugins/plugin-ee-vmware"
+    - kind: "how-to"
+      title: "Migrating off VMware vRA and vRO"
+      description: "Four stages from assessing your estate to retiring vRA at renewal, with a payback calculator."
+      href: "/resources/migration/vra"
 
 seeHow:
   title: "Ready to orchestrate VMware without the legacy automation layer?"

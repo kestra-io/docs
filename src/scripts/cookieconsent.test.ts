@@ -318,6 +318,43 @@ describe("cookieconsent — non-Europe", () => {
     })
 })
 
+// GTM's GA4 page_view fires on content-view, so the landing page-view must not
+// wait on /config (which only feeds PostHog and identify): a slow, hung or
+// failed /config would otherwise drop the visit's landing page and source.
+describe("cookieconsent — landing page-view does not wait on /config", () => {
+    const hangConfig = () => fetchApi.mockImplementationOnce(() => new Promise(() => {}))
+
+    it("pushes content-view before /config resolves (non-Europe)", async () => {
+        hangConfig()
+        setTimezone("America/New_York")
+        await loadModule()
+        await firePageLoad()
+        expect(fetchApi).toHaveBeenCalled()
+        expect(posthogInit).not.toHaveBeenCalled()
+        expect(window.dataLayer.some((e: any) => e?.event === "content-view")).toBe(true)
+    })
+
+    it("pushes content-view before /config resolves when the user accepts analytics (Europe)", async () => {
+        hangConfig()
+        setTimezone("Europe/Paris")
+        await loadModule()
+        await firePageLoad()
+        const { onConsent } = runCookieConsent.mock.calls[0][0]
+        await onConsent({ cookie: { categories: ["analytics"] } })
+        expect(posthogInit).not.toHaveBeenCalled()
+        expect(window.dataLayer.some((e: any) => e?.event === "content-view")).toBe(true)
+    })
+
+    it("still pushes exactly one content-view on the landing page once /config resolves", async () => {
+        setTimezone("America/New_York")
+        await loadModule()
+        await firePageLoad()
+        await new Promise((resolve) => setTimeout(resolve, 0))
+        expect(posthogInit).toHaveBeenCalled()
+        expect(window.dataLayer.filter((e: any) => e?.event === "content-view")).toHaveLength(1)
+    })
+})
+
 describe("cookieconsent — region attribute takes precedence over Intl timezone", () => {
     it("treats the visitor as Europe when the attribute says eu, even with a non-EU timezone", async () => {
         setTimezone("America/New_York")

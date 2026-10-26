@@ -106,6 +106,8 @@ One of its key features is the inclusion of Robotic Process Automation (RPA) cap
 
 Pipedream is built from the ground up for developers. It provides a serverless platform where you can connect APIs and build event-driven workflows using code (Node.js, Python, Go, and Bash). While it offers a visual representation of the workflow, the core logic is written in code, giving developers full control and flexibility.
 
+> **Pipedream Workflows is shutting down.** It stops on March 31, 2027 and is closed to new signups. If your workflows run on it today, the [Pipedream migration guide](/resources/migration/pipedream) covers the export, the move and the cutover.
+
 It features a massive library of pre-built triggers and actions for popular APIs, which can be easily customized. Pipedream's serverless architecture means you don't have to manage any infrastructure, and its generous free tier makes it accessible for individual developers and small projects.
 
 **Best for:** Developers and technical teams building custom API integrations and event-driven serverless workflows who want full control over the code. It is an excellent choice for those looking for developer-focused [Pipedream alternatives](/resources/infrastructure/pipedream-alternatives).
