@@ -34,7 +34,7 @@ Instead of filing a ticket with an operations team and waiting for manual fulfil
 
 ### Why you need self-service infrastructure
 
-Implementing a self-service model offers significant advantages for developers, operations teams, and the business as a whole. It’s a direct way to [solve orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) that arise from manual handoffs and fragmented tooling.
+Implementing a self-service model offers significant advantages for developers, operations teams, and the business as a whole. It’s a direct way to [solve orchestration problems](https://kestra.io/resources/orchestration) that arise from manual handoffs and fragmented tooling.
 
 **For Developers:**
 *   **Increased Velocity:** No more waiting for infrastructure. Developers get the resources they need in minutes, not days, accelerating development and testing cycles.

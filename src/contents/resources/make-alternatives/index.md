@@ -30,7 +30,7 @@ While Make.com's visual interface is a significant strength for straightforward 
 
 ### Scaling beyond visual workflows for complex logic
 
-Visual, drag-and-drop interfaces are excellent for rapid prototyping and simple connections. They can become a bottleneck, though, when managing dozens or hundreds of complex, mission-critical workflows. Version control, collaborative development, and automated testing become difficult when the workflow logic is locked inside a GUI. A change made in the UI can be hard to review in a pull request, and rolling back to a previous version is not as straightforward as a `git revert`. This leads teams to look for platforms where workflows are defined as code or declarative configuration, which addresses the [complexities of modern orchestration](/resources/infrastructure/orchestration-problems-complexity).
+Visual, drag-and-drop interfaces are excellent for rapid prototyping and simple connections. They can become a bottleneck, though, when managing dozens or hundreds of complex, mission-critical workflows. Version control, collaborative development, and automated testing become difficult when the workflow logic is locked inside a GUI. A change made in the UI can be hard to review in a pull request, and rolling back to a previous version is not as straightforward as a `git revert`. This leads teams to look for platforms where workflows are defined as code or declarative configuration, which addresses the [complexities of modern orchestration](/resources/orchestration).
 
 ### The push for open-source and self-hosted flexibility
 

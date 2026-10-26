@@ -79,7 +79,7 @@ The decision between dbt Core and dbt Cloud hinges on several key trade-offs. Le
 
 This is the central question. With **dbt Core**, your team is responsible for the entire stack surrounding the tool. You must provision servers or containers, install Python and dbt, configure CI/CD pipelines, and set up and maintain a separate orchestration tool. This approach treats dbt as a component in a larger, self-managed stack, often defined using [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code) principles.
 
-With **dbt Cloud**, dbt Labs manages the application layer—the IDE, scheduler, and metadata services. Your team is still responsible for managing access to your data warehouse, but you offload the complexity of running and maintaining the dbt application itself. This model helps teams [reduce orchestration complexity](/resources/infrastructure/orchestration-problems-complexity) for their transformation layer.
+With **dbt Cloud**, dbt Labs manages the application layer—the IDE, scheduler, and metadata services. Your team is still responsible for managing access to your data warehouse, but you offload the complexity of running and maintaining the dbt application itself. This model helps teams [reduce orchestration complexity](/resources/orchestration) for their transformation layer.
 
 ## When to Choose Which dbt Solution
 

@@ -183,7 +183,7 @@ Implementing a Multi-Agent System offers significant benefits, particularly for 
 
 Despite the advantages, building and deploying MAS is not without its difficulties.
 
-*   **Coordination Overhead:** Designing effective and efficient communication and coordination protocols can be extremely complex. Poorly designed interactions can lead to system-wide deadlocks, conflicts, or inefficient resource usage. The need to manage these interactions is one of the core [orchestration problems that platforms aim to solve](/resources/infrastructure/orchestration-problems-complexity).
+*   **Coordination Overhead:** Designing effective and efficient communication and coordination protocols can be extremely complex. Poorly designed interactions can lead to system-wide deadlocks, conflicts, or inefficient resource usage. The need to manage these interactions is one of the core [orchestration problems that platforms aim to solve](/resources/orchestration).
 *   **Security:** In open systems where agents may be owned by different entities, security is a major concern. Malicious agents could disrupt the system, provide false information, or attempt to exploit other agents.
 *   **Emergent Behavior:** The global behavior of a MAS can be difficult to predict from the rules of its individual agents. While this can lead to innovative solutions, it can also result in unexpected and undesirable outcomes that are hard to debug.
 *   **Ethical Considerations:** As agents become more autonomous, questions of accountability and responsibility arise. Who is responsible if a MAS makes a harmful decision? How can we ensure that agents act in accordance with ethical principles and avoid bias?

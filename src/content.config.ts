@@ -234,6 +234,9 @@ export const collections = {
                 href: z.string().optional(),
                 sectionIds: z.boolean().optional(),
                 resourceCta: z.boolean().optional(),
+                // Emits `noindex, follow` and keeps the page out of the
+                // sitemap; the page stays reachable for readers and links.
+                noindex: z.boolean().optional(),
                 // Replaces Get Started in the injected CTA pair (Book a Demo
                 // stays secondary). Taglines fall back to the tag defaults.
                 resourceCtaOverride: z

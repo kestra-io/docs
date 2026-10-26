@@ -49,7 +49,7 @@ Vendor lock-in can appear in any domain, but it's particularly damaging in orche
 *   **Infrastructure Automation:** Using a vendor-specific configuration management or IaC tool as your orchestrator can lock your automation logic to that vendor's APIs and formats.
 *   **AI/ML Pipelines:** AI workflows often involve a chain of specialized tools for data prep, model training, and deployment. If the orchestrator is tied to one cloud's AI suite, you lose the flexibility to use different models or MLOps tools from other providers.
 
-These [orchestration problems](/resources/infrastructure/orchestration-problems-complexity) create a ripple effect, where a decision made for one workflow constrains the entire technical stack.
+These [orchestration problems](/resources/orchestration) create a ripple effect, where a decision made for one workflow constrains the entire technical stack.
 
 ## Why a Flexible Orchestration Layer is Critical
 

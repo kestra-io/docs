@@ -112,7 +112,7 @@ With your assessment and goals in hand, you can build a detailed roadmap. This s
 - **Timeline**: Set realistic timelines with key milestones.
 - **Rollback Plan**: Define a clear plan for reverting to the legacy system if a critical issue arises during cutover.
 
-This planning phase is essential to [solve orchestration problems](https://kestra.io/resources/infrastructure/orchestration-problems-complexity) without introducing new ones.
+This planning phase is essential to [solve orchestration problems](https://kestra.io/resources/orchestration) without introducing new ones.
 
 ## Best practices for data migration from legacy systems
 

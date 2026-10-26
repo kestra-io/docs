@@ -1,0 +1,2 @@
+- regexp: "^/resources/infrastructure/orchestration-problems-complexity/?$"
+  to: "/resources/orchestration"

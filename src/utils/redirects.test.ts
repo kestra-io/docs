@@ -14,6 +14,7 @@ const loadRules = (file: string): RedirectRule[] =>
 const docsRules = loadRules("docs")
 const blogsRules = loadRules("blogs")
 const indexRules = loadRules("index")
+const resourcesRules = loadRules("resources")
 
 describe("docs redirects", () => {
     // Every case below was a live 404 or a multi-hop chain ending in one.
@@ -121,5 +122,19 @@ describe("index redirects", () => {
         ["/blogss.md"],
     ])("%s resolves to null", (from) => {
         expect(resolveRedirect(from, indexRules)).toBeNull()
+    })
+})
+
+describe("resources redirects", () => {
+    it.each([
+        ["/resources/infrastructure/orchestration-problems-complexity", "/resources/orchestration"],
+        ["/resources/infrastructure/orchestration-problems-complexity/", "/resources/orchestration"],
+    ])("%s resolves to %s", (from, to) => {
+        expect(resolveRedirect(from, resourcesRules)).toBe(to)
+    })
+
+    it("leaves live resource pages alone", () => {
+        expect(resolveRedirect("/resources/orchestration", resourcesRules)).toBeNull()
+        expect(resolveRedirect("/resources/infrastructure/infrastructure-orchestration", resourcesRules)).toBeNull()
     })
 })
