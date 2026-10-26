@@ -1,0 +1,426 @@
+---
+import Layout from "~/components/layout.astro"
+
+import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
+import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
+import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
+import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
+import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
+import Features from "~/components/lp/workflow-orchestration/Features.astro"
+import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
+import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
+import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
+import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
+import Translation from "~/components/lp/vra-migration/Translation.astro"
+import Proof from "~/components/lp/vra-migration/Proof.astro"
+
+import SelfServiceIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
+import DayTwoIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
+import DecommissioningIcon from "~/components/lp/vra-migration/assets/automate-decommissioning.svg"
+import IntegrationsIcon from "~/components/lp/vra-migration/assets/automate-integrations.svg"
+
+/* Paid traffic only: the generic infrastructure-automation campaign lands
+ * here, ad groups told apart by utm_content. The organic page for the topic
+ * is /infra-automation. */
+const title = "Infrastructure automation, governed from one control plane"
+const description =
+    "Kestra runs your Terraform, Ansible and scripts as governed workflows: self-service with approvals, every run audited, on your own infrastructure."
+
+/** HubSpot records this as the page the lead converted on. */
+const routePath = "/lp/infra-automation"
+
+/* Same HubSpot form as /lp/workflow-orchestration; only the button reads
+ * differently. */
+const formProps = { submitLabel: "Book a 30-minute call" }
+
+const reasons = [
+    {
+        kicker: "Keep your tools",
+        title: "Ansible, Terraform, Bash and PowerShell stay.",
+        body: "Kestra runs them as they are and adds what cron jobs and systemd timers never had: ordering, retries, alerts, and one place to see every run.",
+        icon: "mdi:toolbox-outline",
+    },
+    {
+        kicker: "Self-service",
+        title: "Self-service, with guardrails.",
+        body: "Other teams launch what they need from a form, behind an approval when it touches production. Roles decide who can run what, and the tickets stop queuing on your desk.",
+        icon: "mdi:account-check-outline",
+    },
+    {
+        kicker: "Any network",
+        title: "Reach on-prem, isolated and air-gapped networks.",
+        body: "Workers sit inside each network, next to the systems they touch, and connect back to one control plane. Self-hosted, with your own secret manager.",
+        icon: "mdi:server-security",
+    },
+]
+
+const steps = [
+    {
+        number: "01",
+        title: "Start with one runbook",
+        body: "Pick one your team still runs by hand. Your playbook or script runs as it is, now with retries, alerts and a log.",
+        wash: "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+    {
+        number: "02",
+        title: "Open it to your teams",
+        body: "Put a form and an approval in front of it, so the people who used to file a ticket run it themselves.",
+        wash: "radial-gradient(150% 170% at -20% 140%, rgba(99, 27, 255, 1) 0%, rgba(24, 227, 61, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+    {
+        number: "03",
+        title: "Retire the sprawl",
+        body: "Move the cron jobs and the scheduler jobs across team by team, then switch off what they replaced.",
+        wash: "radial-gradient(130% 150% at -30% -30%, rgba(99, 27, 255, 1) 0%, rgba(24, 166, 227, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+]
+
+const rows = [
+    {
+        from: "Cron jobs and systemd timers on scattered servers",
+        to: "Schedule triggers, with the scripts run as they are in Bash, Python or PowerShell tasks",
+    },
+    {
+        from: "AWX or Ansible Tower job templates",
+        to: "Flows that run your playbooks and inventories unchanged, Execution Environments included",
+    },
+    {
+        from: "terraform apply from a laptop or a CI job",
+        to: "Terraform or OpenTofu tasks: plan, approval, then apply, against the state backend you already use",
+    },
+    {
+        from: "A ticket someone actions by hand",
+        to: "The ticket triggers the flow, and the flow updates and closes it",
+    },
+    {
+        from: "Approvals over email or chat",
+        to: "An approval step in the flow, recorded in the audit log",
+    },
+    {
+        from: "Rundeck or Jenkins jobs stored in a database",
+        to: "Flows as YAML in Git, with typed inputs, retries and access per namespace",
+    },
+    {
+        from: "Credentials in scripts and env files",
+        to: "Your secret manager, referenced by name",
+    },
+    {
+        from: "A spreadsheet of what was provisioned",
+        to: "Kestra Assets, the inventory your flows keep up to date, or the CMDB you already run",
+    },
+]
+
+const proofCases = [
+    {
+        status: "Heavy industry · IT and OT",
+        title: "Fortune 500 manufacturer, off VMware Aria Automation",
+        stats: [
+            { value: "6 months → 6 days", label: "to deliver" },
+            { value: "–90%", label: "licensing cost vs Aria Automation" },
+            { value: "4 + 1", label: "isolated platforms, for OT and IT" },
+        ],
+        body: "Catalog, request forms, orchestration and the vCenter integration moved to Kestra. Ansible and ServiceNow stayed.",
+    },
+    {
+        status: "Telecom · Environments as a service",
+        title: "Global telecom software vendor, environments on request",
+        stats: [
+            { value: "Days → hours", label: "environment delivery" },
+            { value: "2 months", label: "from evaluation to production" },
+            { value: "Validated", label: "test-ready on delivery" },
+        ],
+        body: "Provisioning, deployment and automated validation run as one flow, triggered by the team that needs the environment.",
+    },
+    {
+        status: "Software for banking and insurance",
+        title: "European software provider, self-service in regulated zones",
+        stats: [
+            { value: "100%", label: "of automation runs auditable" },
+            { value: "0", label: "uncontrolled access" },
+            { value: "3", label: "regulated environments, isolated" },
+        ],
+        body: "Terraform modules, CI jobs and scripts kept as they were, wrapped in role-based execution with least privilege per zone and a run history auditors can inspect.",
+    },
+]
+
+const features = [
+    {
+        icon: "mdi:shield-lock-outline",
+        title: "Security & Compliance",
+        body: "SSO and SCIM, role-based access down to who can launch, edit or read logs, your own secret manager, and a full audit log, on infrastructure you control, air-gapped included.",
+    },
+    {
+        icon: "mdi:hexagon-outline",
+        title: "Governance & Change control",
+        body: "Policies checked at save and at run time, approval steps, flows versioned in Git and promoted between environments, and failed runs tracked as cases until they are resolved.",
+    },
+    {
+        icon: "mdi:view-grid-outline",
+        title: "Reach & Scale",
+        body: "Worker groups inside isolated networks and regions, VM task runners with no SSH to open, high availability, and unlimited executions on Docker, Kubernetes or a single VM.",
+    },
+]
+
+const automations = [
+    {
+        Glyph: SelfServiceIcon,
+        title: "Provisioning and self-service",
+        items: [
+            "Request form in Kestra Apps or your ITSM portal",
+            "Approval before the build",
+            "VMs, clusters and networks with Terraform, OpenTofu or Ansible",
+            "IP, DNS and directory entries registered on the way",
+        ],
+    },
+    {
+        Glyph: DayTwoIcon,
+        title: "Day-2 operations",
+        items: [
+            "Patching windows",
+            "Scheduled shutdown and startup",
+            "Certificate rotation",
+            "Backups and restore tests",
+            "Config drift checks",
+        ],
+    },
+    {
+        Glyph: DecommissioningIcon,
+        title: "Decommissioning",
+        items: [
+            "Tear down the resources",
+            "Clean up DNS, IPAM and the directory",
+            "Update the CMDB and close the ticket",
+        ],
+    },
+    {
+        Glyph: IntegrationsIcon,
+        title: "Integrations",
+        items: [
+            "Terraform, OpenTofu and Ansible",
+            "AWS, Azure and GCP",
+            "vSphere, Nutanix and Proxmox",
+            "Kubernetes, Helm and Argo CD",
+            "ServiceNow, Infoblox and NetBox",
+        ],
+    },
+]
+
+const ctaBullets = [
+    {
+        text: "We go through the runbooks and requests your team handles today.",
+        strong: true,
+    },
+    {
+        text: "See one of them run in Kestra, with its approval and its audit trail.",
+        strong: false,
+    },
+    {
+        text: "Leave with a plan for what to move first, and what to retire.",
+        strong: false,
+    },
+]
+
+const faqItems = [
+    {
+        question: "Does Kestra replace Terraform or Ansible?",
+        answer: "No. Kestra orchestrates them. Your modules and playbooks run as they are, through the Terraform, OpenTofu and Ansible plugins or a plain shell task, and Kestra adds what sits around them: the order of steps, inputs, approvals, retries, alerts and the audit trail.",
+    },
+    {
+        question: "We run AWX or Ansible Tower. What does moving look like?",
+        answer: "Playbooks, roles and inventories stay as they are. Each job template becomes a flow that runs ansible-playbook, or Ansible Runner with the containerized Execution Environments you already build. Surveys become typed inputs or a form, schedules become triggers, and workflow templates become flows that chain playbooks with Terraform, tickets and approvals. Both run side by side while you move templates across.",
+    },
+    {
+        question: "How is this different from Rundeck, AWX or Jenkins?",
+        answer: "Each of those covers one slice: running jobs, running playbooks, or building code. Kestra puts provisioning, configuration, ticketing and approvals in one declarative flow, versioned in Git, with self-service forms for the people who request the work and one audit trail across all of it. Teams usually start by calling their existing jobs from Kestra and move them across at their own pace.",
+    },
+    {
+        question:
+            "How do jobs reach servers in isolated networks, without opening SSH everywhere?",
+        answer: "Install a worker inside each network. Workers connect out to the control plane, and each task is routed to the worker group that can reach its target, so one Kestra instance drives every zone. On AWS, Azure and Google Cloud, VM task runners run commands on the instance through the provider's own APIs, with no SSH to open.",
+    },
+    {
+        question: "How do we promote flows from dev to test to production?",
+        answer: "Flows are YAML files, so they follow your Git workflow: review in a pull request, then sync to each environment. Teams that build in the UI can promote a flow from one instance to the next with a diff and a confirmation gate for production.",
+    },
+    {
+        question: "Can people outside the platform team run automation safely?",
+        answer: "Yes. Kestra Apps turn a flow into a form, typed inputs limit what can be entered, and role-based access decides who can launch what. An approval step can sit in front of anything that changes production.",
+    },
+    {
+        question: "Can ServiceNow stay the front door?",
+        answer: "Yes. A catalog request can start a flow through a webhook or the ServiceNow plugin, and the flow updates and closes the ticket when it finishes. Requesters keep the portal they know.",
+    },
+    {
+        question:
+            "Can it run fully self-hosted, on-prem, or air-gapped, with our data never leaving our network?",
+        answer: "Yes. Self-hosted is a first-class deployment rather than a workaround. Workers run inside your VPC or on-prem, you bring your own secret manager, and Kestra holds no access to your data. Worker Groups let one control plane reach physically isolated networks, and licensing works offline so a fully air-gapped install is supported.",
+    },
+    {
+        question:
+            "Does it support SSO/SAML, RBAC, audit logs, and multi-tenant isolation?",
+        answer: "Yes, all four. Fine-grained role-based access control, SSO and SCIM, full audit logs, and native multi-tenancy where namespace isolation lets dozens of teams run on one deployment.",
+    },
+    {
+        question: "Do we need Kubernetes?",
+        answer: "No. Kestra runs on a single VM with Docker if that's what you have. Kubernetes is supported and common at scale, and it is not a requirement to start or to run in production.",
+    },
+    {
+        question: "How is Kestra priced?",
+        answer: "Kestra does not price per execution. The model scales with how broadly the platform is deployed rather than how often your workflows run, so adding volume does not change the bill. Enterprise pricing depends on deployment scope and support tier, and we walk through it on the call.",
+    },
+]
+---
+
+<Layout {title} {description} noindex bareChrome forceTheme="light">
+    <div class="lp-workflow-orchestration">
+        <LpHeader />
+        <Hero
+            {routePath}
+            {formProps}
+            formTitle="Bring the runbook that pages you at night."
+            companies={[
+                "bundesagentur",
+                "itzbund",
+                "jpmorgan",
+                "t-system",
+                "amdocs",
+                "fila",
+                "bloomberg",
+                "xiaomi",
+                "apple",
+            ]}
+        >
+            <Fragment slot="title">
+                <span class="grad grad-a">Infrastructure automation</span>,
+                governed from <span class="grad grad-b">one control plane</span
+                >.
+            </Fragment>
+            <Fragment slot="lead">
+                Your Ansible, Terraform and scripts, today spread across cron
+                jobs, timers and ticket queues, run as governed workflows in one
+                place: self-service with guardrails, every run logged and
+                audited.<br />
+                <strong
+                    >Keep your tools. Run it on your own infrastructure,
+                    air-gapped included.</strong
+                >
+            </Fragment>
+            <Fragment slot="form-sub">
+                We look at your stack and show it running in Kestra in a
+                30-minute call.
+            </Fragment>
+        </Hero>
+        <script is:inline>
+            /* Echo the searched intent in the headline. The campaign's final
+             * URL suffix passes the keyword as utm_term; the term is only
+             * matched against, never written, and without a match the static
+             * headline above stays. */
+            ;(() => {
+                const term = (
+                    new URLSearchParams(location.search).get("utm_term") || ""
+                ).toLowerCase()
+                const h1 = document.querySelector(".lp-hero h1")
+                if (!term || !h1) return
+                /* Clone a server-rendered span so the scoped gradient styles,
+                 * keyed on Astro's data-astro-cid attribute, still apply. */
+                const span = (variant, text) => {
+                    const el = h1.querySelector(".grad").cloneNode(false)
+                    el.className = `grad grad-${variant}`
+                    el.textContent = text
+                    return el.outerHTML
+                }
+                const a = (text) => span("a", text)
+                const b = (text) => span("b", text)
+                if (/alternative|replace/.test(term)) {
+                    const tool = /rundeck/.test(term)
+                        ? "Rundeck"
+                        : /awx/.test(term)
+                          ? "AWX"
+                          : /tower|ansible/.test(term)
+                            ? "Ansible Tower"
+                            : null
+                    if (tool) {
+                        h1.innerHTML = `The ${a(tool)} ${b("alternative")} that runs on your own infrastructure.`
+                        return
+                    }
+                }
+                if (/runbook/.test(term)) {
+                    h1.innerHTML = `${a("Runbook automation")} with approvals and ${b("an audit trail")}.`
+                } else if (/orchestrat/.test(term)) {
+                    h1.innerHTML = `${a("Infrastructure orchestration")} from ${b("one control plane")}.`
+                } else if (/terraform|opentofu/.test(term)) {
+                    h1.innerHTML = `Run ${a("Terraform")} with approvals, from ${b("one control plane")}.`
+                }
+            })()
+        </script>
+        <Platform
+            heading="Get every automation together in one place"
+            cards={reasons}
+        />
+        <Translation
+            heading="What your current automation becomes in Kestra"
+            sub="Nothing is rewritten up front. Each piece moves when it's ready."
+            fromLabel="Today"
+            {rows}
+        />
+        <Migration
+            heading="From scripts and tickets to governed workflows"
+            sub="Kestra runs alongside your current tools for as long as you need them."
+            {steps}
+        />
+        <Proof
+            heading="Infrastructure teams running on Kestra"
+            sub="Results from production deployments."
+            cases={proofCases}
+        />
+        <Features heading="Built for production infrastructure" {features} />
+        <Stack
+            heading="What infrastructure teams automate with Kestra"
+            sub="From the first request to the last cleanup, across on-prem and cloud."
+            columns={automations}
+            glyphSize={72}
+        />
+        <UseCases
+            {routePath}
+            headingLines={["See it on your", "own runbooks"]}
+            bullets={ctaBullets}
+            {formProps}
+        />
+        <Faq items={faqItems} />
+        <ClosingBanner
+            heading="Bring your messiest runbook"
+            sub="We'll show you what it looks like as a governed workflow."
+            cta={{ text: "Book a call", href: "#contact-sales" }}
+        />
+        <LpFooter />
+    </div>
+</Layout>
+
+<style lang="scss">
+    /* Same pinned palette as /lp/workflow-orchestration: the wrapper class is
+     * shared on purpose, so this page inherits its section components' tokens.
+     * Keep the lists identical. */
+    .lp-workflow-orchestration {
+        --lp-purple: #631bff;
+        --lp-purple-light: #f1efff;
+        --lp-purple-rail: #cdc5ff;
+        --lp-shadow-light: #3952f21a;
+        --lp-bg-dark: #111115;
+        --lp-purple-mid: #9869f7;
+        --lp-content-on-card: #3b3a41;
+        --lp-bg-base: #f7f7f8;
+        --lp-content-primary: #08090a;
+        --lp-content-secondary: #5f5f7c;
+        --lp-content-muted: #7e7e9b;
+        --lp-content-dark-secondary: #adadbf;
+        --lp-border: #d0d0da;
+        --lp-border-subtle: #e9e9ee;
+
+        background-color: #ffffff;
+        overflow-x: clip;
+    }
+
+    :global(html) {
+        --top-bar-height: 80px;
+    }
+</style>
