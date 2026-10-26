@@ -347,7 +347,7 @@ The `agentConfig` property accepts inline YAML (as above), a relative path to an
 Docker Agent prints a startup banner to stderr. Kestra captures stderr as ERROR-level log entries, so those lines appear red in the execution logs even when the task succeeds. The agent's actual output appears at INFO level.
 :::
 
-For all properties and outputs, see the [Docker Agent plugin reference](/plugins/plugin-docker/cli/agent).
+For all properties and outputs, see the [Docker Agent plugin reference](/plugins/plugin-docker/docker-cli/io.kestra.plugin.docker.cli.agent).
 
 ## Execution details
 
