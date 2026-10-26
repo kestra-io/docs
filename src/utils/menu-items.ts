@@ -205,7 +205,7 @@ export const menuItems: MenuItems = {
             {
                 icon: HandshakeOutline,
                 title: "Partners",
-                link: "/partners"
+                link: "/partners/find"
             },
             {
                 icon: EmailOutline,
