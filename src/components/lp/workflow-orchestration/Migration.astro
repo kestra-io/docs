@@ -1,5 +1,12 @@
 ---
-const steps = [
+interface Props {
+    heading?: string
+    sub?: string
+    /** Any count: the grid and the rail size themselves to it. */
+    steps?: { number: string; title: string; body: string; wash: string }[]
+}
+
+const defaultSteps = [
     {
         number: "01",
         title: "Run your first workflow",
@@ -20,18 +27,21 @@ const steps = [
         wash: "radial-gradient(130% 150% at -30% -30%, rgba(99, 27, 255, 1) 0%, rgba(24, 166, 227, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
     },
 ]
+
+const {
+    heading = "Replace your Legacy Scheduler",
+    sub = "Kestra runs alongside your current tools for as long as you need them.",
+    steps = defaultSteps,
+} = Astro.props
 ---
 
 <section class="migration">
     <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
-        <h2>Replace your Legacy Scheduler</h2>
-        <p>
-            Kestra runs alongside your current tools for as long as you need
-            them.
-        </p>
+        <h2>{heading}</h2>
+        <p>{sub}</p>
     </div>
 
-    <div class="steps">
+    <div class="steps" style={`--steps: ${steps.length}`}>
         {
             steps.map((step, index) => (
                 <article
@@ -93,14 +103,14 @@ const steps = [
         max-width: 1220px;
         margin-inline: auto;
         @include media-breakpoint-up(md) {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(var(--steps, 3), 1fr);
             gap: var(--steps-gap);
         }
     }
 
-    /* Dashed rail linking the three badges, behind them. Each badge is centred
-     * in its grid column, so the rail runs column-1 centre to column-3 centre —
-     * i.e. half a column in from each edge. */
+    /* Dashed rail linking the badges, behind them. Each badge is centred in
+     * its grid column, so the rail runs first-column centre to last-column
+     * centre — i.e. half a column in from each edge. */
     .steps::before {
         content: "";
         display: none;
@@ -108,8 +118,12 @@ const steps = [
             display: block;
             position: absolute;
             top: calc(1.5rem + var(--numero-size) / 2);
-            left: calc((100% - 2 * var(--steps-gap)) / 6);
-            width: calc(100% - (100% - 2 * var(--steps-gap)) / 3);
+            --column: calc(
+                (100% - (var(--steps, 3) - 1) * var(--steps-gap)) /
+                    var(--steps, 3)
+            );
+            left: calc(var(--column) / 2);
+            width: calc(100% - var(--column));
             border-top: 1px dashed var(--lp-purple-rail);
         }
     }

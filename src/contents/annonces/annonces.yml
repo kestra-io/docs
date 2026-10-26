@@ -1,5 +1,15 @@
+- id: 3
+  tag: "🎉 30k stars"
+  linkText: "Kestra just crossed 30,000 GitHub stars, thank you."
+  tail: "Star us on GitHub"
+  href: "https://github.com/kestra-io/kestra"
 - id: 1
   tag: "Kestra Academy"
   linkText: "Become Kestra Certified:"
   tail: "Infrastructure Automation, AI Workflows and Data Pipelines courses"
   href: "https://academy.kestra.io/"
+- id: 2
+  tag: "VMware migration"
+  linkText: "Leaving vRA?"
+  tail: "Get the migration guide and plan your move off Aria Automation in waves"
+  href: "/lp/vra-migration"

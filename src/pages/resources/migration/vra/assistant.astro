@@ -1,0 +1,133 @@
+---
+import Layout from "~/components/layout.astro"
+import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
+import HeroActions from "~/components/vra-migration-guide/assistant/HeroActions.astro"
+import HeroVisual from "~/components/vra-migration-guide/assistant/HeroVisual.astro"
+import WhatItDoes from "~/components/vra-migration-guide/assistant/WhatItDoes.astro"
+import HowItWorks from "~/components/vra-migration-guide/assistant/HowItWorks.astro"
+import SecurityPosture from "~/components/vra-migration-guide/assistant/SecurityPosture.astro"
+import ExampleUseCase from "~/components/vra-migration-guide/assistant/ExampleUseCase.astro"
+import GetItCards from "~/components/vra-migration-guide/assistant/GetItCards.astro"
+import NextSteps from "~/components/vra-migration-guide/assistant/NextSteps.astro"
+import {
+    GUIDE_HREF,
+    WEBINAR_HREF,
+} from "~/components/vra-migration-guide/assistant/links"
+import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import {
+    HELP_DIALOG_ID,
+    HELP_REQUEST,
+} from "~/components/vra-migration-guide/download"
+
+const faqItems = [
+    {
+        question: "Does it convert vRO workflows to Kestra?",
+        answer: "The open-source tool assesses and plans. It reads the exports and writes the brief, including whether each workflow converts directly or needs a redesign and which Kestra plugins it would use. Conversion, tests and verification are done with Kestra, starting from the final brief.",
+    },
+    {
+        question: "What leaves my network?",
+        answer: "Only the calls to the model you configure. The tool sends nothing to Kestra, has no telemetry and doesn't check for updates. If your policy doesn't allow workflow content to reach an external model, point it at one you host, or run it without a model.",
+    },
+    {
+        question: "Which models does it work with?",
+        answer: "It uses one model for everything, connected through a Claude Code login, an Anthropic API key, or any OpenAI-compatible endpoint, including Azure OpenAI and Amazon Bedrock through a proxy. The default is Claude Opus 5.5 (claude-opus-5-5), and the README lists the models we've tested. Keys never go in the config file.",
+    },
+    {
+        question: "Do I need the vRA export?",
+        answer: "The vRO package is the only required input. The vRA export lets the brief see the catalog items, cloud templates and event subscriptions that start your workflows, so the plan covers replacing vRA as well as vRO.",
+    },
+    {
+        question: "Does it run in an air-gapped environment?",
+        answer: "Yes. The Kestra plugin catalog ships with each release, so the only network call is to the model, and that can be one you host behind an OpenAI-compatible endpoint. Without a model, it still writes a brief from what the code shows (the inventory, the call graph, the vRA entry points, the systems and the plugin coverage).",
+    },
+    {
+        question: "What does it cost?",
+        answer: "The tool is free. Model calls are billed by your provider, and a rerun after answering costs less than the first run, since only what changed goes back to the model.",
+    },
+]
+---
+
+<Layout
+    title="VMware vRA and vRO Migration Tool | Kestra"
+    description="The Kestra Migration Assistant is a free, open-source tool that assesses your VMware vRA and vRO workflows on your machine and plans the migration to Kestra."
+    breadcrumbTitle="Kestra Migration Assistant for vRA"
+    headerTheme="lightText"
+    banner={{
+        tag: "Webinar",
+        linkText: "Migrating off vRA, live on November 4 and 5:",
+        tail: "see the Migration Assistant run end to end",
+        href: WEBINAR_HREF,
+    }}
+>
+    <Fragment slot="head">
+        <SchemaFAQ items={faqItems} />
+    </Fragment>
+
+    <GuideHero
+        pill="Migration Assistant · vRA and vRO"
+        title="Kestra Migration Assistant for vRA"
+    >
+        <Fragment slot="deck">
+            A free, open-source tool that assesses your VMware vRA and vRO
+            estate for a migration to Kestra. It runs on your own machine and
+            writes a migration brief: what each workflow does, what to do with
+            it, and the order to move it in. It's the first step in the <a
+                href={GUIDE_HREF}>vRA migration guide</a
+            >.
+        </Fragment>
+        <HeroActions slot="actions" />
+        <HeroVisual slot="visual" />
+    </GuideHero>
+
+    <WhatItDoes />
+    <HowItWorks />
+    <SecurityPosture />
+    <ExampleUseCase />
+    <GetItCards />
+    <NextSteps />
+
+    <div id="faq">
+        <Faq title="Questions that come up" items={faqItems} client:visible />
+    </div>
+
+    <DownloadDialog
+        id={HELP_DIALOG_ID}
+        label="Get help running it"
+        form={HELP_REQUEST}
+    />
+</Layout>
+
+<script>
+    import {
+        WEBINAR_HREF_EU,
+        WEBINAR_HREF_US,
+    } from "~/components/vra-migration-guide/assistant/links"
+    import { isAmericasTimezone } from "~/composables/useMeeting"
+
+    // Visitors in the Americas get the US session of the webinar, the same
+    // split the demo forms make. The banner is a Vue island, so its link is
+    // swapped once it has hydrated. "Next steps" links each session by name,
+    // so its links are left alone.
+    function pickWebinarSession() {
+        if (!isAmericasTimezone()) return
+        for (const link of document.querySelectorAll<HTMLAnchorElement>(
+            `a[href="${WEBINAR_HREF_EU}"]:not([data-webinar-session])`,
+        )) {
+            const island = link.closest("astro-island")
+            if (island?.hasAttribute("ssr")) {
+                new MutationObserver((_, observer) => {
+                    if (island.hasAttribute("ssr")) return
+                    link.href = WEBINAR_HREF_US
+                    observer.disconnect()
+                }).observe(island, { attributes: true })
+            } else {
+                link.href = WEBINAR_HREF_US
+            }
+        }
+    }
+
+    pickWebinarSession()
+    document.addEventListener("astro:page-load", pickWebinarSession)
+</script>

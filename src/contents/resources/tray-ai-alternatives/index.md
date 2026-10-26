@@ -99,6 +99,8 @@ By being open-source, Activepieces allows for deep customization and extensibili
 
 Pipedream is a serverless integration platform built specifically for developers. It offers a code-first approach to connecting APIs and building event-driven workflows. Users can write custom Node.js, Python, or Go code directly in the browser, leverage pre-built components for thousands of APIs, and trigger workflows from HTTP requests, schedules, or app events.
 
+> **Pipedream Workflows is shutting down.** It stops on March 31, 2027 and is closed to new signups. If your workflows run on it today, the [Pipedream migration guide](/resources/migration/pipedream) covers the export, the move and the cutover.
+
 This focus on developer experience makes Pipedream a strong Tray.ai alternative for use cases that require custom logic, data transformation, or integration with internal systems. It provides the flexibility of code with the convenience of a managed platform.
 
 *   **Limitation:** Its code-centric model makes it less accessible to non-developers. It is not a drag-and-drop tool for business users.

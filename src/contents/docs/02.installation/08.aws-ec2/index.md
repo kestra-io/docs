@@ -66,7 +66,7 @@ kestra:
     basic-auth:
       enabled: true
       username: admin@kestra.io # it must be a valid email address
-      password: kestra
+      password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
 ```
 
 Next, use the following command to start the Kestra server:

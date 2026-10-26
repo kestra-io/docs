@@ -293,6 +293,29 @@ kestra:
 | `kestra.grpc.tls.insecure-trust-all-certificates` | `false` | Skip CA verification (development only) |
 | `kestra.grpc.tls.authority-override` | — | Override TLS authority for static discovery |
 
+## Dedicated-storage workers
+
+Some deployments run workers with their own dedicated storage bucket: a separate region, a customer-managed account, or a different storage provider from the rest of the deployment. Namespace file content needs explicit configuration to stay consistent across the deployment.
+
+**Namespace files.** Namespace file metadata is routed through the controller, but file content is read and written directly to storage. On a worker with dedicated storage, a file uploaded from the UI is listed on the worker but its content is unreachable, and a file written by a task on the worker cannot be read anywhere else.
+
+Set `kestra.namespace-files.worker-access: CONTROLLER` on the worker to route all namespace file reads and writes through the controller over gRPC.
+
+This property defaults to `STORAGE`, preserving the existing behavior for workers that share the deployment's storage.
+
+```yaml
+# Worker configuration — dedicated-storage deployment
+kestra:
+  namespace-files:
+    worker-access: CONTROLLER          # default: STORAGE
+```
+
+`CONTROLLER` mode requires the EE Worker Controller and is authorized against the worker's registration token. Only workers registered with this Kestra instance can use it. Available from Kestra 2.0.4.
+
+| Property | Values | Default | Description |
+|---|---|---|---|
+| `kestra.namespace-files.worker-access` | `STORAGE`, `CONTROLLER` | `STORAGE` | Where the worker reads and writes namespace file content. `CONTROLLER` routes all file operations through the controller over gRPC. |
+
 ## Elasticsearch, Kafka, and indexing
 
 This section is really about one architectural choice: running Kestra on the Kafka plus Elasticsearch stack instead of the simpler JDBC-backed setup. If you are on PostgreSQL or MySQL only, much of this page will not apply.
@@ -302,7 +325,6 @@ These settings cover the advanced repository and queue stack used in Enterprise 
 - Elasticsearch repository settings
 - Kafka client and topic settings
 - Kafka message protection
-- indexer behavior
 
 Use this section when you are running the Kafka plus Elasticsearch architecture instead of a JDBC-only deployment.
 
@@ -355,15 +377,7 @@ kestra:
 
 Kafka tuning is usually about cluster shape rather than syntax. Partition count limits how much component-level concurrency you can achieve, while replication settings should match your broker topology and HA expectations.
 
-This page also covers:
-
-- SSL-secured Kafka clients
-- default topic partition and replication settings
-- consumer, producer, and stream defaults
-- custom topic names and topic properties
-- consumer and topic prefixes for shared clusters
-- Kafka Streams local state directory
-- message protection for oversized Kafka messages
+Kestra passes `kestra.kafka.client.properties` to its Kafka admin client, producers, and consumers, so set transport and authentication there. Kestra creates a topic for each queue when it first needs one, using the settings under `kestra.kafka.defaults.topic`. These settings apply only when Kestra creates a topic; Kestra does not change topics that already exist.
 
 Representative advanced Kafka settings:
 
@@ -376,15 +390,15 @@ kestra:
         security.protocol: SSL
     defaults:
       topic:
-        partitions: 3
+        partitions: 16
         replication-factor: 3
-    topics:
-      executions:
         properties:
           retention.ms: 604800000
+  queue:
+    type: kafka
 ```
 
-Use client properties for transport and auth, `defaults` for cluster-wide topic behavior, and `topics.*.properties` only when one topic needs behavior that differs from the rest.
+Topic properties under `defaults.topic.properties` apply to every topic Kestra creates.
 
 Full SSL client configuration with keystores:
 
@@ -406,7 +420,7 @@ kestra:
     type: kafka
 ```
 
-Consumer, producer, and stream defaults:
+Kestra ships with these consumer and producer defaults:
 
 ```yaml
 kestra:
@@ -420,62 +434,33 @@ kestra:
       producer:
         properties:
           acks: "all"
-          compression.type: "lz4"
+          compression.type: "zstd"
+          compression.zstd.level: 1
           max.request.size: "10485760"
-      stream:
-        properties:
-          processing.guarantee: "exactly_once"
-          replication.factor: "${kestra.kafka.defaults.topic.replication-factor}"
-          acks: "all"
-          compression.type: "lz4"
-          max.request.size: "10485760"
-          state.dir: "/tmp/kafka-streams"
+          linger.ms: 0
 ```
 
-Client loggers for debugging message flow:
+Set only the properties you want to change. The others keep their defaults. For the latency tradeoff behind `linger.ms: 0`, see [Performance tuning](../../performance/performance-tuning/index.md#the-kafka-backend).
 
-```yaml
-kestra:
-  kafka:
-    client:
-      loggers:
-        - level: INFO
-          type: PRODUCER
-          topic-regexp: "kestra_(executions|workertaskresult)"
-          key-regexp: .*parallel.*
-          value-regexp: .*parallel.*
-```
+| Property | Description | Default |
+|---|---|---|
+| `kestra.kafka.client.properties` | Kafka client properties applied to the admin client, producers, and consumers. `bootstrap.servers` is required. | — |
+| `kestra.kafka.defaults.topic.partitions` | Number of partitions of each topic Kestra creates. | `16` |
+| `kestra.kafka.defaults.topic.replication-factor` | Replication factor of each topic Kestra creates. | `1` |
+| `kestra.kafka.defaults.topic.properties` | Kafka topic configuration applied to each topic Kestra creates. | — |
+| `kestra.kafka.defaults.consumer.properties` | Kafka consumer properties. | See the example above |
+| `kestra.kafka.defaults.producer.properties` | Kafka producer properties. | See the example above |
+| `kestra.server.metrics.kafka.admin` | Export Kafka client metrics for the admin client, producers, and consumers. | `true` |
 
-:::alert{type="warning"}
-Client loggers have a heavy performance impact. Use them only for short-lived debugging sessions.
-:::
+To share one Kafka cluster between several Kestra instances, give each instance a different `kestra.queue.prefix`. The prefix starts every topic name, and Kestra derives consumer group IDs from topic names, so instances don't consume each other's messages.
 
-Shared-cluster deployments often also need prefixes or dedicated topic names to avoid collisions with other tenants or environments.
+To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
 
-To reject oversized Kafka messages early:
+The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
-```yaml
-kestra:
-  kafka:
-    message-protection:
-      enabled: true
-      limit: 1048576
-```
+## Redis and AMQP queue backends
 
-Indexer settings control batch indexing from Kafka into Elasticsearch:
-
-```yaml
-kestra:
-  indexer:
-    batch-size: 500
-    batch-duration: PT1S
-```
-
-If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
-
-## Redis, AMQP, and GCP Pub/Sub queue backends
-
-Redis, AMQP (RabbitMQ), and GCP Pub/Sub are Enterprise Edition queue backends, alongside Kafka which is covered above. All three use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All three require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis and AMQP (RabbitMQ) are Enterprise Edition queue backends, alongside Kafka which is covered above. Both use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. Both require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -484,8 +469,8 @@ These properties apply to all queue backends:
 | Property | Description | Default |
 |---|---|---|
 | `kestra.queue.prefix` | Name prefix added to every queue. Use this when multiple Kestra clusters share one backend to prevent stream collisions. | — |
-| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `false` |
-| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | — |
+| `kestra.queue.message-protection.enabled` | Reject messages larger than `limit` before they reach the backend. Terminal execution states are always allowed through regardless of size. | `true` |
+| `kestra.queue.message-protection.limit` | Maximum serialized message size in bytes. Required when `message-protection.enabled` is `true`. | `1048576` (1 MiB) |
 
 ```yaml
 kestra:
@@ -581,49 +566,6 @@ Kestra creates the virtual host at startup if it does not already exist, using t
 | `kestra.amqp.client.management.request-timeout` | HTTP request timeout for management API calls. | `PT10S` |
 
 For TLS-secured brokers, use `amqps://` in the URL. The management API port automatically switches to `management.tls-port` when the scheme is `amqps://`.
-
-### GCP Pub/Sub
-
-Set `kestra.queue.type: gcp-pubsub` and configure the client under `kestra.gcp-pubsub.client`.
-
-Minimal configuration:
-
-```yaml
-kestra:
-  queue:
-    type: gcp-pubsub
-  gcp-pubsub:
-    client:
-      project-id: my-gcp-project
-```
-
-Without a `service-account`, Kestra uses [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials): Workload Identity on GKE, the GCE metadata server, or `GOOGLE_APPLICATION_CREDENTIALS` in the environment.
-
-With an explicit service account key:
-
-```yaml
-kestra:
-  queue:
-    type: gcp-pubsub
-  gcp-pubsub:
-    client:
-      project-id: my-gcp-project
-      service-account: |
-        { "type": "service_account", ... }
-```
-
-#### Configuration reference
-
-| Property | Description | Default |
-|---|---|---|
-| `kestra.gcp-pubsub.client.project-id` | GCP project ID. Required. | — |
-| `kestra.gcp-pubsub.client.service-account` | Service account JSON key. Falls back to ADC when omitted. | — |
-| `kestra.gcp-pubsub.client.ack-deadline` | Acknowledgment deadline per message. | `PT10S` |
-| `kestra.gcp-pubsub.client.compression-enabled` | Enable gRPC message compression for Pub/Sub calls. | `true` |
-| `kestra.gcp-pubsub.client.compression-bytes-threshold` | Minimum message size in bytes before compression applies. | `10` |
-| `kestra.gcp-pubsub.client.exactly-once-delivery` | Enable exactly-once delivery on subscriptions. | `true` |
-| `kestra.gcp-pubsub.client.message-ordering` | Enable message ordering on subscriptions. | `true` |
-| `kestra.gcp-pubsub.client.message-retention-duration` | How long Pub/Sub retains unacknowledged messages. Leave unset to use the Pub/Sub subscription default. | — |
 
 ## MCP server cache
 

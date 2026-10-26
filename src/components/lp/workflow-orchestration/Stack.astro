@@ -12,9 +12,22 @@ import InfraPlatformIcon from "./assets/stack-infra-platform.svg"
 import AppMicroservicesIcon from "./assets/stack-app-microservices.svg"
 import BusinessProcessesIcon from "./assets/stack-business-processes.svg"
 
+interface Props {
+    heading?: string
+    /** Pass null to drop the line under the heading. */
+    sub?: string | null
+    columns?: {
+        Glyph: typeof DataPipelinesIcon
+        title: string
+        items: string[]
+    }[]
+    /** Rendered glyph size in px; thin-stroke icons read better smaller. */
+    glyphSize?: number
+}
+
 const totalPlugins = await fetchTotalPluginsCount()
 
-const columns = [
+const defaultColumns = [
     {
         Glyph: DataPipelinesIcon,
         title: "Data pipelines",
@@ -56,15 +69,19 @@ const columns = [
         ],
     },
 ]
+
+const {
+    heading = "Unified Orchestration Across Your Stack",
+    sub = `API-first, with ${totalPlugins}+ plugins for your databases, clouds, and internal systems`,
+    columns = defaultColumns,
+    glyphSize = 120,
+} = Astro.props
 ---
 
-<section class="stack">
+<section class="stack" style={`--glyph-size: ${glyphSize}px`}>
     <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
-        <h2>Unified Orchestration Across Your Stack</h2>
-        <p>
-            API-first, with {totalPlugins}+ plugins for your databases, clouds,
-            and internal systems
-        </p>
+        <h2>{heading}</h2>
+        {sub && <p>{sub}</p>}
     </div>
 
     <div class="columns">
@@ -222,8 +239,8 @@ const columns = [
     }
 
     .glyph {
-        width: 120px;
-        height: 120px;
+        width: var(--glyph-size, 120px);
+        height: var(--glyph-size, 120px);
     }
 
     .check {

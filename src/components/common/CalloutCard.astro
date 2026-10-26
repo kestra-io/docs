@@ -1,0 +1,86 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    eyebrow?: string
+    title: string
+    description?: string
+    cta: { label: string; href: string }
+    class?: string
+}
+
+const { eyebrow, title, description, cta, class: className } = Astro.props
+---
+
+<div class:list={["callout-card", className]}>
+    <div class="callout-card__text">
+        {eyebrow && <span class="callout-card__eyebrow">{eyebrow}</span>}
+        <span class="callout-card__title">{title}</span>
+        {description && <p class="callout-card__lead">{description}</p>}
+    </div>
+    <a href={cta.href} class="btn btn-secondary callout-card__cta">
+        {cta.label}
+        <Icon name="mdi:chevron-right" width={16} height={16} />
+    </a>
+</div>
+
+<style lang="scss">
+    .callout-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: 1.125rem 1.5rem;
+        text-align: left;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 0.625rem;
+        box-shadow: 2px 3px 12px 0 var(--ks-shadows-light);
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem 1.125rem;
+            gap: 0.875rem;
+        }
+    }
+
+    .callout-card__text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .callout-card__eyebrow {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ks-content-color-highlight);
+    }
+
+    .callout-card__title {
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--ks-content-primary);
+    }
+
+    .callout-card__lead {
+        margin: 0;
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        color: var(--ks-content-secondary);
+    }
+
+    .callout-card__cta {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 0.35rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+</style>

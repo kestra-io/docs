@@ -50,7 +50,23 @@ interface Props {
      * and keep exit paths off the page.
      */
     bareChrome?: boolean
+    /**
+     * Pin the page to one theme whatever the visitor's setting. Campaign pages
+     * pin "light" so components built on the theme-aware --ks-* tokens match
+     * the page's fixed palette.
+     */
+    forceTheme?: "light" | "dark"
     hideFloatingActions?: boolean
+    lang?: string
+    /** A page-only banner shaped like an annonces.yml entry. Without it, only
+     *  the homepage shows a banner (from annonces.yml). */
+    banner?: {
+        tag?: string
+        linkText?: string
+        text?: string
+        tail?: string
+        href: string
+    }
 }
 
 const props = Astro.props
@@ -118,7 +134,12 @@ const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
-const hasAnnounce = isHomepage && annonces.length > 0
+const announceContent = props.banner
+    ? [props.banner]
+    : isHomepage
+      ? annonces
+      : []
+const hasAnnounce = announceContent.length > 0
 
 const websiteSchema = isHomepage
     ? {
@@ -155,15 +176,22 @@ const organizationSchema = {
 }
 ---
 
-<html lang="en" class:list={{ "no-animation": DISABLE_USAL }}>
+<html
+    lang={props.lang ?? "en"}
+    class:list={{ "no-animation": DISABLE_USAL }}
+    data-force-theme={props.forceTheme}
+>
     <head>
         <script is:inline>
             ;(function () {
+                var forced =
+                    document.documentElement.getAttribute("data-force-theme")
                 var theme = localStorage.getItem("theme") || "system"
-                var dark =
-                    theme === "dark" ||
-                    (theme === "system" &&
-                        matchMedia("(prefers-color-scheme: dark)").matches)
+                var dark = forced
+                    ? forced === "dark"
+                    : theme === "dark" ||
+                      (theme === "system" &&
+                          matchMedia("(prefers-color-scheme: dark)").matches)
                 document.documentElement.classList.add(dark ? "dark" : "light")
             })()
         </script>
@@ -263,6 +291,23 @@ const organizationSchema = {
 
         <slot name="head" />
 
+        <!-- Inline copy of readInternalFlagFromUrl (scripts/internalVisitor.ts): it must
+             strip ?kestra_internal before ClientRouter and analytics.js read the URL. -->
+        <script is:inline>
+            try {
+                if (location.search) {
+                    var url = new URL(location.href)
+                    var value = url.searchParams.get("kestra_internal")
+                    if (value !== null) {
+                        if (value === "1") localStorage.setItem("ka_internal", "1")
+                        else if (value === "0") localStorage.removeItem("ka_internal")
+                        url.searchParams.delete("kestra_internal")
+                        history.replaceState(history.state, "", url.pathname + url.search + url.hash)
+                    }
+                }
+            } catch (e) {}
+        </script>
+
        {import.meta.env.PROD && <ClientRouter />}
         <LoadingIndicator color="#a796ff" threshold={0} />
 
@@ -301,13 +346,17 @@ const organizationSchema = {
                     <Search
                         randomAiQuestions={randomAiQuestions}
                         docsLatest={docsLatest}
-                        client:load
+                        client:only="vue"
                     />
                     {hasAnnounce ? (
+                        // Its own persist name, so client-side navigation
+                        // doesn't carry the homepage banner onto this page.
                         <Announce
                             client:load
-                            transition:persist
-                            content={annonces}
+                            transition:persist={
+                                props.banner ? "page-banner" : "announce"
+                            }
+                            content={announceContent}
                         />
                     ) : (
                         ""

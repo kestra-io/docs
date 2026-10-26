@@ -64,7 +64,7 @@ namespace: company.team
 sla:
   - id: assert_output
     type: EXECUTION_ASSERTION
-    assert: "{{ outputs.mytask.value == 'expected output' }}"
+    assert: "{{ outputs.mytask.values.result == 'expected output' }}"
     behavior: FAIL
     labels:
       sla: miss
@@ -72,8 +72,9 @@ sla:
 
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: expected output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: expected output
 ```
 
 ## SLA behavior

@@ -268,7 +268,7 @@ The tool detects these patterns and prints a `✗` message with a docs link. The
 | `io.kestra.plugin.core.flow.EachParallel` | Rewrite as `Loop` with `concurrencyLimit`; same expression changes | [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) |
 | Flow-level `pluginDefaults:` | OSS: inline values on each task. EE: migrate to a namespace Policy | [Plugin defaults removed](../plugin-defaults-removed/index.md) |
 | Flow-level `taskDefaults:` | Same as `pluginDefaults` above — both keys are removed in 2.0 | [Plugin defaults removed](../plugin-defaults-removed/index.md) |
-| `io.kestra.plugin.core.execution.Count` | Use a [KV Store](../../../concepts/kv-store) task or custom script | — |
+| `io.kestra.plugin.core.execution.Count` | Use a [KV Store](../../../06.concepts/05.kv-store/index.md) task or custom script | — |
 | `io.kestra.plugin.core.execution.Resume` | Use the Kestra SDK | — |
 | `io.kestra.plugin.core.trigger.Toggle` | Use the Kestra API or SDK | — |
 | `io.kestra.plugin.git.Push` | `io.kestra.plugin.git.SyncFlows` | — |
@@ -414,7 +414,7 @@ Two AI options can help with the manual rewrites in this step:
      gating probe confirms correct dependsOn firing behavior.
   ```
 
-- **[AI Copilot](../../../ai-tools/ai-copilot/index.md)** — available directly in the Kestra UI. Open the flow editor, switch to Edit mode, and describe the migration: "Rewrite this flow to replace ForEach with Loop". The Copilot rewrites the YAML in place and waits for your confirmation before saving.
+- **[AI Copilot](../../../ai-tools/01.ai-copilot/index.md)** — available directly in the Kestra UI. Open the flow editor, switch to Edit mode, and describe the migration: "Rewrite this flow to replace ForEach with Loop". The Copilot rewrites the YAML in place and waits for your confirmation before saving.
 :::
 
 ### `ForEach` and `ForEachItem`
