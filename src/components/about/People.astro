@@ -11,7 +11,6 @@ const LEADERS = [
     {
         name: "Emmanuel Darras",
         role: "Co-founder and CEO",
-        bio: "Previously co-founded and ran a 500-person game studio for two decades before starting Kestra.",
         links: [
             {
                 icon: "mdi:linkedin",
@@ -24,7 +23,6 @@ const LEADERS = [
     {
         name: "Ludovic Dehon",
         role: "Co-founder and CTO",
-        bio: "Wrote the first version of Kestra, designed the engine and leads engineering.",
         links: [
             {
                 icon: "mdi:linkedin",
@@ -58,7 +56,7 @@ const LEADERS = [
     },
     {
         name: "Kai Waehner",
-        role: "CTO",
+        role: "Global Field CTO",
         links: [
             {
                 icon: "mdi:linkedin",
@@ -109,7 +107,6 @@ const LEADERS = [
                         </figure>
                         <h3>{l.name}</h3>
                         <span class="role">{l.role}</span>
-                        {l.bio && <p>{l.bio}</p>}
                         <div class="links">
                             {l.links.map((link) => (
                                 <a
@@ -219,13 +216,6 @@ const LEADERS = [
         font-family: var(--bs-font-monospace);
         font-size: $font-size-sm;
         color: var(--ks-content-tertiary);
-    }
-
-    p {
-        margin: 0.75rem 0 0;
-        font-size: $font-size-sm;
-        line-height: 1.6;
-        color: var(--ks-content-secondary);
     }
 
     .links {
