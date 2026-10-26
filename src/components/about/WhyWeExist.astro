@@ -1,4 +1,9 @@
+---
+import PixelEdges from "./PixelEdges.astro"
+---
+
 <section class="why">
+    <PixelEdges left="tall" right="cluster" />
     <div class="container">
         <header>
             <span class="eyebrow">Why we exist</span>
@@ -27,6 +32,7 @@
 
     .why {
         @include section;
+        position: relative;
         background: var(--ks-background-body);
 
         .container {

@@ -1,29 +1,43 @@
 ---
+import PixelEdges from "./PixelEdges.astro"
+import { Image } from "astro:assets"
+import HairlineFigure from "~/components/partners/HairlineFigure.astro"
+import soc2Img from "~/components/layout/assets/soc2.png"
+import gdprImg from "~/components/layout/assets/gdpr.svg"
+
+// `figure` names the Hairline figure drawn in the tile, when it has one;
+// `badges` shows the certification badges next to the link.
 const ITEMS = [
     {
         title: "Open source engine",
         text: "Apache 2.0, public issue tracker, public release notes, dependencies you can audit.",
+        figure: "opensource" as const,
     },
     {
         title: "SOC 2 and GDPR",
         text: "Independently audited controls, with reports available on request.",
         href: "/security",
         cta: "Security overview",
+        figure: "padlock" as const,
+        badges: true,
     },
     {
         title: "Self-hosted and air-gapped",
         text: "Your network, your keys, no outbound connection required. Public administrations run it this way.",
+        figure: "servers" as const,
     },
     {
         title: "Responsible disclosure",
         text: "Security issues are handled privately through GitHub security advisories.",
         href: "https://github.com/kestra-io/kestra/security",
         cta: "Report a vulnerability",
+        figure: "patch" as const,
     },
 ]
 ---
 
 <section class="trust">
+    <PixelEdges left="wide" right="tall" />
     <div class="container">
         <header>
             <div>
@@ -36,10 +50,33 @@ const ITEMS = [
             {
                 ITEMS.map((item) => (
                     <li>
-                        <div class="tile" aria-hidden="true" />
+                        <div class="tile">
+                            {item.figure && (
+                                <HairlineFigure
+                                    name={item.figure}
+                                    dark="var(--tile-bg)"
+                                />
+                            )}
+                        </div>
                         <h3>{item.title}</h3>
                         <p>{item.text}</p>
-                        {item.href && <a href={item.href}>{item.cta}</a>}
+                        <div class="actions">
+                            {item.href && <a href={item.href}>{item.cta}</a>}
+                            {item.badges && (
+                                <span class="badges">
+                                    <Image
+                                        src={soc2Img}
+                                        alt="SOC 2"
+                                        height="28"
+                                    />
+                                    <Image
+                                        src={gdprImg}
+                                        alt="GDPR"
+                                        height="28"
+                                    />
+                                </span>
+                            )}
+                        </div>
                     </li>
                 ))
             }
@@ -52,6 +89,7 @@ const ITEMS = [
 
     .trust {
         @include section;
+        position: relative;
         border-top: 1px solid var(--ks-border-primary);
         background: var(--ks-background-secondary);
     }
@@ -102,7 +140,7 @@ const ITEMS = [
         }
     }
 
-    // Placeholder blocks until the illustrations are designed.
+    // A dark tile holding each item's Hairline figure.
     .tile {
         aspect-ratio: 1;
 
@@ -111,12 +149,17 @@ const ITEMS = [
             aspect-ratio: 2 / 1;
         }
 
+        --tile-bg: #111114;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-bottom: 1.25rem;
         border-radius: 8px;
-        background: #111114;
+        background: var(--tile-bg);
 
         :global(html.dark) & {
-            background: var(--ks-border-primary);
+            --tile-bg: var(--ks-border-primary);
         }
     }
 
@@ -133,8 +176,25 @@ const ITEMS = [
         color: var(--ks-content-secondary);
     }
 
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem 1rem;
+    }
+
     a {
         @include text-link;
         font-size: $font-size-sm;
+    }
+
+    .badges {
+        display: inline-flex;
+        gap: 0.375rem;
+
+        :global(img) {
+            width: auto;
+            height: 28px;
+        }
     }
 </style>

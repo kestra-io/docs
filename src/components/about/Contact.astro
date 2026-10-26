@@ -1,4 +1,5 @@
 ---
+import PixelEdges from "./PixelEdges.astro"
 const CHANNELS = [
     {
         title: "Sales",
@@ -24,6 +25,7 @@ const CHANNELS = [
 ---
 
 <section class="contact">
+    <PixelEdges left="cluster" right="tall" />
     <div class="container">
         <span class="eyebrow">Get in touch</span>
         <h2>Talk to us.</h2>
@@ -50,6 +52,7 @@ const CHANNELS = [
 
     .contact {
         @include section;
+        position: relative;
         border-top: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
     }

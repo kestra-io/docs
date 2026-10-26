@@ -1,4 +1,5 @@
 ---
+import PixelEdges from "./PixelEdges.astro"
 import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import manu from "./assets/manu.jpg"
@@ -89,6 +90,7 @@ const LEADERS = [
 ---
 
 <section class="people">
+    <PixelEdges left="cluster" right="wide" />
     <div class="container">
         <header>
             <span class="eyebrow">Leadership</span>
@@ -135,6 +137,7 @@ const LEADERS = [
 
     .people {
         @include section;
+        position: relative;
         border-top: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
     }
@@ -170,6 +173,12 @@ const LEADERS = [
         @include media-breakpoint-down(md) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 2.5rem 1rem;
+        }
+
+        // On wide screens the row of portraits steps out of the text column,
+        // evenly on both sides, up to 1600px.
+        @media (min-width: 1600px) {
+            margin-inline: calc((min(100vw - 8rem, 1600px) - 100%) / -2);
         }
     }
 

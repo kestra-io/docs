@@ -1,4 +1,5 @@
 ---
+import PixelEdges from "./PixelEdges.astro"
 import jpmorgan from "~/assets/teams/jpmorgan.svg?raw"
 import bloomberg from "~/assets/landing/infrastructure/companies/bloomberg.svg?raw"
 import amdocs from "~/assets/landing/infrastructure/companies/amdocs.svg?raw"
@@ -78,6 +79,7 @@ const storyHref = (company?: string) => {
 ---
 
 <section class="customers">
+    <PixelEdges left="wide" right="cluster" />
     <div class="container">
         <header>
             <span class="eyebrow">In production at</span>
@@ -131,6 +133,7 @@ const storyHref = (company?: string) => {
 
     .customers {
         @include section;
+        position: relative;
         border-top: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
     }

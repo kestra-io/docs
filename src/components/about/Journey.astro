@@ -1,4 +1,5 @@
 ---
+import PixelEdges from "./PixelEdges.astro"
 const MILESTONES = [
     {
         year: "2019",
@@ -20,6 +21,7 @@ const MILESTONES = [
 ---
 
 <section class="journey">
+    <PixelEdges />
     <div class="container">
         <span class="eyebrow">Our journey</span>
         <h2>How it all started.</h2>
@@ -41,6 +43,7 @@ const MILESTONES = [
 
     .journey {
         @include section;
+        position: relative;
         background: var(--ks-background-body);
     }
 
