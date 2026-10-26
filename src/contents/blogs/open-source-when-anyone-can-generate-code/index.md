@@ -3,6 +3,7 @@ title: "What Open Source Is For When Anyone Can Generate Code"
 description: "Open source became a distribution channel, GitHub stars got cheap, and AI changed who writes contributions. What still makes an open-source project worth building and trusting."
 date: 2026-10-26T13:00:00
 category: Company News
+image: ./main.webp
 author:
   name: Emmanuel Darras
   linkedin: https://www.linkedin.com/in/emmanuel-darras/
