@@ -13,6 +13,9 @@ const posthogOptOut = vi.fn()
 const posthogOptIn = vi.fn()
 const posthogStopRecording = vi.fn()
 const posthogStartRecording = vi.fn()
+const posthogCapture = vi.fn()
+const posthogRegister = vi.fn()
+const posthogSetPersonProperties = vi.fn()
 let posthogOptedOut = false
 vi.mock("posthog-js", () => ({
     default: {
@@ -20,7 +23,10 @@ vi.mock("posthog-js", () => ({
         register_for_session: vi.fn(),
         get_property: vi.fn(() => undefined),
         alias: vi.fn(),
-        capture: vi.fn(),
+        capture: (...args: unknown[]) => posthogCapture(...args),
+        register: (...args: unknown[]) => posthogRegister(...args),
+        unregister: vi.fn(),
+        setPersonProperties: (...args: unknown[]) => posthogSetPersonProperties(...args),
         opt_out_capturing: (...args: unknown[]) => {
             posthogOptedOut = true
             posthogOptOut(...args)
@@ -57,11 +63,13 @@ type FakeElement = FakeScript | FakeLink
 let listeners: Record<string, ((e: Event) => void)[]>
 let headChildren: FakeElement[]
 let htmlAttrs: Record<string, string>
+let storage: Record<string, string>
 
 const installFakeDom = () => {
     listeners = {}
     headChildren = []
     htmlAttrs = {}
+    storage = {}
 
     const fakeDocument = {
         addEventListener: (type: string, cb: (e: Event) => void) => {
@@ -102,7 +110,15 @@ const installFakeDom = () => {
 
     vi.stubGlobal("document", fakeDocument)
     vi.stubGlobal("window", globalThis)
-    vi.stubGlobal("localStorage", { setItem: vi.fn() })
+    vi.stubGlobal("localStorage", {
+        getItem: (k: string) => storage[k] ?? null,
+        setItem: (k: string, v: string) => {
+            storage[k] = v
+        },
+        removeItem: (k: string) => {
+            delete storage[k]
+        },
+    })
     vi.stubGlobal("navigator", { globalPrivacyControl: undefined })
     globalThis.location = { pathname: "/", search: "" } as Location
 }
@@ -156,6 +172,9 @@ beforeEach(() => {
     posthogOptIn.mockClear()
     posthogStopRecording.mockClear()
     posthogStartRecording.mockClear()
+    posthogCapture.mockClear()
+    posthogRegister.mockClear()
+    posthogSetPersonProperties.mockClear()
     posthogOptedOut = false
     fetchApi.mockClear()
 })
@@ -444,5 +463,40 @@ describe("cookieconsent — Global Privacy Control (Europe)", () => {
         expect(upd?.[2].ad_personalization).toBe("denied")
         expect(upd?.[2].analytics_storage).toBe("granted")
         expect(window.dataLayer.some((e: any) => e?.event === "enable_marketing")).toBe(false)
+    })
+})
+
+// A visitor who opened a page with ?kestra_internal=1 earlier (flag already
+// in localStorage) going through the real consent flow.
+describe("cookieconsent — internal visitor", () => {
+    beforeEach(() => {
+        storage.ka_internal = "1"
+    })
+
+    it("sends nothing to PostHog before an EU visitor consents to analytics", async () => {
+        setTimezone("Europe/Paris")
+        await loadModule()
+        await firePageLoad()
+
+        expect(posthogInit).not.toHaveBeenCalled()
+        expect(posthogRegister).not.toHaveBeenCalled()
+        expect(posthogSetPersonProperties).not.toHaveBeenCalled()
+        expect(posthogCapture).not.toHaveBeenCalled()
+    })
+
+    it("registers is_internal before the landing $pageview once analytics is accepted", async () => {
+        setTimezone("Europe/Paris")
+        await loadModule()
+        await firePageLoad()
+        const { onConsent } = runCookieConsent.mock.calls[0][0]
+        await onConsent({ cookie: { categories: ["analytics"] } })
+
+        expect(posthogRegister).toHaveBeenCalledWith({ is_internal: true })
+        expect(posthogSetPersonProperties).toHaveBeenCalledWith({ is_internal: true })
+        const iPageview = posthogCapture.mock.calls.findIndex((c) => c[0] === "$pageview")
+        expect(iPageview).toBeGreaterThanOrEqual(0)
+        expect(posthogRegister.mock.invocationCallOrder[0]).toBeLessThan(
+            posthogCapture.mock.invocationCallOrder[iPageview]
+        )
     })
 })

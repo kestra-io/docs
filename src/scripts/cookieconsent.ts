@@ -3,6 +3,7 @@ import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"
 import { GTM_ID } from "astro:env/client"
 import { CONSENT_REGION_ATTR } from "~/middlewares/consentRegion"
+import { readInternalFlagFromUrl, tagInternalVisitor } from "./internalVisitor"
 
 // Set by the Worker on <html> from Cloudflare's edge geo data (not a
 // cookie, so responses stay edge-cacheable); falls back to Intl timezone
@@ -95,6 +96,7 @@ export const enabledAnalytics = async () => {
             posthog.opt_in_capturing({ captureEventName: false })
             posthog.startSessionRecording()
         }
+        tagInternalVisitor()
         pushPageView()
         return
     }
@@ -124,6 +126,8 @@ export const enabledAnalytics = async () => {
     posthog.register_for_session({
         from: "SITE",
     })
+
+    tagInternalVisitor()
 
     if (!posthog.get_property("__alias")) {
         posthog.alias(response.id)
@@ -179,6 +183,7 @@ export const disableAnalytics = () => {
 // Fires on initial load and every client-side navigation, so bootstrap runs
 // once and every page after that just reports a page-view.
 document.addEventListener("astro:page-load", async () => {
+    readInternalFlagFromUrl()
     initConsentModeAndGtm()
 
     if (!isEurope) {
