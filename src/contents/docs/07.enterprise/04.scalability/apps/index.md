@@ -713,6 +713,45 @@ Expiration is evaluated against the server clock at the moment a user opens or s
 
 ---
 
+## App watermark
+
+Deployed apps display a Kestra watermark at the bottom of the page. Use the `watermark` property to remove it or replace it with your own content.
+
+```yaml
+id: survey_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Q2 Survey
+namespace: company.team
+flowId: survey_processor
+access:
+  type: PUBLIC
+watermark:
+  content: "Powered by [Acme](https://acme.io)"
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "## Please complete the survey."
+```
+
+The `watermark` property has two optional fields:
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `enabled` | `true` | Set to `false` to remove the watermark from the app. |
+| `content` | The Kestra watermark | Markdown displayed instead of the Kestra watermark. Ignored when `enabled` is `false`. |
+
+To remove the watermark entirely:
+
+```yaml
+watermark:
+  enabled: false
+```
+
+Omit `watermark` and the Kestra watermark stays in place.
+
+---
+
 ## App thumbnails
 
 Add a thumbnail to give catalog users a visual indicator of what the app does. Upload an image file as a [namespace file](../../../06.concepts/02.namespace-files/index.md) to the same namespace as the app's connected flow. Supported formats include `.svg`, `.jpg`, and `.png`. The example below adds `kestra-icon.svg`.
