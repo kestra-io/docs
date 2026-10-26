@@ -24,7 +24,7 @@ import IntegrationsIcon from "~/components/lp/vra-migration/assets/automate-inte
  * is /infra-automation. */
 const title = "Infrastructure automation, governed from one control plane"
 const description =
-    "Kestra runs your Terraform, Ansible and scripts as governed workflows: self-service with approvals, every run audited, on your own infrastructure."
+    "Self-service infrastructure without losing control. Kestra runs your Terraform, Ansible and scripts as governed workflows, with an approval and an audit trail on every request, on your own infrastructure."
 
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/infra-automation"
@@ -35,30 +35,30 @@ const formProps = { submitLabel: "Book a 30-minute call" }
 
 const reasons = [
     {
-        kicker: "Keep your tools",
-        title: "Ansible, Terraform, Bash and PowerShell stay.",
-        body: "Kestra runs them as they are and adds what cron jobs and systemd timers never had: ordering, retries, alerts, and one place to see every run.",
-        icon: "mdi:toolbox-outline",
+        kicker: "Faster delivery",
+        title: "Developers self-serve instead of waiting.",
+        body: "A VM or an environment stops being a ticket in the platform team's queue. Teams request it from a form you publish, and the flow behind it builds it.",
+        icon: "mdi:rocket-launch-outline",
     },
     {
-        kicker: "Self-service",
-        title: "Self-service, with guardrails.",
-        body: "Other teams launch what they need from a form, behind an approval when it touches production. Roles decide who can run what, and the tickets stop queuing on your desk.",
-        icon: "mdi:account-check-outline",
+        kicker: "Lower cost",
+        title: "One tool instead of several.",
+        body: "Provisioning, configuration, tickets and approvals run on one platform, the same one as your data and AI workflows, and decommissioning flows retire what nobody uses any more.",
+        icon: "mdi:cash-multiple",
     },
     {
-        kicker: "Any network",
-        title: "Reach on-prem, isolated and air-gapped networks.",
-        body: "Workers sit inside each network, next to the systems they touch, and connect back to one control plane. Self-hosted, with your own secret manager.",
-        icon: "mdi:server-security",
+        kicker: "Governance by default",
+        title: "An approval and an audit trail on every request.",
+        body: "Who asked for what, with which inputs, who approved it and what ran, on record by default rather than pieced together from tickets, CI logs and scripts.",
+        icon: "mdi:shield-check-outline",
     },
 ]
 
 const steps = [
     {
         number: "01",
-        title: "Start with one runbook",
-        body: "Pick one your team still runs by hand. Your playbook or script runs as it is, now with retries, alerts and a log.",
+        title: "Start with your most common request",
+        body: "Pick the VM, environment or access request your team handles most. The playbook or script behind it runs as it is, now with retries, alerts and a log.",
         wash: "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
     },
     {
@@ -81,7 +81,7 @@ const rows = [
         to: "Schedule triggers, with the scripts run as they are in Bash, Python or PowerShell tasks",
     },
     {
-        from: "AWX or Ansible Tower job templates",
+        from: "AWX, Ansible Tower or Ansible Automation Platform job templates",
         to: "Flows that run your playbooks and inventories unchanged, Execution Environments included",
     },
     {
@@ -207,7 +207,7 @@ const automations = [
 
 const ctaBullets = [
     {
-        text: "We go through the runbooks and requests your team handles today.",
+        text: "We go through the requests and runbooks your team handles today.",
         strong: true,
     },
     {
@@ -261,6 +261,10 @@ const faqItems = [
         answer: "Yes, all four. Fine-grained role-based access control, SSO and SCIM, full audit logs, and native multi-tenancy where namespace isolation lets dozens of teams run on one deployment.",
     },
     {
+        question: "Which edition do we need?",
+        answer: "Kestra Enterprise. The engine is open source, and the self-service forms, role-based access, SSO, audit logs and worker groups described on this page come with the Enterprise Edition, self-hosted or air-gapped.",
+    },
+    {
         question: "Do we need Kubernetes?",
         answer: "No. Kestra runs on a single VM with Docker if that's what you have. Kubernetes is supported and common at scale, and it is not a requirement to start or to run in production.",
     },
@@ -277,7 +281,7 @@ const faqItems = [
         <Hero
             {routePath}
             {formProps}
-            formTitle="Bring the runbook that pages you at night."
+            formTitle="Bring your longest ticket queue."
             companies={[
                 "bundesagentur",
                 "itzbund",
@@ -296,13 +300,13 @@ const faqItems = [
                 >.
             </Fragment>
             <Fragment slot="lead">
-                Your Ansible, Terraform and scripts, today spread across cron
-                jobs, timers and ticket queues, run as governed workflows in one
-                place: self-service with guardrails, every run logged and
-                audited.<br />
+                Developers request what they need from a form instead of a
+                ticket. Your Ansible, Terraform and scripts run behind it as
+                governed workflows, with an approval and an audit trail on every
+                request.<br />
                 <strong
-                    >Keep your tools. Run it on your own infrastructure,
-                    air-gapped included.</strong
+                    >Self-service without losing control. Keep your tools, on
+                    your own infrastructure, air-gapped included.</strong
                 >
             </Fragment>
             <Fragment slot="form-sub">
@@ -336,15 +340,19 @@ const faqItems = [
                         ? "Rundeck"
                         : /awx/.test(term)
                           ? "AWX"
-                          : /tower|ansible/.test(term)
-                            ? "Ansible Tower"
-                            : null
+                          : /automation platform|\baap\b/.test(term)
+                            ? "Ansible Automation Platform"
+                            : /tower|ansible/.test(term)
+                              ? "Ansible Tower"
+                              : null
                     if (tool) {
                         h1.innerHTML = `The ${a(tool)} ${b("alternative")} that runs on your own infrastructure.`
                         return
                     }
                 }
-                if (/runbook/.test(term)) {
+                if (/self.?service/.test(term)) {
+                    h1.innerHTML = `${a("Self-service infrastructure")} without ${b("losing control")}.`
+                } else if (/runbook/.test(term)) {
                     h1.innerHTML = `${a("Runbook automation")} with approvals and ${b("an audit trail")}.`
                 } else if (/orchestrat/.test(term)) {
                     h1.innerHTML = `${a("Infrastructure orchestration")} from ${b("one control plane")}.`
@@ -354,7 +362,7 @@ const faqItems = [
             })()
         </script>
         <Platform
-            heading="Get every automation together in one place"
+            heading="Self-service without losing control"
             cards={reasons}
         />
         <Translation
@@ -364,7 +372,7 @@ const faqItems = [
             {rows}
         />
         <Migration
-            heading="From scripts and tickets to governed workflows"
+            heading="From a ticket queue to governed self-service"
             sub="Kestra runs alongside your current tools for as long as you need them."
             {steps}
         />
@@ -375,7 +383,7 @@ const faqItems = [
         />
         <Features heading="Built for production infrastructure" {features} />
         <Stack
-            heading="What infrastructure teams automate with Kestra"
+            heading="What platform teams automate with Kestra"
             sub="From the first request to the last cleanup, across on-prem and cloud."
             columns={automations}
             glyphSize={72}
@@ -388,8 +396,8 @@ const faqItems = [
         />
         <Faq items={faqItems} />
         <ClosingBanner
-            heading="Bring your messiest runbook"
-            sub="We'll show you what it looks like as a governed workflow."
+            heading="Bring your most common request"
+            sub="We'll show it running as governed self-service, with its approval and audit trail."
             cta={{ text: "Book a call", href: "#contact-sales" }}
         />
         <LpFooter />
