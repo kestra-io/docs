@@ -1,10 +1,12 @@
 ---
+import { Image } from "astro:assets"
+import bookMockup from "./assets/book-mockup.png"
+
 interface Props {
     pdfHref: string
-    readHref: string
 }
 
-const { pdfHref, readHref } = Astro.props
+const { pdfHref } = Astro.props
 
 const INSIDE = [
     "Why fragmentation is the result of modernization, and the three costs it creates: operational risk, metered licensing, and missing audit evidence",
@@ -15,79 +17,68 @@ const INSIDE = [
 ---
 
 <section class="hero">
-    <div class="hero-grid" aria-hidden="true"></div>
     <div class="container hero-inner">
-      <div class="hero-copy">
-        <p class="eyebrow" data-usal="fade-r">
-            Whitepaper · By Kai Waehner, Global Field CTO
-        </p>
-        <h1 data-usal="fade-r">
-            Infrastructure Automation Is Not <span class="highlight"
-                >Infrastructure Orchestration</span
-            >
-        </h1>
-        <p class="subtitle" data-usal="fade-r">
-            Enterprise infrastructure teams are already automated, one tool at a
-            time. This paper makes the case for one control plane above the tools
-            they already run, and for replacing only the glue that connects them.
-        </p>
+        <div class="hero-copy">
+            <p class="eyebrow" data-usal="fade-r">
+                Whitepaper · By Kai Waehner, Global Field CTO
+            </p>
+            <h1 data-usal="fade-r">
+                Infrastructure Automation Is Not <span class="highlight"
+                    >Infrastructure Orchestration</span
+                >
+            </h1>
+            <p class="subtitle" data-usal="fade-r">
+                Enterprise infrastructure teams are already automated, one tool
+                at a time. This paper makes the case for one control plane above
+                the tools they already run, and for replacing only the glue that
+                connects them.
+            </p>
 
-        <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
-        <ul class="inside-list" data-usal="fade-l">
-            {INSIDE.map((item) => <li>{item}</li>)}
-        </ul>
-      </div>
+            <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
+            <ul class="inside-list" data-usal="fade-l">
+                {INSIDE.map((item) => <li>{item}</li>)}
+            </ul>
+        </div>
 
-      <div class="hero-figure" data-usal="zoomin">
-          <!-- TODO hero visual, kestra-io/design#230 -->
-          <div class="hero-placeholder" aria-hidden="true"></div>
-      </div>
-    </div>
-</section>
-
-<section class="cta-band">
-    <div class="container cta-inner">
-        <h2 class="cta-title" data-usal="fade-r">Get the PDF whitepaper</h2>
-        <div class="cta-actions" data-usal="fade-l">
-            <a href={pdfHref} class="btn btn-primary" download>Download</a>
-            <a href={readHref} class="btn btn-secondary">Read it online</a>
+        <div class="hero-figure" data-usal="zoomin">
+            <div class="hero-card">
+                <div class="book-wrap" aria-hidden="true">
+                    <Image
+                        src={bookMockup}
+                        alt=""
+                        widths={[600, 1200]}
+                        sizes="(min-width: 992px) 600px, 90vw"
+                        loading="eager"
+                        class="book-img"
+                    />
+                </div>
+                <p>The full guide is on this page, or download the PDF</p>
+                <a href={pdfHref} class="btn btn-secondary" download>
+                    Download the PDF
+                </a>
+            </div>
         </div>
     </div>
 </section>
 
 <style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
     @use "/src/assets/styles/color-palette" as *;
+    @use "/src/components/vra-migration-guide/shared" as *;
 
     .hero {
         position: relative;
         overflow: hidden;
         padding: 0;
         color: var(--ks-content-primary);
-        background-color: var(--ks-background-body);
-    }
-
-    .hero-grid {
-        --grid-cell: 72px;
-        --grid-line: var(--ks-border-primary);
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background-image:
-            linear-gradient(
-                to right,
-                transparent calc(var(--grid-cell) / 2 - 1px),
-                var(--grid-line) calc(var(--grid-cell) / 2 - 1px),
-                var(--grid-line) calc(var(--grid-cell) / 2),
-                transparent 1px
-            ),
-            linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-        background-size: var(--grid-cell) var(--grid-cell);
-        background-repeat: repeat;
+        // Faded grid and violet wash of the docs header (DocsLayout.astro).
+        background: var(--ks-background-body) url("~/assets/squared-grid.svg")
+            no-repeat top center / 1400px auto;
     }
 
     .hero-inner {
-        position: relative;
+        // Page width of the vRA migration pages.
+        @include guide-container;
         z-index: 1;
         display: flex;
         flex-direction: column;
@@ -118,43 +109,144 @@ const INSIDE = [
         @include media-breakpoint-up(lg) {
             flex: 0 0 480px;
             max-width: 480px;
+            // Room for the book above the card, so the book and the card
+            // together sit centred against the copy.
+            padding-top: 5rem;
         }
     }
 
-    // TODO hero visual, kestra-io/design#230. Placeholder with the 480 x 210
-    // size and the rounded canvas of the unified orchestration hero diagram.
-    .hero-placeholder {
+    // Book card of the vRA migration guide hero (GuideHero.astro), with a
+    // wash that follows the theme instead of the guide's always-dark one.
+    .hero-card {
+        --card-wash: #{rgba($black, 0.04)};
+        --card-edge: #{rgba($black, 0.08)};
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1.5rem;
         width: 100%;
-        aspect-ratio: 480 / 210;
-        border-radius: 12px;
-        background-color: #f4f4fb;
+        max-width: 480px;
+        aspect-ratio: 1;
+        margin: 6rem auto 0;
+        padding: 0 2rem 1.25rem;
+        border-radius: 20px;
+        text-align: center;
+
+        @include media-breakpoint-up(lg) {
+            margin: 0;
+        }
 
         :global(html.dark) & {
-            background-color: $base-grey-800;
+            --card-wash: #{rgba($white, 0.08)};
+            --card-edge: #{rgba($white, 0.12)};
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+        }
+
+        &::before {
+            inset: 0;
+            border-radius: inherit;
+            background: var(--card-wash);
+            box-shadow: inset 0 0 0 1px var(--card-edge);
+            mask-image: linear-gradient(to bottom, transparent 10%, $black 55%);
+        }
+
+        &::after {
+            inset: -30px;
+            padding: 30px;
+            background: var(--card-wash) content-box;
+            filter: blur(15px);
+            mask-image: linear-gradient(to bottom, $black 15%, transparent 55%);
+        }
+
+        p {
+            position: relative;
+            max-width: 23rem;
+            margin: 0;
+            font-weight: 600;
+            line-height: 1.5rem;
+            color: var(--ks-content-primary);
+        }
+
+        // A link, not the guide's <button>, so it centres its label itself.
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 11.25rem;
+            min-height: 3.5rem;
+            padding: 0.5rem 1.375rem;
+            border-radius: $border-radius-lg;
+            font-size: $font-size-lg;
+            font-weight: 700;
+            line-height: 1.75rem;
+
+            :global(html.dark) & {
+                @include btn-secondary-light-surface;
+            }
         }
     }
 
-    .eyebrow {
-        font-size: $font-size-sm;
-        font-weight: 600;
-        color: var(--ks-content-color-highlight);
-        margin: 0 0 1rem;
+    .book-wrap {
+        position: absolute;
+        left: 50%;
+        // Higher than the guide's -30%: this cover sits lower in its image.
+        top: -40%;
+        width: 123%;
+        transform: translateX(-49%);
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            top: -22%;
+            width: 90%;
+        }
+
+        @include media-breakpoint-down(md) {
+            top: -16%;
+            width: 72%;
+        }
+
+        .book-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
     }
 
-    h1 {
-        font-size: 2rem;
+    // Pill of the vRA migration guide hero (GuideHero.astro).
+    .eyebrow {
+        display: inline-block;
+        margin: 0 0 0.75rem;
+        padding: 0.125rem 0.75rem;
+        border: 1px solid #a77af6;
+        border-radius: 999px;
+        box-shadow: 3px 3px 0 rgba(173, 41, 250, 0.2);
+        font-size: $font-size-xs;
         font-weight: 600;
-        line-height: 1.15;
+        line-height: 1.5rem;
+        color: var(--ks-content-primary);
+
+        :global(html.dark) & {
+            text-shadow: 0 4px 0 rgba($black, 0.25);
+        }
+    }
+
+    // Same scale as the vRA migration guide hero (GuideHero.astro).
+    h1 {
         margin: 0 0 1.25rem;
         max-width: 22ch;
-
-        @include media-breakpoint-up(md) {
-            font-size: 2.375rem;
-        }
-
-        @include media-breakpoint-up(xl) {
-            font-size: 2.625rem;
-        }
+        font-size: clamp(2.25rem, 4.2vw, 4rem);
+        line-height: 1.09;
+        letter-spacing: -0.02em;
 
         .highlight {
             color: var(--ks-content-color-highlight);
@@ -203,48 +295,6 @@ const INSIDE = [
                 background-repeat: no-repeat;
                 background-size: contain;
             }
-        }
-    }
-
-    .cta-band {
-        background-color: var(--ks-background-secondary);
-        border-top: 1px solid var(--ks-border-primary);
-        border-bottom: 1px solid var(--ks-border-primary);
-    }
-
-    .cta-inner {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.25rem;
-        padding-top: 1.75rem;
-        padding-bottom: 1.75rem;
-
-        @include media-breakpoint-up(md) {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-        }
-    }
-
-    .cta-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin: 0;
-        color: var(--ks-content-primary);
-    }
-
-    .cta-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-
-        .btn {
-            font-weight: 700;
-            border-radius: 8px;
-            padding: 0.625rem 1.5rem;
-            white-space: nowrap;
         }
     }
 </style>
