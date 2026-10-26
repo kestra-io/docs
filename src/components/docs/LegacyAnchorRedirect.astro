@@ -1,0 +1,39 @@
+---
+// Sends anchors that moved to another page on to their new URL. Old links
+// still point at them (released Kestra versions, see kestra-io/docs#6034),
+// and the hash never reaches the server, so a YAML redirect can't help.
+interface Props {
+    anchors: Record<string, string>
+}
+
+const { anchors } = Astro.props
+---
+
+<div hidden data-legacy-anchors={JSON.stringify(anchors)}></div>
+
+<script>
+    let redirecting = false
+
+    function redirectLegacyAnchor() {
+        const marker = document.querySelector<HTMLElement>(
+            "[data-legacy-anchors]",
+        )
+        const id = location.hash.slice(1)
+        if (redirecting || !marker || !id || document.getElementById(id)) return
+
+        const anchors: Record<string, string> = JSON.parse(
+            marker.dataset.legacyAnchors ?? "{}",
+        )
+        if (!Object.hasOwn(anchors, id)) return
+
+        redirecting = true
+        location.replace(anchors[id])
+    }
+
+    // Run directly as well as on astro:page-load: layout.astro only mounts
+    // <ClientRouter /> in PROD, so the event never fires in dev, and the
+    // listener covers view-transition navigations to this page. Both can fire
+    // for the same load, hence the guard.
+    document.addEventListener("astro:page-load", redirectLegacyAnchor)
+    redirectLegacyAnchor()
+</script>
