@@ -12,22 +12,28 @@ const { anchors } = Astro.props
 <div hidden data-legacy-anchors={JSON.stringify(anchors)}></div>
 
 <script>
+    import { legacyAnchorTarget } from "~/utils/legacyAnchors"
+
     let redirecting = false
 
     function redirectLegacyAnchor() {
         const marker = document.querySelector<HTMLElement>(
             "[data-legacy-anchors]",
         )
-        const id = location.hash.slice(1)
-        if (redirecting || !marker || !id || document.getElementById(id)) return
+        if (redirecting || !marker) return
 
         const anchors: Record<string, string> = JSON.parse(
             marker.dataset.legacyAnchors ?? "{}",
         )
-        if (!Object.hasOwn(anchors, id)) return
+        const target = legacyAnchorTarget(
+            location.hash,
+            anchors,
+            (id) => document.getElementById(id) !== null,
+        )
+        if (!target) return
 
         redirecting = true
-        location.replace(anchors[id])
+        location.replace(target)
     }
 
     // Run directly as well as on astro:page-load: layout.astro only mounts
