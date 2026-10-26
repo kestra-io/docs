@@ -66,7 +66,7 @@ BEGIN;
 -- 1. hello-world (acme)
 INSERT INTO flows (key, value, source_code) VALUES (
   'acme_hello-world_1',
-  '{"id":"hello-world","namespace":"acme","tenantId":"main","revision":1,"deleted":false,"description":"Hello World","tasks":[{"id":"first_task","type":"io.kestra.plugin.core.debug.Return","format":"thrilled"},{"id":"second_task","type":"io.kestra.plugin.scripts.shell.Commands","commands":["sleep 0.42","echo ''::{ \"outputs\":{\"returned_data\":\"mydata\"}}::''"]},{"id":"hello_world","type":"io.kestra.plugin.core.log.Log","message":"Welcome to Acme, {{ inputs.user }}!\nWe are {{ outputs.first_task.value }} to have you here!"}],"inputs":[{"id":"user","type":"STRING","defaults":"Rick Astley"}],"triggers":[{"id":"daily","type":"io.kestra.plugin.core.trigger.Schedule","cron":"0 9 * * *","disabled":true}]}'::jsonb,
+  '{"id":"hello-world","namespace":"acme","tenantId":"main","revision":1,"deleted":false,"description":"Hello World","tasks":[{"id":"first_task","type":"io.kestra.plugin.core.output.OutputValues","values":{"result":"thrilled"}},{"id":"second_task","type":"io.kestra.plugin.scripts.shell.Commands","commands":["sleep 0.42","echo ''::{ \"outputs\":{\"returned_data\":\"mydata\"}}::''"]},{"id":"hello_world","type":"io.kestra.plugin.core.log.Log","message":"Welcome to Acme, {{ inputs.user }}!\nWe are {{ outputs.first_task.values.result }} to have you here!"}],"inputs":[{"id":"user","type":"STRING","defaults":"Rick Astley"}],"triggers":[{"id":"daily","type":"io.kestra.plugin.core.trigger.Schedule","cron":"0 9 * * *","disabled":true}]}'::jsonb,
   'id: hello-world
 namespace: acme
 description: Hello World
@@ -78,8 +78,9 @@ inputs:
 
 tasks:
   - id: first_task
-    type: io.kestra.plugin.core.debug.Return
-    format: thrilled
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: thrilled
 
   - id: second_task
     type: io.kestra.plugin.scripts.shell.Commands
@@ -91,7 +92,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: |
       Welcome to Acme, {{ inputs.user }}!
-      We are {{ outputs.first_task.value }} to have you here!
+      We are {{ outputs.first_task.values.result }} to have you here!
 
 triggers:
   - id: daily

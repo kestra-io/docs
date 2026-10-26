@@ -11,8 +11,10 @@ import { slugify } from "../slugify"
 import {
     formatElementName,
     formatElementType,
+    formatPluginName,
     getBlueprintsHeading,
     getPluginTitle,
+    isElementNameRedundant,
 } from "~/utils/plugins/pluginUtils"
 import { prunePluginsForSidebar } from "./pruneForClient"
 import { matchesSubGroup } from "./subgroupMatcher"
@@ -111,6 +113,16 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             ? undefined
             : pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
 
+    // Subgroup owning the task on task pages, used only for the heading title. Root plugins can also
+    // list their subgroups' tasks, so match subgroups only and fall back to the root for root-level tasks.
+    const taskSubgroupPlugin = pluginType
+        ? pluginsWithoutDeprecated.find(
+              (p) =>
+                  p.subGroup !== undefined &&
+                  Object.values(extractPluginElements(p)).flat().includes(pluginType),
+          )
+        : undefined
+
     const currentPluginMetadata = (() => {
         const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
         const rootGroupId = rootPlugin?.group ?? pluginName
@@ -152,7 +164,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     // "AWS S3", "Google Cloud BigQuery", "PostgreSQL".
     const containerTitle =
         (rootPlugin
-            ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
+            ? getPluginTitle(taskSubgroupPlugin ?? currentSubgroupPlugin ?? rootPlugin, metadataMap)
             : undefined) ?? pluginName
 
     // Task pages prefix the bare class name with their container title (e.g.
@@ -160,15 +172,29 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     // this, every plugin's "Trigger"/"Query"/"Create"/"Delete" task shared the
     // same short, duplicated title across hundreds of pages.
     const elementName = pluginType ? formatElementName(pluginType) : undefined
-    const headingTitle = pluginType && elementName
-        ? containerTitle.toLowerCase() === elementName.toLowerCase()
-            ? containerTitle
-            : `${containerTitle} ${elementName}`
-        : containerTitle
 
     const rootPluginTitle = rootPlugin
         ? getPluginTitle(rootPlugin, metadataMap)
         : pluginName
+
+    const headingTitle = (() => {
+        if (!pluginType || !elementName) return containerTitle
+
+        let title = isElementNameRedundant(containerTitle, elementName)
+            ? containerTitle
+            : `${containerTitle} ${elementName}`
+
+        // If the title collapsed to just the bare task name (e.g. subgroup "Log" + task "Log"),
+        // prefix with the plugin name so the page is indexed descriptively (e.g. "Core Log").
+        if (title.toLowerCase() === elementName.toLowerCase()) {
+            const prefix = formatPluginName(pluginName)
+            if (prefix && !title.toLowerCase().includes(prefix.toLowerCase())) {
+                title = `${prefix} ${title}`
+            }
+        }
+
+        return title
+    })()
 
     let combinedDescription = currentPageMetadata?.description
     const bodyText = (currentPageMetadata as any)?.body

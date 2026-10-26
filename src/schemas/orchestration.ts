@@ -24,23 +24,6 @@ const pillarsSchema = z.object({
     items: z.array(pillarSchema),
 })
 
-const flowNodeSchema = z.object({
-    label: z.string(),
-    sublabel: z.string().optional(),
-    pluginClass: z.string().optional(),
-    icon: z.string().optional(),
-})
-
-const flowDiagramSchema = z.object({
-    source: flowNodeSchema,
-    workflow: z.object({
-        label: z.string(),
-        sublabel: z.string().optional(),
-    }),
-    tools: z.array(flowNodeSchema).min(2).max(5),
-    outcome: flowNodeSchema,
-})
-
 const useCaseStepSchema = z.object({
     node: z.string(),
     label: z.string().optional(),
@@ -91,17 +74,11 @@ const blueprintSchema = z.object({
     name: z.string(),
     title: z.string(),
     description: z.string(),
-    code: z.string().optional(),
-    plugins: z.array(z.string()).optional(),
-    href: z.string().optional(),
-    flowDiagram: flowDiagramSchema.optional(),
-    blueprintId: z.string().optional(),
-    blueprintPlaceholder: z.boolean().optional(),
+    blueprintId: z.string(),
 })
 
 const blueprintsSchema = z.object({
     title: z.string(),
-    lead: z.string(),
     items: z.array(blueprintSchema),
 })
 
@@ -164,12 +141,22 @@ const resourcesSchema = z.object({
     items: z.array(resourceItemSchema),
 })
 
+/** Tool categories, in the order the /orchestration filter tabs show them. */
+export const ORCHESTRATION_CATEGORIES = [
+    "Infrastructure",
+    "Cloud",
+    "Data",
+    "Business",
+    "AI",
+] as const
+
 export const orchestrationSchema = z.object({
     title: z.string(),
     description: z.string(),
     tool: z.object({
         name: z.string(),
         pluginClass: z.string(),
+        category: z.enum(ORCHESTRATION_CATEGORIES),
         color: z.string().optional(),
     }),
     hero: heroSchema,
@@ -180,6 +167,7 @@ export const orchestrationSchema = z.object({
     blueprints: blueprintsSchema,
     comparison: comparisonSchema,
     postCompareCta: postCompareCtaSchema.optional(),
+    guideCta: postCompareCtaSchema.optional(),
     faq: z.array(faqItemSchema),
     seeHow: seeHowSchema,
     resources: resourcesSchema.optional(),

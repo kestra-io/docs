@@ -1,0 +1,68 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Dremio & Kestra: Orchestrate Your Data Lakehouse Workflows"
+const description =
+    "Orchestrate Dremio with Kestra: run Dremio and Arrow Flight SQL queries from flows, start flows on query results, and chain dbt and Python around the lakehouse."
+
+const facts = [
+    {
+        label: "Partnership",
+        value: "Dremio Technology Alliance partner",
+    },
+    {
+        label: "Plugins",
+        value: "Dremio and Arrow Flight SQL, each with Query, Queries and Trigger",
+    },
+    {
+        label: "Trigger",
+        value: "Starts a flow when a polled Dremio query returns results",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:database-search-outline",
+        title: "Dremio SQL as a flow task",
+        text: "Query and Queries run SQL against Dremio over JDBC and store the results in Kestra internal storage for the next task.",
+    },
+    {
+        icon: "mdi:bell-ring-outline",
+        title: "Flows that react to lakehouse data",
+        text: "The Trigger polls a Dremio query and starts a flow when rows come back, for example when a KPI falls outside its expected range.",
+    },
+    {
+        icon: "mdi:source-branch",
+        title: "dbt, Dremio and Python in one flow",
+        text: "Build dbt models on Dremio, query the result and hand it to a Python script with Polars, all in a single declarative flow.",
+    },
+    {
+        icon: "mdi:arrow-decision-outline",
+        title: "Arrow Flight SQL beyond Dremio",
+        text: "The same Query, Queries and Trigger tasks work with any database that exposes an Apache Arrow Flight SQL endpoint.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Dremio">
+    <PartnerProfile
+        name="Dremio"
+        tagline="Dremio queries data where it lives, across object storage and databases, without copying it. Kestra schedules, triggers and chains that SQL with the rest of the data stack."
+        about="Two plugins cover Dremio: one for Dremio SQL and one for any Arrow Flight SQL endpoint. The <a href='https://kestra.io/blogs/2023-12-07-dremio-kestra-integration'>data lakehouse orchestration tutorial</a> shows a full flow that runs dbt on Dremio, queries the models and processes the output in Python."
+        expertiseTitle="Dremio + Kestra: the data lakehouse, orchestrated"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-jdbc-dremio", "plugin-jdbc-arrow-flight"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "dremio",
+            title: '<span class="highlight">Dremio</span> Blueprints',
+        }}
+        closing={{
+            title: "Orchestrate your Dremio lakehouse",
+            text: "Open source and self-hosted. Start from a blueprint below or from the plugin docs.",
+        }}
+        website="https://www.dremio.com/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

@@ -28,7 +28,7 @@
         type JSONProperty,
         isDynamic
     } from "../../../utils/plugins/schema";
-    import Tooltip from "./Tooltip.vue";
+    import Tooltip from "~/components/common/Tooltip.vue";
     import Alert from "vue-material-design-icons/Alert.vue";
     import Snowflake from "vue-material-design-icons/Snowflake.vue";
     import AlphaBBox from "vue-material-design-icons/AlphaBBox.vue";

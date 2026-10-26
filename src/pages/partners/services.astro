@@ -1,0 +1,72 @@
+---
+import Layout from "~/components/layout.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import Benefits from "~/components/partners/Benefits.astro"
+import PartnersLists from "~/components/partners/PartnersLists.vue"
+import PartnerCta from "~/components/partners/PartnerCta.astro"
+import { listPartners } from "~/components/partners/partners"
+import ConapiLogo from "~/assets/landing/partners/conapi-logo-small.svg?raw"
+import AshisutoLogo from "~/assets/landing/partners/ashisuto-logo.svg?raw"
+
+const title =
+    "Kestra Services Partners: Consulting Firms, Integrators and Resellers"
+const description =
+    "Search the consulting firms, systems integrators, managed service providers and resellers who deliver and sell Kestra, by country and expertise. Or join the program."
+
+const partners = listPartners("Services")
+
+const FILTERS: { key: "region" | "expertise"; label: string }[] = [
+    { key: "expertise", label: "Expertise" },
+    { key: "region", label: "Region" },
+]
+
+const BENEFITS = [
+    {
+        title: "A Kestra Cloud tenant",
+        text: "Your own tenant with Enterprise features, issued with the welcome kit, for training, demos and labs. Services partners can request a self-hosted Enterprise licence.",
+    },
+    {
+        title: "Enablement",
+        text: "Training for your team, the sales playbook and program guide, Solutions Engineering sessions, and a shared Slack channel with your Kestra contact.",
+    },
+    {
+        title: "A listing customers use",
+        text: "Once certified, your firm appears in the directory above with the certified badge, searchable by country and service.",
+    },
+    {
+        title: "Introductions and co-marketing",
+        text: "Introductions to opportunities in your region and specialty, a joint announcement, content and events.",
+    },
+]
+
+const QUOTES = [
+    {
+        quote: "Our clients need to connect legacy systems to modern automation without throwing everything away. This integration protects existing infrastructure while enriching APIs with Kestra data. It's the practical path to modernization our customers have been asking for.",
+        author: "Stefan Fritz - CEO, Conapi",
+        smallLogoSvg: ConapiLogo,
+    },
+    {
+        quote: "Our collaboration with Kestra enables us to bring the stability and operational ease that Japan's top-tier enterprises require. As a bridge between Kestra's world-class engineering team and local business needs, we help organizations adopt Kestra with confidence.",
+        author: "Hideki Itaki - Director, Innovation & Marketing Co-Creation Lab at Ashisuto",
+        smallLogoSvg: AshisutoLogo,
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Services Partners">
+    <PartnersLists
+        client:load
+        partners={partners}
+        filters={FILTERS}
+        title="Find a services partner"
+        subtitle="Consulting firms, systems integrators, managed service providers and resellers who deliver and sell Kestra. Search by country and expertise, or join the program."
+        searchPlaceholder="Search by name, country or expertise"
+    />
+    <Benefits
+        title="What partners get"
+        intro="Registered partners get the tools to learn and demo Kestra. Certified partners are listed here and introduced to customers."
+        benefits={BENEFITS}
+    />
+    <Quotes quotes={QUOTES} />
+    <PartnerCta track="services" />
+</Layout>
