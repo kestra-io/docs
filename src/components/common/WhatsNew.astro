@@ -2,7 +2,7 @@
 import BlogList from "~/components/common/BlogList.astro"
 import { getCollection } from "astro:content"
 
-const blogs = await getCollection("blogs")
+const blogs = await getCollection("blogs", ({ data }) => !data.lang)
 
 const recentBlogs = await Promise.all(
     blogs
