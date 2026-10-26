@@ -47,6 +47,10 @@ describe("docs redirects", () => {
             "/docs/enterprise/auditing/audit-logs",
             "/docs/enterprise/governance/audit-logs",
         ],
+        // Still linked from the dashboard editor in released Kestra versions
+        // (kestra-io/docs#6034).
+        ["/docs/ui/dashboards", "/docs/ui/dashboard"],
+        ["/docs/ui/dashboards/foo", "/docs/ui/dashboard"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, docsRules)).toBe(to)
     })
