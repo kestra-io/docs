@@ -348,6 +348,19 @@ kestra:
 
 These rules apply anywhere Kestra asks a user to set or reset a password, including the initial setup flow, invitation acceptance, and user management screens.
 
+In the Enterprise Edition, passwords can also expire after a set age and be checked against the user's previous passwords:
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-max-age: P90D
+      password-expiry-warning: P7D
+      password-history-size: 5
+```
+
+See [Password expiration and reuse](../../07.enterprise/03.auth/rbac/index.md#password-expiration-and-reuse) for how they behave and what they do not cover.
+
 ### Delete configuration files after startup
 
 If the runtime reads secrets from configuration files, delete them after startup so tasks cannot read them later from disk:
