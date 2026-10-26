@@ -617,10 +617,14 @@ Use [Audit Log Shipper](../06.audit-logs/index.md) to ship audit logs from the K
 
 The Audit Log Shipper uses the following properties similar to the execution Log Shipper, except that the `resources` property replaces the `logLevelFilter` property.
 - `logExporters` - This property is required, and it specifies the platform where the audit logs will be exported. It supports a list of entries, allowing you to export logs to different platforms at once
-- `resources` - Specifies from which Kestra resource to ship audit logs for (e.g., FLOW, EXECUTION, USER, KV STORE, etc.)
+- `resources` - Specifies which resource types to ship audit logs for, such as `FLOW`, `EXECUTION`, `USER`, or `KVSTORE`. If you omit it, the task ships every resource type recorded in the tenant. For a SIEM, start with `USER`, `GROUP`, `ROLE`, `BINDING`, `SECURITY_INTEGRATION`, `SECRET`, `CREDENTIAL`, `FLOW`, and `EXECUTION`. See the [Audit Log Shipper plugin documentation](/plugins/core/log-ee/io.kestra.plugin.ee.core.log.auditlogshipper) for what each resource type covers.
 - `lookbackPeriod` - Determines the fetch period for audit logs to be sent. For example, with a default value of `P1D`, all audit logs generated between now and one day ago are batched.
-- `offsetKey` - Specifies the [key](../../../06.concepts/05.kv-store/index.md) that contains the last fetched date. By default, Kestra uses the key `LogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
+- `offsetKey` - Specifies the [key](../../../06.concepts/05.kv-store/index.md) that contains the last fetched date. By default, Kestra uses the key `AuditLogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
 - `delete` - Boolean property that, when set to `true`, deletes the logs from Kestra’s database immediately after successful export, helping optimize storage by removing logs that no longer need to reside in Kestra’s metadata store. By default, this property is set to `false`.
+
+:::alert{type="warning"}
+The Audit Log Shipper only ships audit logs from the tenant its flow runs in. Instance-level events, such as logins, failed logins, impersonation, and changes to tenants, banners, kill switches, or worker groups, are stored outside any tenant and are not shipped. To retrieve them, call `GET /api/v1/auditlogs/export` with an Instance Owner account.
+:::
 
 The following workflow ships audit logs to multiple destinations simultaneously.
 
