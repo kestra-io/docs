@@ -6,25 +6,47 @@ import AmbassadorPerks from "~/components/community/AmbassadorPerks.astro"
 import Contributors from "~/components/community/Contributors.vue"
 import CommunityGrid from "~/components/community/CommunityGrid.vue"
 import Guidelines from "~/components/community/Guidelines.vue"
+import type { Contributor, GitHubMetrics } from "~/components/community/types"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 
-const title = "Kestra Community and Ambassador Program"
+const title = "Kestra Community: Slack, GitHub & Ambassador Program"
 const description =
-    "Join the Kestra open-source community: become an Ambassador, contribute on GitHub, meet other engineers on Slack and follow the community guidelines."
+    "Join the Kestra open-source community: get help on Slack, contribute on GitHub, and apply to the Ambassador Program to share what you build with Kestra."
 
 const AMBASSADOR_PROGRAM_URL = "https://forms.gle/1vdgjHLFWbfQADxG6"
+const CONTRIBUTORS_SHOWN = 27
+
+const [metrics, contributors] = await Promise.all([
+    $fetchApiCachedOptional<GitHubMetrics>("/communities/github/metrics"),
+    $fetchApiCachedOptional<Contributor[]>("/communities/github/contributors"),
+])
+
+const topContributors = (contributors ?? [])
+    .toSorted((a, b) => (b.count ?? 0) - (a.count ?? 0))
+    .slice(0, CONTRIBUTORS_SHOWN)
+const totalContributors = contributors?.length ?? 0
 ---
 
 <Layout
     title={title}
     description={description}
+    breadcrumbTitle="Community"
     headerTheme="darkHeader"
     headerBg="#111114"
 >
     <div>
         <Hero ambassadorHref={AMBASSADOR_PROGRAM_URL} />
         <AmbassadorPerks href={AMBASSADOR_PROGRAM_URL} />
-        <CommunityGrid client:idle />
-        <Contributors client:idle />
+        {metrics && <CommunityGrid metrics={metrics} />}
+        {
+            topContributors.length > 0 && (
+                <Contributors
+                    client:idle
+                    initial={topContributors}
+                    total={totalContributors}
+                />
+            )
+        }
         <Guidelines client:load />
     </div>
 </Layout>

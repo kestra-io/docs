@@ -3,38 +3,34 @@
         <div class="container">
             <h2 class="text-center">Our contributors</h2>
             <div ref="topOfSection" />
-            <div
-                v-if="contributors"
-                class="contributors d-flex flex-wrap justify-content-center"
-            >
-                <template
-                    v-for="(contributor, index) in displayedContributors"
+            <div class="contributors d-flex flex-wrap justify-content-center">
+                <a
+                    v-for="contributor in displayedContributors"
                     :key="contributor.name"
+                    :href="'https://github.com/' + contributor.name"
+                    target="_blank"
+                    rel="noopener"
+                    class="d-flex flex-column gap-3 align-items-center"
+                    data-usal="zoomin"
                 >
-                    <a
-                        :href="'https://github.com/' + contributor.name"
-                        target="_blank"
-                        class="d-flex flex-column gap-3 align-items-center"
-                        data-usal="zoomin"
-                    >
-                        <img
-                            width="90px"
-                            height="90px"
-                            loading="lazy"
-                            class="rounded-circle"
-                            :src="contributor.avatar"
-                            :alt="contributor.name"
-                        />
-                        <p>{{ contributor.name }}</p>
-                    </a>
-                </template>
+                    <img
+                        width="90px"
+                        height="90px"
+                        loading="lazy"
+                        class="rounded-circle"
+                        :src="contributor.avatar"
+                        :alt="contributor.name"
+                    />
+                    <p>{{ contributor.name }}</p>
+                </a>
             </div>
-            <div v-if="contributors && moreCount > 0" class="text-center mt-4">
+            <div v-if="moreCount > 0" class="text-center mt-4">
                 <button
                     v-if="!isExpanded"
                     type="button"
                     class="btn btn-secondary"
-                    @click="isExpanded = true"
+                    :disabled="isLoading"
+                    @click="expand"
                     data-usal="zoomin"
                 >
                     {{ moreCount }} more contributors
@@ -53,88 +49,53 @@
     </section>
 </template>
 
-<script>
-    import { $fetchApiCached } from "~/utils/fetch.ts"
-    import { NO_RANDOM_ORDER } from "astro:env/client"
-    import { randomSortFunction } from "~/utils/random"
+<script setup lang="ts">
+    import { computed, ref } from "vue"
+    import { $fetchApiCached } from "~/utils/fetch"
+    import type { Contributor } from "~/components/community/types"
 
-    export default {
-        setup() {
-            return {}
-        },
-        data() {
-            return {
-                contributors: undefined,
-                contributorsRand: undefined,
-                isExpanded: false,
-                regularCount: 27,
-            }
-        },
-        computed: {
-            sortedByContributions() {
-                if (!this.contributors || this.contributors.length === 0) {
-                    return []
-                }
-                const sample = this.contributors[0] || {}
-                const hasContribField = Object.prototype.hasOwnProperty.call(
-                    sample,
-                    "contributions",
-                )
-                if (hasContribField) {
-                    return [...this.contributors].sort(
-                        (a, b) =>
-                            (b.contributions || 0) - (a.contributions || 0),
-                    )
-                }
-                return this.contributorsRand || []
-            },
-            regularContributors() {
-                return (this.sortedByContributions || []).slice(
-                    0,
-                    this.regularCount,
-                )
-            },
-            displayedContributors() {
-                if (this.isExpanded) {
-                    return this.contributorsRand || []
-                }
-                return this.regularContributors || []
-            },
-            moreCount() {
-                const total = this.contributors ? this.contributors.length : 0
-                const shown = this.regularContributors
-                    ? this.regularContributors.length
-                    : 0
-                const remaining = total - shown
-                return remaining > 0 ? remaining : 0
-            },
-        },
-        async created() {
+    const props = defineProps<{
+        initial: Contributor[]
+        total: number
+    }>()
+
+    const all = ref<Contributor[]>()
+    const isExpanded = ref(false)
+    const isLoading = ref(false)
+    const topOfSection = ref<HTMLElement>()
+
+    const displayedContributors = computed(() =>
+        isExpanded.value && all.value ? all.value : props.initial,
+    )
+    const moreCount = computed(() =>
+        Math.max(props.total - props.initial.length, 0),
+    )
+
+    const expand = async () => {
+        if (!all.value) {
+            isLoading.value = true
             try {
-                const data = await $fetchApiCached(
+                const data = await $fetchApiCached<Contributor[]>(
                     "/communities/github/contributors",
                 )
-                this.contributors = data
-                this.contributorsRand =
-                    this.contributors.toSorted(randomSortFunction)
+                all.value = data.toSorted(
+                    (a, b) => (b.count ?? 0) - (a.count ?? 0),
+                )
             } catch (e) {
-                this.contributors = []
+                return
+            } finally {
+                isLoading.value = false
             }
-        },
-        methods: {
-            collapse() {
-                this.isExpanded = false
-                // Smoothly scroll back to the top of the contributors section
-                try {
-                    this.$refs.topOfSection?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                    })
-                } catch (e) {
-                    // no-op
-                }
-            },
-        },
+        }
+        isExpanded.value = true
+    }
+
+    const collapse = () => {
+        isExpanded.value = false
+        topOfSection.value?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        })
     }
 </script>
 

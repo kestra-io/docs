@@ -37,11 +37,12 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, onMounted, computed } from "vue"
+    import { computed } from "vue"
     import CommunityGradient from "~/components/community/assets/CommunityGradient.vue"
     import NoGapGrid from "~/components/common/NoGapGrid.vue"
     import Link from "~/components/common/Link.vue"
     import contributorsImg from "~/components/community/assets/contributors.png"
+    import type { GitHubMetrics } from "~/components/community/types"
 
     import StarOutline from "vue-material-design-icons/StarOutline.vue"
     import DirectionsFork from "vue-material-design-icons/DirectionsFork.vue"
@@ -50,87 +51,46 @@
     import SourceCommit from "vue-material-design-icons/SourceCommit.vue"
     import AccountSupervisorCircle from "vue-material-design-icons/AccountSupervisorCircle.vue"
 
-    import { $fetchApiCached } from "~/utils/fetch"
-
-    interface GitHubMetrics {
-        stars: number
-        forks: number
-        issues: number
-        pullRequests: number
-        commits: number
-        contributors: number
-    }
-
-    const metrics = ref<GitHubMetrics>({
-        stars: 0,
-        forks: 0,
-        issues: 0,
-        pullRequests: 0,
-        commits: 0,
-        contributors: 0,
-    })
+    const props = defineProps<{
+        metrics: GitHubMetrics
+    }>()
 
     const formatNumber = (num: number) => {
-        return new Intl.NumberFormat("en-US").format(num)
+        return new Intl.NumberFormat("en-US").format(num ?? 0)
     }
 
     const communityStats = computed(() => [
         {
             icon: StarOutline,
             title: "Stars",
-            description: formatNumber(metrics.value.stars),
+            description: formatNumber(props.metrics.stars),
         },
         {
             icon: DirectionsFork,
             title: "Forks",
-            description: formatNumber(metrics.value.forks),
+            description: formatNumber(props.metrics.forks),
         },
         {
             icon: BugCheckOutline,
             title: "Issues",
-            description: formatNumber(metrics.value.issues),
+            description: formatNumber(props.metrics.issues),
         },
         {
             icon: SourcePull,
             title: "Pull requests",
-            description: formatNumber(metrics.value.pullRequests),
+            description: formatNumber(props.metrics.pullRequests),
         },
         {
             icon: SourceCommit,
             title: "Commits",
-            description: formatNumber(metrics.value.commits),
+            description: formatNumber(props.metrics.commits),
         },
         {
             icon: AccountSupervisorCircle,
             title: "Contributors",
-            description: formatNumber(metrics.value.contributors),
+            description: formatNumber(props.metrics.contributors),
         },
     ])
-
-    const fetchData = async () => {
-        try {
-            const [githubMetrics, githubContributors] =
-                await Promise.all([
-                    $fetchApiCached<GitHubMetrics>("/communities/github/metrics"),
-                    $fetchApiCached<any[]>("/communities/github/contributors"),
-                ])
-
-            metrics.value = {
-                stars: githubMetrics.stars ?? 0,
-                forks: githubMetrics.forks ?? 0,
-                issues: githubMetrics.issues ?? 0,
-                pullRequests: githubMetrics.pullRequests ?? 0,
-                commits: githubMetrics.commits ?? 0,
-                contributors: Array.isArray(githubContributors)
-                    ? githubContributors.length
-                    : (githubMetrics.contributors ?? 0),
-            }
-        } catch (error) {
-            console.error("Error fetching community metrics:", error)
-        }
-    }
-
-    onMounted(fetchData)
 </script>
 
 <style lang="scss" scoped>
