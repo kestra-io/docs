@@ -11,14 +11,14 @@
                     target="_blank"
                     rel="noopener"
                     class="d-flex flex-column gap-3 align-items-center"
-                    data-usal="zoomin"
                 >
                     <img
-                        width="90px"
-                        height="90px"
+                        width="90"
+                        height="90"
                         loading="lazy"
+                        decoding="async"
                         class="rounded-circle"
-                        :src="contributor.avatar"
+                        :src="avatarUrl(contributor.avatar)"
                         :alt="contributor.name"
                     />
                     <p>{{ contributor.name }}</p>
@@ -31,7 +31,6 @@
                     class="btn btn-secondary"
                     :disabled="isLoading"
                     @click="expand"
-                    data-usal="zoomin"
                 >
                     {{ moreCount }} more contributors
                 </button>
@@ -40,7 +39,6 @@
                     type="button"
                     class="btn btn-secondary"
                     @click="collapse"
-                    data-usal="zoomin"
                 >
                     Show less
                 </button>
@@ -53,6 +51,7 @@
     import { computed, ref } from "vue"
     import { $fetchApiCached } from "~/utils/fetch"
     import type { Contributor } from "~/components/community/types"
+    import { rankContributors } from "~/components/community/contributors"
 
     const props = defineProps<{
         initial: Contributor[]
@@ -63,6 +62,16 @@
     const isExpanded = ref(false)
     const isLoading = ref(false)
     const topOfSection = ref<HTMLElement>()
+
+    const avatarUrl = (avatar: string) => {
+        try {
+            const url = new URL(avatar)
+            url.searchParams.set("s", "180")
+            return url.toString()
+        } catch {
+            return avatar
+        }
+    }
 
     const displayedContributors = computed(() =>
         isExpanded.value && all.value ? all.value : props.initial,
@@ -78,9 +87,7 @@
                 const data = await $fetchApiCached<Contributor[]>(
                     "/communities/github/contributors",
                 )
-                all.value = data.toSorted(
-                    (a, b) => (b.count ?? 0) - (a.count ?? 0),
-                )
+                all.value = rankContributors(data)
             } catch (e) {
                 return
             } finally {

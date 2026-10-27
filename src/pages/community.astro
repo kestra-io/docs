@@ -7,6 +7,7 @@ import Contributors from "~/components/community/Contributors.vue"
 import CommunityGrid from "~/components/community/CommunityGrid.vue"
 import Guidelines from "~/components/community/Guidelines.vue"
 import type { Contributor, GitHubMetrics } from "~/components/community/types"
+import { rankContributors } from "~/components/community/contributors"
 import { $fetchApiCachedOptional } from "~/utils/fetch"
 
 const title = "Kestra Community: Slack, GitHub & Ambassador Program"
@@ -21,10 +22,9 @@ const [metrics, contributors] = await Promise.all([
     $fetchApiCachedOptional<Contributor[]>("/communities/github/contributors"),
 ])
 
-const topContributors = (contributors ?? [])
-    .toSorted((a, b) => (b.count ?? 0) - (a.count ?? 0))
-    .slice(0, CONTRIBUTORS_SHOWN)
-const totalContributors = contributors?.length ?? 0
+const rankedContributors = rankContributors(contributors ?? [])
+const topContributors = rankedContributors.slice(0, CONTRIBUTORS_SHOWN)
+const totalContributors = rankedContributors.length
 ---
 
 <Layout
