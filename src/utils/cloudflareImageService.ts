@@ -6,8 +6,8 @@ const service: ExternalImageService = {
     validateOptions: async (options, imageConfig, logger) => {
         const requested = options.format
         const validated = await cloudflareService.validateOptions!(options, imageConfig, logger)
-        // Astro fills an unset format with WebP; let Cloudflare's `format=auto`
-        // pick AVIF or WebP per request instead. Explicit formats are kept.
+        // Astro fills an unset format with WebP; ask Cloudflare for `format=auto`. Explicit
+        // formats win, as does `inferSize`, which pre-fills the format before this hook.
         return requested || validated.format === "svg"
             ? validated
             : { ...validated, format: "auto" }
