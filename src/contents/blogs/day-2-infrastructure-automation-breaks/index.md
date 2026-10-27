@@ -62,6 +62,4 @@ The platform that runs the first chain is the one the next domains land on, so [
 
 :::alert{type="info"}
 Read the full whitepaper [Infrastructure Automation Is Not Infrastructure Orchestration](/resources/whitepapers/infrastructure-orchestration) for the target architecture, an anonymized production reference from a European bank patching its private cloud, the resource model an Aria replacement needs, and the five shortlist tests in detail.
-
-[Read the whitepaper](/resources/whitepapers/infrastructure-orchestration)
 :::
