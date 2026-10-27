@@ -195,6 +195,8 @@ export default {
 
         // First, so nothing on a workers.dev host (tracking proxy, static
         // assets, redirects) is reachable without a kestra.io Google sign-in.
+        // First, so nothing on a workers.dev host (tracking proxy, static
+        // assets, redirects) is reachable without a kestra.io Google sign-in.
         const denied = await previewAuth(request as unknown as Request, {
             clientId: GOOGLE_CLIENT_ID,
             clientSecret: GOOGLE_CLIENT_SECRET,
