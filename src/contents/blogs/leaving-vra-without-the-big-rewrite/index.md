@@ -11,7 +11,6 @@ author:
   image: "fqazi"
   role: Senior Solutions Engineer
 image: ./main.png
-imageFormat: webp
 ---
 
 I spent nearly three years at VMware as an Automation Consultant, building custom vRA and vRO automation for banks, government agencies and large companies. Even a single VM provisioning request could involve three consoles: the catalog item in Service Broker, the blueprint in Assembler, and the custom logic in Orchestrator.

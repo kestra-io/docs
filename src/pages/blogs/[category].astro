@@ -38,7 +38,6 @@ const sortedBlogs = await Promise.all(
                       await getImage({
                           src: blog.data.image,
                           width: 800,
-                          format: blog.data.imageFormat,
                       })
                   ).src
                 : PLACEHOLDER_IMAGE

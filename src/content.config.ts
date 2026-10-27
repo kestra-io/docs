@@ -73,9 +73,6 @@ export const collections = {
                     )
                     .optional(),
                 image: image().optional(),
-                // Pins the cover's output format where Cloudflare's AVIF comes out
-                // larger than WebP. Unset lets Cloudflare negotiate (`format=auto`).
-                imageFormat: z.enum(["webp", "png", "jpeg"]).optional(),
                 updated: z.coerce.date().optional(),
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),

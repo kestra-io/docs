@@ -8,7 +8,6 @@ author:
   linkedin: https://www.linkedin.com/in/florian-hussonnois/
   image: "fhussonnois"
 image: ./main.jpg
-imageFormat: webp
 
 ---
 Kestra's servers use a heartbeat mechanism to periodically send their current state to the Kestra backend, indicating their liveness. That mechanism is crucial for the timely detection of server failures and for ensuring seamless continuity in workflow executions.

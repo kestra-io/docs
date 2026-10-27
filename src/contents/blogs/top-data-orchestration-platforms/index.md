@@ -7,7 +7,6 @@ author:
   name: Dario Radecic
   image: "dradecic"
 image: ./main.png
-imageFormat: webp
 ---
 
 Handling data in 2026 is tough, to say the least. It's become normal for companies to collect huge volumes of data from dozens of sources, which means orchestrating these workflows was never more important (and complex) than today. After all, it's what will allow you to make smart, data-driven decisions.

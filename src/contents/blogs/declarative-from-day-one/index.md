@@ -9,7 +9,6 @@ author:
   image: edarras
   role: CEO & Co-Founder
 image: ./main.jpg
-imageFormat: webp
 ---
 
 [Kestra](https://github.com/kestra-io/kestra) committed to a **declarative-first approach** from day one – and we’re more convinced than ever that it was the right decision. While others bolt on YAML or no-code layers as afterthoughts, Kestra was **designed from the ground** to be declarative, flexible, and language-agnostic.

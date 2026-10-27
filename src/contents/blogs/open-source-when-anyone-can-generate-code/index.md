@@ -4,7 +4,6 @@ description: "Open source became a distribution channel, GitHub stars got cheap,
 date: 2026-10-26T13:00:00
 category: Company News
 image: ./main.webp
-imageFormat: webp
 author:
   name: Emmanuel Darras
   linkedin: https://www.linkedin.com/in/emmanuel-darras/
