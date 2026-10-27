@@ -3,7 +3,7 @@ title: Add Inputs to Kestra Workflows
 h1: Make Flows Dynamic with Inputs
 sidebarTitle: Inputs
 icon: /src/contents/docs/icons/tutorial.svg
-description: Discover how to add dynamic inputs to your Kestra workflows to make them flexible and reusable across different scenarios.
+description: Discover how to add dynamic inputs to Kestra workflows, set default input values with the `defaults` property (not `default`), and make flows flexible and reusable.
 ---
 
 Instead of hardcoding values in your flow, use inputs to make your workflows more dynamic and reusable.
@@ -44,6 +44,8 @@ Hit the `Backspace` or `Delete` key while building your expression? Use the keyb
 Try running the above flow with different values for the `user` input. You can do this by clicking on the **Execute** button and then typing a new string value in the prompt for whatever name you'd like.
 
 ![Inputs](./inputs-2-0.png)
+
+### Why is the input property named `defaults` instead of `default`?
 
 :::alert{type="info"}
 The plural form `defaults` is used instead of `default` for two reasons. First, `default` is a reserved keyword in Java, so it cannot be used. Second, this property allows you to set default values for a JSON object which can be an array that simultaneously defines multiple default values.
