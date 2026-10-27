@@ -1,0 +1,165 @@
+---
+interface Props {
+    rows: number
+    cell?: number
+    gap?: number
+    mask?: string
+}
+
+const { rows, cell = 13, gap = 4, mask = "none" } = Astro.props
+---
+
+<div
+    class="pixel-grid"
+    aria-hidden="true"
+    style={`--mask: ${mask}`}
+    data-pixel-grid
+>
+    <div
+        class="cells"
+        style={`--rows: ${rows}; --cell: ${cell}px; --gap: ${gap}px`}
+        data-rows={rows}
+        data-pitch={cell + gap}
+    >
+    </div>
+</div>
+
+<script>
+    const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    function initGrid(root: HTMLElement) {
+        const grid = root.querySelector<HTMLElement>(".cells")!
+        const rows = Number(grid.dataset.rows)
+        const pitch = Number(grid.dataset.pitch)
+        const width = Math.max(window.innerWidth, screen.width)
+        const count = Math.ceil(width / pitch) + 2
+
+        let seed = 7
+        const next = () => (seed = (seed * 16807) % 2147483647) / 2147483647
+        const cells: HTMLElement[] = []
+        const fragment = document.createDocumentFragment()
+        for (let i = 0; i < count * rows; i++) {
+            const r = next()
+            const level = r < 0.74 ? 0 : r < 0.91 ? 1 : r < 0.98 ? 2 : 3
+            const span = document.createElement("span")
+            span.className = `l${level}`
+            cells.push(span)
+            fragment.append(span)
+        }
+        grid.append(fragment)
+        if (reduced()) return
+
+        const timer = setInterval(() => {
+            if (!root.isConnected) return clearInterval(timer)
+            const cell = cells[(Math.random() * cells.length) | 0]
+            const r = Math.random()
+            const kind = r < 0.05 ? "brand" : r < 0.28 ? "glow" : "lit"
+            cell.classList.add(kind)
+            setTimeout(() => cell.classList.remove(kind), 1600)
+        }, 120)
+
+        const section = root.closest("section") ?? root.parentElement!
+        const timers = new Map<HTMLElement, number>()
+        const light = (col: number, row: number) => {
+            if (row < 0 || row >= rows || col < 0 || col >= count) return
+            const cell = cells[col * rows + row]
+            cell.classList.add("trail")
+            clearTimeout(timers.get(cell))
+            timers.set(
+                cell,
+                window.setTimeout(() => cell.classList.remove("trail"), 450),
+            )
+        }
+        section.addEventListener("pointermove", (e) => {
+            if (e.pointerType !== "mouse") return
+            const box = grid.getBoundingClientRect()
+            const col = Math.floor((e.clientX - box.left) / pitch)
+            const row = Math.floor((e.clientY - box.top) / pitch)
+            light(col, row)
+            for (const [dx, dy] of [
+                [1, 0],
+                [-1, 0],
+                [0, 1],
+                [0, -1],
+            ]) {
+                if (Math.random() < 0.45) light(col + dx, row + dy)
+            }
+        })
+    }
+
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>(
+                "[data-pixel-grid]:not([data-ready])",
+            )
+            .forEach((root) => {
+                root.dataset.ready = "true"
+                initGrid(root)
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    .pixel-grid {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        mask-image: var(--mask);
+    }
+
+    .cells {
+        flex: none;
+        display: grid;
+        grid-template-rows: repeat(var(--rows), var(--cell));
+        grid-auto-flow: column;
+        grid-auto-columns: var(--cell);
+        gap: var(--gap);
+
+        :global(span) {
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.03);
+            transition:
+                background 0.9s ease,
+                box-shadow 0.9s ease;
+
+            &.l1 {
+                background: rgba(99, 27, 255, 0.14);
+            }
+
+            &.l2 {
+                background: rgba(99, 27, 255, 0.24);
+            }
+
+            &.l3 {
+                background: rgba(122, 61, 255, 0.36);
+            }
+
+            &.lit {
+                background: rgba(167, 150, 255, 0.5);
+                transition-duration: 0.15s;
+            }
+
+            &.glow {
+                background: rgba(203, 188, 255, 0.75);
+                box-shadow: 0 0 8px 1px rgba(167, 150, 255, 0.35);
+                transition-duration: 0.15s;
+            }
+
+            &.trail {
+                background: rgba(167, 150, 255, 0.55);
+                transition-duration: 0.1s;
+            }
+
+            &.brand {
+                background: #fe0071;
+                box-shadow: 0 0 8px 1px rgba(254, 0, 113, 0.35);
+                transition-duration: 0.15s;
+            }
+        }
+    }
+</style>

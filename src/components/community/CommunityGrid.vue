@@ -27,11 +27,6 @@
                     class="btn btn-secondary"
                     text="Follow on GitHub"
                 />
-                <Link
-                    href="https://github.com/kestra-io/kestra/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen"
-                    class="btn btn-primary"
-                    text="Find Open Issues"
-                />
             </div>
         </div>
     </section>
@@ -135,6 +130,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "/src/assets/styles/color-palette" as *;
+
     .community {
         position: relative;
         overflow: hidden;
@@ -202,6 +199,14 @@
 
             @include media-breakpoint-down(sm) {
                 flex-direction: column;
+            }
+
+            :deep(.btn-secondary) {
+                --ks-content-primary: #fff;
+                --ks-background-button-secondary: transparent;
+                --ks-content-btn-secondary-hover: #{$base-grey-800};
+                --ks-background-button-secondary-hover: #fff;
+                border-color: #fff;
             }
         }
     }

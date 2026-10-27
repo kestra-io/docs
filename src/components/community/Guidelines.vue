@@ -2,8 +2,18 @@
     <section class="guidelines">
         <div class="container">
             <div class="header">
-                <h2 data-usal="fade-r">Community Guidelines</h2>
-                <p data-usal="fade-l">The Kestra community is a friendly and welcoming place for everyone.</p>
+                <div>
+                    <h2 data-usal="fade-r">Community Guidelines</h2>
+                    <p data-usal="fade-l">The Kestra community is a friendly and welcoming place for everyone.</p>
+                </div>
+                <div class="actions">
+                    <a href="/slack" class="btn btn-primary">
+                        Join our Slack <ArrowRight />
+                    </a>
+                    <a href="https://www.reddit.com/r/kestra_io/" target="_blank" class="btn btn-secondary">
+                        Join our Reddit
+                    </a>
+                </div>
             </div>
 
             <div class="guide-list">
@@ -38,6 +48,7 @@
     import Plus from "vue-material-design-icons/Plus.vue";
     import Minus from "vue-material-design-icons/Minus.vue";
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue";
+    import ArrowRight from "vue-material-design-icons/ArrowRight.vue";
 
     const FAQ_ITEMS = [
         {
@@ -89,6 +100,52 @@
             display: flex;
             flex-direction: column;
             gap: 2rem;
+        }
+
+        .header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 2rem;
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h2 {
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                margin-bottom: 0;
+            }
+
+            .actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                flex-shrink: 0;
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.625rem;
+
+                :deep(svg) {
+                    width: 1rem;
+                    height: 1rem;
+                }
+            }
+
+            .btn-primary {
+                color: var(--ks-content-primary-inverse, #fff);
+            }
+
+            .btn-secondary {
+                color: var(--ks-content-primary);
+            }
         }
 
         .guide-list {

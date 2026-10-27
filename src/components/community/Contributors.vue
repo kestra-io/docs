@@ -67,7 +67,7 @@
                 contributors: undefined,
                 contributorsRand: undefined,
                 isExpanded: false,
-                regularCount: 24,
+                regularCount: 27,
             }
         },
         computed: {
@@ -155,7 +155,7 @@
         text-align: center;
         gap: 2rem;
         a {
-            width: fit-content;
+            width: 90px;
             color: var(--ks-content-primary);
             text-decoration: none;
             font-size: $font-size-md;
@@ -163,6 +163,13 @@
                 width: 90px;
                 height: 90px;
                 border-radius: 50%;
+            }
+            p {
+                max-width: 100%;
+                margin: 0;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         }
     }
