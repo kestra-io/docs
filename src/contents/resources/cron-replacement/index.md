@@ -68,7 +68,7 @@ Beyond the operational symptoms, cron's structural gaps remain the same as ever:
 - **Security gaps.** Jobs run with broad user permissions, secrets live in plaintext scripts, and there's no **RBAC** or audit trail for who scheduled what.
 - **Single point of failure.** One crond on one machine — no high availability, no failover.
 
-These gaps compound into the broader [orchestration problems and complexity](/resources/infrastructure/orchestration-problems-complexity) that push teams toward a real replacement.
+These gaps compound into the broader [orchestration problems and complexity](/resources/orchestration) that push teams toward a real replacement.
 
 ## System-Level Cron Alternatives: systemd-timers, at, and Kubernetes CronJob
 

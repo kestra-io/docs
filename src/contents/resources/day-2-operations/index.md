@@ -60,7 +60,7 @@ Second, it addresses **security and compliance**. The threat landscape is consta
 
 Third, it drives **efficiency and cost optimization**. Post-deployment, there are always opportunities to improve. By analyzing performance metrics and user behavior, teams can identify bottlenecks, optimize resource usage, and automate manual tasks. This not only reduces operational overhead but also lowers infrastructure costs and frees up engineering time for innovation.
 
-Finally, a strong Day-2 practice enables **adaptability and evolution**. Business needs change, and software must change with them. The feedback loops established during Day-2 provide the insights needed to iterate on the product, add new features, and scale the system effectively. This prevents the system from becoming a legacy burden and ensures it continues to deliver business value long after its initial deployment, helping to [solve orchestration problems and reduce complexity](/resources/infrastructure/orchestration-problems-complexity) over time.
+Finally, a strong Day-2 practice enables **adaptability and evolution**. Business needs change, and software must change with them. The feedback loops established during Day-2 provide the insights needed to iterate on the product, add new features, and scale the system effectively. This prevents the system from becoming a legacy burden and ensures it continues to deliver business value long after its initial deployment, helping to [solve orchestration problems and reduce complexity](/resources/orchestration) over time.
 
 ## Key Activities and Components of Day-2 Operations
 

@@ -35,7 +35,7 @@ JAMS Scheduler, a product from Fortra, is an enterprise-grade workload automatio
 
 Despite its strengths, the evolving technology landscape has led many organizations to look for alternatives. The primary drivers for this shift include:
 
-*   **Operational Complexity:** Managing traditional schedulers can be cumbersome, often requiring specialized knowledge and manual configuration that doesn't align with modern DevOps practices. This can lead to [orchestration problems rooted in complexity](/resources/infrastructure/orchestration-problems-complexity).
+*   **Operational Complexity:** Managing traditional schedulers can be cumbersome, often requiring specialized knowledge and manual configuration that doesn't align with modern DevOps practices. This can lead to [orchestration problems rooted in complexity](/resources/orchestration).
 *   **Vendor Lock-in and Cost:** As a proprietary solution, JAMS can lead to vendor lock-in and significant licensing costs, prompting teams to explore more flexible and cost-effective options.
 *   **Limited Polyglot Support:** While capable, JAMS is not inherently designed for the diverse, polyglot environments common today, where teams use Python, Go, Node.js, and other languages alongside traditional scripts.
 *   **Friction with GitOps and Cloud-Native:** The non-declarative nature of many traditional schedulers creates friction with GitOps workflows. Defining automation as code, versioning it in Git, and deploying it through CI/CD pipelines is often difficult or impossible.

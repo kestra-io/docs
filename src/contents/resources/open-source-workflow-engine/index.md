@@ -31,7 +31,7 @@ Many organizations begin their automation journey with simple tools like cron jo
 
 The next step often involves adopting domain-specific orchestrators—one for data pipelines, another for CI/CD, and a third for infrastructure automation. This approach creates silos, forcing engineers to write extensive "glue code" to connect disparate systems. The result is a fragmented, high-maintenance architecture where no single person has a complete view of the end-to-end process.
 
-This fragmentation introduces significant operational complexity. Teams spend more time maintaining the orchestrators and their integrations than building value. Furthermore, relying on proprietary or cloud-specific workflow tools can lead to vendor lock-in, limiting flexibility and increasing costs over time. These [orchestration problems](/resources/infrastructure/orchestration-problems-complexity) drive the search for a unified, open source workflow engine that can provide a single control plane across the entire organization.
+This fragmentation introduces significant operational complexity. Teams spend more time maintaining the orchestrators and their integrations than building value. Furthermore, relying on proprietary or cloud-specific workflow tools can lead to vendor lock-in, limiting flexibility and increasing costs over time. These [orchestration problems](/resources/orchestration) drive the search for a unified, open source workflow engine that can provide a single control plane across the entire organization.
 
 ## How we evaluated these open source workflow engines
 
