@@ -4,7 +4,7 @@ metaTitle: "Day 2 Is Where Infrastructure Automation Breaks"
 description: "Every tool reports success while the change across them fails. Why Day 2 infrastructure work breaks between the tools, and how to fix it without replacing them."
 date: 2026-10-28
 category: Solutions
-image: ./main.png
+image: ./main.jpg
 author:
   name: Kai Waehner
   linkedin: https://www.linkedin.com/in/kaiwaehner/
