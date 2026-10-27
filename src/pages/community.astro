@@ -18,9 +18,17 @@ const description =
 const AMBASSADOR_PROGRAM_URL = "https://forms.gle/1vdgjHLFWbfQADxG6"
 const CONTRIBUTORS_SHOWN = 27
 
+// The HTML waits on both calls, so a slow API must not stall the page.
+const apiTimeout = { signal: AbortSignal.timeout(3000) }
 const [metrics, contributors] = await Promise.all([
-    $fetchApiCachedOptional<GitHubMetrics>("/communities/github/metrics"),
-    $fetchApiCachedOptional<Contributor[]>("/communities/github/contributors"),
+    $fetchApiCachedOptional<GitHubMetrics>(
+        "/communities/github/metrics",
+        apiTimeout,
+    ),
+    $fetchApiCachedOptional<Contributor[]>(
+        "/communities/github/contributors",
+        apiTimeout,
+    ),
 ])
 
 const rankedContributors = rankContributors(contributors ?? [])

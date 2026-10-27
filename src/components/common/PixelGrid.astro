@@ -62,7 +62,10 @@ const { rows, cell = 13, gap = 4, mask = "none" } = Astro.props
         }
         let timer: number | undefined
         const observer = new IntersectionObserver(([entry]) => {
-            if (!root.isConnected) return observer.disconnect()
+            if (!root.isConnected) {
+                clearInterval(timer)
+                return observer.disconnect()
+            }
             if (entry.isIntersecting) {
                 timer ??= window.setInterval(twinkle, 120)
             } else {
