@@ -12,7 +12,9 @@ author:
   role: Global Field CTO
 ---
 
-A critical CVE lands late on a weekday.
+Most infrastructure teams have automated every tool they run. What usually isn't automated is the handoff between those tools, and Day 2 operations are where that gap tends to show up. Take a routine patch.
+
+A critical CVE lands late on a weekday. In many enterprises, it passes through five tools in sequence:
 
 1. The vulnerability platform flags it within minutes.
 2. A change record opens in the ITSM system.
@@ -20,11 +22,13 @@ A critical CVE lands late on a weekday.
 4. A configuration run restarts the affected services.
 5. A verification scan is scheduled to confirm the fix.
 
+Every tool does its step and reports success.
+
 ![Five steps of a vulnerability fix, each in a different tool, with question marks between them: CVE detected, change record, patch staged, services restarted, verified and closed](./day2-today-five-consoles.png)
 
 *Today: each tool reports its own success, and nothing owns the chain between them.*
 
-Every tool does its step and reports success. The patch fails on a few hundred hosts. The restart runs anyway, because nothing told it to wait. The next morning's scan still shows a few hundred hosts as vulnerable, and an engineer needs to rebuild the sequence from five consoles and a spreadsheet to work out why.
+Then the patch fails on a few hundred hosts. The restart runs anyway, because nothing told it to wait. The next morning's scan still shows a few hundred hosts as vulnerable, and an engineer needs to rebuild the sequence from five consoles and a spreadsheet to work out why.
 
 > Each tool kept a log of its own step. Nobody kept a log of the chain.
 
@@ -56,4 +60,8 @@ The platform that runs the first chain is the one the next domains land on, so [
 
 ## What is in the whitepaper
 
+:::alert{type="info"}
 Read the full whitepaper [Infrastructure Automation Is Not Infrastructure Orchestration](/resources/whitepapers/infrastructure-orchestration) for the target architecture, an anonymized production reference from a European bank patching its private cloud, the resource model an Aria replacement needs, and the five shortlist tests in detail.
+
+[Read the whitepaper](/resources/whitepapers/infrastructure-orchestration)
+:::
