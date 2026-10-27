@@ -1,5 +1,5 @@
 <template>
-    <section class="community">
+    <section class="community surface-inverse">
         <CommunityGradient />
         <div class="container">
             <div class="header">
@@ -55,9 +55,7 @@
         metrics: GitHubMetrics
     }>()
 
-    const formatNumber = (num: number) => {
-        return new Intl.NumberFormat("en-US").format(num ?? 0)
-    }
+    const formatNumber = new Intl.NumberFormat("en-US").format
 
     const communityStats = computed(() => [
         {
@@ -94,8 +92,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/color-palette" as *;
-
     .community {
         position: relative;
         overflow: hidden;
@@ -163,14 +159,6 @@
 
             @include media-breakpoint-down(sm) {
                 flex-direction: column;
-            }
-
-            :deep(.btn-secondary) {
-                --ks-content-primary: #fff;
-                --ks-background-button-secondary: transparent;
-                --ks-content-btn-secondary-hover: #{$base-grey-800};
-                --ks-background-button-secondary-hover: #fff;
-                border-color: #fff;
             }
         }
     }

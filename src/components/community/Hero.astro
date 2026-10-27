@@ -12,7 +12,7 @@ const MASK =
     "radial-gradient(ellipse 32% 42% at 50% 50%, rgba(0, 0, 0, 0.35) 30%, #000 100%)"
 ---
 
-<section class="hero">
+<section class="hero surface-dark">
     <PixelGrid rows={40} cell={16} gap={5} mask={MASK} />
     <div class="container">
         <span class="eyebrow">Open source</span>
@@ -98,14 +98,6 @@ const MASK =
             display: inline-flex;
             align-items: center;
             gap: 0.625rem;
-        }
-
-        .btn-secondary {
-            --ks-content-primary: #fff;
-            --ks-background-button-secondary: transparent;
-            --ks-content-btn-secondary-hover: #{$base-grey-800};
-            --ks-background-button-secondary-hover: #fff;
-            border-color: #fff;
         }
 
         :global(svg) {

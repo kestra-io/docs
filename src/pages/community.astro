@@ -1,6 +1,5 @@
 ---
 import Layout from "~/components/layout.astro"
-export const prerender = false
 import Hero from "~/components/community/Hero.astro"
 import AmbassadorPerks from "~/components/community/AmbassadorPerks.astro"
 import Contributors from "~/components/community/Contributors.vue"
@@ -9,6 +8,8 @@ import Guidelines from "~/components/community/Guidelines.vue"
 import type { Contributor, GitHubMetrics } from "~/components/community/types"
 import { rankContributors } from "~/components/community/contributors"
 import { $fetchApiCachedOptional } from "~/utils/fetch"
+
+export const prerender = false
 
 const title = "Kestra Community: Slack, GitHub & Ambassador Program"
 const description =
@@ -25,6 +26,13 @@ const [metrics, contributors] = await Promise.all([
 const rankedContributors = rankContributors(contributors ?? [])
 const topContributors = rankedContributors.slice(0, CONTRIBUTORS_SHOWN)
 const totalContributors = rankedContributors.length
+
+// The API's contributor count includes GitHub App accounts; the grid hides
+// them, so the stat tile and "N more contributors" must agree.
+const stats =
+    metrics && contributors
+        ? { ...metrics, contributors: totalContributors }
+        : metrics
 ---
 
 <Layout
@@ -37,7 +45,7 @@ const totalContributors = rankedContributors.length
     <div>
         <Hero ambassadorHref={AMBASSADOR_PROGRAM_URL} />
         <AmbassadorPerks href={AMBASSADOR_PROGRAM_URL} />
-        {metrics && <CommunityGrid metrics={metrics} />}
+        {stats && <CommunityGrid metrics={stats} />}
         {
             topContributors.length > 0 && (
                 <Contributors

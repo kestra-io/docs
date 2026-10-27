@@ -32,7 +32,7 @@
                     :disabled="isLoading"
                     @click="expand"
                 >
-                    {{ moreCount }} more contributors
+                    {{ formatNumber(moreCount) }} more contributors
                 </button>
                 <button
                     v-else
@@ -63,6 +63,8 @@
     const isLoading = ref(false)
     const topOfSection = ref<HTMLElement>()
 
+    const formatNumber = new Intl.NumberFormat("en-US").format
+
     const avatarUrl = (avatar: string) => {
         try {
             const url = new URL(avatar)
@@ -88,7 +90,8 @@
                     "/communities/github/contributors",
                 )
                 all.value = rankContributors(data)
-            } catch (e) {
+            } catch (error) {
+                console.error("Could not load the full contributor list:", error)
                 return
             } finally {
                 isLoading.value = false

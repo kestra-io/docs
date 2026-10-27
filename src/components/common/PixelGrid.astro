@@ -49,16 +49,28 @@ const { rows, cell = 13, gap = 4, mask = "none" } = Astro.props
         grid.appendChild(fragment)
         if (reduced()) return
 
-        const timer = setInterval(() => {
-            if (!root.isConnected) return clearInterval(timer)
+        const section = root.closest("section") ?? root.parentElement!
+
+        // The twinkle only runs while the grid is on screen, so it stops
+        // costing style recalcs once the visitor scrolls past the hero.
+        const twinkle = () => {
             const cell = cells[(Math.random() * cells.length) | 0]
             const r = Math.random()
             const kind = r < 0.05 ? "brand" : r < 0.28 ? "glow" : "lit"
             cell.classList.add(kind)
             setTimeout(() => cell.classList.remove(kind), 1600)
-        }, 120)
-
-        const section = root.closest("section") ?? root.parentElement!
+        }
+        let timer: number | undefined
+        const observer = new IntersectionObserver(([entry]) => {
+            if (!root.isConnected) return observer.disconnect()
+            if (entry.isIntersecting) {
+                timer ??= window.setInterval(twinkle, 120)
+            } else {
+                clearInterval(timer)
+                timer = undefined
+            }
+        })
+        observer.observe(section)
         const timers = new Map<HTMLElement, number>()
         const light = (col: number, row: number) => {
             if (row < 0 || row >= rows || col < 0 || col >= count) return
@@ -109,6 +121,7 @@ const { rows, cell = 13, gap = 4, mask = "none" } = Astro.props
         align-items: center;
         justify-content: center;
         pointer-events: none;
+        -webkit-mask-image: var(--mask);
         mask-image: var(--mask);
     }
 

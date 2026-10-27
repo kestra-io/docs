@@ -20,5 +20,5 @@
   to: "/hacktober"
 - regexp: "^/customers/?$"
   to: "/stories"
-- regexp: "^/write-for-us$"
+- regexp: "^/write-for-us/?$"
   to: "/community"
