@@ -46,7 +46,9 @@ Try running the above flow with different values for the `user` input. You can d
 ![Inputs](./inputs-2-0.png)
 
 :::alert{type="info"}
-The plural form `defaults` is used instead of `default` for two reasons. First, `default` is a reserved keyword in Java, so it cannot be used. Second, this property allows you to set default values for a JSON object which can be an array that simultaneously defines multiple default values.
+**Why is the input property called `defaults` instead of `default`?**
+
+The property is named `defaults` because `default` is a reserved keyword in Java. It also supports setting default values for a JSON object that can be an array defining multiple defaults.
 :::
 
 ## Input types
