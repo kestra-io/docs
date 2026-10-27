@@ -293,7 +293,7 @@ A password expires `password-max-age` after it was last changed, whoever changed
 Expiry only applies to signing in with the password. A user who also signs in through [SSO](../sso/index.md) or a one-time code can keep doing so, and does not see the banner in those sessions.
 
 :::alert{type="info"}
-Kestra only starts tracking a password's age from this version on. A password set before the upgrade is considered changed at the user's next successful password login, so nobody is locked out by the upgrade itself, and the first expiry happens `password-max-age` after that login.
+Kestra only starts tracking a password's age from this version on. During the upgrade, every existing password is considered changed at the time of the upgrade, so nobody is locked out by the upgrade itself, and the first expiry happens `password-max-age` after it.
 :::
 
 ### Password reuse
