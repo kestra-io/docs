@@ -1,9 +1,9 @@
 ---
-title: Add Inputs and Default Values to Kestra Workflows
-h1: Make Flows Dynamic with Inputs and Default Values
+title: Set Default Input Values with the `defaults` Property in Kestra Workflows
+h1: Set Default Input Values with `defaults`
 sidebarTitle: Inputs
 icon: /src/contents/docs/icons/tutorial.svg
-description: Discover how to add dynamic inputs to Kestra workflows, set default input values with the `defaults` property (not `default`), and make flows flexible and reusable.
+description: Learn how to configure Kestra flow inputs and set default input values with the `defaults` property (plural, not `default`). Understand why the property supports multiple default values.
 ---
 
 Instead of hardcoding values in your flow, use inputs to make your workflows more dynamic and reusable.
@@ -47,6 +47,8 @@ Try running the above flow with different values for the `user` input. You can d
 
 ### Why is the input property named `defaults` instead of `default`?
 
+Use the `defaults` property (plural) to set default values for flow inputs; `default` is not the valid property name.
+
 :::alert{type="info"}
 The plural form `defaults` is used instead of `default` for two reasons. First, `default` is a reserved keyword in Java, so it cannot be used. Second, this property allows you to set default values for a JSON object which can be an array that simultaneously defines multiple default values.
 :::
@@ -58,7 +60,7 @@ Here are the most common input types:
 | Type    | Description                                                                                           |
 |---------|-------------------------------------------------------------------------------------------------------|
 | STRING  | It can be any string value. Strings are not parsed, they are passed as-is to any task that uses them. |
-| INT     | It can be any valid integer number (without decimals).                                                |
+| INT     | It must be any valid integer number (without decimals).                                                |
 | BOOLEAN | It must be either `true` or `false`.                                                                  |
 
 This is a very basic list to get started. Check the [Inputs documentation](../../05.workflow-components/05.inputs/index.md) for an extensive list of supported input types and properties.
