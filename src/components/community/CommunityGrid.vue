@@ -30,6 +30,8 @@
                     href="https://github.com/kestra-io/kestra"
                     class="btn btn-secondary"
                     text="Follow on GitHub"
+                    target="_blank"
+                    rel="noopener"
                 />
             </div>
         </div>

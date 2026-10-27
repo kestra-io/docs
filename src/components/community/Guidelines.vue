@@ -7,7 +7,7 @@
                     <p data-usal="fade-l">The Kestra community is a friendly and welcoming place for everyone.</p>
                 </div>
                 <div class="actions">
-                    <a href="/slack" class="btn btn-primary">
+                    <a href="/slack" target="_blank" rel="noopener" class="btn btn-primary">
                         Join our Slack <ArrowRight />
                     </a>
                     <a href="https://www.reddit.com/r/kestra_io/" target="_blank" rel="noopener" class="btn btn-secondary">
