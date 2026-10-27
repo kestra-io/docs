@@ -3,6 +3,10 @@ import { buildContentSecurityPolicy } from "./contentSecurityPolicy";
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
 import { withConsentRegion } from "./consentRegion";
+import { previewAuth } from "./previewAuth";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, PREVIEW_AUTH_SECRET } from "astro:env/server";
+import { previewAuth } from "./previewAuth";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, PREVIEW_AUTH_SECRET } from "astro:env/server";
 import { VERSIONED_DOCS_PATH } from "../utils/versionedDocs";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
@@ -190,6 +194,17 @@ export default {
         ctx: Parameters<typeof handle>[2],
     ) {
         const url = new URL(request.url)
+
+        // First, so nothing on a workers.dev host (tracking proxy, static
+        // assets, redirects) is reachable without a kestra.io Google sign-in.
+        const denied = await previewAuth(request as unknown as Request, {
+            clientId: GOOGLE_CLIENT_ID,
+            clientSecret: GOOGLE_CLIENT_SECRET,
+            secret: PREVIEW_AUTH_SECRET,
+        })
+        if (denied) {
+            return denied
+        }
 
         // Proxy PostHog analytics directly, before Astro can apply
         // `trailingSlash: "never"`. posthog-js posts to /t/i/v0/e/ with a
