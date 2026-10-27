@@ -194,7 +194,7 @@ Approval workflows are applicable across virtually every department in an organi
 *   **Data and Analytics:** Before promoting a dbt model to production, an approval gate can ensure a senior engineer has reviewed the code and its impact, as shown in this [dbt Core approval blueprint](/blueprints/dbt-core-approval-gate).
 
 ## Related concepts
-*   [Workflow Governance: Manage & Automate Operations](/resources/infrastructure/workflow-governance)
+*   [Workflow Governance: Manage & Automate Operations](/resources/ai/ai-governance-workflows)
 *   [RBAC Workflow Orchestration: Secure Access with Kestra](/resources/infrastructure/rbac-workflow-orchestration)
 *   [Human-in-the-Loop (HITL) Orchestration Explained](/resources/ai/human-in-the-loop-orchestration)
 *   [Kestra Blueprints for Approval Workflows](/blueprints)

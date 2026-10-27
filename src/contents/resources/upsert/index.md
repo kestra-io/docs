@@ -31,7 +31,7 @@ This is the problem the "upsert" operation solves. By intelligently combining th
 
 Upsert, a blend of "update" and "insert," is a database operation that modifies a row if it already exists or creates a new one if it doesn't. This conditional logic is handled directly by the database engine based on a unique key or constraint. Instead of first querying the database to check for a record's existence and then deciding whether to run an `INSERT` or `UPDATE` statement, an upsert performs this in a single, atomic step.
 
-This atomicity is critical for building reliable [data pipelines](/resources/data/data-pipeline). It prevents race conditions where two processes might check for the same record simultaneously, leading to duplicate entries or failed updates. The primary benefits of using upsert include:
+This atomicity is critical for building reliable [data pipelines](/resources/data/create-data-pipeline). It prevents race conditions where two processes might check for the same record simultaneously, leading to duplicate entries or failed updates. The primary benefits of using upsert include:
 
 -   **Data Synchronization:** Keeps data consistent between different systems by ensuring records are always current.
 -   **[Idempotency](/resources/infrastructure/idempotency):** Allows an operation to be repeated multiple times without changing the result beyond the initial application. This is essential for fault-tolerant data ingestion.

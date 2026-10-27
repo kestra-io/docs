@@ -83,7 +83,7 @@ Kestra offers complete deployment flexibility. It can be self-hosted on a single
 
 ### Observability, State Management, and Governance
 
-Kestra is built with observability and governance as core tenets. It provides a detailed UI with execution topologies, Gantt charts, live-updating logs, and a version history for every flow. Its built-in KV Store allows for robust state management across workflow executions. For enterprises, features like audit logs, RBAC, and multi-tenancy provide the necessary controls for [workflow governance](/resources/infrastructure/workflow-governance).
+Kestra is built with observability and governance as core tenets. It provides a detailed UI with execution topologies, Gantt charts, live-updating logs, and a version history for every flow. Its built-in KV Store allows for robust state management across workflow executions. For enterprises, features like audit logs, RBAC, and multi-tenancy provide the necessary controls for [workflow governance](/resources/ai/ai-governance-workflows).
 
 GitHub Actions provides logs and a basic UI for monitoring runs, but its state management capabilities are limited. Passing complex artifacts or state between jobs can be cumbersome. While versioning is handled through Git, the platform lacks the deep, centralized audit and governance features required for managing complex, cross-departmental workflows. For teams looking to build robust deployment pipelines, it's essential to understand the [CI/CD workflow examples for Kestra](/docs/version-control-cicd/cicd/github-action).
 

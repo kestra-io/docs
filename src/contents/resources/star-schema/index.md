@@ -49,7 +49,7 @@ Key characteristics of a dimension table include:
 - **Denormalized Structure**: In a pure star schema, dimension tables are denormalized. This means all attributes related to a dimension are stored in a single, wide table to avoid complex joins. For instance, a `dim_product` table would contain product ID, name, category, subcategory, and brand all in one place.
 - **Surrogate Keys**: Each dimension table has a single primary key, often a system-generated integer called a surrogate key. This key is used to join with the fact table and remains stable even if the source system's keys change.
 
-Dimension tables are typically much smaller (fewer rows) than fact tables but can be very wide (many columns). For a comprehensive guide on building the pipelines for these structures, see our article on [Data Warehouse ETL](/resources/data/data-warehouse-etl).
+Dimension tables are typically much smaller (fewer rows) than fact tables but can be very wide (many columns). For a comprehensive guide on building the pipelines for these structures, see our article on [Data Warehouse ETL](/resources/data/etl-workflow).
 
 ## Why Dimensional Modeling Matters for Analytics
 

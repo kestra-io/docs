@@ -73,7 +73,7 @@ When a process is mapped out in a BPMN diagram, inefficiencies, redundant steps,
 
 ### Enabling process automation and governance
 
-A well-defined BPMN diagram is an executable model for automation. It provides a clear specification for what needs to be automated, how decisions should be handled, and how exceptions should be managed. This clarity is crucial for effective [workflow governance](/resources/infrastructure/workflow-governance), ensuring that automated processes are compliant, auditable, and secure. With features like role-based swimlanes, BPMN also supports robust access control, aligning process execution with organizational security policies and [RBAC workflow orchestration](/resources/infrastructure/rbac-workflow-orchestration).
+A well-defined BPMN diagram is an executable model for automation. It provides a clear specification for what needs to be automated, how decisions should be handled, and how exceptions should be managed. This clarity is crucial for effective [workflow governance](/resources/ai/ai-governance-workflows), ensuring that automated processes are compliant, auditable, and secure. With features like role-based swimlanes, BPMN also supports robust access control, aligning process execution with organizational security policies and [RBAC workflow orchestration](/resources/infrastructure/rbac-workflow-orchestration).
 
 ## BPMN in context: Comparing with other modeling notations
 
