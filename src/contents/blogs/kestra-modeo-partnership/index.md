@@ -3,6 +3,7 @@ title: "Kestra and Modeo: Data Platforms Built by Engineers Who Ship"
 description: "Modeo, the Paris data and AI engineering consultancy, is now a Kestra services partner. What its engineers build with Kestra and how to work with them."
 date: 2026-10-27T10:00:00
 category: Company News
+image: ./main.webp
 author:
   name: Emmanuel Darras
   linkedin: https://www.linkedin.com/in/emmanuel-darras/

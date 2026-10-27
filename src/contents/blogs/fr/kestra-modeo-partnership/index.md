@@ -3,6 +3,7 @@ title: "Modeo devient partenaire services de Kestra"
 description: "Modeo, cabinet parisien spécialisé en data et en IA, devient partenaire services de Kestra. Ce que ses équipes construisent avec Kestra et comment travailler avec elles."
 date: 2026-10-27T10:00:00
 category: Company News
+image: ./main.webp
 author:
   name: Emmanuel Darras
   linkedin: https://www.linkedin.com/in/emmanuel-darras/
