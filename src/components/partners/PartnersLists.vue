@@ -89,6 +89,12 @@
                             </a>
                         </div>
                     </div>
+                    <div v-if="props.helpHref" class="help">
+                        <span>{{ props.helpText }}</span>
+                        <a :href="props.helpHref" class="btn btn-sm btn-secondary">
+                            {{ props.helpCtaText }}
+                        </a>
+                    </div>
                 </div>
 
                 <p class="count" aria-live="polite">
@@ -150,6 +156,11 @@
         searchPlaceholder: string
         ctaText?: string
         ctaHref?: string
+        helpText?: string
+        helpCtaText?: string
+        helpHref?: string
+        /** Filters applied when the URL carries no filter or search of its own. */
+        defaultSelected?: Partial<Record<FilterKey, string[]>>
     }>()
 
     const searchQuery = ref("")
@@ -231,8 +242,12 @@
     onMounted(() => {
         const params = new URLSearchParams(window.location.search)
         searchQuery.value = params.get("q") ?? ""
+        const hasState =
+            params.has("q") || props.filters.some(({ key }) => params.has(key))
         for (const { key } of props.filters) {
-            selected[key] = params.get(key)?.split(",").filter(Boolean) ?? []
+            selected[key] = hasState
+                ? (params.get(key)?.split(",").filter(Boolean) ?? [])
+                : [...(props.defaultSelected?.[key] ?? [])]
         }
     })
 
@@ -607,6 +622,16 @@
                 }
             }
         }
+    }
+
+    .help {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        font-size: $font-size-sm;
+        color: rgba(255, 255, 255, 0.75);
     }
 
     .count {
