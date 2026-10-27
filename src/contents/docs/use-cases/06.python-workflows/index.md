@@ -105,7 +105,7 @@ Add a `taskRunner` property to the Python task to run it on AWS Batch:
     bucket: kestra-us
 ```
 
-You can set plugin defaults at the flow, namespace, or global level to apply to all tasks of that type, ensuring that all Python tasks run on AWS Batch in a given environment.
+In Enterprise Edition, a namespace or tenant [Policy](../../07.enterprise/02.governance/policies/index.md) can add this `taskRunner` to every Python task, ensuring that all Python tasks run on AWS Batch in a given environment.
 
 ---
 

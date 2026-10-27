@@ -1,7 +1,7 @@
 ---
 title: Plugins & Execution Configuration in Kestra
-h1: Configure Plugin Defaults, Retries & System Flows
-description: Configure plugin installation, plugin defaults, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
+h1: Configure Plugins, Static Policies, Retries & System Flows
+description: Configure plugin installation, static policies, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
 sidebarTitle: Plugins and Execution
 icon: /src/contents/docs/icons/admin.svg
 ---
@@ -17,8 +17,7 @@ This area includes:
 - installing plugins
 - custom Maven repositories
 - Enterprise plugin repositories
-- plugin defaults
-- forced plugin defaults
+- static policies (global defaults and enforcement)
 - plugin security and allowed plugins
 - plugin management settings
 
@@ -211,7 +210,7 @@ kestra:
 `max-delay` caps the maximum backoff interval. It is undefined by default, which means the delay grows without bound according to the multiplier.
 
 :::alert{type="warning"}
-These retries do not apply to tasks. For task-level retries across many plugins, use plugin defaults.
+These retries do not apply to tasks. Set `retry` on the task or the flow; in Enterprise Edition, a [Policy](../../07.enterprise/02.governance/policies/index.md) can add it to many flows.
 :::
 
 Example task-level retry default:
@@ -226,7 +225,7 @@ Example task-level retry default:
     warningOnRetry: true
 ```
 
-That distinction matters: `kestra.retries` protects platform integrations such as storage and secret backends, while task retry behavior should be managed through plugin defaults or the flow itself.
+That distinction matters: `kestra.retries` protects platform integrations such as storage and secret backends, while task retry behavior should be managed in the flow itself or, in Enterprise Edition, through Policies.
 
 Use `kestra.tasks.tmp-dir` when task runners need a predictable working directory on the host or inside a mounted volume:
 

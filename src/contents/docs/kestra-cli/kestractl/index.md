@@ -81,7 +81,7 @@ kestractl flows list my.namespace --output json
 - `flows`: list, get, deploy, validate, enable, disable, delete, export, import, and sync flows.
 - `executions`: run, inspect, control, and bulk-manage executions.
 - `triggers`: list, enable, disable, unlock, delete, manage backfills, and export triggers.
-- `namespaces`: list, get, create, update, delete namespaces and manage their plugin defaults.
+- `namespaces`: list, get, create, update, delete namespaces and manage their variables.
 - `nsfiles`: list, get, upload, search, move, export, manage revisions, and delete namespace files.
 - `kv`: list, set (with optional TTL), update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
 - `dashboards`: list, get, create, update, and delete dashboards. Requires Kestra EE.

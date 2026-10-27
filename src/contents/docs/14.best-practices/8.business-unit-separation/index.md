@@ -15,7 +15,7 @@ Choosing between tenants and namespaces for separating business units depends on
 
 ## When to use multiple tenants
 
-A [tenant](../../07.enterprise/02.governance/tenants/index.md) is an **isolated environment** within a Kestra instance. Tenants have their own **fully isolated resources**, including flows, RBAC policies, secrets, variables, plugin defaults, and more. Users exist globally across the instance but can have different roles and permissions per tenant.
+A [tenant](../../07.enterprise/02.governance/tenants/index.md) is an **isolated environment** within a Kestra instance. Tenants have their own **fully isolated resources**, including flows, RBAC policies, secrets, variables, Policies, and more. Users exist globally across the instance but can have different roles and permissions per tenant.
 
 You can configure dedicated resources for each tenant:
 

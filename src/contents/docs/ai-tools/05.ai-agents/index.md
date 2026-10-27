@@ -119,7 +119,7 @@ The `prompt` property instructs the agent to summarize the input text. For a sho
 
 ![AI Agent Initial Summary](./ai-agent-summary.png)
 
-The `english_brevity` task only needs a `prompt` because the `systemMessage` is inherited from plugin defaults. Whether the original output is in a different language or needs shortening, `english_brevity` produces a one-sentence English summary.
+The `english_brevity` task has no `systemMessage`: its `prompt` alone asks for a one-sentence English summary of the first task's output. Whether the original output is in a different language or needs shortening, `english_brevity` produces a one-sentence English summary.
 
 ![AI Agent Abbreviated Summary](./ai-agent-brevity.png)
 

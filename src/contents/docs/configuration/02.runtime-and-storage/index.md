@@ -841,5 +841,5 @@ kestra:
 ## When to use this page
 
 - Need logs, telemetry, metrics, endpoints, CORS, or SSL: [Observability and Networking](../03.observability-and-networking/index.md)
-- Need plugin defaults, retries, task temp storage, templates, or system flows: [Plugins and Execution](../04.plugins-and-execution/index.md)
+- Need static policies, retries, task temp storage, templates, or system flows: [Plugins and Execution](../04.plugins-and-execution/index.md)
 - Need secret backends or server hardening: [Security and Secrets](../05.security-and-secrets/index.md)
