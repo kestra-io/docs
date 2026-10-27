@@ -1,6 +1,6 @@
 ---
-title: Add Inputs to Kestra Workflows
-h1: Make Flows Dynamic with Inputs
+title: Add Inputs and Default Values to Kestra Workflows
+h1: Make Flows Dynamic with Inputs and Default Values
 sidebarTitle: Inputs
 icon: /src/contents/docs/icons/tutorial.svg
 description: Discover how to add dynamic inputs to Kestra workflows, set default input values with the `defaults` property (not `default`), and make flows flexible and reusable.
