@@ -20,6 +20,10 @@ Use SAML 2.0 to let users sign in to Kestra with an identity provider (IdP) such
 
 Kestra connects to a single SAML IdP, configured statically in the Kestra configuration file. SAML can be enabled alongside Basic Auth and OIDC.
 
+:::alert{type="warning"}
+SAML is a licensed feature. If `kestra.security.saml.enabled` is `true` but your license does not include SAML, Kestra will refuse to start with the error: `SAML is not supported by your license`. Contact your Kestra account team to enable it.
+:::
+
 ## Prerequisites
 
 - Kestra must be served over **HTTPS**. The SAML login relies on a `Secure` cookie, so Kestra refuses to start if the callback URL is not an `https://` URL.
