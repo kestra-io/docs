@@ -66,7 +66,7 @@ When choosing an AWX alternative, it's crucial to evaluate platforms based on a 
 
 Kestra is a modern, open-source orchestration platform that provides a unified control plane for all your workflows—not just Ansible. It's built on a declarative, language-agnostic foundation, allowing you to define complex workflows in simple YAML files.
 
-Instead of being just a UI for one tool, Kestra acts as the brain that coordinates your entire stack. A Kestra workflow can seamlessly integrate Ansible playbooks, Terraform plans, Kubernetes jobs, Python scripts, and SQL queries. This declarative approach aligns perfectly with [GitOps for operations](/resources/infrastructure/gitops-for-operations), making your automation auditable, versionable, and easy to manage.
+Instead of being just a UI for one tool, Kestra acts as the brain that coordinates your entire stack. A Kestra workflow can seamlessly integrate Ansible playbooks, Terraform plans, Kubernetes jobs, Python scripts, and SQL queries. This declarative approach aligns perfectly with [GitOps for operations](/resources/infrastructure/gitops), making your automation auditable, versionable, and easy to manage.
 
 For example, Germany's public-sector IT provider, Dataport, uses Kestra to standardize API-driven cloud orchestration on its private cloud, creating a government-grade control plane.
 

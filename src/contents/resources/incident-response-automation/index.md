@@ -153,7 +153,7 @@ For critical actions, such as isolating a production server or blocking an IP ad
 
 Building a mature incident response capability involves understanding several related domains of [infrastructure automation](/resources/infrastructure/automation).
 
--   [Workflow Governance](/resources/infrastructure/workflow-governance): Securing the automation platform itself is critical. This includes managing access, protecting credentials, and auditing workflow executions.
+-   [Workflow Governance](/resources/ai/ai-governance-workflows): Securing the automation platform itself is critical. This includes managing access, protecting credentials, and auditing workflow executions.
 -   [Secrets Rotation Automation](/resources/infrastructure/secrets-rotation-automation): Automating the rotation of API keys, passwords, and other credentials is a key part of both preventative security and incident response.
 -   [IAM Automation](/docs/how-to-guides/iam-automation): Automating identity and access management tasks, such as disabling accounts or revoking permissions, is a common remediation step in incident response playbooks.
 -   [Workflow Secret Management](/resources/infrastructure/workflow-secret-management): Securely managing secrets used by workflows is fundamental. Platforms should integrate with vaults like HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault.

@@ -34,7 +34,7 @@ Despite its long-standing presence, many organizations are re-evaluating their i
 - **High Licensing and Operational Costs:** Control-M's pricing model can be prohibitive, and the operational overhead required to maintain the platform is substantial.
 - **Steep Learning Curve:** The platform's complexity often requires specialized knowledge, making it difficult to onboard new team members and democratize automation.
 - **Legacy Architecture:** While it has adapted over time, its core architecture can present challenges in modern hybrid and multi-cloud environments, where flexibility and API-first integration are paramount.
-- **Less Developer-Centric:** Compared to modern tools, its workflow definition and management can feel cumbersome for developer-first teams accustomed to GitOps and [Infrastructure-as-Code](/resources/infrastructure/what-is-infrastructure-as-code) practices.
+- **Less Developer-Centric:** Compared to modern tools, its workflow definition and management can feel cumbersome for developer-first teams accustomed to GitOps and [Infrastructure-as-Code](/resources/infrastructure/everything-as-code) practices.
 - **Module Sunsetting:** BMC's end-of-life announcements for specific modules, such as Control-M for Web Services, Java, and Messaging (WJM), signal a need to modernize and find platforms with more future-proof integrations.
 - **Limited Event-Driven Capabilities:** Modern enterprises increasingly rely on [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) for real-time responsiveness, an area where many legacy WLA platforms including Control-M are constrained by their batch-centric origins.
 
