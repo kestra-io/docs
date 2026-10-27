@@ -58,7 +58,6 @@ It does two things on one platform. It governs the tools that stay, and it repla
 
 The platform that runs the first chain is the one the next domains land on, so [the whitepaper](/resources/whitepapers/infrastructure-orchestration) proposes five properties to test inside a proof of concept: domain neutrality, deployment and sovereignty flexibility, one canonical definition in Git, licensing per instance, and native reach across the whole chain. The same approval gates, scoped credentials, and audit record that make a patch wave governable are what AI agents need once they start making changes through the same tools.
 
-## What is in the whitepaper
 
 :::alert{type="info"}
 Read the full whitepaper [Infrastructure Automation Is Not Infrastructure Orchestration](/resources/whitepapers/infrastructure-orchestration) for the target architecture, an anonymized production reference from a European bank patching its private cloud, the resource model an Aria replacement needs, and the five shortlist tests in detail.
