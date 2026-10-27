@@ -187,6 +187,22 @@ export default defineConfig({
                 access: "secret",
                 optional: true,
             }),
+            // Google sign-in for *.kestra-io.workers.dev (src/middlewares/previewAuth.ts).
+            GOOGLE_CLIENT_ID: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
+            GOOGLE_CLIENT_SECRET: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
+            PREVIEW_AUTH_SECRET: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             ASHBY_APIKEY: envField.string({
                 context: "server",
                 access: "secret",
