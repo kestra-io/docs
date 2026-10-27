@@ -4,6 +4,7 @@ import { Image } from "astro:assets"
 export interface BlogPost {
     path: string
     image?: ImageMetadata
+    imageFormat?: "webp" | "png" | "jpeg"
     title: string
     date: string
     category?: string
@@ -30,6 +31,7 @@ const { posts, title, headingId } = Astro.props
                         {post.image && (
                             <Image
                                 src={post.image}
+                                format={post.imageFormat}
                                 class="card-img-left"
                                 alt={post.title}
                             />

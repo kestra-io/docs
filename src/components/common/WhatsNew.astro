@@ -11,6 +11,7 @@ const recentBlogs = await Promise.all(
         .map(async (blog) => ({
             path: `/blogs/${blog.id}`,
             image: blog.data.image,
+            imageFormat: blog.data.imageFormat,
             title: blog.data.title,
             date: blog.data.date.toISOString(),
             category: blog.data.category,

@@ -190,6 +190,7 @@ const relatedBlogs = allBlogs
     .map((b) => ({
         path: `/blogs/${b.id}`,
         image: b.data.image,
+        imageFormat: b.data.imageFormat,
         title: b.data.title,
         date: b.data.date.toISOString(),
         category: b.data.category,

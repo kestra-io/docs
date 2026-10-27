@@ -8,6 +8,7 @@ author:
   linkedin: https://www.linkedin.com/in/wrussell1999/
   image: "wrussell"
 image: ./main.jpg
+imageFormat: webp
 ---
 
 When you get started with a new tool, it can be overwhelming to know where to start and what to look at first. You probably already have some existing code that you're looking to integrate without doing a ton of extra work.

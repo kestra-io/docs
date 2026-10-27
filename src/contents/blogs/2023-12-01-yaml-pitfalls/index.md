@@ -9,6 +9,7 @@ author:
   medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
+imageFormat: webp
 ---
 
 ## Understanding where the YAML criticism comes from
