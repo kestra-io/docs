@@ -10,7 +10,7 @@
                     <a href="/slack" class="btn btn-primary">
                         Join our Slack <ArrowRight />
                     </a>
-                    <a href="https://www.reddit.com/r/kestra_io/" target="_blank" class="btn btn-secondary">
+                    <a href="https://www.reddit.com/r/kestra_io/" target="_blank" rel="noopener" class="btn btn-secondary">
                         Join our Reddit
                     </a>
                 </div>
@@ -217,6 +217,11 @@
 
         a {
             color: var(--ks-content-link);
+        }
+
+        > .container > p a {
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
         }
     }
 </style>

@@ -18,7 +18,11 @@
             </div>
 
             <div class="stats-grid">
-                <NoGapGrid :items="communityStats" :inverted="true" />
+                <NoGapGrid
+                    :items="communityStats"
+                    :inverted="true"
+                    heading-level="h3"
+                />
             </div>
 
             <div class="cta">

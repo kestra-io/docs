@@ -46,7 +46,7 @@ const { rows, cell = 13, gap = 4, mask = "none" } = Astro.props
             cells.push(span)
             fragment.append(span)
         }
-        grid.append(fragment)
+        grid.appendChild(fragment)
         if (reduced()) return
 
         const timer = setInterval(() => {
