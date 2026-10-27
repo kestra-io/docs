@@ -408,6 +408,82 @@ After the run, the `outputFiles` property allows you to preview or download `sys
 
 ![Ansible File Output](./ansible-outputs.png)
 
+### Install Galaxy collections and Python packages
+
+When your playbooks use Galaxy collections or Python libraries that the image doesn't include, declare them on the task with `galaxyDependencies` and `pythonDependencies`. For example, if you extend the playbook with the `community.general.json_query` filter, it needs the `community.general` collection and the `jmespath` package:
+
+```yaml
+id: system_report
+namespace: company.team
+
+tasks:
+  - id: system_info
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    namespaceFiles:
+      enabled: true
+    galaxyDependencies:
+      - community.general
+    pythonDependencies:
+      - jmespath
+    outputFiles:
+      - system_info.json
+    containerImage: cytopia/ansible:latest-tools
+    commands:
+      - ansible-playbook -i inventory.ini system_info.yml
+```
+
+Kestra installs them before the commands run and caches the result in internal storage. The next execution with the same dependencies, container image, and task runner restores the cache instead of reinstalling, and logs `Restored Ansible dependencies from cache`. A `requirements.yml` or `requirements.txt` added through Namespace Files or `inputFiles` is installed and cached the same way.
+
+The cache expires after `dependencyCacheTtl` (default `P7D`). Its key does not track new releases of unpinned dependencies or a new image behind a floating tag such as `latest`, so pin exact versions (for example, `jmespath==1.0.1`) and image tags if you need a predictable install. Set `dependencyCacheEnabled: false` to install fresh on every run.
+
+### Run it with Ansible Runner
+
+The [Ansible Runner task](/plugins/plugin-ansible/io.kestra.plugin.ansible.runner.ansiblerunner) runs the same playbook through `ansible-runner` inside an Ansible Execution Environment image. Use it when you want typed `project` and `inventory` properties instead of hand-written commands, and structured run results as task outputs. Set `containerImage` to the Execution Environment you want. This example uses `ghcr.io/ansible/community-ansible-dev-tools:latest`, a Fedora-based image with a current Python. The default `quay.io/ansible/ansible-runner:stable-2.12-latest` image is based on CentOS 8 with Python 3.8, so this playbook tries a `yum` upgrade there and fails against the retired CentOS 8 package mirrors.
+
+With the same Namespace Files, point `project.playbook` and `inventory.file` at the playbook and inventory. Extra variables can come from files as well as inline values. Add a `vars/audit.yml` Namespace File that raises the minimum Python version:
+
+```yaml
+python3_min_version: "3.12.0"
+```
+
+Then load it with `env.extraVarsFiles`:
+
+```yaml
+id: system_report_runner
+namespace: company.team
+
+tasks:
+  - id: system_info
+    type: io.kestra.plugin.ansible.runner.AnsibleRunner
+    containerImage: ghcr.io/ansible/community-ansible-dev-tools:latest
+    namespaceFiles:
+      enabled: true
+    project:
+      playbook: system_info.yml
+    inventory:
+      file: inventory.ini
+    env:
+      extraVarsFiles:
+        - vars/audit.yml
+    outputFiles:
+      - system_info.json
+    logsMode: SUMMARY
+```
+
+Ansible extra variables take precedence over the `vars` block in the playbook, so this run checks Python against `3.12.0` instead of `3.11.0`. Files listed in `extraVarsFiles` accept JSON or YAML from the working directory, Namespace Files (`nsfile://company.team/vars/audit.yml`), or internal storage (`kestra:///...`). Kestra merges them in order, and inline `env.extraVars` values override keys from the files. Values under sensitive key names such as `token`, `secret`, or `vault` are masked in logs.
+
+`logsMode: SUMMARY` streams plays, tasks, failures, and the recap instead of every output line. After the run, the task outputs include:
+
+- `status` and `rc`: the final run status (`successful`, `failed`, or `timeout`) and return code.
+- `failures`, `failedHosts`, and `stats`: failure counts and per-host statistics.
+- `resultsUri`: a `results.json` report in internal storage with the status, summary, and failed hosts and tasks.
+- `artifactsUri`: a ZIP archive of the raw `ansible-runner` job events.
+- `outputFiles`: the captured `system_info.json`.
+
+`ansible-runner` runs the playbook from its `runner/project` directory, so the report is keyed by that path. Reference it downstream with `{{ outputs.system_info.outputFiles['runner/project/system_info.json'] }}`, for example as the `from` value in the S3 upload below.
+
+By default, the task fails when the run status is not `successful`. Set `failOnErrors: false` to let downstream tasks inspect `failedHosts` instead.
+
 ### Upload the report to S3
 
 Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.upload) and store credentials in [secrets](../../06.concepts/04.secret/index.md):

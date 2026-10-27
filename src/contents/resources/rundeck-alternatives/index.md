@@ -69,7 +69,7 @@ Jenkins is one of the most established open-source automation servers in the Dev
 Ansible is a powerful open-source tool for configuration management, application deployment, and task automation. Its agentless architecture and simple YAML-based playbooks make it easy to get started. While Rundeck can be used to provide a UI for Ansible playbooks, Ansible itself (especially when paired with Red Hat Ansible Automation Platform) can be a comprehensive alternative. SaltStack offers similar capabilities but uses an agent-based model, which can provide faster execution for large-scale environments.
 
 *   **Best for:** IT operations and infrastructure teams prioritizing configuration management, desired state enforcement, and agentless automation.
-*   **Learn more:** [What is Infrastructure as Code (IaC)?](/resources/infrastructure/what-is-infrastructure-as-code)
+*   **Learn more:** [What is Infrastructure as Code (IaC)?](/resources/infrastructure/everything-as-code)
 
 ## 5. Argo Workflows
 Argo Workflows is a Kubernetes-native workflow engine. If your infrastructure and applications are built on Kubernetes, Argo provides a powerful way to orchestrate parallel jobs and complex workflows directly within your cluster. Workflows are defined as Kubernetes Custom Resource Definitions (CRDs) in YAML, aligning perfectly with cloud-native and GitOps practices. It is particularly strong for CI/CD, batch processing, and machine learning pipelines that are container-based.
@@ -110,7 +110,7 @@ Puppet is a long-standing leader in the configuration management space. It uses 
 ### Assessing your specific automation requirements
 The best choice depends entirely on your primary goal. Are you looking to replace simple runbooks, manage server configurations, or build a universal orchestration layer?
 *   **For IT operations teams** needing a modern runbook and incident response platform, tools like Kestra and StackStorm are strong contenders.
-*   **For infrastructure teams** focused on [Infrastructure as Code](/resources/infrastructure/what-is-infrastructure-as-code), Ansible, Puppet, and Terraform (orchestrated by Kestra) are the standard.
+*   **For infrastructure teams** focused on [Infrastructure as Code](/resources/infrastructure/everything-as-code), Ansible, Puppet, and Terraform (orchestrated by Kestra) are the standard.
 *   **For platform teams** that need to orchestrate across multiple domains—from [data pipelines](/resources/data) to [AI workflows](/resources/ai)—a universal platform like Kestra provides the most flexibility.
 
 ### Considering community support and ecosystem

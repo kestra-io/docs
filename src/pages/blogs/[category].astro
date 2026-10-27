@@ -37,7 +37,6 @@ const sortedBlogs = await Promise.all(
                 ? (
                       await getImage({
                           src: blog.data.image,
-                          format: "webp",
                           width: 800,
                       })
                   ).src
@@ -65,7 +64,6 @@ const externalNews = await Promise.all(
         .map(async (entry) => {
             const image = await getImage({
                 src: entry.data.image,
-                format: "webp",
                 width: 800,
             })
             return {

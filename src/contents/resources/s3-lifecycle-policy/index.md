@@ -125,6 +125,6 @@ These policies can be configured per-team or per-project, aligning with best pra
 
 *   **[Data Retention Automation](/resources/data/data-retention-automation):** The broader practice of creating automated, policy-driven systems to manage the data lifecycle for compliance and risk management.
 *   **[Data Observability](/resources/data/data-observability):** Understanding the health and state of your data. Orchestrating lifecycle policies provides another layer of observability into your data's state.
-*   **[Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code):** S3 lifecycle policies can and should be defined as code (e.g., via Terraform or CloudFormation) and managed within a version-controlled, automated workflow.
+*   **[Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code):** S3 lifecycle policies can and should be defined as code (e.g., via Terraform or CloudFormation) and managed within a version-controlled, automated workflow.
 *   **[ETL Workflow](/resources/data/etl-workflow):** Lifecycle policies are often part of a larger ETL process, managing the raw and processed data once the pipeline has finished.
 *   **[Cloud Cost Management](/infra-automation):** A discipline focused on reducing cloud spending, where S3 lifecycle policies are a foundational tool.

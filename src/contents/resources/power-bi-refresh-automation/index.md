@@ -33,9 +33,9 @@ Most Power BI implementations start with a simple scheduled refresh. You set you
 
 ### The fundamental problem of time-based refreshes
 
-Time-based schedules operate on a fixed clock, assuming that upstream data will always be ready by a specific time. This assumption is fragile. A modern [data pipeline](/resources/data/data-pipeline) involves multiple stages: ingestion from various sources, transformation in a data warehouse (like Snowflake or BigQuery), and validation for quality. These processes have variable durations. An API source might be slow one day, or a complex dbt model might take longer to run due to a surge in data volume.
+Time-based schedules operate on a fixed clock, assuming that upstream data will always be ready by a specific time. This assumption is fragile. A modern [data pipeline](/resources/data/create-data-pipeline) involves multiple stages: ingestion from various sources, transformation in a data warehouse (like Snowflake or BigQuery), and validation for quality. These processes have variable durations. An API source might be slow one day, or a complex dbt model might take longer to run due to a surge in data volume.
 
-When you tie your Power BI refresh to a fixed schedule—a simple [cron expression](/resources/infrastructure/cron-expression)—you are guessing when the data will be ready.
+When you tie your Power BI refresh to a fixed schedule—a simple [cron expression](/resources/infrastructure/cron-replacement)—you are guessing when the data will be ready.
 - **If you guess too early:** The refresh runs before the upstream pipeline is complete, pulling in incomplete or stale data. Your reports are technically "refreshed" but factually wrong.
 - **If you guess too late:** You build in a large buffer to be safe (e.g., refresh at 10 AM when the pipeline usually finishes by 7 AM). This means your business users are working with hours-old data, even when fresh data is available. This delay negates the value of having a fast, efficient data pipeline.
 
