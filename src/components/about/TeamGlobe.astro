@@ -1,18 +1,21 @@
 ---
-// Where the team works from. The two headquarters get a ring; every other
-// place is a plain dot.
+// The two headquarters get a ring and a label; the other dots are regions
+// where Kestra runs in production, unlabeled.
 const PLACES = [
     { code: "FR", name: "France", lat: 46.6, lon: 2.4, hq: true },
     { code: "US", name: "United States", lat: 39.5, lon: -98.4, hq: true },
-    { code: "IN", name: "India", lat: 21.1, lon: 78.9 },
-    { code: "DE", name: "Germany", lat: 51.2, lon: 10.4 },
-    { code: "GB", name: "United Kingdom", lat: 52.8, lon: -1.6 },
-    { code: "ES", name: "Spain", lat: 40.2, lon: -3.7 },
-    { code: "AT", name: "Austria", lat: 47.6, lon: 14.1 },
-    { code: "IE", name: "Ireland", lat: 53.2, lon: -8 },
-    { code: "IT", name: "Italy", lat: 42.8, lon: 12.6 },
-    { code: "RS", name: "Serbia", lat: 44, lon: 20.9 },
-    { code: "SI", name: "Slovenia", lat: 46.1, lon: 14.8 },
+    { code: "CA", name: "Canada", lat: 45.5, lon: -73.6 },
+    { code: "BR", name: "Brazil", lat: -23.5, lon: -46.6 },
+    { code: "CL", name: "Chile", lat: -33.4, lon: -70.6 },
+    { code: "DE", name: "Germany", lat: 50.1, lon: 8.7 },
+    { code: "SE", name: "Sweden", lat: 59.3, lon: 18.1 },
+    { code: "AE", name: "United Arab Emirates", lat: 25.2, lon: 55.3 },
+    { code: "ZA", name: "South Africa", lat: -26.2, lon: 28 },
+    { code: "IN", name: "India", lat: 19.1, lon: 72.9 },
+    { code: "SG", name: "Singapore", lat: 1.35, lon: 103.8 },
+    { code: "JP", name: "Japan", lat: 35.7, lon: 139.7 },
+    { code: "KR", name: "South Korea", lat: 37.6, lon: 127 },
+    { code: "AU", name: "Australia", lat: -31.95, lon: 115.9 },
 ]
 
 const OFFICES = [
@@ -31,7 +34,7 @@ const OFFICES = [
     {
         country: "Remote",
         name: "Distributed teams",
-        text: "Engineering, field and go-to-market teams across North America, Europe and India.",
+        text: "Engineering, field and go-to-market teams across North America, Europe and Asia.",
     },
 ]
 ---
@@ -40,10 +43,11 @@ const OFFICES = [
     <div class="container">
         <div class="text">
             <span class="eyebrow">Global presence</span>
-            <h2>Two headquarters,<br />{PLACES.length} countries.</h2>
+            <h2>Two headquarters,<br />one global team.</h2>
             <p class="intro">
-                Offices in the United States and France, and teammates across
-                Europe, North America and India.
+                Offices in the United States and France, teammates across North
+                America, Europe and Asia, and customers in production on every
+                continent.
             </p>
 
             <ul class="offices">
@@ -62,7 +66,7 @@ const OFFICES = [
         <div class="globe">
             <canvas
                 role="img"
-                aria-label={`A globe with the Kestra team in ${PLACES.map((p) => p.name).join(", ")}`}
+                aria-label="A globe showing where the Kestra team works"
             ></canvas>
         </div>
     </div>
@@ -155,7 +159,7 @@ const OFFICES = [
     function arc(a: Vec, b: Vec, steps = 40): Vec[] {
         const dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
         const omega = Math.acos(Math.min(1, Math.max(-1, dot)))
-        const lift = 0.04 + omega * 0.12
+        const lift = Math.min(0.3, 0.04 + omega * 0.12)
         const pts: Vec[] = []
         for (let s = 0; s <= steps; s++) {
             const t = s / steps
@@ -195,14 +199,16 @@ const OFFICES = [
                     places.map((p) => [p.code, toVec(p.lat, p.lon)]),
                 )
 
-                // Everyone talks to France, and a few teams talk to each other directly.
+                // Two hubs: the Americas and Asia-Pacific link to the United
+                // States, Europe, Africa and the Middle East to France.
                 const pairs: [string, string][] = [
+                    ["US", "FR"],
                     ...places
-                        .filter((p) => p.code !== "FR")
-                        .map((p): [string, string] => ["FR", p.code]),
-                    ["US", "IN"],
-                    ["US", "GB"],
-                    ["DE", "IN"],
+                        .filter((p) => !p.hq)
+                        .map((p): [string, string] => [
+                            p.lon < -30 || p.lon > 100 ? "US" : "FR",
+                            p.code,
+                        ]),
                 ]
                 const links = pairs.map(([a, b], i) => ({
                     a,
@@ -270,21 +276,24 @@ const OFFICES = [
                     const ease = (rate: number) =>
                         1 - Math.pow(1 - rate, dt / 16)
                     if (target && !dragging) {
-                        lon0 += (target.lon - lon0) * ease(0.08)
+                        const turn =
+                            ((((target.lon - lon0 + 180) % 360) + 360) % 360) -
+                            180
+                        lon0 += turn * ease(0.08)
                         lat0 += (target.lat - lat0) * ease(0.08)
                     } else if (!dragging && !reduced) {
-                        // Sway between the Americas and India so the team stays in view.
-                        const goal = -5 + 55 * Math.sin(time * 0.00007)
-                        lon0 += (goal - lon0) * ease(0.03)
-                        lat0 += (30 - lat0) * ease(0.03)
+                        // A slow full turn, so every region comes into view.
+                        lon0 += dt * 0.006
+                        lat0 += (20 - lat0) * ease(0.03)
                     }
+                    lon0 = ((((lon0 + 180) % 360) + 360) % 360) - 180
 
                     const cl = Math.cos(lon0 * RAD)
                     const sl = Math.sin(lon0 * RAD)
                     const ct = Math.cos(lat0 * RAD)
                     const st = Math.sin(lat0 * RAD)
                     const W = size * dpr
-                    const R = W * 0.44
+                    const R = W * 0.37
                     const c = W / 2
 
                     const px = (x: number, y: number, z: number) => {
@@ -401,17 +410,43 @@ const OFFICES = [
                         const sy = c - p[1] * R
                         const r = (place.hq ? 5 : 3) * dpr
 
-                        if (place.hq && !reduced) {
-                            const k =
-                                (time / 2600 +
-                                    (place.code === "US" ? 0.5 : 0)) %
-                                1
-                            ctx.strokeStyle = colors.accent
-                            ctx.lineWidth = 1 * dpr
-                            ctx.globalAlpha = (1 - k) * 0.5
+                        if (place.hq) {
+                            const glow = ctx.createRadialGradient(
+                                sx,
+                                sy,
+                                0,
+                                sx,
+                                sy,
+                                r * 5,
+                            )
+                            glow.addColorStop(0, colors.accent)
+                            glow.addColorStop(1, "transparent")
+                            ctx.globalAlpha = 0.35
+                            ctx.fillStyle = glow
                             ctx.beginPath()
-                            ctx.arc(sx, sy, r + k * 18 * dpr, 0, Math.PI * 2)
-                            ctx.stroke()
+                            ctx.arc(sx, sy, r * 5, 0, Math.PI * 2)
+                            ctx.fill()
+                            ctx.globalAlpha = 1
+                        }
+
+                        if (!reduced) {
+                            const phase = place.hq
+                                ? place.code === "US"
+                                    ? 0.5
+                                    : 0
+                                : (place.lon + 180) / 360
+                            const reach = (place.hq ? 30 : 10) * dpr
+                            const rings = place.hq ? [0, 0.5] : [0]
+                            ctx.strokeStyle = colors.accent
+                            ctx.lineWidth = (place.hq ? 1.5 : 1) * dpr
+                            for (const shift of rings) {
+                                const k = (time / 3000 + phase + shift) % 1
+                                ctx.globalAlpha =
+                                    (1 - k) * (place.hq ? 0.6 : 0.35)
+                                ctx.beginPath()
+                                ctx.arc(sx, sy, r + k * reach, 0, Math.PI * 2)
+                                ctx.stroke()
+                            }
                             ctx.globalAlpha = 1
                         }
 

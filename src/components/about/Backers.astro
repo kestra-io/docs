@@ -1,4 +1,14 @@
 ---
+import { Image } from "astro:assets"
+import nicolas from "~/assets/teams/nico-algolia.webp"
+import olivier from "~/assets/teams/olivier-datadog.webp"
+import tristan from "~/assets/teams/tristian-dbt.webp"
+import michel from "~/assets/teams/michel-airbyte.webp"
+import frederic from "~/assets/teams/fred-invest.webp"
+import clement from "~/assets/teams/clement-hugface.webp"
+import bertrand from "~/assets/teams/bert-syroco.webp"
+import pierre from "~/assets/teams/pierre-strapi.webp"
+import stijn from "~/assets/teams/schristiaens.png"
 import rtpGlobal from "~/assets/teams/rtpglobal.svg?raw"
 import alven from "~/assets/teams/alven-new.svg?raw"
 import isai from "~/assets/teams/isai-new.svg?raw"
@@ -16,6 +26,38 @@ const INVESTORS: Backer[] = [
     { name: "Alven", svg: alven, href: "https://www.alven.co" },
     { name: "Isai", svg: isai, href: "https://isai.vc" },
     { name: "Axeleo Capital", svg: axeleo, href: "https://www.axc.vc" },
+]
+
+const FOUNDERS = [
+    {
+        name: "Olivier Pomel",
+        role: "Co-founder and CEO, Datadog",
+        photo: olivier,
+    },
+    {
+        name: "Clément Delangue",
+        role: "Co-founder and CEO, Hugging Face",
+        photo: clement,
+    },
+    { name: "Nicolas Dessaigne", role: "Co-founder, Algolia", photo: nicolas },
+    {
+        name: "Tristan Handy",
+        role: "Founder and CEO, dbt Labs",
+        photo: tristan,
+    },
+    {
+        name: "Michel Tricot",
+        role: "Co-founder and CEO, Airbyte",
+        photo: michel,
+    },
+    { name: "Bertrand Diard", role: "Co-founder, Talend", photo: bertrand },
+    {
+        name: "Frédéric Plais",
+        role: "Co-founder, Platform.sh",
+        photo: frederic,
+    },
+    { name: "Pierre Burgy", role: "Co-founder and CEO, Strapi", photo: pierre },
+    { name: "Stijn Christiaens", role: "Co-founder, Collibra", photo: stijn },
 ]
 
 const PUBLIC: Backer[] = [
@@ -51,10 +93,25 @@ const PUBLIC: Backer[] = [
                 }
             </ul>
 
-            <p class="angels">
-                And by the founders of Algolia, Datadog, dbt Labs, Airbyte,
-                Platform.sh, Hugging Face, Talend, Strapi and Collibra.
-            </p>
+            <ul class="founders" aria-label="Founders who invested in Kestra">
+                {
+                    FOUNDERS.map((f) => (
+                        <li>
+                            <Image
+                                src={f.photo}
+                                alt=""
+                                width={56}
+                                height={56}
+                                densities={[1, 2]}
+                            />
+                            <span>
+                                <strong>{f.name}</strong>
+                                {f.role}
+                            </span>
+                        </li>
+                    ))
+                }
+            </ul>
 
             <ul class="public" aria-label="Public and banking partners">
                 {
@@ -201,11 +258,67 @@ const PUBLIC: Backer[] = [
         }
     }
 
-    .angels {
-        @include lead;
-        margin: 0;
-        padding: 2rem 1.5rem;
-        text-align: center;
+    .founders {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        li {
+            justify-content: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-top: var(--rule);
+
+            &:not(:nth-child(3n + 1)) {
+                border-left: var(--rule);
+            }
+        }
+
+        li:nth-child(-n + 3) {
+            border-top: 0;
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+
+            li:not(:nth-child(3n + 1)) {
+                border-left: 0;
+            }
+
+            li:nth-child(-n + 3) {
+                border-top: var(--rule);
+            }
+
+            li:first-child {
+                border-top: 0;
+            }
+        }
+
+        :global(img) {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: grayscale(1);
+            transition: filter 0.3s ease;
+        }
+
+        li:hover :global(img) {
+            filter: none;
+        }
+
+        span {
+            display: flex;
+            flex-direction: column;
+            font-size: $font-size-sm;
+            line-height: 1.4;
+            color: var(--ks-content-tertiary);
+        }
+
+        strong {
+            font-size: $font-size-base;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
     }
 
     .public {
