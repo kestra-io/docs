@@ -51,11 +51,12 @@
     import { computed, ref } from "vue"
     import { $fetchApiCached } from "~/utils/fetch"
     import type { Contributor } from "~/components/community/types"
-    import { rankContributors } from "~/components/community/contributors"
+    import { orderContributors } from "~/components/community/contributors"
 
     const props = defineProps<{
         initial: Contributor[]
         total: number
+        seed?: number
     }>()
 
     // Each click reveals one more page, the size of the server-rendered set,
@@ -93,7 +94,7 @@
                 const data = await $fetchApiCached<Contributor[]>(
                     "/communities/github/contributors",
                 )
-                all.value = rankContributors(data)
+                all.value = orderContributors(data, props.seed)
             } catch (error) {
                 console.error("Could not load the full contributor list:", error)
                 return
