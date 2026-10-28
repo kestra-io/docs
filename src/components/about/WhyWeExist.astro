@@ -1,0 +1,83 @@
+---
+import PixelEdges from "./PixelEdges.astro"
+---
+
+<section class="why">
+    <PixelEdges left="tall" right="cluster" />
+    <div class="container">
+        <header>
+            <span class="eyebrow">Why we exist</span>
+            <h2>Every team automated<br />its own corner.</h2>
+        </header>
+        <div class="text">
+            <p>
+                Kestra started in 2019 at Leroy Merlin, Europe's largest DIY
+                retailer, where every team automated its own corner with its own
+                tool and no one could see or control the whole. Data had its
+                scheduler, infrastructure its scripts, operations its runbooks.
+                When something broke between them, no one owned it.
+            </p>
+            <p>
+                We built one control plane for all of it. Every flow, schedule,
+                trigger and approval lives there, versioned and audited, while
+                the work still runs in the databases, clouds, scripts and tools
+                teams already have. Kestra Enterprise and Kestra Cloud add what
+                mission-critical workflows need: security, governance, high
+                availability and 24/7 support. A five-person team running
+                critical workflows needs that as much as a global bank does.
+            </p>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .why {
+        @include section;
+        position: relative;
+        background: var(--ks-background-body);
+
+        .container {
+            display: grid;
+            grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+            gap: 4rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    }
+
+    header {
+        align-self: start;
+        position: sticky;
+        top: 7rem;
+
+        @include media-breakpoint-down(lg) {
+            position: static;
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    .text {
+        p {
+            margin: 0 0 1.5rem;
+            font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+
+            &:first-child {
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+</style>

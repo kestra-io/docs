@@ -1,0 +1,229 @@
+---
+import { Image, getImage } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import teamPhoto from "./assets/team-71.jpg"
+
+const large = await getImage({ src: teamPhoto, width: 1600, format: "webp" })
+const alt = "The whole Kestra team on the stairs of the office"
+---
+
+<section class="company">
+    <div class="container">
+        <p>
+            More than 40,000 organizations run Kestra, from start-ups to Fortune
+            500 companies. The engine is licensed under Apache 2.0, so any
+            company can run it, modify it and build on it commercially. We are
+            headquartered in the United States and France, with teams across
+            North America, Europe and Asia, and customers running Kestra in
+            production on every continent.
+        </p>
+        <figure>
+            <button
+                type="button"
+                command="show-modal"
+                commandfor="team-photo"
+                aria-label="Enlarge the team photo"
+            >
+                <Image
+                    src={teamPhoto}
+                    {alt}
+                    widths={[480, 800, 1200]}
+                    sizes="(min-width: 992px) 520px, 100vw"
+                />
+                <span class="zoom" aria-hidden="true">
+                    <Icon name="mdi:magnify-plus-outline" />
+                </span>
+            </button>
+        </figure>
+        <dialog id="team-photo" closedby="any" aria-label={alt}>
+            <button
+                type="button"
+                class="close"
+                command="close"
+                commandfor="team-photo"
+                aria-label="Close"
+            >
+                <Icon name="mdi:close" />
+            </button>
+            <img src={large.src} {alt} loading="lazy" decoding="async" />
+        </dialog>
+    </div>
+</section>
+
+<script>
+    function init() {
+        document
+            .querySelectorAll<HTMLButtonElement>(
+                ".company [commandfor]:not([data-ready])",
+            )
+            .forEach((button) => {
+                button.dataset.ready = "true"
+                const dialog = document.getElementById(
+                    button.getAttribute("commandfor")!,
+                ) as HTMLDialogElement | null
+                if (!dialog) return
+                button.addEventListener("click", () => {
+                    if (button.getAttribute("command") === "close") {
+                        if (dialog.open) dialog.close()
+                    } else if (!dialog.open) dialog.showModal()
+                })
+                dialog.addEventListener("click", (e) => {
+                    if (e.target === dialog) dialog.close()
+                })
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .company {
+        @include section;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+
+        .container {
+            display: grid;
+            grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+            gap: 3rem 5rem;
+            align-items: center;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    p {
+        margin: 0;
+        font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+        font-weight: 500;
+        letter-spacing: -0.015em;
+        line-height: 1.35;
+        color: var(--ks-content-primary);
+        text-wrap: pretty;
+    }
+
+    figure {
+        position: relative;
+        margin: 0;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            background: #fe0071;
+        }
+
+        @include media-breakpoint-down(lg) {
+            order: -1;
+            aspect-ratio: auto;
+        }
+
+        > button {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: zoom-in;
+        }
+
+        :global(img) {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 35%;
+            transition: transform 0.6s ease;
+
+            @include media-breakpoint-down(lg) {
+                height: auto;
+            }
+        }
+
+        &:hover :global(img) {
+            transform: scale(1.03);
+        }
+    }
+
+    .zoom {
+        position: absolute;
+        right: 0.75rem;
+        bottom: 0.75rem;
+        display: inline-flex;
+        padding: 0.5rem;
+        border-radius: 999px;
+        background: rgba(17, 17, 20, 0.7);
+        color: #fff;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+
+        :global(svg) {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        figure:hover &,
+        button:focus-visible & {
+            opacity: 1;
+        }
+
+        @media (hover: none) {
+            opacity: 1;
+        }
+    }
+
+    dialog {
+        max-width: 95vw;
+        max-height: 95vh;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        overflow: visible;
+
+        &::backdrop {
+            background: rgba(10, 10, 12, 0.9);
+        }
+
+        img {
+            display: block;
+            max-width: 95vw;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+        }
+
+        .close {
+            position: absolute;
+            top: -2.75rem;
+            right: 0;
+            display: inline-flex;
+            padding: 0.375rem;
+            border: 0;
+            background: none;
+            color: #fff;
+            opacity: 0.75;
+            transition: opacity 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                opacity: 1;
+            }
+
+            :global(svg) {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+    }
+</style>
