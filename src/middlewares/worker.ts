@@ -5,8 +5,6 @@ import { proxyTracking } from "../utils/trackingProxy";
 import { withConsentRegion } from "./consentRegion";
 import { previewAuth } from "./previewAuth";
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, PREVIEW_AUTH_SECRET } from "astro:env/server";
-import { previewAuth } from "./previewAuth";
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, PREVIEW_AUTH_SECRET } from "astro:env/server";
 import { VERSIONED_DOCS_PATH } from "../utils/versionedDocs";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
