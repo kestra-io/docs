@@ -1,42 +1,37 @@
 ---
 import { Image } from "astro:assets"
-import bookMockup from "./assets/book-mockup.png"
+import type { ImageMetadata } from "astro"
 
+/**
+ * Hero of the whitepaper landing pages: the copy on the left, the book card
+ * with its download button on the right. The H1 goes in the `title` slot so
+ * a part of it can be highlighted, the deck in the default slot.
+ */
 interface Props {
     pdfHref: string
+    book: ImageMetadata
+    inside: string[]
+    eyebrow?: string
 }
 
-const { pdfHref } = Astro.props
-
-const INSIDE = [
-    "Why fragmentation is the result of modernization, and the three costs it creates: operational risk, metered licensing, and missing audit evidence",
-    "The difference between an execution surface and an orchestrator, and why enterprises keep buying one and not the other",
-    "How to govern the tools that stay and replace only the glue layer, with production references",
-    "Five properties to test in a proof of concept, and why the same governance is what AI agents will need",
-]
+const {
+    pdfHref,
+    book,
+    inside,
+    eyebrow = "Whitepaper · By Kai Waehner, Global Field CTO",
+} = Astro.props
 ---
 
 <section class="hero">
     <div class="container hero-inner">
         <div class="hero-copy">
-            <p class="eyebrow" data-usal="fade-r">
-                Whitepaper · By Kai Waehner, Global Field CTO
-            </p>
-            <h1 data-usal="fade-r">
-                Infrastructure Automation Is Not <span class="highlight"
-                    >Infrastructure Orchestration</span
-                >
-            </h1>
-            <p class="subtitle" data-usal="fade-r">
-                Enterprise infrastructure teams are already automated, one tool
-                at a time. This paper makes the case for one control plane above
-                the tools they already run, and for replacing only the glue that
-                connects them.
-            </p>
+            <p class="eyebrow" data-usal="fade-r">{eyebrow}</p>
+            <h1 data-usal="fade-r"><slot name="title" /></h1>
+            <p class="subtitle" data-usal="fade-r"><slot /></p>
 
             <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
             <ul class="inside-list" data-usal="fade-l">
-                {INSIDE.map((item) => <li>{item}</li>)}
+                {inside.map((item) => <li>{item}</li>)}
             </ul>
         </div>
 
@@ -44,7 +39,7 @@ const INSIDE = [
             <div class="hero-card">
                 <div class="book-wrap" aria-hidden="true">
                     <Image
-                        src={bookMockup}
+                        src={book}
                         alt=""
                         widths={[600, 1200]}
                         sizes="(min-width: 992px) 600px, 90vw"
@@ -104,8 +99,6 @@ const INSIDE = [
     }
 
     .hero-figure {
-        // Same footprint as the unified orchestration hero diagram, so the
-        // final visual drops in without changing the layout.
         @include media-breakpoint-up(lg) {
             flex: 0 0 480px;
             max-width: 480px;
@@ -199,7 +192,7 @@ const INSIDE = [
     .book-wrap {
         position: absolute;
         left: 50%;
-        // Higher than the guide's -30%: this cover sits lower in its image.
+        // Higher than the guide's -30%: these covers sit lower in their image.
         top: -40%;
         width: 123%;
         transform: translateX(-49%);
@@ -248,7 +241,7 @@ const INSIDE = [
         line-height: 1.09;
         letter-spacing: -0.02em;
 
-        .highlight {
+        :global(.highlight) {
             color: var(--ks-content-color-highlight);
         }
     }
