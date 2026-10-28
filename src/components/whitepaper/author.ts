@@ -1,5 +1,5 @@
-// Single source for the author block: AuthorCard renders it on the page and
-// the .md endpoint appends it, so the markdown variant keeps the bio even
+// Single source for the author block: AuthorBlock renders it on the pages and
+// the .md endpoints append it, so the markdown variant keeps the bio even
 // though the section is no longer part of the entry's body.
 export const AUTHOR = {
     name: "Kai Waehner",
