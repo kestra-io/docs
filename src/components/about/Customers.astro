@@ -14,12 +14,8 @@ import itzbund from "~/components/enterprise/assets/logos/ITZ.svg?raw"
 import { getCollection } from "astro:content"
 import { toSlug } from "~/utils/stories"
 
-// Some of these logos are drawn in white only; paint them with the text
-// color so they read in both themes.
 const mono = (svg: string) =>
     svg.replace(/fill="(#fff|#ffffff|white)"/gi, 'fill="currentColor"')
-// Logos in brand colors or shades of gray: every fill takes the text color.
-// Trim the empty margin some logo files carry around the drawing.
 const crop = (svg: string, viewBox: string) => {
     const [, , w, h] = viewBox.split(" ")
     return svg
@@ -28,7 +24,6 @@ const crop = (svg: string, viewBox: string) => {
         .replace(/<svg([^>]*?) height="[^"]+"/, `<svg$1 height="${h}"`)
 }
 
-// Masks keep their own fills, or they would hide the drawing.
 const flat = (svg: string) => {
     const [head, body] = svg.includes("</mask>")
         ? [
@@ -39,7 +34,6 @@ const flat = (svg: string) => {
     return head + body.replace(/fill="(?!none)[^"]+"/gi, 'fill="currentColor"')
 }
 
-// `story` is the company name of a customer story, when there is one.
 const CUSTOMERS: {
     name: string
     svg?: string
@@ -224,7 +218,6 @@ const storyHref = (company?: string) => {
             @include text-link;
         }
 
-        // Customers with a story show a small button when pointed at.
         .story {
             position: absolute;
             left: 50%;
@@ -251,8 +244,6 @@ const storyHref = (company?: string) => {
                 border-color: var(--ks-content-primary);
             }
 
-            // On touch screens the whole cell opens the story; a small arrow
-            // in the corner says so.
             @media (hover: none) {
                 inset: 0;
                 left: 0;

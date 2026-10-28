@@ -51,7 +51,6 @@ const alt = "The whole Kestra team on the stairs of the office"
 </section>
 
 <script>
-    // Fallback for browsers without invoker commands.
     function init() {
         document
             .querySelectorAll<HTMLButtonElement>(
@@ -68,7 +67,6 @@ const alt = "The whole Kestra team on the stairs of the office"
                         if (dialog.open) dialog.close()
                     } else if (!dialog.open) dialog.showModal()
                 })
-                // A click on the backdrop closes it too.
                 dialog.addEventListener("click", (e) => {
                     if (e.target === dialog) dialog.close()
                 })
@@ -81,8 +79,6 @@ const alt = "The whole Kestra team on the stairs of the office"
 <style lang="scss">
     @use "./style/section" as *;
 
-    // The people behind the platform, right after the hero: the company
-    // paragraph set large, next to the whole team.
     .company {
         @include section;
         border-bottom: 1px solid var(--ks-border-primary);
@@ -110,7 +106,6 @@ const alt = "The whole Kestra team on the stairs of the office"
         text-wrap: pretty;
     }
 
-    // The square is the dot of the Kestra wordmark, as on the founders.
     figure {
         position: relative;
         margin: 0;
@@ -183,13 +178,11 @@ const alt = "The whole Kestra team on the stairs of the office"
             opacity: 1;
         }
 
-        // No pointer to hover with: keep the hint visible.
         @media (hover: none) {
             opacity: 1;
         }
     }
 
-    // The photo at full size over a dark backdrop.
     dialog {
         max-width: 95vw;
         max-height: 95vh;
@@ -218,7 +211,6 @@ const alt = "The whole Kestra team on the stairs of the office"
             padding: 0.375rem;
             border: 0;
             background: none;
-            // The backdrop is always dark.
             color: #fff;
             opacity: 0.75;
             transition: opacity 0.2s ease;

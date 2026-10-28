@@ -21,8 +21,6 @@ const LINKS = [
     },
 ]
 
-// A decorative contribution graph fills the section; the browser draws it
-// (see the script below), since it is only decoration. Not real data.
 const DAYS = 48
 ---
 
@@ -56,14 +54,13 @@ const DAYS = 48
 </section>
 
 <script>
-    const CELL = 17 // px, a square and its gap in the background grid
+    const CELL = 17
 
     const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
 
     function initGrid(root: HTMLElement) {
         const weeks = root.querySelector<HTMLElement>(".weeks")!
         const days = Number(weeks.dataset.days)
-        // Wide enough for this screen, edge to edge.
         const count = Math.ceil(window.innerWidth / CELL) + 2
 
         let seed = 7
@@ -78,21 +75,18 @@ const DAYS = 48
             cells.push(span)
             fragment.append(span)
         }
-        weeks.append(fragment)
+        weeks.appendChild(fragment)
         if (reduced()) return
 
-        // Now and then a cell lights up like a commit; a few of them glow.
         const timer = setInterval(() => {
             if (!root.isConnected) return clearInterval(timer)
             const cell = cells[(Math.random() * cells.length) | 0]
-            // Rarely, the red square of the logo.
             const r = Math.random()
             const kind = r < 0.05 ? "brand" : r < 0.28 ? "glow" : "lit"
             cell.classList.add(kind)
             setTimeout(() => cell.classList.remove(kind), 1600)
         }, 120)
 
-        // The pointer leaves a trail of lit cells that fades behind it.
         const section = root.closest("section")!
         const timers = new Map<HTMLElement, number>()
         const light = (col: number, row: number) => {
@@ -111,7 +105,6 @@ const DAYS = 48
             const col = Math.floor((e.clientX - box.left) / CELL)
             const row = Math.floor((e.clientY - box.top) / CELL)
             light(col, row)
-            // A few neighbours too, so the trail has some width.
             for (const [dx, dy] of [
                 [1, 0],
                 [-1, 0],
@@ -139,8 +132,6 @@ const DAYS = 48
     @use "/src/assets/styles/color-palette" as *;
     @use "./style/section" as *;
 
-    // A dark contribution graph fills the section, "kestra." set in its
-    // squares; the content sits on top in white.
     .open-source {
         @include section;
         position: relative;
@@ -187,12 +178,10 @@ const DAYS = 48
         gap: 0.75rem 2rem;
     }
 
-    // Plain text links with a small icon, like the other links on the page.
     a {
         @include text-link;
         --ks-content-primary: #fff;
         --ks-border-secondary: rgba(255, 255, 255, 0.4);
-        // The section is always dark: the light violet of the dark theme.
         --ks-content-link: #{$base-primary-200};
         display: inline-flex;
         align-items: center;
@@ -205,7 +194,6 @@ const DAYS = 48
         }
     }
 
-    // Edge to edge, cleared behind the copy for legibility.
     .activity {
         position: absolute;
         inset: 0;
@@ -230,11 +218,9 @@ const DAYS = 48
         grid-auto-columns: var(--cell);
         gap: 4px;
 
-        // The cells are added by the script, so they need a global selector.
         :global(span) {
             border-radius: 3px;
             background: rgba(255, 255, 255, 0.03);
-            // A slow fade back, so lit cells leave a trail.
             transition:
                 background 0.9s ease,
                 box-shadow 0.9s ease;

@@ -6,8 +6,6 @@ import team2 from "./assets/team-2.jpg"
 import team169 from "./assets/team-169.jpg"
 import team138 from "./assets/team-138.jpg"
 
-// Team photos, no copy: the draft has no text for them. The strip opens on
-// the third one.
 const PHOTOS = [
     { src: team194, alt: "A Kestra team member presenting" },
     { src: team52, alt: "The Kestra team listening to a talk" },
@@ -18,8 +16,6 @@ const PHOTOS = [
 const START = 2
 const START_NARROW = 4
 
-// The series is laid out three times so the strip can loop: the copies on
-// either side are decoration only.
 const COPIES = [0, 1, 2]
 ---
 
@@ -53,11 +49,6 @@ const COPIES = [0, 1, 2]
 </section>
 
 <script>
-    // An endless strip moved with a transform: trackpad, wheel, drag and
-    // arrow keys all push one offset, and the offset is folded back into
-    // the middle copy, so the loop never shows a seam or a jump.
-    // Runs on every page arrival: the site swaps pages client side, so
-    // a module script alone would only wire the first visit.
     function init() {
         document
             .querySelectorAll<HTMLElement>(
@@ -110,7 +101,6 @@ const COPIES = [0, 1, 2]
                     render()
                 }).observe(viewport)
 
-                // Inertia after a drag or a flick.
                 let velocity = 0
                 let gliding = false
                 let last = 0
@@ -130,8 +120,6 @@ const COPIES = [0, 1, 2]
                     requestAnimationFrame(glide)
                 }
 
-                // Horizontal trackpad swipes and shift+wheel move the strip;
-                // vertical scrolling keeps scrolling the page.
                 viewport.addEventListener(
                     "wheel",
                     (e) => {
@@ -223,7 +211,6 @@ const COPIES = [0, 1, 2]
         }
     }
 
-    // Every photo keeps its own shape at the same height.
     .viewport {
         overflow: hidden;
         height: clamp(320px, 38vw, 680px);

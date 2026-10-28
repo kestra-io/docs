@@ -1,6 +1,4 @@
 ---
-// The two headquarters get a ring and a label; the other dots are regions
-// where Kestra runs in production, unlabeled.
 const PLACES = [
     { code: "FR", name: "France", lat: 46.6, lon: 2.4, hq: true },
     { code: "US", name: "United States", lat: 39.5, lon: -98.4, hq: true },
@@ -93,7 +91,7 @@ const OFFICES = [
     type Vec = [number, number, number]
 
     const RAD = Math.PI / 180
-    const ROW = 1.5 // degrees between dot rows, and between dots on a row
+    const ROW = 1.5
 
     const toVec = (lat: number, lon: number): Vec => [
         Math.cos(lat * RAD) * Math.sin(lon * RAD),
@@ -121,8 +119,6 @@ const OFFICES = [
         return new Float32Array(out)
     }
 
-    // The Kestra mark laid on the ocean as dots, between the two
-    // headquarters: sampled from the logo, one dot per cell.
     const MARK = { lat: 30, lon: -40, span: 40, cells: 25 }
 
     async function markDots(): Promise<{ v: Vec; color: string }[]> {
@@ -133,8 +129,6 @@ const OFFICES = [
         const off = document.createElement("canvas")
         off.width = off.height = n
         const octx = off.getContext("2d", { willReadFrequently: true })!
-        // The SVG has a margin around the drawing. This crop keeps every
-        // shape whole and lands them on the grid symmetrically.
         const w = img.naturalWidth
         octx.drawImage(img, w * 0.1, w * 0.11, w * 0.8, w * 0.8, 0, 0, n, n)
         const data = octx.getImageData(0, 0, n, n).data
@@ -155,7 +149,6 @@ const OFFICES = [
         return out
     }
 
-    // A great circle between two places, lifted off the ground in the middle.
     function arc(a: Vec, b: Vec, steps = 40): Vec[] {
         const dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
         const omega = Math.acos(Math.min(1, Math.max(-1, dot)))
@@ -175,8 +168,6 @@ const OFFICES = [
         return pts
     }
 
-    // Runs on every page arrival: the site swaps pages client side, so
-    // a module script alone would only wire the first visit.
     function init() {
         document
             .querySelectorAll<HTMLElement>(
@@ -199,8 +190,6 @@ const OFFICES = [
                     places.map((p) => [p.code, toVec(p.lat, p.lon)]),
                 )
 
-                // Two hubs: the Americas and Asia-Pacific link to the United
-                // States, Europe, Africa and the Middle East to France.
                 const pairs: [string, string][] = [
                     ["US", "FR"],
                     ...places
@@ -250,7 +239,6 @@ const OFFICES = [
                 new ResizeObserver(resize).observe(canvas)
                 resize()
 
-                // View: the longitude and latitude facing the reader.
                 let lon0 = -5
                 let lat0 = 30
                 let target: { lon: number; lat: number } | null = null
@@ -261,16 +249,12 @@ const OFFICES = [
                     lat: number
                 } | null = null
 
-                // Dots fade toward the rim; drawing them in a few alpha bands keeps
-                // the canvas work to a handful of fills per frame.
                 const BANDS = 5
                 const bands = Array.from({ length: BANDS }, () => new Path2D())
 
                 let prev = 0
                 const draw = (time: number) => {
                     if (!size) return
-                    // Easing follows elapsed time, so motion is the same at any
-                    // refresh rate.
                     const dt = Math.min(64, prev ? time - prev : 16)
                     prev = time
                     const ease = (rate: number) =>
@@ -282,7 +266,6 @@ const OFFICES = [
                         lon0 += turn * ease(0.08)
                         lat0 += (target.lat - lat0) * ease(0.08)
                     } else if (!dragging && !reduced) {
-                        // A slow full turn, so every region comes into view.
                         lon0 += dt * 0.006
                         lat0 += (20 - lat0) * ease(0.03)
                     }
@@ -333,7 +316,6 @@ const OFFICES = [
                     }
                     ctx.globalAlpha = 1
 
-                    // The mark follows the globe, fading toward the rim.
                     const md = 2.2 * dpr
                     for (const m of mark) {
                         const p = px(m.v[0], m.v[1], m.v[2])
@@ -352,7 +334,6 @@ const OFFICES = [
                     const visible = (p: number[]) =>
                         p[2] > 0 || p[0] * p[0] + p[1] * p[1] > 1
 
-                    // Links, then the pulses travelling both ways along them.
                     ctx.lineWidth = 1.25 * dpr
                     ctx.strokeStyle = colors.link
                     ctx.beginPath()
@@ -379,8 +360,6 @@ const OFFICES = [
                         for (const link of links) {
                             const t = (time * link.speed + link.offset) % 1
                             for (const pos of [t, 1 - ((t + 0.5) % 1)]) {
-                                // Glide between the two arc samples around the
-                                // pulse, so it moves continuously.
                                 const f = pos * (link.pts.length - 1)
                                 const i = Math.min(link.pts.length - 2, f | 0)
                                 const k = f - i
@@ -479,7 +458,6 @@ const OFFICES = [
                 }).observe(canvas)
                 draw(0)
 
-                // Pointing at an office turns the globe to it.
                 root.querySelectorAll<HTMLElement>("[data-focus]").forEach(
                     (el) => {
                         const place = places.find(
@@ -547,7 +525,6 @@ const OFFICES = [
         --globe-text: #{$base-grey-800};
 
         @include section;
-        // The team photos follow right under the globe.
         padding-bottom: 3rem;
         overflow: hidden;
         border-top: 1px solid var(--ks-border-primary);

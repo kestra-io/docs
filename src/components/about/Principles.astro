@@ -51,8 +51,6 @@ const PRINCIPLES = [
 <style lang="scss">
     @use "./style/section" as *;
 
-    // Full width: the columns and their rules run to both edges of the
-    // screen and down to the bottom of the section.
     .principles {
         --rule: 1px solid rgba(99, 27, 255, 0.16);
 
@@ -64,8 +62,6 @@ const PRINCIPLES = [
 
         border-top: 1px solid var(--ks-border-primary);
         border-bottom: 1px solid var(--ks-border-primary);
-        // The one light violet wash of the page: the principles stand out
-        // as what Kestra believes.
         background: var(--ks-background-purple-light);
     }
 
@@ -92,8 +88,6 @@ const PRINCIPLES = [
         @include title;
     }
 
-    // Five columns read side by side, split by hairlines; they stack on
-    // smaller screens.
     ul {
         list-style: none;
         margin: 0;

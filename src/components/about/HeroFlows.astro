@@ -1,20 +1,16 @@
 ---
-// A faint field of flows behind the hero: thin pipes with task nodes, and
-// now and then an execution running along one of them. It echoes the
-// ASCII mark and stays out of the way of the copy.
+
 ---
 
 <canvas class="hero-flows" aria-hidden="true" data-hero-flows></canvas>
 
 <script>
-    const GAP = 44 // px between lanes
+    const GAP = 44
     const PULSES = 7
 
     type Lane = { y: number; nodes: number[] }
     type Pulse = { lane: number; x: number; speed: number; length: number }
 
-    // Runs on every page arrival: the site swaps pages client side, so
-    // a module script alone would only wire the first visit.
     function init() {
         document
             .querySelectorAll<HTMLCanvasElement>(
@@ -70,7 +66,6 @@
                     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
                     ctx.clearRect(0, 0, W, H)
 
-                    // Pipes and resting task nodes.
                     ctx.strokeStyle = "rgba(255, 255, 255, 0.05)"
                     ctx.lineWidth = 1
                     ctx.beginPath()
@@ -102,7 +97,6 @@
                                 p.length,
                                 2,
                             )
-                            // Nodes just passed by an execution glow for a moment.
                             for (const x of lane.nodes) {
                                 const behind = p.x - x
                                 if (behind >= 0 && behind < 160)
@@ -156,7 +150,6 @@
 </script>
 
 <style lang="scss">
-    // Fainter under the copy on the left, a little stronger toward the mark.
     .hero-flows {
         position: absolute;
         inset: 0;
