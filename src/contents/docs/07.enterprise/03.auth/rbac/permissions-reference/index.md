@@ -711,29 +711,9 @@ Notes
 - `GET /api/v1/{tenant}/auditlogs/history/{detailId}` and `GET /api/v1/{tenant}/auditlogs/{id}/diff` are not controlled by `AUDITLOG`. They check your permission on the audited resource instead:
   - Most entries require `VIEW` on the audited resource type in the entry's namespace. Entries without a namespace, such as App, Asset, Case, Namespace, Test suite, and Dashboard entries, require a tenant-wide `VIEW` grant.
   - Namespace file entries require `NAMESPACE` `MANAGE_FILES`.
-  - Entries for instance-level resources, such as banners, tenants, worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
+  - Entries for instance-level resources, such as banners, tenants, settings (`SYSTEM_SETTINGS`), worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
   - An instance owner with `AUDITLOG` `VIEW` can view entries for `ROLE`, `INVITATION`, `GROUP`, `BINDING`, `USER`, and `SERVICE_ACCOUNT`.
   - The history endpoint returns every entry with the given resource ID, including entries for resources with the same ID in other namespaces. If you lack permission on any of them, the request fails.
-:::
-
----
-
-:::collapse{title="SYSTEM_SETTINGS"}
-**Scope:** Tenant
-
-**Actions and their meaning**
-- `VIEW`: read instance-level settings.
-- `UPDATE`: modify instance-level settings.
-:::
-
----
-
-:::collapse{title="TENANT_SETTINGS"}
-**Scope:** Tenant
-
-**Actions and their meaning**
-- `VIEW`: read tenant-level settings.
-- `UPDATE`: modify tenant-level settings.
 :::
 
 ---
