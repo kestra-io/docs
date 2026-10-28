@@ -1,14 +1,14 @@
 ---
 import { Image } from "astro:assets"
-import nicolas from "~/assets/teams/nico-algolia.webp"
-import olivier from "~/assets/teams/olivier-datadog.webp"
-import tristan from "~/assets/teams/tristian-dbt.webp"
-import michel from "~/assets/teams/michel-airbyte.webp"
-import frederic from "~/assets/teams/fred-invest.webp"
-import clement from "~/assets/teams/clement-hugface.webp"
-import bertrand from "~/assets/teams/bert-syroco.webp"
-import pierre from "~/assets/teams/pierre-strapi.webp"
-import stijn from "~/assets/teams/schristiaens.png"
+import nicolas from "./assets/investors/nicolas-dessaigne.png"
+import olivier from "./assets/investors/olivier-pomel.png"
+import tristan from "./assets/investors/tristan-handy.png"
+import michel from "./assets/investors/michel-tricot.png"
+import frederic from "./assets/investors/frederic-plais.png"
+import clement from "./assets/investors/clement-delangue.png"
+import bertrand from "./assets/investors/bertrand-diard.png"
+import pierre from "./assets/investors/pierre-burgy.png"
+import stijn from "./assets/investors/stijn-christiaens.png"
 import rtpGlobal from "~/assets/teams/rtpglobal.svg?raw"
 import alven from "~/assets/teams/alven-new.svg?raw"
 import isai from "~/assets/teams/isai-new.svg?raw"
@@ -19,7 +19,8 @@ import bnpParibas from "~/assets/teams/bnp-paribas.svg?raw"
 import cic from "~/assets/teams/cic.svg?raw"
 import caisseEpargne from "~/assets/teams/caisse-epargne.svg?raw"
 
-type Backer = { name: string; svg: string; href?: string }
+// `height` sets a logo's own height when its drawing needs more than the row's.
+type Backer = { name: string; svg: string; href?: string; height?: number }
 
 const INVESTORS: Backer[] = [
     { name: "RTP Global", svg: rtpGlobal, href: "https://rtp.vc" },
@@ -62,7 +63,7 @@ const FOUNDERS = [
 
 const PUBLIC: Backer[] = [
     { name: "Bpifrance", svg: bpifrance },
-    { name: "Région Hauts-de-France", svg: hautsDeFrance },
+    { name: "Région Hauts-de-France", svg: hautsDeFrance, height: 44 },
     { name: "BNP Paribas", svg: bnpParibas },
     { name: "CIC", svg: cic },
     { name: "Caisse d'Épargne", svg: caisseEpargne },
@@ -92,7 +93,10 @@ const PUBLIC: Backer[] = [
                     ))
                 }
             </ul>
+        </div>
 
+        <div class="more">
+            <span class="label">Angel investors</span>
             <ul class="founders" aria-label="Founders who invested in Kestra">
                 {
                     FOUNDERS.map((f) => (
@@ -113,11 +117,16 @@ const PUBLIC: Backer[] = [
                 }
             </ul>
 
+            <span class="label">With the support of</span>
             <ul class="public" aria-label="Public and banking partners">
                 {
                     PUBLIC.map((b) => (
                         <li title={b.name}>
-                            <span class="logo" set:html={b.svg} />
+                            <span
+                                class="logo"
+                                style={b.height && `height: ${b.height}px`}
+                                set:html={b.svg}
+                            />
                             <span class="visually-hidden">{b.name}</span>
                         </li>
                     ))
@@ -130,8 +139,8 @@ const PUBLIC: Backer[] = [
 <style lang="scss">
     @use "./style/section" as *;
 
-    // No outer padding: the grid meets the sections above and below, and
-    // the next section's top border closes it.
+    // No top padding: the grid meets the section above; the angels and the
+    // partners follow it in open rows.
     .backers {
         background: var(--ks-background-body);
     }
@@ -167,9 +176,10 @@ const PUBLIC: Backer[] = [
         }
     }
 
+    // The title, the angels and the partners share one left edge, a little
+    // inside the frame.
     header {
-        padding: 4rem 1.5rem;
-        text-align: center;
+        padding: 4rem 3rem;
 
         @include media-breakpoint-down(md) {
             padding: 3rem 1rem;
@@ -258,38 +268,51 @@ const PUBLIC: Backer[] = [
         }
     }
 
+    // Under the grid, the angels and the partners sit in open rows,
+    // without cells, so the lead investors stay the one framed level.
+    .investors::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: -100vw;
+        right: -100vw;
+        height: 1px;
+        background: var(--line);
+        pointer-events: none;
+    }
+
+    .more {
+        padding: 4rem 3rem 6rem;
+
+        @include media-breakpoint-down(md) {
+            padding: 3rem 1rem 4.5rem;
+        }
+    }
+
+    .label {
+        @include eyebrow;
+        margin-bottom: 1.5rem;
+        color: var(--ks-content-tertiary);
+    }
+
     .founders {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.75rem 2rem;
+        margin-bottom: 4rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
 
         li {
             justify-content: flex-start;
             gap: 1rem;
-            padding: 1.5rem;
-            border-top: var(--rule);
-
-            &:not(:nth-child(3n + 1)) {
-                border-left: var(--rule);
-            }
-        }
-
-        li:nth-child(-n + 3) {
-            border-top: 0;
-        }
-
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: minmax(0, 1fr);
-
-            li:not(:nth-child(3n + 1)) {
-                border-left: 0;
-            }
-
-            li:nth-child(-n + 3) {
-                border-top: var(--rule);
-            }
-
-            li:first-child {
-                border-top: 0;
-            }
         }
 
         :global(img) {
@@ -321,37 +344,29 @@ const PUBLIC: Backer[] = [
         }
     }
 
+    // One quiet line of grey marks, all at the same height.
     .public {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem 3rem;
 
         li {
-            height: 140px;
-
-            & + li {
-                border-left: var(--rule);
-            }
-        }
-
-        @include media-breakpoint-down(md) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-
-            li:nth-child(odd) {
-                border-left: 0;
-            }
-
-            li:nth-child(n + 3) {
-                border-top: var(--rule);
-            }
-
-            li {
-                height: 110px;
-            }
+            justify-content: flex-start;
         }
 
         .logo {
-            width: 50%;
-            max-width: 110px;
-            height: 32px;
+            height: 28px;
+            filter: grayscale(1);
+            opacity: 0.6;
+
+            :global(svg) {
+                width: auto;
+            }
+
+            :global(html.dark) & {
+                filter: grayscale(1) invert(1);
+            }
         }
     }
 </style>
