@@ -6,6 +6,7 @@ sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 2.0.0"
+docId: worker-groups
 ---
 
 Worker Groups route tasks to the right machines in your fleet. A Worker Group is a named, token-authenticated pool of workers that subscribes to one or more Worker Queues — tag-based routing lanes that tasks declare requirements against. The result is flexible many-to-many routing: GPU machines and spot instances can serve the same queue, or a single group can cover multiple queues with per-queue capacity guarantees.

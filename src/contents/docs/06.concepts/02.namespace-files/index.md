@@ -4,6 +4,7 @@ h1: Manage Namespace Files and Use Them in Your Flows
 description: Manage Namespace Files in Kestra and use them in your flows. Store scripts, configs, and assets at the namespace level for centralized file management.
 sidebarTitle: Namespace Files
 icon: /src/contents/docs/icons/concepts.svg
+docId: files
 ---
 
 Namespace Files are files tied to a namespace — scripts, queries, configs, and other assets you can reference in any flow within that namespace.
