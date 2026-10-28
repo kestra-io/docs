@@ -53,7 +53,7 @@ import HeroFlows from "./HeroFlows.astro"
         background: #111114;
 
         @include media-breakpoint-down(md) {
-            padding: 4rem 0 5rem;
+            padding: 3rem 0 3.5rem;
         }
 
         .container {
@@ -83,6 +83,11 @@ import HeroFlows from "./HeroFlows.astro"
         color: inherit;
         text-wrap: balance;
 
+        @include media-breakpoint-down(md) {
+            margin-bottom: 1.5rem;
+            font-size: clamp(2.125rem, 9.6vw, 2.75rem);
+        }
+
         // The square dot of the Kestra wordmark.
         .brand-dot {
             display: inline-block;
@@ -99,6 +104,11 @@ import HeroFlows from "./HeroFlows.astro"
         font-size: $font-size-lg;
         line-height: 1.65;
         color: rgba(255, 255, 255, 0.72);
+
+        @include media-breakpoint-down(md) {
+            font-size: $font-size-md;
+            line-height: 1.6;
+        }
     }
 
     .actions {
@@ -106,6 +116,17 @@ import HeroFlows from "./HeroFlows.astro"
         flex-wrap: wrap;
         gap: 1rem;
         margin-top: 2.5rem;
+
+        @include media-breakpoint-down(md) {
+            gap: 0.75rem;
+            margin-top: 2rem;
+
+            > :global(*) {
+                flex: 1 1 100%;
+                justify-content: center;
+                text-align: center;
+            }
+        }
 
         .btn-secondary {
             --ks-content-primary: #fff;

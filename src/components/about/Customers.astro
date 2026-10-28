@@ -266,12 +266,15 @@ const storyHref = (company?: string) => {
                 transform: none;
 
                 &::after {
-                    content: "↗";
+                    content: "";
                     position: absolute;
-                    top: 0.5rem;
+                    top: 0.625rem;
                     right: 0.625rem;
-                    font-size: $font-size-sm;
-                    color: var(--ks-content-tertiary);
+                    width: 14px;
+                    height: 14px;
+                    background: var(--ks-content-tertiary);
+                    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 17.59 15.59 7H9V5h10v10h-2V8.41L6.41 19z'/%3E%3C/svg%3E")
+                        center / contain no-repeat;
                 }
             }
         }

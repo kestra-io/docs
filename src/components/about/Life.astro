@@ -16,6 +16,7 @@ const PHOTOS = [
     { src: team138, alt: "Kestra team members with the logo on their shirts" },
 ]
 const START = 2
+const START_NARROW = 4
 
 // The series is laid out three times so the strip can loop: the copies on
 // either side are decoration only.
@@ -27,6 +28,7 @@ const COPIES = [0, 1, 2]
         class="viewport"
         data-photo-strip
         data-start={PHOTOS.length + START}
+        data-start-narrow={PHOTOS.length + START_NARROW}
         data-count={PHOTOS.length}
         tabindex="0"
     >
@@ -66,7 +68,15 @@ const COPIES = [0, 1, 2]
                 const track = viewport.querySelector<HTMLElement>(".track")!
                 const items = [...track.children] as HTMLElement[]
                 const count = Number(viewport.dataset.count)
-                const start = items[Number(viewport.dataset.start)]
+                const narrow = matchMedia("(max-width: 767.98px)").matches
+                const start =
+                    items[
+                        Number(
+                            narrow
+                                ? viewport.dataset.startNarrow
+                                : viewport.dataset.start,
+                        )
+                    ]
 
                 let x = 0
                 let period = 0
@@ -172,6 +182,25 @@ const COPIES = [0, 1, 2]
                 viewport.addEventListener("pointerup", release)
                 viewport.addEventListener("pointercancel", release)
 
+                if (
+                    matchMedia("(hover: none)").matches &&
+                    !matchMedia("(prefers-reduced-motion: reduce)").matches
+                ) {
+                    const io = new IntersectionObserver(
+                        (entries) => {
+                            if (!entries[0].isIntersecting) return
+                            io.disconnect()
+                            setTimeout(() => {
+                                if (drag) return
+                                velocity = 0.5
+                                launch()
+                            }, 400)
+                        },
+                        { threshold: 0.6 },
+                    )
+                    io.observe(viewport)
+                }
+
                 viewport.addEventListener("keydown", (e) => {
                     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
                     e.preventDefault()
@@ -212,7 +241,7 @@ const COPIES = [0, 1, 2]
         }
 
         @include media-breakpoint-down(md) {
-            height: 320px;
+            height: 280px;
         }
     }
 

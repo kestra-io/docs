@@ -104,11 +104,17 @@ const CHANNELS = [
         }
 
         @include media-breakpoint-down(sm) {
-            padding: 1.5rem 0 0;
+            gap: 0.5rem;
+            padding: 2rem 0;
             margin-top: 0 !important;
 
             & + li {
                 border-left: 0;
+                border-top: 1px solid var(--ks-border-primary);
+            }
+
+            p {
+                margin-bottom: 0.75rem;
             }
         }
     }
