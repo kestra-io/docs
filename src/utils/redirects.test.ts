@@ -117,6 +117,8 @@ describe("blogs redirects", () => {
 describe("index redirects", () => {
     it.each([
         ["/blog", "/blogs"],
+        ["/write-for-us", "/community"],
+        ["/write-for-us/", "/community"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, indexRules)).toBe(to)
     })
@@ -124,6 +126,7 @@ describe("index redirects", () => {
     it.each([
         ["/blogs.md"],
         ["/blogss.md"],
+        ["/write-for-usx"],
     ])("%s resolves to null", (from) => {
         expect(resolveRedirect(from, indexRules)).toBeNull()
     })
