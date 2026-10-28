@@ -128,8 +128,9 @@ const alt = "The whole Kestra team on the stairs of the office"
             background: #fe0071;
         }
 
+        // Stacked under the text, the photo shows whole: nobody cut off.
         @include media-breakpoint-down(lg) {
-            aspect-ratio: 4 / 3;
+            aspect-ratio: auto;
         }
 
         > button {
@@ -149,6 +150,10 @@ const alt = "The whole Kestra team on the stairs of the office"
             object-fit: cover;
             object-position: center 35%;
             transition: transform 0.6s ease;
+
+            @include media-breakpoint-down(lg) {
+                height: auto;
+            }
         }
 
         &:hover :global(img) {
