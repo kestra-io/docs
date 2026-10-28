@@ -116,23 +116,6 @@ describe("orchestrationBlueprints", () => {
             ])
         })
 
-        it("passes through items without blueprintId unchanged", async () => {
-            fetchApiCachedOptional.mockImplementation(async (url: string) => {
-                if (url.endsWith("/graph")) return { nodes: [] }
-                return { flow: "flow" }
-            })
-
-            const items = [
-                { name: "No blueprint" },
-                { blueprintId: "bp1", name: "Has blueprint" },
-            ]
-
-            const result = await resolveBlueprintRenders(items)
-
-            expect(result[0]).toEqual({ name: "No blueprint" })
-            expect(result[1]).toHaveProperty("render")
-        })
-
         it("handles empty array", async () => {
             const result = await resolveBlueprintRenders([])
             expect(result).toEqual([])

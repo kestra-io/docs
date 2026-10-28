@@ -18,7 +18,7 @@ The available purge tasks are [`PurgeExecutions`](/plugins/core/execution/io.kes
 `PurgeExecutions`, `PurgeLogs`, and `PurgeKV` replace the legacy `io.kestra.plugin.core.storage.Purge` task. `PurgeStorage` is a new addition that handles orphaned files the other tasks cannot reach.
 
 :::alert{type="info"}
-The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAuditLogs`](../../07.enterprise/02.governance/06.audit-logs/index.md#how-to-purge-audit-logs).
+The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAuditLogs`](../../07.enterprise/02.governance/06.audit-logs/index.md#purging-audit-logs).
 :::
 
 ## Purge executions and logs
@@ -275,29 +275,39 @@ Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin
 
 ## Purge assets and lineage (retention)
 
-Use the [io.kestra.plugin.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
+Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task hard-deletes three kinds of records that match the filters: [assets](../../07.enterprise/02.governance/01.assets/index.md), asset usage records (shown on each asset's **Executions** tab), and asset lineage events (read by `AssetShipper`). You can turn off any of the three.
 
 **Filters:**
 
 | Property | Description |
 | --- | --- |
+| `endDate` | **(required)** Purge assets last updated before this date, and usage and lineage records created before this date (ISO 8601). |
 | `namespace` | Filter by namespace. Supports prefix matching (e.g., `company.data` matches `company.data.staging`). |
 | `assetId` | Filter by a specific asset ID. |
-| `assetType` | Filter by one or more asset types (e.g., `io.kestra.plugin.ee.assets.Table`). |
-| `metadataQuery` | Filter by metadata key-value pairs. |
-| `endDate` | **(required)** Purge records created or updated before this date (ISO 8601). |
+| `assetType` | Filter by a list of full asset types (e.g., `io.kestra.plugin.ee.assets.Table`). |
+| `metadataQuery` | Filter by metadata. Each entry has a `field`, a `type` (`EQUAL_TO` or `NOT_EQUAL_TO`), and a `value`. |
 
 **Purge scope:**
 
 | Property | Default | Description |
 | --- | --- | --- |
 | `purgeAssets` | `true` | Whether to purge the asset records themselves. |
-| `purgeAssetUsages` | `true` | Whether to purge asset usage events (execution view). |
+| `purgeAssetUsages` | `true` | Whether to purge asset usage records. |
 | `purgeAssetLineages` | `true` | Whether to purge asset lineage events. |
+
+Not every filter applies to every record type. Turn off the record types that don't support the filters you set, or the task fails:
+
+| Filter | Assets | Usages | Lineage events |
+| --- | --- | --- | --- |
+| `endDate`, `namespace` | Yes | Yes | Yes |
+| `assetId` | Yes | Yes | No |
+| `assetType`, `metadataQuery` | Yes | No | No |
+
+Locked assets are skipped. The task purges the rest and leaves the locked assets for a later run.
 
 **Outputs:** `purgedAssetsCount`, `purgedAssetUsagesCount`, `purgedAssetLineagesCount`.
 
-Example: purge old VM assets on a monthly schedule.
+Example: purge VM assets that haven't been updated in 180 days, on a monthly schedule. Because the task filters by `assetType`, it only purges the asset records:
 
 ```yaml
 id: asset_retention_policy
@@ -310,11 +320,15 @@ triggers:
 
 tasks:
   - id: purge_old_vms
-    type: io.kestra.plugin.ee.assets.PurgeAssets
+    type: io.kestra.plugin.kestra.ee.assets.PurgeAssets
     assetType:
       - io.kestra.plugin.ee.assets.VM
     endDate: "{{ now() | dateAdd(-180, 'DAYS') }}"
+    purgeAssetUsages: false
+    purgeAssetLineages: false
 ```
+
+To purge old usage and lineage records for a whole namespace, filter by `namespace` and keep the defaults.
 
 ## Purge tasks vs. UI deletion
 

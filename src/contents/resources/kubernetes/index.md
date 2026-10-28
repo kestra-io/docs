@@ -33,7 +33,7 @@ Kubernetes is an open-source platform designed to automate the deployment, scali
 
 At its core, Kubernetes is a container orchestrator. It takes a collection of physical or virtual machines and turns them into a unified, powerful computing resource. Developers can then deploy their applications without needing to worry about the underlying individual machines. Kubernetes handles critical tasks like resource allocation, load balancing, self-healing (restarting failed containers), and scaling applications up or down based on demand.
 
-The platform operates on a declarative model. You define the desired state of your application—for example, "I want three instances of my web server running with this container image"—and Kubernetes works continuously to maintain that state. This approach aligns perfectly with modern [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code) and broader [infrastructure automation](/resources/infrastructure/automation) practices.
+The platform operates on a declarative model. You define the desired state of your application—for example, "I want three instances of my web server running with this container image"—and Kubernetes works continuously to maintain that state. This approach aligns perfectly with modern [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code) and broader [infrastructure automation](/resources/infrastructure/automation) practices.
 
 ### The history and evolution of Kubernetes
 

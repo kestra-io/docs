@@ -235,6 +235,16 @@ describe("resolveVersionedDocLink", () => {
         ).toBe("/docs/1.0/expressions#syntax")
     })
 
+    it("strips .mdx like .md", () => {
+        expect(
+            resolveVersionedDocLink(
+                "1.3",
+                "workflow-components/concurrency",
+                "../07.triggers/index.mdx#locked-triggers",
+            ),
+        ).toBe("/docs/1.3/workflow-components/triggers#locked-triggers")
+    })
+
     it("clamps .. at the docs root", () => {
         expect(resolveVersionedDocLink("1.0", "", "../../foo.md")).toBe("/docs/1.0/foo")
     })

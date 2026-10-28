@@ -39,7 +39,7 @@ An ADF pipeline is a workflow composed of one or more activities that perform a 
 *   **Linked Services:** Similar to connection strings, linked services define the connection information needed for Data Factory to connect to external resources. This could be an Azure Blob Storage account, an on-premises SQL Server, or a SaaS application.
 *   **Triggers:** These initiate the execution of a pipeline. ADF supports several trigger types, including `Schedule` for time-based execution, `Tumbling Window` for processing time-sliced data, and `Event-based` triggers that respond to events like file arrival in Azure Blob Storage.
 
-These components work together to create a cohesive [data pipeline](/resources/data/data-pipeline). A trigger fires, executing a pipeline. The pipeline runs its activities in a defined sequence, using linked services to connect to datasets that represent the source and destination of the data.
+These components work together to create a cohesive [data pipeline](/resources/data/create-data-pipeline). A trigger fires, executing a pipeline. The pipeline runs its activities in a defined sequence, using linked services to connect to datasets that represent the source and destination of the data.
 
 ## Why ADF Pipelines Need Robust Orchestration
 
@@ -49,7 +49,7 @@ While ADF is a capable tool for Azure-native data integration, production enviro
 *   **Error Recovery and Alerting:** While ADF has retry mechanisms, implementing sophisticated, multi-step error recovery logic that involves external systems requires a more powerful orchestration layer.
 *   **End-to-End Visibility:** Gaining a unified view of a workflow that includes an ADF pipeline, a dbt transformation, and a notification to a Slack channel is difficult without a central orchestrator.
 *   **Hybrid and Multi-Cloud Scenarios:** Organizations often operate in hybrid or multi-cloud environments. An orchestration tool locked into a single cloud ecosystem limits flexibility and increases operational complexity.
-*   **CI/CD and GitOps:** Implementing robust [CI/CD practices](/resources/infrastructure/ci-cd-pipeline) for data pipelines requires a declarative, version-controlled approach to workflow definitions, which is where a platform like Kestra excels. You can manage your [data pipelines as code](/docs/version-control-cicd) and integrate them into your existing DevOps toolchain.
+*   **CI/CD and GitOps:** Implementing robust [CI/CD practices](/resources/infrastructure/ci-cd-orchestration) for data pipelines requires a declarative, version-controlled approach to workflow definitions, which is where a platform like Kestra excels. You can manage your [data pipelines as code](/docs/version-control-cicd) and integrate them into your existing DevOps toolchain.
 
 ## Orchestrate ADF Pipelines with Kestra: An End-to-End Example
 

@@ -39,6 +39,8 @@
     a.ks-glossary-link {
         color: inherit;
         text-decoration: underline dotted;
+        // Without an explicit thickness Firefox draws the dots from the font's metrics, as large round dots.
+        text-decoration-thickness: 1px;
         text-underline-offset: 0.2em;
     }
 

@@ -63,9 +63,8 @@ The **queue** is the internal communication channel between Kestra’s server co
 - **Kafka queue** — Enterprise Edition. Higher throughput; pairs with the PostgreSQL or Elasticsearch repository.
 - **Redis queue** — Enterprise Edition.
 - **AMQP queue** — Enterprise Edition.
-- **GCP Pub/Sub queue** — Enterprise Edition.
 
-For configuration details on the JDBC queue backends, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md). For Kafka, Redis, AMQP, and GCP Pub/Sub, see [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#redis-amqp-and-gcp-pubsub-queue-backends).
+For configuration details on the JDBC queue backends, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md). For Kafka, Redis, and AMQP, see [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#redis-and-amqp-queue-backends).
 
 The queue surface covers four delivery families:
 

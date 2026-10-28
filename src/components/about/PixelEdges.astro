@@ -1,0 +1,77 @@
+---
+import tall from "./assets/patterns/edge-tall.svg?url"
+import wide from "./assets/patterns/edge-wide.svg?url"
+import cluster from "./assets/patterns/cluster.svg?url"
+
+interface Props {
+    left?: "tall" | "wide" | "cluster"
+    right?: "tall" | "wide" | "cluster"
+}
+
+const { left = "tall", right = "wide" } = Astro.props
+const URLS = { tall, wide, cluster }
+---
+
+<div class="pixel-edges" aria-hidden="true">
+    <span class={`edge left ${left}`} style={`--src: url("${URLS[left]}")`}
+    ></span>
+    <span class={`edge right ${right}`} style={`--src: url("${URLS[right]}")`}
+    ></span>
+</div>
+
+<style lang="scss">
+    .pixel-edges {
+        --pixel: rgba(99, 27, 255, 0.09);
+
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+
+        :global(html.dark) & {
+            --pixel: rgba(167, 150, 255, 0.07);
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    .pixel-edges ~ :global(.container) {
+        position: relative;
+    }
+
+    .edge {
+        position: absolute;
+        background: var(--pixel);
+        mask: var(--src) no-repeat center / contain;
+
+        &.left {
+            left: 0;
+            transform: scaleX(-1);
+        }
+
+        &.right {
+            right: 0;
+        }
+
+        &.tall {
+            top: 50%;
+            width: 120px;
+            aspect-ratio: 187 / 517;
+            translate: 0 -50%;
+        }
+
+        &.wide {
+            top: 0;
+            width: 220px;
+            aspect-ratio: 516 / 748;
+        }
+
+        &.cluster {
+            bottom: 2.5rem;
+            width: 130px;
+            aspect-ratio: 194 / 168;
+        }
+    }
+</style>

@@ -277,7 +277,7 @@ export function resolveVersionedDocLink(
             parts.pop()
             continue
         }
-        const seg = raw.replace(/^\d+\./, "").replace(/\.md$/i, "")
+        const seg = raw.replace(/^\d+\./, "").replace(/\.mdx?$/i, "")
         if (seg === "index") continue
         parts.push(seg)
     }

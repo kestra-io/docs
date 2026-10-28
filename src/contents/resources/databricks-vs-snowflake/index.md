@@ -172,7 +172,7 @@ The most sophisticated data teams often don't see this as an either/or decision.
 
 ## Related concepts
 - [ETL vs. ELT: Key Differences](/resources/data/etl-vs-elt)
-- [What is a Data Pipeline?](/resources/data/data-pipeline)
+- [What is a Data Pipeline?](/resources/data/create-data-pipeline)
 - [Data Quality: A Practical Guide](/resources/data/data-quality)
 - [Understanding Data Observability](/resources/data/data-observability)
 - [dbt Integrations for Orchestration](/resources/data/dbt-integrations)

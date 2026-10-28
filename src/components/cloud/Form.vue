@@ -167,10 +167,8 @@
     import { $fetch } from "~/utils/fetch"
     import {
         CONNOR_CLOUD_MEETING_LINK,
-        LUKE_MEETING_LINK,
         ensureMeetingsScriptLoaded,
-        getGeoMeetingUrl,
-        isAmericasTimezone,
+        getMeetingUrl,
         tierFromEmployees,
     } from "~/composables/useMeeting"
 
@@ -205,10 +203,7 @@
     const COMPANY_SIZE_PROPERTY = "number_of_employees"
 
     function cloudMeetingUrl(employees: string) {
-        const tier = tierFromEmployees(employees)
-        if (tier === "T1") return getGeoMeetingUrl()
-        if (tier === "T2" && isAmericasTimezone()) return LUKE_MEETING_LINK
-        return CONNOR_CLOUD_MEETING_LINK
+        return getMeetingUrl(tierFromEmployees(employees), CONNOR_CLOUD_MEETING_LINK)
     }
 
     function withContactParams(

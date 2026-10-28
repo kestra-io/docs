@@ -114,7 +114,7 @@ A modern data team is a multidisciplinary unit. Key roles include:
 
 ### Integrating Data Governance into Your Structure
 
-Data governance isn't a separate team; it's a set of practices integrated into the organizational structure. This involves defining who can take what action, upon what data, in what situations, using what methods. Effective [workflow governance](/resources/infrastructure/workflow-governance) ensures that these rules are applied consistently across all data processes, from ingestion to consumption. Tools that support clear [data lineage](/resources/data/data-lineage) are critical for tracking data movement and enforcing these governance policies.
+Data governance isn't a separate team; it's a set of practices integrated into the organizational structure. This involves defining who can take what action, upon what data, in what situations, using what methods. Effective [workflow governance](/resources/ai/ai-governance-workflows) ensures that these rules are applied consistently across all data processes, from ingestion to consumption. Tools that support clear [data lineage](/resources/data/data-lineage) are critical for tracking data movement and enforcing these governance policies.
 
 ### Data Management vs. Data Governance: A Clear Distinction
 
