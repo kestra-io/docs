@@ -7,6 +7,7 @@ description: Learn where Kestra configuration lives and how to edit it. Covers r
 ---
 
 import ChildCard from "~/components/docs/ChildCard.astro"
+import LegacyAnchorRedirect from "~/components/docs/LegacyAnchorRedirect.astro"
 
 Use this page when you need to know where Kestra configuration is defined, how it is overridden, and which part of the config tree controls a given capability.
 
@@ -46,3 +47,8 @@ Environment variables override file-based configuration, so many teams keep a sh
 ## Browse configuration docs
 
 <ChildCard />
+
+<LegacyAnchorRedirect anchors={{
+    "encryption": "/docs/configuration/security-and-secrets#encryption",
+    "kestra-url": "/docs/configuration/runtime-and-storage#optional-runtime-features",
+}} />
