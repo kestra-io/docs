@@ -153,9 +153,19 @@ const PUBLIC: Backer[] = [
         --line: var(--ks-border-primary);
         --rule: 1px solid var(--line);
 
+        // The frame sits outside the content edge, so the title inside it
+        // lines up with the titles of the other sections.
+        --inset: 3rem;
+
         position: relative;
+        margin-inline: calc(var(--inset) * -1);
         border-left: var(--rule);
         border-right: var(--rule);
+
+        // Phones: the frame reaches the screen's edges.
+        @include media-breakpoint-down(md) {
+            --inset: 1.25rem;
+        }
 
         > * {
             position: relative;
@@ -176,13 +186,12 @@ const PUBLIC: Backer[] = [
         }
     }
 
-    // The title, the angels and the partners share one left edge, a little
-    // inside the frame.
+    // The title, the angels and the partners share the content's left edge.
     header {
-        padding: 4rem 3rem;
+        padding: 4rem var(--inset);
 
         @include media-breakpoint-down(md) {
-            padding: 3rem 1rem;
+            padding-block: 3rem;
         }
     }
 
@@ -282,10 +291,10 @@ const PUBLIC: Backer[] = [
     }
 
     .more {
-        padding: 4rem 3rem 6rem;
+        padding: 4rem 0 6rem;
 
         @include media-breakpoint-down(md) {
-            padding: 3rem 1rem 4.5rem;
+            padding: 3rem 0 4.5rem;
         }
     }
 
