@@ -5,6 +5,7 @@ description: Use Kestra AI Copilot to generate and edit flows with natural langu
 sidebarTitle: AI Copilot
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 2.0.0"
+docId: ai-copilot
 ---
 
 Build and modify flows, ask questions about Kestra, and get AI-driven plans — all from a persistent chat sidebar.

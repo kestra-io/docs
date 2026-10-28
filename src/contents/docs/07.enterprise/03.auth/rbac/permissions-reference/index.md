@@ -5,7 +5,6 @@ description: Reference for Kestra RBAC resources and actions mapped to API endpo
 sidebarTitle: Permissions Reference
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-docId: iam
 ---
 
 This reference maps each RBAC resource and action to the API endpoints that enforce it. Use it to design least-privilege roles and troubleshoot authorization errors.

@@ -6,6 +6,7 @@ sidebarTitle: Kill Switch
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "1.3.0"
+docId: kill-switch
 ---
 
 Kill Switch is an operational safety lever that lets administrators stop misbehaving executions directly from the UI.
