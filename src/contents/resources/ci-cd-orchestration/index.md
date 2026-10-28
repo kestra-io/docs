@@ -5,6 +5,7 @@ metaTitle: "CI/CD Orchestration: Unifying Software Delivery Workflows"
 metaDescription: "CI/CD orchestration coordinates builds, tests, and deployments across separate DevOps tools. See where it fits next to a native CI runner, and when you need it."
 tag: "infrastructure"
 date: 2026-06-20
+lastUpdated: 2026-10-26
 slug: "ci-cd-orchestration"
 faq:
   - question: "What is CI/CD orchestration?"
@@ -19,11 +20,37 @@ faq:
     answer: "Examples of CI/CD orchestration tools include specialized platforms like Argo Workflows for Kubernetes-native tasks, or universal orchestrators like Kestra that can coordinate any tool—from Git and Terraform to Jenkins and cloud APIs—through declarative workflows. Traditional CI tools like Jenkins can also be part of a larger orchestrated pipeline."
   - question: "Why is a declarative approach important for CI/CD orchestration?"
     answer: "A declarative approach, often using YAML, defines the desired state of a CI/CD pipeline rather than a sequence of imperative commands. This makes workflows easier to read, version control, audit, and roll back. It promotes 'Everything as Code' principles, enhancing consistency and reliability across complex software delivery processes."
+  - question: "What is a CI/CD pipeline?"
+    answer: "A CI/CD pipeline is the automated sequence of steps that takes a code change from a Git commit to a tested artifact and, depending on the setup, all the way to production. Continuous integration builds and tests every change. Continuous delivery deploys the result to staging and waits for an approval, while continuous deployment releases it to production automatically. For example, a merged pull request triggers a container build, unit and integration tests, an image scan, a staging deploy, and a canary release, and any failed step stops the change."
+  - question: "What are the main stages of a CI/CD pipeline?"
+    answer: "Most pipelines run five stages: source (a push or pull request starts the run), build (compile and package a versioned artifact), test (unit, integration, and security checks), deploy (promote the same artifact through staging to production), and monitor (smoke tests and production metrics, with a rollback if they degrade). The first three make up continuous integration; deploy and monitor belong to continuous delivery or deployment. Building the artifact once and promoting it unchanged is what makes a passing test in staging meaningful in production."
 ---
 
 Modern software delivery is a complex dance of tools and processes. Continuous Integration (CI) and Continuous Delivery (CD) promise speed and reliability, but as applications grow, the glue connecting build, test, and deploy steps often becomes a fragmented mess of scripts, disparate tools, and manual handoffs. This fragmentation introduces bottlenecks, reduces visibility, and compromises the very agility CI/CD aims to achieve.
 
-The solution lies in CI/CD orchestration: a unified approach that coordinates every stage of your software delivery lifecycle from a single, declarative control plane. This article explores how robust orchestration can transform your development pipelines, ensuring consistent, efficient, and auditable releases, and how Kestra provides the framework to achieve it.
+The solution lies in CI/CD orchestration: a unified approach that coordinates every stage of your software delivery lifecycle from a single, declarative control plane. This article starts with what a CI/CD pipeline is and the stages it runs, then explores how orchestration turns those pipelines into consistent, efficient, and auditable releases, and how Kestra provides the framework to achieve it.
+
+## What Is a CI/CD Pipeline?
+
+A CI/CD pipeline is the automated sequence of steps that takes a code change from a commit in version control to a tested, deployable artifact and, with continuous deployment, all the way to production. Every change runs through the same steps in the same order, and a failure at any step stops that change from moving forward. The pipeline itself is usually defined as code next to the application (a Jenkinsfile, a GitHub Actions workflow, a `.gitlab-ci.yml`), so it is versioned and reviewed like the software it ships. That practice has a name of its own: [pipeline as code](/resources/infrastructure/pipeline-as-code).
+
+### Core stages of a CI/CD pipeline
+
+Pipelines vary by stack, but most run the same five stages:
+
+1. Source. A push, pull request, or tag in Git starts the pipeline. Branch rules decide how far it goes: a feature branch might stop after tests, while a merge to main continues to deployment.
+2. Build. Code is compiled, dependencies are resolved, and the output is packaged as a versioned artifact such as a container image, a JAR, or a bundled frontend. Building the artifact once and promoting that same artifact through every environment is what makes the later stages trustworthy.
+3. Test. Unit tests run first because they are fast. Integration and end-to-end tests follow, alongside static analysis, dependency scanning, and container image scanning. Any failure stops the pipeline and reports back to the author of the change.
+4. Deploy. The artifact goes to staging, then production, often through blue-green, canary, or rolling strategies that limit how many users a bad release reaches. Infrastructure changes and database migrations frequently ship in the same step.
+5. Monitor. Post-deployment smoke tests and production metrics confirm the release is healthy. If error rates or latency move the wrong way, the pipeline alerts the team or rolls back to the previous artifact.
+
+The first three stages make up continuous integration. Deploy and monitor belong to continuous delivery or continuous deployment, depending on whether a human approves the production release. The same stages apply to SQL models and data workflows, covered in [CI/CD for data pipelines](/resources/infrastructure/ci-cd-for-data-pipelines).
+
+### The infrastructure behind continuous integration
+
+Continuous integration infrastructure is the machinery that runs those stages: the CI server or service (Jenkins, GitHub Actions, GitLab CI) that schedules jobs, the runners or build agents that execute them, the caches that keep builds fast, the artifact registry that stores outputs, and the secrets store that holds credentials for each environment.
+
+The main design choice is where runners live. Hosted runners need no maintenance but execute outside your private network. Self-hosted runners can reach internal systems and databases, at the cost of patching, scaling, and isolating them yourself. Ephemeral runners, created per job on Kubernetes or cloud VMs and destroyed afterward, keep state from leaking between builds. Whatever the setup, feedback time is the metric to protect: when a pipeline gets slow, developers batch their changes and start ignoring flaky failures, and integration problems pile up again.
 
 ## Beyond CI/CD: The Need for Orchestration in Software Delivery
 
@@ -34,6 +61,16 @@ To understand the value of CI/CD orchestration, it's essential to first distingu
 Continuous Integration (CI) is the practice of developers frequently merging their code changes into a central repository, after which automated builds and tests are run. The primary goal of CI is to detect integration issues early and maintain a stable codebase.
 
 Continuous Delivery (CD) extends CI by automating the release of validated code to a repository. From there, it can be deployed to any environment—staging, UAT, or production—at any time. Continuous Deployment is a further step where every change that passes all automated tests is automatically deployed to production.
+
+| | Continuous integration | Continuous delivery | Continuous deployment |
+| --- | --- | --- | --- |
+| Goal | Catch integration problems early | Keep every change releasable | Release every passing change |
+| Starts on | Every commit or pull request | A successful CI run | A successful CI run |
+| Ends with | A tested, versioned artifact | That artifact deployed to staging, ready for production | The change running in production |
+| Production release | Out of scope | Manual approval | Automatic |
+| Depends on | Automated builds and fast tests | Automated deployment to every environment | Tests and monitoring trusted enough to remove the approval |
+
+Continuous delivery is the usual default where a release needs a business or compliance sign-off. Continuous deployment fits services where changes are small, rollback is fast, and an approval step would only add queue time.
 
 Together, CI/CD practices form a pipeline that automates the path from code commit to production readiness. However, this pipeline often involves more than just a single tool or environment. This is where the need for a higher level of coordination becomes apparent, which is why it's important to understand the [differences between various types of orchestration](/blogs/orchestration-differences).
 

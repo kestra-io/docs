@@ -74,7 +74,7 @@ At the heart of hybrid automation is an orchestration platform. This tool acts a
 
 ### Infrastructure as Code (IaC) principles
 
-Infrastructure as Code (IaC) is the practice of managing and provisioning infrastructure through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools. Tools like Terraform, OpenTofu, and Ansible allow teams to define their infrastructure declaratively. This approach is fundamental to hybrid automation, as it enables versioning, testing, and consistent deployment of infrastructure components across any environment. You can learn more in our guide on [what is Infrastructure as Code](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code).
+Infrastructure as Code (IaC) is the practice of managing and provisioning infrastructure through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools. Tools like Terraform, OpenTofu, and Ansible allow teams to define their infrastructure declaratively. This approach is fundamental to hybrid automation, as it enables versioning, testing, and consistent deployment of infrastructure components across any environment. You can learn more in our guide on [what is Infrastructure as Code](https://kestra.io/resources/infrastructure/everything-as-code).
 
 ### Integration with existing IT ecosystems
 

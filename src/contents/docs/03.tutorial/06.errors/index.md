@@ -143,7 +143,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - states: [FAILED, WARNING]
-        when: "{{ namespace | startsWith('company.team') }}"
+        when: "{{ flow.namespace | startsWith('company.team') }}"
 ```
 
 Adding this flow ensures you receive a Slack alert for any flow failure in the `company.team` namespace.

@@ -5,6 +5,7 @@ metaTitle: "Everything as Code (EaC): A Comprehensive Guide"
 metaDescription: "Understand Everything as Code (EaC) and its impact on modern DevOps. This guide covers principles, benefits, implementation, and how Kestra supports this approach."
 tag: "infrastructure"
 date: 2026-05-27
+lastUpdated: 2026-10-26
 slug: "everything-as-code"
 faq:
   - question: "What is the Everything as Code principle?"
@@ -17,6 +18,10 @@ faq:
     answer: "While AI code generation tools are rapidly advancing, the claim that AI writes 90% of code in an EaC context is an overstatement. In practice, AI tools act as powerful assistants, generating significant portions of boilerplate or repetitive code. The actual percentage varies widely, often ranging from 25-50% in teams that effectively integrate agentic tools, with human engineers still providing critical oversight, design, and complex problem-solving."
   - question: "Is Web Development dead due to AI in the context of EaC?"
     answer: "No, web development is not dead due to AI. AI tools enhance developer productivity by automating routine tasks, but they don't replace the need for human creativity, problem-solving, and understanding of complex user needs and business logic. The role of web developers evolves to leverage AI tools effectively, building more sophisticated and robust applications."
+  - question: "Is Kubernetes an IaC tool?"
+    answer: "No, not in the same sense as Terraform. Kubernetes is a container orchestration platform, but it runs on the same declarative model as IaC: you describe Deployments, Services, and ConfigMaps in YAML manifests, keep them in Git, and the Kubernetes control plane reconciles the cluster to match. Terraform or OpenTofu typically provisions the cluster itself, and Kubernetes manifests then define what runs inside it."
+  - question: "What is the difference between Terraform and OpenTofu?"
+    answer: "The main difference is licensing and governance, not syntax. Terraform moved from the Mozilla Public License to the Business Source License with version 1.6 in August 2023. OpenTofu is the community fork created in response, governed by the Linux Foundation and still under MPL 2.0. Both read HCL configurations and the same state format, so most existing Terraform code runs on OpenTofu unchanged. Teams that need a fully open-source license tend to pick OpenTofu; teams invested in HashiCorp's commercial products usually stay on Terraform."
 author: "elliot"
 ---
 
@@ -36,7 +41,7 @@ The primary goal is to create a single source of truth for the entire system, en
 
 ### The evolution from Infrastructure as Code to Everything as Code
 
-The journey to EaC began with [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code). IaC revolutionized IT operations by allowing teams to provision and manage infrastructure—servers, load balancers, and databases—through declarative definition files rather than manual processes. Tools like Terraform and Ansible became cornerstones of this movement.
+The journey to EaC began with Infrastructure as Code (IaC). IaC revolutionized IT operations by allowing teams to provision and manage infrastructure—servers, load balancers, and databases—through declarative definition files rather than manual processes. Tools like Terraform and Ansible became cornerstones of this movement.
 
 However, IaC was just the beginning. As teams adopted IaC, they realized the same principles could bring value to other domains. This led to the expansion of the "as code" philosophy:
 - **Configuration as Code (CaC):** Managing application and system configurations.
@@ -45,6 +50,49 @@ However, IaC was just the beginning. As teams adopted IaC, they realized the sam
 - **Security as Code (SaC):** Integrating security practices into the development lifecycle through code.
 
 Everything as Code is the culmination of this evolution. It’s an umbrella term that encompasses IaC and its successors, creating a unified framework where every element of a system is treated as a first-class code citizen. This approach aligns perfectly with modern practices like [GitOps](https://kestra.io/resources/infrastructure/gitops), where a Git repository serves as the definitive source for the desired state of the entire system. Kestra's [partnership with Terraform](https://kestra.io/blogs/2023-09-19-kestra-terraform-partnership) extends this paradigm to mission-critical operational and analytical workflows.
+
+## Infrastructure as Code: the foundation of Everything as Code
+
+Every other "as code" practice borrows its mechanics from IaC, so it is worth getting the foundation right before extending it to policies, pipelines, and workflows.
+
+### What Infrastructure as Code means
+
+Infrastructure as Code is the practice of provisioning and managing infrastructure through machine-readable definition files instead of consoles, tickets, and manual commands. Rather than clicking through a cloud console to create a virtual machine, you write a file that states the machine size, region, and network, and a tool calls the provider's APIs to make it real. Because the file lives in Git, anyone can see what infrastructure exists, who changed it, and why.
+
+IaC typically covers the building blocks cloud and on-premises platforms expose: compute (VMs, containers, serverless functions), networking (VPCs, subnets, firewalls, load balancers), storage (object, block, and file), and identity (IAM roles, security groups, encryption keys).
+
+### Declarative vs. imperative IaC
+
+There are two ways to write infrastructure code:
+
+- Declarative: you describe the end state ("three web servers behind a load balancer, one database") and the tool computes the changes needed to reach it. Terraform, OpenTofu, CloudFormation, and Kubernetes manifests work this way.
+- Imperative: you describe the steps ("create a VM, install nginx, open port 443") and the tool runs them in order. Shell scripts and cloud CLIs are imperative. Ansible sits in between: playbooks run tasks in sequence, but most modules declare a target state (`state: present`) and skip work that is already done.
+
+Declarative definitions are easier to review and safer to rerun, because the tool reconciles reality against the file regardless of the current state. Imperative steps remain useful for one-off operations and ordered procedures such as a database failover. Everything as Code inherits this trade-off: a Kestra flow is a declarative definition of an imperative sequence of tasks.
+
+### Core IaC principles
+
+- Version control is the source of truth. Definitions live in Git, changes go through pull requests, and a revert restores a known-good state. This is the basis of [GitOps](/resources/infrastructure/gitops).
+- Idempotence means applying the same definition twice produces the same result, with no duplicate resources. The [idempotency](/resources/infrastructure/idempotency) property is what makes reruns and retries safe.
+- Immutability means that instead of patching a running server in place, you replace it with a fresh one built from the same definition, which stops undocumented changes from piling up.
+- Modularity means a standard network or database setup is written once as a module and reused across environments.
+- Testing and drift detection close the loop. Linting, policy checks, and plan reviews catch errors before apply, and scheduled comparisons between code and live state catch manual changes afterwards. See [Terraform drift detection](/resources/infrastructure/terraform-drift-detection).
+
+### Main IaC tools
+
+| Tool | Approach | Language | Scope |
+|---|---|---|---|
+| Terraform | Declarative | HCL | Multi-cloud and on-prem provisioning through providers |
+| OpenTofu | Declarative | HCL | Open-source (MPL 2.0) fork of Terraform under the Linux Foundation |
+| Pulumi | Declarative desired state, written in general-purpose code | Python, TypeScript, Go, C#, Java | Multi-cloud provisioning |
+| AWS CloudFormation | Declarative | JSON or YAML templates | AWS only |
+| Azure Resource Manager / Bicep | Declarative | JSON templates or Bicep | Azure only |
+| Ansible | Procedural playbooks of idempotent modules | YAML | Configuration management, app deployment, some provisioning |
+| Puppet / Chef | Declarative DSL (Puppet), Ruby DSL (Chef) | Puppet DSL, Ruby | Configuration management |
+
+Cloud-native tools expose new services quickly but do not port across providers. Terraform and OpenTofu cover the most providers. Ansible is usually paired with one of them: Terraform creates the machines, Ansible configures them. For alternatives, see [Ansible alternatives](/resources/infrastructure/alternatives-to-ansible), [Puppet alternatives](/resources/infrastructure/puppet-alternatives), and [Chef alternatives](/resources/infrastructure/chef-alternatives).
+
+IaC tools define resources. They do not decide when a plan runs, who approves the apply, or what happens downstream once the infrastructure exists. That coordination is the job of an [infrastructure orchestration](/resources/infrastructure/infrastructure-orchestration) layer, and it is where Everything as Code extends beyond infrastructure.
 
 ## Key components of Everything as Code
 

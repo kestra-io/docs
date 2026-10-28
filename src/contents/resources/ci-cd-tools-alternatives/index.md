@@ -51,7 +51,7 @@ However, its tight coupling with GitHub can be a limitation. While it excels at 
 
 GitLab’s main appeal is its all-in-one approach. It bundles source code management, CI/CD, security scanning, a container registry, and more into a single platform. This integration simplifies the toolchain and provides a consistent user experience. GitLab CI/CD is particularly strong in its support for containerized workflows and has robust features for security and compliance, such as Dynamic Application Security Testing (DAST) and dependency scanning.
 
-The trade-off is that its power is most realized when you commit to the entire GitLab ecosystem. For teams that prefer a best-of-breed approach with different tools for source control, artifact storage, and security, GitLab can feel heavyweight. Its strength in integration is also a form of lock-in, making it harder to swap out individual components. Its philosophy aligns well with [GitOps principles for operations](/resources/infrastructure/gitops-for-operations), where the Git repository is the single source of truth for both application and infrastructure state.
+The trade-off is that its power is most realized when you commit to the entire GitLab ecosystem. For teams that prefer a best-of-breed approach with different tools for source control, artifact storage, and security, GitLab can feel heavyweight. Its strength in integration is also a form of lock-in, making it harder to swap out individual components. Its philosophy aligns well with [GitOps principles for operations](/resources/infrastructure/gitops), where the Git repository is the single source of truth for both application and infrastructure state.
 
 ### CircleCI: Speed and cloud-native flexibility
 

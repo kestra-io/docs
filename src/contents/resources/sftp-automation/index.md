@@ -154,7 +154,7 @@ Secure and automated file transfers are a foundational requirement across numero
 -   [What Is Infrastructure Automation?](/resources/infrastructure/automation)
 -   [Hybrid Cloud Automation](/resources/infrastructure/hybrid-cloud-automation)
 -   [Data Retention Automation](/resources/data/data-retention-automation)
--   [Workflow Governance](/resources/infrastructure/workflow-governance)
+-   [Workflow Governance](/resources/ai/ai-governance-workflows)
 -   [Event-Driven Orchestration](/resources/infrastructure/event-driven-orchestration)
 -   [Best Workflow Automation Tools](/resources/infrastructure/best-workflow-automation-tools)
 
