@@ -67,7 +67,7 @@ Each plugin component targets a specific **slot** — a named extension point in
 |---|---|
 | [`topology-details`](#topology-details) | Inside a task node in the execution topology |
 | [`topology-task-drawer`](#topology-task-drawer) | The task drawer in the flow editor |
-| [`topology-task-modal`](#topology-task-modal) | A full-screen dialog opened from a runner-backed task node |
+| [`topology-task-modal`](#topology-task-modal) | A full-screen dialog opened from a task node |
 | [`execution-artifact`](#execution-artifact) | The **Artifacts** tab of an execution |
 | [`asset-card-footer`](#asset-card-footer) | Below an asset's card in the dependency graph |
 
@@ -149,9 +149,12 @@ You can reuse the same Vue component file for both `topology-details` and `topol
 
 ### `topology-task-modal`
 
-Renders as a **full-screen modal** (`KsDialog`) in the execution topology view when the user clicks "View details" on a runner-backed task node. It shares the exact same `propsSchema` as `topology-details` (defined in [`ui/packages/slot-contracts/src/topology-task-modal.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-modal.ts) in Kestra core).
+Renders as a **full-screen modal** (`KsDialog`) over the topology. It shares the exact same `propsSchema` as `topology-details` (defined in [`ui/packages/slot-contracts/src/topology-task-modal.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-modal.ts) in Kestra core).
 
-The modal is triggered by injecting `kestra:openTaskModal` — provided by the Kestra host via `LowCodeEditor.vue`. Plugin components that want to open the modal call this injection; you do not need to handle the dialog lifecycle yourself.
+The host opens the modal in two ways, and handles the dialog lifecycle in both:
+
+- **From a node action.** Declare a [`customAction`](#customaction) without `taskProp` on the task's `topology-details` entry. The host adds the action to the task node and, when the user clicks it, opens the modal with the action's `label` as its title.
+- **From your own component.** Inject `kestra:openTaskModal`, which the host provides through `LowCodeEditor.vue`, and call it.
 
 ```ts
 import { inject } from "vue"
@@ -162,7 +165,7 @@ defineProps<KnownSlotProps["topology-task-modal"]>()
 const openTaskModal = inject<(ctx: Record<string, any>) => void>("kestra:openTaskModal")
 ```
 
-This slot is the right choice when a task runner (e.g. AWS Batch, Docker, Kubernetes) needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel.
+This slot is the right choice when a task needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel, such as a task runner's infrastructure phases (AWS Batch, Kubernetes) or the per-connector state of a Fivetran sync.
 
 ### `execution-artifact`
 
@@ -809,7 +812,7 @@ Commonly used properties for `topology-details`:
 |---|---|---|
 | `height` | `number` | Height (in px) of the detail panel before execution |
 | `heightWithExecution` | `number` | Height (in px) of the detail panel after execution |
-| `customAction` | `object` | Adds a button on the task node that opens a drawer for a specific task property (e.g. a SQL query) |
+| `customAction` | `object` | Adds an action on the task node that opens a drawer for a specific task property (e.g. a SQL query), or the task's `topology-task-modal` when `taskProp` is omitted |
 
 ### Sizing the node
 
@@ -841,6 +844,26 @@ additionalProperties: {
 ```
 
 This is useful for tasks that carry large or structured payloads (SQL queries, scripts, templates) that are better viewed in a dedicated panel than inline in the YAML editor. The drawer shows the property as written in the flow, so Pebble expressions in it appear unrendered, including after an execution.
+
+Omit `taskProp` to open the task's [`topology-task-modal`](#topology-task-modal) instead of a drawer. The host uses `label` as the modal title, and the task type must also register a `topology-task-modal` component:
+
+```ts
+"connectors.Sync": [
+  {
+    slotName: "topology-details",
+    path: "./src/components/ConnectorTopologyDetails.vue",
+    additionalProperties: {
+      height: 150,
+      heightWithExecution: 214,
+      customAction: { label: "Show Details" },
+    },
+  },
+  {
+    slotName: "topology-task-modal",
+    path: "./src/components/ConnectorDetails.vue",
+  },
+],
+```
 
 :::alert{type="info"}
 `additionalProperties` values are static — they are evaluated at build time and embedded in the manifest. They cannot reference runtime task values.

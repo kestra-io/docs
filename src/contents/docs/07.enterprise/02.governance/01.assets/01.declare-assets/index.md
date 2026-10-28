@@ -281,12 +281,15 @@ Emitted assets and declared assets combine. You can turn on `enableAuto` and als
 | --- | --- | --- |
 | JDBC `Query` and `Queries` (all databases) | One `Table` output per `CREATE TABLE` statement. `Query` emits at most one. No inputs. | `<database>.<table>`. The schema isn't part of the ID. |
 | dbt `DbtCLI`, dbt Cloud `CheckStatus`, and dbt Cloud `TriggerRun` when `wait` is `true` | One `Table` output per model, seed, and snapshot, with its parents and sources as `Table` inputs. Adds test results as `dbtTestStatus` (`pass`, `fail`, or `warn`), `dbtTestsTotal`, and `dbtTestsFailed` when `parseRunResults` is `true`. | `<database>.<schema>.<name>` |
-| Fivetran `connectors.Sync` and `connectors.Status` | One `Dataset` output per connector schema and one `Table` output per enabled table | Tables: `<database>.<schema>.<table>` |
+| Fivetran `connectors.Status`, and `connectors.Sync` when `wait` is `true` | One `Dataset` output per connector, and one `Table` output per enabled table with its source table as input. The input is a `Table` for database sources such as PostgreSQL, SQL Server, Snowflake, or BigQuery, and an `External` asset otherwise. When the destination reports no database name, such as Managed BigQuery, only the connector `Dataset` is emitted. | Connector: `<groupId>.<schema>`. Tables: `<database>.<schema>.<table>`. Source inputs: `<database>.<schema>.<table>`, `<schema>.<table>` for MySQL and MariaDB, or `<connectorId>.<schema>.<table>` for `External` |
 | Google Cloud BigQuery `RunTransferConfig` | One `Table` output for the destination table, or one `Dataset` output when the table isn't fixed. Emitted only after a successful run. | `<project>.<dataset>.<table>` or `<project>.<dataset>` |
 | Hex `projects.Run` | One `Dataset` output for the project, with `system: hex`. No inputs. | The `projectId` |
 | Qlik Cloud `apps.Reload` | One `io.kestra.plugin.qlikcloud.assets.App` output for the reloaded app. Set the task's `emitAssets` to `false` to turn this off. | The app ID |
 | Ansible `AnsibleCLI` | One `VM` input per host in an INI inventory file named exactly `inventory.ini` at the working directory root | The host name |
 | Helm `Upgrade`, `Rollback`, `Status`, and `Uninstall` | One `io.kestra.plugin.ee.assets.HelmRelease` output, with the chart and `valuesFrom` files as inputs, plus one `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource. `Uninstall` deletes these assets. | Built from the cluster, Kubernetes namespace, and release name |
+
+<!-- TODO: the Fivetran row describes plugin-fivetran 2.0.0 (kestra-io/plugin-fivetran#116 and #117, merged
+     2026-10-28, still 2.0.0-SNAPSHOT). Confirm the release has shipped before publishing. -->
 
 dbt and Fivetran use the same `<database>.<schema>.<table>` ID format, so a Fivetran table and the dbt source that reads it join into one lineage chain. JDBC IDs leave out the schema, so they don't join with dbt or Fivetran IDs. To connect them, declare the matching IDs yourself.
 
