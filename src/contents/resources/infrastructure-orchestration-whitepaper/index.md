@@ -5,7 +5,7 @@ metaTitle: "Infrastructure Automation vs Orchestration: the Whitepaper"
 metaDescription: "Infrastructure automation runs one tool. Orchestration runs the work across all of them. Kai Waehner's free whitepaper on closing the coordination gap."
 tag: whitepapers
 author: Kai Waehner
-date: 2026-10-28
+date: 2026-10-27
 href: /resources/whitepapers/infrastructure-orchestration
 faq:
   - question: "What is the difference between infrastructure automation and infrastructure orchestration?"
@@ -34,6 +34,8 @@ schema:
       publisher:
         "@id": "https://kestra.io/#organization"
 ---
+
+**Infrastructure orchestration** sequences infrastructure work across many tools, with dependencies, approvals, failure handling, and one record of execution, where infrastructure automation only removes manual work inside a single tool.
 
 ## Executive summary
 
@@ -166,7 +168,7 @@ The macro pressure is arriving at the same time. Gartner forecasts worldwide IT 
 
 So the financial case is not to rip out the execution tools and bank their licenses. Those tools stay. The case has two parts. Stop the metered surfaces from growing by routing new work through an orchestrator licensed by instance rather than by execution. Then remove the duplicated glue layer: the scripts, the cron entries, the CI jobs doing operations work, and the legacy orchestration products that exist only to connect other tools.
 
-The second part is where published displacement results sit. [A Fortune 500 industrial manufacturer](/customers/fortune-500-company) replaced VMware Aria Automation at 90 percent lower licensing cost, securing hybrid cloud automation across IT and OT.
+The second part is where published displacement results sit. [A Fortune 500 industrial manufacturer](/stories/fortune-500-company) replaced VMware Aria Automation at 90 percent lower licensing cost, securing hybrid cloud automation across IT and OT.
 
 ### Execution without audit evidence
 
@@ -250,7 +252,7 @@ These do the orchestrator's job without the orchestrator's properties. They have
 
 Replacement here is staged and chain by chain, and the scripts go two ways. Existing Python, Shell, and PowerShell runs unchanged as a task inside a workflow. Logic written inside the legacy orchestrator itself, such as vRO's JavaScript, is the part that converts, and the [Kestra Migration Assistant](/resources/migration/vra/assistant) drafts that conversion for an engineer to review. In both cases, what changes is the coordination around them.
 
-The Fortune 500 manufacturer from the licensing argument above is the [published example](/customers/fortune-500-company) of this motion. VMware Aria Automation was replaced, Ansible stayed and is now orchestrated, and the same team has since started evaluating whether the commercial platform around its playbooks still earns its license.
+The Fortune 500 manufacturer from the licensing argument above is the [published example](/stories/fortune-500-company) of this motion. VMware Aria Automation was replaced, Ansible stayed and is now orchestrated, and the same team has since started evaluating whether the commercial platform around its playbooks still earns its license.
 
 ![One provisioning chain, two motions. Three of five steps stay on the tool that runs them. Two improvised steps are replaced.](./which-steps-get-governed-and-which-get-replaced.png)
 

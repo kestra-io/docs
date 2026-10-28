@@ -241,11 +241,10 @@ const PERSONAS = [
         }
     }
 
-    // This paper opens directly on its Executive summary heading, so this
-    // rule matches nothing today. It stays so that a lead-in paragraph added
-    // above that heading, such as a one-line definition of infrastructure
-    // orchestration, is set larger than body copy without becoming a heading
-    // and landing in the table of contents.
+    // The paper opens with a one-sentence definition of infrastructure
+    // orchestration, set above the Executive summary heading. It is set
+    // larger than body copy so it reads as the paper's lead, without becoming
+    // a heading and landing in the table of contents.
     .whitepaper-content :global(.bd-content > p:first-child) {
         font-size: 1.25rem;
         line-height: 1.55;

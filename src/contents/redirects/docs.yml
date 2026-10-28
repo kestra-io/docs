@@ -180,6 +180,8 @@
   to: "/docs/ui"
 - regexp: "^/docs/ui/bookmarks(/.*)?$"
   to: "/docs/ui"
+- regexp: "^/docs/ui/dashboards(/.*)?$"
+  to: "/docs/ui/dashboard"
 - regexp: "^/docs/ui/blueprints(/.*)?$"
   to: "/docs/concepts/blueprints"
 - regexp: "^/docs/ui/logs(/.*)?$"

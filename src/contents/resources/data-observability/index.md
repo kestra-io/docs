@@ -26,7 +26,7 @@ This guide delves into data observability, a proactive approach to understanding
 
 ## The Imperative of Data Observability in Modern Data Stacks
 
-As data systems grow in complexity—spanning multiple sources, transformation tools, and consumption layers—the potential for failure increases exponentially. A minor issue upstream can cascade into significant errors downstream, eroding trust and leading to flawed business decisions. Data observability provides the necessary visibility to manage this complexity effectively, and is a critical layer on top of any well-designed [data pipeline](/resources/data/data-pipeline).
+As data systems grow in complexity—spanning multiple sources, transformation tools, and consumption layers—the potential for failure increases exponentially. A minor issue upstream can cascade into significant errors downstream, eroding trust and leading to flawed business decisions. Data observability provides the necessary visibility to manage this complexity effectively, and is a critical layer on top of any well-designed [data pipeline](/resources/data/create-data-pipeline).
 
 ### Defining Data Observability: Beyond Traditional Monitoring
 

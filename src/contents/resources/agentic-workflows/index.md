@@ -68,7 +68,7 @@ An agentic AI integrates a model like ChatGPT as its "brain" but adds critical c
 Effective agentic systems are built from several key components working in concert:
 
 *   **Planning:** The agent's ability to decompose a high-level goal into a sequence of executable steps. This might involve techniques like Chain of Thought (CoT) or Tree of Thoughts.
-*   **Memory:** Agents need memory to maintain context. This includes short-term memory for the current task (like a scratchpad) and long-term memory for retaining information across tasks, often stored in a [vector database](/resources/ai/vector-database) or a simple [key-value store](/docs/concepts/kv-store).
+*   **Memory:** Agents need memory to maintain context. This includes short-term memory for the current task (like a scratchpad) and long-term memory for retaining information across tasks, often stored in a [vector database](/resources/ai/rag-pipeline) or a simple [key-value store](/docs/concepts/kv-store).
 *   **Tools:** These are the functions or APIs that allow the agent to interact with the world. A tool could be a web search API, a database query function, or the ability to execute code in various [programming languages](/docs/scripts/languages). The agent must be able to select the right tool for a given sub-task.
 *   **Reflection:** The ability for an agent to critique its own work and learn from its mistakes. After generating a plan or taking an action, a reflection step can help identify flaws and improve future performance.
 

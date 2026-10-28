@@ -37,7 +37,7 @@ Continuous delivery (CD) takes validated code and automates its release to stagi
 ### Why traditional software CI/CD falls short for data assets
 Standard software CI/CD pipelines are designed to compile source code, build container images, and deploy stateless microservices. Data engineering introduces unique complexities that standard application CI tools often struggle to handle natively. 
 
-Data pipelines operate on stateful assets, depend on external database schemas, and interact with live cloud storage buckets. A passing unit test in a sandbox environment does not guarantee that a SQL transformation will succeed against a production data warehouse containing billions of rows of historical data. Consequently, a robust approach requires dedicated infrastructure awareness, as explored in guides on [CI/CD Pipeline: Automation for Software Delivery](/resources/infrastructure/ci-cd-pipeline).
+Data pipelines operate on stateful assets, depend on external database schemas, and interact with live cloud storage buckets. A passing unit test in a sandbox environment does not guarantee that a SQL transformation will succeed against a production data warehouse containing billions of rows of historical data. Consequently, a robust approach requires dedicated infrastructure awareness, as explored in guides on [CI/CD Pipeline: Automation for Software Delivery](/resources/infrastructure/ci-cd-orchestration).
 
 ## Why data engineering needs automated delivery cycles
 

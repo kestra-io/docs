@@ -40,7 +40,7 @@ The scope of cloud automation extends across the entire lifecycle of digital ass
 - **Monitoring and Scaling:** Automatically adjusting resource allocations based on workload demands or metrics.
 - **Security and Compliance:** Enforcing security baselines and running audit checks continuously.
 
-Moving beyond basic scripts requires dependable definition frameworks. Establishing clear practices around [infrastructure as code](/resources/infrastructure/what-is-infrastructure-as-code) ensures that your cloud state is always version-controlled and reproducible.
+Moving beyond basic scripts requires dependable definition frameworks. Establishing clear practices around [infrastructure as code](/resources/infrastructure/everything-as-code) ensures that your cloud state is always version-controlled and reproducible.
 
 ## The Tangible Benefits of Automated Cloud Operations
 
