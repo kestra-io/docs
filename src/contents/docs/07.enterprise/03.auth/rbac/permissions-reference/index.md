@@ -687,7 +687,7 @@ USE (any `COPILOT` action)
 **Scope:** Tenant
 
 **Actions and their meaning**
-- `VIEW` / `LIST`: search audit logs and view diffs.
+- `VIEW` / `LIST`: search audit logs.
 - `EXPORT`: export audit logs.
 
 **Endpoints**
@@ -695,14 +695,18 @@ USE (any `COPILOT` action)
 VIEW / LIST
 - `GET /api/v1/{tenant}/auditlogs/search`
 - `POST /api/v1/{tenant}/auditlogs/find`
-- `GET /api/v1/{tenant}/auditlogs/history/{detailId}`
-- `GET /api/v1/{tenant}/auditlogs/{id}/diff`
 
 EXPORT
 - `GET /api/v1/{tenant}/auditlogs/export`
 
 Notes
 - Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` (no tenant segment) are instance-owner-only and are not controlled by `AUDITLOG` permissions.
+- `GET /api/v1/{tenant}/auditlogs/history/{detailId}` and `GET /api/v1/{tenant}/auditlogs/{id}/diff` are not controlled by `AUDITLOG`. They check your permission on the audited resource instead:
+  - Most entries require `VIEW` on the audited resource type in the entry's namespace. Entries without a namespace, such as App, Asset, Case, Namespace, Test suite, and Dashboard entries, require a tenant-wide `VIEW` grant.
+  - Namespace file entries require `NAMESPACE` `MANAGE_FILES`.
+  - Entries for instance-level resources, such as banners, tenants, worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
+  - An instance owner with `AUDITLOG` `VIEW` can view entries for `ROLE`, `INVITATION`, `GROUP`, `BINDING`, `USER`, and `SERVICE_ACCOUNT`.
+  - The history endpoint returns every entry with the given resource ID, including entries for resources with the same ID in other namespaces. If you lack permission on any of them, the request fails.
 :::
 
 ---
