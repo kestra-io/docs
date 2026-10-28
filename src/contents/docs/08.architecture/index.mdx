@@ -38,7 +38,7 @@ The queue layer is the only channel through which server roles communicate. A se
 
 - **JDBC** (default) — backed by any supported relational database (PostgreSQL, MySQL). Available in all editions.
 - **Kafka** — Enterprise Edition. Pairs with Elasticsearch for the search and read model.
-- **Redis**, **AMQP**, **GCP Pub/Sub**, **NATS** — Enterprise Edition. Additional broker-backed options for higher throughput.
+- **Redis**, **AMQP**, **GCP Pub/Sub**, **NATS**, **Amazon SQS and SNS** — Enterprise Edition. Additional broker-backed options for higher throughput.
 
 The repository stores all domain entities: flows, executions, logs, triggers, and secrets. In a JDBC deployment, the relational database handles both the queue and repository. In a Kafka deployment, Elasticsearch backs the high-volume read model; the Indexer keeps it in sync.
 

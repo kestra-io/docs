@@ -590,9 +590,9 @@ To reject oversized messages early, use `kestra.queue.message-protection`, descr
 
 The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
-## Redis, AMQP, GCP Pub/Sub, and NATS queue backends
+## Message broker queue backends
 
-Redis, AMQP (RabbitMQ), GCP Pub/Sub, and NATS are Enterprise Edition queue backends, alongside Kafka which is covered above. All four use the same internal queue contracts as the JDBC and Kafka backends. Select a backend with `kestra.queue.type` and configure it under `kestra.queue.<type>`; no producer or consumer code changes. Your Enterprise license must include the backend you select. All four require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis, AMQP (RabbitMQ), GCP Pub/Sub, NATS, and Amazon SQS and SNS are Enterprise Edition queue backends, alongside Kafka which is covered above. They use the same internal queue contracts as the JDBC and Kafka backends. Select a backend with `kestra.queue.type` and configure it under `kestra.queue.<type>`; no producer or consumer code changes. Your Enterprise license must include the backend you select. These backends require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -864,6 +864,87 @@ For mutual TLS, also set `keystore-path` and `keystore-password`.
 | `kestra.queue.nats.queues.fetch-wait` | How long a subscriber waits for a message before checking for pause or close. | `PT1S` |
 | `kestra.queue.nats.queues.ack-wait` | How long the server waits for an acknowledgement before redelivering. | `PT60S` |
 | `kestra.queue.nats.queues.max-ack-pending` | Maximum unacknowledged messages per consumer, shared across all its subscribers. | `1000` |
+
+### Amazon SQS and SNS
+
+Set `kestra.queue.type: aws` and configure the client under `kestra.queue.aws`. SQS queues carry the dispatch queues, and SNS topics carry the broadcast queues.
+
+Minimal configuration:
+
+```yaml
+kestra:
+  queue:
+    type: aws
+    aws:
+      region: eu-west-3
+```
+
+Without `access-key-id`, Kestra uses the [AWS SDK default credentials provider chain](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials-chain.html), such as environment variables or an IAM role on EC2, ECS, or EKS. Without `region`, Kestra also resolves the region through the AWS SDK.
+
+With static credentials:
+
+```yaml
+kestra:
+  queue:
+    type: aws
+    aws:
+      region: eu-west-3
+      access-key-id: "${AWS_ACCESS_KEY_ID}"
+      secret-key-id: "${AWS_SECRET_ACCESS_KEY}"
+```
+
+Set `access-key-id` and `secret-key-id` together. For temporary credentials, also set `session-token`.
+
+To test locally against LocalStack or to route through a VPC endpoint, set `endpoint-override`. It applies to both SQS and SNS.
+
+#### Permissions
+
+Kestra creates and deletes its own queues and topics. Grant the identity these actions, ideally restricted to resources whose names start with `kestra.queue.prefix`:
+
+- SQS: `CreateQueue`, `DeleteQueue`, `GetQueueUrl`, `GetQueueAttributes`, `SetQueueAttributes`, `TagQueue`, `ListQueueTags`, `ListQueues`, `SendMessage`, `ReceiveMessage`, `DeleteMessage`, and `ChangeMessageVisibility`
+- SNS: `CreateTopic`, `SetTopicAttributes`, `Publish`, `Subscribe`, `Unsubscribe`, `GetSubscriptionAttributes`, and `ListSubscriptionsByTopic`, plus `TagResource` when you set `tags`
+
+#### How queues map to SQS and SNS
+
+- Dispatch, keyed dispatch, and vnode dispatch queues are SQS queues: one per queue name, routing key, or vnode, created the first time it is used.
+- Each broadcast queue is an SNS topic. Every subscriber creates its own SQS queue subscribed to the topic and deletes it when it closes, so it receives only the messages published after it subscribed.
+- An instance that crashes leaves its broadcast subscriber queues behind. Each subscriber refreshes a `kestra-heartbeat` tag on its queue, and every instance deletes the topic's queues whose heartbeat is older than `broadcast-queue-ttl`.
+
+Kestra includes `kestra.queue.prefix` in queue and topic names. With SQS and SNS, the prefix can contain only letters, digits, `-`, and `_`. A queue name longer than 80 characters is shortened and ends with a hash of the full name. A broadcast queue name, prefix included, can be at most 65 characters. Kestra fails to start if the prefix or a setting is outside the range SQS and SNS accept.
+
+#### Message ordering
+
+With `message-ordering` set to `true`, the default, dispatch queues are SQS FIFO queues in high-throughput mode. Messages that share a key arrive in publish order, but messages with different keys can overtake each other. Ordering is best effort when SQS stores only part of a published batch. Broadcast queues are never ordered, because a standard SNS topic cannot deliver to a FIFO queue.
+
+:::alert{type="warning"}
+The queue type is fixed when Kestra creates a queue. If you change `message-ordering`, Kestra creates new queues next to the old ones and stops consuming the messages left in the old ones. Drain the queues before you change it.
+:::
+
+#### Limits
+
+- SQS accepts messages up to 1 MiB, but SNS accepts 256 KiB unless a topic allows more. Kestra asks for 1 MiB on the topics it creates and logs a warning if the request fails. Keep `kestra.queue.message-protection.limit` no higher than what the broadcast topics accept.
+- The visibility timeout starts when a subscriber receives a batch and is not extended. Set `visibility-timeout` higher than the time a subscriber needs to process a whole batch, or SQS delivers the messages again while they are still being processed.
+- `max-poll-connections` must exceed the number of pollers on the instance, which grows with the vnodes, queue types, and worker queues. Kestra logs a warning when the pollers use more than 80% of it.
+- If someone deletes a queue by hand, Kestra creates it again, but SQS refuses the name for 60 seconds after a delete. Consumption resumes after that.
+
+#### Configuration reference
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.queue.aws.region` | AWS region of the queues and topics. | AWS SDK default chain |
+| `kestra.queue.aws.endpoint-override` | Custom endpoint for SQS and SNS, such as LocalStack or a VPC endpoint. | — |
+| `kestra.queue.aws.access-key-id` | Access key ID. Set together with `secret-key-id`. | AWS SDK default chain |
+| `kestra.queue.aws.secret-key-id` | Secret access key. Set together with `access-key-id`. | — |
+| `kestra.queue.aws.session-token` | Session token for temporary credentials. | — |
+| `kestra.queue.aws.visibility-timeout` | How long a received message stays hidden before SQS delivers it again. Must be between `PT1S` and `PT12H`. | `PT30S` |
+| `kestra.queue.aws.message-retention-period` | How long SQS retains an unconsumed message. Must be between `PT1M` and `P14D`. | `P4D` |
+| `kestra.queue.aws.batch-size` | Messages received and processed per poll. Must be between `1` and `10`. | `10` |
+| `kestra.queue.aws.wait-time` | How long a poll waits for a message. Must be between `PT1S` and `PT20S`. A short wait bills more empty receives; a long wait delays closing a subscriber. | `PT10S` |
+| `kestra.queue.aws.message-ordering` | Use FIFO queues so messages that share a key arrive in order. Applied only when a queue is created. | `true` |
+| `kestra.queue.aws.broadcast-queue-ttl` | How long a broadcast subscriber queue can go without a heartbeat before Kestra deletes it as leaked. Must be at least `PT5M`. | `PT1H` |
+| `kestra.queue.aws.tags` | Tags added to every queue and topic Kestra creates. | — |
+| `kestra.queue.aws.max-connections` | Maximum concurrent connections for SNS calls and SQS calls other than long polls. A call beyond this waits up to 30 seconds for a connection, then fails. | `128` |
+| `kestra.queue.aws.max-poll-connections` | Maximum concurrent connections for SQS long polls, one per poller waiting for a message. | `512` |
 
 ## MCP server cache
 

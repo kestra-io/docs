@@ -88,7 +88,7 @@ For full details, see [internal storage configuration](../../configuration/02.ru
 ### Queues
 
 - **Open source**: Backed by the relational database (PostgreSQL or MySQL).
-- **Enterprise Edition**: Can use Kafka, Redis, AMQP, GCP Pub/Sub, or NATS for higher-throughput inter-component messaging.
+- **Enterprise Edition**: Can use Kafka, Redis, AMQP, GCP Pub/Sub, NATS, or Amazon SQS and SNS for higher-throughput inter-component messaging.
 
 ### Secrets management
 
