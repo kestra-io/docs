@@ -3,8 +3,6 @@ import tall from "./assets/patterns/edge-tall.svg?url"
 import wide from "./assets/patterns/edge-wide.svg?url"
 import cluster from "./assets/patterns/cluster.svg?url"
 
-// Which drawing sits on each side. The drawings are densest on their right
-// edge, so the left one is mirrored to fade towards the content too.
 interface Props {
     left?: "tall" | "wide" | "cluster"
     right?: "tall" | "wide" | "cluster"
@@ -22,8 +20,6 @@ const URLS = { tall, wide, cluster }
 </div>
 
 <style lang="scss">
-    // Pixel patterns on the outer edges of a light section, drawn in a faint
-    // tint of the background so they stay in the margins of the reading.
     .pixel-edges {
         --pixel: rgba(99, 27, 255, 0.09);
 
@@ -36,13 +32,11 @@ const URLS = { tall, wide, cluster }
             --pixel: rgba(167, 150, 255, 0.07);
         }
 
-        // Phones and tablets have no margin to put them in.
         @include media-breakpoint-down(lg) {
             display: none;
         }
     }
 
-    // The section's content stays above the patterns.
     .pixel-edges ~ :global(.container) {
         position: relative;
     }

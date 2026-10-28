@@ -59,7 +59,6 @@ const NUMBERS = [
 </section>
 
 <script>
-    // Count up to each figure the first time it scrolls into view.
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
     const io = new IntersectionObserver(
         (entries) => {
@@ -85,7 +84,6 @@ const NUMBERS = [
         },
         { threshold: 0.6 },
     )
-    // Runs on every page arrival: the site swaps pages client side.
     function init() {
         document
             .querySelectorAll<HTMLElement>(

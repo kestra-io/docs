@@ -1,5 +1,3 @@
-// Land mask for the team globe: one bit per 0.75° cell, rows from the north
-// pole, columns from 180°W. Generated once from world-atlas land-110m.
 export const LAND_STEP = 0.75
 
 export const LAND_MASK =

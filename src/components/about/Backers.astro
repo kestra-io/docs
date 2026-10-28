@@ -19,7 +19,6 @@ import bnpParibas from "~/assets/teams/bnp-paribas.svg?raw"
 import cic from "~/assets/teams/cic.svg?raw"
 import caisseEpargne from "~/assets/teams/caisse-epargne.svg?raw"
 
-// `height` sets a logo's own height when its drawing needs more than the row's.
 type Backer = { name: string; svg: string; href?: string; height?: number }
 
 const INVESTORS: Backer[] = [
@@ -139,22 +138,14 @@ const PUBLIC: Backer[] = [
 <style lang="scss">
     @use "./style/section" as *;
 
-    // No top padding: the grid meets the section above; the angels and the
-    // partners follow it in open rows.
     .backers {
         background: var(--ks-background-body);
     }
 
-    // One grid of hairlines holds the whole section: a frame, a band per
-    // row, and a cell per logo.
-    // The horizontal rules run on to the edges of the screen; the frame
-    // stays at the width of the content.
     .grid {
         --line: var(--ks-border-primary);
         --rule: 1px solid var(--line);
 
-        // The frame sits outside the content edge, so the title inside it
-        // lines up with the titles of the other sections.
         --inset: 3rem;
 
         position: relative;
@@ -162,7 +153,6 @@ const PUBLIC: Backer[] = [
         border-left: var(--rule);
         border-right: var(--rule);
 
-        // Phones: the frame reaches the screen's edges.
         @include media-breakpoint-down(md) {
             --inset: 1.25rem;
         }
@@ -186,7 +176,6 @@ const PUBLIC: Backer[] = [
         }
     }
 
-    // The title, the angels and the partners share the content's left edge.
     header {
         padding: 4rem var(--inset);
 
@@ -224,8 +213,6 @@ const PUBLIC: Backer[] = [
             height: 100%;
         }
 
-        // The logo files are drawn for light backgrounds: on the dark theme
-        // they turn into light monochrome marks.
         :global(html.dark) & {
             filter: grayscale(1) invert(1);
         }
@@ -277,8 +264,6 @@ const PUBLIC: Backer[] = [
         }
     }
 
-    // Under the grid, the angels and the partners sit in open rows,
-    // without cells, so the lead investors stay the one framed level.
     .investors::after {
         content: "";
         position: absolute;
@@ -353,7 +338,6 @@ const PUBLIC: Backer[] = [
         }
     }
 
-    // One quiet line of grey marks, all at the same height.
     .public {
         display: flex;
         flex-wrap: wrap;

@@ -1,4 +1,3 @@
-// Shared type for the About us sections.
 
 @use "/src/assets/styles/variable" as *;
 
@@ -34,8 +33,6 @@
     }
 }
 
-// Text links stay ink-colored with a quiet underline; violet is kept for
-// accents.
 @mixin text-link {
     font-weight: 600;
     color: var(--ks-content-primary);
@@ -51,7 +48,6 @@
     @include arrow-nudge;
 }
 
-// The arrow after a link slides forward when the link is pointed at.
 @mixin arrow-nudge {
     .arrow {
         display: inline-block;

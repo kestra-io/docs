@@ -1,8 +1,4 @@
 ---
-// The Kestra mark drawn as flows on a dark field. Every row of every
-// diamond is a flow: a trigger, pipes and tasks, and an end. Executions run
-// along them from a to b, light the pipe and finish with a check; the
-// pointer triggers the flows it passes over. Each diamond keeps its color.
 ---
 
 <div class="ascii-mark" data-ascii-mark>
@@ -21,7 +17,7 @@
     const TASK = "◇"
     const END = "■"
     const SUCCESS = "✓"
-    const HOLD = 700 // ms the finished flow stays lit
+    const HOLD = 700
 
     type Cell = {
         x: number
@@ -34,12 +30,11 @@
 
     type Lane = {
         cells: Cell[]
-        speed: number // cells per ms
+        speed: number
         start: number
         rest: number
     }
 
-    // Contiguous runs of a row inside one diamond become one flow.
     function lanes(cells: Cell[]): Lane[] {
         const rows = new Map<number, Cell[]>()
         for (const c of cells) {
@@ -70,12 +65,10 @@
         return out
     }
 
-    // Rasterize the SVG to one pixel per character and keep the covered cells.
     async function sample(): Promise<Cell[]> {
         const img = new Image()
         img.src = markUrl
         await img.decode()
-        // Find the drawing's bounds first, so the mark fills the grid.
         const probe = document.createElement("canvas")
         probe.width = probe.height = 256
         const pctx = probe.getContext("2d", { willReadFrequently: true })!
@@ -135,8 +128,6 @@
         return cells
     }
 
-    // Runs on every page arrival: the site swaps pages client side, so
-    // a module script alone would only wire the first visit.
     function init() {
         document
             .querySelectorAll<HTMLElement>(
@@ -163,7 +154,6 @@
                 new ResizeObserver(resize).observe(canvas)
                 resize()
 
-                // Pointing at a flow that is resting starts it right away.
                 let pointer: { x: number; y: number } | null = null
                 canvas.addEventListener("pointermove", (e) => {
                     const rect = canvas.getBoundingClientRect()
@@ -194,7 +184,6 @@
                         const run = n / lane.speed
                         let t = time - lane.start
 
-                        // Resting flows under the pointer run again at once.
                         const resting = t > run + HOLD
                         if (
                             pointer &&
@@ -217,8 +206,6 @@
                         const fade = done ? 1 - (t - run) / HOLD : 0
 
                         lane.cells.forEach((c, i) => {
-                            // Idle pipe, the trail behind an execution, its head,
-                            // and the whole flow glowing as it completes.
                             let alpha = 0.28
                             let lift = 0
                             if (done) {
@@ -237,8 +224,6 @@
                             const glyph = glyphOf(i, n, done)
                             const cx = (c.x + 0.5) * cell
                             const cy = (c.y + 0.5) * cell
-                            // Pipes are drawn as strokes so they join from cell to
-                            // cell; nodes get a stub on each side that reaches them.
                             const thick = Math.max(1, cell * 0.1)
                             if (glyph === PIPE) {
                                 ctx.fillRect(
