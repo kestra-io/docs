@@ -34,9 +34,9 @@ Replace `oidc-provider` with your chosen provider's name, `{{ clientId }}` with 
 
 For more configuration details, refer to the [Micronaut OIDC configuration guide](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration).
 
-## Configure SAML 2.0
+## SAML 2.0
 
-Kestra also supports SSO with a SAML 2.0 identity provider, including group sync and Single Logout. See [SAML 2.0](./saml/index.md).
+Kestra Enterprise Edition also supports SSO with a SAML 2.0 identity provider, including group sync and Single Logout. See [SAML 2.0](./saml/index.md).
 
 ## Provider guides
 

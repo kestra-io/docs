@@ -280,29 +280,34 @@ kestra:
       password-history-size: 5      # How many passwords, counting the current one, cannot be reused. Default: 0 (no check)
 ```
 
-`password-max-age` must be a positive duration and `password-history-size` cannot be negative; Kestra refuses to start otherwise.
+`password-max-age` must be a positive duration, and `password-history-size` must be zero or more. Kestra refuses to start otherwise.
 
-These rules apply to **users** only. Service accounts and API tokens never expire because of `password-max-age` and are not checked against the password history.
+Password expiry applies to users only. Service account passwords never expire because of `password-max-age`, and API tokens are not affected. The reuse check applies to every password, service accounts included.
 
 ### Expired passwords
 
 A password expires `password-max-age` after it was last changed, whoever changed it: the user from their profile or the reset page, or an Instance Owner from the user's detail page.
 
 - **Warning:** during the last `password-expiry-warning` before expiry, a banner at the top of the UI tells the user when their password expires, with a link to their profile to change it.
-- **Login:** a user who signs in with an expired password is not logged in. Kestra sends them to the reset page with a message explaining that their password has expired, where they choose a new one. This link is valid for one hour and does not need the mail service. When a link is issued, the attempt is recorded in the audit logs as **Password expired**; it never counts toward the [user lockout](#user-lockout) threshold. These links follow the same limits as **Forgot Password**, `password-reset.cooldown` per user and `password-reset.rate-limit` per IP address. When a limit is reached, no new link is issued and nothing is recorded: the user is asked to use **Forgot Password** or to sign in again a few minutes later, and any reset link already sent stays valid.
+- **Login:** a user who signs in with an expired password is not logged in. Kestra sends them to the reset page with a message explaining that their password has expired, where they choose a new one. This link is valid for one hour and does not need the mail service.
+- **API requests:** requests that authenticate with the username and password (HTTP Basic) are rejected once the password has expired.
 - **Open sessions:** a session opened with the password cannot be refreshed once the password has expired, so it ends when its current access token does.
+
+When Kestra issues a link for an expired password, it records the attempt as **Password expired** in the instance-level audit logs. The attempt never counts toward the [user lockout](#user-lockout) threshold.
+
+These links follow the same limits as **Forgot password?**: `password-reset.cooldown` per user and `password-reset.rate-limit` per IP address. When a limit is reached, no new link is issued and nothing is recorded. The user is asked to use **Forgot password?**, which requires the mail service, or to sign in again a few minutes later. Any reset link already sent stays valid.
 
 Expiry only applies to signing in with the password. A user who also signs in through [SSO](../sso/index.md) or a one-time code can keep doing so, and does not see the banner in those sessions.
 
 :::alert{type="info"}
-Kestra only starts tracking a password's age from this version on. During the upgrade, every existing password is considered changed at the time of the upgrade, so nobody is locked out by the upgrade itself, and the first expiry happens `password-max-age` after it.
+Passwords set before this feature have no recorded change date. During the upgrade, every existing password is considered changed at the time of the upgrade, so the upgrade itself expires no password, and the first expiry happens `password-max-age` after it.
 :::
 
 ### Password reuse
 
 With `password-history-size` set to `N`, a new password is rejected if it matches the current password or one of the `N - 1` before it. The check applies everywhere a password is set: the user profile, the reset page, and the user detail page used by an Instance Owner. A rejected password does not change anything, and the user can try another one.
 
-A few things to keep in mind:
+The history has these limits:
 
 - Previous passwords are only recorded from the moment the setting is enabled. When you turn it on, only each user's current password is known, so older ones can be reused once.
 - Lowering `password-history-size` takes effect immediately, and the extra entries are deleted at the user's next password change. Raising it again after that does not bring them back.
@@ -310,7 +315,7 @@ A few things to keep in mind:
 
 ### Password reset links
 
-A user has at most one pending reset link. Requesting a new one, from **Forgot Password** or by signing in with an expired password, cancels the previous link, and any password change cancels the pending one.
+A user has at most one pending reset link. Requesting a new one, from **Forgot password?** or by signing in with an expired password, cancels the previous link, and any password change cancels the pending one.
 
 ## RBAC design notes
 
