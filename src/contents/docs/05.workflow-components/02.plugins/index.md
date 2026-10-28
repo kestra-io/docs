@@ -4,6 +4,7 @@ h1: Find, Choose, and Use Kestra Plugins for Any Integration
 description: Understand how Kestra plugins work, how to choose versions, and where to find or build the right integration.
 sidebarTitle: Plugins
 icon: /src/contents/docs/icons/flow.svg
+docId: plugins
 ---
 
 Plugins are the integrations that let flows connect to databases, APIs, file systems, queues, and runtime environments. Every task and trigger in Kestra is provided by a plugin. Browse the full catalog at [kestra.io/plugins](/plugins).

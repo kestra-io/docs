@@ -141,7 +141,9 @@ const WHO_ITEMS = [
     <CardGrid title="Who this is for" items={WHO_ITEMS} />
 
     <section class="whitepaper-content">
-        <TwoColumnStickyLayout client:load>
+        {/* Static, as on blog and resource pages: hydrating it re-renders the
+            article and drops the click-to-enlarge handlers on its images. */}
+        <TwoColumnStickyLayout>
             <div slot="sidebar" class="whitepaper-sidebar">
                 <ResourceDetails resource={post as any} />
                 <BlogToc client:load links={tocLinks} />

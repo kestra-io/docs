@@ -6,6 +6,7 @@ sidebarTitle: Announcements
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.20.0"
+docId: announcements
 ---
 
 Communicate planned maintenance or incidents with in-app banners

@@ -6,6 +6,7 @@ sidebarTitle: Versioned Plugins
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
+docId: versioned-plugins
 ---
 
 Install multiple versions of any plugin and run them simultaneously across all your flows — assigned at the task, flow, namespace, or instance level.

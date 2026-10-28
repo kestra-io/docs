@@ -48,6 +48,10 @@ describe("docs redirects", () => {
             "/docs/enterprise/auditing/audit-logs",
             "/docs/enterprise/governance/audit-logs",
         ],
+        // Still linked from the dashboard editor in released Kestra versions
+        // (kestra-io/docs#6034).
+        ["/docs/ui/dashboards", "/docs/ui/dashboard"],
+        ["/docs/ui/dashboards/foo", "/docs/ui/dashboard"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, docsRules)).toBe(to)
     })
@@ -113,6 +117,8 @@ describe("blogs redirects", () => {
 describe("index redirects", () => {
     it.each([
         ["/blog", "/blogs"],
+        ["/write-for-us", "/community"],
+        ["/write-for-us/", "/community"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, indexRules)).toBe(to)
     })
@@ -120,6 +126,7 @@ describe("index redirects", () => {
     it.each([
         ["/blogs.md"],
         ["/blogss.md"],
+        ["/write-for-usx"],
     ])("%s resolves to null", (from) => {
         expect(resolveRedirect(from, indexRules)).toBeNull()
     })
