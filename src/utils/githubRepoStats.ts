@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers"
 import { DISABLE_GITHUB, GITHUB_TOKEN } from "astro:env/server"
 import { getGithubStats, type GithubStats } from "~/utils/githubStats"
 
@@ -57,6 +56,7 @@ export async function loadGithubRepoStats(
     locals: Locals,
 ): Promise<GithubStats | undefined> {
     if (DISABLE_GITHUB) return undefined
+    const { env } = await import("cloudflare:workers")
     return getGithubStats({
         kv: env.GITHUB_CACHE,
         fetchStats,
