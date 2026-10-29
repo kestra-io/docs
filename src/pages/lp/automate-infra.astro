@@ -1,85 +1,134 @@
 ---
 import Layout from "~/components/layout.astro"
-import Snippets from "~/components/common/Snippets.astro"
+import TopologyMock from "~/components/home/TopologyMock.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 
 import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
 import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
 import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
 import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
-import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
 import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
 import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
 import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
 import Translation from "~/components/lp/vra-migration/Translation.astro"
 
-import HomelabIcon from "~/components/lp/workflow-orchestration/assets/stack-infra-platform.svg"
-import IacIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
-import GitOpsIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
-import CloudIcon from "~/components/lp/vra-migration/assets/automate-integrations.svg"
-
+import { Icon } from "astro-icon/components"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
-/* Landing page for the infrastructure creators' audiences (homelab, DevOps and
- * platform engineers), linked from their videos and posts with UTM tags. They
- * run things themselves before they ask anyone, so the open-source path comes
- * first and the call is the second ask. What is free and what is Enterprise is
- * spelled out on the page, never left for the call. */
 const title = "Infrastructure automation, as code | Kestra"
 const description =
-    "Kestra is an open-source orchestrator for Ansible, Terraform, OpenTofu and scripts: one YAML file per workflow, versioned in Git, with schedules, webhooks, retries and approvals. Self-host it with one command."
+    "Kestra is an open-source orchestrator for Terraform, Ansible, OpenTofu and scripts: one YAML file per workflow, versioned in Git, with triggers, approvals, retries and logs. Self-host it with one command."
 
-/** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/automate-infra"
 
 const formProps = { submitLabel: "Book a 30-minute call" }
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-/* Kept short on purpose: the page shows the shape of a flow, the docs hold
- * the details. Keep the task types and properties valid. */
-const exampleFlow = `id: new-lab-vm
-namespace: homelab
-
-tasks:
-  - id: provision
-    type: io.kestra.plugin.opentofu.cli.OpenTofuCLI
-    namespaceFiles:
-      enabled: true
-    commands:
-      - tofu init
-      - tofu apply -auto-approve
-
-  - id: configure
-    type: io.kestra.plugin.ansible.cli.AnsibleCLI
-    namespaceFiles:
-      enabled: true
-    commands:
-      - ansible-playbook -i inventory.ini site.yml
-
-triggers:
-  - id: on_merge
-    type: io.kestra.plugin.core.trigger.Webhook
-    key: change-me`
+const topology = {
+    label: "Kestra topology of the provision_vm flow running: request form, owner approval, Terraform apply, Ansible config and CMDB update run one after the other",
+    nodes: [
+        {
+            id: "request_form",
+            type: "core.trigger.Webhook",
+            plugin: "core.trigger.Webhook",
+            fallback: "mdi:webhook",
+            x: 0,
+            y: 0,
+            status: "success" as const,
+            duration: "0.4s",
+            seconds: 0.4,
+        },
+        {
+            id: "owner_approval",
+            type: "core.flow.Pause",
+            plugin: "core.flow.Pause",
+            fallback: "mdi:pause-circle-outline",
+            x: 0,
+            y: 140,
+            status: "success" as const,
+            duration: "2m 31s",
+            seconds: 151,
+        },
+        {
+            id: "terraform_apply",
+            type: "terraform.cli.TerraformCLI",
+            plugin: "terraform.cli.TerraformCLI",
+            fallback: "mdi:terraform",
+            runner: "kubernetes",
+            x: 310,
+            y: 0,
+            status: "success" as const,
+            duration: "3m 05s",
+            seconds: 185,
+            artifacts: 1,
+        },
+        {
+            id: "ansible_config",
+            type: "ansible.cli.AnsibleCLI",
+            plugin: "ansible.cli.AnsibleCLI",
+            fallback: "mdi:ansible",
+            x: 310,
+            y: 140,
+            status: "running" as const,
+            duration: "1m 12s",
+            seconds: 72,
+        },
+        {
+            id: "update_cmdb",
+            type: "servicenow.Post",
+            plugin: "servicenow.Post",
+            fallback: "mdi:database-sync-outline",
+            x: 620,
+            y: 0,
+            status: "created" as const,
+            duration: "0.8s",
+            seconds: 0.8,
+        },
+    ],
+}
 
 const reasons = [
     {
-        kicker: "Declarative",
-        title: "One YAML file per workflow, in Git.",
-        body: "Review a change in a pull request, sync it to your instance, roll it back like any other code. The editor in the UI writes the same YAML.",
+        kicker: "In Git",
+        title: "One YAML file per workflow.",
+        body: "Review a change in a pull request and roll it back like any other code. The editor in the UI writes the same YAML.",
         icon: "mdi:file-code-outline",
     },
     {
         kicker: "No rewrite",
-        title: "Your playbooks and modules run as they are.",
-        body: `Ansible, Terraform, OpenTofu, Bash, Python or PowerShell, each in its own container, plus ${totalPlugins}+ plugins for Proxmox, Kubernetes, the clouds and Git.`,
+        title: "Every tool keeps its job.",
+        body: "Your playbooks, modules and scripts run as they are, each in its own container. Kestra runs the order between them.",
         icon: "mdi:console",
     },
     {
-        kicker: "Everything around it",
-        title: "Triggers, retries, approvals and logs.",
-        body: "A schedule, a webhook, a Git push or a new file starts a flow. A failed step retries, a pause waits for someone to approve, and every run keeps its logs and outputs.",
+        kicker: "Around every step",
+        title: "Triggers, approvals, retries and logs.",
+        body: "A schedule, a webhook or a Git push starts a flow. A failed step retries, a pause waits for approval, and every run keeps its logs.",
         icon: "mdi:state-machine",
     },
+]
+
+const plugins = [
+    { name: "Terraform", cls: "terraform", slug: "plugin-terraform" },
+    { name: "OpenTofu", cls: "opentofu", slug: "plugin-opentofu" },
+    { name: "Ansible", cls: "ansible", slug: "plugin-ansible" },
+    { name: "Proxmox", cls: "proxmox", slug: "plugin-proxmox" },
+    { name: "Kubernetes", cls: "kubernetes", slug: "plugin-kubernetes" },
+    { name: "Helm", cls: "helm", slug: "plugin-helm" },
+    { name: "Argo CD", cls: "argocd", slug: "plugin-argocd" },
+    { name: "Docker", cls: "docker", slug: "plugin-docker" },
+    { name: "AWS", cls: "aws", slug: "plugin-aws" },
+    { name: "Azure", cls: "azure", slug: "plugin-azure" },
+    { name: "Google Cloud", cls: "gcp", slug: "plugin-gcp" },
+    { name: "ServiceNow", cls: "servicenow", slug: "plugin-servicenow" },
+    { name: "Git", cls: "git", slug: "plugin-git" },
+    {
+        name: "Scripts",
+        cls: "scripts.shell",
+        slug: "plugin-scripts",
+    },
+    { name: "Slack", cls: "notifications.slack", slug: "plugin-notifications" },
 ]
 
 const rows = [
@@ -89,7 +138,7 @@ const rows = [
     },
     {
         from: "Ansible playbooks run from a laptop, Semaphore or AWX",
-        to: "Ansible tasks with the same playbooks and inventories, plus inputs and retries",
+        to: "Ansible tasks with the same playbooks and inventories",
     },
     {
         from: "Terraform or OpenTofu applied from a laptop or a CI job",
@@ -99,73 +148,54 @@ const rows = [
         from: "Rundeck or Jenkins jobs stored in a database",
         to: "Flows stored as YAML files in Git",
     },
-    {
-        from: "Credentials in .env files and scripts",
-        to: "Secrets referenced by name, never written in the flow",
-    },
 ]
 
-const openSource = [
-    "The engine, the UI and the API",
-    "Every open-source plugin: Ansible, Terraform, OpenTofu, Proxmox, Kubernetes, Helm, Git and more",
-    "Schedules, webhooks and event triggers",
-    "Retries, error handlers and approval pauses",
-    "Flows synced to and from Git",
-    "Secrets as environment variables, read with secret()",
-    "One shared login",
-    "Production use, standalone or distributed",
+const editions: {
+    feature: string
+    oss: string | boolean
+    ee: string | boolean
+}[] = [
+    { feature: "Engine, UI and API", oss: true, ee: true },
+    { feature: "Every open-source plugin", oss: true, ee: true },
+    { feature: "Schedules, webhooks and event triggers", oss: true, ee: true },
+    {
+        feature: "Retries, error handlers and approval pauses",
+        oss: true,
+        ee: true,
+    },
+    { feature: "Flows synced to and from Git", oss: true, ee: true },
+    {
+        feature: "Users",
+        oss: "One shared login",
+        ee: "SSO, SCIM and role-based access",
+    },
+    {
+        feature: "Secrets",
+        oss: "Environment variables",
+        ee: "Vault, AWS, Azure, Google Cloud and more",
+    },
+    { feature: "Audit logs of every action", oss: false, ee: true },
+    { feature: "Self-service forms (Apps)", oss: false, ee: true },
+    { feature: "Worker groups in isolated networks", oss: false, ee: true },
+    { feature: "Support", oss: "Community Slack", ee: "SLAs" },
 ]
 
-const enterprise = [
-    "Individual accounts, SSO, SCIM and role-based access",
-    "Secret managers: Vault, AWS, Azure, Google Cloud, 1Password, Doppler and more",
-    "Audit logs of every action",
-    "Apps: self-service forms in front of your flows",
-    "Worker groups inside isolated networks",
-    "Multi-tenancy and policies",
-    "Support with SLAs",
-]
-
-const integrations = [
+const migrationSteps = [
     {
-        Glyph: HomelabIcon,
-        title: "Virtualization",
-        items: ["Proxmox VE", "KVM", "Ceph", "Docker"],
+        title: "Read your vRO package",
+        body: "The open-source Migration Assistant runs on your machine, sends nothing to Kestra, and lists what each workflow calls and which plugins cover it.",
     },
     {
-        Glyph: IacIcon,
-        title: "Infrastructure as code",
-        items: ["Terraform", "OpenTofu", "Ansible", "Helm"],
+        title: "Map each piece",
+        body: "A catalog item becomes a flow with inputs, a vRO action a task or a script, an approval policy a pause, a day-2 action a triggered flow.",
     },
     {
-        Glyph: GitOpsIcon,
-        title: "Kubernetes and Git",
-        items: ["Kubernetes", "Argo CD", "GitHub", "GitLab"],
+        title: "Run both",
+        body: "New requests go through Kestra while vRA drains. The same vSphere, the same scripts underneath.",
     },
     {
-        Glyph: CloudIcon,
-        title: "Cloud and alerts",
-        items: ["AWS", "Azure", "Google Cloud", "Slack"],
-    },
-]
-
-/* Public G2 reviews from practitioners, named as G2 shows them, and one
- * customer story from /stories, unnamed as it is there. */
-const quotes = [
-    {
-        text: "I replaced unreliable cron jobs with observable, retryable workflows that alert me on Slack when something fails.",
-        person: "Pruthviraj P.",
-        role: "G2 review",
-    },
-    {
-        text: "Orchestration we can finally trust as critical infrastructure.",
-        person: "Rafael B.",
-        role: "Principal Software Engineer, G2 review",
-    },
-    {
-        text: "Kestra turned automation into a governed platform instead of a collection of scripts.",
-        person: "Platform Engineering Lead",
-        role: "Cloud provider in a regulated industry",
+        title: "Switch off at renewal",
+        body: "Once the last catalog item runs in Kestra, vRA is not renewed.",
     },
 ]
 
@@ -179,7 +209,7 @@ const ctaBullets = [
         strong: false,
     },
     {
-        text: "Kestra for Infrastructure: self-service for your teams, guardrails for the platform team.",
+        text: "Requests come in through forms, and the platform team approves them before anything runs.",
         strong: false,
     },
 ]
@@ -187,7 +217,7 @@ const ctaBullets = [
 const faqItems = [
     {
         question: "Is Kestra really open source?",
-        answer: "Yes. The engine, the UI and the open-source plugins are Apache 2.0 and on GitHub, and the open-source edition runs in production on its own. The Enterprise Edition adds what a shared, multi-team instance needs: individual logins, access control, secret managers and audit logs. The table above lists what sits on each side.",
+        answer: "Yes. The engine, the UI and the open-source plugins are Apache 2.0 and on GitHub, and the open-source edition runs in production on its own. The Enterprise Edition adds what a shared, multi-team instance needs: individual logins, access control, secret managers and audit logs.",
     },
     {
         question: "How much memory does it need?",
@@ -199,19 +229,11 @@ const faqItems = [
     },
     {
         question: "How does the open-source edition handle secrets?",
-        answer: "As base64-encoded environment variables prefixed with SECRET_, read in flows with the secret() function, so values never sit in the YAML. There is no encryption at rest or access control beyond your host's. Vault, AWS, Azure, Google Cloud and other secret managers connect in the Enterprise Edition.",
-    },
-    {
-        question: "Kestra or n8n?",
-        answer: "n8n is built for connecting SaaS apps on a visual canvas. Kestra is built around YAML flows that run infrastructure tooling, Ansible, Terraform and scripts in containers, with Git as the source of truth. If your workflows are playbooks, modules and shell scripts, Kestra is the closer fit, and an n8n plugin lets a flow start the n8n workflows you already have.",
+        answer: "As base64-encoded environment variables prefixed with SECRET_, read in flows with the secret() function, so values never sit in the YAML. Vault, AWS, Azure, Google Cloud and other secret managers connect in the Enterprise Edition.",
     },
     {
         question: "Kestra, Semaphore, AWX or Rundeck?",
-        answer: "Semaphore and AWX put a UI on running playbooks and infrastructure jobs, and Rundeck runs jobs and runbooks. Kestra chains the steps around them: take a Proxmox snapshot, run the playbook, call a webhook, post to Slack, all in one versioned YAML file with triggers and retries. You can also call your existing jobs from a flow and move them across later.",
-    },
-    {
-        question: "I run Kestra 1.x. How do I upgrade to 2.0?",
-        answer: "Kestra 2.0 is a major version: read the 2.0 migration guide in the docs before you change the image tag, and run the migration it describes on your existing flows.",
+        answer: "Semaphore and AWX put a UI on running playbooks, and Rundeck runs jobs and runbooks. Kestra chains the steps around them: take a Proxmox snapshot, run the playbook, call a webhook, post to Slack, all in one versioned YAML file. You can also call your existing jobs from a flow and move them across later.",
     },
     {
         question: "What does it cost?",
@@ -225,15 +247,16 @@ const faqItems = [
         <LpHeader />
         <Hero {routePath} formTitle="Try it on your own infrastructure">
             <Fragment slot="title">
-                Your <span class="grad grad-a">Ansible</span>, OpenTofu and
-                scripts, <span class="grad grad-b">orchestrated</span> as code.
+                Your <span class="grad grad-a">Terraform</span>, Ansible and
+                scripts, in <span class="grad grad-b">one workflow</span>.
             </Fragment>
             <Fragment slot="lead">
-                Kestra is an open-source orchestrator: one YAML file per
-                workflow, versioned in Git, that runs what you already have with
-                schedules, webhooks, retries, approvals and logs.<br />
+                Each tool already automates its own step. Kestra runs the chain
+                between them: one YAML file in Git, with triggers, approvals,
+                retries and a log of every run.<br />
                 <strong
-                    >Self-hosted, free, and your first flow runs in minutes.</strong
+                    >Open source, self-hosted, and your first flow runs in
+                    minutes.</strong
                 >
             </Fragment>
             <Fragment slot="form-sub">
@@ -253,29 +276,59 @@ const faqItems = [
                 </p>
             </div>
         </Hero>
-        <Platform
-            heading="Built for the way you already work"
-            cards={reasons}
-        />
         <section class="example">
             <div class="inner">
                 <div class="copy">
-                    <h2>One flow, start to finish</h2>
+                    <h2>Request, approve, provision, configure</h2>
                     <p>
-                        A merge calls the webhook, OpenTofu builds the VM, and
-                        your Ansible playbook configures it. Every run is
-                        logged, and a failed step can retry or alert you.
+                        A request comes in with a hostname. The owner approves
+                        it, Terraform creates the VM and your playbook
+                        configures it. If a step fails, the run stops there with
+                        its logs, and you restart it from that step.
+                    </p>
+                    <p class="note">
+                        Each node is a task in one YAML file, versioned in Git.
                     </p>
                 </div>
-                <div class="code">
-                    <Snippets
-                        code={exampleFlow}
-                        lang="yaml"
-                        expandThreshold={30}
-                        noCollapse
-                    />
+                <div class="visual" style={`--pixels: url("${pixelCluster}")`}>
+                    <span class="pixels" aria-hidden="true"></span>
+                    <TopologyMock {...topology} />
                 </div>
             </div>
+        </section>
+        <Platform
+            heading="How it fits your tools"
+            cards={reasons}
+        />
+        <section class="plugins">
+            <h2>Plugs into your stack</h2>
+            <p class="sub">
+                {totalPlugins}+ open-source plugins, installed the first time a
+                flow uses them.
+            </p>
+            <ul>
+                {
+                    plugins.map((plugin) => (
+                        <li>
+                            <a href={`/plugins/${plugin.slug}`}>
+                                <img
+                                    src={`/icons/io.kestra.plugin.${plugin.cls}.svg`}
+                                    alt=""
+                                    width="36"
+                                    height="36"
+                                    loading="lazy"
+                                />
+                                <span>{plugin.name}</span>
+                            </a>
+                        </li>
+                    ))
+                }
+                <li>
+                    <a class="all" href="/plugins">
+                        <span>All {totalPlugins}+ plugins</span>
+                    </a>
+                </li>
+            </ul>
         </section>
         <Translation
             heading="What your current setup becomes"
@@ -283,48 +336,111 @@ const faqItems = [
             fromLabel="Today"
             {rows}
         />
-        <section class="editions">
-            <h2>What's free, and what isn't</h2>
-            <p class="sub">
-                No surprises later: here is where the line sits. Your flows
-                carry over unchanged if you move to Enterprise.
-            </p>
-            <div class="columns">
-                <div class="column oss">
-                    <p class="label">Open source · free</p>
-                    <ul>{openSource.map((item) => <li>{item}</li>)}</ul>
+        <section class="vmware">
+            <div class="inner">
+                <div class="why">
+                    <p class="eyebrow">Using VMware Cloud Foundation?</p>
+                    <h2>
+                        Move your vRA and vRO workflows out of the Broadcom
+                        lock-in
+                    </h2>
+                    <p>
+                        vRA and vRO are no longer sold on their own. They ship
+                        inside VMware Cloud Foundation, licensed per core, so
+                        the automation bill follows the size of the hypervisor
+                        footprint, not how much you automate. The workflows
+                        built on them do not move by themselves.
+                    </p>
+                    <a class="proof-card" href="/stories/fortune-500-company">
+                        <span class="figures">
+                            <span><strong>−90%</strong> licensing cost</span>
+                            <span><strong>30×</strong> faster delivery</span>
+                        </span>
+                        <span class="who"
+                            >A Fortune 500 industrial manufacturer replaced Aria
+                            Automation with Kestra. Read the story</span
+                        >
+                    </a>
                 </div>
-                <div class="column ee">
-                    <p class="label">Enterprise · Kestra for Infrastructure</p>
-                    <ul>{enterprise.map((item) => <li>{item}</li>)}</ul>
+                <div class="how">
+                    <ol>
+                        {
+                            migrationSteps.map((step) => (
+                                <li>
+                                    <strong>{step.title}</strong>
+                                    <span>{step.body}</span>
+                                </li>
+                            ))
+                        }
+                    </ol>
+                    <div class="links">
+                        <a class="btn-start" href="/resources/migration/vra"
+                            >Read the vRA migration guide</a
+                        >
+                        <a
+                            class="btn-ghost"
+                            href="/resources/migration/vra/assistant"
+                            >Get the Migration Assistant</a
+                        >
+                    </div>
                 </div>
             </div>
         </section>
-        <section class="quotes">
-            <div class="cards">
+        <section class="editions">
+            <h2>Start free. Add Enterprise when the team needs it.</h2>
+            <p class="sub">
+                The same flows run on both editions, so nothing is rewritten
+                when you move.
+            </p>
+            <div class="table" role="table">
+                <div class="row head" role="row">
+                    <span role="columnheader"></span>
+                    <span role="columnheader" class="col-oss"
+                        >Open source<small>Free</small></span
+                    >
+                    <span role="columnheader"
+                        >Enterprise<small>On a call</small></span
+                    >
+                </div>
                 {
-                    quotes.map((quote) => (
-                        <figure>
-                            <blockquote>“{quote.text}”</blockquote>
-                            <figcaption>
-                                <strong>{quote.person}</strong>
-                                <span>{quote.role}</span>
-                            </figcaption>
-                        </figure>
+                    editions.map((row) => (
+                        <div class="row" role="row">
+                            <span role="rowheader">{row.feature}</span>
+                            {[row.oss, row.ee].map((value, idx) => (
+                                <span
+                                    role="cell"
+                                    class:list={[{ "col-oss": idx === 0 }]}
+                                >
+                                    {value === true ? (
+                                        <Icon
+                                            name="mdi:check"
+                                            class="yes"
+                                            aria-label="Included"
+                                        />
+                                    ) : value === false ? (
+                                        <span
+                                            class="no"
+                                            aria-label="Not included"
+                                        >
+                                            –
+                                        </span>
+                                    ) : (
+                                        value
+                                    )}
+                                </span>
+                            ))}
+                        </div>
                     ))
                 }
             </div>
-            <div class="actions">
-                <a class="btn-start" href="/docs/quickstart">Run it free</a>
-                <a class="btn-call" href="#contact-sales">Book a call</a>
+            <div class="editions-cta">
+                <a class="btn-start" href="/docs/quickstart">Get started free</a
+                >
+                <a class="btn-call" href="#contact-sales"
+                    >Talk to us about Enterprise</a
+                >
             </div>
         </section>
-        <Stack
-            heading="Plugs into your stack"
-            sub="Open-source plugins, installed on demand the first time a flow uses them."
-            columns={integrations}
-            glyphSize={72}
-        />
         <UseCases
             {routePath}
             headingLines={["Bringing it", "to work?"]}
@@ -336,16 +452,13 @@ const faqItems = [
             heading="Run your first infra flow"
             sub="Free, open source and self-hosted. One command, then your first flow."
             cta={{ text: "Read the quickstart", href: "/docs/quickstart" }}
-            reassurance="Apache 2.0. Your infrastructure, your data."
+            reassurance="Apache 2.0, self-hosted on your own machines."
         />
         <LpFooter />
     </div>
 </Layout>
 
 <style lang="scss">
-    /* Same pinned palette as /lp/workflow-orchestration: the wrapper class is
-     * shared on purpose, so this page inherits its section components' tokens.
-     * Keep the lists identical. */
     .lp-workflow-orchestration {
         --lp-purple: #631bff;
         --lp-purple-light: #f1efff;
@@ -370,8 +483,6 @@ const faqItems = [
         --top-bar-height: 80px;
     }
 
-    /* The hero card holds the command instead of the call form: the free path
-     * is the first ask here, the call the second. */
     .start {
         display: flex;
         flex-direction: column;
@@ -429,62 +540,9 @@ const faqItems = [
     }
 
     .example,
+    .plugins,
     .editions {
         padding: 5rem 1rem;
-    }
-
-    .quotes {
-        padding: 0 1rem 5rem;
-        background-color: #ffffff;
-
-        .cards {
-            display: grid;
-            gap: 1rem;
-            max-width: 1140px;
-            margin-inline: auto;
-            @include media-breakpoint-up(md) {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        figure {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 1.25rem;
-            margin: 0;
-            padding: 1.5rem;
-            border-radius: 12px;
-            background-color: var(--lp-bg-base);
-        }
-
-        blockquote {
-            margin: 0;
-            color: var(--lp-content-primary);
-            font-size: 1.125rem;
-            line-height: 1.45;
-        }
-
-        figcaption {
-            display: flex;
-            flex-direction: column;
-            color: var(--lp-content-secondary);
-            font-size: $font-size-sm;
-            strong {
-                color: var(--lp-content-primary);
-            }
-        }
-
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 2.5rem;
-            a {
-                min-width: 220px;
-            }
-        }
     }
 
     .example {
@@ -495,16 +553,54 @@ const faqItems = [
             gap: 2.5rem;
             max-width: 1140px;
             margin-inline: auto;
-            @include media-breakpoint-up(lg) {
-                grid-template-columns: 2fr 3fr;
-                align-items: start;
+            grid-template-columns: minmax(0, 1fr);
+
+            .copy {
+                max-width: 760px;
+                margin-inline: auto;
+                text-align: center;
             }
         }
 
-        /* Grid children default to min-width: auto, which would let the code
-         * block's long lines push the page wider than the viewport. */
-        .code {
+        .visual {
+            --tint: #e6c359;
+
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             min-width: 0;
+            height: 26rem;
+            overflow: hidden;
+            border: 1px solid var(--lp-border-subtle);
+            border-radius: 12px;
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 20%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, #ffffff);
+            @include media-breakpoint-down(md) {
+                height: 18rem;
+            }
+        }
+
+        .pixels {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 96px;
+            aspect-ratio: 194 / 168;
+            background: var(--tint);
+            mask: var(--pixels) no-repeat center / contain;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .note {
+            font-size: $font-size-base;
+            color: var(--lp-content-muted);
         }
 
         p {
@@ -512,14 +608,10 @@ const faqItems = [
             font-size: 1.125rem;
             line-height: 1.5;
         }
-
-        a {
-            color: var(--lp-purple);
-            font-weight: 600;
-        }
     }
 
     .example h2,
+    .plugins h2,
     .editions h2 {
         margin: 0 0 1.5rem;
         color: var(--lp-content-primary);
@@ -532,9 +624,8 @@ const faqItems = [
         }
     }
 
+    .plugins,
     .editions {
-        background-color: #ffffff;
-
         h2,
         .sub {
             max-width: 1140px;
@@ -548,43 +639,278 @@ const faqItems = [
             font-size: 1.125rem;
             line-height: 1.5;
         }
+    }
 
-        .columns {
+    .plugins {
+        background-color: #ffffff;
+
+        ul {
             display: grid;
-            gap: 1rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0;
+            list-style: none;
+            border-top: 1px solid var(--lp-border-subtle);
+            border-left: 1px solid var(--lp-border-subtle);
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        li {
+            border-right: 1px solid var(--lp-border-subtle);
+            border-bottom: 1px solid var(--lp-border-subtle);
+        }
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            height: 100%;
+            padding: 1.25rem 1.5rem;
+            color: var(--lp-content-primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+            &:hover {
+                background-color: var(--lp-bg-base);
+            }
+        }
+
+        img {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .all {
+            color: var(--lp-purple);
+        }
+    }
+
+    .vmware {
+        padding: 5rem 1rem;
+        background-color: var(--lp-bg-dark);
+        color: #ffffff;
+
+        .inner {
+            display: grid;
+            gap: 3rem;
             max-width: 1140px;
             margin-inline: auto;
-            @include media-breakpoint-up(md) {
+            @include media-breakpoint-up(lg) {
                 grid-template-columns: 1fr 1fr;
+                gap: 4rem;
             }
         }
 
-        .column {
-            padding: 1.5rem 1.5rem 1.75rem;
-            border: 1px solid var(--lp-border);
-            border-radius: 12px;
-            &.oss {
-                border-color: var(--lp-purple);
-                box-shadow: 2px 3px 16px 0 var(--lp-shadow-light);
-            }
-        }
-
-        .label {
+        .eyebrow {
             margin: 0 0 1rem;
-            color: var(--lp-purple);
-            font-size: $font-size-md;
+            color: var(--lp-purple-mid);
+            font-size: 1.125rem;
             font-weight: 600;
         }
 
-        ul {
-            margin: 0;
-            padding-left: 1.25rem;
-            color: var(--lp-content-on-card);
+        h2 {
+            margin: 0 0 1.5rem;
+            font-size: 1.875rem;
+            font-weight: 600;
+            line-height: 1.0417;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        .why > p:not(.eyebrow) {
+            color: var(--lp-content-dark-secondary);
+            font-size: 1.125rem;
+            line-height: 1.55;
+        }
+
+        .proof-card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: var(--lp-content-dark-secondary);
+            text-decoration: none;
+            transition: border-color 0.2s ease;
+            &:hover {
+                border-color: var(--lp-purple-mid);
+            }
+        }
+
+        .figures {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem 1.5rem;
+            font-size: 1.125rem;
+            color: #ffffff;
+
+            strong {
+                font-weight: 600;
+            }
+        }
+
+        .who {
+            font-size: $font-size-base;
             line-height: 1.5;
         }
 
-        li + li {
+        ol {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: step;
+        }
+
+        li {
+            position: relative;
+            padding: 0 0 1.75rem 3rem;
+            counter-increment: step;
+
+            &::before {
+                content: counter(step);
+                position: absolute;
+                top: -0.125rem;
+                left: 0;
+                display: grid;
+                place-items: center;
+                width: 2rem;
+                height: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                font-size: $font-size-sm;
+                font-weight: 600;
+            }
+
+            strong {
+                display: block;
+                margin-bottom: 0.25rem;
+                font-size: 1.125rem;
+                font-weight: 600;
+            }
+
+            span {
+                color: var(--lp-content-dark-secondary);
+                line-height: 1.5;
+            }
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
             margin-top: 0.5rem;
+        }
+
+        .btn-ghost {
+            display: block;
+            min-height: 52px;
+            padding: 0.875rem 1.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1.125rem;
+            font-weight: 700;
+            line-height: 1.2;
+            text-decoration: none;
+            &:hover {
+                border-color: #ffffff;
+                color: #ffffff;
+            }
+        }
+    }
+
+    .editions {
+        background-color: #ffffff;
+
+        .table {
+            max-width: 900px;
+            margin-inline: auto;
+            border: 1px solid var(--lp-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            align-items: center;
+
+            & + .row {
+                border-top: 1px solid var(--lp-border-subtle);
+            }
+
+            > span {
+                padding: 0.875rem 1.25rem;
+                color: var(--lp-content-on-card);
+                font-size: $font-size-sm;
+                line-height: 1.4;
+                text-align: center;
+                @include media-breakpoint-down(md) {
+                    padding: 0.75rem 0.625rem;
+                    font-size: $font-size-xs;
+                }
+            }
+
+            > span:first-child {
+                padding-left: 1.5rem;
+                color: var(--lp-content-primary);
+                font-weight: 600;
+                text-align: left;
+            }
+        }
+
+        .col-oss {
+            align-self: stretch;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--lp-purple-light);
+        }
+
+        .head > span {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--lp-content-primary);
+            font-size: $font-size-base;
+            font-weight: 700;
+
+            small {
+                color: var(--lp-content-secondary);
+                font-size: $font-size-xs;
+                font-weight: 500;
+            }
+        }
+
+        .yes {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--lp-purple);
+        }
+
+        .no {
+            color: var(--lp-content-muted);
+        }
+
+        .editions-cta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2.5rem;
+            a {
+                min-width: 240px;
+            }
         }
     }
 </style>

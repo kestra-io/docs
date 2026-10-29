@@ -1,14 +1,15 @@
 ---
 interface Props {
     items: { question: string; answer: string }[]
+    heading?: string
 }
 
-const { items } = Astro.props
+const { items, heading = "Frequently asked questions" } = Astro.props
 ---
 
 <section class="faq">
     <h2 data-usal="fade-u delay-50 duration-500 ease-out">
-        Questions we get on every call
+        {heading}
     </h2>
 
     <div class="items">
