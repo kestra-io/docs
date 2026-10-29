@@ -66,7 +66,7 @@ An AI agent is only as powerful as the systems it can reach. Enterprise technolo
 
 ### Reliability, error handling, and the "30% rule"
 
-In artificial intelligence circles, the "30% rule" highlights that a significant percentage of AI-generated decisions or outputs require validation, refinement, or correction. Network timeouts, rate limits, API schema changes, and model hallucinations are inevitable in production. Orchestration provides enterprise-grade resilience primitives—such as exponential backoffs, automated retries, dead-letter queues, and fallback branches—ensuring that transient errors do not derail core business processes. For a deeper dive into maintaining secure operational control, see resources on [Workflow Governance](/resources/infrastructure/workflow-governance).
+In artificial intelligence circles, the "30% rule" highlights that a significant percentage of AI-generated decisions or outputs require validation, refinement, or correction. Network timeouts, rate limits, API schema changes, and model hallucinations are inevitable in production. Orchestration provides enterprise-grade resilience primitives—such as exponential backoffs, automated retries, dead-letter queues, and fallback branches—ensuring that transient errors do not derail core business processes. For a deeper dive into maintaining secure operational control, see resources on [Workflow Governance](/resources/ai/ai-governance-workflows).
 
 ## Orchestrating agentic business processes with Kestra: An expense approval flow
 

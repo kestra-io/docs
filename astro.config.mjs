@@ -54,6 +54,28 @@ const imageService = () => {
     return process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare"
 }
 
+// The adapter's setup hook runs first and pins its own Cloudflare service; this
+// swaps in a wrapper that requests `format=auto` (AVIF where the browser accepts it).
+/** @type {import("astro").AstroIntegration} */
+const cloudflareAutoFormat = {
+    name: "cloudflare-auto-format",
+    hooks: {
+        "astro:config:setup": ({ command, updateConfig }) => {
+            if (command === "dev" || imageService() !== "cloudflare") return
+            updateConfig({
+                image: {
+                    service: {
+                        entrypoint: path.resolve(
+                            __dirname,
+                            "src/utils/cloudflareImageService.ts",
+                        ),
+                    },
+                },
+            })
+        },
+    },
+}
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
@@ -66,6 +88,7 @@ export default defineConfig({
           }),
     trailingSlash: "never",
     integrations: [
+        cloudflareAutoFormat,
         vue({
             template: {
                 compilerOptions: {
@@ -224,6 +247,10 @@ export default defineConfig({
     },
     redirects: {
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
+        "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application":
+            "/careers#open-application",
+        "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply":
+            "/careers#open-application",
         "/partners/consulting": "/partners/services",
         "/trust":
             "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",

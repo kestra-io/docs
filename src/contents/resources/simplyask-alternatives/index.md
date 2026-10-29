@@ -90,7 +90,7 @@ Metalogix, now part of Quest Software, is known for its tools for data migration
 
 Where SimplyAsk automates processes, Metalogix organizes the underlying data and content. For businesses whose primary inefficiency stems from disorganized or inaccessible data, a tool like Metalogix can be a foundational step before process automation is even possible.
 
-- **Best for:** Organizations with large volumes of unstructured data and content, especially within Microsoft ecosystems, that need robust tools for migration, archiving, and management as part of their [data pipeline strategy](/resources/data/data-pipeline).
+- **Best for:** Organizations with large volumes of unstructured data and content, especially within Microsoft ecosystems, that need robust tools for migration, archiving, and management as part of their [data pipeline strategy](/resources/data/create-data-pipeline).
 - **Limitation:** It is not an AI-centric or workflow automation platform. Its focus is on data and content infrastructure, not the orchestration of business logic or processes.
 
 ## Comparison Table: SimplyAsk Alternatives at a Glance
