@@ -1,0 +1,576 @@
+---
+import Layout from "~/components/layout.astro"
+import Snippets from "~/components/common/Snippets.astro"
+
+import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
+import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
+import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
+import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
+import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
+import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
+import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
+import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
+import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
+import Translation from "~/components/lp/vra-migration/Translation.astro"
+
+import HomelabIcon from "~/components/lp/workflow-orchestration/assets/stack-infra-platform.svg"
+import IacIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
+import GitOpsIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
+import CloudIcon from "~/components/lp/vra-migration/assets/automate-integrations.svg"
+
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+/* Landing page for the infrastructure creators' audiences (homelab, DevOps and
+ * platform engineers), linked from their videos and posts with UTM tags. They
+ * run things themselves before they ask anyone, so the open-source path comes
+ * first and the call is the second ask. What is free and what is Enterprise is
+ * spelled out on the page, never left for the call. */
+const title = "Infrastructure automation, as code | Kestra"
+const description =
+    "Kestra is an open-source orchestrator for Ansible, Terraform, OpenTofu and scripts: one YAML file per workflow, versioned in Git, with schedules, webhooks, retries and approvals. Self-host it with one command."
+
+/** HubSpot records this as the page the lead converted on. */
+const routePath = "/lp/automate-infra"
+
+const formProps = { submitLabel: "Book a 30-minute call" }
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const dockerCommand = `docker run --pull=always --rm -it -p 8080:8080 --user=root \\
+  --name kestra \\
+  -v kestra_data:/app/storage \\
+  -v kestra_db:/app/data \\
+  -v /var/run/docker.sock:/var/run/docker.sock \\
+  -v /tmp:/tmp \\
+  kestra/kestra:latest-slim server local`
+
+/* Condensed from the proxmox-safe-patching blueprint, with the SSH step
+ * swapped for the Ansible task. Keep the task types and properties valid. */
+const exampleFlow = `id: patch-proxmox-vm
+namespace: homelab.infra
+
+inputs:
+  - id: vm_name
+    type: STRING
+    defaults: docker-host-01
+
+triggers:
+  - id: monthly_window
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 3 1 * *"
+
+tasks:
+  - id: snapshot
+    type: io.kestra.plugin.proxmox.snapshot.Create
+    host: "{{ secret('PROXMOX_HOST') }}"
+    node: pve
+    username: "{{ secret('PROXMOX_USERNAME') }}"
+    password: "{{ secret('PROXMOX_PASSWORD') }}"
+    vmName: "{{ inputs.vm_name }}"
+    snapName: "prepatch-{{ execution.id }}"
+
+  - id: patch
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    namespaceFiles:
+      enabled: true
+    limit: "{{ inputs.vm_name }}"
+    commands:
+      - ansible-playbook -i inventory.ini patch.yml
+
+  - id: health_check
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://{{ inputs.vm_name }}.lab.internal/health"
+
+errors:
+  - id: rollback
+    type: io.kestra.plugin.proxmox.snapshot.Rollback
+    host: "{{ secret('PROXMOX_HOST') }}"
+    node: pve
+    username: "{{ secret('PROXMOX_USERNAME') }}"
+    password: "{{ secret('PROXMOX_PASSWORD') }}"
+    vmName: "{{ inputs.vm_name }}"
+    snapName: "prepatch-{{ execution.id }}"`
+
+const reasons = [
+    {
+        kicker: "Declarative",
+        title: "One YAML file per workflow, in Git.",
+        body: "Review a change in a pull request, sync it to your instance, roll it back like any other code. The editor in the UI writes the same YAML.",
+        icon: "mdi:file-code-outline",
+    },
+    {
+        kicker: "No rewrite",
+        title: "Your playbooks and modules run as they are.",
+        body: `Ansible, Terraform, OpenTofu, Bash, Python or PowerShell, each in its own container, plus ${totalPlugins}+ plugins for Proxmox, Kubernetes, the clouds and Git.`,
+        icon: "mdi:console",
+    },
+    {
+        kicker: "Everything around it",
+        title: "Triggers, retries, approvals and logs.",
+        body: "A schedule, a webhook, a Git push or a new file starts a flow. A failed step retries, a pause waits for someone to approve, and every run keeps its logs and outputs.",
+        icon: "mdi:state-machine",
+    },
+]
+
+const steps = [
+    {
+        number: "01",
+        title: "Run it",
+        body: "One docker command, then open localhost:8080. Docker Compose with Postgres, rootless Podman and Kubernetes are documented too.",
+        wash: "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+    {
+        number: "02",
+        title: "Start from a blueprint",
+        body: "Drain a Proxmox node with an approval, test a backup restore, patch behind a snapshot, apply Terraform from a repo. Or point a flow at your own playbook.",
+        wash: "radial-gradient(150% 170% at -20% 140%, rgba(99, 27, 255, 1) 0%, rgba(24, 227, 61, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+    {
+        number: "03",
+        title: "Put it in Git",
+        body: "Sync your flows from a repository so every change goes through review, then move your cron jobs across one at a time.",
+        wash: "radial-gradient(130% 150% at -30% -30%, rgba(99, 27, 255, 1) 0%, rgba(24, 166, 227, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+]
+
+const rows = [
+    {
+        from: "Cron jobs and systemd timers spread across hosts",
+        to: "Schedule triggers, the scripts run as they are, with logs and alerts in one place",
+    },
+    {
+        from: "ansible-playbook from a laptop, or a job template in Semaphore or AWX",
+        to: "An Ansible task: same playbooks and inventories, plus inputs, retries and run history",
+    },
+    {
+        from: "terraform or tofu apply from a laptop or a CI job",
+        to: "Plan, a pause for approval, then apply, against the state backend you already use",
+    },
+    {
+        from: "SSH in and follow the runbook",
+        to: "A flow with typed inputs that anyone on the team can launch",
+    },
+    {
+        from: "A webhook receiver held together with glue scripts",
+        to: "A webhook trigger that starts the flow",
+    },
+    {
+        from: "Rundeck or Jenkins jobs stored in a database",
+        to: "Flows as YAML files in Git",
+    },
+    {
+        from: "Credentials in .env files and scripts",
+        to: "Secrets referenced by name, never written in the flow",
+    },
+]
+
+const openSource = [
+    "The engine, the UI and the API",
+    "Every open-source plugin: Ansible, Terraform, OpenTofu, Proxmox, Kubernetes, Helm, Git and more",
+    "Schedules, webhooks and event triggers",
+    "Retries, error handlers and approval pauses",
+    "Flows synced to and from Git",
+    "Secrets as environment variables, read with secret()",
+    "One shared login",
+    "Production use, standalone or distributed",
+]
+
+const enterprise = [
+    "Individual accounts, SSO, SCIM and role-based access",
+    "Secret managers: Vault, AWS, Azure, Google Cloud, 1Password, Doppler and more",
+    "Audit logs of every action",
+    "Apps: self-service forms in front of your flows",
+    "Worker groups inside isolated networks",
+    "Multi-tenancy and policies",
+    "Support with SLAs",
+]
+
+const integrations = [
+    {
+        Glyph: HomelabIcon,
+        title: "Homelab and on-prem",
+        items: [
+            "Proxmox VE: VMs, snapshots, backups, migrations",
+            "KVM and Ceph",
+            "phpIPAM",
+            "SSH, SFTP and plain shell",
+        ],
+    },
+    {
+        Glyph: IacIcon,
+        title: "Infrastructure as code",
+        items: [
+            "Ansible, with Galaxy collections",
+            "Terraform and Terragrunt",
+            "OpenTofu",
+            "Helm",
+        ],
+    },
+    {
+        Glyph: GitOpsIcon,
+        title: "Containers and GitOps",
+        items: [
+            "Docker",
+            "Kubernetes and Argo CD",
+            "GitHub and GitLab",
+            "Trivy and Snyk",
+        ],
+    },
+    {
+        Glyph: CloudIcon,
+        title: "Cloud and notifications",
+        items: [
+            "AWS, Azure and Google Cloud",
+            "Cloudflare",
+            "Slack, Discord and Telegram",
+            "Prometheus and Grafana",
+        ],
+    },
+]
+
+const ctaBullets = [
+    {
+        text: "We go through the requests and runbooks your team handles today.",
+        strong: true,
+    },
+    {
+        text: "See them run with individual logins, access per team, approvals and an audit trail.",
+        strong: false,
+    },
+    {
+        text: "Kestra for Infrastructure: self-service for your teams, guardrails for the platform team.",
+        strong: false,
+    },
+]
+
+const faqItems = [
+    {
+        question: "Is Kestra really open source?",
+        answer: "Yes. The engine, the UI and the open-source plugins are Apache 2.0 and on GitHub, and the open-source edition runs in production on its own. The Enterprise Edition adds what a shared, multi-team instance needs: individual logins, access control, secret managers and audit logs. The table above lists what sits on each side.",
+    },
+    {
+        question: "How much memory does it need?",
+        answer: "Kestra runs on the JVM and needs at least 2 vCPUs and 4 GiB of memory. A single standalone server with Postgres is enough for a homelab or a small team, and server roles split apart when you need to scale.",
+    },
+    {
+        question: "Does it need root and the Docker socket?",
+        answer: "Only for the quickstart. Script tasks run in containers by default, which is why the one-liner mounts the Docker socket and runs as root. You can run tasks as plain processes with the Process task runner instead, or deploy with rootless Podman.",
+    },
+    {
+        question: "How does the open-source edition handle secrets?",
+        answer: "As base64-encoded environment variables prefixed with SECRET_, read in flows with the secret() function, so values never sit in the YAML. There is no encryption at rest or access control beyond your host's. Vault, AWS, Azure, Google Cloud and other secret managers connect in the Enterprise Edition.",
+    },
+    {
+        question: "Kestra or n8n?",
+        answer: "n8n is built for connecting SaaS apps on a visual canvas. Kestra is built around YAML flows that run infrastructure tooling, Ansible, Terraform and scripts in containers, with Git as the source of truth. If your workflows are playbooks, modules and shell scripts, Kestra is the closer fit, and an n8n plugin lets a flow start the n8n workflows you already have.",
+    },
+    {
+        question: "Kestra, Semaphore, AWX or Rundeck?",
+        answer: "Semaphore and AWX put a UI on running playbooks and infrastructure jobs, and Rundeck runs jobs and runbooks. Kestra chains the steps around them: take a Proxmox snapshot, run the playbook, apply OpenTofu, call a webhook, wait for an approval, all in one versioned YAML file with triggers and retries. You can also call your existing jobs from a flow and move them across later.",
+    },
+    {
+        question: "Can I keep my flows in Git?",
+        answer: "Yes. The Git plugin syncs flows and namespace files from a repository and can push changes made in the UI back to it. Teams that deploy from CI use the Kestra CLI, the API or the Terraform provider.",
+    },
+    {
+        question: "Do I need Kubernetes?",
+        answer: "No. Kestra runs on a single VM or a laptop with Docker. Kubernetes is supported and common at scale, not a requirement.",
+    },
+    {
+        question: "I run Kestra 1.x. How do I upgrade to 2.0?",
+        answer: "Kestra 2.0 is a major version: read the 2.0 migration guide in the docs before you change the image tag, and run the migration it describes on your existing flows.",
+    },
+    {
+        question: "What does it cost?",
+        answer: "The open-source edition is free. The Enterprise Edition is not priced per execution: the price depends on how broadly it is deployed and the support tier, and we walk through it on the call.",
+    },
+]
+---
+
+<Layout {title} {description} noindex bareChrome forceTheme="light">
+    <div class="lp-workflow-orchestration">
+        <LpHeader />
+        <Hero {routePath} formTitle="Start with one command">
+            <Fragment slot="title">
+                Your <span class="grad grad-a">Ansible</span>, OpenTofu and
+                scripts, <span class="grad grad-b">orchestrated</span> as code.
+            </Fragment>
+            <Fragment slot="lead">
+                Kestra is an open-source orchestrator: one YAML file per
+                workflow, versioned in Git, that runs what you already have with
+                schedules, webhooks, retries, approvals and logs.<br />
+                <strong
+                    >Self-hosted, free, and your first flow runs in minutes.</strong
+                >
+            </Fragment>
+            <Fragment slot="form-sub">
+                Apache 2.0. Needs Docker, 2 vCPUs and 4 GiB of memory.
+            </Fragment>
+            <div slot="form" class="start">
+                <Snippets code={dockerCommand} lang="bash" />
+                <a class="btn-start" href="/docs/quickstart">
+                    Read the quickstart
+                </a>
+                <a class="btn-call" href="#contact-sales">
+                    Bringing it to work? Book a call
+                </a>
+            </div>
+        </Hero>
+        <Platform
+            heading="Built for the way you already work"
+            cards={reasons}
+        />
+        <section class="example">
+            <div class="inner">
+                <div class="copy">
+                    <h2>One flow, start to finish</h2>
+                    <p>
+                        Snapshot a Proxmox VM, patch it with your own playbook,
+                        check that it answers, and roll back to the snapshot if
+                        anything fails. Once a month, in a maintenance window,
+                        with every run logged.
+                    </p>
+                    <p>
+                        The playbook and inventory live next to the flow as
+                        namespace files. Credentials stay secrets.
+                    </p>
+                    <a href="/blueprints/proxmox-safe-patching"
+                        >See the full blueprint</a
+                    >
+                </div>
+                <div class="code">
+                    <Snippets
+                        code={exampleFlow}
+                        lang="yaml"
+                        expandThreshold={60}
+                        noCollapse
+                    />
+                </div>
+            </div>
+        </section>
+        <Translation
+            heading="What your current setup becomes"
+            sub="Nothing is rewritten up front. Each piece moves when you are ready."
+            fromLabel="Today"
+            {rows}
+        />
+        <Migration
+            heading="From docker run to your first real flow"
+            sub="Kestra runs next to your cron jobs and scripts for as long as you need them."
+            {steps}
+        />
+        <section class="editions">
+            <h2>What's free, and what isn't</h2>
+            <p class="sub">
+                No surprises later: here is where the line sits. Your flows
+                carry over unchanged if you move to Enterprise.
+            </p>
+            <div class="columns">
+                <div class="column oss">
+                    <p class="label">Open source · free</p>
+                    <ul>{openSource.map((item) => <li>{item}</li>)}</ul>
+                </div>
+                <div class="column ee">
+                    <p class="label">Enterprise · Kestra for Infrastructure</p>
+                    <ul>{enterprise.map((item) => <li>{item}</li>)}</ul>
+                </div>
+            </div>
+        </section>
+        <Stack
+            heading="Plugs into your stack"
+            sub="Open-source plugins, installed on demand the first time a flow uses them."
+            columns={integrations}
+            glyphSize={72}
+        />
+        <UseCases
+            {routePath}
+            headingLines={["Bringing it", "to work?"]}
+            bullets={ctaBullets}
+            {formProps}
+        />
+        <Faq items={faqItems} />
+        <ClosingBanner
+            heading="Run your first infra flow"
+            sub="Free, open source and self-hosted. One command, then a blueprint."
+            cta={{ text: "Read the quickstart", href: "/docs/quickstart" }}
+            reassurance="Apache 2.0. Your infrastructure, your data."
+        />
+        <LpFooter />
+    </div>
+</Layout>
+
+<style lang="scss">
+    /* Same pinned palette as /lp/workflow-orchestration: the wrapper class is
+     * shared on purpose, so this page inherits its section components' tokens.
+     * Keep the lists identical. */
+    .lp-workflow-orchestration {
+        --lp-purple: #631bff;
+        --lp-purple-light: #f1efff;
+        --lp-purple-rail: #cdc5ff;
+        --lp-shadow-light: #3952f21a;
+        --lp-bg-dark: #111115;
+        --lp-purple-mid: #9869f7;
+        --lp-content-on-card: #3b3a41;
+        --lp-bg-base: #f7f7f8;
+        --lp-content-primary: #08090a;
+        --lp-content-secondary: #5f5f7c;
+        --lp-content-muted: #7e7e9b;
+        --lp-content-dark-secondary: #adadbf;
+        --lp-border: #d0d0da;
+        --lp-border-subtle: #e9e9ee;
+
+        background-color: #ffffff;
+        overflow-x: clip;
+    }
+
+    :global(html) {
+        --top-bar-height: 80px;
+    }
+
+    /* The hero card holds the command instead of the call form: the free path
+     * is the first ask here, the call the second. */
+    .start {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding-top: 1.25rem;
+
+        a {
+            display: block;
+            min-height: 52px;
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 700;
+            line-height: 1.2;
+            text-align: center;
+            text-decoration: none;
+        }
+    }
+
+    .btn-start {
+        border: 1px solid var(--lp-purple);
+        background-color: var(--lp-purple);
+        color: #ffffff;
+        &:hover {
+            background-color: var(--lp-purple-mid);
+            color: #ffffff;
+        }
+    }
+
+    .btn-call {
+        border: 1px solid var(--lp-purple);
+        background-color: #ffffff;
+        color: var(--lp-purple);
+        &:hover {
+            background-color: var(--lp-purple-light);
+            color: var(--lp-purple);
+        }
+    }
+
+    .example,
+    .editions {
+        padding: 5rem 1rem;
+    }
+
+    .example {
+        background-color: var(--lp-bg-base);
+
+        .inner {
+            display: grid;
+            gap: 2.5rem;
+            max-width: 1140px;
+            margin-inline: auto;
+            @include media-breakpoint-up(lg) {
+                grid-template-columns: 2fr 3fr;
+                align-items: start;
+            }
+        }
+
+        /* Grid children default to min-width: auto, which would let the code
+         * block's long lines push the page wider than the viewport. */
+        .code {
+            min-width: 0;
+        }
+
+        p {
+            color: var(--lp-content-secondary);
+            font-size: 1.125rem;
+            line-height: 1.5;
+        }
+
+        a {
+            color: var(--lp-purple);
+            font-weight: 600;
+        }
+    }
+
+    .example h2,
+    .editions h2 {
+        margin: 0 0 1.5rem;
+        color: var(--lp-content-primary);
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1.0417;
+        letter-spacing: -0.045rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .editions {
+        background-color: #ffffff;
+
+        h2,
+        .sub {
+            max-width: 1140px;
+            margin-inline: auto;
+            text-align: center;
+        }
+
+        .sub {
+            margin-bottom: 2.5rem;
+            color: var(--lp-content-secondary);
+            font-size: 1.125rem;
+            line-height: 1.5;
+        }
+
+        .columns {
+            display: grid;
+            gap: 1rem;
+            max-width: 1140px;
+            margin-inline: auto;
+            @include media-breakpoint-up(md) {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .column {
+            padding: 1.5rem 1.5rem 1.75rem;
+            border: 1px solid var(--lp-border);
+            border-radius: 12px;
+            &.oss {
+                border-color: var(--lp-purple);
+                box-shadow: 2px 3px 16px 0 var(--lp-shadow-light);
+            }
+        }
+
+        .label {
+            margin: 0 0 1rem;
+            color: var(--lp-purple);
+            font-size: $font-size-md;
+            font-weight: 600;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 1.25rem;
+            color: var(--lp-content-on-card);
+            line-height: 1.5;
+        }
+
+        li + li {
+            margin-top: 0.5rem;
+        }
+    }
+</style>
