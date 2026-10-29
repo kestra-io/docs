@@ -79,7 +79,7 @@ inputs:
 tasks:
   - id: fetch_executions
     type: io.kestra.plugin.core.http.Request
-    uri: "{{ secret('KESTRA_URL') | trim }}/api/v1/dev/executions/search?namespace={{ inputs.namespace }}&size=100&sort=state.startDate:desc"
+    uri: "{{ secret('KESTRA_URL') | trim }}/api/v1/dev/executions/search?filters[namespace][EQUALS]={{ inputs.namespace }}&size=100&sort=state.startDate:desc"
     method: GET
     headers:
       Authorization: "Bearer {{ secret('KESTRA_API_TOKEN') | trim }}"
