@@ -171,6 +171,32 @@ describe("rewriteRelativeLinks", () => {
         expect(out).toContain("[b](https://kestra.io/./B.MD)")
     })
 
+    it("closes a list-item fence whose closer is indented past the opener", () => {
+        const body = [
+            "1. Step:",
+            "   ```yaml",
+            "   [a](./a.md)",
+            "      ```",
+            "- [b](./b.md)",
+            "    ```json",
+            "    [c](./c.md)",
+            "    ```",
+            "- [d](./d.md)",
+        ].join("\n")
+        const out = rewriteRelativeLinks(body, upper)
+        expect(out.split("\n").filter((l) => l.includes("kestra.io"))).toEqual([
+            "- [b](https://kestra.io/./B.MD)",
+            "- [d](https://kestra.io/./D.MD)",
+        ])
+    })
+
+    it("does not close a fence on a line with an info string", () => {
+        const body = ["```md", "```yaml", "[a](./a.md)", "```", "[b](./b.md)"].join("\n")
+        const out = rewriteRelativeLinks(body, upper)
+        expect(out).toContain("[a](./a.md)")
+        expect(out).toContain("[b](https://kestra.io/./B.MD)")
+    })
+
     it("rewrites several links on one line", () => {
         expect(rewriteRelativeLinks("[a](./a.md), [b](../b.md).", upper)).toBe(
             "[a](https://kestra.io/./A.MD), [b](https://kestra.io/../B.MD).",

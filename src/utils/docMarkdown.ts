@@ -45,21 +45,29 @@ export function splitLinkTarget(target: string): [path: string, suffix: string] 
 }
 
 const RELATIVE_LINK_RE = /\]\((\.\.?\/[^\s)]*)((?:\s+"[^"]*")?)\)/g
-const FENCE_RE = /^ {0,3}(`{3,}|~{3,})/
+const FENCE_RE = /^( *)(`{3,}|~{3,})(.*)$/
 
 export function rewriteRelativeLinks(body: string, resolve: RelativeLinkResolver): string {
-    let fence: string | undefined
+    let fence: { marker: string; indent: number } | undefined
     return body
         .split("\n")
         .map((line) => {
-            const marker = FENCE_RE.exec(line)?.[1]
-            if (marker) {
+            const match = FENCE_RE.exec(line)
+            if (match) {
+                const [, spaces, marker, rest] = match
                 if (!fence) {
-                    fence = marker
-                } else if (marker[0] === fence[0] && marker.length >= fence.length) {
-                    fence = undefined
+                    fence = { marker, indent: spaces.length }
+                    return line
                 }
-                return line
+                if (
+                    marker[0] === fence.marker[0] &&
+                    marker.length >= fence.marker.length &&
+                    spaces.length <= fence.indent + 3 &&
+                    rest.trim() === ""
+                ) {
+                    fence = undefined
+                    return line
+                }
             }
             if (fence) return line
             return line.replace(RELATIVE_LINK_RE, (written, target, title) => {
