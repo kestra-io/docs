@@ -237,10 +237,9 @@ const faqItems = [
                 scripts, <span class="grad grad-b">orchestrated</span> as code.
             </Fragment>
             <Fragment slot="lead">
-                <span class="from" hidden></span>
-                Kestra is an open-source orchestrator: one YAML file per workflow,
-                versioned in Git, that runs what you already have with schedules,
-                webhooks, retries, approvals and logs.<br />
+                Kestra is an open-source orchestrator: one YAML file per
+                workflow, versioned in Git, that runs what you already have with
+                schedules, webhooks, retries, approvals and logs.<br />
                 <strong
                     >Self-hosted, free, and your first flow runs in minutes.</strong
                 >
@@ -261,35 +260,6 @@ const faqItems = [
                 </a>
             </div>
         </Hero>
-        <script is:inline>
-            /* Name where the visitor comes from: a creator's video or a blog
-             * article. Creator links carry utm_source (youtube, linkedin or
-             * the blog's domain) and utm_content (who shares); the referrer
-             * is the fallback. Values are only matched, never written. */
-            ;(() => {
-                const params = new URLSearchParams(location.search)
-                const ref = document.referrer.toLowerCase()
-                const tag = [
-                    params.get("utm_source"),
-                    params.get("utm_content"),
-                    ref,
-                ]
-                    .join(" ")
-                    .toLowerCase()
-                const creator = /lempa/.test(tag)
-                    ? "Christian Lempa"
-                    : /devops.?toolbox|dotb|omer/.test(tag)
-                      ? "DevOps Toolbox"
-                      : null
-                const video = /youtube|youtu\.be/.test(tag)
-                const from = document.querySelector(".lp-hero .from")
-                if (!from || (!creator && !video)) return
-                from.textContent = video
-                    ? `Watched ${creator ? `${creator}'s video` : "the video"}? Run the same setup in one command.`
-                    : `Read ${creator ? `${creator}'s article` : "the article"}? Run the same setup in one command.`
-                from.hidden = false
-            })()
-        </script>
         <Platform
             heading="Built for the way you already work"
             cards={reasons}
@@ -438,17 +408,6 @@ const faqItems = [
         text-decoration: none;
         &:hover {
             color: var(--lp-purple);
-        }
-    }
-
-    /* Shown only when the visit comes from a creator's video or article. */
-    .from {
-        display: block;
-        margin-bottom: 1rem;
-        color: #ffffff;
-        font-weight: 600;
-        &[hidden] {
-            display: none;
         }
     }
 
