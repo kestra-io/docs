@@ -11,6 +11,7 @@ import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
 import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
 import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
 import Translation from "~/components/lp/vra-migration/Translation.astro"
+import VideoDialog from "~/components/common/VideoDialog.astro"
 
 import { Icon } from "astro-icon/components"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
@@ -445,6 +446,34 @@ const faqItems = [
             bullets={ctaBullets}
             {formProps}
         />
+        <section class="video">
+            <div class="inner">
+                <div class="copy">
+                    <h2>Replace vRA without changing how your team works</h2>
+                    <p>
+                        The lifecycle of a VM in Kestra, one person at a time:
+                        who requests it, who approves it, who runs it, and what
+                        each of them sees.
+                    </p>
+                </div>
+                <VideoDialog
+                    id="vra-video"
+                    videoId="brZo-5NdP2E"
+                    title="Replace VMware vRA/vRO Without Changing How Your Team Works"
+                    class="video-thumb"
+                    aria-label="Play the video: Replace VMware vRA/vRO Without Changing How Your Team Works"
+                >
+                    <img
+                        src="https://i.ytimg.com/vi/brZo-5NdP2E/maxresdefault.jpg"
+                        alt=""
+                        width="1280"
+                        height="720"
+                        loading="lazy"
+                    />
+                    <span class="play"><Icon name="mdi:play" /></span>
+                </VideoDialog>
+            </div>
+        </section>
         <Faq items={faqItems} />
         <ClosingBanner
             heading="Run your first infra flow"
@@ -838,6 +867,83 @@ const faqItems = [
                 border-color: #ffffff;
                 color: #ffffff;
             }
+        }
+    }
+
+    .video {
+        padding: 5rem 1rem;
+        background-color: var(--lp-bg-base);
+
+        .inner {
+            display: grid;
+            gap: 2.5rem;
+            max-width: 1140px;
+            margin-inline: auto;
+            @include media-breakpoint-up(lg) {
+                grid-template-columns: 2fr 3fr;
+                align-items: center;
+            }
+        }
+
+        h2 {
+            margin: 0 0 1.5rem;
+            color: var(--lp-content-primary);
+            font-size: 1.875rem;
+            font-weight: 600;
+            line-height: 1.0417;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: 1.125rem;
+            line-height: 1.5;
+        }
+
+        /* The button is rendered by VideoDialog, outside this page's scope. */
+        :global(.video-thumb) {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 0;
+            overflow: hidden;
+            border: 0;
+            border-radius: 12px;
+            background: none;
+            box-shadow: 2px 3px 16px 0 var(--lp-shadow-light);
+            cursor: pointer;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: grid;
+            place-items: center;
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 50%;
+            background-color: var(--lp-purple);
+            color: #ffffff;
+            font-size: 2.25rem;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease;
+        }
+
+        :global(.video-thumb:hover) .play {
+            transform: translate(-50%, -50%) scale(1.08);
         }
     }
 
