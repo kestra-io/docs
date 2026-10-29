@@ -108,10 +108,23 @@ function recursivelyBuildChildren(
         children.reverse()
     }
 
-    return children.map((child) => ({
-        title: child.data.title,
-        sidebarTitle: child.data.sidebarTitle,
-        path: `/docs/${child.id}`,
-        children: recursivelyBuildChildren(child.id, docsPages),
-    }))
+    // A child with `sidebarGroup` frontmatter starts a labeled group when its
+    // group differs from the previous child's. The label is a non-link item,
+    // so page URLs stay flat.
+    const items: NavigationItem[] = []
+    let currentGroup: string | undefined
+    for (const child of children) {
+        const group = child.data.sidebarGroup
+        if (group && group !== currentGroup) {
+            items.push({ title: group, path: "#", isSection: true, isGroup: true })
+        }
+        currentGroup = group
+        items.push({
+            title: child.data.title,
+            sidebarTitle: child.data.sidebarTitle,
+            path: `/docs/${child.id}`,
+            children: recursivelyBuildChildren(child.id, docsPages),
+        })
+    }
+    return items
 }

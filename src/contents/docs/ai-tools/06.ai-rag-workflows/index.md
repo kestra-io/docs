@@ -1,7 +1,8 @@
 ---
-title: RAG Workflows in Kestra – Retrieval-Augmented Generation
+title: "RAG Workflows in Kestra: Ground LLM Answers in Your Data"
 h1: Build RAG Workflows to Ground LLM Responses in Your Own Data
 sidebarTitle: RAG Workflows
+sidebarGroup: AI in your flows
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 1.0.0"
 description: Build Retrieval-Augmented Generation (RAG) workflows in Kestra to ground LLM responses in your own data or web search results.

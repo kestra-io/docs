@@ -1,15 +1,16 @@
 ---
 title: "Flow MCP Servers: Expose Kestra Flows as AI Tools"
-h1: Expose Your Flows as Tools for AI Agents
+h1: Expose Your Flows as Tools for External AI Agents
 description: Expose Kestra flows as MCP tools that Claude, Cursor, and other AI agents can call. Create MCP servers, choose authentication, and connect clients.
 sidebarTitle: Flow MCP Servers
+sidebarGroup: Flows as AI tools
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 2.0.0"
 editions: ["OSS", "EE", "Cloud"]
 docId: mcp-servers
 ---
 
-Expose your Kestra flows as named tools that AI agents discover and call over MCP.
+Expose your Kestra flows as named tools that external AI agents discover and call over MCP.
 
 This page is for Kestra administrators and flow authors who want Claude, Cursor, or another AI agent to run their flows. If you want your coding agent to look up Kestra plugin schemas and docs while you write flows, use the [Docs MCP server](../02.kestra-mcp-resources/index.md) instead.
 
@@ -21,8 +22,8 @@ Kestra supports MCP in both directions:
 
 | Direction | How | When to use |
 |---|---|---|
-| **Kestra as MCP server** | `McpToolTrigger` and a flow MCP server | AI agents (Claude, Cursor) call your flows as tools |
-| **Kestra as MCP client** | MCP client tasks (`SseMcpClient`, `StreamableHttpMcpClient`, `StdioMcpClient`, `DockerMcpClient`) | Your flows call external MCP servers as part of an AI Agent task |
+| **Kestra as MCP server** | `McpToolTrigger` and a flow MCP server | External AI agents (Claude, Cursor) call your flows as tools |
+| **Kestra as MCP client** | MCP client tasks (`SseMcpClient`, `StreamableHttpMcpClient`, `StdioMcpClient`, `DockerMcpClient`) | Your flows call external MCP servers as part of an `AIAgent` task |
 
 This page covers Kestra as an MCP server. To call external MCP servers from a flow, see [MCP clients](../05.ai-agents/index.md#mcp-clients).
 
@@ -81,7 +82,7 @@ The authenticating user must already have a Kestra account. The OAuth token's `e
 
 If multiple OIDC providers are configured, set `oauthProvider` to the name of the specific provider (e.g. `my-oidc-provider` from the example above). If `oauthProvider` is omitted, the provider is matched automatically by the JWT's issuer claim.
 
-## Connecting an AI agent client
+## Connect an AI agent client
 
 Open a server in the UI and click the **Connect** tab. It shows the server URL and ready-to-paste configuration snippets for each supported client:
 

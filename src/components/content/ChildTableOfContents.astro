@@ -32,7 +32,7 @@ let navigation: NavigationItem[] = []
 const found: NavigationItem | undefined = findNodeByPath(navTree, basePath)
 
 if (found && found.children) {
-    navigation = found.children
+    navigation = found.children.filter((child) => !child.isGroup)
 } else {
     const childrenDocs = allDocs.filter(
         (doc) =>

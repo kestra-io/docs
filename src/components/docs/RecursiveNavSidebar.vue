@@ -1,5 +1,8 @@
 <template>
-    <li v-if="item.isSection" class="section">
+    <li v-if="item.isGroup" class="group" :class="{ ['depth-' + depthLevel]: true }">
+        {{ title }}
+    </li>
+    <li v-else-if="item.isSection" class="section">
         {{ title }}
     </li>
     <li v-else :class="{ ['depth-' + depthLevel]: true }">
@@ -69,6 +72,7 @@
 
     export interface NavigationItem {
         isSection?: boolean
+        isGroup?: boolean
         isPage?: boolean
         path: string
         title: string
@@ -268,5 +272,14 @@
         font-weight: 700;
         color: var(--ks-content-primary);
         margin: 1.5rem 0 0.75rem 0;
+    }
+
+    .group {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ks-content-tertiary);
+        margin: 0.75rem 0 0.25rem 0;
     }
 </style>

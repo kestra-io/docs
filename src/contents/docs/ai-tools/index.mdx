@@ -17,7 +17,7 @@ AI shows up in Kestra in three separate ways. Pick the one that matches your goa
 |---|---|
 | Get AI help building, fixing, or operating flows | [Build and operate Kestra with AI](#build-and-operate-kestra-with-ai) |
 | Call a model or run an AI agent as part of a flow | [Run AI inside your flows](#run-ai-inside-your-flows) |
-| Let Claude, Cursor, or another AI agent run your flows | [Expose your flows to AI agents](#expose-your-flows-to-ai-agents) |
+| Let Claude, Cursor, or another external AI agent run your flows | [Let external AI agents run your flows](#let-external-ai-agents-run-your-flows) |
 
 None of this is required. Every flow you can generate with AI, you can also write in YAML or build in the No-Code editor.
 
@@ -46,13 +46,13 @@ To set up all three, connect the [Docs MCP server](./02.kestra-mcp-resources/ind
 
 Here the AI is part of what you orchestrate. A task calls a model, an agent decides what to do next, or a flow answers questions from your documents.
 
-- **[LLM tasks and AI agents](./05.ai-agents/index.md#call-an-llm-as-a-task)**: call a model at a fixed step to summarize, classify, or extract structured data, or give an AI agent a goal and tools and let it choose the steps.
+- **[LLM tasks and AI agents](./05.ai-agents/index.md#call-an-llm-as-a-task)**: call a model at a fixed step to summarize, classify, or extract structured data, or give an `AIAgent` task a goal and tools and let it choose the steps.
 - **[RAG workflows](./06.ai-rag-workflows/index.md)**: ground model answers in your own documents or in live web search results.
 
-## Expose your flows to AI agents
+## Let external AI agents run your flows
 
 [Flow MCP servers](./07.mcp-server/index.md) turn Kestra flows into tools that Claude Desktop, Claude Code, Cursor, and other MCP-compatible agents can call. Add an `McpToolTrigger` to a flow and it is registered as a named tool, with its inputs and outputs described as a JSON schema.
 
-This is the opposite direction from the [Docs MCP server](./02.kestra-mcp-resources/index.md): instead of an agent reading Kestra documentation, the agent runs your flows on your instance.
+This is the opposite direction from the [Docs MCP server](./02.kestra-mcp-resources/index.md): instead of a coding agent reading Kestra documentation, an external agent runs your flows on your instance.
 
 <ChildCard />

@@ -3,11 +3,12 @@ title: LLM Tasks and AI Agents in Kestra Flows
 h1: Call LLMs and Run AI Agents Inside Your Flows
 description: Add AI to Kestra flows with LLM tasks for fixed steps and AI agents that choose their own tools. Compare both, set up providers, and adapt the examples.
 sidebarTitle: LLM Tasks and AI Agents
+sidebarGroup: AI in your flows
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 1.0.0"
 ---
 
-Call a language model as a task in your flow, or give an AI agent a goal and the tools to reach it.
+Call a language model as a task in your flow, or give an `AIAgent` task a goal and the tools to reach it.
 
 This page is for flow authors who want a model to do work during an execution. To get AI help writing flows, use [AI Copilot](../01.ai-copilot/index.md) or [your own coding agent](../index.mdx#build-and-operate-kestra-with-ai). To ground answers in your own documents, see [RAG workflows](../06.ai-rag-workflows/index.md).
 

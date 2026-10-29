@@ -2,6 +2,7 @@
 title: Kestra Resources for AI Agents and LLMs
 h1: Docs for Agents
 sidebarTitle: Docs for Agents
+sidebarGroup: Build with AI
 icon: /src/contents/docs/icons/ai.svg
 description: "Machine-readable resources for AI agents and LLMs: the Docs MCP server, Agent Skills, llms.txt, Markdown docs, plugin schemas, and OpenAPI specs."
 ---
