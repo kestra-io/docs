@@ -175,7 +175,7 @@ By implementing disciplined claims automation, insurance organizations can achie
 
 *   [Approval Workflow Automation & Governance](/resources/business/approval-workflow)
 *   [Audit Logs and Orchestration](/resources/infrastructure/audit-logs-orchestration)
-*   [Workflow Governance for Regulated Teams](/resources/infrastructure/workflow-governance)
+*   [Workflow Governance for Regulated Teams](/resources/ai/ai-governance-workflows)
 *   [Data Quality: Checks, Tests, and Ownership](/resources/data/data-quality)
 *   [Business Process Automation: Enterprise Workflows](/resources/business/business-process-automation)
 *   [Financial Services Workflow Automation](/use-cases/financial-services)

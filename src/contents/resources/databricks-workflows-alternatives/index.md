@@ -150,7 +150,7 @@ Selecting the right orchestrator depends on your team's specific needs, existing
 
 If your primary focus is on robust, scalable, and maintainable ETL/ELT pipelines, you need a tool that handles complex dependencies and integrates with a wide range of data sources and destinations.
 *   **Recommendation**: **Kestra** for its polyglot support and declarative YAML, which simplifies complex data pipelines. **Airflow** is a solid choice for teams deeply invested in the Python ecosystem.
-*   **Learn more**: Explore how to [automate data pipelines](/resources/data/automate-data-pipeline) and see how you can [schedule data workflows](/resources/data/schedule-data-workflows) effectively.
+*   **Learn more**: Explore how to [automate data pipelines](/resources/data/create-data-pipeline) and see how you can [schedule data workflows](/resources/data/schedule-data-workflows) effectively.
 
 ### For AI / ML Platform teams
 

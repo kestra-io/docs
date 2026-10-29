@@ -7,6 +7,7 @@ author:
   name: Robert Walters
   linkedin: https://www.linkedin.com/in/robwaltersprofile/
   image: "rwalters"
+  role: Senior Technical Product Marketing Manager
 image: ./main.jpg
 ---
 

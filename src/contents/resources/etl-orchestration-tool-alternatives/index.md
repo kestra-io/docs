@@ -148,7 +148,7 @@ Selecting the right tool depends heavily on your team's specific needs, skills, 
 
 ### For Data Engineering Teams Prioritizing Flexibility and Governance
 
-If your team manages a diverse set of tools and languages, and you need a single platform to govern all workflows, a language-agnostic solution like Kestra is the strongest choice. Its declarative YAML interface simplifies collaboration and governance, while its polyglot support ensures no part of your stack is left behind. This is key to successfully [automating data pipelines](/resources/data/automate-data-pipeline) at scale.
+If your team manages a diverse set of tools and languages, and you need a single platform to govern all workflows, a language-agnostic solution like Kestra is the strongest choice. Its declarative YAML interface simplifies collaboration and governance, while its polyglot support ensures no part of your stack is left behind. This is key to successfully [automating data pipelines](/resources/data/create-data-pipeline) at scale.
 
 ### For Python-First Teams with Existing Investments
 

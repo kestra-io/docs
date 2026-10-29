@@ -1,3 +1,5 @@
+import { TERRITORY_ATTR, territoryFor } from "../utils/territory"
+
 export const CONSENT_REGION_ATTR = "data-kestra-region"
 
 // Mirrors the client-side Intl "Europe" check, computed from Cloudflare's
@@ -13,6 +15,11 @@ const resolveRegion = (request: Request): "eu" | "row" => {
     if (!timezone) return "eu"
 
     return timezone.indexOf("Europe") === 0 ? "eu" : "row"
+}
+
+const resolveTerritory = (request: Request) => {
+    const cf = request.cf as IncomingRequestCfProperties | undefined
+    return cf?.country ? territoryFor(cf.country, cf.regionCode) : "unknown"
 }
 
 // Bakes the region into <html> instead of Set-Cookie, which Cloudflare's Cache
@@ -32,10 +39,12 @@ export const withConsentRegion = (response: Response, request: Request): Respons
     }
 
     const region = resolveRegion(request)
+    const territory = resolveTerritory(request)
     const rewritten = new HTMLRewriter()
         .on("html", {
             element(el) {
                 el.setAttribute(CONSENT_REGION_ATTR, region)
+                el.setAttribute(TERRITORY_ATTR, territory)
             },
         })
         .transform(response)

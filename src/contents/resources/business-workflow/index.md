@@ -29,7 +29,7 @@ At its core, a business workflow is the operational blueprint for achieving a sp
 
 ### Defining a Business Workflow
 
-A business workflow is a defined sequence of tasks, activities, and decision points that move a piece of work from initiation to completion. It dictates the flow of data, documents, and resources between participants, whether they are human employees or automated systems. Think of it as the choreography of a business process, ensuring every step is executed precisely and consistently. Effective [workflow management](/resources/infrastructure/workflow-management) is the key to turning this choreography into a reliable operational reality.
+A business workflow is a defined sequence of tasks, activities, and decision points that move a piece of work from initiation to completion. It dictates the flow of data, documents, and resources between participants, whether they are human employees or automated systems. Think of it as the choreography of a business process, ensuring every step is executed precisely and consistently. Effective [workflow management](/resources/infrastructure/workflow-orchestration-tools) is the key to turning this choreography into a reliable operational reality.
 
 ### Key Characteristics of Effective Workflows
 
@@ -50,7 +50,7 @@ Orchestrated workflows eliminate the friction of manual handoffs and repetitive 
 
 ### Ensuring Consistency and Compliance
 
-Manual processes are prone to human error and variation. A well-defined, automated workflow ensures that every task is performed the same way, every time. This consistency is critical for quality control and customer satisfaction. Furthermore, in regulated industries, orchestrated workflows provide an auditable trail of every action and decision. This makes it easier to demonstrate compliance and enforce [workflow governance](/resources/infrastructure/workflow-governance) policies. Robust [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security) also protects sensitive data as it moves through the process.
+Manual processes are prone to human error and variation. A well-defined, automated workflow ensures that every task is performed the same way, every time. This consistency is critical for quality control and customer satisfaction. Furthermore, in regulated industries, orchestrated workflows provide an auditable trail of every action and decision. This makes it easier to demonstrate compliance and enforce [workflow governance](/resources/ai/ai-governance-workflows) policies. Robust [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security) also protects sensitive data as it moves through the process.
 
 ## Common Business Workflow Patterns
 

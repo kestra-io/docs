@@ -6,6 +6,7 @@ sidebarTitle: API Tokens
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.15.0"
+docId: apitokens
 ---
 
 API tokens grant programmatic access to the Kestra API for users and [service accounts](../service-accounts/index.md).

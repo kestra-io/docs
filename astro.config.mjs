@@ -54,6 +54,28 @@ const imageService = () => {
     return process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare"
 }
 
+// The adapter's setup hook runs first and pins its own Cloudflare service; this
+// swaps in a wrapper that requests `format=auto` (AVIF where the browser accepts it).
+/** @type {import("astro").AstroIntegration} */
+const cloudflareAutoFormat = {
+    name: "cloudflare-auto-format",
+    hooks: {
+        "astro:config:setup": ({ command, updateConfig }) => {
+            if (command === "dev" || imageService() !== "cloudflare") return
+            updateConfig({
+                image: {
+                    service: {
+                        entrypoint: path.resolve(
+                            __dirname,
+                            "src/utils/cloudflareImageService.ts",
+                        ),
+                    },
+                },
+            })
+        },
+    },
+}
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
@@ -66,6 +88,7 @@ export default defineConfig({
           }),
     trailingSlash: "never",
     integrations: [
+        cloudflareAutoFormat,
         vue({
             template: {
                 compilerOptions: {

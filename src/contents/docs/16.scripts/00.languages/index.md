@@ -25,7 +25,7 @@ Kestra provides dedicated script plugins for these languages:
 - [Node.js](/plugins/plugin-script-node)
 - [Shell](/plugins/plugin-script-shell)
 - [PowerShell](/plugins/plugin-script-powershell)
-- [.NET (C#)](/plugins/plugin-script-dotnet)
+- [.NET (C# and F#)](/plugins/plugin-script-dotnet)
 - [Julia](/plugins/plugin-script-julia)
 - [Ruby](/plugins/plugin-script-ruby)
 - [Go](/plugins/plugin-script-go)
@@ -35,6 +35,8 @@ Kestra provides dedicated script plugins for these languages:
 - [PHP](/plugins/plugin-script-php)
 - [Perl](/plugins/plugin-script-perl)
 - [Groovy](/plugins/plugin-script-groovy)
+- [JBang (Java, Kotlin, and JShell)](/plugins/plugin-script-jbang)
+- [zx (JavaScript shell automation)](/plugins/plugin-script-zx)
 
 Each of these plugins provides two task types:
 
@@ -128,7 +130,7 @@ For outputs and file handling from compiled languages, see [Shell outputs and me
 
 ### Java example
 
-If you need to run Java code without building a custom plugin, you can compile and run it from a container:
+For most Java code, use the [JBang plugin](/plugins/plugin-script-jbang), which runs Java source directly and resolves dependencies declared with `//DEPS` comments. Use the Shell plugin when you need full control over the JDK image or the build steps:
 
 ```yaml
 id: java_example

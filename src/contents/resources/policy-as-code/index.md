@@ -37,7 +37,7 @@ This approach is a core component of [Everything as Code (EaC)](/resources/infra
 
 While closely related, Policy as Code and Infrastructure as Code (IaC) serve distinct but complementary purposes.
 
-**[Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code)** uses declarative files (like Terraform HCL or AWS CloudFormation YAML) to define the desired state of your infrastructure: which servers, networks, and databases to create. It describes *what* to build.
+**[Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code)** uses declarative files (like Terraform HCL or AWS CloudFormation YAML) to define the desired state of your infrastructure: which servers, networks, and databases to create. It describes *what* to build.
 
 **Policy as Code (PaC)** defines the constraints, rules, and guardrails for that infrastructure. It describes *how* resources should be configured and operated to meet security, compliance, and operational standards. PaC answers questions like:
 - Can this S3 bucket be public?
@@ -166,6 +166,6 @@ Pairing a policy engine like OPA with an orchestrator like Kestra turns governan
 
 ## Related Concepts
 - [Orchestrate Terraform with Kestra](/orchestration/terraform)
-- [Workflow governance](/resources/infrastructure/workflow-governance)
+- [Workflow governance](/resources/ai/ai-governance-workflows)
 - [Human-in-the-loop orchestration](/resources/ai/human-in-the-loop-orchestration)
 - [Incident response automation](/resources/infrastructure/incident-response-automation)

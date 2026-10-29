@@ -6,6 +6,7 @@ sidebarTitle: Cases
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 2.0.0"
+docId: cases
 ---
 
 Track and resolve incidents directly in Kestra, next to the executions that caused them.
