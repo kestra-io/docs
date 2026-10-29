@@ -21,7 +21,7 @@ Administrators can invite users with pre-configured RBAC permissions. If an [ema
 
 1. Go to **IAM** in the sidebar and open the **Users** tab.
 2. Click **+ Add**.
-3. Enter the user's email address and select a group (via the **Groups** tab) or assign a role directly (via the **Roles** tab). To invite several users at once, enter multiple email addresses separated by commas, semicolons, spaces, or new lines. Every address receives an invitation with the same groups and roles.
+3. Enter the user's email address and select a group (via the **Groups** tab) or assign a role directly (via the **Roles** tab). To invite several users at once, enter multiple email addresses separated by commas, semicolons, spaces, or new lines. Every address receives an invitation with the same groups and roles. You can invite up to 100 addresses at once.
 4. Click **+ Add** to send the invitation email or display the shareable link.
 
 :::alert{type="info"}
