@@ -92,20 +92,20 @@ const reasons = [
 
 const rows = [
     {
-        from: "Cron jobs and systemd timers spread across hosts",
-        to: "Schedule triggers, the scripts run as they are, with logs and alerts in one place",
+        from: "Cron jobs and systemd timers on scattered hosts",
+        to: "Schedule triggers that run the same scripts, with logs and alerts in one place",
     },
     {
-        from: "ansible-playbook from a laptop, or a job template in Semaphore or AWX",
-        to: "An Ansible task: same playbooks and inventories, plus inputs, retries and run history",
+        from: "Ansible playbooks run from a laptop, Semaphore or AWX",
+        to: "Ansible tasks with the same playbooks and inventories, plus inputs and retries",
     },
     {
-        from: "terraform or tofu apply from a laptop or a CI job",
-        to: "Terraform and OpenTofu tasks that run your modules as they are, against the state backend you already use",
+        from: "Terraform or OpenTofu applied from a laptop or a CI job",
+        to: "Terraform and OpenTofu tasks on your existing modules and state backend",
     },
     {
         from: "Rundeck or Jenkins jobs stored in a database",
-        to: "Flows as YAML files in Git",
+        to: "Flows stored as YAML files in Git",
     },
     {
         from: "Credentials in .env files and scripts",
