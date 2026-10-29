@@ -221,7 +221,7 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
-            // Raises the /api/github rate limit; works unauthenticated without it.
+            // Raises the GitHub rate limit for /api/github and the changelog; works unauthenticated without it.
             GITHUB_TOKEN: envField.string({
                 context: "server",
                 access: "secret",
