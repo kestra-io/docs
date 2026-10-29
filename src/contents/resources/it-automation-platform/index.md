@@ -73,7 +73,7 @@ AI is transforming IT automation from a set of pre-defined rules into an intelli
 
 *   **AI Copilots:** Natural language interfaces that allow users to describe a workflow in plain English, which the AI then translates into valid code or YAML. This dramatically lowers the barrier to entry and accelerates development.
 *   **Agentic Orchestration:** AI agents can now execute complex, multi-step tasks to achieve a specific goal. An automation platform provides the governance layer for these agents, allowing them to interact with tools (like web search or code execution) and memory in a secure, auditable way.
-*   **Intelligent Decision-Making:** AI models can be used within a workflow to analyze data and make decisions, such as routing an incident ticket to the most qualified engineer based on its content or predicting potential system failures based on telemetry data. Explore how to build [AI workflows in Kestra](https://kestra.io/docs/ai-tools/ai-workflows).
+*   **Intelligent Decision-Making:** AI models can be used within a workflow to analyze data and make decisions, such as routing an incident ticket to the most qualified engineer based on its content or predicting potential system failures based on telemetry data. Explore how to build [AI workflows in Kestra](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task).
 
 ### Seamless Integration with Existing Systems and Tools
 

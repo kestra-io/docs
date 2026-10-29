@@ -3,91 +3,56 @@ title: "AI in Kestra: Copilot, Coding Agents, MCP & AI Agents"
 h1: Choose How You Use AI with Kestra
 sidebarTitle: AI Tools
 icon: /src/contents/docs/icons/ai.svg
-description: Compare every way to use AI with Kestra — AI Copilot in the UI, your own coding agent via MCP and Agent Skills, and AI Agents running inside your flows.
+description: "Find the right AI tool for your job: AI Copilot in the Kestra UI, your coding agent with MCP and Agent Skills, AI inside your flows, or flows as MCP tools."
 ---
 
 import ChildCard from "~/components/docs/ChildCard.astro"
 import PluginCount from "~/components/content/PluginCount.vue"
 
-Compare every way to use AI with Kestra and pick the one that fits how you work.
+Find the AI tool that matches what you are trying to do with Kestra.
 
-AI shows up in Kestra in two unrelated ways, and it helps to keep them apart:
+AI shows up in Kestra in three separate ways. Pick the one that matches your goal:
 
-- **AI that helps you build and operate Kestra** — writing flow YAML, fixing a failed execution, deploying to a namespace. The AI is a way to drive Kestra faster; it never runs as part of your workflow.
-- **AI that runs inside your flows** — a task calls a model, an agent decides what to do next, a flow answers questions over your documents. Here the AI is part of what you orchestrate.
+| You want to… | Start here |
+|---|---|
+| Get AI help building, fixing, or operating flows | [Build and operate Kestra with AI](#build-and-operate-kestra-with-ai) |
+| Call a model or run an AI agent as part of a flow | [Run AI inside your flows](#run-ai-inside-your-flows) |
+| Let Claude, Cursor, or another AI agent run your flows | [Expose your flows to AI agents](#expose-your-flows-to-ai-agents) |
 
-None of this is required. Kestra is an orchestrator, and every flow you can generate with AI you can also write by hand in YAML or build in the No-Code editor.
+None of this is required. Every flow you can generate with AI, you can also write in YAML or build in the No-Code editor.
 
 ## Build and operate Kestra with AI
 
-Start from where you already work:
+Here the AI helps you write and run flows. It never runs as part of a flow. Start from where you already work:
 
-| Where you work | What to use | What it gives you |
+| Where you work | Use | What it gives you |
 | --- | --- | --- |
-| The Kestra UI | [AI Copilot](./01.ai-copilot/index.md) | Generate and refine flows from a prompt in the editor, and "Fix with AI" on a failed execution |
-| Your terminal or editor (Claude Code, Cursor, Codex, Windsurf) | [MCP server](./02.kestra-mcp-resources/index.md) + [Agent Skills](./04.agent-skills/index.md) | Your existing coding agent writes, validates, and deploys flows alongside the rest of your codebase |
-| Scripts and CI | [`kestractl`](../kestra-cli/kestractl/index.md) | Deterministic flow, execution, and namespace operations with no AI in the loop |
+| The Kestra UI | [AI Copilot](./01.ai-copilot/index.md) | Build and edit flows from a prompt, diagnose failed executions, and run approved multi-step plans |
+| A coding agent in your terminal or editor, such as Claude Code, Cursor, Codex, or Windsurf | [Docs MCP server](./02.kestra-mcp-resources/index.md) and [Agent Skills](./03.agent-skills/index.md) | Your agent writes, validates, and deploys flows next to the rest of your codebase |
+| Scripts and CI | [`kestractl`](../kestra-cli/kestractl/index.md) | Deterministic flow, execution, and namespace operations with no AI involved |
+| Your own AI tool or integration | [Docs for Agents](./04.docs-for-agents/index.md) | Every machine-readable Kestra resource: `llms.txt`, Markdown docs, plugin schemas, and OpenAPI specs |
 
-### AI Copilot in the Kestra UI
+### Use your own coding agent
 
-[AI Copilot](./01.ai-copilot/index.md) is built into the Kestra editor. Describe what you want — for example, _"make a REST API call to https://kestra.io/api/mock and allow failure"_ — and Copilot generates the flow YAML for you to review, accept, or edit. It also modifies existing flows incrementally, touching only the part you asked about, and powers **Fix with AI** on failed tasks.
+If your flows live in Git next to application code, you can stay in your coding agent. Three pieces work together, and each covers a different gap:
 
-Copilot is the fastest path when you are already in the UI and want the change applied to the flow in front of you.
+- **[Docs MCP server](./02.kestra-mcp-resources/index.md) for context.** A hosted [Model Context Protocol](https://modelcontextprotocol.io/) endpoint that gives your agent live task schemas for all <PluginCount client:idle /> plugins, the blueprints library, and documentation search. Without it, an agent guesses plugin properties from stale training data.
+- **[Agent Skills](./03.agent-skills/index.md) for know-how.** `SKILL.md` files that teach your agent to write valid flows, harden them for production, operate an environment, and migrate from Airflow or to Kestra 2.0. Skills carry the guardrails: no invented task types, no hardcoded secrets, validate before deploying.
+- **[`kestractl`](../kestra-cli/kestractl/index.md) to act.** The Kestra CLI that the agent calls to validate, deploy, and run flows on your instance. Without it, the agent can write flows but can't deploy them.
 
-### Your own coding agent
-
-If your flows live in Git next to your application code, you may prefer to stay in Claude Code, Cursor, Codex, or Windsurf. Three separate pieces make that work, and each covers a different gap:
-
-- **[MCP server](./02.kestra-mcp-resources/index.md) — context.** A hosted [Model Context Protocol](https://modelcontextprotocol.io/) endpoint that gives your agent live access to task schemas for all <PluginCount client:idle /> plugins, the blueprints library, and documentation search. Without it, an agent invents plugin properties from stale training data.
-- **[Agent Skills](./04.agent-skills/index.md) — know-how.** `SKILL.md` files that teach your agent how to author valid flows (`kestra-flow`), harden them for production (`kestra-flow-hardening`), operate an environment (`kestra-ops`), and port Airflow DAGs (`migrate-airflow-kestra`). Skills carry the guardrails: no invented task types, no hardcoded secrets, validate before deploy.
-- **[`kestractl`](../kestra-cli/kestractl/index.md) — hands.** The Kestra CLI the agent actually calls to validate, deploy, and run flows against a real instance. The `kestra-ops` skill is a wrapper around these commands, so an agent without `kestractl` can write flows but cannot deploy them.
-
-#### Set it up
-
-Connect the MCP server. For Claude Code:
-
-```bash
-claude mcp add kestra --transport http https://api.kestra.io/v1/mcp
-```
-
-Any MCP-compatible tool can connect to `https://api.kestra.io/v1/mcp` over HTTP — see [MCP server](./02.kestra-mcp-resources/index.md) for Cursor and other configurations.
-
-Install the skills. [skills.sh](https://skills.sh) detects your agent and writes the files to the right location:
-
-```bash
-npx skills add kestra-io/agent-skills
-```
-
-Install `kestractl` and point it at your instance:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
-kestractl config add default http://localhost:8080 main --username YOUR_USERNAME --password YOUR_PASSWORD --default
-```
-
-See [`kestractl`](../kestra-cli/kestractl/index.md) for Enterprise token auth and the full command reference.
-
-#### What it looks like end to end
-
-With all three in place, a single prompt covers authoring and deployment:
-
-```plaintext
-Use kestra-flow to write a flow in namespace company.data that fetches
-https://api.example.com/metrics every 30 minutes and stores the response in
-the KV store under the key last_metrics. Validate it with kestractl, then
-deploy it to the dev instance.
-```
-
-The agent queries the MCP server for the correct plugin schema, follows the skill's guardrails (no hardcoded credentials, valid YAML structure), runs `kestractl flow validate`, and deploys with `kestractl flow create`.
-
-### Expose flows as AI tools
-
-[MCP Server](./03.mcp-server/index.md) lets you go the other direction: instead of an agent driving Kestra, Kestra flows become callable tools for any MCP-compatible AI agent. Add an `McpToolTrigger` to any flow and it is automatically registered as a named tool. AI agents such as Claude Desktop, Claude Code, and Cursor can then discover and invoke your flows directly, with inputs and outputs mapped to a JSON schema.
+To set up all three, connect the [Docs MCP server](./02.kestra-mcp-resources/index.md#connect-the-mcp-server), [install the skills](./03.agent-skills/index.md#setup), and [configure `kestractl`](../kestra-cli/kestractl/index.md). The [Agent Skills examples](./03.agent-skills/index.md#example-workflows) show a single prompt that writes, validates, and deploys a flow.
 
 ## Run AI inside your flows
 
-- **[AI Agents](./05.ai-agents/index.md)**: autonomous orchestration where an LLM decides which actions to take at runtime rather than following a fixed sequence.
-- **[AI Workflows](./06.ai-workflows/index.md)**: pre-built flow templates for common AI patterns such as summarization, classification, and structured extraction.
-- **[RAG Workflows](./07.ai-rag-workflows/index.md)**: retrieval-augmented generation pipelines that connect your documents to a language model.
+Here the AI is part of what you orchestrate. A task calls a model, an agent decides what to do next, or a flow answers questions from your documents.
+
+- **[LLM tasks and AI agents](./05.ai-agents/index.md#call-an-llm-as-a-task)**: call a model at a fixed step to summarize, classify, or extract structured data, or give an AI agent a goal and tools and let it choose the steps.
+- **[RAG workflows](./06.ai-rag-workflows/index.md)**: ground model answers in your own documents or in live web search results.
+
+## Expose your flows to AI agents
+
+[Flow MCP servers](./07.mcp-server/index.md) turn Kestra flows into tools that Claude Desktop, Claude Code, Cursor, and other MCP-compatible agents can call. Add an `McpToolTrigger` to a flow and it is registered as a named tool, with its inputs and outputs described as a JSON schema.
+
+This is the opposite direction from the [Docs MCP server](./02.kestra-mcp-resources/index.md): instead of an agent reading Kestra documentation, the agent runs your flows on your instance.
 
 <ChildCard />

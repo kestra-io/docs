@@ -34,7 +34,7 @@ Prompt chaining is a technique in prompt engineering where a complex task is dec
 
 At its core, prompt chaining is a conversational workflow. The output from the first prompt is captured and used as part of the input for the second prompt. This process continues down the chain, with each step building upon the last. This creates a stateful, multi-turn interaction that mimics a structured thought process.
 
-Think of it as a relay race. A single prompt is like asking one runner to sprint a full mile. Prompt chaining is like having four runners each run a 400-meter leg, passing the baton between them. Each runner can focus on their specific leg of the race, leading to a faster and more efficient overall result. For LLMs, this focused, sequential approach is key to building complex [AI workflows](https://kestra.io/docs/ai-tools/ai-workflows).
+Think of it as a relay race. A single prompt is like asking one runner to sprint a full mile. Prompt chaining is like having four runners each run a 400-meter leg, passing the baton between them. Each runner can focus on their specific leg of the race, leading to a faster and more efficient overall result. For LLMs, this focused, sequential approach is key to building complex [AI workflows](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task).
 
 ### Why prompt chaining matters for LLMs
 

@@ -124,7 +124,7 @@ You should choose RAG when your application requires:
 
 ### Future Trends in RAG Development
 
-The RAG landscape is rapidly evolving. Future trends include **multi-modal RAG**, which can retrieve and process information from images, audio, and video, not just text. We are also seeing the rise of **self-improving RAG systems** that use feedback to refine their retrieval strategies over time. The tight integration of RAG with [agentic AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) and [autonomous agents](https://kestra.io/docs/ai-tools/ai-agents) is also pushing the boundaries of what's possible.
+The RAG landscape is rapidly evolving. Future trends include **multi-modal RAG**, which can retrieve and process information from images, audio, and video, not just text. We are also seeing the rise of **self-improving RAG systems** that use feedback to refine their retrieval strategies over time. The tight integration of RAG with [agentic AI workflows](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task) and [autonomous agents](https://kestra.io/docs/ai-tools/ai-agents) is also pushing the boundaries of what's possible.
 
 ## Implementing RAG Architecture in Practice
 

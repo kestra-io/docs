@@ -55,7 +55,7 @@ The orchestrator’s role includes:
 *   **Adaptive Sequencing:** Determining the best order of agent execution based on the evolving context of the problem.
 *   **Dynamic Prioritization:** Re-prioritizing tasks and agents in real-time to optimize for the desired outcome.
 
-This paradigm allows for a flexible and powerful way to manage complex [AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) and is a foundational concept for building robust systems of [AI agents](https://kestra.io/docs/ai-tools/ai-agents).
+This paradigm allows for a flexible and powerful way to manage complex [AI workflows](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task) and is a foundational concept for building robust systems of [AI agents](https://kestra.io/docs/ai-tools/ai-agents).
 
 ### Adapting agents with reinforcement learning
 

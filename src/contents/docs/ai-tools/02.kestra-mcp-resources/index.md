@@ -1,26 +1,28 @@
 ---
-title: "Kestra MCP Server: Plugins, Blueprints & Docs for AI Tools"
-h1: Connect AI Tools to Kestra with the MCP Server
-sidebarTitle: MCP Server
+title: "Kestra Docs MCP Server for AI Coding Agents"
+h1: Connect Your Coding Agent to Kestra Docs and Plugin Schemas
+sidebarTitle: Docs MCP Server
 icon: /src/contents/docs/icons/ai.svg
-description: Use the Kestra MCP server to give AI tools like Claude Code and Cursor live access to Kestra plugin documentation, blueprints, and product docs.
+description: Connect Claude Code, Cursor, or another coding agent to the hosted Kestra MCP server for live plugin schemas, blueprints, and docs while you write flows.
 ---
 
-Give AI tools direct access to Kestra's plugin reference, blueprints library, and product documentation through a single MCP server.
+Give your coding agent live access to Kestra plugin schemas, blueprints, and documentation through a hosted MCP server.
 
-## What is the Kestra MCP server
+This page is for developers who write flows in Claude Code, Cursor, Codex, or another coding agent. The server is public, read-only, and hosted by Kestra; it doesn't connect to your Kestra instance. To let AI agents run *your* flows as tools, see [Flow MCP servers](../07.mcp-server/index.md).
 
-The Kestra MCP server implements the [Model Context Protocol](https://modelcontextprotocol.io/), a standard that lets AI tools query external data sources at runtime. Connect an AI coding agent to the Kestra MCP server to access:
+## What the server provides
 
-- **Plugin reference**: task schemas, properties, inputs, outputs, and version history for all 1,400+ Kestra plugins
+The Docs MCP server implements the [Model Context Protocol](https://modelcontextprotocol.io/), a standard that lets AI tools query external data sources at runtime. Once connected, your agent can look up:
+
+- **Plugin reference**: task schemas, properties, inputs, outputs, and version history for every Kestra plugin
 - **Blueprints**: ready-to-use flow templates for common integration patterns
-- **Documentation**: searchable product docs — concepts, how-to guides, and reference pages
+- **Documentation**: searchable product docs, including concepts, how-to guides, and reference pages
 
-An agent configured with the Kestra MCP server retrieves current information about plugin behavior, configuration options, and usage patterns — rather than relying on static training data.
+With the server connected, the agent checks current plugin properties instead of guessing them from training data.
 
 ## Connect the MCP server
 
-The Kestra MCP server is available at:
+The server URL is:
 
 ```plaintext
 https://api.kestra.io/v1/mcp
@@ -67,7 +69,7 @@ Any MCP-compatible tool can connect using the HTTP transport and the URL above. 
 
 ## Available tools
 
-The Kestra MCP server exposes the following tools to your agent once connected:
+Once connected, the server exposes these tools to your agent:
 
 | Category | Tools |
 | --- | --- |
@@ -84,9 +86,9 @@ Ask your agent about a specific task's properties:
 
 > "What properties does the `io.kestra.plugin.jdbc.postgresql.Query` task accept?"
 
-The agent retrieves the live task schema and returns a structured summary:
+The agent retrieves the live task schema and returns a summary similar to this:
 
-```
+```text
 io.kestra.plugin.jdbc.postgresql.Query — key properties:
 
 - url (string, required): JDBC connection string, e.g. jdbc:postgresql://host:5432/db
@@ -103,7 +105,7 @@ Ask your agent to find a blueprint by use case:
 
 > "Find a blueprint for triggering a flow when a file lands in S3."
 
-The agent searches the blueprints library and returns matching flow YAML you can paste directly into the Kestra editor:
+The agent searches the blueprints library and returns matching flow YAML. The excerpt below shows the shape of a result; the full blueprint includes every task property:
 
 ```yaml
 id: s3_trigger
@@ -124,15 +126,10 @@ triggers:
 
 ### Documentation lookup
 
-For prose questions — such as _"What does the `whenMissingInSource` property do in NamespaceSync?"_ — the agent retrieves and summarizes the relevant docs page directly.
+For prose questions, such as _"What does the `whenMissingInSource` property do in NamespaceSync?"_, the agent retrieves and summarizes the relevant docs page.
 
-## Relationship to other AI tools
+## Next steps
 
-The Kestra MCP server complements the other AI tools in this section:
-
-- **[AI Copilot](../01.ai-copilot/index.md)**: generates and refines flows from natural language inside the Kestra UI.
-- **[AI Agents](../05.ai-agents/index.md)**: autonomous task execution inside Kestra flows.
-- **[Agent Skills](../04.agent-skills/index.md)**: structured knowledge files that teach coding agents how to build Kestra flows and operate environments.
-- **[Docs for Agents](../08.docs-for-agents/index.md)**: all machine-readable Kestra resources in one place — `llms.txt`, plain Markdown docs, plugin schemas, and OpenAPI specs.
-
-If you primarily work in an AI coding agent like Claude Code or Cursor, the MCP server gives you current Kestra context while building flows.
+- [Agent Skills](../03.agent-skills/index.md): teach your coding agent how to write, harden, and deploy flows. Skills and this server work together.
+- [`kestractl`](../../kestra-cli/kestractl/index.md): let the agent validate and deploy flows to your instance.
+- [Docs for Agents](../04.docs-for-agents/index.md): every other machine-readable Kestra resource, such as `llms.txt`, Markdown docs, and OpenAPI specs.

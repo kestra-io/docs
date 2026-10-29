@@ -94,7 +94,7 @@ Three protocols form the backbone of modern SSO systems:
 
 Enterprises rarely have the luxury of a greenfield environment. SSO workflows must integrate with a mix of modern SaaS applications, legacy on-premise systems, and homegrown tools. A robust orchestration platform with a rich library of [plugins](https://kestra.io/plugins) and API-first design is essential for bridging these gaps.
 
-For example, an onboarding workflow might need to interact with an ITSM platform like [ServiceNow](https://kestra.io/orchestration/servicenow) to create a ticket, call a legacy system's API to create an account, and then use an AI service to determine the appropriate level of access based on the user's risk profile. Platforms that support [AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) can enable these kinds of adaptive security measures.
+For example, an onboarding workflow might need to interact with an ITSM platform like [ServiceNow](https://kestra.io/orchestration/servicenow) to create a ticket, call a legacy system's API to create an account, and then use an AI service to determine the appropriate level of access based on the user's risk profile. Platforms that support [AI workflows](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task) can enable these kinds of adaptive security measures.
 
 ## Choosing an Enterprise Orchestration Platform
 

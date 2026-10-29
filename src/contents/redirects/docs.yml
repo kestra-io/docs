@@ -216,3 +216,5 @@
   to: "/docs/security-hardening"
 - regexp: "^/docs/how-to-guides/minio(/.*)?$"
   to: "/docs/configuration/runtime-and-storage#s3-compatible-storage"
+- regexp: "^/docs/ai-tools/ai-workflows(\\.md|/.*)?$"
+  to: "/docs/ai-tools/ai-agents#call-an-llm-as-a-task"

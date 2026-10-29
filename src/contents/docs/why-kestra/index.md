@@ -77,7 +77,7 @@ Everything in Kestra is driven by an API. Flows, tasks, logs, permissions: anyth
 - Manage flows, executions, namespaces, and IAM from the command line using [`kestractl`](../kestra-cli/kestractl/index.md), the standalone Kestra CLI
 - Build custom UIs
 - Dynamically generate new workflow executions from anywhere
-- Expose flows as tools through the [Kestra MCP server](../ai-tools/03.mcp-server/index.md) so AI assistants can trigger and monitor them directly
+- Expose flows as tools through [flow MCP servers](../ai-tools/07.mcp-server/index.md) so AI assistants can trigger and monitor them directly
 
 ### Language-agnostic, YAML-based configuration
 

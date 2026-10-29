@@ -3,14 +3,16 @@ title: Kestra Resources for AI Agents and LLMs
 h1: Docs for Agents
 sidebarTitle: Docs for Agents
 icon: /src/contents/docs/icons/ai.svg
-description: Machine-readable resources for AI agents and LLMs — MCP server, Agent Skills, llms.txt, plain Markdown docs, plugin schemas, and OpenAPI specs.
+description: "Machine-readable resources for AI agents and LLMs: the Docs MCP server, Agent Skills, llms.txt, Markdown docs, plugin schemas, and OpenAPI specs."
 ---
 
 A reference index of every machine-readable endpoint, format, and tool for connecting AI agents and LLMs to Kestra.
 
-## MCP server
+Use this page when you build an AI tool, agent, or integration that needs to read Kestra documentation or schemas. For step-by-step setup in a coding agent, start with the [Docs MCP server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
 
-The Kestra MCP server gives AI tools live access to plugin documentation, blueprints, and product docs. Configure it in Claude Code, Cursor, or any MCP-compatible agent.
+## Docs MCP server
+
+The Kestra Docs MCP server gives AI tools live access to plugin documentation, blueprints, and product docs. Configure it in Claude Code, Cursor, or any MCP-compatible agent.
 
 **Auto-discovery endpoint:**
 
@@ -24,11 +26,11 @@ https://kestra.io/.well-known/mcp.json
 https://api.kestra.io/v1/mcp
 ```
 
-No authentication required for the public server. See the [MCP server setup guide](../02.kestra-mcp-resources/index.md) for configuration instructions for each tool.
+No authentication required for the public server. For per-tool configuration, see [Docs MCP server](../02.kestra-mcp-resources/index.md). This server serves documentation only; to call your own flows from an agent, see [Flow MCP servers](../07.mcp-server/index.md).
 
 ## Agent Skills
 
-Agent Skills are structured knowledge files that teach AI coding agents how to generate valid Kestra flows, harden them for production, and operate Kestra environments via the CLI.
+Agent Skills are structured knowledge files that teach AI coding agents how to generate valid Kestra flows, harden them for production, operate Kestra environments with `kestractl`, and migrate to Kestra 2.0.
 
 Install all Kestra skills with:
 
@@ -36,23 +38,21 @@ Install all Kestra skills with:
 npx skills add kestra-io/agent-skills
 ```
 
-Available skills: `kestra-flow`, `kestra-flow-hardening`, `kestra-ops`, `migrate-airflow-kestra`.
-
-See the [Agent Skills page](../04.agent-skills/index.md) for full descriptions and example prompts.
+See [Agent Skills](../03.agent-skills/index.md) for the list of skills, what each one covers, and example prompts.
 
 ## Plain Markdown docs
 
 Every Kestra documentation page is available as plain Markdown. Three ways to retrieve it:
 
-- **Copy Page menu** — every docs page has a toolbar with Copy as Markdown, View as Markdown, Open in ChatGPT, and Open in Claude.
+- From the **Copy Page** menu on every docs page, choose **Copy as Markdown**, **View as Markdown**, **Open in ChatGPT**, or **Open in Claude**.
 
-- **Append `.md`** to any `kestra.io/docs/*` URL:
+- Append `.md` to any `kestra.io/docs/*` URL:
 
   ```plaintext
   https://kestra.io/docs/quickstart.md
   ```
 
-- **Set the `Accept` header** on the request:
+- Set the `Accept` header on the request:
 
   ```bash
   curl -H "Accept: text/markdown" https://kestra.io/docs/quickstart
