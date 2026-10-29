@@ -36,7 +36,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 ```mermaid
 graph LR
     subgraph CORE["Kestra Core"]
-        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal\nexecution-artifact)"]
+        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal\nexecution-artifact\nasset-card-footer)"]
         HOST["Host UI\nconfigureAxios\nkestra:openTaskModal"]
         MFH["Module Federation\nruntime loader"]
     end
@@ -63,7 +63,7 @@ graph LR
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Four slots are available:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Five slots are available:
 
 ### `topology-details`
 
@@ -197,6 +197,29 @@ export async function getSubtitle({ fetchOutputs }) {
 :::alert{type="warning"}
 A version of `@kestra-io/artifact-sdk` released before this slot rejects the `execution-artifact/<id>` slot name at build time. Use a version that knows the slot.
 :::
+
+### `asset-card-footer`
+
+Renders at the bottom of an **asset card** in the assets dependencies graph. Use it for a short line about an asset that the card does not show, such as a row count, a freshness date or a link to the source. The contract is defined in [`ui/packages/slot-contracts/src/asset-card-footer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/asset-card-footer.ts) in Kestra core.
+
+Like the other slots, it is resolved by the task type that produced the asset. The component receives these props:
+
+- **`assetId`** is the id of the asset, as shown in the graph.
+- **`metadata`** holds everything the producing task attached to the asset, such as the keys a plugin emits through `Asset.metadata`.
+- **`assetType`** is the optional type of the asset.
+- **`tenant`** is the current tenant, so a component that bundles its own SDK copy does not have to guess it.
+
+The manifest accepts one field, `footerHeight`, the extra pixels the footer adds below a card. The graph reserves it for every card at once so rows stay aligned, and a graph with no footer keeps the compact card. Set it to the real height of your component.
+
+```ts
+"table.Sync": [
+  {
+    slotName: "asset-card-footer",
+    path: "./src/components/TableSyncAssetCardFooter.vue",
+    additionalProperties: { footerHeight: 24 },
+  },
+],
+```
 
 ## Tracking live task progress
 
