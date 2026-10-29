@@ -29,7 +29,7 @@ Check **Create user directly (skip invitation)** to bypass the email flow. Use t
 :::
 
 :::alert{type="info"}
-When you invite several users at once, Kestra sends one invitation per address and continues if one of them fails. The dialog lists the invitations that were sent and the addresses that failed, along with the reason.
+When you invite several users at once, Kestra validates every address before sending anything. If an address is malformed, already invited, or already has access to the tenant, no invitation is sent and the dialog lists the addresses to fix so you can submit again.
 :::
 
 ## Accepting invitations
