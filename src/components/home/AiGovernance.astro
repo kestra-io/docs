@@ -1,0 +1,453 @@
+---
+import { Icon } from "astro-icon/components"
+import SectionHead from "./SectionHead.astro"
+
+const AGENTS = [
+    { name: "Support agent", runtime: "LLM · tool calls" },
+    { name: "Ops copilot", runtime: "MCP client" },
+    { name: "Finance agent", runtime: "Self-hosted model" },
+]
+
+const CONTROLS = [
+    {
+        icon: "mdi:key-outline",
+        name: "Permissioned",
+        detail: "Service account ops-agent: 4 workflows allowed",
+        state: "Allowed",
+        tone: "success",
+    },
+    {
+        icon: "mdi:account-check-outline",
+        name: "Approved",
+        detail: "refund_order paused for a human decision",
+        state: "Waiting",
+        tone: "warning",
+    },
+    {
+        icon: "mdi:text-box-search-outline",
+        name: "Audited",
+        detail: "Every call becomes an execution with inputs and outputs",
+        state: "Logged",
+        tone: "info",
+    },
+]
+
+const WORKFLOWS = [
+    { domain: "Data pipelines", flow: "refresh_dashboard" },
+    { domain: "Infrastructure", flow: "scale_cluster" },
+    { domain: "IT operations", flow: "nightly_batch" },
+    { domain: "Business processes", flow: "refund_order" },
+]
+
+const AUDIT_LOG = [
+    {
+        time: "14:02:11",
+        agent: "support-agent",
+        flow: "refund_order",
+        outcome: "approved by j.kim",
+        state: "Success",
+        tone: "success",
+    },
+    {
+        time: "14:02:37",
+        agent: "finance-agent",
+        flow: "drop_table",
+        outcome: "blocked by policy",
+        state: "Denied",
+        tone: "danger",
+    },
+]
+---
+
+<section
+    class="ai-governance surface-dark"
+    aria-labelledby="ai-governance"
+    data-header-dark
+>
+    <div class="container">
+        <SectionHead id="ai-governance" eyebrow="AI orchestration">
+            AI agents cross systems seamlessly. Enforce governance at every
+            step.
+            <Fragment slot="lead">
+                Permissions, approvals, and audit trails apply to every action
+                an agent takes.
+            </Fragment>
+        </SectionHead>
+
+        <figure
+            class="diagram"
+            aria-label="AI agents calling governed Kestra workflows, with permissions, approvals and an audit log"
+        >
+            <div class="column agents">
+                <p class="column-title">Agents</p>
+                <ul>
+                    {
+                        AGENTS.map((agent) => (
+                            <li class="tile">
+                                <Icon name="mdi:robot-outline" />
+                                <span>
+                                    <strong>{agent.name}</strong>
+                                    <small>{agent.runtime}</small>
+                                </span>
+                            </li>
+                        ))
+                    }
+                </ul>
+                <p class="denied">
+                    <Icon name="mdi:close-circle-outline" />
+                    <code>drop_table</code> · denied
+                </p>
+            </div>
+
+            <div class="column layer">
+                <p class="column-title">Kestra governance layer</p>
+                <div class="layer-box">
+                    <p class="layer-head">
+                        <img
+                            src="/icon-simple.svg"
+                            alt=""
+                            width="20"
+                            height="20"
+                        />
+                        <span>
+                            <strong>kestra</strong>
+                            <small>workflows exposed as tools through MCP</small
+                            >
+                        </span>
+                    </p>
+                    <ul>
+                        {
+                            CONTROLS.map((control) => (
+                                <li class="control">
+                                    <Icon name={control.icon} />
+                                    <span>
+                                        <strong>{control.name}</strong>
+                                        <small>{control.detail}</small>
+                                    </span>
+                                    <span class={`state ${control.tone}`}>
+                                        {control.state}
+                                    </span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="column workflows">
+                <p class="column-title">Governed workflows</p>
+                <ul>
+                    {
+                        WORKFLOWS.map((workflow) => (
+                            <li class="tile">
+                                <span>
+                                    <small>{workflow.domain}</small>
+                                    <code>{workflow.flow}</code>
+                                </span>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </figure>
+
+        <div class="audit">
+            <p class="column-title">Audit log</p>
+            <ul>
+                {
+                    AUDIT_LOG.map((entry) => (
+                        <li>
+                            <time>{entry.time}</time>
+                            <code>{entry.agent}</code>
+                            <Icon name="mdi:arrow-right" class="arrow" />
+                            <code>{entry.flow}</code>
+                            <span class="outcome">{entry.outcome}</span>
+                            <span class={`state ${entry.tone}`}>
+                                {entry.state}
+                            </span>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        <a href="/ai-automation" class="more">
+            How agents fit <Icon name="mdi:arrow-right" />
+        </a>
+    </div>
+</section>
+
+<script>
+    // While a [data-header-dark] section sits under the fixed menu, the menu
+    // turns dark too (Header.vue reads body[data-header-over-dark]).
+    function watchDarkSections() {
+        const sections =
+            document.querySelectorAll<HTMLElement>("[data-header-dark]")
+        if (!sections.length || document.body.dataset.darkSectionsWatched)
+            return
+        document.body.dataset.darkSectionsWatched = "true"
+        let frame = 0
+        const update = () => {
+            frame = 0
+            const bar = document.getElementById("top-bar")
+            const line = bar ? bar.getBoundingClientRect().bottom - 1 : 0
+            const over = [...sections].some((section) => {
+                const box = section.getBoundingClientRect()
+                return box.top <= line && box.bottom > line
+            })
+            document.body.toggleAttribute("data-header-over-dark", over)
+        }
+        const schedule = () => {
+            frame ||= requestAnimationFrame(update)
+        }
+        window.addEventListener("scroll", schedule, { passive: true })
+        window.addEventListener("resize", schedule)
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                window.removeEventListener("scroll", schedule)
+                window.removeEventListener("resize", schedule)
+                document.body.removeAttribute("data-header-over-dark")
+                delete document.body.dataset.darkSectionsWatched
+            },
+            { once: true },
+        )
+        update()
+    }
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+</script>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    // Dark in both themes: the tokens are pointed at the dark theme's values
+    // so the section (and SectionHead inside it) reads light on dark.
+    .ai-governance {
+        --ks-content-primary: #{$base-grey-white};
+        --ks-content-secondary: #{$base-grey-200};
+        --ks-content-tertiary: #{$base-grey-300};
+        --ks-content-link: #{$base-primary-200};
+        --ks-background-body: #{$base-grey-700};
+        --ks-background-primary: #{$base-grey-700};
+        --ks-background-secondary: #{$base-grey-800};
+        --ks-background-purple-light: #{rgba($base-primary-400, 0.2)};
+        --ks-border-primary: #2c2b31;
+        --ks-border-secondary: #{$base-grey-600};
+        --ks-border-active: #8c4bff;
+        --ks-background-alert-success: #215d42;
+        --ks-content-alert-success: #80fac5;
+        --ks-background-alert-warning: #3d1500;
+        --ks-content-alert-warning: #ff8b61;
+        --ks-background-alert-info: #022670;
+        --ks-content-alert-info: #dbe0ff;
+        --ks-background-alert-danger: #350001;
+        --ks-content-alert-danger: #ffacac;
+
+        padding: 7rem 0;
+        background: #111114;
+        color: var(--ks-content-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 4.5rem 0;
+        }
+    }
+
+    .diagram {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+        gap: 1.5rem;
+        align-items: stretch;
+        margin: 0;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .column-title {
+        margin: 0 0 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ks-content-tertiary);
+    }
+
+    ul {
+        display: grid;
+        gap: 0.625rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    strong,
+    small {
+        display: block;
+    }
+
+    strong {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    small {
+        font-size: 0.8125rem;
+        color: var(--ks-content-tertiary);
+    }
+
+    code {
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        color: var(--ks-content-primary);
+        background: none;
+        padding: 0;
+    }
+
+    .tile {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 0.75rem;
+        background: var(--ks-background-primary);
+
+        > :global(svg) {
+            flex: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--ks-content-link);
+        }
+    }
+
+    .denied {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0.75rem 0 0;
+        font-size: 0.8125rem;
+        color: var(--ks-content-alert-danger);
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        code {
+            color: inherit;
+            text-decoration: line-through;
+        }
+    }
+
+    .layer-box {
+        height: calc(100% - 1.875rem);
+        padding: 1.25rem;
+        border: 1.5px solid var(--ks-border-active);
+        border-radius: 1rem;
+        background: var(--ks-background-purple-light);
+    }
+
+    .layer-head {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        margin: 0 0 1rem;
+
+        strong {
+            font-size: 1rem;
+        }
+    }
+
+    .control {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 0.875rem;
+        border-radius: 0.625rem;
+        background: var(--ks-background-primary);
+
+        > :global(svg) {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--ks-content-link);
+        }
+    }
+
+    .state {
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        &.success {
+            background: var(--ks-background-alert-success);
+            color: var(--ks-content-alert-success);
+        }
+        &.warning {
+            background: var(--ks-background-alert-warning);
+            color: var(--ks-content-alert-warning);
+        }
+        &.info {
+            background: var(--ks-background-alert-info);
+            color: var(--ks-content-alert-info);
+        }
+        &.danger {
+            background: var(--ks-background-alert-danger);
+            color: var(--ks-content-alert-danger);
+        }
+    }
+
+    .audit {
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 1rem;
+        background: var(--ks-background-secondary);
+
+        li {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--ks-content-secondary);
+        }
+
+        time {
+            font-family: $font-family-monospace;
+            color: var(--ks-content-tertiary);
+        }
+
+        .arrow {
+            width: 1rem;
+            height: 1rem;
+            color: var(--ks-content-tertiary);
+        }
+
+        .state {
+            margin-left: auto;
+        }
+    }
+
+    .more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin-top: 2rem;
+        font-weight: 600;
+        color: var(--ks-content-link);
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+</style>

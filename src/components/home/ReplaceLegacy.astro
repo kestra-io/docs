@@ -1,0 +1,123 @@
+---
+import { Icon } from "astro-icon/components"
+import SectionHead from "./SectionHead.astro"
+
+const PROBLEMS = [
+    {
+        icon: "mdi:link-variant-off",
+        title: "Inconsistent reliability",
+        text: "Each domain developed its own tool in a silo. This led to failures occurring between workflows, where ownership and visibility break down. Teams are now forced to reconstruct what happened with limited telemetry.",
+    },
+    {
+        icon: "mdi:lock-outline",
+        title: "Expensive vendor lock-in",
+        text: "Acquisition-driven price increases, product retirements, and vendor lock-in limit options. Platforms built to automate the business become liabilities, driving up costs and constraining how your organization can modernize.",
+    },
+    {
+        icon: "mdi:shield-alert-outline",
+        title: "Fragmented AI governance",
+        text: "Agents make decisions and take actions across systems autonomously, but fragmented orchestration leaves permissions, approvals, and audit trails disconnected. Actions can bypass controls, which makes failures harder to trace and contain.",
+    },
+]
+---
+
+<section class="replace" aria-labelledby="replace">
+    <div class="container">
+        <div class="intro">
+            <SectionHead id="replace" align="start">
+                Replace what no longer serves you
+                <Fragment slot="lead">
+                    Fragmented orchestration slows recovery, drives up costs,
+                    and leaves gaps in AI governance. Bring your workflows
+                    together while keeping the code and systems they already run
+                    on.
+                </Fragment>
+            </SectionHead>
+            <a
+                href="/unified-orchestration-whitepaper-kestra.pdf"
+                class="btn btn-secondary"
+                target="_blank"
+                rel="noopener"
+            >
+                Read the whitepaper
+            </a>
+        </div>
+
+        <ul>
+            {
+                PROBLEMS.map((problem) => (
+                    <li>
+                        <Icon name={problem.icon} />
+                        <h3>{problem.title}</h3>
+                        <p>{problem.text}</p>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    .replace {
+        padding: 7rem 0;
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 4.5rem 0;
+        }
+    }
+
+    .intro {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.5rem 3rem;
+        margin-bottom: 3rem;
+
+        :global(.section-head) {
+            margin-bottom: 0;
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    li {
+        padding: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 1rem;
+        background: var(--ks-background-primary);
+
+        > :global(svg) {
+            width: 1.75rem;
+            height: 1.75rem;
+            margin-bottom: 1.25rem;
+            color: var(--ks-content-link);
+        }
+    }
+
+    h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+</style>

@@ -1,0 +1,255 @@
+---
+// Logos and story links as in the About us customers grid
+// (src/components/about/Customers.astro), laid out in two rows of six under
+// the hero; the two should merge into one shared component.
+import jpmorgan from "~/assets/teams/jpmorgan.svg?raw"
+import bloomberg from "~/assets/landing/infrastructure/companies/bloomberg.svg?raw"
+import amdocs from "~/assets/landing/infrastructure/companies/amdocs.svg?raw"
+import tsystems from "~/assets/companies/t-system.svg?raw"
+import leroyMerlin from "~/assets/companies/leroy-merlin.svg?raw"
+import fila from "~/assets/companies/fila.svg?raw"
+import xiaomi from "~/assets/landing/infrastructure/companies/xiaomi.svg?raw"
+import acxiom from "~/assets/companies/acxiom.svg?raw"
+import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
+import councilOfEurope from "~/components/enterprise/assets/logos/COE.svg?raw"
+import itzbund from "~/components/enterprise/assets/logos/ITZ.svg?raw"
+import { getCollection } from "astro:content"
+import { toSlug } from "~/utils/stories"
+
+// Some of these logos are drawn in white only; paint them with the text
+// color so they read in both themes.
+const mono = (svg: string) =>
+    svg.replace(/fill="(#fff|#ffffff|white)"/gi, 'fill="currentColor"')
+
+// Trim the empty margin some logo files carry around the drawing.
+const crop = (svg: string, viewBox: string) => {
+    const [, , w, h] = viewBox.split(" ")
+    return svg
+        .replace(/viewBox="[^"]+"/, `viewBox="${viewBox}"`)
+        .replace(/<svg([^>]*?) width="[^"]+"/, `<svg$1 width="${w}"`)
+        .replace(/<svg([^>]*?) height="[^"]+"/, `<svg$1 height="${h}"`)
+}
+
+// Logos in brand colors or shades of gray: every fill takes the text color.
+// Masks keep their own fills, or they would hide the drawing.
+const flat = (svg: string) => {
+    const [head, body] = svg.includes("</mask>")
+        ? [
+              svg.slice(0, svg.lastIndexOf("</mask>")),
+              svg.slice(svg.lastIndexOf("</mask>")),
+          ]
+        : ["", svg]
+    return head + body.replace(/fill="(?!none)[^"]+"/gi, 'fill="currentColor"')
+}
+
+// `story` is the company name of a customer story, when there is one.
+// `height` is set logo by logo so the row reads even: about the same area
+// for each, a bit less for heavy marks and more for thin ones.
+const CUSTOMERS: {
+    name: string
+    svg: string
+    height: number
+    story?: string
+}[] = [
+    {
+        name: "JPMorgan",
+        svg: mono(jpmorgan),
+        height: 20,
+        story: "JPMorgan Chase",
+    },
+    { name: "Bloomberg", svg: mono(bloomberg), height: 34 },
+    { name: "Amdocs", svg: mono(amdocs), height: 22, story: "Amdocs" },
+    { name: "T-Systems", svg: tsystems, height: 20 },
+    {
+        name: "Leroy Merlin",
+        svg: leroyMerlin,
+        height: 29,
+        story: "Leroy Merlin France",
+    },
+    {
+        name: "Crédit Agricole",
+        svg: flat(creditAgricole),
+        height: 32,
+        story: "Crédit Agricole",
+    },
+    { name: "Fila", svg: fila, height: 21, story: "Fila" },
+    { name: "Xiaomi", svg: mono(xiaomi), height: 21 },
+    { name: "Acxiom", svg: acxiom, height: 23, story: "Acxiom" },
+    {
+        name: "Council of Europe",
+        svg: crop(mono(councilOfEurope), "29 6.5 76.6 61.7"),
+        height: 42,
+    },
+    {
+        name: "ITZBund",
+        svg: crop(flat(itzbund), "25.3 11.3 85.3 52.4"),
+        height: 38,
+    },
+]
+
+const stories = await getCollection("customerStories")
+const storyHref = (company?: string) => {
+    const entry = company && stories.find((e) => e.data.companyName === company)
+    return entry ? `/stories/${toSlug(entry)}` : undefined
+}
+---
+
+<ul class="logos" aria-label="Customers">
+    {
+        CUSTOMERS.map((c) => {
+            const href = storyHref(c.story)
+            return (
+                <li title={c.name}>
+                    <span
+                        class="logo"
+                        style={`--logo-height: ${c.height}px`}
+                        set:html={c.svg}
+                    />
+                    <span class="visually-hidden">{c.name}</span>
+                    {href && (
+                        <a class="story" href={href}>
+                            Read the story <span class="arrow">→</span>
+                        </a>
+                    )}
+                </li>
+            )
+        })
+    }
+    <li class="more">
+        <a href="/stories">
+            See all success stories <span class="arrow">→</span>
+        </a>
+    </li>
+</ul>
+
+<style lang="scss">
+    // A grid of hairline cells, two rows of six, as on About us.
+    .logos {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-top: 1px solid var(--ks-border-primary);
+        border-left: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            padding: 1.25rem;
+            border-right: 1px solid var(--ks-border-primary);
+            border-bottom: 1px solid var(--ks-border-primary);
+            color: var(--ks-content-primary);
+            transition: background 0.2s ease;
+
+            &:hover {
+                background: var(--ks-background-secondary);
+            }
+
+            @include media-breakpoint-down(md) {
+                height: 96px;
+            }
+        }
+
+        // Heights are tuned logo by logo so the row reads even.
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: calc(var(--logo-height) * 1.15);
+
+            :global(svg) {
+                width: auto;
+                max-width: 136px;
+                height: 100%;
+            }
+        }
+
+        .more a {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .arrow {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .more a:hover .arrow,
+        .story:hover .arrow,
+        .story:focus-visible .arrow {
+            transform: translateX(0.25em);
+        }
+
+        // Customers with a story show a small button when pointed at.
+        .story {
+            position: absolute;
+            left: 50%;
+            bottom: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            border: 1px solid var(--ks-border-secondary);
+            background: var(--ks-background-body);
+            font-size: $font-size-xs;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            text-decoration: none;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translate(-50%, 4px);
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease,
+                border-color 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                border-color: var(--ks-content-primary);
+            }
+
+            // On touch screens the whole cell opens the story; a small arrow
+            // in the corner says so.
+            @media (hover: none) {
+                inset: 0;
+                left: 0;
+                bottom: 0;
+                padding: 0;
+                border: 0;
+                border-radius: 0;
+                background: none;
+                font-size: 0;
+                opacity: 1;
+                transform: none;
+
+                &::after {
+                    content: "↗";
+                    position: absolute;
+                    top: 0.375rem;
+                    right: 0.5rem;
+                    font-size: $font-size-xs;
+                    color: var(--ks-content-tertiary);
+                }
+            }
+        }
+
+        li:hover .story,
+        .story:focus-visible {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+    }
+</style>

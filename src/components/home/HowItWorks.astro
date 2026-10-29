@@ -1,0 +1,161 @@
+---
+import { Icon } from "astro-icon/components"
+import Snippets from "~/components/common/Snippets.astro"
+import SectionHead from "./SectionHead.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const STEPS = [
+    {
+        title: "Declare",
+        text: "Write the workflow in YAML with your favorite editor or coding agent, or build it in the visual editor. Every change is versioned, reviewable, and deployable via your CI/CD pipeline.",
+    },
+    {
+        title: "Connect",
+        text: `${totalPlugins}+ plugins, scripts in any language, containers. Kestra adapts to the tools and languages you already use.`,
+    },
+    {
+        title: "Run and govern",
+        text: "Apply permissions, capture audit trails, and monitor every execution, whether self-hosted, in the cloud, or air-gapped.",
+    },
+]
+
+const FLOW = `id: nightly_close
+namespace: finance
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: SELECT * FROM ledger WHERE day = '{{ trigger.date }}'
+
+  - id: approve # a human decides before anything moves
+    type: io.kestra.plugin.core.flow.Pause
+
+  - id: post_to_erp
+    type: io.kestra.plugin.scripts.python.Script
+    script: |
+      post_journal(read_csv('{{ outputs.extract.uri }}'))`
+---
+
+<section class="how-it-works" aria-labelledby="how-it-works">
+    <div class="container">
+        <SectionHead id="how-it-works">
+            How it works
+            <Fragment slot="lead">
+                Define workflows in YAML files that teams can review, version in
+                Git, and deploy through CI/CD.
+            </Fragment>
+        </SectionHead>
+
+        <div class="split">
+            <div>
+                <ol>
+                    {
+                        STEPS.map((step, idx) => (
+                            <li>
+                                <span class="number">{idx + 1}</span>
+                                <div>
+                                    <h3>{step.title}</h3>
+                                    <p>{step.text}</p>
+                                </div>
+                            </li>
+                        ))
+                    }
+                </ol>
+                <a href="/features" class="more">
+                    See the platform <Icon name="mdi:arrow-right" />
+                </a>
+            </div>
+            <div class="code">
+                <Snippets code={FLOW} lang="yaml" noCollapse />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .how-it-works {
+        padding: 7rem 0;
+        background: var(--ks-background-secondary);
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 4.5rem 0;
+        }
+    }
+
+    .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 4rem;
+        align-items: center;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+    }
+
+    ol {
+        display: grid;
+        gap: 2rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .number {
+        display: grid;
+        place-items: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--ks-background-purple-light);
+        font-size: $font-size-sm;
+        font-weight: 700;
+        color: var(--ks-content-link);
+    }
+
+    h3 {
+        margin: 0.25rem 0 0.375rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+
+    .more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin-top: 2rem;
+        font-weight: 600;
+        color: var(--ks-content-link);
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    .code {
+        min-width: 0;
+    }
+</style>

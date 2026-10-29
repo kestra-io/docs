@@ -1,0 +1,157 @@
+---
+import { Icon } from "astro-icon/components"
+import SectionHead from "./SectionHead.astro"
+
+// Company names are text until logo usage rights are confirmed.
+const STORIES = [
+    {
+        company: "Apple",
+        stat: "200",
+        label: "ML engineers on Kestra",
+        quote: "I want to highlight their robustness, which is crucial at our scale.",
+    },
+    {
+        company: "JPMorgan Chase",
+        stat: "Billions",
+        label: "of cybersecurity records processed",
+        detail: "100+ analysts define their own secure workflows.",
+        href: "/stories/jpmorgan-chase",
+    },
+    {
+        company: "Crédit Agricole",
+        stat: "7 teams",
+        label: "unified on 100+ managed clusters",
+        quote: "From fragmented automation to a unified control plane.",
+    },
+    {
+        company: "FILA",
+        stat: "2.5M",
+        label: "executions a month across 2,000+ workflows",
+        detail: "ERP, PLM and supply chain in 70+ countries.",
+    },
+]
+---
+
+<section class="customers" aria-labelledby="customers">
+    <div class="container">
+        <SectionHead id="customers" eyebrow="Customers">
+            In production, at scale
+            <Fragment slot="lead">
+                Teams across banking, manufacturing, technology and the public
+                sector run Kestra in production.
+            </Fragment>
+        </SectionHead>
+
+        <ul>
+            {
+                STORIES.map((story) => (
+                    <li>
+                        <p class="company">{story.company}</p>
+                        <p class="stat">{story.stat}</p>
+                        <p class="label">{story.label}</p>
+                        {story.quote && (
+                            <blockquote>“{story.quote}”</blockquote>
+                        )}
+                        {story.detail && <p class="detail">{story.detail}</p>}
+                        {story.href && (
+                            <a href={story.href} class="story-link">
+                                Read the story <Icon name="mdi:arrow-right" />
+                            </a>
+                        )}
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    .customers {
+        padding: 7rem 0;
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 4.5rem 0;
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        padding: 1.75rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 1rem;
+        background: var(--ks-background-primary);
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .company {
+        margin-bottom: 1.5rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--ks-content-tertiary);
+    }
+
+    .stat {
+        font-size: 2.5rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        color: var(--ks-content-link);
+    }
+
+    .label {
+        margin: 0.375rem 0 1.25rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    blockquote,
+    .detail {
+        margin: 0;
+        line-height: 1.55;
+        color: var(--ks-content-secondary);
+    }
+
+    blockquote {
+        font-style: italic;
+    }
+
+    .story-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin-top: auto;
+        padding-top: 1.25rem;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-link);
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+</style>

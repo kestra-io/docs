@@ -65,12 +65,11 @@
                     class="d-none d-lg-inline-flex align-items-center slack-link me-2"
                     aria-label="Slack"
                 >
-                    <span
+                    <Slack
                         class="slack-icon"
                         :class="{
                             'slack-icon--dark': isScrolled || isOpen,
                         }"
-                        v-html="SlackIcon"
                     />
                 </a>
                 <GithubButton
@@ -727,6 +726,7 @@
     import Close from "vue-material-design-icons/Close.vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
+    import Slack from "vue-material-design-icons/Slack.vue"
     import { menuWidths } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
     import { openModal } from "~/utils/modal"
@@ -1667,6 +1667,212 @@
 
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);
+                }
+            }
+
+            // Pages that set body[data-header-clean] (the homepage) get a
+            // quieter menu: a plain opaque bar, with a hairline once scrolled
+            // instead of the blur, a smaller logo, flat buttons and a bare
+            // GitHub star count.
+            body[data-header-clean] & {
+                // Opaque from the top, so nothing shows through while the
+                // background would otherwise fade in on the first scroll.
+                &,
+                &.scrolled:not(.open) {
+                    background-color: var(--ks-background-body);
+                    -webkit-backdrop-filter: none;
+                    backdrop-filter: none;
+                }
+
+                &.scrolled:not(.open) {
+                    box-shadow: 0 1px 0 var(--ks-border-primary);
+                }
+
+                .navbar-brand :deep(svg) {
+                    width: 132px;
+                }
+
+                .header-actions {
+                    .btn {
+                        padding: 0.5rem 0.875rem;
+                        border: 0;
+                        border-radius: 0.5rem;
+                        font-size: 0.8125rem;
+                        font-weight: 500;
+                        line-height: 1.461;
+                        box-shadow: none;
+                    }
+
+                    .btn-secondary {
+                        --ks-background-button-secondary: #eeeef1;
+                        --ks-background-button-secondary-hover: #e2e2e7;
+                        --ks-content-btn-secondary-hover: var(--ks-content-primary);
+                        color: var(--ks-content-primary) !important;
+                    }
+
+                    .btn-primary,
+                    .btn-primary:hover {
+                        background: var(--ks-background-button-primary);
+                    }
+
+                    .btn-primary:hover {
+                        filter: brightness(1.1);
+                    }
+
+                    // Slack and search as square grey buttons, as tall as
+                    // Contact Sales.
+                    .slack-link,
+                    .btn.icon-button {
+                        align-items: center;
+                        justify-content: center;
+                        width: 2.1875rem;
+                        height: 2.1875rem;
+                        padding: 0 !important;
+                        border-radius: 0.5rem;
+                        background: #eeeef1;
+                        color: var(--ks-content-primary);
+                        transition: background-color 0.2s ease;
+
+                        &:hover {
+                            background: #e2e2e7;
+                            color: var(--ks-content-primary);
+                        }
+                    }
+
+                    .btn.icon-button {
+                        display: inline-flex;
+                    }
+
+                    // GitHub, Slack and search all come from Material Design
+                    // Icons, drawn in the same 18px box and centered.
+                    .btn.icon-button :deep(.material-design-icon),
+                    .slack-icon {
+                        display: flex;
+                        width: 18px;
+                        height: 18px;
+                    }
+
+                    .btn.icon-button :deep(svg),
+                    .slack-icon :deep(svg) {
+                        position: static;
+                        display: block;
+                        width: 18px;
+                        height: 18px;
+                    }
+
+                    // GitHub first, then Slack.
+                    :deep(.github-button-wrapper) {
+                        order: -1;
+                        margin: 0 0.75rem 0 0 !important;
+                    }
+
+                    :deep(.github-button) {
+                        align-items: center;
+                        width: auto;
+                        min-height: 0;
+                        border: 0;
+                        color: var(--ks-content-primary);
+                        font-size: 0.8125rem;
+                        font-weight: 500;
+
+                        .left-part,
+                        .right-part {
+                            min-width: 0;
+                            background: none;
+                            color: inherit !important;
+                        }
+
+                        .left-part {
+                            flex: none;
+                            margin-right: 0.375rem;
+
+                            .material-design-icon {
+                                display: flex;
+                                width: 18px;
+                                height: 18px;
+                            }
+
+                            svg {
+                                position: static;
+                                display: block;
+                                width: 18px;
+                                height: 18px;
+                            }
+                        }
+
+                        .star-text {
+                            display: none;
+                        }
+                    }
+                }
+
+                @at-root html.dark & .header-actions {
+                    .btn-secondary {
+                        --ks-background-button-secondary: #2a2a30;
+                        --ks-background-button-secondary-hover: #36363d;
+                    }
+
+                    .slack-link,
+                    .btn.icon-button {
+                        background: #2a2a30;
+
+                        &:hover {
+                            background: #36363d;
+                        }
+                    }
+                }
+            }
+
+            // A page section marked [data-header-dark] is under the menu: the
+            // menu turns dark with it, scrolled or not.
+            body[data-header-over-dark] &:not(.open),
+            body[data-header-over-dark] &.scrolled:not(.open) {
+                background-color: #111114;
+                -webkit-backdrop-filter: none;
+                backdrop-filter: none;
+                box-shadow: 0 1px 0 #2c2b31;
+
+                .navbar-brand {
+                    .logo-dark {
+                        display: block !important;
+                    }
+
+                    .logo-light {
+                        display: none !important;
+                    }
+                }
+
+                @include dark-nav-content;
+
+                .btn-secondary {
+                    @include btn-secondary-dark-surface;
+                }
+
+                .slack-link .slack-icon :deep(svg) {
+                    filter: brightness(0) invert(1);
+                }
+
+                .header-actions {
+                    .btn-secondary {
+                        --ks-background-button-secondary: #2a2a30;
+                        --ks-background-button-secondary-hover: #36363d;
+                        --ks-content-btn-secondary-hover: #ffffff;
+                        color: #ffffff !important;
+                    }
+
+                    :deep(.github-button) {
+                        color: #ffffff;
+                    }
+
+                    .slack-link,
+                    .btn.icon-button {
+                        background: #2a2a30;
+                        color: #ffffff;
+
+                        &:hover {
+                            background: #36363d;
+                        }
+                    }
                 }
             }
 

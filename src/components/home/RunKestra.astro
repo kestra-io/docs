@@ -1,0 +1,182 @@
+---
+import { Icon } from "astro-icon/components"
+import Snippets from "~/components/common/Snippets.astro"
+import SectionHead from "./SectionHead.astro"
+
+const DOCKER_COMMAND = `docker run --pull=always --rm -it -p 8080:8080 --user=root \\
+  -v /var/run/docker.sock:/var/run/docker.sock \\
+  -v /tmp:/tmp kestra/kestra:latest server local`
+---
+
+<section class="run-kestra" aria-labelledby="run-kestra">
+    <div class="container">
+        <SectionHead id="run-kestra">
+            Three ways to run Kestra
+            <Fragment slot="lead">
+                Try it alone, try it managed, or talk to an expert who has done
+                the migration before.
+            </Fragment>
+        </SectionHead>
+
+        <div class="editions">
+            <article class="edition">
+                <Icon name="mdi:github" class="edition-icon" />
+                <h3>Open Source</h3>
+                <p>
+                    Where most teams start, and where many experiment with a
+                    first production. Self-hosted and free, with no limits on
+                    flows or executions.
+                </p>
+                <p class="hint">
+                    One command, one minute, the full open source edition.
+                </p>
+                <div class="command">
+                    <Snippets code={DOCKER_COMMAND} lang="bash" />
+                </div>
+                <div class="actions">
+                    <a
+                        href="/docs/getting-started/quickstart"
+                        class="btn btn-secondary"
+                    >
+                        Read the quickstart
+                    </a>
+                    <a href="/get-started" class="link">Get started</a>
+                    <a href="/pricing" class="link">Pricing</a>
+                </div>
+            </article>
+
+            <article class="edition">
+                <Icon name="mdi:cloud-outline" class="edition-icon" />
+                <p class="badge">Early adopter program</p>
+                <h3>Scale with Kestra Cloud</h3>
+                <p>
+                    Managed by the people who build Kestra. No platform to run,
+                    pay for what you use. Join the early adopter program:
+                    onboarding with the Cloud team and a say in what we build
+                    next.
+                </p>
+                <div class="actions">
+                    <a href="/cloud" class="btn btn-secondary">
+                        Try Kestra Cloud
+                    </a>
+                    <a href="/cloud" class="link">Cloud</a>
+                    <a href="/pricing" class="link">Pricing</a>
+                </div>
+            </article>
+
+            <article class="edition featured">
+                <Icon name="mdi:domain" class="edition-icon" />
+                <h3>Enterprise</h3>
+                <p>
+                    The Kestra experience scaled for the enterprise: multi-team
+                    organization, security and governance, support with SLAs.
+                    Self-hosted, cloud or air-gapped.
+                </p>
+                <p>
+                    Book a demo with an engineer who has replaced vRA, Airflow,
+                    or Control-M before, on your use case.
+                </p>
+                <div class="actions">
+                    <a href="/demo" class="btn btn-primary">Book a demo</a>
+                    <a href="/enterprise" class="link">Enterprise</a>
+                    <a href="/pricing" class="link">Pricing</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .run-kestra {
+        padding: 7rem 0;
+        background: var(--ks-background-secondary);
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 4.5rem 0;
+        }
+    }
+
+    .editions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .edition {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        padding: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 1rem;
+        background: var(--ks-background-primary);
+
+        &.featured {
+            border-color: var(--ks-border-active);
+            box-shadow: 0 24px 60px -32px rgba(56, 22, 120, 0.45);
+        }
+
+        :global(.edition-icon) {
+            width: 2rem;
+            height: 2rem;
+            margin-bottom: 1.25rem;
+            color: var(--ks-content-link);
+        }
+    }
+
+    .badge {
+        align-self: flex-start;
+        margin: 0 0 0.75rem;
+        padding: 0.125rem 0.625rem;
+        border-radius: 999px;
+        background: var(--ks-background-purple-light);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--ks-content-link);
+    }
+
+    h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    p {
+        margin: 0 0 1rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+
+    .hint {
+        margin-bottom: 0.5rem;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    .command {
+        min-width: 0;
+        margin-bottom: 1rem;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1.25rem;
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+
+    .link {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-link);
+    }
+</style>
