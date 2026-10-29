@@ -141,6 +141,30 @@ const resourcesSchema = z.object({
     items: z.array(resourceItemSchema),
 })
 
+/** A literal, quotable answer to the page's main question, shown under the hero. */
+const answerSchema = z.object({
+    question: z.string(),
+    text: z.string(),
+})
+
+/** Step-by-step "how do I" section with one complete, copyable flow. */
+const howToSchema = z.object({
+    title: z.string(),
+    intro: z.string().optional(),
+    steps: z.array(
+        z.object({
+            title: z.string(),
+            description: z.string(),
+        }),
+    ),
+    flow: z
+        .object({
+            caption: z.string().optional(),
+            code: z.string(),
+        })
+        .optional(),
+})
+
 /** Tool categories, in the order the /orchestration filter tabs show them. */
 export const ORCHESTRATION_CATEGORIES = [
     "Infrastructure",
@@ -160,6 +184,10 @@ export const orchestrationSchema = z.object({
         color: z.string().optional(),
     }),
     hero: heroSchema,
+    answer: answerSchema.optional(),
+    howTo: howToSchema.optional(),
+    /** Last content review, shown on the page and emitted as dateModified. */
+    updated: z.coerce.date().optional(),
     nutshell: z.string().optional(),
     pillars: pillarsSchema,
     useCases: useCasesSchema,

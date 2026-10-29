@@ -1,0 +1,75 @@
+---
+interface Props {
+    question: string
+    text: string
+    updated?: Date
+}
+
+const { question, text, updated } = Astro.props
+const updatedLabel = updated?.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+})
+---
+
+<section class="orch-answer" aria-labelledby="orch-answer-title">
+    <div class="orch-answer__inner">
+        <h2 id="orch-answer-title">{question}</h2>
+        <p class="orch-answer__text" set:html={text} />
+        {
+            updated && (
+                <p class="orch-answer__updated">
+                    Updated <time datetime={updated.toISOString().slice(0, 10)}>{updatedLabel}</time>
+                    · Kestra 2.0
+                </p>
+            )
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .orch-answer {
+        width: 100%;
+        padding: 3rem 2rem 1rem;
+        background: var(--ks-background-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 2rem 0.75rem 0.5rem;
+        }
+
+        &__inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 1.5rem 1.75rem;
+            border: 1px solid var(--ks-border-primary);
+            border-left: 4px solid var(--ks-content-color-highlight);
+            border-radius: 0.75rem;
+            background: var(--ks-background-secondary);
+        }
+
+        h2 {
+            font-size: 1.375rem;
+            margin-bottom: 0.75rem;
+            color: var(--ks-content-primary);
+        }
+
+        &__text {
+            font-size: $font-size-lg;
+            line-height: 1.65;
+            color: var(--ks-content-primary);
+            margin: 0;
+
+            :global(code) {
+                font-size: 0.9em;
+            }
+        }
+
+        &__updated {
+            margin: 0.75rem 0 0;
+            font-size: $font-size-sm;
+            color: var(--ks-content-tertiary);
+        }
+    }
+</style>

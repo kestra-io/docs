@@ -29,7 +29,7 @@ Databricks workflows are powerful, but they come with limitations that developer
 
 ## Kestra’s Take on Databricks Orchestration
 
-Kestra doesn’t try to replace Databricks’ capabilities—it complements them by addressing the operational gaps that come with managing large-scale workflows.
+Kestra doesn’t try to replace Databricks’ capabilities—it complements them by addressing the operational gaps that come with managing large-scale workflows. For the current tasks and patterns, see [Databricks orchestration with Kestra](/orchestration/databricks).
 
 ### Efficient Cluster Management
 
