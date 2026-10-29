@@ -9,6 +9,8 @@ editions: ["Cloud"]
 
 Kestra Cloud is a fully managed Kestra instance run by the Kestra team. You build the pipelines; Kestra handles hosting, scaling, upgrades, SSO, and secrets.
 
+If your first flows need something from your IT team, such as access to a database behind your firewall, single sign-on, or a security review, send your IT team the [IT setup guide](../04.setup-for-it/index.md) now. Those requests usually take longer than building the flow.
+
 ## Two places you'll work
 
 Kestra Cloud consists of two platforms:
@@ -122,5 +124,6 @@ Common first-week blockers:
 
 - Credentials not reaching a task: [Secrets](../../../06.concepts/04.secret/index.md)
 - Cloud auth or OIDC trust issues: [Credentials](../../03.auth/credentials/index.md)
+- Waiting on IT for network access, SSO, or a security review: [Set up Kestra Cloud for your team](../04.setup-for-it/index.md)
 
 For help, reach the team at support@kestra.io, in the [Slack community](https://kestra.io/slack), or by replying to your onboarding email.

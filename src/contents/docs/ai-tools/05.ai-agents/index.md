@@ -17,7 +17,7 @@ This page is for flow authors who want a model to do work during an execution. T
 | | LLM task | AI agent |
 |---|---|---|
 | Who decides the steps | You, in the flow definition | The model, at runtime |
-| Task type | [`ChatCompletion`](/plugins/plugin-ai/completion/chatcompletion) or a provider plugin | [`AIAgent`](/plugins/plugin-ai/agent) |
+| Task type | [`ChatCompletion`](/plugins/plugin-ai/completion/io.kestra.plugin.ai.completion.chatcompletion) or a provider plugin | [`AIAgent`](/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.aiagent) |
 | Typical jobs | Summarize, classify, or extract structured data, then hand the result to regular tasks | Open-ended goals that need tools: web search, calling flows, running code, delegating to other agents |
 | Calls per run | Fixed | Varies with the tools the model decides to call |
 
@@ -75,7 +75,7 @@ INFO  Attempting chat request with provider GOOGLE_AI_GEMINI [model=gemini-2.5-f
 
 ## Call an LLM as a task
 
-An LLM task calls the model once, at a fixed point in the flow, and passes the result to the next task. Use [`io.kestra.plugin.ai.completion.ChatCompletion`](/plugins/plugin-ai/completion/chatcompletion) to stay provider-agnostic. Provider plugins such as [OpenAI](/plugins/plugin-openai), [Gemini](/plugins/plugin-gemini), and [Ollama](/plugins/plugin-ollama) expose provider-specific features.
+An LLM task calls the model once, at a fixed point in the flow, and passes the result to the next task. Use [`io.kestra.plugin.ai.completion.ChatCompletion`](/plugins/plugin-ai/completion/io.kestra.plugin.ai.completion.chatcompletion) to stay provider-agnostic. Provider plugins such as [OpenAI](/plugins/plugin-openai), [Gemini](/plugins/plugin-gemini), and [Ollama](/plugins/plugin-ollama) expose provider-specific features.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FiL5MQZBj-s" title="AI Workflows Explained: Automation That Can Think" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -146,7 +146,7 @@ tasks:
 
 ### Run a local model with Ollama
 
-This flow summarizes the past week of commits in a GitHub repository with a model that runs on your own infrastructure, then posts the summary to Slack every Friday. [`OllamaCLI`](/plugins/plugin-ollama/cli/ollamacli) starts Ollama in a container, so the flow needs no model API key and the commit data stays on your worker.
+This flow summarizes the past week of commits in a GitHub repository with a model that runs on your own infrastructure, then posts the summary to Slack every Friday. [`OllamaCLI`](/plugins/plugin-ollama/io.kestra.plugin.ollama.cli.ollamacli) starts Ollama in a container, so the flow needs no model API key and the commit data stays on your worker.
 
 ```yaml
 id: summarize_weekly_commits
@@ -189,7 +189,7 @@ Ollama writes its server output to stderr, which Kestra logs at ERROR level. Tho
 
 ## Build an AI agent
 
-An [`AIAgent`](/plugins/plugin-ai/agent) task gives a model a goal and a set of tools, such as web search, running Kestra tasks, or calling other flows. The model decides which tools to call and in what order, and can keep calling them until it reaches the goal. Each run combines a **system message**, which defines the agent's role and constraints, with a **prompt**, which carries the input for that execution. Add `memory` to keep context across executions.
+An [`AIAgent`](/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.aiagent) task gives a model a goal and a set of tools, such as web search, running Kestra tasks, or calling other flows. The model decides which tools to call and in what order, and can keep calling them until it reaches the goal. Each run combines a **system message**, which defines the agent's role and constraints, with a **prompt**, which carries the input for that execution. Add `memory` to keep context across executions.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/osrS9mi5-eg?si=Tc8kMRP6NhqLQ4_u" title="AI Agents in Kestra: Autonomous Orchestration with Declarative Workflows" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -285,7 +285,7 @@ The example selects `short` for the summary length and German (`de`) for the sum
 
 #### Tasks
 
-The flow has two tasks using the [AI Agent plugin](/plugins/plugin-ai/agent): `multilingual_agent` and `english_brevity`. The first task, `multilingual_agent`, uses the `systemMessage` property to set the agent's role and behavior. The system message references the input selections for summary length and language, and defines what to output for each length option.
+The flow has two tasks using the [AI Agent plugin](/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.aiagent): `multilingual_agent` and `english_brevity`. The first task, `multilingual_agent`, uses the `systemMessage` property to set the agent's role and behavior. The system message references the input selections for summary length and language, and defines what to output for each length option.
 
 The `prompt` property instructs the agent to summarize the input text. For a short summary, `multilingual_agent` produces a 1–2 sentence German summary of Kestra.
 
@@ -295,7 +295,7 @@ The `english_brevity` task has no `systemMessage`, so the prompt alone instructs
 
 ![AI Agent Abbreviated Summary](./ai-agent-brevity.png)
 
-Pass these outputs to notification tasks, subflows, or other agents. Use the `tokenUsage` output to compare providers on the same task. Kestra also emits the counter metrics `ai.agent.tool.calls`, `ai.provider.calls`, and `ai.embedding.store.calls`, tagged by class name, which you can scrape with Prometheus or export through OpenTelemetry. For all properties and outputs, see the [AI Agent plugin documentation](/plugins/plugin-ai/agent).
+Pass these outputs to notification tasks, subflows, or other agents. Use the `tokenUsage` output to compare providers on the same task. Kestra also emits the counter metrics `ai.agent.tool.calls`, `ai.provider.calls`, and `ai.embedding.store.calls`, tagged by class name, which you can scrape with Prometheus or export through OpenTelemetry. For all properties and outputs, see the [AI Agent plugin documentation](/plugins/plugin-ai/agent/io.kestra.plugin.ai.agent.aiagent).
 
 ## Agent tools
 
@@ -303,7 +303,7 @@ The AI Agent can be extended with **tools**: capabilities the model can call at 
 
 ### Skills
 
-The [**Skill**](/plugins/plugin-ai/tool/skill) tool lets you attach structured instructions to an agent that it can activate on demand. Rather than including all instructions in the system message, skills let you define discrete, reusable knowledge blocks, each with a name, a description the LLM uses to decide when to activate it, and the actual instruction content.
+The [**Skill**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.skill) tool lets you attach structured instructions to an agent that it can activate on demand. Rather than including all instructions in the system message, skills let you define discrete, reusable knowledge blocks, each with a name, a description the LLM uses to decide when to activate it, and the actual instruction content.
 
 This is useful when an agent has multiple possible modes of operation, such as translating text, reviewing code, or formatting data, where you want the LLM to select and apply the right instructions based on context rather than always receiving all instructions at once.
 
@@ -373,26 +373,26 @@ tasks:
             contentUri: "{{ outputs.write_instructions.uri }}"
 ```
 
-A single `Skill` tool can define multiple skills. Each skill must have a unique name. `content` and `contentUri` are mutually exclusive, and each skill needs exactly one of them. For more details on all available properties, refer to the [Skill plugin documentation](/plugins/plugin-ai/tool/skill).
+A single `Skill` tool can define multiple skills. Each skill must have a unique name. `content` and `contentUri` are mutually exclusive, and each skill needs exactly one of them. For more details on all available properties, refer to the [Skill plugin documentation](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.skill).
 
 ### Kestra-native tools
 
-- [**KestraFlow**](/plugins/plugin-ai/tool/kestraflow): Triggers a Kestra flow as a tool, either with a predefined namespace and flow ID or dynamically based on the agent's prompt.
-- [**KestraTask**](/plugins/plugin-ai/tool/kestratask): Exposes one or more Kestra runnable tasks as tools, letting the agent supply values for properties left unset.
+- [**KestraFlow**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.kestraflow): Triggers a Kestra flow as a tool, either with a predefined namespace and flow ID or dynamically based on the agent's prompt.
+- [**KestraTask**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.kestratask): Exposes one or more Kestra runnable tasks as tools, letting the agent supply values for properties left unset.
 
 ### Web search
 
-- [**TavilyWebSearch**](/plugins/plugin-ai/tool/tavilywebsearch): Gives the agent access to live web results via the Tavily search API.
-- [**GoogleCustomWebSearch**](/plugins/plugin-ai/tool/googlecustomwebsearch): Gives the agent access to live web results via a Google Custom Search Engine.
+- [**TavilyWebSearch**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.tavilywebsearch): Gives the agent access to live web results via the Tavily search API.
+- [**GoogleCustomWebSearch**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.googlecustomwebsearch): Gives the agent access to live web results via a Google Custom Search Engine.
 
 ### Code execution
 
-- [**CodeExecution**](/plugins/plugin-ai/tool/codeexecution): Lets the agent write and run JavaScript snippets in a Judge0 sandbox (via RapidAPI).
+- [**CodeExecution**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.codeexecution): Lets the agent write and run JavaScript snippets in a Judge0 sandbox (via RapidAPI).
 
 ### Nested agents
 
-- [**AIAgent**](/plugins/plugin-ai/tool/aiagent): Wraps another AI agent as a callable tool so a parent agent can delegate sub-tasks to a specialized child agent.
-- [**A2AClient**](/plugins/plugin-ai/tool/a2aclient): Forwards prompts to a remote AI agent over the Agent-to-Agent (A2A) protocol and returns its response.
+- [**AIAgent**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.aiagent): Wraps another AI agent as a callable tool so a parent agent can delegate sub-tasks to a specialized child agent.
+- [**A2AClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.a2aclient): Forwards prompts to a remote AI agent over the Agent-to-Agent (A2A) protocol and returns its response.
 
 ### MCP clients
 
@@ -400,10 +400,10 @@ Kestra supports MCP in two directions. These clients cover the **Kestra-as-clien
 
 Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server to expose its tools:
 
-- [**DockerMcpClient**](/plugins/plugin-ai/tool/dockermcpclient): Runs an MCP server inside a Docker container.
-- [**SseMcpClient**](/plugins/plugin-ai/tool/ssemcpclient): Connects to a remote MCP server over Server-Sent Events (SSE).
-- [**StdioMcpClient**](/plugins/plugin-ai/tool/stdiomcpclient): Spawns a local MCP server process and communicates over stdio.
-- [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/streamablehttpmcpclient): Connects to an MCP server over HTTP streaming.
+- [**DockerMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.dockermcpclient): Runs an MCP server inside a Docker container.
+- [**SseMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.ssemcpclient): Connects to a remote MCP server over Server-Sent Events (SSE).
+- [**StdioMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.stdiomcpclient): Spawns a local MCP server process and communicates over stdio.
+- [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.streamablehttpmcpclient): Connects to an MCP server over HTTP streaming.
 
 The [Kestra Python MCP server](https://github.com/kestra-io/mcp-server-python) is an example of an external MCP server you can connect to from a Kestra AI Agent task using one of the clients above.
 
@@ -473,7 +473,7 @@ The `agentConfig` property accepts inline YAML (as above), a relative path to an
 Docker Agent prints a startup banner to stderr. Kestra captures stderr as ERROR-level log entries, so those lines appear red in the execution logs even when the task succeeds. The agent's actual output appears at INFO level.
 :::
 
-For all properties and outputs, see the [Docker Agent plugin reference](/plugins/plugin-docker/cli/agent).
+For all properties and outputs, see the [Docker Agent plugin reference](/plugins/plugin-docker/docker-cli/io.kestra.plugin.docker.cli.agent).
 
 ## Execution details
 

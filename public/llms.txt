@@ -311,8 +311,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Maintenance Mode in Kestra Enterprise: Safe Upgrades](https://kestra.io/docs/enterprise/instance/maintenance-mode.md)
 - [Versioned Plugins in Kestra Enterprise: Multi-Version](https://kestra.io/docs/enterprise/instance/versioned-plugins.md)
 - [Instance Owner Console in Kestra Enterprise](https://kestra.io/docs/enterprise/instance/instance-owner.md)
-- [Kestra Cloud](https://kestra.io/docs/enterprise/cloud.md): Landing section for Kestra Cloud onboarding, compute billing, and task run counting.
+- [Kestra Cloud](https://kestra.io/docs/enterprise/cloud.md): Landing section for Kestra Cloud onboarding, IT setup, compute billing, and task run counting.
 - [Kestra Cloud: Getting Started](https://kestra.io/docs/enterprise/cloud/getting-started.md): Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
+- [Kestra Cloud Setup Guide for IT and Platform Admins](https://kestra.io/docs/enterprise/cloud/setup-for-it.md): What IT, security, and platform admins do so a team can use Kestra Cloud: network access, SSO, cloud credentials, Git, and the security review.
 - [Kestra Cloud Compute](https://kestra.io/docs/enterprise/cloud/cloud-compute.md): Which task types use Kestra Cloud compute, what is measured per attempt, and how to bring your own runner.
 - [Kestra Cloud Task Runs](https://kestra.io/docs/enterprise/cloud/task-runs.md): What a task run is, which ones are counted toward Cloud usage, and how loops, subflows, and retries affect the count.
 - [Kestra Assets: Track the Resources Your Flows Read and Write](https://kestra.io/docs/enterprise/governance/assets.md): What assets are, how Kestra records lineage and usage when tasks declare inputs and outputs, ways to create assets, and a goal-to-page routing table for asset triggers, inventory, locks, and OpenLineage export
