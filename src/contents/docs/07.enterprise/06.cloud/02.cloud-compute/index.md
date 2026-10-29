@@ -189,4 +189,4 @@ Open the execution, select the task, and check its Outputs. A task that ran on t
 
 **Can a plugin update change whether a task type qualifies?**
 
-Yes, if the plugin adds or removes the `taskRunner` property on a task type. The list above is regenerated from the plugin schemas periodically. If a task must never move onto Cloud compute, set its `taskRunner` explicitly to your own infrastructure, or set one by Policy for the namespace: an explicit setting wins over the Cloud default, so a plugin change cannot move the work.
+Yes, if the plugin adds or removes the `taskRunner` property on a task type. The list above is regenerated from the plugin schemas periodically. If a task must never move onto Cloud compute, set its `taskRunner` explicitly to your own infrastructure, or set one by [Policy](../../02.governance/policies/index.md) for the namespace: an explicit setting wins over the Cloud default, so a plugin change cannot move the work.
