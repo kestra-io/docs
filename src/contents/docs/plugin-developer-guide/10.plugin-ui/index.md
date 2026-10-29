@@ -97,19 +97,20 @@ export const propsSchema = z.object({
     progress: progressEventSchema.array(),
     fetchOutputs: z.custom<(query?: { taskRunId?: string }) => Promise<Record<string, unknown>>>().optional(),
     fetchMetrics: z.custom<(query?: { page?: number; size?: number; sort?: string; taskRunId?: string }) => Promise<PagedResultsMetricEntry>>().optional(),
+    fetchEndpoint: z.custom<(name: string, params?: Record<string, string>, query?: { taskRunId?: string }) => Promise<unknown>>().optional(),
 })
 ```
 
 The core contract imports `Task`, `Execution`, and `PagedResultsMetricEntry` from `@kestra-io/kestra-sdk` for typing only. `@kestra-io/artifact-sdk` ships its own structural copies of these types, so your plugin doesn't depend on `@kestra-io/kestra-sdk`.
 
-<!-- TODO: on kestra develop, propsSchema also has `fetchEndpoint(name, params?, query?)` (kestra#21653),
-     which calls the plugin's own PluginEndpoint for the current task run. Document it with plugin endpoints
-     once eng confirms the release it ships in. It is not on releases/v2.1.x as of 2026-10-26. -->
+<!-- TODO: `fetchEndpoint` (kestra#21653) is on kestra develop but not on the releases/v2.1.x RC branch as of
+     2026-10-29. Confirm it is in 2.1 GA scope before publishing. -->
 
 
 - **`task`** is complete — the host merges the graph node's task with the same task parsed out of `source`, so you never need to fetch the flow definition to fill in properties missing from the execution-graph node.
 - **`tenant`** is the current tenant, so you don't need to read it from `localStorage` or resolve it yourself.
 - **`fetchOutputs(query?)`** and **`fetchMetrics(query?)`** are lazy fetchers, not values: calling them resolves the current task run's outputs/metrics (scoped to this task and tenant already), and a component that renders neither costs no request. Both accept an optional `taskRunId` to address one iteration of a looped task; outside an execution they resolve to `{}` / an empty page rather than being absent. See [Fetching outputs and metrics](#fetching-outputs-and-metrics) below.
+- **`fetchEndpoint(name, params?, query?)`** calls one of your plugin's own endpoints for the current task run. See [Running backend logic with plugin endpoints](#running-backend-logic-with-plugin-endpoints) below.
 
 Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. `progress` is covered in [Tracking live task progress](#tracking-live-task-progress) below.
 
@@ -169,9 +170,8 @@ This slot is the right choice when a task needs a rich detail view that goes bey
 
 ### `execution-artifact`
 
-<!-- TODO: kestra#21611 merged to kestra develop on 2026-10-23, after releases/v2.1.x was cut, and is not on
-     that branch as of 2026-10-26. Confirm with eng whether it is backported to 2.1 or ships in 2.2 before
-     this section is published. -->
+<!-- TODO: kestra#21611 merged to kestra develop on 2026-10-23 and is not on the releases/v2.1.x RC branch
+     as of 2026-10-29. The RC branch isn't the full 2.1 scope. Confirm it is in 2.1 GA scope before publishing. -->
 
 Renders in the **Artifacts** tab of an execution, next to **Overview**, **Gantt**, and **Logs**. Use it for a result that a user opens full size after a run, such as a model graph, a compiled query, or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
 
@@ -212,7 +212,7 @@ export async function getSubtitle({ fetchOutputs }) {
 </script>
 ```
 
-`getSubtitle` receives `{ task, execution, fetchOutputs, fetchMetrics }`. `fetchOutputs` and `fetchMetrics` accept an optional `taskRunId` and default to the latest run of the task. Return a string, or `undefined` to show only the description.
+`getSubtitle` receives `{ task, execution, fetchOutputs, fetchMetrics, fetchEndpoint }`. `fetchOutputs` and `fetchMetrics` accept an optional `taskRunId` and default to the latest run of the task. Return a string, or `undefined` to show only the description.
 
 :::alert{type="warning"}
 `@kestra-io/artifact-sdk` versions before 0.3.1 reject the `execution-artifact/<id>` slot name at build time. Use 0.3.1 or later.
@@ -404,9 +404,115 @@ Pass `taskRunId` to address one iteration of a looped task; omit it to let the h
 
 ## Calling the Kestra API
 
-**A new data need is a new slot prop, not a new SDK call.** An artifact renders what the host passes to it. The props above, `task`, `execution`, `tenant`, `fetchOutputs`, and `fetchMetrics`, already cover flow definitions, execution state, outputs, and metrics. No case remains where an artifact needs to call the Kestra REST API directly, including rendering task properties for display (see [Pebble expressions](#pebble-expressions-in-task-config) below). A direct call bypasses the permission scoping that the props provide and ties your component to internal API shapes. If your component needs data the props don't provide, the slot contract is missing a prop: raise that instead of working around it.
+**A new data need is a new slot prop, not a new SDK call.** An artifact renders what the host passes to it. The props above, `task`, `execution`, `tenant`, `fetchOutputs`, and `fetchMetrics`, already cover flow definitions, execution state, outputs, and metrics. For work that has to run on the server when the user asks for it, `fetchEndpoint` calls a [plugin endpoint](#running-backend-logic-with-plugin-endpoints). No case remains where an artifact needs to call the Kestra REST API directly, including rendering task properties for display (see [Pebble expressions](#pebble-expressions-in-task-config) below). A direct call bypasses the permission scoping that the props provide and ties your component to internal API shapes. If your component needs data the props don't provide, the slot contract is missing a prop: raise that instead of working around it.
 
 Don't add `@kestra-io/kestra-sdk` to your `ui/package.json`. The Kestra UI doesn't share it with plugin modules, and `@kestra-io/artifact-sdk` no longer depends on it or offers it in the scaffolder.
+
+## Running backend logic with plugin endpoints
+
+:::alert{type="warning"}
+Plugin endpoints are a preview, and the `PluginEndpoint` interface can still change.
+:::
+
+Outputs and metrics contain only what the task computed while it ran. Some data can't be prepared in advance, such as a file too large to store as an output, or one part of an execution's files that the user picks. For that data, the plugin can expose an **endpoint**: a Java class that Kestra runs on the server when it is called.
+
+Prefer task outputs whenever the value is known at the end of the task. Use an endpoint only for work that has to happen on demand.
+
+### Implement an endpoint
+
+Implement `PluginEndpoint` and annotate the class with `@Plugin`. Kestra discovers it the same way it discovers tasks and triggers.
+
+```java
+@Plugin
+public class HelloEndpoint implements PluginEndpoint {
+    @Override
+    public String name() {
+        return "hello";
+    }
+
+    @Override
+    public PluginEndpointResponse handle(PluginEndpointContext context) {
+        String name = context.param("name");
+        return PluginEndpointResponse.of(Map.of("message", "hello: " + name));
+    }
+}
+```
+
+- **`name()`** is a URL segment. It must be unique within a plugin JAR. When two endpoints share a name, Kestra logs a warning and keeps the first.
+- **`context.param(name)`** returns the first value of a query parameter, or `null`. `context.parameters()` returns all of them.
+- **`context.body()`** returns the JSON request body as a `Map<String, Object>`. It is empty for a `GET` call.
+- **`context.executionId()`** and **`context.taskRunId()`** identify the task run the endpoint was called for.
+- **`PluginEndpointResponse.of(object)`** serializes the object as JSON. **`PluginEndpointResponse.ofBytes(bytes, contentType)`** returns raw bytes. **`PluginEndpointResponse.ofFile(bytes, contentType, fileName)`** returns raw bytes with a download file name.
+
+The class must be a stateless singleton with a public no-argument constructor.
+
+### Read the task run from an endpoint
+
+The context gives access to the task run the endpoint was called for, and nothing beyond it:
+
+| Accessor | What it gives you |
+|---|---|
+| `context.logs()` | `find()` or `find(Level minLevel)` returns the task run's log entries. |
+| `context.outputs()` | `get()` returns the task run's outputs. A value can be a `kestra://` storage URI instead of inline data. |
+| `context.storage()` | `getFile`, `list`, `exists`, `putFile`, and `deleteFile` on the internal storage of the current execution. A URI outside that execution's storage, or one that uses `..`, is rejected with an `IllegalArgumentException`. |
+
+Use `context.storage()` to read a file that an output points to.
+
+### Call an endpoint from an artifact
+
+Call the endpoint with the `fetchEndpoint` prop. The host binds it to your plugin, the current execution, and the task's current run:
+
+```ts
+const props = defineProps<KnownSlotProps["topology-details"]>();
+
+const greeting = await props.fetchEndpoint?.("hello", { name: "kestra" });
+// { message: "hello: kestra" }
+```
+
+`fetchEndpoint(name, params?, query?)` sends a `GET` request with `params` as query parameters, and resolves to the response body. Pass `query.taskRunId` to call it for one iteration of a looped task. Outside an execution, it rejects instead of resolving to an empty result, so check `execution?.id` before calling it.
+
+The `topology-details` and `topology-task-drawer` slots receive `fetchEndpoint`, as do a `topology-task-modal` opened from a [`customAction`](#customaction) and the `execution-artifact` slot, including its `getSubtitle` export.
+
+### Call an endpoint over HTTP
+
+Kestra serves every endpoint at:
+
+```
+GET|POST /api/v1/{tenant}/plugins/{cls}/endpoints/{name}/{executionId}/{taskRunId}
+```
+
+`{cls}` is the fully qualified name of any plugin class in the same JAR as the endpoint, such as `io.kestra.plugin.example.Hello`. A `POST` call needs a JSON object body.
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  "http://localhost:8080/api/v1/main/plugins/io.kestra.plugin.example.Hello/endpoints/hello/$EXECUTION_ID/$TASKRUN_ID?name=kestra"
+```
+
+```json
+{"message":"hello: kestra"}
+```
+
+### What to expect
+
+| Situation | Result |
+|---|---|
+| In Enterprise Edition, the caller lacks the **FLOW** `EXECUTE` or the **EXECUTION** `VIEW` permission on the execution's namespace | `403` |
+| The execution or task run doesn't exist, no plugin has that class, or no endpoint has that name | `404` |
+| A `POST` call has no JSON body | `422` |
+| The request body is larger than the server limit (10 MiB by default, set with `kestra.plugins.endpoint.max-body-size`) | `413` |
+| `handle()` throws an exception | `500` with a generic message. Kestra writes the exception only to the server log. |
+| The response is JSON | Served inline |
+| The response is any other content type | Always served as a download (`Content-Disposition: attachment`, `X-Content-Type-Options: nosniff`), never rendered in the page |
+
+Kestra checks permissions before your code runs. Don't implement your own permission checks in `handle()`.
+
+To turn the feature off, set `kestra.plugins.endpoint.enabled: false`.
+
+### Limits
+
+- `handle()` has no access to secrets, the flow definition, other task runs, or other executions.
+- `handle()` runs synchronously on a web server thread, and there is no timeout yet. Keep it short and bounded, and never wait indefinitely on an external system.
+- A response has only a body, a content type, and an optional file name. You can't set a status code or headers, so invalid input and internal errors both return `500`.
 
 ## Pebble expressions in task config
 

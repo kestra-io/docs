@@ -183,6 +183,16 @@ kestra:
 - `default-version`: controls which plugin version is selected when no explicit version is pinned; accepts `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or a specific version string
 - `worker-access` (EE): controls how workers fetch managed plugin artifacts. Set to `CONTROLLER` when a worker runs with dedicated storage that differs from the deployment's. See [Dedicated-storage workers](../06.enterprise-and-advanced/index.md#dedicated-storage-workers).
 
+[Plugin endpoints](../../plugin-developer-guide/10.plugin-ui/index.md#running-backend-logic-with-plugin-endpoints) are configured under `kestra.plugins.endpoint`:
+
+```yaml
+kestra:
+  plugins:
+    endpoint:
+      enabled: true          # default; set to false to remove the endpoint API
+      max-body-size: 10485760 # default, in bytes; larger request bodies return 413
+```
+
 ## Execution behavior
 
 These settings affect how the platform behaves around tasks and executions globally. Use them for platform-wide operational defaults, not for flow-specific logic.
