@@ -6,7 +6,6 @@ import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
 import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
 import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
 import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
-import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
 import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
 import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
 import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
@@ -44,52 +43,31 @@ const dockerCommand = `docker run --pull=always --rm -it -p 8080:8080 --user=roo
   -v /tmp:/tmp \\
   kestra/kestra:latest-slim server local`
 
-/* Condensed from the proxmox-safe-patching blueprint, with the SSH step
- * swapped for the Ansible task. Keep the task types and properties valid. */
-const exampleFlow = `id: patch-proxmox-vm
-namespace: homelab.infra
-
-inputs:
-  - id: vm_name
-    type: STRING
-    defaults: docker-host-01
-
-triggers:
-  - id: monthly_window
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 3 1 * *"
+/* Kept short on purpose: the page shows the shape of a flow, the docs hold
+ * the details. Keep the task types and properties valid. */
+const exampleFlow = `id: new-lab-vm
+namespace: homelab
 
 tasks:
-  - id: snapshot
-    type: io.kestra.plugin.proxmox.snapshot.Create
-    host: "{{ secret('PROXMOX_HOST') }}"
-    node: pve
-    username: "{{ secret('PROXMOX_USERNAME') }}"
-    password: "{{ secret('PROXMOX_PASSWORD') }}"
-    vmName: "{{ inputs.vm_name }}"
-    snapName: "prepatch-{{ execution.id }}"
+  - id: provision
+    type: io.kestra.plugin.opentofu.cli.OpenTofuCLI
+    namespaceFiles:
+      enabled: true
+    commands:
+      - tofu init
+      - tofu apply -auto-approve
 
-  - id: patch
+  - id: configure
     type: io.kestra.plugin.ansible.cli.AnsibleCLI
     namespaceFiles:
       enabled: true
-    limit: "{{ inputs.vm_name }}"
     commands:
-      - ansible-playbook -i inventory.ini patch.yml
+      - ansible-playbook -i inventory.ini site.yml
 
-  - id: health_check
-    type: io.kestra.plugin.core.http.Request
-    uri: "https://{{ inputs.vm_name }}.lab.internal/health"
-
-errors:
-  - id: rollback
-    type: io.kestra.plugin.proxmox.snapshot.Rollback
-    host: "{{ secret('PROXMOX_HOST') }}"
-    node: pve
-    username: "{{ secret('PROXMOX_USERNAME') }}"
-    password: "{{ secret('PROXMOX_PASSWORD') }}"
-    vmName: "{{ inputs.vm_name }}"
-    snapName: "prepatch-{{ execution.id }}"`
+triggers:
+  - id: on_merge
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: change-me`
 
 const reasons = [
     {
@@ -112,27 +90,6 @@ const reasons = [
     },
 ]
 
-const steps = [
-    {
-        number: "01",
-        title: "Run it",
-        body: "One docker command, then open localhost:8080. Docker Compose with Postgres, rootless Podman and Kubernetes are documented too.",
-        wash: "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
-    },
-    {
-        number: "02",
-        title: "Start from a blueprint",
-        body: "Drain a Proxmox node with an approval, test a backup restore, patch behind a snapshot, apply Terraform from a repo. Or point a flow at your own playbook.",
-        wash: "radial-gradient(150% 170% at -20% 140%, rgba(99, 27, 255, 1) 0%, rgba(24, 227, 61, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
-    },
-    {
-        number: "03",
-        title: "Put it in Git",
-        body: "Sync your flows from a repository so every change goes through review, then move your cron jobs across one at a time.",
-        wash: "radial-gradient(130% 150% at -30% -30%, rgba(99, 27, 255, 1) 0%, rgba(24, 166, 227, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
-    },
-]
-
 const rows = [
     {
         from: "Cron jobs and systemd timers spread across hosts",
@@ -145,14 +102,6 @@ const rows = [
     {
         from: "terraform or tofu apply from a laptop or a CI job",
         to: "Plan, a pause for approval, then apply, against the state backend you already use",
-    },
-    {
-        from: "SSH in and follow the runbook",
-        to: "A flow with typed inputs that anyone on the team can launch",
-    },
-    {
-        from: "A webhook receiver held together with glue scripts",
-        to: "A webhook trigger that starts the flow",
     },
     {
         from: "Rundeck or Jenkins jobs stored in a database",
@@ -188,43 +137,23 @@ const enterprise = [
 const integrations = [
     {
         Glyph: HomelabIcon,
-        title: "Homelab and on-prem",
-        items: [
-            "Proxmox VE: VMs, snapshots, backups, migrations",
-            "KVM and Ceph",
-            "phpIPAM",
-            "SSH, SFTP and plain shell",
-        ],
+        title: "Virtualization",
+        items: ["Proxmox VE", "KVM", "Ceph", "Docker"],
     },
     {
         Glyph: IacIcon,
         title: "Infrastructure as code",
-        items: [
-            "Ansible, with Galaxy collections",
-            "Terraform and Terragrunt",
-            "OpenTofu",
-            "Helm",
-        ],
+        items: ["Terraform", "OpenTofu", "Ansible", "Helm"],
     },
     {
         Glyph: GitOpsIcon,
-        title: "Containers and GitOps",
-        items: [
-            "Docker",
-            "Kubernetes and Argo CD",
-            "GitHub and GitLab",
-            "Trivy and Snyk",
-        ],
+        title: "Kubernetes and Git",
+        items: ["Kubernetes", "Argo CD", "GitHub", "GitLab"],
     },
     {
         Glyph: CloudIcon,
-        title: "Cloud and notifications",
-        items: [
-            "AWS, Azure and Google Cloud",
-            "Cloudflare",
-            "Slack, Discord and Telegram",
-            "Prometheus and Grafana",
-        ],
+        title: "Cloud and alerts",
+        items: ["AWS", "Azure", "Google Cloud", "Slack"],
     },
 ]
 
@@ -267,14 +196,6 @@ const faqItems = [
     {
         question: "Kestra, Semaphore, AWX or Rundeck?",
         answer: "Semaphore and AWX put a UI on running playbooks and infrastructure jobs, and Rundeck runs jobs and runbooks. Kestra chains the steps around them: take a Proxmox snapshot, run the playbook, apply OpenTofu, call a webhook, wait for an approval, all in one versioned YAML file with triggers and retries. You can also call your existing jobs from a flow and move them across later.",
-    },
-    {
-        question: "Can I keep my flows in Git?",
-        answer: "Yes. The Git plugin syncs flows and namespace files from a repository and can push changes made in the UI back to it. Teams that deploy from CI use the Kestra CLI, the API or the Terraform provider.",
-    },
-    {
-        question: "Do I need Kubernetes?",
-        answer: "No. Kestra runs on a single VM or a laptop with Docker. Kubernetes is supported and common at scale, not a requirement.",
     },
     {
         question: "I run Kestra 1.x. How do I upgrade to 2.0?",
@@ -325,24 +246,16 @@ const faqItems = [
                 <div class="copy">
                     <h2>One flow, start to finish</h2>
                     <p>
-                        Snapshot a Proxmox VM, patch it with your own playbook,
-                        check that it answers, and roll back to the snapshot if
-                        anything fails. Once a month, in a maintenance window,
-                        with every run logged.
+                        A merge calls the webhook, OpenTofu builds the VM, and
+                        your Ansible playbook configures it. Every run is
+                        logged, and a failed step can retry or alert you.
                     </p>
-                    <p>
-                        The playbook and inventory live next to the flow as
-                        namespace files. Credentials stay secrets.
-                    </p>
-                    <a href="/blueprints/proxmox-safe-patching"
-                        >See the full blueprint</a
-                    >
                 </div>
                 <div class="code">
                     <Snippets
                         code={exampleFlow}
                         lang="yaml"
-                        expandThreshold={60}
+                        expandThreshold={30}
                         noCollapse
                     />
                 </div>
@@ -353,11 +266,6 @@ const faqItems = [
             sub="Nothing is rewritten up front. Each piece moves when you are ready."
             fromLabel="Today"
             {rows}
-        />
-        <Migration
-            heading="From docker run to your first real flow"
-            sub="Kestra runs next to your cron jobs and scripts for as long as you need them."
-            {steps}
         />
         <section class="editions">
             <h2>What's free, and what isn't</h2>
@@ -391,7 +299,7 @@ const faqItems = [
         <Faq items={faqItems} />
         <ClosingBanner
             heading="Run your first infra flow"
-            sub="Free, open source and self-hosted. One command, then a blueprint."
+            sub="Free, open source and self-hosted. One command, then your first flow."
             cta={{ text: "Read the quickstart", href: "/docs/quickstart" }}
             reassurance="Apache 2.0. Your infrastructure, your data."
         />
