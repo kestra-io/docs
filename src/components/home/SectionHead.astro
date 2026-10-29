@@ -42,9 +42,10 @@ const { id, eyebrow, align = "center" } = Astro.props
 
     h2 {
         margin: 0;
-        font-size: clamp(2rem, 4vw, 2.75rem);
-        font-weight: 600;
-        letter-spacing: -0.015em;
+        // The homepage's one h2 scale, as in the control plane block.
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        font-weight: 500;
+        letter-spacing: -0.02em;
         line-height: 1.1;
         color: var(--ks-content-primary);
     }

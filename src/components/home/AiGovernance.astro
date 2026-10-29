@@ -132,8 +132,8 @@ const icons = await Promise.all(
     {/* The About us pixel art, as in the blocks above. */}
     <PixelEdges left="wide" right="tall" />
     {
-        /* The rails sit inside container-xl, on the same lines as the
-    control plane block's above. */
+        /* Full width and dark, like the hero; the rails sit inside
+    container-xl, on the same lines as the control plane block's above. */
     }
     <div class="container-xl">
         <div class="rails">
@@ -167,7 +167,6 @@ const icons = await Promise.all(
                 <div class="planet" aria-hidden="true">
                     <span class="atmosphere"></span>
                     <span class="limb"></span>
-                    <span class="limb glow"></span>
                 </div>
                 <div class="console" aria-hidden="true">
                     {/* The agent at work, as the panel's header. */}
@@ -270,7 +269,7 @@ const icons = await Promise.all(
                                         fallback={task.fallback}
                                         status="success"
                                         duration={task.duration}
-                                        style={`width: 330px; ${slot(idx)}`}
+                                        style={`width: 100%; ${slot(idx)}`}
                                         data-task={idx}
                                     >
                                         {idx === 0 && (
@@ -586,6 +585,43 @@ const icons = await Promise.all(
         color: var(--text);
     }
 
+    // The section is dark in both themes: the pixels take their dark-theme
+    // tint.
+    .ai-governance :global(.pixel-edges) {
+        --pixel: rgba(167, 150, 255, 0.07);
+    }
+
+    // Hairline rails down the sides, on the control plane block's lines.
+    // The inset is the hero's and the control plane's, so the panels start
+    // on the same line as their copy.
+    .rails {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        padding-top: clamp(4rem, 6vw, 5.5rem);
+
+        // Drawn as lines over the content, so the planet never covers them.
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: 3;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        &::before {
+            left: 0;
+        }
+
+        &::after {
+            right: 0;
+        }
+    }
+
     // The planet: a disc wider than the page, centred, its top just above
     // the panels so its limb arcs over them and down behind them. Static,
     // so it costs nothing while the story plays.
@@ -600,10 +636,10 @@ const icons = await Promise.all(
         aspect-ratio: 1;
         translate: -50% 0;
         border-radius: 50%;
-        // The night side, a shade above the section's black.
+        // The night side stays dark: the colour is all in the sky above.
         background: radial-gradient(
             60% 22% at 50% 0%,
-            #191a24,
+            #15151d,
             #0e0e13 70%,
             var(--bg)
         );
@@ -627,12 +663,13 @@ const icons = await Promise.all(
         background: conic-gradient(
             from -90deg,
             transparent 0deg,
-            #166fd6 40deg,
-            #2188ff 62deg,
-            #daebff 82deg,
+            #1f6fe0 36deg,
+            #4a9bff 58deg,
+            #cfe2ff 78deg,
             #ffffff 90deg,
-            #beb9ff 102deg,
-            #2075d7 130deg,
+            #e4ddff 100deg,
+            #b8adff 114deg,
+            #3d8bff 136deg,
             transparent 180deg
         );
         mask:
@@ -643,89 +680,44 @@ const icons = await Promise.all(
             ),
             linear-gradient(#000, transparent 36%);
         mask-composite: intersect;
-
-        // The same ring, wider and blurred: the atmosphere glowing on both
-        // sides of the edge. The box overscans by 60px so the glow outside
-        // the disc is not cut off; the ring stays on the disc's edge.
-        &.glow {
-            inset: -60px;
-            filter: blur(16px);
-            mask:
-                radial-gradient(
-                    farthest-side,
-                    transparent calc(100% - 110px),
-                    #000 calc(100% - 64px),
-                    #000 calc(100% - 56px),
-                    transparent calc(100% - 15px)
-                ),
-                linear-gradient(#000, transparent 30%);
-            mask-composite: intersect;
-        }
     }
 
-    // Light scattered above the limb, and the one touch of violet, faint.
+    // The sky over the planet, as in the reference: it hugs the arc,
+    // lavender at the limb and azure higher up, and fades into the black
+    // above and down both sides. It sits under the disc, which hides the
+    // part inside the limb.
     .atmosphere {
         position: absolute;
-        left: 50%;
-        top: -6rem;
-        width: 80rem;
-        height: 30rem;
-        translate: -50% 0;
-        background:
-            radial-gradient(
-                50% 50% at 50% 60%,
-                rgba(33, 136, 255, 0.2),
-                transparent 70%
-            ),
-            radial-gradient(
-                40% 60% at 50% 70%,
-                rgba(132, 5, 255, 0.1),
-                transparent 70%
-            );
-    }
-
-    // The section is dark in both themes: the pixels take their dark-theme
-    // tint.
-    .ai-governance :global(.pixel-edges) {
-        --pixel: rgba(167, 150, 255, 0.07);
-    }
-
-    // Hairline rails down the sides, like the blocks above.
-    .rails {
-        position: relative;
-        padding-block: 7rem 0;
-
-        // Drawn as lines over the content, so the planet never covers them.
-        &::before,
-        &::after {
-            content: "";
-            position: absolute;
-            z-index: 3;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background: var(--line);
-            pointer-events: none;
-        }
-
-        &::before {
-            left: 0;
-        }
-
-        &::after {
-            right: 0;
-        }
-
-        @include media-breakpoint-down(md) {
-            padding-top: 4.5rem;
-        }
+        z-index: -1;
+        inset: -20rem;
+        border-radius: 50%;
+        // Drawn without blur: a bright band hugging the limb, then the
+        // lavender, a touch of Kestra violet and the azure of the reference, so the horizon stays crisp
+        // and nothing spills grey onto the night side.
+        background: radial-gradient(
+            circle closest-side,
+            transparent calc(100% - 20rem),
+            rgba(255, 255, 255, 0.85) calc(100% - 20rem + 1px),
+            rgba(226, 220, 255, 0.55) calc(100% - 19.25rem),
+            rgba(160, 120, 255, 0.4) calc(100% - 17.5rem),
+            rgba(132, 5, 255, 0.24) calc(100% - 14.5rem),
+            rgba(50, 125, 240, 0.22) calc(100% - 11rem),
+            rgba(30, 90, 210, 0.1) calc(100% - 7rem),
+            transparent calc(100% - 2rem)
+        );
+        mask: linear-gradient(#000 4%, transparent 38%);
     }
 
     .head {
         position: relative;
         max-width: 50rem;
-        // Room for the planet's limb between the copy and the panels.
+        // Room for the planet's limb between the copy and the panels; none
+        // on a phone, where the planet is not drawn.
         margin: 0 auto 11rem;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 3rem;
+        }
         padding-inline: 1.5rem;
         text-align: center;
     }
@@ -744,10 +736,11 @@ const icons = await Promise.all(
 
     h2 {
         margin: 0;
-        font-size: clamp(2.25rem, 4.6vw, 3.75rem);
+        // The homepage's one h2 scale, as in the control plane block.
+        font-size: clamp(2rem, 3.6vw, 3rem);
         font-weight: 500;
-        letter-spacing: -0.025em;
-        line-height: 1.06;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
         color: var(--text);
         text-wrap: balance;
 
@@ -774,7 +767,7 @@ const icons = await Promise.all(
         grid-template-columns: minmax(0, 1fr) 12rem minmax(0, 1fr);
         align-items: stretch;
         margin: 0;
-        padding: 0 clamp(1rem, 3vw, 2.5rem) 2.5rem;
+        padding: 0 var(--inset) 2.5rem;
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
@@ -1295,6 +1288,8 @@ const icons = await Promise.all(
 
     .step {
         position: relative;
+        // Wider than the topology's nodes, but never past the panel.
+        width: min(330px, 100%);
 
         // Dashed edge down from the task above, past its pills.
         & + &::before {
@@ -1389,7 +1384,7 @@ const icons = await Promise.all(
     // hanging from the gate's beam.
     .ledger {
         position: relative;
-        margin: 0 clamp(1rem, 3vw, 2.5rem);
+        margin: 0 var(--inset);
         border: 1px solid var(--panel-border);
         border-radius: 0.875rem;
         background: var(--panel);
@@ -1430,10 +1425,12 @@ const icons = await Promise.all(
     .control {
         position: relative;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        // Icon, name and tag on one line, the detail under the name.
+        grid-template-columns: auto minmax(0, 1fr) auto;
         align-content: start;
-        gap: 0.375rem 1rem;
-        padding: 1.5rem 1.75rem 1.75rem;
+        align-items: center;
+        gap: 0.375rem 0.75rem;
+        padding: 1.375rem 1.75rem 1.5rem;
         transition:
             opacity 0.5s ease,
             transform 0.5s ease;
@@ -1466,10 +1463,8 @@ const icons = await Promise.all(
         }
 
         :global(.control-icon) {
-            grid-column: 1 / -1;
             width: 1.25rem;
             height: 1.25rem;
-            margin-bottom: 1rem;
             color: var(--muted);
         }
 
@@ -1479,7 +1474,7 @@ const icons = await Promise.all(
         }
 
         p {
-            grid-column: 1;
+            grid-column: 2 / -1;
             margin: 0;
             font-size: 0.875rem;
             line-height: 1.5;
@@ -1488,15 +1483,20 @@ const icons = await Promise.all(
 
         // The waiting and resumed tags share one cell.
         .state {
-            grid-column: 2;
-            grid-row: 2;
-            align-self: center;
+            grid-column: 3;
+            grid-row: 1;
             justify-self: end;
         }
 
         // Resumed, its thread turns green with its tag.
         &:has(.resumed.on) {
             --tone: var(--success);
+        }
+
+        // The waiting and resumed tags swap at every width, even where the
+        // controls themselves stay lit.
+        .playing ~ * & .state[data-at]:not(.on) {
+            opacity: 0;
         }
 
         // Without the story playing, the approval is already given.
@@ -1564,7 +1564,7 @@ const icons = await Promise.all(
 
         ul {
             display: block;
-            min-height: 7.5rem;
+            min-height: 6.25rem;
             margin: 0;
             padding: 0;
             list-style: none;
@@ -1668,7 +1668,7 @@ const icons = await Promise.all(
 
     .foot {
         position: relative;
-        padding: 2.5rem clamp(1rem, 3vw, 2.5rem) 5.5rem;
+        padding: 2rem var(--inset) 3.5rem;
         text-align: center;
     }
 

@@ -13,6 +13,8 @@ import acxiom from "~/assets/companies/acxiom.svg?raw"
 import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
 import councilOfEurope from "~/components/enterprise/assets/logos/COE.svg?raw"
 import itzbund from "~/components/enterprise/assets/logos/ITZ.svg?raw"
+import apple from "~/contents/customer-stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra/logo.svg?raw"
+import gorgias from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
 import { getCollection } from "astro:content"
 import { toSlug } from "~/utils/stories"
 
@@ -29,6 +31,10 @@ const crop = (svg: string, viewBox: string) => {
         .replace(/<svg([^>]*?) width="[^"]+"/, `<svg$1 width="${w}"`)
         .replace(/<svg([^>]*?) height="[^"]+"/, `<svg$1 height="${h}"`)
 }
+
+// Some logo files have no viewBox, so they cannot scale: give them one.
+const framed = (svg: string, viewBox: string) =>
+    svg.replace("<svg ", `<svg viewBox="${viewBox}" `)
 
 // Logos in brand colors or shades of gray: every fill takes the text color.
 // Masks keep their own fills, or they would hide the drawing.
@@ -57,6 +63,12 @@ const CUSTOMERS: {
         height: 20,
         story: "JPMorgan Chase",
     },
+    {
+        name: "Apple",
+        svg: mono(framed(apple, "0 0 842.32007 1000.0001")),
+        height: 30,
+        story: "Apple",
+    },
     { name: "Bloomberg", svg: mono(bloomberg), height: 34 },
     { name: "Amdocs", svg: mono(amdocs), height: 22, story: "Amdocs" },
     { name: "T-Systems", svg: tsystems, height: 20 },
@@ -80,12 +92,20 @@ const CUSTOMERS: {
         svg: crop(mono(councilOfEurope), "29 6.5 76.6 61.7"),
         height: 42,
     },
+    { name: "Gorgias", svg: mono(gorgias), height: 22, story: "Gorgias" },
     {
         name: "ITZBund",
         svg: crop(flat(itzbund), "25.3 11.3 85.3 52.4"),
         height: 38,
     },
 ]
+
+interface Props {
+    /** Melissa's line, shown in the grid's first row. */
+    label: string
+}
+
+const { label } = Astro.props
 
 const stories = await getCollection("customerStories")
 const storyHref = (company?: string) => {
@@ -95,6 +115,7 @@ const storyHref = (company?: string) => {
 ---
 
 <ul class="logos" aria-label="Customers">
+    <li class="label">{label}</li>
     {
         CUSTOMERS.map((c) => {
             const href = storyHref(c.story)
@@ -123,22 +144,44 @@ const storyHref = (company?: string) => {
 </ul>
 
 <style lang="scss">
-    // A grid of hairline cells, two rows of six, as on About us.
+    // A grid of hairline cells on the same columns as the hero's key facts
+    // strip: seven across. A first row frames
+    // the label, then two rows of logos end on the link to every story.
     .logos {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(7, minmax(0, 1fr));
         margin: 0;
         padding: 0;
         list-style: none;
+        // Rule on the left too, on the control plane block's rail below.
         border-top: 1px solid var(--ks-border-primary);
         border-left: 1px solid var(--ks-border-primary);
 
         @include media-breakpoint-down(lg) {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
         @include media-breakpoint-down(md) {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        // Melissa's line, framed in a row of its own.
+        .label {
+            grid-column: 1 / -1;
+            height: auto;
+            padding: 2rem 1.25rem;
+            // Set like a caption in the product: monospace capitals,
+            // spaced out.
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ks-content-tertiary);
+
+            &:hover {
+                background: none;
+            }
         }
 
         li {
@@ -173,6 +216,9 @@ const storyHref = (company?: string) => {
                 width: auto;
                 max-width: 136px;
                 height: 100%;
+                // Some drawings run past their viewBox (the J.P.Morgan
+                // descender): let them show.
+                overflow: visible;
             }
         }
 
@@ -196,29 +242,40 @@ const storyHref = (company?: string) => {
         }
 
         // Customers with a story show a small button when pointed at.
+        // In the cell's top right corner, a button without border shaped
+        // like Contact Sales in the menu, but white so it reads on the grey
+        // of the hovered cell.
         .story {
             position: absolute;
-            left: 50%;
-            bottom: 0.75rem;
-            padding: 0.125rem 0.5rem;
-            border-radius: 999px;
-            border: 1px solid var(--ks-border-secondary);
-            background: var(--ks-background-body);
-            font-size: $font-size-xs;
-            font-weight: 600;
+            top: 0.625rem;
+            right: 0.625rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+            font-size: 0.75rem;
+            font-weight: 500;
             color: var(--ks-content-primary);
             text-decoration: none;
             white-space: nowrap;
             opacity: 0;
-            transform: translate(-50%, 4px);
+            transform: translateY(-4px);
             transition:
                 opacity 0.2s ease,
                 transform 0.2s ease,
-                border-color 0.2s ease;
+                background-color 0.2s ease;
+
+            :global(html.dark) & {
+                background: #2a2a33;
+            }
 
             &:hover,
             &:focus-visible {
-                border-color: var(--ks-content-primary);
+                background: #f4f4f6;
+
+                :global(html.dark) & {
+                    background: #34343e;
+                }
             }
 
             // On touch screens the whole cell opens the story; a small arrow
@@ -249,7 +306,7 @@ const storyHref = (company?: string) => {
         li:hover .story,
         .story:focus-visible {
             opacity: 1;
-            transform: translate(-50%, 0);
+            transform: none;
         }
     }
 </style>

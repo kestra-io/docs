@@ -24,10 +24,13 @@ const KEY_FACTS = [
 }
 <section class="home-hero" aria-labelledby="hero-title">
     <PixelEdges left="tall" right="wide" />
-    {/* container-xl, like the menu, so the frame lines up with its edges. */}
-    <div class="container-xl">
-        {/* The frame stands in for the hero visual until it is ready. */}
-        <div class="frame surface-dark">
+    {
+        /* Full width and dark, like the AI block further down; the copy sits
+    in container-xl, on the page's text line. The frame stands in for the
+    hero visual until it is ready. */
+    }
+    <div class="frame surface-dark">
+        <div class="container-xl">
             <div class="intro">
                 <div class="copy">
                     <h1 id="hero-title">
@@ -48,67 +51,100 @@ const KEY_FACTS = [
                         <a href="/demo" class="btn-ghost">Book a demo</a>
                     </div>
                 </div>
-                <ul class="key" aria-label="Kestra at a glance">
-                    {
-                        KEY_FACTS.map((fact, idx) => (
-                            <li style={`--i: ${idx}`}>
-                                <span class="state" aria-hidden="true">
-                                    <Icon name="mdi:loading" class="running" />
-                                    <Icon
-                                        name="mdi:check-circle-outline"
-                                        class="success"
-                                    />
-                                </span>
-                                {fact}
-                            </li>
-                        ))
-                    }
-                </ul>
             </div>
         </div>
+        {
+            /* The key facts, a strip of cells across the frame's foot, full width. */
+        }
+        <ul class="key" aria-label="Kestra at a glance" data-key-facts>
+            {
+                KEY_FACTS.map((fact, idx) => (
+                    <li style={`--i: ${idx}`}>
+                        <span class="bar" aria-hidden="true" />
+                        {fact}
+                    </li>
+                ))
+            }
+        </ul>
     </div>
-    {/* The customers, on the page under the frame. */}
-    <div class="customers container-xl">
-        <p class="customers-label">Companies running Kestra in production</p>
-        <CustomerLogos />
+    {
+        /* The customers under the frame, full width, on the key facts' columns. */
+    }
+    <div class="customers">
+        <CustomerLogos label="Companies running Kestra in production" />
     </div>
 </section>
 
+<script>
+    // The key facts run on arrival, then again every few seconds while the
+    // strip is in view. Without JavaScript they simply show, lit.
+    const REPLAY_MS = 9000
+
+    function loopKeyFacts() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        for (const strip of document.querySelectorAll<HTMLElement>(
+            "[data-key-facts]:not([data-looping])",
+        )) {
+            strip.dataset.looping = "true"
+            const run = () => {
+                strip.classList.remove("running")
+                void strip.offsetWidth
+                strip.classList.add("running")
+            }
+            let visible = false
+            new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting && !visible) run()
+                visible = entry.isIntersecting
+            }).observe(strip)
+            setInterval(() => {
+                if (visible && !document.hidden) run()
+            }, REPLAY_MS)
+        }
+    }
+
+    document.addEventListener("astro:page-load", loopKeyFacts)
+    loopKeyFacts()
+</script>
+
 <style lang="scss">
-    // One rounded dark frame as wide as the menu, a little below it, with
-    // the copy at its bottom left over a row of key facts; the customers
-    // follow on the page.
+    // One dark frame across the page under the menu, with the copy at its
+    // bottom left over a row of key facts; the customers follow on the
+    // page.
     .home-hero {
         position: relative;
-        padding-top: 0.75rem;
         background: var(--ks-background-body);
     }
 
     .frame {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
         position: relative;
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
-        min-height: min(66vh, 640px);
-        padding-top: clamp(2.5rem, 6vw, 4.5rem);
-        border-radius: 0.875rem;
+        // Most of the first screen; the copy sits centred in the space
+        // above the key facts strip.
+        min-height: min(86vh, 860px);
+        // Square, edge to edge: a global .frame rule rounds it otherwise.
+        border-radius: 0;
         overflow: hidden;
+        // Black to grey only, no colour: a faint light from the top right.
         background:
             radial-gradient(
                 90% 80% at 85% 10%,
-                rgba(132, 5, 255, 0.28),
+                rgba(255, 255, 255, 0.06),
                 transparent 60%
             ),
-            radial-gradient(
-                60% 60% at 10% 100%,
-                rgba(31, 155, 243, 0.12),
-                transparent 70%
-            ),
-            #0b0c10;
+            #0d0d0f;
         color: #ffffff;
 
         @include media-breakpoint-down(md) {
-            min-height: 520px;
+            min-height: 560px;
+        }
+
+        > .container-xl {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
         }
     }
 
@@ -251,122 +287,174 @@ const KEY_FACTS = [
         }
     }
 
-    // Key facts along the bottom of the copy.
+    // Key facts as the frame's foot: a strip of hairline cells across the
+    // container, its top rule running edge to edge. They light up one after
+    // the other, like a run: a white bar fills each cell's top edge, then
+    // settles into the rule, and the label brightens.
     .key {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem 1.75rem;
-        margin: 2.5rem 0 0;
+        --run: 0.35s;
+        --rule: rgba(255, 255, 255, 0.12);
+
+        position: relative;
+        display: grid;
+        // Seven across, on the same columns as the customer logos below.
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        margin: 0;
         padding: 0;
         list-style: none;
 
-        // Each fact runs like a task: a spinner, then a success check,
-        // one after the other.
-        li {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.75);
-            animation: fact-in 0.4s ease both;
-            animation-delay: calc(0.5s + var(--i) * 0.22s);
+        // The top rule, across the whole frame.
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--rule);
         }
 
-        .state {
-            position: relative;
-            display: inline-grid;
-            width: 14px;
-            height: 14px;
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
 
-            :global(svg) {
-                grid-area: 1 / 1;
-                width: 14px;
-                height: 14px;
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        li {
+            position: relative;
+            padding: 1.375rem 1rem;
+            font-size: 0.875rem;
+            text-align: center;
+            font-weight: 500;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.85);
+
+            border-left: 1px solid var(--rule);
+
+            &:first-child {
+                border-left: 0;
+            }
+
+            @include media-breakpoint-between(md, lg) {
+                &:nth-child(4n + 1) {
+                    border-left: 0;
+                }
+
+                &:nth-child(n + 5) {
+                    border-top: 1px solid var(--rule);
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                &:nth-child(odd) {
+                    border-left: 0;
+                }
+
+                &:nth-child(n + 3) {
+                    border-top: 1px solid var(--rule);
+                }
             }
         }
 
-        .running {
-            color: #9869f7;
-            animation:
-                spin 0.6s linear infinite,
-                fact-out 0.15s ease forwards;
-            animation-delay: 0s, calc(0.8s + var(--i) * 0.22s);
+        // On hover a cell lights its top edge with a soft glow, like the
+        // run that lit it.
+        li:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+
+            .bar {
+                opacity: 1;
+                transform: none;
+                box-shadow: 0 0 12px 1px rgba(255, 255, 255, 0.55);
+                animation: none;
+            }
         }
 
-        .success {
-            color: #06f0b1;
-            opacity: 0;
-            animation: fact-check 0.25s ease forwards;
-            animation-delay: calc(0.8s + var(--i) * 0.22s);
+        li {
+            transition:
+                background-color 0.25s ease,
+                color 0.25s ease;
+        }
+
+        .bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #ffffff;
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        // A run: the script adds this class on arrival, then again every
+        // few seconds while the strip is in view.
+        &.running {
+            li {
+                color: rgba(255, 255, 255, 0.4);
+                animation: fact-lit 0.4s ease forwards;
+                animation-delay: calc(0.6s + (var(--i) + 1) * var(--run));
+            }
+
+            .bar {
+                animation:
+                    fact-run var(--run) linear forwards,
+                    fact-done 0.6s ease forwards;
+                animation-delay:
+                    calc(0.6s + var(--i) * var(--run)),
+                    calc(0.6s + (var(--i) + 1) * var(--run));
+            }
+
+            li:hover .bar {
+                animation: none;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
             li,
-            .running,
-            .success {
+            .bar {
                 animation: none;
             }
 
-            .running {
+            li {
+                color: rgba(255, 255, 255, 0.85);
+            }
+
+            .bar {
                 display: none;
             }
-
-            .success {
-                opacity: 1;
-            }
-        }
-
-        @include media-breakpoint-down(md) {
-            gap: 0.375rem 1.25rem;
-            margin-top: 2rem;
         }
     }
 
-    @keyframes fact-in {
-        from {
-            opacity: 0;
-            transform: translateY(4px);
+    @keyframes fact-run {
+        to {
+            transform: scaleX(1);
         }
     }
 
-    @keyframes fact-out {
+    @keyframes fact-done {
         to {
             opacity: 0;
         }
     }
 
-    @keyframes fact-check {
-        from {
-            opacity: 0;
-            transform: scale(0.6);
-        }
+    @keyframes fact-lit {
         to {
-            opacity: 1;
-            transform: none;
-        }
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
+            color: rgba(255, 255, 255, 0.85);
         }
     }
 
     // Melissa's label for the logo row.
     .intro {
-        padding: 0 clamp(1.5rem, 4vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem);
+        display: flex;
+        flex: 1;
+        align-items: center;
+        padding: clamp(3rem, 6vw, 5rem) var(--inset);
     }
 
     .customers {
-        margin-top: 2.5rem;
-    }
-
-    .customers-label {
-        margin: 0 0 1rem;
-        text-align: center;
-        font-size: 0.8125rem;
-        font-weight: 500;
-        color: var(--ks-content-tertiary);
+        margin-top: 0;
     }
 </style>
