@@ -220,9 +220,26 @@ export async function getSubtitle({ fetchOutputs }) {
 
 ### `asset-card-footer`
 
-Renders below an asset's card in the dependency graph. Unlike the other slots, it doesn't receive a task or an execution: it receives the asset's `assetId`, its `assetType`, the `metadata` that the producing task attached to it, and the current `tenant`. The contract is defined in [`ui/packages/slot-contracts/src/asset-card-footer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/asset-card-footer.ts) in Kestra core.
+Renders below an asset's card in the dependency graph. Use it for a short line that the card doesn't show, such as a row count, a freshness date, or a link to the source. The contract is defined in [`ui/packages/slot-contracts/src/asset-card-footer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/asset-card-footer.ts) in Kestra core.
 
-Set `footerHeight` in `additionalProperties` to the number of pixels the footer adds below a card. The graph reserves that space for every card at once, so rows stay aligned.
+Kestra picks the footer from the task type that produced the asset. Unlike the other slots, the component doesn't receive a task or an execution. It receives these props:
+
+- **`assetId`** is the asset's ID, as shown in the graph.
+- **`assetType`** is the asset's type. It is optional.
+- **`metadata`** holds everything the producing task attached to the asset, such as the keys a plugin emits through `Asset.metadata`.
+- **`tenant`** is the current tenant, so a component that bundles its own SDK copy doesn't have to guess it.
+
+Set `footerHeight` in `additionalProperties` to the height of your component in pixels. The graph reserves that space for every card at once, so rows stay aligned. A graph with no footer keeps the compact card.
+
+```ts
+"table.Sync": [
+  {
+    slotName: "asset-card-footer",
+    path: "./src/components/TableSyncAssetCardFooter.vue",
+    additionalProperties: { footerHeight: 24 },
+  },
+],
+```
 
 Assets are available in Enterprise Edition and Kestra Cloud. For how plugins write asset metadata and how this slot displays it, see [Plugin artifacts and assets](../../06.concepts/plugin-artifacts-vs-assets/index.md).
 

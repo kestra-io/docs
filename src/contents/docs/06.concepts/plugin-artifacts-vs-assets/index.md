@@ -65,6 +65,5 @@ An artifact displays the data Kestra passes to it, such as a task run's outputs 
      - plugin-dbt#350 (DbtCLI) and plugin-dbt#351 (dbt Cloud): run and test summaries in the topology
      - plugin-dbt emitting dbt-specific asset types instead of io.kestra.plugin.ee.assets.Table
      - kestra-ee#11726: dbt asset-card-footer artifact showing test status (dbtTestStatus, dbtTestsTotal, dbtTestsFailed)
-     - artifact-sdk#88: asset-card-footer published in the artifact SDK
      Show one DbtCLI run: the topology artifact for the run, and the footer on the model's asset card.
      Include screenshots of both. -->
