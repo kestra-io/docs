@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Generate a bot token
         id: bot-token
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
         with:
           client-id: ${{ secrets.GH_BOT_APP_ID }}
           private-key: ${{ secrets.GH_BOT_PRIVATE_KEY }}
@@ -26,7 +26,7 @@ jobs:
 
       - name: Check the author's repository role
         id: role
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           github-token: ${{ steps.bot-token.outputs.token }}
           script: |
@@ -42,7 +42,7 @@ jobs:
 
       - name: Welcome a first pull request
         if: github.event.action == 'opened' && steps.role.outputs.is-outsider == 'true'
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           # Kept out of the script itself: interpolated there, a backtick or ${ would break out and run as JS.
           OPENED_MESSAGE: |
@@ -90,7 +90,7 @@ jobs:
 
       - name: Congratulate on a first merged pull request
         if: github.event.action == 'closed' && steps.role.outputs.is-outsider == 'true'
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           # Kept out of the script itself for the same reason as above: a backtick or ${ interpolated there would break out and run as JS.
           MERGED_MESSAGE: |
