@@ -101,7 +101,7 @@ const rows = [
     },
     {
         from: "terraform or tofu apply from a laptop or a CI job",
-        to: "Plan, a pause for approval, then apply, against the state backend you already use",
+        to: "Terraform and OpenTofu tasks that run your modules as they are, against the state backend you already use",
     },
     {
         from: "Rundeck or Jenkins jobs stored in a database",
@@ -157,6 +157,26 @@ const integrations = [
     },
 ]
 
+/* From the public customer stories on /stories. Unnamed people stay unnamed,
+ * as they are there. */
+const quotes = [
+    {
+        text: "Being used to Python orchestration frameworks, using Kestra has been refreshing! It works so well. I'm sticking to Kestra!",
+        person: "Rene Molenaar",
+        role: "Founder, NetworkLessons",
+    },
+    {
+        text: "Kestra turned automation into a governed platform instead of a collection of scripts.",
+        person: "Platform Engineering Lead",
+        role: "Cloud provider in a regulated industry",
+    },
+    {
+        text: "What used to take 6 months now takes 6 days with Kestra!",
+        person: "Principal Hosting",
+        role: "Fortune 500 manufacturer",
+    },
+]
+
 const ctaBullets = [
     {
         text: "We go through the requests and runbooks your team handles today.",
@@ -195,7 +215,7 @@ const faqItems = [
     },
     {
         question: "Kestra, Semaphore, AWX or Rundeck?",
-        answer: "Semaphore and AWX put a UI on running playbooks and infrastructure jobs, and Rundeck runs jobs and runbooks. Kestra chains the steps around them: take a Proxmox snapshot, run the playbook, apply OpenTofu, call a webhook, wait for an approval, all in one versioned YAML file with triggers and retries. You can also call your existing jobs from a flow and move them across later.",
+        answer: "Semaphore and AWX put a UI on running playbooks and infrastructure jobs, and Rundeck runs jobs and runbooks. Kestra chains the steps around them: take a Proxmox snapshot, run the playbook, call a webhook, post to Slack, all in one versioned YAML file with triggers and retries. You can also call your existing jobs from a flow and move them across later.",
     },
     {
         question: "I run Kestra 1.x. How do I upgrade to 2.0?",
@@ -217,9 +237,10 @@ const faqItems = [
                 scripts, <span class="grad grad-b">orchestrated</span> as code.
             </Fragment>
             <Fragment slot="lead">
-                Kestra is an open-source orchestrator: one YAML file per
-                workflow, versioned in Git, that runs what you already have with
-                schedules, webhooks, retries, approvals and logs.<br />
+                <span class="from" hidden></span>
+                Kestra is an open-source orchestrator: one YAML file per workflow,
+                versioned in Git, that runs what you already have with schedules,
+                webhooks, retries, approvals and logs.<br />
                 <strong
                     >Self-hosted, free, and your first flow runs in minutes.</strong
                 >
@@ -235,8 +256,40 @@ const faqItems = [
                 <a class="btn-call" href="#contact-sales">
                     Bringing it to work? Book a call
                 </a>
+                <a class="proof" href="https://github.com/kestra-io/kestra">
+                    30,000+ stars on GitHub · Apache 2.0
+                </a>
             </div>
         </Hero>
+        <script is:inline>
+            /* Name where the visitor comes from: a creator's video or a blog
+             * article. Creator links carry utm_source (youtube, linkedin or
+             * the blog's domain) and utm_content (who shares); the referrer
+             * is the fallback. Values are only matched, never written. */
+            ;(() => {
+                const params = new URLSearchParams(location.search)
+                const ref = document.referrer.toLowerCase()
+                const tag = [
+                    params.get("utm_source"),
+                    params.get("utm_content"),
+                    ref,
+                ]
+                    .join(" ")
+                    .toLowerCase()
+                const creator = /lempa/.test(tag)
+                    ? "Christian Lempa"
+                    : /devops.?toolbox|dotb|omer/.test(tag)
+                      ? "DevOps Toolbox"
+                      : null
+                const video = /youtube|youtu\.be/.test(tag)
+                const from = document.querySelector(".lp-hero .from")
+                if (!from || (!creator && !video)) return
+                from.textContent = video
+                    ? `Watched ${creator ? `${creator}'s video` : "the video"}? Run the same setup in one command.`
+                    : `Read ${creator ? `${creator}'s article` : "the article"}? Run the same setup in one command.`
+                from.hidden = false
+            })()
+        </script>
         <Platform
             heading="Built for the way you already work"
             cards={reasons}
@@ -282,6 +335,25 @@ const faqItems = [
                     <p class="label">Enterprise · Kestra for Infrastructure</p>
                     <ul>{enterprise.map((item) => <li>{item}</li>)}</ul>
                 </div>
+            </div>
+        </section>
+        <section class="quotes">
+            <div class="cards">
+                {
+                    quotes.map((quote) => (
+                        <figure>
+                            <blockquote>“{quote.text}”</blockquote>
+                            <figcaption>
+                                <strong>{quote.person}</strong>
+                                <span>{quote.role}</span>
+                            </figcaption>
+                        </figure>
+                    ))
+                }
+            </div>
+            <div class="actions">
+                <a class="btn-start" href="/docs/quickstart">Run it free</a>
+                <a class="btn-call" href="#contact-sales">Book a call</a>
             </div>
         </section>
         <Stack
@@ -342,17 +414,41 @@ const faqItems = [
         flex-direction: column;
         gap: 0.75rem;
         padding-top: 1.25rem;
+    }
 
-        a {
-            display: block;
-            min-height: 52px;
-            padding: 0.875rem 1.75rem;
-            border-radius: 8px;
-            font-size: 1.125rem;
-            font-weight: 700;
-            line-height: 1.2;
-            text-align: center;
-            text-decoration: none;
+    .btn-start,
+    .btn-call {
+        display: block;
+        min-height: 52px;
+        padding: 0.875rem 1.75rem;
+        border-radius: 8px;
+        font-size: 1.125rem;
+        font-weight: 700;
+        line-height: 1.2;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .proof {
+        padding-top: 0.25rem;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-sm;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        &:hover {
+            color: var(--lp-purple);
+        }
+    }
+
+    /* Shown only when the visit comes from a creator's video or article. */
+    .from {
+        display: block;
+        margin-bottom: 1rem;
+        color: #ffffff;
+        font-weight: 600;
+        &[hidden] {
+            display: none;
         }
     }
 
@@ -379,6 +475,60 @@ const faqItems = [
     .example,
     .editions {
         padding: 5rem 1rem;
+    }
+
+    .quotes {
+        padding: 0 1rem 5rem;
+        background-color: #ffffff;
+
+        .cards {
+            display: grid;
+            gap: 1rem;
+            max-width: 1140px;
+            margin-inline: auto;
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        figure {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.25rem;
+            margin: 0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background-color: var(--lp-bg-base);
+        }
+
+        blockquote {
+            margin: 0;
+            color: var(--lp-content-primary);
+            font-size: 1.125rem;
+            line-height: 1.45;
+        }
+
+        figcaption {
+            display: flex;
+            flex-direction: column;
+            color: var(--lp-content-secondary);
+            font-size: $font-size-sm;
+            strong {
+                color: var(--lp-content-primary);
+            }
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2.5rem;
+            a {
+                min-width: 220px;
+            }
+        }
     }
 
     .example {
