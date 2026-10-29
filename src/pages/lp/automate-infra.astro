@@ -35,14 +35,6 @@ const formProps = { submitLabel: "Book a 30-minute call" }
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-const dockerCommand = `docker run --pull=always --rm -it -p 8080:8080 --user=root \\
-  --name kestra \\
-  -v kestra_data:/app/storage \\
-  -v kestra_db:/app/data \\
-  -v /var/run/docker.sock:/var/run/docker.sock \\
-  -v /tmp:/tmp \\
-  kestra/kestra:latest-slim server local`
-
 /* Kept short on purpose: the page shows the shape of a flow, the docs hold
  * the details. Keep the task types and properties valid. */
 const exampleFlow = `id: new-lab-vm
@@ -231,7 +223,7 @@ const faqItems = [
 <Layout {title} {description} noindex bareChrome forceTheme="light">
     <div class="lp-workflow-orchestration">
         <LpHeader />
-        <Hero {routePath} formTitle="Start with one command">
+        <Hero {routePath} formTitle="Try it on your own infrastructure">
             <Fragment slot="title">
                 Your <span class="grad grad-a">Ansible</span>, OpenTofu and
                 scripts, <span class="grad grad-b">orchestrated</span> as code.
@@ -245,21 +237,17 @@ const faqItems = [
                 >
             </Fragment>
             <Fragment slot="form-sub">
-                Apache 2.0. Needs Docker, 2 vCPUs and 4 GiB of memory.
+                Free and open source. Runs on a laptop, a single VM or
+                Kubernetes.
             </Fragment>
             <div slot="form" class="start">
-                <Snippets code={dockerCommand} lang="bash" />
-                <a class="btn-start" href="/docs/quickstart">
-                    Read the quickstart
-                </a>
+                <a class="btn-start" href="/docs/quickstart">Get started free</a
+                >
                 <a class="btn-call" href="#contact-sales">
                     Bringing it to work? Book a call
                 </a>
                 <p class="proof">
-                    <a
-                        href="https://www.g2.com/products/kestra-technologies-kestra/reviews"
-                        >4.6/5 on G2</a
-                    > · <a href="https://github.com/kestra-io/kestra"
+                    <a href="https://github.com/kestra-io/kestra"
                         >30,000+ GitHub stars</a
                     > · Apache 2.0
                 </p>
