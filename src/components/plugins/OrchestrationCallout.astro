@@ -1,0 +1,59 @@
+---
+import type { OrchestrationLink } from "~/utils/plugins/orchestrationLinks"
+
+interface Props {
+    links: OrchestrationLink[]
+}
+
+const { links } = Astro.props
+---
+
+{
+    links.length > 0 && (
+        <aside class="orchestration-callout" aria-label="Orchestration guides">
+            {links.map((link) => (
+                <a href={`/orchestration/${link.slug}`} class="item">
+                    <span class="title">
+                        Orchestrate {link.toolName} with Kestra →
+                    </span>
+                    <span class="description">{link.description}</span>
+                </a>
+            ))}
+        </aside>
+    )
+}
+
+<style lang="scss">
+    .orchestration-callout {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin: 1rem 0 1.5rem;
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--ks-border-primary);
+            border-left: 3px solid var(--ks-content-color-highlight);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            background: var(--ks-background-secondary);
+
+            &:hover .title {
+                text-decoration: underline;
+            }
+        }
+
+        .title {
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+
+        .description {
+            font-size: 0.875rem;
+            color: var(--ks-content-secondary);
+        }
+    }
+</style>

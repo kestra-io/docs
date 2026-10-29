@@ -70,7 +70,7 @@ These limitations are why many teams look for higher-level orchestration platfor
 
 ## Orchestrating Kubernetes Jobs with Kestra: A Declarative Approach
 
-An orchestrator like Kestra uses Kubernetes as the place where steps run, and adds the workflow layer on top. For broader patterns, see [Kubernetes workflows](/resources/infrastructure/kubernetes-workflow).
+An orchestrator like Kestra uses Kubernetes as the place where steps run, and adds the workflow layer on top. For broader patterns, see [Kubernetes workflows](/resources/infrastructure/kubernetes-workflow); for the Kestra side, see [how Kestra runs Kubernetes jobs and deployments from a workflow](/orchestration/kubernetes).
 
 ### A Unified Control Plane for Kubernetes Workloads
 

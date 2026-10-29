@@ -282,6 +282,10 @@ faq:
 resources:
   title: "More on VMware and Kestra"
   items:
+    - kind: "resource"
+      title: "VMware automation: tools and approaches"
+      description: "From Aria Automation and VCF to SDKs, Ansible and orchestration platforms."
+      href: "/resources/infrastructure/vmware-automation"
     - kind: "blog"
       title: "Orchestrate VMware Without the Legacy Automation Layer"
       description: "The VMware plugin end to end: vSphere, vCenter, ESXi lifecycle, snapshots, templates, and event-based triggers."

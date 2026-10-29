@@ -15,6 +15,7 @@ import PluginSidebar from "~/components/plugins/sidebar/PluginSidebar.vue"
 import DefinitionView from "~/components/plugins/DefinitionView.astro"
 import SubgroupView from "~/components/plugins/SubgroupView.astro"
 import SimilarPlugins from "~/components/plugins/similar-plugins/SimilarPlugins.astro"
+import OrchestrationCallout from "~/components/plugins/OrchestrationCallout.astro"
 
 import { generatePageNames, recursivePages } from "~/utils/navigation"
 import { buildPluginPageProps } from "~/utils/plugins/buildPluginPageProps"
@@ -42,6 +43,7 @@ import {
     resolveVersionedShortElementSlug,
 } from "~/utils/plugins/shortElementSlug"
 import { subGroupName } from "~/utils/plugins/plugin"
+import { findOrchestrationLinks } from "~/utils/plugins/orchestrationLinks"
 import { slugify } from "~/utils/slugify"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
@@ -325,6 +327,13 @@ const subGroupFqcn = subGroup
       )?.subGroup
     : undefined
 const scopeElement = pluginType ?? subGroupFqcn
+const orchestrationLinks = await findOrchestrationLinks(
+    pluginEntries[0]?.group,
+    subGroupFqcn ??
+        (pluginType
+            ? pluginEntries.find((p) => p.subGroup && pluginType.startsWith(`${p.subGroup}.`))?.subGroup
+            : undefined),
+)
 
 let dropdownVersions = githubVersions
 if (scopeElement && githubVersions.versions?.length) {
@@ -474,6 +483,8 @@ const familyBreadcrumbListItems = pluginFamilyName
                     )
                 }
             </div>
+
+            <OrchestrationCallout links={orchestrationLinks} />
 
             {
                 pluginType && (pageWithToc.body as any)?.jsonSchema ? (
