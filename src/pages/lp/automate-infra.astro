@@ -246,7 +246,7 @@ const faqItems = [
 <Layout {title} {description} noindex bareChrome forceTheme="light">
     <div class="lp-workflow-orchestration">
         <LpHeader />
-        <Hero {routePath} formTitle="Try it on your own infrastructure">
+        <Hero {routePath} formTitle="Where will you run it?">
             <Fragment slot="title">
                 Your <span class="grad grad-a">Terraform</span>, Ansible and
                 scripts, in <span class="grad grad-b">one workflow</span>.
@@ -261,15 +261,26 @@ const faqItems = [
                 >
             </Fragment>
             <Fragment slot="form-sub">
-                Free and open source. Runs on a laptop, a single VM or
-                Kubernetes.
+                The same flows run on both, so nothing is rewritten when you
+                move.
             </Fragment>
             <div slot="form" class="start">
-                <a class="btn-start" href="/docs/quickstart">Get started free</a
-                >
-                <a class="btn-call" href="#contact-sales">
-                    Bringing it to work? Book a call
-                </a>
+                <div class="path">
+                    <p class="path-title">For yourself</p>
+                    <p class="path-sub">
+                        Open source and free, on a laptop, a VM or Kubernetes.
+                    </p>
+                    <a class="btn-start" href="/docs/quickstart"
+                        >Get started free</a
+                    >
+                </div>
+                <div class="path">
+                    <p class="path-title">For your team</p>
+                    <p class="path-sub">
+                        SSO, role-based access and audit logs, with support.
+                    </p>
+                    <a class="btn-call" href="#contact-sales">Book a call</a>
+                </div>
                 <p class="proof">
                     <a href="https://github.com/kestra-io/kestra"
                         >30,000+ GitHub stars</a
@@ -515,6 +526,27 @@ const faqItems = [
         flex-direction: column;
         gap: 0.75rem;
         padding-top: 1.25rem;
+    }
+
+    /* One box per path, so the free start and the Enterprise call each
+     * say who they are for. */
+    .path {
+        padding: 1rem;
+        border: 1px solid var(--lp-border-subtle);
+        border-radius: 8px;
+    }
+
+    .path-title {
+        margin: 0;
+        color: var(--lp-content-primary);
+        font-weight: 600;
+    }
+
+    .path-sub {
+        margin: 0.125rem 0 0.75rem;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-sm;
+        line-height: 1.4;
     }
 
     .btn-start,
