@@ -9,7 +9,7 @@ editions: ["Cloud"]
 
 Kestra Cloud is a fully managed Kestra instance run by the Kestra team. You build the pipelines; Kestra handles hosting, scaling, upgrades, SSO, and secrets.
 
-If your first flows need something from your IT team, such as access to a database behind your firewall, single sign-on, or a security review, forward them [Set up Kestra Cloud for your team](../04.setup-for-it/index.md) today. Those requests usually take longer than building the flow.
+If your first flows need something from your IT team, such as access to a database behind your firewall, single sign-on, or a security review, send your IT team the [IT setup guide](../04.setup-for-it/index.md) now. Those requests usually take longer than building the flow.
 
 ## Two places you'll work
 
