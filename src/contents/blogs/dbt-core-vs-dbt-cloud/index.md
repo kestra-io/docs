@@ -66,7 +66,7 @@ The decision between dbt Core and dbt Cloud hinges on several key trade-offs. He
 
 ### Infrastructure management and hosting
 
-- **dbt Core**: You manage everything. This includes provisioning the compute resources to run dbt, setting up Python environments, and maintaining the scheduler. Teams often manage this stack using [Infrastructure as Code](/resources/infrastructure/what-is-infrastructure-as-code) principles, treating dbt as one component in a larger self-managed ecosystem. The model offers maximum flexibility for complex [multi-cloud orchestration](/resources/infrastructure/multi-cloud-orchestration) or strict security environments, but it means higher operational overhead.
+- **dbt Core**: You manage everything. This includes provisioning the compute resources to run dbt, setting up Python environments, and maintaining the scheduler. Teams often manage this stack using [Infrastructure as Code](/resources/infrastructure/everything-as-code) principles, treating dbt as one component in a larger self-managed ecosystem. The model offers maximum flexibility for complex [multi-cloud orchestration](/resources/infrastructure/multi-cloud-orchestration) or strict security environments, but it means higher operational overhead.
 - **dbt Cloud**: It’s a fully managed SaaS platform. dbt Labs handles all the infrastructure, including hosting, scaling, and maintenance. This convenience allows your team to focus on analytics engineering rather than [infrastructure automation](/resources/infrastructure/automation).
 
 ### Development environment and tooling
@@ -132,7 +132,7 @@ Calculate the Total Cost of Ownership (TCO). For dbt Core, factor in the cost of
 
 ### Integration with existing data stack
 
-Where dbt sits in your end-to-end [data pipeline](/resources/data/data-pipeline) shapes the answer, and for most teams at scale, this factor alone determines the call. Do you need to trigger dbt jobs after an ingestion tool runs? Do you need to run [data quality](/resources/data/data-quality) checks or trigger a [reverse ETL](/resources/data/reverse-etl) sync after dbt models are updated? Your integration needs will influence whether a simple built-in scheduler is sufficient or if a more powerful, universal orchestrator is required. This is where a platform for [modern data engineers](/data) can unify your stack.
+Where dbt sits in your end-to-end [data pipeline](/resources/data/create-data-pipeline) shapes the answer, and for most teams at scale, this factor alone determines the call. Do you need to trigger dbt jobs after an ingestion tool runs? Do you need to run [data quality](/resources/data/data-quality) checks or trigger a [reverse ETL](/resources/data/reverse-etl) sync after dbt models are updated? Your integration needs will influence whether a simple built-in scheduler is sufficient or if a more powerful, universal orchestrator is required. This is where a platform for [modern data engineers](/data) can unify your stack.
 
 ## How Kestra complements both dbt Core and dbt Cloud
 

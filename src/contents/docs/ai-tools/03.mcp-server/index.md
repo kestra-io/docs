@@ -6,6 +6,7 @@ sidebarTitle: Kestra Flow MCP Servers
 icon: /src/contents/docs/icons/ai.svg
 version: "2.0.0"
 editions: ["OSS", "EE"]
+docId: mcp-servers
 ---
 
 A Kestra MCP server exposes flows as named tools over HTTP for AI agents to discover and call.

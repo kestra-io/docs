@@ -88,7 +88,7 @@ The challenge is managing both without standing up separate, siloed systems. An 
 
 ### Integrating AI and data pipelines into HPC
 
-The convergence of AI and HPC creates a data-management problem. Training a large model can require terabytes staged from a data lake to the cluster's high-performance file system. The orchestrator has to manage that movement, then chain data preparation, training, validation, and deployment into one flow. The ability to [automate data pipelines](/resources/data/automate-data-pipeline) matters as much as managing the compute itself, especially for workloads like a [RAG pipeline](/resources/ai/rag-pipeline) that combines retrieval and inference.
+The convergence of AI and HPC creates a data-management problem. Training a large model can require terabytes staged from a data lake to the cluster's high-performance file system. The orchestrator has to manage that movement, then chain data preparation, training, validation, and deployment into one flow. The ability to [automate data pipelines](/resources/data/create-data-pipeline) matters as much as managing the compute itself, especially for workloads like a [RAG pipeline](/resources/ai/rag-pipeline) that combines retrieval and inference.
 
 ## Modern Approaches to HPC Workflow Orchestration
 
@@ -197,7 +197,7 @@ Reliable HPC workflows go past simple job submission. With Kestra you can apply 
 *   **Modularity:** break large workflows into smaller, reusable subflows so they are easier to develop, test, and maintain.
 *   **Resilience:** set retry policies and error-handling logic to recover from the transient failures that are common in large distributed systems.
 *   **Resource control:** use dynamic task generation to scale work up or down with demand, which keeps cloud spend in check.
-*   **Security and compliance:** apply [workflow governance](/resources/infrastructure/workflow-governance) and use [RBAC](/resources/infrastructure/rbac-workflow-orchestration) to control who can run or change critical workflows, with audit logs for reporting.
+*   **Security and compliance:** apply [workflow governance](/resources/ai/ai-governance-workflows) and use [RBAC](/resources/infrastructure/rbac-workflow-orchestration) to control who can run or change critical workflows, with audit logs for reporting.
 *   **Performance:** Kestra is built for high concurrency; its [published benchmarks](/docs/performance/benchmark) show how it handles large execution volumes.
 
 As HPC keeps merging with AI, data analytics, and cloud computing, the need for a flexible, unified orchestration layer only grows. Platforms that combine declarative definitions, event-driven triggers, and hybrid-cloud reach are set to become the backbone of the next generation of high-performance computing. To start building, explore the full [documentation](/docs).

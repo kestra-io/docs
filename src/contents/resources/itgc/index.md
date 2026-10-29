@@ -104,7 +104,7 @@ This is a common point of confusion. ITGCs are not an alternative to SOX control
 - **SOX Controls** are the specific internal controls an organization implements to comply with SOX requirements, particularly Section 302 and 404, which relate to the accuracy of financial reporting.
 - **SOX ITGC Testing** is the process of auditing the IT General Controls for systems that support financial reporting. If a company's financial statements are produced by an ERP system, auditors must test the ITGCs related to that system (e.g., who can access it, how are changes made to it) to ensure the financial data is reliable.
 
-Effective ITGCs are a prerequisite for a successful SOX audit. Without them, auditors cannot rely on the data produced by financial systems. This makes [workflow governance](/resources/infrastructure/workflow-governance) and standards like [SOC 2 compliance](/resources/infrastructure/soc2-compliance) close relatives of ITGC work.
+Effective ITGCs are a prerequisite for a successful SOX audit. Without them, auditors cannot rely on the data produced by financial systems. This makes [workflow governance](/resources/ai/ai-governance-workflows) and standards like [SOC 2 compliance](/resources/infrastructure/soc2-compliance) close relatives of ITGC work.
 
 ## Implementing and Auditing ITGCs
 

@@ -48,7 +48,7 @@ A data intelligence platform is not a single, monolithic application but a conne
 *   **Connecting Disparate Tools:** A modern data stack consists of various specialized tools. Orchestration is the central nervous system, coordinating tasks across your [ETL pipeline tools](/resources/data/etl-pipeline-tools), data warehouse, data lake, and BI platforms.
 *   **Ensuring Data Freshness and Quality:** Intelligence is only as good as the data it's based on. Orchestration automates the regular execution of data quality checks, profiling, and metadata ingestion, ensuring the platform's information is always current and trustworthy.
 *   **Driving Event-Driven Processes:** The value of data intelligence multiplies when it can react to events in real time. An event-driven orchestrator can trigger workflows automatically when new data arrives, a quality issue is detected, or a schema changes, enabling proactive data management.
-*   **Enforcing Governance at Scale:** [Workflow governance](/resources/infrastructure/workflow-governance) is critical. An orchestration platform ensures that every [data pipeline](/resources/data/data-pipeline) adheres to defined policies, from access controls to data masking, providing an auditable trail for compliance.
+*   **Enforcing Governance at Scale:** [Workflow governance](/resources/ai/ai-governance-workflows) is critical. An orchestration platform ensures that every [data pipeline](/resources/data/create-data-pipeline) adheres to defined policies, from access controls to data masking, providing an auditable trail for compliance.
 *   **Managing Complexity:** As the volume and variety of data grow, so does the complexity of managing it. A declarative orchestration platform allows teams to define complex, multi-step workflows as code, making them versionable, reusable, and easier to manage at scale.
 
 ## Orchestrate Data Intelligence with Kestra: Automated Cataloging and Quality Checks
@@ -159,7 +159,7 @@ Implementing a data intelligence platform, powered by disciplined orchestration,
 *   **[Change Data Capture (CDC)](/resources/data/change-data-capture):** A technique to capture data changes in real time, feeding fresh data into the intelligence platform.
 *   **[Databricks Unity Catalog](/resources/data/databricks-unity-catalog):** A vendor implementation of unified governance, showing how access control and metadata are centralized in one platform.
 *   **[Data Mesh Architecture](/resources/data/data-mesh-architecture):** A decentralized approach to data ownership that relies on a strong, federated governance model, often enabled by a data intelligence platform.
-*   **[Data Warehouse ETL Explained](/resources/data/data-warehouse-etl):** The process of preparing data for analytics, which benefits from the context and quality checks provided by data intelligence.
+*   **[Data Warehouse ETL Explained](/resources/data/etl-workflow):** The process of preparing data for analytics, which benefits from the context and quality checks provided by data intelligence.
 *   **[Data Vault Modeling](/resources/data/data-vault):** An agile modeling technique for enterprise data warehousing that benefits from the automated lineage and metadata management of an intelligence platform.
 
 ## Turn Your Data Into Decisions with Kestra

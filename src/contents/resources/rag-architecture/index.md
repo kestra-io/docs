@@ -35,7 +35,7 @@ Retrieval-Augmented Generation (RAG) is a two-step process that enhances the out
 
 ### How RAG Enhances Large Language Models (LLMs)
 
-LLMs are trained on static datasets, which means their knowledge has a cutoff date and lacks specific, proprietary information. RAG overcomes these limitations by providing a mechanism to inject real-time, external context into the generation process. Instead of just "remembering" information from its training, the LLM can now "read" relevant documents on the fly. This makes it possible to build applications that can answer questions about recent events, internal company documents, or specialized technical manuals. The core components of this system often rely on a [vector database](https://kestra.io/resources/ai/vector-database) to efficiently store and retrieve information.
+LLMs are trained on static datasets, which means their knowledge has a cutoff date and lacks specific, proprietary information. RAG overcomes these limitations by providing a mechanism to inject real-time, external context into the generation process. Instead of just "remembering" information from its training, the LLM can now "read" relevant documents on the fly. This makes it possible to build applications that can answer questions about recent events, internal company documents, or specialized technical manuals. The core components of this system often rely on a [vector database](https://kestra.io/resources/ai/rag-pipeline) to efficiently store and retrieve information.
 
 ### Is ChatGPT a RAG Model?
 
@@ -48,7 +48,7 @@ A RAG system is composed of two main phases, each with its own set of components
 ### The Retrieval Phase: Accessing External Knowledge
 
 The retrieval phase is responsible for finding and fetching the most relevant information from a knowledge base to answer a user's query. This process typically involves:
-- **Data Ingestion and Indexing:** Documents are loaded, split into manageable chunks, and converted into numerical representations (embeddings) using an embedding model. These embeddings are then stored and indexed in a [vector database](https://kestra.io/resources/ai/vector-database).
+- **Data Ingestion and Indexing:** Documents are loaded, split into manageable chunks, and converted into numerical representations (embeddings) using an embedding model. These embeddings are then stored and indexed in a [vector database](https://kestra.io/resources/ai/rag-pipeline).
 - **Querying:** When a user submits a query, it is also converted into an embedding. The system then performs a similarity search in the vector database to find the document chunks with embeddings closest to the query embedding.
 - **Knowledge Sources:** The external knowledge can come from various sources, including text documents, PDFs, database records, or even web pages. Proper management of these [data storage components](https://kestra.io/docs/architecture/data-components) is crucial for a robust RAG system.
 

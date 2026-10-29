@@ -36,7 +36,7 @@ Key benefits of adopting [infrastructure automation](/resources/infrastructure/a
 *   **Scalability:** Easily manage and scale your infrastructure from a handful of servers to thousands without a proportional increase in administrative overhead.
 *   **Cost Savings:** Reduced manual labor, fewer errors, and more efficient resource utilization lead to significant operational cost reductions.
 
-This practice is a foundational element of modern IT operations, closely related to the principles of [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code).
+This practice is a foundational element of modern IT operations, closely related to the principles of [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code).
 
 ## Why Modern IT Demands New Server Automation Approaches
 

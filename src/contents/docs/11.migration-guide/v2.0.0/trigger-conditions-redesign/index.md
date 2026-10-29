@@ -29,9 +29,11 @@ The variables available in a `when` expression depend on the trigger type. For S
 |---|---|
 | Schedule | `trigger.date` |
 | Webhook | `trigger.body`, `trigger.headers` |
-| Flow (`dependsOn.when`) | `namespace` (also `flow.namespace` / `execution.namespace`), `flowId` (also `flow.id` / `execution.flowId`), `state`, `hasRetryAttempt`, `labels`, `execution.outputs` |
+| Flow (`dependsOn.when`) | `flow.namespace`, `flow.id`, `labels`, `execution.state`, `execution.outputs`, `execution.attemptNumber` |
 
-`flow.namespace` and `flow.id` refer to the upstream flow (the one that just completed) and are equivalent to the bare `namespace` and `flowId`. `execution.namespace` and `execution.flowId` are additional aliases for the same values. `execution.outputs` holds the upstream flow's declared outputs; `outputs` is also available but holds task outputs — use `execution.outputs.<key>` to filter on flow outputs.
+`flow` refers to the upstream flow (the one that just completed), and `execution` to its execution. The bare `namespace`, `flowId`, `state` and `hasRetryAttempt` variables, as well as `execution.namespace` and `execution.flowId`, do not exist: use `flow.namespace`, `flow.id` and `execution.state` instead. `execution.outputs` holds the upstream flow's declared outputs; `outputs` is also available but holds task outputs — use `execution.outputs.<key>` to filter on flow outputs.
+
+A `when` expression that cannot be rendered, for example because it references a variable that does not exist, does not fire the trigger. The error is logged as a `WARN` on the upstream execution and as an `ERROR` on the flow that owns the trigger.
 
 :::alert{type="info"}
 **Schedule date skipping:** When a Schedule trigger has a `when` expression, the scheduler evaluates it against each candidate date. If `when` evaluates to `false`, the scheduler skips that date and advances to the next cron-matching date. This is the same behavior as the previous `conditions` on Schedule triggers; `when` controls which scheduled dates fire, not just whether a single date fires.
@@ -676,20 +678,9 @@ triggers:
       - type: io.kestra.plugin.core.condition.HasRetryAttempt
 ```
 
-**After**
-
-```yaml
-triggers:
-  - id: after_flaky
-    type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: flaky_pipeline
-        namespace: company.team
-        states: [SUCCESS]
-        when: "{{ hasRetryAttempt == true }}"
-```
-
-`hasRetryAttempt` is `true` when the upstream execution had at least one retry attempt before reaching a terminal state.
+:::alert{type="warning"}
+`HasRetryAttempt` has no direct replacement: the `when` context does not expose task run attempts. `execution.attemptNumber` is the closest available signal, but it counts attempts of the whole upstream execution (it starts at `1` and is incremented each time the execution is restarted or replayed), not retries of its tasks.
+:::
 
 ### Negation: trigger on any state except SUCCESS
 
@@ -945,7 +936,7 @@ triggers:
 | `ExecutionNamespace` (`comparison: PREFIX`) | `when: "{{ flow.namespace \| startsWith('...') }}"` on the entry |
 | `ExecutionLabels` (`labels: {k: v}`) | `labels: {k: v}` on the `dependsOn` entry |
 | `ExecutionOutputs` (`expression`) | `when` with `execution.outputs.<key>` on the entry (flow-level outputs) |
-| `HasRetryAttempt` | `when: "{{ hasRetryAttempt == true }}"` on the `dependsOn` entry |
+| `HasRetryAttempt` | no direct replacement — `execution.attemptNumber > 1` matches a restarted or replayed upstream execution, not task retries |
 | `Not` > `ExecutionStatus` | Explicit `states` list only — `state` is not available in the `when` context; use `execution.state` for expression-based checks |
 | `where` filter `REGEX` | `{{ flow.id \| regexMatch('^pattern$') }}` — note: `regexMatch` matches anywhere in the value (partial match), while 1.3 `REGEX` matched the whole value. Use `^...$` anchors to preserve 1.3 behavior. |
 | Multiple triggers for OR logic | `mode: ANY` with `dependsOn` entries |

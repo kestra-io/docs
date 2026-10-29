@@ -30,6 +30,8 @@ The table below gives an overview of script-related tasks and example configurat
 | Node.js    | node                                               | npm install json2csv                            | console.log('Hello, World!');        | node hello.js               |
 | Shell      | ubuntu                                             | apt-get install curl                            | echo "Hello, World!"               | ./hello.bash                |
 | PowerShell | mcr.microsoft.com/powershell                       | Install-Module -Name ImportExcel                | Write-Output "Hello, World!"       | .\hello.ps1                |
+| C#         | mcr.microsoft.com/dotnet/sdk                       | dotnet tool install -g dotnet-script            | Console.WriteLine("Hello, World!"); | dotnet-script hello.csx     |
+| F#         | mcr.microsoft.com/dotnet/sdk                       | N/A                                             | printfn "Hello, World!"            | dotnet fsi hello.fsx        |
 | Go         | golang                                             | go mod init go_script                            | println("Hello, World!")           | go run hello.go             |
 | Deno       | denoland/deno                                      | N/A                                             | console.log("Hello from Kestra!")  | deno run main.ts            |
 | Lua        | nickblah/lua                                       | N/A                                             | print("Hello from Kestra!")        | lua -e 'print("Hello from Kestra!")' |
@@ -37,6 +39,8 @@ The table below gives an overview of script-related tasks and example configurat
 | PHP        | php                                                | N/A                                             | echo "Hello, World!";              | php main.php                |
 | Perl       | perl                                               | N/A                                             | print "Hello from Kestra!\n";     | perl -e 'print "Hello from Kestra!\n"' |
 | Groovy     | groovy                                             | N/A                                             | println "Hello, $name!"            | groovy HelloWorld.groovy    |
+| JBang      | jbangdev/jbang-action                              | N/A                                             | class hello { public static void main(String[] args) { System.out.println("Hello, World!"); } } | jbang hello.java |
+| zx         | ghcr.io/google/zx                                  | npm install json2csv                            | `` console.log((await $`echo Hello, World!`).stdout) ``| node /zx/build/cli.js main.mjs |
 
 **Full class names:**
 - [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands)
@@ -53,6 +57,10 @@ The table below gives an overview of script-related tasks and example configurat
 - [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script)
 - [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands)
 - [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script)
+- [io.kestra.plugin.scripts.csharp.Commands](/plugins/plugin-script-dotnet/io.kestra.plugin.scripts.csharp.commands)
+- [io.kestra.plugin.scripts.csharp.Script](/plugins/plugin-script-dotnet/io.kestra.plugin.scripts.csharp.script)
+- [io.kestra.plugin.scripts.fsharp.Commands](/plugins/plugin-script-dotnet/io.kestra.plugin.scripts.fsharp.commands)
+- [io.kestra.plugin.scripts.fsharp.Script](/plugins/plugin-script-dotnet/io.kestra.plugin.scripts.fsharp.script)
 - [io.kestra.plugin.scripts.go.Script](/plugins/plugin-script-go/io.kestra.plugin.scripts.go.script)
 - [io.kestra.plugin.scripts.go.Commands](/plugins/plugin-script-go/io.kestra.plugin.scripts.go.commands)
 - [io.kestra.plugin.scripts.deno.Script](/plugins/plugin-script-deno/io.kestra.plugin.scripts.deno.script)
@@ -65,6 +73,10 @@ The table below gives an overview of script-related tasks and example configurat
 - [io.kestra.plugin.scripts.perl.Commands](/plugins/plugin-script-perl/io.kestra.plugin.scripts.perl.commands)
 - [io.kestra.plugin.scripts.groovy.Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.script)
 - [io.kestra.plugin.scripts.groovy.Commands](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.commands)
+- [io.kestra.plugin.scripts.jbang.Script](/plugins/plugin-script-jbang/io.kestra.plugin.scripts.jbang.script)
+- [io.kestra.plugin.scripts.jbang.Commands](/plugins/plugin-script-jbang/io.kestra.plugin.scripts.jbang.commands)
+- [io.kestra.plugin.scripts.zx.Script](/plugins/plugin-script-zx/io.kestra.plugin.scripts.zx.script)
+- [io.kestra.plugin.scripts.zx.Commands](/plugins/plugin-script-zx/io.kestra.plugin.scripts.zx.commands)
 
 Check available [blueprints](/blueprints) to get started.
 

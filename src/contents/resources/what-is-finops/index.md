@@ -83,7 +83,7 @@ A mature FinOps practice requires robust automation and orchestration. This is w
 *   **Cost and Usage Reporting**: Schedule workflows to ingest billing data from tools like [CloudQuery](https://kestra.io/blogs/2024-03-12-introduction-to-cloudquery) and generate custom cost reports.
 *   **Anomaly Detection**: Automatically monitor spending patterns and trigger alerts when costs spike unexpectedly.
 *   **Resource Optimization**: Run scheduled jobs to identify and terminate idle resources, downsize underutilized instances, or apply cost-saving tags.
-*   **Governance and Compliance**: Enforce budget policies and tagging standards as part of your [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) deployment pipelines.
+*   **Governance and Compliance**: Enforce budget policies and tagging standards as part of your [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) deployment pipelines.
 
 Here is an example Kestra flow that uses the AWS CLI to find untagged EC2 instances and sends a report to Slack:
 
