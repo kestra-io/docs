@@ -157,23 +157,23 @@ const integrations = [
     },
 ]
 
-/* From the public customer stories on /stories. Unnamed people stay unnamed,
- * as they are there. */
+/* Public G2 reviews from practitioners, named as G2 shows them, and one
+ * customer story from /stories, unnamed as it is there. */
 const quotes = [
     {
-        text: "Being used to Python orchestration frameworks, using Kestra has been refreshing! It works so well. I'm sticking to Kestra!",
-        person: "Rene Molenaar",
-        role: "Founder, NetworkLessons",
+        text: "I replaced unreliable cron jobs with observable, retryable workflows that alert me on Slack when something fails.",
+        person: "Pruthviraj P.",
+        role: "G2 review",
+    },
+    {
+        text: "Orchestration we can finally trust as critical infrastructure.",
+        person: "Rafael B.",
+        role: "Principal Software Engineer, G2 review",
     },
     {
         text: "Kestra turned automation into a governed platform instead of a collection of scripts.",
         person: "Platform Engineering Lead",
         role: "Cloud provider in a regulated industry",
-    },
-    {
-        text: "What used to take 6 months now takes 6 days with Kestra!",
-        person: "Principal Hosting",
-        role: "Fortune 500 manufacturer",
     },
 ]
 
@@ -255,9 +255,14 @@ const faqItems = [
                 <a class="btn-call" href="#contact-sales">
                     Bringing it to work? Book a call
                 </a>
-                <a class="proof" href="https://github.com/kestra-io/kestra">
-                    30,000+ stars on GitHub · Apache 2.0
-                </a>
+                <p class="proof">
+                    <a
+                        href="https://www.g2.com/products/kestra-technologies-kestra/reviews"
+                        >4.6/5 on G2</a
+                    > · <a href="https://github.com/kestra-io/kestra"
+                        >30,000+ GitHub stars</a
+                    > · Apache 2.0
+                </p>
             </div>
         </Hero>
         <Platform
@@ -400,14 +405,18 @@ const faqItems = [
     }
 
     .proof {
+        margin: 0;
         padding-top: 0.25rem;
         color: var(--lp-content-secondary);
         font-size: $font-size-sm;
         font-weight: 600;
         text-align: center;
-        text-decoration: none;
-        &:hover {
-            color: var(--lp-purple);
+        a {
+            color: inherit;
+            text-decoration: none;
+            &:hover {
+                color: var(--lp-purple);
+            }
         }
     }
 
