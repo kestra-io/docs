@@ -27,12 +27,12 @@
     "test:visual:report": "node scripts/visual-diff-report.mjs"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/cloudflare": "^14.3.0",
-    "@astrojs/markdown-remark": "^7.3.0",
-    "@astrojs/mdx": "^8.0.0",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/cloudflare": "^14.4.2",
+    "@astrojs/markdown-remark": "^7.3.4",
+    "@astrojs/mdx": "^8.1.1",
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/vue": "^7.0.2",
+    "@astrojs/vue": "^7.1.2",
     "@cloudflare/workers-types": "^5.20260908.1",
     "@gtm-support/vue-gtm": "^3.2.0",
     "@iconify-json/mdi": "^1.2.3",
@@ -47,7 +47,7 @@
     "@vue-flow/core": "^1.48.2",
     "@vueuse/core": "^14.4.0",
     "astro": "^7.3.1",
-    "astro-expressive-code": "^0.44.2",
+    "astro-expressive-code": "^0.44.3",
     "astro-icon": "^1.2.0",
     "astro-loading-indicator": "^0.9.0",
     "countries-list": "^3.4.1",
@@ -96,7 +96,7 @@
     "wrangler": "^4.129.1"
   },
   "devDependencies": {
-    "@astrojs/node": "^11.1.5",
+    "@astrojs/node": "^11.1.9",
     "@playwright/test": "1.61.0",
     "mdast-util-mdx-jsx": "^3.2.0",
     "odiff-bin": "^4.5.0",
