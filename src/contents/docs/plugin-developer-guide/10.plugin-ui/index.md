@@ -202,6 +202,10 @@ A version of `@kestra-io/artifact-sdk` released before this slot rejects the `ex
 
 Renders at the bottom of an **asset card** in the assets dependencies graph. Use it for a short line about an asset that the card does not show, such as a row count, a freshness date or a link to the source. The contract is defined in [`ui/packages/slot-contracts/src/asset-card-footer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/asset-card-footer.ts) in Kestra core.
 
+:::alert{type="info"}
+Assets are only available in the Enterprise Edition of Kestra, so this slot has no effect in the open-source edition.
+:::
+
 Like the other slots, it is resolved by the task type that produced the asset. The component receives these props:
 
 - **`assetId`** is the id of the asset, as shown in the graph.
