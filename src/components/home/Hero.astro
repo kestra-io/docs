@@ -17,7 +17,7 @@ const KEY_FACTS = [
     "API-First",
 ]
 
-// The logo carousel under the key facts, from the logo bar of the previous
+// The logo carousel at the frame's foot, from the logo bar of the previous
 // hero.
 const CAROUSEL = [
     { file: "jpmorgan", name: "JPMorgan Chase" },
@@ -68,27 +68,23 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                         </a>
                         <a href="/demo" class="btn-ghost">Book a demo</a>
                     </div>
+                    {/* The key facts, a quiet line under the buttons. */}
+                    <ul
+                        class="key"
+                        aria-label="Kestra at a glance"
+                        data-key-facts
+                    >
+                        {
+                            KEY_FACTS.map((fact, idx) => (
+                                <li style={`--i: ${idx}`}>{fact}</li>
+                            ))
+                        }
+                    </ul>
                 </div>
             </div>
         </div>
         {
-            /* The key facts, a strip of cells at the frame's foot, between
-            the page's rails. */
-        }
-        <div class="container-xl">
-            <ul class="key" aria-label="Kestra at a glance" data-key-facts>
-                {
-                    KEY_FACTS.map((fact, idx) => (
-                        <li style={`--i: ${idx}`}>
-                            <span class="bar" aria-hidden="true" />
-                            {fact}
-                        </li>
-                    ))
-                }
-            </ul>
-        </div>
-        {
-            /* The customers run under the key facts, four rounds so the
+            /* The customers run along the frame's foot, four rounds so the
             belt outruns wide screens and its half loops without a seam;
             only the first round is read out. */
         }
@@ -124,7 +120,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 
 <script>
     // The key facts run on arrival, then again every few seconds while the
-    // strip is in view. Without JavaScript they simply show, lit.
+    // line is in view. Without JavaScript they simply show, lit.
     const REPLAY_MS = 9000
 
     function loopKeyFacts() {
@@ -154,8 +150,8 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 </script>
 
 <style lang="scss">
-    // One dark frame across the page under the menu, with the copy at its
-    // bottom left over a row of key facts and the customers' carousel.
+    // One dark frame across the page under the menu, with the copy and its
+    // key facts on the left, over the customers' carousel.
     .home-hero {
         position: relative;
         background: var(--ks-background-body);
@@ -168,7 +164,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         display: flex;
         flex-direction: column;
         // Most of the first screen; the copy sits centred in the space
-        // above the key facts strip.
+        // above the carousel.
         min-height: min(86vh, 860px);
         // Square, edge to edge: a global .frame rule rounds it otherwise.
         border-radius: 0;
@@ -187,8 +183,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             min-height: 560px;
         }
 
-        // Only the copy grows, so the key facts and the carousel stay at
-        // the frame's foot.
+        // Only the copy grows, so the carousel stays at the frame's foot.
         > .stage {
             display: flex;
             flex: 1;
@@ -196,11 +191,14 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
+    // The title and lead keep their own measure, so the key facts line can
+    // run wider than them.
     .copy {
-        max-width: 46rem;
+        min-width: 0;
     }
 
     h1 {
+        max-width: 46rem;
         margin: 0;
         font-size: clamp(2.5rem, 5.2vw, 4.25rem);
         font-weight: 600;
@@ -335,167 +333,70 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // Key facts as the frame's foot: a strip of hairline cells across the
-    // container, its top rule running edge to edge. They light up one after
-    // the other, like a run: a white bar fills each cell's top edge, then
-    // settles into the rule, and the label brightens.
+    // Key facts as one line of monospace capitals under the buttons, dot
+    // between dot. They light up one after the other, like a run.
     .key {
-        --run: 0.35s;
-        --rule: rgba(255, 255, 255, 0.12);
+        --run: 0.25s;
 
-        position: relative;
-        display: grid;
-        // Seven across.
-        grid-template-columns: repeat(7, minmax(0, 1fr));
-        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        // Plain gaps while the line wraps, so no row opens on a dot.
+        gap: 0.625rem 1.5rem;
+        margin: 2.5rem 0 0;
         padding: 0;
         list-style: none;
-        // A frame of its own between the rails, on the logos' edges below.
-        border: 1px solid var(--rule);
+        font-family: $font-family-monospace;
 
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+        @include media-breakpoint-up(lg) {
+            gap: 0;
         }
 
-        @include media-breakpoint-down(md) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
 
         li {
-            position: relative;
-            padding: 1.375rem 1rem;
-            font-size: 0.875rem;
-            text-align: center;
-            font-weight: 500;
+            color: rgba(255, 255, 255, 0.55);
             white-space: nowrap;
-            color: rgba(255, 255, 255, 0.85);
 
-            border-left: 1px solid var(--rule);
-
-            &:first-child {
-                border-left: 0;
-            }
-
-            @include media-breakpoint-between(md, lg) {
-                &:nth-child(4n + 1) {
-                    border-left: 0;
-                }
-
-                &:nth-child(n + 5) {
-                    border-top: 1px solid var(--rule);
+            @include media-breakpoint-up(lg) {
+                & + li::before {
+                    content: "·";
+                    margin-inline: 0.875rem;
+                    color: rgba(255, 255, 255, 0.3);
                 }
             }
-
-            @include media-breakpoint-down(md) {
-                &:nth-child(odd) {
-                    border-left: 0;
-                }
-
-                &:nth-child(n + 3) {
-                    border-top: 1px solid var(--rule);
-                }
-            }
-        }
-
-        // On hover a cell lights its top edge with a soft glow, like the
-        // run that lit it.
-        li:hover {
-            background: rgba(255, 255, 255, 0.03);
-            color: #ffffff;
-
-            .bar {
-                opacity: 1;
-                transform: none;
-                box-shadow: 0 0 12px 1px rgba(255, 255, 255, 0.55);
-                animation: none;
-            }
-        }
-
-        li {
-            transition:
-                background-color 0.25s ease,
-                color 0.25s ease;
-        }
-
-        .bar {
-            position: absolute;
-            // On the strip's top rule.
-            top: -1px;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #ffffff;
-            transform: scaleX(0);
-            transform-origin: left;
         }
 
         // A run: the script adds this class on arrival, then again every
-        // few seconds while the strip is in view.
-        &.running {
-            li {
-                color: rgba(255, 255, 255, 0.4);
-                animation: fact-lit 0.4s ease forwards;
-                animation-delay: calc(0.6s + (var(--i) + 1) * var(--run));
-            }
-
-            .bar {
-                animation:
-                    fact-run var(--run) linear forwards,
-                    fact-done 0.6s ease forwards;
-                animation-delay:
-                    calc(0.6s + var(--i) * var(--run)),
-                    calc(0.6s + (var(--i) + 1) * var(--run));
-            }
-
-            li:hover .bar {
-                animation: none;
-            }
+        // few seconds while the line is in view.
+        &.running li {
+            animation: fact-lit 1.2s ease;
+            animation-delay: calc(0.6s + var(--i) * var(--run));
         }
 
         @media (prefers-reduced-motion: reduce) {
-            li,
-            .bar {
+            &.running li {
                 animation: none;
             }
-
-            li {
-                color: rgba(255, 255, 255, 0.85);
-            }
-
-            .bar {
-                display: none;
-            }
-        }
-    }
-
-    @keyframes fact-run {
-        to {
-            transform: scaleX(1);
-        }
-    }
-
-    @keyframes fact-done {
-        to {
-            opacity: 0;
         }
     }
 
     @keyframes fact-lit {
-        to {
-            color: rgba(255, 255, 255, 0.85);
+        20% {
+            color: #ffffff;
         }
     }
 
-    // Melissa's label for the logo row.
     .intro {
         display: flex;
         flex: 1;
         align-items: center;
-        // On the Kestra logo of the menu, and the key facts' left edge.
+        // On the Kestra logo of the menu.
         padding-block: clamp(3rem, 6vw, 5rem);
     }
 
-    // A belt of white logos sliding left under the key facts, from one
+    // A belt of white logos sliding left at the frame's foot, from one
     // edge of the screen to the other, fading out at both.
     .carousel {
         overflow: hidden;
