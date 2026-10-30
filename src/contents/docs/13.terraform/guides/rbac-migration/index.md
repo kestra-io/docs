@@ -15,7 +15,7 @@ This guide explains how to update your Terraform configurations.
 1. **Schema field rename**: The `permissions` block is now called `resources`, and the inner `permissions` list is now called `actions`.
 2. **Actions are now fine-grained**: `READ` has been replaced by `VIEW`, `LIST`, and resource-specific actions like `ACCESS_LOGS`, `EXPORT`, etc. `UPDATE` has been replaced by specific lifecycle actions like `EXECUTE`, `KILL`, `RESTART`, `DISABLE`, etc.
 3. **Some resource types were renamed**: `AI_COPILOT` became `COPILOT`, `TEST` became `TESTSUITE`, etc.
-4. **Some resource types were merged or dropped**: `APPEXECUTION` merged into `APP`, `TEMPLATE` and `SETTING` were removed entirely. `SETTING` was split into `SYSTEM_SETTINGS` and `TENANT_SETTINGS` in 2.0, and both were [removed in 2.1.0](../../../11.migration-guide/v2.1.0/settings-permissions-removed/index.md), since settings are managed by the Instance Owner only.
+4. **Some resource types were merged or dropped**: `APPEXECUTION` merged into `APP`, and `TEMPLATE` and `SETTING` were removed. `SETTING` became `SYSTEM_SETTINGS` and `TENANT_SETTINGS` in 2.0, and Kestra 2.1.0 [removed both](../../../11.migration-guide/v2.1.0/settings-permissions-removed/index.md).
 5. **Tenant access is now a prerequisite**: adding a user to a group no longer grants that user access to the tenant as a side effect. See [Tenant Access Is Now a Prerequisite](#tenant-access-is-now-a-prerequisite).
 
 ## Migration Steps
@@ -86,7 +86,7 @@ may still rely on it.
 
 | Old Type | New Type(s) | Notes |
 |----------|-------------|-------|
-| `SETTING` | _(removed)_ | Delete the block entirely. From 2.1.0, a role listing `SYSTEM_SETTINGS` or `TENANT_SETTINGS` is rejected |
+| `SETTING` | _(removed)_ | Delete the block. Kestra 2.1.0 rejects roles that list `SYSTEM_SETTINGS` or `TENANT_SETTINGS` |
 | `AI_COPILOT` | `COPILOT` | |
 | `TEST` | `TESTSUITE` | |
 | `APPEXECUTION` | `APP` | Merge into existing `APP` block if you have one |
