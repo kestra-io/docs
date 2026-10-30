@@ -145,6 +145,16 @@ const resourcesSchema = z.object({
 const answerSchema = z.object({
     question: z.string(),
     text: z.string(),
+    /** Up to three key facts shown next to the answer. */
+    facts: z
+        .array(
+            z.object({
+                label: z.string(),
+                value: z.string(),
+            }),
+        )
+        .max(3)
+        .optional(),
 })
 
 /** Step-by-step "how do I" section with one complete, copyable flow. */

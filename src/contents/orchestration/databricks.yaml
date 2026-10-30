@@ -20,6 +20,13 @@ hero:
 answer:
   question: "How do you orchestrate Databricks jobs with Kestra?"
   text: "Kestra orchestrates Databricks from outside the workspace. A YAML flow submits a Databricks run with the <code>SubmitRun</code> task, waits for it to finish, runs SQL checks on a SQL warehouse, and chains the result with ingestion, dbt and alerting. Flows start on a schedule, a file arrival, a new Unity Catalog table or an API call."
+  facts:
+    - label: "Kestra task"
+      value: "<code>databricks.job.SubmitRun</code> submits the run, waits for it, and adopts it after a worker loss"
+    - label: "Starts on"
+      value: "A schedule, a file arrival, a new Unity Catalog table, a webhook or an API call"
+    - label: "Runs on"
+      value: "Self-hosted (Docker, Kubernetes, air-gapped) or Kestra Cloud · Apache 2.0"
 
 updated: 2026-10-29
 
