@@ -67,7 +67,7 @@ Automating your workflow schedules provides significant advantages beyond just k
 - **Error Handling:** Modern orchestration tools with schedulers include built-in retry logic and alerting, making pipelines more resilient.
 - **Cost Savings:** Optimize resource usage by running compute-intensive jobs during off-peak hours.
 
-Ultimately, the goal is to [automate your data pipeline](/resources/data/automate-data-pipeline) to be as hands-off as possible, intervening only by exception.
+Ultimately, the goal is to [automate your data pipeline](/resources/data/create-data-pipeline) to be as hands-off as possible, intervening only by exception.
 
 ## Core concepts of data workflow orchestration
 
@@ -191,6 +191,6 @@ Effective data workflow scheduling requires more than a simple cron job. It dema
 
 With its declarative YAML interface, Kestra brings GitOps best practices to data orchestration, making your schedules version-controlled, auditable, and easy to manage. Its language-agnostic design means you can orchestrate anything, from [Python scripts and Databricks jobs](https://kestra.io/blogs/2024-03-12-kestra-databricks) to Terraform and Ansible playbooks.
 
-Kestra is not just a replacement for [legacy schedulers](https://kestra.io/vs/broadcom) or a simple [alternative to Airflow](https://kestra.io/vs/airflow); it's a comprehensive platform that unifies your entire technical stack. Whether you are managing [data pipelines](/resources/data/data-pipeline), [infrastructure automation](https://kestra.io/infra-automation), or [AI workflows](https://kestra.io/ai-automation), Kestra provides the scheduling and orchestration capabilities you need.
+Kestra is not just a replacement for [legacy schedulers](https://kestra.io/vs/broadcom) or a simple [alternative to Airflow](https://kestra.io/vs/airflow); it's a comprehensive platform that unifies your entire technical stack. Whether you are managing [data pipelines](/resources/data/create-data-pipeline), [infrastructure automation](https://kestra.io/infra-automation), or [AI workflows](https://kestra.io/ai-automation), Kestra provides the scheduling and orchestration capabilities you need.
 
 Explore Kestra's [Enterprise Edition](https://kestra.io/enterprise) for advanced governance and security features, or get started with [Kestra Cloud](https://kestra.io/cloud) for a fully managed experience.

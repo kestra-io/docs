@@ -400,7 +400,7 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `project` | string | No | — | GCP project ID. |
+| `project` | string | **Yes** | — | GCP project ID. |
 | `service-account` | string | No | — | Service account JSON key file contents. |
 | `prefix` | string | No | `kestra` | Prefix applied to all secret names. Lowercase letters, digits, `_` and `-` only, up to 233 characters. |
 | `tags` | map | No | — | Default labels added to every new or updated secret. |
@@ -534,7 +534,7 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `address` | string | No | — | Fully qualified Vault address with scheme and port. |
+| `address` | string | **Yes** | — | Fully qualified Vault address with scheme and port. |
 | `password` | object | No | — | Userpass auth. Sub-fields: `user`, `password`. |
 | `token` | object | No | — | Token auth. Sub-field: `token`. |
 | `app-role` | object | No | — | AppRole auth. Sub-fields: `path`, `role-id`, `secret-id`. |
@@ -696,9 +696,9 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `token` | string | No | — | Doppler service token with access to the target project and config. |
-| `project` | string | No | — | Doppler project containing the secrets. |
-| `config` | string | No | — | Doppler config (environment) to read from. |
+| `token` | string | **Yes** | — | Doppler service token with access to the target project and config. |
+| `project` | string | **Yes** | — | Doppler project containing the secrets. |
+| `config` | string | **Yes** | — | Doppler config (environment) to read from. |
 | `secret-name-prefix` | string | No | — | Prefix added to secret keys to avoid collisions when sharing a backend. |
 | `connect-timeout` | duration | No | `PT15S` | HTTP connection timeout for Doppler API calls. |
 | `read-timeout` | duration | No | `PT60S` | HTTP read timeout for Doppler API calls. |
@@ -917,8 +917,8 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `access-token` | string | No | — | Machine account access token for authentication and client-side decryption. |
-| `organization-id` | string | No | — | Bitwarden organization the machine account belongs to. |
+| `access-token` | string | **Yes** | — | Machine account access token for authentication and client-side decryption. |
+| `organization-id` | string | **Yes** | — | Bitwarden organization the machine account belongs to. |
 | `api-url` | string | No | `https://api.bitwarden.com` | Bitwarden API URL. Use `https://api.bitwarden.eu` for EU cloud or your instance URL for self-hosted. |
 | `identity-url` | string | No | `https://identity.bitwarden.com` | Bitwarden identity URL. Use `https://identity.bitwarden.eu` for EU cloud. |
 | `project-id` | string | No | — | Restrict resolution to a single Bitwarden project. |

@@ -5,7 +5,6 @@ description: Reference for Kestra RBAC resources and actions mapped to API endpo
 sidebarTitle: Permissions Reference
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
-docId: iam
 ---
 
 This reference maps each RBAC resource and action to the API endpoints that enforce it. Use it to design least-privilege roles and troubleshoot authorization errors.
@@ -618,7 +617,8 @@ EXECUTE
 **Actions and their meaning**
 - `VIEW` / `LIST`: view assets and their dependency or usage graphs.
 - `CREATE`: create assets.
-- `DELETE`: delete assets.
+- `UPDATE`: edit existing assets.
+- `DELETE`: delete assets and purge their usage and lineage records.
 - `LOCK`: acquire a write lock on an asset (from a flow task or the UI).
 - `UNLOCK`: release a write lock on an asset (from a flow task or the UI). UI unlock is forced regardless of owner.
 
@@ -629,14 +629,20 @@ VIEW / LIST
 - `GET /api/v1/{tenant}/assets/{id}/dependencies`
 - `GET /api/v1/{tenant}/assets/search`
 - `GET /api/v1/{tenant}/assets/usages/search`
+- `GET /api/v1/{tenant}/assets/lineage-events/search`
 
 CREATE
 - `POST /api/v1/{tenant}/assets`
+
+UPDATE
+- `PUT /api/v1/{tenant}/assets/{id}`
 
 DELETE
 - `DELETE /api/v1/{tenant}/assets/{id}`
 - `DELETE /api/v1/{tenant}/assets/by-ids`
 - `DELETE /api/v1/{tenant}/assets/by-query`
+- `DELETE /api/v1/{tenant}/assets/usages/by-query`
+- `DELETE /api/v1/{tenant}/assets/lineage-events/by-query`
 
 LOCK
 - `POST /api/v1/{tenant}/assets/{id}/lock`
@@ -680,7 +686,7 @@ USE (any `COPILOT` action)
 **Scope:** Tenant
 
 **Actions and their meaning**
-- `VIEW` / `LIST`: search audit logs and view diffs.
+- `VIEW` / `LIST`: search audit logs.
 - `EXPORT`: export audit logs.
 
 **Endpoints**
@@ -688,14 +694,18 @@ USE (any `COPILOT` action)
 VIEW / LIST
 - `GET /api/v1/{tenant}/auditlogs/search`
 - `POST /api/v1/{tenant}/auditlogs/find`
-- `GET /api/v1/{tenant}/auditlogs/history/{detailId}`
-- `GET /api/v1/{tenant}/auditlogs/{id}/diff`
 
 EXPORT
 - `GET /api/v1/{tenant}/auditlogs/export`
 
 Notes
 - Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` (no tenant segment) are instance-owner-only and are not controlled by `AUDITLOG` permissions.
+- `GET /api/v1/{tenant}/auditlogs/history/{detailId}` and `GET /api/v1/{tenant}/auditlogs/{id}/diff` are not controlled by `AUDITLOG`. They check your permission on the audited resource instead:
+  - Most entries require `VIEW` on the audited resource type in the entry's namespace. Entries without a namespace, such as App, Asset, Case, Namespace, Test suite, and Dashboard entries, require a tenant-wide `VIEW` grant.
+  - Namespace file entries require `NAMESPACE` `MANAGE_FILES`.
+  - Entries for instance-level resources, such as banners, tenants, worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
+  - An instance owner with `AUDITLOG` `VIEW` can view entries for `ROLE`, `INVITATION`, `GROUP`, `BINDING`, `USER`, and `SERVICE_ACCOUNT`.
+  - The history endpoint returns every entry with the given resource ID, including entries for resources with the same ID in other namespaces. If you lack permission on any of them, the request fails.
 :::
 
 ---

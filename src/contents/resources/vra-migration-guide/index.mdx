@@ -178,7 +178,7 @@ This lets the migration run alongside normal operations without a change freeze 
 
 ### 2.2 The Kestra Migration Assistant for vRA
 
-The Kestra Migration Assistant for vRA is an AI-powered tool that does the reading for you. Its assessment is free and open source: point it at your vRO package and, if you have one, your vRA export, run one command on your own machine, and it works through Stage 1 in the order this guide describes. It sanitizes your export before anything reaches a model, and it also runs without one.
+The Kestra Migration Assistant for vRA is an AI-powered tool that does the reading for you. Its [vRA migration assessment](/resources/migration/vra/assistant) is free and open source: point it at your vRO package and, if you have one, your vRA export, run one command on your own machine, and it works through Stage 1 in the order this guide describes. It sanitizes your export before anything reaches a model, and it also runs without one.
 
 Here's what its brief contains:
 
@@ -186,6 +186,8 @@ Here's what its brief contains:
 - **A recommendation for each workflow and action**: retire, merge into another, treat as a wrapper, convert, or rebuild.
 - **A translation table**: what each part of your estate becomes in Kestra, and which plugins cover your integrations, checked against Kestra's plugin catalog.
 - **A migration plan in waves**, each starting with its first of a kind.
+
+For a walkthrough of a sample brief and its wave plan, see [Leaving vRA without the big rewrite](/blogs/leaving-vra-without-the-big-rewrite).
 
 In Stage 2, its brief helps you pick the workflows for your proof of concept. In Stage 3, the migration follows its waves. The conversion is the other half of the Migration Assistant, and we run it with you: tests are written from the original workflow before anything is converted, and each wave is verified before it reaches your environment ([section 5.2](#section-5-2)).
 
@@ -523,7 +525,7 @@ Now that you've made decisions about the estate as a system, this section is whe
 
 Start with an export rather than a manual count or a list assembled from people's memory. You need two things from it: the content, and when each workflow last ran.
 
-The content is a .package export from the vRO client, holding the workflows, actions, configuration elements and resource elements. It is also what the Kestra Migration Assistant for vRA reads. If vRA starts your workflows, export its content as well.
+The content is a .package export from the vRO client, holding the workflows, actions, configuration elements and resource elements. It is also what the Kestra Migration Assistant, our [vRA and vRO migration tool](/resources/migration/vra/assistant), reads. If vRA starts your workflows, export its content as well.
 
 When each workflow last ran is not in a .package, and it is what the retirement decisions rest on. There are three practical ways to get it, and each also gives you a fuller inventory:
 
@@ -638,7 +640,7 @@ Keep near-duplicates in the same group as their first of a kind. If one needs su
 
 These counts are inputs to the payback estimate in [Section 7.2](#section-7-2). Retain the workflow list behind each group so you can check that every workflow in scope is counted once.
 
-**The Migration Assistant does this classification too**, and adds what a spreadsheet can't: for each workflow, the systems it calls and the Kestra plugin or HTTP route for each one, and a wave plan with the first of a kind for each wave.
+**The Migration Assistant does this classification too**, and its [automated vRO workflow inventory](/resources/migration/vra/assistant) adds what a spreadsheet can't: for each workflow, the systems it calls and the Kestra plugin or HTTP route for each one, and a wave plan with the first of a kind for each wave.
 
 ### 3.3 Summary of what you leave Stage 1 with
 
@@ -782,7 +784,7 @@ There are three ways to convert a workflow, and most estates use all three. The 
 3. **The flows pass their tests**, in your Kestra.
 4. **The wave runs against a simulated copy of your environment**, then against your non-production systems, side by side with vRA, until the owner certifies it against the acceptance criteria agreed before the wave started. Only then is the vRA version retired.
 
-How much of the conversion the Migration Assistant handles depends on how much logic sits in JavaScript, how consistent that code is, and which SDK calls it uses. The [payback calculation](#section-7-2) in the business case lets you set your own share, and a proof of concept measures it on your code.
+How much of the [vRO to Kestra conversion](/resources/migration/vra/assistant) the Migration Assistant handles depends on how much logic sits in JavaScript, how consistent that code is, and which SDK calls it uses. The [payback calculation](#section-7-2) in the business case lets you set your own share, and a proof of concept measures it on your code.
 
 **For some estates, the right answer is not to convert at all.** When most of the JavaScript turns out to be integration libraries that plugins replace, and what is left is logic the team would design differently today, rebuilding from the pattern breakdown can be faster than converting workflow by workflow. Stage 1 applies either way: the inventory, the decisions and the patterns are what you build to. The Migration Assistant's brief says which side of that line your estate falls on, and why.
 

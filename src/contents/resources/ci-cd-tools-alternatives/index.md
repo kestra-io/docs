@@ -51,7 +51,7 @@ However, its tight coupling with GitHub can be a limitation. While it excels at 
 
 GitLab’s main appeal is its all-in-one approach. It bundles source code management, CI/CD, security scanning, a container registry, and more into a single platform. This integration simplifies the toolchain and provides a consistent user experience. GitLab CI/CD is particularly strong in its support for containerized workflows and has robust features for security and compliance, such as Dynamic Application Security Testing (DAST) and dependency scanning.
 
-The trade-off is that its power is most realized when you commit to the entire GitLab ecosystem. For teams that prefer a best-of-breed approach with different tools for source control, artifact storage, and security, GitLab can feel heavyweight. Its strength in integration is also a form of lock-in, making it harder to swap out individual components. Its philosophy aligns well with [GitOps principles for operations](/resources/infrastructure/gitops-for-operations), where the Git repository is the single source of truth for both application and infrastructure state.
+The trade-off is that its power is most realized when you commit to the entire GitLab ecosystem. For teams that prefer a best-of-breed approach with different tools for source control, artifact storage, and security, GitLab can feel heavyweight. Its strength in integration is also a form of lock-in, making it harder to swap out individual components. Its philosophy aligns well with [GitOps principles for operations](/resources/infrastructure/gitops), where the Git repository is the single source of truth for both application and infrastructure state.
 
 ### CircleCI: Speed and cloud-native flexibility
 
@@ -149,7 +149,7 @@ Kestra is language-agnostic. A single workflow can contain tasks written in Pyth
 
 ### Event-driven and human-in-the-loop capabilities
 
-Workflows can be triggered by schedules, webhooks, file detections, or messages from systems like Kafka. This event-driven capability allows for building reactive, real-time automation. Kestra also supports human-in-the-loop workflows, where a process can pause to wait for manual approval before continuing. This is essential for critical operations and for orchestrating advanced processes like those involving [AI agents](/docs/ai-tools/ai-agents).
+Workflows can be triggered by schedules, webhooks, file detections, or messages from systems like Kafka. This event-driven capability allows for building reactive, real-time automation. Kestra also supports human-in-the-loop workflows, where a process can pause to wait for manual approval before continuing. This is essential for critical operations and for orchestrating advanced processes like those involving [AI agents](/docs/ai-orchestration/ai-agents).
 
 ### Complementing existing CI/CD tools, not replacing them
 

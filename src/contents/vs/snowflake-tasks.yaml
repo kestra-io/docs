@@ -96,7 +96,7 @@ easeOfUse:
   title: Workflows Engineers Can Own End to End
   kestra:
     title: "Kestra: YAML that lives in Git"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow is a file in your repository, reviewed in pull requests, deployed the same way as application code."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow is a file in your repository, reviewed in pull requests, deployed the same way as application code."
     code: |
       id: daily_etl
       namespace: data.warehouse

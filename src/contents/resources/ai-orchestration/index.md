@@ -62,7 +62,7 @@ In essence, AI orchestration provides the framework to build, run, and manage re
 
 [Agentic orchestration](/resources/ai/agentic-orchestration) is a specialized subset of AI orchestration that focuses on coordinating the actions of multiple autonomous AI agents. As AI systems become more sophisticated, they increasingly rely on agents that can reason, plan, and use tools to accomplish complex tasks.
 
-AI agent orchestration manages how these agents collaborate, share information, and work together towards a common objective. This often involves concepts like [Directed Agentic Graphs](/resources/ai/directed-agentic-graphs), where the workflow is not static but evolves based on the decisions made by the agents themselves. Managing these dynamic, multi-agent systems requires a robust orchestration layer that can provide supervision, governance, and observability. Kestra's support for [AI agents](/docs/ai-tools/ai-agents) is designed to address this emerging need, allowing teams to build and govern complex agentic workflows.
+AI agent orchestration manages how these agents collaborate, share information, and work together towards a common objective. This often involves concepts like [Directed Agentic Graphs](/resources/ai/directed-agentic-graphs), where the workflow is not static but evolves based on the decisions made by the agents themselves. Managing these dynamic, multi-agent systems requires a robust orchestration layer that can provide supervision, governance, and observability. Kestra's support for [AI agents](/docs/ai-orchestration/ai-agents) is designed to address this emerging need, allowing teams to build and govern complex agentic workflows.
 
 ## How AI orchestration works in practice
 

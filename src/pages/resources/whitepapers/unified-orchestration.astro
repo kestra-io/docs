@@ -1,7 +1,6 @@
 ---
 import { getEntry, render } from "astro:content"
 import Layout from "~/components/layout.astro"
-import CardGrid from "~/components/card/CardGrid.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
 import BlogToc from "~/components/blogs/BlogToc.vue"
@@ -9,18 +8,20 @@ import BlogSocials from "~/components/blogs/BlogSocials.vue"
 import ResourceDetails from "~/components/resources/ResourceDetails.vue"
 import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
-import Hero from "~/components/unified-orchestration-whitepaper/Hero.astro"
-import AuthorCard from "~/components/unified-orchestration-whitepaper/AuthorCard.astro"
+import WhitepaperHero from "~/components/whitepaper/WhitepaperHero.astro"
+import WhoItsFor from "~/components/whitepaper/WhoItsFor.astro"
+import AuthorBlock from "~/components/whitepaper/AuthorBlock.astro"
 import Link from "~/components/common/Link.astro"
 import LivePluginCount from "~/components/content/LivePluginCount.astro"
 
+import bookMockup from "~/components/unified-orchestration-whitepaper/assets/book-mockup.png"
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 
 const PDF_HREF = "/unified-orchestration-whitepaper-kestra.pdf"
-const READ_HREF = "#executive-summary"
 
 const post = await getEntry("resources", "unified-orchestration-whitepaper")
-if (!post) throw new Error("resources/unified-orchestration-whitepaper entry missing")
+if (!post)
+    throw new Error("resources/unified-orchestration-whitepaper entry missing")
 const { Content, headings } = await render(post)
 const page = post.data
 
@@ -74,21 +75,25 @@ const faqSchema =
           }
         : null
 
-const WHO_ITEMS = [
+const INSIDE = [
+    "Why orchestration fragmented into four tool categories, and why agentic AI is not a fifth one",
+    "What Gartner's SOAP and BOAT and Forrester's Adaptive Process Orchestration each got right about the convergence",
+    "The seven requirements a platform has to meet before it earns the word unified",
+    "The difference between orchestrating agents and agentic orchestration, and why an enterprise needs both",
+]
+
+const PERSONAS = [
     {
-        title: "<span class='persona-tag persona-tag--purple'>Enterprise architects</span>",
-        description:
-            "You own the map. You need a boundary between the layer that moves data and the layer that decides what happens next, and a test for which platforms actually span all four domains.",
+        tag: "Enterprise architects",
+        text: "You own the map. You need a boundary between the layer that moves data and the layer that decides what happens next, and a test for which platforms actually span all four domains.",
     },
     {
-        title: "<span class='persona-tag persona-tag--blue'>Platform and data engineering leaders</span>",
-        description:
-            "You run one domain today and inherit the handoffs to the other three. You want the consolidation path that does not require ripping out the tools already in production.",
+        tag: "Platform and data engineering leaders",
+        text: "You run one domain today and inherit the handoffs to the other three. You want the consolidation path that does not require ripping out the tools already in production.",
     },
     {
-        title: "<span class='persona-tag persona-tag--green'>CTOs and CIOs</span>",
-        description:
-            "You are being asked to put agents into production. You need to know what governs their actions across data, infrastructure, applications and business processes before that happens.",
+        tag: "CTOs and CIOs",
+        text: "You are being asked to put agents into production. You need to know what governs their actions across data, infrastructure, applications and business processes before that happens.",
     },
 ]
 ---
@@ -137,11 +142,24 @@ const WHO_ITEMS = [
         }
     </Fragment>
 
-    <Hero pdfHref={PDF_HREF} readHref={READ_HREF} />
-    <CardGrid title="Who this is for" items={WHO_ITEMS} />
+    <WhitepaperHero pdfHref={PDF_HREF} book={bookMockup} inside={INSIDE}>
+        <Fragment slot="title">
+            Unified Orchestration and Agentic AI: <span class="highlight"
+                >One Control Plane</span
+            > for Enterprise-Grade Automation
+        </Fragment>
+        Enterprise automation is fragmented across four domains: data, infrastructure,
+        applications, and business processes. AI agents now act across all four. This
+        paper defines what it takes to govern them on a single control plane.
+    </WhitepaperHero>
+    <WhoItsFor personas={PERSONAS} />
 
     <section class="whitepaper-content">
-        <TwoColumnStickyLayout client:load>
+        {
+            /* Static, as on blog and resource pages: hydrating it re-renders the
+            article and drops the click-to-enlarge handlers on its images. */
+        }
+        <TwoColumnStickyLayout>
             <div slot="sidebar" class="whitepaper-sidebar">
                 <ResourceDetails resource={post as any} />
                 <BlogToc client:load links={tocLinks} />
@@ -160,7 +178,7 @@ const WHO_ITEMS = [
         </TwoColumnStickyLayout>
     </section>
 
-    <AuthorCard />
+    <AuthorBlock />
 
     {
         faqItems.length > 0 && (
@@ -185,9 +203,9 @@ const WHO_ITEMS = [
         }}
     >
         <Fragment slot="title">Start with one workflow</Fragment>
-        Take the paper with you, or skip straight to the engine: the open source
-        edition runs in production, and the path from four silos to one platform
-        starts with a single flow.
+        Take the paper with you, or skip straight to the engine: the open source edition
+        runs in production, and the path from four silos to one platform starts with
+        a single flow.
         <Fragment slot="footer">
             <Link href="/docs/quickstart" class="btn btn-secondary">
                 Get Started
@@ -198,9 +216,9 @@ const WHO_ITEMS = [
 </Layout>
 
 <style lang="scss">
-    .whitepaper-content {
-        padding: 3rem 0;
-    }
+    @use "/src/components/whitepaper/page" as *;
+
+    @include whitepaper-content;
 
     .whitepaper-sidebar {
         display: flex;
@@ -234,41 +252,5 @@ const WHO_ITEMS = [
 
     .whitepaper-faq :global(section.faq) {
         background: var(--ks-background-secondary);
-    }
-
-    :global(.persona-tag) {
-        display: inline-flex;
-        font-size: $font-size-sm;
-        font-weight: 600;
-        padding: 0.375rem 0.75rem;
-        border-radius: 999px;
-        line-height: 1;
-    }
-
-    :global(.persona-tag--green) {
-        background-color: rgba(34, 197, 94, 0.12);
-        color: #16a34a;
-
-        :global(html.dark) & {
-            color: #4ade80;
-        }
-    }
-
-    :global(.persona-tag--blue) {
-        background-color: rgba(59, 130, 246, 0.12);
-        color: #2563eb;
-
-        :global(html.dark) & {
-            color: #60a5fa;
-        }
-    }
-
-    :global(.persona-tag--purple) {
-        background-color: rgba(159, 79, 237, 0.12);
-        color: #7c3aed;
-
-        :global(html.dark) & {
-            color: #c084fc;
-        }
     }
 </style>

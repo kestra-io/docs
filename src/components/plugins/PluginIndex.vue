@@ -108,7 +108,13 @@
         return getSubgroupMetadata(subGroupWrapper)?.title ?? subGroupWrapper.title ?? subGroupName(subGroupWrapper);
     };
 
-    const plugin = computed(() => props.plugins.find(p => props.subGroup === undefined ? true : (slugify(subGroupName(p)) === props.subGroup)));
+    // On a subgroup URL, a real subgroup entry wins over the plugin root entry whose title
+    // slugifies the same way: plugin-cassandra's root is "Apache Cassandra" like its
+    // standard subgroup, and matching the root listed the Astra DB elements there too.
+    const plugin = computed(() => props.subGroup === undefined
+        ? props.plugins[0]
+        : props.plugins.find(p => p.subGroup !== undefined && slugify(subGroupName(p)) === props.subGroup)
+            ?? props.plugins.find(p => slugify(subGroupName(p)) === props.subGroup));
 
     const description = computed(() => {
         return plugin.value?.longDescription ?? plugin.value?.description
@@ -124,7 +130,14 @@
         return split?.[split.length - 1];
     }
 
-    const elementHref = (element: string) => `${props.routePath}/${element.toLowerCase()}`;
+    // A plugin without subgroups also answers on /plugins/<plugin>/<its title> (e.g.
+    // /plugins/plugin-jdbc-postgres/postgresql), but its elements live under the plugin root:
+    // prefixing them with that extra segment gives URLs that 301.
+    const elementBase = computed(() => props.subGroup !== undefined && plugin.value?.subGroup === undefined
+        ? props.routePath.replace(/\/[^/]+$/, "")
+        : props.routePath);
+
+    const elementHref = (element: string) => `${elementBase.value}/${element.toLowerCase()}`;
 
     function getTotalElementCount(plugin: Plugin): number {
         const elements = extractPluginElements(plugin);

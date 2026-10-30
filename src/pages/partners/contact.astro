@@ -1,0 +1,177 @@
+---
+import Layout from "~/components/layout.astro"
+
+const title = "Find the Right Kestra Partner"
+const description =
+    "Tell us about your project and we'll introduce you to a Kestra partner with the right skills, region and services."
+
+const FORM_URL = "https://share-eu1.hsforms.com/1qERzToUOTuyzjw-Fg5zaAQg7f8j"
+---
+
+<Layout {title} {description} breadcrumbTitle="Contact us">
+    <section class="contact">
+        <div class="contact-left">
+            <h1>Find the right <span>Kestra partner</span></h1>
+            <p class="subtitle">Your project is unique.</p>
+            <p class="subtitle">Your partner should fit it.</p>
+            <ul class="list">
+                <li>
+                    <b>Your project:</b> Tell us what you're building, migrating
+                    or scaling with Kestra.
+                </li>
+                <li>
+                    <b>Your needs:</b> Share the region, industry and services
+                    you're looking for.
+                </li>
+                <li>
+                    <b>The match:</b> We'll introduce you to a certified partner
+                    who has delivered similar work.
+                </li>
+            </ul>
+            <p class="shadow-card">
+                Prefer to browse? <a href="/partners/find">See every partner</a>{" "}
+                and filter by track, region and service.
+            </p>
+        </div>
+        <div class="contact-right">
+            <iframe
+                src={FORM_URL}
+                title="Contact us about finding a partner"
+                loading="lazy"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            ></iframe>
+        </div>
+    </section>
+</Layout>
+
+<style lang="scss">
+    .contact {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        font-size: 0.9rem;
+        --background-grid-cell-size: 72px;
+        --background-grid-line-color: var(--ks-border-primary);
+        background-image:
+            radial-gradient(
+                farthest-corner at top center,
+                transparent 0.5%,
+                var(--ks-background-primary) 40%
+            ),
+            linear-gradient(
+                to right,
+                transparent calc(var(--background-grid-cell-size) / 2 - 1px),
+                var(--background-grid-line-color)
+                    calc(var(--background-grid-cell-size) / 2 - 1px),
+                var(--background-grid-line-color)
+                    calc(var(--background-grid-cell-size) / 2),
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--background-grid-line-color) 1px,
+                transparent 1px
+            );
+        background-size:
+            150% 100%,
+            var(--background-grid-cell-size) var(--background-grid-cell-size),
+            var(--background-grid-cell-size) var(--background-grid-cell-size);
+        background-repeat: no-repeat, repeat, repeat;
+        background-position:
+            center top,
+            50% 0,
+            100% 0;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            justify-content: center;
+        }
+    }
+
+    h1 {
+        margin-bottom: 2rem;
+        font-size: 3rem;
+        span {
+            &:before {
+                content: "\A";
+                white-space: pre;
+            }
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
+    .contact-left {
+        flex: 1;
+        padding: 2rem;
+        @include media-breakpoint-up(lg) {
+            padding: 5%;
+            border-right: 1px solid var(--ks-border-primary);
+        }
+        @include media-breakpoint-up(xl) {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            > * {
+                width: 95%;
+            }
+        }
+        @include media-breakpoint-up(xxl) {
+            > * {
+                max-width: 600px;
+            }
+        }
+    }
+
+    .subtitle {
+        font-size: 1.25rem;
+        margin: 0;
+    }
+
+    .list {
+        font-size: 1.15rem;
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        margin: 2rem 0;
+        li {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    .shadow-card {
+        background-color: var(--ks-background-primary);
+        color: var(--ks-content-primary);
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        font-size: 1.15rem;
+        box-shadow: 0px 0px 15px var(--ks-shadows-light);
+    }
+
+    // same dark, blue-lit half-column as the /demo form
+    .contact-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+        background-color: #151515;
+        background-image:
+            radial-gradient(
+                circle at -100px -220px,
+                #2da4ff 0%,
+                transparent 650px
+            ),
+            radial-gradient(circle at 850px 130%, #2da4ff 0%, transparent 750px);
+        background-repeat: no-repeat;
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 50%;
+            padding: 3rem;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 600px;
+            min-height: 800px;
+            border: none;
+            border-radius: 0.5rem;
+            background: white;
+        }
+    }
+</style>

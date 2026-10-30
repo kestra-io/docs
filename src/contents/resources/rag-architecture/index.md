@@ -35,7 +35,7 @@ Retrieval-Augmented Generation (RAG) is a two-step process that enhances the out
 
 ### How RAG Enhances Large Language Models (LLMs)
 
-LLMs are trained on static datasets, which means their knowledge has a cutoff date and lacks specific, proprietary information. RAG overcomes these limitations by providing a mechanism to inject real-time, external context into the generation process. Instead of just "remembering" information from its training, the LLM can now "read" relevant documents on the fly. This makes it possible to build applications that can answer questions about recent events, internal company documents, or specialized technical manuals. The core components of this system often rely on a [vector database](https://kestra.io/resources/ai/vector-database) to efficiently store and retrieve information.
+LLMs are trained on static datasets, which means their knowledge has a cutoff date and lacks specific, proprietary information. RAG overcomes these limitations by providing a mechanism to inject real-time, external context into the generation process. Instead of just "remembering" information from its training, the LLM can now "read" relevant documents on the fly. This makes it possible to build applications that can answer questions about recent events, internal company documents, or specialized technical manuals. The core components of this system often rely on a [vector database](https://kestra.io/resources/ai/rag-pipeline) to efficiently store and retrieve information.
 
 ### Is ChatGPT a RAG Model?
 
@@ -48,7 +48,7 @@ A RAG system is composed of two main phases, each with its own set of components
 ### The Retrieval Phase: Accessing External Knowledge
 
 The retrieval phase is responsible for finding and fetching the most relevant information from a knowledge base to answer a user's query. This process typically involves:
-- **Data Ingestion and Indexing:** Documents are loaded, split into manageable chunks, and converted into numerical representations (embeddings) using an embedding model. These embeddings are then stored and indexed in a [vector database](https://kestra.io/resources/ai/vector-database).
+- **Data Ingestion and Indexing:** Documents are loaded, split into manageable chunks, and converted into numerical representations (embeddings) using an embedding model. These embeddings are then stored and indexed in a [vector database](https://kestra.io/resources/ai/rag-pipeline).
 - **Querying:** When a user submits a query, it is also converted into an embedding. The system then performs a similarity search in the vector database to find the document chunks with embeddings closest to the query embedding.
 - **Knowledge Sources:** The external knowledge can come from various sources, including text documents, PDFs, database records, or even web pages. Proper management of these [data storage components](https://kestra.io/docs/architecture/data-components) is crucial for a robust RAG system.
 
@@ -56,7 +56,7 @@ The retrieval phase is responsible for finding and fetching the most relevant in
 
 Once the relevant document chunks are retrieved, the generation phase begins. This phase uses the power of an LLM to synthesize an answer.
 - **Prompt Augmentation:** The retrieved text is combined with the original user query to form an augmented prompt. This prompt provides the LLM with the necessary context to generate a factually grounded response.
-- **LLM Generation:** The augmented prompt is sent to an LLM (e.g., GPT-5, Claude Opus 4). The model uses the provided context to craft a coherent, human-like answer that directly addresses the user's question. This is a core part of building [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows) and can be enhanced with autonomous [AI agents](https://kestra.io/docs/ai-tools/ai-agents).
+- **LLM Generation:** The augmented prompt is sent to an LLM (e.g., GPT-5, Claude Opus 4). The model uses the provided context to craft a coherent, human-like answer that directly addresses the user's question. This is a core part of building [RAG workflows](https://kestra.io/docs/ai-orchestration/ai-rag-workflows) and can be enhanced with autonomous [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents).
 
 ### Key Benefits of RAG in AI
 
@@ -124,7 +124,7 @@ You should choose RAG when your application requires:
 
 ### Future Trends in RAG Development
 
-The RAG landscape is rapidly evolving. Future trends include **multi-modal RAG**, which can retrieve and process information from images, audio, and video, not just text. We are also seeing the rise of **self-improving RAG systems** that use feedback to refine their retrieval strategies over time. The tight integration of RAG with [agentic AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) and [autonomous agents](https://kestra.io/docs/ai-tools/ai-agents) is also pushing the boundaries of what's possible.
+The RAG landscape is rapidly evolving. Future trends include **multi-modal RAG**, which can retrieve and process information from images, audio, and video, not just text. We are also seeing the rise of **self-improving RAG systems** that use feedback to refine their retrieval strategies over time. The tight integration of RAG with [agentic AI workflows](https://kestra.io/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task) and [autonomous agents](https://kestra.io/docs/ai-orchestration/ai-agents) is also pushing the boundaries of what's possible.
 
 ## Implementing RAG Architecture in Practice
 
@@ -157,7 +157,7 @@ Retrieval is one workload on a shared control plane. The same scheduling, retry 
 
 ### Declarative YAML for RAG Pipeline Definition
 
-Kestra allows you to define your entire [RAG workflow](https://kestra.io/docs/ai-tools/ai-rag-workflows) as a simple, declarative YAML file. This brings GitOps principles to your AI pipelines, enabling version control, code reviews, and automated deployments. You can define every step, from data ingestion and chunking to embedding and indexing, in a single, auditable file.
+Kestra allows you to define your entire [RAG workflow](https://kestra.io/docs/ai-orchestration/ai-rag-workflows) as a simple, declarative YAML file. This brings GitOps principles to your AI pipelines, enabling version control, code reviews, and automated deployments. You can define every step, from data ingestion and chunking to embedding and indexing, in a single, auditable file.
 
 ```yaml
 id: simple-rag-pipeline
