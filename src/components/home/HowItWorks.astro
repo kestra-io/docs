@@ -51,28 +51,33 @@ const USED = [
     "core.flow.Pause",
     "scripts.python.Script",
 ]
+// The carousel's plugins, the names people look for first.
 const CROWD = [
     "aws.s3.Upload",
-    "gcp.bigquery.Query",
-    "jdbc.snowflake.Query",
-    "dbt.cli.DbtCLI",
-    "kubernetes.core.PodCreate",
     "azure.storage.blob.Upload",
-    "notifications.slack.SlackIncomingWebhook",
-    "databricks.job.CreateJob",
-    "terraform.cli.TerraformCLI",
-    "kafka.Produce",
-    "airbyte.connections.Sync",
-    "mongodb.Find",
-    "ansible.cli.AnsibleCLI",
-    "elasticsearch.Search",
-    "openai.ChatCompletion",
-    "scripts.node.Script",
-    "docker.Run",
-    "fivetran.connectors.Sync",
-    "git.Clone",
-    "spark.SparkCLI",
+    "gcp.bigquery.Query",
     "servicenow.Post",
+    "notifications.slack.SlackIncomingWebhook",
+    "ansible.cli.AnsibleCLI",
+    "openai.ChatCompletion",
+    "huggingface.Inference",
+    "anthropic.ChatCompletion",
+    "ai.agent.AIAgent",
+    "docker.Run",
+    "dbt.cli.DbtCLI",
+    "jdbc.mysql.Query",
+    "kafka.Produce",
+    "elasticsearch.Search",
+    "jdbc.snowflake.Query",
+    "databricks.job.CreateJob",
+    "kubernetes.core.PodCreate",
+    "terraform.cli.TerraformCLI",
+    "mongodb.Find",
+    "github.issues.Create",
+    "airbyte.connections.Sync",
+    "fivetran.connectors.Sync",
+    "spark.SparkCLI",
+    "gcp.vertexai.ChatCompletion",
     "redis.list.ListPush",
 ]
 
@@ -96,38 +101,26 @@ const dataUri = (svg: string | null) =>
     svg && svg !== generic ? `data:image/svg+xml;base64,${svg}` : null
 const icons = fetched.slice(0, USED.length).map(dataUri)
 
-// Each tile's place in the panel, on either side of the editor: loose
-// columns along the edges, clear of the editor and of the flow's own
-// plugins and their leads.
-const crowd = fetched
-    .slice(USED.length)
-    .map(dataUri)
-    .filter((icon): icon is string => icon !== null)
-const SLOTS = [
-    [5, 12],
-    [13, 32],
-    [5, 50],
-    [12, 68],
-    [5, 86],
-    [21, 92],
-    [88, 26],
-    [95, 46],
-    [89, 62],
-    [95, 80],
-    [88, 94],
+// The carousel behind the editor: each plugin once, as a CSS variable on
+// the carousel so its icon is written out a single time.
+const crowd = [
+    ...new Set(
+        fetched
+            .slice(USED.length)
+            .map(dataUri)
+            .filter((icon): icon is string => icon !== null),
+    ),
 ]
+const CAROUSEL_ICONS = crowd
+    .map((icon, idx) => `--p${idx}: url("${icon}")`)
+    .join("; ")
+
+// The flow's own plugins, near the editor, over the carousel.
 const TILES = [
-    // The flow's plugins, near the editor.
     { icon: icons[0], used: 0, x: 19, y: 24 },
-    { icon: icons[1], used: 1, x: 81, y: 40 },
-    { icon: icons[2], used: 2, x: 19, y: 52 },
+    { icon: icons[1], used: 1, x: 81, y: 28 },
+    { icon: icons[2], used: 2, x: 19, y: 76 },
     { icon: icons[3], used: 3, x: 81, y: 74 },
-    ...crowd.slice(0, SLOTS.length).map((icon, idx) => ({
-        icon,
-        used: -1,
-        x: SLOTS[idx][0],
-        y: SLOTS[idx][1],
-    })),
 ].filter((tile) => tile.icon)
 
 // The flow's lines, split into tokens for the editor's colors. Type lines
@@ -180,11 +173,55 @@ const CODE = LINES.map((line) => {
     ].join("")
 }).join("")
 
+// The run, as the Gantt shows it: each task's slot along the run.
 const RUN = [
-    { id: "extract", detail: "1,204 rows", duration: "2.1s" },
-    { id: "approve", detail: "Waiting for approval", duration: "3m 40s" },
-    { id: "post_to_erp", detail: "Python 3.12 container", duration: "4.6s" },
+    { id: "extract", duration: "2.1s", start: 0, length: 0.14 },
+    { id: "approve", duration: "3m 40s", start: 0.14, length: 0.6 },
+    { id: "post_to_erp", duration: "4.6s", start: 0.74, length: 0.26 },
 ]
+
+// The run's logs, as the product's Logs tab shows them, each in when
+// its task gets there (ms from the step's start).
+const LOGS = [
+    {
+        at: 2400,
+        level: "INFO",
+        time: "02:00:02.104",
+        task: "extract",
+        message: "Query returned 1,204 rows",
+    },
+    {
+        at: 2600,
+        level: "WARN",
+        time: "02:00:02.311",
+        task: "approve",
+        message: "Execution paused, waiting for m.lee",
+    },
+    {
+        at: 5300,
+        level: "INFO",
+        time: "02:03:42.518",
+        task: "approve",
+        message: "Execution resumed by m.lee",
+    },
+    {
+        at: 5500,
+        level: "INFO",
+        time: "02:03:42.640",
+        task: "post_to_erp",
+        message: "Python 3.12 container started",
+    },
+    {
+        at: 6800,
+        level: "INFO",
+        time: "02:03:47.330",
+        task: "post_to_erp",
+        message: "Journal posted to the ERP",
+    },
+]
+
+// The dashboard's executions over the last 24 hours, one bar an hour.
+const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 ---
 
 {
@@ -236,12 +273,29 @@ const RUN = [
                     aria-hidden="true"
                     style={`--pixels: url("${pixelCluster}")`}></span>
 
+                {
+                    /* Connect: the plugins roll by behind the editor, the
+                    list twice over so it loops. */
+                }
+                <div class="carousel" aria-hidden="true" style={CAROUSEL_ICONS}>
+                    <div class="lane">
+                        {
+                            [...crowd, ...crowd].map((_, idx) => (
+                                <span
+                                    class="chip"
+                                    style={`--src: var(--p${idx % crowd.length})`}
+                                />
+                            ))
+                        }
+                    </div>
+                </div>
+
                 <div class="crowd" aria-hidden="true">
                     {
                         TILES.map((tile, idx) => (
                             <span
                                 class:list={["tile", { used: tile.used >= 0 }]}
-                                style={`left: ${tile.x}%; top: ${tile.y}%; --k: ${idx}`}
+                                style={`left: ${tile.x}%; top: ${tile.y}%; --k: ${idx}; --dy: ${((50 - tile.y) * 36) / 100}rem`}
                                 data-used={
                                     tile.used >= 0 ? tile.used : undefined
                                 }
@@ -272,53 +326,24 @@ const RUN = [
                 {/* The flow, in the product's editor. */}
                 <div class="card editor" aria-label="The nightly_close flow">
                     <div class="tabs">
-                        <span class="tab active">
+                        <span class="tab active yaml-tab">
                             <span class="logo"
                                 ><img src={kestraMark.src} alt="" /></span
                             >
                             YAML
                         </span>
-                    </div>
-                    <pre><code set:html={CODE} /></pre>
-                </div>
-
-                {/* Declare: the change is reviewed, checked and deployed. */}
-                <div class="card pr" data-scene="0">
-                    <div class="card-head">
-                        <Icon name="mdi:source-pull" />
-                        <span>Add the nightly close</span>
-                        <span class="pill merged" data-on="3600">Merged</span>
-                        <span class="pill open">Open</span>
-                    </div>
-                    <ul>
-                        <li data-on="1800">
-                            <span class="avatar">AR</span>
-                            Reviewed by a.ruiz
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
-                        <li data-on="2600">
-                            <code>CI</code>
-                            Validate flow
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
-                        <li data-on="3400">
-                            <code>CD</code>
-                            Deploy to finance
-                            <span class="state"
-                                ><Icon name="mdi:check-circle-outline" /></span
-                            >
-                        </li>
-                    </ul>
-                </div>
-
-                {/* Run and govern: the execution, as in the product. */}
-                <div class="card exec" data-scene="2">
-                    <div class="card-head">
-                        <span><strong>Execution :</strong> nightly_close</span>
+                        {
+                            /* Run and govern: the run's own tab, once executed. */
+                        }
+                        <span class="tab exec-tab">
+                            <Icon name="mdi:play-outline" /> Execution
+                        </span>
+                        <span class="execute" aria-hidden="true">
+                            <Icon name="mdi:play" /> Execute
+                        </span>
+                        {
+                            /* Once pressed, Execute gives way to the run's state. */
+                        }
                         <span class="pill status">
                             <Icon name="mdi:loading" class="spin" />
                             <Icon name="mdi:pause" class="wait" />
@@ -331,47 +356,240 @@ const RUN = [
                             <span class="success">Success</span>
                         </span>
                     </div>
+                    <div class="sheet">
+                        <pre><code set:html={CODE} /></pre>
+
+                        {/* The run, as the product's Gantt view. */}
+                        <div class="gantt" aria-hidden="true">
+                            <div class="gantt-head">
+                                <span>
+                                    Execution <code>4dTq2x</code>
+                                </span>
+                            </div>
+                            <ul>
+                                {
+                                    RUN.map((row, idx) => (
+                                        <li
+                                            class="task is-created"
+                                            data-task={idx}
+                                            style={`--start: ${row.start}; --length: ${row.length}`}
+                                        >
+                                            <code class="name">{row.id}</code>
+                                            <span class="track">
+                                                <span class="fill" />
+                                            </span>
+                                            <span class="end">
+                                                <Icon
+                                                    name="mdi:loading"
+                                                    class="spin"
+                                                />
+                                                <Icon
+                                                    name="mdi:pause"
+                                                    class="wait"
+                                                />
+                                                <Icon
+                                                    name="mdi:check-circle-outline"
+                                                    class="done"
+                                                />
+                                                <span class="time">
+                                                    {row.duration}
+                                                </span>
+                                            </span>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                            <ol class="logs">
+                                {
+                                    LOGS.map((log) => (
+                                        <li
+                                            class={log.level.toLowerCase()}
+                                            data-on={log.at}
+                                        >
+                                            <span class="level">
+                                                {log.level}
+                                            </span>
+                                            <span class="meta">
+                                                <time>{log.time}</time>
+                                                <span class="kv">
+                                                    taskId:{" "}
+                                                    <span>{log.task}</span>
+                                                </span>
+                                            </span>
+                                            <span class="message">
+                                                {log.message}
+                                            </span>
+                                        </li>
+                                    ))
+                                }
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                {
+                    /* Declare: on the left, the change lands in Git and is
+                    reviewed; on the right, CI/CD checks and deploys it. */
+                }
+                <div class="card side git" data-scene="0">
+                    <div class="card-head">
+                        <Icon name="mdi:source-branch" />
+                        <span>Versioned in Git</span>
+                        <code class="branch">main</code>
+                    </div>
                     <ul>
-                        {
-                            RUN.map((row, idx) => (
-                                <li class="task is-created" data-task={idx}>
-                                    <span class="name">
-                                        <strong>{row.id}</strong>
-                                        <span class="detail">
-                                            {idx === 1 ? (
-                                                <>
-                                                    <span class="waiting">
-                                                        {row.detail}
-                                                    </span>
-                                                    <span class="approved">
-                                                        Approved by m.lee
-                                                    </span>
-                                                </>
-                                            ) : (
-                                                row.detail
-                                            )}
-                                        </span>
-                                    </span>
-                                    <span class="track">
-                                        <span class="fill" />
-                                    </span>
-                                    <span class="end">
-                                        <Icon name="mdi:loading" class="spin" />
-                                        <Icon name="mdi:pause" class="wait" />
-                                        <Icon
-                                            name="mdi:check-circle-outline"
-                                            class="done"
-                                        />
-                                        <span class="time">{row.duration}</span>
-                                    </span>
-                                </li>
-                            ))
-                        }
+                        <li class="fresh" data-on="1400">
+                            <span class="avatar">ML</span>
+                            <span class="what">
+                                Add the nightly close
+                                <code>a3f9c2</code>
+                            </span>
+                        </li>
+                        <li data-on="2000">
+                            <span class="avatar reviewer">AR</span>
+                            <span class="what">Review approved</span>
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                        <li class="past">
+                            <span class="avatar">ML</span>
+                            <span class="what">
+                                Move cron to 02:00
+                                <code>7be1d0</code>
+                            </span>
+                        </li>
+                        <li class="past">
+                            <span class="avatar reviewer">AR</span>
+                            <span class="what">
+                                Initial flow
+                                <code>c41e88</code>
+                            </span>
+                        </li>
                     </ul>
-                    <p class="audit">
+                </div>
+                <div class="card side ci" data-scene="0">
+                    <div class="card-head">
+                        <Icon name="mdi:rocket-launch-outline" />
+                        <span>CI/CD</span>
+                        <span class="pill merged" data-on="3800">Deployed</span>
+                        <span class="pill open">Running</span>
+                    </div>
+                    <ul>
+                        <li data-on="2600">
+                            <span class="what">Validate flow</span>
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                        <li data-on="3000">
+                            <span class="what">Run tests</span>
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                        <li data-on="3500">
+                            <span class="what">Deploy to finance</span>
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                {
+                    /* Run and govern: on the left, what governs the run; on
+                    the right, the dashboard that watches every execution. */
+                }
+                <div class="card side gov" data-scene="2">
+                    <div class="card-head">
                         <Icon name="mdi:shield-check-outline" />
-                        Audit log: approve resumed by m.lee
-                    </p>
+                        <span>Governance</span>
+                    </div>
+                    <ul>
+                        <li data-on="1500">
+                            <Icon name="mdi:key-outline" class="glyph" />
+                            <span class="what">
+                                Permissions
+                                <small>etl-bot can run finance flows</small>
+                            </span>
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                        <li class="approval" data-on="2600">
+                            <Icon
+                                name="mdi:account-check-outline"
+                                class="glyph"
+                            />
+                            <span class="what">
+                                Approval
+                                <small class="waiting">Waiting for m.lee</small>
+                                <small class="approved">Approved by m.lee</small
+                                >
+                            </span>
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                        <li data-on="7000">
+                            <Icon
+                                name="mdi:text-box-search-outline"
+                                class="glyph"
+                            />
+                            <span class="what">
+                                Audit trail
+                                <small>Every step logged</small>
+                            </span>
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="card side dash" data-scene="2">
+                    <div class="card-head">
+                        <Icon name="mdi:chart-line" />
+                        <span>Dashboard</span>
+                        <span class="period">Last 24 hours</span>
+                    </div>
+                    <div class="tiles">
+                        <div class="tile-kpi">
+                            <small>Success ratio</small>
+                            <strong>98.2<span class="unit">%</span></strong>
+                            <span class="ratio"><span></span></span>
+                        </div>
+                        <div class="tile-kpi">
+                            <small>Executions</small>
+                            <strong class="total">
+                                <span class="before">1,204</span>
+                                <span class="after">1,205</span>
+                            </strong>
+                            <svg viewBox="0 0 120 28" class="bars">
+                                {
+                                    HOURS.map((h, idx) => (
+                                        <rect
+                                            x={idx * 10 + 1}
+                                            y={28 - h * 2}
+                                            width="7"
+                                            height={h * 2}
+                                            rx="1.5"
+                                            class:list={{
+                                                last: idx === HOURS.length - 1,
+                                            }}
+                                        />
+                                    ))
+                                }
+                            </svg>
+                        </div>
+                        <div class="tile-kpi inline">
+                            <small>In progress</small>
+                            <strong class="live">
+                                <span class="idle">0</span>
+                                <span class="busy">1</span>
+                            </strong>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -389,15 +607,16 @@ const RUN = [
     // The steps take turns while the block is in view: the open step's top
     // edge fills as its time goes, then the next one opens. A click picks a
     // step and stops the turns.
-    const STEP_MS = [7000, 7000, 8500]
+    const STEP_MS = [7000, 7000, 9500]
     // The run's states over time, in ms from the step's start.
+    // Execute is pressed at 600ms, the Gantt replaces the code at 900ms.
     const RUN: [number, number, string][] = [
-        [600, 0, "running"],
-        [1700, 0, "success"],
-        [1900, 1, "paused"],
-        [4600, 1, "success"],
-        [4800, 2, "running"],
-        [6200, 2, "success"],
+        [1400, 0, "running"],
+        [2400, 0, "success"],
+        [2600, 1, "paused"],
+        [5300, 1, "success"],
+        [5500, 2, "running"],
+        [6800, 2, "success"],
     ]
 
     function wireHow() {
@@ -447,26 +666,23 @@ const RUN = [
                     const tile = root.querySelector<HTMLElement>(
                         `[data-used="${i}"]`,
                     )
-                    const line = root.querySelector<HTMLElement>(
-                        `.line[data-plugin="${i}"]`,
-                    )
-                    if (!tile || !line) return
-                    const t = tile.getBoundingClientRect()
-                    const l = line.getBoundingClientRect()
-                    const left =
-                        t.left + t.width / 2 < frame.left + frame.width / 2
-                    const x1 = (left ? t.right + 4 : t.left - 4) - box.left
-                    const y1 = t.top + t.height / 2 - box.top
+                    if (!tile) return
+                    // The tile's resting centre, from the layout, so the
+                    // lead is right even while the tile is still on its way
+                    // out of the carousel. It starts there, behind the tile.
+                    const x1 = tile.offsetLeft + tile.offsetWidth / 2
+                    const y1 = tile.offsetTop + tile.offsetHeight / 2
+                    const left = x1 + box.left < frame.left + frame.width / 2
                     const x2 = (left ? frame.left : frame.right) - box.left
-                    const y2 = l.top + l.height / 2 - box.top
-                    const mid = (x1 + x2) / 2
+                    // A straight horizontal lead, from behind the tile to
+                    // the editor's edge, level with the tile.
                     link.querySelector("path")!.setAttribute(
                         "d",
-                        `M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}`,
+                        `M${x1},${y1} H${x2}`,
                     )
                     const dot = link.querySelector("circle")!
                     dot.setAttribute("cx", String(x2))
-                    dot.setAttribute("cy", String(y2))
+                    dot.setAttribute("cy", String(y1))
                 })
             }
             window.addEventListener("resize", drawLinks)
@@ -496,10 +712,18 @@ const RUN = [
 
                 tasks.forEach((_, i) => setTask(i, "created"))
                 delete body.dataset.run
-                body.dataset.exec = "running"
-                if (idx === 2)
+                body.dataset.exec = "idle"
+                body.classList.remove("pressing", "executing")
+                if (idx === 2) {
+                    later(600, () => body.classList.add("pressing"))
+                    later(900, () => {
+                        body.classList.remove("pressing")
+                        body.classList.add("executing")
+                        body.dataset.exec = "running"
+                    })
                     for (const [at, task, status] of RUN)
                         later(at, () => setTask(task, status))
+                }
                 if (auto)
                     later(STEP_MS[idx], () => open((idx + 1) % steps.length))
             }
@@ -987,9 +1211,12 @@ const RUN = [
 
     // Connect: each plugin's class name lights up, as in the product's
     // editor. Run: the task that runs lights up.
+    // Lit together with the leads, once the plugins are out of the
+    // carousel.
     .body[data-at="1"] pre :global(.cls) {
         background: var(--hl-cls);
         color: var(--text);
+        transition-delay: 1.2s;
     }
 
     .body[data-at="2"][data-run="0"] pre :global([data-task-line="0"]),
@@ -1033,8 +1260,8 @@ const RUN = [
         pointer-events: none;
     }
 
-    // The plugins around the editor: a faint crowd, brought in and lit by
-    // Connect, the flow's own ones ringed in the tint.
+    // The plugins around the editor, shown by Connect only: a faint grey
+    // crowd, with the flow's own ones in colour.
     // Connect's leads, dashed in the tint, the dashes flowing toward the
     // editor.
     .links {
@@ -1050,12 +1277,12 @@ const RUN = [
 
         .body[data-at="1"] & {
             opacity: 1;
-            transition: opacity 0.5s ease 0.5s;
+            transition: opacity 0.5s ease 1.2s;
         }
 
         path {
             fill: none;
-            stroke: var(--tint);
+            stroke: var(--muted);
             stroke-width: 1.25;
             stroke-dasharray: 4 4;
             opacity: 0.7;
@@ -1063,7 +1290,7 @@ const RUN = [
         }
 
         circle {
-            fill: var(--tint);
+            fill: var(--muted);
         }
 
         @include media-breakpoint-down(lg) {
@@ -1077,8 +1304,88 @@ const RUN = [
         }
     }
 
+    // Connect's carousel: one row of grey plugin chips rolling by behind
+    // the editor, across its middle, fading at the panel's edges.
+    .carousel {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        opacity: 0;
+        mask: linear-gradient(
+            90deg,
+            transparent,
+            #000 12%,
+            #000 88%,
+            transparent
+        );
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+
+        .body[data-at="1"] & {
+            opacity: 1;
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    .lane {
+        display: flex;
+        width: max-content;
+        animation: roll 60s linear infinite;
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+        }
+    }
+
+    // A chip per plugin, its icon from the carousel's variables. The right
+    // margin, rather than a gap, keeps the two halves exactly equal.
+    .chip {
+        flex-shrink: 0;
+        width: 4rem;
+        height: 4rem;
+        margin-right: 1.25rem;
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        background: var(--src) center / 2.375rem no-repeat #ffffff;
+        filter: grayscale(1);
+        opacity: 0.55;
+
+        // In colour as Connect opens, then grey as the flow's own plugins
+        // come out of the row.
+        .body[data-at="1"].enter & {
+            animation: dim-out 2.4s ease both;
+        }
+    }
+
+    @keyframes dim-out {
+        0%,
+        35% {
+            filter: none;
+            opacity: 1;
+        }
+
+        100% {
+            filter: grayscale(1);
+            opacity: 0.55;
+        }
+    }
+
+    @keyframes roll {
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    // Over the leads, so each one comes out from behind its tile; still
+    // under the editor, which comes later.
     .crowd {
         position: absolute;
+        z-index: 2;
         inset: 0;
 
         @include media-breakpoint-down(lg) {
@@ -1097,14 +1404,17 @@ const RUN = [
         border-radius: 10px;
         background: #ffffff;
         box-shadow: 0 4px 12px -6px rgba(43, 43, 51, 0.2);
-        opacity: 0.35;
+        // Only Connect shows the plugins; Declare and Run keep the panel to
+        // their own screens.
+        opacity: 0;
         filter: grayscale(1);
         animation: drift 7s ease-in-out infinite alternate;
         animation-delay: calc(var(--k) * -0.9s);
         transition:
             opacity 0.5s ease,
             filter 0.5s ease,
-            box-shadow 0.5s ease;
+            box-shadow 0.5s ease,
+            scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
         img {
             width: 1.375rem;
@@ -1119,22 +1429,46 @@ const RUN = [
         }
 
         &.used {
-            width: 2.75rem;
-            height: 2.75rem;
-            margin: -1.375rem 0 0 -1.375rem;
+            width: 3.25rem;
+            height: 3.25rem;
+            margin: -1.625rem 0 0 -1.625rem;
+            border-radius: 12px;
 
             img {
-                width: 1.625rem;
-                height: 1.625rem;
+                width: 2rem;
+                height: 2rem;
             }
         }
 
+        // Active, they grow and come forward.
         .body[data-at="1"] &.used {
+            scale: 1.25;
             opacity: 1;
             filter: none;
             border-color: color-mix(in srgb, var(--tint) 45%, transparent);
             box-shadow: 0 6px 16px -6px
                 color-mix(in srgb, var(--tint) 45%, transparent);
+        }
+
+        // As Connect opens, the flow's own plugins come out of the carousel
+        // one after the other, still drifting.
+        .body[data-at="1"].enter &.used {
+            animation:
+                drift 7s ease-in-out infinite alternate,
+                emerge 0.9s cubic-bezier(0.34, 1.3, 0.64, 1) backwards;
+            animation-delay:
+                calc(var(--k) * -0.9s), calc(0.2s + var(--k) * 0.18s);
+        }
+    }
+
+    // Out of the carousel: from the rolling row, grey and small like its
+    // chips, up or down to the tile's place, in colour.
+    @keyframes emerge {
+        from {
+            translate: 0 var(--dy);
+            scale: 0.8;
+            opacity: 0.55;
+            filter: grayscale(1);
         }
     }
 
@@ -1256,11 +1590,15 @@ const RUN = [
         }
     }
 
-    // Declare: the pull request, reviewed, checked, then merged.
-    .pr {
-        left: calc(50% - 34rem);
-        bottom: 2.5rem;
-        width: 20rem;
+    // Declare: the two side cards, either side of the editor and clear of
+    // it, using the panel's width.
+    // Both the same height, centred in the panel's height.
+    .side {
+        top: calc(50% - 9.25rem);
+        display: flex;
+        flex-direction: column;
+        width: min(17rem, calc(27% - 3.5rem));
+        height: 18.5rem;
         transform: translateY(12px);
 
         .open {
@@ -1331,6 +1669,56 @@ const RUN = [
         }
     }
 
+    .git {
+        right: calc(50% + min(19rem, 23%) + 2rem);
+
+        .branch {
+            margin-left: auto;
+        }
+
+        .what {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            min-width: 0;
+            font-size: 0.8125rem;
+
+            code {
+                align-self: flex-start;
+            }
+        }
+
+        // The new commit, marked as it lands; the older ones stay quiet.
+        .fresh:global(.on) {
+            background: var(--running-bg);
+        }
+
+        .past {
+            color: var(--muted);
+            opacity: 0.7;
+        }
+    }
+
+    .ci {
+        left: calc(50% + min(19rem, 23%) + 2rem);
+
+        // Its three steps share the card's height.
+        ul {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            li {
+                flex: 1;
+            }
+        }
+
+        .merged,
+        .open {
+            margin-left: auto;
+        }
+    }
+
     .avatar {
         display: grid;
         place-items: center;
@@ -1343,85 +1731,269 @@ const RUN = [
         color: #ffffff;
     }
 
-    // Run and govern: the execution's phases, as in the 2.0 page.
-    .exec {
-        top: 7rem;
-        right: calc(50% - 35.5rem);
-        width: 23rem;
-        transform: translateY(12px);
+    // Run and govern: Execute in the tab bar, pressed; the run's tab comes
+    // in before YAML, and the Gantt takes the code's place.
+    .execute {
+        align-self: center;
+        display: none;
+        align-items: center;
+        gap: 0.375rem;
+        margin-left: auto;
+        padding: 0.375rem 0.875rem 0.375rem 0.75rem;
+        border-radius: 8px;
+        background: #6a2bf5;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #ffffff;
+        box-shadow: 0 4px 14px -6px rgba(106, 43, 245, 0.7);
+        transition:
+            transform 0.15s ease,
+            box-shadow 0.15s ease,
+            opacity 0.3s ease;
+
+        :global(svg) {
+            width: 0.9375rem;
+            height: 0.9375rem;
+        }
+
+        .body[data-at="2"] & {
+            display: inline-flex;
+        }
+
+        .pressing & {
+            transform: scale(0.94);
+            box-shadow: 0 0 0 4px rgba(106, 43, 245, 0.2);
+        }
+
+        .body[data-at="2"].executing & {
+            display: none;
+        }
+    }
+
+    .tabs .status {
+        align-self: center;
+        display: none;
+        margin-left: auto;
+
+        .executing & {
+            display: inline-flex;
+            animation: tab-in 0.35s ease;
+        }
+    }
+
+    .exec-tab {
+        display: none;
+
+        .executing & {
+            display: inline-flex;
+            margin-bottom: -1px;
+            border-color: var(--card-border);
+            background: var(--card);
+            font-weight: 500;
+            color: var(--text);
+            animation: tab-in 0.35s ease;
+        }
+    }
+
+    .executing .yaml-tab {
+        margin-bottom: 0;
+        border-color: transparent;
+        background: none;
+        font-weight: 400;
+        color: var(--muted);
+    }
+
+    @keyframes tab-in {
+        from {
+            opacity: 0;
+            transform: translateY(4px);
+        }
+    }
+
+    .sheet {
+        position: relative;
+    }
+
+    .gantt {
+        position: absolute;
+        inset: 0;
+        padding: 1.25rem 1.5rem;
+        background: var(--card);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.35s ease,
+            visibility 0s 0.35s;
+
+        .executing & {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.35s ease;
+        }
+
+        ul {
+            display: grid;
+            gap: 0.25rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
 
         li {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 5.5rem auto;
+            grid-template-columns: 6.5rem minmax(0, 1fr) 4.5rem;
             align-items: center;
             gap: 1rem;
-            padding: 0.875rem 1.125rem;
+            height: 3rem;
+            border-bottom: 1px solid var(--card-border);
+
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        .name {
+            overflow: hidden;
+            font-size: 0.75rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    // The run's logs, as in the product's Logs tab: the level in colour,
+    // the time and the task as a key:value pill, the message under them.
+    // Open at the foot, so it reads as running on under the editor's edge.
+    .logs {
+        margin: 1.5rem 0 0;
+        padding: 0;
+        border: 1px solid var(--card-border);
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+        list-style: none;
+        font-size: 0.75rem;
+        overflow: hidden;
+
+        li {
+            display: grid;
+            grid-template-columns: 3rem minmax(0, 1fr);
+            row-gap: 0.25rem;
+            padding: 0.5rem 0.875rem;
+            border-left: 2px solid transparent;
+            opacity: 0;
+            transition: opacity 0.3s ease;
 
             & + li {
                 border-top: 1px solid var(--card-border);
             }
-        }
-    }
 
-    .name {
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
+            &:global(.on) {
+                opacity: 1;
+            }
 
-        strong {
-            font-family: $font-family-monospace;
-            font-size: 0.8125rem;
-            font-weight: 500;
-        }
-    }
+            &.info {
+                border-left-color: color-mix(in srgb, #3c6cf0 35%, transparent);
+            }
 
-    .detail {
-        overflow: hidden;
-        font-size: 0.75rem;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: var(--muted);
-
-        .approved {
-            display: none;
+            &.warn {
+                border-left-color: var(--paused);
+                background: var(--paused-bg);
+            }
         }
 
-        .is-paused & {
+        .level {
+            grid-row: span 2;
+            font-weight: 700;
+        }
+
+        .info .level {
+            color: #3c6cf0;
+        }
+
+        .warn .level {
             color: var(--paused);
         }
 
-        .is-success & .waiting {
-            display: none;
+        .meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 0;
         }
 
-        .is-success & .approved {
-            display: inline;
+        time,
+        .message {
+            font-family: $font-family-monospace;
+            color: var(--code-text);
+        }
+
+        .kv {
+            padding: 0 0.375rem;
+            border-radius: 4px;
+            background: var(--soft);
+            color: var(--muted);
+            white-space: nowrap;
+
+            span {
+                color: var(--running);
+            }
+        }
+
+        .message {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
-    .track {
-        height: 4px;
-        border-radius: 2px;
-        background: var(--soft);
+    .gantt {
         overflow: hidden;
     }
 
+    .gantt-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+
+        code {
+            padding: 0;
+            background: none;
+            font-family: $font-family-monospace;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--muted);
+        }
+    }
+
+    // A task's slot along the run, filling as it runs.
+    .track {
+        position: relative;
+        height: 1.125rem;
+        border-radius: 4px;
+        background: var(--soft);
+    }
+
     .fill {
-        display: block;
-        height: 100%;
-        border-radius: inherit;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(var(--start) * 100%);
+        width: calc(var(--length) * 100%);
+        border-radius: 4px;
         background: var(--running);
         transform: scaleX(0);
         transform-origin: left;
 
         .is-running & {
             transform: scaleX(0.85);
-            transition: transform 1.2s ease-out;
+            transition: transform 1s ease-out;
         }
 
         .is-paused & {
             background: var(--paused);
-            transform: scaleX(0.5);
+            transform: scaleX(0.6);
             transition: transform 0.4s ease;
         }
 
@@ -1437,7 +2009,6 @@ const RUN = [
         align-items: center;
         justify-content: flex-end;
         gap: 0.375rem;
-        min-width: 4.5rem;
         font-family: $font-family-monospace;
         font-size: 0.75rem;
         color: var(--muted);
@@ -1471,6 +2042,182 @@ const RUN = [
             .time {
                 visibility: visible;
             }
+        }
+    }
+
+    // The governance card's rows, as the Git card's, each with its glyph.
+    .gov {
+        right: calc(50% + min(19rem, 23%) + 2rem);
+
+        ul {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            li {
+                flex: 1;
+            }
+        }
+
+        :global(.glyph) {
+            flex-shrink: 0;
+            width: 1.125rem;
+            height: 1.125rem;
+            color: var(--muted);
+        }
+
+        .what {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            min-width: 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+
+            small {
+                font-size: 0.75rem;
+                font-weight: 400;
+                color: var(--muted);
+            }
+        }
+
+        // The approval waits in amber, then shows who gave it.
+        .approved {
+            display: none;
+        }
+
+        .body:has(.task[data-task="1"].is-paused) & .waiting {
+            color: var(--paused);
+        }
+
+        .body:has(.task[data-task="1"].is-success) & {
+            .waiting {
+                display: none;
+            }
+
+            .approved {
+                display: block;
+            }
+        }
+
+        li.approval .state {
+            opacity: 0;
+        }
+
+        .body:has(.task[data-task="1"].is-success) & li.approval .state {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    // The dashboard's tiles, as the product's.
+    .dash {
+        left: calc(50% + min(19rem, 23%) + 2rem);
+
+        .period {
+            margin-left: auto;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: var(--muted);
+        }
+    }
+
+    .tiles {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
+
+    .tile-kpi {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0 1.125rem;
+
+        & + & {
+            border-top: 1px solid var(--card-border);
+        }
+
+        small {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        strong {
+            font-size: 1.375rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+
+            .unit {
+                font-size: 0.875rem;
+                color: var(--muted);
+            }
+        }
+
+        &.inline {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    .ratio {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--soft);
+
+        span {
+            display: block;
+            width: 98%;
+            height: 100%;
+            border-radius: inherit;
+            background: var(--success);
+        }
+    }
+
+    .bars {
+        width: 100%;
+        height: 1.75rem;
+
+        rect {
+            fill: color-mix(in srgb, var(--success) 45%, transparent);
+            transition: fill 0.4s ease;
+        }
+
+        .body[data-exec="success"] & .last {
+            fill: var(--success);
+        }
+    }
+
+    // The counters move with the run: one more execution once it succeeds,
+    // one in progress while it runs.
+    .total .after,
+    .live .busy {
+        display: none;
+    }
+
+    .body[data-exec="success"] .total {
+        .before {
+            display: none;
+        }
+
+        .after {
+            display: inline;
+            animation: tab-in 0.35s ease;
+        }
+    }
+
+    .body[data-exec="running"] .live,
+    .body[data-exec="paused"] .live {
+        .idle {
+            display: none;
+        }
+
+        .busy {
+            display: inline;
+            color: var(--running);
         }
     }
 
@@ -1509,31 +2256,6 @@ const RUN = [
             > :global(.done) {
                 display: inline;
             }
-        }
-    }
-
-    .audit {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 0;
-        padding: 0.75rem 1.125rem;
-        border-top: 1px solid var(--card-border);
-        background: var(--card-head);
-        font-size: 0.8125rem;
-        color: var(--muted);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-
-        :global(svg) {
-            width: 1rem;
-            height: 1rem;
-            color: var(--success);
-        }
-
-        .body[data-exec="success"] &,
-        .body:has(.task[data-task="1"].is-success) & {
-            opacity: 1;
         }
     }
 
