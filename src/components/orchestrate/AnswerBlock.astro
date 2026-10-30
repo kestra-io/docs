@@ -1,0 +1,183 @@
+---
+interface Fact {
+    label: string
+    value: string
+}
+
+interface Props {
+    question: string
+    text: string
+    updated?: Date
+    /** Up to three key facts; when present they sit next to the answer. */
+    facts?: Fact[]
+    toolColor?: string
+}
+
+const { question, text, updated, facts = [], toolColor } = Astro.props
+const variant = facts.length > 0 ? "facts" : "lead"
+const updatedLabel = updated?.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+})
+const style = toolColor ? `--tool-color: ${toolColor};` : undefined
+---
+
+<section
+    class:list={["orch-answer", `orch-answer--${variant}`]}
+    style={style}
+    aria-labelledby="orch-answer-title"
+>
+    <div class="orch-answer__container">
+        <div class="orch-answer__main">
+            <p class="orch-answer__eyebrow">In short</p>
+            <h2 id="orch-answer-title">{question}</h2>
+            <p class="orch-answer__text" set:html={text} />
+            {
+                updated && (
+                    <p class="orch-answer__updated">
+                        Updated{" "}
+                        <time datetime={updated.toISOString().slice(0, 10)}>
+                            {updatedLabel}
+                        </time>{" "}
+                        · Kestra 2.0
+                    </p>
+                )
+            }
+        </div>
+
+        {
+            variant === "facts" && (
+                <dl class="orch-answer__facts">
+                    {facts.map((fact) => (
+                        <div class="fact">
+                            <dt>{fact.label}</dt>
+                            <dd set:html={fact.value} />
+                        </div>
+                    ))}
+                </dl>
+            )
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .orch-answer {
+        width: 100%;
+        padding-inline: 1rem;
+        background: var(--ks-background-primary);
+
+        &__container {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        &__eyebrow {
+            margin: 0 0 0.5rem;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--tool-color, var(--ks-content-color-highlight));
+        }
+
+        h2 {
+            margin: 0 0 0.75rem;
+            color: var(--ks-content-primary);
+        }
+
+        &__text {
+            margin: 0;
+            line-height: 1.7;
+            color: var(--ks-content-secondary);
+
+            :global(code) {
+                font-size: 0.9em;
+            }
+        }
+
+        &__updated {
+            margin: 1rem 0 0;
+            font-size: $font-size-sm;
+            color: var(--ks-content-tertiary);
+        }
+
+        /* Without facts: editorial lead on the hero grid, a thin rule, no box. */
+        &--lead {
+            padding-block: 3rem 1rem;
+
+            .orch-answer__main {
+                max-width: 760px;
+                padding-left: 1.25rem;
+                border-left: 2px solid
+                    var(--tool-color, var(--ks-content-color-highlight));
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .orch-answer__text {
+                font-size: $font-size-lg;
+                color: var(--ks-content-primary);
+            }
+        }
+
+        /* With facts: answer on the left, key facts on the right. */
+        &--facts {
+            padding-block: 3rem;
+            border-bottom: 1px solid var(--ks-border-primary);
+
+            .orch-answer__container {
+                display: grid;
+                gap: 2.5rem;
+
+                @include media-breakpoint-up(lg) {
+                    grid-template-columns: 3fr 2fr;
+                    align-items: center;
+                }
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .orch-answer__text {
+                font-size: $font-size-lg;
+            }
+        }
+
+        &__facts {
+            display: grid;
+            gap: 0.75rem;
+            margin: 0;
+
+            .fact {
+                padding: 1rem 1.25rem;
+                border: 1px solid var(--ks-border-primary);
+                border-radius: 0.75rem;
+                background: var(--ks-background-secondary);
+            }
+
+            dt {
+                margin-bottom: 0.25rem;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--ks-content-tertiary);
+            }
+
+            dd {
+                margin: 0;
+                color: var(--ks-content-primary);
+
+                :global(code) {
+                    font-size: 0.9em;
+                }
+            }
+        }
+
+    }
+</style>

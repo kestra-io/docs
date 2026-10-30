@@ -160,7 +160,7 @@ Rely on Unity Catalog and Lakeflow Jobs alone when your pipelines start and end 
 
 ## Orchestrating Databricks jobs under Unity Catalog with Kestra
 
-Kestra runs the end-to-end flow and calls Databricks for the steps that belong there, so Unity Catalog keeps enforcing data access while every run gets a trigger, a history and an approval trail. The flow below lands a partner's daily invoice export in a Unity Catalog volume, runs the Databricks job that loads it into `finance.silver.invoices`, checks the result, and holds the publish step for the data owner when the check finds bad rows.
+Kestra runs the end-to-end flow and calls Databricks for the steps that belong there ([more Databricks orchestration patterns](/orchestration/databricks)), so Unity Catalog keeps enforcing data access while every run gets a trigger, a history and an approval trail. The flow below lands a partner's daily invoice export in a Unity Catalog volume, runs the Databricks job that loads it into `finance.silver.invoices`, checks the result, and holds the publish step for the data owner when the check finds bad rows.
 
 ```yaml
 id: invoices-daily-unity-catalog

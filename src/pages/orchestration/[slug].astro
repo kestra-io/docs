@@ -25,6 +25,8 @@ import FeatureGrid from "~/components/versus/FeatureGrid.astro"
 import Hero from "~/components/orchestrate/Hero.astro"
 import OrchPattern from "~/components/orchestrate/OrchPattern.astro"
 import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
+import AnswerBlock from "~/components/orchestrate/AnswerBlock.astro"
+import HowTo from "~/components/orchestrate/HowTo.astro"
 
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import { optimizeSvgIcon } from "~/utils/svgo"
@@ -145,6 +147,9 @@ const {
     description,
     tool,
     hero,
+    answer,
+    howTo,
+    updated,
     nutshell,
     pillars,
     useCases,
@@ -241,6 +246,23 @@ const comparisonTableData = comparison.rows.map((row) => {
 
 <Layout title={title} description={description}>
     <SchemaFAQ items={faq} slot="head" />
+    {
+        updated && (
+            <script
+                is:inline
+                slot="head"
+                type="application/ld+json"
+                set:html={JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "WebPage",
+                    name: title,
+                    description,
+                    url: new URL(Astro.url.pathname, Astro.site).toString(),
+                    dateModified: updated.toISOString().slice(0, 10),
+                })}
+            />
+        )
+    }
 
     <Hero
         title={hero.title}
@@ -251,6 +273,18 @@ const comparisonTableData = comparison.rows.map((row) => {
         toolIcon={pluginIcon}
         toolColor={tool.color}
     />
+
+    {
+        answer && (
+            <AnswerBlock
+                question={answer.question}
+                text={answer.text}
+                updated={updated}
+                facts={answer.facts}
+                toolColor={tool.color}
+            />
+        )
+    }
 
     <OrchPattern
         heading={blueprints.title}
@@ -267,6 +301,17 @@ const comparisonTableData = comparison.rows.map((row) => {
         subtitle={pillars.subtitle}
         items={pillars.items}
     />
+
+    {
+        howTo && (
+            <HowTo
+                title={howTo.title}
+                intro={howTo.intro}
+                steps={howTo.steps}
+                flow={howTo.flow}
+            />
+        )
+    }
 
     <section class="orch-usecases">
         <div class="orch-usecases__head">

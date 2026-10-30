@@ -1,0 +1,130 @@
+---
+import Snippets from "~/components/common/SnippetsIsland.astro"
+
+interface Props {
+    title: string
+    intro?: string
+    steps: { title: string; description: string }[]
+    flow?: { caption?: string; code: string }
+}
+
+const { title, intro, steps, flow } = Astro.props
+---
+
+<section class="orch-howto" aria-labelledby="orch-howto-title">
+    <div class="orch-howto__inner">
+        <h2 id="orch-howto-title">{title}</h2>
+        {intro && <p class="orch-howto__intro" set:html={intro} />}
+        <ol class="orch-howto__steps">
+            {
+                steps.map((step) => (
+                    <li>
+                        <h3>{step.title}</h3>
+                        <p set:html={step.description} />
+                    </li>
+                ))
+            }
+        </ol>
+        {
+            flow && (
+                <figure class="orch-howto__flow">
+                    {flow.caption && (
+                        <figcaption set:html={flow.caption} />
+                    )}
+                    <Snippets code={flow.code.trim()} lang="yaml" />
+                </figure>
+            )
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .orch-howto {
+        width: 100%;
+        padding: 3rem 2rem;
+        background: var(--ks-background-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 2rem 0.75rem;
+        }
+
+        &__inner {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--ks-content-primary);
+            margin-bottom: 1rem;
+        }
+
+        &__intro {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            line-height: 1.6;
+            max-width: 760px;
+            margin: 0 auto 2rem;
+        }
+
+        &__steps {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem;
+            display: grid;
+            gap: 1rem;
+
+            @include media-breakpoint-up(lg) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            li {
+                counter-increment: step;
+                position: relative;
+                padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+                border: 1px solid var(--ks-border-primary);
+                border-radius: 0.75rem;
+                background: var(--ks-background-secondary);
+
+                &::before {
+                    content: counter(step);
+                    position: absolute;
+                    left: 1.25rem;
+                    top: 1.2rem;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    border-radius: 50%;
+                    display: grid;
+                    place-items: center;
+                    font-size: $font-size-sm;
+                    font-weight: 600;
+                    color: var(--ks-content-inverse, #fff);
+                    background: var(--ks-content-color-highlight);
+                }
+            }
+
+            h3 {
+                font-size: 1.0625rem;
+                margin: 0 0 0.375rem;
+                color: var(--ks-content-primary);
+            }
+
+            p {
+                margin: 0;
+                line-height: 1.6;
+                color: var(--ks-content-secondary);
+            }
+        }
+
+        &__flow {
+            margin: 0;
+
+            figcaption {
+                margin-bottom: 0.75rem;
+                color: var(--ks-content-secondary);
+            }
+        }
+    }
+</style>
