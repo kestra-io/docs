@@ -125,4 +125,4 @@ Comprehensive audit logging records every execution attempt, input parameter, ge
 - [AI resource hub](/resources/ai)
 - [AI Agent Orchestration guide](/resources/ai/ai-agent-orchestration)
 - [Orchestrating AI Agents blog](/blogs/orchestrate-ai-agents-kestra)
-- [Kestra AI Tools](/docs/ai-tools)
+- [Develop with AI in Kestra](/docs/develop-with-ai)

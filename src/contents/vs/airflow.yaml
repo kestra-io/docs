@@ -88,7 +88,7 @@ easeOfUse:
   title: YAML Anyone Can Read vs. Python Only Devs Can Write
   kestra:
     title: "Kestra: Readable by Your Whole Team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python knowledge required to understand or modify a workflow."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python knowledge required to understand or modify a workflow."
     code: |
       id: daily_etl
       namespace: data.production

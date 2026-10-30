@@ -66,7 +66,7 @@ The components in most multi-cloud orchestration architectures:
 
 - **Orchestration layer** — declarative workflows spanning all environments, with triggers, retries, and dependency management
 - **Secrets and credentials** — centralized vault (HashiCorp Vault, AWS Secrets Manager, Azure Key Vault) accessed consistently from every workflow
-- **Provider integrations** — native plugins for each cloud's APIs (EC2, GCE, Azure VM, Kubernetes, [Terraform providers](/resources/infrastructure/what-is-infrastructure-as-code))
+- **Provider integrations** — native plugins for each cloud's APIs (EC2, GCE, Azure VM, Kubernetes, [Terraform providers](/resources/infrastructure/everything-as-code))
 - **Execution runtime** — workers running close to targets (inside VPCs, on-prem, air-gapped networks)
 - **Audit and observability** — unified logs, metrics, and lineage across all environments
 

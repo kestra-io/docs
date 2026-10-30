@@ -1,0 +1,139 @@
+---
+import PixelEdges from "./PixelEdges.astro"
+const CHANNELS = [
+    {
+        title: "Sales",
+        text: "A demo on your use case, with an engineer.",
+        links: [{ label: "Book a demo", href: "/demo" }],
+    },
+    {
+        title: "Community",
+        text: "Questions, blueprints and help from the team on Slack.",
+        links: [{ label: "Join Slack", href: "/slack" }],
+    },
+    {
+        title: "Partners",
+        text: "Technology partners, integrators and resellers.",
+        links: [{ label: "Partner program", href: "/partners" }],
+    },
+    {
+        title: "Press and brand",
+        text: "Logo pack and brand guidelines. Media inquiries: press@kestra.io",
+        links: [{ label: "Newsroom", href: "/newsroom" }],
+    },
+]
+---
+
+<section class="contact">
+    <PixelEdges left="cluster" right="tall" />
+    <div class="container">
+        <h2>Talk to us.</h2>
+        <ul>
+            {
+                CHANNELS.map((c) => (
+                    <li>
+                        <h3>{c.title}</h3>
+                        <p>{c.text}</p>
+                        {c.links.map((l) => (
+                            <a href={l.href}>
+                                {l.label} <span class="arrow">→</span>
+                            </a>
+                        ))}
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .contact {
+        @include section;
+        position: relative;
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    h2 {
+        @include title;
+    }
+
+    ul {
+        list-style: none;
+        margin: 2.5rem 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.375rem;
+        padding: 1.75rem 1.5rem 0.5rem;
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        & + li {
+            border-left: 1px solid var(--ks-border-primary);
+        }
+
+        @include media-breakpoint-down(lg) {
+            &:nth-child(3) {
+                padding-left: 0;
+                border-left: 0;
+            }
+
+            &:nth-child(n + 3) {
+                margin-top: 1.5rem;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            gap: 0.5rem;
+            padding: 2rem 0;
+            margin-top: 0 !important;
+
+            & + li {
+                border-left: 0;
+                border-top: 1px solid var(--ks-border-primary);
+            }
+
+            p {
+                margin-bottom: 0.75rem;
+            }
+        }
+    }
+
+    h3 {
+        margin: 0;
+        font-size: $font-size-lg;
+        font-weight: 600;
+    }
+
+    p {
+        margin: 0 0 0.5rem;
+        font-size: $font-size-sm;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+
+    a {
+        @include text-link;
+        font-size: $font-size-sm;
+    }
+</style>

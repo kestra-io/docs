@@ -120,7 +120,7 @@ The rule of thumb is to choose `RealtimeTrigger` for immediate action and `Trigg
 ## Where Kafka Architecture Pays Off: Key Use Cases
 
 The distributed and resilient nature of Kafka's architecture makes it suitable for a wide range of applications:
--   **Resilient Data Pipelines**: Kafka provides a durable buffer between systems, ensuring that data is never lost during ingestion and processing in your [data pipeline](/resources/data/data-pipeline).
+-   **Resilient Data Pipelines**: Kafka provides a durable buffer between systems, ensuring that data is never lost during ingestion and processing in your [data pipeline](/resources/data/create-data-pipeline).
 -   **Event Sourcing**: By storing an immutable log of all events, Kafka can serve as the source of truth for an application's state, enabling powerful patterns like CQRS.
 -   **Real-time Analytics**: It can ingest vast streams of data from websites, applications, and IoT devices, feeding them into stream processing engines for real-time dashboards and insights.
 -   **Microservices Communication**: Kafka decouples microservices, allowing them to communicate asynchronously and reliably without being tightly coupled, a core principle of [event-driven orchestration](/resources/infrastructure/event-driven-orchestration).

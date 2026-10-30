@@ -89,7 +89,7 @@ easeOfUse:
   title: Workflows Your Whole Team Can Read
   kestra:
     title: "Kestra: Version-Controlled Workflows Anyone Can Read"
-    description: "YAML is readable on day 1. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows from a prompt, or start from our library of Blueprints. Every change goes through a pull request. No proprietary CLI syntax, no central team dependency."
+    description: "YAML is readable on day 1. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows from a prompt, or start from our library of Blueprints. Every change goes through a pull request. No proprietary CLI syntax, no central team dependency."
     code: |
       id: daily_etl
       namespace: finance

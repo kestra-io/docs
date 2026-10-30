@@ -125,7 +125,7 @@ Orchestrating Elasticsearch unlocks its full potential across a variety of busin
 *   **AI and RAG Pipelines**: In the context of AI, Elasticsearch is frequently used as a vector database to store embeddings for Retrieval-Augmented Generation (RAG) applications. Orchestration is essential for building a reliable [RAG pipeline](/resources/ai/rag-pipeline), managing the chunking of documents, generating embeddings, and keeping the vector index synchronized with source data. This is a core component of modern [AI automation](/ai-automation).
 
 ## Related Concepts
-*   [Data Pipeline](/resources/data/data-pipeline)
-*   [Vector Database](/resources/ai/vector-database)
+*   [Data Pipeline](/resources/data/create-data-pipeline)
+*   [Vector Database](/resources/ai/rag-pipeline)
 *   [Kafka Connect](/resources/data/kafka-connect)
 *   [Kubernetes](/resources/infrastructure/kubernetes)

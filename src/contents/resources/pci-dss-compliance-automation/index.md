@@ -173,7 +173,7 @@ A well-designed orchestration platform allows you to manage compliance for multi
 
 ## Related Concepts
 
-- [Workflow Governance](/resources/infrastructure/workflow-governance) — enterprise-level controls, RBAC and policies for automated workflows.
+- [Workflow Governance](/resources/ai/ai-governance-workflows) — enterprise-level controls, RBAC and policies for automated workflows.
 - [FedRAMP Compliance](/resources/infrastructure/fedramp-compliance) — automating security controls in federal cloud environments.
 - [RBAC](/resources/infrastructure/rbac) — role-based access control, which PCI DSS Requirement 7 turns into an audit obligation.
 - [Workflow Secret Management](/resources/infrastructure/workflow-secret-management) — keeping credentials out of flow definitions and logs.

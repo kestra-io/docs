@@ -36,7 +36,7 @@ The core benefits of self-hosting your orchestration solution are centered aroun
 *   **Customization and Flexibility:** A self-hosted environment allows for deep customization. You can modify configurations, extend functionality with custom plugins, and integrate seamlessly with proprietary internal systems that aren't exposed to the public internet.
 *   **Cost Efficiency at Scale:** While there's an initial setup and maintenance cost, self-hosting can be more cost-effective in the long run, especially for high-volume workloads. It avoids the usage-based pricing of many SaaS platforms and eliminates vendor lock-in.
 
-Effective [workflow management](https://kestra.io/resources/infrastructure/workflow-management) in a self-hosted model provides a centralized control plane for all automated processes, from data pipelines to infrastructure provisioning, giving you complete visibility and governance.
+Effective [workflow management](https://kestra.io/resources/infrastructure/workflow-orchestration-tools) in a self-hosted model provides a centralized control plane for all automated processes, from data pipelines to infrastructure provisioning, giving you complete visibility and governance.
 
 ## Top Open-Source Workflow Orchestration Tools
 
@@ -133,7 +133,7 @@ The world of workflow orchestration is constantly evolving, with several key tre
 
 ### The role of AI in workflow automation
 
-AI is transforming how workflows are built and executed. Modern orchestrators are integrating [AI Copilots](https://kestra.io/docs/ai-tools/ai-copilot) that can generate entire workflows from a natural language prompt. Furthermore, the concept of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration) is emerging, where autonomous AI agents can execute complex, multi-step tasks, with the orchestrator providing the necessary governance, tools, and human-in-the-loop oversight.
+AI is transforming how workflows are built and executed. Modern orchestrators are integrating [AI Copilots](https://kestra.io/docs/develop-with-ai/ai-copilot) that can generate entire workflows from a natural language prompt. Furthermore, the concept of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration) is emerging, where autonomous AI agents can execute complex, multi-step tasks, with the orchestrator providing the necessary governance, tools, and human-in-the-loop oversight.
 
 ### Evolution of open-source projects and community-driven development
 

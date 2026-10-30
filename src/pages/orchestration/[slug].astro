@@ -178,7 +178,7 @@ const pluginDocsUrl =
           : null
 
 const toolKeyword = tool.name.toLowerCase().split(" ")[0]
-const allBlogs = await getCollection("blogs")
+const allBlogs = await getCollection("blogs", ({ data }) => !data.lang)
 const relatedBlogs = allBlogs
     .filter(
         (b) =>
