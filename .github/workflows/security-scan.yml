@@ -8,6 +8,12 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      metadata:
+        description: 'Extra key=value pairs added to every finding, one per line'
+        required: false
+        type: string
+        default: ''
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -28,6 +34,7 @@ jobs:
       components: |
         frontend=**
       npm-lockfile: package-lock.json
+      metadata: ${{ github.event.inputs.metadata }}
     secrets:
       OTLP_ENDPOINT: ${{ secrets.OTLP_ENDPOINT }}
       OTLP_HEADERS: ${{ secrets.OTLP_HEADERS }}
