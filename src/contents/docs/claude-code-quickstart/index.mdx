@@ -139,25 +139,18 @@ Start your agent from your project folder:
 
 In Cursor, start a chat in Agent mode once the folder opens.
 
-Ask it to write a flow:
+Ask it to write, deploy, and run a flow in one prompt:
 
 ```plaintext
 Use kestra-flow to write a flow in the tutorial namespace that calls
 https://api.github.com/repos/kestra-io/kestra every hour and logs the
-star count. Save it as ./flows/github_stars.yaml.
+star count. Save it as ./flows/github_stars.yaml. Then use kestra-ops
+to deploy it to my Kestra instance, run it, and tell me the result.
 ```
 
-The agent looks up the HTTP and Log task schemas on the Docs MCP server and writes the flow file.
+The agent uses `kestra-flow` to look up the HTTP and Log task schemas on the Docs MCP server and write the flow file. It then uses `kestra-ops` to validate, deploy, and run the flow with `kestractl`.
 
-Then ask it to deploy and run the flow:
-
-```plaintext
-Use kestra-ops to validate ./flows, deploy it to my Kestra instance,
-run github_stars in the tutorial namespace, wait for it to finish,
-and tell me the result.
-```
-
-The agent runs commands similar to these:
+To deploy and run the flow yourself instead, run the same commands the agent uses:
 
 ```bash
 kestractl flows validate ./flows/
