@@ -565,12 +565,18 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `filer-host` | string | No | — | Hostname or IP of the SeaweedFS filer server. |
+| `filer-host` | string | **Yes** | — | Hostname or IP of the SeaweedFS filer server. |
 | `filer-port` | integer | No | `18888` | gRPC port of the SeaweedFS filer server. |
-| `prefix` | string | No | `""` | Root prefix path for all storage operations. |
+| `prefix` | string | No | `""` | Filer folder under which Kestra stores all data. For example, `kestra` stores files under `/kestra/<tenant>/...`. Applied from `storage-seaweedfs` 2.0.0; earlier versions ignore it and write to the filer root. |
 | `replication` | string | No | `"000"` | Replication factor (`000` = no replication, `001` = 1 copy). |
 
 SeaweedFS has no built-in authentication. Control access at the network level by restricting which hosts can reach the filer gRPC port.
+
+:::alert{type="warning"}
+If you set `prefix` before upgrading to `storage-seaweedfs` 2.0.0, your data is still at the filer root. Either remove `prefix` from the configuration, or stop every Kestra component and, in `weed shell`, run `fs.mkdir /<prefix>` and `fs.mv /<folder> /<prefix>/` for each tenant folder and instance-level folder such as `_plugins` before restarting. Don't run old and new plugin versions side by side.
+:::
+
+To move existing data from MinIO or Amazon S3 to SeaweedFS, see [Migrate to SeaweedFS](../../10.administrator-guide/backup-and-restore/index.md#migrate-to-seaweedfs).
 
 ---
 
