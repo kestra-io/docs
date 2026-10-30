@@ -31,7 +31,24 @@ The image below shows the relationship between Users, Groups, Service Accounts, 
 
 A role is a collection of permissions that can be assigned to users, service accounts, or groups. Each permission is a combination of a **resource** (e.g., `FLOW`, `EXECUTION`, `SECRET`) and one or more **actions** (e.g., `EXECUTE`, `VIEW`, `DELETE`). A role alone grants nothing — it must be attached to a user, service account, or group via a **binding** on the **IAM** page.
 
-Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). [Impersonate](#impersonate) allows Instance Owners to verify a user's effective permissions after role assignment.
+Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). A binding scoped to a namespace only accepts a role whose permissions are all namespace-level, see [Namespace bindings](#namespace-bindings). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). [Impersonate](#impersonate) allows Instance Owners to verify a user's effective permissions after role assignment.
+
+## Namespace bindings
+
+Each permission is either namespace-level or tenant-level:
+
+- **Namespace-level** permissions apply to the namespaces a binding is scoped to: `FLOW`, `EXECUTION`, `TRIGGER`, `NAMESPACE`, `KVSTORE`, `SECRET`, `CREDENTIAL`, `REUSABLE_INPUTS`, `APP`, `TESTSUITE`, `ASSET`, `COPILOT`, `POLICY`, `CASE`, and `DASHBOARD` `VIEW`, `LIST` and `EXPORT`.
+- **Tenant-level** permissions apply to the whole tenant, so only a tenant-wide binding can grant them: all other permissions, including `DASHBOARD` `CREATE`, `UPDATE` and `DELETE`, `BLUEPRINT`, `MCP_SERVER`, `AUDITLOG`, and the IAM resources (`USER`, `GROUP`, `ROLE`, `BINDING`, `SERVICE_ACCOUNT`, `INVITATION`).
+
+A binding scoped to a namespace can only use a role whose permissions are all namespace-level. Kestra rejects with a `422` error, listing the tenant-level permissions involved:
+
+- a namespace binding whose role holds a tenant-level permission;
+- an invitation with such a namespace binding;
+- adding a tenant-level permission to a role that is bound to a namespace, or that a pending invitation binds to a namespace. Remove those namespace bindings and invitations first.
+
+Of the [managed roles](#managed-roles), only Launcher can be bound to a namespace. To give a team access to one namespace, bind Launcher or a custom role that only holds namespace-level permissions to that namespace. `GET /api/v1/{tenant}/acls/scopes` returns the scope of each resource and action.
+
+When upgrading to 2.1.0, existing namespace bindings of roles with tenant-level permissions move to a `<Role name> (namespace)` role that only holds the namespace-level permissions. Keep those roles free of tenant-level permissions. See the [2.1.0 migration guide](../../../11.migration-guide/v2.1.0/namespace-binding-scope/index.md).
 
 ## Impersonate
 
@@ -62,7 +79,7 @@ kestractl users impersonate <user_id>
 
 A resource is a category of product entity or capability that can be controlled through RBAC. Each resource has its own set of allowed actions.
 
-**Core resources** (namespace-scoped — bindings can restrict access to specific namespaces):
+**Namespace-level resources** (a binding scoped to a namespace can grant them, see [Namespace bindings](#namespace-bindings)):
 
 | Resource | Description |
 |---|---|
@@ -74,23 +91,19 @@ A resource is a category of product entity or capability that can be controlled 
 | `SECRET` | Secrets stored in the namespace |
 | `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
 | `REUSABLE_INPUTS` | Reusable input sets defined at the namespace level |
-
-**Apps and features** (tenant-scoped):
-
-| Resource | Description |
-|---|---|
-| `DASHBOARD` | Custom dashboards |
-| `BLUEPRINT` | Custom blueprints |
 | `APP` | Apps and their executions |
 | `TESTSUITE` | Unit tests |
 | `ASSET` | Data assets and lineage |
-| `MCP_SERVER` | MCP servers exposing flows as AI tools |
 | `COPILOT` | AI Copilot flow generation |
+| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
+| `DASHBOARD` | Custom dashboards. `VIEW`, `LIST` and `EXPORT` are namespace-level, `CREATE`, `UPDATE` and `DELETE` are tenant-level |
 
-**Administration** (tenant-scoped):
+**Tenant-level resources** (only a tenant-wide binding grants them):
 
 | Resource | Description |
 |---|---|
+| `BLUEPRINT` | Custom blueprints |
+| `MCP_SERVER` | MCP servers exposing flows as AI tools |
 | `USER` | Users in the tenant |
 | `GROUP` | Groups and their members |
 | `ROLE` | RBAC roles |
@@ -98,7 +111,6 @@ A resource is a category of product entity or capability that can be controlled 
 | `SERVICE_ACCOUNT` | Service accounts |
 | `INVITATION` | User invitations |
 | `AUDITLOG` | Audit log entries |
-| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
 
 ### Actions
 
@@ -163,6 +175,8 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
+Admin, Developer, Editor and Viewer hold tenant-level permissions, so they can only be bound to the whole tenant. Launcher can be bound to a namespace. See [Namespace bindings](#namespace-bindings).
+
 ## Who can grant access
 
 Permissions to manage roles, bindings, groups, and invitations let the holder grant access to anyone, themselves included. Kestra does not limit what they grant to the permissions they already hold. This is by design. Treat these permissions as admin rights for their scope, and grant them only to people you would make admin there.
@@ -173,10 +187,7 @@ Permissions to manage roles, bindings, groups, and invitations let the holder gr
 
 ### Bindings
 
-`BINDING` `CREATE` lets you bind any role to any user, group, or service account, yourself included, at the scope where you hold it:
-
-- On a namespace, you can bind roles on that namespace and its child namespaces. Binding the Admin role to yourself there gives you every permission on those namespaces.
-- On the tenant, you can create tenant-wide bindings, which grant every permission in the role.
+`BINDING` is a tenant-level permission: creating or deleting a binding requires it on the whole tenant. `BINDING` `CREATE` lets you bind any role to any user, group, or service account, yourself included, on the whole tenant or on any namespace. A tenant-wide binding grants every permission in the role. To let someone give access to a team without this right, make them owner of a group bound to that team's namespace, see [Groups](#groups).
 
 If the user you bind has no access to the tenant yet, the binding gives them access.
 
@@ -188,7 +199,7 @@ Each group member is either a member or an owner. A group owner can add users al
 
 ### Invitations
 
-To create an [invitation](../invitations/index.md), you need `INVITATION` `CREATE`. You also need `BINDING` `CREATE` at the scope of each binding in the invitation. For each group in it, you need ownership of the group or `GROUP` `MANAGE_MEMBERS`. Only an Instance Owner can invite an Instance Owner.
+To create an [invitation](../invitations/index.md), you need `INVITATION` `CREATE`. When the invitation carries bindings, you also need `BINDING` `CREATE` on the whole tenant. For each group in it, you need ownership of the group or `GROUP` `MANAGE_MEMBERS`. Only an Instance Owner can invite an Instance Owner.
 
 ### Review changes
 
