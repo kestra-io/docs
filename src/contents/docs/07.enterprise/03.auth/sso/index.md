@@ -34,6 +34,36 @@ Replace `oidc-provider` with your chosen provider's name, `{{ clientId }}` with 
 
 For more configuration details, refer to the [Micronaut OIDC configuration guide](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration).
 
+## Users and groups
+
+### First login
+
+Kestra identifies an SSO user by their email. When no Kestra user has this email yet, Kestra creates one only if something gives them access:
+
+- One of the groups in the user's groups claim exists in Kestra, in any tenant.
+- A tenant has a [default role](../../../configuration/05.security-and-secrets/index.md#default-role).
+- The user has a pending [invitation](../invitations/index.md), which is accepted.
+
+Otherwise, the login is refused and no user is created.
+
+### Group sync
+
+Set `kestra.security.oidc.groups-claim-path` to the claim holding the user's groups, for example `groups`. With [LDAP in `GROUP_SYNC_ONLY` mode](./ldap/index.md#group-sync-with-sso-group_sync_only), the user's LDAP groups are added to them.
+
+Group sync never creates groups. Create the groups in Kestra first, with the same names as the identity provider groups, and bind them to roles in each tenant (see [RBAC](../rbac/index.md)). The names must match the values the identity provider sends: Microsoft Entra ID, for example, sends group object IDs rather than names by default.
+
+At every login:
+
+- The user joins every Kestra group, in every tenant, whose name matches one of their identity provider groups.
+- The user leaves the groups they joined through the identity provider and that it no longer sends. Group memberships added manually in Kestra are kept.
+- When the user leaves the last group that gave them access to a tenant, they lose access to that tenant, unless a role is bound to them directly there, including a default role, or they are provisioned in that tenant by [SCIM](../scim/index.mdx).
+
+After group sync, a returning user must still have access to a tenant, or the login is refused.
+
+:::alert{type="info"}
+This behavior applies from Kestra 2.0.9. Until 2.0.8, SSO logins created every group of the groups claim in every tenant, and a new user needed a default role or an invitation. See the [migration guide](../../../11.migration-guide/v2.0.0/idp-groups-existing-only/index.md).
+:::
+
 ## Provider guides
 
 Provider-specific setup guides:
