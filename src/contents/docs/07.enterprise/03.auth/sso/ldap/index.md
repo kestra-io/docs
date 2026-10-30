@@ -183,7 +183,7 @@ micronaut:
 With this configuration:
 - Users log in using their SSO provider. LDAP credentials are never checked.
 - At each login, Kestra queries the LDAP directory for the user's group memberships and merges them with any groups sourced from OIDC claims.
-- Groups found in LDAP are synced to Kestra using the same rules as standard LDAP group sync — new groups are created automatically, and membership is updated on login.
+- Groups found in LDAP are synced to Kestra with the same rules as LDAP login: the user joins the existing groups with the same names, as described in [LDAP users in Kestra](#ldap-users-in-kestra).
 
 Two `groups` properties control how Kestra reads group entries from the directory:
 - `filter`: the LDAP search filter used to find groups for a user. `{0}` is replaced with the user's distinguished name (DN).
@@ -191,7 +191,7 @@ Two `groups` properties control how Kestra reads group entries from the director
 - `filter-attribute`: the user entry attribute substituted into `{0}` in the group filter. Use `dn` for directories that store full DNs in group membership attributes (common in Active Directory). Use `uid` for POSIX-style directories.
 
 :::alert{type="info"}
-`GROUP_SYNC_ONLY` mode requires that the user already exists in Kestra (created on first login). LDAP group sync fires on every subsequent login.
+LDAP groups are resolved at every SSO login, including the first one. A group that exists in Kestra with the same name as one of the user's LDAP groups lets Kestra create the user at their first SSO login.
 :::
 
 :::alert{type="warning"}
@@ -200,13 +200,23 @@ If the LDAP server is unreachable or misconfigured, group sync fails silently �
 
 ## LDAP users in Kestra
 
-On first login with LDAP, Kestra validates the user's credentials against the directory and creates a corresponding user account. If an account already exists, the user authenticates with their LDAP credentials.
+On first login with LDAP, Kestra validates the user's credentials against the directory. When no Kestra user has this email yet, Kestra creates one only if one of the following gives them access:
 
-If the user belongs to any groups in the directory, those groups are created in Kestra if they don't exist, and the user is added to each. Group assignments sync only at login — if a user is added to a group in LDAP after their first login, they must log out and back in to pick up the new membership. Any user authenticated via LDAP shows `LDAP` in the **Login & API Tokens** column on the **IAM → Users** page.
+- One of the user's LDAP groups exists in Kestra, in any tenant.
+- A tenant has a [default role](../../../../configuration/05.security-and-secrets/index.md#default-role).
+- The user has a pending [invitation](../../invitations/index.md). Kestra accepts it at login.
+
+Otherwise, the login is refused and no user is created. If an account already exists, the user authenticates with their LDAP credentials.
+
+Group sync never creates groups. Create the groups in Kestra first, with the same names as the LDAP groups, and bind them to roles in each tenant (see [RBAC](../../rbac/index.md)). At every login, the user joins the existing Kestra groups that match their LDAP groups and leaves the ones LDAP no longer returns, following the [group sync rules](../index.md#group-sync). Leaving the last group that gave them access to a tenant can remove their access to that tenant.
+
+Group assignments sync only at login. If a user is added to a group in LDAP after their first login, they must log out and back in to pick up the new membership. Any user authenticated via LDAP shows `LDAP` in the **Login & API Tokens** column on the **IAM → Users** page.
+
+:::alert{type="info"}
+Before 2.0.9, LDAP created every user at first login and created their LDAP groups in every tenant. See the [migration guide](../../../../11.migration-guide/v2.0.0/idp-groups-existing-only/index.md).
+:::
 
 ![IAM Users tab showing LDAP as the authentication method for a user](./ldap-1.png)
-
-Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization (typically at the next login).
 
 :::alert{type="info"}
 Users who log in via SSO with `GROUP_SYNC_ONLY` mode show their SSO provider in the **Login & API Tokens** column on the **IAM → Users** page, not `LDAP`. The LDAP connection is used only to resolve group memberships in the background.

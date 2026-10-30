@@ -200,4 +200,4 @@ kestra:
       groups-claim-path: "groups"
 ```
 
-Once configured, Kestra will source user groups from the `groups` claim in the ID Token, with Keycloak as the single source of truth.
+Once configured, Kestra will source user groups from the `groups` claim in the ID Token, with Keycloak as the single source of truth. Kestra never creates these groups: create each one in Kestra with the same name as the Keycloak group, and bind it to roles, as described in [Group sync](../index.md#group-sync).
