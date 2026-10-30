@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import SectionHead from "./SectionHead.astro"
+import PixelEdges from "~/components/about/PixelEdges.astro"
 
 const PROBLEMS = [
     {
@@ -21,103 +21,194 @@ const PROBLEMS = [
 ]
 ---
 
+{
+    /* On the hairline grid of the blocks above: the head on two columns, the
+    three problems in cells between rules, then the whitepaper in the closing
+    row. */
+}
 <section class="replace" aria-labelledby="replace">
-    <div class="container">
-        <div class="intro">
-            <SectionHead id="replace" align="start">
-                Replace what no longer serves you
-                <Fragment slot="lead">
+    <PixelEdges left="tall" right="wide" />
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="replace">Replace what no longer serves you</h2>
+                <p>
                     Fragmented orchestration slows recovery, drives up costs,
                     and leaves gaps in AI governance. Bring your workflows
                     together while keeping the code and systems they already run
                     on.
-                </Fragment>
-            </SectionHead>
-            <a
-                href="/unified-orchestration-whitepaper-kestra.pdf"
-                class="btn btn-secondary"
-                target="_blank"
-                rel="noopener"
-            >
-                Read the whitepaper
-            </a>
-        </div>
+                </p>
+            </header>
 
-        <ul>
-            {
-                PROBLEMS.map((problem) => (
-                    <li>
-                        <Icon name={problem.icon} />
-                        <h3>{problem.title}</h3>
-                        <p>{problem.text}</p>
-                    </li>
-                ))
-            }
-        </ul>
+            <ul class="problems">
+                {
+                    PROBLEMS.map((problem) => (
+                        <li>
+                            <Icon name={problem.icon} />
+                            <h3>{problem.title}</h3>
+                            <p>{problem.text}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+
+            <div class="foot">
+                <a
+                    href="/unified-orchestration-whitepaper-kestra.pdf"
+                    class="btn btn-secondary"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Read the whitepaper
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 
 <style lang="scss">
     .replace {
-        padding: 7rem 0;
+        position: relative;
         background: var(--ks-background-body);
         border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    // The control plane block's hairline grid: rails on both sides, and
+    // full-width rules around the problems' row.
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        > .problems {
+            position: relative;
+            border-block: var(--rule);
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+
+            &::before {
+                top: -1px;
+            }
+
+            &::after {
+                bottom: -1px;
+            }
+        }
+    }
+
+    // The homepage's two-column head: the title on the left, the copy on the
+    // right, both from the top.
+    .head {
+        display: grid;
+        grid-template-columns: minmax(0, 29rem) minmax(0, 1fr);
+        row-gap: 1.25rem;
+        align-items: start;
+        padding: 6rem 0 4rem;
+
+        > * {
+            padding-inline: var(--inset);
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
 
         @include media-breakpoint-down(md) {
-            padding: 4.5rem 0;
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+            text-wrap: balance;
+
+            // Two lines, free to run past its column into the gutter
+            // before the copy, as in the control plane block.
+            @include media-breakpoint-up(lg) {
+                width: max-content;
+                max-width: 10em;
+                padding-right: 0;
+            }
+        }
+
+        p {
+            max-width: calc(26rem + 2 * var(--inset));
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: pretty;
         }
     }
 
-    .intro {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 1.5rem 3rem;
-        margin-bottom: 3rem;
-
-        :global(.section-head) {
-            margin-bottom: 0;
-        }
-    }
-
-    ul {
+    // Three cells between the rules: an icon, the problem, its copy.
+    .problems {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.5rem;
         margin: 0;
         padding: 0;
         list-style: none;
 
         @include media-breakpoint-down(lg) {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        > li {
+            padding: 2.5rem var(--inset) 3rem;
+
+            & + li {
+                border-left: var(--rule);
+
+                @include media-breakpoint-down(lg) {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+
+            > :global(svg) {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-bottom: 1.75rem;
+                color: var(--ks-content-primary);
+            }
+        }
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--ks-content-secondary);
         }
     }
 
-    li {
-        padding: 2rem;
-        border: 1px solid var(--ks-border-primary);
-        border-radius: 1rem;
-        background: var(--ks-background-primary);
-
-        > :global(svg) {
-            width: 1.75rem;
-            height: 1.75rem;
-            margin-bottom: 1.25rem;
-            color: var(--ks-content-link);
-        }
-    }
-
-    h3 {
-        margin: 0 0 0.75rem;
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: var(--ks-content-primary);
-    }
-
-    p {
-        margin: 0;
-        line-height: 1.6;
-        color: var(--ks-content-secondary);
+    // The closing row, with the whitepaper, as See the platform above.
+    .foot {
+        display: flex;
+        justify-content: center;
+        padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset);
     }
 </style>
