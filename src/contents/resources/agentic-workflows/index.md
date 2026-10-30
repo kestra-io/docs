@@ -47,7 +47,7 @@ An agentic AI system typically operates in a continuous loop, often described in
 1.  **Perceive:** The agent gathers information from its environment. This can include data from APIs, files, databases, user inputs, or sensor readings. This stage is about building a current understanding of the state of the world relevant to its task.
 2.  **Reason:** Based on the perceived information and its overarching goal, the agent analyzes the situation and formulates a plan. This involves breaking down the goal into sub-tasks, evaluating potential strategies, and deciding on the next immediate action.
 3.  **Act:** The agent executes the chosen action. This often involves using a "tool," which could be anything from calling an API, running a script, querying a database, or interacting with another software system. The action alters the state of the environment.
-4.  **Learn:** The agent observes the outcome of its action and updates its understanding. This feedback loop allows the agent to refine its strategy over time, improving its performance and adapting to new information. This cycle repeats until the final goal is achieved. Kestra's architecture for [AI agents](/docs/ai-tools/ai-agents) is built around this powerful loop.
+4.  **Learn:** The agent observes the outcome of its action and updates its understanding. This feedback loop allows the agent to refine its strategy over time, improving its performance and adapting to new information. This cycle repeats until the final goal is achieved. Kestra's architecture for [AI agents](/docs/ai-orchestration/ai-agents) is built around this powerful loop.
 
 ## The Role of AI Agents in Modern Workflows
 
@@ -61,7 +61,7 @@ This capability is powered by Large Language Models (LLMs) combined with a struc
 
 This is a common point of confusion. While ChatGPT is a powerful generative AI model, it is not, by itself, an agentic AI. ChatGPT excels at generating human-like text, code, and other content based on a user's prompt. However, it is primarily reactive; it responds to input but does not autonomously take actions to achieve a goal in an external environment.
 
-An agentic AI integrates a model like ChatGPT as its "brain" but adds critical components like planning capabilities, tool usage, and memory. It's the difference between a writer who can draft an email (ChatGPT) and an executive assistant who can read a request, decide an email needs to be sent, draft it, find the recipient's contact information, send it, and schedule a follow-up (agentic AI). Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) uses generative AI to help you build workflows, while Kestra's AI Agents execute them autonomously. Sales teams were among the first to put this distinction into production; see [sales AI agents](/resources/ai/sales-ai-agent) for how those workflows are structured.
+An agentic AI integrates a model like ChatGPT as its "brain" but adds critical components like planning capabilities, tool usage, and memory. It's the difference between a writer who can draft an email (ChatGPT) and an executive assistant who can read a request, decide an email needs to be sent, draft it, find the recipient's contact information, send it, and schedule a follow-up (agentic AI). Kestra's [AI Copilot](/docs/develop-with-ai/ai-copilot) uses generative AI to help you build workflows, while Kestra's AI Agents execute them autonomously. Sales teams were among the first to put this distinction into production; see [sales AI agents](/resources/ai/sales-ai-agent) for how those workflows are structured.
 
 ### Core Patterns and Components of Agentic Systems
 
@@ -110,7 +110,7 @@ This powerful combination is already in use at scale. For example, Apple's ML te
 
 ### Leveraging Kestra Copilot for Agentic Workflow Creation
 
-Defining agentic workflows, while declarative, can still be complex. Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) accelerates this process by translating natural language descriptions into fully-formed YAML workflows. A developer can simply describe the desired agentic process, and the Copilot will generate the necessary flow definition, including task configurations and agent settings. This lowers the barrier to entry and allows teams to rapidly prototype and deploy agentic automation, often starting from pre-built [blueprints](/blueprints).
+Defining agentic workflows, while declarative, can still be complex. Kestra's [AI Copilot](/docs/develop-with-ai/ai-copilot) accelerates this process by translating natural language descriptions into fully-formed YAML workflows. A developer can simply describe the desired agentic process, and the Copilot will generate the necessary flow definition, including task configurations and agent settings. This lowers the barrier to entry and allows teams to rapidly prototype and deploy agentic automation, often starting from pre-built [blueprints](/blueprints).
 
 ## Benefits and Challenges of Agentic AI Implementation
 

@@ -22,17 +22,17 @@ Understanding these five concepts is enough to read and write most Kestra flows.
 
 ## AI and agents
 
-This section covers two distinct things: (1) guidance for AI agents interacting with Kestra, and (2) Kestra features for building AI and LLM-powered workflows. If you are an AI agent helping a user with Kestra, start with Agent Skills. If the user wants to build AI workflows on top of Kestra, use the remaining links.
+This section covers two distinct things: (1) guidance for AI agents interacting with Kestra, and (2) Kestra features for building AI and LLM-powered workflows. If you are an AI agent helping a user with Kestra, start with Agent Skills. If the user wants to add AI to their flows, use LLM Tasks and AI Agents or RAG Workflows. To let AI agents run the user's flows, use Flow MCP Servers.
 
-- [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
-- [Kestra MCP resources](https://kestra.io/docs/ai-tools/kestra-mcp-resources.md): Connect Claude Code, Cursor, or any MCP-compatible AI tool to live Kestra plugin docs, blueprints, and documentation at runtime — no training data required
-- [Docs for Agents](https://kestra.io/docs/ai-tools/docs-for-agents.md): All machine-readable Kestra resources in one place — MCP server, Agent Skills, llms.txt endpoints, plain Markdown docs, plugin schemas, and OpenAPI specs
-- [AI Tools overview](https://kestra.io/docs/ai-tools.md): Overview of all AI capabilities in Kestra — Copilot, Agents, Agent Skills, AI Workflows, and RAG Workflows
-- [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot.md): Generate and refine flow YAML from natural language prompts inside the Kestra UI
-- [AI Agents](https://kestra.io/docs/ai-tools/ai-agents.md): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
-- [AI Workflows](https://kestra.io/docs/ai-tools/ai-workflows.md): Patterns for building AI-native workflows — LLM calls, tool use, and multi-step inference pipelines — using Kestra tasks
-- [RAG Workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows.md): Retrieval-augmented generation patterns — indexing, chunking, embedding, and querying — orchestrated as Kestra flows
-- [MCP Server](https://kestra.io/docs/ai-tools/mcp-server.md): Expose Kestra flows as MCP tools for AI agents — configure MCP servers, connect Claude Desktop/Code/Cursor, and understand OSS vs EE auth options
+- [Agent Skills](https://kestra.io/docs/develop-with-ai/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
+- [Docs MCP Server](https://kestra.io/docs/develop-with-ai/kestra-mcp-resources.md): Connect Claude Code, Cursor, or any MCP-compatible coding agent to the hosted, read-only Kestra MCP server for live plugin schemas, blueprints, and documentation
+- [Docs for Agents](https://kestra.io/docs/develop-with-ai/docs-for-agents.md): All machine-readable Kestra resources in one place — MCP server, Agent Skills, llms.txt endpoints, plain Markdown docs, plugin schemas, and OpenAPI specs
+- [Develop with AI overview](https://kestra.io/docs/develop-with-ai.md): Use AI to build and operate Kestra, with AI Copilot in the UI or a coding agent with the Docs MCP server, Agent Skills, and kestractl
+- [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot.md): Build and edit flows, diagnose failed executions, and run approved plans from a chat sidebar inside the Kestra UI
+- [AI Orchestration overview](https://kestra.io/docs/ai-orchestration.md): Run AI inside flows with LLM tasks, AI agents, and RAG, and expose flows to external AI agents as MCP tools
+- [LLM Tasks and AI Agents](https://kestra.io/docs/ai-orchestration/ai-agents.md): Call LLMs as tasks for fixed steps such as summarizing or structured extraction, or run AI agents that choose their own tools at runtime
+- [RAG Workflows](https://kestra.io/docs/ai-orchestration/ai-rag-workflows.md): Retrieval-augmented generation patterns — indexing, chunking, embedding, and querying — orchestrated as Kestra flows
+- [Flow MCP Servers](https://kestra.io/docs/ai-orchestration/mcp-server.md): Expose Kestra flows as MCP tools for external AI agents; configure servers, connect Claude Desktop, Claude Code, and Cursor, and choose OSS or EE auth
 
 ## Authoring flows
 
@@ -208,14 +208,10 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Upgrade Kestra: Rolling Updates, Migrations, and Rollback](https://kestra.io/docs/administrator-guide/upgrades.md)
 - [Anonymous Usage Reporting in Kestra: Enable or Disable](https://kestra.io/docs/administrator-guide/usage.md)
 - [Webserver URL, Reverse Proxy, and Forward Proxy Setup](https://kestra.io/docs/administrator-guide/webserver-url.md)
-- [AI Tools in Kestra: Copilot, Agents & RAG Workflows](https://kestra.io/docs/ai-tools.md)
-- [Agent Skills – Operate Kestra from AI Coding Agents](https://kestra.io/docs/ai-tools/agent-skills.md)
-- [Kestra MCP Resources – Connect AI Coding Agents to Live Plugin Docs and Blueprints](https://kestra.io/docs/ai-tools/kestra-mcp-resources.md)
-- [AI Agents in Kestra – Autonomous Orchestration](https://kestra.io/docs/ai-tools/ai-agents.md)
-- [AI Copilot in Kestra – Generate and Edit Flows](https://kestra.io/docs/ai-tools/ai-copilot.md)
-- [RAG Workflows in Kestra – Retrieval-Augmented Generation](https://kestra.io/docs/ai-tools/ai-rag-workflows.md)
-- [AI Workflows in Kestra: Orchestrate with Any LLM](https://kestra.io/docs/ai-tools/ai-workflows.md)
-- [MCP Server in Kestra – Expose Flows as AI Tools](https://kestra.io/docs/ai-tools/mcp-server.md)
+- [AI Orchestration in Kestra: LLM Tasks, AI Agents, RAG & MCP](https://kestra.io/docs/ai-orchestration.md)
+- [LLM Tasks and AI Agents in Kestra Flows](https://kestra.io/docs/ai-orchestration/ai-agents.md)
+- [RAG Workflows in Kestra: Ground LLM Answers in Your Data](https://kestra.io/docs/ai-orchestration/ai-rag-workflows.md)
+- [Flow MCP Servers: Expose Kestra Flows as AI Tools](https://kestra.io/docs/ai-orchestration/mcp-server.md)
 - [API Reference: Enterprise and Open Source Editions](https://kestra.io/docs/api-reference.md)
 - [Cloud & Enterprise API Reference for Kestra](https://kestra.io/docs/api-reference/enterprise.md)
 - [SDK Language Clients for the Kestra API](https://kestra.io/docs/api-reference/kestra-sdk.md)
@@ -272,6 +268,11 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Community Guidelines: How to Participate in Kestra](https://kestra.io/docs/contribute-to-kestra/community-guidelines.md)
 - [Contribute to the Kestra Codebase: Issues and PRs](https://kestra.io/docs/contribute-to-kestra/contributing.md)
 - [Kestra Docs Contributor Guide: Writer's Reference](https://kestra.io/docs/contribute-to-kestra/docs-contributor-guide.md)
+- [Develop with AI in Kestra: Copilot, Coding Agents & MCP](https://kestra.io/docs/develop-with-ai.md)
+- [Agent Skills for Kestra: Teach Coding Agents to Write Flows](https://kestra.io/docs/develop-with-ai/agent-skills.md)
+- [AI Copilot in Kestra: Build, Debug, and Plan Flows](https://kestra.io/docs/develop-with-ai/ai-copilot.md)
+- [Kestra Resources for AI Agents and LLMs](https://kestra.io/docs/develop-with-ai/docs-for-agents.md)
+- [Kestra Docs MCP Server for AI Coding Agents](https://kestra.io/docs/develop-with-ai/kestra-mcp-resources.md)
 - [Cloud & Enterprise Edition: Features and Setup](https://kestra.io/docs/enterprise.md)
 - [Auth & Users in Kestra Enterprise: RBAC, SSO](https://kestra.io/docs/enterprise/auth.md)
 - [Enterprise API in Kestra: Endpoints and Auth](https://kestra.io/docs/enterprise/auth/api.md)
