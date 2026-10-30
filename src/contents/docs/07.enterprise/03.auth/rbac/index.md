@@ -171,8 +171,6 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 
 Permissions to manage roles, bindings, groups, and invitations let the holder grant access to anyone, themselves included. Kestra does not limit what they grant to the permissions they already hold. This is by design. Treat these permissions as admin rights for their scope, and grant them only to people you would make admin there.
 
-Roles and invitations belong to the tenant, but `ROLE` and `INVITATION` actions held on a single namespace are enough to manage them. For example, `ROLE` `UPDATE` on one namespace lets you edit any custom role in the tenant.
-
 ### Roles
 
 `ROLE` `CREATE` and `UPDATE` let you put any permission in a role, including permissions you don't hold. Updating a role changes every binding that uses it, including tenant-wide bindings. Only an Instance Owner can add `USER` `IMPERSONATE` to a role, set the default role, or edit a managed role.
@@ -181,7 +179,7 @@ Roles and invitations belong to the tenant, but `ROLE` and `INVITATION` actions 
 
 `BINDING` `CREATE` lets you bind any role to any user, group, or service account, yourself included, at the scope where you hold it:
 
-- On a namespace, you can bind roles on that namespace and its child namespaces. Binding the Admin role to yourself there gives you every permission on those namespaces. Admin also includes `ROLE` `UPDATE`, which lets you edit any custom role, including roles bound tenant-wide. A namespace-scoped `BINDING` `CREATE` can therefore lead to tenant-wide access.
+- On a namespace, you can bind roles on that namespace and its child namespaces. Binding the Admin role to yourself there gives you every permission on those namespaces.
 - On the tenant, you can create tenant-wide bindings, which grant every permission in the role.
 
 If the user you bind has no access to the tenant yet, the binding gives them access.
@@ -190,11 +188,11 @@ If the user you bind has no access to the tenant yet, the binding gives them acc
 
 Each group member is either a member or an owner. A group owner can add users already in the tenant to the group and make other members owners, without any RBAC permission. Making someone owner of a group lets them give out everything the group's bindings grant.
 
-`GROUP` `MANAGE_MEMBERS` held tenant-wide gives the same power over every group in the tenant, including adding yourself. `USER` `MANAGE_GROUP_MEMBERSHIP` does too, when combined with any tenant-wide `GROUP` permission such as `VIEW`. Held only on a namespace, neither lets you change the members of groups you don't own, except through [invitations](#invitations). Joining a group gives you everything its bindings grant, including tenant-wide bindings.
+`GROUP` `MANAGE_MEMBERS` held tenant-wide gives the same power over every group in the tenant, including adding yourself. `USER` `MANAGE_GROUP_MEMBERSHIP` does too, when combined with any tenant-wide `GROUP` permission such as `VIEW`. Joining a group gives you everything its bindings grant, including tenant-wide bindings.
 
 ### Invitations
 
-To create an [invitation](../invitations/index.md), you need `INVITATION` `CREATE`. You also need `BINDING` `CREATE` at the scope of each binding in the invitation. For each group in it, you need ownership of the group or `GROUP` `MANAGE_MEMBERS` on any namespace, so a namespace-scoped `GROUP` `MANAGE_MEMBERS` lets you invite users into every group in the tenant. Only an Instance Owner can invite an Instance Owner.
+To create an [invitation](../invitations/index.md), you need `INVITATION` `CREATE`. You also need `BINDING` `CREATE` at the scope of each binding in the invitation. For each group in it, you need ownership of the group or `GROUP` `MANAGE_MEMBERS`. Only an Instance Owner can invite an Instance Owner.
 
 ### Review changes
 
