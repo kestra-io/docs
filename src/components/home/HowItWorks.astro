@@ -184,35 +184,35 @@ const RUN = [
 // its task gets there (ms from the step's start).
 const LOGS = [
     {
-        at: 2400,
+        at: 1500,
         level: "INFO",
         time: "02:00:02.104",
         task: "extract",
         message: "Query returned 1,204 rows",
     },
     {
-        at: 2600,
+        at: 1650,
         level: "WARN",
         time: "02:00:02.311",
         task: "approve",
         message: "Execution paused, waiting for m.lee",
     },
     {
-        at: 5300,
+        at: 3300,
         level: "INFO",
         time: "02:03:42.518",
         task: "approve",
         message: "Execution resumed by m.lee",
     },
     {
-        at: 5500,
+        at: 3450,
         level: "INFO",
         time: "02:03:42.640",
         task: "post_to_erp",
         message: "Python 3.12 container started",
     },
     {
-        at: 6800,
+        at: 4400,
         level: "INFO",
         time: "02:03:47.330",
         task: "post_to_erp",
@@ -507,7 +507,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         <span>Governance</span>
                     </div>
                     <ul>
-                        <li data-on="1500">
+                        <li data-on="1000">
                             <Icon name="mdi:key-outline" class="glyph" />
                             <span class="what">
                                 Permissions
@@ -517,7 +517,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                                 ><Icon name="mdi:check-circle-outline" /></span
                             >
                         </li>
-                        <li class="approval" data-on="2600">
+                        <li class="approval" data-on="1650">
                             <Icon
                                 name="mdi:account-check-outline"
                                 class="glyph"
@@ -532,7 +532,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                                 ><Icon name="mdi:check-circle-outline" /></span
                             >
                         </li>
-                        <li data-on="7000">
+                        <li data-on="4600">
                             <Icon
                                 name="mdi:text-box-search-outline"
                                 class="glyph"
@@ -607,16 +607,16 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
     // The steps take turns while the block is in view: the open step's top
     // edge fills as its time goes, then the next one opens. A click picks a
     // step and stops the turns.
-    const STEP_MS = [7000, 7000, 9500]
+    const STEP_MS = [7000, 7000, 7000]
     // The run's states over time, in ms from the step's start.
-    // Execute is pressed at 600ms, the Gantt replaces the code at 900ms.
+    // Execute is pressed at 400ms, the Gantt replaces the code at 600ms.
     const RUN: [number, number, string][] = [
-        [1400, 0, "running"],
-        [2400, 0, "success"],
-        [2600, 1, "paused"],
-        [5300, 1, "success"],
-        [5500, 2, "running"],
-        [6800, 2, "success"],
+        [900, 0, "running"],
+        [1500, 0, "success"],
+        [1650, 1, "paused"],
+        [3300, 1, "success"],
+        [3450, 2, "running"],
+        [4400, 2, "success"],
     ]
 
     function wireHow() {
@@ -715,8 +715,8 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 body.dataset.exec = "idle"
                 body.classList.remove("pressing", "executing")
                 if (idx === 2) {
-                    later(600, () => body.classList.add("pressing"))
-                    later(900, () => {
+                    later(400, () => body.classList.add("pressing"))
+                    later(600, () => {
                         body.classList.remove("pressing")
                         body.classList.add("executing")
                         body.dataset.exec = "running"
