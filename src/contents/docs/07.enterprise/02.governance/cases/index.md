@@ -44,7 +44,7 @@ Cases require the [Kestra plugin](https://kestra.io/plugins/plugin-kestra) to be
 
 There is no restrictive state machine: any status can be changed to any other, including reopening a resolved or cancelled case. A few rules apply:
 
-1. Resolving requires a **resolution reason**; the note is optional. When the case was created from a template, the template can restrict the allowed reasons and make the note mandatory. Without a template, the built-in reasons are offered: Fixed, Workaround applied, Configuration change, Duplicate, No action needed, Won't fix.
+1. Resolving requires a **resolution reason**; the note is optional. The accepted reasons are, in order: the case's own reasons (set with the `resolutionReasons` property of the `CreateCase` task), the reasons of the template the case was created from, then those of the tenant's default template. When none of them define reasons, any reason is accepted and the built-in ones are offered: Fixed, Workaround applied, Configuration change, Duplicate, No action needed, Won't fix. The note is mandatory when the case requires it (the `requireResolutionNote` property of the `CreateCase` task), otherwise when the template the case was created from does.
 2. Cancelling accepts an optional reason and note.
 3. The first time the case moves from `Open` to any other status, the acknowledgement time is recorded (this satisfies the acknowledgement SLA and is kept even if the case is later reopened).
 4. Reopening a terminal case clears the resolution, and the case's auto-attach flow (if any) is recreated.
@@ -112,19 +112,22 @@ tasks:
 
 | Property | Description |
 |---|---|
-| `title` | Case title; required unless `caseId` is set. Supports expressions. |
-| `caseDescription` | Markdown description (named this way because `description` is reserved for the task itself). |
-| `severity` | `CRITICAL`, `HIGH`, `MEDIUM`, or `LOW`; defaults to `MEDIUM`. |
+| `templateId` | Case template to pre-fill the case from; defaults to the tenant's default template. See [Case templates](#case-templates). |
+| `title` | Case title. Supports expressions. Defaults to the template's title pattern; required when the template has none, unless `caseId` is set. |
+| `caseDescription` | Markdown description (named this way because `description` is reserved for the task itself); defaults to the template's description. |
+| `severity` | `CRITICAL`, `HIGH`, `MEDIUM`, or `LOW`; defaults to the template's severity, otherwise `MEDIUM`. |
 | `status` | Initial status; defaults to `OPEN`. |
 | `namespace` | Namespace the case belongs to; defaults to the flow's namespace. |
-| `sla` | `acknowledgement` and `resolution` durations (ISO-8601, e.g. `PT1H`). |
+| `sla` | `acknowledgement` and `resolution` durations (ISO-8601, e.g. `PT1H`); defaults to the template's SLA. |
+| `resolutionReasons` | The only reasons the case can be resolved with, offered on the Resolve dialog; defaults to the template's reasons. Must contain at least one reason when set. |
+| `requireResolutionNote` | Whether resolving the case requires a note; defaults to the template's setting. |
 | `linkMatchingExecutions` | When `true`, the execution is attached to an already-open case with the same origin instead of creating a new one; defaults to `false`. |
 | `caseId` | Attach the execution to this exact case instead of creating one (used by generated auto-attach flows). |
 | `executionId` | Execution to link; defaults to the current execution. |
-| `assignees` / `watchers` | User emails and group names, resolved to stable IDs on the server. |
-| `labels` | Key/value pairs, stored as Text custom fields on the case. |
+| `assignees` / `watchers` | User emails and group names, resolved to stable IDs on the server; default to the template's. |
+| `labels` | Key/value pairs, stored as Text custom fields on the case; when unset, the case gets the template's custom fields. |
 | `assetIds` | Assets to link to the case. |
-| `actions` | Case actions to attach, each with `label`, `namespace`, and `flowId`. |
+| `actions` | Case actions to attach, each with `label`, `namespace`, and `flowId`; default to the template's. |
 
 Connection properties (`kestraUrl`, `auth`, `tenantId`) are shared by all tasks from the Kestra plugin; `tenantId` defaults to the execution's tenant. Authentication is resolved as described above: `auth` set on the task takes precedence, then the namespace's default authentication credentials, then the tenant's, then the instance configuration.
 
@@ -132,7 +135,26 @@ Connection properties (`kestraUrl`, `auth`, `tenantId`) are shared by all tasks 
 
 The task returns `caseId` and `created`. `created: false` means the execution was attached to an existing case (via deduplication or `caseId`) rather than opening a new one.
 
-Note that the task cannot reference a case template. Case templates are mainly helpers to make it easier to configure cases from the UI; when creating cases from code, all properties such as severity or SLAs are declared explicitly on the task, following Kestra's declarative nature.
+### Case templates in the task
+
+The task applies a case template the same way the Create Case modal does: the one referenced by `templateId`, or the tenant's default template when `templateId` is not set. Every property set on the task takes precedence over the template. The template's title pattern and description are rendered against the triggering execution, so the built-in default template gives a case titled `<execution id> failed for <flow id>` without any `title` on the task. Rendering requires the task's credentials to have the `VIEW` action on the `EXECUTION` permission for that execution's namespace; otherwise the pattern is stored as is. A template's ID is shown in the templates table under **Cases → Settings**. The case keeps a link to the template, so the template's resolution rules apply when the case is resolved.
+
+```yaml
+errors:
+  - id: open_case
+    type: io.kestra.plugin.kestra.ee.cases.CreateCase
+    templateId: 5mSfVmh4GwLKO1nQ0qCRu8
+    severity: CRITICAL
+    resolutionReasons:
+      - Provider outage
+      - Data fixed
+      - False alarm
+    requireResolutionNote: true
+```
+
+:::alert{type="warning"}
+Existing `CreateCase` tasks that set no `templateId` now get the tenant's default template applied. Severity, SLA, assignees, watchers, description, custom fields and actions they do not set come from that template; for the built-in default template, this means `HIGH` severity and a 1 hour acknowledgement and 8 hour resolution SLA instead of `MEDIUM` and no SLA. Set those properties on the task to keep the previous values.
+:::
 
 ## Deduplication
 
@@ -201,7 +223,7 @@ Templates are managed in **Cases → Settings** and require the `TEMPLATE` actio
 
 Every tenant is seeded with a built-in "Execution failure incident" template: severity High, title pattern `{{ execution.id }} failed for {{ flow.id }}`, 1 hour acknowledgement and 8 hour resolution SLA, and the built-in resolution reasons.
 
-Template defaults apply when creating cases via the UI or the API; they cannot be used by the `CreateCase` task, where all properties are declared explicitly in the flow YAML.
+Template defaults apply when creating cases via the UI, the API, or the `CreateCase` task. The task applies the tenant's default template when it references none; see [Case templates in the task](#case-templates-in-the-task).
 
 ## Notifications
 
@@ -256,7 +278,7 @@ curl -X POST "https://{host}/api/v1/{tenant}/cases/{id}/resolve" \
   -d '{ "reason": "Fixed", "note": "Deployed hotfix v1.2.3" }'
 ```
 
-A `reason` is required to resolve. The reason is a free-form string; case templates can configure a `resolutionReasons` list to restrict which values are accepted.
+A `reason` is required to resolve. The reason is a free-form string unless the case, its template, or the tenant's default template defines a `resolutionReasons` list, which then restricts the accepted values (see [Case lifecycle](#case-lifecycle)). `GET /api/v1/{tenant}/cases/{id}/resolution-rules` returns the reasons accepted for a case and whether a note is required.
 
 **Link executions**
 
