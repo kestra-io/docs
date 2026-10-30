@@ -129,7 +129,7 @@ The streamable nature of NDJSON makes it a valuable format in various data-drive
 *   **Real-Time Logging:** Aggregating logs from multiple services where each log event is a structured JSON object.
 *   **Large Data Ingestion:** Efficiently loading massive datasets from cloud storage (like S3 or GCS) into data warehouses or databases.
 *   **Big Data Processing:** Using tools like Spark or DuckDB to process terabytes of data, where NDJSON serves as a convenient and performant serialization format.
-*   **API Data Exchange:** Streaming large result sets from an API endpoint without having to buffer the entire response in memory. This is crucial for building a scalable [data pipeline](/resources/data/data-pipeline).
+*   **API Data Exchange:** Streaming large result sets from an API endpoint without having to buffer the entire response in memory. This is crucial for building a scalable [data pipeline](/resources/data/create-data-pipeline).
 
 ## Related concepts
 

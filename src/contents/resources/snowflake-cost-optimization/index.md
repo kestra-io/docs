@@ -159,7 +159,7 @@ You can explore practical implementations in Kestra's [Snowflake blueprints](/bl
 
 - [Data Engineering Resources Hub](/resources/data)
 - [dbt Integrations](/resources/data/dbt-integrations)
-- [What is a Data Pipeline?](/resources/data/data-pipeline)
+- [What is a Data Pipeline?](/resources/data/create-data-pipeline)
 - [Data Orchestration Explained](/resources/data/data-orchestration)
 
 Ready to take control of your Snowflake spend? Explore Kestra's capabilities for [declarative data orchestration](/data).

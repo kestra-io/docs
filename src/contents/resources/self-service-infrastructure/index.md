@@ -98,7 +98,7 @@ The portal provides the "what," and the automation engine provides the "how." To
 
 ### Self-service infrastructure for DevOps teams
 
-Self-service is a natural extension of DevOps principles. It promotes a "shift-left" culture by empowering developers with operational capabilities, fostering shared responsibility between development and operations teams. Instead of a hard handoff, both teams collaborate on building and maintaining the self-service platform. This model breaks down silos and aligns everyone around the common goal of delivering value faster. The foundation of this collaboration is often built on [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code).
+Self-service is a natural extension of DevOps principles. It promotes a "shift-left" culture by empowering developers with operational capabilities, fostering shared responsibility between development and operations teams. Instead of a hard handoff, both teams collaborate on building and maintaining the self-service platform. This model breaks down silos and aligns everyone around the common goal of delivering value faster. The foundation of this collaboration is often built on [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code).
 
 ### Understanding IT infrastructure basics
 

@@ -30,7 +30,7 @@ Data orchestration is the automated coordination and management of data flows ac
 
 The reason it matters is arithmetic. The average enterprise data stack in 2026 runs on more than ten tools working together — a warehouse, an ingestion service, a transformation framework, a BI layer, a streaming platform, several cloud services, and a handful of custom scripts nobody wants to touch. None of them run themselves. Something has to trigger them, sequence them, handle their failures, and surface what went wrong. That something is data orchestration.
 
-This guide is the hub for the category: what data orchestration is and why it matters, its core components, how it differs from ETL and data integration, the tools that dominate the landscape, how to build a strategy, and where the category is headed. It links out to deeper guides on specific patterns — [data pipelines](/resources/data/data-pipeline), [ETL vs ELT](/resources/data/etl-vs-elt), [data mesh architecture](/resources/data/data-mesh-architecture), and [the orchestrator primer](/resources/data/orchestrator).
+This guide is the hub for the category: what data orchestration is and why it matters, its core components, how it differs from ETL and data integration, the tools that dominate the landscape, how to build a strategy, and where the category is headed. It links out to deeper guides on specific patterns — [data pipelines](/resources/data/create-data-pipeline), [ETL vs ELT](/resources/data/etl-vs-elt), [data mesh architecture](/resources/data/data-mesh-architecture), and [the orchestrator primer](/resources/data/orchestrator).
 
 ## What Is Data Orchestration?
 
@@ -151,7 +151,7 @@ ETL describes the work; orchestration describes how that work is coordinated. Da
 
 ### When to use data orchestration vs. ETL
 
-It's never either/or — ETL is one of the things you orchestrate. A single orchestrated workflow might trigger an Airbyte sync (the EL), run a [dbt transformation](/orchestration/dbt-core) (the T), execute a Python data-quality check, and post a Slack alert, all coordinated by the orchestration layer. For the pipeline-level view, see the [data pipeline guide](/resources/data/data-pipeline).
+It's never either/or — ETL is one of the things you orchestrate. A single orchestrated workflow might trigger an Airbyte sync (the EL), run a [dbt transformation](/orchestration/dbt-core) (the T), execute a Python data-quality check, and post a Slack alert, all coordinated by the orchestration layer. For the pipeline-level view, see the [data pipeline guide](/resources/data/create-data-pipeline).
 
 ## Data Orchestration Examples
 
@@ -236,7 +236,7 @@ Map every source (databases, APIs, streams, files) and every destination (wareho
 
 ### Design your data pipelines
 
-Model workflows as explicit, version-controlled definitions rather than ad-hoc scripts, and favor a declarative approach where the workflow logic is separated from the code it runs — that separation makes pipelines easier to review, test, and maintain. Break complex pipelines into smaller, reusable components; the guide to [automating data pipelines](/resources/data/automate-data-pipeline) covers this in depth.
+Model workflows as explicit, version-controlled definitions rather than ad-hoc scripts, and favor a declarative approach where the workflow logic is separated from the code it runs — that separation makes pipelines easier to review, test, and maintain. Break complex pipelines into smaller, reusable components; the guide to [automating data pipelines](/resources/data/create-data-pipeline) covers this in depth.
 
 ### Monitor and optimize your orchestrated workflows
 
@@ -270,4 +270,4 @@ Kestra is an open-source, declarative orchestration platform that unifies data, 
 
 Data orchestration is the infrastructure layer that makes the rest of the modern data stack actually work. Skipping it is fine at small scale and breaks at medium scale — every data team eventually hits the wall where cron jobs and bash scripts stop scaling.
 
-For teams evaluating tools, [Kestra](/) is open-source, self-hostable, declarative in YAML, and built around the multi-trigger, multi-tenant, cross-stack pattern the category is moving toward. Explore the [declarative orchestration overview](/data) or the [orchestrator category guide](/resources/data/orchestrator), then go deeper on the specific patterns in the sister guides: [data pipeline](/resources/data/data-pipeline), [ETL vs ELT](/resources/data/etl-vs-elt), [automate data pipeline](/resources/data/automate-data-pipeline), and [data mesh architecture](/resources/data/data-mesh-architecture).
+For teams evaluating tools, [Kestra](/) is open-source, self-hostable, declarative in YAML, and built around the multi-trigger, multi-tenant, cross-stack pattern the category is moving toward. Explore the [declarative orchestration overview](/data) or the [orchestrator category guide](/resources/data/orchestrator), then go deeper on the specific patterns in the sister guides: [data pipeline](/resources/data/create-data-pipeline), [ETL vs ELT](/resources/data/etl-vs-elt), [automate data pipeline](/resources/data/create-data-pipeline), and [data mesh architecture](/resources/data/data-mesh-architecture).

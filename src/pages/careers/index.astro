@@ -7,7 +7,7 @@ import Positions from "~/components/careers/Positions.vue"
 import CardGrid from "~/components/card/CardGrid.astro"
 import imgSrc from "~/components/careers/assets/see_how.png"
 import { type AshbyJob, fetchJobs } from "~/utils/careers.ts"
-import { OPEN_APPLICATION_PATH } from "~/utils/careersPath.ts"
+import { OPEN_APPLICATION_URL } from "~/utils/careersPath.ts"
 import SeeHow from "~/components/common/SeeHow.astro"
 
 const positions: AshbyJob[] = await fetchJobs()
@@ -64,21 +64,23 @@ const description =
         subtitle="We take care of everything you need to help you grow and do the best work of your career."
         items={PERKS}
     />
-    <SeeHow
-        cta={{
-            text: "Send an Open Application",
-            href: OPEN_APPLICATION_PATH,
-        }}
-        imgSrc={imgSrc}
-    >
-        <h2 slot="title">
-            Open Application: Shape the Future of Workflow Orchestration
-        </h2>
-        <p>
-            Interested in joining us but not able to find what you are looking
-            for? Let's talk anyway.
-        </p>
-    </SeeHow>
+    <div id="open-application">
+        <SeeHow
+            cta={{
+                text: "Contact our team on LinkedIn",
+                href: OPEN_APPLICATION_URL,
+            }}
+            imgSrc={imgSrc}
+        >
+            <h2 slot="title">
+                Open Application: Shape the Future of Workflow Orchestration
+            </h2>
+            <p>
+                Interested in joining us but not able to find what you are looking
+                for? Contact our team on LinkedIn and let's talk anyway.
+            </p>
+        </SeeHow>
+    </div>
 </Layout>
 
 <style lang="scss">

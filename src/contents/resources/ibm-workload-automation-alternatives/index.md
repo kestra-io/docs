@@ -111,12 +111,12 @@ However, Airflow's strengths are also its limitations in this context. It is pri
 ### For Data Engineering Teams
 Teams focused on data pipelines need strong integration with the modern data stack, robust dependency management, and support for transformations.
 *   **Recommendations:** **Kestra** for its ability to orchestrate polyglot data workflows alongside other systems, and **Apache Airflow** for Python-centric data teams.
-*   **Resources:** Explore [data orchestration](/resources/data/data-orchestration) and how to build an [automated data pipeline](/resources/data/automate-data-pipeline).
+*   **Resources:** Explore [data orchestration](/resources/data/data-orchestration) and how to build an [automated data pipeline](/resources/data/create-data-pipeline).
 
 ### For Infrastructure & DevOps Teams
 These teams prioritize Infrastructure as Code (IaC), GitOps workflows, and the ability to automate across hybrid cloud and on-premise environments.
 *   **Recommendations:** **Kestra** provides a declarative control plane that integrates seamlessly with tools like Terraform and Ansible. **Stonebranch** and **Redwood** also offer strong hybrid capabilities.
-*   **Resources:** See our [infrastructure automation](/resources/infrastructure/automation) resources and learn more about [what is infrastructure as code](/resources/infrastructure/what-is-infrastructure-as-code).
+*   **Resources:** See our [infrastructure automation](/resources/infrastructure/automation) resources and learn more about [what is infrastructure as code](/resources/infrastructure/everything-as-code).
 
 ### For AI & ML Platform Teams
 AI and ML workflows require orchestrating heterogeneous tasks, ensuring reproducibility, and enabling agentic workflows. A language-agnostic platform is crucial.

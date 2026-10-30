@@ -91,6 +91,7 @@ Use this section when deciding *how* to structure a flow or *which* pattern to u
 - [Outputs patterns](https://kestra.io/docs/best-practices/outputs.md): Clean patterns for producing and consuming task outputs across tasks and flows
 - [Credentials vs Secrets vs KV Store](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store.md): Decision guide for choosing the right storage backend for each type of value
 - [Secrets management](https://kestra.io/docs/best-practices/secrets-management.md): How to handle credentials and sensitive values safely in flows
+- [Asset best practices](https://kestra.io/docs/best-practices/assets.md): Stable asset IDs that join with plugin-emitted IDs, shared metadata keys, namespaced vs Global assets, and trigger design
 - [Naming conventions](https://kestra.io/docs/best-practices/naming-conventions.md): Consistent `id`, `namespace`, and label conventions for maintainable flows
 
 ## Examples, how-tos, and use cases
@@ -130,6 +131,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 - [Tenants](https://kestra.io/docs/enterprise/governance/tenants.md): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
 - [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs.md): Immutable record of all user and system actions across the platform
 - [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager.md): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
+- [Assets](https://kestra.io/docs/enterprise/governance/assets.md): Start here for lineage and inventory. Explains how tasks declare `assets.inputs`/`outputs`, then routes to the declaration reference, the triggers/tasks reference (correct FQCNs: `io.kestra.plugin.ee.assets.EventTrigger`, `io.kestra.plugin.kestra.ee.assets.FreshnessTrigger`), UI/API/CLI management, and use-case how-to guides
 - [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management.md): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
 - [Worker isolation](https://kestra.io/docs/enterprise/governance/worker-isolation.md): Restrict which workers can execute tasks from a given namespace
 - [Promote](https://kestra.io/docs/enterprise/governance/promote.md): Copy flows between Kestra instances from the UI — diff review, optional confirmation gate, drift detection, and promotion history without a Git pipeline
@@ -230,6 +232,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Multi-Tenancy in Kestra: Tenant Isolation Model](https://kestra.io/docs/architecture/multi-tenancy.md)
 - [Server Components in Kestra Architecture Explained](https://kestra.io/docs/architecture/server-components.md)
 - [Workflow Best Practices in Kestra: Design & Patterns](https://kestra.io/docs/best-practices.md)
+- [Kestra Asset Best Practices: IDs, Metadata, and Namespaces](https://kestra.io/docs/best-practices/assets.md): How to choose stable asset IDs that match plugin-emitted IDs, a shared metadata vocabulary, namespaced vs Global assets, failure behavior, trigger design, and catalog cleanup
 - [Business Unit Separation in Kestra Enterprise](https://kestra.io/docs/best-practices/business-unit-separation.md)
 - [Choosing Where to Store Sensitive and Shared Values](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store.md)
 - [Expressions with Namespace Files in Kestra](https://kestra.io/docs/best-practices/expressions-with-namespace-files.md)
@@ -293,7 +296,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Set Up Okta OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/okta.md)
 - [Governance in Kestra Enterprise: Security and Control](https://kestra.io/docs/enterprise/governance.md)
 - [Allowed & Restricted Plugins in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/allowed-plugins.md)
-- [Assets in Kestra: Track Lineage and Metadata](https://kestra.io/docs/enterprise/governance/assets.md)
 - [Audit Logs in Kestra: Governance and Compliance](https://kestra.io/docs/enterprise/governance/audit-logs.md)
 - [Custom Blueprints in Kestra Enterprise: Templates](https://kestra.io/docs/enterprise/governance/custom-blueprints.md)
 - [Log Shipper in Kestra Enterprise: Centralize Logs](https://kestra.io/docs/enterprise/governance/logshipper.md)
@@ -311,10 +313,15 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Maintenance Mode in Kestra Enterprise: Safe Upgrades](https://kestra.io/docs/enterprise/instance/maintenance-mode.md)
 - [Versioned Plugins in Kestra Enterprise: Multi-Version](https://kestra.io/docs/enterprise/instance/versioned-plugins.md)
 - [Instance Owner Console in Kestra Enterprise](https://kestra.io/docs/enterprise/instance/instance-owner.md)
-- [Kestra Cloud](https://kestra.io/docs/enterprise/cloud.md): Landing section for Kestra Cloud onboarding, compute billing, and task run counting.
+- [Kestra Cloud](https://kestra.io/docs/enterprise/cloud.md): Landing section for Kestra Cloud onboarding, IT setup, compute billing, and task run counting.
 - [Kestra Cloud: Getting Started](https://kestra.io/docs/enterprise/cloud/getting-started.md): Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
+- [Kestra Cloud Setup Guide for IT and Platform Admins](https://kestra.io/docs/enterprise/cloud/setup-for-it.md): What IT, security, and platform admins do so a team can use Kestra Cloud: network access, SSO, cloud credentials, Git, and the security review.
 - [Kestra Cloud Compute](https://kestra.io/docs/enterprise/cloud/cloud-compute.md): Which task types use Kestra Cloud compute, what is measured per attempt, and how to bring your own runner.
 - [Kestra Cloud Task Runs](https://kestra.io/docs/enterprise/cloud/task-runs.md): What a task run is, which ones are counted toward Cloud usage, and how loops, subflows, and retries affect the count.
+- [Kestra Assets: Track the Resources Your Flows Read and Write](https://kestra.io/docs/enterprise/governance/assets.md): What assets are, how Kestra records lineage and usage when tasks declare inputs and outputs, ways to create assets, and a goal-to-page routing table for asset triggers, inventory, locks, and OpenLineage export
+- [Declare Assets on Tasks: Reference for Kestra](https://kestra.io/docs/enterprise/governance/assets/declare-assets.md): The task `assets` property (`inputs`, `outputs`, `enableAuto`, `assetFailureBehavior`), asset fields and ID rules, update and namespace rules, built-in types, plugins that auto-emit assets and their ID formats, and script log-line emission
+- [Manage Assets in the Kestra UI, API, and CLI](https://kestra.io/docs/enterprise/governance/assets/manage-assets.md): Assets list and detail tabs, dependencies graph layouts, freshness states and group-by, asset locks and their effect on each write path, Assets REST API endpoints with permissions, and kestractl assets commands
+- [Asset Tasks, Triggers, and Functions Reference](https://kestra.io/docs/enterprise/governance/assets/tasks-and-triggers.md): Correct FQCNs and properties for EventTrigger (`trigger.asset`), FreshnessTrigger (`trigger.assets` list), Set, List, Delete, PurgeAssets, Acquire/Release locks, the `assets()` Pebble function, and AssetShipper exporters
 - [Enterprise Edition in Kestra: Architecture and Setup](https://kestra.io/docs/enterprise/overview.md)
 - [Enterprise Features in Kestra: High-Availability](https://kestra.io/docs/enterprise/overview/enterprise-edition.md)
 - [Migrate from OSS to Kestra Enterprise Edition](https://kestra.io/docs/enterprise/overview/migrate-from-oss.md)
@@ -348,6 +355,14 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Declare Explicit Outputs in Ansible Playbooks with Kestra](https://kestra.io/docs/how-to-guides/ansible-explicit-outputs.md)
 - [Extend Kestra with the API](https://kestra.io/docs/how-to-guides/api.md)
 - [Deploy Kestra with ArgoCD](https://kestra.io/docs/how-to-guides/argocd.md)
+- [Run a Flow When an Upstream Table Changes in Kestra](https://kestra.io/docs/how-to-guides/asset-event-triggers.md): Start a downstream flow with an asset EventTrigger filtered by namespace, type, and metadata, and avoid self-triggering loops
+- [Target Fleet Operations with Asset Metadata in Kestra](https://kestra.io/docs/how-to-guides/asset-fleet-operations.md): Select VMs from the asset inventory with `assets()` or the List task, run an operation per server, and stamp results back as metadata
+- [Detect and Refresh Stale Data with Kestra Asset Freshness Checks](https://kestra.io/docs/how-to-guides/asset-freshness.md): Use FreshnessTrigger to find stale tables, rerun their producing flow per asset, and alert without repeated remediation
+- [Build a Live Inventory of Provisioned Infrastructure in Kestra](https://kestra.io/docs/how-to-guides/asset-infrastructure-inventory.md): Register VMs, IP addresses, certificates, and snapshots as linked assets from provisioning and day-2 flows
+- [Track Lineage Across a dbt Pipeline Without Writing It by Hand](https://kestra.io/docs/how-to-guides/asset-lineage-dbt.md): Turn on `assets.enableAuto` for dbt to record models and dependencies, connect downstream consumers, and alert on dbt test failures
+- [Prevent Concurrent Changes to a Shared Resource with Asset Locks](https://kestra.io/docs/how-to-guides/asset-locks.md): Lock an asset with Acquire and Release around maintenance work, wait for locks with retry, and lock from the UI or API for maintenance windows
+- [Send Kestra Asset Lineage to OpenLineage Tools Such as Marquez](https://kestra.io/docs/how-to-guides/asset-openlineage.md): Ship lineage events on a schedule with AssetShipper and OpenLineageAssetExporter, map assets to dataset names, filter exports, and export to files
+- [Share Platform Resources Across Teams with Kestra Assets](https://kestra.io/docs/how-to-guides/asset-platform-sharing.md): Publish shared infrastructure as assets, let other teams select and reference them, and restrict writes with allowed namespaces
 - [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
 - [Automate Clever Cloud with Kestra](https://kestra.io/docs/how-to-guides/clever-cloud.md)
 - [Add Conditional Branching in Kestra](https://kestra.io/docs/how-to-guides/conditional-branching.md)
@@ -589,6 +604,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Azure Virtual Machine Task Runner – Run Tasks Natively on Azure VMs](https://kestra.io/docs/task-runners/types/azure-virtualmachine-task-runner.md)
 - [Docker Task Runner – Run Tasks in Containers](https://kestra.io/docs/task-runners/types/docker-task-runner.md)
 - [Huawei Cloud CCI Task Runner: Serverless Container Execution](https://kestra.io/docs/task-runners/types/huawei-cci-task-runner.md)
+- [Cloud Task Runner: Managed Compute on Kestra Cloud](https://kestra.io/docs/task-runners/types/cloud-task-runner.md): Pick a machine size, set timeouts and credentials; Kestra handles provisioning, placement, and cleanup.
 - [Google Batch Task Runner: Run Tasks on Cloud VMs](https://kestra.io/docs/task-runners/types/google-batch-task-runner.md)
 - [Google Cloud Run Task Runner: Serverless Task Execution](https://kestra.io/docs/task-runners/types/google-cloudrun-task-runner.md)
 - [Google Compute Engine Task Runner: Run Tasks on Compute Engine VMs](https://kestra.io/docs/task-runners/types/google-computeengine-task-runner.md)

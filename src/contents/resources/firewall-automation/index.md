@@ -57,7 +57,7 @@ Implementing firewall automation successfully requires a strategic shift in how 
 
 ### Embracing Declarative Security Policies
 
-The foundation of modern firewall automation is treating your security policies as code. A declarative approach means you define the desired state of your firewall rules in a structured, version-controlled format, and the automation platform ensures the live environment matches that state. This is a core tenet of [Infrastructure as Code](/resources/infrastructure/what-is-infrastructure-as-code), applied to network security.
+The foundation of modern firewall automation is treating your security policies as code. A declarative approach means you define the desired state of your firewall rules in a structured, version-controlled format, and the automation platform ensures the live environment matches that state. This is a core tenet of [Infrastructure as Code](/resources/infrastructure/everything-as-code), applied to network security.
 
 By using a GitOps workflow, every change to a firewall policy goes through a pull request, peer review, and automated testing before being applied. This makes the entire process transparent, auditable, and collaborative.
 

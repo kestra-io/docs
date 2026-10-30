@@ -800,8 +800,8 @@ See [Database migrations](../database-migrations/index.md) for the full EE refer
 All flows stored in the 1.3 database survive the upgrade and appear in the namespace listing immediately:
 
 ```bash
-curl -s -u "admin@kestra.io:Kestra123!" \
-  "http://localhost:8080/api/v1/flows/search?namespace=company.migration" \
+curl -g -s -u "admin@kestra.io:Kestra123!" \
+  "http://localhost:8080/api/v1/flows/search?filters[namespace][EQUALS]=company.migration" \
   | jq '{total: .total, ids: [.results[].id]}'
 ```
 

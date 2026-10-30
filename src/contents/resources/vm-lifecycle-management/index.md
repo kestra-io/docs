@@ -54,7 +54,7 @@ Security must be integrated into every stage of the VM lifecycle, not treated as
 Security starts before the VM is even created. By embedding security practices into the provisioning and deployment phases, you can build a strong foundation.
 
 - **Hardened Templates and Images**: Use standardized, pre-hardened VM templates and images that have been scanned for vulnerabilities and configured according to security best practices. This ensures that every new VM starts from a known-secure state.
-- **Secure Network Configuration**: Automate the setup of network security rules, firewalls, and virtual private clouds (VPCs) as part of the provisioning process. Adhering to [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) principles makes these configurations auditable and repeatable.
+- **Secure Network Configuration**: Automate the setup of network security rules, firewalls, and virtual private clouds (VPCs) as part of the provisioning process. Adhering to [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) principles makes these configurations auditable and repeatable.
 - **Least Privilege Access**: Ensure that the accounts and services used for provisioning have only the minimum necessary permissions to create and configure VMs. This limits the potential damage if credentials are compromised. Policy-as-code tools like Open Policy Agent can be orchestrated to [enforce these guardrails](https://kestra.io/orchestration/opa).
 
 ### Ongoing security practices for running VMs

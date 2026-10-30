@@ -4,6 +4,7 @@ h1: Store and Access Sensitive Information Securely
 description: Store and access sensitive information securely in Kestra. Use Secrets to protect API keys, passwords, and credentials without exposing plain-text values.
 sidebarTitle: Secrets
 icon: /src/contents/docs/icons/concepts.svg
+docId: secrets
 ---
 
 Secrets let you store sensitive values (API keys, passwords, certificates) outside your flow definitions and inject them at runtime via the `secret()` function.

@@ -85,6 +85,7 @@ You've taken the product tour, executed your first flow, and explored Kestra. Ne
 - Follow the full [Installation guide](../02.installation/index.mdx) for persistent local or distributed setups.
 - Explore the available [Plugins](/plugins) to integrate with external systems, and begin orchestrating your applications, microservices, and processes.
 - [Contribute to Kestra](../04.contribute-to-kestra/index.mdx) – whether a developer or not, we value outside contribution of all kinds: Plugins, Features, Documentation, Feature Requests, and Bug Reports. Get involved!
+- Take courses on [Kestra Academy](https://academy.kestra.io) to go deeper with guided lessons and earn a certification.
 
 :::alert{type="info"}
 **Prefer to work from your terminal or editor?** Claude Code, Cursor, Codex, and other coding agents can write and deploy flows for you using the Kestra MCP server, Agent Skills, and `kestractl`. See [AI tools](../ai-tools/index.mdx) to compare that with the in-product AI Copilot.

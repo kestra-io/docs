@@ -31,7 +31,6 @@
                         width="24px"
                         height="24px"
                         loading="lazy"
-                        format="webp"
                         class="close-icon"
                         src="/landing/header-menu/window-close.svg"
                         alt="close"
@@ -42,7 +41,6 @@
                         width="236px"
                         height="123px"
                         loading="lazy"
-                        format="webp"
                         class="img-fluid"
                         src="/landing/header-menu/download-logo.svg"
                         alt="Looking for our logo"
@@ -416,6 +414,7 @@
                             />
                             <span>Join us on Slack</span>
                         </a>
+                        <GithubButton class="d-lg-none" />
                         <a
                             @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 btn btn-secondary btn-md"

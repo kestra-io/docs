@@ -5,6 +5,7 @@ description: Use the Instance Owner console in Kestra Enterprise to manage tenan
 sidebarTitle: Instance Owner
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
+docId: instanceowner
 ---
 
 The Instance Owner console provides instance-wide administration for tenants, IAM, infrastructure, and governance, separate from the tenant workspace you work in day to day.

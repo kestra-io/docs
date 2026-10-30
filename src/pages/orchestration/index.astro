@@ -5,6 +5,7 @@ import Faq from "~/components/common/Faq.vue"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import kestraIcon from "~/components/versus/assets/ks-icon.svg?raw"
+import { ORCHESTRATION_CATEGORIES } from "~/schemas/orchestration"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import {
     fetchTotalPluginsCount,
@@ -42,24 +43,10 @@ const entries = await Promise.all(
         }),
 )
 
-const CATEGORY_ORDER = [
-    "Infrastructure",
-    "Cloud",
-    "Data",
-    "Business",
-    "AI",
-    "Alerting",
-    "Core",
-]
-const presentCategories = [...new Set(entries.map((e) => e.category))].sort(
-    (a, b) => {
-        const ai = CATEGORY_ORDER.indexOf(a)
-        const bi = CATEGORY_ORDER.indexOf(b)
-        if (ai === -1 && bi === -1) return a.localeCompare(b)
-        if (ai === -1) return 1
-        if (bi === -1) return -1
-        return ai - bi
-    },
+// The schema enum fixes both the allowed categories and the tab order, so a
+// category can only appear here if some entry declares it.
+const presentCategories = ORCHESTRATION_CATEGORIES.filter((cat) =>
+    entries.some((e) => e.category === cat),
 )
 
 const faqItems = [

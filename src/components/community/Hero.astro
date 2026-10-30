@@ -1,0 +1,108 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelGrid from "~/components/common/PixelGrid.astro"
+
+interface Props {
+    ambassadorHref: string
+}
+
+const { ambassadorHref } = Astro.props
+
+const MASK =
+    "radial-gradient(ellipse 32% 42% at 50% 50%, rgba(0, 0, 0, 0.35) 30%, #000 100%)"
+---
+
+<section class="hero surface-dark">
+    <PixelGrid rows={40} cell={16} gap={5} mask={MASK} />
+    <div class="container">
+        <span class="eyebrow">Open source</span>
+        <h1>Connect and Collaborate</h1>
+        <p>
+            Kestra has been open source since its first commit. The engine, the
+            plugins and the roadmap are public. Thousands of people run it,
+            contribute to it and shape it every month, and that community is the
+            foundation of everything we build.
+        </p>
+        <div class="actions">
+            <a
+                href={ambassadorHref}
+                class="btn btn-primary"
+                target="_blank"
+                rel="noopener"
+            >
+                Join the Ambassadors Program
+                <Icon name="mdi:send" />
+            </a>
+            <a href="/get-started" class="btn btn-secondary">
+                Install Kestra Open Source
+            </a>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 6.25rem 0;
+        color: #fff;
+        text-align: center;
+        background: #111114;
+
+        @include media-breakpoint-down(md) {
+            padding: 4rem 0;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    .eyebrow {
+        font-size: $font-size-sm;
+        font-weight: 700;
+        color: $base-primary-300;
+    }
+
+    h1 {
+        max-width: 9em;
+        margin: 0 0 1.5rem;
+        font-size: clamp(2.75rem, 5vw, 4rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.06;
+        color: inherit;
+        text-wrap: balance;
+    }
+
+    p {
+        max-width: 620px;
+        margin: 0;
+        font-size: $font-size-lg;
+        line-height: 1.5;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+</style>
