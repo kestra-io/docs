@@ -185,7 +185,6 @@ const DOMAINS: Domain[] = [
                     type: "jdbc.oracle.Query",
                     plugin: "jdbc.oracle.Query",
                     fallback: "mdi:database-export-outline",
-                    artifacts: 1,
                     x: 0,
                     y: 140,
                     status: "success",
@@ -254,7 +253,6 @@ const DOMAINS: Domain[] = [
                     type: "fs.sftp.Download",
                     plugin: "fs.sftp.Download",
                     fallback: "mdi:download-network-outline",
-                    artifacts: 3,
                     x: 0,
                     y: 140,
                     status: "success",
@@ -267,6 +265,8 @@ const DOMAINS: Domain[] = [
                     plugin: "scripts.shell.Commands",
                     fallback: "mdi:console",
                     runner: "process",
+                    // Artifacts come from task runners, as in the product.
+                    artifacts: 1,
                     x: 310,
                     y: 0,
                     status: "success",
@@ -571,7 +571,7 @@ const DOMAINS: Domain[] = [
         h2 {
             margin: 0;
             font-size: clamp(2rem, 3.6vw, 3rem);
-            font-weight: 500;
+            font-weight: 600;
             letter-spacing: -0.02em;
             line-height: 1.1;
             color: var(--ks-content-primary);

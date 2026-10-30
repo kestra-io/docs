@@ -105,7 +105,7 @@ interface Props {
     label: string
 }
 
-const { label } = Astro.props
+const { label } = Astro.props as Props
 
 const stories = await getCollection("customerStories")
 const storyHref = (company?: string) => {

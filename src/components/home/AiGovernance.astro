@@ -165,7 +165,9 @@ const icons = await Promise.all(
             colours: its lit limb arcs over the panels and behind the gate. */
                 }
                 <div class="planet" aria-hidden="true">
+                    <span class="haze"></span>
                     <span class="atmosphere"></span>
+                    <span class="rim"></span>
                     <span class="limb"></span>
                 </div>
                 <div class="console" aria-hidden="true">
@@ -596,6 +598,9 @@ const icons = await Promise.all(
     // on the same line as their copy.
     .rails {
         --inset: clamp(1.5rem, 4vw, 3.5rem);
+        // The scene and its ledger stay a compact stage, centred under the
+        // title, however wide the screen: the story reads in one glance.
+        --stage: max(var(--inset), calc((100% - 72rem) / 2));
 
         position: relative;
         padding-top: clamp(4rem, 6vw, 5.5rem);
@@ -626,23 +631,31 @@ const icons = await Promise.all(
     // the panels so its limb arcs over them and down behind them. Static,
     // so it costs nothing while the story plays.
     .planet {
-        --size: 100rem;
+        // Sized to the stage: its arc spans the panels, not the screen.
+        --size: 84rem;
 
         position: absolute;
         z-index: -1;
-        top: -4.5rem;
+        top: -2.5rem;
         left: 50%;
         width: var(--size);
         aspect-ratio: 1;
         translate: -50% 0;
         border-radius: 50%;
-        // The night side stays dark: the colour is all in the sky above.
-        background: radial-gradient(
-            60% 22% at 50% 0%,
-            #15151d,
-            #0e0e13 70%,
-            var(--bg)
-        );
+        // Lit from above, as in the reference: a pale cap on top that
+        // fades into the night side, and an indigo glow running inside the
+        // edge down both sides. No texture, light only.
+        background:
+            // The disc melts into the page by about its middle.
+
+            linear-gradient(transparent 20%, var(--bg) 48%),
+            radial-gradient(
+                ellipse 62% 26% at 50% 0%,
+                rgba(200, 200, 216, 0.24),
+                rgba(130, 130, 150, 0.1) 40%,
+                transparent 72%
+            ),
+            #060609;
         pointer-events: none;
 
         @include media-breakpoint-down(lg) {
@@ -654,8 +667,8 @@ const icons = await Promise.all(
         }
     }
 
-    // The lit limb: a thin ring painted with the 2.0 page's blues and
-    // lavender, brightest at the top and fading down both sides.
+    // The limb: a soft edge of light fading inwards, pale where the light
+    // falls on top, indigo down both sides.
     .limb {
         position: absolute;
         inset: 0;
@@ -663,49 +676,97 @@ const icons = await Promise.all(
         background: conic-gradient(
             from -90deg,
             transparent 0deg,
-            #1f6fe0 36deg,
-            #4a9bff 58deg,
-            #cfe2ff 78deg,
-            #ffffff 90deg,
-            #e4ddff 100deg,
-            #b8adff 114deg,
-            #3d8bff 136deg,
+            #3a26ff 22deg,
+            #5f4dff 52deg,
+            rgba(216, 214, 236, 0.45) 80deg,
+            rgba(255, 255, 255, 0.55) 90deg,
+            rgba(216, 214, 236, 0.45) 100deg,
+            #5f4dff 128deg,
+            #3a26ff 158deg,
             transparent 180deg
         );
         mask:
             radial-gradient(
                 farthest-side,
-                transparent calc(100% - 3px),
-                #000 calc(100% - 1px)
+                transparent calc(100% - 16px),
+                #000 100%
             ),
-            linear-gradient(#000, transparent 36%);
+            linear-gradient(#000 15%, transparent 46%);
         mask-composite: intersect;
     }
 
-    // The sky over the planet, as in the reference: it hugs the arc,
-    // lavender at the limb and azure higher up, and fades into the black
-    // above and down both sides. It sits under the disc, which hides the
-    // part inside the limb.
+    // The glow around the planet: an indigo halo hugging the edge, which
+    // fades down the sides, and a pale haze over the lit top. It sits under
+    // the disc, which hides the part inside the edge.
     .atmosphere {
         position: absolute;
         z-index: -1;
         inset: -20rem;
         border-radius: 50%;
-        // Drawn without blur: a bright band hugging the limb, then the
-        // lavender, a touch of Kestra violet and the azure of the reference, so the horizon stays crisp
-        // and nothing spills grey onto the night side.
         background: radial-gradient(
             circle closest-side,
             transparent calc(100% - 20rem),
-            rgba(255, 255, 255, 0.85) calc(100% - 20rem + 1px),
-            rgba(226, 220, 255, 0.55) calc(100% - 19.25rem),
-            rgba(160, 120, 255, 0.4) calc(100% - 17.5rem),
-            rgba(132, 5, 255, 0.24) calc(100% - 14.5rem),
-            rgba(50, 125, 240, 0.22) calc(100% - 11rem),
-            rgba(30, 90, 210, 0.1) calc(100% - 7rem),
-            transparent calc(100% - 2rem)
+            rgba(80, 56, 255, 0.5) calc(100% - 20rem + 1px),
+            rgba(70, 44, 255, 0.22) calc(100% - 18rem),
+            rgba(60, 30, 240, 0.08) calc(100% - 14rem),
+            transparent calc(100% - 9rem)
         );
-        mask: linear-gradient(#000 4%, transparent 38%);
+        // Indigo on the sides only: the top stays pale.
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 45deg,
+                transparent 78deg,
+                transparent 102deg,
+                #000 135deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 4%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    // Inside the edge, the same indigo glow down both sides.
+    .rim {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent 82%,
+            rgba(50, 28, 220, 0.16) 92%,
+            rgba(72, 48, 255, 0.5) 98.5%,
+            rgba(118, 100, 255, 0.7) 100%
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 40deg,
+                transparent 75deg,
+                transparent 105deg,
+                #000 140deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 20%, transparent 48%);
+        mask-composite: intersect;
+    }
+
+    // A pale haze over the lit top.
+    .haze {
+        position: absolute;
+        z-index: -1;
+        top: -7rem;
+        left: 50%;
+        width: 44rem;
+        height: 16rem;
+        translate: -50% 0;
+        background: radial-gradient(
+            closest-side,
+            rgba(230, 230, 242, 0.1),
+            rgba(200, 200, 220, 0.04) 55%,
+            transparent
+        );
     }
 
     .head {
@@ -713,7 +774,7 @@ const icons = await Promise.all(
         max-width: 50rem;
         // Room for the planet's limb between the copy and the panels; none
         // on a phone, where the planet is not drawn.
-        margin: 0 auto 11rem;
+        margin: 0 auto 8.5rem;
 
         @include media-breakpoint-down(md) {
             margin-bottom: 3rem;
@@ -722,15 +783,14 @@ const icons = await Promise.all(
         text-align: center;
     }
 
+    // Set like the customer logos' label: monospace capitals, spaced out.
     .eyebrow {
-        display: inline-block;
         margin: 0 0 1.25rem;
-        padding: 0.125rem 0.625rem;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 0.375rem;
-        background: rgba(255, 255, 255, 0.05);
-        font-size: 0.8125rem;
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
         font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
         color: var(--muted);
     }
 
@@ -738,7 +798,7 @@ const icons = await Promise.all(
         margin: 0;
         // The homepage's one h2 scale, as in the control plane block.
         font-size: clamp(2rem, 3.6vw, 3rem);
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: -0.02em;
         line-height: 1.1;
         color: var(--text);
@@ -767,7 +827,7 @@ const icons = await Promise.all(
         grid-template-columns: minmax(0, 1fr) 12rem minmax(0, 1fr);
         align-items: stretch;
         margin: 0;
-        padding: 0 var(--inset) 2.5rem;
+        padding: 0 var(--stage) 2.5rem;
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
@@ -798,8 +858,8 @@ const icons = await Promise.all(
         display: flex;
         flex-direction: column;
         // A fixed height: the story plays inside, the page never moves.
-        height: 30rem;
-        padding: 1.25rem;
+        height: 25.5rem;
+        padding: 1rem 1.125rem;
         border: 1px solid var(--panel-border);
         border-radius: 0.875rem;
         background: var(--panel);
@@ -901,10 +961,10 @@ const icons = await Promise.all(
         gap: 0.625rem;
         max-width: 85%;
         max-height: 6rem;
-        margin-top: 1rem;
-        padding: 0.75rem 1rem;
-        border-radius: 0.75rem;
-        font-size: 0.875rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.875rem;
+        border-radius: 0.625rem;
+        font-size: 0.8125rem;
         line-height: 1.45;
         overflow: hidden;
         transition:
@@ -1049,8 +1109,8 @@ const icons = await Promise.all(
         z-index: 2;
         display: grid;
         place-items: center;
-        width: 5rem;
-        height: 5rem;
+        width: 4.25rem;
+        height: 4.25rem;
         border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 50%;
         background: radial-gradient(circle at 50% 30%, #23232e, #0f0f14 70%);
@@ -1063,8 +1123,8 @@ const icons = await Promise.all(
             box-shadow 0.4s ease;
 
         img {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 2.125rem;
+            height: 2.125rem;
         }
 
         .scene[data-step="3"] & {
@@ -1273,17 +1333,19 @@ const icons = await Promise.all(
         }
     }
 
-    // The run, in the topology animations' nodes, one under the other.
+    // The run, in the topology animations' nodes, one under the other,
+    // drawn a little smaller so the whole scene fits in one view.
     .tasks {
+        zoom: 0.74;
         display: flex;
         flex: 1;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 2.5rem;
+        gap: 2.25rem;
         // The pills hang 28px under the last node: the bottom padding
         // carries them, so the stack and its pills sit centred.
-        padding: 1rem 0 calc(1rem + 28px);
+        padding: 6px 0 22px;
     }
 
     .step {
@@ -1297,7 +1359,7 @@ const icons = await Promise.all(
             position: absolute;
             left: 34px;
             bottom: 100%;
-            height: 2.5rem;
+            height: 2.25rem;
             border-left: 1.5px dashed #4a4a5a;
             transition: border-color 0.5s ease;
         }
@@ -1361,8 +1423,8 @@ const icons = await Promise.all(
     // the run off centre.
     .approver {
         position: absolute;
-        left: 1.25rem;
-        bottom: 1.125rem;
+        left: 1.125rem;
+        bottom: 1rem;
         display: flex;
         align-items: center;
         gap: 0.375rem;
@@ -1384,7 +1446,7 @@ const icons = await Promise.all(
     // hanging from the gate's beam.
     .ledger {
         position: relative;
-        margin: 0 var(--inset);
+        margin: 0 var(--stage);
         border: 1px solid var(--panel-border);
         border-radius: 0.875rem;
         background: var(--panel);
@@ -1430,7 +1492,7 @@ const icons = await Promise.all(
         align-content: start;
         align-items: center;
         gap: 0.375rem 0.75rem;
-        padding: 1.375rem 1.75rem 1.5rem;
+        padding: 1rem 1.5rem 1.125rem;
         transition:
             opacity 0.5s ease,
             transform 0.5s ease;
@@ -1449,8 +1511,8 @@ const icons = await Promise.all(
             content: "";
             position: absolute;
             top: -1px;
-            left: 1.75rem;
-            right: 1.75rem;
+            left: 1.5rem;
+            right: 1.5rem;
             height: 1px;
             background: linear-gradient(
                 90deg,
@@ -1469,14 +1531,14 @@ const icons = await Promise.all(
         }
 
         strong {
-            font-size: 1rem;
+            font-size: 0.9375rem;
             font-weight: 500;
         }
 
         p {
             grid-column: 2 / -1;
             margin: 0;
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             line-height: 1.5;
             color: var(--faint);
         }
@@ -1557,14 +1619,14 @@ const icons = await Promise.all(
     // The audit log, the panel's footer, after the product's audit logs
     // table.
     .audit {
-        padding: 1.25rem 1.75rem 1.5rem;
+        padding: 1rem 1.5rem 1.125rem;
         border-top: 1px solid var(--line);
         border-radius: 0 0 0.875rem 0.875rem;
         background: rgba(0, 0, 0, 0.25);
 
         ul {
             display: block;
-            min-height: 6.25rem;
+            min-height: 5.25rem;
             margin: 0;
             padding: 0;
             list-style: none;
@@ -1577,7 +1639,7 @@ const icons = await Promise.all(
             grid-template-columns: 5.5rem 8.5rem 7rem minmax(0, 1fr) 5.5rem;
             align-items: center;
             gap: 1rem;
-            min-height: 2.5rem;
+            min-height: 2.125rem;
         }
 
         .cols {

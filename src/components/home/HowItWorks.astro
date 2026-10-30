@@ -1,7 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
-import Snippets from "~/components/common/Snippets.astro"
-import SectionHead from "./SectionHead.astro"
+import { API_URL } from "astro:env/client"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
@@ -41,113 +43,828 @@ tasks:
     type: io.kestra.plugin.scripts.python.Script
     script: |
       post_journal(read_csv('{{ outputs.extract.uri }}'))`
+
+// The flow's own plugins first, then a crowd of others around the editor.
+const USED = [
+    "core.trigger.Schedule",
+    "jdbc.postgresql.Query",
+    "core.flow.Pause",
+    "scripts.python.Script",
+]
+const CROWD = [
+    "aws.s3.Upload",
+    "gcp.bigquery.Query",
+    "jdbc.snowflake.Query",
+    "dbt.cli.DbtCLI",
+    "kubernetes.core.PodCreate",
+    "azure.storage.blob.Upload",
+    "notifications.slack.SlackIncomingWebhook",
+    "databricks.job.CreateJob",
+    "terraform.cli.TerraformCLI",
+    "kafka.Produce",
+    "airbyte.connections.Sync",
+    "mongodb.Find",
+    "ansible.cli.AnsibleCLI",
+    "elasticsearch.Search",
+    "openai.ChatCompletion",
+    "scripts.node.Script",
+    "docker.Run",
+    "fivetran.connectors.Sync",
+    "git.Clone",
+    "spark.SparkCLI",
+    "servicenow.Post",
+    "redis.list.ListPush",
+]
+
+const fetchIcon = async (type: string) => {
+    try {
+        const response = await fetch(
+            `${API_URL}/plugins/icons/io.kestra.plugin.${type}`,
+        )
+        if (!response.ok) return null
+        return Buffer.from(await response.arrayBuffer()).toString("base64")
+    } catch {
+        return null
+    }
+}
+// The API answers an unknown plugin with a generic icon: those are left
+// out of the crowd.
+const [generic, ...fetched] = await Promise.all(
+    ["unknown.Plugin", ...USED, ...CROWD].map(fetchIcon),
+)
+const dataUri = (svg: string | null) =>
+    svg && svg !== generic ? `data:image/svg+xml;base64,${svg}` : null
+const icons = fetched.slice(0, USED.length).map(dataUri)
+
+// Each tile's place in the panel, on either side of the editor: loose
+// columns along the edges, clear of the editor and of the flow's own
+// plugins and their leads.
+const crowd = fetched
+    .slice(USED.length)
+    .map(dataUri)
+    .filter((icon): icon is string => icon !== null)
+const SLOTS = [
+    [5, 12],
+    [13, 32],
+    [5, 50],
+    [12, 68],
+    [5, 86],
+    [21, 92],
+    [88, 26],
+    [95, 46],
+    [89, 62],
+    [95, 80],
+    [88, 94],
+]
+const TILES = [
+    // The flow's plugins, near the editor.
+    { icon: icons[0], used: 0, x: 19, y: 24 },
+    { icon: icons[1], used: 1, x: 81, y: 40 },
+    { icon: icons[2], used: 2, x: 19, y: 52 },
+    { icon: icons[3], used: 3, x: 81, y: 74 },
+    ...crowd.slice(0, SLOTS.length).map((icon, idx) => ({
+        icon,
+        used: -1,
+        x: SLOTS[idx][0],
+        y: SLOTS[idx][1],
+    })),
+].filter((tile) => tile.icon)
+
+// The flow's lines, split into tokens for the editor's colors. Type lines
+// carry their plugin, and each task's lines its index, for the run.
+let plugin = 0
+let task = -1
+const LINES = FLOW.split("\n").map((text, row) => {
+    const match = text.match(/^(\s*)(- )?([\w]+)(:)(.*)$/)
+    if (/^tasks:/.test(text)) task = -1
+    if (/^ {2}- id:/.test(text) && task > -2) task++
+    if (/^triggers:/.test(text)) task = -2
+    const line = {
+        row,
+        indent: text.match(/^\s*/)?.[0] ?? "",
+        dash: match?.[2] ?? "",
+        key: match?.[3] ?? "",
+        value: match ? match[5] : text.trim(),
+        comment: "",
+        plugin: match?.[3] === "type" ? plugin++ : -1,
+        task: task >= 0 && text.trim() !== "" ? task : -1,
+    }
+    const hash = line.value.indexOf(" #")
+    if (hash >= 0) {
+        line.comment = line.value.slice(hash + 1)
+        line.value = line.value.slice(0, hash)
+    }
+    return line
+})
+
+// Written out as one string: in a pre, the template's own line breaks and
+// indents would show. A type's class name is wrapped, to light up as in
+// the product's editor.
+const escape = (text: string) =>
+    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+const CODE = LINES.map((line) => {
+    const string = /^\s*["']/.test(line.value) ? " string" : ""
+    let value = escape(line.value)
+    if (line.plugin >= 0)
+        value = value.replace(/\.(\w+)$/, '.<span class="cls">$1</span>')
+    return [
+        `<span class="line" style="--n: ${line.row}"`,
+        line.task >= 0 ? ` data-task-line="${line.task}"` : "",
+        line.plugin >= 0 ? ` data-plugin="${line.plugin}">` : ">",
+        `<span class="no">${line.row + 1}</span>${line.indent}`,
+        line.dash && `<span class="dash">- </span>`,
+        line.key && `<span class="key">${line.key}:</span>`,
+        `<span class="value${string}">${value}</span>`,
+        line.comment && `<span class="comment"> ${escape(line.comment)}</span>`,
+        "\n</span>",
+    ].join("")
+}).join("")
+
+const RUN = [
+    { id: "extract", detail: "1,204 rows", duration: "2.1s" },
+    { id: "approve", detail: "Waiting for approval", duration: "3m 40s" },
+    { id: "post_to_erp", detail: "Python 3.12 container", duration: "4.6s" },
+]
 ---
 
-<section class="how-it-works" aria-labelledby="how-it-works">
-    <div class="container">
-        <SectionHead id="how-it-works">
-            How it works
-            <Fragment slot="lead">
-                Define workflows in YAML files that teams can review, version in
-                Git, and deploy through CI/CD.
-            </Fragment>
-        </SectionHead>
+{
+    /* On the control plane block's hairline grid: the same two-column head,
+    then the three steps as a strip of cells taking turns, over a panel of
+    product screens in the 2.0 style: the flow in a white editor, with what
+    each step does around it. */
+}
+<section class="how-it-works" aria-labelledby="how-it-works" data-how>
+    {/* A few About us pixels at the edges, as on the blocks above. */}
+    <PixelEdges left="wide" right="cluster" />
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="how-it-works">How it works</h2>
+                <div>
+                    <p>
+                        Define workflows in YAML files that teams can review,
+                        version in Git, and deploy through CI/CD.
+                    </p>
+                </div>
+            </header>
 
-        <div class="split">
-            <div>
-                <ol>
+            <ol class="steps">
+                {
+                    STEPS.map((step, idx) => (
+                        <li
+                            class:list={["step", { active: idx === 0 }]}
+                            data-step={idx}
+                        >
+                            <button type="button" aria-pressed={idx === 0}>
+                                <span class="bar" aria-hidden="true" />
+                                <span class="number">0{idx + 1}</span>
+                                <h3>{step.title}</h3>
+                                <p>{step.text}</p>
+                            </button>
+                        </li>
+                    ))
+                }
+            </ol>
+
+            <div class="body" data-at="0">
+                {/* Plugins all around: faint, until Connect brings them in. */}
+                {
+                    /* A small About us pixel cluster in the corner, as in the control plane's panel. */
+                }
+                <span
+                    class="pixels"
+                    aria-hidden="true"
+                    style={`--pixels: url("${pixelCluster}")`}></span>
+
+                <div class="crowd" aria-hidden="true">
                     {
-                        STEPS.map((step, idx) => (
-                            <li>
-                                <span class="number">{idx + 1}</span>
-                                <div>
-                                    <h3>{step.title}</h3>
-                                    <p>{step.text}</p>
-                                </div>
-                            </li>
+                        TILES.map((tile, idx) => (
+                            <span
+                                class:list={["tile", { used: tile.used >= 0 }]}
+                                style={`left: ${tile.x}%; top: ${tile.y}%; --k: ${idx}`}
+                                data-used={
+                                    tile.used >= 0 ? tile.used : undefined
+                                }
+                            >
+                                <img src={tile.icon} alt="" />
+                            </span>
                         ))
                     }
-                </ol>
-                <a href="/features" class="more">
-                    See the platform <Icon name="mdi:arrow-right" />
-                </a>
+                    <a href="/plugins" class="count" tabindex="-1">
+                        <strong>{totalPlugins}+</strong> plugins
+                    </a>
+                </div>
+
+                {
+                    /* Connect: a dashed lead from each of the flow's plugins to its line. */
+                }
+                <svg class="links" aria-hidden="true">
+                    {
+                        USED.map(() => (
+                            <g>
+                                <path />
+                                <circle r="3" />
+                            </g>
+                        ))
+                    }
+                </svg>
+
+                {/* The flow, in the product's editor. */}
+                <div class="card editor" aria-label="The nightly_close flow">
+                    <div class="tabs">
+                        <span class="tab active">
+                            <span class="logo"
+                                ><img src={kestraMark.src} alt="" /></span
+                            >
+                            YAML
+                        </span>
+                    </div>
+                    <pre><code set:html={CODE} /></pre>
+                </div>
+
+                {/* Declare: the change is reviewed, checked and deployed. */}
+                <div class="card pr" data-scene="0">
+                    <div class="card-head">
+                        <Icon name="mdi:source-pull" />
+                        <span>Add the nightly close</span>
+                        <span class="pill merged" data-on="3600">Merged</span>
+                        <span class="pill open">Open</span>
+                    </div>
+                    <ul>
+                        <li data-on="1800">
+                            <span class="avatar">AR</span>
+                            Reviewed by a.ruiz
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                        <li data-on="2600">
+                            <code>CI</code>
+                            Validate flow
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                        <li data-on="3400">
+                            <code>CD</code>
+                            Deploy to finance
+                            <span class="state"
+                                ><Icon name="mdi:check-circle-outline" /></span
+                            >
+                        </li>
+                    </ul>
+                </div>
+
+                {/* Run and govern: the execution, as in the product. */}
+                <div class="card exec" data-scene="2">
+                    <div class="card-head">
+                        <span><strong>Execution :</strong> nightly_close</span>
+                        <span class="pill status">
+                            <Icon name="mdi:loading" class="spin" />
+                            <Icon name="mdi:pause" class="wait" />
+                            <Icon
+                                name="mdi:check-circle-outline"
+                                class="done"
+                            />
+                            <span class="running">Running</span>
+                            <span class="paused">Paused</span>
+                            <span class="success">Success</span>
+                        </span>
+                    </div>
+                    <ul>
+                        {
+                            RUN.map((row, idx) => (
+                                <li class="task is-created" data-task={idx}>
+                                    <span class="name">
+                                        <strong>{row.id}</strong>
+                                        <span class="detail">
+                                            {idx === 1 ? (
+                                                <>
+                                                    <span class="waiting">
+                                                        {row.detail}
+                                                    </span>
+                                                    <span class="approved">
+                                                        Approved by m.lee
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                row.detail
+                                            )}
+                                        </span>
+                                    </span>
+                                    <span class="track">
+                                        <span class="fill" />
+                                    </span>
+                                    <span class="end">
+                                        <Icon name="mdi:loading" class="spin" />
+                                        <Icon name="mdi:pause" class="wait" />
+                                        <Icon
+                                            name="mdi:check-circle-outline"
+                                            class="done"
+                                        />
+                                        <span class="time">{row.duration}</span>
+                                    </span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                    <p class="audit">
+                        <Icon name="mdi:shield-check-outline" />
+                        Audit log: approve resumed by m.lee
+                    </p>
+                </div>
             </div>
-            <div class="code">
-                <Snippets code={FLOW} lang="yaml" noCollapse />
+
+            {/* The closing row, with the way into the platform. */}
+            <div class="foot">
+                <a href="/features" class="btn btn-secondary"
+                    >See the platform</a
+                >
             </div>
         </div>
     </div>
 </section>
 
+<script>
+    // The steps take turns while the block is in view: the open step's top
+    // edge fills as its time goes, then the next one opens. A click picks a
+    // step and stops the turns.
+    const STEP_MS = [7000, 7000, 8500]
+    // The run's states over time, in ms from the step's start.
+    const RUN: [number, number, string][] = [
+        [600, 0, "running"],
+        [1700, 0, "success"],
+        [1900, 1, "paused"],
+        [4600, 1, "success"],
+        [4800, 2, "running"],
+        [6200, 2, "success"],
+    ]
+
+    function wireHow() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-how]:not([data-wired])",
+        )) {
+            root.dataset.wired = "true"
+            const steps = [...root.querySelectorAll<HTMLElement>(".step")]
+            const body = root.querySelector<HTMLElement>(".body")!
+            const tasks = [...root.querySelectorAll<HTMLElement>("[data-task]")]
+            const timed = [...root.querySelectorAll<HTMLElement>("[data-on]")]
+            const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+            let auto = !still
+            let timers: number[] = []
+            const later = (ms: number, fn: () => void) =>
+                timers.push(window.setTimeout(fn, still ? 0 : ms))
+
+            const setTask = (idx: number, status: string) => {
+                tasks[idx].classList.remove(
+                    "is-created",
+                    "is-running",
+                    "is-paused",
+                    "is-success",
+                )
+                tasks[idx].classList.add(`is-${status}`)
+                // The editor lights the task that runs, and the card's head
+                // shows the execution's state.
+                const last = idx === tasks.length - 1
+                if (status !== "success") body.dataset.run = String(idx)
+                else if (last) delete body.dataset.run
+                body.dataset.exec =
+                    status === "success" && last
+                        ? "success"
+                        : status === "paused"
+                          ? "paused"
+                          : "running"
+            }
+
+            // The leads run from each used plugin's tile to the editor's
+            // edge, level with its type line, in a soft S.
+            const editor = root.querySelector<HTMLElement>(".editor")!
+            const links = [...root.querySelectorAll<SVGGElement>(".links g")]
+            const drawLinks = () => {
+                const box = body.getBoundingClientRect()
+                const frame = editor.getBoundingClientRect()
+                links.forEach((link, i) => {
+                    const tile = root.querySelector<HTMLElement>(
+                        `[data-used="${i}"]`,
+                    )
+                    const line = root.querySelector<HTMLElement>(
+                        `.line[data-plugin="${i}"]`,
+                    )
+                    if (!tile || !line) return
+                    const t = tile.getBoundingClientRect()
+                    const l = line.getBoundingClientRect()
+                    const left =
+                        t.left + t.width / 2 < frame.left + frame.width / 2
+                    const x1 = (left ? t.right + 4 : t.left - 4) - box.left
+                    const y1 = t.top + t.height / 2 - box.top
+                    const x2 = (left ? frame.left : frame.right) - box.left
+                    const y2 = l.top + l.height / 2 - box.top
+                    const mid = (x1 + x2) / 2
+                    link.querySelector("path")!.setAttribute(
+                        "d",
+                        `M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}`,
+                    )
+                    const dot = link.querySelector("circle")!
+                    dot.setAttribute("cx", String(x2))
+                    dot.setAttribute("cy", String(y2))
+                })
+            }
+            window.addEventListener("resize", drawLinks)
+
+            const open = (idx: number) => {
+                timers.forEach(clearTimeout)
+                timers = []
+                steps.forEach((step, i) => {
+                    step.classList.toggle("active", i === idx)
+                    step.classList.toggle("timed", auto && i === idx)
+                    step.style.setProperty("--dur", `${STEP_MS[i]}ms`)
+                    step.querySelector("button")!.ariaPressed = String(
+                        i === idx,
+                    )
+                })
+                // Restart the step's entrance.
+                body.dataset.at = String(idx)
+                if (idx === 1) drawLinks()
+                body.classList.remove("enter")
+                void body.offsetWidth
+                body.classList.add("enter")
+
+                // Timed details come on one after the other.
+                timed.forEach((el) => el.classList.remove("on"))
+                for (const el of timed)
+                    later(Number(el.dataset.on), () => el.classList.add("on"))
+
+                tasks.forEach((_, i) => setTask(i, "created"))
+                delete body.dataset.run
+                body.dataset.exec = "running"
+                if (idx === 2)
+                    for (const [at, task, status] of RUN)
+                        later(at, () => setTask(task, status))
+                if (auto)
+                    later(STEP_MS[idx], () => open((idx + 1) % steps.length))
+            }
+
+            steps.forEach((step, idx) =>
+                step.querySelector("button")!.addEventListener("click", () => {
+                    auto = false
+                    open(idx)
+                }),
+            )
+
+            // Starts when the block comes into view.
+            let started = false
+            new IntersectionObserver(
+                ([entry]) => {
+                    if (!entry.isIntersecting || started) return
+                    started = true
+                    open(0)
+                },
+                { threshold: 0.35 },
+            ).observe(body)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireHow)
+    wireHow()
+</script>
+
 <style lang="scss">
     .how-it-works {
-        padding: 7rem 0;
-        background: var(--ks-background-secondary);
+        position: relative;
+        background: var(--ks-background-body);
         border-bottom: 1px solid var(--ks-border-primary);
+    }
 
-        @include media-breakpoint-down(md) {
-            padding: 4.5rem 0;
+    // The control plane block's hairline grid: rails on both sides, and
+    // full-width rules between rows.
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --tint: #8405ff;
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        :global(html.dark) & {
+            --tint: #9869f7;
+        }
+
+        > .steps,
+        > .body {
+            position: relative;
+            border-top: var(--rule);
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+        }
+
+        > .body {
+            border-bottom: var(--rule);
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -1px;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
         }
     }
 
-    .split {
+    // Same head as the control plane block: the title on the left, the
+    // copy on the right.
+    .head {
         display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        gap: 4rem;
-        align-items: center;
+        grid-template-columns: minmax(0, 29rem) minmax(0, 1fr);
+        row-gap: 1.25rem;
+        align-items: end;
+        padding: 6rem 0 4rem;
+
+        > * {
+            padding-inline: var(--inset);
+        }
 
         @include media-breakpoint-down(lg) {
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            max-width: calc(26rem + 2 * var(--inset));
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: pretty;
         }
     }
 
-    ol {
+    // The steps: three hairline cells. The open one is lit, and while the
+    // steps take turns its top edge fills with the tint, like the control
+    // plane's domain marker.
+    .steps {
         display: grid;
-        gap: 2rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         margin: 0;
         padding: 0;
         list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
     }
 
-    li {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 1rem;
+    .step {
+        & + & {
+            border-left: var(--rule);
+
+            @include media-breakpoint-down(lg) {
+                border-left: 0;
+                border-top: var(--rule);
+            }
+        }
+
+        button {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            height: 100%;
+            padding: 2rem var(--inset) 2.25rem;
+            border: 0;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+
+            &:hover {
+                background: var(--ks-background-secondary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--ks-border-active);
+                outline-offset: -2px;
+            }
+        }
+
+        .bar {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--tint);
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        &.active .bar {
+            transform: none;
+        }
+
+        &.timed .bar {
+            animation: step-time var(--dur) linear forwards;
+        }
+
+        .number {
+            display: block;
+            margin-bottom: 1rem;
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            color: var(--ks-content-tertiary);
+            transition: color 0.25s ease;
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--ks-content-tertiary);
+            transition: color 0.25s ease;
+        }
+
+        p {
+            margin: 0;
+            max-width: 24rem;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--ks-content-tertiary);
+            transition: color 0.25s ease;
+        }
+
+        &.active {
+            .number {
+                color: var(--tint);
+            }
+
+            h3 {
+                color: var(--ks-content-primary);
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+            }
+        }
     }
 
-    .number {
-        display: grid;
-        place-items: center;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        background: var(--ks-background-purple-light);
-        font-size: $font-size-sm;
-        font-weight: 700;
-        color: var(--ks-content-link);
+    @keyframes step-time {
+        from {
+            transform: scaleX(0);
+        }
+
+        to {
+            transform: scaleX(1);
+        }
     }
 
-    h3 {
-        margin: 0.25rem 0 0.375rem;
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: var(--ks-content-primary);
+    // The panel: the control plane's tinted background, with product
+    // screens on it in the 2.0 style.
+    .body {
+        // Screens, light in the light theme and dark in the dark one.
+        --card: #ffffff;
+        --card-head: #f7f7fa;
+        --card-border: #e4e4ec;
+        --text: #2b2b33;
+        --muted: #8a8a97;
+        --soft: #f0f0f5;
+        --line-no: #c4c4cf;
+        --code-key: #a594f9;
+        --code-text: #4a4a57;
+        --code-string: #1e875e;
+        --hl: rgba(132, 5, 255, 0.06);
+        --hl-cls: #ece6ff;
+        --success: #1e875e;
+        --success-bg: #e7f6ef;
+        --running: #8405ff;
+        --running-bg: #f1e9ff;
+        --paused: #b25f00;
+        --paused-bg: #fff1dc;
+        --shadow: 0 12px 32px -12px rgba(43, 43, 51, 0.18);
+
+        position: relative;
+        height: 36rem;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            radial-gradient(
+                60% 70% at 0% 100%,
+                color-mix(in srgb, var(--tint) 10%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+
+        :global(html.dark) & {
+            --card: #18181e;
+            --card-head: #1e1e26;
+            --card-border: #2e2e3c;
+            --text: #ffffff;
+            --muted: #adadbf;
+            --soft: #26262f;
+            --line-no: #4a4a57;
+            --code-key: #b9a6ff;
+            --code-text: #d6d6e0;
+            --code-string: #7fd8b0;
+            --hl: rgba(152, 105, 247, 0.1);
+            --hl-cls: rgba(152, 105, 247, 0.28);
+            --success: #06f0b1;
+            --success-bg: rgba(30, 135, 94, 0.18);
+            --running: #b9a6ff;
+            --running-bg: rgba(152, 105, 247, 0.18);
+            --paused: #ffb547;
+            --paused-bg: rgba(255, 181, 71, 0.14);
+            --shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 12%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 6%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        }
+
+        @include media-breakpoint-down(lg) {
+            height: auto;
+            padding: 2rem 1rem;
+        }
     }
 
-    p {
-        margin: 0;
-        line-height: 1.6;
-        color: var(--ks-content-secondary);
+    .card {
+        position: absolute;
+        z-index: 2;
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        color: var(--text);
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) {
+            position: relative;
+            inset: auto;
+            width: auto;
+            margin-top: 1rem;
+            transform: none;
+        }
     }
 
-    .more {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        margin-top: 2rem;
-        font-weight: 600;
-        color: var(--ks-content-link);
+    // The editor in the middle, running off the panel's foot like the 2.0
+    // screens.
+    .editor {
+        top: 3.5rem;
+        left: 50%;
+        width: min(38rem, 46%);
+        transform: translateX(-50%);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .tabs {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        height: 3rem;
+        padding: 0 1rem;
+        border-bottom: 1px solid var(--card-border);
+        background: var(--card-head);
+        font-size: 0.875rem;
+        color: var(--muted);
 
         :global(svg) {
             width: 1rem;
@@ -155,7 +872,685 @@ tasks:
         }
     }
 
-    .code {
+    .tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        height: 2.375rem;
+        padding: 0 0.875rem;
+        border: 1px solid transparent;
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+
+        // The Kestra mark on a small black tile, as on the product's icon.
+        .logo {
+            display: grid;
+            place-items: center;
+            width: 1.375rem;
+            height: 1.375rem;
+            border-radius: 6px;
+            background: #0d0d10;
+
+            img {
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+
+        &.active {
+            margin-bottom: -1px;
+            border-color: var(--card-border);
+            background: var(--card);
+            font-weight: 500;
+            color: var(--text);
+        }
+    }
+
+    pre {
+        margin: 0;
+        padding: 1rem 0 2rem;
+        overflow: hidden;
+        background: none;
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        line-height: 1.375rem;
+        white-space: pre;
+
+        code {
+            font: inherit;
+            color: inherit;
+            background: none;
+            padding: 0;
+        }
+    }
+
+    pre :global(.line) {
+        position: relative;
+        display: block;
+        padding-right: 1rem;
+        transition:
+            background-color 0.35s ease,
+            box-shadow 0.35s ease,
+            opacity 0.35s ease;
+    }
+
+    pre :global(.no) {
+        display: inline-block;
+        width: 3rem;
+        padding-right: 1.25rem;
+        text-align: right;
+        color: var(--line-no);
+        user-select: none;
+    }
+
+    pre :global(.key) {
+        color: var(--code-key);
+    }
+
+    pre :global(.dash) {
+        color: var(--line-no);
+    }
+
+    pre :global(.value) {
+        color: var(--code-text);
+
+        &:global(.string) {
+            color: var(--code-string);
+        }
+    }
+
+    pre :global(.comment) {
+        color: var(--muted);
+        font-style: italic;
+    }
+
+    pre :global(.cls) {
+        padding: 0.0625rem 0.125rem;
+        border-radius: 3px;
+        transition:
+            background-color 0.35s ease,
+            color 0.35s ease;
+    }
+
+    // Declare: the flow writes itself in, line after line.
+    .body[data-at="0"].enter pre :global(.line) {
+        animation: line-in 0.3s ease backwards;
+        animation-delay: calc(0.2s + var(--n) * 55ms);
+    }
+
+    @keyframes line-in {
+        from {
+            opacity: 0;
+            transform: translateX(-6px);
+        }
+    }
+
+    // Connect: each plugin's class name lights up, as in the product's
+    // editor. Run: the task that runs lights up.
+    .body[data-at="1"] pre :global(.cls) {
+        background: var(--hl-cls);
+        color: var(--text);
+    }
+
+    .body[data-at="2"][data-run="0"] pre :global([data-task-line="0"]),
+    .body[data-at="2"][data-run="1"] pre :global([data-task-line="1"]),
+    .body[data-at="2"][data-run="2"] pre :global([data-task-line="2"]) {
+        background: var(--hl);
+        box-shadow: inset 2px 0 var(--tint);
+    }
+
+    .body[data-at="2"][data-exec="paused"] pre :global([data-task-line="1"]) {
+        background: var(--paused-bg);
+        box-shadow: inset 2px 0 var(--paused);
+    }
+
+    .body[data-at="2"][data-run] pre :global(.line) {
+        opacity: 0.45;
+    }
+
+    .body[data-at="2"][data-run="0"] pre :global([data-task-line="0"]),
+    .body[data-at="2"][data-run="1"] pre :global([data-task-line="1"]),
+    .body[data-at="2"][data-run="2"] pre :global([data-task-line="2"]) {
+        opacity: 1;
+    }
+
+    .foot {
+        display: flex;
+        justify-content: center;
+        padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset);
+    }
+
+    // The About us pixel cluster, in the tint, in the panel's top corner.
+    .pixels {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 96px;
+        aspect-ratio: 194 / 168;
+        background: var(--tint);
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    // The plugins around the editor: a faint crowd, brought in and lit by
+    // Connect, the flow's own ones ringed in the tint.
+    // Connect's leads, dashed in the tint, the dashes flowing toward the
+    // editor.
+    .links {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        .body[data-at="1"] & {
+            opacity: 1;
+            transition: opacity 0.5s ease 0.5s;
+        }
+
+        path {
+            fill: none;
+            stroke: var(--tint);
+            stroke-width: 1.25;
+            stroke-dasharray: 4 4;
+            opacity: 0.7;
+            animation: flow 1.2s linear infinite;
+        }
+
+        circle {
+            fill: var(--tint);
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    @keyframes flow {
+        to {
+            stroke-dashoffset: -16;
+        }
+    }
+
+    .crowd {
+        position: absolute;
+        inset: 0;
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    .tile {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        margin: -1.125rem 0 0 -1.125rem;
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px -6px rgba(43, 43, 51, 0.2);
+        opacity: 0.35;
+        filter: grayscale(1);
+        animation: drift 7s ease-in-out infinite alternate;
+        animation-delay: calc(var(--k) * -0.9s);
+        transition:
+            opacity 0.5s ease,
+            filter 0.5s ease,
+            box-shadow 0.5s ease;
+
+        img {
+            width: 1.375rem;
+            height: 1.375rem;
+        }
+
+        // The crowd stays grey: there are many, but only the flow's own
+        // plugins come forward, in color.
+        .body[data-at="1"] & {
+            opacity: 0.5;
+            transition-delay: calc(var(--k) * 40ms);
+        }
+
+        &.used {
+            width: 2.75rem;
+            height: 2.75rem;
+            margin: -1.375rem 0 0 -1.375rem;
+
+            img {
+                width: 1.625rem;
+                height: 1.625rem;
+            }
+        }
+
+        .body[data-at="1"] &.used {
+            opacity: 1;
+            filter: none;
+            border-color: color-mix(in srgb, var(--tint) 45%, transparent);
+            box-shadow: 0 6px 16px -6px
+                color-mix(in srgb, var(--tint) 45%, transparent);
+        }
+    }
+
+    @keyframes drift {
+        from {
+            transform: translate(0, -5px);
+        }
+
+        to {
+            transform: translate(3px, 5px);
+        }
+    }
+
+    .count {
+        position: absolute;
+        top: 1rem;
+        left: 50%;
+        padding: 0.25rem 0.75rem;
+        border: 1px solid var(--card-border);
+        border-radius: 999px;
+        background: var(--card);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        text-decoration: none;
+        opacity: 0;
+        transform: translate(-50%, 4px);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+
+        strong {
+            color: var(--text);
+        }
+
+        .body[data-at="1"] & {
+            opacity: 1;
+            transform: translate(-50%, 0);
+            transition-delay: 0.4s;
+        }
+    }
+
+    // A side screen shows with its step.
+    [data-scene] {
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.4s ease,
+            transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+            visibility 0s 0.4s;
+
+        .body[data-at="0"] &[data-scene="0"],
+        .body[data-at="2"] &[data-scene="2"] {
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            transition:
+                opacity 0.4s ease 0.9s,
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.9s;
+        }
+
+        .body[data-at="2"] &[data-scene="2"] {
+            transition-delay: 0.2s;
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+
+            .body[data-at="0"] &[data-scene="0"],
+            .body[data-at="2"] &[data-scene="2"] {
+                display: block;
+            }
+        }
+    }
+
+    .card-head {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.875rem 1.125rem;
+        border-bottom: 1px solid var(--card-border);
+        background: var(--card-head);
+        font-size: 0.9375rem;
+        font-weight: 600;
+
+        > :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: var(--muted);
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        > span:first-of-type {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+
+    .card ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.1875rem 0.625rem;
+        border-radius: 6px;
+        font-size: 0.8125rem;
+        font-weight: 500;
+
+        :global(svg) {
+            width: 0.9375rem;
+            height: 0.9375rem;
+        }
+    }
+
+    // Declare: the pull request, reviewed, checked, then merged.
+    .pr {
+        left: calc(50% - 34rem);
+        bottom: 2.5rem;
+        width: 20rem;
+        transform: translateY(12px);
+
+        .open {
+            background: var(--running-bg);
+            color: var(--running);
+        }
+
+        .merged {
+            display: none;
+            background: var(--success-bg);
+            color: var(--success);
+
+            &:global(.on) {
+                display: inline-flex;
+
+                + .open {
+                    display: none;
+                }
+            }
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.75rem 1.125rem;
+            font-size: 0.875rem;
+            color: var(--muted);
+            transition: color 0.3s ease;
+
+            & + li {
+                border-top: 1px solid var(--card-border);
+            }
+
+            &:global(.on) {
+                color: var(--text);
+            }
+        }
+
+        code {
+            padding: 0.0625rem 0.375rem;
+            border-radius: 4px;
+            background: var(--soft);
+            font-family: $font-family-monospace;
+            font-size: 0.6875rem;
+            color: var(--muted);
+        }
+
+        .state {
+            display: grid;
+            margin-left: auto;
+            color: var(--success);
+            opacity: 0;
+            transform: scale(0.6);
+            transition:
+                opacity 0.3s ease,
+                transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+            :global(svg) {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+        }
+
+        li:global(.on) .state {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    .avatar {
+        display: grid;
+        place-items: center;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 50%;
+        background: #3b5bdb;
+        font-size: 0.5625rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    // Run and govern: the execution's phases, as in the 2.0 page.
+    .exec {
+        top: 7rem;
+        right: calc(50% - 35.5rem);
+        width: 23rem;
+        transform: translateY(12px);
+
+        li {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 5.5rem auto;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1.125rem;
+
+            & + li {
+                border-top: 1px solid var(--card-border);
+            }
+        }
+    }
+
+    .name {
+        display: flex;
+        flex-direction: column;
         min-width: 0;
+
+        strong {
+            font-family: $font-family-monospace;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+    }
+
+    .detail {
+        overflow: hidden;
+        font-size: 0.75rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--muted);
+
+        .approved {
+            display: none;
+        }
+
+        .is-paused & {
+            color: var(--paused);
+        }
+
+        .is-success & .waiting {
+            display: none;
+        }
+
+        .is-success & .approved {
+            display: inline;
+        }
+    }
+
+    .track {
+        height: 4px;
+        border-radius: 2px;
+        background: var(--soft);
+        overflow: hidden;
+    }
+
+    .fill {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--running);
+        transform: scaleX(0);
+        transform-origin: left;
+
+        .is-running & {
+            transform: scaleX(0.85);
+            transition: transform 1.2s ease-out;
+        }
+
+        .is-paused & {
+            background: var(--paused);
+            transform: scaleX(0.5);
+            transition: transform 0.4s ease;
+        }
+
+        .is-success & {
+            background: var(--success);
+            transform: none;
+            transition: transform 0.3s ease;
+        }
+    }
+
+    .end {
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.375rem;
+        min-width: 4.5rem;
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        color: var(--muted);
+
+        :global(svg) {
+            display: none;
+            width: 1.0625rem;
+            height: 1.0625rem;
+        }
+
+        .time {
+            visibility: hidden;
+        }
+
+        .is-running & :global(.spin) {
+            display: block;
+            color: var(--running);
+        }
+
+        .is-paused & :global(.wait) {
+            display: block;
+            color: var(--paused);
+        }
+
+        .is-success & {
+            :global(.done) {
+                display: block;
+                color: var(--success);
+            }
+
+            .time {
+                visibility: visible;
+            }
+        }
+    }
+
+    // The execution's state in the card's head.
+    .status {
+        > *,
+        > :global(svg) {
+            display: none;
+        }
+
+        .body[data-exec="running"] & {
+            background: var(--running-bg);
+            color: var(--running);
+
+            > .running,
+            > :global(.spin) {
+                display: inline;
+            }
+        }
+
+        .body[data-exec="paused"] & {
+            background: var(--paused-bg);
+            color: var(--paused);
+
+            > .paused,
+            > :global(.wait) {
+                display: inline;
+            }
+        }
+
+        .body[data-exec="success"] & {
+            background: var(--success-bg);
+            color: var(--success);
+
+            > .success,
+            > :global(.done) {
+                display: inline;
+            }
+        }
+    }
+
+    .audit {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0.75rem 1.125rem;
+        border-top: 1px solid var(--card-border);
+        background: var(--card-head);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+            color: var(--success);
+        }
+
+        .body[data-exec="success"] &,
+        .body:has(.task[data-task="1"].is-success) & {
+            opacity: 1;
+        }
+    }
+
+    :global(.spin) {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        pre :global(.line),
+        .tile {
+            animation: none !important;
+        }
     }
 </style>
