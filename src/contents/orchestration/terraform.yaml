@@ -338,3 +338,23 @@ seeHow:
   cta:
     label: "Book a Demo"
     href: "/demo"
+
+resources:
+  title: "More on Terraform and Kestra"
+  items:
+    - kind: "resource"
+      title: "Terraform drift detection"
+      description: "How to detect and handle drift between Terraform state and real infrastructure."
+      href: "/resources/infrastructure/terraform-drift-detection"
+    - kind: "docs"
+      title: "Automate infrastructure workflows in Kestra"
+      description: "How Kestra orchestrates Terraform, OpenTofu, Ansible, Docker and cloud CLIs in one declarative flow."
+      href: "/docs/use-cases/infrastructure"
+    - kind: "docs"
+      title: "Manage Kestra itself with Terraform"
+      description: "Looking for the Kestra Terraform provider instead? It manages flows, namespaces and access in Kestra as code."
+      href: "/docs/terraform"
+    - kind: "plugin"
+      title: "Terraform plugin reference"
+      description: "Every Terraform CLI task and its properties."
+      href: "/plugins/plugin-terraform"

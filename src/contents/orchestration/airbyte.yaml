@@ -276,3 +276,15 @@ seeHow:
   cta:
     label: "Book a Demo"
     href: "/demo"
+
+resources:
+  title: "More on Airbyte and Kestra"
+  items:
+    - kind: "resource"
+      title: "Airbyte orchestration: how it works and which tool to use"
+      description: "What Airbyte orchestration covers, how syncs fit into end-to-end pipelines, and how the main orchestrators compare."
+      href: "/resources/data/airbyte-orchestration"
+    - kind: "plugin"
+      title: "Airbyte plugin reference"
+      description: "Every Airbyte task and its properties."
+      href: "/plugins/plugin-airbyte"

@@ -131,7 +131,7 @@ A few things are worth noticing in this workflow:
 
 The right tool for dbt orchestration depends on your team's needs.
 - **dbt Cloud Scheduler:** For teams whose workflows live entirely within dbt and require simple, time-based scheduling, the native [dbt Cloud scheduler](/orchestration/dbt-cloud) is a convenient and well-integrated option.
-- **External Orchestrator (Kestra, Airflow):** For teams that need to integrate dbt with the rest of their stack, an external orchestrator is essential. This is the case when you need to trigger dbt runs from upstream tools, manage complex dependencies with non-dbt systems (like [Databricks Workflows](/vs/databricks-workflows)), or require advanced error handling and event-driven capabilities. Comparing tools like [Airflow vs Kestra](/vs/airflow) often comes down to preferring declarative YAML over Python scripting and seeking a more language-agnostic platform.
+- **External Orchestrator (Kestra, Airflow):** For teams that need to integrate dbt with the rest of their stack, an external orchestrator is essential. See how Kestra [schedules and runs dbt Core in production](/orchestration/dbt-core). This is the case when you need to trigger dbt runs from upstream tools, manage complex dependencies with non-dbt systems (like [Databricks Workflows](/vs/databricks-workflows)), or require advanced error handling and event-driven capabilities. Comparing tools like [Airflow vs Kestra](/vs/airflow) often comes down to preferring declarative YAML over Python scripting and seeking a more language-agnostic platform.
 
 ## Where dbt orchestration pays off
 

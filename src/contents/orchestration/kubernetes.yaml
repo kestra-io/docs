@@ -277,6 +277,10 @@ faq:
 resources:
   title: "More on Kubernetes and Kestra"
   items:
+    - kind: "resource"
+      title: "Kubernetes job orchestration"
+      description: "How native Jobs and CronJobs work, where they stop, and how to orchestrate multi-step batch workloads on Kubernetes."
+      href: "/resources/infrastructure/kubernetes-job-orchestration"
     - kind: "docs"
       title: "Automate infrastructure workflows in Kestra"
       description: "How Kestra orchestrates Kubernetes, Argo CD, Terraform, Cloudflare, and the rest of the stack in one declarative flow."
