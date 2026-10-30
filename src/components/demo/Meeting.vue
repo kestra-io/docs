@@ -286,21 +286,7 @@
                     />
                 </div>
 
-                <div class="col-12">
-                    <label :for="`${uid}-email`" class="form-label mb-0">
-                        Company email
-                    </label>
-                    <input
-                        :id="`${uid}-email`"
-                        name="email"
-                        type="email"
-                        class="form-control"
-                        placeholder="Company email *"
-                        required
-                    />
-                </div>
-
-                <div class="col-12">
+                <div class="col-md-6 col-12">
                     <label :for="`${uid}-company`" class="form-label mb-0">
                         Company name
                     </label>
@@ -311,6 +297,20 @@
                         type="text"
                         class="form-control"
                         placeholder="Company name *"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6 col-12">
+                    <label :for="`${uid}-email`" class="form-label mb-0">
+                        Company email
+                    </label>
+                    <input
+                        :id="`${uid}-email`"
+                        name="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="Company email *"
                         required
                     />
                 </div>
