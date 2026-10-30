@@ -88,7 +88,7 @@ easeOfUse:
   title: YAML Anyone Can Read vs. Proprietary Job Definitions
   kestra:
     title: "Kestra: Any engineer, any language"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Engineers deploy through Git, same as application code."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Engineers deploy through Git, same as application code."
     code: |
       id: batch_processing
       namespace: finance.batch

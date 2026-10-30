@@ -43,7 +43,12 @@
         const dir = dirs[Math.max(1, dirs.length - 2)]
         if (!dir) return ""
 
-        const specialCases: Record<string, string> = { ui: "UI", "ai-tools": "AI Tools" }
+        const specialCases: Record<string, string> = {
+            ui: "UI",
+            "ai-tools": "AI Tools",
+            "ai-orchestration": "AI Orchestration",
+            "develop-with-ai": "Develop with AI",
+        }
         return specialCases[dir] || dir.split("-").map(upperFirst).join(" ")
     }
 </script>

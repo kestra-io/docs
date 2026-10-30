@@ -92,7 +92,7 @@ Use ETL tools for the specific task of moving and transforming data. Use an orch
 ## Implementing Effective Data Orchestration
 
 ### AI and ML: Orchestration is the foundation
-The push towards AI and ML relies on clean, reliable, and timely data. An effective orchestration platform is the backbone of any successful [AI pipeline](https://kestra.io/resources/ai/ai-pipeline). It ensures that data for model training is prepared correctly, automates complex [RAG pipelines](https://kestra.io/resources/ai/rag-pipeline), and governs the execution of [AI agents](https://kestra.io/docs/ai-tools/ai-agents). Orchestration provides the reproducibility and auditability necessary for building trusted AI systems.
+The push towards AI and ML relies on clean, reliable, and timely data. An effective orchestration platform is the backbone of any successful [AI pipeline](https://kestra.io/resources/ai/ai-pipeline). It ensures that data for model training is prepared correctly, automates complex [RAG pipelines](https://kestra.io/resources/ai/rag-pipeline), and governs the execution of [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents). Orchestration provides the reproducibility and auditability necessary for building trusted AI systems.
 
 ### Key considerations for choosing a platform
 When selecting a data orchestration platform, especially in a European context, consider the following:

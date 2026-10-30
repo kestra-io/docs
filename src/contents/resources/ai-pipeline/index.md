@@ -63,7 +63,7 @@ Implementing a well-structured AI pipeline moves AI development from an artisana
 
 ## Building and Automating Your AI Pipeline with Kestra
 
-While the benefits are clear, building and managing AI pipelines presents significant challenges. Teams often struggle with fragmented tools, brittle custom scripts, and a lack of visibility across the data, infrastructure, and ML domains. Kestra provides a unified, declarative control plane to [orchestrate AI workflows](/docs/ai-tools/ai-workflows) and overcome these hurdles.
+While the benefits are clear, building and managing AI pipelines presents significant challenges. Teams often struggle with fragmented tools, brittle custom scripts, and a lack of visibility across the data, infrastructure, and ML domains. Kestra provides a unified, declarative control plane to [orchestrate AI workflows](/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task) and overcome these hurdles.
 
 A single pipeline is straightforward. Running dozens of them alongside inference, evaluation and agents is where [AI orchestration best practices](/resources/ai/ai-orchestration) start to matter.
 

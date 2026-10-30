@@ -414,6 +414,7 @@
                             />
                             <span>Join us on Slack</span>
                         </a>
+                        <GithubButton class="d-lg-none" />
                         <a
                             @click="globalClick(true)"
                             class="d-block d-sm-inline-block mb-1 btn btn-secondary btn-md"

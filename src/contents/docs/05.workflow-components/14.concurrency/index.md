@@ -5,6 +5,7 @@ description: Manage workflow load with Concurrency Limits in Kestra. Control the
 sidebarTitle: Concurrency Limits
 icon: /src/contents/docs/icons/flow.svg
 version: ">= 0.13.0"
+docId: concurrency-limits
 ---
 
 Concurrency limits control how many executions can run at the same time, at the flow, namespace, or tenant level. When a limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.

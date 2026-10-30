@@ -112,7 +112,7 @@ inputs:
     expression: >-
       {{
       http(
-        uri = 'http://localhost:8080/api/v1/internal/executions/search?state=PAUSED',
+        uri = 'http://localhost:8080/api/v1/internal/executions/search?filters[state][EQUALS]=PAUSED',
         method = 'GET',
         contentType = 'application/json',
         headers={
