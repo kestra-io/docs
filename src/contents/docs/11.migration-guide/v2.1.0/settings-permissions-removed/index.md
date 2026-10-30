@@ -16,7 +16,7 @@ These permissions never granted access to anything: no endpoint checked them. In
 
 - **Role editor and managed roles**: both permissions no longer appear in the role editor, and the managed roles (Viewer, Launcher, Editor, Developer, Admin) no longer carry them.
 - **Existing roles**: no migration is needed. A stored role that still holds either permission is read without it, and the permission disappears from the database the next time the role is saved.
-- **API**: creating or updating a role with either permission is rejected with a `400` error, like any unknown or non-assignable permission.
+- **API**: creating or updating a role with either permission is rejected with a `422` error, like any unknown or non-assignable permission.
 - **Audit logs**: past entries that use these names stay readable. Setting changes are still recorded under the `SYSTEM_SETTINGS` resource type, and only the Instance Owner can view the diff of these entries.
 
 ## Update Terraform role definitions
