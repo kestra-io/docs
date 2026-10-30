@@ -1257,6 +1257,60 @@ kestra:
 | `isolation.enabled` | Enable service isolation (default `false`). |
 | `isolation.denied-services` | List of Kestra service names that must not resolve secrets (e.g. `EXECUTOR`, `INDEXER`, `SCHEDULER`). |
 
+### Worker access to secrets
+
+By default, each worker connects to the secrets manager itself, so every worker needs the backend's credentials and network access to it. Workers can instead read secrets through the controller over gRPC. A worker in this mode holds no secrets manager credentials and needs no `kestra.secret.type` configuration of its own.
+
+Use controller access when:
+
+- Workers run in a network zone that cannot reach the secrets manager.
+- Your security policy forbids workers from holding secrets backend credentials.
+- The instance uses the JDBC secret backend. A worker deployed as a dedicated service has no database connection, so any task that calls `secret()` on it fails with `The 'jdbc' secret manager reads secrets from the Kestra repositories, which a worker deployed as a dedicated service does not have.`
+
+Only the secret read goes through the controller. The worker still walks the namespace hierarchy and still falls back to its own `SECRET_*` environment variables.
+
+Enable the secret API on the controller. The controller must have `kestra.secret.type` configured:
+
+```yaml
+# Controller configuration
+kestra:
+  controller:
+    secret-api:
+      enabled: true
+```
+
+Then set the worker access mode on each worker:
+
+```yaml
+# Worker configuration
+kestra:
+  secret:
+    worker-access: CONTROLLER
+```
+
+| Property | Values | Default | Description |
+|---|---|---|---|
+| `kestra.controller.secret-api.enabled` | `true`, `false` | `false` | Set on the controller. Serves secrets to workers that read through the controller. |
+| `kestra.secret.worker-access` | `DIRECT`, `CONTROLLER`, `CONTROLLER_ONLY` | `DIRECT` | Set on the worker. How the worker reaches the secrets manager. |
+
+If the controller's secret API is disabled, any task that calls `secret()` on a worker reading through the controller fails with `Cannot read the secret '<key>' of namespace '<namespace>' through the controller, which serves no secrets to workers.`
+
+The three modes:
+
+- `DIRECT`: the worker connects to the secrets manager itself.
+- `CONTROLLER`: the worker reads secrets through the controller. A tenant or namespace can still choose `DIRECT` for its own dedicated secrets manager.
+- `CONTROLLER_ONLY`: the worker always reads secrets through the controller. Tenant and namespace settings that ask for `DIRECT` are ignored, and the worker logs a warning.
+
+Tenants and namespaces with a dedicated secrets manager have a **Worker access** setting with the options **Direct** and **Through the controller**. Leave it empty to apply the worker's `kestra.secret.worker-access` value. Use it when, for example, one tenant's Vault is reachable from the workers and another's is not. **Through the controller** works even on workers set to `DIRECT`, as long as the controller has the secret API enabled.
+
+Worker access applies only to workers started as a separate `worker` server. A standalone server always connects to the secrets manager itself.
+
+:::alert{type="warning"}
+Enable [gRPC TLS](../../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) and [worker authentication](../../04.scalability/worker-group/index.md#worker-authentication) before you enable the secret API. Without TLS, secret values travel to workers in cleartext. Without worker authentication, any client that reaches the controller can read the secrets of every tenant and namespace. The controller logs a warning at startup if either is disabled.
+:::
+
+If [secret isolation](#secret-isolation) denies the secrets manager to the server that hosts the worker controller, that server fails to start. Run the worker controller as a dedicated `CONTROLLER` server, or remove that server type from `isolation.denied-services`.
+
 ---
 
 ## Known limitations
