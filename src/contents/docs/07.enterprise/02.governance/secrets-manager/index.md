@@ -400,7 +400,7 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `project` | string | No | — | GCP project ID. |
+| `project` | string | **Yes** | — | GCP project ID. |
 | `service-account` | string | No | — | Service account JSON key file contents. |
 | `prefix` | string | No | `kestra` | Prefix applied to all secret names. Lowercase letters, digits, `_` and `-` only, up to 233 characters. |
 | `tags` | map | No | — | Default labels added to every new or updated secret. |
@@ -534,7 +534,7 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `address` | string | No | — | Fully qualified Vault address with scheme and port. |
+| `address` | string | **Yes** | — | Fully qualified Vault address with scheme and port. |
 | `password` | object | No | — | Userpass auth. Sub-fields: `user`, `password`. |
 | `token` | object | No | — | Token auth. Sub-field: `token`. |
 | `app-role` | object | No | — | AppRole auth. Sub-fields: `path`, `role-id`, `secret-id`. |
@@ -696,9 +696,9 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `token` | string | No | — | Doppler service token with access to the target project and config. |
-| `project` | string | No | — | Doppler project containing the secrets. |
-| `config` | string | No | — | Doppler config (environment) to read from. |
+| `token` | string | **Yes** | — | Doppler service token with access to the target project and config. |
+| `project` | string | **Yes** | — | Doppler project containing the secrets. |
+| `config` | string | **Yes** | — | Doppler config (environment) to read from. |
 | `secret-name-prefix` | string | No | — | Prefix added to secret keys to avoid collisions when sharing a backend. |
 | `connect-timeout` | duration | No | `PT15S` | HTTP connection timeout for Doppler API calls. |
 | `read-timeout` | duration | No | `PT60S` | HTTP read timeout for Doppler API calls. |
@@ -917,8 +917,8 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `access-token` | string | No | — | Machine account access token for authentication and client-side decryption. |
-| `organization-id` | string | No | — | Bitwarden organization the machine account belongs to. |
+| `access-token` | string | **Yes** | — | Machine account access token for authentication and client-side decryption. |
+| `organization-id` | string | **Yes** | — | Bitwarden organization the machine account belongs to. |
 | `api-url` | string | No | `https://api.bitwarden.com` | Bitwarden API URL. Use `https://api.bitwarden.eu` for EU cloud or your instance URL for self-hosted. |
 | `identity-url` | string | No | `https://identity.bitwarden.com` | Bitwarden identity URL. Use `https://identity.bitwarden.eu` for EU cloud. |
 | `project-id` | string | No | — | Restrict resolution to a single Bitwarden project. |
@@ -1256,6 +1256,60 @@ kestra:
 |---|---|
 | `isolation.enabled` | Enable service isolation (default `false`). |
 | `isolation.denied-services` | List of Kestra service names that must not resolve secrets (e.g. `EXECUTOR`, `INDEXER`, `SCHEDULER`). |
+
+### Worker access to secrets
+
+By default, each worker connects to the secrets manager itself, so every worker needs the backend's credentials and network access to it. Workers can instead read secrets through the controller over gRPC. A worker in this mode holds no secrets manager credentials and needs no `kestra.secret.type` configuration of its own.
+
+Use controller access when:
+
+- Workers run in a network zone that cannot reach the secrets manager.
+- Your security policy forbids workers from holding secrets backend credentials.
+- The instance uses the JDBC secret backend. A worker deployed as a dedicated service has no database connection, so any task that calls `secret()` on it fails with `The 'jdbc' secret manager reads secrets from the Kestra repositories, which a worker deployed as a dedicated service does not have.`
+
+Only the secret read goes through the controller. The worker still walks the namespace hierarchy and still falls back to its own `SECRET_*` environment variables.
+
+Enable the secret API on the controller. The controller must have `kestra.secret.type` configured:
+
+```yaml
+# Controller configuration
+kestra:
+  controller:
+    secret-api:
+      enabled: true
+```
+
+Then set the worker access mode on each worker:
+
+```yaml
+# Worker configuration
+kestra:
+  secret:
+    worker-access: CONTROLLER
+```
+
+| Property | Values | Default | Description |
+|---|---|---|---|
+| `kestra.controller.secret-api.enabled` | `true`, `false` | `false` | Set on the controller. Serves secrets to workers that read through the controller. |
+| `kestra.secret.worker-access` | `DIRECT`, `CONTROLLER`, `CONTROLLER_ONLY` | `DIRECT` | Set on the worker. How the worker reaches the secrets manager. |
+
+If the controller's secret API is disabled, any task that calls `secret()` on a worker reading through the controller fails with `Cannot read the secret '<key>' of namespace '<namespace>' through the controller, which serves no secrets to workers.`
+
+The three modes:
+
+- `DIRECT`: the worker connects to the secrets manager itself.
+- `CONTROLLER`: the worker reads secrets through the controller. A tenant or namespace can still choose `DIRECT` for its own dedicated secrets manager.
+- `CONTROLLER_ONLY`: the worker always reads secrets through the controller. Tenant and namespace settings that ask for `DIRECT` are ignored, and the worker logs a warning.
+
+Tenants and namespaces with a dedicated secrets manager have a **Worker access** setting with the options **Direct** and **Through the controller**. Leave it empty to apply the worker's `kestra.secret.worker-access` value. Use it when, for example, one tenant's Vault is reachable from the workers and another's is not. **Through the controller** works even on workers set to `DIRECT`, as long as the controller has the secret API enabled.
+
+Worker access applies only to workers started as a separate `worker` server. A standalone server always connects to the secrets manager itself.
+
+:::alert{type="warning"}
+Enable [gRPC TLS](../../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) and [worker authentication](../../04.scalability/worker-group/index.md#worker-authentication) before you enable the secret API. Without TLS, secret values travel to workers in cleartext. Without worker authentication, any client that reaches the controller can read the secrets of every tenant and namespace. The controller logs a warning at startup if either is disabled.
+:::
+
+If [secret isolation](#secret-isolation) denies the secrets manager to the server that hosts the worker controller, that server fails to start. Run the worker controller as a dedicated `CONTROLLER` server, or remove that server type from `isolation.denied-services`.
 
 ---
 

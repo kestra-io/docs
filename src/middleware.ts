@@ -3,15 +3,20 @@ import { sequence } from "astro/middleware"
 import YAML from "yaml"
 import { resolveRedirect } from "~/utils/redirects"
 import { $fetchApiRawCached } from "~/utils/fetch"
+import { API_URL } from "astro:env/client"
 import {
     apiDocPath,
     decideVersionedRoute,
-    frontmatterField,
+    docLinkBaseDir,
     isAssetShapedDocPath,
     missingDocFallbackHref,
     stripFrontmatter,
     VERSIONED_DOCS_PATH,
+    versionedDocLinkResolver,
+    versionHomeHref,
 } from "~/utils/versionedDocs"
+import { buildDocMarkdown, parseDocFrontmatter } from "~/utils/docMarkdown"
+import { KESTRA_SITE_ORIGIN } from "~/utils/markdown-actions/resolveMarkdownUrl"
 import {
     getDocsLatestVersion,
     getKnownDocVersions,
@@ -269,11 +274,23 @@ const versionedDocs = defineMiddleware(async (context, next) => {
     }
 
     if (isMarkdownRequest) {
-        // Matches [...docsPath].md.ts's format for the latest docs: an
-        // "# {title}" header over the frontmatter-stripped body, not the raw
-        // frontmatter block.
-        const title = frontmatterField(markdown, "title") ?? "Documentation"
-        const body = `# ${title}\n\n${stripFrontmatter(markdown)}`
+        // Matches [...docsPath].md.ts's format for the latest docs: frontmatter,
+        // the page's real H1, then the body with its relative links resolved
+        // for this version. The children map tells a directory page from a
+        // leaf, which decides what "./" resolves against.
+        const children = await getDocChildren(version)
+        const home = versionHomeHref(version)
+        const { title, h1, description } = parseDocFrontmatter(markdown)
+        const body = buildDocMarkdown(
+            {
+                title: title ?? "Documentation",
+                h1,
+                description,
+                url: `${KESTRA_SITE_ORIGIN}${path ? `${home}/${path}` : home}`,
+            },
+            stripFrontmatter(markdown),
+            versionedDocLinkResolver(version, docLinkBaseDir(path, children), API_URL),
+        )
         return new Response(body, {
             headers: {
                 "content-type": "text/markdown;charset=utf-8",

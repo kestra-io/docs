@@ -5,6 +5,7 @@ description: Use Policies to inject, validate, and enforce plugin and flow confi
 sidebarTitle: Policies
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
+docId: policies
 ---
 
 Policies let platform administrators inject, validate, and enforce configuration rules across namespaces and tenants. 

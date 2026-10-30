@@ -73,7 +73,7 @@ Tasks open as a modal by default; this can be changed to tabs in **Settings**.
 You can open multiple panels simultaneously; for example, keep **Docs** open alongside the canvas to reference plugin documentation while configuring a task. Use the **Actions** menu to export or copy the flow at any time.
 
 :::alert{type="info"}
-Flow Code, No Code, and [AI Copilot](../../ai-tools/01.ai-copilot/index.md) all stay in sync. Write YAML, describe your flow to the Copilot, or build visually on the canvas and switch freely at any point. Every change is reflected across all three views instantly.
+Flow Code, No Code, and [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) all stay in sync. Write YAML, describe your flow to the Copilot, or build visually on the canvas and switch freely at any point. Every change is reflected across all three views instantly.
 :::
 
 ### Topology view

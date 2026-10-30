@@ -130,9 +130,9 @@ Yes, Kubernetes is more relevant than ever in 2026. With cloud-native adoption r
 
 ### Managing complex Kubernetes workflows with AI-powered orchestration
 
-As Kubernetes environments grow, managing their complexity becomes a significant challenge. AI-powered orchestration tools like Kestra are emerging to address this. Kestra's [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) can generate workflow YAML from natural language prompts, drastically reducing the time it takes to create deployment and management pipelines.
+As Kubernetes environments grow, managing their complexity becomes a significant challenge. AI-powered orchestration tools like Kestra are emerging to address this. Kestra's [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot) can generate workflow YAML from natural language prompts, drastically reducing the time it takes to create deployment and management pipelines.
 
-Furthermore, [Kestra's AI agents](https://kestra.io/docs/ai-tools/ai-agents) can be used to build self-healing and automated remediation systems. For instance, an agent can monitor cluster events, detect anomalies like repeated pod crashes, analyze the logs to diagnose the root cause, and execute a corrective action, such as rolling back a faulty deployment or scaling a service. This level of automation, demonstrated in blueprints like the [Kubernetes AI-powered incident monitor](https://kestra.io/blueprints/k8s-ai-incident-monitor), transforms operations from reactive to proactive.
+Furthermore, [Kestra's AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) can be used to build self-healing and automated remediation systems. For instance, an agent can monitor cluster events, detect anomalies like repeated pod crashes, analyze the logs to diagnose the root cause, and execute a corrective action, such as rolling back a faulty deployment or scaling a service. This level of automation, demonstrated in blueprints like the [Kubernetes AI-powered incident monitor](https://kestra.io/blueprints/k8s-ai-incident-monitor), transforms operations from reactive to proactive.
 
 ### What is Argo CD and Argo Workflows on Kubernetes?
 

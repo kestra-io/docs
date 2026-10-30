@@ -9,7 +9,7 @@ description: Understand which task types use Kestra Cloud compute, what is measu
 
 This page explains which tasks in a flow use the Kestra Cloud task runner, and what is measured when they do. Task runs are counted separately from runner time: every task counts whether or not it uses the runner. See [Task runs](../03.task-runs/index.md) for how task runs are counted.
 
-On Kestra Cloud, time on the Cloud task runner is what you are billed for. If a task runs on your own Kubernetes cluster or batch service, none of its time is billed by Kestra: you pay your cloud provider instead.
+On Kestra Cloud, time on the [Cloud task runner](../../../task-runners/04.types/13.cloud-task-runner/index.md) is what you are billed for. If a task runs on your own Kubernetes cluster or batch service, none of its time is billed by Kestra: you pay your cloud provider instead.
 
 ## When a task uses the Cloud runner
 
@@ -149,17 +149,27 @@ Set `taskRunner` explicitly to run a task on your own infrastructure. Your setti
 
 ```yaml
 - id: heavy_job
-  type: io.kestra.plugin.scripts.python.Script
+  type: io.kestra.plugin.scripts.python.Commands
+  containerImage: ghcr.io/kestra-io/pydata:latest
   taskRunner:
-    type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-    namespace: jobs
-    config:
-      masterUrl: https://your-cluster.example.com
-  script: |
-    ...
+    type: io.kestra.plugin.ee.aws.runner.Batch
+    region: eu-central-1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+    computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
+    jobQueueArn: "arn:aws:batch:eu-central-1:123456789012:job-queue/kestraJobQueue"
+    executionRoleArn: "arn:aws:iam::123456789012:role/kestraEcsTaskExecutionRole"
+    taskRoleArn: "arn:aws:iam::123456789012:role/ecsTaskRole"
+    bucket: my-kestra-bucket
+  namespaceFiles:
+    enabled: true
+  commands:
+    - python {{ workingDir }}/main.py
 ```
 
-The Kubernetes runner, AWS Batch, Azure Batch, Google Batch, EC2, Azure VM, and Compute Engine runners all target infrastructure you control. See [all available task runners](../../../task-runners/index.mdx) for the full list. Runner time on your own infrastructure is billed by that provider, not through Kestra Cloud.
+Kestra Cloud runs outside your AWS account, so static `accessKeyId` and `secretKeyId` credentials are required: there is no instance profile or EKS IRSA to fall back on. See [Running from Kestra Cloud](../../../task-runners/04.types/04.aws-batch-task-runner/index.md#running-from-kestra-cloud) for STS role assumption and egress IP allowlisting.
+
+The Kubernetes runner, AWS Batch, Azure Batch, Google Batch, EC2, Azure VM, and Compute Engine runners all target infrastructure you control. See [all available task runners](../../../task-runners/04.types/index.mdx) for the full list. Runner time on your own infrastructure is billed by that provider, not through Kestra Cloud.
 
 Two runners common in self-hosted flows do not work on Kestra Cloud: the Process runner (which would run your code on the Kestra worker itself) and the Docker runner (which needs a Docker daemon that Cloud instances do not have). If you are bringing flows from a self-hosted install, change any explicit `taskRunner` of either type before they run.
 
@@ -179,4 +189,4 @@ Open the execution, select the task, and check its Outputs. A task that ran on t
 
 **Can a plugin update change whether a task type qualifies?**
 
-Yes, if the plugin adds or removes the `taskRunner` property on a task type. The list above is regenerated from the plugin schemas periodically.
+Yes, if the plugin adds or removes the `taskRunner` property on a task type. The list above is regenerated from the plugin schemas periodically. If a task must never move onto Cloud compute, set its `taskRunner` explicitly to your own infrastructure, or set one by [Policy](../../02.governance/policies/index.md) for the namespace: an explicit setting wins over the Cloud default, so a plugin change cannot move the work.

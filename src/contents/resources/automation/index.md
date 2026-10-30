@@ -50,7 +50,7 @@ When all three are in place, infrastructure behaves like software — with the s
 
 Infrastructure as Code is the practice of defining infrastructure through machine-readable configuration files rather than through manual console clicks. The configuration files live in version control alongside application code. When deployed, the IaC tool reconciles the declared state with the live environment, creating, updating, or destroying resources as needed.
 
-IaC is the foundation most infrastructure automation builds on. Without it, automation is a collection of brittle scripts. With it, automation becomes a reproducible, auditable system that any engineer can read on day one. For a deeper dive into the discipline, see [What Is Infrastructure as Code](/resources/infrastructure/what-is-infrastructure-as-code).
+IaC is the foundation most infrastructure automation builds on. Without it, automation is a collection of brittle scripts. With it, automation becomes a reproducible, auditable system that any engineer can read on day one. For a deeper dive into the discipline, see [What Is Infrastructure as Code](/resources/infrastructure/everything-as-code).
 
 ### Top 5 IaC Tools
 

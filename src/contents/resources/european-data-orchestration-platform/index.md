@@ -84,7 +84,7 @@ While tools like [Airflow](https://kestra.io/vs/airflow), [Prefect](https://kest
 ## Orchestration vs. ETL: Understanding the Relationship
 
 ### Data orchestration as the conductor for ETL processes
-It's a common point of confusion, but orchestration and ETL are not mutually exclusive; they are complementary. An [ETL workflow](https://kestra.io/resources/data/etl-workflow) is a specific process focused on extracting, transforming, and loading data. Data orchestration is the higher-level framework that manages and monitors these ETL jobs, along with any other tasks before or after them, such as data quality checks, infrastructure provisioning, or sending notifications. You can use Kestra to [automate data pipelines](https://kestra.io/resources/data/automate-data-pipeline) that include multiple ETL steps.
+It's a common point of confusion, but orchestration and ETL are not mutually exclusive; they are complementary. An [ETL workflow](https://kestra.io/resources/data/etl-workflow) is a specific process focused on extracting, transforming, and loading data. Data orchestration is the higher-level framework that manages and monitors these ETL jobs, along with any other tasks before or after them, such as data quality checks, infrastructure provisioning, or sending notifications. You can use Kestra to [automate data pipelines](https://kestra.io/resources/data/create-data-pipeline) that include multiple ETL steps.
 
 ### When to use each: a complementary approach
 Use ETL tools for the specific task of moving and transforming data. Use an orchestration platform to manage the end-to-end process. The orchestrator ensures that your ETL job runs at the right time, handles any failures with predefined retry logic, and triggers downstream processes once the data is ready. This separation of concerns, as outlined in the [ETL vs. ELT debate](https://kestra.io/resources/data/etl-vs-elt), leads to more robust and manageable data architectures.
@@ -92,7 +92,7 @@ Use ETL tools for the specific task of moving and transforming data. Use an orch
 ## Implementing Effective Data Orchestration
 
 ### AI and ML: Orchestration is the foundation
-The push towards AI and ML relies on clean, reliable, and timely data. An effective orchestration platform is the backbone of any successful [AI pipeline](https://kestra.io/resources/ai/ai-pipeline). It ensures that data for model training is prepared correctly, automates complex [RAG pipelines](https://kestra.io/resources/ai/rag-pipeline), and governs the execution of [AI agents](https://kestra.io/docs/ai-tools/ai-agents). Orchestration provides the reproducibility and auditability necessary for building trusted AI systems.
+The push towards AI and ML relies on clean, reliable, and timely data. An effective orchestration platform is the backbone of any successful [AI pipeline](https://kestra.io/resources/ai/ai-pipeline). It ensures that data for model training is prepared correctly, automates complex [RAG pipelines](https://kestra.io/resources/ai/rag-pipeline), and governs the execution of [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents). Orchestration provides the reproducibility and auditability necessary for building trusted AI systems.
 
 ### Key considerations for choosing a platform
 When selecting a data orchestration platform, especially in a European context, consider the following:

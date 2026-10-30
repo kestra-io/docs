@@ -5,6 +5,7 @@ sidebarTitle: Reusable Inputs
 description: Define a named input group once at the namespace level and reference it across multiple flows to eliminate duplicated input declarations.
 icon: /src/contents/docs/icons/flow.svg
 editions: ["EE", "Cloud"]
+docId: reusable-inputs
 ---
 
 Reusable inputs let you define a named group of typed inputs once at the namespace level and reference them in any flow.

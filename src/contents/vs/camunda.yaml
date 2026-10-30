@@ -88,7 +88,7 @@ easeOfUse:
   title: Two Ways to Define a Workflow
   kestra:
     title: "Kestra: A workflow is a YAML file"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Any engineer can read a YAML workflow and understand exactly what it does."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Any engineer can read a YAML workflow and understand exactly what it does."
     code: |
       id: daily_etl
       namespace: data.production

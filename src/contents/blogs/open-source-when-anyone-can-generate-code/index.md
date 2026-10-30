@@ -45,7 +45,7 @@ Anyone can now generate a project from a prompt, and that makes reviewed code wo
 
 Contributions also need someone to point them somewhere. Our engineers write and scope every [good first issue](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues) so that a newcomer, or a newcomer's assistant, can land the change in the right place. People can write the code with AI; our engineers decide where it goes and review it.
 
-Agents make this more pressing. When an AI agent acts in production, companies want to know exactly what it will do, and with open source they can read the code to find out. That's why our [docs](/docs) and [plugins](/plugins) are available as Markdown for agents, why any flow can be exposed through the [Kestra MCP server](/docs/ai-tools/mcp-server), and why we [rebuilt the engine for Kestra 2.0](/blogs/2026-09-01-kestra20-rebuild-engine) in the open.
+Agents make this more pressing. When an AI agent acts in production, companies want to know exactly what it will do, and with open source they can read the code to find out. That's why our [docs](/docs) and [plugins](/plugins) are available as Markdown for agents, why any flow can be exposed through the [Kestra MCP server](/docs/ai-orchestration/mcp-server), and why we [rebuilt the engine for Kestra 2.0](/blogs/2026-09-01-kestra20-rebuild-engine) in the open.
 
 ## Thank You
 
