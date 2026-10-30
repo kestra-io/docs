@@ -351,23 +351,34 @@ Roll back only before any flow runs or file edits on the new backend. Anything w
 
 ### Migrate to SeaweedFS
 
-The same procedure moves internal storage to SeaweedFS. Copy the bucket through the SeaweedFS S3 gateway, then point Kestra's `seaweedfs` storage at the folder where the gateway keeps it. This requires `storage-seaweedfs` 2.0.0 or later, because earlier versions ignore `prefix`.
+The same procedure moves internal storage to SeaweedFS. Download the bucket to a local folder, upload it to the SeaweedFS filer with `weed filer.copy`, which writes through the filer's gRPC port, then point Kestra's `seaweedfs` storage at that folder with `prefix`. Don't copy through the SeaweedFS S3 gateway, which isn't supported for this migration.
+
+`prefix` requires `storage-seaweedfs` 2.0.0 or later, because earlier versions ignore it. With an earlier version, upload to the filer root instead and leave `prefix` unset.
 
 The steps differ as follows:
 
-- In step 3, upload to the S3 gateway (port `8333` by default) with an identity that can create buckets and write objects. Create the bucket first. The gateway stores bucket `<bucket>` under `/buckets/<bucket>/` on the filer.
+- In step 3, run only the download command, then upload the folder's contents to a filer folder such as `/kestra/`:
+
+  ```bash
+  cd kestra-bucket
+  weed filer.copy * http://<filer-host>:8888/kestra/
+  ```
+
 - Skip step 4. SeaweedFS stores folders as directories rather than empty objects, so there are no markers to copy, and metadata backups find namespace files without them.
-- In step 5, compare file counts only. The gateway lists no folder markers.
+- In step 5, compare the source file count with the count on the filer. The last line of `fs.tree` reports it as `<n> directories, <n> files`:
+
+  ```bash
+  echo "fs.tree /kestra" | weed shell -master=<master-host>:9333 -filer=<filer-host>:8888 | tail -1
+  ```
+
 - In step 6, configure the `seaweedfs` storage with that folder as `prefix`:
 
-```yaml
-kestra:
-  storage:
-    type: seaweedfs
-    seaweedfs:
-      filer-host: <filer-host>
-      filer-port: 18888
-      prefix: /buckets/<bucket>/
-```
-
-After the switch, Kestra writes through the filer under `/buckets/<bucket>/`, so the data stays readable through the S3 gateway too.
+  ```yaml
+  kestra:
+    storage:
+      type: seaweedfs
+      seaweedfs:
+        filer-host: <filer-host>
+        filer-port: 18888
+        prefix: kestra
+  ```
