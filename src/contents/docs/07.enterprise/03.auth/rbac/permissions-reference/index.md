@@ -15,6 +15,7 @@ This reference maps each RBAC resource and action to the API endpoints that enfo
 - Each resource section gates all its endpoints: a user must have at least one valid action on the resource to reach any endpoint within it. Endpoints that do not check a specific action beyond this gate are marked "any action".
 - Some endpoints require permissions on more than one resource; notes call these out.
 - Namespace-scoped resources respect namespace bindings: access is evaluated against the namespace of the target item, and child namespaces inherit access.
+- A binding scoped to a namespace can only grant namespace-level permissions. See [Namespace bindings](../index.md#namespace-bindings) for which permissions are namespace-level, and `GET /api/v1/{tenant}/acls/scopes` for the scope of each resource and action.
 
 :::collapse{title="FLOW"}
 **Scope:** Namespace
@@ -353,7 +354,7 @@ DELETE
 ---
 
 :::collapse{title="DASHBOARD"}
-**Scope:** Tenant
+**Scope:** Tenant. A binding scoped to a namespace can grant `VIEW`, `LIST` and `EXPORT`, but not `CREATE`, `UPDATE` or `DELETE`.
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: read dashboards and their charts.
@@ -792,6 +793,7 @@ VIEW / LIST
 - `POST /api/v1/{tenant}/roles/ids`
 - `GET /api/v1/{tenant}/acls/permissions` (any `ROLE` action)
 - `GET /api/v1/{tenant}/acls/templates` (any `ROLE` action)
+- `GET /api/v1/{tenant}/acls/scopes` (any `ROLE` or `BINDING` action)
 
 CREATE
 - `POST /api/v1/{tenant}/roles`
@@ -828,6 +830,8 @@ DELETE
 
 Notes
 - Bindings are immutable. To change a binding's scope or roles, delete it and create a new one.
+- `CREATE` and `DELETE` require the permission on the whole tenant.
+- A binding scoped to a namespace is rejected with a `422` error when its role holds a tenant-level permission. See [Namespace bindings](../index.md#namespace-bindings).
 :::
 
 ---
