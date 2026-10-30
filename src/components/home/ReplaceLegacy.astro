@@ -22,9 +22,9 @@ const PROBLEMS = [
 ---
 
 {
-    /* On the hairline grid of the blocks above: the head on two columns, the
-    three problems in cells between rules, then the whitepaper in the closing
-    row. */
+    /* On the hairline grid of the blocks above: the head on two columns with
+    the whitepaper on its right, then the three problems in cells between
+    rules. */
 }
 <section class="replace" aria-labelledby="replace">
     <PixelEdges left="tall" right="wide" />
@@ -38,6 +38,14 @@ const PROBLEMS = [
                     together while keeping the code and systems they already run
                     on.
                 </p>
+                <a
+                    href="/unified-orchestration-whitepaper-kestra.pdf"
+                    class="btn-ghost whitepaper"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Read the whitepaper
+                </a>
             </header>
 
             <ul class="problems">
@@ -51,17 +59,6 @@ const PROBLEMS = [
                     ))
                 }
             </ul>
-
-            <div class="foot">
-                <a
-                    href="/unified-orchestration-whitepaper-kestra.pdf"
-                    class="btn btn-secondary"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    Read the whitepaper
-                </a>
-            </div>
         </div>
     </div>
 </section>
@@ -112,10 +109,10 @@ const PROBLEMS = [
     }
 
     // The homepage's two-column head: the title on the left, the copy on the
-    // right, both from the top.
+    // right, both from the top, and the whitepaper at the far right.
     .head {
         display: grid;
-        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr) auto;
         row-gap: 1.25rem;
         align-items: start;
         padding: 8.5rem 0 4rem;
@@ -157,6 +154,19 @@ const PROBLEMS = [
             line-height: 1.55;
             color: var(--ks-content-tertiary);
             text-wrap: pretty;
+        }
+
+        // A button keeps its own width, so its inset goes on a margin, and
+        // its padding stays the button's own.
+        .whitepaper {
+            justify-self: end;
+            margin-inline: var(--inset);
+            padding-inline: 1.5rem;
+            white-space: nowrap;
+
+            @include media-breakpoint-down(lg) {
+                justify-self: start;
+            }
         }
     }
 
@@ -284,12 +294,5 @@ const PROBLEMS = [
         50% {
             transform: scale(1);
         }
-    }
-
-    // The closing row, with the whitepaper, as See the platform above.
-    .foot {
-        display: flex;
-        justify-content: center;
-        padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset);
     }
 </style>

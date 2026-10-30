@@ -53,14 +53,13 @@ const STATS = [
         <div class="buttons">
             <a
                 href="https://github.com/kestra-io/kestra"
-                class="btn btn-primary"
+                class="btn-solid"
                 target="_blank"
                 rel="noopener"
             >
                 <Icon name="mdi:github" /> Star on GitHub
             </a>
-            <a href="/blueprints" class="btn btn-secondary">Browse blueprints</a
-            >
+            <a href="/blueprints" class="btn-ghost">Browse blueprints</a>
         </div>
     </div>
 </section>
@@ -127,15 +126,9 @@ const STATS = [
         gap: 0.75rem;
         margin-top: 2.5rem;
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
+        // A little more room beside the GitHub mark.
+        a {
             gap: 0.5rem;
-
-            :global(svg) {
-                width: 1.125rem;
-                height: 1.125rem;
-            }
         }
     }
 </style>

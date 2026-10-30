@@ -179,8 +179,15 @@ const STORIES = [
             </div>
 
             {/* The closing row, as See the platform and the whitepaper. */}
+            {/* The reach in one line, with the way to every story. */}
             <div class="foot">
-                <a href="/stories" class="btn btn-secondary">See all stories</a>
+                <p>
+                    More than <strong>40,000</strong> organizations run Kestra, including
+                    nearly 800 companies with over 1,000 employees.
+                </p>
+                <a href="/stories" class="all">
+                    See all stories <span aria-hidden="true">→</span>
+                </a>
             </div>
         </div>
     </div>
@@ -346,8 +353,43 @@ const STORIES = [
 
     .foot {
         display: flex;
-        justify-content: center;
-        padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset);
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem 2rem;
+        padding: clamp(2rem, 3vw, 2.75rem) var(--inset);
+        font-size: 1.0625rem;
+
+        p {
+            margin: 0;
+            color: var(--ks-content-tertiary);
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        .all {
+            color: var(--ks-content-secondary);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+
+            span {
+                display: inline-block;
+                margin-left: 0.25rem;
+                transition: translate 0.2s ease;
+            }
+
+            &:hover {
+                color: var(--ks-content-primary);
+
+                span {
+                    translate: 0.25em 0;
+                }
+            }
+        }
     }
 
     // The logo tabs: four cells between the rules; the open one is grey,
