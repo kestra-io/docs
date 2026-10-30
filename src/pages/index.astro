@@ -8,7 +8,7 @@ import HowItWorks from "~/components/home/HowItWorks.astro"
 import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
 import RunKestra from "~/components/home/RunKestra.astro"
 import Customers from "~/components/home/Customers.astro"
-import Community from "~/components/home/Community.astro"
+import Enterprise from "~/components/home/Enterprise.astro"
 ---
 
 <Layout>
@@ -17,13 +17,13 @@ import Community from "~/components/home/Community.astro"
     </Fragment>
     <div class="home-page">
         <Hero />
+        <HowItWorks />
         <ControlPlane />
         <AiGovernance />
-        <HowItWorks />
+        <Enterprise />
         <ReplaceLegacy />
-        <RunKestra />
         <Customers />
-        <Community />
+        <RunKestra />
     </div>
 </Layout>
 
