@@ -133,6 +133,6 @@
     "core-js@3.50.0": true,
     "core-js-pure@3.50.0": true,
     "esbuild@0.28.2": true,
-    "workerd@1.20260907.1": true
+    "workerd@1.20261023.1": true
   }
 }
