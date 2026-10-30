@@ -95,6 +95,8 @@ const icons = await Promise.all(
 >
     {/* The About us pixel art, as in the blocks above. */}
     <PixelEdges left="wide" right="tall" />
+    {/* A faint technical grid behind the scene, fading out at the edges. */}
+    <span class="texture" aria-hidden="true"></span>
     {
         /* Full width and dark, like the hero; the rails sit inside
     container-xl, on the same lines as the control plane block's above. */
@@ -112,6 +114,10 @@ const icons = await Promise.all(
                     Permissions, approvals, and audit trails apply to every
                     action an agent takes.
                 </p>
+                {/* The hero's primary button, with its violet glow. */}
+                <a href="/ai-automation" class="btn-solid">
+                    How agents fit <Icon name="mdi:chevron-right" />
+                </a>
             </div>
 
             {
@@ -182,8 +188,8 @@ const icons = await Promise.all(
                             <span class="args">table: orders</span>
                         </li>
                         <li class="msg denied on" data-at="11">
-                            <Icon name="mdi:close-circle-outline" />
-                            <code>drop_table</code> · denied
+                            <Icon name="mdi:shield-lock-outline" />
+                            <code>drop_table</code> · blocked by Kestra policy
                         </li>
                     </ol>
                 </div>
@@ -255,7 +261,7 @@ const icons = await Promise.all(
                 <ul class="controls" aria-label="Governance controls">
                     {
                         CONTROLS.map((control, idx) => (
-                            <li class="control on" data-at={[3, 7, 8][idx]}>
+                            <li class="control on" data-at={[3, 7, 12][idx]}>
                                 <Icon
                                     name={control.icon}
                                     class="control-icon"
@@ -265,11 +271,6 @@ const icons = await Promise.all(
                         ))
                     }
                 </ul>
-            </div>
-
-            <div class="foot">
-                {/* The hero's secondary button, as next to Get started. */}
-                <a href="/ai-automation" class="btn-ghost"> How agents fit </a>
             </div>
         </div>
     </div>
@@ -323,6 +324,7 @@ const icons = await Promise.all(
     //  8 the refund runs, the call is logged
     //  9 the finance agent asks  10 it calls drop_table
     // 11 the layer turns it back, logged as denied
+    // 12 the gate calms down, and the audit is complete
     const STEPS: [number, number][] = [
         [0, 700],
         [1, 1100],
@@ -334,7 +336,8 @@ const icons = await Promise.all(
         [8, 2200],
         [9, 1100],
         [10, 1000],
-        [11, 3800],
+        [11, 2200],
+        [12, 2600],
     ]
 
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
@@ -458,8 +461,8 @@ const icons = await Promise.all(
         --warning-bg: rgba(255, 138, 92, 0.15);
         --info: #8fa6ff;
         --info-bg: rgba(113, 139, 254, 0.17);
-        --danger: #ff6b6b;
-        --danger-bg: rgba(255, 85, 85, 0.15);
+        --danger: #ff5c7a;
+        --danger-bg: rgba(255, 75, 105, 0.2);
 
         // The menu reads these while it sits over the section.
         --ks-content-primary: #{$base-grey-white};
@@ -660,7 +663,7 @@ const icons = await Promise.all(
         max-width: 50rem;
         // Room for the planet's limb between the copy and the panels; none
         // on a phone, where the planet is not drawn.
-        margin: 0 auto 8.5rem;
+        margin: 0 auto 6.5rem;
 
         @include media-breakpoint-down(md) {
             margin-bottom: 3rem;
@@ -692,16 +695,42 @@ const icons = await Promise.all(
 
         // The second sentence in grey, the promise after the fact.
         span {
-            color: #8a8a9a;
+            color: #a9a9b8;
         }
+    }
+
+    .btn-solid {
+        margin-top: 2rem;
     }
 
     .lead {
         margin: 1.25rem auto 0;
-        max-width: 34rem;
-        font-size: 1.125rem;
-        line-height: 1.6;
-        color: var(--muted);
+        max-width: 36rem;
+        font-size: 1.25rem;
+        line-height: 1.55;
+        color: #cfcfda;
+    }
+
+    // A fine grid, as in the product's canvas, faded to nothing away from
+    // the scene.
+    .texture {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0
+                0 / 48px 48px,
+            linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.035) 1px,
+                    transparent 1px
+                )
+                0 0 / 48px 48px;
+        mask: radial-gradient(
+            ellipse 60% 55% at 50% 45%,
+            #000 20%,
+            transparent 75%
+        );
+        pointer-events: none;
     }
 
     // The scene: three columns, the layer between the agent and the work.
@@ -998,6 +1027,22 @@ const icons = await Promise.all(
             height: 2.125rem;
         }
 
+        // A ring breathes out of the gate, so it reads as the live heart of
+        // the scene.
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border: 1px solid rgba(190, 170, 255, 0.5);
+            border-radius: 50%;
+            animation: gate-ring 3s ease-out infinite;
+            pointer-events: none;
+
+            @media (prefers-reduced-motion: reduce) {
+                display: none;
+            }
+        }
+
         .scene[data-step="3"] & {
             border-color: rgba(6, 240, 177, 0.7);
             box-shadow:
@@ -1012,6 +1057,18 @@ const icons = await Promise.all(
                 inset 0 1px 0 rgba(255, 255, 255, 0.12),
                 0 0 0 8px rgba(255, 75, 95, 0.14),
                 0 0 60px rgba(255, 75, 95, 0.5);
+        }
+    }
+
+    @keyframes gate-ring {
+        0% {
+            opacity: 0.8;
+            transform: scale(1);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(1.9);
         }
     }
 
@@ -1044,10 +1101,10 @@ const icons = await Promise.all(
 
     // The refused call comes back: the sender's edge flashes red.
     .scene[data-step="11"] .console {
-        border-color: rgba(255, 107, 122, 0.45);
+        border-color: rgba(255, 107, 122, 0.65);
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 0 40px -8px rgba(255, 75, 95, 0.35);
+            0 0 60px -6px rgba(255, 75, 95, 0.55);
     }
 
     // A call: a short streak of light along the wire. It slides with a
@@ -1201,16 +1258,16 @@ const icons = await Promise.all(
     // The run, in the topology animations' nodes, one under the other,
     // drawn a little smaller so the whole scene fits in one view.
     .tasks {
-        zoom: 0.74;
+        zoom: 0.88;
         display: flex;
         flex: 1;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 2.25rem;
-        // The pills hang 28px under the last node: the bottom padding
-        // carries them, so the stack and its pills sit centred.
-        padding: 6px 0 22px;
+        gap: 1.75rem;
+        // Set a little low, so the nodes and the pills under the last one
+        // read as centred between the head and the approver.
+        padding: 22px 0 6px;
     }
 
     .step {
@@ -1307,17 +1364,22 @@ const icons = await Promise.all(
         }
     }
 
-    // The ledger: the three controls in one light row under the scene.
+    // A band of the hairline grid, from rail to rail, as in the blocks
+    // around: the controls between two rules.
     .ledger {
         position: relative;
-        margin: 0 var(--stage);
+        z-index: 3;
+        // The block's closing row, as far under the scene as the copy sits
+        // under the block's top.
+        margin: clamp(4rem, 6vw, 5.5rem) 0 0;
+        border-block: 1px solid var(--line);
     }
 
     // The three controls in a row; each lights when the story reaches it.
     .controls {
         display: grid;
-        // The middle control on the page's axis, the others either side.
-        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        // Three equal cells across the band, each control centred in its own.
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         margin: 0;
         padding: 0;
         list-style: none;
@@ -1330,22 +1392,15 @@ const icons = await Promise.all(
     .control {
         position: relative;
         display: grid;
-        // Icon and name on one line.
+        // Icon and name on one line, centred in the cell.
         grid-template-columns: auto auto;
+        justify-content: center;
         align-items: center;
         gap: 0.625rem;
-        padding: 0.5rem 1.75rem;
+        padding: 2.25rem 2rem;
         transition:
             opacity 0.5s ease,
             transform 0.5s ease;
-
-        &:first-child {
-            justify-self: end;
-        }
-
-        &:last-child {
-            justify-self: start;
-        }
 
         & + & {
             border-left: 1px solid var(--line);
@@ -1376,33 +1431,81 @@ const icons = await Promise.all(
         }
     }
 
-    .foot {
+    // Same as the hero's Get started: violet, a light sweep and a violet
+    // glow on hover, and a soft glow at rest on the dark surface.
+    .btn-solid {
         position: relative;
-        padding: 2rem var(--inset) 3.5rem;
-        text-align: center;
-    }
-
-    // Same as the hero's Book a demo: translucent on the dark surface.
-    .btn-ghost {
         display: inline-flex;
         align-items: center;
-        padding: 0.625rem 1.125rem;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        gap: 0.25rem;
+        padding: 0.625rem 0.75rem 0.625rem 1.125rem;
         border-radius: 0.5rem;
-        background: rgba(255, 255, 255, 0.06);
+        overflow: hidden;
+        background: var(--ks-background-button-primary);
         font-size: 0.9375rem;
         font-weight: 500;
         color: #ffffff;
         text-decoration: none;
+        box-shadow:
+            0 6px 24px -8px rgba(132, 5, 255, 0.55),
+            inset 0 1px 0 rgba(255, 255, 255, 0.18);
         transition:
-            background-color 0.2s ease,
-            border-color 0.2s ease;
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            filter 0.25s ease;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                110deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.35) 50%,
+                transparent 70%
+            );
+            transform: translateX(-120%);
+            pointer-events: none;
+        }
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            transition: transform 0.25s ease;
+        }
 
         &:hover,
         &:focus-visible {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.12);
             color: #ffffff;
+            transform: translateY(-1px);
+            filter: brightness(1.08);
+            box-shadow:
+                0 8px 28px -6px rgba(132, 5, 255, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+            &::after {
+                transform: translateX(120%);
+                transition: transform 0.7s ease;
+            }
+
+            :global(svg) {
+                transform: translateX(3px);
+            }
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &,
+            &:hover {
+                transform: none;
+            }
+
+            &::after {
+                display: none;
+            }
         }
     }
 </style>
