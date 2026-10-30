@@ -211,9 +211,7 @@ triggers:
   - id: keycloak_register_event
     type: io.kestra.plugin.core.trigger.Webhook
     key: "{{ secret('KEYCLOAK_WEBHOOK_KEY') }}"
-    conditions:
-      - type: io.kestra.plugin.core.condition.Expression
-        expression: "{{ trigger.body.type == 'REGISTER' }}"
+    when: "{{ trigger.body.type == 'REGISTER' }}"
 ```
 This illustrates the declarative, event-driven nature of orchestration. Because the flow runs in Kestra, any step that needs logic beyond a simple notification — approval gates, conditional branching, or calls back to the Keycloak Admin API — can be added to the very same workflow.
 
