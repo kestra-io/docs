@@ -63,6 +63,7 @@
         const fn = form["first-name"].value
         const ln = form["last-name"].value
         const em = form["email"].value
+        const company = form["company"].value
         const emp = form["employees"].value
         const jobtitle = form["job-title"].value
         const clickId = getStoredClickId()
@@ -83,6 +84,7 @@
         const formData = {
             fields: [
                 { objectTypeId: "0-1", name: "email", value: em },
+                { objectTypeId: "0-1", name: "company", value: company },
                 { objectTypeId: "0-1", name: "firstname", value: fn },
                 { objectTypeId: "0-1", name: "lastname", value: ln },
                 { objectTypeId: "0-1", name: "jobtitle", value: jobtitle },
@@ -294,6 +296,21 @@
                         type="email"
                         class="form-control"
                         placeholder="Company email *"
+                        required
+                    />
+                </div>
+
+                <div class="col-12">
+                    <label :for="`${uid}-company`" class="form-label mb-0">
+                        Company name
+                    </label>
+                    <input
+                        :id="`${uid}-company`"
+                        name="company"
+                        autocomplete="organization"
+                        type="text"
+                        class="form-control"
+                        placeholder="Company name *"
                         required
                     />
                 </div>
