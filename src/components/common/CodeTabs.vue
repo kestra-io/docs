@@ -27,18 +27,23 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted } from "vue"
+    import { ref, computed, onMounted, onBeforeUnmount } from "vue"
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import Check from "vue-material-design-icons/Check.vue"
 
     const props = withDefaults(
         defineProps<{
-            tabs: { label: string; code: string }[]
+            // A tab's own `lang` overrides the group's, for tabs that mix
+            // a shell command with a config file.
+            tabs: { label: string; code: string; lang?: string }[]
             storageKey?: string
             lang?: string
         }>(),
         { storageKey: "code-tab-preference", lang: "bash" },
     )
+
+    // Tells the other groups sharing this storageKey to switch too.
+    const SELECT_EVENT = "code-tabs-select"
 
     const active = ref(props.tabs[0]?.label ?? "")
     const copied = ref(false)
@@ -54,18 +59,21 @@
             }
         } catch {}
 
+        window.addEventListener(SELECT_EVENT, onSelect)
+
         try {
             // The shared core toolset, not the full `shiki` bundle: that one
             // ships every grammar, several megabytes, for one `lang`.
             const { getHighlighterCore, resolveLanguage } = await import(
                 "~/components/plugins/schema/shikiToolset"
             )
-            const lang = resolveLanguage(props.lang)
-            const highlighter = await getHighlighterCore(lang ? [lang] : [])
+            const langOf = (tab: { lang?: string }) => resolveLanguage(tab.lang ?? props.lang)
+            const langs = new Set(props.tabs.map(langOf).filter((lang): lang is NonNullable<typeof lang> => lang !== undefined))
+            const highlighter = await getHighlighterCore(langs)
             const map: Record<string, string> = {}
             for (const tab of props.tabs) {
                 map[tab.label] = highlighter.codeToHtml(tab.code, {
-                    lang: lang ?? "text",
+                    lang: langOf(tab) ?? "text",
                     themes: {
                         light: "github-light-default",
                         dark: "github-dark-default",
@@ -77,11 +85,23 @@
         } catch {}
     })
 
+    onBeforeUnmount(() => window.removeEventListener(SELECT_EVENT, onSelect))
+
+    function onSelect(event: Event) {
+        const { storageKey, label } = (event as CustomEvent<{ storageKey: string; label: string }>).detail
+        if (storageKey === props.storageKey && props.tabs.some((t) => t.label === label)) {
+            active.value = label
+        }
+    }
+
     const select = (label: string) => {
         active.value = label
         try {
             localStorage.setItem(props.storageKey, label)
         } catch {}
+        window.dispatchEvent(
+            new CustomEvent(SELECT_EVENT, { detail: { storageKey: props.storageKey, label } }),
+        )
     }
 
     const copy = async (code: string) => {

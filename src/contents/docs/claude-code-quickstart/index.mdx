@@ -1,0 +1,194 @@
+---
+title: "Claude Code Quickstart: Build and Deploy Kestra Flows with AI"
+h1: Set Up Claude Code to Build, Deploy, and Run Kestra Flows
+sidebarTitle: Claude Code Quickstart
+icon: /src/contents/docs/icons/ai.svg
+description: Connect Claude Code, Cursor, or Codex to Kestra with the Docs MCP server, Agent Skills, and kestractl, then write, deploy, and run a flow from a prompt.
+---
+
+import CodeTabs from "~/components/common/CodeTabs.vue"
+
+Set up Claude Code so it can write a flow, deploy it to your Kestra instance, and run it from a single prompt.
+
+This page is for anyone who wants to point a coding agent at Kestra and describe the flow they need. In about 15 minutes, you connect four pieces and finish with a flow running on your instance. The steps use Claude Code. If you use Cursor or Codex, pick its tab wherever the commands differ. To compare this setup with AI Copilot in the Kestra UI, see [Develop with AI](../develop-with-ai/index.mdx).
+
+## What you set up
+
+| Piece | What it gives your agent |
+| --- | --- |
+| [Docs MCP server](../develop-with-ai/02.kestra-mcp-resources/index.md) | Live plugin schemas, blueprints, and Kestra documentation, so the agent doesn't guess task properties |
+| [Agent Skills](../develop-with-ai/03.agent-skills/index.md) | Instructions for writing valid flows, hardening them, and operating Kestra |
+| [`kestractl`](../kestra-cli/kestractl/index.md) | The CLI that the agent calls to validate, deploy, and run flows |
+| A `kestractl` context | The URL, tenant, and credentials for your instance |
+
+## Prerequisites
+
+- [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) installed, or [Cursor](https://cursor.com/) or [Codex](https://developers.openai.com/codex). For other agents, see [Docs MCP server](../develop-with-ai/02.kestra-mcp-resources/index.md#other-ai-tools).
+- A terminal on macOS or Linux. On Windows, use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+- [Node.js](https://nodejs.org/) to install the skills with `npx`. You can also install them manually without Node.js.
+- A running Kestra 2.0 instance. If you don't have one, start one locally in the next step.
+
+## Step 1: Start Kestra locally
+
+Skip this step if you already have a Kestra URL and credentials.
+
+With [Docker](https://docs.docker.com/get-docker/) running, start Kestra with the same command as the [Quickstart](../01.quickstart/index.md):
+
+```bash
+docker run --pull=always --rm -it -p 8080:8080 --user=root \
+  --name kestra \
+  -v kestra_data:/app/storage \
+  -v kestra_db:/app/data \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp \
+  kestra/kestra:latest-slim server local
+```
+
+Open `http://localhost:8080` and create your user when the UI prompts you. Keep the username and password: `kestractl` uses them in Step 5.
+
+For a persistent setup with PostgreSQL, see [Docker Compose installation](../02.installation/03.docker-compose/index.md). For Kubernetes and cloud installs, see the [Installation guide](../02.installation/index.mdx).
+
+## Step 2: Connect the Docs MCP server
+
+The Docs MCP server is a public, read-only endpoint hosted by Kestra at `https://api.kestra.io/v1/mcp`. It needs no account or API key, and it doesn't connect to your instance.
+
+Add the server, then list your servers to check that `kestra` appears:
+
+<CodeTabs client:load storageKey="coding-agent-preference" tabs={[
+  { label: "Claude Code", code: "claude mcp add kestra --transport http https://api.kestra.io/v1/mcp\nclaude mcp list" },
+  { label: "Cursor", lang: "json", code: '{\n  "mcpServers": {\n    "kestra": {\n      "url": "https://api.kestra.io/v1/mcp"\n    }\n  }\n}' },
+  { label: "Codex", code: "codex mcp add kestra --url https://api.kestra.io/v1/mcp\ncodex mcp list" }
+]} />
+
+Cursor has no CLI command for this: save the JSON as `.cursor/mcp.json` in your project, then check that `kestra` appears under **Cursor Settings > MCP**.
+
+## Step 3: Install the Agent Skills
+
+Skills are `SKILL.md` files that tell your agent how to work with Kestra. From your project folder, run the installer for your agent:
+
+<CodeTabs client:load storageKey="coding-agent-preference" tabs={[
+  { label: "Claude Code", code: "npx skills add kestra-io/agent-skills --agent claude-code" },
+  { label: "Cursor", code: "npx skills add kestra-io/agent-skills --agent cursor" },
+  { label: "Codex", code: "npx skills add kestra-io/agent-skills --agent codex" }
+]} />
+
+The installer writes the skills to `.claude/skills/` for Claude Code, and to `.agents/skills/` for Cursor and Codex. To make the skills available in every project, add `--global`.
+
+This guide uses two of the skills: `kestra-flow` writes flow YAML against the live flow schema, and `kestra-ops` validates, deploys, and runs flows with `kestractl`. For the other skills, see [Available skills](../develop-with-ai/03.agent-skills/index.md#available-skills). To install without Node.js, see [Manual installation](../develop-with-ai/03.agent-skills/index.md#manual-installation).
+
+## Step 4: Install kestractl
+
+Install `kestractl`, the Kestra CLI that the `kestra-ops` skill drives:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
+```
+
+The script installs the latest `kestractl` 3.x release, which works with Kestra 2.x and Kestra 1.3. For an earlier Kestra version, or to choose the install folder, see [Installation](../kestra-cli/kestractl/index.md#installation). For Windows and other platforms, download a binary from the [kestractl releases](https://github.com/kestra-io/kestractl/releases).
+
+Confirm the install:
+
+```bash
+kestractl --help
+```
+
+## Step 5: Connect kestractl to your instance
+
+Add a context with the URL, tenant, and credentials for your instance. A context is a named connection; the commands below name it `default` and make it the one `kestractl` uses. Use the command that matches your edition.
+
+For Kestra Open Source, including the local instance from Step 1, use your username and password. The tenant is `main`:
+
+```bash
+kestractl config add default http://localhost:8080 main \
+  --username YOUR_USERNAME --password YOUR_PASSWORD --default
+```
+
+For Kestra Enterprise, use an [API token](../07.enterprise/03.auth/api-tokens/index.md) and your tenant ID:
+
+```bash
+kestractl config add default https://kestra.example.com YOUR_TENANT \
+  --token YOUR_API_TOKEN --default
+```
+
+`kestractl` saves the context in `~/.kestractl/config.yaml`. Check the connection:
+
+```bash
+kestractl config show
+kestractl flows list
+```
+
+The connection works if `kestractl flows list` returns without an error. An empty list is expected on a new instance.
+
+:::alert{type="warning"}
+Don't paste passwords or API tokens into a prompt, and don't commit `~/.kestractl/config.yaml`. Your agent reads credentials through `kestractl`, so it never needs to see them. For shared or production instances, use a token with only the permissions the agent needs.
+:::
+
+To manage several instances, add one context per instance and switch with `kestractl config use <name>`. See [Configuration](../kestra-cli/kestractl/index.md#configuration) for contexts and environment variables.
+
+## Step 6: Write, deploy, and run a flow
+
+Start your agent from your project folder:
+
+<CodeTabs client:load storageKey="coding-agent-preference" tabs={[
+  { label: "Claude Code", code: "claude" },
+  { label: "Cursor", code: "cursor ." },
+  { label: "Codex", code: "codex" }
+]} />
+
+In Cursor, start a chat in Agent mode once the folder opens.
+
+Ask it to write a flow:
+
+```plaintext
+Use kestra-flow to write a flow in the tutorial namespace that calls
+https://api.github.com/repos/kestra-io/kestra every hour and logs the
+star count. Save it as ./flows/github_stars.yaml.
+```
+
+The agent looks up the HTTP and Log task schemas on the Docs MCP server and writes the flow file.
+
+Then ask it to deploy and run the flow:
+
+```plaintext
+Use kestra-ops to validate ./flows, deploy it to my Kestra instance,
+run github_stars in the tutorial namespace, wait for it to finish,
+and tell me the result.
+```
+
+The agent runs commands similar to these:
+
+```bash
+kestractl flows validate ./flows/
+kestractl flows deploy ./flows/ --override
+kestractl executions run tutorial github_stars --wait
+```
+
+Open the Kestra UI. The `github_stars` flow appears in the `tutorial` namespace, with one execution that logs the star count.
+
+The flow's Schedule trigger runs it every hour from now on. When you finish testing, ask the agent to disable the trigger or delete the flow, or do it from the flow page in the UI.
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| The agent doesn't list the `kestra` MCP server | Repeat Step 2, then restart the agent. |
+| The agent doesn't use a skill | Check that `SKILL.md` exists under `.claude/skills/<skill>/` or `.agents/skills/<skill>/`, restart the agent, and name the skill in your prompt, for example `Use kestra-ops to...`. |
+| `kestractl: command not found` | Add the install folder to your `PATH` and open a new terminal. |
+| `401` or `unauthorized` | Run `kestractl config add` again with the correct credentials and tenant. |
+| `connection refused` | Check that Kestra is running and that the URL and port in your context are correct. |
+| Flow validation fails | Ask the agent to fix the flow. The `kestra-flow` skill checks it against the live schema again. |
+
+## Next steps
+
+Try these prompts on your flows:
+
+- `Use kestra-flow-hardening to audit ./flows and add retries, timeouts, and failure alerts.`
+- `Find a blueprint for triggering a flow when a file lands in S3.`
+- `What properties does the io.kestra.plugin.jdbc.postgresql.Query task accept?`
+
+To go further:
+
+- [Agent Skills](../develop-with-ai/03.agent-skills/index.md) has more example prompts and explains how to write custom skills.
+- [`kestractl`](../kestra-cli/kestractl/index.md) lists every command your agent can run on your instance.
+- The [Tutorial](../03.tutorial/index.mdx) explains the inputs, outputs, triggers, and error handling in the flows your agent writes for you.
+- Ask questions and share what you build in the [Kestra community Slack](https://kestra.io/slack).

@@ -5,6 +5,7 @@ export type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 export const navigationTree = {
     "Get Started with Kestra": [
         "Quickstart",
+        "Claude Code Quickstart",
         "Installation Guide",
         "Tutorial",
         "Architecture",
