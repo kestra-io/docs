@@ -180,7 +180,7 @@ A typical RAG pipeline draws on four to six of these groups in sequence:
 
 Every step is a task, and data moves between them through [Kestra's internal storage](/docs/concepts/storage), so each stage hands off cleanly to the next. The flow YAML is the single source of truth: version-controlled, observable end to end, and portable anywhere Kestra runs. Re-indexing the corpus from scratch is a [backfill](/docs/concepts/backfill); keeping it current is a trigger. The model was never the hard part. Making everything around it dependable is, and that's the part Kestra owns.
 
-For a deeper look at how these pieces fit together in production, see [RAG workflows in Kestra](/docs/ai-tools/ai-rag-workflows).
+For a deeper look at how these pieces fit together in production, see [RAG workflows in Kestra](/docs/ai-orchestration/ai-rag-workflows).
 
 ---
 

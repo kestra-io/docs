@@ -154,7 +154,7 @@ DevSecOps is the practice of integrating security practices into the DevOps life
 
 ### AI-Driven Automation and Governance in CI/CD
 
-The next frontier in CI/CD is the integration of AI. AI-powered tools can help optimize pipeline performance, predict release risks, and even automate the generation of tests or workflow definitions. For example, Kestra's AI Copilot can assist in creating [AI code generation pipelines](/resources/ai/ai-code-generation-pipelines) by translating natural language descriptions into executable YAML. Furthermore, [AI agents can be orchestrated](/docs/ai-tools/ai-agents) to perform complex, goal-oriented tasks within the CI/CD process, such as automatically diagnosing a test failure and suggesting a fix.
+The next frontier in CI/CD is the integration of AI. AI-powered tools can help optimize pipeline performance, predict release risks, and even automate the generation of tests or workflow definitions. For example, Kestra's AI Copilot can assist in creating [AI code generation pipelines](/resources/ai/ai-code-generation-pipelines) by translating natural language descriptions into executable YAML. Furthermore, [AI agents can be orchestrated](/docs/ai-orchestration/ai-agents) to perform complex, goal-oriented tasks within the CI/CD process, such as automatically diagnosing a test failure and suggesting a fix.
 
 ## Kestra: The Declarative Control Plane for CI/CD Orchestration
 

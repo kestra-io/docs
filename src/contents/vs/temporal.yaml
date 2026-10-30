@@ -88,7 +88,7 @@ easeOfUse:
   title: Workflows Your Whole Team Can Understand
   kestra:
     title: "Kestra: Readable without an SDK"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Any team member can read the YAML and understand what a workflow does, no SDK knowledge required."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Any team member can read the YAML and understand what a workflow does, no SDK knowledge required."
     code: |
       id: daily_etl
       namespace: data.production
