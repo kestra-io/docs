@@ -391,6 +391,8 @@ When you open an execution in the topology view, the details panel for an Azure 
 
 Azure Batch is the only task runner that emits detailed CPU and I/O metrics — the post-execution panel is especially useful for right-sizing pool nodes and diagnosing performance bottlenecks.
 
+Before an execution, the panel shows values from the task definition and marks any value that contains a Pebble expression as a template. After an execution, it shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
+
 **Pre-execution:**
 - Batch account endpoint
 - Pool ID
@@ -403,6 +405,9 @@ Azure Batch is the only task runner that emits detailed CPU and I/O metrics — 
 |---|---|
 | Job ID | Reference for looking up the job in the Azure Portal |
 | Pool ID | The pool where the job ran |
+| Container image | The container image the task ran in |
+| Blob storage container used for file staging | The container used to stage working directory files |
+| Job status | The terminal job status |
 | Wall clock | Total elapsed time from job start to finish |
 | CPU kernel | Kernel CPU time consumed by the container |
 | CPU user | User CPU time consumed by the container |

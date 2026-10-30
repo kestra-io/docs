@@ -79,7 +79,7 @@ The `SCIMProvisioner` role has no `DELETE` permission for users because users ar
    - Name: `Kestra`
    - Grant Type: Client Credentials
    - Sign-in redirect URIs: `http://<kestra-hostname>/oauth/callback/okta`
-   - Sign-out redirect URIs: `http://<kestra-hostname>/logout`
+   - Sign-out redirect URIs: `http://<kestra-hostname>/ui`
 
    Note the client ID and client secret once the application is created.
 

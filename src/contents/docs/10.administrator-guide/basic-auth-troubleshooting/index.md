@@ -8,7 +8,7 @@ description: Troubleshoot common issues with Basic Authentication in Kestra, inc
 
 Troubleshoot issues with Basic Authentication.
 
-Every open-source instance of Kestra requires Basic Authentication (`username` and `password`). Credentials can be configured via the Setup page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
+Every open-source instance of Kestra requires Basic Authentication (`username` and `password`). Credentials can be configured via the Setup page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production). To change credentials stored in the database after initial setup, click your username in the sidebar and select **Change Password**.
 
 ```yaml
 kestra:
@@ -67,8 +67,24 @@ In this scenario, the Setup page is publicly reachable until credentials are sub
 :::
 
 :::alert{type="info"}
-If you forget your credentials, update the `username` and `password` in the configuration file. The configuration file always takes precedence over values set from the Setup page.
+**Forgot your credentials?**
+- **Credentials set via the Setup page** (stored in the database): click your username in the sidebar and select **Change Password**.
+- **Credentials set in the configuration file**: update `username` and `password` in the configuration file and restart Kestra. The configuration file always takes precedence over values stored in the database.
 :::
+
+### Change Password
+
+To change credentials stored in the database, click your username in the sidebar and select **Change Password**.
+
+![Change Password option in the user menu](./change-password-menu.png)
+
+Enter your email address, current password, and a new password to confirm. The new password must satisfy the configured [password policy](../../configuration/05.security-and-secrets/index.md).
+
+If your credentials are set in the configuration file, the dialog shows a message instead of a form:
+
+![Change Password dialog when credentials are managed by the configuration file](./change-password-dialog.png)
+
+Update `username` and `password` in the configuration file and restart Kestra to apply the change.
 
 ### Scenario 4: Using Authorization headers instead of cookies
 

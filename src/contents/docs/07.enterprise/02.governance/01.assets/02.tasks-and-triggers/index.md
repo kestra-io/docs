@@ -1,7 +1,7 @@
 ---
 title: "Asset Tasks, Triggers, and Functions Reference"
 h1: Asset Triggers, Tasks, Functions, and Exporters
-description: Reference for Kestra asset triggers (EventTrigger, FreshnessTrigger), asset tasks (Set, List, Delete, PurgeAssets, Acquire, Release), the assets() Pebble function, and AssetShipper exporters.
+description: Reference for Kestra asset triggers (EventTrigger, FreshnessTrigger, TtlTrigger), asset tasks (Set, List, Delete, PurgeAssets, Acquire, Release), the assets() Pebble function, and AssetShipper exporters.
 sidebarTitle: Tasks and Triggers
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -18,20 +18,21 @@ For how to attach assets to a task, see the [asset declaration reference](../01.
 | --- | --- | --- | --- |
 | [`EventTrigger`](#eventtrigger) | Trigger | `io.kestra.plugin.ee.assets.EventTrigger` | Start a flow when an asset is created, updated, deleted, or used |
 | [`FreshnessTrigger`](#freshnesstrigger) | Trigger | `io.kestra.plugin.kestra.ee.assets.FreshnessTrigger` | Start a flow when assets haven't been updated for too long |
+| [`TtlTrigger`](#ttltrigger) | Trigger | `io.kestra.plugin.ee.assets.TtlTrigger` | Start a flow once when an asset's TTL is about to pass or has passed |
 | [`Set`](#set) | Task | `io.kestra.plugin.kestra.ee.assets.Set` | Create an asset as its own step |
 | [`List`](#list) | Task | `io.kestra.plugin.kestra.ee.assets.List` | Query assets during an execution |
 | [`Delete`](#delete) | Task | `io.kestra.plugin.kestra.ee.assets.Delete` | Delete an asset |
-| [`PurgeAssets`](#purgeassets) | Task | `io.kestra.plugin.kestra.ee.assets.PurgeAssets` | Hard-delete old assets, usages, and lineage events |
+| [`PurgeAssets`](#purgeassets) | Task | `io.kestra.plugin.kestra.ee.assets.PurgeAssets` | Hard-delete old assets and asset usage records |
 | [`Acquire`](#acquire-and-release) | Task | `io.kestra.plugin.kestra.ee.locks.Acquire` | Lock an asset against writes from other executions |
 | [`Release`](#acquire-and-release) | Task | `io.kestra.plugin.kestra.ee.locks.Release` | Release a lock this execution holds |
 | [`assets()`](#assets-pebble-function) | Pebble function | — | Look up assets inside any expression, including dynamic inputs |
 | [`AssetShipper`](#assetshipper) | Task | `io.kestra.plugin.ee.assets.AssetShipper` | Export lineage events to OpenLineage or a file |
 
-`EventTrigger` and `AssetShipper` run inside Kestra. The tasks and the `FreshnessTrigger` from the `io.kestra.plugin.kestra.ee` package call the Kestra API, so they accept the [connection properties](#connection-properties-for-api-based-tasks) described at the end of this page.
+`EventTrigger`, `TtlTrigger`, and `AssetShipper` run inside Kestra. The tasks and the `FreshnessTrigger` from the `io.kestra.plugin.kestra.ee` package call the Kestra API, so they accept the [connection properties](#connection-properties-for-api-based-tasks) described at the end of this page.
 
 ## Metadata queries
 
-`EventTrigger`, `FreshnessTrigger`, `List`, and `PurgeAssets` accept a `metadataQuery` list. Each entry compares one top-level metadata key with a value:
+`EventTrigger`, `FreshnessTrigger`, `TtlTrigger`, `List`, and `PurgeAssets` accept a `metadataQuery` list. Each entry compares one top-level metadata key with a value:
 
 | Property | Description |
 | --- | --- |
@@ -183,6 +184,110 @@ triggers:
 
 For a complete walkthrough, see [Detect and refresh stale data](../../../../15.how-to-guides/asset-freshness/index.md).
 
+## TtlTrigger
+
+`io.kestra.plugin.ee.assets.TtlTrigger` starts a flow when an asset's [`ttl`](../01.declare-assets/index.md#lifecycle-fields) enters a warning window or has passed. It starts the flow at most once per window. Repeated checks don't restart it, and changing the TTL resets the windows.
+
+| Property | Required | Description |
+| --- | --- | --- |
+| `on` | Yes | `EXPIRING` fires once when the TTL enters the warning window. `EXPIRED` fires once when the TTL has passed. |
+| `expiresWithin` | With `EXPIRING` | The warning window as an ISO 8601 duration, for example `P3D`. Required with `EXPIRING`, not allowed with `EXPIRED`. |
+| `assetId` | No | Only react to this asset ID. |
+| `namespace` | No | Only react to assets in this exact namespace. |
+| `assetType` | No | Only react to assets of this exact type. Defaults to deployments. |
+| `metadataQuery` | No | Only react to assets whose metadata matches. See [Metadata queries](#metadata-queries). |
+
+The execution exposes:
+
+| Variable | Description |
+| --- | --- |
+| `trigger.asset` | The asset whose TTL is expiring or has expired |
+| `trigger.asset.id` | The asset ID |
+| `trigger.asset.ttl` | The TTL as an ISO 8601 UTC timestamp with milliseconds, for example `2026-12-01T00:00:00.000Z` |
+| `trigger.asset.owner` | The asset's owner, for example `user:alice` or `group:ops` |
+| `trigger.asset.status` | The asset's lifecycle status, for example `active` |
+| `trigger.on` | `EXPIRING` or `EXPIRED` |
+
+`TtlTrigger` has no `interval` property. A single instance-wide checker evaluates every `TtlTrigger`, once an hour by default. To change the interval, see [Asset TTL checks](../../../../configuration/06.enterprise-and-advanced/index.md#asset-ttl-checks-kestraassetsttl-check).
+
+This flow warns 7 days and 1 day before any deployment expires:
+
+```yaml
+id: ttl_warning
+namespace: company.infra
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.asset.id }} expires on {{ trigger.asset.ttl }}"
+
+triggers:
+  - id: warn_7_days
+    type: io.kestra.plugin.ee.assets.TtlTrigger
+    on: EXPIRING
+    expiresWithin: P7D
+  - id: warn_1_day
+    type: io.kestra.plugin.ee.assets.TtlTrigger
+    on: EXPIRING
+    expiresWithin: P1D
+```
+
+This flow acts the moment a specific deployment expires:
+
+```yaml
+id: retire_staging_cluster
+namespace: company.infra
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.asset.id }} has expired"
+
+triggers:
+  - id: expired
+    type: io.kestra.plugin.ee.assets.TtlTrigger
+    on: EXPIRED
+    namespace: company.infra
+    assetId: staging-cluster-eu
+```
+
+### Owner notifications
+
+The TTL check also notifies the asset's `owner` in the app, once per window:
+
+- **Expiring**: sent only when an `EXPIRING` trigger starts a flow for the asset.
+- **Expired**: sent when the TTL has passed, even if no flow reacts. This applies to every asset type, not only deployments.
+
+Clicking the notification opens the asset. In an Infrastructure tenant, a deployment opens on its Deployments page and any other asset opens in Inventory.
+
+Kestra resolves `owner` to the users to notify:
+
+| `owner` value | Resolved as |
+| --- | --- |
+| `user:<name>` | A user, matched by username, then by ID |
+| `group:<name>` | A group in the tenant, matched by name, then by ID. Every member is notified. |
+| `<name>` | A user first, then a group if no user matches |
+
+If `owner` matches no user or group, such as free text, no one is notified.
+
+### TTL flow levels
+
+On a deployment's **TTL & Lease** card, **On expiring** and **On expired** open a TTL flow at one of three levels. TTL flows live in the [system namespace](../../../../06.concepts/system-flows/index.md), and Kestra identifies each level by its flow ID:
+
+| Level | Menu entry | `EXPIRING` flow ID | Prefilled filter |
+| --- | --- | --- | --- |
+| One deployment | **Edit for this deployment** | `ttl_expiring_asset_<assetId>` | `assetId` |
+| One namespace | **Edit for namespace `<namespace>`** | `ttl_expiring_namespace_<namespace>` | `namespace` |
+| All deployments | **Edit for all deployments** | `ttl_expiring` | None |
+
+`EXPIRED` flows follow the same pattern with `ttl_expired` in place of `ttl_expiring`. If an asset ID or namespace contains characters that aren't allowed in a flow ID, or the ID would exceed 100 characters, Kestra sanitizes it and appends a hash. Create those flows from the menu rather than by hand.
+
+For each asset, Kestra starts only the most specific level that exists. For example, if both `ttl_expiring_namespace_company.infra` and `ttl_expiring` exist, deployments in `company.infra` start only the namespace-level flow. A level flow must contain a `TtlTrigger`, and that trigger's filters apply on top of the level. `TtlTrigger` flows with other IDs, or outside the system namespace, aren't part of this hierarchy and start whenever their trigger matches.
+
+When a level has no flow yet, the menu opens the editor with a flow copied from the level in effect, or with a starter flow if no level exists. The flow is created only when you save it. Attaching a flow requires permission to create flows in the system namespace.
+
+Deleting an asset also deletes its asset-level TTL flows, `ttl_expiring_asset_<assetId>` and `ttl_expired_asset_<assetId>`.
+
 ## Set
 
 [`io.kestra.plugin.kestra.ee.assets.Set`](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.set) creates an asset.
@@ -263,7 +368,7 @@ tasks:
 
 ## PurgeAssets
 
-[`io.kestra.plugin.kestra.ee.assets.PurgeAssets`](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) hard-deletes assets, asset usage records, and lineage events older than a cutoff date. Locked assets are skipped.
+[`io.kestra.plugin.kestra.ee.assets.PurgeAssets`](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) hard-deletes assets and asset usage records older than a cutoff date. Locked assets are skipped.
 
 The [purge reference](../../../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) lists every property and the filter combinations each record type supports. For retention strategy, see [Purging data](../../../../14.best-practices/11.purging-data/index.md#when-to-purge-assets-and-lineage).
 
@@ -338,7 +443,7 @@ message: "{{ assets(id='reports.weekly_csv') | jq('.[0].metadata.path') | first 
 
 ## AssetShipper
 
-[`io.kestra.plugin.ee.assets.AssetShipper`](/plugins/core/asset-ee/io.kestra.plugin.ee.assets.assetshipper) exports asset lineage events to one or more destinations. Each lineage event describes one task run: the flow and task, the execution, the run state, and the input and output assets.
+[`io.kestra.plugin.ee.assets.AssetShipper`](/plugins/core/asset-ee/io.kestra.plugin.ee.assets.assetshipper) exports asset lineage to one or more destinations. Kestra rebuilds one lineage event per task run from the history it records when tasks read and write assets. Each event describes the flow and task, the execution, the run state, and the input and output assets.
 
 The task runs incrementally. On its first run, it exports events from the last `lookbackPeriod`. It then stores the timestamp of the last exported event in the KV Store and continues from there on the next run. Schedule it with a [`Schedule` trigger](../../../../05.workflow-components/07.triggers/01.schedule-trigger/index.md).
 
@@ -348,8 +453,8 @@ The task runs incrementally. On its first run, it exports events from the last `
 | `lookbackPeriod` | `P1D` | How far back the first run looks when no offset is stored. |
 | `offsetKey` | — | Prefix of the KV Store key that stores the offset. Set it when several `AssetShipper` tasks must keep separate offsets. |
 | `flowNamespace`, `flowId`, `taskId` | — | Only export events from this namespace, flow, or task. |
-| `assetNamespace`, `assetTypes` | — | Only export events that involve assets in this namespace or of these types. |
-| `delete` | `false` | Delete the exported records after export. |
+| `assetNamespace`, `assetTypes` | — | Only export history for assets in this exact namespace or of these types. Assets that don't match are left out of each event. |
+| `delete` | `false` | Delete the exported history after export. Usage records are kept. |
 
 Outputs: `size` (number of events exported), `endFetchedDate`, and `outputs` (one entry per exporter).
 

@@ -346,6 +346,30 @@ triggers:
         when: "{{ flow.namespace | startsWith('company') }}"
 ```
 
+## Suppressing intermediate failure alerts during retries
+
+When an upstream flow uses a flow-level `retry`, the execution passes through a `FAILED` state before each retry attempt. A Flow trigger listening for `FAILED` fires on that intermediate state — even if the execution ultimately succeeds — producing a false alarm.
+
+Set `waitForAllRetries: true` on the trigger to skip evaluation on intermediate `FAILED` states. The trigger fires only when the upstream execution exhausts all retries and ends in `FAILED`.
+
+```yaml
+triggers:
+  - id: on_failure
+    type: io.kestra.plugin.core.trigger.Flow
+    waitForAllRetries: true
+    dependsOn:
+      - namespace: company.team
+        flowId: flaky
+        states:
+          - FAILED
+```
+
+`waitForAllRetries` defaults to `false` to preserve existing behavior. It works for both simple `states` triggers and `dependsOn` triggers.
+
+:::alert{type="info"}
+`waitForAllRetries` covers **flow-level retries** only. Task-level retries are not affected. The `RETRIED` terminal state produced by `behavior: CREATE_NEW_EXECUTION` is also not suppressed — only the intermediate `FAILED` states that precede a scheduled retry are skipped.
+:::
+
 ## Multiple triggers on the same flow
 
 ```yaml

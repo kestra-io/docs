@@ -10,6 +10,8 @@ Labels are key-value pairs attached to [flows](../01.flow/index.md) and [executi
 
 A label can be set on the flow definition, on individual execution instances, or both, making it possible to group across flows or distinguish between runs of the same flow.
 
+To find executions by a business value computed in the flow, such as an order ID, use [searchable outputs](../06.outputs/index.md#searchable-outputs) instead. A label holds one value per key, while a searchable output can hold many.
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/dwuj5jOHIOA?si=ioct3HALKVKojax4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

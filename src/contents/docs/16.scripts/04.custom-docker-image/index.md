@@ -193,3 +193,13 @@ tasks:
 The `pullPolicy: NEVER` property ensures that Kestra uses the local image instead of trying to pull it from DockerHub.
 
 If you want to run languages other than Python using a custom Docker image, here is an example with [Go](../00.languages/index.md#use-a-custom-docker-image-for-extra-dependencies).
+
+## Pinning images by digest
+
+For reproducible builds and supply-chain security, you can pin `containerImage` to a specific digest using the `image:tag@sha256:...` format:
+
+```yaml
+containerImage: cytopia/ansible:2.20-tools@sha256:b273f5b1c7af55cf885fa29fc83c949b250a8b08931558559af07f4daccb0223
+```
+
+Kestra passes the digest directly to the Docker daemon, which resolves the exact manifest rather than the mutable tag. This guarantees the same image is pulled on every execution, regardless of whether the tag has been updated since.

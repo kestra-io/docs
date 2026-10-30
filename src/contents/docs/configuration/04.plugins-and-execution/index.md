@@ -183,6 +183,16 @@ kestra:
 - `default-version`: controls which plugin version is selected when no explicit version is pinned; accepts `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or a specific version string
 - `worker-access` (EE): controls how workers fetch managed plugin artifacts. Set to `CONTROLLER` when a worker runs with dedicated storage, separate from the internal storage that the webserver and Worker Controller use. See [Dedicated-storage workers](../06.enterprise-and-advanced/index.md#dedicated-storage-workers).
 
+[Plugin endpoints](../../plugin-developer-guide/10.plugin-ui/index.md#running-backend-logic-with-plugin-endpoints) are configured under `kestra.plugins.endpoint`:
+
+```yaml
+kestra:
+  plugins:
+    endpoint:
+      enabled: true          # default; set to false to remove the endpoint API
+      max-body-size: 10485760 # default, in bytes; larger request bodies return 413
+```
+
 ## Execution behavior
 
 These settings affect how the platform behaves around tasks and executions globally. Use them for platform-wide operational defaults, not for flow-specific logic.
@@ -302,6 +312,24 @@ micronaut:
 ```
 
 Use Micronaut file watching only when you want local flow synchronization from disk into Kestra.
+
+### Executor loop intervals
+
+Two properties control how often the executor checks delayed executions and evaluates SLA deadlines:
+
+```yaml
+kestra:
+  executor:
+    execution-delay-loop-periodicity-ms: 1000
+    monitor-sla-loop-periodicity-ms: 1000
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `execution-delay-loop-periodicity-ms` | `1000` | Milliseconds between checks for executions whose start has been deferred. |
+| `monitor-sla-loop-periodicity-ms` | `1000` | Milliseconds between SLA monitor loop runs for deadline detection. |
+
+Lower values improve SLA accuracy and reduce deferred-execution start latency at the cost of slightly higher executor load. The defaults are appropriate for most deployments.
 
 ## Variables and rendering
 

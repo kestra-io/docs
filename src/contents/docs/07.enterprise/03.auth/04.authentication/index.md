@@ -48,13 +48,9 @@ On Kestra Cloud, contact support to change this setting.
 
 ## Basic authentication
 
-The default installation comes with no users defined. An administrator account is created with the CLI:
+The default installation comes with no users defined. Create the first administrator account with the [setup wizard](../../01.overview/02.setup/index.md) on first launch, or define it in the [`kestra.security.instance-owner`](../../05.instance/00.instance-owner/index.md#through-configuration) configuration.
 
-```bash
-./kestra auths users create --admin --username=<admin-username> --password=<admin-password> --tenant=<tenant-id>
-```
-
-When using `--admin`, `--tenant` is required to specify which tenant the admin role applies to. Omit `--tenant` only when creating a user without group or role assignments.
+After the first account exists, create additional users in the UI or with [`kestractl users create`](../../../kestra-cli/kestractl/index.md#users).
 
 ## Single sign-on (SSO)
 
@@ -76,6 +72,8 @@ micronaut:
 ```
 
 See the [Micronaut OIDC configuration guide](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration) for full details. See [Single Sign-On](../sso/index.md) to configure SSO with Google, Microsoft, and other providers.
+
+Kestra Enterprise Edition also supports SSO with a SAML 2.0 identity provider. See [SAML 2.0](../sso/saml/index.md).
 
 ## Passwordless (One-Time-Password)
 
