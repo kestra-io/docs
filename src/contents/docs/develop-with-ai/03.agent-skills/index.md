@@ -2,14 +2,13 @@
 title: "Agent Skills for Kestra: Teach Coding Agents to Write Flows"
 h1: Teach Your Coding Agent to Write and Deploy Kestra Flows
 sidebarTitle: Agent Skills
-sidebarGroup: Build with AI
 icon: /src/contents/docs/icons/ai.svg
 description: Give AI coding agents like Claude Code, Cursor, and Windsurf structured knowledge to generate Kestra flows and operate Kestra environments using kestractl.
 ---
 
 Teach your coding agent how to write valid Kestra flows, harden them, deploy them, and migrate to Kestra 2.0.
 
-This page is for developers who build flows in Claude Code, Cursor, Windsurf, Codex, or another coding agent. To get AI help inside the Kestra UI instead, use [AI Copilot](../01.ai-copilot/index.md). To run AI as part of a flow, see [LLM tasks and AI agents](../05.ai-agents/index.md).
+This page is for developers who build flows in Claude Code, Cursor, Windsurf, Codex, or another coding agent. To get AI help inside the Kestra UI instead, use [AI Copilot](../01.ai-copilot/index.md). To run AI as part of a flow, see [LLM tasks and AI agents](../../ai-orchestration/01.ai-agents/index.md).
 
 ## What Agent Skills are
 

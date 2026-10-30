@@ -21,7 +21,7 @@ Native AI capabilities built into the platform for flow authoring, agent orchest
 
 ### AI Copilot
 
-The [AI Copilot](./ai-tools/01.ai-copilot/index.md) has been redesigned as a persistent sidebar with three modes:
+The [AI Copilot](./develop-with-ai/01.ai-copilot/index.md) has been redesigned as a persistent sidebar with three modes:
 
 - **Ask** — answers questions about Kestra using docs-grounded responses
 - **Edit** — generates and iteratively refines flow YAML with a confirmation step before applying changes
@@ -31,15 +31,15 @@ Context pills attach the resource you are viewing automatically. The Copilot rea
 
 ### AI Agents
 
-[AI Agents](./ai-tools/05.ai-agents/index.md) let you build agentic pipelines using LLM task orchestration within flows. Agents emit usage metrics so you can track token consumption per execution.
+[AI Agents](./ai-orchestration/01.ai-agents/index.md) let you build agentic pipelines using LLM task orchestration within flows. Agents emit usage metrics so you can track token consumption per execution.
 
 ### AI RAG Workflows
 
-[RAG Workflows](./ai-tools/06.ai-rag-workflows/index.md) provide native support for retrieval-augmented generation pipelines, including vector store integration and chunking tasks.
+[RAG Workflows](./ai-orchestration/02.ai-rag-workflows/index.md) provide native support for retrieval-augmented generation pipelines, including vector store integration and chunking tasks.
 
 ### MCP Server and MCP Tool Trigger
 
-The [Kestra MCP server](./ai-tools/07.mcp-server/index.md) exposes flows as tools AI agents can call. The complementary [MCP Tool Trigger](./05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) lets flows be invoked directly by MCP-compatible agents. [Agent Skills](./ai-tools/03.agent-skills/index.md) extend this with reusable tool definitions.
+A [flow MCP server](./ai-orchestration/03.mcp-server/index.md) exposes flows as tools AI agents can call. The complementary [MCP Tool Trigger](./05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) lets flows be invoked directly by MCP-compatible agents. [Agent Skills](./develop-with-ai/03.agent-skills/index.md) extend this with reusable tool definitions.
 
 ---
 

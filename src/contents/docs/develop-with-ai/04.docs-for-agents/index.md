@@ -2,7 +2,6 @@
 title: Kestra Resources for AI Agents and LLMs
 h1: Docs for Agents
 sidebarTitle: Docs for Agents
-sidebarGroup: Build with AI
 icon: /src/contents/docs/icons/ai.svg
 description: "Machine-readable resources for AI agents and LLMs: the Docs MCP server, Agent Skills, llms.txt, Markdown docs, plugin schemas, and OpenAPI specs."
 ---
@@ -27,7 +26,7 @@ https://kestra.io/.well-known/mcp.json
 https://api.kestra.io/v1/mcp
 ```
 
-No authentication required for the public server. For per-tool configuration, see [Docs MCP server](../02.kestra-mcp-resources/index.md). This server serves documentation only; to call your own flows from an agent, see [Flow MCP servers](../07.mcp-server/index.md).
+No authentication required for the public server. For per-tool configuration, see [Docs MCP server](../02.kestra-mcp-resources/index.md). This server serves documentation only; to call your own flows from an agent, see [Flow MCP servers](../../ai-orchestration/03.mcp-server/index.md).
 
 ## Agent Skills
 

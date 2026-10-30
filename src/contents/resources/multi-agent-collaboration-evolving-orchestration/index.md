@@ -55,7 +55,7 @@ The orchestrator’s role includes:
 *   **Adaptive Sequencing:** Determining the best order of agent execution based on the evolving context of the problem.
 *   **Dynamic Prioritization:** Re-prioritizing tasks and agents in real-time to optimize for the desired outcome.
 
-This paradigm allows for a flexible and powerful way to manage complex [AI workflows](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task) and is a foundational concept for building robust systems of [AI agents](https://kestra.io/docs/ai-tools/ai-agents).
+This paradigm allows for a flexible and powerful way to manage complex [AI workflows](https://kestra.io/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task) and is a foundational concept for building robust systems of [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents).
 
 ### Adapting agents with reinforcement learning
 
@@ -127,7 +127,7 @@ Building, managing, and evolving complex multi-agent systems requires a robust c
 Here’s why Kestra is uniquely suited for evolving orchestration:
 *   **Declarative YAML:** Workflows are defined in simple, auditable YAML, making it easy to version, review, and manage the evolution of your agent strategies.
 *   **Polyglot Execution:** Agents can be written in any language—Python, Go, Node.js, or even as simple shell scripts—and orchestrated seamlessly.
-*   **Native AI Capabilities:** With a built-in [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) and native AI agent plugins, Kestra is designed for the modern AI stack.
+*   **Native AI Capabilities:** With a built-in [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot) and native AI agent plugins, Kestra is designed for the modern AI stack.
 *   **Unified Platform:** Orchestrate data pipelines, infrastructure, and AI workflows from a single control plane, providing end-to-end visibility.
 *   **GitOps-Ready:** Full integration with Git allows for CI/CD, version control, and auditable rollbacks of your orchestration logic.
 

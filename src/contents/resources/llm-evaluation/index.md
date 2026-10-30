@@ -32,7 +32,7 @@ Before deploying any LLM-powered application, a thorough evaluation is not just 
 
 LLM evaluation is the systematic process of assessing the performance, quality, and safety of a large language model. Unlike traditional machine learning evaluation, which often relies on clear-cut metrics like accuracy or F1-score on a labeled dataset, LLM evaluation is far more complex. The generative nature of LLMs means there is often no single "correct" answer. Instead, evaluation must consider a spectrum of qualities, including fluency, coherence, relevance, factual accuracy, and the absence of harmful content.
 
-The primary goal is to move beyond subjective "eyeballing" of outputs to a structured, repeatable, and scalable methodology. This involves testing the model against a wide range of inputs and scenarios it will likely encounter in production. An effective evaluation framework provides a clear picture of a model's strengths and weaknesses, enabling developers to select the right model for a given task, fine-tune its performance, and implement necessary guardrails. For complex [AI workflows](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task), this evaluation process becomes an integral part of the development lifecycle, ensuring each component of an AI system is validated.
+The primary goal is to move beyond subjective "eyeballing" of outputs to a structured, repeatable, and scalable methodology. This involves testing the model against a wide range of inputs and scenarios it will likely encounter in production. An effective evaluation framework provides a clear picture of a model's strengths and weaknesses, enabling developers to select the right model for a given task, fine-tune its performance, and implement necessary guardrails. For complex [AI workflows](https://kestra.io/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task), this evaluation process becomes an integral part of the development lifecycle, ensuring each component of an AI system is validated.
 
 ### Why LLM Evaluation is Crucial for AI Deployment
 
@@ -93,7 +93,7 @@ Evaluation criteria must be tailored to the specific application. A one-size-fit
 *   **Summarization**: Key metrics include coverage (does the summary include all key points?), accuracy (does it misrepresent the source?), and conciseness.
 *   **Code Generation**: Evaluation goes beyond simple text quality. It must include functional correctness (does the code run and produce the correct output?), efficiency, and adherence to coding standards.
 *   **RAG (Retrieval-Augmented Generation)**: This requires a multi-stage evaluation. You need to assess the retriever (did it find the correct documents?), the generator (did it use the retrieved context accurately?), and the overall response quality. A well-orchestrated [RAG pipeline](https://kestra.io/resources/ai/rag-pipeline) will have evaluation steps built into its workflow. Understanding the underlying [RAG architecture](https://kestra.io/resources/ai/rag-architecture) is essential when designing what to evaluate at each stage.
-*   **Agentic Workflows**: Evaluating AI agents is a frontier. It involves assessing not just the final output but the entire reasoning process, including tool selection, multi-step planning, and the ability to recover from errors. The safety and reliability of [AI agents](https://kestra.io/docs/ai-tools/ai-agents) require particularly rigorous testing. See our guide to [agentic workflows](https://kestra.io/resources/ai/agentic-workflows) for more on how these systems are structured and orchestrated.
+*   **Agentic Workflows**: Evaluating AI agents is a frontier. It involves assessing not just the final output but the entire reasoning process, including tool selection, multi-step planning, and the ability to recover from errors. The safety and reliability of [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) require particularly rigorous testing. See our guide to [agentic workflows](https://kestra.io/resources/ai/agentic-workflows) for more on how these systems are structured and orchestrated.
 
 ## Key Metrics for Quantifying LLM Performance
 
@@ -184,7 +184,7 @@ The community is actively working to standardize best practices. Resources from 
 
 ### Agent Evaluation in the Context of LLMs
 
-Evaluating autonomous [AI agents](https://kestra.io/docs/ai-tools/ai-agents) introduces a new layer of complexity. Unlike simple request-response models, agents perform multi-step tasks, use tools, and interact with external environments.
+Evaluating autonomous [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) introduces a new layer of complexity. Unlike simple request-response models, agents perform multi-step tasks, use tools, and interact with external environments.
 
 Evaluating an agent requires assessing:
 *   **Task Success**: Did the agent ultimately achieve its goal?

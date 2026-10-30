@@ -3,7 +3,6 @@ title: "Flow MCP Servers: Expose Kestra Flows as AI Tools"
 h1: Expose Your Flows as Tools for External AI Agents
 description: Expose Kestra flows as MCP tools that Claude, Cursor, and other AI agents can call. Create MCP servers, choose authentication, and connect clients.
 sidebarTitle: Flow MCP Servers
-sidebarGroup: Flows as AI tools
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 2.0.0"
 editions: ["OSS", "EE", "Cloud"]
@@ -12,7 +11,7 @@ docId: mcp-servers
 
 Expose your Kestra flows as named tools that external AI agents discover and call over MCP.
 
-This page is for Kestra administrators and flow authors who want Claude, Cursor, or another AI agent to run their flows. If you want your coding agent to look up Kestra plugin schemas and docs while you write flows, use the [Docs MCP server](../02.kestra-mcp-resources/index.md) instead.
+This page is for Kestra administrators and flow authors who want Claude, Cursor, or another AI agent to run their flows. If you want your coding agent to look up Kestra plugin schemas and docs while you write flows, use the [Docs MCP server](../../develop-with-ai/02.kestra-mcp-resources/index.md) instead.
 
 A flow MCP server is a tenant-scoped entity that uses the [Model Context Protocol](https://modelcontextprotocol.io). Any flow with an [`McpToolTrigger`](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) is registered as a named tool on its target server. AI agents discover the tool list at connection time, so adding or removing triggers takes effect without restarting clients.
 
@@ -25,7 +24,7 @@ Kestra supports MCP in both directions:
 | **Kestra as MCP server** | `McpToolTrigger` and a flow MCP server | External AI agents (Claude, Cursor) call your flows as tools |
 | **Kestra as MCP client** | MCP client tasks (`SseMcpClient`, `StreamableHttpMcpClient`, `StdioMcpClient`, `DockerMcpClient`) | Your flows call external MCP servers as part of an `AIAgent` task |
 
-This page covers Kestra as an MCP server. To call external MCP servers from a flow, see [MCP clients](../05.ai-agents/index.md#mcp-clients).
+This page covers Kestra as an MCP server. To call external MCP servers from a flow, see [MCP clients](../01.ai-agents/index.md#mcp-clients).
 
 ## Default server
 

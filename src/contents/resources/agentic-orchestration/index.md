@@ -95,7 +95,7 @@ An agentic workflow is the specific sequence of steps that one or more agents ex
 
 ### Orchestration: the conductor of agentic workflows
 
-Orchestration is the active management and coordination of these workflows. If the workflow is the recipe, the orchestrator is the head chef who keeps all the cooks (agents) working together, supplied with the right ingredients (data), and delivering their part on time. The orchestrator initiates the workflow, monitors its progress, handles exceptions, and ensures the final goal is met. Kestra's [AI Agents](/docs/ai-tools/ai-agents), for instance, operate within an orchestration framework that governs their execution and interaction with other systems.
+Orchestration is the active management and coordination of these workflows. If the workflow is the recipe, the orchestrator is the head chef who keeps all the cooks (agents) working together, supplied with the right ingredients (data), and delivering their part on time. The orchestrator initiates the workflow, monitors its progress, handles exceptions, and ensures the final goal is met. Kestra's [AI Agents](/docs/ai-orchestration/ai-agents), for instance, operate within an orchestration framework that governs their execution and interaction with other systems.
 
 ## Orchestration vs. choreography in agentic AI: choosing the right model
 

@@ -149,7 +149,7 @@ Kestra is language-agnostic. A single workflow can contain tasks written in Pyth
 
 ### Event-driven and human-in-the-loop capabilities
 
-Workflows can be triggered by schedules, webhooks, file detections, or messages from systems like Kafka. This event-driven capability allows for building reactive, real-time automation. Kestra also supports human-in-the-loop workflows, where a process can pause to wait for manual approval before continuing. This is essential for critical operations and for orchestrating advanced processes like those involving [AI agents](/docs/ai-tools/ai-agents).
+Workflows can be triggered by schedules, webhooks, file detections, or messages from systems like Kafka. This event-driven capability allows for building reactive, real-time automation. Kestra also supports human-in-the-loop workflows, where a process can pause to wait for manual approval before continuing. This is essential for critical operations and for orchestrating advanced processes like those involving [AI agents](/docs/ai-orchestration/ai-agents).
 
 ### Complementing existing CI/CD tools, not replacing them
 

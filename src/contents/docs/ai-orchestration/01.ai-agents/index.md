@@ -3,14 +3,13 @@ title: LLM Tasks and AI Agents in Kestra Flows
 h1: Call LLMs and Run AI Agents Inside Your Flows
 description: Add AI to Kestra flows with LLM tasks for fixed steps and AI agents that choose their own tools. Compare both, set up providers, and adapt the examples.
 sidebarTitle: LLM Tasks and AI Agents
-sidebarGroup: AI in your flows
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 1.0.0"
 ---
 
 Call a language model as a task in your flow, or give an `AIAgent` task a goal and the tools to reach it.
 
-This page is for flow authors who want a model to do work during an execution. To get AI help writing flows, use [AI Copilot](../01.ai-copilot/index.md) or [your own coding agent](../index.mdx#build-and-operate-kestra-with-ai). To ground answers in your own documents, see [RAG workflows](../06.ai-rag-workflows/index.md).
+This page is for flow authors who want a model to do work during an execution. To get AI help writing flows, use [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) or [your own coding agent](../../develop-with-ai/index.mdx#use-your-own-coding-agent). To ground answers in your own documents, see [RAG workflows](../02.ai-rag-workflows/index.md).
 
 ## Choose an LLM task or an AI agent
 
@@ -396,7 +395,7 @@ A single `Skill` tool can define multiple skills. Each skill must have a unique 
 
 ### MCP clients
 
-Kestra supports MCP in two directions. These clients cover the **Kestra-as-client** direction: your flow calls tools on an *external* MCP server. To go the other way and expose your flows *as* MCP tools for external AI agents, see [flow MCP servers](../07.mcp-server/index.md) and the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md).
+Kestra supports MCP in two directions. These clients cover the **Kestra-as-client** direction: your flow calls tools on an *external* MCP server. To go the other way and expose your flows *as* MCP tools for external AI agents, see [flow MCP servers](../03.mcp-server/index.md) and the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md).
 
 Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server to expose its tools:
 

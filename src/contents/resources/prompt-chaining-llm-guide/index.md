@@ -34,7 +34,7 @@ Prompt chaining is a technique in prompt engineering where a complex task is dec
 
 At its core, prompt chaining is a conversational workflow. The output from the first prompt is captured and used as part of the input for the second prompt. This process continues down the chain, with each step building upon the last. This creates a stateful, multi-turn interaction that mimics a structured thought process.
 
-Think of it as a relay race. A single prompt is like asking one runner to sprint a full mile. Prompt chaining is like having four runners each run a 400-meter leg, passing the baton between them. Each runner can focus on their specific leg of the race, leading to a faster and more efficient overall result. For LLMs, this focused, sequential approach is key to building complex [AI workflows](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task).
+Think of it as a relay race. A single prompt is like asking one runner to sprint a full mile. Prompt chaining is like having four runners each run a 400-meter leg, passing the baton between them. Each runner can focus on their specific leg of the race, leading to a faster and more efficient overall result. For LLMs, this focused, sequential approach is key to building complex [AI workflows](https://kestra.io/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task).
 
 ### Why prompt chaining matters for LLMs
 
@@ -72,7 +72,7 @@ The primary difference lies in control, debuggability, and reliability.
 | **Reliability** | Lower for complex tasks. Prone to hallucination or skipping steps. | Higher. Each step is simpler and less ambiguous, leading to more consistent results. |
 | **Flexibility** | Low. The entire prompt must be rewritten to change the logic. | High. Prompts can be swapped, reordered, or have new steps inserted easily. |
 
-While a single prompt might seem faster to write initially, the iterative development and debugging process for a structured chain is far more efficient for complex tasks, especially when using tools like an [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) to generate the initial workflow structure.
+While a single prompt might seem faster to write initially, the iterative development and debugging process for a structured chain is far more efficient for complex tasks, especially when using tools like an [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot) to generate the initial workflow structure.
 
 ### Passing output as input: a core concept
 
@@ -91,7 +91,7 @@ Prompt chaining makes it feasible to automate tasks that are far beyond the reac
 *   **Multi-Stage Data Analysis:** An initial prompt can write a SQL query to fetch data, a second prompt can analyze the results to identify trends, and a third can generate a natural-language explanation of those trends.
 *   **Dynamic Code Generation:** A chain can take a user story, break it down into functional requirements, write the code for each function, and then generate unit tests.
 
-This modular approach is the key to building complex, multi-step [AI tools](https://kestra.io/docs/ai-tools).
+This modular approach is the key to building complex, multi-step [AI tools](https://kestra.io/docs/ai-orchestration).
 
 ### Enhancing reasoning and traceability
 
@@ -157,7 +157,7 @@ From content creation to data processing, prompt chains automate multi-step proc
 4.  If the sentiment is positive, use a third prompt to draft a social media post about it.
 5.  Post the draft to a Slack channel for approval.
 
-This pattern is especially powerful when combined with techniques like Retrieval-Augmented Generation (RAG), where one step retrieves relevant documents and the next uses them to generate an informed response. Learn more about how to structure a [RAG pipeline](/resources/ai/rag-pipeline) or dive into the broader [RAG architecture](/resources/ai/rag-architecture) patterns. Kestra provides native support for building these complex [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows).
+This pattern is especially powerful when combined with techniques like Retrieval-Augmented Generation (RAG), where one step retrieves relevant documents and the next uses them to generate an informed response. Learn more about how to structure a [RAG pipeline](/resources/ai/rag-pipeline) or dive into the broader [RAG architecture](/resources/ai/rag-architecture) patterns. Kestra provides native support for building these complex [RAG workflows](https://kestra.io/docs/ai-orchestration/ai-rag-workflows).
 
 ### Human-in-the-loop prompt chaining
 
@@ -247,7 +247,7 @@ For complex tasks, a chain can be more token-efficient than a single large promp
 
 Prompt chaining is not an isolated technique; it's a foundational pattern that integrates with other advanced AI strategies. It's the mechanism you use to implement:
 *   **Retrieval-Augmented Generation (RAG):** A two-step chain of "retrieve documents" then "synthesize an answer."
-*   **Agentic AI:** An [AI agent](https://kestra.io/docs/ai-tools/ai-agents) is essentially executing a dynamic prompt chain, where it decides the next prompt (or "tool use") based on the output of the previous one. For a deeper look at how these systems behave at scale, see [agentic orchestration](/resources/ai/agentic-orchestration) and [multi-agent systems](/resources/ai/multi-agent-system).
+*   **Agentic AI:** An [AI agent](https://kestra.io/docs/ai-orchestration/ai-agents) is essentially executing a dynamic prompt chain, where it decides the next prompt (or "tool use") based on the output of the previous one. For a deeper look at how these systems behave at scale, see [agentic orchestration](/resources/ai/agentic-orchestration) and [multi-agent systems](/resources/ai/multi-agent-system).
 
 ## Future trends in prompt chaining and AI
 

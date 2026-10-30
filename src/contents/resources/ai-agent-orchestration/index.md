@@ -70,7 +70,7 @@ Kestra provides a declarative, event-driven platform that is uniquely suited for
 
 ### Building Agents with Tools, Memory, and Goals
 
-In Kestra, an [AI agent](/docs/ai-tools/ai-agents) is not just a call to an LLM; it's a configurable task that combines a large language model with memory and a set of tools.
+In Kestra, an [AI agent](/docs/ai-orchestration/ai-agents) is not just a call to an LLM; it's a configurable task that combines a large language model with memory and a set of tools.
 
 - **Tools:** These are the skills an agent can use to interact with the outside world. A tool could be a simple shell command, a database query, an API call, or even another Kestra flow. This allows you to ground your agents in reality, giving them access to the specific data and systems they need to accomplish their goals.
 - **Memory:** Kestra agents can be configured with memory, allowing them to retain context from previous steps or conversations. This is crucial for multi-step tasks where information must be carried forward.
@@ -144,7 +144,7 @@ Agents often require access to sensitive data and systems. Ensuring they operate
 
 ### The Evolving Landscape of AI Agent Frameworks
 
-The AI space is moving incredibly fast, with new models and frameworks emerging constantly. An effective orchestration platform must be vendor-agnostic, allowing you to integrate the best tools for the job without being locked into a single ecosystem. Kestra's plugin-based architecture, with {totalPlugins}+ integrations, ensures you can connect to any LLM, vector database, or AI service. This flexibility allows you to evolve your AI stack without having to re-architect your core orchestration logic. Kestra's [agent skills](/docs/ai-tools/agent-skills) further extend this by allowing agents to operate Kestra itself, creating powerful self-managing workflows.
+The AI space is moving incredibly fast, with new models and frameworks emerging constantly. An effective orchestration platform must be vendor-agnostic, allowing you to integrate the best tools for the job without being locked into a single ecosystem. Kestra's plugin-based architecture, with {totalPlugins}+ integrations, ensures you can connect to any LLM, vector database, or AI service. This flexibility allows you to evolve your AI stack without having to re-architect your core orchestration logic. Kestra's [agent skills](/docs/develop-with-ai/agent-skills) further extend this by allowing agents to operate Kestra itself, creating powerful self-managing workflows.
 
 ## Implementing AI Agent Orchestration in Your Enterprise
 

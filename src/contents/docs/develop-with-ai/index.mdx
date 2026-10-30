@@ -1,29 +1,23 @@
 ---
-title: "AI in Kestra: Copilot, Coding Agents, MCP & AI Agents"
-h1: Choose How You Use AI with Kestra
-sidebarTitle: AI Tools
+title: "Develop with AI in Kestra: Copilot, Coding Agents & MCP"
+h1: Build and Operate Kestra with AI
+sidebarTitle: Develop with AI
 icon: /src/contents/docs/icons/ai.svg
-description: "Find the right AI tool for your job: AI Copilot in the Kestra UI, your coding agent with MCP and Agent Skills, AI inside your flows, or flows as MCP tools."
+description: "Use AI to build and operate Kestra: AI Copilot in the Kestra UI, or your own coding agent with the Docs MCP server, Agent Skills, and kestractl."
 ---
 
 import ChildCard from "~/components/docs/ChildCard.astro"
 import PluginCount from "~/components/content/PluginCount.vue"
 
-Find the AI tool that matches what you are trying to do with Kestra.
+Use AI to write, fix, and operate flows, from the Kestra UI or from your own coding agent.
 
-AI shows up in Kestra in three separate ways. Pick the one that matches your goal:
-
-| You want to… | Start here |
-|---|---|
-| Get AI help building, fixing, or operating flows | [Build and operate Kestra with AI](#build-and-operate-kestra-with-ai) |
-| Call a model or run an AI agent as part of a flow | [Run AI inside your flows](#run-ai-inside-your-flows) |
-| Let Claude, Cursor, or another external AI agent run your flows | [Let external AI agents run your flows](#let-external-ai-agents-run-your-flows) |
+This section is for anyone who builds or runs flows. The AI here helps you do the work and never runs as part of a flow. To call a model, run an AI agent, or expose flows to external agents at runtime, see [AI Orchestration](../ai-orchestration/index.mdx).
 
 None of this is required. Every flow you can generate with AI, you can also write in YAML or build in the No-Code editor.
 
-## Build and operate Kestra with AI
+## Choose a tool
 
-Here the AI helps you write and run flows. It never runs as part of a flow. Start from where you already work:
+Start from where you already work:
 
 | Where you work | Use | What it gives you |
 | --- | --- | --- |
@@ -32,7 +26,7 @@ Here the AI helps you write and run flows. It never runs as part of a flow. Star
 | Scripts and CI | [`kestractl`](../kestra-cli/kestractl/index.md) | Deterministic flow, execution, and namespace operations with no AI involved |
 | Your own AI tool or integration | [Docs for Agents](./04.docs-for-agents/index.md) | Every machine-readable Kestra resource: `llms.txt`, Markdown docs, plugin schemas, and OpenAPI specs |
 
-### Use your own coding agent
+## Use your own coding agent
 
 If your flows live in Git next to application code, you can stay in your coding agent. Three pieces work together, and each covers a different gap:
 
@@ -41,18 +35,5 @@ If your flows live in Git next to application code, you can stay in your coding 
 - **[`kestractl`](../kestra-cli/kestractl/index.md) to act.** The Kestra CLI that the agent calls to validate, deploy, and run flows on your instance. Without it, the agent can write flows but can't deploy them.
 
 To set up all three, connect the [Docs MCP server](./02.kestra-mcp-resources/index.md#connect-the-mcp-server), [install the skills](./03.agent-skills/index.md#setup), and [configure `kestractl`](../kestra-cli/kestractl/index.md). The [Agent Skills examples](./03.agent-skills/index.md#example-workflows) show a single prompt that writes, validates, and deploys a flow.
-
-## Run AI inside your flows
-
-Here the AI is part of what you orchestrate. A task calls a model, an agent decides what to do next, or a flow answers questions from your documents.
-
-- **[LLM tasks and AI agents](./05.ai-agents/index.md#call-an-llm-as-a-task)**: call a model at a fixed step to summarize, classify, or extract structured data, or give an `AIAgent` task a goal and tools and let it choose the steps.
-- **[RAG workflows](./06.ai-rag-workflows/index.md)**: ground model answers in your own documents or in live web search results.
-
-## Let external AI agents run your flows
-
-[Flow MCP servers](./07.mcp-server/index.md) turn Kestra flows into tools that Claude Desktop, Claude Code, Cursor, and other MCP-compatible agents can call. Add an `McpToolTrigger` to a flow and it is registered as a named tool, with its inputs and outputs described as a JSON schema.
-
-This is the opposite direction from the [Docs MCP server](./02.kestra-mcp-resources/index.md): instead of a coding agent reading Kestra documentation, an external agent runs your flows on your instance.
 
 <ChildCard />

@@ -18,7 +18,6 @@ export const collections = {
                 h1: z.string().optional(),
                 updated: z.coerce.date().optional(),
                 sidebarTitle: z.string().optional(),
-                sidebarGroup: z.string().optional(),
                 description: z.string().optional(),
                 icon: z.string().optional(),
                 release: z.string().optional(),

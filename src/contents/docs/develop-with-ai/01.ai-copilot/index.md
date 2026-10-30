@@ -3,7 +3,6 @@ title: "AI Copilot in Kestra: Build, Debug, and Plan Flows"
 h1: Build, Debug, and Plan with AI Copilot in the Kestra UI
 description: Use Kestra AI Copilot to build and edit flows, diagnose failed executions, and run approved multi-step plans from a chat sidebar in the Kestra UI.
 sidebarTitle: AI Copilot
-sidebarGroup: Build with AI
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 2.0.0"
 docId: ai-copilot

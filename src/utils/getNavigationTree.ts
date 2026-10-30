@@ -16,8 +16,12 @@ export const navigationTree = {
         "Workflow Components",
         "Concepts",
         "Multi-Language Script Tasks",
-        "AI Tools",
+        "AI Orchestration",
         "Version Control & CI/CD",
+        "Develop with AI",
+        // Split into AI Orchestration and Develop with AI; kept so older
+        // versioned docs, which fall back to this map, still group their page.
+        "AI Tools",
         "Plugin Developer Guide",
         "Use Cases",
         "How-to Guides",
@@ -108,23 +112,10 @@ function recursivelyBuildChildren(
         children.reverse()
     }
 
-    // A child with `sidebarGroup` frontmatter starts a labeled group when its
-    // group differs from the previous child's. The label is a non-link item,
-    // so page URLs stay flat.
-    const items: NavigationItem[] = []
-    let currentGroup: string | undefined
-    for (const child of children) {
-        const group = child.data.sidebarGroup
-        if (group && group !== currentGroup) {
-            items.push({ title: group, path: "#", isSection: true, isGroup: true })
-        }
-        currentGroup = group
-        items.push({
-            title: child.data.title,
-            sidebarTitle: child.data.sidebarTitle,
-            path: `/docs/${child.id}`,
-            children: recursivelyBuildChildren(child.id, docsPages),
-        })
-    }
-    return items
+    return children.map((child) => ({
+        title: child.data.title,
+        sidebarTitle: child.data.sidebarTitle,
+        path: `/docs/${child.id}`,
+        children: recursivelyBuildChildren(child.id, docsPages),
+    }))
 }

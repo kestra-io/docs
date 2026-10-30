@@ -73,7 +73,7 @@ AI is transforming IT automation from a set of pre-defined rules into an intelli
 
 *   **AI Copilots:** Natural language interfaces that allow users to describe a workflow in plain English, which the AI then translates into valid code or YAML. This dramatically lowers the barrier to entry and accelerates development.
 *   **Agentic Orchestration:** AI agents can now execute complex, multi-step tasks to achieve a specific goal. An automation platform provides the governance layer for these agents, allowing them to interact with tools (like web search or code execution) and memory in a secure, auditable way.
-*   **Intelligent Decision-Making:** AI models can be used within a workflow to analyze data and make decisions, such as routing an incident ticket to the most qualified engineer based on its content or predicting potential system failures based on telemetry data. Explore how to build [AI workflows in Kestra](https://kestra.io/docs/ai-tools/ai-agents#call-an-llm-as-a-task).
+*   **Intelligent Decision-Making:** AI models can be used within a workflow to analyze data and make decisions, such as routing an incident ticket to the most qualified engineer based on its content or predicting potential system failures based on telemetry data. Explore how to build [AI workflows in Kestra](https://kestra.io/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task).
 
 ### Seamless Integration with Existing Systems and Tools
 
@@ -201,11 +201,11 @@ The field of IT automation is rapidly evolving, driven by advancements in AI and
 
 ### AI's Evolving Role in Enhancing Automation
 
-AI is no longer just a feature; it's becoming a core component of IT automation. We are moving towards a model where AI can not only assist in building workflows but also act as an autonomous agent within them. Platforms are now providing the guardrails for [AI agents](https://kestra.io/docs/ai-tools/ai-agents) to perform complex tasks, from diagnosing production issues to optimizing infrastructure costs, all within a governed and auditable framework. This shift is turning the automation platform into the essential control plane for the AI era.
+AI is no longer just a feature; it's becoming a core component of IT automation. We are moving towards a model where AI can not only assist in building workflows but also act as an autonomous agent within them. Platforms are now providing the guardrails for [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) to perform complex tasks, from diagnosing production issues to optimizing infrastructure costs, all within a governed and auditable framework. This shift is turning the automation platform into the essential control plane for the AI era.
 
 ### The Human Element: AI as an Enhancer, Not a Replacer
 
-Despite the rise of autonomous systems, the human element remains critical. AI is not replacing IT professionals; it's augmenting their capabilities. By handling the repetitive and predictable tasks, automation frees up engineers to focus on strategic planning, complex problem-solving, and innovation. An [AI copilot](https://kestra.io/docs/ai-tools/ai-copilot) can help an engineer write a workflow in seconds, but the engineer's expertise is still needed to validate the logic and ensure it aligns with business goals.
+Despite the rise of autonomous systems, the human element remains critical. AI is not replacing IT professionals; it's augmenting their capabilities. By handling the repetitive and predictable tasks, automation frees up engineers to focus on strategic planning, complex problem-solving, and innovation. An [AI copilot](https://kestra.io/docs/develop-with-ai/ai-copilot) can help an engineer write a workflow in seconds, but the engineer's expertise is still needed to validate the logic and ensure it aligns with business goals.
 
 ### Emerging Trends and Next-Generation Capabilities in IT Automation
 
