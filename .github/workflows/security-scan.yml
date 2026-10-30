@@ -34,6 +34,8 @@ jobs:
       components: |
         frontend=**
       npm-lockfile: package-lock.json
+      exclude-path: |
+        src/contents/**
       metadata: ${{ github.event.inputs.metadata }}
     secrets:
       OTLP_ENDPOINT: ${{ secrets.OTLP_ENDPOINT }}
