@@ -200,31 +200,23 @@ If the LDAP server is unreachable or misconfigured, group sync fails silently �
 
 ## LDAP users in Kestra
 
-On first login with LDAP, Kestra validates the user's credentials against the directory. When no Kestra user has this email yet, Kestra creates one only if something gives them access:
+On first login with LDAP, Kestra validates the user's credentials against the directory. When no Kestra user has this email yet, Kestra creates one only if one of the following gives them access:
 
 - One of the user's LDAP groups exists in Kestra, in any tenant.
 - A tenant has a [default role](../../../../configuration/05.security-and-secrets/index.md#default-role).
-- The user has a pending [invitation](../../invitations/index.md), which is accepted.
+- The user has a pending [invitation](../../invitations/index.md). Kestra accepts it at login.
 
 Otherwise, the login is refused and no user is created. If an account already exists, the user authenticates with their LDAP credentials.
 
-Group sync never creates groups. Create the groups in Kestra first, with the same names as the LDAP groups, and bind them to roles in each tenant (see [RBAC](../../rbac/index.md)). At every login:
+Group sync never creates groups. Create the groups in Kestra first, with the same names as the LDAP groups, and bind them to roles in each tenant (see [RBAC](../../rbac/index.md)). At every login, the user joins the existing Kestra groups that match their LDAP groups and leaves the ones LDAP no longer returns, following the [group sync rules](../index.md#group-sync). Leaving the last group that gave them access to a tenant can remove their access to that tenant.
 
-- The user joins every Kestra group, in every tenant, whose name matches one of their LDAP groups.
-- The user leaves the groups they joined through LDAP and that LDAP no longer returns. Group memberships added manually in Kestra are kept.
-- When the user leaves the last group that gave them access to a tenant, they lose access to that tenant, unless a role is bound to them directly there, including a default role, or they are provisioned in that tenant by [SCIM](../../scim/index.mdx).
-
-After group sync, a returning user must still have access to a tenant, or the login is refused.
-
-Group assignments sync only at login — if a user is added to a group in LDAP after their first login, they must log out and back in to pick up the new membership. Any user authenticated via LDAP shows `LDAP` in the **Login & API Tokens** column on the **IAM → Users** page.
+Group assignments sync only at login. If a user is added to a group in LDAP after their first login, they must log out and back in to pick up the new membership. Any user authenticated via LDAP shows `LDAP` in the **Login & API Tokens** column on the **IAM → Users** page.
 
 :::alert{type="info"}
-This behavior applies from Kestra 2.0.9. Until 2.0.8, LDAP created every user at first login and created their LDAP groups in every tenant. See the [migration guide](../../../../11.migration-guide/v2.0.0/idp-groups-existing-only/index.md).
+Before 2.0.9, LDAP created every user at first login and created their LDAP groups in every tenant. See the [migration guide](../../../../11.migration-guide/v2.0.0/idp-groups-existing-only/index.md).
 :::
 
 ![IAM Users tab showing LDAP as the authentication method for a user](./ldap-1.png)
-
-Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization (typically at the next login).
 
 :::alert{type="info"}
 Users who log in via SSO with `GROUP_SYNC_ONLY` mode show their SSO provider in the **Login & API Tokens** column on the **IAM → Users** page, not `LDAP`. The LDAP connection is used only to resolve group memberships in the background.
