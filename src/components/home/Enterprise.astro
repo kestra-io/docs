@@ -1,0 +1,45 @@
+{
+    /* The Enterprise insert, empty for now: a grey band on the hairline
+    grid, holding its place after the AI block until its content is ready. */
+}
+<section class="enterprise" aria-label="Kestra Enterprise">
+    <div class="container-xl">
+        <div class="grid">
+            <p class="placeholder">Enterprise</p>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    // Grey, so it reads apart from the black AI block above and the white
+    // Replace block below.
+    .enterprise {
+        position: relative;
+        background: var(--ks-background-secondary);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    // The rails of the hairline grid.
+    .grid {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36rem;
+        border-left: 1px solid var(--ks-border-primary);
+        border-right: 1px solid var(--ks-border-primary);
+
+        @include media-breakpoint-down(md) {
+            min-height: 24rem;
+        }
+    }
+
+    // A quiet caption so reviewers know the band is waiting for content.
+    .placeholder {
+        margin: 0;
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ks-content-tertiary);
+    }
+</style>

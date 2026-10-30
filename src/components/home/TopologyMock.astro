@@ -1,0 +1,892 @@
+---
+/**
+ * An executed Kestra 2.0 topology, drawn in HTML after the product's node
+ * design: plugin icon, task id and type, a status border with its progress
+ * line, and the duration (and artifact) pills under each node, above a
+ * Gantt strip. When on screen it plays the run: each task goes running, then
+ * success, and its dashed edge carries the run on to the next task. The
+ * progress line in a node sits where that task's Gantt bar sits. Without
+ * JavaScript, or with reduced motion, it shows the snapshot in the props.
+ */
+import { Icon } from "astro-icon/components"
+import { API_URL } from "astro:env/client"
+import TopologyNode from "./TopologyNode.astro"
+
+type Status = "success" | "running" | "created"
+
+export interface TopologyNode {
+    id: string
+    /** Short type shown under the id. */
+    type: string
+    /** Plugin class after io.kestra.plugin., for its icon. */
+    plugin: string
+    /** Fallback icon when the plugin icon cannot be fetched. */
+    fallback: string
+    x: number
+    y: number
+    /** State in the static snapshot. */
+    status: Status
+    /** Duration as shown in the pills and the Gantt. */
+    duration: string
+    /** Duration in seconds, which places the task in the run. */
+    seconds: number
+    artifacts?: number
+    runner?: string
+}
+
+export interface Props {
+    /** In run order; each node hands over to the next. */
+    nodes: TopologyNode[]
+    label: string
+    /** Shows the Gantt strip under the graph; off for now, the graph alone
+     * tells the run. */
+    gantt?: boolean
+}
+
+const { nodes, label, gantt = false } = Astro.props
+
+const NODE_W = 260
+const NODE_H = 76
+
+const icons = await Promise.all(
+    nodes.map(async (node) => {
+        try {
+            const response = await fetch(
+                `${API_URL}/plugins/icons/io.kestra.plugin.${node.plugin}`,
+            )
+            if (!response.ok) return null
+            // Drawn as an image, not inline: some icon files carry a doctype
+            // or a <style> whose classes would leak into the page.
+            const svg = Buffer.from(await response.arrayBuffer())
+            return `data:image/svg+xml;base64,${svg.toString("base64")}`
+        } catch {
+            return null
+        }
+    }),
+)
+
+// Right-angled edges: straight down a column, or out to the gap, across and
+// in to the next column.
+const edges = nodes.slice(0, -1).map((a, idx) => {
+    const b = nodes[idx + 1]
+    if (a.x === b.x) {
+        const x = a.x + 40
+        return `M${x} ${a.y + NODE_H} V${b.y - 2}`
+    }
+    // Out to the gap, across and in, with small rounded bends.
+    const x1 = a.x + NODE_W
+    const y1 = a.y + NODE_H / 2
+    const y2 = b.y + NODE_H / 2
+    const mid = (x1 + b.x) / 2
+    const r = Math.min(8, Math.abs(y2 - y1) / 2)
+    const dy = Math.sign(y2 - y1)
+    if (!dy) return `M${x1} ${y1} H${b.x - 2}`
+    return [
+        `M${x1} ${y1}`,
+        `H${mid - r}`,
+        `Q${mid} ${y1} ${mid} ${y1 + dy * r}`,
+        `V${y2 - dy * r}`,
+        `Q${mid} ${y2} ${mid + r} ${y2}`,
+        `H${b.x - 2}`,
+    ].join(" ")
+})
+
+// Tasks run one after the other: each starts when the previous one ends.
+// Very short tasks keep a visible sliver, like the dot in the product, and
+// the next bar starts after that sliver, so bars never overlap.
+const total = nodes.reduce((sum, node) => sum + node.seconds, 0)
+const starts = nodes.map((_, idx) =>
+    nodes.slice(0, idx).reduce((sum, node) => sum + node.seconds, 0),
+)
+const MIN_LENGTH = 0.015
+const shown = nodes.map((node) => Math.max(node.seconds / total, MIN_LENGTH))
+const span = shown.reduce((sum, length) => sum + length, 0)
+const slot = (idx: number) => {
+    const start = shown.slice(0, idx).reduce((sum, length) => sum + length, 0)
+    return `--start: ${start / span}; --length: ${shown[idx] / span}`
+}
+
+const clock = (seconds: number) => {
+    if (seconds < 60) return `${Math.round(seconds * 10) / 10}s`
+    const m = Math.floor(seconds / 60)
+    const s = Math.round(seconds % 60)
+    return `${m}m ${String(s).padStart(2, "0")}s`
+}
+---
+
+<div
+    class:list={["topology", { "no-gantt": !gantt }]}
+    role="img"
+    aria-label={label}
+    data-topology
+>
+    {
+        /* The graph is centred in the space above the Gantt, which sits at the
+    bottom of the panel. */
+    }
+    <div class="graph">
+        <div class="canvas">
+            {
+                /* Triggers sit in their own cluster, as in the product: a green
+            capsule with its label and collapse button, under the edges. */
+            }
+            {
+                nodes.map(
+                    (node, idx) =>
+                        node.plugin.startsWith("core.trigger.") && (
+                            <div
+                                class="trigger"
+                                style={`left: ${node.x}px; top: ${node.y}px; --i: ${idx}`}
+                                aria-hidden="true"
+                            >
+                                <span class="trigger-label">trigger</span>
+                                <span class="trigger-collapse">
+                                    <Icon name="mdi:arrow-collapse" />
+                                </span>
+                            </div>
+                        ),
+                )
+            }
+
+            <svg class="edges" viewBox="0 0 880 250" aria-hidden="true">
+                <defs>
+                    <marker
+                        id="topology-arrow"
+                        viewBox="0 0 10 10"
+                        refX="9"
+                        refY="5"
+                        markerWidth="6"
+                        markerHeight="6"
+                        markerUnits="userSpaceOnUse"
+                        orient="auto"
+                    >
+                        <path
+                            d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
+                            class="arrow"></path>
+                    </marker>
+                    <marker
+                        id="topology-arrow-running"
+                        viewBox="0 0 10 10"
+                        refX="9"
+                        refY="5"
+                        markerWidth="6"
+                        markerHeight="6"
+                        markerUnits="userSpaceOnUse"
+                        orient="auto"
+                    >
+                        <path
+                            d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
+                            class="arrow running"></path>
+                    </marker>
+                    <marker
+                        id="topology-arrow-done"
+                        viewBox="0 0 10 10"
+                        refX="9"
+                        refY="5"
+                        markerWidth="6"
+                        markerHeight="6"
+                        markerUnits="userSpaceOnUse"
+                        orient="auto"
+                    >
+                        <path
+                            d="M1 1.5 L9 5 L1 8.5 Q2.5 5 1 1.5 z"
+                            class="arrow done"></path>
+                    </marker>
+                    <marker
+                        id="topology-dot"
+                        viewBox="0 0 6 6"
+                        refX="3"
+                        refY="3"
+                        markerWidth="5"
+                        markerHeight="5"
+                        markerUnits="userSpaceOnUse"
+                    >
+                        <circle cx="3" cy="3" r="3" class="arrow"></circle>
+                    </marker>
+                </defs>
+                {
+                    edges.map((d, idx) => (
+                        <path
+                            d={d}
+                            class:list={[
+                                "edge",
+                                { done: nodes[idx + 1].status !== "created" },
+                            ]}
+                            data-edge={idx}
+                            style={`--i: ${idx + 1}`}
+                        />
+                    ))
+                }
+            </svg>
+
+            {
+                nodes.map((node, idx) => (
+                    <TopologyNode
+                        id={node.id}
+                        type={node.type}
+                        icon={icons[idx]}
+                        fallback={node.fallback}
+                        status={node.status}
+                        duration={node.duration}
+                        artifacts={node.artifacts}
+                        runner={node.runner}
+                        style={`position: absolute; left: ${node.x}px; top: ${node.y}px; ${slot(idx)}; --i: ${idx}`}
+                        data-node={idx}
+                    />
+                ))
+            }
+        </div>
+    </div>
+
+    {
+        /* The Gantt view, simplified: icon, task, start offset, bar, duration
+    and state. */
+    }
+    {/* Kept hidden when off: the run's timing is read from its rows. */}
+    <div class="gantt" hidden={!gantt}>
+        <div class="gantt-head">
+            <span>0s</span>
+            {
+                /* Elapsed time; it only reaches the total at the end of the run. */
+            }
+            <span data-elapsed>{clock(total)}</span>
+        </div>
+        <ul>
+            {
+                nodes.map((node, idx) => (
+                    <li
+                        class:list={[`is-${node.status}`]}
+                        style={slot(idx)}
+                        data-bar={idx}
+                        data-start={starts[idx]}
+                        data-seconds={node.seconds}
+                    >
+                        <span class="icon small">
+                            {icons[idx] ? (
+                                <img class="plugin" src={icons[idx]} alt="" />
+                            ) : (
+                                <Icon name={node.fallback} />
+                            )}
+                        </span>
+                        <span class="gantt-task">{node.id}</span>
+                        <span class="offset">+{clock(starts[idx])}</span>
+                        <span class="track">
+                            <span class="bar" />
+                        </span>
+                        <span class="took">{node.duration}</span>
+                        <span class="gantt-state">
+                            <span class="state-running">
+                                <Icon name="mdi:loading" class="spin" />
+                                Running
+                            </span>
+                            <span class="state-success">
+                                <Icon name="mdi:check-circle-outline" />
+                                Success
+                            </span>
+                        </span>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Plays the run in a loop while the topology is on screen and shown.
+    const RUN_MS = 1100
+    const HANDOVER_MS = 450
+    const HOLD_MS = 2200
+
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+    function play(root: HTMLElement) {
+        const nodes = [...root.querySelectorAll<HTMLElement>("[data-node]")]
+        const bars = [...root.querySelectorAll<HTMLElement>("[data-bar]")]
+        const edges = [...root.querySelectorAll<SVGElement>("[data-edge]")]
+
+        let visible = false
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting && root.offsetParent !== null
+        }).observe(root)
+
+        const set = (idx: number, status: string) => {
+            for (const el of [nodes[idx], bars[idx]]) {
+                el.classList.remove("is-created", "is-running", "is-success")
+                el.classList.add(`is-${status}`)
+            }
+        }
+
+        // Live Gantt, as in the product: the scale ends at the time elapsed so
+        // far, so every started task's slot is redrawn each frame, in the
+        // Gantt rows and in the nodes alike. Very short tasks keep a sliver
+        // and the next slot starts after it.
+        const elapsed = root.querySelector<HTMLElement>("[data-elapsed]")!
+        const starts = bars.map((bar) => Number(bar.dataset.start))
+        const seconds = bars.map((bar) => Number(bar.dataset.seconds))
+        const MIN_LENGTH = 0.015
+        const clock = (value: number) => {
+            if (value < 60) return `${Math.round(value * 10) / 10}s`
+            const m = Math.floor(value / 60)
+            const sec = Math.round(value % 60)
+            return `${m}m ${String(sec).padStart(2, "0")}s`
+        }
+        const layout = (time: number) => {
+            const now = Math.max(time, 0.001)
+            elapsed.textContent = clock(time)
+            const shown = starts.map((start, idx) =>
+                start <= now
+                    ? Math.max(
+                          Math.min(now - start, seconds[idx]) / now,
+                          MIN_LENGTH,
+                      )
+                    : 0,
+            )
+            const span = Math.max(
+                1,
+                shown.reduce((sum, l) => sum + l, 0),
+            )
+            let offset = 0
+            shown.forEach((length, idx) => {
+                for (const el of [nodes[idx], bars[idx]]) {
+                    el.style.setProperty("--start", String(offset / span))
+                    el.style.setProperty("--length", String(length / span))
+                }
+                offset += length
+            })
+        }
+        const tick = (idx: number) => {
+            const began = performance.now()
+            const step = (now: number) => {
+                const t = Math.min(1, (now - began) / RUN_MS)
+                layout(starts[idx] + t * seconds[idx])
+                if (t < 1) requestAnimationFrame(step)
+            }
+            requestAnimationFrame(step)
+        }
+
+        const reset = () => {
+            layout(0)
+            root.classList.add("resetting")
+            nodes.forEach((_, idx) => set(idx, "created"))
+            edges.forEach((edge) => edge.classList.remove("active", "done"))
+            void root.offsetWidth
+            root.classList.remove("resetting")
+        }
+
+        // Shown means on screen and, inside a tab panel, in the open tab.
+        const host = root.closest<HTMLElement>("[data-domain-visual]")
+        const shown = () =>
+            visible &&
+            root.offsetParent !== null &&
+            (!host || host.classList.contains("active"))
+
+        // Each time the topology comes into view it builds itself quickly
+        // (nodes, then edges, then the Gantt) before the run starts.
+        let built = false
+        const waitVisible = async () => {
+            if (shown()) return
+            built = false
+            root.classList.add("building")
+            while (!shown()) await sleep(200)
+        }
+        const build = async () => {
+            reset()
+            root.classList.add("building")
+            void root.offsetWidth
+            root.classList.remove("building")
+            built = true
+            await sleep(900)
+        }
+
+        // Tells the page how far the run is, so it can follow along.
+        const report = (type: string, detail?: number) =>
+            root.dispatchEvent(new CustomEvent(type, { bubbles: true, detail }))
+
+        const loop = async () => {
+            run: for (;;) {
+                await waitVisible()
+                if (!built) await build()
+                else {
+                    reset()
+                    await sleep(500)
+                }
+                for (let idx = 0; idx < nodes.length; idx++) {
+                    await waitVisible()
+                    if (!built) continue run
+                    set(idx, "running")
+                    tick(idx)
+                    await sleep(RUN_MS)
+                    set(idx, "success")
+                    report("topology:progress", (idx + 1) / nodes.length)
+                    const edge = edges[idx]
+                    if (edge) {
+                        edge.classList.add("active")
+                        await sleep(HANDOVER_MS)
+                        edge.classList.remove("active")
+                        edge.classList.add("done")
+                    }
+                }
+                report("topology:done")
+                await sleep(HOLD_MS)
+            }
+        }
+        loop()
+    }
+
+    function init() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-topology]:not([data-playing])",
+        )) {
+            root.dataset.playing = "true"
+            play(root)
+        }
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    .topology {
+        // Light values from the 2.0 node design; dark ones below.
+        --node-bg: #ffffff;
+        --node-border: #ebebf0;
+        --node-text: #2b2b33;
+        --node-muted: #8a8a97;
+        --edge: #d0d0da;
+        --track: #f0f0f4;
+        --success: #1e875e;
+        --success-border: #9fdcc0;
+        --success-line: #1e875e;
+        --success-bg: #e7f6ef;
+        --running: #8405ff;
+        --running-bg: #f1e9ff;
+        --runner: #3b5bdb;
+        --runner-bg: #e8edff;
+        --trigger: #4fb383;
+        --trigger-button: #5fd6b4;
+        --trigger-border: #7fdcc0;
+        --trigger-bg: rgba(95, 214, 180, 0.12);
+
+        position: relative;
+        --z: 0.85;
+        --gantt-h: 156px;
+
+        // Fills the panel whatever the zoom; the graph keeps its drawn width.
+        // Zoom counts in the width but not in a percentage height, so the
+        // height comes from stretching in the panel instead.
+        width: calc(100% / var(--z));
+        align-self: stretch;
+        font-family: var(--font-family-mona-sans), system-ui, sans-serif;
+
+        :global(html.dark) & {
+            --node-bg: #1a1c22;
+            --node-border: #2e2e3c;
+            --node-text: #ffffff;
+            --node-muted: #adadbf;
+            --edge: #4a4a5a;
+            --track: #2a2a36;
+            --success-line: #06f0b1;
+            --success-border: #1e875e;
+            --success-bg: rgba(30, 135, 94, 0.14);
+            --running: #9869f7;
+            --running-bg: rgba(152, 105, 247, 0.14);
+            --runner: #718bfe;
+            --runner-bg: rgba(152, 105, 247, 0.12);
+            --trigger: #1e875e;
+            --trigger-button: #1e875e;
+            --trigger-border: rgba(6, 240, 177, 0.35);
+            --trigger-bg: rgba(6, 240, 177, 0.06);
+        }
+
+        // Drawn at a fixed width and scaled to sit inside the panel.
+        zoom: var(--z);
+
+        @include media-breakpoint-down(xxl) {
+            --z: 0.78;
+        }
+
+        @include media-breakpoint-down(xl) {
+            --z: 0.65;
+        }
+
+        @include media-breakpoint-down(md) {
+            --z: 0.42;
+        }
+
+        &.no-gantt {
+            --gantt-h: 0px;
+        }
+
+        // A reset jumps straight back to the start.
+        &.resetting * {
+            transition: none !important;
+        }
+    }
+
+    .graph {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: var(--gantt-h);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    // The topology is the star: drawn larger than the Gantt below it, as
+    // wide as the panel allows next to the wider domain column.
+    .canvas {
+        position: relative;
+        width: 880px;
+        height: 250px;
+        zoom: 1.04;
+    }
+
+    // Dashed edges; the one carrying the run on flows in violet.
+    .edges {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        // Its own layer: the flowing dashes repaint the edges alone, not
+        // the nodes over them.
+        will-change: transform;
+    }
+
+    .edge {
+        fill: none;
+        stroke: var(--edge);
+        stroke-width: 1.5;
+        stroke-dasharray: 4 4;
+        transition:
+            stroke 0.5s ease,
+            opacity 0.3s ease calc(150ms + var(--i) * 70ms);
+
+        .building & {
+            opacity: 0;
+            transition: none;
+        }
+
+        &.active {
+            stroke: var(--running);
+            animation: flow 0.5s linear infinite;
+        }
+
+        &.done {
+            stroke: var(--success-line);
+        }
+    }
+
+    // Arrow heads follow their edge's state.
+    .arrow {
+        fill: var(--edge);
+
+        &.running {
+            fill: var(--running);
+        }
+
+        &.done {
+            fill: var(--success-line);
+        }
+    }
+
+    .edge {
+        marker-start: url(#topology-dot);
+        marker-end: url(#topology-arrow);
+
+        &.active {
+            marker-end: url(#topology-arrow-running);
+        }
+
+        &.done {
+            marker-end: url(#topology-arrow-done);
+        }
+    }
+
+    @keyframes flow {
+        to {
+            stroke-dashoffset: -16;
+        }
+    }
+
+    // The trigger cluster around its node, with the label on its top left
+    // and the collapse button on its top right corner. Narrow at the sides,
+    // so the edges in the gap pass it by, and deep enough at the bottom for
+    // the node's pills.
+    .trigger {
+        position: absolute;
+        width: calc(260px + 2 * 14px);
+        height: calc(76px + 36px + 38px);
+        margin: -36px 0 0 -14px;
+        border: 1px solid var(--trigger-border);
+        border-radius: 10px;
+        background: var(--trigger-bg);
+        transition:
+            opacity 0.35s ease calc(var(--i) * 70ms),
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i) * 70ms);
+
+        .building & {
+            opacity: 0;
+            transform: translateY(6px) scale(0.98);
+            transition: none;
+        }
+    }
+
+    .trigger-label {
+        position: absolute;
+        top: 9px;
+        left: 10px;
+        padding: 1px 9px 2px;
+        border-radius: 9px;
+        background: var(--trigger);
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .trigger-collapse {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--trigger-button);
+        color: #ffffff;
+
+        :global(svg) {
+            width: 13px;
+            height: 13px;
+        }
+    }
+
+    // The plugin icon tile, in the Gantt rows (the nodes draw their own).
+    .icon {
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: #ffffff;
+    }
+
+    .plugin {
+        .small & {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    // The task's slot in its Gantt row, moved and sized with a transform
+    // so the per-frame redraws skip layout.
+    .bar {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        transform: translateX(calc(var(--start) * 100%)) scaleX(var(--length));
+        transform-origin: left;
+        opacity: 0;
+        transition:
+            background-color 0.4s ease,
+            opacity 0.3s ease;
+
+        .is-running .track > & {
+            opacity: 1;
+            background: var(--running);
+        }
+
+        .is-success .track > & {
+            opacity: 1;
+            background: var(--success-line);
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    // Gantt under the graph, after the product's Gantt tab: a scale on top,
+    // then one row per task. Docked along the bottom of the panel, full
+    // width, like a drawer.
+    .gantt {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        min-height: var(--gantt-h);
+        border-top: 1px solid var(--node-border);
+        // In support of the topology: lighter than the nodes.
+        background: color-mix(in srgb, var(--node-bg) 72%, transparent);
+        backdrop-filter: blur(6px);
+        overflow: hidden;
+        transition:
+            opacity 0.4s ease 0.45s,
+            transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.45s;
+
+        .building & {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            display: grid;
+            grid-template-columns: 22px 150px 56px minmax(0, 1fr) 52px 76px;
+            align-items: center;
+            gap: 10px;
+            height: 26px;
+            padding: 0 24px;
+
+            & + li {
+                border-top: 1px solid var(--node-border);
+            }
+
+            // Rows are reserved from the start but stay empty, a pale track
+            // only, until their task starts and fills them.
+            &.is-created {
+                .icon,
+                .gantt-task {
+                    opacity: 0;
+                }
+
+                .track {
+                    opacity: 0.5;
+                }
+            }
+
+            .track {
+                transition: opacity 0.4s ease;
+            }
+
+            .icon,
+            .gantt-task {
+                transition: opacity 0.4s ease;
+            }
+        }
+    }
+
+    .gantt-head {
+        display: flex;
+        justify-content: space-between;
+        // Lines the scale up with the bars' column.
+        margin-left: calc(24px + 22px + 150px + 56px + 30px);
+        margin-right: calc(24px + 52px + 76px + 20px);
+        padding: 6px 0 4px;
+        font-size: 11px;
+        color: var(--node-muted);
+    }
+
+    .icon.small {
+        width: 20px;
+        height: 20px;
+        border: 1px solid var(--node-border);
+        border-radius: 6px;
+
+        :global(svg) {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    .gantt-task,
+    .offset,
+    .took {
+        overflow: hidden;
+        font-family: var(--font-family-jetbrains-mono), monospace;
+        font-size: 11px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .gantt-task {
+        color: var(--node-text);
+    }
+
+    // The start offset is only known once the task starts.
+    .offset {
+        text-align: right;
+        color: var(--node-muted);
+        opacity: 0;
+        transition: opacity 0.5s ease;
+
+        .is-running > &,
+        .is-success > & {
+            opacity: 1;
+        }
+    }
+
+    .took {
+        color: var(--node-text);
+        text-decoration: underline dotted var(--node-muted);
+        text-underline-offset: 3px;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+
+        .is-success > & {
+            opacity: 1;
+        }
+    }
+
+    .gantt-state {
+        font-size: 11px;
+        font-weight: 500;
+
+        > span {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 3px 0;
+            border-radius: 6px;
+        }
+
+        :global(svg) {
+            width: 13px;
+            height: 13px;
+        }
+
+        .state-running {
+            background: var(--running-bg);
+            color: var(--running);
+        }
+
+        .state-success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .is-running > & .state-running,
+        .is-success > & .state-success {
+            display: flex;
+        }
+
+        :global(.spin) {
+            animation: spin 1s linear infinite;
+        }
+    }
+
+    .track {
+        position: relative;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--track);
+    }
+
+    .bar {
+        top: 0;
+        height: 100%;
+        border-radius: 3px;
+    }
+</style>

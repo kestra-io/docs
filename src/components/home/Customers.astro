@@ -1,0 +1,578 @@
+---
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+import applePhoto from "./assets/customers/apple.jpg"
+import filaPhoto from "./assets/customers/fila.jpg"
+import jpmorganPhoto from "./assets/customers/jpmorgan.jpg"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import { getCollection } from "astro:content"
+import { toSlug } from "~/utils/stories"
+import jpmorgan from "~/assets/teams/jpmorgan.svg?raw"
+import fila from "~/assets/companies/fila.svg?raw"
+import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
+import apple from "~/contents/customer-stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra/logo.svg?raw"
+
+// Every fill takes the text color, so each logo reads in both themes. Masks
+// keep their own fills, or they would hide the drawing.
+const flat = (svg: string) => {
+    const [head, body] = svg.includes("</mask>")
+        ? [
+              svg.slice(0, svg.lastIndexOf("</mask>")),
+              svg.slice(svg.lastIndexOf("</mask>")),
+          ]
+        : ["", svg]
+    return head + body.replace(/fill="(?!none)[^"]+"/gi, 'fill="currentColor"')
+}
+
+// Each story links to its customer story page, found by company name.
+const stories = await getCollection("customerStories")
+const storyHref = (company: string) => {
+    const entry = stories.find((e) => e.data.companyName === company)
+    return entry ? `/stories/${toSlug(entry)}` : undefined
+}
+
+// Melissa's stories, each with its logo for the tab, its industry and,
+// when there is one yet, its photo.
+const STORIES = [
+    {
+        company: "Apple",
+        photo: applePhoto,
+        story: "Apple",
+        logo: flat(
+            apple.replace("<svg ", '<svg viewBox="0 0 842.32007 1000.0001" '),
+        ),
+        height: 30,
+        industry: "AI / ML",
+        stat: "200",
+        label: "ML engineers on Kestra",
+        quote: "I want to highlight their robustness, which is crucial at our scale.",
+    },
+    {
+        company: "JPMorgan Chase",
+        photo: jpmorganPhoto,
+        story: "JPMorgan Chase",
+        logo: flat(jpmorgan),
+        height: 20,
+        industry: "Cybersecurity",
+        stat: "Billions",
+        label: "of cybersecurity records processed",
+        detail: "100+ analysts define their own secure workflows.",
+    },
+    {
+        company: "Crédit Agricole",
+        story: "Crédit Agricole",
+        logo: flat(creditAgricole),
+        height: 32,
+        industry: "Infrastructure",
+        stat: "7 teams",
+        label: "unified on 100+ managed clusters",
+        quote: "From fragmented automation to a unified control plane.",
+    },
+    {
+        company: "FILA",
+        photo: filaPhoto,
+        story: "Fila",
+        logo: flat(fila),
+        height: 21,
+        industry: "Manufacturing",
+        stat: "2.5M",
+        label: "executions a month across 2,000+ workflows",
+        detail: "ERP, PLM and supply chain in 70+ countries.",
+    },
+]
+---
+
+{
+    /* On the hairline grid of the blocks above: the head, then the customers
+    as a row of logo tabs over one story at a time: its words and figure on
+    the quotes' lavender, the open tab in the same lavender, and the photo
+    of its customer story beside them. */
+}
+<section class="customers" aria-labelledby="customers" data-stories>
+    <PixelEdges left="cluster" right="tall" />
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="customers">
+                    In production, at scale
+                    <span
+                        >Teams across banking, manufacturing, technology and the
+                        public sector run Kestra in production.</span
+                    >
+                </h2>
+            </header>
+
+            <div class="tabs" role="tablist" aria-label="Customer stories">
+                {
+                    STORIES.map((story, idx) => (
+                        <button
+                            type="button"
+                            role="tab"
+                            class:list={["tab", { active: idx === 0 }]}
+                            aria-selected={idx === 0 ? "true" : "false"}
+                            aria-controls={`story-${idx}`}
+                            style={`--logo-height: ${story.height}px`}
+                        >
+                            <span class="bar" aria-hidden="true" />
+                            <span class="logo" set:html={story.logo} />
+                            <span class="visually-hidden">{story.company}</span>
+                        </button>
+                    ))
+                }
+            </div>
+
+            <div class="panels">
+                {
+                    STORIES.map((story, idx) => (
+                        <div
+                            id={`story-${idx}`}
+                            role="tabpanel"
+                            class:list={["panel", { active: idx === 0 }]}
+                        >
+                            <figure class="story">
+                                <div class="figure">
+                                    <p class="industry">{story.industry}</p>
+                                    <p class="stat">
+                                        {story.stat} <span>{story.label}</span>
+                                    </p>
+                                </div>
+                                <figcaption class="words">
+                                    <svg
+                                        viewBox="0 0 46 40"
+                                        class="glyph"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z" />
+                                        <path d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z" />
+                                    </svg>
+                                    {story.quote ? (
+                                        <blockquote>{story.quote}</blockquote>
+                                    ) : (
+                                        <p class="detail">{story.detail}</p>
+                                    )}
+                                    {storyHref(story.story) && (
+                                        <a
+                                            href={storyHref(story.story)}
+                                            class="read"
+                                        >
+                                            <span>Read the story</span>
+                                            <Icon name="mdi:arrow-right" />
+                                        </a>
+                                    )}
+                                </figcaption>
+                            </figure>
+                            {/* The story's photo; black while it has none yet. */}
+                            <div class="photo" aria-hidden="true">
+                                {story.photo && (
+                                    <Image
+                                        src={story.photo}
+                                        alt=""
+                                        widths={[480, 720, 960]}
+                                        sizes="(max-width: 992px) 100vw, 40vw"
+                                        loading="lazy"
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+
+            {/* The closing row, as See the platform and the whitepaper. */}
+            {/* The reach in one line, with the way to every story. */}
+            <div class="foot">
+                <p>
+                    More than <strong>40,000</strong> organizations run Kestra, including
+                    nearly 800 companies with over 1,000 employees.
+                </p>
+                <a href="/stories" class="all">
+                    See all stories <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // One story at a time: the tabs take turns while the block is in view,
+    // the open tab's top edge filling as its time goes; a click picks one
+    // and stops the turns.
+    const TURN_MS = 6000
+
+    function wireStories() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-stories]:not([data-wired])",
+        )) {
+            root.dataset.wired = "true"
+            const tabs = [...root.querySelectorAll<HTMLElement>(".tab")]
+            const panels = [...root.querySelectorAll<HTMLElement>(".panel")]
+            let auto = !matchMedia("(prefers-reduced-motion: reduce)").matches
+            let current = 0
+            let inView = false
+            let timer = 0
+
+            const open = (idx: number) => {
+                current = idx
+                tabs.forEach((tab, i) => {
+                    tab.classList.toggle("active", i === idx)
+                    tab.classList.remove("timed")
+                    tab.setAttribute("aria-selected", String(i === idx))
+                })
+                panels.forEach((panel, i) =>
+                    panel.classList.toggle("active", i === idx),
+                )
+                schedule()
+            }
+
+            const schedule = () => {
+                clearTimeout(timer)
+                if (!auto || !inView) return
+                const tab = tabs[current]
+                void tab.offsetWidth
+                tab.classList.add("timed")
+                timer = window.setTimeout(
+                    () => open((current + 1) % tabs.length),
+                    TURN_MS,
+                )
+            }
+
+            tabs.forEach((tab, idx) =>
+                tab.addEventListener("click", () => {
+                    auto = false
+                    clearTimeout(timer)
+                    tabs.forEach((t) => t.classList.remove("timed"))
+                    open(idx)
+                }),
+            )
+
+            // The turns run only while the block is in view.
+            new IntersectionObserver(
+                ([entry]) => {
+                    inView = entry.isIntersecting
+                    if (inView) schedule()
+                    else {
+                        clearTimeout(timer)
+                        tabs.forEach((t) => t.classList.remove("timed"))
+                    }
+                },
+                { threshold: 0.35 },
+            ).observe(root)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireStories)
+    wireStories()
+</script>
+
+<style lang="scss">
+    .customers {
+        position: relative;
+        background: var(--ks-background-body);
+    }
+
+    // No hairline grid on the background here, to break the page's rhythm:
+    // the tabs and the story sit as one lavender piece, split by the grid's
+    // grey rules, on the same insets as the other blocks.
+    .grid {
+        --gap: 1px;
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        // The lavender of our quotes.
+        --surface: #f0f0fd;
+        --glyph: #4f6df7;
+
+        :global(html.dark) & {
+            --surface: #1c1b2e;
+            --glyph: #a796ff;
+        }
+
+        position: relative;
+        background: var(--ks-background-body);
+
+        // The rules show through the gaps.
+        > .tabs {
+            border-bottom: var(--gap) solid var(--ks-border-primary);
+            background: var(--ks-border-primary);
+        }
+    }
+
+    // The title in two tones, the lead as its grey second line.
+    .head {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+        padding: 8.5rem var(--inset) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            max-width: 26em;
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+            text-wrap: pretty;
+
+            span {
+                display: block;
+                color: var(--ks-content-tertiary);
+            }
+        }
+    }
+
+    .foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem 2rem;
+        // More room under the line, before Three ways.
+        padding: clamp(2rem, 3vw, 2.75rem) var(--inset) clamp(4.5rem, 8vw, 7rem);
+        font-size: 1.0625rem;
+
+        p {
+            margin: 0;
+            color: var(--ks-content-tertiary);
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        .all {
+            color: var(--ks-content-secondary);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+
+            span {
+                display: inline-block;
+                margin-left: 0.25rem;
+                transition: translate 0.2s ease;
+            }
+
+            &:hover {
+                color: var(--ks-content-primary);
+
+                span {
+                    translate: 0.25em 0;
+                }
+            }
+        }
+    }
+
+    // The logo tabs: four cells between the rules; the open one is grey,
+    // its top edge filling while the stories take turns.
+    .tabs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--gap);
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .tab {
+        position: relative;
+        display: grid;
+        place-items: center;
+        height: 6rem;
+        border: 0;
+        // Every tab in the quotes' lavender, as the story under them.
+        background: var(--surface);
+        color: var(--ks-content-tertiary);
+        cursor: pointer;
+        transition:
+            background-color 0.25s ease,
+            color 0.25s ease;
+
+        &:hover {
+            background: color-mix(in srgb, var(--glyph) 8%, var(--surface));
+            color: var(--ks-content-primary);
+        }
+
+        // The open one: its logo in full, its top edge drawn.
+        &.active {
+            color: var(--ks-content-primary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+
+        .bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--ks-content-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+
+        &.timed .bar {
+            animation: turn 6s linear forwards;
+        }
+
+        .logo {
+            display: flex;
+            height: var(--logo-height);
+
+            :global(svg) {
+                width: auto;
+                max-width: 9rem;
+                height: 100%;
+            }
+        }
+    }
+
+    @keyframes turn {
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    // One story at a time: its figure on the left, its words on the right
+    // on the lavender of our quotes.
+    .panels {
+        display: grid;
+    }
+
+    .panel {
+        grid-area: 1 / 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+        min-height: 32rem;
+        // One lavender card: the story's words and its photo, set in it.
+        background: var(--surface);
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.4s ease,
+            visibility 0s 0.4s;
+
+        &.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.4s ease;
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    // The story on the quotes' lavender: the industry and the figure at the
+    // top, the quote at the foot.
+    .story {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2.5rem;
+        margin: 0;
+        padding: 3rem var(--inset);
+
+        .glyph {
+            width: 2.25rem;
+            height: 2rem;
+            margin-bottom: 1.25rem;
+            fill: var(--glyph);
+            transform: scaleX(-1);
+        }
+
+        blockquote,
+        .detail {
+            max-width: 28em;
+            margin: 0;
+            font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
+            font-weight: 500;
+            line-height: 1.45;
+            color: var(--ks-content-primary);
+        }
+
+        .industry {
+            margin: 0 0 0.875rem;
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ks-content-tertiary);
+        }
+
+        .stat {
+            max-width: 14em;
+            margin: 0;
+            font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--ks-content-primary);
+
+            span {
+                color: var(--ks-content-tertiary);
+            }
+        }
+
+        .read {
+            margin-top: 1.25rem;
+        }
+    }
+
+    // The customer story's photo, upright, filling its column to the rules.
+    // Black while a story has none yet.
+    .photo {
+        position: relative;
+        min-height: 20rem;
+        background: #0d0d10;
+        overflow: hidden;
+
+        :global(img) {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    // A quiet link that reads with the quote.
+    .read {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+        text-decoration: none;
+
+        span {
+            background: linear-gradient(currentColor, currentColor) left
+                bottom / 100% 1px no-repeat;
+        }
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        &:hover :global(svg) {
+            transform: translateX(3px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .panel {
+            transition: none;
+        }
+    }
+</style>

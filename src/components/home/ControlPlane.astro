@@ -1,0 +1,814 @@
+---
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+import TopologyMock, { type Props as TopologyProps } from "./TopologyMock.astro"
+
+interface Domain {
+    id: string
+    label: string
+    /** Vertical's color, from the color code started in Stacked.astro. */
+    tint: string
+    title: string
+    description: string
+    solutionHref?: string
+    /** An executed topology drawn after the 2.0 node design. */
+    topology: TopologyProps
+}
+
+const DOMAINS: Domain[] = [
+    {
+        id: "infrastructure",
+        label: "Infrastructure",
+        tint: "#E6C359",
+        title: "Infrastructure automation",
+        description:
+            "Accelerate infrastructure delivery with consistent controls. Coordinate provisioning, deployment, and operations across clouds, hypervisors, and bare metal environments with approvals and audit trails.",
+        solutionHref: "/infra-automation",
+        topology: {
+            label: "Kestra topology of the provision_vm flow running: request form, owner approval, Terraform apply, Ansible config and CMDB update run one after the other",
+            nodes: [
+                {
+                    id: "request_form",
+                    type: "core.trigger.Webhook",
+                    plugin: "core.trigger.Webhook",
+                    fallback: "mdi:webhook",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "0.4s",
+                    seconds: 0.4,
+                },
+                {
+                    id: "owner_approval",
+                    type: "core.flow.Pause",
+                    plugin: "core.flow.Pause",
+                    fallback: "mdi:pause-circle-outline",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "2m 31s",
+                    seconds: 151,
+                },
+                {
+                    id: "terraform_apply",
+                    type: "terraform.cli.TerraformCLI",
+                    plugin: "terraform.cli.TerraformCLI",
+                    fallback: "mdi:terraform",
+                    runner: "kubernetes",
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "3m 05s",
+                    seconds: 185,
+                    artifacts: 1,
+                },
+                {
+                    id: "ansible_config",
+                    type: "ansible.cli.AnsibleCLI",
+                    plugin: "ansible.cli.AnsibleCLI",
+                    fallback: "mdi:ansible",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "1m 12s",
+                    seconds: 72,
+                },
+                {
+                    id: "update_cmdb",
+                    type: "servicenow.Post",
+                    plugin: "servicenow.Post",
+                    fallback: "mdi:database-sync-outline",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.8s",
+                    seconds: 0.8,
+                },
+            ],
+        },
+    },
+    {
+        id: "data",
+        label: "Data pipelines",
+        tint: "#59BCE6",
+        title: "Data pipelines",
+        description:
+            "Deliver reliable data faster. Coordinate ingestion, transformation, and downstream delivery with dependencies, retries, and recovery in one governed workflow.",
+        solutionHref: "/data",
+        topology: {
+            label: "Kestra topology of the daily_revenue flow running: orders extract, dbt build, quality checks, Snowflake load and Slack notification run one after the other",
+            nodes: [
+                {
+                    id: "extract_orders",
+                    type: "jdbc.postgresql.Query",
+                    plugin: "jdbc.postgresql.Query",
+                    fallback: "mdi:database-export-outline",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "42s",
+                    seconds: 42,
+                },
+                {
+                    id: "dbt_build",
+                    type: "dbt.cli.DbtCLI",
+                    plugin: "dbt.cli.DbtCLI",
+                    fallback: "mdi:hammer-wrench",
+                    runner: "docker",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "1m 36s",
+                    seconds: 96,
+                },
+                {
+                    id: "quality_checks",
+                    type: "scripts.python.Script",
+                    plugin: "scripts.python.Script",
+                    fallback: "mdi:language-python",
+                    artifacts: 1,
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "18s",
+                    seconds: 18,
+                },
+                {
+                    id: "load_snowflake",
+                    type: "jdbc.snowflake.Upload",
+                    plugin: "jdbc.snowflake.Upload",
+                    fallback: "mdi:snowflake",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "1m 04s",
+                    seconds: 64,
+                },
+                {
+                    id: "notify_slack",
+                    type: "notifications.slack.SlackIncomingWebhook",
+                    plugin: "notifications.slack.SlackIncomingWebhook",
+                    fallback: "mdi:slack",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.6s",
+                    seconds: 0.6,
+                },
+            ],
+        },
+    },
+    {
+        id: "business",
+        label: "Business processes",
+        tint: "#E67FA2",
+        title: "Business processes",
+        description:
+            "Shorten business cycles and reduce manual handoffs. Connect requests, approvals, and tasks across finance, sales, and operations in one auditable workflow.",
+        topology: {
+            label: "Kestra topology of the nightly_close flow running: schedule, ledger extract, controller approval, ERP posting and Slack notification run one after the other",
+            nodes: [
+                {
+                    id: "schedule",
+                    type: "core.trigger.Schedule",
+                    plugin: "core.trigger.Schedule",
+                    fallback: "mdi:clock-outline",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "0.2s",
+                    seconds: 0.2,
+                },
+                {
+                    id: "extract_ledger",
+                    type: "jdbc.oracle.Query",
+                    plugin: "jdbc.oracle.Query",
+                    fallback: "mdi:database-export-outline",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "37s",
+                    seconds: 37,
+                },
+                {
+                    id: "controller_approval",
+                    type: "core.flow.Pause",
+                    plugin: "core.flow.Pause",
+                    fallback: "mdi:pause-circle-outline",
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "12m 52s",
+                    seconds: 772,
+                },
+                {
+                    id: "post_to_erp",
+                    type: "odoo.Query",
+                    plugin: "odoo.Query",
+                    fallback: "mdi:file-document-outline",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "1m 06s",
+                    seconds: 66,
+                },
+                {
+                    id: "notify_finance",
+                    type: "notifications.slack.SlackIncomingWebhook",
+                    plugin: "notifications.slack.SlackIncomingWebhook",
+                    fallback: "mdi:slack",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.5s",
+                    seconds: 0.5,
+                },
+            ],
+        },
+    },
+    {
+        id: "itops",
+        label: "IT operations",
+        tint: "#59E659",
+        title: "IT operations",
+        description:
+            "Modernize scheduling and batch operations. Replace cron jobs and aging schedulers with observable, versioned workflows, with dependencies, SLAs, retries, and alerts in one place, so teams can find and fix failures fast.",
+        topology: {
+            label: "Kestra topology of the nightly_batch flow running: 2 AM schedule, SFTP download, ERP batch load, archive to S3 and on-call alert run one after the other",
+            nodes: [
+                {
+                    id: "schedule_0200",
+                    type: "core.trigger.Schedule",
+                    plugin: "core.trigger.Schedule",
+                    fallback: "mdi:clock-outline",
+                    x: 0,
+                    y: 0,
+                    status: "success",
+                    duration: "0.2s",
+                    seconds: 0.2,
+                },
+                {
+                    id: "sftp_download",
+                    type: "fs.sftp.Download",
+                    plugin: "fs.sftp.Download",
+                    fallback: "mdi:download-network-outline",
+                    x: 0,
+                    y: 140,
+                    status: "success",
+                    duration: "52s",
+                    seconds: 52,
+                },
+                {
+                    id: "erp_batch_load",
+                    type: "scripts.shell.Commands",
+                    plugin: "scripts.shell.Commands",
+                    fallback: "mdi:console",
+                    runner: "process",
+                    // Artifacts come from task runners, as in the product.
+                    artifacts: 1,
+                    x: 310,
+                    y: 0,
+                    status: "success",
+                    duration: "7m 08s",
+                    seconds: 428,
+                },
+                {
+                    id: "archive_files",
+                    type: "aws.s3.Upload",
+                    plugin: "aws.s3.Upload",
+                    fallback: "mdi:archive-arrow-up-outline",
+                    x: 310,
+                    y: 140,
+                    status: "running",
+                    duration: "24s",
+                    seconds: 24,
+                },
+                {
+                    id: "notify_on_call",
+                    type: "notifications.pagerduty.PagerDutyAlert",
+                    plugin: "notifications.pagerduty.PagerDutyAlert",
+                    fallback: "mdi:bell-ring-outline",
+                    x: 620,
+                    y: 0,
+                    status: "created",
+                    duration: "0.7s",
+                    seconds: 0.7,
+                },
+            ],
+        },
+    },
+]
+---
+
+{
+    /* On the hairline grid of the About us Backers block, lined up with the
+    hero frame: a compact two-column head, then the domains on the left (the
+    open one shows its copy) and its product screen on the right. */
+}
+<section class="control-plane" aria-labelledby="control-plane" data-domains>
+    {/* A few About us pixels at the edges, where the hero hands over. */}
+    <PixelEdges left="cluster" right="wide" />
+    {/* container-xl, like the hero frame, so the rails sit on its edges. */}
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="control-plane">One control plane for every workflow</h2>
+                <p>
+                    Give teams shared visibility and consistent governance
+                    across workflows.
+                </p>
+            </header>
+            <div class="body">
+                <ul class="domains">
+                    {
+                        DOMAINS.map((domain, idx) => (
+                            <li
+                                class:list={["domain", { active: idx === 0 }]}
+                                data-domain={domain.id}
+                                style={`--tint: ${domain.tint}`}
+                            >
+                                <button
+                                    type="button"
+                                    class="domain-toggle"
+                                    aria-expanded={idx === 0 ? "true" : "false"}
+                                    aria-controls={`domain-copy-${domain.id}`}
+                                >
+                                    {/* The short label while closed; once open,
+                                    the rest of the title slides out after it. */}
+                                    {domain.label}
+                                    {domain.title !== domain.label && (
+                                        <span class="more">
+                                            {domain.title.slice(
+                                                domain.label.length,
+                                            )}
+                                        </span>
+                                    )}
+                                </button>
+                                <div
+                                    id={`domain-copy-${domain.id}`}
+                                    class="domain-copy"
+                                >
+                                    <div class="domain-copy-inner">
+                                        <p>{domain.description}</p>
+                                        {/* The vertical's solution page, or its
+                                        blueprints when it has none yet. */}
+                                        <a
+                                            href={
+                                                domain.solutionHref ??
+                                                "/blueprints"
+                                            }
+                                            class="btn-ghost compact solution"
+                                        >
+                                            {domain.solutionHref
+                                                ? "Explore the solution"
+                                                : "Browse blueprints"}
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        ))
+                    }
+                </ul>
+
+                <div class="visuals">
+                    {
+                        DOMAINS.map((domain, idx) => (
+                            <div
+                                class:list={["visual", { active: idx === 0 }]}
+                                data-domain-visual={domain.id}
+                                style={`--tint: ${domain.tint}; --pixels: url("${pixelCluster}")`}
+                            >
+                                {/* A small About us pixel cluster, in the vertical's color. */}
+                                <span class="pixels" aria-hidden="true" />
+                                <TopologyMock {...domain.topology} />
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // One domain open at a time, on click: its copy expands on the left and
+    // its screen fades in on the right.
+    function wireDomains() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-domains]",
+        )) {
+            if (root.dataset.wired === "true") continue
+            root.dataset.wired = "true"
+
+            const items = [...root.querySelectorAll<HTMLElement>(".domain")]
+            const toggles = items.map((item) =>
+                item.querySelector<HTMLElement>(".domain-toggle")!,
+            )
+            const visuals = [
+                ...root.querySelectorAll<HTMLElement>("[data-domain-visual]"),
+            ]
+
+            const open = (idx: number) => {
+                items.forEach((item, i) => {
+                    item.classList.toggle("active", i === idx)
+                    toggles[i].setAttribute("aria-expanded", String(i === idx))
+                })
+                visuals.forEach((visual, i) =>
+                    visual.classList.toggle("active", i === idx),
+                )
+            }
+
+            // The list keeps the height of its tallest open domain, so
+            // switching never moves the page.
+            const list = root.querySelector<HTMLElement>(".domains")!
+            const settle = () => {
+                const current = items.findIndex((item) =>
+                    item.classList.contains("active"),
+                )
+                root.classList.add("measuring")
+                list.style.minHeight = ""
+                let tallest = 0
+                items.forEach((_, idx) => {
+                    open(idx)
+                    tallest = Math.max(
+                        tallest,
+                        Math.ceil(list.getBoundingClientRect().height),
+                    )
+                })
+                open(current)
+                list.style.minHeight = `${tallest}px`
+                root.classList.remove("measuring")
+            }
+            settle()
+            window.addEventListener("resize", settle)
+            document.fonts?.ready.then(settle)
+
+            // Until the visitor picks a domain, the domains take turns: the
+            // open one's marker fills as its run goes, and once the run is
+            // done the next domain opens.
+            let auto = !matchMedia("(prefers-reduced-motion: reduce)").matches
+            if (auto) items[0].style.setProperty("--progress", "0")
+            const shownIndex = (event: Event) =>
+                visuals.findIndex(
+                    (visual) =>
+                        visual.contains(event.target as Node) &&
+                        visual.classList.contains("active"),
+                )
+            root.addEventListener("topology:progress", (event) => {
+                const idx = shownIndex(event)
+                if (!auto || idx < 0) return
+                items[idx].style.setProperty(
+                    "--progress",
+                    String((event as CustomEvent<number>).detail),
+                )
+            })
+            root.addEventListener("topology:done", (event) => {
+                const idx = shownIndex(event)
+                if (!auto || idx < 0) return
+                setTimeout(() => {
+                    if (!auto || !visuals[idx].classList.contains("active"))
+                        return
+                    items[idx].style.removeProperty("--progress")
+                    const next = (idx + 1) % items.length
+                    items[next].style.setProperty("--progress", "0")
+                    open(next)
+                }, 1200)
+            })
+            const takeOver = () => {
+                auto = false
+                items.forEach((item) => item.style.removeProperty("--progress"))
+            }
+
+            toggles.forEach((toggle, idx) => {
+                toggle.addEventListener("click", () => {
+                    takeOver()
+                    open(idx)
+                })
+                toggle.addEventListener("keydown", (e) => {
+                    const step =
+                        e.key === "ArrowDown" ? 1 : e.key === "ArrowUp" ? -1 : 0
+                    if (!step) return
+                    e.preventDefault()
+                    takeOver()
+                    const next = (idx + step + toggles.length) % toggles.length
+                    toggles[next].focus()
+                    open(next)
+                })
+            })
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireDomains)
+    wireDomains()
+</script>
+
+<style lang="scss">
+    .control-plane {
+        position: relative;
+        // Switching domains must not make the browser re-anchor the scroll.
+        overflow-anchor: none;
+        background: var(--ks-background-body);
+        // How it works above draws the rule between the two.
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    // Hairline grid: rails on both sides of the content, and full-width rules
+    // between rows, like the About us Backers block. The rails sit on the
+    // hero frame's edges and the inset matches its padding, so the copy lines
+    // up with the hero's.
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+
+        // An empty closing row between the rails, so the panel does not run
+        // straight into the dark section below.
+        padding-bottom: clamp(4rem, 7vw, 6.5rem);
+
+        > .body {
+            position: relative;
+            border-block: var(--rule);
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+
+            &::before {
+                top: -1px;
+            }
+
+            &::after {
+                bottom: -1px;
+            }
+        }
+    }
+
+    // Compact head: the title on the left, Melissa's line on the right.
+    .head {
+        // The title on one line, the copy under it.
+        display: grid;
+        row-gap: 1.25rem;
+        padding: 8.5rem 0 4rem;
+
+        > * {
+            padding-inline: var(--inset);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+            text-wrap: balance;
+        }
+
+        p {
+            max-width: calc(26rem + 2 * var(--inset));
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: pretty;
+        }
+    }
+
+    .body {
+        background: var(--ks-background-body);
+        display: grid;
+        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    // Domains on the left; the open one shows its copy, marked on the rail.
+    .domains {
+        // One easing for every part of the switch, so the name, its copy
+        // and the list move together.
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --ease-time: 0.5s;
+
+        margin: 0;
+        padding: 3.5rem 0;
+        list-style: none;
+        border-right: var(--rule);
+
+        @include media-breakpoint-down(lg) {
+            border-right: 0;
+            border-bottom: var(--rule);
+        }
+    }
+
+    .domain {
+        position: relative;
+        padding: 0 var(--inset);
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            left: -1px;
+            width: 2px;
+            background: var(--tint);
+            opacity: 0;
+            // Fills with the run while the domains take turns.
+            transform: scaleY(var(--progress, 1));
+            transform-origin: top;
+            transition:
+                opacity 0.2s ease,
+                transform 0.4s ease;
+        }
+
+        &.active::before {
+            opacity: 1;
+        }
+
+        & + & {
+            margin-top: 0.75rem;
+        }
+    }
+
+    .domain-toggle {
+        display: block;
+        width: 100%;
+        padding: 0.625rem 0;
+        border: 0;
+        background: none;
+        // Smaller while closed; the open one grows to its full size.
+        font-size: 1.0625rem;
+        font-weight: 500;
+        text-align: left;
+        color: var(--ks-content-tertiary);
+        cursor: pointer;
+        transition:
+            color 0.3s ease,
+            font-size var(--ease-time) var(--ease),
+            font-weight var(--ease-time) var(--ease);
+
+        &:hover {
+            color: var(--ks-content-secondary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .active & {
+            font-size: 1.3125rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            cursor: default;
+        }
+
+        .more {
+            display: inline-block;
+            max-width: 0;
+            overflow: hidden;
+            vertical-align: bottom;
+            white-space: pre;
+            opacity: 0;
+            transition:
+                max-width var(--ease-time) var(--ease),
+                opacity var(--ease-time) var(--ease);
+
+            .active & {
+                max-width: 12em;
+                opacity: 1;
+            }
+        }
+    }
+
+    // The open domain's copy slides open under its name.
+    .measuring .domain-toggle,
+    .measuring .more,
+    .measuring .domain-copy,
+    .measuring .domain-copy-inner {
+        transition: none !important;
+    }
+
+    .domain-copy {
+        display: grid;
+        grid-template-rows: 0fr;
+        overflow: hidden;
+        transition: grid-template-rows var(--ease-time) var(--ease);
+
+        .domain-copy-inner {
+            min-height: 0;
+            padding-bottom: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .active & {
+            grid-template-rows: 1fr;
+
+            .domain-copy-inner {
+                opacity: 1;
+                transition-delay: 0.1s;
+            }
+        }
+
+        p {
+            margin: 0;
+            max-width: 28rem;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    // The way on, as a secondary button: the vertical's solution page, or
+    // its blueprints.
+    .solution {
+        margin-top: 1.5rem;
+    }
+
+    // The product screen fills the right column, in a grey panel, cropped at
+    // its bottom right.
+    .visuals {
+        position: relative;
+        // Stretches with the domain column, so the panel always reaches the
+        // rule below.
+        min-height: max(26rem, min(34rem, calc(100vh - 10rem)));
+        background: var(--ks-background-body);
+        overflow: hidden;
+    }
+
+    // Screens are stacked and cross-fade. Each sits on a soft glow of its
+    // vertical's color, with one small pixel cluster in the top corner.
+    .visual {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // The topology runs edge to edge, centered in the panel's height.
+        padding: var(--inset) 0;
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+
+        > * {
+            transform: translateY(16px);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        &.active {
+            opacity: 1;
+            pointer-events: auto;
+
+            > * {
+                transform: none;
+            }
+        }
+
+        :global(html.dark) & {
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 12%, transparent),
+                    transparent 70%
+                ),
+                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        }
+
+        .pixels {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 96px;
+            aspect-ratio: 194 / 168;
+            background: var(--tint);
+            mask: var(--pixels) no-repeat center / contain;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+    }
+</style>

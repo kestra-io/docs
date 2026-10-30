@@ -1,0 +1,298 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+
+const PROBLEMS = [
+    {
+        icon: "mdi:link-variant-off",
+        title: "Inconsistent reliability",
+        text: "Each domain developed its own tool in a silo. This led to failures occurring between workflows, where ownership and visibility break down. Teams are now forced to reconstruct what happened with limited telemetry.",
+    },
+    {
+        icon: "mdi:lock-outline",
+        title: "Expensive vendor lock-in",
+        text: "Acquisition-driven price increases, product retirements, and vendor lock-in limit options. Platforms built to automate the business become liabilities, driving up costs and constraining how your organization can modernize.",
+    },
+    {
+        icon: "mdi:shield-alert-outline",
+        title: "Fragmented AI governance",
+        text: "Agents make decisions and take actions across systems autonomously, but fragmented orchestration leaves permissions, approvals, and audit trails disconnected. Actions can bypass controls, which makes failures harder to trace and contain.",
+    },
+]
+---
+
+{
+    /* On the hairline grid of the blocks above: the head on two columns with
+    the whitepaper on its right, then the three problems in cells between
+    rules. */
+}
+<section class="replace" aria-labelledby="replace">
+    <PixelEdges left="tall" right="wide" />
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="replace">Replace what no longer serves you</h2>
+                <p>
+                    Fragmented orchestration slows recovery, drives up costs,
+                    and leaves gaps in AI governance. Bring your workflows
+                    together while keeping the code and systems they already run
+                    on.
+                </p>
+                <a
+                    href="/unified-orchestration-whitepaper-kestra.pdf"
+                    class="btn-ghost whitepaper"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Read the whitepaper
+                </a>
+            </header>
+
+            <ul class="problems">
+                {
+                    PROBLEMS.map((problem, idx) => (
+                        <li class={`problem-${idx}`}>
+                            <Icon name={problem.icon} />
+                            <h3>{problem.title}</h3>
+                            <p>{problem.text}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .replace {
+        position: relative;
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    // The control plane block's hairline grid: rails on both sides, and
+    // full-width rules around the problems' row.
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+        // White between the rails, so the edge pixels never show through the
+        // cells on narrower screens.
+        background: var(--ks-background-body);
+
+        > .problems {
+            position: relative;
+            border-block: var(--rule);
+
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                left: -100vw;
+                right: -100vw;
+                height: 1px;
+                background: var(--ks-border-primary);
+                pointer-events: none;
+            }
+
+            &::before {
+                top: -1px;
+            }
+
+            &::after {
+                bottom: -1px;
+            }
+        }
+    }
+
+    // The homepage's two-column head: the title on the left, the copy on the
+    // right, both from the top, and the whitepaper at the far right.
+    .head {
+        display: grid;
+        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr) auto;
+        row-gap: 1.25rem;
+        align-items: start;
+        padding: 8.5rem 0 4rem;
+
+        > * {
+            padding-inline: var(--inset);
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+            text-wrap: balance;
+
+            // Two lines, free to run past its column into the gutter
+            // before the copy, as in the control plane block.
+            @include media-breakpoint-up(lg) {
+                width: max-content;
+                max-width: 10em;
+                padding-right: 0;
+            }
+        }
+
+        p {
+            max-width: calc(26rem + 2 * var(--inset));
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+            text-wrap: pretty;
+        }
+
+        // A button keeps its own width, so its inset goes on a margin, and
+        // its padding stays the button's own.
+        .whitepaper {
+            justify-self: end;
+            margin-inline: var(--inset);
+            padding-inline: 1.5rem;
+            white-space: nowrap;
+
+            @include media-breakpoint-down(lg) {
+                justify-self: start;
+            }
+        }
+    }
+
+    // Three cells between the rules: an icon, the problem, its copy.
+    .problems {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        > li {
+            position: relative;
+            padding: 2.5rem var(--inset) 3rem;
+            transition: background-color 0.3s ease;
+
+            // On hover the cell draws its top edge, like the How it works
+            // steps, and its icon acts the problem out.
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--ks-content-primary);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            &:hover {
+                background: var(--ks-background-secondary);
+
+                &::before {
+                    transform: none;
+                }
+            }
+
+            & + li {
+                border-left: var(--rule);
+
+                @include media-breakpoint-down(lg) {
+                    border-left: 0;
+                    border-top: var(--rule);
+                }
+            }
+
+            > :global(svg) {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-bottom: 1.75rem;
+                color: var(--ks-content-primary);
+            }
+        }
+
+        // The broken link jolts apart, the lock rattles, the shield sounds
+        // the alarm.
+        .problem-0:hover > :global(svg) {
+            animation: jolt 0.5s ease;
+        }
+
+        .problem-1:hover > :global(svg) {
+            animation: rattle 0.5s ease;
+        }
+
+        .problem-2:hover > :global(svg) {
+            animation: alarm 0.9s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            > li:hover > :global(svg) {
+                animation: none;
+            }
+        }
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    @keyframes jolt {
+        30% {
+            transform: translate(-3px, 2px) rotate(-12deg);
+        }
+
+        60% {
+            transform: translate(2px, -1px) rotate(8deg);
+        }
+    }
+
+    @keyframes rattle {
+        20%,
+        60% {
+            transform: rotate(-10deg);
+        }
+
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+
+    @keyframes alarm {
+        25%,
+        75% {
+            transform: scale(1.25);
+        }
+
+        50% {
+            transform: scale(1);
+        }
+    }
+</style>

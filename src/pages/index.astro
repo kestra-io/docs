@@ -2,98 +2,244 @@
 import Layout from "~/components/layout.astro"
 import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
 import Hero from "~/components/home/Hero.astro"
-import Comparison from "~/components/home/Comparison.astro"
-import Stacked from "~/components/common/Stacked.astro"
-import PlatformOverview from "~/components/home/PlatformOverview.astro"
-import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
-import Testimonial from "~/components/home/Testimonial.astro"
-import Blueprints from "~/components/home/Blueprints.astro"
-import ClosingCTA from "~/components/home/ClosingCTA.astro"
-import GetStarted from "~/components/common/GetStarted.astro"
-import PluginsBlock from "~/components/common/PluginsBlock.astro"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-
-const totalPlugins = await fetchTotalPluginsCount()
+import ControlPlane from "~/components/home/ControlPlane.astro"
+import AiGovernance from "~/components/home/AiGovernance.astro"
+import HowItWorks from "~/components/home/HowItWorks.astro"
+import ReplaceLegacy from "~/components/home/ReplaceLegacy.astro"
+import RunKestra from "~/components/home/RunKestra.astro"
+import Customers from "~/components/home/Customers.astro"
+import Enterprise from "~/components/home/Enterprise.astro"
 ---
 
-<Layout headerTheme="lightText">
+<Layout>
     <Fragment slot="head">
         <SchemaSoftwareApplication url="https://kestra.io" />
     </Fragment>
     <div class="home-page">
         <Hero />
-        <Comparison />
-        <Stacked>
-            <h2 slot="title" id="adopt">
-                Adopt Once.<br />
-                <span>Standardize Everywhere.</span>
-            </h2>
-
-            <div slot="description"></div>
-        </Stacked>
-        <PlatformOverview />
-        <UseCaseGrid />
-        <PluginsBlock>
-            <span slot="title">
-                Work With Your Stack, <br />
-                Not the Other Way Around.
-            </span>
-            <span slot="description">
-                Kestra integrates with your existing cloud, data,
-                infrastructure, and SaaS tools. <br />With {totalPlugins}+
-                plugins, you can orchestrate everything without building custom
-                glue code.
-            </span>
-        </PluginsBlock>
-        <Testimonial />
-        <GetStarted>
-            <h2 slot="heading" id="get-started">
-                Deploy Anywhere. Keep Everything Governed.
-            </h2>
-        </GetStarted>
-        <Blueprints />
-        <ClosingCTA />
+        <HowItWorks />
+        <ControlPlane />
+        <AiGovernance />
+        <Enterprise />
+        <ReplaceLegacy />
+        <Customers />
+        <RunKestra />
     </div>
 </Layout>
 
+<script>
+    // Ask Header.vue for a quieter menu on this page, and drop the
+    // request when navigating away.
+    function requestCleanHeader() {
+        if (!document.querySelector(".home-page")) return
+        document.body.setAttribute("data-header-clean", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clean"),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", requestCleanHeader)
+    requestCleanHeader()
+
+    // A section out of view pauses its looping CSS animations (rings,
+    // flowing edges, spinners, carousels), so the page spends nothing on
+    // what nobody sees.
+    function pauseOffscreen() {
+        const sections = document.querySelectorAll<HTMLElement>(
+            ".home-page > section:not([data-watched])",
+        )
+        if (!sections.length) return
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries)
+                    entry.target.toggleAttribute(
+                        "data-offscreen",
+                        !entry.isIntersecting,
+                    )
+            },
+            { rootMargin: "200px 0px" },
+        )
+        for (const section of sections) {
+            section.dataset.watched = ""
+            observer.observe(section)
+        }
+    }
+
+    document.addEventListener("astro:page-load", pauseOffscreen)
+    pauseOffscreen()
+</script>
+
 <style lang="scss">
-    /* since the home page will mostly follow its own theme,
-     * we need to define some of the colors here. */
     .home-page {
-        --hp-background-dark: #0a0b0d;
-        --hp-content-dark: #ffffff;
-        --hp-content-primary: #131316;
-        --hp-content-secondary: #3b3a41;
-        --hp-content-secondary-inverse: #cccbce;
-        --hp-background-tertiary: #7f7f86;
-        --hp-content-tertiary: #94a3b8;
-        --hp-border-primary: #f1f1f1;
-        --hp-border-secondary: #cccbce;
-        --hp-background-purple-light: #f1efff;
-        --hp-grid-size: 68px;
-        background-color: var(--hp-background-dark);
-        color: var(--hp-content-dark);
+        // The site's border, a touch stronger here, so the hairline grid
+        // holds on every surface, the quotes' lavender included.
+        --ks-border-primary: #e2e2e8;
+
+        :global(html.dark) & {
+            --ks-border-primary: #46454d;
+        }
+
         overflow: clip;
-    }
 
-    h2 {
-        font-size: 2rem;
-        text-align: center;
-        margin-bottom: 2rem;
-        margin-inline: auto;
-        @include media-breakpoint-up(md) {
-            width: 700px;
+        // See pauseOffscreen above.
+        :global([data-offscreen]) :global(*),
+        :global([data-offscreen]) :global(*::before),
+        :global([data-offscreen]) :global(*::after) {
+            animation-play-state: paused !important;
         }
-    }
 
-    h2#adopt {
-        color: var(--ks-content-primary);
-        span {
-            color: var(--ks-content-color-highlight);
+        // The homepage's two buttons, from the hero. Solid: flat violet; on
+        // hover it lifts, glows and a sheen sweeps across it. Ghost: quiet
+        // and translucent beside it, in the text color on light surfaces
+        // and in white on dark ones. `compact` sets either a size down.
+        :global(.btn-solid),
+        :global(.btn-ghost) {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.0625rem;
+            font-weight: 500;
+            line-height: 1.5;
+            text-decoration: none;
+            white-space: nowrap;
         }
-    }
 
-    h2#get-started {
-        color: var(--ks-content-primary-inverse);
+        :global(.btn-solid.compact),
+        :global(.btn-ghost.compact) {
+            padding: 0.625rem 1.125rem;
+            font-size: 0.9375rem;
+        }
+
+        :global(.btn-solid) {
+            overflow: hidden;
+            background: var(--ks-background-button-primary);
+            color: #ffffff;
+            box-shadow:
+                0 0 0 0 rgba(132, 5, 255, 0),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    110deg,
+                    transparent 30%,
+                    rgba(255, 255, 255, 0.35) 50%,
+                    transparent 70%
+                );
+                transform: translateX(-120%);
+                pointer-events: none;
+            }
+
+            :global(svg) {
+                width: 1.125rem;
+                height: 1.125rem;
+                transition: transform 0.25s ease;
+            }
+
+            &:hover,
+            &:focus-visible {
+                color: #ffffff;
+                transform: translateY(-1px);
+                filter: brightness(1.08);
+                box-shadow:
+                    0 8px 28px -6px rgba(132, 5, 255, 0.7),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+                &::after {
+                    transform: translateX(120%);
+                    transition: transform 0.7s ease;
+                }
+
+                :global(svg) {
+                    transform: translateX(3px);
+                }
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                &,
+                &:hover {
+                    transform: none;
+                }
+
+                &::after {
+                    display: none;
+                }
+            }
+        }
+
+        :global(.btn-ghost) {
+            border: 1px solid var(--ks-border-primary);
+            background: color-mix(
+                in srgb,
+                var(--ks-content-primary) 4%,
+                transparent
+            );
+            color: var(--ks-content-primary);
+            transition:
+                background-color 0.2s ease,
+                border-color 0.2s ease;
+
+            :global(svg) {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+
+            &:hover,
+            &:focus-visible {
+                border-color: color-mix(
+                    in srgb,
+                    var(--ks-content-primary) 25%,
+                    transparent
+                );
+                background: color-mix(
+                    in srgb,
+                    var(--ks-content-primary) 8%,
+                    transparent
+                );
+                color: var(--ks-content-primary);
+            }
+        }
+
+        :global(.surface-dark .btn-ghost) {
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+
+            &:hover,
+            &:focus-visible {
+                border-color: rgba(255, 255, 255, 0.2);
+                background: rgba(255, 255, 255, 0.12);
+                color: #ffffff;
+            }
+        }
+
+        // Same width as the About us page.
+        :global(.container) {
+            @include media-breakpoint-up(xxl) {
+                max-width: 1320px;
+            }
+
+            // A comfortable gutter on phones.
+            @include media-breakpoint-down(md) {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+        }
     }
 </style>

@@ -1,0 +1,1421 @@
+---
+/**
+ * Melissa's AI orchestration block, played live: an agent calls a Kestra
+ * workflow through MCP, the call crosses the governance layer, and the
+ * execution runs its approval before it is audited. Then a
+ * second agent tries drop_table and the layer turns it back. Without
+ * JavaScript, or with reduced motion, it shows the end of the story.
+ */
+import { Icon } from "astro-icon/components"
+import { API_URL } from "astro:env/client"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import TopologyNode from "./TopologyNode.astro"
+
+const AGENTS = [
+    { name: "Support agent", runtime: "LLM · tool calls" },
+    { name: "Finance agent", runtime: "Self-hosted model" },
+]
+
+const CONTROLS = [
+    {
+        icon: "mdi:key-outline",
+        name: "Permissioned",
+    },
+    {
+        icon: "mdi:account-check-outline",
+        name: "Approved",
+    },
+    {
+        icon: "mdi:text-box-search-outline",
+        name: "Audited",
+    },
+]
+
+// The refund_order execution, as in the product's topology.
+const TASKS = [
+    {
+        id: "owner_approval",
+        type: "core.flow.Pause",
+        plugin: "core.flow.Pause",
+        fallback: "mdi:pause-circle-outline",
+        duration: "4m 12s",
+        seconds: 252,
+    },
+    {
+        id: "issue_refund",
+        type: "core.http.Request",
+        plugin: "core.http.Request",
+        fallback: "mdi:web",
+        duration: "1.4s",
+        seconds: 1.4,
+    },
+    {
+        id: "email_customer",
+        type: "notifications.mail.MailSend",
+        plugin: "notifications.mail.MailSend",
+        fallback: "mdi:email-outline",
+        duration: "0.8s",
+        seconds: 0.8,
+    },
+]
+
+// Each task's slot in the run, drawn as the line along its node, as in the
+// topology animations: tasks run one after the other, and short ones keep
+// a visible sliver.
+const MIN_LENGTH = 0.015
+const total = TASKS.reduce((sum, task) => sum + task.seconds, 0)
+const shown = TASKS.map((task) => Math.max(task.seconds / total, MIN_LENGTH))
+const span = shown.reduce((sum, length) => sum + length, 0)
+const slot = (idx: number) => {
+    const start = shown.slice(0, idx).reduce((sum, length) => sum + length, 0)
+    return `--start: ${start / span}; --length: ${shown[idx] / span}`
+}
+
+const icons = await Promise.all(
+    TASKS.map(async (task) => {
+        try {
+            const response = await fetch(
+                `${API_URL}/plugins/icons/io.kestra.plugin.${task.plugin}`,
+            )
+            if (!response.ok) return null
+            const svg = Buffer.from(await response.arrayBuffer())
+            return `data:image/svg+xml;base64,${svg.toString("base64")}`
+        } catch {
+            return null
+        }
+    }),
+)
+---
+
+<section
+    class="ai-governance surface-dark"
+    aria-labelledby="ai-governance"
+    data-header-dark
+>
+    {/* The About us pixel art, as in the blocks above. */}
+    <PixelEdges left="wide" right="tall" />
+    {/* A faint technical grid behind the scene, fading out at the edges. */}
+    <span class="texture" aria-hidden="true"></span>
+    {
+        /* Full width and dark, like the hero; the rails sit inside
+    container-xl, on the same lines as the control plane block's above. */
+    }
+    <div class="container-xl">
+        <div class="rails">
+            <div class="head">
+                <h2 id="ai-governance">
+                    AI agents cross systems seamlessly. <span
+                        >Enforce governance at every step.</span
+                    >
+                </h2>
+                <p class="lead">
+                    Permissions, approvals, and audit trails apply to every
+                    action an agent takes.
+                </p>
+                {/* The hero's primary button, with its violet glow. */}
+                <a href="/ai-automation" class="btn-solid">
+                    How agents fit <Icon name="mdi:chevron-right" />
+                </a>
+            </div>
+
+            {
+                /* The scene: the agents on the left, the governance layer in the
+        middle, the workflow it runs on the right. Each element carries the
+        step from which it shows (data-at) or the steps of its states. */
+            }
+            <figure
+                class="scene"
+                aria-label="An AI agent calls the refund_order workflow through Kestra: the call is permissioned, paused for approval by j.kim, then audited. A second agent's drop_table call is denied by policy."
+                data-ai-scene
+            >
+                {
+                    /* A planet rising behind the scene, in the 2.0 page's
+            colours: its lit limb arcs over the panels and behind the gate. */
+                }
+                <div class="planet" aria-hidden="true">
+                    <span class="haze"></span>
+                    <span class="atmosphere"></span>
+                    <span class="rim"></span>
+                    <span class="limb"></span>
+                </div>
+                <div class="console" aria-hidden="true">
+                    {/* The agent at work, as the panel's header. */}
+                    <ul class="agents">
+                        {
+                            AGENTS.map((agent, idx) => (
+                                <li
+                                    class:list={[
+                                        "speaker",
+                                        { current: idx === 1 },
+                                    ]}
+                                    data-agent={idx}
+                                >
+                                    <Icon name="mdi:robot-outline" />
+                                    <span>
+                                        <strong>{agent.name}</strong>
+                                        <small>{agent.runtime}</small>
+                                    </span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+
+                    <ol class="chat">
+                        <li class="msg user on" data-at="1">
+                            Customer #4821 got a damaged item. Refund it.
+                        </li>
+                        <li class="msg call on" data-at="2">
+                            <Icon name="mdi:tools" />
+                            <code>refund_order</code>
+                            <span class="args"
+                                >order: 4821 · amount: 129.00</span
+                            >
+                        </li>
+                        <li class="msg agent waiting on" data-at="5">
+                            <Icon name="mdi:pause" /> Paused for approval
+                        </li>
+                        <li class="msg agent on" data-at="8">
+                            Refund issued. The execution is in the audit log.
+                        </li>
+                        <li class="msg user on" data-at="9">
+                            Clean up the old staging tables.
+                        </li>
+                        <li class="msg call on" data-at="10">
+                            <Icon name="mdi:tools" />
+                            <code>drop_table</code>
+                            <span class="args">table: orders</span>
+                        </li>
+                        <li class="msg denied on" data-at="11">
+                            <Icon name="mdi:shield-lock-outline" />
+                            <code>drop_table</code> · blocked by Kestra policy
+                        </li>
+                    </ol>
+                </div>
+
+                {/* The layer: Kestra as the gate every call goes through. */}
+                <div class="layer" aria-hidden="true">
+                    <span class="wire"></span>
+                    <span class="track"><span class="pulse"></span></span>
+                    <div class="gate">
+                        <img
+                            src={kestraMark.src}
+                            alt=""
+                            width="40"
+                            height="40"
+                        />
+                    </div>
+                </div>
+
+                <div class="execution" aria-hidden="true">
+                    <div class="exec-head">
+                        <code>refund_order</code>
+                        <span class="exec-state">
+                            <span class="s-running">
+                                <Icon name="mdi:loading" class="spin" /> Running
+                            </span>
+                            <span class="s-paused">
+                                <Icon name="mdi:pause" /> Paused
+                            </span>
+                            <span class="s-success">
+                                <Icon name="mdi:check-circle-outline" /> Success
+                            </span>
+                        </span>
+                    </div>
+                    <div class="tasks">
+                        {
+                            TASKS.map((task, idx) => (
+                                <div class="step">
+                                    <TopologyNode
+                                        id={task.id}
+                                        type={task.type}
+                                        icon={icons[idx]}
+                                        fallback={task.fallback}
+                                        status="success"
+                                        duration={task.duration}
+                                        style={`width: 100%; ${slot(idx)}`}
+                                        data-task={idx}
+                                    >
+                                        {idx === 0 && (
+                                            <span class="resume" slot="action">
+                                                <Icon name="mdi:play" /> Resume
+                                            </span>
+                                        )}
+                                    </TopologyNode>
+                                </div>
+                            ))
+                        }
+                    </div>
+                    <p class="approver on" data-at="7">
+                        <Icon name="mdi:account-check-outline" /> Resumed by j.kim
+                    </p>
+                </div>
+            </figure>
+
+            {
+                /* The controls, one light row under the scene: each lights
+        when the scene plays it. */
+            }
+            <div class="ledger">
+                <ul class="controls" aria-label="Governance controls">
+                    {
+                        CONTROLS.map((control, idx) => (
+                            <li class="control on" data-at={[3, 7, 12][idx]}>
+                                <Icon
+                                    name={control.icon}
+                                    class="control-icon"
+                                />
+                                <strong>{control.name}</strong>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // While a [data-header-dark] section sits under the fixed menu, the menu
+    // turns dark too (Header.vue reads body[data-header-over-dark]).
+    function watchDarkSections() {
+        const sections =
+            document.querySelectorAll<HTMLElement>("[data-header-dark]")
+        if (!sections.length || document.body.dataset.darkSectionsWatched)
+            return
+        document.body.dataset.darkSectionsWatched = "true"
+        let frame = 0
+        const update = () => {
+            frame = 0
+            const bar = document.getElementById("top-bar")
+            const line = bar ? bar.getBoundingClientRect().bottom - 1 : 0
+            const over = [...sections].some((section) => {
+                const box = section.getBoundingClientRect()
+                return box.top <= line && box.bottom > line
+            })
+            document.body.toggleAttribute("data-header-over-dark", over)
+        }
+        const schedule = () => {
+            frame ||= requestAnimationFrame(update)
+        }
+        window.addEventListener("scroll", schedule, { passive: true })
+        window.addEventListener("resize", schedule)
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                window.removeEventListener("scroll", schedule)
+                window.removeEventListener("resize", schedule)
+                document.body.removeAttribute("data-header-over-dark")
+                delete document.body.dataset.darkSectionsWatched
+            },
+            { once: true },
+        )
+        update()
+    }
+
+    document.addEventListener("astro:page-load", watchDarkSections)
+    watchDarkSections()
+
+    // The story, step by step, and how long each step holds (ms):
+    //  1 the support agent asks   2 it calls refund_order
+    //  3 the call crosses the layer: permissioned, the execution starts
+    //  5 owner_approval pauses    7 j.kim resumes it
+    //  8 the refund runs, the call is logged
+    //  9 the finance agent asks  10 it calls drop_table
+    // 11 the layer turns it back, logged as denied
+    // 12 the gate calms down, and the audit is complete
+    const STEPS: [number, number][] = [
+        [0, 700],
+        [1, 1100],
+        [2, 1000],
+        [3, 900],
+        [4, 900],
+        [5, 2200],
+        [7, 800],
+        [8, 2200],
+        [9, 1100],
+        [10, 1000],
+        [11, 2200],
+        [12, 2600],
+    ]
+
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+    function play(scene: HTMLElement) {
+        const root = scene.closest<HTMLElement>(".ai-governance")!
+        const timed = [...root.querySelectorAll<HTMLElement>("[data-at]")]
+        const agents = [...scene.querySelectorAll<HTMLElement>("[data-agent]")]
+        const tasks = [...scene.querySelectorAll<HTMLElement>("[data-task]")]
+
+        let visible = false
+        new IntersectionObserver(
+            ([entry]) => {
+                visible = entry.isIntersecting
+            },
+            { threshold: 0.35 },
+        ).observe(scene)
+
+        const task = (idx: number, status: string) => {
+            tasks[idx].classList.remove(
+                "is-created",
+                "is-running",
+                "is-paused",
+                "is-success",
+            )
+            tasks[idx].classList.add(`is-${status}`)
+        }
+
+        const show = (step: number) => {
+            for (const el of timed) {
+                const until = Number(el.dataset.until ?? Infinity)
+                const at = Number(el.dataset.at)
+                el.classList.toggle("on", step >= at && step < until)
+            }
+            agents.forEach((agent, idx) =>
+                agent.classList.toggle("current", idx === (step >= 9 ? 1 : 0)),
+            )
+            // The run and the execution's state.
+            scene.dataset.step = String(step)
+            const exec =
+                step < 3
+                    ? "idle"
+                    : step < 5
+                      ? "running"
+                      : step < 7
+                        ? "paused"
+                        : step < 8
+                          ? "running"
+                          : step < 9
+                            ? "success"
+                            : "done"
+            scene.dataset.exec = exec
+            task(0, step < 5 ? "created" : step < 7 ? "paused" : "success")
+            task(1, step < 7 ? "created" : step < 8 ? "running" : "success")
+            task(2, step < 8 ? "created" : "success")
+        }
+
+        // A new round: the last conversation scrolls up and out, like a
+        // chat moving on, before the next one starts below.
+        const chat = scene.querySelector<HTMLElement>(".chat")!
+        const clear = async () => {
+            if (!chat.querySelector(".msg.on")) return
+            chat.classList.add("clearing")
+            await sleep(700)
+            chat.classList.add("resetting")
+        }
+
+        const loop = async () => {
+            scene.classList.add("playing")
+            for (;;) {
+                for (const [step, hold] of STEPS) {
+                    while (!visible) await sleep(250)
+                    if (step === 0) await clear()
+                    show(step)
+                    if (step === 0) {
+                        void chat.offsetWidth
+                        chat.classList.remove("clearing", "resetting")
+                    }
+                    await sleep(hold)
+                }
+            }
+        }
+        loop()
+    }
+
+    function init() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        for (const scene of document.querySelectorAll<HTMLElement>(
+            "[data-ai-scene]:not([data-playing])",
+        )) {
+            scene.dataset.playing = "true"
+            play(scene)
+        }
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    // Dark in both themes, with its own palette after the product's dark
+    // theme.
+    .ai-governance {
+        --bg: #0b0b0e;
+        --line: rgba(255, 255, 255, 0.08);
+        --panel: rgba(22, 22, 28, 0.72);
+        --panel-border: rgba(255, 255, 255, 0.09);
+        --text: #ffffff;
+        --muted: #b4b4c3;
+        --faint: #7a7a8c;
+        // Light accents for the calls and the run; violet stays in the
+        // background glow only.
+        --accent: #ffffff;
+        --accent-soft: #d9d9e3;
+        // State colours from the product's tags, dark theme.
+        --success: #21e3a4;
+        --success-bg: rgba(33, 227, 164, 0.13);
+        --warning: #ff9a62;
+        --warning-bg: rgba(255, 138, 92, 0.15);
+        --info: #8fa6ff;
+        --info-bg: rgba(113, 139, 254, 0.17);
+        --danger: #ff5c7a;
+        --danger-bg: rgba(255, 75, 105, 0.2);
+
+        // The menu reads these while it sits over the section.
+        --ks-content-primary: #{$base-grey-white};
+        --ks-content-secondary: #{$base-grey-200};
+        --ks-content-tertiary: #{$base-grey-300};
+        --ks-content-link: #{$base-primary-200};
+
+        position: relative;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+    }
+
+    // The section is dark in both themes: the pixels take their dark-theme
+    // tint.
+    .ai-governance :global(.pixel-edges) {
+        --pixel: rgba(167, 150, 255, 0.07);
+    }
+
+    // Hairline rails down the sides, on the control plane block's lines.
+    // The inset is the hero's and the control plane's, so the panels start
+    // on the same line as their copy.
+    .rails {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        // The scene and its ledger stay a compact stage, centred under the
+        // title, however wide the screen: the story reads in one glance.
+        --stage: max(var(--inset), calc((100% - 72rem) / 2));
+
+        position: relative;
+        padding-top: clamp(4rem, 6vw, 5.5rem);
+
+        // Drawn as lines over the content, so the planet never covers them.
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: 3;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        &::before {
+            left: 0;
+        }
+
+        &::after {
+            right: 0;
+        }
+    }
+
+    // The planet: a disc wider than the page, centred, its top just above
+    // the panels so its limb arcs over them and down behind them. Static,
+    // so it costs nothing while the story plays.
+    .planet {
+        // Sized to the stage: its arc spans the panels, not the screen.
+        --size: 84rem;
+
+        position: absolute;
+        z-index: -1;
+        top: -2.5rem;
+        left: 50%;
+        width: var(--size);
+        aspect-ratio: 1;
+        translate: -50% 0;
+        border-radius: 50%;
+        // Lit from above, as in the reference: a pale cap on top that
+        // fades into the night side, and an indigo glow running inside the
+        // edge down both sides. No texture, light only.
+        background:
+            // The disc melts into the page by about its middle.
+
+            linear-gradient(transparent 20%, var(--bg) 48%),
+            radial-gradient(
+                ellipse 62% 26% at 50% 0%,
+                rgba(200, 200, 216, 0.24),
+                rgba(130, 130, 150, 0.1) 40%,
+                transparent 72%
+            ),
+            #060609;
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            --size: 60rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    // The limb: a soft edge of light fading inwards, pale where the light
+    // falls on top, indigo down both sides.
+    .limb {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+            from -90deg,
+            transparent 0deg,
+            #3a26ff 22deg,
+            #5f4dff 52deg,
+            rgba(216, 214, 236, 0.45) 80deg,
+            rgba(255, 255, 255, 0.55) 90deg,
+            rgba(216, 214, 236, 0.45) 100deg,
+            #5f4dff 128deg,
+            #3a26ff 158deg,
+            transparent 180deg
+        );
+        mask:
+            radial-gradient(
+                farthest-side,
+                transparent calc(100% - 16px),
+                #000 100%
+            ),
+            linear-gradient(#000 15%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    // The glow around the planet: an indigo halo hugging the edge, which
+    // fades down the sides, and a pale haze over the lit top. It sits under
+    // the disc, which hides the part inside the edge.
+    .atmosphere {
+        position: absolute;
+        z-index: -1;
+        inset: -20rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent calc(100% - 20rem),
+            rgba(80, 56, 255, 0.5) calc(100% - 20rem + 1px),
+            rgba(70, 44, 255, 0.22) calc(100% - 18rem),
+            rgba(60, 30, 240, 0.08) calc(100% - 14rem),
+            transparent calc(100% - 9rem)
+        );
+        // Indigo on the sides only: the top stays pale.
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 45deg,
+                transparent 78deg,
+                transparent 102deg,
+                #000 135deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 4%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    // Inside the edge, the same indigo glow down both sides.
+    .rim {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent 82%,
+            rgba(50, 28, 220, 0.16) 92%,
+            rgba(72, 48, 255, 0.5) 98.5%,
+            rgba(118, 100, 255, 0.7) 100%
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 40deg,
+                transparent 75deg,
+                transparent 105deg,
+                #000 140deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 20%, transparent 48%);
+        mask-composite: intersect;
+    }
+
+    // A pale haze over the lit top.
+    .haze {
+        position: absolute;
+        z-index: -1;
+        top: -7rem;
+        left: 50%;
+        width: 44rem;
+        height: 16rem;
+        translate: -50% 0;
+        background: radial-gradient(
+            closest-side,
+            rgba(230, 230, 242, 0.1),
+            rgba(200, 200, 220, 0.04) 55%,
+            transparent
+        );
+    }
+
+    .head {
+        position: relative;
+        max-width: 50rem;
+        // Room for the planet's limb between the copy and the panels; none
+        // on a phone, where the planet is not drawn.
+        margin: 0 auto 6.5rem;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 3rem;
+        }
+        padding-inline: 1.5rem;
+        text-align: center;
+    }
+
+    h2 {
+        margin: 0;
+        // The homepage's one h2 scale, as in the control plane block.
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--text);
+        text-wrap: balance;
+
+        // The second sentence in grey, the promise after the fact.
+        span {
+            color: #a9a9b8;
+        }
+    }
+
+    .btn-solid {
+        margin-top: 2rem;
+    }
+
+    .lead {
+        margin: 1.25rem auto 0;
+        max-width: 36rem;
+        font-size: 1.25rem;
+        line-height: 1.55;
+        color: #cfcfda;
+    }
+
+    // A fine grid, as in the product's canvas, faded to nothing away from
+    // the scene.
+    .texture {
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px) 0
+                0 / 48px 48px,
+            linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.035) 1px,
+                    transparent 1px
+                )
+                0 0 / 48px 48px;
+        mask: radial-gradient(
+            ellipse 60% 55% at 50% 45%,
+            #000 20%,
+            transparent 75%
+        );
+        pointer-events: none;
+    }
+
+    // The scene: three columns, the layer between the agent and the work.
+    .scene {
+        position: relative;
+        // Its own stacking layer, so the planet sits under the panels.
+        isolation: isolate;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 12rem minmax(0, 1fr);
+        align-items: stretch;
+        margin: 0;
+        padding: 0 var(--stage) 2.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+        }
+    }
+
+    .label {
+        margin: 0 0 0.75rem;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+    }
+
+    code {
+        padding: 0;
+        background: none;
+        font-family: $font-family-monospace;
+        font-size: 0.8125rem;
+        color: var(--text);
+    }
+
+    .console,
+    .execution {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        // A fixed height: the story plays inside, the page never moves.
+        height: 25.5rem;
+        padding: 1rem 1.125rem;
+        border: 1px solid var(--panel-border);
+        border-radius: 0.875rem;
+        background: var(--panel);
+        backdrop-filter: blur(12px);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 30px 60px -30px rgba(0, 0, 0, 0.8);
+        @include media-breakpoint-down(md) {
+            height: auto;
+            padding: 1rem;
+        }
+    }
+
+    // The agent at work, alone in the panel's header like the workflow
+    // in the execution's; the next agent takes its place.
+    .agents {
+        display: grid;
+        margin: 0;
+        padding: 0 0 1rem;
+        border-bottom: 1px solid var(--line);
+        list-style: none;
+    }
+
+    .speaker {
+        display: flex;
+        grid-area: 1 / 1;
+        align-items: center;
+        gap: 0.625rem;
+        min-width: 0;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+
+        > :global(svg) {
+            flex: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--muted);
+        }
+
+        span {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+
+        strong {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        small {
+            overflow: hidden;
+            font-size: 0.75rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--faint);
+        }
+
+        &.current {
+            opacity: 1;
+        }
+    }
+
+    // The conversation stays at the bottom; older lines fade out above.
+    .chat {
+        min-height: 0;
+
+        // On a phone the panel grows with its content; the chat keeps a
+        // fixed height so the page still does not move.
+        @include media-breakpoint-down(md) {
+            flex: none;
+            height: 16rem;
+        }
+
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: flex-end;
+        margin: 0.5rem 0 0;
+        // A list resets its own indent, so the lines sit centred in the
+        // panel with the same margin on both sides.
+        padding: 0 0 0.25rem;
+        overflow: hidden;
+        list-style: none;
+        mask-image: linear-gradient(to bottom, transparent, #000 35%);
+    }
+
+    // Each line slides in: it opens its own room (height, margin) while it
+    // fades up, so the lines above glide up instead of jumping.
+    .msg {
+        display: flex;
+        // Never squeezed when the chat fills up: older lines scroll out
+        // the top instead.
+        flex-shrink: 0;
+        align-self: flex-start;
+        align-items: center;
+        gap: 0.625rem;
+        max-width: 85%;
+        max-height: 6rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.875rem;
+        border-radius: 0.625rem;
+        font-size: 0.8125rem;
+        line-height: 1.45;
+        overflow: hidden;
+        transition:
+            max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+            margin 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+            padding 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.5s ease 0.1s,
+            transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+
+        :global(svg) {
+            flex: none;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &.user {
+            align-self: flex-end;
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--text);
+        }
+
+        &.agent {
+            padding-inline: 0.25rem;
+            color: var(--muted);
+        }
+
+        &.call {
+            flex-wrap: wrap;
+            // Filled, no border, like the user's bubbles.
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--accent-soft);
+        }
+
+        &.waiting {
+            color: var(--warning);
+        }
+
+        &.denied {
+            background: var(--danger-bg);
+            color: var(--danger);
+
+            code {
+                color: inherit;
+                text-decoration: line-through;
+            }
+        }
+
+        .args {
+            font-family: $font-family-monospace;
+            font-size: 0.75rem;
+            color: var(--faint);
+        }
+    }
+
+    // Timed elements: in the static scene all show; while it plays, only
+    // those the story has reached. Hidden chat lines fold to nothing. The
+    // controls and the log under the scene follow it only where they sit
+    // in view with it; on a phone they are far below, so they stay lit.
+    .playing [data-at]:not(.on) {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    @include media-breakpoint-up(lg) {
+        .playing ~ * [data-at]:not(.on) {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+    }
+
+    // Clearing: every line slides up and fades together; the reset after
+    // it folds them away without a transition.
+    .chat.clearing .msg {
+        opacity: 0;
+        transform: translateY(-2.5rem);
+        transition:
+            opacity 0.6s ease,
+            transform 0.7s cubic-bezier(0.55, 0, 0.45, 1);
+    }
+
+    .chat.resetting .msg {
+        transition: none;
+    }
+
+    .playing .msg:not(.on) {
+        max-height: 0;
+        margin-top: 0;
+        padding-block: 0;
+        transform: translateY(10px);
+    }
+
+    // The layer: the wire the calls travel on, and the Kestra gate where
+    // they cross.
+    .layer {
+        position: relative;
+        display: grid;
+        place-items: center;
+
+        @include media-breakpoint-down(lg) {
+            padding: 2.5rem 0;
+        }
+    }
+
+    .wire {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(255, 255, 255, 0.16) 50%,
+            rgba(255, 255, 255, 0.04)
+        );
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    // The gate: Kestra's mark alone, in a glowing disc on the planet's
+    // horizon. It rings green when it lets a call through, red when it
+    // turns one back.
+    .gate {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        width: 4.25rem;
+        height: 4.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 50%;
+        background: radial-gradient(circle at 50% 30%, #23232e, #0f0f14 70%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 0 0 8px rgba(255, 255, 255, 0.03),
+            0 0 50px rgba(150, 190, 255, 0.35);
+        transition:
+            border-color 0.4s ease,
+            box-shadow 0.4s ease;
+
+        img {
+            width: 2.125rem;
+            height: 2.125rem;
+        }
+
+        // A ring breathes out of the gate, so it reads as the live heart of
+        // the scene.
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border: 1px solid rgba(190, 170, 255, 0.5);
+            border-radius: 50%;
+            animation: gate-ring 3s ease-out infinite;
+            pointer-events: none;
+
+            @media (prefers-reduced-motion: reduce) {
+                display: none;
+            }
+        }
+
+        .scene[data-step="3"] & {
+            border-color: rgba(6, 240, 177, 0.7);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                0 0 0 8px rgba(6, 240, 177, 0.12),
+                0 0 60px rgba(6, 240, 177, 0.45);
+        }
+
+        .scene[data-step="11"] & {
+            border-color: rgba(255, 107, 122, 0.8);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                0 0 0 8px rgba(255, 75, 95, 0.14),
+                0 0 60px rgba(255, 75, 95, 0.5);
+        }
+    }
+
+    @keyframes gate-ring {
+        0% {
+            opacity: 0.8;
+            transform: scale(1);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(1.9);
+        }
+    }
+
+    // The calls travel inside the gap only: they leave one panel's edge and
+    // reach the other's, never crossing over a panel.
+    .track {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    // A panel lights its edge as it sends a call, or receives one.
+    .console,
+    .execution {
+        transition:
+            border-color 0.5s ease,
+            box-shadow 0.5s ease,
+            opacity 0.5s ease;
+    }
+
+    .scene[data-step="2"] .console,
+    .scene[data-step="10"] .console,
+    .scene[data-step="3"] .execution {
+        border-color: rgba(255, 255, 255, 0.32);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.06),
+            0 0 40px -8px rgba(160, 200, 255, 0.35);
+    }
+
+    // The refused call comes back: the sender's edge flashes red.
+    .scene[data-step="11"] .console {
+        border-color: rgba(255, 107, 122, 0.65);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 0 60px -6px rgba(255, 75, 95, 0.55);
+    }
+
+    // A call: a short streak of light along the wire. It slides with a
+    // transform, so it never moves anything around it.
+    .pulse {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 3.5rem;
+        height: 2px;
+        margin-top: -0.5px;
+        border-radius: 1px;
+        background: linear-gradient(90deg, transparent, #ffffff);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        opacity: 0;
+
+        .scene[data-step="2"] & {
+            animation: cross 1s cubic-bezier(0.55, 0, 0.45, 1) forwards;
+        }
+
+        // The finance call stops at the gate and is sent back.
+        .scene[data-step="10"] & {
+            animation: reach 1s cubic-bezier(0.55, 0, 0.45, 1) forwards;
+        }
+
+        .scene[data-step="11"] & {
+            animation: bounce 0.9s ease-out forwards;
+            background: linear-gradient(90deg, var(--danger), transparent);
+            box-shadow: 0 0 10px rgba(255, 75, 95, 0.8);
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    @keyframes cross {
+        0% {
+            transform: translateX(-3.5rem);
+            opacity: 0;
+        }
+        15%,
+        85% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(12rem);
+            opacity: 0;
+        }
+    }
+
+    @keyframes reach {
+        0% {
+            transform: translateX(-3.5rem);
+            opacity: 0;
+        }
+        20% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes bounce {
+        0% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-5rem);
+            opacity: 0;
+        }
+    }
+
+    // The execution, after the product's execution page.
+    .exec-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--line);
+
+        code {
+            font-size: 0.9375rem;
+        }
+    }
+
+    .exec-state {
+        font-size: 0.75rem;
+        font-weight: 500;
+
+        > span {
+            display: none;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.1875rem 0.5rem;
+            border-radius: 0.375rem;
+        }
+
+        :global(svg) {
+            width: 0.875rem;
+            height: 0.875rem;
+        }
+
+        :global(.spin) {
+            animation: spin 1s linear infinite;
+        }
+
+        .s-running {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--accent-soft);
+        }
+
+        .s-paused {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .s-success {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .scene[data-exec="running"] & .s-running,
+        .scene[data-exec="paused"] & .s-paused,
+        .scene:not(.playing) & .s-success,
+        .scene[data-exec="success"] & .s-success,
+        .scene[data-exec="done"] & .s-success {
+            display: inline-flex;
+        }
+    }
+
+    .execution {
+        // Room at the bottom for the approver line pinned there.
+        padding-bottom: 2.75rem;
+
+        // Before the call arrives, the workflow waits in the dark; once it
+        // is done, it steps back while the next agent tries its luck.
+        .scene[data-exec="idle"] & {
+            opacity: 0.4;
+        }
+
+        .scene[data-exec="done"] & {
+            opacity: 0.55;
+        }
+    }
+
+    // The run, in the topology animations' nodes, one under the other,
+    // drawn a little smaller so the whole scene fits in one view.
+    .tasks {
+        zoom: 0.88;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.75rem;
+        // Set a little low, so the nodes and the pills under the last one
+        // read as centred between the head and the approver.
+        padding: 22px 0 6px;
+    }
+
+    .step {
+        position: relative;
+        // Wider than the topology's nodes, but never past the panel.
+        width: min(330px, 100%);
+
+        // Dashed edge down from the task above, past its pills.
+        & + &::before {
+            content: "";
+            position: absolute;
+            left: 34px;
+            bottom: 100%;
+            height: 2.25rem;
+            border-left: 1.5px dashed #4a4a5a;
+            transition: border-color 0.5s ease;
+        }
+
+        // Not started yet: the node waits, dimmed.
+        :global(.is-created) {
+            opacity: 0.55;
+        }
+    }
+
+    // The edge turns green once the task above has succeeded.
+    :global(.ai-governance .step:has(> .is-success) + .step::before) {
+        border-color: #06f0b1;
+    }
+
+    // The Pause task's Resume button, pressed by the approver.
+    .resume {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        background: #ffffff;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #111114;
+        opacity: 0;
+        transition:
+            opacity 0.3s ease,
+            transform 0.2s ease;
+
+        :global(svg) {
+            width: 0.875rem;
+            height: 0.875rem;
+        }
+
+        :global(.is-paused) > & {
+            opacity: 1;
+            animation: press 2.2s ease forwards;
+        }
+    }
+
+    @keyframes press {
+        80% {
+            transform: none;
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        }
+        90% {
+            transform: scale(0.92);
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.2);
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    // Pinned to the panel's bottom, out of the flow, so it never pushes
+    // the run off centre.
+    .approver {
+        position: absolute;
+        left: 1.125rem;
+        bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin: 0;
+        font-size: 0.8125rem;
+        color: var(--muted);
+        transition:
+            opacity 0.4s ease,
+            transform 0.5s ease;
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+            color: var(--success);
+        }
+    }
+
+    // A band of the hairline grid, from rail to rail, as in the blocks
+    // around: the controls between two rules.
+    .ledger {
+        position: relative;
+        z-index: 3;
+        // The block's closing row, as far under the scene as the copy sits
+        // under the block's top.
+        margin: clamp(4rem, 6vw, 5.5rem) 0 0;
+        border-block: 1px solid var(--line);
+    }
+
+    // The three controls in a row; each lights when the story reaches it.
+    .controls {
+        display: grid;
+        // Three equal cells across the band, each control centred in its own.
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .control {
+        position: relative;
+        display: grid;
+        // Icon and name on one line, centred in the cell.
+        grid-template-columns: auto auto;
+        justify-content: center;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 2.25rem 2rem;
+        transition:
+            opacity 0.5s ease,
+            transform 0.5s ease;
+
+        & + & {
+            border-left: 1px solid var(--line);
+
+            @include media-breakpoint-down(md) {
+                border-left: 0;
+                border-top: 1px solid var(--line);
+            }
+        }
+
+        :global(.control-icon) {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--muted);
+        }
+
+        strong {
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+
+        // Unlit, it stays in place, dimmed, until the story reaches it.
+        @include media-breakpoint-up(lg) {
+            .playing ~ * &:not(.on) {
+                opacity: 0.35;
+                transform: none;
+            }
+        }
+    }
+</style>

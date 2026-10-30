@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed-top">
+    <div v-if="!dismissed" class="fixed-top">
         <div class="announce">
             <div class="alert alert-primary" :class="{ scrolled: scrolled }">
                 <ul>
@@ -40,6 +40,14 @@
                         </a>
                     </li>
                 </ul>
+                <button
+                    type="button"
+                    class="dismiss"
+                    aria-label="Close the announcement"
+                    @click="dismiss"
+                >
+                    <Close />
+                </button>
             </div>
         </div>
     </div>
@@ -47,10 +55,14 @@
 
 <script>
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+    import Close from "vue-material-design-icons/Close.vue"
+
+    const DISMISSED_KEY = "announce-dismissed"
 
     export default {
         components: {
             ArrowRight,
+            Close,
         },
         props: {
             content: {
@@ -67,8 +79,23 @@
             previous: -1,
             paused: false,
             timer: null,
+            dismissed: false,
         }),
+        computed: {
+            // Dismissing hides this set of announcements only; a new one shows.
+            contentKey() {
+                return this.content.map((slide) => slide.id).join(",")
+            },
+        },
         mounted() {
+            try {
+                if (localStorage.getItem(DISMISSED_KEY) === this.contentKey) {
+                    this.dismiss()
+                    return
+                }
+            } catch {
+                // Storage can be blocked; the bar just shows.
+            }
             if (this.content.length < 2) return
             if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
                 return
@@ -80,6 +107,19 @@
         },
         beforeUnmount() {
             clearInterval(this.timer)
+        },
+        methods: {
+            dismiss() {
+                this.dismissed = true
+                clearInterval(this.timer)
+                // Drops the space app.scss keeps for the bar.
+                document.body.classList.remove("has-annonces")
+                try {
+                    localStorage.setItem(DISMISSED_KEY, this.contentKey)
+                } catch {
+                    // Storage can be blocked; the bar comes back next visit.
+                }
+            },
         },
     }
 </script>
@@ -181,5 +221,56 @@
 
     .text-truncate {
         min-width: 0;
+    }
+
+    .dismiss {
+        display: none;
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        padding: 0.25rem;
+        border: 0;
+        background: none;
+        color: rgba($white, 0.8);
+        line-height: 0;
+        transform: translateY(-50%);
+        transition: color 0.2s ease;
+
+        &:hover,
+        &:focus-visible {
+            color: $white;
+        }
+
+        :deep(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+    }
+
+    // The homepage's quieter menu (body[data-header-clean]) pairs with a
+    // plain black bar: one white sentence and an arrow, and a close button.
+    // Written as whole global selectors: Vue drops nested :global() blocks.
+    :global(body[data-header-clean] .announce .alert) {
+        background: #000000;
+    }
+
+    :global(body[data-header-clean] .announce .dismiss) {
+        display: block;
+    }
+
+    :global(body[data-header-clean] .announce ul) {
+        padding-inline: 3rem;
+    }
+
+    :global(body[data-header-clean] .announce a) {
+        color: $white;
+    }
+
+    :global(body[data-header-clean] .announce a strong) {
+        display: none;
+    }
+
+    :global(body[data-header-clean] .announce a em) {
+        font-style: normal;
     }
 </style>

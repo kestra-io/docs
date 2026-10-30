@@ -1,0 +1,364 @@
+---
+/**
+ * One task of an executed Kestra 2.0 topology, after the product's node
+ * design: plugin icon, task id and type, a status border with the task's
+ * Gantt slot as a line along the bottom, and the duration (and artifact)
+ * pills under it. The page's script moves it between states with the
+ * is-created / is-running / is-paused / is-success classes, and places its
+ * Gantt slot with --start and --length.
+ */
+import { Icon } from "astro-icon/components"
+
+export type NodeStatus = "success" | "running" | "paused" | "created"
+
+export interface Props {
+    id: string
+    type: string
+    /** Plugin icon as a data URI, or null to use the fallback. */
+    icon: string | null
+    fallback: string
+    status: NodeStatus
+    duration: string
+    artifacts?: number
+    runner?: string
+    /** Position and Gantt slot, set by the page. */
+    style?: string
+    [key: `data-${string}`]: string | number | undefined
+}
+
+const {
+    id,
+    type,
+    icon,
+    fallback,
+    status,
+    duration,
+    artifacts,
+    runner,
+    style,
+    ...rest
+} = Astro.props
+---
+
+<div class:list={["node", `is-${status}`]} style={style} {...rest}>
+    <span class="icon">
+        {
+            icon ? (
+                <img class="plugin" src={icon} alt="" />
+            ) : (
+                <Icon name={fallback} />
+            )
+        }
+    </span>
+    <span class="text">
+        {runner && <span class="runner">{runner}</span>}
+        <strong>{id}</strong>
+        <span class="type">{type}</span>
+    </span>
+    {
+        /* The page can put an action in place of the info icon, like a
+        Pause task's Resume button. */
+    }
+    {
+        Astro.slots.has("action") ? (
+            <slot name="action" />
+        ) : (
+            <Icon name="mdi:information-outline" class="info" />
+        )
+    }
+    <span class="progress"></span>
+
+    <span class="pills">
+        {
+            artifacts && (
+                <span class="pill artifact">
+                    <Icon name="mdi:diamond-outline" />
+                    {artifacts} artifact
+                    {artifacts > 1 && "s"}
+                </span>
+            )
+        }
+        <span class="pill state">
+            <Icon name="mdi:check-circle-outline" class="done" />
+            <Icon name="mdi:loading" class="spin" />
+            <Icon name="mdi:pause" class="wait" />
+            {duration}
+        </span>
+    </span>
+</div>
+
+<style lang="scss">
+    .node {
+        // Light values from the 2.0 node design; dark ones below, also on a
+        // section that stays dark in both themes.
+        --node-bg: #ffffff;
+        --node-border: #ebebf0;
+        --node-text: #2b2b33;
+        --node-muted: #8a8a97;
+        --track: #f0f0f4;
+        --success: #1e875e;
+        --success-border: #9fdcc0;
+        --success-line: #1e875e;
+        --success-bg: #e7f6ef;
+        --running: #8405ff;
+        --running-bg: #f1e9ff;
+        --paused: #b25f00;
+        --paused-bg: #fff1dc;
+        --runner: #3b5bdb;
+        --runner-bg: #e8edff;
+
+        :global(html.dark) &,
+        :global(.surface-dark) & {
+            --node-bg: #1a1c22;
+            --node-border: #2e2e3c;
+            --node-text: #ffffff;
+            --node-muted: #adadbf;
+            --track: #2a2a36;
+            --success-line: #06f0b1;
+            --success-border: #1e875e;
+            --success-bg: rgba(30, 135, 94, 0.14);
+            --running: #9869f7;
+            --running-bg: rgba(152, 105, 247, 0.14);
+            --paused: #ffb547;
+            --paused-bg: rgba(255, 181, 71, 0.14);
+            --runner: #718bfe;
+            --runner-bg: rgba(152, 105, 247, 0.12);
+        }
+
+        position: relative;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.875rem;
+        width: 260px;
+        height: 76px;
+        // Room under the text for the progress track.
+        padding: 0 0.875rem 10px;
+        border: 1px solid var(--node-border);
+        border-radius: 8px;
+        background: var(--node-bg);
+        // Light drop shadow from the 2.0 tokens.
+        box-shadow: 0 1px 4px 0 var(--ks-shadows-light);
+        font-family: var(--font-family-mona-sans), system-ui, sans-serif;
+        color: var(--node-text);
+        transition:
+            border-color 0.6s ease,
+            box-shadow 0.6s ease,
+            opacity 0.35s ease calc(var(--i, 0) * 70ms),
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)
+                calc(var(--i, 0) * 70ms);
+
+        // A topology building itself in: nodes appear one after the other.
+        :global(.building) & {
+            opacity: 0;
+            transform: translateY(6px) scale(0.98);
+            transition: none;
+        }
+
+        &.is-success {
+            border-color: var(--success-border);
+        }
+
+        &.is-running {
+            border-color: var(--running);
+            box-shadow:
+                0 0 0 3px var(--running-bg),
+                0 2px 6px 0 var(--ks-shadows-light);
+        }
+
+        &.is-paused {
+            border-color: var(--paused);
+            box-shadow:
+                0 0 0 3px var(--paused-bg),
+                0 2px 6px 0 var(--ks-shadows-light);
+        }
+
+        // Light grey track across the node, so a task's slot reads against
+        // the whole run.
+        &::after {
+            content: "";
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 8px;
+            height: 2px;
+            border-radius: 1px;
+            background: var(--track);
+        }
+    }
+
+    .icon {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: #ffffff;
+
+        :global(svg) {
+            width: 32px;
+            height: 32px;
+            color: #2b2b33;
+        }
+    }
+
+    .plugin {
+        width: 32px;
+        height: 32px;
+    }
+
+    .text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        line-height: 1.2;
+
+        strong {
+            overflow: hidden;
+            font-size: 14px;
+            font-weight: 500;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--node-text);
+        }
+    }
+
+    .type {
+        overflow: hidden;
+        font-size: 13px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--node-muted);
+    }
+
+    .runner {
+        align-self: flex-start;
+        margin-bottom: 2px;
+        padding: 0 5px;
+        border-radius: 4px;
+        background: var(--runner-bg);
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--runner);
+    }
+
+    .info {
+        width: 18px;
+        height: 18px;
+        color: var(--node-muted);
+    }
+
+    // The task's Gantt slot across the node's inner width. Moved and sized
+    // with a transform, so the page can redraw it every frame without
+    // layout.
+    .progress {
+        position: absolute;
+        z-index: 1;
+        bottom: 8px;
+        left: 12px;
+        width: calc(100% - 24px);
+        height: 2px;
+        border-radius: 1px;
+        transform: translateX(calc(var(--start, 0) * 100%))
+            scaleX(var(--length, 1));
+        transform-origin: left;
+        opacity: 0;
+        transition:
+            background-color 0.4s ease,
+            opacity 0.3s ease;
+
+        .is-running > & {
+            opacity: 1;
+            background: var(--running);
+        }
+
+        .is-paused > & {
+            opacity: 1;
+            background: var(--paused);
+        }
+
+        .is-success > & {
+            opacity: 1;
+            background: var(--success-line);
+        }
+    }
+
+    .pills {
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        display: flex;
+        gap: 6px;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+
+        .is-running > &,
+        .is-paused > &,
+        .is-success > & {
+            opacity: 1;
+        }
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+
+        :global(svg) {
+            width: 14px;
+            height: 14px;
+        }
+
+        &.artifact {
+            display: none;
+            background: var(--running-bg);
+            color: var(--running);
+
+            .is-success & {
+                display: inline-flex;
+            }
+        }
+
+        .is-success &.state {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+
+        .is-running &.state {
+            background: var(--running-bg);
+            color: var(--running);
+        }
+
+        .is-paused &.state {
+            background: var(--paused-bg);
+            color: var(--paused);
+        }
+
+        // One status icon at a time.
+        :global(.done),
+        :global(.spin),
+        :global(.wait) {
+            display: none;
+        }
+
+        :global(.spin) {
+            animation: spin 1s linear infinite;
+        }
+
+        .is-success & :global(.done),
+        .is-running & :global(.spin),
+        .is-paused & :global(.wait) {
+            display: block;
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
