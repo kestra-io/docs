@@ -25,7 +25,7 @@ const SECTIONS = getSections(totalPlugins)
             <table class="plan-table">
                 <thead>
                     <tr>
-                        <th class="col-feature"></th>
+                        <th class="col-feature"><span class="visually-hidden">Feature</span></th>
                         {
                             PLANS.map((plan, index) => (
                                 <th
@@ -104,7 +104,13 @@ const SECTIONS = getSections(totalPlugins)
                                                             ? "icon-check"
                                                             : "icon-cross"
                                                     }
+                                                    aria-hidden="true"
                                                 />
+                                                <span class="visually-hidden">
+                                                    {val === "check"
+                                                        ? "Included"
+                                                        : "Not included"}
+                                                </span>
                                             </td>
                                         ))}
                                     </tr>
@@ -127,7 +133,7 @@ const SECTIONS = getSections(totalPlugins)
             <table class="plan-table support-table">
                 <thead>
                     <tr>
-                        <th class="col-feature"></th>
+                        <th class="col-feature"><span class="visually-hidden">Feature</span></th>
                         {
                             SUPPORT_PLANS.map((plan) => (
                                 <th class="col-plan">
@@ -147,10 +153,16 @@ const SECTIONS = getSections(totalPlugins)
                                 {row.values.map((val) => (
                                     <td class="col-plan">
                                         {val === "check" ? (
-                                            <Icon
-                                                name="mdi:check-bold"
-                                                class="icon-check"
-                                            />
+                                            <>
+                                                <Icon
+                                                    name="mdi:check-bold"
+                                                    class="icon-check"
+                                                    aria-hidden="true"
+                                                />
+                                                <span class="visually-hidden">
+                                                    Included
+                                                </span>
+                                            </>
                                         ) : (
                                             val
                                         )}
@@ -198,6 +210,8 @@ const SECTIONS = getSections(totalPlugins)
     }
 
     .table-wrapper {
+        position: relative;
+
         @include media-breakpoint-down(xxl) {
             overflow-x: auto;
             overflow-y: hidden;
