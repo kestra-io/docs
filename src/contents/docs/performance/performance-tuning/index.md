@@ -84,6 +84,8 @@ The Executor starts two thread pools of this size: one for execution events and 
 
 ## MySQL-specific tuning
 
+Before tuning MySQL for throughput, confirm the server meets Kestra's [MySQL settings](../../10.administrator-guide/00.requirements/index.md#mysql-settings), including the required `READ COMMITTED` transaction isolation level.
+
 If you run the JDBC backend on MySQL, you may see meaningfully lower executor throughput than on PostgreSQL on comparable hardware, even after tuning the JDBC queue settings above. This comes from a MySQL server default, not from the JDBC queue itself.
 
 Kestra's JDBC queue is commit-heavy. A busy instance can produce thousands of commits per second. By default, MySQL synchronously flushes the binary log to disk on every commit (`sync_binlog=1`), on top of its own redo log flush. PostgreSQL does not perform this second fsync. That extra flush is what dominates at this commit rate.

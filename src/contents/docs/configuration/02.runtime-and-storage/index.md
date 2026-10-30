@@ -102,7 +102,10 @@ datasources:
     username: kestra
     password: k3str4
     dialect: MYSQL
+    transaction-isolation: TRANSACTION_READ_COMMITTED
 ```
+
+Kestra requires the `READ COMMITTED` isolation level on MySQL. The `transaction-isolation` property sets it for Kestra's connections. You can omit it if the MySQL server already sets `transaction_isolation=READ-COMMITTED`. See [MySQL settings](../../10.administrator-guide/00.requirements/index.md#mysql-settings) for both options.
 :::
 
 :::collapse{title="H2"}
@@ -166,7 +169,7 @@ Kestra uses HikariCP for datasource pooling. Common options include:
 | `password` | String | Database password | — |
 | `catalog` | String | Default catalog | driver default |
 | `schema` | String | Default schema | driver default |
-| `transaction-isolation` | String | Default transaction isolation level | driver default |
+| `transaction-isolation` | String | Default transaction isolation level. On MySQL, set to `TRANSACTION_READ_COMMITTED` unless the server already uses `READ-COMMITTED`. | driver default |
 | `pool-name` | String | Pool name | `HikariPool-<generated>` |
 | `maximum-pool-size` | Int | Maximum number of open connections | `10` |
 | `minimum-idle` | Long | Minimum number of idle connections | `10` |
