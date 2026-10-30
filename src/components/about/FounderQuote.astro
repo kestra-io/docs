@@ -1,11 +1,9 @@
 ---
 import { Image } from "astro:assets"
-import PixelEdges from "./PixelEdges.astro"
 import manu from "./assets/manu.jpg"
 ---
 
 <section class="founder-quote">
-    <PixelEdges left="wide" right="tall" />
     <div class="container">
         <figure>
             <blockquote>
@@ -37,19 +35,58 @@ import manu from "./assets/manu.jpg"
     @use "./style/section" as *;
 
     .founder-quote {
-        @include section;
-        position: relative;
-        border-top: 1px solid var(--ks-border-primary);
+        padding-bottom: 7.5rem;
         background: var(--ks-background-body);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 4.5rem;
+        }
     }
 
     figure {
-        max-width: 880px;
-        margin: 0;
+        --line: var(--ks-border-primary);
+        --inset: 3rem;
+
+        position: relative;
+        margin: 0 calc(var(--inset) * -1);
+        border-left: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+
+        @include media-breakpoint-down(md) {
+            --inset: 1.5rem;
+        }
+
+        > * {
+            position: relative;
+        }
+
+        > *::before,
+        > :last-child::after {
+            content: "";
+            position: absolute;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        > *::before {
+            top: 0;
+        }
+
+        > :last-child::after {
+            bottom: 0;
+        }
     }
 
     blockquote {
         margin: 0;
+        padding: 4rem var(--inset);
+
+        @include media-breakpoint-down(md) {
+            padding-block: 3rem;
+        }
 
         p {
             position: relative;
@@ -58,6 +95,7 @@ import manu from "./assets/manu.jpg"
             font-weight: 500;
             letter-spacing: -0.015em;
             line-height: 1.35;
+            max-width: 880px;
             text-wrap: pretty;
             color: var(--ks-content-primary);
 
@@ -79,11 +117,7 @@ import manu from "./assets/manu.jpg"
         display: flex;
         align-items: center;
         gap: 1rem;
-        margin-top: 2.5rem;
-
-        @include media-breakpoint-down(md) {
-            margin-top: 2rem;
-        }
+        padding: 1.5rem var(--inset);
 
         .avatar {
             flex-shrink: 0;
