@@ -268,12 +268,13 @@ const STORIES = [
     .customers {
         position: relative;
         background: var(--ks-background-body);
-        border-bottom: 1px solid var(--ks-border-primary);
     }
 
-    // The control plane block's hairline grid, white between the rails.
+    // No hairline grid on the background here, to break the page's rhythm:
+    // the tabs and the story sit as one lavender piece, split by the grid's
+    // grey rules, on the same insets as the other blocks.
     .grid {
-        --rule: 1px solid var(--ks-border-primary);
+        --gap: 1px;
         --inset: clamp(1.5rem, 4vw, 3.5rem);
         // The lavender of our quotes.
         --surface: #f0f0fd;
@@ -285,40 +286,12 @@ const STORIES = [
         }
 
         position: relative;
-        border-left: var(--rule);
-        border-right: var(--rule);
         background: var(--ks-background-body);
 
-        > .tabs,
-        > .panels {
-            position: relative;
-            border-top: var(--rule);
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: -1px;
-                left: -100vw;
-                right: -100vw;
-                height: 1px;
-                background: var(--ks-border-primary);
-                pointer-events: none;
-            }
-        }
-
-        > .panels {
-            border-bottom: var(--rule);
-
-            &::after {
-                content: "";
-                position: absolute;
-                bottom: -1px;
-                left: -100vw;
-                right: -100vw;
-                height: 1px;
-                background: var(--ks-border-primary);
-                pointer-events: none;
-            }
+        // The rules show through the gaps.
+        > .tabs {
+            border-bottom: var(--gap) solid var(--ks-border-primary);
+            background: var(--ks-border-primary);
         }
     }
 
@@ -357,7 +330,8 @@ const STORIES = [
         align-items: baseline;
         justify-content: space-between;
         gap: 1rem 2rem;
-        padding: clamp(2rem, 3vw, 2.75rem) var(--inset);
+        // More room under the line, before Three ways.
+        padding: clamp(2rem, 3vw, 2.75rem) var(--inset) clamp(4.5rem, 8vw, 7rem);
         font-size: 1.0625rem;
 
         p {
@@ -397,6 +371,7 @@ const STORIES = [
     .tabs {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--gap);
 
         @include media-breakpoint-down(md) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -417,10 +392,6 @@ const STORIES = [
             background-color 0.25s ease,
             color 0.25s ease;
 
-        & + & {
-            border-left: var(--rule);
-        }
-
         &:hover {
             background: color-mix(in srgb, var(--glyph) 8%, var(--surface));
             color: var(--ks-content-primary);
@@ -438,7 +409,7 @@ const STORIES = [
 
         .bar {
             position: absolute;
-            top: -1px;
+            top: 0;
             left: 0;
             right: 0;
             height: 2px;
