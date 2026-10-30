@@ -20,8 +20,6 @@ faq:
     answer: "Kestra is not a standalone ETL tool but an orchestration platform that enables you to build, manage, and monitor robust ETL pipelines. It integrates seamlessly with various ETL tools, data sources, and transformation engines, providing a declarative control plane to unify your entire data stack."
   - question: "How do open-source ETL tools compare to commercial options?"
     answer: "Open-source ETL tools often offer greater flexibility, customization, and community support at no licensing cost, making them attractive for technical teams. Commercial tools typically provide more extensive features, enterprise-grade support, and visual interfaces, often at a higher total cost of ownership. The best choice depends on team expertise, budget, and specific integration needs."
-  - question: "What is the difference between ETL and ELT?"
-    answer: "ETL (Extract, Transform, Load) transforms data before loading it into the target warehouse, while ELT (Extract, Load, Transform) loads raw data into the warehouse first and transforms it there using the warehouse's own compute. ELT has become the dominant pattern with modern cloud data warehouses like Snowflake, BigQuery, and Redshift, which offer powerful built-in processing. Tools like dbt are purpose-built for the transformation step in an ELT workflow."
 ---
 
 In today's data-driven landscape, moving data efficiently from diverse sources, transforming it for analysis, and loading it into target systems is a foundational challenge. The Extract, Transform, Load (ETL) pipeline is the workhorse behind this process, powering everything from business intelligence dashboards to advanced machine learning models. But with an ever-growing array of tools and methodologies, selecting the right ETL solution can feel overwhelming.
@@ -193,31 +191,9 @@ When evaluating cost, look beyond the sticker price. An open-source tool may hav
 
 Platforms with transparent [pricing](https://kestra.io/pricing) and efficient resource utilization often provide the best long-term value.
 
-## Understanding ETL vs. ELT in Data Pipelines
+## ETL or ELT: Which Pattern Your Tools Need to Support
 
-The rise of powerful, scalable cloud data warehouses has led to a shift in data integration patterns, popularizing an alternative to traditional ETL: ELT.
-
-### Distinguishing Between ETL and ELT Methodologies
-
-*   **ETL (Extract, Transform, Load):** Transformations happen in a separate processing engine *before* the data is loaded into the data warehouse. This was the standard when warehouse compute was expensive and couldn't handle complex transformations efficiently.
-*   **ELT (Extract, Load, Transform):** Raw data is loaded directly into the data warehouse, and transformations are performed *afterward* using the warehouse's own powerful compute engine. This approach leverages the scalability of modern warehouses like Snowflake, BigQuery, and Redshift.
-
-For a detailed breakdown of the trade-offs, check out our guide on [ETL vs. ELT](/resources/data/etl-vs-elt).
-
-### When to Use ETL vs. ELT
-
-*   **Use ETL when:**
-    *   You need to perform heavy data cleansing or apply complex business rules before loading.
-    *   Data privacy and compliance are critical, and you need to mask or remove sensitive data before it ever reaches the warehouse.
-    *   Your target system is a traditional database with limited processing power.
-*   **Use ELT when:**
-    *   You are using a modern, scalable cloud data warehouse.
-    *   You want to store the raw, untransformed data in the warehouse for future, unforeseen analysis.
-    *   Your transformations are primarily SQL-based and can be efficiently run inside the warehouse (a perfect use case for dbt).
-
-### Tools that Support Both ETL and ELT
-
-Most modern data integration platforms are flexible and can support both patterns. For example, you can use a tool like Airbyte to perform the "EL" part and then use dbt for the "T". A powerful orchestration platform like [Kestra](https://kestra.io/) is agnostic to the pattern; it can seamlessly orchestrate a traditional ETL flow or a modern ELT workflow involving multiple specialized tools.
+Most modern stacks run both patterns: ETL where data must be cleaned or masked before it reaches the warehouse, ELT where raw data lands first and SQL transformations run inside Snowflake, BigQuery, or Redshift. When you shortlist tools, check which side of that split each one covers. Airbyte or Fivetran handle the "EL", dbt handles the "T", and an orchestrator like [Kestra](https://kestra.io/) is agnostic to the pattern and can chain them in one workflow. For the trade-offs between the two approaches and how to choose, see our guide to [ETL vs ELT](/resources/data/etl-vs-elt).
 
 ## The Future of ETL: AI and Automation
 
