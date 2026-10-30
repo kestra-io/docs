@@ -536,12 +536,13 @@ const clock = (seconds: number) => {
         justify-content: center;
     }
 
-    // The topology is the star: drawn larger than the Gantt below it.
+    // The topology is the star: drawn larger than the Gantt below it, as
+    // wide as the panel allows next to the wider domain column.
     .canvas {
         position: relative;
         width: 880px;
         height: 250px;
-        zoom: 1.18;
+        zoom: 1.04;
     }
 
     // Dashed edges; the one carrying the run on flows in violet.

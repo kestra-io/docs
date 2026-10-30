@@ -73,6 +73,14 @@ import Community from "~/components/home/Community.astro"
 
 <style lang="scss">
     .home-page {
+        // The site's border, a touch stronger here, so the hairline grid
+        // holds on every surface, the quotes' lavender included.
+        --ks-border-primary: #e2e2e8;
+
+        :global(html.dark) & {
+            --ks-border-primary: #46454d;
+        }
+
         overflow: clip;
 
         // See pauseOffscreen above.

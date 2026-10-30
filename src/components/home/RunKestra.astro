@@ -1,11 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import Snippets from "~/components/common/Snippets.astro"
 import SectionHead from "./SectionHead.astro"
-
-const DOCKER_COMMAND = `docker run --pull=always --rm -it -p 8080:8080 --user=root \\
-  -v /var/run/docker.sock:/var/run/docker.sock \\
-  -v /tmp:/tmp kestra/kestra:latest server local`
 ---
 
 <section class="run-kestra" aria-labelledby="run-kestra">
@@ -27,27 +22,16 @@ const DOCKER_COMMAND = `docker run --pull=always --rm -it -p 8080:8080 --user=ro
                     first production. Self-hosted and free, with no limits on
                     flows or executions.
                 </p>
-                <p class="hint">
-                    One command, one minute, the full open source edition.
-                </p>
-                <div class="command">
-                    <Snippets code={DOCKER_COMMAND} lang="bash" />
-                </div>
                 <div class="actions">
-                    <a
-                        href="/docs/getting-started/quickstart"
-                        class="btn btn-secondary"
-                    >
-                        Read the quickstart
+                    <a href="/get-started" class="btn btn-secondary">
+                        Get started
                     </a>
-                    <a href="/get-started" class="link">Get started</a>
-                    <a href="/pricing" class="link">Pricing</a>
                 </div>
             </article>
 
             <article class="edition">
                 <Icon name="mdi:cloud-outline" class="edition-icon" />
-                <p class="badge">Early adopter program</p>
+                <p class="badge">Early Access</p>
                 <h3>Scale with Kestra Cloud</h3>
                 <p>
                     Managed by the people who build Kestra. No platform to run,
@@ -59,8 +43,6 @@ const DOCKER_COMMAND = `docker run --pull=always --rm -it -p 8080:8080 --user=ro
                     <a href="/cloud" class="btn btn-secondary">
                         Try Kestra Cloud
                     </a>
-                    <a href="/cloud" class="link">Cloud</a>
-                    <a href="/pricing" class="link">Pricing</a>
                 </div>
             </article>
 
@@ -78,10 +60,13 @@ const DOCKER_COMMAND = `docker run --pull=always --rm -it -p 8080:8080 --user=ro
                 </p>
                 <div class="actions">
                     <a href="/demo" class="btn btn-primary">Book a demo</a>
-                    <a href="/enterprise" class="link">Enterprise</a>
-                    <a href="/pricing" class="link">Pricing</a>
                 </div>
             </article>
+        </div>
+
+        {/* One way to compare the three, under them. */}
+        <div class="foot">
+            <a href="/pricing" class="btn btn-secondary">Pricing</a>
         </div>
     </div>
 </section>
@@ -153,18 +138,6 @@ const DOCKER_COMMAND = `docker run --pull=always --rm -it -p 8080:8080 --user=ro
         color: var(--ks-content-secondary);
     }
 
-    .hint {
-        margin-bottom: 0.5rem;
-        font-size: $font-size-sm;
-        font-weight: 600;
-        color: var(--ks-content-primary);
-    }
-
-    .command {
-        min-width: 0;
-        margin-bottom: 1rem;
-    }
-
     .actions {
         display: flex;
         flex-wrap: wrap;
@@ -174,9 +147,9 @@ const DOCKER_COMMAND = `docker run --pull=always --rm -it -p 8080:8080 --user=ro
         padding-top: 1rem;
     }
 
-    .link {
-        font-size: $font-size-sm;
-        font-weight: 600;
-        color: var(--ks-content-link);
+    .foot {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
     }
 </style>

@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 import TopologyMock, { type Props as TopologyProps } from "./TopologyMock.astro"
@@ -345,17 +344,19 @@ const DOMAINS: Domain[] = [
                                 >
                                     <div class="domain-copy-inner">
                                         <p>{domain.description}</p>
-                                        {domain.solutionHref && (
-                                            <a
-                                                href={domain.solutionHref}
-                                                class="solution"
-                                            >
-                                                <span>
-                                                    Explore the solution
-                                                </span>
-                                                <Icon name="mdi:arrow-right" />
-                                            </a>
-                                        )}
+                                        {/* The vertical's solution page, or its
+                                        blueprints when it has none yet. */}
+                                        <a
+                                            href={
+                                                domain.solutionHref ??
+                                                "/blueprints"
+                                            }
+                                            class="btn btn-secondary btn-sm solution"
+                                        >
+                                            {domain.solutionHref
+                                                ? "Explore the solution"
+                                                : "Browse blueprints"}
+                                        </a>
                                     </div>
                                 </div>
                             </li>
@@ -551,10 +552,10 @@ const DOMAINS: Domain[] = [
         display: grid;
         // Same columns as the body below: the title over the domains, the
         // copy lined up with the panel's content.
-        grid-template-columns: minmax(0, 29rem) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
         row-gap: 1.25rem;
         align-items: start;
-        padding: 6rem 0 4rem;
+        padding: 8.5rem 0 4rem;
 
         > * {
             padding-inline: var(--inset);
@@ -599,7 +600,7 @@ const DOMAINS: Domain[] = [
     .body {
         background: var(--ks-background-body);
         display: grid;
-        grid-template-columns: minmax(0, 29rem) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
@@ -655,7 +656,7 @@ const DOMAINS: Domain[] = [
         padding: 0.625rem 0;
         border: 0;
         background: none;
-        font-size: 1.125rem;
+        font-size: 1.3125rem;
         font-weight: 500;
         text-align: left;
         color: var(--ks-content-tertiary);
@@ -723,49 +724,17 @@ const DOMAINS: Domain[] = [
 
         p {
             margin: 0;
-            max-width: 23rem;
-            font-size: 1rem;
+            max-width: 28rem;
+            font-size: 1.125rem;
             line-height: 1.7;
             color: var(--ks-content-secondary);
         }
     }
 
-    // A quiet link that reads with the copy, underlined in the vertical's
-    // color, rather than a button competing with the visual.
+    // The way on, as a secondary button: the vertical's solution page, or
+    // its blueprints.
     .solution {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        margin-top: 1rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--ks-content-primary);
-        text-decoration: none;
-
-        span {
-            background: linear-gradient(var(--tint), var(--tint)) left bottom /
-                100% 2px no-repeat;
-            transition: background-size 0.25s ease;
-        }
-
-        :global(svg) {
-            width: 1rem;
-            height: 1rem;
-            transition: transform 0.2s ease;
-        }
-
-        &:hover,
-        &:focus-visible {
-            color: var(--ks-content-primary);
-
-            span {
-                background-size: 100% 4px;
-            }
-
-            :global(svg) {
-                transform: translateX(3px);
-            }
-        }
+        margin-top: 1.5rem;
     }
 
     // The product screen fills the right column, in a grey panel, cropped at
