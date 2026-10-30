@@ -258,9 +258,9 @@ KV entries and namespace files are versioned: the database tracks each revision,
 
 ### Step 2: Remove file and folder name conflicts
 
-Kestra versions before 1.3.32 could store a namespace path as both a file and a folder. In object storage, this leaves an empty object such as `<tenant>/<namespace>/_files/scripts` next to the `scripts/` folder. MinIO then hides everything under that folder from listings, so listing-based copies and metadata backups silently skip those files.
+If this instance ever ran a Kestra version earlier than 1.3.32, check for leftover empty objects that share a name with a namespace folder. MinIO hides the files inside such a folder from listings, so copies and metadata backups skip them without any error. Otherwise, skip this step.
 
-Find these objects from the database. The query lists every namespace folder, and the loop checks whether an object exists at the same key without the trailing slash:
+Find these objects from the database:
 
 ```bash
 psql -h <db-host> -U <username> -d <database> -At -F ' ' \
