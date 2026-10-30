@@ -68,9 +68,10 @@ const KEY_FACTS = [
         </ul>
     </div>
     {
-        /* The customers under the frame, full width, on the key facts' columns. */
+        /* The customers under the frame, between the rails of the control
+        plane block below. */
     }
-    <div class="customers">
+    <div class="customers container-xl">
         <CustomerLogos label="Companies running Kestra in production" />
     </div>
 </section>
@@ -297,7 +298,7 @@ const KEY_FACTS = [
 
         position: relative;
         display: grid;
-        // Seven across, on the same columns as the customer logos below.
+        // Seven across.
         grid-template-columns: repeat(7, minmax(0, 1fr));
         margin: 0;
         padding: 0;
@@ -454,7 +455,10 @@ const KEY_FACTS = [
         padding: clamp(3rem, 6vw, 5rem) var(--inset);
     }
 
+    // The logos' last rule lies on the control plane block's top rule, so
+    // the two never stack.
     .customers {
         margin-top: 0;
+        margin-bottom: -1px;
     }
 </style>

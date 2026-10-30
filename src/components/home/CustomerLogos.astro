@@ -11,7 +11,6 @@ import fila from "~/assets/companies/fila.svg?raw"
 import xiaomi from "~/assets/landing/infrastructure/companies/xiaomi.svg?raw"
 import acxiom from "~/assets/companies/acxiom.svg?raw"
 import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
-import councilOfEurope from "~/components/enterprise/assets/logos/COE.svg?raw"
 import itzbund from "~/components/enterprise/assets/logos/ITZ.svg?raw"
 import apple from "~/contents/customer-stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra/logo.svg?raw"
 import gorgias from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
@@ -87,11 +86,6 @@ const CUSTOMERS: {
     { name: "Fila", svg: fila, height: 21, story: "Fila" },
     { name: "Xiaomi", svg: mono(xiaomi), height: 21 },
     { name: "Acxiom", svg: acxiom, height: 23, story: "Acxiom" },
-    {
-        name: "Council of Europe",
-        svg: crop(mono(councilOfEurope), "29 6.5 76.6 61.7"),
-        height: 42,
-    },
     { name: "Gorgias", svg: mono(gorgias), height: 22, story: "Gorgias" },
     {
         name: "ITZBund",
@@ -99,9 +93,6 @@ const CUSTOMERS: {
         height: 38,
     },
 ]
-
-// On four columns (tablets), these two step out so the rows end full.
-const TRIM = ["Council of Europe", "ITZBund"]
 
 interface Props {
     /** Melissa's line, shown in the grid's first row. */
@@ -123,7 +114,7 @@ const storyHref = (company?: string) => {
         CUSTOMERS.map((c) => {
             const href = storyHref(c.story)
             return (
-                <li title={c.name} class:list={{ trim: TRIM.includes(c.name) }}>
+                <li title={c.name}>
                     <span
                         class="logo"
                         style={`--logo-height: ${c.height}px`}
@@ -139,20 +130,14 @@ const storyHref = (company?: string) => {
             )
         })
     }
-    <li class="more">
-        <a href="/stories">
-            See all success stories <span class="arrow">→</span>
-        </a>
-    </li>
 </ul>
 
 <style lang="scss">
-    // A grid of hairline cells on the same columns as the hero's key facts
-    // strip: seven across. A first row frames
-    // the label, then two rows of logos end on the link to every story.
+    // A grid of hairline cells, six across: a first row frames the label,
+    // then two full rows of logos.
     .logos {
         display: grid;
-        grid-template-columns: repeat(7, minmax(0, 1fr));
+        grid-template-columns: repeat(6, minmax(0, 1fr));
         margin: 0;
         padding: 0;
         list-style: none;
@@ -166,14 +151,6 @@ const storyHref = (company?: string) => {
 
         @include media-breakpoint-down(md) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        // Fourteen cells fill seven and two columns, not four: on four,
-        // two logos step out.
-        @include media-breakpoint-between(md, lg) {
-            .trim {
-                display: none;
-            }
         }
 
         // Melissa's line, framed in a row of its own.
@@ -233,20 +210,11 @@ const storyHref = (company?: string) => {
             }
         }
 
-        .more a {
-            font-size: $font-size-sm;
-            font-weight: 600;
-            color: var(--ks-content-primary);
-            text-align: center;
-            text-decoration: none;
-        }
-
         .arrow {
             display: inline-block;
             transition: transform 0.2s ease;
         }
 
-        .more a:hover .arrow,
         .story:hover .arrow,
         .story:focus-visible .arrow {
             transform: translateX(0.25em);

@@ -333,10 +333,16 @@ const DOMAINS: Domain[] = [
                                     aria-expanded={idx === 0 ? "true" : "false"}
                                     aria-controls={`domain-copy-${domain.id}`}
                                 >
-                                    {/* The short label while closed, the full title once
-                                    open, so the two never stack. */}
-                                    <span class="label">{domain.label}</span>
-                                    <span class="title">{domain.title}</span>
+                                    {/* The short label while closed; once open,
+                                    the rest of the title slides out after it. */}
+                                    {domain.label}
+                                    {domain.title !== domain.label && (
+                                        <span class="more">
+                                            {domain.title.slice(
+                                                domain.label.length,
+                                            )}
+                                        </span>
+                                    )}
                                 </button>
                                 <div
                                     id={`domain-copy-${domain.id}`}
@@ -549,20 +555,13 @@ const DOMAINS: Domain[] = [
 
     // Compact head: the title on the left, Melissa's line on the right.
     .head {
+        // The title on one line, the copy under it.
         display: grid;
-        // Same columns as the body below: the title over the domains, the
-        // copy lined up with the panel's content.
-        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
         row-gap: 1.25rem;
-        align-items: start;
         padding: 8.5rem 0 4rem;
 
         > * {
             padding-inline: var(--inset);
-        }
-
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: minmax(0, 1fr);
         }
 
         @include media-breakpoint-down(md) {
@@ -577,14 +576,6 @@ const DOMAINS: Domain[] = [
             line-height: 1.1;
             color: var(--ks-content-primary);
             text-wrap: balance;
-
-            // Two lines, free to run past its column into the gutter
-            // before the copy.
-            @include media-breakpoint-up(lg) {
-                width: max-content;
-                max-width: 10em;
-                padding-right: 0;
-            }
         }
 
         p {
@@ -609,6 +600,11 @@ const DOMAINS: Domain[] = [
 
     // Domains on the left; the open one shows its copy, marked on the rail.
     .domains {
+        // One easing for every part of the switch, so the name, its copy
+        // and the list move together.
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --ease-time: 0.5s;
+
         margin: 0;
         padding: 3.5rem 0;
         list-style: none;
@@ -656,12 +652,16 @@ const DOMAINS: Domain[] = [
         padding: 0.625rem 0;
         border: 0;
         background: none;
-        font-size: 1.3125rem;
+        // Smaller while closed; the open one grows to its full size.
+        font-size: 1.0625rem;
         font-weight: 500;
         text-align: left;
         color: var(--ks-content-tertiary);
         cursor: pointer;
-        transition: color 0.2s ease;
+        transition:
+            color 0.3s ease,
+            font-size var(--ease-time) var(--ease),
+            font-weight var(--ease-time) var(--ease);
 
         &:hover {
             color: var(--ks-content-secondary);
@@ -674,27 +674,33 @@ const DOMAINS: Domain[] = [
         }
 
         .active & {
+            font-size: 1.3125rem;
             font-weight: 600;
             color: var(--ks-content-primary);
             cursor: default;
         }
 
-        .title {
-            display: none;
-        }
+        .more {
+            display: inline-block;
+            max-width: 0;
+            overflow: hidden;
+            vertical-align: bottom;
+            white-space: pre;
+            opacity: 0;
+            transition:
+                max-width var(--ease-time) var(--ease),
+                opacity var(--ease-time) var(--ease);
 
-        .active & {
-            .label {
-                display: none;
-            }
-
-            .title {
-                display: inline;
+            .active & {
+                max-width: 12em;
+                opacity: 1;
             }
         }
     }
 
     // The open domain's copy slides open under its name.
+    .measuring .domain-toggle,
+    .measuring .more,
     .measuring .domain-copy,
     .measuring .domain-copy-inner {
         transition: none !important;
@@ -704,7 +710,7 @@ const DOMAINS: Domain[] = [
         display: grid;
         grid-template-rows: 0fr;
         overflow: hidden;
-        transition: grid-template-rows 0.3s ease;
+        transition: grid-template-rows var(--ease-time) var(--ease);
 
         .domain-copy-inner {
             min-height: 0;
