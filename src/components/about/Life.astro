@@ -1,0 +1,267 @@
+---
+import { Image } from "astro:assets"
+import team194 from "./assets/team-194.jpg"
+import team52 from "./assets/team-52.jpg"
+import team2 from "./assets/team-2.jpg"
+import team169 from "./assets/team-169.jpg"
+import team138 from "./assets/team-138.jpg"
+import team2024 from "./assets/team-2024.jpg"
+import teamNight from "./assets/team-night.jpg"
+import interview from "./assets/interview.jpg"
+import londonBooth from "./assets/london-booth.jpg"
+import londonBoothTalk from "./assets/london-booth-talk.jpg"
+
+const PHOTOS = [
+    { src: team2024, alt: "The Kestra team in 2024" },
+    { src: team194, alt: "A Kestra team member presenting" },
+    { src: londonBoothTalk, alt: "Talking with a visitor at the Kestra booth" },
+    { src: team52, alt: "The Kestra team listening to a talk" },
+    { src: teamNight, alt: "The Kestra team on a night out" },
+    { src: team2, alt: "Kestra team members laughing during a session" },
+    { src: interview, alt: "Kestra team members interviewed on stage" },
+    { src: team169, alt: "Kestra team members talking" },
+    { src: team138, alt: "Kestra team members with the logo on their shirts" },
+    { src: londonBooth, alt: "A Kestra team member at the booth" },
+]
+const START = 8
+const START_NARROW = 9
+
+const COPIES = [0, 1, 2]
+---
+
+<section class="photos" aria-label="The Kestra team">
+    <div
+        class="viewport"
+        data-photo-strip
+        data-start={PHOTOS.length + START}
+        data-start-narrow={PHOTOS.length + START_NARROW}
+        data-count={PHOTOS.length}
+        tabindex="0"
+    >
+        <ul class="track">
+            {
+                COPIES.map((copy) =>
+                    PHOTOS.map((p) => (
+                        <li aria-hidden={copy !== 1 ? "true" : undefined}>
+                            <Image
+                                src={p.src}
+                                alt={copy === 1 ? p.alt : ""}
+                                widths={[640, 1200, 1600]}
+                                sizes="(min-width: 768px) 60vw, 90vw"
+                                draggable="false"
+                            />
+                        </li>
+                    )),
+                )
+            }
+        </ul>
+    </div>
+</section>
+
+<script>
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>(
+                "[data-photo-strip]:not([data-ready])",
+            )
+            .forEach((viewport) => {
+                viewport.dataset.ready = "true"
+                const track = viewport.querySelector<HTMLElement>(".track")!
+                const items = [...track.children] as HTMLElement[]
+                const count = Number(viewport.dataset.count)
+                const narrow = matchMedia("(max-width: 767.98px)").matches
+                const start =
+                    items[
+                        Number(
+                            narrow
+                                ? viewport.dataset.startNarrow
+                                : viewport.dataset.start,
+                        )
+                    ]
+
+                let x = 0
+                let period = 0
+                let low = 0
+
+                const measure = () => {
+                    period =
+                        items[2 * count].offsetLeft - items[count].offsetLeft
+                    low = items[count].offsetLeft - viewport.clientWidth / 2
+                }
+                const fold = () => {
+                    if (period <= 0) return
+                    x = low + ((((x - low) % period) + period) % period)
+                }
+                const render = () => {
+                    fold()
+                    track.style.transform = `translate3d(${-x}px, 0, 0)`
+                }
+                const reset = () => {
+                    measure()
+                    x =
+                        start.offsetLeft -
+                        (viewport.clientWidth - start.clientWidth) / 2
+                    render()
+                }
+                reset()
+                new ResizeObserver(() => {
+                    const before = x - low
+                    measure()
+                    x = low + before
+                    render()
+                }).observe(viewport)
+
+                let velocity = 0
+                let gliding = false
+                let last = 0
+                const glide = (time: number) => {
+                    const dt = Math.min(48, time - last)
+                    last = time
+                    x += velocity * dt
+                    velocity *= Math.pow(0.94, dt / 16)
+                    render()
+                    if (Math.abs(velocity) > 0.02) requestAnimationFrame(glide)
+                    else gliding = false
+                }
+                const launch = () => {
+                    if (gliding || Math.abs(velocity) < 0.05) return
+                    gliding = true
+                    last = performance.now()
+                    requestAnimationFrame(glide)
+                }
+
+                viewport.addEventListener(
+                    "wheel",
+                    (e) => {
+                        const dx =
+                            Math.abs(e.deltaX) > Math.abs(e.deltaY)
+                                ? e.deltaX
+                                : e.shiftKey
+                                  ? e.deltaY
+                                  : 0
+                        if (!dx) return
+                        e.preventDefault()
+                        velocity = 0
+                        x += dx
+                        render()
+                    },
+                    { passive: false },
+                )
+
+                let drag: { x: number; at: number; prev: number } | null = null
+                viewport.addEventListener("pointerdown", (e) => {
+                    velocity = 0
+                    drag = {
+                        x: e.clientX,
+                        at: performance.now(),
+                        prev: e.clientX,
+                    }
+                    viewport.classList.add("dragging")
+                    viewport.setPointerCapture(e.pointerId)
+                })
+                viewport.addEventListener("pointermove", (e) => {
+                    if (!drag) return
+                    const now = performance.now()
+                    const dx = e.clientX - drag.prev
+                    const dt = Math.max(1, now - drag.at)
+                    x -= dx
+                    velocity = velocity * 0.6 + (-dx / dt) * 0.4
+                    drag.prev = e.clientX
+                    drag.at = now
+                    render()
+                })
+                const release = () => {
+                    if (!drag) return
+                    if (performance.now() - drag.at > 80) velocity = 0
+                    drag = null
+                    viewport.classList.remove("dragging")
+                    launch()
+                }
+                viewport.addEventListener("pointerup", release)
+                viewport.addEventListener("pointercancel", release)
+
+                if (
+                    matchMedia("(hover: none)").matches &&
+                    !matchMedia("(prefers-reduced-motion: reduce)").matches
+                ) {
+                    const io = new IntersectionObserver(
+                        (entries) => {
+                            if (!entries[0].isIntersecting) return
+                            io.disconnect()
+                            setTimeout(() => {
+                                if (drag) return
+                                velocity = 0.5
+                                launch()
+                            }, 400)
+                        },
+                        { threshold: 0.6 },
+                    )
+                    io.observe(viewport)
+                }
+
+                viewport.addEventListener("keydown", (e) => {
+                    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
+                    e.preventDefault()
+                    velocity = (e.key === "ArrowRight" ? 1 : -1) * 2.2
+                    launch()
+                })
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
+<style lang="scss">
+    .photos {
+        padding: 0 0 7.5rem;
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 4.5rem;
+        }
+    }
+
+    .viewport {
+        overflow: hidden;
+        height: clamp(320px, 38vw, 680px);
+        cursor: grab;
+        touch-action: pan-y;
+        user-select: none;
+        outline: none;
+
+        &.dragging {
+            cursor: grabbing;
+        }
+
+        &:focus-visible {
+            box-shadow: inset 0 0 0 2px var(--ks-content-color-highlight);
+        }
+
+        @include media-breakpoint-down(md) {
+            height: 280px;
+        }
+    }
+
+    .track {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 0.5rem;
+        height: 100%;
+        width: max-content;
+        will-change: transform;
+    }
+
+    li {
+        flex: none;
+        height: 100%;
+
+        :global(img) {
+            display: block;
+            width: auto;
+            height: 100%;
+            pointer-events: none;
+        }
+    }
+</style>

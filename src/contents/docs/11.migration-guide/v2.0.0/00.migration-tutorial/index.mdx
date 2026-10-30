@@ -414,7 +414,7 @@ Two AI options can help with the manual rewrites in this step:
      gating probe confirms correct dependsOn firing behavior.
   ```
 
-- **[AI Copilot](../../../ai-tools/01.ai-copilot/index.md)** — available directly in the Kestra UI. Open the flow editor, switch to Edit mode, and describe the migration: "Rewrite this flow to replace ForEach with Loop". The Copilot rewrites the YAML in place and waits for your confirmation before saving.
+- **[AI Copilot](../../../develop-with-ai/01.ai-copilot/index.md)** — available directly in the Kestra UI. Open the flow editor, switch to Edit mode, and describe the migration: "Rewrite this flow to replace ForEach with Loop". The Copilot rewrites the YAML in place and waits for your confirmation before saving.
 :::
 
 ### `ForEach` and `ForEachItem`
@@ -800,8 +800,8 @@ See [Database migrations](../database-migrations/index.md) for the full EE refer
 All flows stored in the 1.3 database survive the upgrade and appear in the namespace listing immediately:
 
 ```bash
-curl -s -u "admin@kestra.io:Kestra123!" \
-  "http://localhost:8080/api/v1/flows/search?namespace=company.migration" \
+curl -g -s -u "admin@kestra.io:Kestra123!" \
+  "http://localhost:8080/api/v1/flows/search?filters[namespace][EQUALS]=company.migration" \
   | jq '{total: .total, ids: [.results[].id]}'
 ```
 

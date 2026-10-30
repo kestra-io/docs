@@ -18,8 +18,7 @@ export const jobPath = (job: AshbyJob): string | null => {
 }
 
 /**
- * Ashby posting for the catch-all "Open Application". Shared by the careers
- * page CTA and the Open Roles empty state so the two cannot drift.
+ * Open applications are handled on LinkedIn. Shared by the careers page CTA and
+ * the Open Roles empty state so the two cannot drift.
  */
-export const OPEN_APPLICATION_PATH =
-    "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application"
+export const OPEN_APPLICATION_URL = "https://www.linkedin.com/company/kestra"

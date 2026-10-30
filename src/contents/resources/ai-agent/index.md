@@ -28,7 +28,7 @@ An AI agent is a software program that can perceive its environment, process tha
 
 An agent is one component in a wider system. Making it useful in production means [coordinating models, data and tools](/resources/ai/ai-orchestration) around it, not just improving the agent itself.
 
-This ability to operate autonomously is what sets AI agents apart. They are designed to be proactive and persistent, capable of running complex, long-duration tasks without direct human intervention. This could involve anything from monitoring a system for anomalies to executing a multi-step financial transaction or provisioning cloud infrastructure. The core idea is to delegate not just the "how" but also the "what" and "when" of a task to a system that can reason and react. For a deeper dive into how Kestra implements this, explore our documentation on [AI Agents in Kestra](/docs/ai-tools/ai-agents). Broader patterns around autonomous, goal-driven automation are covered in our guide to [agentic AI](/resources/ai/agentic-ai).
+This ability to operate autonomously is what sets AI agents apart. They are designed to be proactive and persistent, capable of running complex, long-duration tasks without direct human intervention. This could involve anything from monitoring a system for anomalies to executing a multi-step financial transaction or provisioning cloud infrastructure. The core idea is to delegate not just the "how" but also the "what" and "when" of a task to a system that can reason and react. For a deeper dive into how Kestra implements this, explore our documentation on [AI Agents in Kestra](/docs/ai-orchestration/ai-agents). Broader patterns around autonomous, goal-driven automation are covered in our guide to [agentic AI](/resources/ai/agentic-ai).
 
 ## Key characteristics of AI agents
 
@@ -130,7 +130,7 @@ A robust AI agent requires several key components to function effectively:
 - **Orchestration Layer:** A control plane to define, execute, and monitor the agent's lifecycle and its interactions with other systems.
 - **Domain Grounding:** The same components behave very differently once pointed at a specific function — see [sales AI agents](/resources/ai/sales-ai-agent) for a worked example.
 
-Kestra provides a comprehensive suite of [AI tools](/docs/ai-tools) to build and manage these components declaratively.
+Kestra provides a comprehensive suite of [AI tools](/docs/ai-orchestration) to build and manage these components declaratively.
 
 ### Kestra's role in orchestrating AI agents
 

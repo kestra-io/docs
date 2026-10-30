@@ -230,11 +230,11 @@ These are traditional, deterministic workflows common in MLOps, such as [ETL for
 
 ### Agentic AI workflows for execution
 
-These workflows involve [AI agents](https://kestra.io/resources/ai/ai-agent) that can use tools and make basic decisions to complete tasks. Governance here must also cover the agent's autonomy, ensuring its actions are constrained, auditable, and aligned with predefined rules. Kestra's platform allows you to build and manage these [AI agents](https://kestra.io/docs/ai-tools/ai-agents) within a controlled environment. When the workflow itself is written by a model rather than by a person, the control surface shifts again — see [governing AI-generated workflows](/resources/ai/governing-ai-generated-workflows).
+These workflows involve [AI agents](https://kestra.io/resources/ai/ai-agent) that can use tools and make basic decisions to complete tasks. Governance here must also cover the agent's autonomy, ensuring its actions are constrained, auditable, and aligned with predefined rules. Kestra's platform allows you to build and manage these [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) within a controlled environment. When the workflow itself is written by a model rather than by a person, the control surface shifts again — see [governing AI-generated workflows](/resources/ai/governing-ai-generated-workflows).
 
 ### Agentic AI with strong governance for scale
 
-For complex, multi-agent systems, robust governance is non-negotiable. This requires a platform capable of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration), which coordinates multiple agents, systems, and human actors within a single, auditable process. Governance must include human-in-the-loop approval gates, strict control over the tools and skills available to agents, and complete traceability of every decision and action. Kestra's [agent skills](https://kestra.io/docs/ai-tools/agent-skills) framework provides this level of declarative control.
+For complex, multi-agent systems, robust governance is non-negotiable. This requires a platform capable of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration), which coordinates multiple agents, systems, and human actors within a single, auditable process. Governance must include human-in-the-loop approval gates, strict control over the tools and skills available to agents, and complete traceability of every decision and action. Kestra's [agent skills](https://kestra.io/docs/develop-with-ai/agent-skills) framework provides this level of declarative control.
 
 Here is an example of a Kestra flow that orchestrates an AI agent with a mandatory human review step before executing its plan.
 
@@ -293,7 +293,7 @@ Kestra’s human-in-the-loop tasks, such as `Pause`, allow you to insert manual 
 
 ### Utilizing structured workflows and automated checks
 
-With Kestra, all workflows are defined as declarative YAML, creating a version-controlled, auditable record of your governance processes. You can use a wide range of [workflow components](https://kestra.io/docs/workflow-components) and plugins to build automated checks for everything from data quality to model fairness. This is particularly powerful for complex processes like [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows).
+With Kestra, all workflows are defined as declarative YAML, creating a version-controlled, auditable record of your governance processes. You can use a wide range of [workflow components](https://kestra.io/docs/workflow-components) and plugins to build automated checks for everything from data quality to model fairness. This is particularly powerful for complex processes like [RAG workflows](https://kestra.io/docs/ai-orchestration/ai-rag-workflows).
 
 ### Managing dependencies across pipelines
 
@@ -316,4 +316,4 @@ Because these controls apply to every flow, the same guardrails cover a nightly 
 
 ### Kestra as your AI orchestration control plane
 
-By unifying data, AI, infrastructure, and business workflows, Kestra provides a single control plane for holistic governance. You can enforce consistent policies across all your automated processes, from simple data ingestion to complex, multi-agent systems. With Kestra's [AI tools](https://kestra.io/docs/ai-tools), you can build, govern, and scale your [AI automation](https://kestra.io/ai-automation) initiatives with confidence. Explore our [use cases](https://kestra.io/use-cases) to see how orchestration can transform your approach to AI governance.
+By unifying data, AI, infrastructure, and business workflows, Kestra provides a single control plane for holistic governance. You can enforce consistent policies across all your automated processes, from simple data ingestion to complex, multi-agent systems. With Kestra's [AI tools](https://kestra.io/docs/ai-orchestration), you can build, govern, and scale your [AI automation](https://kestra.io/ai-automation) initiatives with confidence. Explore our [use cases](https://kestra.io/use-cases) to see how orchestration can transform your approach to AI governance.

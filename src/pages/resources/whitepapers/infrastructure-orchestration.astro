@@ -8,12 +8,13 @@ import BlogSocials from "~/components/blogs/BlogSocials.vue"
 import ResourceDetails from "~/components/resources/ResourceDetails.vue"
 import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
-import Hero from "~/components/infrastructure-orchestration-whitepaper/Hero.astro"
-import WhoItsFor from "~/components/infrastructure-orchestration-whitepaper/WhoItsFor.astro"
-import AuthorBlock from "~/components/infrastructure-orchestration-whitepaper/AuthorBlock.astro"
+import WhitepaperHero from "~/components/whitepaper/WhitepaperHero.astro"
+import WhoItsFor from "~/components/whitepaper/WhoItsFor.astro"
+import AuthorBlock from "~/components/whitepaper/AuthorBlock.astro"
 import Link from "~/components/common/Link.astro"
 import LivePluginCount from "~/components/content/LivePluginCount.astro"
 
+import bookMockup from "~/components/infrastructure-orchestration-whitepaper/assets/book-mockup.png"
 import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
 
 const PDF_HREF =
@@ -79,6 +80,28 @@ const faqSchema =
               })),
           }
         : null
+
+const INSIDE = [
+    "Why fragmentation is the result of modernization, and the three costs it creates: operational risk, metered licensing, and missing audit evidence",
+    "The difference between an execution surface and an orchestrator, and why enterprises keep buying one and not the other",
+    "How to govern the tools that stay and replace only the glue layer, with production references",
+    "Five properties to test in a proof of concept, and why the same governance is what AI agents will need",
+]
+
+const PERSONAS = [
+    {
+        tag: "Platform and infrastructure automation leads",
+        text: "You run Terraform, Ansible, and a patch platform, and the chain between them lives in scripts and in people. You want one control plane above the tools you already trust, and a way to retire the glue without rewriting what works.",
+    },
+    {
+        tag: "Heads of infrastructure and operations",
+        text: "Every node the AI buildout adds moves a license meter, the next renewal may reprice the stack, and auditors now ask for proof that each change ran as approved. You want to know which costs you can stop growing, and what evidence one control plane gives you.",
+    },
+    {
+        tag: "Enterprise architects",
+        text: "You own the target architecture. You need a clear boundary between the tools that execute work and the layer that coordinates it, and a way to test which platforms can carry data, application, and agent workloads later.",
+    },
+]
 ---
 
 <Layout {title} {description}>
@@ -125,8 +148,17 @@ const faqSchema =
         }
     </Fragment>
 
-    <Hero pdfHref={PDF_HREF} />
-    <WhoItsFor />
+    <WhitepaperHero pdfHref={PDF_HREF} book={bookMockup} inside={INSIDE}>
+        <Fragment slot="title">
+            Infrastructure Automation Is Not <span class="highlight"
+                >Infrastructure Orchestration</span
+            >
+        </Fragment>
+        Enterprise infrastructure teams are already automated, one tool at a time.
+        This paper makes the case for one control plane above the tools they already
+        run, and for replacing only the glue that connects them.
+    </WhitepaperHero>
+    <WhoItsFor personas={PERSONAS} />
 
     <section class="whitepaper-content">
         {
@@ -190,33 +222,9 @@ const faqSchema =
 </Layout>
 
 <style lang="scss">
-    @use "/src/components/vra-migration-guide/shared" as *;
+    @use "/src/components/whitepaper/page" as *;
 
-    // The layout adds its own top padding, so the section only pads below,
-    // as on the vRA migration guide.
-    .whitepaper-content {
-        padding: 0 0 3rem;
-    }
-
-    // Side margins of the hero and the cards above, in place of the layout's
-    // narrower 1180px column and its own side padding.
-    .whitepaper-content :global(.layout-wrapper) {
-        padding-inline: 0;
-    }
-
-    .whitepaper-content :global(.layout-wrapper > .container) {
-        @include guide-container;
-    }
-
-    // Lighter edge than the site-wide Get Started / Book a Demo block.
-    .whitepaper-content :global(.bd-content .resource-cta) {
-        border-color: var(--ks-border-primary);
-    }
-
-    // The paper opens on a heading: line it up with the top of the sidebar.
-    .whitepaper-content :global(.bd-content > h2:first-child) {
-        margin-top: 0;
-    }
+    @include whitepaper-content;
 
     .whitepaper-sidebar {
         display: flex;

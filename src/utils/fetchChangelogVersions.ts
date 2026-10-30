@@ -1,4 +1,16 @@
+import { GITHUB_TOKEN } from "astro:env/server"
 import { $fetchCached } from "~/utils/fetch.ts"
+
+// GitHub answers 403 to requests without a User-Agent. Node's fetch sends one
+// but the Worker's does not, so the SSR changelog.md route needs it set here.
+function githubInit(): RequestInit {
+    const headers: Record<string, string> = {
+        "User-Agent": "kestra.io",
+        Accept: "application/vnd.github+json",
+    }
+    if (GITHUB_TOKEN) headers.Authorization = `Bearer ${GITHUB_TOKEN}`
+    return { headers }
+}
 
 export interface GitHubRelease {
     tag_name: string
@@ -38,6 +50,7 @@ export async function fetchMajorReleases(limit = 20): Promise<GitHubRelease[]> {
     try {
         const data = await $fetchCached(
             `https://api.github.com/repos/kestra-io/kestra/releases?per_page=150`,
+            githubInit(),
         )
         const majorReleases = data.filter((r: any) => !r.draft && !r.prerelease && !r.tag_name.includes("/"))
 
@@ -54,6 +67,7 @@ export async function fetchReleaseByTag(tag: string) {
     try {
         const data = await $fetchCached(
             `https://api.github.com/repos/kestra-io/kestra/releases/tags/${tag}`,
+            githubInit(),
         )
         return {
             ...data,
