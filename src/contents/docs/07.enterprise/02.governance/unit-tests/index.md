@@ -514,7 +514,6 @@ While the above examples use `contains` and `equalTo` as assertion operators, th
 
 The `value` expression always renders as a string, so keep these behaviors in mind:
 
-- `in` and `notIn` compare the rendered value as a string, so quote the list items. Unquoted numbers make the test run fail with an error.
 - The rendered value is never null, so `isNull: true` never passes on an expression. A null value renders as an empty string, and a value that doesn't exist fails the assertion with an evaluation error. To check that a value is missing, use Pebble's `is defined` test with `equalTo`:
 
 ```yaml
