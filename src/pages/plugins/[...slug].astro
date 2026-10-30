@@ -259,6 +259,7 @@ const {
     rootPluginTitle,
     currentSubgroupPlugin,
     currentPluginMetadata,
+    pluginInstallCommand,
     metadataMap,
     headingTitle,
     headingDescription,
@@ -480,6 +481,7 @@ const familyBreadcrumbListItems = pluginFamilyName
                     <DefinitionView
                         schema={(pageWithToc.body as any).jsonSchema}
                         pluginType={pluginType}
+                        installCommand={pluginInstallCommand}
                     />
                 ) : pluginType ? null : (
                     <SubgroupView

@@ -39,6 +39,34 @@
                 </template>
             </Collapsible>
 
+            <Collapsible
+                v-if="installCommand"
+                class="plugin-section"
+                title="Installation"
+                href="installation"
+                :initially-expanded="true"
+                :no-url-change
+            >
+                <template #content>
+                    <div class="d-flex flex-column gap-3">
+                        <p class="mb-0">
+                            If you use one of our Docker images tagged <code>*-full</code>, this plugin is already included.
+                            Otherwise, install it with the following command:
+                        </p>
+                        <SchemaToCode
+                            :highlighter="highlighter"
+                            language="bash"
+                            :theme="codeTheme"
+                            :code="installCommand"
+                        />
+                        <p class="mb-0">
+                            This command installs the latest available version. Replace <code>LATEST</code> with a specific
+                            version or version range to pin the plugin version.
+                        </p>
+                    </div>
+                </template>
+            </Collapsible>
+
             <CollapsibleProperties
                 v-if="schema.properties?.properties"
                 class="plugin-section"
@@ -113,6 +141,7 @@
     const props = withDefaults(defineProps<{
         schema: JSONSchema,
         pluginType: string,
+        installCommand?: string,
         darkMode?: boolean,
         propsInitiallyExpanded?: boolean,
         forceIncludeProperties?: string[],
@@ -179,7 +208,9 @@
 
     const {getHighlighterCore} = await import("./shikiToolset");
 
-    highlighter.value = await getHighlighterCore(exampleLangs(props.schema));
+    const initialLanguages = new Set<string>(["yaml"])
+    if (props.installCommand) initialLanguages.add("bash")
+    highlighter.value = await getHighlighterCore(exampleLangs(props.schema, initialLanguages));
 </script>
 
 <style scoped lang="scss">
