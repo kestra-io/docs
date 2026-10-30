@@ -192,4 +192,4 @@ While metrics like email open rates are useful, the true value of sales AI agent
 -   **Data Hygiene:** Track the percentage of CRM records that are automatically enriched and updated by agents. Improved data quality has compounding benefits for reporting and future sales efforts.
 -   **SDR Productivity:** Measure the reduction in time SDRs spend on manual, administrative tasks and the corresponding increase in time spent on high-value activities like talking to prospects.
 
-By focusing on these core business outcomes, you can build a clear case for the value of orchestrating [AI agents](/docs/ai-tools/ai-agents) within your sales process. Explore the available [AI resources](/resources/ai) to build robust and reliable agentic workflows.
+By focusing on these core business outcomes, you can build a clear case for the value of orchestrating [AI agents](/docs/ai-orchestration/ai-agents) within your sales process. Explore the available [AI resources](/resources/ai) to build robust and reliable agentic workflows.

@@ -89,7 +89,7 @@ easeOfUse:
   title: Two Ways to Build a Scheduled Pipeline
   kestra:
     title: "Kestra: One file, one workflow"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No code required to run a dbt model, trigger an Airbyte sync, or load data to Snowflake."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No code required to run a dbt model, trigger an Airbyte sync, or load data to Snowflake."
     code: |
       id: daily_etl
       namespace: data.production

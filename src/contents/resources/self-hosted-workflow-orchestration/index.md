@@ -133,7 +133,7 @@ The world of workflow orchestration is constantly evolving, with several key tre
 
 ### The role of AI in workflow automation
 
-AI is transforming how workflows are built and executed. Modern orchestrators are integrating [AI Copilots](https://kestra.io/docs/ai-tools/ai-copilot) that can generate entire workflows from a natural language prompt. Furthermore, the concept of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration) is emerging, where autonomous AI agents can execute complex, multi-step tasks, with the orchestrator providing the necessary governance, tools, and human-in-the-loop oversight.
+AI is transforming how workflows are built and executed. Modern orchestrators are integrating [AI Copilots](https://kestra.io/docs/develop-with-ai/ai-copilot) that can generate entire workflows from a natural language prompt. Furthermore, the concept of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration) is emerging, where autonomous AI agents can execute complex, multi-step tasks, with the orchestrator providing the necessary governance, tools, and human-in-the-loop oversight.
 
 ### Evolution of open-source projects and community-driven development
 

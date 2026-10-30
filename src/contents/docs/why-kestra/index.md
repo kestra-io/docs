@@ -46,7 +46,7 @@ Everything lives in one place:
 
 - **[Code editor](../09.ui/01.flows/index.md)**: Write or edit YAML in the browser with syntax validation, autocompletion, a live-updating dependency view, and integrated docs.
 - **[No-code editor](../09.ui/01.flows/index.md)**: Build flows on a visual canvas, configuring each task and trigger through a guided form. The YAML editor, No-code editor, and AI Copilot stay in sync, so all three always show the same flow.
-- **[AI Copilot](../ai-tools/01.ai-copilot/index.md)**: Generate, refine, or explain flows from natural language prompts directly in the UI. Switch between Plan, Edit, and Ask modes depending on what you need.
+- **[AI Copilot](../develop-with-ai/01.ai-copilot/index.md)**: Generate, refine, or explain flows from natural language prompts directly in the UI. Switch between Plan, Edit, and Ask modes depending on what you need.
 - **[Revision history](../06.concepts/03.revision/index.md)**: Every flow keeps a revision history. Compare changes side by side and roll back at any time.
 - **Draft flows**: Save a flow as a draft to iterate without affecting live executions. Publish explicitly when the revision is ready.
 - **[Git integration](../version-control-cicd/04.git/index.md)**: Sync flows and namespace files with a Git repository so your workflows follow the same review and CI/CD process as your code.
@@ -77,7 +77,7 @@ Everything in Kestra is driven by an API. Flows, tasks, logs, permissions: anyth
 - Manage flows, executions, namespaces, and IAM from the command line using [`kestractl`](../kestra-cli/kestractl/index.md), the standalone Kestra CLI
 - Build custom UIs
 - Dynamically generate new workflow executions from anywhere
-- Expose flows as tools through the [Kestra MCP server](../ai-tools/03.mcp-server/index.md) so AI assistants can trigger and monitor them directly
+- Expose flows as tools through [flow MCP servers](../ai-orchestration/03.mcp-server/index.md) so AI assistants can trigger and monitor them directly
 
 ### Language-agnostic, YAML-based configuration
 
@@ -148,7 +148,7 @@ Kestra is open source, and you can self-host it anywhere, so you retain full con
 - **Data Pipelines and ETL/ELT**: Orchestrate batch and real-time data processing jobs, load data from multiple sources, run dbt transformations, and scale computation for custom scripts with task runners.
 - **Process Automation**: Empower non-engineers to automate routine tasks and complex business-critical processes with human-in-the-loop manual approval, intuitive UI forms, and user-facing Apps.
 - **Microservice Coordination**: Trigger workflows based on events, integrate with message brokers or REST APIs, monitor long-running processes, and call containerized jobs in any language.
-- **Generative AI Workflows**: Orchestrate LLM-powered tasks, build retrieval-augmented generation (RAG) pipelines, and run [AI agents](../ai-tools/05.ai-agents/index.md) that decide which tasks to run at runtime. Expose any flow as an MCP tool so AI assistants can trigger and monitor workflows directly. Use Pause & Resume to let humans validate AI-generated outputs before continuing.
+- **Generative AI Workflows**: Orchestrate LLM-powered tasks, build retrieval-augmented generation (RAG) pipelines, and run [AI agents](../ai-orchestration/01.ai-agents/index.md) that decide which tasks to run at runtime. Expose any flow as an MCP tool so AI assistants can trigger and monitor workflows directly. Use Pause & Resume to let humans validate AI-generated outputs before continuing.
 - **IT Automation**: Automate resource requests for infrastructure provisioning across AWS, GCP, or on-prem. Orchestrate build processes with plugins for Terraform, Ansible, or Docker and simplify DevOps processes from a single orchestrator.
 - **Cross-Team Collaboration**: Let analytics, finance, marketing, and engineering automate work in the same platform, each at their own comfort level.
 - **Custom Applications**: Use Kestra as a backend workflow engine for your internal tools, SaaS products, or customer-facing applications.

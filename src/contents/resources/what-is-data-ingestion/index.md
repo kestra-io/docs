@@ -131,7 +131,7 @@ The field of data ingestion continues to evolve, driven by advancements in AI an
 
 ### The Impact of AI and Machine Learning on Data Ingestion
 
-AI is set to automate many of the manual aspects of data ingestion. Expect to see more tools that can automatically detect schema changes, identify data quality issues, and even self-heal broken pipelines. AI-powered assistants, like Kestra's [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot), are already simplifying the process of building and optimizing ingestion workflows by translating natural language into executable code.
+AI is set to automate many of the manual aspects of data ingestion. Expect to see more tools that can automatically detect schema changes, identify data quality issues, and even self-heal broken pipelines. AI-powered assistants, like Kestra's [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot), are already simplifying the process of building and optimizing ingestion workflows by translating natural language into executable code.
 
 ### The Role of Cloud in Modern Data Ingestion
 

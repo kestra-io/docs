@@ -1,17 +1,19 @@
 ---
-title: MCP Server in Kestra – Expose Flows as AI Tools
-h1: Configure Kestra MCP Servers and Connect AI Agents
-description: Configure Kestra MCP servers to expose flows as tools for AI agents. Learn how to create servers, set authentication, and connect Claude Desktop, Claude Code, and Cursor.
-sidebarTitle: Kestra Flow MCP Servers
+title: "Flow MCP Servers: Expose Kestra Flows as AI Tools"
+h1: Expose Your Flows as Tools for External AI Agents
+description: Expose Kestra flows as MCP tools that Claude, Cursor, and other AI agents can call. Create MCP servers, choose authentication, and connect clients.
+sidebarTitle: Flow MCP Servers
 icon: /src/contents/docs/icons/ai.svg
-version: "2.0.0"
-editions: ["OSS", "EE"]
+version: ">= 2.0.0"
+editions: ["OSS", "EE", "Cloud"]
 docId: mcp-servers
 ---
 
-A Kestra MCP server exposes flows as named tools over HTTP for AI agents to discover and call.
+Expose your Kestra flows as named tools that external AI agents discover and call over MCP.
 
-A Kestra MCP server is a tenant-scoped entity that uses the [Model Context Protocol](https://modelcontextprotocol.io). Any flow with an [`McpToolTrigger`](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) is automatically registered as a named tool on its target server. AI agents discover the tool list at connection time, so adding or removing triggers takes effect without restarting clients.
+This page is for Kestra administrators and flow authors who want Claude, Cursor, or another AI agent to run their flows. If you want your coding agent to look up Kestra plugin schemas and docs while you write flows, use the [Docs MCP server](../../develop-with-ai/02.kestra-mcp-resources/index.md) instead.
+
+A flow MCP server is a tenant-scoped entity that uses the [Model Context Protocol](https://modelcontextprotocol.io). Any flow with an [`McpToolTrigger`](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) is registered as a named tool on its target server. AI agents discover the tool list at connection time, so adding or removing triggers takes effect without restarting clients.
 
 ## Two directions: Kestra as server vs. Kestra as client
 
@@ -19,10 +21,10 @@ Kestra supports MCP in both directions:
 
 | Direction | How | When to use |
 |---|---|---|
-| **Kestra as MCP server** | `McpToolTrigger` + MCP server entity | AI agents (Claude, Cursor) call your flows as tools |
-| **Kestra as MCP client** | MCP client tasks (`SseMcpClient`, `StreamableHttpMcpClient`, `StdioMcpClient`, `DockerMcpClient`) | Your flows call external MCP servers as part of an AI Agent task |
+| **Kestra as MCP server** | `McpToolTrigger` and a flow MCP server | External AI agents (Claude, Cursor) call your flows as tools |
+| **Kestra as MCP client** | MCP client tasks (`SseMcpClient`, `StreamableHttpMcpClient`, `StdioMcpClient`, `DockerMcpClient`) | Your flows call external MCP servers as part of an `AIAgent` task |
 
-This page covers Kestra as an MCP server. For using external MCP servers from within flows, see [AI Agents](../05.ai-agents/index.md).
+This page covers Kestra as an MCP server. To call external MCP servers from a flow, see [MCP clients](../01.ai-agents/index.md#mcp-clients).
 
 ## Default server
 
@@ -79,16 +81,16 @@ The authenticating user must already have a Kestra account. The OAuth token's `e
 
 If multiple OIDC providers are configured, set `oauthProvider` to the name of the specific provider (e.g. `my-oidc-provider` from the example above). If `oauthProvider` is omitted, the provider is matched automatically by the JWT's issuer claim.
 
-## Connecting an AI agent client
+## Connect an AI agent client
 
 Open a server in the UI and click the **Connect** tab. It shows the server URL and ready-to-paste configuration snippets for each supported client:
 
-- **Claude Desktop** — JSON block to add to `claude_desktop_config.json`. Claude Desktop does not natively support HTTP MCP servers, so the snippet uses `npx mcp-remote` as a bridge over SSE.
-- **Claude Code** — `claude mcp add` command using `--transport http`. Run it in your terminal, then start Claude Code from the same terminal session so the auth header is in scope.
-- **Cursor** — server URL to paste into Cursor Settings → MCP → Add new MCP server
-- **Codex** — connection configuration
+- **Claude Desktop**: a JSON block to add to `claude_desktop_config.json`. Claude Desktop does not support HTTP MCP servers natively, so the snippet uses `npx mcp-remote` as a bridge over SSE.
+- **Claude Code**: a `claude mcp add` command that uses `--transport http`.
+- **Cursor**: the server URL to paste into **Cursor Settings > MCP > Add new MCP server**.
+- **Codex**: the connection configuration.
 
-For Basic Auth, the snippet references `${KESTRA_BASIC_AUTH}` as a placeholder. Replace it with the actual base64-encoded `username:password` value inline; the variable reference does not expand at connection time:
+For Basic Auth, the snippets contain a `${KESTRA_BASIC_AUTH}` placeholder. MCP clients store this text literally and do not expand it when they connect, so replace it with the base64-encoded `username:password` value. In Claude Code, let your shell compute the value when you add the server:
 
 ```bash
 claude mcp add <server-id> <server-url> \
