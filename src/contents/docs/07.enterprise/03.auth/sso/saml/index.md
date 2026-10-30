@@ -182,8 +182,8 @@ Group sync never creates groups. Create the groups in Kestra first, with the sam
 At every login:
 
 - The user joins every Kestra group, in every tenant, whose name matches a group sent by the IdP.
-- The user leaves the groups they joined through the IdP and that the IdP no longer sends. If the IdP sends no groups attribute, the user leaves all of them.
-- When the user leaves the last group that gave them access to a tenant, they lose access to that tenant, unless a role is bound to them directly there, including a default role, or they are provisioned in that tenant by [SCIM](../../scim/index.mdx).
+- The user leaves any group they joined through the IdP that the IdP no longer sends. If the IdP sends no groups attribute, the user leaves all of them.
+- When the user leaves the last group that gave them access to a tenant, they lose access to that tenant. They keep it only if a role, including a default role, is bound directly to them in that tenant, or if [SCIM](../../scim/index.mdx) provisioned them there.
 
 Group memberships added manually in Kestra are kept.
 
