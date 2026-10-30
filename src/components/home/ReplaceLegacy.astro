@@ -42,8 +42,8 @@ const PROBLEMS = [
 
             <ul class="problems">
                 {
-                    PROBLEMS.map((problem) => (
-                        <li>
+                    PROBLEMS.map((problem, idx) => (
+                        <li class={`problem-${idx}`}>
                             <Icon name={problem.icon} />
                             <h3>{problem.title}</h3>
                             <p>{problem.text}</p>
@@ -82,6 +82,9 @@ const PROBLEMS = [
         position: relative;
         border-left: var(--rule);
         border-right: var(--rule);
+        // White between the rails, so the edge pixels never show through the
+        // cells on narrower screens.
+        background: var(--ks-background-body);
 
         > .problems {
             position: relative;
@@ -170,7 +173,32 @@ const PROBLEMS = [
         }
 
         > li {
+            position: relative;
             padding: 2.5rem var(--inset) 3rem;
+            transition: background-color 0.3s ease;
+
+            // On hover the cell draws its top edge, like the How it works
+            // steps, and its icon acts the problem out.
+            &::before {
+                content: "";
+                position: absolute;
+                top: -1px;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--ks-content-primary);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            &:hover {
+                background: var(--ks-background-secondary);
+
+                &::before {
+                    transform: none;
+                }
+            }
 
             & + li {
                 border-left: var(--rule);
@@ -189,6 +217,26 @@ const PROBLEMS = [
             }
         }
 
+        // The broken link jolts apart, the lock rattles, the shield sounds
+        // the alarm.
+        .problem-0:hover > :global(svg) {
+            animation: jolt 0.5s ease;
+        }
+
+        .problem-1:hover > :global(svg) {
+            animation: rattle 0.5s ease;
+        }
+
+        .problem-2:hover > :global(svg) {
+            animation: alarm 0.9s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            > li:hover > :global(svg) {
+                animation: none;
+            }
+        }
+
         h3 {
             margin: 0 0 1rem;
             font-size: 1.5rem;
@@ -202,6 +250,39 @@ const PROBLEMS = [
             font-size: 1rem;
             line-height: 1.65;
             color: var(--ks-content-secondary);
+        }
+    }
+
+    @keyframes jolt {
+        30% {
+            transform: translate(-3px, 2px) rotate(-12deg);
+        }
+
+        60% {
+            transform: translate(2px, -1px) rotate(8deg);
+        }
+    }
+
+    @keyframes rattle {
+        20%,
+        60% {
+            transform: rotate(-10deg);
+        }
+
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+
+    @keyframes alarm {
+        25%,
+        75% {
+            transform: scale(1.25);
+        }
+
+        50% {
+            transform: scale(1);
         }
     }
 
