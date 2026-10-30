@@ -1,5 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+import applePhoto from "./assets/customers/apple.jpg"
+import filaPhoto from "./assets/customers/fila.jpg"
+import jpmorganPhoto from "./assets/customers/jpmorgan.jpg"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import { getCollection } from "astro:content"
 import { toSlug } from "~/utils/stories"
@@ -27,10 +31,12 @@ const storyHref = (company: string) => {
     return entry ? `/stories/${toSlug(entry)}` : undefined
 }
 
-// Melissa's stories, each with its logo for the tab and its industry.
+// Melissa's stories, each with its logo for the tab, its industry and,
+// when there is one yet, its photo.
 const STORIES = [
     {
         company: "Apple",
+        photo: applePhoto,
         story: "Apple",
         logo: flat(
             apple.replace("<svg ", '<svg viewBox="0 0 842.32007 1000.0001" '),
@@ -43,6 +49,7 @@ const STORIES = [
     },
     {
         company: "JPMorgan Chase",
+        photo: jpmorganPhoto,
         story: "JPMorgan Chase",
         logo: flat(jpmorgan),
         height: 20,
@@ -63,6 +70,7 @@ const STORIES = [
     },
     {
         company: "FILA",
+        photo: filaPhoto,
         story: "Fila",
         logo: flat(fila),
         height: 21,
@@ -153,8 +161,18 @@ const STORIES = [
                                     )}
                                 </figcaption>
                             </figure>
-                            {/* The story's photo goes here; black until it comes. */}
-                            <div class="photo" aria-hidden="true" />
+                            {/* The story's photo; black while it has none yet. */}
+                            <div class="photo" aria-hidden="true">
+                                {story.photo && (
+                                    <Image
+                                        src={story.photo}
+                                        alt=""
+                                        widths={[480, 720, 960]}
+                                        sizes="(max-width: 992px) 100vw, 40vw"
+                                        loading="lazy"
+                                    />
+                                )}
+                            </div>
                         </div>
                     ))
                 }
@@ -497,12 +515,20 @@ const STORIES = [
     }
 
     // The customer story's photo, upright, filling its column to the rules.
-    // Black until the photos come.
+    // Black while a story has none yet.
     .photo {
         position: relative;
         min-height: 20rem;
         background: #0d0d10;
         overflow: hidden;
+
+        :global(img) {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     // A quiet link that reads with the quote.
