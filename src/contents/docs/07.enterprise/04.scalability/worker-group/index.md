@@ -452,7 +452,7 @@ Under `type: DNS` discovery, the authority is derived from the DNS hostname auto
 
 ## Dedicated storage isolation
 
-If a worker group uses its own storage bucket rather than the deployment's shared storage, KV Store values, namespace files, and managed plugin artifacts are not consistent across the deployment without additional configuration. Set the following properties on the worker:
+If a worker group uses its own storage bucket rather than the internal storage that the webserver and Worker Controller use, KV Store values, namespace files, and managed plugin artifacts are not consistent across the deployment without additional configuration. Set the following properties on the worker:
 
 ```yaml
 kestra:

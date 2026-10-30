@@ -305,11 +305,11 @@ Set `kestra.kv.worker-access: CONTROLLER` on the worker to route all KV reads an
 
 Set `kestra.namespace-files.worker-access: CONTROLLER` on the worker to route all namespace file reads and writes through the controller over gRPC.
 
-**Managed plugin artifacts.** When plugin versioning is enabled, workers sync plugin artifacts from the deployment's shared storage. On a worker with dedicated storage, those artifacts are unreachable directly.
+**Managed plugin artifacts.** When plugin versioning is enabled, workers sync plugin artifacts from the internal storage that the webserver and Worker Controller use. On a worker with dedicated storage, those artifacts are unreachable directly.
 
 Set `kestra.plugins.management.worker-access: CONTROLLER` on the worker to pull plugin artifacts through the controller over gRPC instead.
 
-All three properties default to `STORAGE`, which keeps the existing behavior for workers that share the deployment's storage.
+All three properties default to `STORAGE`, which keeps the existing behavior for workers that share internal storage with the webserver and Worker Controller.
 
 ```yaml
 # Worker configuration for a dedicated-storage deployment
