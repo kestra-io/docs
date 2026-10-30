@@ -210,7 +210,7 @@ const ctaBullets = [
         strong: false,
     },
     {
-        text: "Requests come in through forms, and the platform team approves them before anything runs.",
+        text: "Requests come in through forms, and the platform team can require approval before anything runs.",
         strong: false,
     },
 ]
@@ -268,7 +268,7 @@ const faqItems = [
                 <a class="btn-start" href="/docs/quickstart">Get started free</a
                 >
                 <a class="btn-call" href="#contact-sales">
-                    Bringing it to work? Book a call
+                    Rolling it out? Book a call
                 </a>
                 <p class="proof">
                     <a href="https://github.com/kestra-io/kestra"
@@ -282,10 +282,11 @@ const faqItems = [
                 <div class="copy">
                     <h2>Request, approve, provision, configure</h2>
                     <p>
-                        A request comes in with a hostname. The owner approves
-                        it, Terraform creates the VM and your playbook
-                        configures it. If a step fails, the run stops there with
-                        its logs, and you restart it from that step.
+                        A request comes in with a hostname. When the change
+                        needs sign-off, the owner approves it, then Terraform
+                        creates the VM and your playbook configures it. If a
+                        step fails, the run stops there with its logs, and you
+                        restart it from that step.
                     </p>
                     <p class="note">
                         Each node is a task in one YAML file, versioned in Git.
@@ -349,8 +350,13 @@ const faqItems = [
                         footprint, not how much you automate. The workflows
                         built on them do not move by themselves.
                     </p>
+                    <a class="btn-start" href="/resources/migration/vra"
+                        >Read the vRA migration guide</a
+                    >
                 </div>
                 <div class="how">
+                    <p class="eyebrow">Migration Assistant</p>
+                    <h3>From vRO package to running flows, in four steps</h3>
                     <ol>
                         {
                             migrationSteps.map((step) => (
@@ -362,9 +368,6 @@ const faqItems = [
                         }
                     </ol>
                     <div class="links">
-                        <a class="btn-start" href="/resources/migration/vra"
-                            >Read the vRA migration guide</a
-                        >
                         <a
                             class="btn-ghost"
                             href="/resources/migration/vra/assistant"
@@ -384,6 +387,34 @@ const faqItems = [
                 >
                 <span class="more">Read the story →</span>
             </a>
+        </section>
+        <section class="video">
+            <div class="inner">
+                <div class="copy">
+                    <h2>Replace vRA without changing how your team works</h2>
+                    <p>
+                        The lifecycle of a VM in Kestra, one person at a time:
+                        who requests it, who approves it, who runs it, and what
+                        each of them sees.
+                    </p>
+                </div>
+                <VideoDialog
+                    id="vra-video"
+                    videoId="brZo-5NdP2E"
+                    title="Replace VMware vRA/vRO Without Changing How Your Team Works"
+                    class="video-thumb"
+                    aria-label="Play the video: Replace VMware vRA/vRO Without Changing How Your Team Works"
+                >
+                    <img
+                        src="https://i.ytimg.com/vi/brZo-5NdP2E/maxresdefault.jpg"
+                        alt=""
+                        width="1280"
+                        height="720"
+                        loading="lazy"
+                    />
+                    <span class="play"><Icon name="mdi:play" /></span>
+                </VideoDialog>
+            </div>
         </section>
         <section class="editions">
             <h2>Start free. Add Enterprise when the team needs it.</h2>
@@ -442,38 +473,10 @@ const faqItems = [
         </section>
         <UseCases
             {routePath}
-            headingLines={["Bringing it", "to work?"]}
+            headingLines={["Rolling it out", "to your team?"]}
             bullets={ctaBullets}
             {formProps}
         />
-        <section class="video">
-            <div class="inner">
-                <div class="copy">
-                    <h2>Replace vRA without changing how your team works</h2>
-                    <p>
-                        The lifecycle of a VM in Kestra, one person at a time:
-                        who requests it, who approves it, who runs it, and what
-                        each of them sees.
-                    </p>
-                </div>
-                <VideoDialog
-                    id="vra-video"
-                    videoId="brZo-5NdP2E"
-                    title="Replace VMware vRA/vRO Without Changing How Your Team Works"
-                    class="video-thumb"
-                    aria-label="Play the video: Replace VMware vRA/vRO Without Changing How Your Team Works"
-                >
-                    <img
-                        src="https://i.ytimg.com/vi/brZo-5NdP2E/maxresdefault.jpg"
-                        alt=""
-                        width="1280"
-                        height="720"
-                        loading="lazy"
-                    />
-                    <span class="play"><Icon name="mdi:play" /></span>
-                </VideoDialog>
-            </div>
-        </section>
         <Faq items={faqItems} />
         <ClosingBanner
             heading="Run your first infra flow"
@@ -749,6 +752,19 @@ const faqItems = [
             @include media-breakpoint-up(lg) {
                 font-size: 3rem;
             }
+        }
+
+        .why .btn-start {
+            display: inline-block;
+            margin-top: 2rem;
+        }
+
+        /* Names the right column, so the steps read as the Assistant's. */
+        h3 {
+            margin: 0 0 1.75rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.2;
         }
 
         .why > p:not(.eyebrow) {
