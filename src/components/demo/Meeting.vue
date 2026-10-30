@@ -9,6 +9,7 @@
         getMeetingUrl,
         tierFromEmployees,
     } from "~/composables/useMeeting.js"
+    import type { Routing } from "~/utils/hubspotRouting"
     import { $fetch } from "~/utils/fetch"
 
     /* This form is mounted more than once per page (the landing pages show it
@@ -19,6 +20,7 @@
     const valid = ref(false)
     const message = ref("")
     const meetingUrl = ref<string>()
+    const submitting = ref(false)
     const formRef = useTemplateRef("demo-form")
 
     const props = withDefaults(
@@ -55,6 +57,8 @@
             message.value = "Please check the form fields and try again."
             return
         }
+        if (submitting.value) return
+        submitting.value = true
 
         const fn = form["first-name"].value
         const ln = form["last-name"].value
@@ -116,12 +120,15 @@
             },
         }
 
+        let routing: Routing | undefined
         try {
-            await submitHubspotForm<{ inlineMessage?: string }>(
-                hubSpotFormId,
-                formData,
-            )
+            const result = await submitHubspotForm<{
+                inlineMessage?: string
+                routing?: Routing
+            }>(hubSpotFormId, formData)
+            routing = result?.routing
         } catch (error: any) {
+            submitting.value = false
             valid.value = false
             console.error("Error submitting form data to HubSpot", error)
             if (
@@ -138,9 +145,12 @@
             return
         }
 
+        submitting.value = false
         valid.value = true
         meetingUrl.value = withContactParams(
-            getMeetingUrl(tierFromEmployees(emp)),
+            getMeetingUrl(routing?.tier ?? tierFromEmployees(emp), {
+                territory: routing?.territory,
+            }),
             {
                 firstname: fn,
                 lastname: ln,
@@ -334,8 +344,12 @@
                 </div>
 
                 <div class="col-12 mt-4 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary w-100">
-                        {{ submitLabel }}
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                        :disabled="submitting"
+                    >
+                        {{ submitting ? "Sending..." : submitLabel }}
                     </button>
                 </div>
             </form>

@@ -215,6 +215,11 @@ export default defineConfig({
                 access: "secret",
                 optional: true,
             }),
+            HUBSPOT_PRIVATE_APP_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             DISABLE_USAL: envField.boolean({
                 context: "server",
                 access: "public",
