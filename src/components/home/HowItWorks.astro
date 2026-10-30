@@ -630,6 +630,9 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             const timed = [...root.querySelectorAll<HTMLElement>("[data-on]")]
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches
             let auto = !still
+            let inView = false
+            let started = false
+            let waiting: number | null = null
             let timers: number[] = []
             const later = (ms: number, fn: () => void) =>
                 timers.push(window.setTimeout(fn, still ? 0 : ms))
@@ -724,8 +727,14 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     for (const [at, task, status] of RUN)
                         later(at, () => setTask(task, status))
                 }
+                // The next step opens only while the block is in view;
+                // out of view, it waits for the block to come back.
                 if (auto)
-                    later(STEP_MS[idx], () => open((idx + 1) % steps.length))
+                    later(STEP_MS[idx], () => {
+                        const next = (idx + 1) % steps.length
+                        if (inView) open(next)
+                        else waiting = next
+                    })
             }
 
             steps.forEach((step, idx) =>
@@ -735,13 +744,20 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 }),
             )
 
-            // Starts when the block comes into view.
-            let started = false
+            // Starts when the block comes into view, and picks up where it
+            // waited when it comes back.
             new IntersectionObserver(
                 ([entry]) => {
-                    if (!entry.isIntersecting || started) return
-                    started = true
-                    open(0)
+                    inView = entry.isIntersecting
+                    if (!inView) return
+                    if (!started) {
+                        started = true
+                        open(0)
+                    } else if (waiting !== null) {
+                        const next = waiting
+                        waiting = null
+                        open(next)
+                    }
                 },
                 { threshold: 0.35 },
             ).observe(body)
@@ -1287,6 +1303,11 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             stroke-dasharray: 4 4;
             opacity: 0.7;
             animation: flow 1.2s linear infinite;
+            animation-play-state: paused;
+
+            .body[data-at="1"] & {
+                animation-play-state: running;
+            }
         }
 
         circle {
@@ -1336,6 +1357,12 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         display: flex;
         width: max-content;
         animation: roll 60s linear infinite;
+        // Rolls only while Connect shows it.
+        animation-play-state: paused;
+
+        .body[data-at="1"] & {
+            animation-play-state: running;
+        }
 
         @media (prefers-reduced-motion: reduce) {
             animation: none;
@@ -1410,6 +1437,8 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         filter: grayscale(1);
         animation: drift 7s ease-in-out infinite alternate;
         animation-delay: calc(var(--k) * -0.9s);
+        // Drifts only while Connect shows it.
+        animation-play-state: paused;
         transition:
             opacity 0.5s ease,
             filter 0.5s ease,
@@ -1424,6 +1453,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         // The crowd stays grey: there are many, but only the flow's own
         // plugins come forward, in color.
         .body[data-at="1"] & {
+            animation-play-state: running;
             opacity: 0.5;
             transition-delay: calc(var(--k) * 40ms);
         }

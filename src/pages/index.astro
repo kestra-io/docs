@@ -42,11 +42,45 @@ import Community from "~/components/home/Community.astro"
 
     document.addEventListener("astro:page-load", requestCleanHeader)
     requestCleanHeader()
+
+    // A section out of view pauses its looping CSS animations (rings,
+    // flowing edges, spinners, carousels), so the page spends nothing on
+    // what nobody sees.
+    function pauseOffscreen() {
+        const sections = document.querySelectorAll<HTMLElement>(
+            ".home-page > section:not([data-watched])",
+        )
+        if (!sections.length) return
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries)
+                    entry.target.toggleAttribute(
+                        "data-offscreen",
+                        !entry.isIntersecting,
+                    )
+            },
+            { rootMargin: "200px 0px" },
+        )
+        for (const section of sections) {
+            section.dataset.watched = ""
+            observer.observe(section)
+        }
+    }
+
+    document.addEventListener("astro:page-load", pauseOffscreen)
+    pauseOffscreen()
 </script>
 
 <style lang="scss">
     .home-page {
         overflow: clip;
+
+        // See pauseOffscreen above.
+        :global([data-offscreen]) :global(*),
+        :global([data-offscreen]) :global(*::before),
+        :global([data-offscreen]) :global(*::after) {
+            animation-play-state: paused !important;
+        }
 
         // Same width as the About us page.
         :global(.container) {
