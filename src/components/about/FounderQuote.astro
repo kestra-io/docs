@@ -22,7 +22,7 @@ import manu from "./assets/manu.jpg"
             </blockquote>
             <figcaption>
                 <span class="avatar">
-                    <Image src={manu} alt="" width={200} />
+                    <Image src={manu} alt="" width={112} densities={[1, 2]} />
                 </span>
                 <span>
                     <strong>Emmanuel Darras</strong>
@@ -39,22 +39,20 @@ import manu from "./assets/manu.jpg"
     .founder-quote {
         @include section;
         position: relative;
-        background: var(--ks-background-purple-light);
-
-        .container {
-            position: relative;
-        }
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
     }
 
     figure {
-        max-width: 960px;
-        margin: 0 auto;
+        max-width: 880px;
+        margin: 0;
     }
 
     blockquote {
         margin: 0;
 
         p {
+            position: relative;
             margin: 0;
             font-size: clamp(1.5rem, 2.6vw, 2.25rem);
             font-weight: 500;
@@ -65,6 +63,10 @@ import manu from "./assets/manu.jpg"
 
             &::before {
                 content: "\201C";
+                position: absolute;
+                right: 100%;
+                padding-right: 0.08em;
+                color: var(--ks-content-link);
             }
 
             &::after {
@@ -92,10 +94,10 @@ import manu from "./assets/manu.jpg"
 
             :global(img) {
                 display: block;
-                width: 100px;
-                max-width: none;
+                width: 100%;
                 height: auto;
-                margin: -8px 0 0 -22px;
+                transform: scale(1.8);
+                transform-origin: 50% 20%;
             }
         }
 
