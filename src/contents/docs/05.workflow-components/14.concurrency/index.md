@@ -11,7 +11,7 @@ Concurrency limits control how many executions can run at the same time, at the 
 
 Once an execution occupies a concurrency slot, it keeps that slot until it reaches a terminal state. This includes executions in the `PAUSED` state while they wait for manual approval. For example, with `concurrency.limit` set to 1, a flow paused by a `Pause` task blocks all subsequent executions until the paused execution is resumed, killed, or otherwise reaches a terminal state. Resuming the execution continues to use its existing slot, so it cannot exceed the configured limit.
 
-Restarted and replayed executions go through the concurrency limit like new executions, so they can be queued, cancelled, or failed.
+Restarted executions and replays of a failed execution go through the concurrency limit like new executions, so they can be queued, cancelled, or failed.
 
 :::alert{type="info"}
 Concurrency limits executions, not the number of tasks a worker runs. Task processing is governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions competing for the same lock) can increase database load and slow scheduling.
@@ -72,6 +72,8 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 - `QUEUE`: hold the execution until a slot opens (default).
 - `CANCEL`: immediately mark the execution as `CANCELLED`.
 - `FAIL`: immediately mark the execution as `FAILED`.
+
+With `FAIL`, every execution the limit rejects ends `FAILED`, so alerts on failed executions fire once per rejected execution. A trigger with [`stopAfter: [FAILED]`](../07.triggers/index.mdx#stopafter) is disabled by the first execution the limit rejects. Use `CANCEL` when you expect rejected executions and don't want them to alert or disable triggers.
 
 Time spent in `QUEUED` counts toward an [SLA](../18.sla/index.md) `MAX_DURATION`, so a queued execution can breach its SLA before it starts running.
 
