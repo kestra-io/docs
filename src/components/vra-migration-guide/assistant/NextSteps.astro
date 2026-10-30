@@ -10,15 +10,13 @@ const STEPS = [
     },
     {
         title: "November 4 · Europe and Asia",
-        text: "Join the webinar to see the Migration Assistant run end to end.",
+        text: "Join the live webinar: Moving off VMware? Start with the orchestrator.",
         href: WEBINAR_HREF_EU,
-        session: true,
     },
     {
         title: "November 5 · Americas",
-        text: "Join the webinar to see the Migration Assistant run end to end.",
+        text: "Join the live webinar: Moving off VMware? Start with the orchestrator.",
         href: WEBINAR_HREF_US,
-        session: true,
     },
 ]
 ---
@@ -30,10 +28,7 @@ const STEPS = [
             {
                 STEPS.map((step) => (
                     <li>
-                        <a
-                            href={step.href}
-                            data-webinar-session={step.session ? "" : undefined}
-                        >
+                        <a href={step.href}>
                             <span class="copy">
                                 <strong>{step.title}</strong>
                                 <span>{step.text}</span>
