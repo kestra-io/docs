@@ -1,0 +1,116 @@
+---
+import { Image } from "astro:assets"
+import PixelEdges from "./PixelEdges.astro"
+import manu from "./assets/manu.jpg"
+---
+
+<section class="founder-quote">
+    <PixelEdges left="wide" right="tall" />
+    <div class="container">
+        <figure>
+            <blockquote>
+                <p>
+                    Every decade, one coordination problem grows large enough to
+                    become its own category. Today, that problem is
+                    orchestrating everything a company runs: infrastructure,
+                    data, AI, business processes. We started building Kestra
+                    before anyone gave it a name, and we kept going. Now
+                    engineers at some of the world's largest companies trust it
+                    with their business-critical operations. Our goal is to lead
+                    this market.
+                </p>
+            </blockquote>
+            <figcaption>
+                <span class="avatar">
+                    <Image src={manu} alt="" width={200} />
+                </span>
+                <span>
+                    <strong>Emmanuel Darras</strong>
+                    Co-founder and CEO
+                </span>
+            </figcaption>
+        </figure>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .founder-quote {
+        @include section;
+        position: relative;
+        background: var(--ks-background-purple-light);
+
+        .container {
+            position: relative;
+        }
+    }
+
+    figure {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    blockquote {
+        margin: 0;
+
+        p {
+            margin: 0;
+            font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+            font-weight: 500;
+            letter-spacing: -0.015em;
+            line-height: 1.35;
+            text-wrap: pretty;
+            color: var(--ks-content-primary);
+
+            &::before {
+                content: "\201C";
+            }
+
+            &::after {
+                content: "\201D";
+            }
+        }
+    }
+
+    figcaption {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2.5rem;
+
+        @include media-breakpoint-down(md) {
+            margin-top: 2rem;
+        }
+
+        .avatar {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            overflow: hidden;
+
+            :global(img) {
+                display: block;
+                width: 100px;
+                max-width: none;
+                height: auto;
+                margin: -8px 0 0 -22px;
+            }
+        }
+
+        span:not(.avatar) {
+            display: flex;
+            flex-direction: column;
+            font-size: $font-size-sm;
+            line-height: 1.4;
+            color: var(--ks-content-tertiary);
+        }
+
+        strong {
+            font-size: $font-size-base;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+    }
+</style>
