@@ -110,7 +110,7 @@ For teams focused purely on infrastructure, tools like [Ansible Automation Platf
 Selecting the right alternative depends on your team's primary use cases and technical expertise.
 
 ### For Infrastructure and DevOps Teams
-Your focus should be on [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) principles. Look for a tool with strong integrations for Terraform and Ansible, robust GitOps capabilities, and the flexibility to manage hybrid and multi-cloud environments. A declarative approach is critical for auditability and reliability. Explore how Kestra can help you [automate your infrastructure](https://kestra.io/infra-automation).
+Your focus should be on [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) principles. Look for a tool with strong integrations for Terraform and Ansible, robust GitOps capabilities, and the flexibility to manage hybrid and multi-cloud environments. A declarative approach is critical for auditability and reliability. Explore how Kestra can help you [automate your infrastructure](https://kestra.io/infra-automation).
 
 ### For Data Engineering Teams
 Prioritize platforms that can handle large-scale [data orchestration](https://kestra.io/resources/data/data-orchestration) and integrate seamlessly with your data stack. Key features include support for dbt, robust data lineage tracking, and the ability to connect to a wide range of data sources and destinations. See how Kestra can serve your [data teams](https://kestra.io/data).

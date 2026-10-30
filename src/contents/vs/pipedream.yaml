@@ -93,7 +93,7 @@ easeOfUse:
   title: "The Same Workflow, Without the Workarounds"
   kestra:
     title: "Kestra: A Loop Is a Task, Not a Hack"
-    description: "A webhook starts the flow, a Loop processes each record, a Go or Python script does the custom work, and an errors block routes failures to the right team. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> drafts the YAML from a description or an exported workflow, and every step is tested and replayable."
+    description: "A webhook starts the flow, a Loop processes each record, a Go or Python script does the custom work, and an errors block routes failures to the right team. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> drafts the YAML from a description or an exported workflow, and every step is tested and replayable."
     code: |
       id: staff_directory_sync
       namespace: it.integrations

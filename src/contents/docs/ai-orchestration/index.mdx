@@ -1,0 +1,30 @@
+---
+title: "AI Orchestration in Kestra: LLM Tasks, AI Agents, RAG & MCP"
+h1: Orchestrate LLMs, AI Agents, and RAG in Your Flows
+sidebarTitle: AI Orchestration
+icon: /src/contents/docs/icons/ai.svg
+description: "Run AI as part of your flows: call LLMs as tasks, give AI agents goals and tools, ground answers with RAG, and expose flows to external agents over MCP."
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Run AI as part of your flows: call models, run AI agents, ground answers in your data, and let external agents call your flows.
+
+This section is for flow authors who put AI into production. Everything here runs during an execution, uses your model provider credentials, and shows up in execution logs and outputs. To get AI help writing or operating flows instead, see [Develop with AI](../develop-with-ai/index.mdx).
+
+## Choose an approach
+
+| You want to… | Use |
+| --- | --- |
+| Summarize, classify, or extract structured data at a fixed step | [LLM tasks](./01.ai-agents/index.md#call-an-llm-as-a-task) |
+| Give a model a goal and tools, and let it choose the steps | [`AIAgent` tasks](./01.ai-agents/index.md#build-an-ai-agent) |
+| Answer questions from your own documents or live web results | [RAG workflows](./02.ai-rag-workflows/index.md) |
+| Let Claude, Cursor, or another external AI agent run your flows | [Flow MCP servers](./03.mcp-server/index.md) |
+
+## MCP in both directions
+
+Kestra works with the [Model Context Protocol](https://modelcontextprotocol.io/) both ways. As a client, an `AIAgent` task calls tools on external MCP servers through [MCP client tools](./01.ai-agents/index.md#mcp-clients). As a server, a [flow MCP server](./03.mcp-server/index.md) exposes your flows as tools that external agents call.
+
+Neither is the [Docs MCP server](../develop-with-ai/02.kestra-mcp-resources/index.md), which gives coding agents Kestra documentation and plugin schemas while you write flows.
+
+<ChildCard />

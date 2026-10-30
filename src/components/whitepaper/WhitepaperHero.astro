@@ -1,0 +1,293 @@
+---
+import { Image } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+/**
+ * Hero of the whitepaper landing pages: the copy on the left, the book card
+ * with its download button on the right. The H1 goes in the `title` slot so
+ * a part of it can be highlighted, the deck in the default slot.
+ */
+interface Props {
+    pdfHref: string
+    book: ImageMetadata
+    inside: string[]
+    eyebrow?: string
+}
+
+const {
+    pdfHref,
+    book,
+    inside,
+    eyebrow = "Whitepaper · By Kai Waehner, Global Field CTO",
+} = Astro.props
+---
+
+<section class="hero">
+    <div class="container hero-inner">
+        <div class="hero-copy">
+            <p class="eyebrow" data-usal="fade-r">{eyebrow}</p>
+            <h1 data-usal="fade-r"><slot name="title" /></h1>
+            <p class="subtitle" data-usal="fade-r"><slot /></p>
+
+            <h2 class="inside-title" data-usal="fade-r">What's inside</h2>
+            <ul class="inside-list" data-usal="fade-l">
+                {inside.map((item) => <li>{item}</li>)}
+            </ul>
+        </div>
+
+        <div class="hero-figure" data-usal="zoomin">
+            <div class="hero-card">
+                <div class="book-wrap" aria-hidden="true">
+                    <Image
+                        src={book}
+                        alt=""
+                        widths={[600, 1200]}
+                        sizes="(min-width: 992px) 600px, 90vw"
+                        loading="eager"
+                        class="book-img"
+                    />
+                </div>
+                <p>The full guide is on this page, or download the PDF</p>
+                <a href={pdfHref} class="btn btn-secondary" download>
+                    Download the PDF
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "/src/assets/styles/buttons" as *;
+    @use "/src/assets/styles/color-palette" as *;
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+        color: var(--ks-content-primary);
+        // Faded grid and violet wash of the docs header (DocsLayout.astro).
+        background: var(--ks-background-body) url("~/assets/squared-grid.svg")
+            no-repeat top center / 1400px auto;
+    }
+
+    .hero-inner {
+        // Page width of the vRA migration pages.
+        @include guide-container;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+        padding-top: 4rem;
+        padding-bottom: 3rem;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            gap: 3rem;
+            padding-top: 5rem;
+            padding-bottom: 4rem;
+        }
+    }
+
+    .hero-copy {
+        min-width: 0;
+
+        @include media-breakpoint-up(lg) {
+            flex: 1 1 auto;
+        }
+    }
+
+    .hero-figure {
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 480px;
+            max-width: 480px;
+            // Room for the book above the card, so the book and the card
+            // together sit centred against the copy.
+            padding-top: 5rem;
+        }
+    }
+
+    // Book card of the vRA migration guide hero (GuideHero.astro), with a
+    // wash that follows the theme instead of the guide's always-dark one.
+    .hero-card {
+        --card-wash: #{rgba($black, 0.04)};
+        --card-edge: #{rgba($black, 0.08)};
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 480px;
+        aspect-ratio: 1;
+        margin: 6rem auto 0;
+        padding: 0 2rem 1.25rem;
+        border-radius: 20px;
+        text-align: center;
+
+        @include media-breakpoint-up(lg) {
+            margin: 0;
+        }
+
+        :global(html.dark) & {
+            --card-wash: #{rgba($white, 0.08)};
+            --card-edge: #{rgba($white, 0.12)};
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+        }
+
+        &::before {
+            inset: 0;
+            border-radius: inherit;
+            background: var(--card-wash);
+            box-shadow: inset 0 0 0 1px var(--card-edge);
+            mask-image: linear-gradient(to bottom, transparent 10%, $black 55%);
+        }
+
+        &::after {
+            inset: -30px;
+            padding: 30px;
+            background: var(--card-wash) content-box;
+            filter: blur(15px);
+            mask-image: linear-gradient(to bottom, $black 15%, transparent 55%);
+        }
+
+        p {
+            position: relative;
+            max-width: 23rem;
+            margin: 0;
+            font-weight: 600;
+            line-height: 1.5rem;
+            color: var(--ks-content-primary);
+        }
+
+        // A link, not the guide's <button>, so it centres its label itself.
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 11.25rem;
+            min-height: 3.5rem;
+            padding: 0.5rem 1.375rem;
+            border-radius: $border-radius-lg;
+            font-size: $font-size-lg;
+            font-weight: 700;
+            line-height: 1.75rem;
+
+            :global(html.dark) & {
+                @include btn-secondary-light-surface;
+            }
+        }
+    }
+
+    .book-wrap {
+        position: absolute;
+        left: 50%;
+        // Higher than the guide's -30%: these covers sit lower in their image.
+        top: -40%;
+        width: 123%;
+        transform: translateX(-49%);
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            top: -22%;
+            width: 90%;
+        }
+
+        @include media-breakpoint-down(md) {
+            top: -16%;
+            width: 72%;
+        }
+
+        .book-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    // Pill of the vRA migration guide hero (GuideHero.astro).
+    .eyebrow {
+        display: inline-block;
+        margin: 0 0 0.75rem;
+        padding: 0.125rem 0.75rem;
+        border: 1px solid #a77af6;
+        border-radius: 999px;
+        box-shadow: 3px 3px 0 rgba(173, 41, 250, 0.2);
+        font-size: $font-size-xs;
+        font-weight: 600;
+        line-height: 1.5rem;
+        color: var(--ks-content-primary);
+
+        :global(html.dark) & {
+            text-shadow: 0 4px 0 rgba($black, 0.25);
+        }
+    }
+
+    // Same scale as the vRA migration guide hero (GuideHero.astro).
+    h1 {
+        margin: 0 0 1.25rem;
+        max-width: 22ch;
+        font-size: clamp(2.25rem, 4.2vw, 4rem);
+        line-height: 1.09;
+        letter-spacing: -0.02em;
+
+        :global(.highlight) {
+            color: var(--ks-content-color-highlight);
+        }
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+        margin: 0 0 2.5rem;
+        max-width: 68ch;
+    }
+
+    .inside-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin: 0 0 1rem;
+        color: var(--ks-content-primary);
+        opacity: 0.6;
+    }
+
+    .inside-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.4em;
+                width: 1.125rem;
+                height: 1.125rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Ccircle cx='10' cy='10' r='9' stroke='%239F4FED' stroke-width='1.5'/%3E%3Cpath d='M6 10l2.5 2.5L14 7.5' stroke='%239F4FED' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-size: contain;
+            }
+        }
+    }
+</style>

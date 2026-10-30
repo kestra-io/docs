@@ -6,6 +6,7 @@ sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 2.0.0"
+docId: worker-groups
 ---
 
 Worker Groups route tasks to the right machines in your fleet. A Worker Group is a named, token-authenticated pool of workers that subscribes to one or more Worker Queues — tag-based routing lanes that tasks declare requirements against. The result is flexible many-to-many routing: GPU machines and spot instances can serve the same queue, or a single group can cover multiple queues with per-queue capacity guarantees.
@@ -451,22 +452,24 @@ Under `type: DNS` discovery, the authority is derived from the DNS hostname auto
 
 ## Dedicated storage isolation
 
-If a worker group uses its own storage bucket rather than the deployment's shared storage, KV values, namespace files, and managed plugin artifacts will not be consistent across the deployment without additional configuration. Set the relevant properties on the worker:
+If a worker group uses its own storage bucket rather than the internal storage that the webserver and Worker Controller use, KV Store values, namespace files, and managed plugin artifacts are not consistent across the deployment without additional configuration. Set the following properties on the worker:
 
 ```yaml
 kestra:
   kv:
-    worker-access: CONTROLLER          # default: STORAGE; requires Kestra 2.1
+    worker-access: CONTROLLER          # default: STORAGE
 
   namespace-files:
     worker-access: CONTROLLER          # default: STORAGE
 
   plugins:
     management:
-      worker-access: CONTROLLER        # default: STORAGE; requires Kestra 2.1
+      worker-access: CONTROLLER        # default: STORAGE
 ```
 
-See [Dedicated-storage workers](../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference. `kestra.namespace-files.worker-access` is available from Kestra 2.0.4; `kestra.kv.worker-access` and `kestra.plugins.management.worker-access` require Kestra 2.1.
+See [Dedicated-storage workers](../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference.
+
+Workers in a group that cannot reach the secrets manager, or that must not hold its credentials, can read secrets through the controller instead. See [Worker access to secrets](../../02.governance/secrets-manager/index.md#worker-access-to-secrets).
 
 ## Use cases
 

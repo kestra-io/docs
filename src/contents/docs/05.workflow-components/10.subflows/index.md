@@ -84,8 +84,33 @@ tasks:
 | `outputs` (deprecated) | Passes subflow outputs to the parent flow. Use [flow outputs](../06.outputs/index.md#flow-outputs) instead. |
 | `revision`             | The subflow revision to execute (defaults to the latest)                   |
 | `scheduleDate`         | Schedule subflow execution on a specific date rather than immediately. To move the date before the execution starts, [reschedule it via the API](../03.execution/index.md#schedule-and-reschedule-an-execution). |
-| `transmitFailed`       | If true, parent flow fails on subflow failure (requires `wait` to be true). |
+| `transmitFailed`       | If true, parent flow fails when the subflow execution fails or is killed (requires `wait` to be true; default: true). |
 | `wait`                 | If true, parent flow waits for subflow completion (default: true).         |
+
+## Killing parent and subflow executions
+
+When a parent execution waits on a subflow, the final state of each execution depends on which one you kill and how.
+
+### Killing the parent execution
+
+Clicking **Kill** on a parent execution kills the parent and its running subflow executions. The dropdown next to **Kill** offers both options explicitly:
+
+- **Kill current and subflows** kills the parent and its running subflow executions. The parent, the `Subflow` task run, and the subflow execution all end `KILLED`.
+- **Kill current only** kills the parent and lets the subflow execution finish. The parent stays `KILLING` until the subflow execution ends, then ends `KILLED`. No further tasks run in the parent.
+
+Through the API, `DELETE /api/v1/{tenant}/executions/{executionId}/actions/kill` kills subflow executions by default. Add `?isOnKillCascade=false` to kill the current execution only. The bulk kill endpoints, `DELETE /api/v1/{tenant}/executions/kill/by-ids` and `DELETE /api/v1/{tenant}/executions/kill/by-query`, never kill subflow executions.
+
+### Killing the subflow execution
+
+When you kill a subflow execution directly, the parent treats it as a failure of the `Subflow` task, governed by `transmitFailed` and `allowFailure`:
+
+| `Subflow` task configuration | `Subflow` task run | Parent execution |
+|---|---|---|
+| `transmitFailed: true` | `KILLED` | Skips the remaining tasks, runs any [`errors`](../11.errors/index.md) tasks, and ends `FAILED`. |
+| `transmitFailed: true` and `allowFailure: true` | `WARNING` | Continues with the next tasks and ends `WARNING`. |
+| `transmitFailed: false` | `SUCCESS` | Continues with the next tasks. |
+
+A [`retry`](../12.retries/index.md) on the `Subflow` task does not restart a killed subflow execution.
 
 
 ## Passing data between parent and child flows

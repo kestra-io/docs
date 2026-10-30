@@ -10,6 +10,7 @@ import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 
 import BrowserFrame from "~/components/vra-migration-guide/assistant/BrowserFrame.astro"
+import { WEBINAR_HREF_EU } from "~/components/vra-migration-guide/assistant/links"
 import cubes from "~/components/vra-migration-guide/assets/assistant-cubes.webp"
 
 const mapping = [
@@ -78,6 +79,14 @@ const points = [
                 yours.
             </p>
             <a href="#contact-sales" class="cta">Run it with us</a>
+            <p class="webinar">
+                See it run live with our team:
+                <strong>November 4, 2 PM CET</strong> (Europe and Asia) or
+                <strong>November 5, 11 AM PT</strong> (Americas).
+                <a href={WEBINAR_HREF_EU} target="_blank" rel="noopener"
+                    >Register →</a
+                >
+            </p>
         </div>
 
         <figure
@@ -232,6 +241,27 @@ const points = [
         color: var(--lp-purple-mid);
     }
 
+    .webinar {
+        margin: 0;
+        color: var(--lp-content-dark-secondary);
+        font-size: $font-size-md;
+        line-height: 1.5;
+
+        strong {
+            color: #ffffff;
+        }
+
+        a {
+            color: var(--lp-purple-mid);
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
     .cta {
         display: inline-flex;
         align-self: flex-start;
@@ -384,3 +414,46 @@ const points = [
         }
     }
 </style>
+
+<script>
+    import {
+        WEBINAR_HREF_EU,
+        WEBINAR_HREF_US,
+    } from "~/components/vra-migration-guide/assistant/links"
+    import { isAmericasTimezone } from "~/composables/useMeeting"
+
+    // The Americas session ends on November 5 at noon PT (20:00 UTC). After
+    // that the line goes, until it is removed from the source.
+    const WEBINAR_ENDS = Date.UTC(2026, 10, 5, 20)
+
+    // Visitors in the Americas get the US session, the same split as the
+    // Migration Assistant page. Each click is pushed to the dataLayer for GTM:
+    // registrations happen on Contrast, which reports nothing back.
+    function setUpWebinarLine() {
+        const line = document.querySelector<HTMLElement>(".assistant .webinar")
+        if (!line || line.dataset.ready !== undefined) return
+        if (Date.now() > WEBINAR_ENDS) {
+            line.remove()
+            return
+        }
+        line.dataset.ready = ""
+        const session = isAmericasTimezone() ? "us" : "eu"
+        const link = line.querySelector("a")!
+        link.href = session === "us" ? WEBINAR_HREF_US : WEBINAR_HREF_EU
+        const track = () => {
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({
+                event: "vra_webinar_register_click",
+                webinar_session: session,
+            })
+        }
+        link.addEventListener("click", track)
+        // Middle-click opens the session too; right-click only opens a menu.
+        link.addEventListener("auxclick", (event) => {
+            if (event.button === 1) track()
+        })
+    }
+
+    setUpWebinarLine()
+    document.addEventListener("astro:page-load", setUpWebinarLine)
+</script>

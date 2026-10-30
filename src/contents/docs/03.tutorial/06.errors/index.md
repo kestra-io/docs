@@ -143,7 +143,7 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - states: [FAILED, WARNING]
-        when: "{{ namespace | startsWith('company.team') }}"
+        when: "{{ flow.namespace | startsWith('company.team') }}"
 ```
 
 Adding this flow ensures you receive a Slack alert for any flow failure in the `company.team` namespace.
@@ -291,6 +291,7 @@ Next, you can dive into:
 - [Architecture](../../08.architecture/index.mdx)
 - [Workflow Components](../../05.workflow-components/index.mdx)
 - [Key concepts](../../06.concepts/index.mdx)
-- [Plugins](/plugins) to integrate with external systems
+- [Plugins](/plugins) to integrate with external systems.
 - [Deployments](../../10.administrator-guide/index.mdx) to deploy Kestra to production.
 - [Scripts](../../16.scripts/index.mdx)
+- [Kestra Academy](https://academy.kestra.io) for guided courses and certifications.

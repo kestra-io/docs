@@ -1,0 +1,133 @@
+---
+const PRINCIPLES = [
+    {
+        title: "Declarative",
+        text: "A workflow is a YAML document the whole team can read, review in a pull request, version and promote.",
+    },
+    {
+        title: "Open",
+        text: "The engine is Apache 2.0, the plugins are public, and the roadmap is argued in GitHub issues. Leaving is as easy as exporting a file.",
+    },
+    {
+        title: "Language-agnostic",
+        text: "Python, SQL, shell, Java, Terraform, dbt, an API call. Kestra runs what your teams already write, where they already run it.",
+    },
+    {
+        title: "Runs anywhere",
+        text: "Cloud, on-premises, air-gapped. Workers connect outbound, so compute stays where your data and your rules require.",
+    },
+    {
+        title: "Governed by default",
+        text: "Access control, audit logs, approvals and policies ship with the platform, and apply to agents the same way they apply to workflows.",
+    },
+]
+---
+
+<section class="principles">
+    <div class="container">
+        <header>
+            <div>
+                <span class="eyebrow">What we believe</span>
+                <h2>Principles we build to.</h2>
+            </div>
+            <p>
+                We use these five to decide what goes into Kestra and what we
+                turn down.
+            </p>
+        </header>
+    </div>
+    <ul>
+        {
+            PRINCIPLES.map((p) => (
+                <li>
+                    <h3>{p.title}</h3>
+                    <p>{p.text}</p>
+                </li>
+            ))
+        }
+    </ul>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .principles {
+        --rule: 1px solid rgba(99, 27, 255, 0.16);
+
+        padding: 7.5rem 0 0;
+
+        @include media-breakpoint-down(md) {
+            padding-top: 4.5rem;
+        }
+
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-purple-light);
+    }
+
+    header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1.5rem 4rem;
+        margin-bottom: 3.5rem;
+
+        p {
+            @include lead;
+            max-width: 420px;
+            margin: 0;
+        }
+    }
+
+    .eyebrow {
+        @include eyebrow;
+    }
+
+    h2 {
+        @include title;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        border-top: var(--rule);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    li {
+        padding: 2.75rem clamp(1.25rem, 2.2vw, 2.75rem) 6rem;
+
+        & + li {
+            border-left: var(--rule);
+        }
+
+        @include media-breakpoint-down(lg) {
+            padding: 1.5rem;
+
+            & + li {
+                border-left: 0;
+                border-top: var(--rule);
+            }
+        }
+    }
+
+    h3 {
+        margin: 0 0 0.75rem;
+        font-size: $font-size-lg;
+        font-weight: 600;
+    }
+
+    li p {
+        margin: 0;
+        font-size: $font-size-sm;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+    }
+</style>
