@@ -156,7 +156,7 @@ This has several advantages for MAS:
 *   **Auditability:** The YAML definition provides a clear, auditable record of how the system is designed to work. Every execution is logged, providing a complete history for compliance and debugging.
 *   **Separation of Concerns:** The orchestration logic (in YAML) is decoupled from the agent's internal implementation (in Python, Java, etc.). This allows different teams to work on agents and workflows independently.
 
-You can learn more about how Kestra enables [autonomous orchestration with AI Agents in the documentation](/docs/ai-tools/ai-agents).
+You can learn more about how Kestra enables [autonomous orchestration with AI Agents in the documentation](/docs/ai-orchestration/ai-agents).
 
 ### Integrating diverse AI agents and tools within a unified platform
 

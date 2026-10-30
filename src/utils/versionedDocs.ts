@@ -1,3 +1,5 @@
+import { KESTRA_SITE_ORIGIN } from "~/utils/markdown-actions/resolveMarkdownUrl"
+
 // Helpers for the versioned documentation routing (kestra.io/docs/{major.minor}/...).
 // Versioned doc pages are fetched at request time from api.kestra.io; the latest
 // docs keep being served by Astro's static content collection.
@@ -286,6 +288,28 @@ export function resolveVersionedDocLink(
 }
 
 /**
+ * Resolver for the relative links in a versioned page's `.md` body: page links
+ * re-root under /docs/{version} exactly as the rendered page's do, colocated
+ * assets map to their versioned API file. Absolute, so they hold wherever the
+ * Markdown ends up.
+ */
+export function versionedDocLinkResolver(
+    version: string,
+    baseDir: string,
+    apiUrl: string,
+): (target: string) => string {
+    return (target) => {
+        const cut = target.search(/[?#]/)
+        const path = cut === -1 ? target : target.slice(0, cut)
+        const suffix = cut === -1 ? "" : target.slice(cut)
+        if (!/\.mdx?$/i.test(path) && isRelativeAssetRef(path)) {
+            return versionedAssetUrl(apiUrl, version, resolveRelativeAssetRef(baseDir, path)) + suffix
+        }
+        return `${KESTRA_SITE_ORIGIN}${resolveVersionedDocLink(version, baseDir, target)}`
+    }
+}
+
+/**
  * Target URL when switching to `version` (empty string = latest) from
  * `pathname`, which may itself be a latest-docs path or already versioned
  * (`/docs/{otherVersion}/...`). Re-roots the bare sub-path under the new
@@ -433,7 +457,9 @@ const FRONTMATTER_BLOCK_RE = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/
 export function frontmatterField(markdown: string, key: string): string | undefined {
     const block = FRONTMATTER_BLOCK_RE.exec(markdown)?.[1] ?? ""
     const raw = new RegExp(`^${key}: (.*)$`, "m").exec(block)?.[1]?.trim()
-    return raw?.replace(/^(['"])(.*)\1$/, "$2")
+    // A block scalar indicator (`description: >`) carries no value on its line.
+    if (raw === undefined || /^[>|][-+0-9]{0,2}$/.test(raw)) return undefined
+    return raw.replace(/^(['"])(.*)\1$/, "$2")
 }
 
 /** Strip a leading ---...--- frontmatter block, returning the body only. */

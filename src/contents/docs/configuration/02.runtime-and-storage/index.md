@@ -587,13 +587,13 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `endpoint` | string | No | — | S3-compatible server hostname or URL. |
+| `endpoint` | string | **Yes** | — | S3-compatible server hostname or URL. |
 | `port` | integer | No | `0` | Server port. Default `0` uses the standard port for the chosen scheme. |
 | `secure` | boolean | No | `false` | Use TLS for the connection. |
 | `access-key` | string | No | — | Access key ID. |
 | `secret-key` | string | No | — | Secret access key. |
 | `region` | string | No | — | Region to include in request signing. |
-| `bucket` | string | No | — | Bucket name. |
+| `bucket` | string | **Yes** | — | Bucket name. |
 | `part-size` | size | No | `5MB` | Multipart upload part size. Minimum 5 MiB. |
 | `vhost` | boolean | No | `false` | Enable virtual-hosted style bucket URLs (`bucket.endpoint`). Leave `false` for path-style addressing. |
 | `ca-pem` | string | No | — | CA certificate PEM for custom TLS trust. |
@@ -648,7 +648,7 @@ kestra:
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `filer-host` | string | No | — | Hostname or IP of the SeaweedFS filer server. |
+| `filer-host` | string | **Yes** | — | Hostname or IP of the SeaweedFS filer server. |
 | `filer-port` | integer | No | `18888` | gRPC port of the SeaweedFS filer server. |
 | `prefix` | string | No | `""` | Root prefix path for all storage operations. |
 | `replication` | string | No | `"000"` | Replication factor (`000` = no replication, `001` = 1 copy). |

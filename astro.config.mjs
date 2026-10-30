@@ -221,7 +221,7 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
-            // Raises the /api/github rate limit; works unauthenticated without it.
+            // Raises the GitHub rate limit for /api/github and the changelog; works unauthenticated without it.
             GITHUB_TOKEN: envField.string({
                 context: "server",
                 access: "secret",
@@ -247,6 +247,10 @@ export default defineConfig({
     },
     redirects: {
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
+        "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application":
+            "/careers#open-application",
+        "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply":
+            "/careers#open-application",
         "/partners/consulting": "/partners/services",
         "/trust":
             "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",

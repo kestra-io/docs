@@ -157,7 +157,7 @@ Managed services like [Google Cloud Composer](https://kestra.io/vs/cloud-compose
 
 ### AI and automation in legacy system understanding
 
-Understanding complex legacy systems can be a major bottleneck. Modern tools can help. Kestra's [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) can help generate new workflows from natural language descriptions, reducing the manual effort of translation. As the [orchestration control plane of the AI era](https://kestra.io/blogs/kestra-series-a), Kestra is designed to integrate AI seamlessly into your automation strategy.
+Understanding complex legacy systems can be a major bottleneck. Modern tools can help. Kestra's [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot) can help generate new workflows from natural language descriptions, reducing the manual effort of translation. As the [orchestration control plane of the AI era](https://kestra.io/blogs/kestra-series-a), Kestra is designed to integrate AI seamlessly into your automation strategy.
 
 ## Migrating specific legacy orchestrators with Kestra
 

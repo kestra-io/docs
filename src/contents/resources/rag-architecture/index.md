@@ -56,7 +56,7 @@ The retrieval phase is responsible for finding and fetching the most relevant in
 
 Once the relevant document chunks are retrieved, the generation phase begins. This phase uses the power of an LLM to synthesize an answer.
 - **Prompt Augmentation:** The retrieved text is combined with the original user query to form an augmented prompt. This prompt provides the LLM with the necessary context to generate a factually grounded response.
-- **LLM Generation:** The augmented prompt is sent to an LLM (e.g., GPT-5, Claude Opus 4). The model uses the provided context to craft a coherent, human-like answer that directly addresses the user's question. This is a core part of building [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows) and can be enhanced with autonomous [AI agents](https://kestra.io/docs/ai-tools/ai-agents).
+- **LLM Generation:** The augmented prompt is sent to an LLM (e.g., GPT-5, Claude Opus 4). The model uses the provided context to craft a coherent, human-like answer that directly addresses the user's question. This is a core part of building [RAG workflows](https://kestra.io/docs/ai-orchestration/ai-rag-workflows) and can be enhanced with autonomous [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents).
 
 ### Key Benefits of RAG in AI
 
@@ -124,7 +124,7 @@ You should choose RAG when your application requires:
 
 ### Future Trends in RAG Development
 
-The RAG landscape is rapidly evolving. Future trends include **multi-modal RAG**, which can retrieve and process information from images, audio, and video, not just text. We are also seeing the rise of **self-improving RAG systems** that use feedback to refine their retrieval strategies over time. The tight integration of RAG with [agentic AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) and [autonomous agents](https://kestra.io/docs/ai-tools/ai-agents) is also pushing the boundaries of what's possible.
+The RAG landscape is rapidly evolving. Future trends include **multi-modal RAG**, which can retrieve and process information from images, audio, and video, not just text. We are also seeing the rise of **self-improving RAG systems** that use feedback to refine their retrieval strategies over time. The tight integration of RAG with [agentic AI workflows](https://kestra.io/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task) and [autonomous agents](https://kestra.io/docs/ai-orchestration/ai-agents) is also pushing the boundaries of what's possible.
 
 ## Implementing RAG Architecture in Practice
 
@@ -157,7 +157,7 @@ Retrieval is one workload on a shared control plane. The same scheduling, retry 
 
 ### Declarative YAML for RAG Pipeline Definition
 
-Kestra allows you to define your entire [RAG workflow](https://kestra.io/docs/ai-tools/ai-rag-workflows) as a simple, declarative YAML file. This brings GitOps principles to your AI pipelines, enabling version control, code reviews, and automated deployments. You can define every step, from data ingestion and chunking to embedding and indexing, in a single, auditable file.
+Kestra allows you to define your entire [RAG workflow](https://kestra.io/docs/ai-orchestration/ai-rag-workflows) as a simple, declarative YAML file. This brings GitOps principles to your AI pipelines, enabling version control, code reviews, and automated deployments. You can define every step, from data ingestion and chunking to embedding and indexing, in a single, auditable file.
 
 ```yaml
 id: simple-rag-pipeline

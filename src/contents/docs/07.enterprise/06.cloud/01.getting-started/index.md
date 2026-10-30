@@ -9,6 +9,8 @@ editions: ["Cloud"]
 
 Kestra Cloud is a fully managed Kestra instance run by the Kestra team. You build the pipelines; Kestra handles hosting, scaling, upgrades, SSO, and secrets.
 
+If your first flows need something from your IT team, such as access to a database behind your firewall, single sign-on, or a security review, send your IT team the [IT setup guide](../04.setup-for-it/index.md) now. Those requests usually take longer than building the flow.
+
 ## Two places you'll work
 
 Kestra Cloud consists of two platforms:
@@ -49,9 +51,9 @@ Three getting-started blueprints run successfully on the first execution with pu
 
 In your instance: go to **Flows → Create → Blueprints**, pick one, **Save**, then **Execute**. Open the run and review the **Logs**, the **Gantt** timeline, and each task's **Outputs**. Edit, execute, review the run: that's the core loop.
 
-Hundreds more are available in the [blueprints library](https://kestra.io/blueprints). The [AI Copilot](../../../ai-tools/01.ai-copilot/index.md) can also write a flow from a plain-English description.
+Hundreds more are available in the [blueprints library](https://kestra.io/blueprints). The [AI Copilot](../../../develop-with-ai/01.ai-copilot/index.md) can also write a flow from a plain-English description.
 
-Building with AI tools? The [Kestra MCP server](../../../ai-tools/03.mcp-server/index.md) gives Claude, Cursor, and other tools live access to Kestra docs, plugins, and blueprints. Add [kestractl](https://github.com/kestra-io/kestractl) to generate and deploy flows from the CLI.
+Building with AI tools? The [Kestra Docs MCP server](../../../develop-with-ai/02.kestra-mcp-resources/index.md) gives Claude, Cursor, and other tools live access to Kestra docs, plugins, and blueprints. Add [kestractl](https://github.com/kestra-io/kestractl) to generate and deploy flows from the CLI.
 
 Prefer your editor? The [VS Code extension](../../../version-control-cicd/05.vscode/index.md) edits, validates, and runs flows locally with instance-aware autocomplete and a topology preview.
 
@@ -122,5 +124,6 @@ Common first-week blockers:
 
 - Credentials not reaching a task: [Secrets](../../../06.concepts/04.secret/index.md)
 - Cloud auth or OIDC trust issues: [Credentials](../../03.auth/credentials/index.md)
+- Waiting on IT for network access, SSO, or a security review: [Set up Kestra Cloud for your team](../04.setup-for-it/index.md)
 
 For help, reach the team at support@kestra.io, in the [Slack community](https://kestra.io/slack), or by replying to your onboarding email.

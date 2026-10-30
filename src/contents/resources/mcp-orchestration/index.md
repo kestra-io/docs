@@ -120,7 +120,7 @@ Kestra serves as the comprehensive orchestration control plane that brings enter
 
 With Kestra, you can define complex [AI workflows declaratively in YAML](/docs/workflow-components/flow). This approach allows you to version, audit, and manage your agentic systems as code. Kestra's extensive [plugin ecosystem](/plugins/plugin-ai) can expose virtually any system—from databases and APIs to infrastructure tools—as an MCP-compliant tool for your agents.
 
-Kestra's built-in features like the [AI Copilot](/docs/ai-tools/ai-copilot) and native [AI Agents](/docs/ai-tools/ai-agents) are designed to work seamlessly with protocols like MCP. As announced with [Kestra 1.0](/blogs/release-1-0), our platform provides the runtime execution, robust logging, monitoring, and governance layer that is essential for running these AI systems in production. You can find more details in our [documentation](/docs).
+Kestra's built-in features like the [AI Copilot](/docs/develop-with-ai/ai-copilot) and native [AI Agents](/docs/ai-orchestration/ai-agents) are designed to work seamlessly with protocols like MCP. As announced with [Kestra 1.0](/blogs/release-1-0), our platform provides the runtime execution, robust logging, monitoring, and governance layer that is essential for running these AI systems in production. You can find more details in our [documentation](/docs).
 
 ## Benefits of an MCP-driven orchestration strategy
 
