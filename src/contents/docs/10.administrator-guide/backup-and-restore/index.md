@@ -231,7 +231,7 @@ Kestra doesn't back up internal storage itself, because it can hold arbitrary am
 
 ## Migrate internal storage to another backend
 
-To move internal storage from one object storage backend to another, for example from MinIO to Amazon S3, copy every object to the new bucket while Kestra is stopped, then point Kestra at the new bucket. The database stores files as `kestra:///` URIs without a bucket name or endpoint, so the database itself doesn't change.
+To move internal storage from one object storage backend to another, for example from MinIO to Amazon S3 or SeaweedFS, copy every object to the new bucket while Kestra is stopped, then point Kestra at the new bucket. The database stores files as `kestra:///` URIs without a bucket name or endpoint, so the database itself doesn't change.
 
 This procedure moves internal storage only. [Metadata backup](#metadata-backup) can't do it, because it skips execution files and revision history.
 
@@ -244,11 +244,37 @@ This procedure moves internal storage only. [Metadata backup](#metadata-backup) 
 
 ### Step 1: Stop Kestra
 
-In Enterprise Edition, enable [Maintenance Mode](../../07.enterprise/05.instance/maintenance-mode/index.md) first. Wait for running executions to finish, then scale every Kestra component to zero. Keep Kestra stopped until step 6.
+In Enterprise Edition, enable [Maintenance Mode](../../07.enterprise/05.instance/maintenance-mode/index.md) first. Wait for running executions to finish, then scale every Kestra component to zero. Keep Kestra stopped until step 7.
 
 KV entries and namespace files are versioned: the database tracks each revision, and internal storage holds the content. If Kestra writes anything during the copy, the two drift apart and namespaces show missing or wrong content.
 
-### Step 2: Copy the objects
+### Step 2: Remove file and folder name conflicts
+
+Kestra versions before 1.3.32 could store a namespace path as both a file and a folder. In object storage, this leaves an empty object such as `<tenant>/<namespace>/_files/scripts` next to the `scripts/` folder. MinIO then hides everything under that folder from listings, so listing-based copies and metadata backups silently skip those files.
+
+Find these objects from the database. The query lists every namespace folder, and the loop checks whether an object exists at the same key without the trailing slash:
+
+```bash
+psql -h <db-host> -U <username> -d <database> -At -F ' ' \
+  -c "SELECT DISTINCT tenant_id, namespace, path FROM namespace_file_metadata WHERE path LIKE '%/' AND path <> '/'" > folders.txt
+
+while read -r tenant namespace path; do
+  key="$tenant/${namespace//.//}/_files${path%/}"
+  aws s3api head-object --bucket <source-bucket> --key "$key" --profile source --endpoint-url https://<minio-endpoint> > /dev/null 2>&1 && echo "$key"
+done < folders.txt > conflicts.txt
+```
+
+On MySQL, run the same `SELECT` with `mysql -N -B -e`. Review `conflicts.txt`, then delete each object it lists:
+
+```bash
+while read -r key; do
+  aws s3api delete-object --bucket <source-bucket> --key "$key" --profile source --endpoint-url https://<minio-endpoint>
+done < conflicts.txt
+```
+
+These empty objects aren't namespace files, so deleting them doesn't remove any content. If `conflicts.txt` is empty, there is nothing to remove.
+
+### Step 3: Copy the objects
 
 Download the source bucket to a local folder, then upload that folder to the new bucket. Object keys become file paths on download and turn back into the same keys on upload:
 
@@ -261,7 +287,7 @@ If no single host can reach both backends, run the download and upload on differ
 
 `aws s3 sync` uploads only missing or changed files, so you can re-run it after an interruption.
 
-### Step 3: Copy the folder markers
+### Step 4: Copy the folder markers
 
 Kestra writes an empty object whose key ends with `/` for every folder. Copying through a local folder drops these markers, because a folder on disk isn't an object, and some bucket-to-bucket tools such as `aws s3 sync` skip them too. Kestra runs without them, but [metadata backups](#metadata-backup) silently leave out the namespace files of any namespace whose `_files/` marker is missing.
 
@@ -276,9 +302,9 @@ while read -r key; do
 done < markers.txt
 ```
 
-If one host can reach both backends, rclone 1.63 and later copies objects and markers bucket to bucket in one command, replacing steps 2 and 3: `rclone copy -M --create-empty-src-dirs --s3-directory-markers <source-remote>:<source-bucket> <target-remote>:<new-bucket>`.
+If one host can reach both backends, rclone 1.63 and later copies objects and markers bucket to bucket in one command, replacing steps 3 and 4: `rclone copy -M --create-empty-src-dirs --s3-directory-markers <source-remote>:<source-bucket> <target-remote>:<new-bucket>`.
 
-### Step 4: Compare object counts
+### Step 5: Compare object counts
 
 Count files and markers on both sides. Each pair of numbers must match:
 
@@ -292,7 +318,7 @@ aws s3api list-objects-v2 --bucket <source-bucket> --profile source --endpoint-u
 aws s3api list-objects-v2 --bucket <new-bucket> --profile target --query "length(Contents[?ends_with(Key, '/')])"
 ```
 
-### Step 5: Point Kestra at the new backend
+### Step 6: Point Kestra at the new backend
 
 Change `kestra.storage` to the new backend. See [Internal storage](../../configuration/02.runtime-and-storage/index.md#internal-storage) for each backend's options.
 
@@ -307,7 +333,7 @@ kestra:
       region: <region>
 ```
 
-### Step 6: Start Kestra and verify
+### Step 7: Start Kestra and verify
 
 Start Kestra, then check that:
 
@@ -322,3 +348,26 @@ When everything checks out, disable Maintenance Mode.
 The procedure doesn't modify the source bucket. To roll back, restore the previous `kestra.storage` configuration and restart Kestra.
 
 Roll back only before any flow runs or file edits on the new backend. Anything written after the switch exists only in the new bucket, and Kestra serves the previous revision of an edited namespace file without reporting an error.
+
+### Migrate to SeaweedFS
+
+The same procedure moves internal storage to SeaweedFS. Copy the bucket through the SeaweedFS S3 gateway, then point Kestra's `seaweedfs` storage at the folder where the gateway keeps it. This requires `storage-seaweedfs` 2.0.0 or later, because earlier versions ignore `prefix`.
+
+The steps differ as follows:
+
+- In step 3, upload to the S3 gateway (port `8333` by default) with an identity that can create buckets and write objects. Create the bucket first. The gateway stores bucket `<bucket>` under `/buckets/<bucket>/` on the filer.
+- Skip step 4. SeaweedFS stores folders as directories rather than empty objects, so there are no markers to copy, and metadata backups find namespace files without them.
+- In step 5, compare file counts only. The gateway lists no folder markers.
+- In step 6, configure the `seaweedfs` storage with that folder as `prefix`:
+
+```yaml
+kestra:
+  storage:
+    type: seaweedfs
+    seaweedfs:
+      filer-host: <filer-host>
+      filer-port: 18888
+      prefix: /buckets/<bucket>/
+```
+
+After the switch, Kestra writes through the filer under `/buckets/<bucket>/`, so the data stays readable through the S3 gateway too.
