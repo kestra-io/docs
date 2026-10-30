@@ -36,7 +36,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 ```mermaid
 graph LR
     subgraph CORE["Kestra Core"]
-        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal)"]
+        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal\nexecution-artifact\nasset-card-footer)"]
         HOST["Host UI\nconfigureAxios\nkestra:openTaskModal"]
         MFH["Module Federation\nruntime loader"]
     end
@@ -63,7 +63,7 @@ graph LR
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Three slots are available in `@kestra-io/artifact-sdk`:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Five slots are available:
 
 ### `topology-details`
 
@@ -152,6 +152,78 @@ const openTaskModal = inject<(ctx: Record<string, any>) => void>("kestra:openTas
 ```
 
 This slot is the right choice when a task runner (e.g. AWS Batch, Docker, Kubernetes) needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel.
+
+### `execution-artifact`
+
+Renders in the **Artifacts tab** of an execution, next to Overview, Gantt and Logs. Use it for a result a user wants to open full size after a run, such as a model graph, a compiled query or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
+
+The component receives the same props as `topology-details`, without `progress`. The tab only appears when the flow contains at least one task type that declares an artifact, and it shows the number of artifacts as a count. Artifacts are grouped by task, and each one opens in a viewer beside the list.
+
+A task type can ship several artifacts. Each one is its own component, registered as `execution-artifact/<id>`, and every module has its own entry in the manifest:
+
+```ts
+"cli.DbtCLI": [
+  {
+    slotName: "execution-artifact/model-graph",
+    path: "./src/components/ModelGraphArtifact.vue",
+    additionalProperties: { title: "Model graph" },
+  },
+  {
+    slotName: "execution-artifact/compiled-sql",
+    path: "./src/components/CompiledSqlArtifact.vue",
+    additionalProperties: { title: "Compiled SQL" },
+  },
+],
+```
+
+`additionalProperties` is read by the host to build the list:
+
+- **`title`** is the label of the artifact in the tab. It is required.
+- **`description`** is an optional line shown under the title.
+
+To show a line that depends on the run, such as `8 nodes · 8 dependencies`, export `getSubtitle` from the component. It is read again when the execution state changes, so it can use outputs that only exist once the task has run:
+
+```vue
+<script lang="ts">
+export async function getSubtitle({ fetchOutputs }) {
+  const outputs = await fetchOutputs();
+  return outputs.modelCount ? `${outputs.modelCount} models` : undefined;
+}
+</script>
+```
+
+`getSubtitle` receives `{ task, execution, fetchOutputs, fetchMetrics }`. `fetchOutputs` and `fetchMetrics` accept an optional `taskRunId`, and default to the latest run of the task. Return a string, or `undefined` to show only the description.
+
+:::alert{type="warning"}
+A version of `@kestra-io/artifact-sdk` released before this slot rejects the `execution-artifact/<id>` slot name at build time. Use a version that knows the slot.
+:::
+
+### `asset-card-footer`
+
+Renders at the bottom of an **asset card** in the assets dependencies graph. Use it for a short line about an asset that the card does not show, such as a row count, a freshness date or a link to the source. The contract is defined in [`ui/packages/slot-contracts/src/asset-card-footer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/asset-card-footer.ts) in Kestra core.
+
+:::alert{type="info"}
+Assets are only available in the Enterprise Edition of Kestra, so this slot has no effect in the open-source edition.
+:::
+
+Like the other slots, it is resolved by the task type that produced the asset. The component receives these props:
+
+- **`assetId`** is the id of the asset, as shown in the graph.
+- **`metadata`** holds everything the producing task attached to the asset, such as the keys a plugin emits through `Asset.metadata`.
+- **`assetType`** is the optional type of the asset.
+- **`tenant`** is the current tenant, so a component that bundles its own SDK copy does not have to guess it.
+
+The manifest accepts one field, `footerHeight`, the extra pixels the footer adds below a card. The graph reserves it for every card at once so rows stay aligned, and a graph with no footer keeps the compact card. Set it to the real height of your component.
+
+```ts
+"table.Sync": [
+  {
+    slotName: "asset-card-footer",
+    path: "./src/components/TableSyncAssetCardFooter.vue",
+    additionalProperties: { footerHeight: 24 },
+  },
+],
+```
 
 ## Tracking live task progress
 
