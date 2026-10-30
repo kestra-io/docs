@@ -26,7 +26,7 @@ jobs:
     steps:
       # Only the composite action is needed here, so skip the full tree.
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           sparse-checkout: .github/actions
 
@@ -61,7 +61,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       # Commit history for the sitemaps' lastmod dates, without the blobs of old
       # revisions: ~9 MB in a few seconds, where fetch-depth 0 took up to 1m50s.
