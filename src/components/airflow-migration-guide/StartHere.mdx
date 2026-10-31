@@ -1,0 +1,19 @@
+import GuideCard from "../vra-migration-guide/blocks/GuideCard.astro"
+import GuideCards from "../vra-migration-guide/blocks/GuideCards.astro"
+
+## Start here
+
+Teams rarely leave Airflow because a version expired. They leave because every pipeline is a Python program only the platform team can own, because the scheduler needs tuning each time the DAG count grows, and because SQL, dbt and shell work ends up wrapped in `PythonOperator` for lack of an alternative. This guide translates what you have into Kestra flows, concept by concept, with YAML checked against Kestra 2.0, and shows how to run both schedulers side by side until Airflow is empty. If the Airflow 2 end-of-life deadline is what put this on your desk, the [EOL whitepaper](/resources/airflow-2-eol-whitepaper) covers that decision; this page covers the move.
+
+<GuideCards columns={2}>
+<GuideCard title="Who this is for">
+
+Data and platform engineers who own an Airflow deployment and want a working translation of operators, schedules, retries, branching, secrets and XCom into Kestra flows. Every YAML snippet targets Kestra 2.0 and was checked against the current docs.
+
+</GuideCard>
+<GuideCard title="What this is not">
+
+An Airflow 3 upgrade guide (the Airflow project publishes one), a feature comparison (see [Kestra vs Airflow](/vs/airflow)) or a promise that every DAG translates one-to-one. Some concepts have no direct equivalent; we say so.
+
+</GuideCard>
+</GuideCards>

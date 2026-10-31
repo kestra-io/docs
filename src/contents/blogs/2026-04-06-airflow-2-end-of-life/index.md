@@ -130,3 +130,5 @@ It depends on your team and workloads. If you're a Python-native data engineerin
 Both upgrading to Airflow 3 and migrating to an alternative typically take **4 to 8 weeks** for a mid-size deployment (50-200 DAGs), depending on the number of custom operators, undocumented workarounds, and integration complexity. The [airflow-to-kestra-migration](https://github.com/kestra-io/airflow-to-kestra-migration) repository provides a concrete reference for what a DAG-to-YAML conversion looks like.
 
 EOL is a rare moment when the status quo actually costs you something. Use this opportunity to make the decision deliberately.
+
+If the decision is to leave Airflow, the [Airflow to Kestra migration guide](/resources/migration/airflow) maps every Airflow concept to Kestra 2.0, converts three DAGs side by side, and lays out the playbook for running both platforms in parallel until the last DAG is cut over.

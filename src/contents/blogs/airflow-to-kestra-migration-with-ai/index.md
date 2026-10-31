@@ -527,7 +527,7 @@ default_args = {"retries": 2, "retry_delay": timedelta(seconds=30)}
   type: io.kestra.plugin.scripts.python.Commands
   retry:
     type: constant
-    maxAttempts: 2
+    maxAttempts: 3   # retries: 2 means three attempts in total
     interval: PT30S
 ```
 
@@ -595,6 +595,7 @@ Then:
 1. Install Kestra agent skills: [kestra.io/docs/develop-with-ai/agent-skills](../../docs/develop-with-ai/03.agent-skills/index.md)
 2. Install `kestractl`: [kestra.io/docs/kestra-cli/kestractl](../../docs/kestra-cli/kestractl/index.md)
 3. Pick a simple DAG to start (a 3-5 task sequential pipeline works well) and run it through the migration workflow described above
+4. For the full concept mapping, the patterns the skill does not cover (sensors, branching, pools, dynamic task mapping) and the side-by-side cut-over playbook, see the [Airflow to Kestra migration guide](/resources/migration/airflow)
 
 If you prefer a standalone migration tool, the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills/blob/main/skills/migrate-airflow-kestra/SKILL.md) repository on GitHub provides a dedicated `/migrate-airflow-kestra` skill you can install directly into Claude Code. It handles the full migration workflow (DAG parsing, namespace file extraction, flow validation, and deployment) as a single command.
 
