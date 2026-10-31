@@ -21,11 +21,15 @@ Administrators can invite users with pre-configured RBAC permissions. If an [ema
 
 1. Go to **IAM** in the sidebar and open the **Users** tab.
 2. Click **+ Add**.
-3. Enter the user's email address and select a group (via the **Groups** tab) or assign a role directly (via the **Roles** tab).
+3. Enter the user's email address and select a group (via the **Groups** tab) or assign a role directly (via the **Roles** tab). To invite several users at once, type an email address and press Enter, then repeat for each one, or paste a list separated by commas, semicolons, spaces, or new lines. Each address becomes a tag below the field that you can remove, and an address that is not valid is shown in red with an icon. Every address receives an invitation with the same groups and roles, and you can invite up to 100 addresses at once.
 4. Click **+ Add** to send the invitation email or display the shareable link.
 
 :::alert{type="info"}
 Check **Create user directly (skip invitation)** to bypass the email flow. Use this only with third-party authentication such as SSO or LDAP.
+:::
+
+:::alert{type="info"}
+When you invite several users at once, Kestra validates every address before sending anything. If an address is malformed, already invited, or already has access to the tenant, no invitation is sent and the dialog lists the addresses to fix so you can submit again.
 :::
 
 ## Accepting invitations
