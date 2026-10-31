@@ -116,7 +116,7 @@ triggers:
         value: staging
 ```
 
-For a complete walkthrough, see [Run a flow when a table changes](../../../../15.how-to-guides/asset-event-triggers/index.md).
+For complete walkthroughs, see [Run a flow when a table changes](../../../../15.how-to-guides/asset-event-triggers/index.md) and [Trigger flows on each phase of a VM's lifecycle](../../../../15.how-to-guides/asset-vm-lifecycle-phases/index.md).
 
 ## FreshnessTrigger
 
