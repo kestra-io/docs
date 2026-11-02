@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
 
 // Four reasons, each over a glimpse of the product that proves it.
 const FEATURES = [
@@ -25,11 +26,47 @@ const FEATURES = [
     },
 ]
 
-const NAMESPACES = ["data.*", "finance.*", "ops.*"]
+// Each glimpse is a corner of the product: the page it would sit on in
+// Kestra, named in its bar, and the product's own state badges.
+const PAGES = {
+    access: "Tenants",
+    reliability: "Worker groups",
+    governance: "Audit logs",
+    scale: "Workers",
+} as const
+
+// Tenants stacked, the Infrastructure one open on its namespaces and
+// flows, and the people who work in it.
+const ROOT = "acme"
+const NAMESPACES: { id: string; flows?: string[] }[] = [
+    { id: "acme.cloud" },
+    { id: "acme.kubernetes", flows: ["scale_cluster"] },
+    { id: "acme.network" },
+    { id: "acme.monitoring" },
+]
+// The namespace the admin removes in the story.
+const DELETED = "acme.network"
+// Three roles: one edits a flow, one runs it, one deletes a namespace.
+const PEOPLE = [
+    { id: "launcher", name: "Launcher", icon: "mdi:play-circle-outline" },
+    { id: "editor", name: "Editor", icon: "mdi:pencil" },
+    { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
+]
 const AUDIT = [
-    { time: "09:14", who: "j.kim", action: "ran", what: "close_books" },
-    { time: "09:31", who: "m.chen", action: "approved" },
-    { time: "09:32", who: "agent", blocked: true },
+    { time: "09:14", who: "j.kim", what: "close_books", state: "success" },
+    { time: "09:31", who: "m.chen", what: "approved", state: "success" },
+    { time: "09:32", who: "agent", what: "delete_flow", state: "failed" },
+]
+// The queues the worker group serves, with the slots in use.
+const QUEUES = [
+    { name: "ml-training", mode: "Elastic 25%", used: 8, slots: 10 },
+    { name: "Default", mode: "Shared", used: 4, slots: 24 },
+]
+// As on the 2.0 page: workers prove who they are before they join.
+const WORKERS = [
+    { name: "worker-onprem-01", ok: true },
+    { name: "worker-euwest-02", ok: true },
+    { name: "unknown", ok: false },
 ]
 ---
 
@@ -48,7 +85,8 @@ const AUDIT = [
             <header class="head">
                 <div>
                     <h2 id="enterprise">
-                        <span>Achieve more with</span> Kestra Enterprise.
+                        <span>Achieve more with</span>{" "}
+                        <em>Kestra Enterprise.</em>
                     </h2>
                     <p>
                         Kestra Enterprise gives you the security, governance and
@@ -69,83 +107,257 @@ const AUDIT = [
                 {
                     FEATURES.map((feature) => (
                         <li>
-                            <div class="mock" aria-hidden="true">
-                                {feature.id === "access" && (
-                                    <div class="tree">
-                                        <p class="root">
-                                            <span class="dot" /> company
-                                            <span class="slash">/</span>
-                                        </p>
-                                        {NAMESPACES.map((namespace) => (
-                                            <p class="leaf">
-                                                <span class="dot" />
-                                                {namespace}
-                                                <Icon name="mdi:lock-outline" />
-                                            </p>
-                                        ))}
-                                    </div>
+                            <div
+                                class:list={[
+                                    "mock",
+                                    { bare: feature.id === "access" },
+                                ]}
+                                aria-hidden="true"
+                            >
+                                {feature.id !== "access" && (
+                                    <p class="bar">
+                                        <img
+                                            src={kestraMark.src}
+                                            alt=""
+                                            width="14"
+                                            height="14"
+                                        />
+                                        {
+                                            PAGES[
+                                                feature.id as keyof typeof PAGES
+                                            ]
+                                        }
+                                        <span class="dots">
+                                            <span />
+                                            <span />
+                                            <span />
+                                        </span>
+                                    </p>
                                 )}
-                                {feature.id === "reliability" && (
-                                    <div class="workers">
-                                        <p>
-                                            <span class="tag failed">
-                                                Failed
-                                            </span>
-                                            worker-eu-1
-                                        </p>
-                                        <p>
-                                            <span class="tag running">
-                                                Running
-                                            </span>
-                                            worker-eu-2
-                                        </p>
-                                        <p class="note">P0 response · 1h</p>
-                                    </div>
-                                )}
-                                {feature.id === "governance" && (
-                                    <div class="audit">
-                                        {AUDIT.map((line) => (
-                                            <p>
-                                                <span class="time">
-                                                    {line.time}
-                                                </span>
-                                                <strong>{line.who}</strong>
-                                                {line.blocked ? (
-                                                    <span class="tag failed">
-                                                        Blocked
+                                <div class="body">
+                                    {feature.id === "access" && (
+                                        <div class="tenants" data-tenants>
+                                            <div class="tenant front">
+                                                <p class="tenant-head">
+                                                    <Icon name="mdi:server-network" />
+                                                    Tenant
+                                                    <span class="env infra">
+                                                        <span class="dot" />
+                                                        Infrastructure
                                                     </span>
-                                                ) : (
-                                                    <>
-                                                        <span class="verb">
-                                                            {line.action}
+                                                </p>
+                                                <ul class="ns-tree">
+                                                    <li>
+                                                        <span data-row={ROOT}>
+                                                            <Icon name="mdi:dots-grid" />
+                                                            {ROOT}
                                                         </span>
-                                                        {line.what && (
-                                                            <strong>
-                                                                {line.what}
-                                                            </strong>
-                                                        )}
-                                                    </>
-                                                )}
+                                                        <ul>
+                                                            {NAMESPACES.map(
+                                                                (namespace) => (
+                                                                    <li
+                                                                        class:list={{
+                                                                            doomed:
+                                                                                namespace.id ===
+                                                                                DELETED,
+                                                                        }}
+                                                                    >
+                                                                        <span
+                                                                            data-row={
+                                                                                namespace.id
+                                                                            }
+                                                                        >
+                                                                            <Icon name="mdi:dots-grid" />
+                                                                            {
+                                                                                namespace.id
+                                                                            }
+                                                                            {namespace.id ===
+                                                                                DELETED && (
+                                                                                <span
+                                                                                    class="row-state"
+                                                                                    data-row-state
+                                                                                >
+                                                                                    <span class="badge failed">
+                                                                                        <Icon name="mdi:delete-outline" />
+                                                                                        Deleted
+                                                                                    </span>
+                                                                                </span>
+                                                                            )}
+                                                                        </span>
+                                                                        {namespace.flows && (
+                                                                            <ul>
+                                                                                {namespace.flows.map(
+                                                                                    (
+                                                                                        flow,
+                                                                                    ) => (
+                                                                                        <li>
+                                                                                            <span data-row="flow">
+                                                                                                <Icon name="mdi:file-tree-outline" />
+                                                                                                {
+                                                                                                    flow
+                                                                                                }
+                                                                                                <span
+                                                                                                    class="row-state"
+                                                                                                    data-row-state
+                                                                                                >
+                                                                                                    <span class="badge editing">
+                                                                                                        <Icon name="mdi:pencil" />
+                                                                                                        Editing
+                                                                                                    </span>
+                                                                                                    <span class="badge running">
+                                                                                                        <Icon name="mdi:loading" />
+                                                                                                        Running
+                                                                                                    </span>
+                                                                                                    <span class="badge success">
+                                                                                                        <Icon name="mdi:check-circle-outline" />
+                                                                                                        Success
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </span>
+                                                                                        </li>
+                                                                                    ),
+                                                                                )}
+                                                                            </ul>
+                                                                        )}
+                                                                    </li>
+                                                                ),
+                                                            )}
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            {PEOPLE.map((person) => (
+                                                <span
+                                                    class:list={[
+                                                        "cursor",
+                                                        person.id,
+                                                    ]}
+                                                    data-person={person.id}
+                                                >
+                                                    <svg viewBox="0 0 10 10">
+                                                        <path d="M0 0 L10 4 L5.5 5.5 L4 10 Z" />
+                                                    </svg>
+                                                    <span class="who">
+                                                        <Icon
+                                                            name={person.icon}
+                                                        />
+                                                        {person.name}
+                                                    </span>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {feature.id === "reliability" && (
+                                        <div class="routing">
+                                            <p class="group-head">
+                                                <strong>gpu-a100</strong>
+                                                <span class="label">
+                                                    Reserved
+                                                </span>
+                                                <span class="status">
+                                                    <span class="dot" />
+                                                    Online
+                                                </span>
                                             </p>
-                                        ))}
-                                    </div>
-                                )}
-                                {feature.id === "scale" && (
-                                    <div class="backend">
-                                        <p class="label">Queue backend</p>
-                                        <p class="select">
-                                            Kafka
-                                            <Icon name="mdi:chevron-down" />
-                                        </p>
-                                        <p class="note">
-                                            <span class="dot ok" /> mTLS · 12
-                                            workers verified
-                                        </p>
-                                    </div>
-                                )}
+                                            <p class="stats">
+                                                <span>
+                                                    <b>8</b> workers online
+                                                </span>
+                                                <span>
+                                                    <b>0.8</b> tasks/s
+                                                </span>
+                                            </p>
+                                            {QUEUES.map((queue) => (
+                                                <div class="queue">
+                                                    <p>
+                                                        {queue.name}
+                                                        <span class="mode">
+                                                            {queue.mode}
+                                                        </span>
+                                                        <span class="ratio">
+                                                            {`${queue.used} / ${queue.slots}`}
+                                                        </span>
+                                                    </p>
+                                                    <span
+                                                        class="meter"
+                                                        style={`--fill: ${queue.used / queue.slots}`}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {feature.id === "governance" && (
+                                        <div class="audit">
+                                            {AUDIT.map((line) => (
+                                                <p>
+                                                    <span class="time">
+                                                        {line.time}
+                                                    </span>
+                                                    <strong>{line.who}</strong>
+                                                    <span class="what">
+                                                        {line.what}
+                                                    </span>
+                                                    <span
+                                                        class:list={[
+                                                            "badge",
+                                                            line.state,
+                                                        ]}
+                                                    >
+                                                        {line.state ===
+                                                        "success"
+                                                            ? "Allowed"
+                                                            : "Denied"}
+                                                    </span>
+                                                </p>
+                                            ))}
+                                            <p class="note">
+                                                <Icon name="mdi:arrow-right" />
+                                                Splunk · syslog over TLS
+                                            </p>
+                                        </div>
+                                    )}
+                                    {feature.id === "scale" && (
+                                        <div class="handshake">
+                                            {WORKERS.map((worker) => (
+                                                <p
+                                                    class:list={{
+                                                        refused: !worker.ok,
+                                                    }}
+                                                >
+                                                    <Icon
+                                                        name={
+                                                            worker.ok
+                                                                ? "mdi:server-security"
+                                                                : "mdi:server-off"
+                                                        }
+                                                    />
+                                                    {worker.name}
+                                                    <span
+                                                        class:list={[
+                                                            "badge",
+                                                            worker.ok
+                                                                ? "success"
+                                                                : "failed",
+                                                        ]}
+                                                    >
+                                                        {worker.ok
+                                                            ? "Verified"
+                                                            : "Refused"}
+                                                    </span>
+                                                </p>
+                                            ))}
+                                            <p class="note">
+                                                <Icon name="mdi:shield-lock-outline" />
+                                                mTLS · Kafka queue
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <h3>{feature.title}</h3>
-                            <p class="text">{feature.text}</p>
+                            <div class="copy">
+                                <h3>{feature.title}</h3>
+                                <p class="text">{feature.text}</p>
+                            </div>
                         </li>
                     ))
                 }
@@ -162,17 +374,46 @@ const AUDIT = [
         --bg: #141418;
         --rule-color: rgba(255, 255, 255, 0.08);
         --rule: 1px solid var(--rule-color);
-        --card: #1b1b20;
         --card-border: rgba(255, 255, 255, 0.08);
         --text: #ffffff;
         --muted: #9a9aa8;
         --faint: #5c5c68;
 
         position: relative;
-        background: var(--bg);
+        overflow: hidden;
+        // Lit from above like a showroom: a soft silver light over the
+        // title, falling to a deeper black at the foot.
+        background:
+            radial-gradient(
+                60% 55% at 30% 0%,
+                rgba(255, 255, 255, 0.07),
+                transparent 70%
+            ),
+            radial-gradient(
+                40% 40% at 85% 10%,
+                rgba(200, 200, 220, 0.04),
+                transparent 70%
+            ),
+            linear-gradient(180deg, #17171c 0%, var(--bg) 45%, #0c0c0f 100%);
         color: var(--text);
-        // A rule across the page, between the AI block and this one.
-        border-top: var(--rule);
+
+        // The rule between the AI block and this one, brighter in the
+        // middle, like the edge of polished metal catching the light.
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                var(--rule-color) 0%,
+                rgba(255, 255, 255, 0.4) 50%,
+                var(--rule-color) 100%
+            );
+            pointer-events: none;
+        }
     }
 
     // The hairline grid, in white on black: rails on both sides, on the AI
@@ -211,6 +452,20 @@ const AUDIT = [
             span {
                 color: #a9a9b8;
             }
+
+            // The name in brushed silver.
+            em {
+                font-style: normal;
+                background: linear-gradient(
+                    180deg,
+                    #ffffff 0%,
+                    #e4e4ec 45%,
+                    #9d9daf 100%
+                );
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
         }
 
         p {
@@ -229,11 +484,12 @@ const AUDIT = [
         gap: 0.75rem;
     }
 
-    // Four cells between full-width rules.
+    // Four cells, two by two, between full-width rules: in each, the
+    // glimpse of the product beside its promise.
     .features {
         position: relative;
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         margin: 0;
         padding: 0;
         list-style: none;
@@ -258,51 +514,50 @@ const AUDIT = [
             bottom: -1px;
         }
 
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
         @include media-breakpoint-down(md) {
             grid-template-columns: minmax(0, 1fr);
         }
 
         > li {
-            display: flex;
-            flex-direction: column;
-            // More room under the copy: the cells are the block's foot.
-            padding: 2rem clamp(1.25rem, 2vw, 2rem) clamp(5rem, 9vw, 7.5rem);
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+            align-items: center;
+            gap: clamp(1.75rem, 3vw, 3rem);
+            padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset);
             transition: background-color 0.3s ease;
 
-            & + li {
+            &:nth-child(even) {
                 border-left: var(--rule);
+            }
+
+            &:nth-child(n + 3) {
+                border-top: var(--rule);
             }
 
             &:hover {
                 background: rgba(255, 255, 255, 0.02);
             }
 
-            // On two columns, the third cell starts a row: a rule above
-            // the second row, none on its left edge.
-            @include media-breakpoint-between(md, lg) {
-                &:nth-child(3) {
-                    border-left: 0;
-                }
-
-                &:nth-child(n + 3) {
-                    border-top: var(--rule);
-                }
+            // Narrower cells: the glimpse above its copy.
+            @include media-breakpoint-down(xl) {
+                grid-template-columns: minmax(0, 1fr);
+                align-items: start;
+                gap: 1.75rem;
             }
 
             @include media-breakpoint-down(md) {
-                & + li {
+                &:nth-child(even) {
                     border-left: 0;
+                }
+
+                & + li {
                     border-top: var(--rule);
                 }
             }
         }
 
         h3 {
-            margin: 1.75rem 0 0.5rem;
+            margin: 0 0 0.75rem;
             font-size: 1.25rem;
             font-weight: 600;
             line-height: 1.3;
@@ -318,17 +573,22 @@ const AUDIT = [
         }
     }
 
-    // A glimpse of the product: a dark card, grey and white, colour only
-    // in a state's tag.
+    // A corner of the product: a dark Kestra window with the page's name
+    // in its bar, the product's dark tokens, and colour only in the state
+    // badges, as in the UI.
     .mock {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        min-height: 11rem;
-        padding: 1.25rem;
+        min-height: 18.75rem;
         border: 1px solid var(--card-border);
         border-radius: 0.75rem;
-        background: var(--card);
+        overflow: hidden;
+        // A finish, not a flat fill: lighter at the top, with a bright
+        // top edge and a deep shadow under it.
+        background: linear-gradient(180deg, #1d1e25 0%, #141418 100%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 20px 40px -20px rgba(0, 0, 0, 0.8);
         font-size: 0.875rem;
         color: #d6d6de;
 
@@ -340,20 +600,10 @@ const AUDIT = [
         }
 
         :global(svg) {
+            flex: none;
             width: 0.9375rem;
             height: 0.9375rem;
             color: var(--faint);
-        }
-
-        .dot {
-            width: 0.4375rem;
-            height: 0.4375rem;
-            border-radius: 50%;
-            background: var(--faint);
-
-            &.ok {
-                background: #ffffff;
-            }
         }
 
         .note {
@@ -362,54 +612,80 @@ const AUDIT = [
         }
     }
 
-    // The namespaces, each locked to its team.
-    .tree {
-        display: flex;
-        flex-direction: column;
-        gap: 0.375rem;
+    // The tenants are cards already: they stand on the section without a
+    // window around them.
+    .mock.bare {
+        border-color: transparent;
+        background: none;
+        box-shadow: none;
+        overflow: visible;
 
-        .root {
-            margin-bottom: 0.25rem;
-            color: #ffffff;
+        // The tenant fills the cell, as tall as the windows beside it.
+        .body {
+            padding: 0;
+        }
+    }
 
-            .dot {
-                background: #ffffff;
-            }
+    // The window's bar: the mark, the page, and the UI's kebab.
+    .bar {
+        padding: 0.625rem 0.875rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.025);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: #ffffff;
+
+        img {
+            width: 0.875rem;
+            height: 0.875rem;
         }
 
-        .slash {
-            color: var(--faint);
-        }
+        .dots {
+            display: flex;
+            gap: 0.1875rem;
+            margin-left: auto;
 
-        .leaf {
-            justify-content: flex-start;
-            margin-left: 0.75rem;
-            padding: 0.4375rem 0.625rem;
-            border-radius: 0.375rem;
-            background: rgba(255, 255, 255, 0.04);
-
-            :global(svg) {
-                margin-left: auto;
+            span {
+                width: 0.1875rem;
+                height: 0.1875rem;
+                border-radius: 50%;
+                background: var(--faint);
             }
         }
     }
 
-    // A worker fails, the next one carries on.
-    .workers,
-    .audit,
-    .backend {
+    .body {
         display: flex;
+        flex: 1;
         flex-direction: column;
-        gap: 0.875rem;
+        justify-content: center;
+        padding: 1rem 0.875rem;
     }
 
-    .tag {
-        padding: 0.125rem 0.4375rem;
-        border-radius: 0.25rem;
+    // The product's state badges, in its dark tokens.
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: auto;
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.375rem;
         font-size: 0.6875rem;
         font-weight: 600;
         letter-spacing: 0.04em;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        :global(svg) {
+            width: 0.8125rem;
+            height: 0.8125rem;
+            color: currentColor;
+        }
+
+        &.success {
+            background: rgba(30, 135, 94, 0.18);
+            color: #3ee0a6;
+        }
 
         &.failed {
             background: rgba(255, 92, 122, 0.14);
@@ -417,16 +693,388 @@ const AUDIT = [
         }
 
         &.running {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(152, 105, 247, 0.16);
+            color: #b796ff;
+
+            :global(svg) {
+                animation: spin 1s linear infinite;
+            }
+        }
+    }
+
+    // Tenants stacked like cards, the front one open on its namespaces and
+    // flows, with the people who work in it pointing at their part.
+    .tenants {
+        position: relative;
+        flex: 1;
+    }
+
+    .tenant {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 0.75rem 1rem 0.875rem;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 0.5rem;
+        background: #23242c;
+        box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.8);
+    }
+
+    .tenant-head {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #ffffff;
+
+        :global(svg) {
             color: #ffffff;
         }
     }
 
-    // Who ran what, and the one the policy turned back.
+    // The tenant's kind, in the product's tags.
+    .env {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: auto;
+        padding: 0 0.4375rem;
+        border: 1px solid rgba(var(--tone), 0.3);
+        border-radius: 1rem;
+        background: rgba(var(--tone), 0.12);
+        font-size: 0.625rem;
+        font-weight: 600;
+        color: rgb(var(--tone));
+
+        &.infra {
+            --tone: 140, 160, 255;
+        }
+
+        .dot {
+            width: 0.3125rem;
+            height: 0.3125rem;
+            border-radius: 50%;
+            background: currentColor;
+        }
+    }
+
+    // A row's state as the story goes: the flow edited, run and done, the
+    // namespace deleted. One badge at a time, set by the page's script;
+    // none at rest.
+    .row-state {
+        display: grid;
+        margin-left: auto;
+
+        .badge {
+            grid-area: 1 / 1;
+            justify-self: end;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(2px);
+            transition:
+                opacity 0.3s ease,
+                transform 0.3s ease;
+        }
+
+        .editing {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        &[data-state="editing"] .editing,
+        &[data-state="running"] .running,
+        &[data-state="success"] .success,
+        &[data-state="deleted"] .failed {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    // Hairline branches, as in the illustration.
+    .ns-tree {
+        margin: 0.625rem 0 0 0.125rem;
+        padding: 0;
+        list-style: none;
+        font-size: 0.8125rem;
+        color: var(--muted);
+
+        ul {
+            margin: 0 0 0 0.375rem;
+            padding: 0;
+            list-style: none;
+        }
+
+        // The root has no branch into it.
+        > li {
+            padding-left: 0;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        li {
+            position: relative;
+            padding-left: 0.875rem;
+
+            // The namespace the admin deletes folds away, and back.
+            &.doomed {
+                max-height: 2rem;
+                overflow: hidden;
+                transition:
+                    max-height 0.5s ease,
+                    opacity 0.4s ease;
+
+                &:global(.removed) {
+                    max-height: 0;
+                    opacity: 0;
+                }
+            }
+
+            // The branch to this item, from the line on its left.
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0.625rem;
+                height: 1rem;
+                border-left: 1px solid rgba(255, 255, 255, 0.18);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            }
+
+            // The line goes on down to the next sibling.
+            &:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                border-left: 1px solid rgba(255, 255, 255, 0.18);
+            }
+        }
+
+        // A row lights up, in the person's colour, while they are on it.
+        [data-row] {
+            display: flex;
+            align-items: center;
+            gap: 0.3125rem;
+            margin-left: -0.25rem;
+            padding: 0 0.25rem;
+            border-radius: 0.25rem;
+            line-height: 2rem;
+            transition:
+                background-color 0.4s ease,
+                color 0.4s ease;
+
+            // Struck through once deleted, until the story starts again.
+            &:global(.gone) {
+                text-decoration: line-through;
+                opacity: 0.55;
+            }
+
+            &:global(.hot) {
+                background: rgba(var(--tone), 0.14);
+                color: rgb(var(--tone));
+
+                :global(svg) {
+                    color: currentColor;
+                }
+            }
+        }
+
+        :global(svg) {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+    }
+
+    // A pointer with its person's chip, each in their own colour. The
+    // page's script glides them from row to row; without it they rest
+    // where they are placed here.
+    .cursor {
+        --tone: 240, 140, 190;
+
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.125rem;
+        transition:
+            left 1.1s cubic-bezier(0.65, 0, 0.35, 1),
+            top 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+
+        :global(.placing) & {
+            transition: none;
+        }
+
+        svg {
+            width: 0.625rem;
+            height: 0.625rem;
+            fill: rgb(var(--tone));
+        }
+
+        .who {
+            margin-left: 0.5rem;
+        }
+
+        &.launcher {
+            top: 2rem;
+            left: 60%;
+        }
+
+        &.editor {
+            --tone: 120, 214, 170;
+
+            top: 10.5rem;
+            left: 30%;
+        }
+
+        &.admin {
+            --tone: 140, 196, 255;
+
+            top: 4rem;
+            left: 35%;
+        }
+    }
+
+    .who {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.0625rem 0.375rem;
+        border: 1px solid rgba(var(--tone), 0.6);
+        border-radius: 0.3125rem;
+        background: rgba(var(--tone), 0.1);
+        backdrop-filter: blur(4px);
+        font-size: 0.6875rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: rgb(var(--tone));
+
+        :global(svg) {
+            width: 0.75rem;
+            height: 0.75rem;
+            color: currentColor;
+        }
+    }
+
+    .routing,
+    .audit,
+    .handshake {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+
+    // A worker group as the product shows it: its name and label, the
+    // workers it has online, and each queue it serves with its capacity
+    // meter, green when free, warming to red as it fills.
+    .routing {
+        gap: 0.5rem;
+
+        .group-head {
+            strong {
+                font-weight: 600;
+                color: #ffffff;
+            }
+        }
+
+        .label {
+            padding: 0 0.375rem;
+            border-radius: 0.25rem;
+            background: rgba(113, 139, 254, 0.12);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #a3b4ff;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3125rem;
+            margin-left: auto;
+            padding: 0 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            color: #d6d6de;
+
+            .dot {
+                width: 0.375rem;
+                height: 0.375rem;
+                border-radius: 50%;
+                background: #3ee0a6;
+            }
+        }
+
+        .stats {
+            gap: 1rem;
+            margin-bottom: 0.25rem;
+            padding-bottom: 0.625rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.8125rem;
+            color: var(--muted);
+
+            b {
+                margin-right: 0.125rem;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #ffffff;
+            }
+        }
+
+        .queue {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3125rem;
+
+            p {
+                font-size: 0.8125rem;
+                color: #ffffff;
+            }
+        }
+
+        .mode {
+            padding: 0 0.375rem;
+            border-radius: 0.25rem;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.625rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .ratio {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        // Segments over the green-to-red scale; what is free is dimmed.
+        .meter {
+            display: block;
+            height: 0.4375rem;
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent calc(var(--fill) * 100%),
+                    rgba(20, 20, 24, 0.72) 0
+                ),
+                linear-gradient(90deg, #5fb98a, #d9a96b 55%, #e8846f);
+            mask: repeating-linear-gradient(
+                90deg,
+                #000 0 3px,
+                transparent 3px 5px
+            );
+        }
+    }
+
+    // Who did what, and the one the policy turned back.
     .audit {
         .time {
             color: var(--faint);
-            font-variant-numeric: tabular-nums;
         }
 
         strong {
@@ -434,27 +1082,190 @@ const AUDIT = [
             color: #ffffff;
         }
 
-        .verb {
+        .what {
+            overflow: hidden;
+            min-width: 0;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--muted);
+        }
+
+        .note {
+            margin-top: 0.125rem;
+            padding-top: 0.625rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+    }
+
+    // The handshake: trusted workers get in, an unknown one is turned back
+    // before it reaches anything.
+    .handshake {
+        p:not(.note) {
+            color: #d6d6de;
+        }
+
+        .refused {
             color: var(--muted);
         }
     }
 
-    // The queue backend picked in settings.
-    .backend {
-        gap: 0.625rem;
-
-        .label {
-            font-size: 0.8125rem;
-            color: var(--muted);
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
         }
+    }
 
-        .select {
-            justify-content: space-between;
-            padding: 0.5625rem 0.75rem;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 0.375rem;
-            font-weight: 500;
-            color: #ffffff;
+    @media (prefers-reduced-motion: reduce) {
+        .badge.running :global(svg) {
+            animation: none;
         }
     }
 </style>
+
+<script>
+    // A little story in the tenant, on a loop: the editor edits the flow,
+    // the launcher runs it and it succeeds, then the admin deletes a
+    // namespace. The row each of them works on lights up in their colour.
+    // Only while the stack is on screen, and not with reduced motion.
+    function playTenants() {
+        const stage = document.querySelector<HTMLElement>("[data-tenants]")
+        if (!stage || matchMedia("(prefers-reduced-motion: reduce)").matches)
+            return
+        const row = (name: string) =>
+            stage.querySelector<HTMLElement>(`[data-row="${name}"]`)
+        const person = (name: string) =>
+            stage.querySelector<HTMLElement>(`[data-person="${name}"]`)
+        const launcher = person("launcher")
+        const editor = person("editor")
+        const admin = person("admin")
+        const flow = row("flow")
+        const doomed = row("acme.network")
+        if (!launcher || !editor || !admin || !flow || !doomed) return
+
+        const at = new Map<HTMLElement, [HTMLElement, number]>()
+        let lit: HTMLElement | undefined
+        let timers: number[] = []
+
+        // Onto a row, at a point across the stage, in the stage's own
+        // pixels even when it is scaled.
+        // "foot" parks them at the bottom of the card, under the rows.
+        const go = (who: HTMLElement, name: string, lane: number) => {
+            const target = name === "foot" ? stage : row(name)
+            if (!target) return
+            at.set(who, [target, lane])
+            const box = stage.getBoundingClientRect()
+            const rect = target.getBoundingClientRect()
+            const scale = box.width / stage.offsetWidth || 1
+            const width = stage.offsetWidth
+            const x = Math.min(width * lane, width - who.offsetWidth)
+            const y =
+                target === stage
+                    ? stage.offsetHeight - who.offsetHeight - 10
+                    : (rect.top - box.top + rect.height * 0.55) / scale
+            who.style.left = `${x}px`
+            who.style.top = `${y}px`
+        }
+
+        // The row under someone lights up in their colour, or in red for
+        // a deletion.
+        const light = (who?: HTMLElement, tone?: string) => {
+            lit?.classList.remove("hot")
+            lit = who ? at.get(who)?.[0] : undefined
+            if (!who || !lit || lit === stage) return
+            lit.style.setProperty(
+                "--tone",
+                tone ?? getComputedStyle(who).getPropertyValue("--tone"),
+            )
+            lit.classList.add("hot")
+        }
+
+        const show = (target: HTMLElement, name = "") => {
+            const state = target.querySelector<HTMLElement>("[data-row-state]")
+            if (state) state.dataset.state = name
+        }
+
+        const rest = () => {
+            go(launcher, "acme", 0.45)
+            go(admin, "acme.cloud", 0.75)
+            go(editor, "foot", 0.06)
+        }
+
+        const reset = () => {
+            rest()
+            light()
+            show(flow)
+            show(doomed)
+            doomed.classList.remove("gone")
+            doomed.parentElement?.classList.remove("removed")
+        }
+
+        const STORY: [number, () => void][] = [
+            [0, () => go(editor, "flow", 0.52)],
+            [1100, () => (light(editor), show(flow, "editing"))],
+            [
+                3200,
+                () => (go(editor, "foot", 0.06), go(launcher, "flow", 0.52)),
+            ],
+            [4300, () => (light(launcher), show(flow, "running"))],
+            [6100, () => show(flow, "success")],
+            [
+                7800,
+                () => (
+                    go(launcher, "acme", 0.45),
+                    light(),
+                    show(flow),
+                    go(admin, "acme.network", 0.6)
+                ),
+            ],
+            [
+                8900,
+                () => (
+                    light(admin, "255, 129, 151"),
+                    show(doomed, "deleted"),
+                    doomed.classList.add("gone")
+                ),
+            ],
+            // The row goes, the admin leaves, and it is back for the next turn.
+            [
+                10000,
+                () => (light(), doomed.parentElement?.classList.add("removed")),
+            ],
+            [10700, () => go(admin, "acme.cloud", 0.75)],
+            [12600, reset],
+        ]
+        const LOOP = 14400
+
+        const play = () => {
+            timers = STORY.map(([delay, beat]) =>
+                window.setTimeout(beat, delay),
+            )
+            timers.push(window.setTimeout(play, LOOP))
+        }
+
+        // Everyone at rest at once, before the story starts.
+        const snap = (move: () => void) => {
+            stage.classList.add("placing")
+            move()
+            stage.getBoundingClientRect()
+            stage.classList.remove("placing")
+        }
+        snap(rest)
+
+        new IntersectionObserver(([entry]) => {
+            timers.forEach(window.clearTimeout)
+            timers = []
+            if (!entry.isIntersecting) return
+            reset()
+            play()
+        }).observe(stage)
+        window.addEventListener("resize", () =>
+            snap(() =>
+                at.forEach(([target, lane], who) =>
+                    go(who, target.dataset.row ?? "foot", lane),
+                ),
+            ),
+        )
+    }
+
+    playTenants()
+</script>
