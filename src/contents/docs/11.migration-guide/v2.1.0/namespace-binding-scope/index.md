@@ -27,7 +27,7 @@ Before 2.1.0, a namespace binding could carry a role with tenant-level permissio
 
 The upgrade changes the namespace bindings that break the rule, in every tenant:
 
-1. For each role that holds both tenant-level and namespace-level permissions, it creates a role named `<Role name> (namespace)`, with the id `<role id>_namespace`, that holds only the namespace-level permissions. The copy is created for every custom role, and for a managed role only when that role is bound to a namespace. For example, Developer bound to a namespace in the `main` tenant gets a `Developer (namespace)` role with the id `developer_main_namespace`. These roles are created even when your license does not include custom roles.
+1. For each role that holds both tenant-level and namespace-level permissions, it creates a role named `<Role name> (namespace)`, with the id `<role id>_namespace`, that holds only the namespace-level permissions. The copy is created for every custom role, and for a managed role only when that role is bound to a namespace. For example, Developer bound to a namespace in the `main` tenant gets a `Developer (namespace)` role with the id `developer_main_namespace`. These roles are created even when your license does not include custom roles. If another role already has that name, a number is added, as in `Developer (namespace 2)`.
 2. Each namespace binding of such a role moves to its copy, for the same user, group or service account and the same namespace. Tenant-wide bindings are not changed.
 3. A namespace binding whose role holds only tenant-level permissions grants nothing on the namespace, and is deleted.
 4. Namespace bindings in pending invitations that have not expired are changed the same way.
