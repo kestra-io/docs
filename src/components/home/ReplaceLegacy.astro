@@ -184,7 +184,9 @@ const PROBLEMS = [
 
         > li {
             position: relative;
-            padding: 2.5rem var(--inset) 3rem;
+            // Room around each problem, more below than above.
+            padding: clamp(4rem, 6vw, 5.5rem) var(--inset)
+                clamp(5rem, 8.5vw, 7.5rem);
             transition: background-color 0.3s ease;
 
             // On hover the cell draws its top edge, like the How it works
@@ -222,7 +224,7 @@ const PROBLEMS = [
             > :global(svg) {
                 width: 1.5rem;
                 height: 1.5rem;
-                margin-bottom: 1.75rem;
+                margin-bottom: 3rem;
                 color: var(--ks-content-primary);
             }
         }
@@ -248,7 +250,7 @@ const PROBLEMS = [
         }
 
         h3 {
-            margin: 0 0 1rem;
+            margin: 0 0 1.5rem;
             font-size: 1.5rem;
             font-weight: 600;
             letter-spacing: -0.01em;
@@ -256,9 +258,10 @@ const PROBLEMS = [
         }
 
         p {
+            max-width: 26rem;
             margin: 0;
             font-size: 1rem;
-            line-height: 1.65;
+            line-height: 1.7;
             color: var(--ks-content-secondary);
         }
     }

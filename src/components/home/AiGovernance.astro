@@ -597,20 +597,17 @@ const auditPath = (cx: number) =>
         margin-top: 2rem;
     }
 
-    // A fine grid, as in the product's canvas, faded to nothing away from
-    // the stack.
+    // The dots of the product's topology canvas, faded to nothing away
+    // from the stack.
     .texture {
         position: absolute;
         inset: 0;
-        background:
-            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0
-                0 / 48px 48px,
-            linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.03) 1px,
-                    transparent 1px
-                )
-                0 0 / 48px 48px;
+        background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.07) 1px,
+                transparent 1.5px
+            )
+            0 0 / 20px 20px;
         mask: radial-gradient(
             ellipse 60% 50% at 50% 65%,
             #000 20%,
