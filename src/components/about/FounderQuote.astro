@@ -1,9 +1,11 @@
 ---
 import { Image } from "astro:assets"
 import manu from "./assets/manu.jpg"
+import Rails from "./Rails.astro"
 ---
 
 <section class="founder-quote">
+    <Rails />
     <div class="container">
         <div class="frame">
             <figure class="quote">
@@ -53,6 +55,7 @@ import manu from "./assets/manu.jpg"
     @use "./style/section" as *;
 
     .founder-quote {
+        position: relative;
         padding-bottom: 7.5rem;
         background: var(--ks-background-body);
 
@@ -67,8 +70,6 @@ import manu from "./assets/manu.jpg"
 
         position: relative;
         margin: 0 calc(var(--inset) * -1);
-        border-left: 1px solid var(--line);
-        border-right: 1px solid var(--line);
 
         @include media-breakpoint-down(md) {
             --inset: 1.5rem;
