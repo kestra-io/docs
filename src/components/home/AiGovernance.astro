@@ -44,6 +44,23 @@ const CONTROLS = [
 ]
 const CONTROL_W = 160
 
+// Above the agents: room for the wires down from the mascot.
+const TOP = -140
+const BUS_Y = -4
+// From the mascot, down a trunk and along a bus to an agent's top. The
+// faint wires draw the shared trunk once (the middle agent's), so it is no
+// brighter than the rest; the pulses run the whole way.
+const briefPath = (cx: number, branchOnly = false) =>
+    cx === W / 2
+        ? `M ${cx} ${TOP} V ${AGENT_Y}`
+        : [
+              `M ${W / 2} ${branchOnly ? BUS_Y - 14 : TOP}`,
+              `V ${BUS_Y - 14}`,
+              `Q ${W / 2} ${BUS_Y} ${W / 2 + Math.sign(cx - W / 2) * 14} ${BUS_Y}`,
+              `H ${cx - Math.sign(cx - W / 2) * 14}`,
+              `Q ${cx} ${BUS_Y} ${cx} ${BUS_Y + 14}`,
+              `V ${AGENT_Y}`,
+          ].join(" ")
 const agentPath = (cx: number) => `M ${cx} ${AGENT_Y + AGENT_H} V ${BAND_Y}`
 const domainPath = (cx: number) => `M ${cx} ${BAND_Y + BAND_H} V ${DOMAIN_Y}`
 // From a domain's foot, along the floor and up the left side, back into
@@ -75,9 +92,30 @@ const auditPath = (cx: number) =>
     <div class="container-xl">
         <div class="rails">
             <div class="head">
+                <h2 id="ai-governance">
+                    AI agents cross systems seamlessly. <span
+                        >Enforce governance at every step.</span
+                    >
+                </h2>
+                <p class="lead">
+                    Permissions, approvals, and audit trails apply to every
+                    action an agent takes.
+                </p>
+                {/* The hero's primary button. */}
+                <a href="/ai-automation" class="btn-solid">
+                    How agents fit <Icon name="mdi:chevron-right" />
+                </a>
+            </div>
+
+            <figure
+                class="stack"
+                aria-label="AI agents call into Kestra, which checks permissions, holds approvals and keeps the audit trail before any action reaches infrastructure, data pipelines, business processes or IT operations. A drop_table call from the finance agent is blocked by policy."
+                data-ai-stack
+            >
                 {
                     /* A wink to the launch video's agent: it pops in, winks,
-                    then follows the pointer with its eyes. */
+                    then follows the pointer with its eyes. It briefs the three agents
+                    below, one wire each. */
                 }
                 <div class="mascot" data-mascot aria-hidden="true">
                     <span class="ring"></span>
@@ -106,38 +144,28 @@ const auditPath = (cx: number) =>
                                     cy="22"
                                     r="2.4"></circle>
                             </g>
-                            <rect x="18" y="29" width="12" height="2.75" rx="1"
-                            ></rect>
+                            <rect
+                                class="mouth"
+                                x="18"
+                                y="29"
+                                width="12"
+                                height="2.75"
+                                rx="1"></rect>
                         </svg>
                     </span>
                 </div>
-                <h2 id="ai-governance">
-                    AI agents cross systems seamlessly. <span
-                        >Enforce governance at every step.</span
-                    >
-                </h2>
-                <p class="lead">
-                    Permissions, approvals, and audit trails apply to every
-                    action an agent takes.
-                </p>
-                {/* The hero's primary button. */}
-                <a href="/ai-automation" class="btn-solid">
-                    How agents fit <Icon name="mdi:chevron-right" />
-                </a>
-            </div>
-
-            <figure
-                class="stack"
-                aria-label="AI agents call into Kestra, which checks permissions, holds approvals and keeps the audit trail before any action reaches infrastructure, data pipelines, business processes or IT operations. A drop_table call from the finance agent is blocked by policy."
-                data-ai-stack
-            >
                 <svg
-                    viewBox={`0 0 ${W} 580`}
+                    viewBox={`0 ${TOP} ${W} ${580 - TOP}`}
                     role="presentation"
                     aria-hidden="true"
                 >
                     {/* The wires, faint; the pulses run on copies of them. */}
                     <g class="wires">
+                        {
+                            AGENTS.map((agent) => (
+                                <path d={briefPath(agent.cx, true)} />
+                            ))
+                        }
                         {
                             AGENTS.map((agent) => (
                                 <path d={agentPath(agent.cx)} />
@@ -156,6 +184,14 @@ const auditPath = (cx: number) =>
                     </g>
 
                     <g class="pulses">
+                        {
+                            AGENTS.map((agent) => (
+                                <path
+                                    d={briefPath(agent.cx)}
+                                    data-pulse={`brief-${agent.id}`}
+                                />
+                            ))
+                        }
                         {
                             AGENTS.map((agent) => (
                                 <path
@@ -441,6 +477,17 @@ const auditPath = (cx: number) =>
                 }
             })
 
+        // The mascot reacts to each step, and looks where it happens.
+        const mascot = root.querySelector<HTMLElement>("[data-mascot]")
+        const mood = (name: string, target: Element | null = null) => {
+            if (!mascot) return
+            if (name) mascot.dataset.mood = name
+            else delete mascot.dataset.mood
+            mascot.dispatchEvent(
+                new CustomEvent("mascot:look", { detail: target }),
+            )
+        }
+
         const set = (el: Element, state: string) =>
             el.setAttribute("data-state", state)
         const clear = (el: Element) => el.removeAttribute("data-state")
@@ -465,6 +512,9 @@ const auditPath = (cx: number) =>
                 "Approvals"
             const agent = q<SVGGElement>(`[data-agent="${call.agent}"]`)
             const domain = q<SVGGElement>(`[data-domain="${call.domain}"]`)
+            // The mascot hands the agent its task.
+            mood("send", agent)
+            await pulse(`brief-${call.agent}`, 800)
             set(agent, "active")
             agent.querySelector("[data-call]")!.textContent = call.call
             await wait(500)
@@ -472,6 +522,7 @@ const auditPath = (cx: number) =>
 
             set(band, "busy")
             set(control("permissions"), call.denied ? "denied" : "ok")
+            mood(call.denied ? "denied" : "ok", control("permissions"))
             await wait(500)
 
             if (call.denied) {
@@ -482,6 +533,7 @@ const auditPath = (cx: number) =>
                 set(control("audit"), "ok")
                 auditLabel.textContent = `Audit trail · ${audited}`
                 await wait(2600)
+                mood("")
                 clear(band)
                 clear(agent)
                 return
@@ -490,10 +542,12 @@ const auditPath = (cx: number) =>
             if (call.approval) {
                 const approvals = control("approvals")
                 set(approvals, "waiting")
+                mood("wait", approvals)
                 approvals.querySelector("text")!.textContent =
                     `Awaiting ${call.approval}`
                 await wait(1300)
                 set(approvals, "ok")
+                mood("ok", approvals)
                 approvals.querySelector("text")!.textContent =
                     `Approved by ${call.approval}`
                 await wait(500)
@@ -501,6 +555,7 @@ const auditPath = (cx: number) =>
 
             await pulse(`domain-${call.domain}`, 700)
             set(domain, "ok")
+            mood("happy", domain)
             domain.querySelector("[data-result]")!.textContent =
                 `${call.call} ✓`
             await wait(400)
@@ -509,6 +564,7 @@ const auditPath = (cx: number) =>
             set(control("audit"), "ok")
             auditLabel.textContent = `Audit trail · ${audited}`
             await wait(900)
+            mood("")
             clear(band)
             clear(agent)
         }
@@ -575,22 +631,31 @@ const auditPath = (cx: number) =>
 
         let frame = 0
         let pointer = { x: 0, y: 0 }
+        // While the stack points it at a step, it looks there instead.
+        let target: Element | null = null
         const look = () => {
             frame = 0
             const box = root.getBoundingClientRect()
-            const dx = pointer.x - (box.left + box.width / 2)
-            const dy = pointer.y - (box.top + box.height / 2)
+            const at = target?.getBoundingClientRect()
+            const x0 = at ? at.left + at.width / 2 : pointer.x
+            const y0 = at ? at.top + at.height / 2 : pointer.y
+            const dx = x0 - (box.left + box.width / 2)
+            const dy = y0 - (box.top + box.height / 2)
             const distance = Math.hypot(dx, dy) || 1
-            const reach = Math.min(1, distance / 320)
+            const reach = at ? 1 : Math.min(1, distance / 320)
             const x = (dx / distance) * 3.2 * reach
             const y = (dy / distance) * 2.6 * reach
             eyes.style.transform = `translate(${x}px, ${y}px)`
         }
         const follow = (event: PointerEvent) => {
             pointer = { x: event.clientX, y: event.clientY }
-            frame ||= requestAnimationFrame(look)
+            if (!target) frame ||= requestAnimationFrame(look)
         }
         window.addEventListener("pointermove", follow, { passive: true })
+        root.addEventListener("mascot:look", (event) => {
+            target = (event as CustomEvent<Element | null>).detail
+            frame ||= requestAnimationFrame(look)
+        })
         document.addEventListener(
             "astro:before-swap",
             () => {
@@ -728,9 +793,11 @@ const auditPath = (cx: number) =>
         position: relative;
         display: grid;
         place-items: center;
+        z-index: 1;
         width: 12rem;
         height: 12rem;
-        margin: -2rem auto 1.25rem;
+        // Its centre on the drawing's top edge, where the wires start.
+        margin: 0 auto -6rem;
 
         .ring {
             position: absolute;
@@ -781,9 +848,11 @@ const auditPath = (cx: number) =>
             transition: transform 0.25s ease-out;
         }
 
-        .eye {
+        .eye,
+        .mouth {
             transform-box: fill-box;
             transform-origin: center;
+            transition: transform 0.25s ease;
         }
 
         &:global(.in) {
@@ -800,6 +869,82 @@ const auditPath = (cx: number) =>
 
         &:global(.blinking) .eye {
             animation: shut 0.22s ease-in-out;
+        }
+
+        // Its moods, as the calls go through the stack.
+        // Sending a task: a nod towards the agent.
+        &[data-mood="send"] .disc {
+            animation: nod 0.5s ease;
+        }
+
+        // A check passes: eyes narrowed, content.
+        &[data-mood="ok"] .eye {
+            transform: scaleY(0.55);
+        }
+
+        // Held for a person: the dashed ring turns while it waits.
+        &[data-mood="wait"] .ring:not(.outer) {
+            animation: turn 6s linear infinite;
+        }
+
+        // Done: a hop, a grin.
+        &[data-mood="happy"] {
+            .disc {
+                animation: hop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            .eye {
+                transform: scaleY(0.45);
+            }
+
+            .mouth {
+                transform: scaleX(1.3);
+            }
+        }
+
+        // Turned back by policy: wide eyes, a shake of the head.
+        &[data-mood="denied"] {
+            .disc {
+                animation: shake 0.5s ease;
+            }
+
+            .eye {
+                transform: scale(1.25);
+            }
+
+            .mouth {
+                transform: scaleX(0.55);
+            }
+        }
+    }
+
+    @keyframes nod {
+        40% {
+            transform: translateY(4px) scale(0.97);
+        }
+    }
+
+    @keyframes hop {
+        40% {
+            transform: translateY(-8px);
+        }
+    }
+
+    @keyframes shake {
+        20%,
+        60% {
+            transform: translateX(-5px) rotate(-4deg);
+        }
+
+        40%,
+        80% {
+            transform: translateX(5px) rotate(4deg);
+        }
+    }
+
+    @keyframes turn {
+        to {
+            transform: rotate(1turn);
         }
     }
 
@@ -907,7 +1052,7 @@ const auditPath = (cx: number) =>
             overflow-x: auto;
         }
 
-        svg {
+        > svg {
             display: block;
             width: 100%;
             min-width: 46rem;
