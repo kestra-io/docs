@@ -96,6 +96,7 @@ kestractl flows list my.namespace --output json
 - `bindings`: list, get, create (including bulk), and delete role bindings. Requires Kestra EE; tenant-scoped.
 - `invitations`: list, get, create, and delete user invitations. Requires Kestra EE; tenant-scoped.
 - `logs`: list, search, download, and delete execution logs.
+- `mcp-servers` (aliases: `mcp-server`, `mcp`): list, get, create, update, delete, enable, and disable MCP servers, and list the tools a server exposes.
 - `secrets`: list, set, patch, and delete secrets. Requires Kestra EE.
 - `server`: view license info, list server actions, and generate statistics reports. `server license` requires Kestra EE.
 - `plugins`: list compatible plugins for a Kestra version, download them to a local directory, and list plugins installed on a connected server.
@@ -727,6 +728,50 @@ kestractl reusable-inputs delete my.namespace my-inputs-block
 # List the namespaces that define at least one reusable inputs block
 kestractl reusable-inputs namespaces
 ```
+
+## MCP servers
+
+A [flow MCP server](../../ai-orchestration/03.mcp-server/index.md) exposes every flow with an MCP Tool trigger as a tool that AI agents can call. Every tenant has a `default` server, which you cannot delete. The `mcp-servers` commands act on the active tenant from your context.
+
+```bash
+# List MCP servers (alias: ls)
+kestractl mcp-servers list
+kestractl mcp-servers list --page 2 --size 20 --sort id:asc --output json
+
+# Get an MCP server (aliases: show, describe)
+kestractl mcp-servers get default
+
+# List the tools a server exposes, with the flow and trigger behind each tool
+kestractl mcp-servers tools default
+
+# Create an MCP server
+kestractl mcp-servers create ops --description "Operations flows" \
+  --instructions "Only call a tool when the request clearly maps to one of the flows."
+
+# Update an MCP server — only the flags you pass change
+kestractl mcp-servers update ops --description "Operations and on-call flows"
+
+# Enable or disable an MCP server
+kestractl mcp-servers disable ops
+kestractl mcp-servers enable ops
+
+# Delete an MCP server (alias: rm) — prompts for confirmation; skip with --yes
+kestractl mcp-servers delete ops
+kestractl mcp-servers delete ops --yes
+```
+
+`create` sets only the ID, description, and instructions. New servers are private with `BASIC` authentication. To use another server type or authentication type, configure the server in the UI or through the REST API.
+
+`update` fails with `nothing to update` if you pass neither `--description` nor `--instructions`. `enable` and `disable` set the state explicitly, so running `disable` on a disabled server leaves it disabled and reports `already disabled`.
+
+| Flag | Command | Default | Description |
+|---|---|---|---|
+| `--description` | `create`, `update` | none | Description of the server |
+| `--instructions` | `create`, `update` | none | Instructions the server sends to MCP clients when they connect |
+| `--page` | `list` | `1` | Page number |
+| `--size` | `list` | `100` | Page size |
+| `--sort` | `list` | none | Sort expression, for example `id:asc`. Repeatable |
+| `--yes`, `-y` | `delete` | `false` | Skip the confirmation prompt |
 
 ## Tenant management (Enterprise Edition)
 
