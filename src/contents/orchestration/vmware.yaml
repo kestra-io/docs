@@ -17,7 +17,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace VMware Aria Automation (vRA/vRO) with a workflow engine that listens to vCenter events, handles snapshot-gated change with rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Run it in any cloud, across segmented network zones, or fully air-gapped, and keep your automation independent of Broadcom's pricing."
+nutshell: "Replace VMware Aria Automation (vRA/vRO) with a workflow engine that listens to vCenter events, handles snapshot-gated change with rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Run it in any cloud, across segmented network zones, or fully air-gapped, and keep your automation independent of Broadcom's pricing. See it end to end in our <a href='https://www.youtube.com/watch?v=brZo-5NdP2E'>8-minute demo</a>."
 
 guideCta:
   eyebrow: "Migration guide"
