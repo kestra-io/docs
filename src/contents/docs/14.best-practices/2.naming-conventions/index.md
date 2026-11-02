@@ -90,7 +90,7 @@ namespace: prod.marketing.attribution
 
 inputs:
   - id: api_endpoint
-    type: URL
+    type: URI
     defaults: https://dummyjson.com/products
 
 tasks:
@@ -125,6 +125,7 @@ tasks:
 
 outputs:
   - id: final_result
+    type: FILE
     value: "{{ outputs.sql_query.uri }}"
 
 triggers:
@@ -144,7 +145,7 @@ namespace: prod.marketing.attribution
 
 inputs:
   - id: apiEndpoint
-    type: URL
+    type: URI
     defaults: https://dummyjson.com/products
 
 tasks:
@@ -179,6 +180,7 @@ tasks:
 
 outputs:
   - id: finalResult
+    type: FILE
     value: "{{ outputs.sqlQuery.uri }}"
 
 triggers:
