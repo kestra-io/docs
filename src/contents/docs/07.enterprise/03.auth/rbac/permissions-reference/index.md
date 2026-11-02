@@ -125,7 +125,8 @@ Notes
 - `KILL`: kill a running execution.
 - `REPLAY`: replay an execution (creates a new execution from a previous one).
 - `PAUSE`: pause a running execution.
-- `RESUME`: resume a paused execution.
+- `RESUME`: resume a paused execution. An execution paused only on an `Approval` task cannot be resumed this way; decide it with `REVIEW` instead.
+- `REVIEW`: approve, deny, or cancel an `Approval` task. When the `Approval` defines assignees, the user must also be one of them.
 - `CHANGE_LABELS`: update labels on a terminated execution.
 - `ACCESS_LOGS`: read or stream execution logs.
 - `ACCESS_OUTPUTS`: read task run outputs.
@@ -135,7 +136,6 @@ Notes
 - `UNQUEUE`: move a queued execution out of the queue.
 - `FORCE_RUN`: force a paused or queued execution to run immediately.
 - `UPDATE`: change the state of an execution or of a task run within it, and reschedule an execution that has not started.
-- `REVIEW`: approve or deny an Approval task run. The Approval task can further restrict who may review it.
 
 **Endpoints**
 
@@ -186,6 +186,12 @@ RESUME
 - `POST /api/v1/{tenant}/executions/resume/by-ids`
 - `POST /api/v1/{tenant}/executions/resume/by-query`
 
+REVIEW
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/review`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/review/validate`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/cancel-approval`
+- `GET /api/v1/{tenant}/executions/{executionId}/actions/review/allowed` (any `EXECUTION` action; returns whether the caller can review)
+
 CHANGE_LABELS
 - `POST /api/v1/{tenant}/executions/{executionId}/actions/labels`
 - `POST /api/v1/{tenant}/executions/labels/by-ids`
@@ -231,14 +237,12 @@ UPDATE
 - `POST /api/v1/{tenant}/executions/{executionId}/actions/state`
 - `POST /api/v1/{tenant}/executions/{executionId}/actions/reschedule`
 
-REVIEW
-- `GET /api/v1/{tenant}/executions/{executionId}/actions/review/allowed` (returns whether you may review the task run)
-- `POST /api/v1/{tenant}/executions/{executionId}/actions/review/validate`
-- `POST /api/v1/{tenant}/executions/{executionId}/actions/review`
-
 Notes
 - Webhook execution endpoints are authorized by webhook key only; RBAC is not checked.
 - Execution creation (`POST /executions/{namespace}/{id}`) checks `FLOW: EXECUTE`, not an `EXECUTION` action.
+- `POST /api/v1/{tenant}/cases/approvals/cancel/by-ids` and `POST /api/v1/{tenant}/cases/approvals/reviewable/by-ids` check `REVIEW` on the namespace of each approval case. Cases the caller cannot review are returned as refused or left out of the result instead of failing the request.
+- The **Approvals** page lists approval cases, so it also requires `CASE: LIST`, and opening an approval requires `CASE: VIEW` on its namespace.
+- The `ApprovalReview` block of [Apps](../../../04.scalability/apps/index.md) checks `REVIEW` the same way.
 :::
 
 ---
