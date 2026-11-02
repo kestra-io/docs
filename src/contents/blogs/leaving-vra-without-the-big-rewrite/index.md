@@ -137,9 +137,6 @@ To run the open-source assessment on your own export, or see a sample migration 
 
 **→ [Get the Kestra Migration Assistant for vRA](/resources/migration/vra/assistant)**
 
-You can also see the Migration Assistant in action, starting from the [sample vRO and vRA export](/kestra-migration-assistant-sample-vra-load-balancer.zip) (free to download) and its [migration brief](/resources/migration/vra/assistant), through to a converted flow tested in the VMware Migration Lab. I'm hosting the European session, and my colleague Parham Parvizi is hosting the Americas session, both with live Q&A:
+You can also see the Migration Assistant in action, starting from the [sample vRO and vRA export](/kestra-migration-assistant-sample-vra-load-balancer.zip) (free to download) and its [migration brief](/resources/migration/vra/assistant), through to a converted flow tested in the VMware Migration Lab. I'm hosting it with my colleague Fernando Mattos, live on LinkedIn and YouTube, with Q&A, on **Wednesday, November 4 at 2 PM CET (8 AM ET)**.
 
-- **Europe:** Wednesday, November 4 at 2 PM CET (8 AM ET)
-- **Americas:** Thursday, November 5 at 11 AM PT
-
-**→ Register: [EU session](https://watch.getcontrast.io/register/kestra-leaving-vra-without-the-big-rewrite) · [US session](https://watch.getcontrast.io/register/kestra-leaving-vra-without-the-big-rewrite-9061c391)**
+**→ [Register](https://luma.com/2ng7260z)**
