@@ -347,3 +347,5 @@ inputs:
       - GCP
       - Azure
 ```
+
+When an execution is created with a value for an input that sets `allowCustomValue: true`, Kestra doesn't render the input's `expression`. This lets a `Subflow` task or a trigger start a flow whose dropdown uses `subflow()`. See [Start the flow from a Subflow task or a trigger](../../15.how-to-guides/dynamic-inputs/index.md#start-the-flow-from-a-subflow-task-or-a-trigger).
