@@ -142,7 +142,7 @@ If you are upgrading from Kestra 1.x, see the [RBAC action model migration guide
 
 ### MCP server permissions
 
-`MCP_SERVER` is a first-class RBAC resource that controls access to [Kestra MCP servers](../../../ai-tools/03.mcp-server/index.md). Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
+`MCP_SERVER` is a first-class RBAC resource that controls access to [flow MCP servers](../../../ai-orchestration/03.mcp-server/index.md). Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
 
 Default role assignments:
 
@@ -157,15 +157,46 @@ In addition to these permissions, access to a **private** MCP server is also flo
 
 ### Managed roles
 
-Kestra ships five managed roles. Each role's full permission set is visible under **IAM → Roles**. Instance Owners can create additional custom roles on top of these. Users can hold multiple roles.
+Kestra ships five managed roles. Each role's full permission set is visible under **IAM → Roles**. Users with `ROLE` `CREATE` can create additional custom roles on top of these. Users can hold multiple roles.
 
 | Role | Description |
 |---|---|
-| **Admin** | All actions on all resources. |
+| **Admin** | All actions on all resources, including granting any access to anyone. See [Who can grant access](#who-can-grant-access). |
 | **Developer** | Everything Editor has, plus: full namespace management (including file management), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
 | **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
+
+## Who can grant access
+
+Permissions to manage roles, bindings, groups, and invitations let the holder grant access to anyone, themselves included. Kestra does not limit what they grant to the permissions they already hold. This is by design. Treat these permissions as admin rights for their scope, and grant them only to people you would make admin there.
+
+### Roles
+
+`ROLE` `CREATE` and `UPDATE` let you put any permission in a role, including permissions you don't hold. Updating a role changes every binding that uses it, including tenant-wide bindings. Only an Instance Owner can add `USER` `IMPERSONATE` to a role, set the default role, or edit a managed role.
+
+### Bindings
+
+`BINDING` `CREATE` lets you bind any role to any user, group, or service account, yourself included, at the scope where you hold it:
+
+- On a namespace, you can bind roles on that namespace and its child namespaces. Binding the Admin role to yourself there gives you every permission on those namespaces.
+- On the tenant, you can create tenant-wide bindings, which grant every permission in the role.
+
+If the user you bind has no access to the tenant yet, the binding gives them access.
+
+### Groups
+
+Each group member is either a member or an owner. A group owner can add users already in the tenant to the group and make other members owners, without any RBAC permission. Making someone owner of a group lets them give out everything the group's bindings grant.
+
+`GROUP` `MANAGE_MEMBERS` held tenant-wide gives the same power over every group in the tenant, including adding yourself. `USER` `MANAGE_GROUP_MEMBERSHIP` does too, when combined with any tenant-wide `GROUP` permission such as `VIEW`. Joining a group gives you everything its bindings grant, including tenant-wide bindings.
+
+### Invitations
+
+To create an [invitation](../invitations/index.md), you need `INVITATION` `CREATE`. You also need `BINDING` `CREATE` at the scope of each binding in the invitation. For each group in it, you need ownership of the group or `GROUP` `MANAGE_MEMBERS`. Only an Instance Owner can invite an Instance Owner.
+
+### Review changes
+
+Every change to roles and bindings is recorded in the [audit logs](../../02.governance/06.audit-logs/index.md). Filter by the `ROLE` or `BINDING` resource type to review who granted what.
 
 ## Instance Owner and Admin
 

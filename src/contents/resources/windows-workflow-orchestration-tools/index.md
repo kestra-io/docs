@@ -102,7 +102,7 @@ Selecting the right tool requires evaluating several factors specific to the Win
 3.  **Declarative vs. Imperative:** A [declarative approach](https://kestra.io/features) (e.g., YAML) defines the "what," not the "how," making workflows easier to read, maintain, and version control compared to imperative scripts.
 4.  **Scalability and Architecture:** How does the tool scale? Can you add more workers to handle increased load? Understand the underlying [architecture](https://kestra.io/docs/architecture) to ensure it can grow with your needs.
 5.  **Extensibility:** Does it have a rich ecosystem of plugins for the tools you already use, such as SQL Server, Azure services, Active Directory, and more?
-6.  **AI and Modern Features:** Look for forward-looking capabilities. For instance, Kestra’s [AI agents](https://kestra.io/docs/ai-tools/ai-agents) can autonomously manage and execute workflows, bringing a new level of automation.
+6.  **AI and Modern Features:** Look for forward-looking capabilities. For instance, Kestra’s [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) can autonomously manage and execute workflows, bringing a new level of automation.
 7.  **Total Cost of Ownership:** Consider both licensing costs and the operational overhead. An open-source solution might have no upfront cost but requires management, while enterprise or cloud editions offer support and managed services. Compare the different [deployment models](https://kestra.io/docs/oss-vs-paid) and [pricing](https://kestra.io/pricing) to find the best fit.
 
 ## How Workflow Orchestration Impacts Data Engineering on Windows

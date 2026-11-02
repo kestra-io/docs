@@ -94,7 +94,7 @@ easeOfUse:
   title: Version-Controlled Workflows vs. Visual Zap Builder
   kestra:
     title: "Kestra: Readable by Your Whole Team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows live in Git and deploy through your existing CI/CD pipeline."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows live in Git and deploy through your existing CI/CD pipeline."
     code: |
       id: daily_report
       namespace: analytics

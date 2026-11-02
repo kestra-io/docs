@@ -8,6 +8,7 @@ import Link from "~/components/common/Link.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
 import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
+import WebinarBanner from "~/components/vra-migration-guide/WebinarBanner.astro"
 import StartHere, {
     getHeadings as startHereHeadings,
 } from "~/components/vra-migration-guide/StartHere.mdx"
@@ -127,6 +128,7 @@ const jsonLinkedData = {
         meta={META}
         codeHints
     />
+    <WebinarBanner />
     <GuideBand><StartHere /></GuideBand>
     <section class="guide-content">
         <TwoColumnStickyLayout>

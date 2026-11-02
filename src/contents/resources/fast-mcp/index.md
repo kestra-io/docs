@@ -49,7 +49,7 @@ FastMCP adopts a declarative, Pythonic approach. Instead of manually handling HT
 
 ### Bridging LLMs with External Data and Services
 
-The core function of a FastMCP server is to act as a bridge. On one side, it speaks the MCP language to LLMs. On the other, it executes standard Python code that can interact with anything a Python script can: databases, REST APIs, internal services, file systems, or even other scripts. This makes it a powerful component for creating versatile [AI tools that can be integrated into larger workflows](/docs/ai-tools). FastMCP simplifies the creation of this bridge, turning complex integration tasks into manageable Python functions.
+The core function of a FastMCP server is to act as a bridge. On one side, it speaks the MCP language to LLMs. On the other, it executes standard Python code that can interact with anything a Python script can: databases, REST APIs, internal services, file systems, or even other scripts. This makes it a powerful component for creating versatile [AI tools that can be integrated into larger workflows](/docs/ai-orchestration). FastMCP simplifies the creation of this bridge, turning complex integration tasks into manageable Python functions.
 
 ## FastMCP Architecture and Key Features
 

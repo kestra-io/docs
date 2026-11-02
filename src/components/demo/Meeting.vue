@@ -9,6 +9,7 @@
         getMeetingUrl,
         tierFromEmployees,
     } from "~/composables/useMeeting.js"
+    import type { Routing } from "~/utils/hubspotRouting"
     import { $fetch } from "~/utils/fetch"
 
     /* This form is mounted more than once per page (the landing pages show it
@@ -19,6 +20,7 @@
     const valid = ref(false)
     const message = ref("")
     const meetingUrl = ref<string>()
+    const submitting = ref(false)
     const formRef = useTemplateRef("demo-form")
 
     const props = withDefaults(
@@ -55,10 +57,13 @@
             message.value = "Please check the form fields and try again."
             return
         }
+        if (submitting.value) return
+        submitting.value = true
 
         const fn = form["first-name"].value
         const ln = form["last-name"].value
         const em = form["email"].value
+        const company = form["company"].value
         const emp = form["employees"].value
         const jobtitle = form["job-title"].value
         const clickId = getStoredClickId()
@@ -79,6 +84,7 @@
         const formData = {
             fields: [
                 { objectTypeId: "0-1", name: "email", value: em },
+                { objectTypeId: "0-1", name: "company", value: company },
                 { objectTypeId: "0-1", name: "firstname", value: fn },
                 { objectTypeId: "0-1", name: "lastname", value: ln },
                 { objectTypeId: "0-1", name: "jobtitle", value: jobtitle },
@@ -116,12 +122,15 @@
             },
         }
 
+        let routing: Routing | undefined
         try {
-            await submitHubspotForm<{ inlineMessage?: string }>(
-                hubSpotFormId,
-                formData,
-            )
+            const result = await submitHubspotForm<{
+                inlineMessage?: string
+                routing?: Routing
+            }>(hubSpotFormId, formData)
+            routing = result?.routing
         } catch (error: any) {
+            submitting.value = false
             valid.value = false
             console.error("Error submitting form data to HubSpot", error)
             if (
@@ -138,9 +147,12 @@
             return
         }
 
+        submitting.value = false
         valid.value = true
         meetingUrl.value = withContactParams(
-            getMeetingUrl(tierFromEmployees(emp)),
+            getMeetingUrl(routing?.tier ?? tierFromEmployees(emp), {
+                territory: routing?.territory,
+            }),
             {
                 firstname: fn,
                 lastname: ln,
@@ -274,7 +286,22 @@
                     />
                 </div>
 
-                <div class="col-12">
+                <div class="col-md-6 col-12">
+                    <label :for="`${uid}-company`" class="form-label mb-0">
+                        Company name
+                    </label>
+                    <input
+                        :id="`${uid}-company`"
+                        name="company"
+                        autocomplete="organization"
+                        type="text"
+                        class="form-control"
+                        placeholder="Company name *"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6 col-12">
                     <label :for="`${uid}-email`" class="form-label mb-0">
                         Company email
                     </label>
@@ -334,8 +361,12 @@
                 </div>
 
                 <div class="col-12 mt-4 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary w-100">
-                        {{ submitLabel }}
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                        :disabled="submitting"
+                    >
+                        {{ submitting ? "Sending..." : submitLabel }}
                     </button>
                 </div>
             </form>

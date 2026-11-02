@@ -102,7 +102,7 @@ inputs:
 tasks:
   - id: triage
     type: io.kestra.plugin.ai.agent.AIAgent
-    # provider injected by a namespace Policy, or add it inline: see /docs/ai-tools/ai-agents
+    # provider injected by a namespace Policy, or add it inline: see /docs/ai-orchestration/ai-agents
     systemMessage: |
       You are an SRE assistant. Correlate the alert with recent deployments and logs,
       identify the most likely root cause, and propose exactly one remediation from
@@ -147,7 +147,7 @@ The agent is one task. Its tools are other Kestra flows and an MCP server, so it
 
 ### Reviewing agent performance is reviewing an execution
 
-The details panel of an [`AIAgent`](/docs/ai-tools/ai-agents) task shows the model and provider, the system prompt, the tools it had, and after the run the full tool-call timeline with arguments and results, token usage and estimated cost, the reasoning chain, and why the model stopped, including guardrail triggers. Counters (`ai.agent.tool.calls`, `ai.provider.calls`) go to Prometheus or OpenTelemetry like any other metric.
+The details panel of an [`AIAgent`](/docs/ai-orchestration/ai-agents) task shows the model and provider, the system prompt, the tools it had, and after the run the full tool-call timeline with arguments and results, token usage and estimated cost, the reasoning chain, and why the model stopped, including guardrail triggers. Counters (`ai.agent.tool.calls`, `ai.provider.calls`) go to Prometheus or OpenTelemetry like any other metric.
 
 ### Changing what agents run is a Git commit
 
@@ -155,17 +155,17 @@ Flows are code; they reach production through CI and a promotion with a diff and
 
 ### Scaling a win is copying a flow
 
-A flow that works for one team goes into another namespace, gets parameterised with inputs, and is published as a [blueprint](/docs/concepts/blueprints). Agents call flows as tools with [`KestraFlow`](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.kestraflow); external agents (Claude, Cursor, your own) call Kestra flows through the [MCP server](/docs/ai-tools/mcp-server), where any flow with an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) becomes a named, permissioned tool.
+A flow that works for one team goes into another namespace, gets parameterised with inputs, and is published as a [blueprint](/docs/concepts/blueprints). Agents call flows as tools with [`KestraFlow`](/plugins/plugin-ai/tool/io.kestra.plugin.ai.tool.kestraflow); external agents (Claude, Cursor, your own) call Kestra flows through the [MCP server](/docs/ai-orchestration/mcp-server), where any flow with an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) becomes a named, permissioned tool.
 
 ## Where to start
 
 Here is the shortest path.
 
 1. Run Kestra locally. The [quickstart](/docs/quickstart) is one Docker command; [Docker Compose](/docs/installation/docker-compose) with Postgres if you want something that survives a restart.
-2. Wire one agent task. The [AI Agents](/docs/ai-tools/ai-agents) page has a working flow; swap the provider for yours and store the key as a [secret](/docs/concepts/secret). Give it one `KestraFlow` tool pointing at a flow you already have.
+2. Wire one agent task. The [AI Agents](/docs/ai-orchestration/ai-agents) page has a working flow; swap the provider for yours and store the key as a [secret](/docs/concepts/secret). Give it one `KestraFlow` tool pointing at a flow you already have.
 3. Put a gate after it. Add a `Pause` with `onResume` inputs ([how-to](/docs/how-to-guides/pause-resume)) and a deterministic task that only runs when `approved` is true.
 4. Read the execution. Open the agent task in the topology view and look at the tool-call timeline, the token count and the finish reason. That panel is what you will show your security team.
-5. Expose a flow to your coding agent. Point Claude Code or Cursor at the [MCP server](/docs/ai-tools/mcp-server) and add an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) to one flow. You now have an agent outside Kestra calling a governed operation inside it.
+5. Expose a flow to your coding agent. Point Claude Code or Cursor at the [MCP server](/docs/ai-orchestration/mcp-server) and add an [MCP tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) to one flow. You now have an agent outside Kestra calling a governed operation inside it.
 6. Start from a blueprint. The [AI blueprints](/blueprints?tags=AI) cover summarisation, classification, RAG and agent-with-tools patterns; most infra and data flows in the library can be handed to an agent as a tool without changes.
 
 ## Do you need one?
@@ -176,7 +176,7 @@ Titles come and go. Deciding where agents act and where humans decide, and build
 
 ---
 
-Sources: [Cognizant, Frontier Certified Engineer announcement](https://news.cognizant.com/2026-06-01-Cognizant-Develops-Frontier-Certified-Engineer-and-Frontier-Business-Operator-Roles-to-Define-the-Next-Generation-of-AI-Powered-Work) and [Frontier Engineer job posting](https://careers.cognizant.com/global-en/jobs/000702458411/frontier-engineer/) · [Microsoft 2026 Work Trend Index](https://www.microsoft.com/en-us/worklab/work-trend-index/agents-human-agency-and-the-opportunity-for-every-organization) · [OpenAI Frontier](https://openai.com/index/introducing-openai-frontier/) · [Kestra AI Agents docs](/docs/ai-tools/ai-agents)
+Sources: [Cognizant, Frontier Certified Engineer announcement](https://news.cognizant.com/2026-06-01-Cognizant-Develops-Frontier-Certified-Engineer-and-Frontier-Business-Operator-Roles-to-Define-the-Next-Generation-of-AI-Powered-Work) and [Frontier Engineer job posting](https://careers.cognizant.com/global-en/jobs/000702458411/frontier-engineer/) · [Microsoft 2026 Work Trend Index](https://www.microsoft.com/en-us/worklab/work-trend-index/agents-human-agency-and-the-opportunity-for-every-organization) · [OpenAI Frontier](https://openai.com/index/introducing-openai-frontier/) · [Kestra AI Agents docs](/docs/ai-orchestration/ai-agents)
 
 :::alert{type="info"}
 If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).

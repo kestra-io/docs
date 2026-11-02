@@ -88,7 +88,7 @@ easeOfUse:
   title: "Declarative YAML vs. UI-First Job Definitions"
   kestra:
     title: "Kestra: Orchestration as Reviewable Code"
-    description: "Write workflows in YAML that read like documentation. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> drafts them for you. Workflows go through Git and CI/CD—no hidden configuration state. Add approvals, secrets, retries, and event triggers as YAML constructs."
+    description: "Write workflows in YAML that read like documentation. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> drafts them for you. Workflows go through Git and CI/CD—no hidden configuration state. Add approvals, secrets, retries, and event triggers as YAML constructs."
     code: |
       id: server_patching_runbook
       namespace: ops.runbooks

@@ -1,28 +1,30 @@
 ---
-title: AI Copilot in Kestra – Generate and Edit Flows
-h1: Generate and Refine Flows with Natural Language Prompts
-description: Use Kestra AI Copilot to generate and edit flows with natural language prompts. Get AI-assisted suggestions for tasks, triggers, and configurations.
+title: "AI Copilot in Kestra: Build, Debug, and Plan Flows"
+h1: Build, Debug, and Plan with AI Copilot in the Kestra UI
+description: Use Kestra AI Copilot to build and edit flows, diagnose failed executions, and run approved multi-step plans from a chat sidebar in the Kestra UI.
 sidebarTitle: AI Copilot
 icon: /src/contents/docs/icons/ai.svg
 version: ">= 2.0.0"
 docId: ai-copilot
 ---
 
-Build and modify flows, ask questions about Kestra, and get AI-driven plans — all from a persistent chat sidebar.
+Build and edit flows, diagnose failed executions, and run multi-step plans from a chat sidebar in the Kestra UI.
 
-The AI Copilot opens as a right-side panel from the **AI** button in the top toolbar. Click **New chat +** to start a conversation, or use **Recents** to return to a previous one. Conversations persist for the browser session. You can type prompts or click the microphone button to dictate with speech-to-text.
+This page is for anyone who works in the Kestra UI. Administrators who need to enable Copilot or choose its model can go straight to [Configure an LLM provider](#configure-an-llm-provider). If you write flows in Claude Code, Cursor, or another coding agent instead, see the [Docs MCP server](../02.kestra-mcp-resources/index.md) and [Agent Skills](../03.agent-skills/index.md).
+
+Open Copilot with the **AI** button in the top toolbar. Click **New chat +** to start a conversation, or use **Recents** to return to a previous one. Conversations last for the browser session. Type a prompt, or click the microphone button to dictate it.
 
 ## Modes
 
-The Copilot has three modes, selectable from the dropdown at the bottom left of the chat panel:
+Choose a mode from the dropdown at the bottom left of the chat panel:
 
 | Mode | What it does |
 |---|---|
-| **Ask** | Answers questions about Kestra using docs-grounded responses. Ask about features, configuration, plugin options, or get help diagnosing a failed execution. |
-| **Edit** | Generates and iteratively edits flow YAML. Describe what you want to build; the Copilot drafts the change and asks for confirmation before applying it. |
-| **Plan** | Proposes a step-by-step plan for a complex task. Each step requires individual approval before the Copilot executes it. Rejecting any step cancels the plan. |
+| **Ask** | Answers questions about Kestra from the documentation, and diagnoses failed executions from their logs. Ask mode doesn't change anything. |
+| **Edit** | Generates and edits YAML for flows, apps, unit tests, and dashboards. Copilot proposes each change and applies it only after you approve. |
+| **Plan** | Proposes a numbered plan for a multi-step task. Nothing runs until you approve the plan, and each step that changes a resource asks for confirmation again. |
 
-Switch modes at any point in a conversation — the Copilot carries the conversation history across mode switches.
+You can switch modes at any point; Copilot keeps the conversation history.
 
 | If you want to… | Use |
 |---|---|
@@ -33,9 +35,9 @@ Switch modes at any point in a conversation — the Copilot carries the conversa
 
 ## Context
 
-The Copilot automatically attaches the resource you are viewing as context when you open the panel. Attached resources appear as dismissible pills above the input. You can remove any pill to narrow the Copilot’s focus, and the transcript records each add and remove so you always know what the agent is looking at.
+When you open the panel, Copilot attaches the resource you are viewing as context. Attached resources appear as pills above the input. Remove a pill to narrow Copilot's focus; the transcript records each addition and removal.
 
-Resources that can be attached as context:
+You can attach these resources as context:
 
 - Flow
 - Namespace
@@ -46,100 +48,18 @@ Resources that can be attached as context:
 - Blueprint
 - Plugin
 
-Copilot also reads Namespace metadata — Policies, Variables, Secrets, and Key-Value pairs — so prompts like "Create a task that integrates with MongoDB" can reuse your configured credentials and variables without extra hints.
+Copilot also reads namespace metadata, such as Policies, Variables, Secrets, and key-value pairs. A prompt like "Create a task that integrates with MongoDB" can then reuse the credentials and variables configured in that namespace.
 
 ## Confirmation
 
-In **Edit** and **Plan** modes, actions that modify resources (creating or updating a flow, restarting an execution) require explicit confirmation before the Copilot executes them. A confirmation prompt appears in the chat with an optional field to steer the next step. Approving executes the action; rejecting resumes the conversation in Edit mode or cancels the current plan in Plan mode.
+In Edit and Plan modes, any action that changes a resource, such as creating or updating a flow or restarting an execution, waits for your confirmation. The confirmation prompt has an optional field to steer the next step.
 
-## Edit mode
-
-Edit mode generates and iteratively refines declarative flow YAML. Describe what you want to build; the Copilot searches available plugins, validates the generated YAML, and proposes the change for your approval. Once accepted, you can keep iterating — adding triggers, adjusting tasks, or refactoring a section — without the Copilot touching unrelated parts of the flow.
-
-Edit mode is available anywhere you build in Kestra — Flows, Apps, Unit tests, and Dashboards.
-
-## Usage limits
-
-AI Copilot requires a configured LLM provider. Without one, the feature is inactive. Configure a provider in the `kestra.ai.providers` block — see [Configuration](#configuration) below.
-
-## Configuration
-
-To add Copilot to your flow editor, add one of the following to your configuration. For OSS users, you can provide your Gemini API key to use the AI Copilot.
-
-```yaml
-kestra:
-  ai:
-    providers:
-      - id: gemini
-        display-name: Gemini
-        type: gemini
-        configuration:
-          api-key: YOUR_GEMINI_API_KEY
-          model-name: gemini-3.5-flash-lite
-```
-
-For Enterprise, the `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):
-
-```yaml
-kestra:
-  ai:
-    enabled: true # set to false to disable AI Copilot entirely
-    providers:
-      - id: gemini
-        display-name: Gemini - Private
-        type: gemini
-        configuration:
-          model-name: gemini-2.5-flash
-          api-key: YOUR_GEMINI_API_KEY
-      - id: gpt
-        display-name: OpenAI
-        type: openai
-        is-default: true
-        configuration:
-          model-name: gpt-4o
-          api-key: YOUR_OPENAI_API_KEY
-```
-
-For more information on provider configuration, check the [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). 
-
-:::alert{type="info"}
-Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`is-default: true`).
-:::
-
-### Disabling AI Copilot
-
-To disable AI Copilot, set `kestra.ai.enabled` to `false`:
-
-```yaml
-kestra:
-  ai:
-    enabled: false
-```
-
-The property defaults to `true`.
-
-:::alert{type="warning"}
-**Known issue (Kestra 2.0.0):** `kestra.ai.enabled: false` does not fully disable AI Copilot in the current release. The Copilot UI button and other AI features such as "Fix with AI" remain visible and the feature continues to respond. This is being tracked and will be resolved in an upcoming release.
-:::
-
-### Multiple providers
-
-When multiple providers are configured, users can switch models from a dropdown in the Copilot UI instead of relying only on the default.
-
-For a full reference of every configuration property — including generation parameters, extended reasoning, mTLS, custom headers, and per-provider availability — see the [AI Copilot configuration reference](../../configuration/06.enterprise-and-advanced/index.md#ai-copilot).
-- `timeout`: Specifies the maximum duration to wait for an AI model API request to complete before timing out. ISO 8601 duration format (Java Duration): `PT30S` = 30 seconds. You can set it per provider to enforce strict SLAs.
-
-:::alert{type="info"}
-Enterprise Edition includes an [RBAC permission](../../07.enterprise/03.auth/rbac/index.md) that lets administrators allow or disallow Copilot usage per role at tenant or namespace scope.
-:::
-
-:::alert{type="info"}
-The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. See [Enterprise Edition Copilot configurations](#enterprise-edition-copilot-configurations) below. If you use a different provider, [reach out to us](https://kestra.io/demo) and we'll add it.
-:::
+- In Edit mode, rejecting an action returns you to the conversation.
+- In Plan mode, rejecting the plan, or any action after you approved it, stops the plan.
 
 ## Build flows with Edit mode
 
-Open the Copilot sidebar, select **Edit** mode, and describe what you want to build. The Copilot searches for the right plugins, generates validated YAML, and proposes the change for your approval. The flow is marked **Valid** before the proposal is shown — you will not be asked to apply broken YAML.
+Open the Copilot sidebar, select **Edit** mode, and describe what you want to build. Copilot searches for the right plugins, generates YAML, and validates it before proposing the change, so the flow is marked **Valid** when you see the proposal. After you accept a change, keep iterating: add triggers, adjust tasks, or refactor a section. Copilot changes only the part you ask about.
 
 **Step 1: Build the initial flow**
 
@@ -159,7 +79,7 @@ Add error handling that sends a Slack alert if any task fails
 
 ![AI Copilot Edit mode showing the Copilot adding an errors block with a Slack webhook task without touching the existing tasks](./edit-step-2-errors.png)
 
-The Copilot updates only the `errors` block — the existing `download_from_s3` and `load_to_postgres` tasks are untouched. The Copilot explains what it changed before presenting the proposal.
+The Copilot adds an `errors` block and leaves the existing `download_from_s3` and `load_to_postgres` tasks unchanged. The Copilot explains what it changed before presenting the proposal.
 
 **Step 3: Parameterize hardcoded values**
 
@@ -183,33 +103,35 @@ When you open the Copilot from a failed execution view, the execution is automat
 
 ![AI Copilot Ask mode showing the Copilot diagnosing a failed execution by reading logs and identifying missing secrets, with the execution and namespace context pills attached](./ask-mode-diagnose.png)
 
-In the example above, the Copilot ran `read-execution` and `read-execution-logs`, identified that the `download_from_s3` task failed due to `SecretNotFoundException`, and listed exactly which secrets — `AWS_ACCESS_KEY_ID`, `AWS_SECRET_KEY_ID`, `POSTGRES_USERNAME`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, and `SLACK_WEBHOOK` — need to be configured before running the flow again.
+In the example above, the Copilot ran `read-execution` and `read-execution-logs`, identified that the `download_from_s3` task failed due to `SecretNotFoundException`, and listed the secrets to create before running the flow again.
 
 Other example questions:
+
 - "What is the difference between a Worker Group and a Task Runner?"
 - "How do I configure namespace-level Policies?"
 - "What secrets and variables are available in this namespace?" (with a namespace attached as context)
 
-Ask mode is also a useful starting point before switching to Edit or Plan — use it to understand your options, then switch modes to act on the answer.
+Start in Ask mode to understand your options, then switch to Edit or Plan to act on the answer.
 
 ## Plan mode
 
-Use Plan mode when a task involves multiple ordered steps that you want to approve individually before the Copilot executes them. Plan mode presents the full plan upfront as a numbered list, then waits for your confirmation before starting. You can approve and execute the plan, or reply to revise it before anything runs.
+Use Plan mode for tasks with several ordered steps that you want to review before anything runs. Copilot presents the whole plan as a numbered list and waits. Select **Approve & execute** to run it, or **Reply to revise** to send feedback and get a revised plan.
 
 ![AI Copilot Plan mode showing a proposed ELT pipeline plan with four numbered steps and an Approve & execute button](./plan-mode.png)
 
-In the example above, the prompt "Build an ELT pipeline: extract from Salesforce, transform with dbt on DuckDB, load into Snowflake, and send a Slack summary on completion or failure" produced a four-step plan. The `company.team` namespace pill is attached, so the Copilot can reference available plugins and credentials in that namespace.
+In the example above, the prompt "Build an ELT pipeline: extract from Salesforce, transform with dbt on DuckDB, load into Snowflake, and send a Slack summary on completion or failure" produced a four-step plan. The `company.team` namespace pill is attached, so Copilot can use the plugins and credentials available in that namespace.
 
-Rejecting a step cancels the remaining steps. If you want to adjust the plan before it runs, use **Reply to revise** to send feedback and get a revised plan.
+After you approve the plan, Copilot carries it out one step at a time. Each step that changes a resource asks for confirmation. Rejecting one stops the plan.
 
 Use Plan mode for tasks like:
+
 - Building a multi-stage pipeline where you want to review the structure before any YAML is generated
-- Migrating flows from one pattern to another (for example, from `ForEach` to the Loop task) across multiple steps
+- Migrating flows from one pattern to another, for example from `ForEach` to the Loop task
 - Setting up namespaces, variables, and RBAC in sequence for a new team
 
 ## Fix with AI
 
-From the Logs and Gantt views, click the three-dot menu on any failed task and select **Fix with AI**. The flow editor opens with the Copilot pre-loaded with the error context in Edit mode, ready to propose a fix.
+From the **Logs** and **Gantt** views of an execution, open the three-dot menu on a failed task and select **Fix with AI**. The flow editor opens with Copilot in Edit mode, loaded with the error context and ready to propose a fix.
 
 ## Starter prompts
 
@@ -283,15 +205,60 @@ From the Logs and Gantt views, click the three-dot menu on any failed task and s
 ```
 :::
 
-## Enterprise Edition Copilot configurations
+## Configure an LLM provider
 
-Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models via Ollama. Add one or more provider blocks inside `kestra.ai.providers` and set `is-default: true` on the one Copilot should use by default.
+Copilot needs an LLM provider. Until you configure one, the Copilot panel opens but can't answer prompts. Add providers under `kestra.ai.providers` in your Kestra configuration.
 
-:::alert{type="warning"}
-Some Ollama model tags resolve to thinking models behind the scenes (for example, `qwen3:30b-a3b` points to a thinking variant). Thinking models that cannot have thinking disabled will produce incorrect YAML. Check that your chosen model supports a non-thinking mode, or use `thinking-enabled: false` where the provider supports it.
+Kestra Open Source supports Google Gemini:
+
+```yaml
+kestra:
+  ai:
+    providers:
+      - id: gemini
+        display-name: Gemini
+        type: gemini
+        configuration:
+          api-key: YOUR_GEMINI_API_KEY
+          model-name: gemini-3.5-flash-lite
+```
+
+Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and open-source models served by Ollama. If you need another provider, [contact us](https://kestra.io/demo).
+
+For every configuration property, including generation parameters, extended reasoning, request timeouts, mTLS, and custom headers, see the [AI Copilot configuration reference](../../configuration/06.enterprise-and-advanced/index.md#ai-copilot).
+
+:::alert{type="info"}
+Legacy single-provider configurations (`kestra.ai.type` plus a provider block) still work. Use the `providers` array to register several providers and choose a default.
 :::
 
-### Amazon Bedrock
+### Register multiple providers
+
+In Enterprise Edition, register several providers and mark one with `is-default: true`. Users can switch between them from the model dropdown in the Copilot panel.
+
+```yaml
+kestra:
+  ai:
+    providers:
+      - id: gemini
+        display-name: Gemini - Private
+        type: gemini
+        configuration:
+          model-name: gemini-3.5-flash-lite
+          api-key: YOUR_GEMINI_API_KEY
+      - id: gpt
+        display-name: OpenAI
+        type: openai
+        is-default: true
+        configuration:
+          model-name: gpt-5-mini
+          api-key: YOUR_OPENAI_API_KEY
+```
+
+### Provider examples
+
+Each example below shows the minimum configuration for one Enterprise Edition provider.
+
+#### Amazon Bedrock
 
 ```yaml
 kestra:
@@ -306,7 +273,7 @@ kestra:
           secret-access-key: BEDROCK_SECRET_ACCESS_KEY
 ```
 
-### Anthropic
+#### Anthropic
 
 Anthropic does not accept an `api-key` configuration field. Set the `ANTHROPIC_API_KEY` environment variable on the Kestra server instead.
 
@@ -321,7 +288,7 @@ kestra:
           model-name: claude-opus-4-5
 ```
 
-### Azure OpenAI
+#### Azure OpenAI
 
 ```yaml
 kestra:
@@ -339,7 +306,7 @@ kestra:
           endpoint: "https://your-resource.openai.azure.com/"
 ```
 
-### Deepseek
+#### DeepSeek
 
 ```yaml
 kestra:
@@ -354,7 +321,7 @@ kestra:
           base-url: "https://api.deepseek.com/v1"
 ```
 
-### Google Gemini
+#### Google Gemini
 
 ```yaml
 kestra:
@@ -364,13 +331,13 @@ kestra:
         display-name: Google Gemini
         type: gemini
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.5-flash-lite
           api-key: YOUR_GEMINI_API_KEY
 ```
 
-### Google Vertex AI
+#### Google Vertex AI
 
-Authenticates via Application Default Credentials; no `api-key` field is needed. Ensure the Kestra runtime has ADC configured (e.g. `GOOGLE_APPLICATION_CREDENTIALS` env var or Workload Identity).
+Vertex AI authenticates with Application Default Credentials, so there is no `api-key` field. Configure ADC on the Kestra server, for example with the `GOOGLE_APPLICATION_CREDENTIALS` environment variable or Workload Identity.
 
 ```yaml
 kestra:
@@ -385,7 +352,7 @@ kestra:
           location: us-central1
 ```
 
-### Mistral
+#### Mistral
 
 ```yaml
 kestra:
@@ -395,12 +362,12 @@ kestra:
         display-name: Mistral
         type: mistralai
         configuration:
-          model-name: mistral:7b
+          model-name: mistral-small-latest
           api-key: MISTRALAI_API_KEY
           base-url: "https://api.mistral.ai/v1"
 ```
 
-### Ollama
+#### Ollama
 
 ```yaml
 kestra:
@@ -414,11 +381,13 @@ kestra:
           base-url: http://localhost:11434
 ```
 
-:::alert{type="info"}
-If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead. For example, set the base URL to `http://host.docker.internal:11434`.
+If Kestra runs in a container and Ollama runs on the host, `localhost` points to the container. Set the base URL to `http://host.docker.internal:11434` instead.
+
+:::alert{type="warning"}
+Some Ollama model tags resolve to thinking models; for example, `qwen3:30b-a3b` points to a thinking variant. Thinking models that can't disable thinking produce incorrect YAML. Choose a model with a non-thinking mode, or set `thinking-enabled: false` where the provider supports it.
 :::
 
-### OpenAI
+#### OpenAI
 
 ```yaml
 kestra:
@@ -433,7 +402,7 @@ kestra:
           base-url: https://api.openai.com/v1
 ```
 
-### OpenRouter
+#### OpenRouter
 
 ```yaml
 kestra:
@@ -446,3 +415,21 @@ kestra:
           api-key: OPENROUTER_API_KEY
           model-name: "anthropic/claude-sonnet-4"
 ```
+
+### Disable AI Copilot
+
+Set `kestra.ai.enabled` to `false`. The property defaults to `true`.
+
+```yaml
+kestra:
+  ai:
+    enabled: false
+```
+
+:::alert{type="warning"}
+**Known issue (Kestra 2.0.0):** `kestra.ai.enabled: false` does not fully disable AI Copilot in the current release. The Copilot UI button and other AI features such as "Fix with AI" remain visible and the feature continues to respond. This is being tracked and will be resolved in an upcoming release.
+:::
+
+### Control access with RBAC
+
+In Enterprise Edition, an [RBAC permission](../../07.enterprise/03.auth/rbac/index.md) lets administrators allow or deny Copilot usage per role, at tenant or namespace scope.

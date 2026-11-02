@@ -133,6 +133,7 @@ These use cases show that governance is the enabler for moving AI from experimen
 - [Best Workflow Monitoring Tools for 2026](/resources/infrastructure/workflow-monitoring-tools)
 - [Top SimplyAsk Alternatives & Competitors in 2026](/resources/ai/simplyask-alternatives)
 - [Kestra Resources: Guides for Data, AI, Infrastructure & More](/resources)
-- [Kestra AI Tools – Copilot, Agents, Agent Skills, and RAG Workflows](/docs/ai-tools)
+- [Develop with AI in Kestra: Copilot and Agent Skills](/docs/develop-with-ai)
+- [AI Orchestration in Kestra: LLM Tasks, AI Agents, and RAG](/docs/ai-orchestration)
 
 Governing AI-generated workflows is essential for any organization serious about scaling its AI initiatives responsibly. By adopting a declarative, auditable, and human-centric approach, you can build AI systems that are not only powerful but also trustworthy. Ready to implement governed AI workflows? Explore how Kestra can help you [stop writing glue code around your AI pipelines](/ai-automation).

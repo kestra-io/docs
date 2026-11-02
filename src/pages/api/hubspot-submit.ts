@@ -1,4 +1,6 @@
 import type { APIRoute } from "astro"
+import { HUBSPOT_PRIVATE_APP_TOKEN } from "astro:env/server"
+import { resolveHqRouting } from "~/utils/hubspotRouting"
 
 export const prerender = false
 
@@ -13,6 +15,13 @@ function json(data: unknown, status: number) {
         status,
         headers: { "Content-Type": "application/json" },
     })
+}
+
+function fieldValue(fields: unknown[], name: string) {
+    const field = fields.find(
+        (candidate) => (candidate as { name?: unknown })?.name === name,
+    ) as { value?: unknown } | undefined
+    return typeof field?.value === "string" ? field.value : undefined
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -52,17 +61,29 @@ export const POST: APIRoute = async ({ request }) => {
         context: safeContext,
     }
 
+    const submit = fetch(
+        `${HUBSPOT_SUBMIT_BASE}/${HUBSPOT_PORTAL_ID}/${formId}`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+        },
+    )
+
+    const routing = resolveHqRouting({
+        token: HUBSPOT_PRIVATE_APP_TOKEN,
+        email: fieldValue(fields, "email"),
+        employees: fieldValue(fields, "number_of_employees"),
+        submitted: submit.then(
+            (response) => response.ok,
+            () => false,
+        ),
+    })
+
     let upstream: Response
 
     try {
-        upstream = await fetch(
-            `${HUBSPOT_SUBMIT_BASE}/${HUBSPOT_PORTAL_ID}/${formId}`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
-            },
-        )
+        upstream = await submit
     } catch (error) {
         console.error("HubSpot proxy upstream request failed:", error)
         return json(
@@ -75,12 +96,26 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const responseBody = await upstream.text()
+    const passthrough = () =>
+        new Response(responseBody, {
+            status: upstream.status,
+            headers: {
+                "Content-Type":
+                    upstream.headers.get("Content-Type") || "application/json",
+            },
+        })
 
-    return new Response(responseBody, {
-        status: upstream.status,
-        headers: {
-            "Content-Type":
-                upstream.headers.get("Content-Type") || "application/json",
-        },
-    })
+    if (!upstream.ok) return passthrough()
+
+    const resolved = await routing
+    if (!resolved) return passthrough()
+
+    let parsed: Record<string, unknown>
+    try {
+        parsed = JSON.parse(responseBody)
+    } catch {
+        return passthrough()
+    }
+
+    return json({ ...parsed, routing: resolved }, upstream.status)
 }

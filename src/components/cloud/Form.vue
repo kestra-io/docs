@@ -171,6 +171,7 @@
         getMeetingUrl,
         tierFromEmployees,
     } from "~/composables/useMeeting"
+    import type { Routing } from "~/utils/hubspotRouting"
 
     const {
         variant = "default",
@@ -202,8 +203,11 @@
     const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
     const COMPANY_SIZE_PROPERTY = "number_of_employees"
 
-    function cloudMeetingUrl(employees: string) {
-        return getMeetingUrl(tierFromEmployees(employees), CONNOR_CLOUD_MEETING_LINK)
+    function cloudMeetingUrl(employees: string, routing?: Routing) {
+        return getMeetingUrl(routing?.tier ?? tierFromEmployees(employees), {
+            fallback: CONNOR_CLOUD_MEETING_LINK,
+            territory: routing?.territory,
+        })
     }
 
     function withContactParams(
@@ -289,10 +293,15 @@
                 },
             }
 
-            await submitHubspotForm(HUBSPOT_FORM_ID, payload)
+            const result = await submitHubspotForm<{ routing?: Routing }>(
+                HUBSPOT_FORM_ID,
+                payload,
+            )
 
             valid.value = true
-            meetingUrl.value = withContactParams(cloudMeetingUrl(employees), {
+            meetingUrl.value = withContactParams(
+                cloudMeetingUrl(employees, result?.routing),
+                {
                 firstname,
                 lastname,
                 email,

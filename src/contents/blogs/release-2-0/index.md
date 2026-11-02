@@ -150,7 +150,7 @@ Flow inputs map automatically to the tool's JSON schema parameter spec. Outputs 
 
 All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so you can filter by agent origin in the execution list.
 
-Full setup in the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger).
+Full setup in the [MCP server docs](/docs/ai-orchestration/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger).
 
 <div style="position: relative; padding-bottom: calc(49.0084% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/T50B5gunEbBXP5caS8yl?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flow as an MCP Tool in Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -172,7 +172,7 @@ When you open the sidebar while viewing a resource, that resource attaches autom
 
 Actions that modify resources require explicit confirmation before the AI Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode, keeping you in full control while you iterate.
 
-The [AI Copilot docs](/docs/ai-tools/ai-copilot) cover mode details, context tags, and RBAC config.
+The [AI Copilot docs](/docs/develop-with-ai/ai-copilot) cover mode details, context tags, and RBAC config.
 
 ## No-code Editor
 
@@ -489,7 +489,7 @@ Plugin artifacts are available to all plugin authors in 2.0. The [plugin artifac
 - TRACEPARENT propagation: pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent their OpenTelemetry spans under the Kestra task span. This closes a distributed tracing gap for teams running scripts inside Docker containers.
 - Syslog (CEF) log exporter: the EE [Log Shipper](/docs/enterprise/governance/logshipper) and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. CEF-formatted Kestra log events route directly into SIEM infrastructure (Graylog, Splunk, QRadar) without a custom adapter.
 - [LDAP](/docs/enterprise/auth/sso/ldap) group-sync-only mode (EE): `mode: GROUP_SYNC_ONLY` lets teams keep their existing SSO provider for login while using LDAP exclusively to resolve group memberships.
-- [AI Agent](/docs/ai-tools/ai-agents): `guardrails` attach input/output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Prometheus metrics now cover tool calls, provider calls, and embedding store calls. New MCP client tasks let Agent tasks call external MCP servers as tools.
+- [AI Agent](/docs/ai-orchestration/ai-agents): `guardrails` attach input/output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Prometheus metrics now cover tool calls, provider calls, and embedding store calls. New MCP client tasks let Agent tasks call external MCP servers as tools.
 - [VS Code extension](/docs/version-control-cicd/vscode): the extension now downloads the flow schema from your connected instance rather than bundling a generic one, so completion reflects the plugins actually installed. Live validation, Pebble autocompletion, topology preview with live task states during a run, and run-from-editor are all in.
 - [Draft revisions](/docs/concepts/revision): save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed; any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft.
 - Execution API performance: task run outputs now live in dedicated storage rather than inline in the execution record. `GET /executions/search` responses are significantly lighter, which directly improves execution list load time on large instances. Integrations that read `taskRunList[*].outputs` from the execution endpoint should switch to `GET /outputs/{executionId}/{taskRunId}`. See the [execution API response migration guide](/docs/migration-guide/v2.0.0/execution-api-response).

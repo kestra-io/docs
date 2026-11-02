@@ -11,10 +11,8 @@ import SecurityPosture from "~/components/vra-migration-guide/assistant/Security
 import ExampleUseCase from "~/components/vra-migration-guide/assistant/ExampleUseCase.astro"
 import GetItCards from "~/components/vra-migration-guide/assistant/GetItCards.astro"
 import NextSteps from "~/components/vra-migration-guide/assistant/NextSteps.astro"
-import {
-    GUIDE_HREF,
-    WEBINAR_HREF,
-} from "~/components/vra-migration-guide/assistant/links"
+import WebinarBanner from "~/components/vra-migration-guide/WebinarBanner.astro"
+import { GUIDE_HREF } from "~/components/vra-migration-guide/assistant/links"
 import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
 import {
     HELP_DIALOG_ID,
@@ -54,12 +52,6 @@ const faqItems = [
     description="The Kestra Migration Assistant is a free, open-source tool that assesses your VMware vRA and vRO workflows on your machine and plans the migration to Kestra."
     breadcrumbTitle="Kestra Migration Assistant for vRA"
     headerTheme="lightText"
-    banner={{
-        tag: "Webinar",
-        linkText: "Migrating off vRA, live on November 4 and 5:",
-        tail: "see the Migration Assistant run end to end",
-        href: WEBINAR_HREF,
-    }}
 >
     <Fragment slot="head">
         <SchemaFAQ items={faqItems} />
@@ -80,6 +72,7 @@ const faqItems = [
         <HeroActions slot="actions" />
         <HeroVisual slot="visual" />
     </GuideHero>
+    <WebinarBanner />
 
     <WhatItDoes />
     <HowItWorks />
@@ -98,36 +91,3 @@ const faqItems = [
         form={HELP_REQUEST}
     />
 </Layout>
-
-<script>
-    import {
-        WEBINAR_HREF_EU,
-        WEBINAR_HREF_US,
-    } from "~/components/vra-migration-guide/assistant/links"
-    import { isAmericasTimezone } from "~/composables/useMeeting"
-
-    // Visitors in the Americas get the US session of the webinar, the same
-    // split the demo forms make. The banner is a Vue island, so its link is
-    // swapped once it has hydrated. "Next steps" links each session by name,
-    // so its links are left alone.
-    function pickWebinarSession() {
-        if (!isAmericasTimezone()) return
-        for (const link of document.querySelectorAll<HTMLAnchorElement>(
-            `a[href="${WEBINAR_HREF_EU}"]:not([data-webinar-session])`,
-        )) {
-            const island = link.closest("astro-island")
-            if (island?.hasAttribute("ssr")) {
-                new MutationObserver((_, observer) => {
-                    if (island.hasAttribute("ssr")) return
-                    link.href = WEBINAR_HREF_US
-                    observer.disconnect()
-                }).observe(island, { attributes: true })
-            } else {
-                link.href = WEBINAR_HREF_US
-            }
-        }
-    }
-
-    pickWebinarSession()
-    document.addEventListener("astro:page-load", pickWebinarSession)
-</script>

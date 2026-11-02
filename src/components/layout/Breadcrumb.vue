@@ -76,6 +76,8 @@
         const specialCases: Record<string, string> = {
             ui: "UI",
             "ai-tools": "AI Tools",
+            "ai-orchestration": "AI Orchestration",
+            "develop-with-ai": "Develop with AI",
         }
         return (
             specialCases[item] ||

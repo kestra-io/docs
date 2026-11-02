@@ -83,7 +83,7 @@ easeOfUse:
   title: Code-native vs. Click-to-build
   kestra:
     title: "Kestra: Readable, reviewable, deployable"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows go through pull requests and CI/CD like any other code."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Workflows go through pull requests and CI/CD like any other code."
     code: |
       id: daily_report
       namespace: analytics

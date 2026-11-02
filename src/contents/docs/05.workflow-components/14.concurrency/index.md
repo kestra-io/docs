@@ -12,6 +12,8 @@ Concurrency limits control how many executions can run at the same time, at the 
 
 Once an execution occupies a concurrency slot, it keeps that slot until it reaches a terminal state. This includes executions in the `PAUSED` state while they wait for manual approval. For example, with `concurrency.limit` set to 1, a flow paused by a `Pause` task blocks all subsequent executions until the paused execution is resumed, killed, or otherwise reaches a terminal state. Resuming the execution continues to use its existing slot, so it cannot exceed the configured limit.
 
+Restarted executions and replays of a failed execution go through the concurrency limit like new executions, so they can be queued, cancelled, or failed.
+
 :::alert{type="info"}
 Concurrency limits executions, not the number of tasks a worker runs. Task processing is governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions competing for the same lock) can increase database load and slow scheduling.
 :::
@@ -46,6 +48,8 @@ With `limit: 2`, a third execution waits until one of the two running executions
 
 ### Namespace level
 
+Namespace and tenant limits are available in Enterprise Edition.
+
 Set a concurrency limit on a namespace to cap the total simultaneous executions across all flows within that namespace and its children.
 
 Navigate to **Namespaces**, open the target namespace, click **Edit**, and scroll to the **Concurrency** section. Set the **Limit** and choose a **Behavior** (`Queue`, `Cancel`, or `Fail`). The same configuration is also available via the API.
@@ -55,6 +59,8 @@ A namespace concurrency limit applies to every flow whose namespace matches or i
 ### Tenant level
 
 Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
+
+In the [Instance Owner console](../../07.enterprise/05.instance/00.instance-owner/index.md), open the tenant's **Settings**, then set the **Limit** and **Behavior** in the **Concurrency** section.
 
 :::alert{type="warning"}
 Namespace and tenant limits with `behavior: QUEUE` (the default) can deadlock when flows in that scope start [subflows](../10.subflows/index.md) that run in the same scope, including child namespaces. With `wait: true` (the default), a parent execution keeps its slot while it waits, and the subflow execution needs a slot from the same limit. Once every slot is held by an execution waiting on a queued subflow, no execution in the namespace or tenant can start, including flows that don't use subflows. Kestra reports no error or timeout, and the deadlock does not resolve on its own. To prevent or resolve this, see [Parent executions stuck waiting on queued subflows](#parent-executions-stuck-waiting-on-queued-subflows).
@@ -67,6 +73,10 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 - `QUEUE`: hold the execution until a slot opens (default).
 - `CANCEL`: immediately mark the execution as `CANCELLED`.
 - `FAIL`: immediately mark the execution as `FAILED`.
+
+With `FAIL`, every execution the limit rejects ends `FAILED`, so alerts on failed executions fire once per rejected execution. A trigger with [`stopAfter: [FAILED]`](../07.triggers/index.mdx#stopafter) is disabled by the first execution the limit rejects. Use `CANCEL` when you expect rejected executions and don't want them to alert or disable triggers.
+
+Time spent in `QUEUED` counts toward an [SLA](../18.sla/index.md) `MAX_DURATION`, so a queued execution can breach its SLA before it starts running.
 
 If you expect execution spikes, combine a conservative limit with backoff at the source (e.g., slower trigger rates) to avoid large queues that increase database lock contention.
 
@@ -115,7 +125,9 @@ The **Concurrency** tab on a Flow page shows current slot usage, the configured 
 
 ### Concurrency Limits page
 
-The **Concurrency Limits** page under **Tenant** in the sidebar lists every flow, namespace, and tenant concurrency limit configured, along with its live running count. It provides a tenant-wide view of concurrency usage across all scopes.
+The **Concurrency Limits** page lists every flow, namespace, and tenant concurrency limit configured, along with its live running count. It provides a tenant-wide view of concurrency usage across all scopes.
+
+In the open-source edition, open it from **Tenant > Concurrency Limits** in the sidebar. In Enterprise Edition, only the Instance Owner can open it: in the [Instance Owner console](../../07.enterprise/05.instance/00.instance-owner/index.md), select the tenant and open **Concurrency Limits**.
 
 ![Concurrency Limits page listing two flows with their namespaces and running counts](./concurrency-limits-page.png)
 
@@ -144,9 +156,11 @@ Set `allowConcurrent: true` to allow multiple executions to run simultaneously f
 
 Update a concurrency limit when executions are backing up or hitting the limit unexpectedly. Avoid changing limits routinely; a stable limit is a deliberate resource protection decision.
 
-Edit the `concurrency.limit` value directly in the flow editor and save. The executor reads the latest flow revision immediately, so the new limit takes effect for all in-progress executions without a restart.
+Edit the `concurrency.limit` value directly in the flow editor and save. For a namespace or tenant limit, edit the **Concurrency** section of the namespace or tenant settings.
 
-You can also update the limit from the **Concurrency Limits** page in the sidebar: click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
+The new limit applies to new executions without a restart. Executions that are already `QUEUED` stay queued until a running execution of the flow ends, even when the new limit leaves room for them.
+
+If you remove `concurrency` from a flow and add it back later, the running count restarts at 0. Executions that were already running are not counted, so more executions than the limit can run until they finish.
 
 ## Troubleshooting concurrency issues
 
@@ -158,7 +172,9 @@ The **Concurrency** tab on the Flow page shows which executions are running, que
 
 ### Reset a stuck running counter
 
-If executions were deleted while running, their concurrency slots can remain occupied indefinitely. The **Concurrency Limits** page allows manual adjustment of the running counter for affected flows.
+If executions were deleted while running, their concurrency slots can remain occupied indefinitely. On the **Concurrency Limits** page, click the edit icon next to the running count of the affected flow, set the new count, and save. The edit icon changes the running count, not the limit. You can also set the count with the API: `PUT /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}`.
+
+Resetting the count doesn't start queued executions. They stay `QUEUED` until a running execution of the flow ends, while new executions can take the freed slots first.
 
 ![Concurrency Limits counter reset dialog with a warning that changing the counter may allow executions to exceed the limit](./concurrency-limits-reset.png)
 
