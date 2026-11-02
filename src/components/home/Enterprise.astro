@@ -1,8 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
-import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
 
-// Four reasons, each over a glimpse of the product that proves it.
+// Four reasons, each under a glimpse of the product that proves it.
 const FEATURES = [
     {
         id: "access",
@@ -26,54 +25,125 @@ const FEATURES = [
     },
 ]
 
-// Each glimpse is a corner of the product: the page it would sit on in
-// Kestra, named in its bar, and the product's own state badges.
-const PAGES = {
-    access: "Tenants",
+// The page each glimpse would sit on in Kestra.
+const PAGES: Record<string, string> = {
+    access: "Tenant",
     reliability: "Worker groups",
     governance: "Audit logs",
     scale: "Workers",
-} as const
+}
 
-// Tenants stacked, the Infrastructure one open on its namespaces and
-// flows, and the people who work in it.
+// The Infrastructure tenant, open on its namespaces and a flow.
 const ROOT = "acme"
-const NAMESPACES: { id: string; flows?: string[] }[] = [
-    { id: "acme.cloud" },
-    { id: "acme.kubernetes", flows: ["scale_cluster"] },
-    { id: "acme.network" },
-    { id: "acme.monitoring" },
+const NAMESPACES = [
+    "acme.cloud",
+    "acme.kubernetes",
+    "acme.network",
+    "acme.monitoring",
 ]
+const FLOW = { parent: "acme.kubernetes", id: "scale_cluster" }
 // The namespace the admin removes in the story.
 const DELETED = "acme.network"
-// Three roles: one edits a flow, one runs it, one deletes a namespace.
+// Three roles: one edits the flow, one runs it, one deletes a namespace.
 const PEOPLE = [
     { id: "launcher", name: "Launcher", icon: "mdi:play-circle-outline" },
     { id: "editor", name: "Editor", icon: "mdi:pencil" },
     { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
 ]
-const AUDIT = [
-    { time: "09:14", who: "j.kim", what: "close_books", state: "success" },
-    { time: "09:31", who: "m.chen", what: "approved", state: "success" },
-    { time: "09:32", who: "agent", what: "delete_flow", state: "failed" },
-]
+
 // The queues the worker group serves, with the slots in use.
 const QUEUES = [
     { name: "ml-training", mode: "Elastic 25%", used: 8, slots: 10 },
     { name: "Default", mode: "Shared", used: 4, slots: 24 },
 ]
+
+// The audit log as the product lists it: what changed, how, by whom,
+// one detail of it, and when. The first five show; the script streams the
+// others in on top, newest first.
+const AUDIT = [
+    {
+        type: "Execution",
+        action: "Resumed",
+        actor: "m.chen",
+        detail: "approval:deploy_prod",
+        age: 40,
+    },
+    {
+        type: "Execution",
+        action: "Created",
+        actor: "s.roy",
+        detail: "flowId:deploy_prod",
+        age: 260,
+    },
+    {
+        type: "Flow",
+        action: "Updated",
+        actor: "j.kim",
+        detail: "revision:7",
+        age: 900,
+    },
+    {
+        type: "Role",
+        action: "Created",
+        actor: "admin",
+        detail: "id:finance_viewer",
+        age: 3600,
+    },
+    {
+        type: "User",
+        action: "Login",
+        actor: "j.kim",
+        detail: "resource:USER",
+        age: 7400,
+    },
+    {
+        type: "Secret",
+        action: "Updated",
+        actor: "m.chen",
+        detail: "key:DB_PASSWORD",
+        age: 0,
+    },
+    {
+        type: "Namespace",
+        action: "Updated",
+        actor: "admin",
+        detail: "id:acme.finance",
+        age: 0,
+    },
+    {
+        type: "Flow",
+        action: "Created",
+        actor: "agent-01",
+        detail: "id:sync_crm",
+        age: 0,
+    },
+    {
+        type: "Binding",
+        action: "Created",
+        actor: "admin",
+        detail: "role:editor",
+        age: 0,
+    },
+]
+const ago = (seconds: number) =>
+    seconds < 60
+        ? "just now"
+        : seconds < 3600
+          ? `${Math.round(seconds / 60)} min ago`
+          : `${Math.round(seconds / 3600)} hours ago`
+
 // As on the 2.0 page: workers prove who they are before they join.
 const WORKERS = [
-    { name: "worker-onprem-01", ok: true },
-    { name: "worker-euwest-02", ok: true },
-    { name: "unknown", ok: false },
+    { name: "worker-onprem-01", ok: true, tps: 12.4 },
+    { name: "worker-euwest-02", ok: true, tps: 8.1 },
+    { name: "unknown", ok: false, note: "Untrusted certificate" },
 ]
 ---
 
 {
     /* Kestra Enterprise, on black after the AI block, on the page's hairline
     grid: the head with its two ways on, then four cells, each a glimpse of
-    the product over its promise. */
+    the product, drawn in lines and fading out, over its promise. */
 }
 <section
     class="enterprise surface-dark"
@@ -107,125 +177,99 @@ const WORKERS = [
                 {
                     FEATURES.map((feature) => (
                         <li>
-                            <div
-                                class:list={[
-                                    "mock",
-                                    { bare: feature.id === "access" },
-                                ]}
-                                aria-hidden="true"
-                            >
-                                {feature.id !== "access" && (
-                                    <p class="bar">
-                                        <img
-                                            src={kestraMark.src}
-                                            alt=""
-                                            width="14"
-                                            height="14"
-                                        />
-                                        {
-                                            PAGES[
-                                                feature.id as keyof typeof PAGES
-                                            ]
-                                        }
-                                        <span class="dots">
-                                            <span />
-                                            <span />
-                                            <span />
-                                        </span>
+                            <div class="stage" aria-hidden="true">
+                                <div class="glimpse" data-card={feature.id}>
+                                    <p class="glimpse-head">
+                                        {PAGES[feature.id]}
+                                        {feature.id === "access" && (
+                                            <span class="pill">
+                                                <span class="dot" />
+                                                Infrastructure
+                                            </span>
+                                        )}
                                     </p>
-                                )}
-                                <div class="body">
                                     {feature.id === "access" && (
-                                        <div class="tenants" data-tenants>
-                                            <div class="tenant front">
-                                                <p class="tenant-head">
-                                                    <Icon name="mdi:server-network" />
-                                                    Tenant
-                                                    <span class="env infra">
-                                                        <span class="dot" />
-                                                        Infrastructure
+                                        <div
+                                            class="glimpse-body tenant"
+                                            data-tenants
+                                        >
+                                            <ul class="ns-tree">
+                                                <li>
+                                                    <span data-row={ROOT}>
+                                                        <Icon name="mdi:dots-grid" />
+                                                        {ROOT}
                                                     </span>
-                                                </p>
-                                                <ul class="ns-tree">
-                                                    <li>
-                                                        <span data-row={ROOT}>
-                                                            <Icon name="mdi:dots-grid" />
-                                                            {ROOT}
-                                                        </span>
-                                                        <ul>
-                                                            {NAMESPACES.map(
-                                                                (namespace) => (
-                                                                    <li
-                                                                        class:list={{
-                                                                            doomed:
-                                                                                namespace.id ===
-                                                                                DELETED,
-                                                                        }}
+                                                    <ul>
+                                                        {NAMESPACES.map(
+                                                            (namespace) => (
+                                                                <li
+                                                                    class:list={{
+                                                                        doomed:
+                                                                            namespace ===
+                                                                            DELETED,
+                                                                    }}
+                                                                >
+                                                                    <span
+                                                                        data-row={
+                                                                            namespace
+                                                                        }
                                                                     >
-                                                                        <span
-                                                                            data-row={
-                                                                                namespace.id
-                                                                            }
-                                                                        >
-                                                                            <Icon name="mdi:dots-grid" />
-                                                                            {
-                                                                                namespace.id
-                                                                            }
-                                                                            {namespace.id ===
-                                                                                DELETED && (
-                                                                                <span
-                                                                                    class="row-state"
-                                                                                    data-row-state
-                                                                                >
-                                                                                    <span class="badge failed">
-                                                                                        <Icon name="mdi:delete-outline" />
-                                                                                        Deleted
+                                                                        <Icon name="mdi:dots-grid" />
+                                                                        {
+                                                                            namespace
+                                                                        }
+                                                                        {namespace ===
+                                                                            DELETED && (
+                                                                            <span
+                                                                                class="row-state"
+                                                                                data-row-state
+                                                                            >
+                                                                                <span class="pill bad deleted">
+                                                                                    <Icon name="mdi:delete-outline" />
+                                                                                    Deleted
+                                                                                </span>
+                                                                            </span>
+                                                                        )}
+                                                                    </span>
+                                                                    {namespace ===
+                                                                        FLOW.parent && (
+                                                                        <ul>
+                                                                            <li>
+                                                                                <span data-row="flow">
+                                                                                    <Icon name="mdi:file-tree-outline" />
+                                                                                    {
+                                                                                        FLOW.id
+                                                                                    }
+                                                                                    <span
+                                                                                        class="row-state"
+                                                                                        data-row-state
+                                                                                    >
+                                                                                        <span class="pill editing">
+                                                                                            <Icon name="mdi:pencil" />
+                                                                                            Editing
+                                                                                        </span>
+                                                                                        <span class="pill run running">
+                                                                                            <Icon
+                                                                                                name="mdi:loading"
+                                                                                                class="spin"
+                                                                                            />
+                                                                                            Running
+                                                                                        </span>
+                                                                                        <span class="pill ok success">
+                                                                                            <Icon name="mdi:check-circle-outline" />
+                                                                                            Success
+                                                                                        </span>
                                                                                     </span>
                                                                                 </span>
-                                                                            )}
-                                                                        </span>
-                                                                        {namespace.flows && (
-                                                                            <ul>
-                                                                                {namespace.flows.map(
-                                                                                    (
-                                                                                        flow,
-                                                                                    ) => (
-                                                                                        <li>
-                                                                                            <span data-row="flow">
-                                                                                                <Icon name="mdi:file-tree-outline" />
-                                                                                                {
-                                                                                                    flow
-                                                                                                }
-                                                                                                <span
-                                                                                                    class="row-state"
-                                                                                                    data-row-state
-                                                                                                >
-                                                                                                    <span class="badge editing">
-                                                                                                        <Icon name="mdi:pencil" />
-                                                                                                        Editing
-                                                                                                    </span>
-                                                                                                    <span class="badge running">
-                                                                                                        <Icon name="mdi:loading" />
-                                                                                                        Running
-                                                                                                    </span>
-                                                                                                    <span class="badge success">
-                                                                                                        <Icon name="mdi:check-circle-outline" />
-                                                                                                        Success
-                                                                                                    </span>
-                                                                                                </span>
-                                                                                            </span>
-                                                                                        </li>
-                                                                                    ),
-                                                                                )}
-                                                                            </ul>
-                                                                        )}
-                                                                    </li>
-                                                                ),
-                                                            )}
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    )}
+                                                                </li>
+                                                            ),
+                                                        )}
+                                                    </ul>
+                                                </li>
+                                            </ul>
                                             {PEOPLE.map((person) => (
                                                 <span
                                                     class:list={[
@@ -248,13 +292,16 @@ const WORKERS = [
                                         </div>
                                     )}
                                     {feature.id === "reliability" && (
-                                        <div class="routing">
-                                            <p class="group-head">
+                                        <div
+                                            class="glimpse-body routing"
+                                            data-routing
+                                        >
+                                            <p class="group">
                                                 <strong>gpu-a100</strong>
-                                                <span class="label">
+                                                <span class="tag">
                                                     Reserved
                                                 </span>
-                                                <span class="status">
+                                                <span class="pill ok">
                                                     <span class="dot" />
                                                     Online
                                                 </span>
@@ -264,18 +311,25 @@ const WORKERS = [
                                                     <b>8</b> workers online
                                                 </span>
                                                 <span>
-                                                    <b>0.8</b> tasks/s
+                                                    <b data-tps>0.8</b> tasks/s
                                                 </span>
                                             </p>
                                             {QUEUES.map((queue) => (
-                                                <div class="queue">
+                                                <div
+                                                    class="queue"
+                                                    data-queue
+                                                    data-slots={queue.slots}
+                                                >
                                                     <p>
                                                         {queue.name}
-                                                        <span class="mode">
+                                                        <span class="tag">
                                                             {queue.mode}
                                                         </span>
                                                         <span class="ratio">
-                                                            {`${queue.used} / ${queue.slots}`}
+                                                            <span data-used>
+                                                                {queue.used}
+                                                            </span>
+                                                            {` / ${queue.slots}`}
                                                         </span>
                                                     </p>
                                                     <span
@@ -284,61 +338,173 @@ const WORKERS = [
                                                     />
                                                 </div>
                                             ))}
+                                            <dl class="facts">
+                                                <dt>Backup</dt>
+                                                <dd data-backup>
+                                                    <Icon
+                                                        name="mdi:check-circle-outline"
+                                                        class="done"
+                                                    />
+                                                    <Icon
+                                                        name="mdi:loading"
+                                                        class="spin"
+                                                    />
+                                                    <span data-backup-text>
+                                                        Last successful 3m ago
+                                                    </span>
+                                                </dd>
+                                                <dt>Maintenance mode</dt>
+                                                <dd>
+                                                    <span class="switch" />
+                                                    Off
+                                                </dd>
+                                                <dt>SLA target</dt>
+                                                <dd>99.99%</dd>
+                                            </dl>
                                         </div>
                                     )}
                                     {feature.id === "governance" && (
-                                        <div class="audit">
-                                            {AUDIT.map((line) => (
-                                                <p>
-                                                    <span class="time">
-                                                        {line.time}
-                                                    </span>
-                                                    <strong>{line.who}</strong>
-                                                    <span class="what">
-                                                        {line.what}
-                                                    </span>
-                                                    <span
-                                                        class:list={[
-                                                            "badge",
-                                                            line.state,
-                                                        ]}
+                                        <div
+                                            class="glimpse-body audit"
+                                            data-audit
+                                        >
+                                            <p class="entry labels">
+                                                <span>Resource</span>
+                                                <span>Action</span>
+                                                <span>Actor</span>
+                                                <span>Details</span>
+                                                <span>Date</span>
+                                            </p>
+                                            <div class="entries" data-entries>
+                                                {AUDIT.slice(0, 5).map(
+                                                    (line) => (
+                                                        <p
+                                                            class="entry"
+                                                            data-age={line.age}
+                                                        >
+                                                            <span class="type">
+                                                                {line.type}
+                                                            </span>
+                                                            <span class="action">
+                                                                {line.action}
+                                                            </span>
+                                                            <strong class="actor">
+                                                                {line.actor}
+                                                            </strong>
+                                                            <span class="detail">
+                                                                <span class="tag">
+                                                                    {
+                                                                        line.detail
+                                                                    }
+                                                                </span>
+                                                            </span>
+                                                            <span class="date">
+                                                                {ago(line.age)}
+                                                            </span>
+                                                        </p>
+                                                    ),
+                                                )}
+                                            </div>
+                                            <template data-pool>
+                                                {AUDIT.slice(5).map((line) => (
+                                                    <p
+                                                        class="entry"
+                                                        data-age="0"
                                                     >
-                                                        {line.state ===
-                                                        "success"
-                                                            ? "Allowed"
-                                                            : "Denied"}
-                                                    </span>
-                                                </p>
-                                            ))}
-                                            <p class="note">
-                                                <Icon name="mdi:arrow-right" />
-                                                Splunk · syslog over TLS
+                                                        <span class="type">
+                                                            {line.type}
+                                                        </span>
+                                                        <span class="action">
+                                                            {line.action}
+                                                        </span>
+                                                        <strong class="actor">
+                                                            {line.actor}
+                                                        </strong>
+                                                        <span class="detail">
+                                                            <span class="tag">
+                                                                {line.detail}
+                                                            </span>
+                                                        </span>
+                                                        <span class="date">
+                                                            just now
+                                                        </span>
+                                                    </p>
+                                                ))}
+                                            </template>
+                                            <p class="stream">
+                                                <span class="live" />
+                                                Streaming to Splunk & Syslog
+                                                over TLS
+                                                <span class="count">
+                                                    <span data-exported>
+                                                        1,284
+                                                    </span>{" "}
+                                                    events
+                                                </span>
                                             </p>
                                         </div>
                                     )}
                                     {feature.id === "scale" && (
-                                        <div class="handshake">
+                                        <div
+                                            class="glimpse-body handshake"
+                                            data-handshake
+                                        >
+                                            <p class="labels">
+                                                <span>Worker</span>
+                                                <span class="tps">
+                                                    Throughput
+                                                </span>
+                                                <span class="status">
+                                                    Status
+                                                </span>
+                                            </p>
                                             {WORKERS.map((worker) => (
                                                 <p
-                                                    class:list={{
-                                                        refused: !worker.ok,
-                                                    }}
+                                                    class:list={[
+                                                        "worker",
+                                                        { refused: !worker.ok },
+                                                    ]}
+                                                    data-worker={
+                                                        worker.ok
+                                                            ? "ok"
+                                                            : "refused"
+                                                    }
                                                 >
                                                     <Icon
                                                         name={
                                                             worker.ok
-                                                                ? "mdi:server-security"
-                                                                : "mdi:server-off"
+                                                                ? "mdi:server-outline"
+                                                                : "mdi:alert-outline"
                                                         }
                                                     />
-                                                    {worker.name}
+                                                    <span class="name">
+                                                        {worker.name}
+                                                        {worker.note && (
+                                                            <small>
+                                                                {worker.note}
+                                                            </small>
+                                                        )}
+                                                    </span>
+                                                    {worker.ok && (
+                                                        <span class="tps">
+                                                            <span
+                                                                data-worker-tps
+                                                            >
+                                                                {worker.tps?.toFixed(
+                                                                    1,
+                                                                )}
+                                                            </span>
+                                                            k tasks/s
+                                                        </span>
+                                                    )}
                                                     <span
                                                         class:list={[
-                                                            "badge",
+                                                            "pill",
                                                             worker.ok
-                                                                ? "success"
-                                                                : "failed",
+                                                                ? "ok"
+                                                                : "bad",
                                                         ]}
+                                                        data-verdict
                                                     >
                                                         {worker.ok
                                                             ? "Verified"
@@ -346,10 +512,23 @@ const WORKERS = [
                                                     </span>
                                                 </p>
                                             ))}
-                                            <p class="note">
-                                                <Icon name="mdi:shield-lock-outline" />
-                                                mTLS · Kafka queue
-                                            </p>
+                                            <dl class="facts">
+                                                <dt>Tunnel</dt>
+                                                <dd>
+                                                    <Icon
+                                                        name="mdi:shield-check-outline"
+                                                        class="secure"
+                                                    />
+                                                    mTLS active
+                                                </dd>
+                                                <dt>Backends</dt>
+                                                <dd>PostgreSQL · Kafka</dd>
+                                                <dt>Throughput</dt>
+                                                <dd>
+                                                    <b data-total>20.5k</b>{" "}
+                                                    tasks/s
+                                                </dd>
+                                            </dl>
                                         </div>
                                     )}
                                 </div>
@@ -371,30 +550,16 @@ const WORKERS = [
     // read as one dark run with a step between them. It stays dark in both
     // themes.
     .enterprise {
-        --bg: #141418;
+        --bg: #0d0d10;
         --rule-color: rgba(255, 255, 255, 0.08);
         --rule: 1px solid var(--rule-color);
-        --card-border: rgba(255, 255, 255, 0.08);
         --text: #ffffff;
         --muted: #9a9aa8;
         --faint: #5c5c68;
 
         position: relative;
         overflow: hidden;
-        // Lit from above like a showroom: a soft silver light over the
-        // title, falling to a deeper black at the foot.
-        background:
-            radial-gradient(
-                60% 55% at 30% 0%,
-                rgba(255, 255, 255, 0.07),
-                transparent 70%
-            ),
-            radial-gradient(
-                40% 40% at 85% 10%,
-                rgba(200, 200, 220, 0.04),
-                transparent 70%
-            ),
-            linear-gradient(180deg, #17171c 0%, var(--bg) 45%, #0c0c0f 100%);
+        background: var(--bg);
         color: var(--text);
 
         // The rule between the AI block and this one, brighter in the
@@ -485,7 +650,7 @@ const WORKERS = [
     }
 
     // Four cells, two by two, between full-width rules: in each, the
-    // glimpse of the product beside its promise.
+    // glimpse of the product above its promise.
     .features {
         position: relative;
         display: grid;
@@ -519,11 +684,11 @@ const WORKERS = [
         }
 
         > li {
-            display: grid;
-            grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-            align-items: center;
-            gap: clamp(1.75rem, 3vw, 3rem);
-            padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 0 0 clamp(3rem, 5vw, 4rem) var(--inset);
+            overflow: hidden;
             transition: background-color 0.3s ease;
 
             &:nth-child(even) {
@@ -535,14 +700,7 @@ const WORKERS = [
             }
 
             &:hover {
-                background: rgba(255, 255, 255, 0.02);
-            }
-
-            // Narrower cells: the glimpse above its copy.
-            @include media-breakpoint-down(xl) {
-                grid-template-columns: minmax(0, 1fr);
-                align-items: start;
-                gap: 1.75rem;
+                background: rgba(255, 255, 255, 0.015);
             }
 
             @include media-breakpoint-down(md) {
@@ -557,40 +715,56 @@ const WORKERS = [
         }
 
         h3 {
-            margin: 0 0 0.75rem;
-            font-size: 1.25rem;
-            font-weight: 600;
-            line-height: 1.3;
+            margin: 0 0 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+            line-height: 1.35;
             color: var(--text);
-            text-wrap: balance;
         }
 
         .text {
+            max-width: 30rem;
             margin: 0;
-            font-size: 0.9375rem;
+            font-size: 1rem;
             line-height: 1.6;
             color: var(--muted);
         }
     }
 
-    // A corner of the product: a dark Kestra window with the page's name
-    // in its bar, the product's dark tokens, and colour only in the state
-    // badges, as in the UI.
-    .mock {
+    .copy {
+        padding-right: var(--inset);
+    }
+
+    // The glimpse's stage, above the copy.
+    .stage {
+        padding-top: clamp(2.5rem, 4vw, 3.5rem);
+    }
+
+    .glimpse {
+        // Fits the cell, short of its right rule, as the copy does, and
+        // all four are the same height.
         display: flex;
         flex-direction: column;
-        min-height: 18.75rem;
-        border: 1px solid var(--card-border);
-        border-radius: 0.75rem;
+        width: calc(100% - var(--inset));
+        height: 23.5rem;
         overflow: hidden;
-        // A finish, not a flat fill: lighter at the top, with a bright
-        // top edge and a deep shadow under it.
-        background: linear-gradient(180deg, #1d1e25 0%, #141418 100%);
+
+        // A little taller on a phone, where some lines wrap.
+        @include media-breakpoint-down(md) {
+            height: 25rem;
+        }
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 0.75rem;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.035) 0%,
+            rgba(255, 255, 255, 0.012) 60%
+        );
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.08),
-            0 20px 40px -20px rgba(0, 0, 0, 0.8);
-        font-size: 0.875rem;
-        color: #d6d6de;
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 30px 60px -30px rgba(0, 0, 0, 0.9);
+        font-size: 0.9375rem;
+        color: #c9c9d2;
 
         p {
             display: flex;
@@ -601,173 +775,113 @@ const WORKERS = [
 
         :global(svg) {
             flex: none;
-            width: 0.9375rem;
-            height: 0.9375rem;
+            width: 1rem;
+            height: 1rem;
             color: var(--faint);
         }
 
-        .note {
-            font-size: 0.8125rem;
-            color: var(--muted);
+        :global(.spin) {
+            animation: spin 1s linear infinite;
         }
     }
 
-    // The tenants are cards already: they stand on the section without a
-    // window around them.
-    .mock.bare {
-        border-color: transparent;
-        background: none;
-        box-shadow: none;
-        overflow: visible;
-
-        // The tenant fills the cell, as tall as the windows beside it.
-        .body {
-            padding: 0;
-        }
-    }
-
-    // The window's bar: the mark, the page, and the UI's kebab.
-    .bar {
-        padding: 0.625rem 0.875rem;
+    .glimpse-head {
+        padding: 1rem 1.25rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        background: rgba(255, 255, 255, 0.025);
-        font-size: 0.8125rem;
-        font-weight: 500;
-        color: #ffffff;
+        font-size: 1rem;
+        color: #ededf1;
 
-        img {
-            width: 0.875rem;
-            height: 0.875rem;
-        }
-
-        .dots {
-            display: flex;
-            gap: 0.1875rem;
-            margin-left: auto;
-
-            span {
-                width: 0.1875rem;
-                height: 0.1875rem;
-                border-radius: 50%;
-                background: var(--faint);
-            }
+        .pill {
+            margin-left: 0.5rem;
         }
     }
 
-    .body {
+    // The content runs the card's full width.
+    .glimpse-body {
         display: flex;
         flex: 1;
         flex-direction: column;
-        justify-content: center;
-        padding: 1rem 0.875rem;
+        gap: 0.75rem;
+        padding: 1.125rem 1.25rem 1.5rem;
     }
 
-    // The product's state badges, in its dark tokens.
-    .badge {
+    // Labels and states in thin pills, colour only in the state's text.
+    .pill,
+    .tag {
         display: inline-flex;
         align-items: center;
-        gap: 0.25rem;
-        margin-left: auto;
-        padding: 0.125rem 0.5rem;
-        border-radius: 0.375rem;
-        font-size: 0.6875rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
+        gap: 0.3125rem;
+        padding: 0.0625rem 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        line-height: 1.5;
         white-space: nowrap;
+        color: #c9c9d2;
 
         :global(svg) {
-            width: 0.8125rem;
-            height: 0.8125rem;
+            width: 0.875rem;
+            height: 0.875rem;
             color: currentColor;
         }
 
-        &.success {
-            background: rgba(30, 135, 94, 0.18);
-            color: #3ee0a6;
-        }
-
-        &.failed {
-            background: rgba(255, 92, 122, 0.14);
-            color: #ff8197;
-        }
-
-        &.running {
-            background: rgba(152, 105, 247, 0.16);
-            color: #b796ff;
-
-            :global(svg) {
-                animation: spin 1s linear infinite;
-            }
-        }
-    }
-
-    // Tenants stacked like cards, the front one open on its namespaces and
-    // flows, with the people who work in it pointing at their part.
-    .tenants {
-        position: relative;
-        flex: 1;
-    }
-
-    .tenant {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        padding: 0.75rem 1rem 0.875rem;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        border-radius: 0.5rem;
-        background: #23242c;
-        box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.8);
-    }
-
-    .tenant-head {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #ffffff;
-
-        :global(svg) {
-            color: #ffffff;
-        }
-    }
-
-    // The tenant's kind, in the product's tags.
-    .env {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        margin-left: auto;
-        padding: 0 0.4375rem;
-        border: 1px solid rgba(var(--tone), 0.3);
-        border-radius: 1rem;
-        background: rgba(var(--tone), 0.12);
-        font-size: 0.625rem;
-        font-weight: 600;
-        color: rgb(var(--tone));
-
-        &.infra {
-            --tone: 140, 160, 255;
-        }
-
         .dot {
-            width: 0.3125rem;
-            height: 0.3125rem;
+            width: 0.375rem;
+            height: 0.375rem;
             border-radius: 50%;
             background: currentColor;
         }
     }
 
+    .tag {
+        padding-inline: 0.4375rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+    }
+
+    .pill {
+        transition:
+            color 0.3s ease,
+            border-color 0.3s ease;
+
+        &.ok {
+            color: #4cc38a;
+        }
+
+        &.bad {
+            color: #ff7a8a;
+        }
+
+        &.run {
+            color: #b796ff;
+        }
+
+        &.wait {
+            color: #e8b45a;
+        }
+    }
+
+    // The tenant: its tree, and the people at work in it.
+    // It fills the card, so the editor's spot at the foot holds while a
+    // row folds away.
+    .tenant {
+        position: relative;
+        flex: 1;
+    }
+
     // A row's state as the story goes: the flow edited, run and done, the
-    // namespace deleted. One badge at a time, set by the page's script;
-    // none at rest.
+    // namespace deleted. One pill at a time, set by the script; none at
+    // rest.
     .row-state {
         display: grid;
         margin-left: auto;
 
-        .badge {
+        .pill {
             grid-area: 1 / 1;
             justify-self: end;
-            margin: 0;
             opacity: 0;
             transform: translateY(2px);
             transition:
@@ -775,15 +889,10 @@ const WORKERS = [
                 transform 0.3s ease;
         }
 
-        .editing {
-            background: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
-        }
-
         &[data-state="editing"] .editing,
         &[data-state="running"] .running,
         &[data-state="success"] .success,
-        &[data-state="deleted"] .failed {
+        &[data-state="deleted"] .deleted {
             opacity: 1;
             transform: none;
         }
@@ -791,14 +900,13 @@ const WORKERS = [
 
     // Hairline branches, as in the illustration.
     .ns-tree {
-        margin: 0.625rem 0 0 0.125rem;
+        margin: 0;
         padding: 0;
         list-style: none;
-        font-size: 0.8125rem;
         color: var(--muted);
 
         ul {
-            margin: 0 0 0 0.375rem;
+            margin: 0 0 0 0.4375rem;
             padding: 0;
             list-style: none;
         }
@@ -818,7 +926,7 @@ const WORKERS = [
 
             // The namespace the admin deletes folds away, and back.
             &.doomed {
-                max-height: 2rem;
+                max-height: 2.25rem;
                 overflow: hidden;
                 transition:
                     max-height 0.5s ease,
@@ -837,9 +945,9 @@ const WORKERS = [
                 top: 0;
                 left: 0;
                 width: 0.625rem;
-                height: 1rem;
-                border-left: 1px solid rgba(255, 255, 255, 0.18);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+                height: 1.0625rem;
+                border-left: 1px solid rgba(255, 255, 255, 0.14);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.14);
             }
 
             // The line goes on down to the next sibling.
@@ -849,7 +957,7 @@ const WORKERS = [
                 top: 0;
                 bottom: 0;
                 left: 0;
-                border-left: 1px solid rgba(255, 255, 255, 0.18);
+                border-left: 1px solid rgba(255, 255, 255, 0.14);
             }
         }
 
@@ -857,13 +965,15 @@ const WORKERS = [
         [data-row] {
             display: flex;
             align-items: center;
-            gap: 0.3125rem;
-            margin-left: -0.25rem;
-            padding: 0 0.25rem;
-            border-radius: 0.25rem;
-            line-height: 2rem;
+            gap: 0.375rem;
+            margin-left: -0.375rem;
+            padding: 0 0.375rem;
+            border: 1px solid transparent;
+            border-radius: 0.375rem;
+            line-height: 2.125rem;
             transition:
                 background-color 0.4s ease,
+                border-color 0.4s ease,
                 color 0.4s ease;
 
             // Struck through once deleted, until the story starts again.
@@ -873,7 +983,8 @@ const WORKERS = [
             }
 
             &:global(.hot) {
-                background: rgba(var(--tone), 0.14);
+                border-color: rgba(var(--tone), 0.25);
+                background: rgba(var(--tone), 0.06);
                 color: rgb(var(--tone));
 
                 :global(svg) {
@@ -883,14 +994,14 @@ const WORKERS = [
         }
 
         :global(svg) {
-            width: 0.75rem;
-            height: 0.75rem;
+            width: 0.875rem;
+            height: 0.875rem;
         }
     }
 
     // A pointer with its person's chip, each in their own colour. The
-    // page's script glides them from row to row; without it they rest
-    // where they are placed here.
+    // script glides them from row to row; without it they rest where they
+    // are placed here.
     .cursor {
         --tone: 240, 140, 190;
 
@@ -909,32 +1020,28 @@ const WORKERS = [
         }
 
         svg {
-            width: 0.625rem;
-            height: 0.625rem;
+            width: 0.75rem;
+            height: 0.75rem;
             fill: rgb(var(--tone));
         }
 
-        .who {
-            margin-left: 0.5rem;
-        }
-
         &.launcher {
-            top: 2rem;
-            left: 60%;
+            top: 1.25rem;
+            left: 45%;
         }
 
         &.editor {
             --tone: 120, 214, 170;
 
-            top: 10.5rem;
-            left: 30%;
+            bottom: 0.5rem;
+            left: 6%;
         }
 
         &.admin {
             --tone: 140, 196, 255;
 
-            top: 4rem;
-            left: 35%;
+            top: 3.5rem;
+            left: 72%;
         }
     }
 
@@ -942,84 +1049,48 @@ const WORKERS = [
         display: inline-flex;
         align-items: center;
         gap: 0.25rem;
-        padding: 0.0625rem 0.375rem;
-        border: 1px solid rgba(var(--tone), 0.6);
-        border-radius: 0.3125rem;
-        background: rgba(var(--tone), 0.1);
+        margin-left: 0.5rem;
+        padding: 0.0625rem 0.4375rem;
+        border: 1px solid rgba(var(--tone), 0.45);
+        border-radius: 0.375rem;
+        background: rgba(20, 20, 24, 0.6);
         backdrop-filter: blur(4px);
-        font-size: 0.6875rem;
+        font-size: 0.8125rem;
         font-weight: 500;
         white-space: nowrap;
         color: rgb(var(--tone));
 
         :global(svg) {
-            width: 0.75rem;
-            height: 0.75rem;
+            width: 0.8125rem;
+            height: 0.8125rem;
             color: currentColor;
         }
     }
 
-    .routing,
-    .audit,
-    .handshake {
-        display: flex;
-        flex-direction: column;
-        gap: 0.625rem;
-    }
-
     // A worker group as the product shows it: its name and label, the
-    // workers it has online, and each queue it serves with its capacity
-    // meter, green when free, warming to red as it fills.
+    // workers online, each queue it serves with its live capacity meter,
+    // then its continuity settings.
     .routing {
-        gap: 0.5rem;
-
-        .group-head {
+        .group {
             strong {
-                font-weight: 600;
+                font-weight: 500;
                 color: #ffffff;
             }
-        }
 
-        .label {
-            padding: 0 0.375rem;
-            border-radius: 0.25rem;
-            background: rgba(113, 139, 254, 0.12);
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #a3b4ff;
-        }
-
-        .status {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3125rem;
-            margin-left: auto;
-            padding: 0 0.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            color: #d6d6de;
-
-            .dot {
-                width: 0.375rem;
-                height: 0.375rem;
-                border-radius: 50%;
-                background: #3ee0a6;
+            .pill {
+                margin-left: auto;
             }
         }
 
         .stats {
-            gap: 1rem;
-            margin-bottom: 0.25rem;
-            padding-bottom: 0.625rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 0.8125rem;
+            gap: 1.25rem;
             color: var(--muted);
 
             b {
                 margin-right: 0.125rem;
-                font-size: 1rem;
-                font-weight: 600;
+                font-size: 1.125rem;
+                font-weight: 500;
+                font-variant-numeric: tabular-nums;
                 color: #ffffff;
             }
         }
@@ -1027,85 +1098,306 @@ const WORKERS = [
         .queue {
             display: flex;
             flex-direction: column;
-            gap: 0.3125rem;
+            gap: 0.375rem;
 
             p {
-                font-size: 0.8125rem;
-                color: #ffffff;
+                color: #e6e6ea;
             }
-        }
-
-        .mode {
-            padding: 0 0.375rem;
-            border-radius: 0.25rem;
-            background: rgba(255, 255, 255, 0.08);
-            font-size: 0.625rem;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: var(--muted);
         }
 
         .ratio {
             margin-left: auto;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
+            font-variant-numeric: tabular-nums;
             color: var(--muted);
         }
 
-        // Segments over the green-to-red scale; what is free is dimmed.
+        // Segments over the green-to-red scale; what is free is dimmed,
+        // and the dim part slides as the load moves.
         .meter {
+            position: relative;
             display: block;
             height: 0.4375rem;
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent calc(var(--fill) * 100%),
-                    rgba(20, 20, 24, 0.72) 0
-                ),
-                linear-gradient(90deg, #5fb98a, #d9a96b 55%, #e8846f);
+            background: linear-gradient(90deg, #5fb98a, #d9a96b 55%, #e8846f);
+            -webkit-mask: repeating-linear-gradient(
+                90deg,
+                #000 0 3px,
+                transparent 3px 5px
+            );
             mask: repeating-linear-gradient(
                 90deg,
                 #000 0 3px,
                 transparent 3px 5px
             );
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: calc((1 - var(--fill)) * 100%);
+                background: rgba(28, 28, 33, 0.8);
+                transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+            }
         }
     }
 
-    // Who did what, and the one the policy turned back.
+    // Settings and figures as a two-column list under a hairline.
+    .facts {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.5rem 1.5rem;
+        // Held at the card's foot, under the rows.
+        margin: auto 0 0;
+        padding-top: 0.875rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        font-size: 0.875rem;
+
+        dt {
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        dd {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            margin: 0;
+            color: #e6e6ea;
+
+            b {
+                font-weight: 500;
+                font-variant-numeric: tabular-nums;
+            }
+        }
+
+        :global(.done),
+        :global(.secure) {
+            color: #4cc38a;
+        }
+
+        // The backup's check, or its spinner while it runs.
+        [data-backup] :global(.spin) {
+            display: none;
+        }
+
+        [data-backup]:global(.busy) {
+            :global(.spin) {
+                display: block;
+            }
+
+            :global(.done) {
+                display: none;
+            }
+        }
+    }
+
+    // A switch, off.
+    .switch {
+        position: relative;
+        width: 1.75rem;
+        height: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 1rem;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0.125rem;
+            left: 0.125rem;
+            width: 0.625rem;
+            height: 0.625rem;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+    }
+
+    // The audit log as a table: column labels, then rows of what
+    // changed, by whom and when. New rows slide in on top.
     .audit {
-        .time {
+        gap: 0;
+
+        .entry {
+            display: grid;
+            grid-template-columns: 5.25rem 4.25rem 4.5rem minmax(0, 1fr) 5.5rem;
+            align-items: center;
+            gap: 0.75rem;
+            height: 2.375rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+
+        .labels {
+            height: 1.75rem;
+            border-color: rgba(255, 255, 255, 0.06);
+            font-size: 0.75rem;
             color: var(--faint);
         }
 
-        strong {
+        .entries {
+            height: calc(5 * 2.375rem);
+            overflow: hidden;
+        }
+
+        // A new row opens its space and fades in.
+        .entry:global(.arriving) {
+            animation: arrive 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .type {
+            color: #e6e6ea;
+        }
+
+        .action {
+            color: var(--muted);
+        }
+
+        .actor {
+            overflow: hidden;
             font-weight: 500;
+            text-overflow: ellipsis;
             color: #ffffff;
         }
 
-        .what {
+        .detail {
             overflow: hidden;
             min-width: 0;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        }
+
+        .date {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            color: var(--faint);
+        }
+
+        .stream {
+            margin-top: auto;
+            padding-top: 0.875rem;
+            font-size: 0.875rem;
             color: var(--muted);
         }
 
-        .note {
-            margin-top: 0.125rem;
-            padding-top: 0.625rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        .count {
+            margin-left: auto;
+            font-variant-numeric: tabular-nums;
+            color: var(--faint);
         }
     }
 
-    // The handshake: trusted workers get in, an unknown one is turned back
-    // before it reaches anything.
-    .handshake {
-        p:not(.note) {
-            color: #d6d6de;
+    @keyframes arrive {
+        from {
+            height: 0;
+            opacity: 0;
         }
 
-        .refused {
+        to {
+            height: 2.375rem;
+            opacity: 1;
+        }
+    }
+
+    // The log's live dot.
+    .live {
+        position: relative;
+        width: 0.4375rem;
+        height: 0.4375rem;
+        border-radius: 50%;
+        background: #4cc38a;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -0.25rem;
+            border-radius: 50%;
+            border: 1px solid #4cc38a;
+            opacity: 0;
+            animation: ping 2s ease-out infinite;
+        }
+    }
+
+    // Workers shaking hands: each is checked, the trusted ones get in with
+    // their live throughput, the unknown one is turned back.
+    .handshake {
+        gap: 0;
+
+        // Column labels, as on the audit log.
+        .labels {
+            gap: 0.625rem;
+            height: 1.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.75rem;
+            color: var(--faint);
+
+            .tps {
+                font-size: inherit;
+                color: inherit;
+            }
+
+            .status {
+                min-width: 5.5rem;
+                text-align: center;
+            }
+        }
+
+        // Rows like the audit log's, one worker each.
+        .worker {
+            gap: 0.625rem;
+            min-height: 2.875rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: #e6e6ea;
+            transition: opacity 0.4s ease;
+
+            &.refused {
+                color: var(--muted);
+
+                :global(svg) {
+                    color: #ff7a8a;
+                }
+            }
+
+            &:global(.shake) .pill {
+                animation: shake 0.45s ease;
+            }
+        }
+
+        .name {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;
+
+            small {
+                font-size: 0.75rem;
+                color: var(--faint);
+            }
+        }
+
+        .tps {
+            margin-left: auto;
+            font-size: 0.875rem;
+            font-variant-numeric: tabular-nums;
             color: var(--muted);
+        }
+
+        .pill {
+            min-width: 5.5rem;
+            justify-content: center;
+        }
+
+        .refused .pill {
+            margin-left: auto;
+        }
+
+        // While a worker is checked: a neutral pill and no figures yet.
+        [data-worker]:global(.checking) {
+            .pill {
+                color: var(--muted);
+            }
+
+            .tps {
+                opacity: 0.3;
+            }
         }
     }
 
@@ -1115,22 +1407,62 @@ const WORKERS = [
         }
     }
 
+    @keyframes ping {
+        0% {
+            opacity: 0.6;
+            transform: scale(0.6);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(1.6);
+        }
+    }
+
+    @keyframes shake {
+        0%,
+        100% {
+            transform: none;
+        }
+
+        25% {
+            transform: translateX(-3px);
+        }
+
+        50% {
+            transform: translateX(3px);
+        }
+
+        75% {
+            transform: translateX(-2px);
+        }
+    }
+
     @media (prefers-reduced-motion: reduce) {
-        .badge.running :global(svg) {
+        .glimpse :global(.spin),
+        .live::after {
             animation: none;
         }
     }
 </style>
 
 <script>
+    const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    // Runs `start` while the element is on screen and `stop` when it
+    // leaves.
+    function whileVisible(el: Element, start: () => void, stop: () => void) {
+        new IntersectionObserver(([entry]) =>
+            entry.isIntersecting ? start() : stop(),
+        ).observe(el)
+    }
+
     // A little story in the tenant, on a loop: the editor edits the flow,
     // the launcher runs it and it succeeds, then the admin deletes a
     // namespace. The row each of them works on lights up in their colour.
-    // Only while the stack is on screen, and not with reduced motion.
     function playTenants() {
         const stage = document.querySelector<HTMLElement>("[data-tenants]")
-        if (!stage || matchMedia("(prefers-reduced-motion: reduce)").matches)
-            return
+        if (!stage || reduced()) return
         const row = (name: string) =>
             stage.querySelector<HTMLElement>(`[data-row="${name}"]`)
         const person = (name: string) =>
@@ -1147,8 +1479,7 @@ const WORKERS = [
         let timers: number[] = []
 
         // Onto a row, at a point across the stage, in the stage's own
-        // pixels even when it is scaled.
-        // "foot" parks them at the bottom of the card, under the rows.
+        // pixels even when it is scaled. "foot" parks them under the rows.
         const go = (who: HTMLElement, name: string, lane: number) => {
             const target = name === "foot" ? stage : row(name)
             if (!target) return
@@ -1160,10 +1491,11 @@ const WORKERS = [
             const x = Math.min(width * lane, width - who.offsetWidth)
             const y =
                 target === stage
-                    ? stage.offsetHeight - who.offsetHeight - 10
+                    ? stage.offsetHeight - who.offsetHeight - 12
                     : (rect.top - box.top + rect.height * 0.55) / scale
             who.style.left = `${x}px`
             who.style.top = `${y}px`
+            who.style.bottom = "auto"
         }
 
         // The row under someone lights up in their colour, or in red for
@@ -1186,8 +1518,8 @@ const WORKERS = [
 
         const rest = () => {
             go(launcher, "acme", 0.45)
-            go(admin, "acme.cloud", 0.75)
-            go(editor, "foot", 0.06)
+            go(admin, "acme.cloud", 0.72)
+            go(editor, "foot", 0.04)
         }
 
         const reset = () => {
@@ -1200,12 +1532,9 @@ const WORKERS = [
         }
 
         const STORY: [number, () => void][] = [
-            [0, () => go(editor, "flow", 0.52)],
+            [0, () => go(editor, "flow", 0.5)],
             [1100, () => (light(editor), show(flow, "editing"))],
-            [
-                3200,
-                () => (go(editor, "foot", 0.06), go(launcher, "flow", 0.52)),
-            ],
+            [3200, () => (go(editor, "foot", 0.04), go(launcher, "flow", 0.5))],
             [4300, () => (light(launcher), show(flow, "running"))],
             [6100, () => show(flow, "success")],
             [
@@ -1214,23 +1543,23 @@ const WORKERS = [
                     go(launcher, "acme", 0.45),
                     light(),
                     show(flow),
-                    go(admin, "acme.network", 0.6)
+                    go(admin, "acme.network", 0.58)
                 ),
             ],
             [
                 8900,
                 () => (
-                    light(admin, "255, 129, 151"),
+                    light(admin, "255, 122, 138"),
                     show(doomed, "deleted"),
                     doomed.classList.add("gone")
                 ),
             ],
-            // The row goes, the admin leaves, and it is back for the next turn.
+            // The row goes, the admin leaves, and it is back next turn.
             [
                 10000,
                 () => (light(), doomed.parentElement?.classList.add("removed")),
             ],
-            [10700, () => go(admin, "acme.cloud", 0.75)],
+            [10700, () => go(admin, "acme.cloud", 0.72)],
             [12600, reset],
         ]
         const LOOP = 14400
@@ -1251,13 +1580,11 @@ const WORKERS = [
         }
         snap(rest)
 
-        new IntersectionObserver(([entry]) => {
-            timers.forEach(window.clearTimeout)
-            timers = []
-            if (!entry.isIntersecting) return
-            reset()
-            play()
-        }).observe(stage)
+        whileVisible(
+            stage,
+            () => (reset(), play()),
+            () => (timers.forEach(window.clearTimeout), (timers = [])),
+        )
         window.addEventListener("resize", () =>
             snap(() =>
                 at.forEach(([target, lane], who) =>
@@ -1267,5 +1594,183 @@ const WORKERS = [
         )
     }
 
+    // The worker group at work: the load on each queue and the tasks per
+    // second move, and now and then a backup runs and completes.
+    function playRouting() {
+        const card = document.querySelector<HTMLElement>("[data-routing]")
+        if (!card || reduced()) return
+        const tps = card.querySelector<HTMLElement>("[data-tps]")
+        const queues = [...card.querySelectorAll<HTMLElement>("[data-queue]")]
+        const backup = card.querySelector<HTMLElement>("[data-backup]")
+        const backupText = card.querySelector<HTMLElement>("[data-backup-text]")
+        let tick = 0
+        let timer = 0
+
+        const step = () => {
+            tick++
+            queues.forEach((queue) => {
+                const slots = Number(queue.dataset.slots)
+                const used = queue.querySelector<HTMLElement>("[data-used]")
+                const meter = queue.querySelector<HTMLElement>(".meter")
+                if (!used || !meter) return
+                const now = Number(used.textContent)
+                const next = Math.max(
+                    Math.round(slots * 0.15),
+                    Math.min(slots, now + Math.round(Math.random() * 2 - 1)),
+                )
+                used.textContent = String(next)
+                meter.style.setProperty("--fill", String(next / slots))
+            })
+            if (tps) tps.textContent = (0.6 + Math.random() * 0.7).toFixed(1)
+            // A backup every so often: running, then done just now.
+            if (backup && backupText && tick % 8 === 0) {
+                backup.classList.add("busy")
+                backupText.textContent = "Backing up…"
+                window.setTimeout(() => {
+                    backup.classList.remove("busy")
+                    backupText.textContent = "Last successful just now"
+                }, 2400)
+            }
+        }
+
+        whileVisible(
+            card,
+            () => (timer = window.setInterval(step, 1500)),
+            () => window.clearInterval(timer),
+        )
+    }
+
+    // The audit log streams: a new event slides in on top every few
+    // seconds, the oldest drops off the foot, every row's date ages, and
+    // each event is counted as it goes out to the SIEM.
+    function playAudit() {
+        const card = document.querySelector<HTMLElement>("[data-audit]")
+        if (!card || reduced()) return
+        const list = card.querySelector<HTMLElement>("[data-entries]")
+        const pool = card.querySelector<HTMLTemplateElement>("[data-pool]")
+        const exported = card.querySelector<HTMLElement>("[data-exported]")
+        if (!list || !pool) return
+        // The waiting events, and the ones that dropped off, in turn.
+        const queue = [...pool.content.querySelectorAll<HTMLElement>(".entry")]
+        let total = 1284
+        let timer = 0
+
+        const ago = (seconds: number) =>
+            seconds < 60
+                ? "just now"
+                : seconds < 3600
+                  ? `${Math.round(seconds / 60)} min ago`
+                  : `${Math.round(seconds / 3600)} hours ago`
+
+        const step = () => {
+            // Time moves on for the rows already there.
+            list.querySelectorAll<HTMLElement>(".entry").forEach((row) => {
+                const age = Number(row.dataset.age) + 150
+                row.dataset.age = String(age)
+                const date = row.querySelector(".date")
+                if (date) date.textContent = ago(age)
+            })
+            const next = queue.shift()
+            if (!next) return
+            const row = next.cloneNode(true) as HTMLElement
+            row.dataset.age = "0"
+            row.querySelector(".date")!.textContent = "just now"
+            row.classList.add("arriving")
+            list.prepend(row)
+            const last = list.lastElementChild as HTMLElement | null
+            if (last && list.children.length > 5) {
+                last.remove()
+                queue.push(last)
+            }
+            total++
+            if (exported) exported.textContent = total.toLocaleString("en-US")
+        }
+
+        whileVisible(
+            card,
+            () => (timer = window.setInterval(step, 2600)),
+            () => window.clearInterval(timer),
+        )
+    }
+
+    // Workers shaking hands, one after the other: the trusted ones are
+    // verified and start to carry tasks, the unknown one is refused. Their
+    // throughput then moves, and the total with it.
+    function playHandshake() {
+        const card = document.querySelector<HTMLElement>("[data-handshake]")
+        if (!card || reduced()) return
+        const workers = [...card.querySelectorAll<HTMLElement>("[data-worker]")]
+        const total = card.querySelector<HTMLElement>("[data-total]")
+        let timers: number[] = []
+        let ticker = 0
+
+        const verdict = (worker: HTMLElement) =>
+            worker.querySelector<HTMLElement>("[data-verdict]")
+
+        const sum = () => {
+            if (!total) return
+            const values = [
+                ...card.querySelectorAll<HTMLElement>("[data-worker-tps]"),
+            ]
+                .filter((el) => !el.closest(".checking"))
+                .map((el) => Number(el.textContent))
+            total.textContent = `${values.reduce((a, b) => a + b, 0).toFixed(1)}k`
+        }
+
+        const play = () => {
+            workers.forEach((worker) => {
+                worker.classList.add("checking")
+                const pill = verdict(worker)
+                if (pill) pill.textContent = "Verifying…"
+            })
+            sum()
+            timers = workers.map((worker, idx) =>
+                window.setTimeout(
+                    () => {
+                        const ok = worker.dataset.worker === "ok"
+                        const pill = verdict(worker)
+                        worker.classList.remove("checking")
+                        if (pill) pill.textContent = ok ? "Verified" : "Refused"
+                        if (!ok) {
+                            worker.classList.remove("shake")
+                            void worker.offsetWidth
+                            worker.classList.add("shake")
+                        }
+                        sum()
+                    },
+                    900 + idx * 1100,
+                ),
+            )
+            timers.push(window.setTimeout(play, 16000))
+        }
+
+        const tick = () => {
+            card.querySelectorAll<HTMLElement>("[data-worker-tps]").forEach(
+                (el) => {
+                    if (el.closest(".checking")) return
+                    const now = Number(el.textContent)
+                    el.textContent = Math.max(
+                        4,
+                        now + (Math.random() - 0.5) * 0.8,
+                    ).toFixed(1)
+                },
+            )
+            sum()
+        }
+
+        whileVisible(
+            card,
+            () => (play(), (ticker = window.setInterval(tick, 1300))),
+            () => (
+                timers.forEach(window.clearTimeout),
+                (timers = []),
+                window.clearInterval(ticker)
+            ),
+        )
+    }
+
     playTenants()
+    playRouting()
+    playAudit()
+    playHandshake()
 </script>
