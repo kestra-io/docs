@@ -5,29 +5,47 @@ import manu from "./assets/manu.jpg"
 
 <section class="founder-quote">
     <div class="container">
-        <figure>
-            <blockquote>
-                <p>
-                    Every decade, one coordination problem grows large enough to
-                    become its own category. Today, that problem is
-                    orchestrating everything a company runs: infrastructure,
-                    data, AI, business processes. We started building Kestra
-                    before anyone gave it a name, and we kept going. Now
-                    engineers at some of the world's largest companies trust it
-                    with their business-critical operations. Our goal is to lead
-                    this market.
-                </p>
-            </blockquote>
-            <figcaption>
-                <span class="avatar">
-                    <Image src={manu} alt="" width={112} densities={[1, 2]} />
-                </span>
-                <span>
-                    <strong>Emmanuel Darras</strong>
-                    Co-founder and CEO
-                </span>
-            </figcaption>
-        </figure>
+        <div class="frame">
+            <figure class="card">
+                <div class="words">
+                    <svg viewBox="0 0 46 40" class="glyph" aria-hidden="true">
+                        <path
+                            d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z"
+                        ></path>
+                        <path
+                            d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z"
+                        ></path>
+                    </svg>
+                    <blockquote>
+                        <p>
+                            Every decade, one coordination problem grows large
+                            enough to become its own category. Today, that
+                            problem is orchestrating everything a company runs:
+                            infrastructure, data, AI, business processes. We
+                            started building Kestra before anyone gave it a
+                            name, and we kept going. Now engineers at some of
+                            the world's largest companies trust it with their
+                            business-critical operations. Our goal is to lead
+                            this market.
+                        </p>
+                    </blockquote>
+                    <figcaption>
+                        <span class="avatar">
+                            <Image
+                                src={manu}
+                                alt=""
+                                width={112}
+                                densities={[1, 2]}
+                            />
+                        </span>
+                        <span>
+                            <strong>Emmanuel Darras</strong>
+                            Co-founder and CEO
+                        </span>
+                    </figcaption>
+                </div>
+            </figure>
+        </div>
     </div>
 </section>
 
@@ -43,7 +61,7 @@ import manu from "./assets/manu.jpg"
         }
     }
 
-    figure {
+    .frame {
         --line: var(--ks-border-primary);
         --inset: 3rem;
 
@@ -56,12 +74,8 @@ import manu from "./assets/manu.jpg"
             --inset: 1.5rem;
         }
 
-        > * {
-            position: relative;
-        }
-
-        > *::before,
-        > :last-child::after {
+        &::before,
+        &::after {
             content: "";
             position: absolute;
             left: -100vw;
@@ -71,45 +85,54 @@ import manu from "./assets/manu.jpg"
             pointer-events: none;
         }
 
-        > *::before {
+        &::before {
             top: 0;
         }
 
-        > :last-child::after {
+        &::after {
             bottom: 0;
+        }
+    }
+
+    .card {
+        --surface: #f0f0fd;
+        --glyph: #4f6df7;
+
+        margin: 0;
+        background: var(--surface);
+
+        :global(html.dark) & {
+            --surface: #1c1b2e;
+            --glyph: #a796ff;
+        }
+    }
+
+    .words {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2.5rem;
+        padding: 3rem var(--inset);
+
+        .glyph {
+            width: 2.25rem;
+            height: 2rem;
+            fill: var(--glyph);
+            transform: scaleX(-1);
         }
     }
 
     blockquote {
         margin: 0;
-        padding: 4rem var(--inset);
-
-        @include media-breakpoint-down(md) {
-            padding-block: 3rem;
-        }
 
         p {
-            position: relative;
+            max-width: 32em;
             margin: 0;
-            font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+            font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
             font-weight: 500;
-            letter-spacing: -0.015em;
-            line-height: 1.35;
-            max-width: 880px;
+            line-height: 1.45;
             text-wrap: pretty;
             color: var(--ks-content-primary);
-
-            &::before {
-                content: "\201C";
-                position: absolute;
-                right: 100%;
-                padding-right: 0.08em;
-                color: var(--ks-content-link);
-            }
-
-            &::after {
-                content: "\201D";
-            }
         }
     }
 
@@ -117,13 +140,11 @@ import manu from "./assets/manu.jpg"
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 1.5rem var(--inset);
 
         .avatar {
             flex-shrink: 0;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
             overflow: hidden;
 
             :global(img) {
