@@ -169,7 +169,7 @@ If no credential is available at any level, SDK-based tasks using `DEFAULT` or `
 
 - Use [Runtime and Storage](../02.runtime-and-storage/index.md) for datasources, queue, repository, internal storage, JVM, environment metadata, and global variables.
 - Use [Observability and Networking](../03.observability-and-networking/index.md) for logs, metrics, Micronaut, endpoints, access logs, SSL, and CORS.
-- Use [Plugins and Execution](../04.plugins-and-execution/index.md) for plugin installation, plugin defaults, retries, local flow sync, templates, and execution behavior.
+- Use [Plugins and Execution](../04.plugins-and-execution/index.md) for plugin installation, static policies, retries, local flow sync, templates, and execution behavior.
 - Use [Security and Secrets](../05.security-and-secrets/index.md) for encryption, secret backends, auth hardening, and liveness settings.
 - Use [Enterprise and Advanced](../06.enterprise-and-advanced/index.md) for EE license, Kafka, Elasticsearch, indexer, AI Copilot, and air-gapped deployments.
 
