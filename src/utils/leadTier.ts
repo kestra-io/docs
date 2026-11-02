@@ -4,7 +4,7 @@ const RANK: Record<Tier, number> = { T1: 3, T2: 2, T3: 1 }
 
 export function tierFromEmployees(value: string): Tier {
     if (value === "1000+") return "T1"
-    if (value === "between 100 and 999") return "T2"
+    if (value === "100-999") return "T2"
     return "T3"
 }
 
