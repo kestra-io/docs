@@ -19,8 +19,16 @@ Source code and releases are available at [github.com/kestra-io/kestractl](https
 curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
 ```
 
-:::alert{type="warning"}
-The default install script installs kestractl 2.0, compatible with Kestra 2.0 only. For Kestra 1.x, pass `VERSION=1`:
+The script installs to `/usr/local/bin` when that folder is writable, and to `~/.local/bin` otherwise. To choose the folder, set `INSTALL_DIR`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | INSTALL_DIR=~/.local/bin bash
+```
+
+Binaries for every platform, including Windows, are on the [releases page](https://github.com/kestra-io/kestractl/releases).
+
+:::alert{type="info"}
+The install script installs the latest kestractl 3.x release, which works with Kestra 2.x and Kestra 1.3. For an earlier Kestra 1.x version, install the legacy kestractl 1.x line with `VERSION=1`:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | VERSION=1 bash
