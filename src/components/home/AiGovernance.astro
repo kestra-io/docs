@@ -534,7 +534,8 @@ const auditPath = (cx: number) =>
     // Hairline rails down the sides, on the other blocks' lines.
     .rails {
         position: relative;
-        padding: clamp(4rem, 6vw, 5.5rem) 0 clamp(4rem, 6vw, 5.5rem);
+        // More black above the title, straight after the last domain row.
+        padding: clamp(6rem, 9vw, 8.5rem) 0 clamp(4rem, 6vw, 5.5rem);
 
         &::before,
         &::after {
