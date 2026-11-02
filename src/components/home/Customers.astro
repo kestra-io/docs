@@ -301,7 +301,8 @@ const STORIES = [
         flex-direction: column;
         align-items: flex-start;
         gap: 2rem;
-        padding: 8.5rem var(--inset) 4rem;
+        // Flush with the lavender piece's left edge, as there are no rails.
+        padding: 8.5rem 0 4rem;
 
         @include media-breakpoint-down(md) {
             padding-block: 4.5rem 3rem;
@@ -331,7 +332,7 @@ const STORIES = [
         justify-content: space-between;
         gap: 1rem 2rem;
         // More room under the line, before Three ways.
-        padding: clamp(2rem, 3vw, 2.75rem) var(--inset) clamp(4.5rem, 8vw, 7rem);
+        padding: clamp(2rem, 3vw, 2.75rem) 0 clamp(4.5rem, 8vw, 7rem);
         font-size: 1.0625rem;
 
         p {
