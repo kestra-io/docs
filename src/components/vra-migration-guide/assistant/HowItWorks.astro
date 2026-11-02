@@ -16,25 +16,16 @@ const STEPS = [
         text: "One command. It shows the model it will use, which you can change or switch off, and asks four questions about how your estate works, such as where settings and secrets come from. Then it analyzes every workflow and writes the brief. It tells you the cost before anything is billed.",
         code: `$ kestra-migrate vra run ./my-estate
 
-Before the analysis, 4 questions about your estate.
-
-Question 1 of 4
-  vRA starts workflows through the catalog items and subscriptions in its export. What else starts
-  these workflows from outside vRO? Choose all that apply.
-    1. nothing else: vRA, and workflows calling each other (suggested)
-    2. an external platform or scripts, through the vRO API
-    3. vRO schedules or policies
-    4. an ITSM such as ServiceNow
-    5. None of these, enter my own answer`,
+Before the analysis, 4 questions about your estate.`,
         lang: "bash",
     },
     {
         title: "Read the brief, then sharpen it",
-        text: "The brief opens in your browser, with every assumption the tool made listed in it. To make it sharper, run the same command again: it asks the questions that change the brief most, each with a suggested answer you can take with Enter. Your answers are kept in answers.yaml, so each run picks up where the last one stopped.",
+        text: "The brief opens in your browser, with every assumption the tool made listed in it. To make it sharper, run the same command again: it asks the few questions that change the brief most, and you can skip any of them or stop and carry on later. Your answers are kept in answers.yaml.",
         code: `$ kestra-migrate vra run ./my-estate
 
 To sharpen the brief: 5 questions (about 2 minutes), the ones that change it most first.`,
-        lang: "yaml",
+        lang: "bash",
     },
 ]
 ---
