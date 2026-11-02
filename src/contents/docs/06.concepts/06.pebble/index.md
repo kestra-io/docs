@@ -73,7 +73,7 @@ inputs:
   - id: pythonFile
     type: STRING
   - id: sparkPythonTaskSource
-    type: ENUM
+    type: SELECT
     defaults: WORKSPACE
     values:
       - GIT
