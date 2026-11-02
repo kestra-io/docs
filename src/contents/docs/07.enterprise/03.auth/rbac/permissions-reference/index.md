@@ -632,6 +632,7 @@ VIEW / LIST
 - `GET /api/v1/{tenant}/assets/usages/search`
 - `GET /api/v1/{tenant}/assets/{id}/relations`
 - `GET /api/v1/{tenant}/assets/{id}/relations/summary`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` (also requires `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace)
 
 CREATE
 - `POST /api/v1/{tenant}/assets`

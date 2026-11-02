@@ -149,6 +149,7 @@ The Assets API is available at `/api/v1/{tenant}/assets`. Create and update requ
 | `PATCH /assets/{id}` | Update `description`, `displayName`, or `metadata` with a JSON body. Metadata keys are merged into the stored metadata. | `ASSET:UPDATE` |
 | `POST /assets/bulk` | Create or update many assets from YAML documents separated by `---`. Add `dryRun=true` to preview. See [Import through the API](../../tenants/types/infrastructure/index.md#import-through-the-api). | `ASSET:CREATE`, and `ASSET:UPDATE` to update existing assets |
 | `GET /assets/{id}/dependencies` | Get the dependencies graph of one asset. Filter with `kinds`, and use `expandAll` and `hubCursor` to page through large parents. | `ASSET:VIEW` |
+| `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` | Get the asset relation graph around a flow. Takes the same `kinds`, `expandAll`, and `hubCursor` parameters as `GET /assets/{id}/dependencies`. | `ASSET:VIEW`, and `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace |
 | `GET /assets/{id}/relations` | List an asset's relations. Filter by `kind` and `direction` (`OUTBOUND`, `INBOUND`, or `BOTH`). | `ASSET:VIEW` |
 | `GET /assets/{id}/relations/summary` | Summarize an asset's relations by kind | `ASSET:VIEW` |
 | `POST /assets/{id}/relations` | Add a relation with a JSON body of `kind`, `direction`, `targetId`, and optional `targetNamespace` and `role` | `ASSET:UPDATE`, and `VIEW` on the other end |
