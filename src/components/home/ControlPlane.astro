@@ -303,8 +303,8 @@ const DOMAINS: Domain[] = [
 
 {
     /* On the hairline grid of the About us Backers block, lined up with the
-    hero frame: a compact two-column head, then the domains on the left (the
-    open one shows its copy) and its product screen on the right. */
+    hero frame: a centred head, then the four use cases as tabs above one
+    tinted panel, where the open one's copy sits beside its product screen. */
 }
 <section class="control-plane" aria-labelledby="control-plane" data-domains>
     {/* A few About us pixels at the edges, where the hero hands over. */}
@@ -326,68 +326,58 @@ const DOMAINS: Domain[] = [
                 </p>
             </header>
             <div class="body">
-                <ul class="domains">
+                <div class="tabs" role="tablist" aria-label="Use cases">
                     {
                         DOMAINS.map((domain, idx) => (
-                            <li
-                                class:list={["domain", { active: idx === 0 }]}
-                                data-domain={domain.id}
+                            <button
+                                type="button"
+                                role="tab"
+                                id={`domain-tab-${domain.id}`}
+                                class:list={["tab", { active: idx === 0 }]}
+                                aria-selected={idx === 0 ? "true" : "false"}
+                                aria-controls={`domain-panel-${domain.id}`}
+                                tabindex={idx === 0 ? 0 : -1}
                                 style={`--tint: ${domain.tint}`}
                             >
-                                <button
-                                    type="button"
-                                    class="domain-toggle"
-                                    aria-expanded={idx === 0 ? "true" : "false"}
-                                    aria-controls={`domain-copy-${domain.id}`}
-                                >
-                                    {/* The short label while closed; once open,
-                                    the rest of the title slides out after it. */}
-                                    {domain.label}
-                                    {domain.title !== domain.label && (
-                                        <span class="more">
-                                            {domain.title.slice(
-                                                domain.label.length,
-                                            )}
-                                        </span>
-                                    )}
-                                </button>
-                                <div
-                                    id={`domain-copy-${domain.id}`}
-                                    class="domain-copy"
-                                >
-                                    <div class="domain-copy-inner">
-                                        <p>{domain.description}</p>
-                                        {/* The vertical's solution page, or its
-                                        blueprints when it has none yet. */}
-                                        <a
-                                            href={
-                                                domain.solutionHref ??
-                                                "/blueprints"
-                                            }
-                                            class="btn-ghost compact solution"
-                                        >
-                                            {domain.solutionHref
-                                                ? "Explore the solution"
-                                                : "Browse blueprints"}
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
+                                <span class="swatch" aria-hidden="true" />
+                                {domain.label}
+                            </button>
                         ))
                     }
-                </ul>
+                </div>
 
                 <div class="visuals">
                     {
                         DOMAINS.map((domain, idx) => (
                             <div
+                                id={`domain-panel-${domain.id}`}
+                                role="tabpanel"
+                                aria-labelledby={`domain-tab-${domain.id}`}
                                 class:list={["visual", { active: idx === 0 }]}
                                 data-domain-visual={domain.id}
                                 style={`--tint: ${domain.tint}; --pixels: url("${pixelCluster}")`}
                             >
                                 {/* A small About us pixel cluster, in the vertical's color. */}
                                 <span class="pixels" aria-hidden="true" />
-                                <TopologyMock {...domain.topology} />
+                                <div class="panel-copy">
+                                    <h3>{domain.title}</h3>
+                                    <p>{domain.description}</p>
+                                    {/* The vertical's solution page, or its
+                                    blueprints when it has none yet. */}
+                                    <a
+                                        href={
+                                            domain.solutionHref ?? "/blueprints"
+                                        }
+                                        class="btn-ghost compact solution"
+                                    >
+                                        {domain.solutionHref
+                                            ? "Explore the solution"
+                                            : "Browse blueprints"}
+                                    </a>
+                                </div>
+                                <div class="panel-topology">
+                                    <TopologyMock {...domain.topology} />
+                                </div>
                             </div>
                         ))
                     }
@@ -398,8 +388,8 @@ const DOMAINS: Domain[] = [
 </section>
 
 <script>
-    // One domain open at a time, on click: its copy expands on the left and
-    // its screen fades in on the right.
+    // One use case open at a time: its tab lights up and its panel, copy
+    // and screen together, fades in.
     function wireDomains() {
         for (const root of document.querySelectorAll<HTMLElement>(
             "[data-domains]",
@@ -407,54 +397,27 @@ const DOMAINS: Domain[] = [
             if (root.dataset.wired === "true") continue
             root.dataset.wired = "true"
 
-            const items = [...root.querySelectorAll<HTMLElement>(".domain")]
-            const toggles = items.map((item) =>
-                item.querySelector<HTMLElement>(".domain-toggle")!,
-            )
+            const tabs = [...root.querySelectorAll<HTMLElement>(".tab")]
             const visuals = [
                 ...root.querySelectorAll<HTMLElement>("[data-domain-visual]"),
             ]
 
             const open = (idx: number) => {
-                items.forEach((item, i) => {
-                    item.classList.toggle("active", i === idx)
-                    toggles[i].setAttribute("aria-expanded", String(i === idx))
+                tabs.forEach((tab, i) => {
+                    tab.classList.toggle("active", i === idx)
+                    tab.setAttribute("aria-selected", String(i === idx))
+                    tab.tabIndex = i === idx ? 0 : -1
                 })
                 visuals.forEach((visual, i) =>
                     visual.classList.toggle("active", i === idx),
                 )
             }
 
-            // The list keeps the height of its tallest open domain, so
-            // switching never moves the page.
-            const list = root.querySelector<HTMLElement>(".domains")!
-            const settle = () => {
-                const current = items.findIndex((item) =>
-                    item.classList.contains("active"),
-                )
-                root.classList.add("measuring")
-                list.style.minHeight = ""
-                let tallest = 0
-                items.forEach((_, idx) => {
-                    open(idx)
-                    tallest = Math.max(
-                        tallest,
-                        Math.ceil(list.getBoundingClientRect().height),
-                    )
-                })
-                open(current)
-                list.style.minHeight = `${tallest}px`
-                root.classList.remove("measuring")
-            }
-            settle()
-            window.addEventListener("resize", settle)
-            document.fonts?.ready.then(settle)
-
-            // Until the visitor picks a domain, the domains take turns: the
-            // open one's marker fills as its run goes, and once the run is
-            // done the next domain opens.
+            // Until the visitor picks one, the use cases take turns: the
+            // open tab's line fills as its run goes, and once the run is
+            // done the next one opens.
             let auto = !matchMedia("(prefers-reduced-motion: reduce)").matches
-            if (auto) items[0].style.setProperty("--progress", "0")
+            if (auto) tabs[0].style.setProperty("--progress", "0")
             const shownIndex = (event: Event) =>
                 visuals.findIndex(
                     (visual) =>
@@ -464,7 +427,7 @@ const DOMAINS: Domain[] = [
             root.addEventListener("topology:progress", (event) => {
                 const idx = shownIndex(event)
                 if (!auto || idx < 0) return
-                items[idx].style.setProperty(
+                tabs[idx].style.setProperty(
                     "--progress",
                     String((event as CustomEvent<number>).detail),
                 )
@@ -475,30 +438,34 @@ const DOMAINS: Domain[] = [
                 setTimeout(() => {
                     if (!auto || !visuals[idx].classList.contains("active"))
                         return
-                    items[idx].style.removeProperty("--progress")
-                    const next = (idx + 1) % items.length
-                    items[next].style.setProperty("--progress", "0")
+                    tabs[idx].style.removeProperty("--progress")
+                    const next = (idx + 1) % tabs.length
+                    tabs[next].style.setProperty("--progress", "0")
                     open(next)
                 }, 1200)
             })
             const takeOver = () => {
                 auto = false
-                items.forEach((item) => item.style.removeProperty("--progress"))
+                tabs.forEach((tab) => tab.style.removeProperty("--progress"))
             }
 
-            toggles.forEach((toggle, idx) => {
-                toggle.addEventListener("click", () => {
+            tabs.forEach((tab, idx) => {
+                tab.addEventListener("click", () => {
                     takeOver()
                     open(idx)
                 })
-                toggle.addEventListener("keydown", (e) => {
+                tab.addEventListener("keydown", (e) => {
                     const step =
-                        e.key === "ArrowDown" ? 1 : e.key === "ArrowUp" ? -1 : 0
+                        e.key === "ArrowRight"
+                            ? 1
+                            : e.key === "ArrowLeft"
+                              ? -1
+                              : 0
                     if (!step) return
                     e.preventDefault()
                     takeOver()
-                    const next = (idx + step + toggles.length) % toggles.length
-                    toggles[next].focus()
+                    const next = (idx + step + tabs.length) % tabs.length
+                    tabs[next].focus()
                     open(next)
                 })
             })
@@ -693,180 +660,120 @@ const DOMAINS: Domain[] = [
 
     .body {
         background: var(--ks-background-body);
+    }
+
+    // The four use cases, side by side between rules, above the panel.
+    .tabs {
         display: grid;
-        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-bottom: var(--rule);
 
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: minmax(0, 1fr);
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
-    // Domains on the left; the open one shows its copy, marked on the rail.
-    .domains {
-        // One easing for every part of the switch, so the name, its copy
-        // and the list move together.
-        --ease: cubic-bezier(0.22, 1, 0.36, 1);
-        --ease-time: 0.5s;
-
-        margin: 0;
-        padding: 3.5rem 0;
-        list-style: none;
-        border-right: var(--rule);
-
-        @include media-breakpoint-down(lg) {
-            border-right: 0;
-            border-bottom: var(--rule);
-        }
-    }
-
-    .domain {
+    .tab {
         position: relative;
-        padding: 0 var(--inset);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        padding: 1.375rem 1rem;
+        border: 0;
+        background: none;
+        font-size: 1.0625rem;
+        font-weight: 500;
+        text-align: center;
+        // The same text, open or not: only the square and the line under
+        // it take the vertical's colour.
+        color: var(--ks-content-primary);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
 
-        &::before {
+        & + & {
+            border-left: var(--rule);
+        }
+
+        @include media-breakpoint-down(md) {
+            &:nth-child(3) {
+                border-left: 0;
+            }
+
+            &:nth-child(n + 3) {
+                border-top: var(--rule);
+            }
+        }
+
+        &:hover {
+            background: color-mix(in srgb, var(--tint) 4%, transparent);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: -2px;
+        }
+
+        &.active {
+            cursor: default;
+        }
+
+        // The tab's line, on the rule under it, in the vertical's color;
+        // it fills with the run while the use cases take turns.
+        &::after {
             content: "";
             position: absolute;
-            top: 0.5rem;
-            bottom: 0.5rem;
-            left: -1px;
-            width: 2px;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 2px;
             background: var(--tint);
             opacity: 0;
-            // Fills with the run while the domains take turns.
-            transform: scaleY(var(--progress, 1));
-            transform-origin: top;
+            transform: scaleX(var(--progress, 1));
+            transform-origin: left;
             transition:
                 opacity 0.2s ease,
                 transform 0.4s ease;
         }
 
-        &.active::before {
+        &.active::after {
             opacity: 1;
         }
-
-        & + & {
-            margin-top: 0.75rem;
-        }
     }
 
-    .domain-toggle {
-        display: block;
-        width: 100%;
-        padding: 0.625rem 0;
-        border: 0;
-        background: none;
-        // Smaller while closed; the open one grows to its full size.
-        font-size: 1.0625rem;
-        font-weight: 500;
-        text-align: left;
-        color: var(--ks-content-tertiary);
-        cursor: pointer;
+    .swatch {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 2px;
+        background: var(--ks-content-tertiary);
+        opacity: 0.5;
         transition:
-            color 0.3s ease,
-            font-size var(--ease-time) var(--ease),
-            font-weight var(--ease-time) var(--ease);
-
-        &:hover {
-            color: var(--ks-content-secondary);
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--ks-border-active);
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
+            background-color 0.3s ease,
+            opacity 0.3s ease;
 
         .active & {
-            font-size: 1.3125rem;
-            font-weight: 600;
-            color: var(--ks-content-primary);
-            cursor: default;
-        }
-
-        .more {
-            display: inline-block;
-            max-width: 0;
-            overflow: hidden;
-            vertical-align: bottom;
-            white-space: pre;
-            opacity: 0;
-            transition:
-                max-width var(--ease-time) var(--ease),
-                opacity var(--ease-time) var(--ease);
-
-            .active & {
-                max-width: 12em;
-                opacity: 1;
-            }
+            background: var(--tint);
+            opacity: 1;
         }
     }
 
-    // The open domain's copy slides open under its name.
-    .measuring .domain-toggle,
-    .measuring .more,
-    .measuring .domain-copy,
-    .measuring .domain-copy-inner {
-        transition: none !important;
-    }
-
-    .domain-copy {
-        display: grid;
-        grid-template-rows: 0fr;
-        overflow: hidden;
-        transition: grid-template-rows var(--ease-time) var(--ease);
-
-        .domain-copy-inner {
-            min-height: 0;
-            padding-bottom: 1.5rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .active & {
-            grid-template-rows: 1fr;
-
-            .domain-copy-inner {
-                opacity: 1;
-                transition-delay: 0.1s;
-            }
-        }
-
-        p {
-            margin: 0;
-            max-width: 28rem;
-            font-size: 1.125rem;
-            line-height: 1.7;
-            color: var(--ks-content-secondary);
-        }
-    }
-
-    // The way on, as a secondary button: the vertical's solution page, or
-    // its blueprints.
-    .solution {
-        margin-top: 1.5rem;
-    }
-
-    // The product screen fills the right column, in a grey panel, cropped at
-    // its bottom right.
+    // The panels are stacked and cross-fade, each tinted in its vertical's
+    // color, its copy on the left and its product screen on the right.
     .visuals {
         position: relative;
-        // Stretches with the domain column, so the panel always reaches the
-        // rule below.
-        min-height: max(26rem, min(34rem, calc(100vh - 10rem)));
-        background: var(--ks-background-body);
+        display: grid;
         overflow: hidden;
     }
 
-    // Screens are stacked and cross-fade. Each sits on a soft glow of its
-    // vertical's color, with one small pixel cluster in the top corner.
     .visual {
-        position: absolute;
-        inset: 0;
-        display: flex;
+        position: relative;
+        grid-area: 1 / 1;
+        display: grid;
+        grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
         align-items: center;
-        justify-content: center;
-        // The topology runs edge to edge, centered in the panel's height.
-        padding: var(--inset) 0;
+        gap: 2rem;
+        min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
+        padding: var(--inset) 0 var(--inset) var(--inset);
         background:
             radial-gradient(
                 80% 90% at 100% 0%,
@@ -874,22 +781,36 @@ const DOMAINS: Domain[] = [
                 transparent 70%
             ),
             color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
+        // Edged in the open tab's line colour, so the tab and its panel
+        // read as one.
+        box-shadow: inset 0 0 0 1px var(--tint);
         opacity: 0;
-        transition: opacity 0.5s ease;
-        pointer-events: none;
+        visibility: hidden;
+        transition:
+            opacity 0.5s ease,
+            visibility 0s linear 0.5s;
 
-        > * {
+        > .panel-copy,
+        > .panel-topology {
             transform: translateY(16px);
             transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         &.active {
             opacity: 1;
-            pointer-events: auto;
+            visibility: visible;
+            transition: opacity 0.5s ease;
 
-            > * {
+            > .panel-copy,
+            > .panel-topology {
                 transform: none;
             }
+        }
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: minmax(0, 1fr);
+            align-content: start;
+            padding-right: var(--inset);
         }
 
         :global(html.dark) & {
@@ -913,5 +834,40 @@ const DOMAINS: Domain[] = [
             opacity: 0.3;
             pointer-events: none;
         }
+    }
+
+    .panel-copy {
+        position: relative;
+        z-index: 1;
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.0625rem;
+            line-height: 1.65;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    // The way on, as a secondary button: the vertical's solution page, or
+    // its blueprints.
+    .solution {
+        margin-top: 1.75rem;
+    }
+
+    // The topology fills the rest of the panel, edge to edge on the right.
+    .panel-topology {
+        position: relative;
+        display: flex;
+        align-self: stretch;
+        min-height: 20rem;
     }
 </style>
