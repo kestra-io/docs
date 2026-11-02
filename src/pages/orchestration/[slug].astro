@@ -158,6 +158,7 @@ const {
     comparison,
     postCompareCta,
     guideCta,
+    video,
     faq,
     seeHow,
     resources,
@@ -290,6 +291,7 @@ const comparisonTableData = comparison.rows.map((row) => {
         heading={blueprints.title}
         nutshell={nutshell}
         callout={guideCta}
+        {video}
         blueprints={blueprintItems}
         toolColor={tool.color}
         toolName={tool.name}

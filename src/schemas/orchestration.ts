@@ -175,6 +175,13 @@ const howToSchema = z.object({
         .optional(),
 })
 
+/** A YouTube video shown right after the guide callout. */
+const videoSchema = z.object({
+    youtubeId: z.string(),
+    /** One line shown under the player. */
+    caption: z.string(),
+})
+
 /** Tool categories, in the order the /orchestration filter tabs show them. */
 export const ORCHESTRATION_CATEGORIES = [
     "Infrastructure",
@@ -206,6 +213,7 @@ export const orchestrationSchema = z.object({
     comparison: comparisonSchema,
     postCompareCta: postCompareCtaSchema.optional(),
     guideCta: postCompareCtaSchema.optional(),
+    video: videoSchema.optional(),
     faq: z.array(faqItemSchema),
     seeHow: seeHowSchema,
     resources: resourcesSchema.optional(),
