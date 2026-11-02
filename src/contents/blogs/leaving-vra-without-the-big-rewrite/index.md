@@ -19,6 +19,12 @@ Now at Kestra, I talk with teams that want to leave vRA, often because of licens
 
 That's why we built the **Kestra Migration Assistant for vRA**. Kestra is an open-source orchestrator that infrastructure teams at [Crédit Agricole](/customers/credit-agricole) and [Dataport](/customers/dataport) run in production. The Migration Assistant's open-source assessment runs locally against your vRA and vRO exports, inventories the automation, and recommends what to retire, merge, wrap, convert or rebuild. Your engineers review the plan, and we help you migrate the remaining work in waves while vRA keeps running.
 
+Here's what that looks like in practice, in an 8-minute demo:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/brZo-5NdP2E" title="Kestra replacing vRA: the VM lifecycle on vSphere" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Know What Every Workflow Does, and What to Do With It
 
 The Migration Assistant takes your exported vRO packages and vRA content and produces a migration brief:
