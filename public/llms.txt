@@ -567,7 +567,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Performance Tuning in Kestra: Workers, JDBC, Kafka](https://kestra.io/docs/performance/performance-tuning.md)
 - [Size & Scale Kestra: Executors, Workers, Schedulers](https://kestra.io/docs/performance/sizing-and-scaling-infrastructure.md)
 - [Plugin Developer Guide: Build & Publish in Kestra](https://kestra.io/docs/plugin-developer-guide.md)
-- [Develop a Kestra Condition Plugin](https://kestra.io/docs/plugin-developer-guide/condition.md)
 - [Plugin Contribution Guidelines for Kestra](https://kestra.io/docs/plugin-developer-guide/contribution-guidelines.md)
 - [Document Your Kestra Plugin with Annotations](https://kestra.io/docs/plugin-developer-guide/document.md)
 - [Develop a Kestra File Renderer Plugin](https://kestra.io/docs/plugin-developer-guide/file-renderer.md)
