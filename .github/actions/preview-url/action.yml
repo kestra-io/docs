@@ -1,6 +1,12 @@
 name: Preview URL
 description: Resolves the Cloudflare Workers preview alias and public URL for the current ref.
 
+inputs:
+  branch:
+    description: Branch to resolve; defaults to the pull request head branch.
+    required: false
+    default: ${{ github.head_ref }}
+
 outputs:
   slug:
     description: Worker preview alias, e.g. ks-my-branch (empty branch part on main).
@@ -14,10 +20,12 @@ runs:
   steps:
     - id: resolve
       shell: bash
+      env:
+        BRANCH: ${{ inputs.branch }}
       # Alias is capped at 30 chars of branch name; Cloudflare rejects longer
       # ones and trailing dashes, hence the cut and sed.
       run: |
-        SLUG="ks-$(echo "$GITHUB_HEAD_REF" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')"
+        SLUG="ks-$(echo "$BRANCH" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')"
         if [ "$GITHUB_REF" = "refs/heads/main" ]; then
           URL="https://kestra.io"
         else

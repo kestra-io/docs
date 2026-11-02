@@ -17,6 +17,7 @@ import Payback from "~/components/lp/vra-migration/Payback.astro"
 import Assistant from "~/components/lp/vra-migration/Assistant.astro"
 import HeroActions from "~/components/lp/vra-migration/HeroActions.astro"
 import GuideOffer from "~/components/lp/vra-migration/GuideOffer.astro"
+import WebinarBanner from "~/components/vra-migration-guide/WebinarBanner.astro"
 
 import SelfServiceIcon from "~/components/lp/vra-migration/assets/automate-self-service.svg"
 import DayTwoIcon from "~/components/lp/vra-migration/assets/automate-day-2.svg"
@@ -144,7 +145,7 @@ const faqItems = [
     },
     {
         question: "How is vRA priced since Broadcom?",
-        answer: 'vRA is no longer sold on its own. It ships inside VMware Cloud Foundation, licensed per core on subscription, so the automation bill tracks the size of the hypervisor footprint rather than how much you automate. Gartner expects most VMware customers\' bills to grow by 200 to 500 percent at their next renewal, <a href="https://www.theregister.com/2024/08/26/vmware_explore_preview/" target="_blank" rel="noopener">as reported by The Register</a>. The calculator above sets that renewal against the cost of migrating.',
+        answer: 'vRA is no longer sold on its own. It ships inside VMware Cloud Foundation, licensed per core on subscription, so the automation bill tracks the size of the hypervisor footprint rather than how much you automate. Gartner warned that most VMware customers\' bills could grow by 200 to 500 percent at their next renewal, <a href="https://www.theregister.com/2024/08/26/vmware_explore_preview/" target="_blank" rel="noopener">as reported by The Register</a>. The calculator above sets that renewal against the cost of migrating.',
     },
     {
         question: "Do we have to leave vSphere?",
@@ -193,7 +194,7 @@ const faqItems = [
         <LpHeader />
         <Hero
             {routePath}
-            formTitle="Bring your vRA renewal quote."
+            formTitle="Bring your VMware renewal quote."
             companies={[
                 "bundesagentur",
                 "itzbund",
@@ -227,6 +228,7 @@ const faqItems = [
             </Fragment>
             <HeroActions slot="form" {routePath} {formProps} />
         </Hero>
+        <WebinarBanner />
         <script is:inline>
             /* Echo the searched product and intent in the headline. The G_VRA
              * final URL suffix passes the keyword as utm_term; the term is only
@@ -238,6 +240,8 @@ const faqItems = [
                 ).toLowerCase()
                 const h1 = document.querySelector(".lp-hero h1")
                 if (!term || !h1) return
+                const isProductSearch =
+                    /vra|vro|aria|vrealize|orchestrator|automation/.test(term)
                 const isVro = /orchestrator|\bvro\b/.test(term)
                 const product = /aria/.test(term)
                     ? "Aria Automation"
@@ -258,7 +262,29 @@ const faqItems = [
                 }
                 const a = (text) => span("a", text)
                 const b = (text) => span("b", text)
-                if (/pric|licens|cost|renewal/.test(term)) {
+                /* Broad VMware searches (no product named) get the
+                 * orchestrator-first pitch instead of a vRA headline. */
+                if (
+                    !isProductSearch &&
+                    /vmware|vcf|cloud foundation|vsphere|vvf|broadcom|esxi/.test(
+                        term,
+                    )
+                ) {
+                    h1.innerHTML = `Moving off ${a("VMware")}? Start with the ${b("orchestrator")}.`
+                    /* Keep the server-rendered bold line, as the static lead has it. */
+                    const lead = document.querySelector(".lp-hero .lead-copy")
+                    const strong = lead?.querySelector("strong")
+                    if (lead)
+                        lead.replaceChildren(
+                            "Your vRO workflows are what tie you to vSphere. Replace them with Kestra first, and change the hypervisor when you're ready.",
+                            ...(strong
+                                ? [document.createElement("br"), strong]
+                                : []),
+                        )
+                } else if (
+                    isProductSearch &&
+                    /pric|licens|cost|renewal/.test(term)
+                ) {
                     h1.innerHTML = `Retire the ${a(`${product} licence`)} at ${b("renewal")}, one workflow at a time.`
                 } else if (/alternative|replacement/.test(term)) {
                     h1.innerHTML = `The ${a(product === "VMware vRA" ? "vRA and vRO" : product)} ${b("alternative")} on your own infrastructure.`
@@ -300,7 +326,7 @@ const faqItems = [
         <Payback />
         <Faq items={faqItems} />
         <ClosingBanner
-            heading="Bring your vRA renewal quote"
+            heading="Bring your VMware renewal quote"
             sub="We'll set the exit plan against your renewal date."
         />
         <LpFooter />
