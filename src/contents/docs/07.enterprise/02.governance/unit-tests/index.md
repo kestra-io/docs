@@ -25,6 +25,8 @@ Unit tests are configured for and connected to their respective flows. They are 
 
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
 
+To have AI Copilot draft a test for you, open a flow, open the three-dot menu, and select **Generate a unit test**. Copilot reads the flow, proposes a test in the chat, and creates it only when you select **Apply**. See [Generate a unit test](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test) for details.
+
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
 ![Tests Tree Diagram](./unittest.png)
