@@ -70,9 +70,47 @@ const auditPath = (cx: number) =>
     <PixelEdges left="wide" right="tall" />
     {/* A faint technical grid behind the stack, fading out at the edges. */}
     <span class="texture" aria-hidden="true"></span>
+    {/* A soft light that follows the pointer across the block. */}
+    <span class="glow" aria-hidden="true" data-glow></span>
     <div class="container-xl">
         <div class="rails">
             <div class="head">
+                {
+                    /* A wink to the launch video's agent: it pops in, winks,
+                    then follows the pointer with its eyes. */
+                }
+                <div class="mascot" data-mascot aria-hidden="true">
+                    <span class="ring"></span>
+                    <span class="ring outer"></span>
+                    <span class="disc">
+                        <svg viewBox="0 0 48 48">
+                            <rect x="20" y="6" width="8" height="7" rx="3.5"
+                            ></rect>
+                            <rect x="5" y="19" width="5" height="12" rx="2.5"
+                            ></rect>
+                            <rect x="38" y="19" width="5" height="12" rx="2.5"
+                            ></rect>
+                            <rect
+                                class="face"
+                                x="11.5"
+                                y="12.5"
+                                width="25"
+                                height="24"
+                                rx="3.5"></rect>
+                            <g class="eyes" data-eyes>
+                                <circle class="eye" cx="19.5" cy="22" r="2.4"
+                                ></circle>
+                                <circle
+                                    class="eye wink"
+                                    cx="28.5"
+                                    cy="22"
+                                    r="2.4"></circle>
+                            </g>
+                            <rect x="18" y="29" width="12" height="2.75" rx="1"
+                            ></rect>
+                        </svg>
+                    </span>
+                </div>
                 <h2 id="ai-governance">
                     AI agents cross systems seamlessly. <span
                         >Enforce governance at every step.</span
@@ -497,6 +535,120 @@ const auditPath = (cx: number) =>
 
     document.addEventListener("astro:page-load", startStacks)
     startStacks()
+
+    // The agent pops in once in view and winks, then blinks now and then;
+    // its eyes follow the pointer, a couple of units at most.
+    function wakeMascot(root: HTMLElement) {
+        if (root.dataset.awake) return
+        root.dataset.awake = "true"
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            root.classList.add("in")
+            return
+        }
+        const eyes = root.querySelector<SVGGElement>("[data-eyes]")!
+        const flash = (name: string, ms: number) => {
+            root.classList.add(name)
+            setTimeout(() => root.classList.remove(name), ms)
+        }
+
+        let timer = 0
+        const blinkLater = () => {
+            timer = window.setTimeout(
+                () => {
+                    flash("blinking", 250)
+                    blinkLater()
+                },
+                3500 + Math.random() * 3000,
+            )
+        }
+        const seen = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) return
+                seen.disconnect()
+                root.classList.add("in")
+                setTimeout(() => flash("winking", 500), 800)
+                setTimeout(blinkLater, 1400)
+            },
+            { threshold: 0.6 },
+        )
+        seen.observe(root)
+
+        let frame = 0
+        let pointer = { x: 0, y: 0 }
+        const look = () => {
+            frame = 0
+            const box = root.getBoundingClientRect()
+            const dx = pointer.x - (box.left + box.width / 2)
+            const dy = pointer.y - (box.top + box.height / 2)
+            const distance = Math.hypot(dx, dy) || 1
+            const reach = Math.min(1, distance / 320)
+            const x = (dx / distance) * 3.2 * reach
+            const y = (dy / distance) * 2.6 * reach
+            eyes.style.transform = `translate(${x}px, ${y}px)`
+        }
+        const follow = (event: PointerEvent) => {
+            pointer = { x: event.clientX, y: event.clientY }
+            frame ||= requestAnimationFrame(look)
+        }
+        window.addEventListener("pointermove", follow, { passive: true })
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                window.removeEventListener("pointermove", follow)
+                clearTimeout(timer)
+                seen.disconnect()
+            },
+            { once: true },
+        )
+    }
+
+    function wakeMascots() {
+        document
+            .querySelectorAll<HTMLElement>("[data-mascot]")
+            .forEach(wakeMascot)
+    }
+
+    document.addEventListener("astro:page-load", wakeMascots)
+    wakeMascots()
+
+    // The light follows the pointer while it is over the block.
+    function trackGlow(glow: HTMLElement) {
+        if (glow.dataset.tracking) return
+        glow.dataset.tracking = "true"
+        if (!matchMedia("(pointer: fine)").matches) return
+        const section = glow.parentElement!
+        let frame = 0
+        let point = { x: 0, y: 0 }
+        const move = () => {
+            frame = 0
+            glow.style.setProperty("--x", `${point.x}px`)
+            glow.style.setProperty("--y", `${point.y}px`)
+        }
+        section.addEventListener("pointermove", (event) => {
+            const box = section.getBoundingClientRect()
+            point = { x: event.clientX - box.left, y: event.clientY - box.top }
+            // Coming in, it lights where the pointer is, without sliding
+            // over from where it last was.
+            if (!glow.classList.contains("on")) {
+                glow.style.transition = "opacity 0.6s ease"
+                move()
+                requestAnimationFrame(() => (glow.style.transition = ""))
+                glow.classList.add("on")
+                return
+            }
+            frame ||= requestAnimationFrame(move)
+        })
+        section.addEventListener("pointerleave", () =>
+            glow.classList.remove("on"),
+        )
+    }
+
+    function trackGlows() {
+        document.querySelectorAll<HTMLElement>("[data-glow]").forEach(trackGlow)
+    }
+
+    document.addEventListener("astro:page-load", trackGlows)
+    trackGlows()
 </script>
 
 <style lang="scss">
@@ -570,6 +722,103 @@ const auditPath = (cx: number) =>
         }
     }
 
+    // The agent from the launch video: a robot in a dark disc, ringed
+    // with dashes. It pops in, winks, and its eyes follow the pointer.
+    .mascot {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 12rem;
+        height: 12rem;
+        margin: -2rem auto 1.25rem;
+
+        .ring {
+            position: absolute;
+            inset: 1.75rem;
+            border: 1px dashed rgba(255, 255, 255, 0.24);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0.6);
+            transition:
+                opacity 0.6s ease 0.25s,
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+
+            &.outer {
+                inset: 0;
+                border-color: rgba(255, 255, 255, 0.12);
+                transition-delay: 0.4s;
+            }
+        }
+
+        .disc {
+            display: grid;
+            place-items: center;
+            width: 6rem;
+            height: 6rem;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #2c2c33 0%, #141418 100%);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
+            opacity: 0;
+            transform: scale(0.3);
+            transition:
+                opacity 0.3s ease,
+                transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        svg {
+            width: 3.75rem;
+            height: 3.75rem;
+            fill: #ffffff;
+        }
+
+        .face {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 3.25;
+        }
+
+        .eyes {
+            transition: transform 0.25s ease-out;
+        }
+
+        .eye {
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        &:global(.in) {
+            .ring,
+            .disc {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        &:global(.winking) .wink {
+            animation: shut 0.45s ease-in-out;
+        }
+
+        &:global(.blinking) .eye {
+            animation: shut 0.22s ease-in-out;
+        }
+    }
+
+    @keyframes shut {
+        35%,
+        60% {
+            transform: scaleY(0.12);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .mascot .ring,
+        .mascot .disc {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+    }
+
     h2 {
         margin: 0;
         font-size: clamp(2rem, 3.6vw, 3rem);
@@ -614,6 +863,36 @@ const auditPath = (cx: number) =>
             transparent 75%
         );
         pointer-events: none;
+    }
+
+    // A soft light under the pointer, shown only while it is over the
+    // block, on devices with a mouse.
+    .glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50rem;
+        height: 50rem;
+        margin: -25rem 0 0 -25rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.03) 22%,
+            rgba(255, 255, 255, 0.012) 45%,
+            transparent 70%
+        );
+        opacity: 0;
+        transform: translate(var(--x, 0), var(--y, 0));
+        // It trails the pointer a little, softly.
+        transition:
+            opacity 0.6s ease,
+            transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none;
+
+        &:global(.on) {
+            opacity: 1;
+        }
     }
 
     // The stack: one drawing, scaled to the stage. On a phone it keeps a
