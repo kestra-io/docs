@@ -25,13 +25,3 @@ export function tierFromCompany(company: {
     if (leadTier in RANK) return leadTier as Tier
     return tierFromHeadcount(company.employees)
 }
-
-export function higherTier(
-    ...tiers: Array<Tier | undefined>
-): Tier | undefined {
-    return tiers.reduce<Tier | undefined>((best, tier) => {
-        if (!tier) return best
-        if (!best || RANK[tier] > RANK[best]) return tier
-        return best
-    }, undefined)
-}
