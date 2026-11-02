@@ -557,6 +557,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Trigger Conditions Redesign](https://kestra.io/docs/migration-guide/v2.0.0/trigger-conditions-redesign.md)
 - [Helm Chart gRPC Worker-Controller Changes in Kestra 2.0.0](https://kestra.io/docs/migration-guide/v2.0.0/helm-grpc-worker-controller.md)
 - [Management Endpoint Hardening in Kestra 2.0.0](https://kestra.io/docs/migration-guide/v2.0.0/management-endpoint-hardening.md)
+- [MySQL READ COMMITTED Isolation Level](https://kestra.io/docs/migration-guide/v2.0.0/mysql-read-committed.md)
 - [Execution Data in Internal Storage Removed](https://kestra.io/docs/migration-guide/v2.0.0/execution-data-internal-storage.md)
 - [Super Admin Renamed to Instance Owner](https://kestra.io/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
