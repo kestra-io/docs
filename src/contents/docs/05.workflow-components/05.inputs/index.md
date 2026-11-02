@@ -106,6 +106,7 @@ Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510),
 | `expression` | Pebble expression used to populate `SELECT` and `MULTISELECT` values dynamically, e.g. `{{ kv('MY_LIST') }}`. |
 | `dependsOn` | Makes this input conditional on other inputs being provided or matching a `condition`. |
 | `autoSelectFirst` | Auto-selects the first value in `SELECT`/`MULTISELECT` lists as the default. |
+| `searchable` | Stores the input value so you can find executions by it. Defaults to `false`. See [Searchable inputs](#searchable-inputs). |
 
 ### Description display mode
 
@@ -266,6 +267,46 @@ inputs:
     itemType: INT
     defaults: [1, 2, 3]
 ```
+
+## Searchable inputs
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `searchable: true` on an input to find executions by its value, such as an order ID or a customer code. Kestra stores the value when the execution is created, so you can find executions that are still running.
+
+```yaml
+id: process_orders
+namespace: company.sales
+
+inputs:
+  - id: customerId
+    type: STRING
+    searchable: true
+
+  - id: orderIds
+    type: ARRAY
+    itemType: STRING
+    searchable: true
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing {{ inputs.orderIds | length }} orders for {{ inputs.customerId }}"
+```
+
+Kestra stores each item of an `ARRAY` input separately, so a search for one order ID finds this execution. Use an `ARRAY` input rather than `MULTISELECT` to search on several values.
+
+Searchable inputs follow these rules:
+
+- **Types:** `STRING`, `EMAIL`, `SELECT`, `INT`, `FLOAT`, `BOOL`, `URI`, `DATE`, `DATETIME`, `TIME`, `DURATION`, and `ARRAY` of those scalar values. Saving a flow that marks an input of any other type as searchable, such as `SECRET`, `FILE`, or `MULTISELECT`, fails with an error that names the input.
+- **When values are stored:** after all inputs pass validation. An execution rejected for invalid inputs stores no searchable values. An input left empty has no searchable value.
+- **IDs:** an ID can be searchable on an input or on an output of the same flow, not both.
+- **Size limits, errors, replays, and cleanup:** the same as for [searchable outputs](../06.outputs/index.md#searchable-outputs). A value that can't be stored is logged as an error, and the execution still runs.
+
+<!-- TODO(runtime, 2.1 RC): confirm that executions started by a Flow trigger store searchable inputs, and the filter key for a searchable input inside a FORM input (dotted ID such as `environment.region`?). -->
+
+To find executions by a searchable input, use the **Inputs & Outputs** filter on the **Executions** page or the `searchableData` API filter. See [Find executions by searchable value](../06.outputs/index.md#find-executions-by-searchable-value).
 
 ## Using inputs in a flow
 
