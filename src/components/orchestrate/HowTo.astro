@@ -115,6 +115,10 @@ const { title, intro, steps, flow } = Astro.props
                 margin: 0;
                 line-height: 1.6;
                 color: var(--ks-content-secondary);
+
+                :global(code) {
+                    overflow-wrap: anywhere;
+                }
             }
         }
 
