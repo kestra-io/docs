@@ -1,5 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
+import { API_URL } from "astro:env/client"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
 
 // Four reasons, each under a glimpse of the product that proves it.
 const FEATURES = [
@@ -25,12 +27,10 @@ const FEATURES = [
     },
 ]
 
-// The page each glimpse would sit on in Kestra.
+// The page each windowed glimpse would sit on in Kestra; the others are
+// drawn free, without a window, so the four do not all look alike.
 const PAGES: Record<string, string> = {
-    access: "Tenant",
     reliability: "Worker groups",
-    governance: "Audit logs",
-    scale: "Workers",
 }
 
 // The Infrastructure tenant, open on its namespaces and a flow.
@@ -132,11 +132,54 @@ const ago = (seconds: number) =>
           ? `${Math.round(seconds / 60)} min ago`
           : `${Math.round(seconds / 3600)} hours ago`
 
+// The backends to pick from, each with its plugin's icon, fetched at
+// build. JDBC alone is open source; Enterprise adds the rest. The script
+// switches between a few setups.
+const BACKENDS = {
+    repository: [
+        { id: "jdbc", name: "JDBC" },
+        { id: "elasticsearch", name: "Elasticsearch", plugin: "elasticsearch" },
+    ],
+    queue: [
+        { id: "jdbc", name: "JDBC" },
+        { id: "redis", name: "Redis", plugin: "redis" },
+        { id: "rabbitmq", name: "RabbitMQ", plugin: "amqp" },
+        { id: "kafka", name: "Kafka", plugin: "kafka" },
+    ],
+}
+const SETUPS = [
+    ["elasticsearch", "kafka"],
+    ["jdbc", "redis"],
+    ["elasticsearch", "rabbitmq"],
+    ["jdbc", "jdbc"],
+]
+const icons = Object.fromEntries(
+    await Promise.all(
+        [...BACKENDS.repository, ...BACKENDS.queue]
+            .filter((backend) => backend.plugin)
+            .map(async (backend) => {
+                try {
+                    const response = await fetch(
+                        `${API_URL}/plugins/icons/io.kestra.plugin.${backend.plugin}`,
+                    )
+                    if (!response.ok) return [backend.id, null]
+                    const svg = Buffer.from(await response.arrayBuffer())
+                    return [
+                        backend.id,
+                        `data:image/svg+xml;base64,${svg.toString("base64")}`,
+                    ]
+                } catch {
+                    return [backend.id, null]
+                }
+            }),
+    ),
+) as Record<string, string | null>
+
 // As on the 2.0 page: workers prove who they are before they join.
 const WORKERS = [
-    { name: "worker-onprem-01", ok: true, tps: 12.4 },
-    { name: "worker-euwest-02", ok: true, tps: 8.1 },
-    { name: "unknown", ok: false, note: "Untrusted certificate" },
+    { name: "onprem-01", ok: true },
+    { name: "euwest-02", ok: true },
+    { name: "unknown", ok: false },
 ]
 ---
 
@@ -178,25 +221,44 @@ const WORKERS = [
                     FEATURES.map((feature) => (
                         <li>
                             <div class="stage" aria-hidden="true">
-                                <div class="glimpse" data-card={feature.id}>
-                                    <p class="glimpse-head">
-                                        {PAGES[feature.id]}
-                                        {feature.id === "access" && (
-                                            <span class="pill">
-                                                <span class="dot" />
-                                                Infrastructure
-                                            </span>
-                                        )}
-                                    </p>
+                                <div
+                                    class:list={[
+                                        "glimpse",
+                                        { free: !PAGES[feature.id] },
+                                    ]}
+                                    data-card={feature.id}
+                                >
+                                    {PAGES[feature.id] && (
+                                        <p class="glimpse-head">
+                                            {PAGES[feature.id]}
+                                            {feature.id === "access" && (
+                                                <span class="pill">
+                                                    <span class="dot" />
+                                                    Infrastructure
+                                                </span>
+                                            )}
+                                        </p>
+                                    )}
                                     {feature.id === "access" && (
                                         <div
                                             class="glimpse-body tenant"
                                             data-tenants
                                         >
+                                            <p class="tenant-label">
+                                                <Icon name="mdi:server-network" />
+                                                Tenant
+                                                <span class="pill">
+                                                    <span class="dot" />
+                                                    Infrastructure
+                                                </span>
+                                            </p>
                                             <ul class="ns-tree">
                                                 <li>
                                                     <span data-row={ROOT}>
-                                                        <Icon name="mdi:dots-grid" />
+                                                        <Icon
+                                                            name="mdi:folder-open-outline"
+                                                            class="folder"
+                                                        />
                                                         {ROOT}
                                                     </span>
                                                     <ul>
@@ -214,7 +276,10 @@ const WORKERS = [
                                                                             namespace
                                                                         }
                                                                     >
-                                                                        <Icon name="mdi:dots-grid" />
+                                                                        <Icon
+                                                                            name="mdi:folder-open-outline"
+                                                                            class="folder"
+                                                                        />
                                                                         {
                                                                             namespace
                                                                         }
@@ -365,70 +430,81 @@ const WORKERS = [
                                     )}
                                     {feature.id === "governance" && (
                                         <div
-                                            class="glimpse-body audit"
+                                            class="glimpse-body notes"
                                             data-audit
                                         >
-                                            <p class="entry labels">
-                                                <span>Resource</span>
-                                                <span>Action</span>
-                                                <span>Actor</span>
-                                                <span>Details</span>
-                                                <span>Date</span>
-                                            </p>
-                                            <div class="entries" data-entries>
-                                                {AUDIT.slice(0, 5).map(
+                                            <div class="stack" data-stack>
+                                                {AUDIT.slice(0, 3).map(
                                                     (line) => (
-                                                        <p
-                                                            class="entry"
+                                                        <div
+                                                            class="note"
                                                             data-age={line.age}
                                                         >
-                                                            <span class="type">
-                                                                {line.type}
-                                                            </span>
-                                                            <span class="action">
-                                                                {line.action}
-                                                            </span>
-                                                            <strong class="actor">
-                                                                {line.actor}
-                                                            </strong>
-                                                            <span class="detail">
+                                                            <p class="note-top">
+                                                                <span class="pill">
+                                                                    {line.type}
+                                                                </span>
+                                                                <span
+                                                                    class:list={[
+                                                                        "state",
+                                                                        line.action.toLowerCase(),
+                                                                    ]}
+                                                                >
+                                                                    {
+                                                                        line.action
+                                                                    }
+                                                                </span>
+                                                                <span class="date">
+                                                                    {ago(
+                                                                        line.age,
+                                                                    )}
+                                                                </span>
+                                                            </p>
+                                                            <p class="note-main">
+                                                                <strong>
+                                                                    {line.actor}
+                                                                </strong>
                                                                 <span class="tag">
                                                                     {
                                                                         line.detail
                                                                     }
                                                                 </span>
+                                                            </p>
+                                                        </div>
+                                                    ),
+                                                )}
+                                            </div>
+                                            <template data-pool>
+                                                {AUDIT.slice(3).map((line) => (
+                                                    <div
+                                                        class="note"
+                                                        data-age={line.age}
+                                                    >
+                                                        <p class="note-top">
+                                                            <span class="pill">
+                                                                {line.type}
+                                                            </span>
+                                                            <span
+                                                                class:list={[
+                                                                    "state",
+                                                                    line.action.toLowerCase(),
+                                                                ]}
+                                                            >
+                                                                {line.action}
                                                             </span>
                                                             <span class="date">
                                                                 {ago(line.age)}
                                                             </span>
                                                         </p>
-                                                    ),
-                                                )}
-                                            </div>
-                                            <template data-pool>
-                                                {AUDIT.slice(5).map((line) => (
-                                                    <p
-                                                        class="entry"
-                                                        data-age="0"
-                                                    >
-                                                        <span class="type">
-                                                            {line.type}
-                                                        </span>
-                                                        <span class="action">
-                                                            {line.action}
-                                                        </span>
-                                                        <strong class="actor">
-                                                            {line.actor}
-                                                        </strong>
-                                                        <span class="detail">
+                                                        <p class="note-main">
+                                                            <strong>
+                                                                {line.actor}
+                                                            </strong>
                                                             <span class="tag">
                                                                 {line.detail}
                                                             </span>
-                                                        </span>
-                                                        <span class="date">
-                                                            just now
-                                                        </span>
-                                                    </p>
+                                                        </p>
+                                                    </div>
                                                 ))}
                                             </template>
                                             <p class="stream">
@@ -446,89 +522,161 @@ const WORKERS = [
                                     )}
                                     {feature.id === "scale" && (
                                         <div
-                                            class="glimpse-body handshake"
-                                            data-handshake
+                                            class="glimpse-body schema-body"
+                                            data-backends
+                                            data-setups={JSON.stringify(SETUPS)}
                                         >
-                                            <p class="labels">
-                                                <span>Worker</span>
-                                                <span class="tps">
-                                                    Throughput
-                                                </span>
-                                                <span class="status">
-                                                    Status
-                                                </span>
-                                            </p>
-                                            {WORKERS.map((worker) => (
-                                                <p
-                                                    class:list={[
-                                                        "worker",
-                                                        { refused: !worker.ok },
-                                                    ]}
-                                                    data-worker={
-                                                        worker.ok
-                                                            ? "ok"
-                                                            : "refused"
-                                                    }
+                                            <div
+                                                class="schema blocked"
+                                                data-intruder
+                                            >
+                                                <svg
+                                                    class="lines"
+                                                    viewBox="0 0 560 340"
+                                                    aria-hidden="true"
                                                 >
-                                                    <Icon
-                                                        name={
-                                                            worker.ok
-                                                                ? "mdi:server-outline"
-                                                                : "mdi:alert-outline"
-                                                        }
+                                                    <path
+                                                        class="wire"
+                                                        d="M140 100 C196 100 196 170 252 170"
                                                     />
-                                                    <span class="name">
-                                                        {worker.name}
-                                                        {worker.note && (
-                                                            <small>
-                                                                {worker.note}
-                                                            </small>
-                                                        )}
-                                                    </span>
-                                                    {worker.ok && (
-                                                        <span class="tps">
+                                                    <path
+                                                        class="wire"
+                                                        d="M140 170 H252"
+                                                    />
+                                                    {/* The unknown worker sends its run like the
+                                                    others; it is stopped on the way, a cross
+                                                    appears and its link turns red. */}
+                                                    <path
+                                                        class="wire intruder"
+                                                        d="M140 240 C196 240 196 170 252 170"
+                                                    />
+                                                    <path
+                                                        class="jet"
+                                                        d="M140 240 C196 240 196 170 252 170"
+                                                        data-jet
+                                                    />
+                                                    <path
+                                                        class="cut"
+                                                        d="M192.5 201.5 l7 7 M199.5 201.5 l-7 7"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M308 170 C354 170 354 112 400 112"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M308 170 C354 170 354 228 400 228"
+                                                    />
+                                                    <g class="flows">
+                                                        <path d="M140 100 C196 100 196 170 252 170 H308 C354 170 354 112 400 112" />
+                                                        <path d="M140 170 H308 C354 170 354 228 400 228" />
+                                                    </g>
+                                                </svg>
+                                                <p
+                                                    class="workers"
+                                                    data-handshake
+                                                >
+                                                    {WORKERS.map(
+                                                        (worker, idx) => (
                                                             <span
-                                                                data-worker-tps
+                                                                class:list={[
+                                                                    "worker",
+                                                                    worker.ok
+                                                                        ? "ok"
+                                                                        : "refused",
+                                                                ]}
+                                                                data-worker={
+                                                                    worker.ok
+                                                                        ? "ok"
+                                                                        : "refused"
+                                                                }
+                                                                style={`top: ${100 + idx * 70}px`}
                                                             >
-                                                                {worker.tps?.toFixed(
-                                                                    1,
-                                                                )}
+                                                                <span class="state" />
+                                                                {worker.name}
                                                             </span>
-                                                            k tasks/s
-                                                        </span>
+                                                        ),
                                                     )}
-                                                    <span
-                                                        class:list={[
-                                                            "pill",
-                                                            worker.ok
-                                                                ? "ok"
-                                                                : "bad",
-                                                        ]}
-                                                        data-verdict
-                                                    >
-                                                        {worker.ok
-                                                            ? "Verified"
-                                                            : "Refused"}
-                                                    </span>
                                                 </p>
-                                            ))}
-                                            <dl class="facts">
-                                                <dt>Tunnel</dt>
-                                                <dd>
-                                                    <Icon
-                                                        name="mdi:shield-check-outline"
-                                                        class="secure"
+                                                <span class="hub">
+                                                    <img
+                                                        src={kestraMark.src}
+                                                        alt=""
+                                                        width="28"
+                                                        height="28"
                                                     />
-                                                    mTLS active
-                                                </dd>
-                                                <dt>Backends</dt>
-                                                <dd>PostgreSQL · Kafka</dd>
-                                                <dt>Throughput</dt>
-                                                <dd>
-                                                    <b data-total>20.5k</b>{" "}
-                                                    tasks/s
-                                                </dd>
-                                            </dl>
+                                                </span>
+                                                <span class="hub-label">
+                                                    Kestra
+                                                </span>
+                                                {(
+                                                    [
+                                                        "repository",
+                                                        "queue",
+                                                    ] as const
+                                                ).map((kind, col) => (
+                                                    <div
+                                                        class:list={[
+                                                            "lane",
+                                                            kind,
+                                                        ]}
+                                                        data-column={kind}
+                                                    >
+                                                        <div class="bar">
+                                                            <p class="lane-title">
+                                                                {kind ===
+                                                                "repository"
+                                                                    ? "Repository"
+                                                                    : "Queue"}
+                                                            </p>
+                                                            {BACKENDS[kind].map(
+                                                                (backend) => (
+                                                                    <span
+                                                                        class:list={[
+                                                                            "choice",
+                                                                            {
+                                                                                on:
+                                                                                    backend.id ===
+                                                                                    SETUPS[0][
+                                                                                        col
+                                                                                    ],
+                                                                            },
+                                                                        ]}
+                                                                        data-option={
+                                                                            backend.id
+                                                                        }
+                                                                    >
+                                                                        <span class="logo">
+                                                                            {icons[
+                                                                                backend
+                                                                                    .id
+                                                                            ] ? (
+                                                                                <img
+                                                                                    src={
+                                                                                        icons[
+                                                                                            backend
+                                                                                                .id
+                                                                                        ]
+                                                                                    }
+                                                                                    alt=""
+                                                                                />
+                                                                            ) : (
+                                                                                <Icon
+                                                                                    name="mdi:language-java"
+                                                                                    class="java"
+                                                                                />
+                                                                            )}
+                                                                        </span>
+                                                                        {
+                                                                            backend.name
+                                                                        }
+                                                                    </span>
+                                                                ),
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     )}
                                 </div>
@@ -618,18 +766,9 @@ const WORKERS = [
                 color: #a9a9b8;
             }
 
-            // The name in brushed silver.
             em {
                 font-style: normal;
-                background: linear-gradient(
-                    180deg,
-                    #ffffff 0%,
-                    #e4e4ec 45%,
-                    #9d9daf 100%
-                );
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
+                color: var(--text);
             }
         }
 
@@ -749,9 +888,10 @@ const WORKERS = [
         height: 23.5rem;
         overflow: hidden;
 
-        // A little taller on a phone, where some lines wrap.
+        // On a phone, one card per row: each as tall as its content.
         @include media-breakpoint-down(md) {
-            height: 25rem;
+            height: auto;
+            min-height: 25rem;
         }
         border: 1px solid rgba(255, 255, 255, 0.09);
         border-radius: 0.75rem;
@@ -870,6 +1010,23 @@ const WORKERS = [
     .tenant {
         position: relative;
         flex: 1;
+        gap: 1.25rem;
+    }
+
+    // The tenant named over its tree, with its kind.
+    .tenant-label {
+        font-size: 1rem;
+        color: #ededf1;
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: var(--muted);
+        }
+
+        .pill {
+            margin-left: 0.25rem;
+        }
     }
 
     // A row's state as the story goes: the flow edited, run and done, the
@@ -899,11 +1056,18 @@ const WORKERS = [
     }
 
     // Hairline branches, as in the illustration.
+    // Drawn large, straight on the section: the tree is the picture.
     .ns-tree {
         margin: 0;
         padding: 0;
         list-style: none;
+        font-size: 0.9375rem;
         color: var(--muted);
+
+        // Namespaces are folders, in the product's violet.
+        :global(.folder) {
+            color: #b48cff;
+        }
 
         ul {
             margin: 0 0 0 0.4375rem;
@@ -945,7 +1109,7 @@ const WORKERS = [
                 top: 0;
                 left: 0;
                 width: 0.625rem;
-                height: 1.0625rem;
+                height: 1rem;
                 border-left: 1px solid rgba(255, 255, 255, 0.14);
                 border-bottom: 1px solid rgba(255, 255, 255, 0.14);
             }
@@ -970,7 +1134,7 @@ const WORKERS = [
             padding: 0 0.375rem;
             border: 1px solid transparent;
             border-radius: 0.375rem;
-            line-height: 2.125rem;
+            line-height: 2rem;
             transition:
                 background-color 0.4s ease,
                 border-color 0.4s ease,
@@ -994,8 +1158,8 @@ const WORKERS = [
         }
 
         :global(svg) {
-            width: 0.875rem;
-            height: 0.875rem;
+            width: 0.9375rem;
+            height: 0.9375rem;
         }
     }
 
@@ -1013,10 +1177,15 @@ const WORKERS = [
         gap: 0.125rem;
         transition:
             left 1.1s cubic-bezier(0.65, 0, 0.35, 1),
-            top 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+            top 1.1s cubic-bezier(0.65, 0, 0.35, 1),
+            opacity 0.5s ease;
 
         :global(.placing) & {
             transition: none;
+        }
+
+        &:global(.idle) {
+            opacity: 0.3;
         }
 
         svg {
@@ -1213,88 +1382,142 @@ const WORKERS = [
         }
     }
 
-    // The audit log as a table: column labels, then rows of what
-    // changed, by whom and when. New rows slide in on top.
-    .audit {
-        gap: 0;
+    // Free glimpses: no window, the drawing on the section itself.
+    .glimpse.free {
+        border-color: transparent;
+        background: none;
+        box-shadow: none;
 
-        .entry {
-            display: grid;
-            grid-template-columns: 5.25rem 4.25rem 4.5rem minmax(0, 1fr) 5.5rem;
-            align-items: center;
-            gap: 0.75rem;
-            height: 2.375rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        .glimpse-body {
+            justify-content: center;
+            padding: 0;
+        }
+    }
+
+    // The audit log as a stack of events, as notifications: the newest in
+    // front, the ones before it fading behind. A new one drops in on top.
+    .notes {
+        align-items: center;
+        gap: 2.5rem;
+    }
+
+    .stack {
+        position: relative;
+        width: min(100%, 32rem);
+        height: 6.5rem;
+    }
+
+    .note {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.875rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem;
+        background: #17171b;
+        box-shadow: 0 16px 32px -16px rgba(0, 0, 0, 0.9);
+        transform-origin: bottom center;
+        transition:
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.7s ease;
+
+        &:nth-child(1) {
+            z-index: 3;
+        }
+
+        > * {
+            transition: opacity 0.4s ease;
+        }
+
+        // Behind, only the cards' edges show, not what they say.
+        &:nth-child(n + 2) > * {
+            opacity: 0;
+        }
+
+        &:nth-child(2) {
+            z-index: 2;
+            opacity: 0.7;
+            transform: translateY(0.625rem) scale(0.95);
+        }
+
+        &:nth-child(3) {
+            z-index: 1;
+            opacity: 0.35;
+            transform: translateY(1.25rem) scale(0.9);
+        }
+
+        &:nth-child(n + 4) {
+            opacity: 0;
+            transform: translateY(2.5rem) scale(0.85);
+        }
+
+        // Where a new event starts, above the stack.
+        &:global(.enter) {
+            opacity: 0;
+            transform: translateY(-1rem);
+            transition: none;
+        }
+
+        p {
+            gap: 0.5rem;
             font-size: 0.875rem;
-            white-space: nowrap;
         }
+    }
 
-        .labels {
-            height: 1.75rem;
-            border-color: rgba(255, 255, 255, 0.06);
-            font-size: 0.75rem;
-            color: var(--faint);
-        }
+    .note-top {
+        // The action in the topology's state colours: created as success,
+        // updated as running, resumed as paused, a login as a runner.
+        .state {
+            --tone: 201, 201, 210;
 
-        .entries {
-            height: calc(5 * 2.375rem);
-            overflow: hidden;
-        }
-
-        // A new row opens its space and fades in.
-        .entry:global(.arriving) {
-            animation: arrive 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .type {
-            color: #e6e6ea;
-        }
-
-        .action {
-            color: var(--muted);
-        }
-
-        .actor {
-            overflow: hidden;
+            padding: 0.0625rem 0.5rem;
+            border-radius: 0.375rem;
+            background: rgba(var(--tone), 0.14);
+            font-size: 0.8125rem;
             font-weight: 500;
-            text-overflow: ellipsis;
-            color: #ffffff;
-        }
+            color: rgb(var(--tone));
 
-        .detail {
-            overflow: hidden;
-            min-width: 0;
+            &.created {
+                --tone: 62, 224, 166;
+            }
+
+            &.updated {
+                --tone: 152, 105, 247;
+            }
+
+            &.resumed {
+                --tone: 255, 181, 71;
+            }
+
+            &.login {
+                --tone: 113, 139, 254;
+            }
         }
 
         .date {
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-            color: var(--faint);
-        }
-
-        .stream {
-            margin-top: auto;
-            padding-top: 0.875rem;
-            font-size: 0.875rem;
-            color: var(--muted);
-        }
-
-        .count {
             margin-left: auto;
-            font-variant-numeric: tabular-nums;
+            font-size: 0.8125rem;
             color: var(--faint);
         }
     }
 
-    @keyframes arrive {
-        from {
-            height: 0;
-            opacity: 0;
-        }
+    .note-main strong {
+        font-weight: 500;
+        color: #ffffff;
+    }
 
-        to {
-            height: 2.375rem;
-            opacity: 1;
+    .stream {
+        font-size: 0.875rem;
+        color: var(--muted);
+
+        .count {
+            margin-left: 0.75rem;
+            font-variant-numeric: tabular-nums;
+            color: var(--faint);
         }
     }
 
@@ -1317,87 +1540,318 @@ const WORKERS = [
         }
     }
 
-    // Workers shaking hands: each is checked, the trusted ones get in with
-    // their live throughput, the unknown one is turned back.
-    .handshake {
-        gap: 0;
+    // The backend as a schema, after the 2.0 page: the workers on the left
+    // connect to Kestra over mTLS (the unknown one's link breaks on the
+    // way), and Kestra runs on the repository and queue picked on the
+    // right. Drawn on a fixed 560 by 340 box, in the AI block's nodes.
+    .schema-body {
+        align-items: center;
+    }
 
-        // Column labels, as on the audit log.
-        .labels {
-            gap: 0.625rem;
-            height: 1.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 0.75rem;
-            color: var(--faint);
+    .schema {
+        position: relative;
+        width: 35rem;
+        height: 21.25rem;
+        flex: none;
+        font-size: 0.875rem;
 
-            .tps {
-                font-size: inherit;
-                color: inherit;
-            }
+        @include media-breakpoint-down(xl) {
+            zoom: 0.8;
+        }
 
-            .status {
-                min-width: 5.5rem;
-                text-align: center;
+        // Drawn smaller on a phone, so it all still shows.
+        @include media-breakpoint-down(md) {
+            zoom: 0.55;
+        }
+    }
+
+    .schema > .lines {
+        position: absolute;
+        inset: 0;
+        width: 560px;
+        height: 340px;
+        overflow: visible;
+        fill: none;
+
+        .wire {
+            stroke: rgba(255, 255, 255, 0.16);
+            stroke-width: 1;
+
+            &.intruder {
+                transition: stroke 0.3s ease;
             }
         }
 
-        // Rows like the audit log's, one worker each.
-        .worker {
-            gap: 0.625rem;
-            min-height: 2.875rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            color: #e6e6ea;
-            transition: opacity 0.4s ease;
-
-            &.refused {
-                color: var(--muted);
-
-                :global(svg) {
-                    color: #ff7a8a;
-                }
-            }
-
-            &:global(.shake) .pill {
-                animation: shake 0.45s ease;
-            }
+        // The unknown worker's run, sent by the script; it stops halfway.
+        .jet {
+            stroke: rgba(255, 255, 255, 0.7);
+            stroke-width: 1.25;
+            stroke-linecap: round;
+            stroke-dasharray: 14 400;
+            stroke-dashoffset: 14;
+            opacity: 0;
         }
 
-        .name {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.3;
-
-            small {
-                font-size: 0.75rem;
-                color: var(--faint);
-            }
+        // The small red cross where it is stopped.
+        .cut {
+            stroke: #ff7a8a;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            opacity: 0;
+            transform: scale(0.4);
+            transform-box: fill-box;
+            transform-origin: center;
+            transition:
+                opacity 0.2s ease,
+                transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .tps {
-            margin-left: auto;
-            font-size: 0.875rem;
-            font-variant-numeric: tabular-nums;
+        // Runs travelling along the wires.
+        .flows path {
+            stroke: rgba(255, 255, 255, 0.7);
+            stroke-width: 1.25;
+            stroke-linecap: round;
+            stroke-dasharray: 14 640;
+            animation: flow 3.2s linear infinite;
+
+            & + path {
+                animation-delay: -1.6s;
+            }
+        }
+    }
+
+    // Once stopped: the link dashed in red, and the cross.
+    .schema:global(.blocked) {
+        .lines .intruder {
+            stroke: rgba(255, 122, 138, 0.55);
+            stroke-dasharray: 3 3;
+        }
+
+        .lines .cut {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes flow {
+        from {
+            stroke-dashoffset: 654;
+        }
+
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    .workers {
+        display: contents;
+    }
+
+    // A node, as in the AI block: a dark fill, a hairline edge, small
+    // corners.
+    .worker,
+    .bar {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        background: #141418;
+    }
+
+    .worker {
+        position: absolute;
+        left: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 140px;
+        height: 40px;
+        margin-top: -20px;
+        padding: 0 0.75rem;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        color: #e6e6ea;
+
+        .state {
+            width: 0.4375rem;
+            height: 0.4375rem;
+            border-radius: 50%;
+            background: #4cc38a;
+            transition: background-color 0.3s ease;
+        }
+
+        &.refused {
+            border-color: rgba(255, 122, 138, 0.3);
             color: var(--muted);
-        }
 
-        .pill {
-            min-width: 5.5rem;
-            justify-content: center;
-        }
-
-        .refused .pill {
-            margin-left: auto;
-        }
-
-        // While a worker is checked: a neutral pill and no figures yet.
-        [data-worker]:global(.checking) {
-            .pill {
-                color: var(--muted);
+            .state {
+                background: #ff7a8a;
             }
+        }
 
-            .tps {
-                opacity: 0.3;
+        // While it is checked: a grey, pulsing dot.
+        &:global(.checking) {
+            border-color: rgba(255, 255, 255, 0.1);
+
+            .state {
+                background: var(--faint);
+                animation: pulse 0.9s ease-in-out infinite;
             }
+        }
+
+        &:global(.shake) {
+            animation: shake 0.45s ease;
+        }
+    }
+
+    // Kestra in the middle, on its black tile.
+    .hub {
+        position: absolute;
+        top: 142px;
+        left: 252px;
+        display: grid;
+        place-items: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        background: #141418;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+        // Lights up as each run comes in, on the runs' own clock.
+        animation: hub-in 3.2s linear infinite;
+    }
+
+    // The runs' clock: the first reaches Kestra at 21% and its repository
+    // at 48%; the second, half a turn behind, Kestra at 67% and its queue
+    // at 94%.
+    @keyframes hub-in {
+        0%,
+        16%,
+        30%,
+        62%,
+        76%,
+        100% {
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+        }
+
+        21%,
+        67% {
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.5),
+                0 0 24px 2px rgba(255, 255, 255, 0.12);
+        }
+    }
+
+    @keyframes lane-in {
+        0%,
+        12%,
+        100% {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        4% {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+    }
+
+    .hub-label {
+        position: absolute;
+        top: 208px;
+        left: 240px;
+        width: 80px;
+        text-align: center;
+        font-size: 0.8125rem;
+        color: var(--muted);
+    }
+
+    // A lane: one node, its name at the top and the backend in use under
+    // it, the others waiting their turn.
+    .lane {
+        position: absolute;
+        left: 400px;
+        width: 160px;
+
+        // The repository's node tops out with the first worker, the
+        // queue's bottoms out with the last.
+        &.repository {
+            top: 80px;
+        }
+
+        &.queue {
+            top: 196px;
+        }
+    }
+
+    // The lane's name, small, in the top of its node.
+    .lane .lane-title {
+        position: absolute;
+        top: 8px;
+        left: 0.625rem;
+        font-size: 0.75rem;
+        line-height: 1;
+        color: var(--faint);
+    }
+
+    .bar {
+        position: relative;
+        height: 64px;
+        animation: lane-in 3.2s linear infinite;
+
+        .repository & {
+            animation-delay: calc(-3.2s + 0.44 * 3.2s);
+        }
+
+        .queue & {
+            animation-delay: calc(-3.2s + 0.9 * 3.2s);
+        }
+    }
+
+    .choice {
+        position: absolute;
+        top: 40px;
+        left: 0.625rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #ffffff;
+        opacity: 0;
+        transform: translateY(calc(-50% + 6px));
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+
+        &.on,
+        &:global(.on) {
+            opacity: 1;
+            transform: translateY(-50%);
+        }
+
+        // The logo straight on the node, no tile behind it.
+        .logo {
+            display: grid;
+            place-items: center;
+            width: 1.375rem;
+            height: 1.375rem;
+        }
+
+        img {
+            width: 1.375rem;
+            height: 1.375rem;
+            object-fit: contain;
+        }
+
+        // Kafka's mark is black: drawn in white on the dark node.
+        &[data-option="kafka"] img {
+            filter: invert(1);
+        }
+
+        :global(.java) {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: #e76f00;
+        }
+    }
+
+    @keyframes pulse {
+        50% {
+            opacity: 0.3;
         }
     }
 
@@ -1440,7 +1894,10 @@ const WORKERS = [
 
     @media (prefers-reduced-motion: reduce) {
         .glimpse :global(.spin),
-        .live::after {
+        .live::after,
+        .lines .flows path,
+        .hub,
+        .bar {
             animation: none;
         }
     }
@@ -1518,12 +1975,20 @@ const WORKERS = [
 
         const rest = () => {
             go(launcher, "acme", 0.45)
-            go(admin, "acme.cloud", 0.72)
+            go(admin, "acme", 0.74)
             go(editor, "foot", 0.04)
         }
 
+        // The one at work stands out; the others wait, dimmed.
+        const people = [launcher, editor, admin]
+        const focus = (who?: HTMLElement) =>
+            people.forEach((person) =>
+                person.classList.toggle("idle", !!who && person !== who),
+            )
+
         const reset = () => {
             rest()
+            focus()
             light()
             show(flow)
             show(doomed)
@@ -1532,14 +1997,22 @@ const WORKERS = [
         }
 
         const STORY: [number, () => void][] = [
-            [0, () => go(editor, "flow", 0.5)],
+            [0, () => (focus(editor), go(editor, "flow", 0.5))],
             [1100, () => (light(editor), show(flow, "editing"))],
-            [3200, () => (go(editor, "foot", 0.04), go(launcher, "flow", 0.5))],
+            [
+                3200,
+                () => (
+                    focus(launcher),
+                    go(editor, "foot", 0.04),
+                    go(launcher, "flow", 0.5)
+                ),
+            ],
             [4300, () => (light(launcher), show(flow, "running"))],
             [6100, () => show(flow, "success")],
             [
                 7800,
                 () => (
+                    focus(admin),
                     go(launcher, "acme", 0.45),
                     light(),
                     show(flow),
@@ -1559,7 +2032,7 @@ const WORKERS = [
                 10000,
                 () => (light(), doomed.parentElement?.classList.add("removed")),
             ],
-            [10700, () => go(admin, "acme.cloud", 0.72)],
+            [10700, () => go(admin, "acme", 0.74)],
             [12600, reset],
         ]
         const LOOP = 14400
@@ -1640,18 +2113,17 @@ const WORKERS = [
         )
     }
 
-    // The audit log streams: a new event slides in on top every few
-    // seconds, the oldest drops off the foot, every row's date ages, and
-    // each event is counted as it goes out to the SIEM.
+    // The audit log as a stack: every few seconds a new event drops in on
+    // top, the others move back and fade, the last one goes, and each event
+    // is counted as it streams out to the SIEM.
     function playAudit() {
         const card = document.querySelector<HTMLElement>("[data-audit]")
         if (!card || reduced()) return
-        const list = card.querySelector<HTMLElement>("[data-entries]")
+        const stack = card.querySelector<HTMLElement>("[data-stack]")
         const pool = card.querySelector<HTMLTemplateElement>("[data-pool]")
         const exported = card.querySelector<HTMLElement>("[data-exported]")
-        if (!list || !pool) return
-        // The waiting events, and the ones that dropped off, in turn.
-        const queue = [...pool.content.querySelectorAll<HTMLElement>(".entry")]
+        if (!stack || !pool) return
+        const queue = [...pool.content.querySelectorAll<HTMLElement>(".note")]
         let total = 1284
         let timer = 0
 
@@ -1663,114 +2135,169 @@ const WORKERS = [
                   : `${Math.round(seconds / 3600)} hours ago`
 
         const step = () => {
-            // Time moves on for the rows already there.
-            list.querySelectorAll<HTMLElement>(".entry").forEach((row) => {
-                const age = Number(row.dataset.age) + 150
-                row.dataset.age = String(age)
-                const date = row.querySelector(".date")
+            stack.querySelectorAll<HTMLElement>(".note").forEach((note) => {
+                const age = Number(note.dataset.age) + 150
+                note.dataset.age = String(age)
+                const date = note.querySelector(".date")
                 if (date) date.textContent = ago(age)
             })
             const next = queue.shift()
             if (!next) return
-            const row = next.cloneNode(true) as HTMLElement
-            row.dataset.age = "0"
-            row.querySelector(".date")!.textContent = "just now"
-            row.classList.add("arriving")
-            list.prepend(row)
-            const last = list.lastElementChild as HTMLElement | null
-            if (last && list.children.length > 5) {
-                last.remove()
-                queue.push(last)
-            }
+            const note = next.cloneNode(true) as HTMLElement
+            note.dataset.age = "0"
+            const date = note.querySelector(".date")
+            if (date) date.textContent = "just now"
+            note.classList.add("enter")
+            stack.prepend(note)
+            void note.offsetWidth
+            note.classList.remove("enter")
+            // The one that leaves goes back to the end of the queue.
+            const last = stack.children[4] as HTMLElement | undefined
+            if (last)
+                window.setTimeout(() => (last.remove(), queue.push(last)), 700)
             total++
             if (exported) exported.textContent = total.toLocaleString("en-US")
         }
 
         whileVisible(
             card,
-            () => (timer = window.setInterval(step, 2600)),
+            () => (timer = window.setInterval(step, 3000)),
             () => window.clearInterval(timer),
         )
     }
 
-    // Workers shaking hands, one after the other: the trusted ones are
-    // verified and start to carry tasks, the unknown one is refused. Their
-    // throughput then moves, and the total with it.
-    function playHandshake() {
-        const card = document.querySelector<HTMLElement>("[data-handshake]")
+    // Each lane changes backend on its own, never both at once: each
+    // switches as a run reaches it, every other run. The runs keep the
+    // CSS clock of 3.2s, the repository's arriving at 48% of it and the
+    // queue's at 94%.
+    function playBackends() {
+        const card = document.querySelector<HTMLElement>("[data-backends]")
         if (!card || reduced()) return
-        const workers = [...card.querySelectorAll<HTMLElement>("[data-worker]")]
-        const total = card.querySelector<HTMLElement>("[data-total]")
+        const setups = JSON.parse(card.dataset.setups ?? "[]") as string[][]
+        const columns = [...card.querySelectorAll<HTMLElement>("[data-column]")]
+        const CLOCK = 3200
+        const ARRIVALS = [0.48, 0.94]
+        const turns = [0, 0]
         let timers: number[] = []
-        let ticker = 0
 
-        const verdict = (worker: HTMLElement) =>
-            worker.querySelector<HTMLElement>("[data-verdict]")
-
-        const sum = () => {
-            if (!total) return
-            const values = [
-                ...card.querySelectorAll<HTMLElement>("[data-worker-tps]"),
-            ]
-                .filter((el) => !el.closest(".checking"))
-                .map((el) => Number(el.textContent))
-            total.textContent = `${values.reduce((a, b) => a + b, 0).toFixed(1)}k`
+        const show = (col: number) => {
+            turns[col] = (turns[col] + 1) % setups.length
+            columns[col]
+                .querySelectorAll<HTMLElement>("[data-option]")
+                .forEach((option) =>
+                    option.classList.toggle(
+                        "on",
+                        option.dataset.option === setups[turns[col]][col],
+                    ),
+                )
         }
 
-        const play = () => {
-            workers.forEach((worker) => {
-                worker.classList.add("checking")
-                const pill = verdict(worker)
-                if (pill) pill.textContent = "Verifying…"
+        const start = () => {
+            const now = Number(document.timeline.currentTime ?? 0)
+            timers = ARRIVALS.flatMap((arrival, col) => {
+                // Wait for this lane's next run, then every other one.
+                const wait =
+                    (((arrival * CLOCK - (now % CLOCK)) % CLOCK) + CLOCK) %
+                    CLOCK
+                let interval = 0
+                const first = window.setTimeout(() => {
+                    show(col)
+                    interval = window.setInterval(() => show(col), 2 * CLOCK)
+                    timers.push(interval)
+                }, wait + CLOCK)
+                return [first]
             })
-            sum()
+        }
+
+        whileVisible(card, start, () => {
+            timers.forEach(
+                (id) => (window.clearTimeout(id), window.clearInterval(id)),
+            )
+            timers = []
+        })
+    }
+
+    // Workers shaking hands, one after the other: the trusted ones get in,
+    // the unknown one is refused.
+    function playHandshake() {
+        const strip = document.querySelector<HTMLElement>("[data-handshake]")
+        if (!strip || reduced()) return
+        const workers = [
+            ...strip.querySelectorAll<HTMLElement>('[data-worker="ok"]'),
+        ]
+        let timers: number[] = []
+
+        const play = () => {
+            workers.forEach((worker) => worker.classList.add("checking"))
             timers = workers.map((worker, idx) =>
                 window.setTimeout(
                     () => {
-                        const ok = worker.dataset.worker === "ok"
-                        const pill = verdict(worker)
                         worker.classList.remove("checking")
-                        if (pill) pill.textContent = ok ? "Verified" : "Refused"
-                        if (!ok) {
-                            worker.classList.remove("shake")
-                            void worker.offsetWidth
-                            worker.classList.add("shake")
-                        }
-                        sum()
                     },
                     900 + idx * 1100,
                 ),
             )
-            timers.push(window.setTimeout(play, 16000))
+            timers.push(window.setTimeout(play, 12000))
         }
 
-        const tick = () => {
-            card.querySelectorAll<HTMLElement>("[data-worker-tps]").forEach(
-                (el) => {
-                    if (el.closest(".checking")) return
-                    const now = Number(el.textContent)
-                    el.textContent = Math.max(
-                        4,
-                        now + (Math.random() - 0.5) * 0.8,
-                    ).toFixed(1)
-                },
-            )
-            sum()
-        }
+        whileVisible(strip, play, () => {
+            timers.forEach(window.clearTimeout)
+            timers = []
+        })
+    }
 
-        whileVisible(
-            card,
-            () => (play(), (ticker = window.setInterval(tick, 1300))),
-            () => (
-                timers.forEach(window.clearTimeout),
-                (timers = []),
-                window.clearInterval(ticker)
-            ),
+    // The unknown worker sends a run like the others; it is stopped
+    // halfway, a cross appears, its link turns red and it shakes. Then it
+    // tries again.
+    function playIntruder() {
+        const schema = document.querySelector<HTMLElement>("[data-intruder]")
+        if (!schema || reduced()) return
+        const jet = schema.querySelector<SVGPathElement>("[data-jet]")
+        const worker = schema.querySelector<HTMLElement>(
+            '[data-worker="refused"]',
         )
+        if (!jet || !worker) return
+        let timers: number[] = []
+
+        const attempt = () => {
+            schema.classList.remove("blocked")
+            worker.classList.add("checking")
+            timers = [
+                window.setTimeout(() => {
+                    const run = jet.animate(
+                        [
+                            { strokeDashoffset: 14, opacity: 1 },
+                            { strokeDashoffset: -55, opacity: 1 },
+                        ],
+                        { duration: 900, easing: "ease-out", fill: "forwards" },
+                    )
+                    run.finished.then(() => {
+                        schema.classList.add("blocked")
+                        worker.classList.remove("checking", "shake")
+                        void worker.offsetWidth
+                        worker.classList.add("shake")
+                        jet.animate([{ opacity: 1 }, { opacity: 0 }], {
+                            duration: 400,
+                            fill: "forwards",
+                        })
+                    })
+                }, 1200),
+                window.setTimeout(attempt, 6400),
+            ]
+        }
+
+        whileVisible(schema, attempt, () => {
+            timers.forEach(window.clearTimeout)
+            timers = []
+            schema.classList.add("blocked")
+            worker.classList.remove("checking")
+        })
     }
 
     playTenants()
     playRouting()
     playAudit()
+    playBackends()
     playHandshake()
+    playIntruder()
 </script>
