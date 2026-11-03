@@ -17,7 +17,6 @@ import {
     isElementNameRedundant,
 } from "~/utils/plugins/pluginUtils"
 import { prunePluginsForSidebar } from "./pruneForClient"
-import { getPluginInstallCommand } from "./installCommand"
 import { matchesSubGroup } from "./subgroupMatcher"
 import type { PluginPage, PluginPageWithToc, TocLink } from "./types"
 
@@ -145,8 +144,6 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
         return []
     })()
-
-    const pluginInstallCommand = getPluginInstallCommand(pluginType, currentPluginMetadata)
 
     const metadataMap: Record<string, PluginMetadata> = Object.fromEntries(
         currentPluginMetadata.map((m) => [m.group, m]),
@@ -299,16 +296,6 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
               ? []
               : pluginToc
 
-        const tocLinks = [...baseTocLinks]
-        if (pluginInstallCommand) {
-            const propertiesIndex = tocLinks.findIndex((link) => link.id === "properties")
-            tocLinks.splice(
-                propertiesIndex === -1 ? tocLinks.length : propertiesIndex,
-                0,
-                tocEntry("installation", "Installation"),
-            )
-        }
-
         const hasBlueprints = pluginType
             ? blueprintCounts?.[pluginType] > 0
             : effectiveSubGroup
@@ -319,7 +306,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         const isRootPluginPage = isRootView && subGroup === undefined
 
         return [
-            ...tocLinks,
+            ...baseTocLinks,
             ...(isRootPluginPage && rootPlugin?.longDescription
                 ? [tocEntry("how-to-use-this-plugin", extractFirstHeading(rootPlugin.longDescription) ?? "How to use this plugin")]
                 : []),
@@ -377,7 +364,6 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         prunedPluginsWithoutDeprecated,
         pageWithToc,
         currentPluginMetadata,
-        pluginInstallCommand,
         currentPluginCategories,
         sidebarPluginDataResult: sidebarPluginData,
 

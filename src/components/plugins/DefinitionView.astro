@@ -5,17 +5,15 @@ import PluginDocsFrame from "./PluginDocsFrame.astro"
 interface Props {
     schema: any
     pluginType: string
-    installCommand?: string
 }
 
-const { schema, pluginType, installCommand } = Astro.props
+const { schema, pluginType } = Astro.props
 ---
 
 <PluginDocsFrame>
     <PluginsMarkdownRender
         {schema}
         {pluginType}
-        {installCommand}
         client:idle
     />
 </PluginDocsFrame>

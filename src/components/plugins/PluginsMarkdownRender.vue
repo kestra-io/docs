@@ -4,7 +4,6 @@
             class="plugin-schema"
             :schema
             :plugin-type
-            :install-command="installCommand"
             :props-initially-expanded="true"
         >
             <template #markdown="{ content }">
@@ -26,7 +25,6 @@
     defineProps<{
         schema: JSONSchema
         pluginType: string
-        installCommand?: string
     }>()
 </script>
 

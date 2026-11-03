@@ -1,0 +1,79 @@
+name: Preview cleanup
+
+# Preview URLs are Worker versions uploaded with a branch alias. Deleting the
+# versions of a deleted branch closes its preview. The daily job drops old
+# versions that carry no alias (superseded production and unaliased uploads).
+on:
+  delete:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Delete for real; leave off for a dry run
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  delete-branch-preview:
+    name: Delete the deleted branch's preview
+    if: github.event_name == 'delete' && github.event.ref_type == 'branch' && github.repository == 'kestra-io/docs'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            .github/actions
+            scripts/prune-worker-versions.mjs
+
+      - name: Resolve preview alias
+        id: preview-url
+        uses: ./.github/actions/preview-url
+        with:
+          branch: ${{ github.event.ref }}
+
+      - name: Delete versions of the alias
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
+          ALIAS: ${{ steps.preview-url.outputs.slug }}
+        run: node scripts/prune-worker-versions.mjs --alias "$ALIAS" --apply
+
+      - name: Slack - Notify on failure
+        if: failure()
+        uses: kestra-io/actions/composite/slack-status@main
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: C09FF36GKE1
+          suffix: "- delete branch preview"
+
+  prune-unaliased-versions:
+    name: Delete day-old versions without alias
+    if: github.event_name != 'delete' && github.repository == 'kestra-io/docs'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: scripts/prune-worker-versions.mjs
+
+      - name: Delete versions
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
+          APPLY: ${{ github.event_name == 'schedule' || inputs.apply }}
+        run: |
+          node scripts/prune-worker-versions.mjs --no-alias --older-than-days 1 \
+            $([ "$APPLY" = "true" ] && echo --apply)
+
+      - name: Slack - Notify on failure
+        if: failure()
+        uses: kestra-io/actions/composite/slack-status@main
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: C09FF36GKE1
+          suffix: "- prune unaliased versions"

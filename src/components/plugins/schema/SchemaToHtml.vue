@@ -39,36 +39,6 @@
                 </template>
             </Collapsible>
 
-            <Collapsible
-                v-if="installCommand"
-                class="plugin-section"
-                title="Installation"
-                href="installation"
-                :initially-expanded="true"
-                :no-url-change
-            >
-                <template #content>
-                    <div class="d-flex flex-column gap-3">
-                        <p class="mb-0">
-                            Our standard Docker images already include this plugin. If you use a <code>-slim</code> image or another setup,
-                            install it with the following command:
-                        </p>
-                        <CodeTabs
-                            :tabs="[
-                                { label: 'kestractl', code: kestractlInstallCommand },
-                                { label: 'Kestra CLI', code: installCommand },
-                            ]"
-                            storage-key="plugin-install-command"
-                            lang="bash"
-                        />
-                        <p class="mb-0">
-                            This command installs the latest available version. Replace <code>LATEST</code> with a specific
-                            version or version range to pin the plugin version.
-                        </p>
-                    </div>
-                </template>
-            </Collapsible>
-
             <CollapsibleProperties
                 v-if="schema.properties?.properties"
                 class="plugin-section"
@@ -139,12 +109,10 @@
     import type {JSONProperty, JSONSchema} from "../../../utils/plugins/schema";
     import Collapsible from "./Collapsible.vue";
     import CollapsibleProperties from "./CollapsibleProperties.vue";
-    import CodeTabs from "~/components/common/CodeTabs.vue";
 
     const props = withDefaults(defineProps<{
         schema: JSONSchema,
         pluginType: string,
-        installCommand?: string,
         darkMode?: boolean,
         propsInitiallyExpanded?: boolean,
         forceIncludeProperties?: string[],
@@ -184,13 +152,6 @@
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);
 
-    const kestractlInstallCommand = computed(() => {
-        const coordinate = props.installCommand
-            ?.replace(/^\.\/kestra plugins install\s+/, "")
-            .trim();
-        return coordinate ? `kestractl plugins get ${coordinate}` : "";
-    });
-
     const examples = computed(() => props.schema.properties?.$examples);
     const hasOutputs = computed(() => !!props.schema.outputs?.properties && Object.keys(props.schema.outputs.properties).length > 0);
 
@@ -218,9 +179,7 @@
 
     const {getHighlighterCore} = await import("./shikiToolset");
 
-    const initialLanguages = new Set<string>(["yaml"])
-    if (props.installCommand) initialLanguages.add("bash")
-    highlighter.value = await getHighlighterCore(exampleLangs(props.schema, initialLanguages));
+    highlighter.value = await getHighlighterCore(exampleLangs(props.schema));
 </script>
 
 <style scoped lang="scss">

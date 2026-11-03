@@ -1,3 +1,5 @@
+- regexp: "^/docs/plugin-developer-guide/condition/?$"
+  to: "/docs/migration-guide/v2.0.0/trigger-conditions-redesign"
 - regexp: "^/docs/workflow-components/task-cache(/.*)?$"
   to: "/docs/concepts/caching#cache-task-outputs-with-taskcache"
 - regexp: "^/docs/concepts/backfill(/.*)?$"
