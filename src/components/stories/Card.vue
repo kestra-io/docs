@@ -1,8 +1,8 @@
 <template>
-    <a
-        :href="`/stories/${story.slug}`"
+    <article
         class="story-card"
         :class="{ 'is-highlighted': highlighted }"
+        @click="onCardClick"
     >
         <div class="card-flip">
             <div class="card-face card-face-stats">
@@ -22,7 +22,13 @@
                         <span v-else class="card-initial">{{ initial }}</span>
                     </div>
                     <div class="card-info">
-                        <span class="card-company">{{ displayName }}</span>
+                        <a
+                            ref="link"
+                            :href="`/stories/${story.slug}`"
+                            class="card-company stretched-link"
+                        >
+                            {{ displayName }}
+                        </a>
                         <p v-if="shortDesc" class="card-short-desc">{{ shortDesc }}</p>
                     </div>
                 </div>
@@ -97,11 +103,11 @@
                 </div>
             </div>
         </div>
-    </a>
+    </article>
 </template>
 
 <script setup lang="ts">
-    import { computed } from "vue"
+    import { computed, ref } from "vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
 
     const MAX_TASKS = 3
@@ -143,6 +149,29 @@
                 .filter(Boolean) as { value: string; label: string }[]
         ).slice(0, MAX_KPIS),
     )
+
+    const link = ref<HTMLAnchorElement | null>(null)
+
+    // The company name is the card's only link and its stretched overlay
+    // covers the card, except the plugin icons (kept above it for their
+    // tooltips) and the quote face of a highlighted card (hit-tested even
+    // when flipped away). Forward those clicks to the link, modifiers
+    // included, so the whole card keeps navigating as the old <a> root did.
+    function onCardClick(event: MouseEvent) {
+        const anchor = link.value
+        if (!anchor || event.defaultPrevented) return
+        if (event.target instanceof Node && anchor.contains(event.target)) return
+        anchor.dispatchEvent(
+            new MouseEvent("click", {
+                cancelable: true,
+                button: event.button,
+                ctrlKey: event.ctrlKey,
+                metaKey: event.metaKey,
+                shiftKey: event.shiftKey,
+                altKey: event.altKey,
+            }),
+        )
+    }
 </script>
 
 <style scoped lang="scss">
@@ -155,10 +184,17 @@
         display: block;
         position: relative;
         height: 100%;
-        text-decoration: none;
-        color: inherit;
         border-radius: $card-radius;
-        outline-offset: 4px;
+        cursor: pointer;
+
+        &:has(.stretched-link:focus-visible) {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 4px;
+        }
+    }
+
+    .stretched-link:focus-visible {
+        outline: none;
     }
 
     .card-flip {
@@ -184,7 +220,7 @@
         }
 
         &:hover,
-        &:focus-visible {
+        &:has(.stretched-link:focus-visible) {
             transform: translateY(-2px);
 
             .card-face-stats {
@@ -212,7 +248,7 @@
         }
 
         &:hover .card-flip,
-        &:focus-visible .card-flip {
+        &:has(.stretched-link:focus-visible) .card-flip {
             transform: rotateY(180deg);
         }
 
@@ -315,6 +351,7 @@
         letter-spacing: -0.1px;
         line-height: 1.5rem;
         color: var(--ks-content-primary);
+        text-decoration: none;
     }
 
     .card-short-desc {
@@ -385,6 +422,8 @@
         display: flex;
         gap: 0.25rem;
         align-items: center;
+        position: relative;
+        z-index: 2;
     }
 
     .task-icon-wrap {
