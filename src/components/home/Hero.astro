@@ -1,6 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
 import { Image } from "astro:assets"
+import { API_URL } from "astro:env/client"
+import sharp from "sharp"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
@@ -17,19 +20,131 @@ const KEY_FACTS = [
     "API-First",
 ]
 
-// The logo carousel at the frame's foot, from the logo bar of the previous
+// The customers under the frame, from the logo bar of the previous
 // hero.
-const CAROUSEL = [
+const CUSTOMERS = [
     { file: "jpmorgan", name: "JPMorgan Chase" },
-    { file: "apple", name: "Apple" },
+    // Optical corrections: the apple's leaf lifts its box, FILA's heavy
+    // capitals fill theirs.
+    { file: "apple", name: "Apple", scale: 1.15, lift: 0.12 },
     { file: "bloomberg", name: "Bloomberg" },
     { file: "amdocs", name: "Amdocs" },
     { file: "t-system", name: "T-Systems" },
-    { file: "fila", name: "FILA" },
+    { file: "fila", name: "FILA", scale: 0.8 },
     { file: "xiaomi", name: "Xiaomi" },
     { file: "toyota", name: "Toyota" },
     { file: "bundesagentur", name: "Bundesagentur für Arbeit" },
+    { file: "brainlab", name: "Brainlab" },
 ]
+// The plugins that fly at you behind the title: everything, everywhere.
+const PLUGINS = [
+    "aws.s3.Upload",
+    "jdbc.postgresql.Query",
+    "scripts.python.Script",
+    "azure.storage.blob.Upload",
+    "gcp.bigquery.Query",
+    "notifications.slack.SlackIncomingWebhook",
+    "openai.ChatCompletion",
+    "docker.Run",
+    "dbt.cli.DbtCLI",
+    "kafka.Produce",
+    "jdbc.snowflake.Query",
+    "databricks.job.CreateJob",
+    "kubernetes.core.PodCreate",
+    "terraform.cli.TerraformCLI",
+    "mongodb.Find",
+    "github.issues.Create",
+    "airbyte.connections.Sync",
+    "ansible.cli.AnsibleCLI",
+    "anthropic.ChatCompletion",
+    "servicenow.Post",
+    "elasticsearch.Search",
+    "fivetran.connectors.Sync",
+    "spark.SparkCLI",
+    "redis.list.ListPush",
+    "jdbc.mysql.Query",
+    "huggingface.Inference",
+    "gcp.vertexai.ChatCompletion",
+    "scripts.node.Script",
+    "scripts.shell.Commands",
+    "git.Clone",
+    "jira.issues.Create",
+    "jdbc.duckdb.Query",
+    "jdbc.oracle.Query",
+    "gcp.gcs.Upload",
+    "aws.lambda.Invoke",
+    "notifications.teams.TeamsIncomingWebhook",
+]
+const fetchIcon = async (type: string) => {
+    try {
+        const response = await fetch(
+            `${API_URL}/plugins/icons/io.kestra.plugin.${type}`,
+        )
+        if (!response.ok) return null
+        return Buffer.from(await response.arrayBuffer()).toString("base64")
+    } catch {
+        return null
+    }
+}
+// The API answers an unknown plugin with a generic icon: those stay out.
+const [generic, ...fetched] = await Promise.all(
+    ["unknown.Plugin", ...PLUGINS].map(fetchIcon),
+)
+// A logo drawn in black would vanish on the dark: its mean lightness,
+// read off a small render, says which ones to turn white.
+const isDark = async (svg: string) => {
+    try {
+        const { data } = await sharp(Buffer.from(svg, "base64"))
+            .resize(24, 24)
+            .ensureAlpha()
+            .raw()
+            .toBuffer({ resolveWithObject: true })
+        let light = 0
+        let ink = 0
+        for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3] / 255
+            light +=
+                alpha *
+                (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2])
+            ink += alpha
+        }
+        return ink > 0 && light / ink < 70
+    } catch {
+        return false
+    }
+}
+const icons = await Promise.all(
+    fetched
+        .filter((svg): svg is string => !!svg && svg !== generic)
+        .map(async (svg) => ({
+            src: `data:image/svg+xml;base64,${svg}`,
+            dark: await isDark(svg),
+        })),
+)
+// Each tile on its own line of flight, spread by the golden angle so none
+// share one, and set off at its own point in the loop.
+const GOLDEN = 2.39996
+// Each icon twice, on two lines of flight, so the field stays full.
+const flights = [...icons, ...icons]
+// Each icon written once, as a variable on the field the tiles point to.
+const iconVars = icons
+    .map((icon, idx) => `--icon-${idx}: url(${icon.src})`)
+    .join("; ")
+const tiles = flights.map((icon, idx) => {
+    const angle = idx * GOLDEN
+    const reach = 0.5 + ((idx * 7) % 11) / 18
+    return {
+        icon: idx % icons.length,
+        dark: icon.dark,
+        dx: (Math.cos(angle) * reach * 30).toFixed(2),
+        dy: (Math.sin(angle) * reach * 30).toFixed(2),
+        size: (3 + ((idx * 5) % 4) * 0.45).toFixed(2),
+        delay: (-(idx / flights.length) * 22).toFixed(2),
+        // One in five lit.
+        lit: idx % 5 === 2,
+    }
+})
+
 const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     "/src/components/home/assets/companies/*.svg",
     { eager: true },
@@ -47,7 +162,33 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     in container-xl, on the page's text line. The frame stands in for the
     hero visual until it is ready. */
     }
-    <div class="frame surface-dark">
+    <div class="frame surface-dark" data-hero-frame data-header-dark>
+        {
+            /* Orbits round the title and the plugins flying out of the dark
+            through them, toward you. */
+        }
+        <div class="field" aria-hidden="true" style={iconVars}>
+            <div class="space">
+                <span class="orbit" style="--d: 34rem"></span>
+                <span class="orbit" style="--d: 58rem"></span>
+                <span class="orbit" style="--d: 86rem"></span>
+                <span class="orbit" style="--d: 120rem"></span>
+                {
+                    tiles.map((tile) => (
+                        <span
+                            class:list={[
+                                "tile",
+                                { lit: tile.lit, dark: tile.dark },
+                            ]}
+                            style={`--dx: ${tile.dx}; --dy: ${tile.dy}; --s: ${tile.size}rem; --delay: ${tile.delay}s; --icon: var(--icon-${tile.icon})`}
+                        >
+                            <span class="face" />
+                            <span class="face soft" />
+                        </span>
+                    ))
+                }
+            </div>
+        </div>
         <div class="container-xl stage">
             <div class="intro">
                 <div class="copy">
@@ -58,6 +199,10 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                             class="visually-hidden">.</span
                         >
                     </h1>
+                    {/* Kestra, where every plugin flies out from. */}
+                    <span class="mark" aria-hidden="true" data-hero-mark>
+                        <img src={kestraMark.src} alt="" />
+                    </span>
                     <p class="lead">
                         Use any language, connect your systems, and run
                         anywhere. Built on open source.
@@ -68,54 +213,45 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                         </a>
                         <a href="/demo" class="btn-ghost">Book a demo</a>
                     </div>
-                    {/* The key facts, a quiet line under the buttons. */}
-                    <ul
-                        class="key"
-                        aria-label="Kestra at a glance"
-                        data-key-facts
-                    >
-                        {
-                            KEY_FACTS.map((fact, idx) => (
-                                <li style={`--i: ${idx}`}>{fact}</li>
-                            ))
-                        }
-                    </ul>
                 </div>
             </div>
-        </div>
-        {
-            /* The customers run along the frame's foot, four rounds so the
-            belt outruns wide screens and its half loops without a seam;
-            only the first round is read out. */
-        }
-        <div class="carousel">
-            <ul
-                class="belt"
-                aria-label="Companies running Kestra in production"
-            >
+            {/* The key facts, a quiet line at the frame's foot. */}
+            <ul class="key" aria-label="Kestra at a glance" data-key-facts>
                 {
-                    [...CAROUSEL, ...CAROUSEL, ...CAROUSEL, ...CAROUSEL].map(
-                        (company, idx) => {
-                            const echo = idx >= CAROUSEL.length
-                            return (
-                                <li aria-hidden={echo ? "true" : undefined}>
-                                    <Image
-                                        src={
-                                            companyLogos[
-                                                `/src/components/home/assets/companies/${company.file}.svg`
-                                            ].default
-                                        }
-                                        alt={echo ? "" : company.name}
-                                        class="brand-logo"
-                                    />
-                                </li>
-                            )
-                        },
-                    )
+                    KEY_FACTS.map((fact, idx) => (
+                        <li style={`--i: ${idx}`}>{fact}</li>
+                    ))
                 }
             </ul>
         </div>
     </div>
+    {/* The customers, one still row under the frame, on white. */}
+    <ul class="customers" aria-label="Companies running Kestra in production">
+        {
+            CUSTOMERS.map((company) => {
+                const logo =
+                    companyLogos[
+                        `/src/components/home/assets/companies/${company.file}.svg`
+                    ].default
+                // Sized to a like area rather than a like height, so a
+                // square mark doesn't shrink and a long word doesn't shout.
+                const height = Math.min(
+                    1.5,
+                    1.1 / Math.sqrt(logo.width / logo.height / 4.5),
+                )
+                return (
+                    <li>
+                        <Image
+                            src={logo}
+                            alt={company.name}
+                            class="brand-logo"
+                            style={`height: ${(height * (company.scale ?? 1)).toFixed(3)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
+                        />
+                    </li>
+                )
+            })
+        }
+    </ul>
 </section>
 
 <script>
@@ -147,13 +283,71 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 
     document.addEventListener("astro:page-load", loopKeyFacts)
     loopKeyFacts()
+
+    // The field leans with the pointer, as if you looked into it.
+    function leanField() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        for (const frame of document.querySelectorAll<HTMLElement>(
+            "[data-hero-frame]:not([data-leaning])",
+        )) {
+            frame.dataset.leaning = "true"
+            frame.addEventListener("pointermove", (event) => {
+                const box = frame.getBoundingClientRect()
+                frame.style.setProperty(
+                    "--px",
+                    ((event.clientX - box.left) / box.width - 0.5).toFixed(3),
+                )
+                frame.style.setProperty(
+                    "--py",
+                    ((event.clientY - box.top) / box.height - 0.5).toFixed(3),
+                )
+            })
+            // Back to face on when the pointer leaves.
+            frame.addEventListener("pointerleave", () => {
+                frame.style.setProperty("--px", "0")
+                frame.style.setProperty("--py", "0")
+            })
+        }
+    }
+
+    document.addEventListener("astro:page-load", leanField)
+    leanField()
+
+    // The field's vanishing point sits on the Kestra mark, wherever the
+    // copy puts it.
+    function centreOnMark() {
+        for (const frame of document.querySelectorAll<HTMLElement>(
+            "[data-hero-frame]",
+        )) {
+            const mark = frame.querySelector<HTMLElement>("[data-hero-mark]")
+            if (!mark) continue
+            const place = () => {
+                const box = frame.getBoundingClientRect()
+                const at = mark.getBoundingClientRect()
+                frame.style.setProperty(
+                    "--oy",
+                    `${at.top + at.height / 2 - box.top}px`,
+                )
+            }
+            place()
+            new ResizeObserver(place).observe(frame)
+        }
+    }
+
+    document.addEventListener("astro:page-load", centreOnMark)
+    centreOnMark()
 </script>
 
 <style lang="scss">
     // One dark frame across the page under the menu, with the copy and its
-    // key facts on the left, over the customers' carousel.
+    // key facts centred in a field of plugins, over the customers.
     .home-hero {
         position: relative;
+        // Up under the fixed menu, so no strip of white shows between them
+        // (the page's top padding runs a little taller than the menu).
+        margin-top: -1rem;
+        // A hairline across the page between the customers and what follows.
+        border-bottom: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
     }
 
@@ -163,8 +357,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         position: relative;
         display: flex;
         flex-direction: column;
-        // Most of the first screen; the copy sits centred in the space
-        // above the carousel.
+        // Most of the first screen, the copy centred in it.
         min-height: min(86vh, 860px);
         // Square, edge to edge: a global .frame rule rounds it otherwise.
         border-radius: 0;
@@ -176,15 +369,18 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 rgba(255, 255, 255, 0.06),
                 transparent 60%
             ),
-            #0d0d0f;
+            // The dark menu's own black, so the two read as one.
+            #111114;
         color: #ffffff;
 
         @include media-breakpoint-down(md) {
             min-height: 560px;
         }
 
-        // Only the copy grows, so the carousel stays at the frame's foot.
+        // The copy, over the field.
         > .stage {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex: 1;
             flex-direction: column;
@@ -195,11 +391,13 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     // run wider than them.
     .copy {
         min-width: 0;
+        margin-inline: auto;
+        text-align: center;
     }
 
     h1 {
         max-width: 46rem;
-        margin: 0;
+        margin: 0 auto;
         font-size: clamp(2.5rem, 5.2vw, 4.25rem);
         font-weight: 600;
         letter-spacing: -0.03em;
@@ -216,9 +414,46 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
+    // The mark in a tile, as the plugins' nodes are, a little lighter.
+    .mark {
+        display: grid;
+        place-items: center;
+        position: relative;
+        width: 5rem;
+        aspect-ratio: 1;
+        margin: 1.75rem auto 0;
+        background: linear-gradient(180deg, #2a2a31, #151519);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.875rem;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.18),
+            0 0 48px rgba(255, 255, 255, 0.08),
+            0 18px 44px rgba(0, 0, 0, 0.6);
+
+        img {
+            position: relative;
+            width: 58%;
+            height: auto;
+        }
+
+        // A soft white light round it, the source of the field.
+        &::before {
+            content: "";
+            position: absolute;
+            inset: -150%;
+            z-index: -1;
+            background: radial-gradient(
+                closest-side,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            pointer-events: none;
+        }
+    }
+
     .lead {
         max-width: 36rem;
-        margin: 1.25rem 0 2rem;
+        margin: 1.25rem auto 2rem;
         font-size: 1.125rem;
         line-height: 1.6;
         color: rgba(255, 255, 255, 0.8);
@@ -228,10 +463,11 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     .buttons {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         gap: 0.75rem;
     }
 
-    // Key facts as one line of monospace capitals under the buttons, dot
+    // Key facts as one quiet line at the frame's foot, dot
     // between dot. They light up one after the other, like a run.
     .key {
         --run: 0.25s;
@@ -239,19 +475,17 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         display: flex;
         flex-wrap: wrap;
         // Plain gaps while the line wraps, so no row opens on a dot.
+        justify-content: center;
         gap: 0.625rem 1.5rem;
-        margin: 2.5rem 0 0;
-        padding: 0;
+        margin: 0;
+        padding: 0 0 clamp(3rem, 5vw, 4.5rem);
         list-style: none;
-        font-family: $font-family-monospace;
-
         @include media-breakpoint-up(lg) {
             gap: 0;
         }
 
-        font-size: 0.75rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.01em;
 
         li {
             color: rgba(255, 255, 255, 0.55);
@@ -286,6 +520,174 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
+    // The field: a deep box seen from the title, its orbits flat on the
+    // screen and the tiles crossing it from far to near.
+    .field {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        perspective: 900px;
+        perspective-origin: calc(50% + var(--px, 0) * -260px)
+            calc(var(--oy, 50%) + var(--py, 0) * -180px);
+        transition: perspective-origin 0.5s ease-out;
+        pointer-events: none;
+        // The title keeps a clear, dark middle.
+        mask-image: radial-gradient(
+            ellipse 30% 34% at 50% var(--oy, 46%),
+            transparent 45%,
+            #000 100%
+        );
+    }
+
+    // The whole field turns toward the pointer, orbits and tiles together.
+    .space {
+        position: absolute;
+        inset: 0;
+        transform: rotateY(calc(var(--px, 0) * 14deg))
+            rotateX(calc(var(--py, 0) * -10deg));
+        transform-origin: 50% var(--oy, 50%);
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease-out;
+    }
+
+    .orbit {
+        position: absolute;
+        top: var(--oy, 48%);
+        left: 50%;
+        width: var(--d);
+        aspect-ratio: 1;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 50%;
+        translate: -50% -50%;
+    }
+
+    .tile {
+        position: absolute;
+        top: var(--oy, 48%);
+        left: 50%;
+        width: var(--s);
+        aspect-ratio: 1;
+        margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+        animation: fly 22s linear infinite;
+        animation-delay: var(--delay);
+        will-change: transform, opacity;
+        opacity: 0;
+
+        // Still, at a middle depth, without motion.
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+            opacity: 0.6;
+            transform: translate3d(
+                calc(var(--dx) * 1vw),
+                calc(var(--dy) * 1vh),
+                -300px
+            );
+        }
+    }
+
+    // The tile itself, sharp, and a copy blurred once that takes over as
+    // it nears you: only their opacities move, never the blur.
+    .face {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, #26262c, #18181c);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 0.625rem;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+        animation: sharp 22s linear infinite;
+        animation-delay: var(--delay);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 24%;
+            background: var(--icon) center / contain no-repeat;
+        }
+
+        // A black logo, in white.
+        .dark > &::before {
+            filter: brightness(0) invert(1);
+        }
+
+        // Lit in white.
+        .lit > & {
+            border-color: rgba(255, 255, 255, 0.45);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 22px rgba(255, 255, 255, 0.12),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        &.soft {
+            filter: blur(6px);
+            animation-name: soft;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+
+            &.soft {
+                opacity: 0;
+            }
+        }
+    }
+
+    @keyframes sharp {
+        0%,
+        86% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes soft {
+        0%,
+        80% {
+            opacity: 0;
+        }
+
+        93%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    // From the far dark, past you at the end. Transform and opacity only,
+    // which the compositor runs without repainting.
+    @keyframes fly {
+        0% {
+            opacity: 0;
+            transform: translate3d(
+                calc(var(--dx) * 1vw),
+                calc(var(--dy) * 1vh),
+                -1600px
+            );
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate3d(
+                calc(var(--dx) * 1vw),
+                calc(var(--dy) * 1vh),
+                350px
+            );
+        }
+    }
+
     .intro {
         display: flex;
         flex: 1;
@@ -294,55 +696,30 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         padding-block: clamp(3rem, 6vw, 5rem);
     }
 
-    // A belt of white logos sliding left at the frame's foot, from one
-    // edge of the screen to the other, fading out at both.
-    .carousel {
-        overflow: hidden;
-        padding-block: clamp(2.5rem, 4vw, 3.5rem);
-        mask-image: linear-gradient(
-            90deg,
-            transparent,
-            #000 6%,
-            #000 94%,
-            transparent
-        );
-    }
-
-    .belt {
+    .customers {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: clamp(3rem, 5vw, 5rem);
-        width: max-content;
-        margin: 0;
-        padding: 0 clamp(3rem, 5vw, 5rem) 0 0;
+        justify-content: center;
+        gap: 1.75rem clamp(1.75rem, 3.2vw, 3.5rem);
+        max-width: 92rem;
+        margin: 0 auto;
+        padding: clamp(2.5rem, 4vw, 3.5rem) var(--bs-gutter-x, 1.5rem);
         list-style: none;
-        animation: belt 80s linear infinite;
 
         > li {
             display: flex;
-            flex-shrink: 0;
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            animation: none;
-        }
-    }
-
-    .carousel:hover .belt {
-        animation-play-state: paused;
     }
 
     .brand-logo {
         flex-shrink: 0;
         width: auto;
-        height: 1.5rem;
-        filter: brightness(0) invert(1);
-        opacity: 0.7;
-    }
+        // In black, on white.
+        filter: brightness(0);
 
-    @keyframes belt {
-        to {
-            transform: translateX(-50%);
+        :global(html.dark) & {
+            filter: brightness(0) invert(1);
         }
     }
 </style>

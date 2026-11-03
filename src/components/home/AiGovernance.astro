@@ -448,10 +448,13 @@ const auditPath = (cy: number) =>
         const update = () => {
             frame = 0
             const bar = document.getElementById("top-bar")
-            const line = bar ? bar.getBoundingClientRect().bottom - 1 : 0
+            // The menu mounts after this script: wait for it.
+            if (!bar) return setTimeout(schedule, 100)
+            const line = bar.getBoundingClientRect().bottom - 1
             const over = [...sections].some((section) => {
                 const box = section.getBoundingClientRect()
-                return box.top <= line && box.bottom > line
+                // A few pixels' grace: the hero starts just under the menu.
+                return box.top <= line + 4 && box.bottom > line
             })
             document.body.toggleAttribute("data-header-over-dark", over)
         }
