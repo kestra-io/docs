@@ -48,7 +48,7 @@ Keep the following in mind when you write fixtures:
 - A `FILE` input takes a namespace file URI, for example `myfile: "nsfile:///data/in.txt"`, or an [inline file fixture](#inline-file-fixture), for example `myfile: "{{ files['in.txt'] }}"`.
 - Kestra renders expressions in `fixtures.inputs` before it validates the inputs. If an expression fails to render, the test case reports `ERROR` with `Invalid fixture inputs: <reason>`.
 - Nested inputs, such as `FORM` inputs and reusable inputs, take a nested map in `fixtures.inputs`, for example `ad: {username: bob}`. Dotted keys such as `ad.username: bob` don't set the nested input.
-- A task fixture on a task inside a `Loop` applies to every iteration.
+- A task fixture on a task inside a `Loop` applies to every iteration. Leave `value` unset: tasks inside a `Loop` iteration have no value, so a fixture with `value` never matches them.
 - A trigger fixture acts as if the trigger fired, so Kestra doesn't evaluate the trigger's `when` condition.
 - Tasks inside a `WorkingDirectory` task can't be mocked individually. Mock the `WorkingDirectory` task as a whole.
 
