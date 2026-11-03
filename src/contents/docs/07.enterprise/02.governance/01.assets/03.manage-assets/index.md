@@ -101,15 +101,17 @@ Select a node to open a side panel with the asset's name and ID, its freshness s
 
 Kestra stores how assets connect as relations. Flows create most of them: lineage relations come from task inputs and outputs, and `partOf` and `related` declarations create **Part of** and **Related** relations. See [Relate assets](../01.declare-assets/index.md#relate-assets).
 
-| Relation | Direction | Created by |
-| --- | --- | --- |
-| Produces | Flow to asset | A flow writing the asset |
-| Consumed by | Asset to flow | A flow reading the asset |
-| Upstream of | Asset to asset | A task reading one asset and writing another |
-| Part of | Asset to its parent asset | `partOf`, or the API |
-| Related | Between two assets, no direction | `related`, or the API |
+| Relation | API `kind` | Direction | Created by |
+| --- | --- | --- | --- |
+| Produces | `PRODUCES` | Flow to asset | A flow writing the asset |
+| Consumed by | `CONSUMED_BY` | Asset to flow | A flow reading the asset |
+| Upstream of | `UPSTREAM_OF` | Asset to asset | A task reading one asset and writing another |
+| Part of | `PART_OF` | Asset to its parent asset | `partOf`, or the API |
+| Related | `RELATED` | Between two assets, no direction | `related`, or the API |
 
-To remove a relation that a flow derived, delete it through the API. Kestra remembers the removal, so later runs of the flow don't recreate it. A relation that a flow declares comes back the next time the flow declares it.
+To set **Part of** and **Related** relations without a flow, include `partOf` and `related` in the YAML body when you create or update an asset through the API, including bulk imports. The same [update rules](../01.declare-assets/index.md#update-rules) apply as for a flow write. You can also add and remove single relations with the relations endpoints. See [Automate with the API](#automate-with-the-api).
+
+To remove a relation that a flow derived, delete it through the API. Kestra remembers the removal, so later runs of the flow don't recreate it. A relation that a flow declares comes back the next time the flow declares it. Adding a removed relation again through the API restores it.
 
 When you delete an asset that has parts, choose what happens to them with the `children` parameter of the delete endpoints:
 
@@ -155,9 +157,9 @@ The Assets API is available at `/api/v1/{tenant}/assets`. Create and update requ
 | `POST /assets/bulk` | Create or update many assets from YAML documents separated by `---`. Add `dryRun=true` to preview. See [Import through the API](../../tenants/types/infrastructure/index.md#import-through-the-api). | `ASSET:CREATE`, and `ASSET:UPDATE` to update existing assets |
 | `GET /assets/{id}/dependencies` | Get the dependencies graph of one asset. Filter with `kinds`, and use `expandAll` and `hubCursor` to page through large parents. | `ASSET:VIEW` |
 | `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` | Get the asset relation graph around a flow. Takes the same `kinds`, `expandAll`, and `hubCursor` parameters as `GET /assets/{id}/dependencies`. | `ASSET:VIEW`, and `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace |
-| `GET /assets/{id}/relations` | List an asset's relations. Filter by `kind` and `direction` (`OUTBOUND`, `INBOUND`, or `BOTH`). | `ASSET:VIEW` |
+| `GET /assets/{id}/relations` | List one page of an asset's relations of one kind. `kind` and `direction` are required: `OUTBOUND` or `INBOUND` for directed kinds, `BOTH` for `RELATED`. Page with `size` (default `20`) and `after`, set to the previous page's `nextCursor`. | `ASSET:VIEW` |
 | `GET /assets/{id}/relations/summary` | Summarize an asset's relations by kind | `ASSET:VIEW` |
-| `POST /assets/{id}/relations` | Add a relation with a JSON body of `kind`, `direction`, `targetId`, and optional `targetNamespace` and `role` | `ASSET:UPDATE`, and `VIEW` on the other end |
+| `POST /assets/{id}/relations` | Add a relation with a JSON body of `kind`, `direction`, `targetId`, and optional `targetNamespace` and `role`. `PART_OF` isn't accepted: set a parent with `PUT /assets/{id}/parent`. Posting an existing relation replaces its `role`. | `ASSET:UPDATE`, and `VIEW` on the other end |
 | `DELETE /assets/{id}/relations/{uid}` | Remove a relation | `ASSET:DELETE`, or `ASSET:UPDATE` for a parent link |
 | `PUT /assets/{id}/parent` | Set the parent with a JSON body of `parentId` and optional `namespace` and `role` | `ASSET:UPDATE`, and `VIEW` on the parent |
 | `DELETE /assets/{id}/parent` | Remove the parent | `ASSET:UPDATE` |
