@@ -96,6 +96,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `ASSET` | Data assets and lineage |
 | `COPILOT` | AI Copilot flow generation |
 | `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
+| `CASE` | Cases and case templates |
 | `DASHBOARD` | Custom dashboards. `VIEW`, `LIST` and `EXPORT` are namespace-level, `CREATE`, `UPDATE` and `DELETE` are tenant-level |
 
 **Tenant-level resources** (only a tenant-wide binding grants them):
@@ -111,6 +112,8 @@ A resource is a category of product entity or capability that can be controlled 
 | `SERVICE_ACCOUNT` | Service accounts |
 | `INVITATION` | User invitations |
 | `AUDITLOG` | Audit log entries |
+| `PROMOTION_TARGET` | Target environments for [promoting flows](../../02.governance/promote/index.md) |
+| `SUPPORT` | Support tickets sent from the UI, with instance debug information |
 
 ### Actions
 
@@ -130,17 +133,19 @@ Each resource defines its own set of allowed actions. Not every action applies t
 
 | Resource | Additional actions |
 |---|---|
-| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
-| `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
+| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT`, `PROMOTE` (promote to another environment) |
+| `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN`, `REVIEW` (approve or deny an Approval task run) |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
 | `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
 | `POLICY` | `EXECUTE` (dry-run evaluate a policy against its scope), `EXPORT`, `IMPORT` |
 | `APP` | `EXECUTE`, `ACCESS_FILES`, `ACCESS_LOGS` |
 | `TESTSUITE` | `EXECUTE` |
+| `ASSET` | `LOCK`, `UNLOCK` |
 | `AUDITLOG` | `EXPORT` |
 | `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
 | `GROUP` | `MANAGE_MEMBERS` |
 | `COPILOT` | `USE` (only action) |
+| `CASE` | `FOLLOW`, `TEMPLATE` (manage case templates) |
 
 :::alert{type="info"}
 For a complete resource-to-endpoint mapping, see the [Permissions reference](./permissions-reference/index.md).
