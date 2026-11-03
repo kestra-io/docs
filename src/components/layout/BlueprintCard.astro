@@ -44,7 +44,7 @@ const tagsList = tags?.length
         )
     }
     <h6 class="title">
-                <a href={href} class="stretched-link">{capitalizedTitle}</a>
+        <a href={href} class="stretched-link">{capitalizedTitle}</a>
     </h6>
     {
         blueprint.shortDescription && (
@@ -94,7 +94,7 @@ const tagsList = tags?.length
     @use "/src/components/blueprints/_blueprintCard.scss" as blueprintCard;
 
     .blueprint {
-position: relative;
+        position: relative;
         @include blueprintCard.blueprint-card-base;
 
         .cs-badge {
