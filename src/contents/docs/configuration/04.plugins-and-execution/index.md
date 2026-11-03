@@ -1,7 +1,7 @@
 ---
 title: Plugins & Execution Configuration in Kestra
-h1: Configure Plugin Defaults, Retries & System Flows
-description: Configure plugin installation, plugin defaults, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
+h1: Configure Plugins, Static Policies, Retries & System Flows
+description: Configure plugin installation, static policies, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
 sidebarTitle: Plugins and Execution
 icon: /src/contents/docs/icons/admin.svg
 ---
@@ -17,8 +17,7 @@ This area includes:
 - installing plugins
 - custom Maven repositories
 - Enterprise plugin repositories
-- plugin defaults
-- forced plugin defaults
+- static policies for installation-wide defaults and enforcement (Enterprise Edition)
 - plugin security and allowed plugins
 - plugin management settings
 
@@ -211,22 +210,25 @@ kestra:
 `max-delay` caps the maximum backoff interval. It is undefined by default, which means the delay grows without bound according to the multiplier.
 
 :::alert{type="warning"}
-These retries do not apply to tasks. For task-level retries across many plugins, use plugin defaults.
+These retries do not apply to tasks. Configure task retries with the `retry` property in the flow.
 :::
 
-Example task-level retry default:
+Example task-level retry:
 
 ```yaml
-- type: io.kestra
-  retry:
-    type: constant
-    interval: PT5M
-    maxDuration: PT1H
-    maxAttempts: 3
-    warningOnRetry: true
+tasks:
+  - id: fetch
+    type: io.kestra.plugin.core.http.Request
+    uri: https://example.com/api
+    retry:
+      type: constant
+      interval: PT5M
+      maxDuration: PT1H
+      maxAttempts: 3
+      warningOnRetry: true
 ```
 
-That distinction matters: `kestra.retries` protects platform integrations such as storage and secret backends, while task retry behavior should be managed through plugin defaults or the flow itself.
+That distinction matters: `kestra.retries` protects platform integrations such as storage and secret backends, while task retry behavior belongs in the flow. See [Retries](../../05.workflow-components/12.retries/index.md) for task-level and flow-level options. In Enterprise Edition, a [Policy](../../07.enterprise/02.governance/policies/index.md) can add a flow-level `retry` to every flow in a namespace or tenant.
 
 Use `kestra.tasks.tmp-dir` when task runners need a predictable working directory on the host or inside a mounted volume:
 
