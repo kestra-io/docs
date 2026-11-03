@@ -88,5 +88,5 @@ You've taken the product tour, executed your first flow, and explored Kestra. Ne
 - Take courses on [Kestra Academy](https://academy.kestra.io) to go deeper with guided lessons and earn a certification.
 
 :::alert{type="info"}
-**Prefer to work from your terminal or editor?** Claude Code, Cursor, Codex, and other coding agents can write and deploy flows for you using the Kestra MCP server, Agent Skills, and `kestractl`. See [Develop with AI](../develop-with-ai/index.mdx) to compare that with the in-product AI Copilot.
+**Prefer to work from your terminal or editor?** Claude Code, Cursor, Codex, and other coding agents can write and deploy flows for you using the Kestra MCP server, Agent Skills, and `kestractl`. Follow the [Claude Code Quickstart](../claude-code-quickstart/index.mdx) to set it up, or see [Develop with AI](../develop-with-ai/index.mdx) to compare that with the in-product AI Copilot.
 :::

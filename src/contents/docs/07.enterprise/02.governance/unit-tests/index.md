@@ -45,9 +45,10 @@ Common fixture types:
 
 Keep the following in mind when you write fixtures:
 
-- A `FILE` input takes a namespace file URI in `fixtures.inputs`, for example `myfile: "nsfile:///data/in.txt"`.
+- A `FILE` input takes a namespace file URI, for example `myfile: "nsfile:///data/in.txt"`, or an [inline file fixture](#inline-file-fixture), for example `myfile: "{{ files['in.txt'] }}"`.
+- Kestra renders expressions in `fixtures.inputs` before it validates the inputs. If an expression fails to render, the test case reports `ERROR` with `Invalid fixture inputs: <reason>`.
 - Nested inputs, such as `FORM` inputs and reusable inputs, take a nested map in `fixtures.inputs`, for example `ad: {username: bob}`. Dotted keys such as `ad.username: bob` don't set the nested input.
-- A task fixture on a task inside a `Loop` applies to every iteration.
+- A task fixture on a task inside a `Loop` applies to every iteration. Leave `value` unset: tasks inside a `Loop` iteration have no value, so a fixture with `value` never matches them.
 - A trigger fixture acts as if the trigger fired, so Kestra doesn't evaluate the trigger's `when` condition.
 - Tasks inside a `WorkingDirectory` task can't be mocked individually. Mock the `WorkingDirectory` task as a whole.
 
@@ -67,6 +68,12 @@ If you don't specify any fixtures, the test runs the entire flow as in productio
 :::
 
 Test executions don't start flows that use a Flow trigger on the tested flow. SLAs, concurrency limits, and flow, namespace, and tenant quotas apply as in a normal execution. A suite that runs often, for example in CI, can use up a quota and cause production executions to fail or be cancelled.
+
+Test executions also follow the flow rules that apply to every execution:
+
+- A test runs the latest published revision of the flow, never a [draft revision](../../../06.concepts/03.revision/index.md#draft-revisions). If the flow only has draft revisions, the test run fails with `Flow execution blocked: flow <flow> only has draft revisions`.
+- If the flow is [disabled](../../../05.workflow-components/16.disabled/index.md), no task runs and every test case reports `SKIPPED`.
+- The flow's [checks](../../../05.workflow-components/07.checks/index.md) evaluate against the fixture inputs. A `BLOCK_EXECUTION` check that fails stops the test case before any task runs, and the test case reports `ERROR` with the check message. A failed `FAIL_EXECUTION` check creates the test execution in the `FAILED` state, which you can assert with [`expectedState`](#assert-expected-failure-state).
 
 The following flow:
 
@@ -293,6 +300,43 @@ testCases:
         equalTo: "[BOWLER HAT, TRILBY HAT]"
 ```
 
+An inline file can also feed a `FILE` input. The following flow logs the content of an uploaded file:
+
+```yaml
+id: log_uploaded_file
+namespace: company.team
+
+inputs:
+  - id: orders
+    type: FILE
+
+tasks:
+  - id: log_orders
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(inputs.orders) }}"
+```
+
+The test passes the inline file to the `orders` input, so you don't need a namespace file for each test case:
+
+```yaml
+id: log_uploaded_file_tests
+namespace: company.team
+flowId: log_uploaded_file
+testCases:
+  - id: orders_input_should_come_from_inline_file
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      files:
+        orders.csv: |
+          order_id,quantity
+          103,2
+      inputs:
+        orders: "{{ files['orders.csv'] }}"
+    assertions:
+      - value: "{{ read(inputs.orders) }}"
+        contains: "103,2"
+```
+
 ## Trigger fixture example
 
 When your flow is kicked off by a trigger, you can mock the trigger payload directly in the test so you don't have to hit the real endpoint. The example below stubs a webhook trigger carrying an order event and asserts the flow formats the message correctly.
@@ -443,7 +487,9 @@ testCases:
         lessThan: 1
 ```
 
-When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test fails and reports both the expected and actual states.
+When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test case reports `ERROR` with both the expected and actual states.
+
+The same assertion works for a flow [check](../../../05.workflow-components/07.checks/index.md) with `behavior: FAIL_EXECUTION`: when the fixture inputs fail the check, Kestra creates the test execution in the `FAILED` state. A failed `BLOCK_EXECUTION` check creates no execution, so the test case reports `ERROR` whatever `expectedState` you set.
 
 ## Assert that a task ran
 
