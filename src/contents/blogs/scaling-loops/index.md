@@ -3,6 +3,7 @@ title: "Scaling Loops in Kestra 2.0"
 description: "The new Loop task runs each iteration as a sub-execution. It ran 100,000 iterations in 33 minutes, where ForEach in Kestra 1.x stalled past 1,000."
 date: 2026-10-30T10:00:00
 category: Engineering
+image: ./main.webp
 author:
   name: Loïc Mathieu
   linkedin: https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/
