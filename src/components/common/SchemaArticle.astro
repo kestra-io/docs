@@ -1,0 +1,58 @@
+---
+/**
+ * Article JSON-LD for resource, guide and whitepaper pages. Pair it with
+ * `<SchemaFAQ>` for the FAQ block. Both belong inside `<Fragment slot="head">`
+ * placed as a direct child of `<Layout>`: Astro only honours `slot=` on a
+ * component's direct children.
+ */
+type Author =
+    | { "@id": string }
+    | { "@type": "Person"; name: string; [key: string]: unknown }
+
+interface Props {
+    headline: string
+    description?: string
+    /** Absolute image URL. Defaults to the site OG image. */
+    image?: string
+    /** Defaults to the site-wide Organization node emitted by the layout. */
+    author?: Author
+    datePublished?: string | Date
+    dateModified?: string | Date
+    /** Defaults to the current URL. */
+    url?: string
+}
+
+const {
+    headline,
+    description,
+    image,
+    author,
+    datePublished,
+    dateModified,
+    url,
+} = Astro.props
+
+const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    mainEntityOfPage: { "@type": "WebPage", "@id": url ?? Astro.url.href },
+    headline: headline,
+    image: [image ?? `${Astro.url.origin}/og-image.png`],
+    author: author ?? { "@id": "https://kestra.io/#organization" },
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    publisher: {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    ...(description ? { description } : {}),
+}
+---
+
+<script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(schema)}
+/>
