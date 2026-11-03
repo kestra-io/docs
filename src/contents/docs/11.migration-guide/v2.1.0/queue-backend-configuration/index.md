@@ -53,4 +53,4 @@ kestra:
       password: "${REDIS_PASSWORD}"
 ```
 
-The GCP Pub/Sub, NATS, and Amazon SQS and SNS queue backends are new in 2.1.0 and only read `kestra.queue.gcp-pubsub`, `kestra.queue.nats`, and `kestra.queue.aws`. For every property, see [Message broker queue backends](../../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends).
+The GCP Pub/Sub, NATS, Amazon SQS and SNS, and Azure Event Hubs queue backends are new in 2.1.0 and only read `kestra.queue.gcp-pubsub`, `kestra.queue.nats`, `kestra.queue.aws`, and `kestra.queue.azure-eventhub`. For every property, see [Message broker queue backends](../../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends).

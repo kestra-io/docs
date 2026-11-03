@@ -594,7 +594,7 @@ The Indexer has no settings of its own. It runs with every queue and repository 
 
 ## Message broker queue backends
 
-Redis, AMQP (RabbitMQ), GCP Pub/Sub, NATS, and Amazon SQS and SNS are Enterprise Edition queue backends, alongside Kafka which is covered above. They use the same internal queue contracts as the JDBC and Kafka backends. Select a backend with `kestra.queue.type` and configure it under `kestra.queue.<type>`; no producer or consumer code changes. Your Enterprise license must include the backend you select. These backends require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis, AMQP (RabbitMQ), GCP Pub/Sub, NATS, Amazon SQS and SNS, and Azure Event Hubs are Enterprise Edition queue backends, alongside Kafka which is covered above. They use the same internal queue contracts as the JDBC and Kafka backends. Select a backend with `kestra.queue.type` and configure it under `kestra.queue.<type>`; no producer or consumer code changes. Your Enterprise license must include the backend you select. These backends require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -947,6 +947,137 @@ The queue type is fixed when Kestra creates a queue. If you change `message-orde
 | `kestra.queue.aws.tags` | Tags added to every queue and topic Kestra creates. | — |
 | `kestra.queue.aws.max-connections` | Maximum concurrent connections for SNS calls and SQS calls other than long polls. A call beyond this waits up to 30 seconds for a connection, then fails. | `128` |
 | `kestra.queue.aws.max-poll-connections` | Maximum concurrent connections for SQS long polls, one per poller waiting for a message. | `512` |
+
+### Azure Event Hubs
+
+Set `kestra.queue.type: azure-eventhub` and configure the client under `kestra.queue.azure-eventhub`. Each queue is an event hub, and the subscribers store their progress (checkpoints) in an Azure Blob Storage container.
+
+Minimal configuration, where Kestra creates the event hubs it needs:
+
+```yaml
+kestra:
+  queue:
+    type: azure-eventhub
+    azure-eventhub:
+      namespace: my-namespace.servicebus.windows.net
+      checkpoint-endpoint: https://mystorageaccount.blob.core.windows.net
+      checkpoint-container: kestra
+      subscription-id: 00000000-0000-0000-0000-000000000000
+      resource-group: my-resource-group
+```
+
+The namespace must use the **Premium** or **Dedicated** tier. See [Why a Premium or Dedicated namespace](#why-a-premium-or-dedicated-namespace).
+
+Without a `connection-string`, Kestra authenticates with Microsoft Entra ID through the [default Azure credential chain](https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#defaultazurecredential-overview), such as environment variables, workload identity on AKS, a managed identity, or the Azure CLI. The same credential reaches the checkpoint container when `checkpoint-endpoint` is set.
+
+With a service principal:
+
+```yaml
+kestra:
+  queue:
+    type: azure-eventhub
+    azure-eventhub:
+      namespace: my-namespace.servicebus.windows.net
+      tenant-id: "${AZURE_TENANT_ID}"
+      client-id: "${AZURE_CLIENT_ID}"
+      client-secret: "${AZURE_CLIENT_SECRET}"
+      checkpoint-endpoint: https://mystorageaccount.blob.core.windows.net
+      checkpoint-container: kestra
+```
+
+Set `tenant-id`, `client-id`, and `client-secret` together. Kestra uses the default credential chain unless all three are set.
+
+With connection strings:
+
+```yaml
+kestra:
+  queue:
+    type: azure-eventhub
+    azure-eventhub:
+      connection-string: "${EVENTHUB_CONNECTION_STRING}"
+      checkpoint-connection-string: "${STORAGE_CONNECTION_STRING}"
+      checkpoint-container: kestra
+```
+
+A `connection-string` takes precedence over the Entra ID credentials and over `namespace`. `checkpoint-connection-string` takes precedence over `checkpoint-endpoint`.
+
+#### Why a Premium or Dedicated namespace
+
+Kestra needs more event hubs, consumer groups, and partitions than the Basic and Standard tiers allow:
+
+- **Event hubs**: Kestra uses about 30 event hubs, plus one per worker group. A Standard namespace allows 10.
+- **Consumer groups**: a broadcast queue is read by every Kestra service, each service through a consumer group of its own. By default, a broadcast hub has 20 consumer groups next to `$Default`, but a Standard event hub allows 20 in total and a Basic one allows only `$Default`.
+- **Message retention**: `message-retention` accepts up to 90 days, but Standard retains events for at most 7 days.
+
+A Premium namespace allows 100 event hubs and 200 partitions per processing unit, and up to 1,000 consumer groups per event hub. For the current limits of each tier, see [Azure Event Hubs quotas and limits](https://learn.microsoft.com/azure/event-hubs/event-hubs-quotas).
+
+Size the processing units after the partitions Kestra creates:
+
+- 15 dispatch queues, each with `partition-count` partitions
+- 14 broadcast queues, each with 1 partition
+- 1 event hub for the scheduler's virtual nodes, with `kestra.scheduler.vnodes` partitions
+- `partition-count` partitions per worker group, as the keyed dispatch queue has one event hub per routing key
+
+With the default `partition-count` of `4`, that is about 80 partitions, plus the vnodes and 4 per worker group.
+
+#### Roles
+
+Grant these roles to the identity Kestra uses:
+
+| Role | Scope | Needed for |
+|---|---|---|
+| Azure Event Hubs Data Sender | The namespace | Publishing |
+| Azure Event Hubs Data Receiver | The namespace | Consuming |
+| Storage Blob Data Contributor | The checkpoint storage account or container | Checkpoints |
+| Contributor, or a role that can create event hubs and consumer groups | The resource group | Creating event hubs, only when `subscription-id` and `resource-group` are set |
+
+Azure can take a few minutes to propagate a new role assignment.
+
+#### How queues map to event hubs
+
+- Each queue is an event hub named `<kestra.queue.prefix>__<queue>`. A keyed dispatch queue has one event hub per routing key, named `<kestra.queue.prefix>__<queue>__<token>`, where the token encodes the routing key. An empty routing key gives the token `default`.
+- Kestra creates or checks an event hub the first time a queue is used, not at startup, so a missing or misconfigured event hub is reported on first use.
+- When `subscription-id` and `resource-group` are set, Kestra creates the missing event hubs and consumer groups through Azure Resource Manager. Otherwise, create them in advance, for example with Terraform. Broadcast hubs need the consumer groups `kestra-broadcast-00`, `kestra-broadcast-01`, and so on, as many as `broadcast-consumer-groups`. Kestra refuses an existing event hub with fewer partitions than it needs, and names the setting to change.
+- Kestra never deletes an event hub.
+- Dispatch queues share the `$Default` consumer group of their event hub, and the Kestra services balance its partitions between them. Kestra creates the checkpoint container when it is missing.
+- An Event Hubs consumer group accepts 5 readers, so a broadcast hub accepts at most `broadcast-consumer-groups` × 5 services. The default of 20 consumer groups allows 100 services.
+
+A prefix can contain only letters, digits, `.`, `-`, and `_`, and must start with a letter or a digit.
+
+#### Throughput and latency
+
+Event Hubs confirms a publish only once the event is durably stored. Publishing therefore costs a network round trip to Event Hubs, and Kestra waits for each confirmation before going on. That latency stays the same as load grows, but it limits how many messages one subscriber processes per second, because a subscriber hands its messages to Kestra one at a time.
+
+- Run Kestra in the same Azure region as the namespace. The round trip from outside the region multiplies the time each message takes.
+- `partition-count` doesn't make one Kestra instance faster. More partitions only help when several instances consume the same queue, each taking part of the partitions. To process more executions, add Executor instances and set `partition-count` to at least their number.
+- Processing units don't lower the latency of a publish. Add some only when Event Hubs throttles the namespace.
+
+#### Failures
+
+A subscriber whose reading fails, for example on a network error, a throttled namespace, or a checkpoint that cannot be written, logs a warning and reads again from its last checkpoint. Kestra stops only when Event Hubs refuses a subscriber for good: the credential lacks the right to listen, an event hub or a consumer group does not exist, or an event hub is disabled. As Azure takes a few minutes to propagate a new event hub, consumer group, or role, Kestra stops only once the refusals have lasted `refusal-tolerance`. Fix the namespace, or lower `broadcast-consumer-groups` when a broadcast consumer group is missing, then start Kestra again.
+
+A service that shuts down gracefully gives up its partitions at once. When a service crashes, the other services take over its partitions once their ownership expires, after 6 × `load-balancing-interval`.
+
+#### Configuration reference
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.queue.azure-eventhub.namespace` | Fully qualified namespace, such as `my-namespace.servicebus.windows.net`. Required unless `connection-string` is set. | — |
+| `kestra.queue.azure-eventhub.connection-string` | Namespace connection string. Takes precedence over the Entra ID credentials and over `namespace`. | — |
+| `kestra.queue.azure-eventhub.tenant-id` | Tenant of the service principal. Set together with `client-id` and `client-secret`. | Default Azure credential chain |
+| `kestra.queue.azure-eventhub.client-id` | Client ID of the service principal. | — |
+| `kestra.queue.azure-eventhub.client-secret` | Client secret of the service principal. | — |
+| `kestra.queue.azure-eventhub.checkpoint-endpoint` | Blob endpoint of the checkpoint storage account. Required unless `checkpoint-connection-string` is set. | — |
+| `kestra.queue.azure-eventhub.checkpoint-connection-string` | Connection string of the checkpoint storage account. | — |
+| `kestra.queue.azure-eventhub.checkpoint-container` | Blob container that holds the checkpoints. Required. | — |
+| `kestra.queue.azure-eventhub.subscription-id` | Azure subscription of the namespace. Set together with `resource-group` to let Kestra create the missing event hubs and consumer groups. | — |
+| `kestra.queue.azure-eventhub.resource-group` | Resource group of the namespace. | — |
+| `kestra.queue.azure-eventhub.partition-count` | Partitions of the event hubs Kestra creates, from `1` to `100`. Caps how many instances can consume a dispatch queue at once. | `4` |
+| `kestra.queue.azure-eventhub.broadcast-consumer-groups` | Consumer groups of a broadcast hub, from `1` to `100`. | `20` |
+| `kestra.queue.azure-eventhub.batch-size` | Events a subscriber processes together. | `100` |
+| `kestra.queue.azure-eventhub.load-balancing-interval` | How often the services rebalance the partitions of an event hub. A partition's ownership expires after 6 times this, and a paused subscriber gives its partitions up after this. | `PT5S` |
+| `kestra.queue.azure-eventhub.message-retention` | Retention of the event hubs Kestra creates, from `P1D` to `P90D`. | `P1D` |
+| `kestra.queue.azure-eventhub.refusal-tolerance` | How long Event Hubs can refuse a subscriber for good before Kestra stops. | `PT5M` |
 
 ## MCP server cache
 
