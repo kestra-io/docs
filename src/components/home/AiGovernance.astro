@@ -8,7 +8,6 @@
  * Without JavaScript, or with reduced motion, the stack stands still.
  */
 import { Icon } from "astro-icon/components"
-import agentBackground from "./assets/ai/agent-background.webp"
 import kestraLogo from "./assets/ai/kestra-logo-full-on-dark.svg"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
@@ -190,7 +189,6 @@ const auditPath = (cy: number) =>
             <figure
                 class="stack"
                 aria-label="AI agents call into Kestra, which checks permissions, holds approvals and keeps the audit trail before any action reaches infrastructure, data pipelines, business processes or IT operations. A drop_table call from the finance agent is blocked by policy."
-                style={`--backdrop: url(${agentBackground.src})`}
                 data-ai-stack
             >
                 {
@@ -1871,8 +1869,14 @@ const auditPath = (cy: number) =>
             margin-inline: auto;
             border-block: 0;
             border-radius: 1.25rem;
-            // Black falling to blue, with a violet light rising from below.
-            background: #161618 var(--backdrop) center 65% / cover no-repeat;
+            // Black fading to grey toward the foot, no colour.
+            background:
+                radial-gradient(
+                    ellipse 70% 60% at 50% 110%,
+                    rgba(255, 255, 255, 0.1),
+                    transparent 70%
+                ),
+                linear-gradient(180deg, #0e0e10 0%, #18181b 45%, #2e2e33 100%);
 
             @include media-breakpoint-down(md) {
                 border-radius: 0;
@@ -1931,7 +1935,7 @@ const auditPath = (cy: number) =>
 
         .agent[data-state="active"] rect.tile {
             stroke: #cd88ff;
-            filter: drop-shadow(0 0 16px rgba(205, 136, 255, 0.7));
+            filter: drop-shadow(0 0 10px rgba(205, 136, 255, 0.3));
         }
 
         // A domain's outline as its halo.
@@ -1941,17 +1945,18 @@ const auditPath = (cy: number) =>
             stroke-dasharray: none;
         }
 
-        // Kestra: a black tile, lit in violet.
+        // Kestra: a black tile, grey at rest, edged in violet only while
+        // a call crosses it.
         .band {
             > rect.tile {
                 fill: #0b0b0e;
-                stroke: rgba(205, 136, 255, 0.55);
-                filter: drop-shadow(0 0 28px rgba(169, 80, 255, 0.55));
+                stroke: rgba(255, 255, 255, 0.22);
+                filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.06));
             }
 
             > .halo {
-                fill: rgba(169, 80, 255, 0.1);
-                stroke: rgba(205, 136, 255, 0.35);
+                fill: rgba(255, 255, 255, 0.05);
+                stroke: rgba(255, 255, 255, 0.18);
             }
 
             .band-name {
@@ -1965,7 +1970,7 @@ const auditPath = (cy: number) =>
             &[data-state="busy"] > rect.tile,
             &[data-state="denied"] > rect.tile {
                 stroke: #cd88ff;
-                filter: drop-shadow(0 0 40px rgba(169, 80, 255, 0.85));
+                filter: drop-shadow(0 0 14px rgba(169, 80, 255, 0.3));
             }
         }
 

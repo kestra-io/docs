@@ -710,6 +710,15 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         > li {
             display: flex;
         }
+
+        // Spread across the page when it fits on one line, the gaps
+        // growing with the screen.
+        @include media-breakpoint-up(xl) {
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            max-width: 108rem;
+            padding-inline: clamp(2.5rem, 6.4vw, 7rem);
+        }
     }
 
     .brand-logo {
