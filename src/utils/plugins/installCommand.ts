@@ -20,7 +20,13 @@ export function getPluginInstallCommand(
                 Boolean(artifactId) &&
                 artifactId !== "core",
         )
-        .toSorted((a, b) => b.group.length - a.group.length)[0]
+        .toSorted((a, b) => {
+            // Prefer the metadata group with the most specific package name.
+            // When multiple groups have the same depth, prefer the longer group.
+            const depthA = a.group.split(".").length
+            const depthB = b.group.split(".").length
+            return depthB - depthA || b.group.length - a.group.length
+        })[0]
 
     if (!matchingMetadata) return undefined
 
