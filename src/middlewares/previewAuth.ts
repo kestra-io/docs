@@ -12,8 +12,12 @@ const PREVIEW_HOST = /^([a-z0-9-]+\.)*kestra-io\.workers\.dev$/
 const CALLBACK_HOST = "kestra.io"
 const CALLBACK_PATH = "/__preview-auth/callback"
 const CONSUME_PATH = "/__preview-auth/consume"
+const COOKIE = "__preview_auth"
 const ALLOWED_DOMAIN = "kestra.io"
+
+const STATE_TTL = "10m"
 const HANDOFF_TTL = "60s"
+const SESSION_TTL_SECONDS = 12 * 60 * 60
 
 const GOOGLE_JWKS = createRemoteJWKSet(
     new URL("https://www.googleapis.com/oauth2/v3/certs"),
@@ -27,11 +31,12 @@ const text = (body: string, status: number): Response =>
         headers: { "Content-Type": "text/plain", "Cache-Control": "no-store" },
     })
 
-const redirect = (location: string): Response =>
-    new Response(null, {
-        status: 302,
-        headers: { Location: location, "Cache-Control": "no-store" },
-    })
+const redirect = (location: string, headers?: HeadersInit): Response => {
+    const response = new Response(null, { status: 302, headers })
+    response.headers.set("Location", location)
+    response.headers.set("Cache-Control", "no-store")
+    return response
+}
 
 const isSafePath = (path: unknown): path is string =>
     typeof path === "string" &&
@@ -68,7 +73,41 @@ const verify = async (
     }
 }
 
+const readCookie = (request: Request, name: string): string | null => {
+    for (const part of (request.headers.get("cookie") ?? "").split(";")) {
+        const [key, ...value] = part.trim().split("=")
+        if (key === name) {
+            return value.join("=")
+        }
+    }
+    return null
+}
+
 const callbackUrl = `https://${CALLBACK_HOST}${CALLBACK_PATH}`
+
+async function startLogin(
+    url: URL,
+    config: Required<PreviewAuthConfig>,
+    key: Uint8Array,
+): Promise<Response> {
+    const state = await sign(
+        key,
+        "preview-state",
+        { host: url.host, path: url.pathname + url.search },
+        STATE_TTL,
+    )
+    const google = new URL("https://accounts.google.com/o/oauth2/v2/auth")
+    google.search = new URLSearchParams({
+        client_id: config.clientId,
+        redirect_uri: callbackUrl,
+        response_type: "code",
+        scope: "openid email",
+        hd: ALLOWED_DOMAIN,
+        prompt: "select_account",
+        state,
+    }).toString()
+    return redirect(google.toString())
+}
 
 async function handleCallback(
     url: URL,
@@ -144,16 +183,39 @@ async function handleCallback(
     return redirect(back.toString())
 }
 
+async function handleConsume(url: URL, key: Uint8Array): Promise<Response> {
+    const token = url.searchParams.get("token")
+    const to = url.searchParams.get("to")
+    const claims = token ? await verify(key, "preview-handoff", token) : null
+    if (!claims || claims.host !== url.host || !isSafePath(to)) {
+        return text("Invalid or expired sign-in link", 400)
+    }
+
+    const session = await sign(
+        key,
+        "preview-session",
+        { email: String(claims.email) },
+        `${SESSION_TTL_SECONDS}s`,
+    )
+    return redirect(to, {
+        "Set-Cookie": `${COOKIE}=${session}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
+    })
+}
+
 /**
- * Completes the Google sign-in for preview hosts. Only the callback path on
- * production is handled; everything else returns null and is untouched.
+ * Gates every `*.kestra-io.workers.dev` host behind a Google sign-in limited to
+ * the kestra.io Workspace. Returns a response to short-circuit the request, or
+ * null to let it through. Production hosts are never gated, except for the
+ * callback path that completes the sign-in.
  */
 export async function previewAuth(
     request: Request,
     config: PreviewAuthConfig,
 ): Promise<Response | null> {
     const url = new URL(request.url)
-    if (url.host !== CALLBACK_HOST || url.pathname !== CALLBACK_PATH) {
+    const isCallback = url.host === CALLBACK_HOST && url.pathname === CALLBACK_PATH
+
+    if (!isCallback && !isPreviewHost(url.host)) {
         return null
     }
 
@@ -161,10 +223,21 @@ export async function previewAuth(
     if (!clientId || !clientSecret || !secret) {
         return text("Preview authentication is not configured", 403)
     }
+    const full = { clientId, clientSecret, secret }
+    const key = new TextEncoder().encode(secret)
 
-    return handleCallback(
-        url,
-        { clientId, clientSecret, secret },
-        new TextEncoder().encode(secret),
-    )
+    if (isCallback) {
+        return handleCallback(url, full, key)
+    }
+
+    if (url.pathname === CONSUME_PATH) {
+        return handleConsume(url, key)
+    }
+
+    const session = readCookie(request, COOKIE)
+    if (session && (await verify(key, "preview-session", session))) {
+        return null
+    }
+
+    return startLogin(url, full, key)
 }

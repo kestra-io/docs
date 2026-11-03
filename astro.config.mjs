@@ -200,16 +200,6 @@ export default defineConfig({
                 optional: false,
                 default: "GTM-T4F85WRF",
             }),
-            CLOUDFLARE_TEAM_DOMAIN: envField.string({
-                context: "server",
-                access: "secret",
-                optional: true,
-            }),
-            CLOUDFLARE_POLICY_AUD: envField.string({
-                context: "server",
-                access: "secret",
-                optional: true,
-            }),
             // Google sign-in for *.kestra-io.workers.dev (src/middlewares/previewAuth.ts).
             GOOGLE_CLIENT_ID: envField.string({
                 context: "server",

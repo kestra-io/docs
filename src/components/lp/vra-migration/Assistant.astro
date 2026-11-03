@@ -10,7 +10,7 @@ import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 
 import BrowserFrame from "~/components/vra-migration-guide/assistant/BrowserFrame.astro"
-import { WEBINAR_HREF_EU } from "~/components/vra-migration-guide/assistant/links"
+import { WEBINAR_HREF } from "~/components/vra-migration-guide/assistant/links"
 import cubes from "~/components/vra-migration-guide/assets/assistant-cubes.webp"
 
 const mapping = [
@@ -81,9 +81,9 @@ const points = [
             <a href="#contact-sales" class="cta">Run it with us</a>
             <p class="webinar">
                 See it run live with our team:
-                <strong>November 4, 2 PM CET</strong> (Europe and Asia) or
-                <strong>November 5, 11 AM PT</strong> (Americas).
-                <a href={WEBINAR_HREF_EU} target="_blank" rel="noopener"
+                <strong>November 4, 2 PM CET</strong> (8 AM ET), on LinkedIn and
+                YouTube.
+                <a href={WEBINAR_HREF} target="_blank" rel="noopener"
                     >Register →</a
                 >
             </p>
@@ -416,19 +416,12 @@ const points = [
 </style>
 
 <script>
-    import {
-        WEBINAR_HREF_EU,
-        WEBINAR_HREF_US,
-    } from "~/components/vra-migration-guide/assistant/links"
-    import { isAmericasTimezone } from "~/composables/useMeeting"
+    // The session ends on November 4 at 4 PM CET (15:00 UTC). After that the
+    // line goes, until it is removed from the source.
+    const WEBINAR_ENDS = Date.UTC(2026, 10, 4, 15)
 
-    // The Americas session ends on November 5 at noon PT (20:00 UTC). After
-    // that the line goes, until it is removed from the source.
-    const WEBINAR_ENDS = Date.UTC(2026, 10, 5, 20)
-
-    // Visitors in the Americas get the US session, the same split as the
-    // Migration Assistant page. Each click is pushed to the dataLayer for GTM:
-    // registrations happen on Contrast, which reports nothing back.
+    // Each click is pushed to the dataLayer for GTM: registrations happen on
+    // Luma, which reports nothing back.
     function setUpWebinarLine() {
         const line = document.querySelector<HTMLElement>(".assistant .webinar")
         if (!line || line.dataset.ready !== undefined) return
@@ -437,14 +430,12 @@ const points = [
             return
         }
         line.dataset.ready = ""
-        const session = isAmericasTimezone() ? "us" : "eu"
         const link = line.querySelector("a")!
-        link.href = session === "us" ? WEBINAR_HREF_US : WEBINAR_HREF_EU
         const track = () => {
             window.dataLayer = window.dataLayer || []
             window.dataLayer.push({
                 event: "vra_webinar_register_click",
-                webinar_session: session,
+                webinar_session: "eu",
             })
         }
         link.addEventListener("click", track)
