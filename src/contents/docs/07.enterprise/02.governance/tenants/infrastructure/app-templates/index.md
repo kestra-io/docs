@@ -29,7 +29,9 @@ App templates don't appear under **Blueprints** → **App Blueprints**. They're 
 
 ## Find app templates
 
-Open **Templates**, the first entry in the **Automation** group of the sidebar. The entry appears only in an [Infrastructure tenant](../index.md), when your license includes Custom Blueprints and you hold at least one `BLUEPRINT` permission. In other tenants, manage templates through the [API](#manage-templates-with-the-api). Each template card shows its title, description, argument count, and tags, with **Edit** and **Use** actions.
+Open **Templates**, the first entry in the **Automation** group of the sidebar. The entry appears only in an [Infrastructure tenant](../index.md), when your license includes Custom Blueprints and you hold at least one `BLUEPRINT` permission. In other tenants, manage templates through the [API](#manage-templates-with-the-api). Each template card shows its title, description, argument count, and tags, with **Edit**, **Use**, and delete actions.
+
+![The Templates page in an Infrastructure tenant, showing the New application environment card with 5 arguments, a platform tag, and Edit and Use buttons](./app-templates-list.png)
 
 An Infrastructure tenant includes an example template, **New application environment**. Its arguments fix the scaffolding repository, the database engine and version, and the sizes and regions teams may request. Using it creates a demo flow and publishes its request form to the catalog.
 
@@ -41,6 +43,8 @@ A template has four parts, each edited in its own panel:
 - **Flow**: the source of the flow to create
 - **App**: the source of the app to create
 - **Syntax Helper**: a reference for the templating syntax
+
+![The editor for a new template, with the Details panel showing the title, description, tags, and a name argument, next to the Flow and App source panels](./app-template-editor.png)
 
 ### Arguments
 
@@ -142,6 +146,8 @@ Using a template creates the flow first, then the app. You need the `BLUEPRINT` 
 4. In the **Review** step, check the rendered **Flow** and **App** tabs. Each tab lists the problems that block creation. Edit a source to fix them; the edited source is validated again when you click **Create**.
 5. Click **Create**.
 
+![The Review step of the Use dialog for New application environment, showing the rendered flow with the chosen namespace added, and the Back, Cancel, and Create buttons](./app-template-use-review.png)
+
 The **Created** step reports each resource with a link to open it. When the app is created, click **Open the catalog** to see the new entry.
 
 If the app fails to be created after the flow succeeds, click **Back to review**, fix the app source, and click **Create** again. The flow that was already created is kept and is not created twice.
@@ -184,4 +190,3 @@ The `render` endpoint takes a `namespace` and `argumentValues`, and returns each
 ## Version control
 
 The [`PushBlueprints` and `SyncBlueprints`](../../../custom-blueprints/index.md#version-control-for-custom-blueprints) tasks handle Custom Blueprints only. They don't push, sync, or delete app templates. To keep templates in Git, read them with `GET /app-templates` and write them back with `POST` or `PUT /app-templates/{id}`.
-<!-- TODO(screenshots, 2.1 RC): Templates list (tour panel closed), template editor with Details/Flow/App panels, Use dialog Review step. -->

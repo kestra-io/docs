@@ -217,7 +217,7 @@ Example resources are tagged so they can be hidden in the Catalog using the **Hi
 
 ### Product tour
 
-When the example flows are present, the Catalog offers a guided tour built on them. It walks through requesting a resource from the catalog, following the request, the flow behind the app, the resulting deployment and its decommission action, and the dashboard. A tenant without the example environment, for example with seeding disabled, doesn't offer the tour.
+When the example flows are present, the Catalog offers a guided tour built on them. It walks through requesting a resource from the catalog, following the request, the flow behind the app, the resulting deployment and its decommission action, and the dashboard. To continue a tour you left, select **Resume tour** in the sidebar. A tenant without the example environment, for example with seeding disabled, doesn't offer the tour.
 
 ### Seeding on type change
 
