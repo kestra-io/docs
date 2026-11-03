@@ -710,8 +710,8 @@ const WORKERS = [
         background: var(--bg);
         color: var(--text);
 
-        // The rule between the AI block and this one, brighter in the
-        // middle, like the edge of polished metal catching the light.
+        // The rule between the AI block and this one, as faint as the
+        // grid's.
         &::before {
             content: "";
             position: absolute;
@@ -719,12 +719,7 @@ const WORKERS = [
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(
-                90deg,
-                var(--rule-color) 0%,
-                rgba(255, 255, 255, 0.4) 50%,
-                var(--rule-color) 100%
-            );
+            background: var(--rule-color);
             pointer-events: none;
         }
     }

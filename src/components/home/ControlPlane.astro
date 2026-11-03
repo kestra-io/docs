@@ -2,7 +2,6 @@
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 import TopologyMock, { type Props as TopologyProps } from "./TopologyMock.astro"
-import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
 
 interface Domain {
     id: string
@@ -313,12 +312,6 @@ const DOMAINS: Domain[] = [
     <div class="container-xl">
         <div class="grid">
             <header class="head">
-                {
-                    /* Kestra's mark on a black tile, the plane every flow runs on. */
-                }
-                <span class="mark-tile" aria-hidden="true" data-mark-tile>
-                    <img src={kestraMark.src} alt="" width="32" height="32" />
-                </span>
                 <h2 id="control-plane">One control plane for every workflow</h2>
                 <p>
                     Give teams shared visibility and consistent governance
@@ -383,6 +376,14 @@ const DOMAINS: Domain[] = [
                     }
                 </div>
             </div>
+            {
+                /* The start of the bridge to the AI block below: a node on the
+            panel's foot, and a dashed line down to the seam. */
+            }
+            <span class="bridge" aria-hidden="true">
+                <span class="node"></span>
+                <span class="run"></span>
+            </span>
         </div>
     </div>
 </section>
@@ -474,39 +475,37 @@ const DOMAINS: Domain[] = [
 
     document.addEventListener("astro:page-load", wireDomains)
     wireDomains()
-
-    // The Kestra tile lands as the block comes in: it drops in, the mark
-    // rises into place, and a light sweeps across it.
-    function landTiles() {
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
-        document
-            .querySelectorAll<HTMLElement>("[data-mark-tile]:not(.armed)")
-            .forEach((tile) => {
-                tile.classList.add("armed")
-                const seen = new IntersectionObserver(
-                    ([entry]) => {
-                        if (!entry.isIntersecting) return
-                        seen.disconnect()
-                        tile.classList.add("in")
-                    },
-                    { threshold: 0.8 },
-                )
-                seen.observe(tile)
-            })
-    }
-
-    document.addEventListener("astro:page-load", landTiles)
-    landTiles()
 </script>
 
 <style lang="scss">
     .control-plane {
+        --blue: #3b5bdb;
+
         position: relative;
+        // Above the AI block, so the bridge's run can cross into it.
+        z-index: 1;
         // Switching domains must not make the browser re-anchor the scroll.
         overflow-anchor: none;
-        background: var(--ks-background-body);
-        // How it works above draws the rule between the two.
-        border-bottom: 1px solid var(--ks-border-primary);
+        // The AI block's blue, so the two read as one: a soft light from
+        // the top left, and a stronger one low on the right that carries
+        // on into the AI block below. No rule between them.
+        background:
+            radial-gradient(
+                60% 70% at 0% 0%,
+                color-mix(in srgb, var(--blue) 8%, transparent),
+                transparent 70%
+            ),
+            radial-gradient(
+                70% 80% at 100% 100%,
+                color-mix(in srgb, var(--blue) 14%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--blue) 3%, var(--ks-background-body));
+
+        :global(html.dark) & {
+            background: var(--ks-background-body);
+            border-bottom: 1px solid var(--ks-border-primary);
+        }
     }
 
     // Hairline grid: rails on both sides of the content, and full-width rules
@@ -523,7 +522,97 @@ const DOMAINS: Domain[] = [
 
         // An empty closing row between the rails, so the panel does not run
         // straight into the dark section below.
-        padding-bottom: clamp(4rem, 7vw, 6.5rem);
+        padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
+
+        // The bridge's upper half, through that closing row.
+        > .bridge {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            height: clamp(2.5rem, 4vw, 3.5rem);
+            pointer-events: none;
+
+            // The dashed line, drawn downwards when the AI block plays its
+            // arrival (see arriveAi there).
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: repeating-linear-gradient(
+                    180deg,
+                    color-mix(
+                            in srgb,
+                            var(--ks-content-primary) 28%,
+                            transparent
+                        )
+                        0 4px,
+                    transparent 4px 8px
+                );
+                transform-origin: top;
+                transition: transform 0.45s linear;
+            }
+
+            .node {
+                position: absolute;
+                z-index: 2;
+                top: -6px;
+                left: -6px;
+                width: 13px;
+                height: 13px;
+                border: 1.5px solid #a950ff;
+                border-radius: 50%;
+                background: var(--ks-background-body);
+                box-shadow: 0 0 0 4px rgba(169, 80, 255, 0.12);
+                transition:
+                    opacity 0.3s ease,
+                    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            // A run from the node, all the way down to the AI block's
+            // statement: across this half and the AI block's.
+            .run {
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: -1px;
+                width: 3px;
+                height: 14px;
+                border-radius: 2px;
+                background: #8405ff;
+                opacity: 0;
+                animation: bridge-run 2.8s ease-in infinite;
+            }
+
+            // Until the arrival: no line, no node, no run.
+            &:global(.armed) {
+                &::before {
+                    transform: scaleY(0);
+                }
+
+                .node {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+
+                .run {
+                    animation: none;
+                }
+            }
+
+            &:global(.armed.on) .node {
+                opacity: 1;
+                transform: none;
+            }
+
+            &:global(.armed.drawn)::before {
+                transform: none;
+            }
+
+            &:global(.armed.done) .run {
+                animation: bridge-run 2.8s ease-in infinite;
+            }
+        }
 
         > .body {
             position: relative;
@@ -567,84 +656,17 @@ const DOMAINS: Domain[] = [
             padding-block: 4.5rem 3rem;
         }
 
-        // Black in both themes, as the product's own icon.
-        .mark-tile {
-            position: relative;
-            overflow: hidden;
-            display: grid;
-            place-items: center;
-            width: 4.5rem;
-            height: 4.5rem;
-            margin-bottom: 0.75rem;
-            padding: 0;
-            border-radius: 1rem;
-            background: linear-gradient(180deg, #2a2a30 0%, #0b0b0e 100%);
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.08),
-                0 12px 30px -10px rgba(0, 0, 0, 0.45);
-
-            img {
-                width: 2.25rem;
-                height: 2.25rem;
-            }
-
-            // The sweep of light, parked off the tile's left edge.
-            &::after {
-                content: "";
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(
-                    115deg,
-                    transparent 30%,
-                    rgba(255, 255, 255, 0.22) 50%,
-                    transparent 70%
-                );
-                transform: translateX(-120%);
-                pointer-events: none;
-            }
-
-            // Hidden until it lands; only once the script has armed it, so
-            // it shows without JavaScript.
-            &:global(.armed) {
-                opacity: 0;
-                transform: translateY(-1rem) scale(0.8) rotate(-8deg);
-
-                img {
-                    opacity: 0;
-                    transform: translateY(0.75rem) scale(0.7);
-                }
-            }
-
-            &:global(.armed.in) {
-                opacity: 1;
-                transform: none;
-                transition:
-                    opacity 0.4s ease,
-                    transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-                img {
-                    opacity: 1;
-                    transform: none;
-                    transition:
-                        opacity 0.4s ease 0.25s,
-                        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s;
-                }
-
-                &::after {
-                    transform: translateX(120%);
-                    transition: transform 0.9s ease-in-out 0.6s;
-                }
-            }
-        }
-
+        // Large, as the head of the AI block it hands over to.
         h2 {
             margin: 0;
-            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
             font-weight: 600;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
             color: var(--ks-content-primary);
             text-wrap: balance;
+            // Two balanced lines.
+            max-width: 10.5em;
         }
 
         p {
@@ -658,8 +680,9 @@ const DOMAINS: Domain[] = [
         }
     }
 
+    // The tabs on the block's blue; the panel brings its own tint.
     .body {
-        background: var(--ks-background-body);
+        background: none;
     }
 
     // The four use cases, side by side between rules, above the panel.
@@ -765,6 +788,15 @@ const DOMAINS: Domain[] = [
         overflow: hidden;
     }
 
+    // The open panel lights up as the bridge to the AI block leaves it.
+    .visual {
+        :global(.lit) > &.active {
+            box-shadow:
+                inset 0 0 0 2px #a950ff,
+                inset 0 0 60px rgba(169, 80, 255, 0.16);
+        }
+    }
+
     .visual {
         position: relative;
         grid-area: 1 / 1;
@@ -773,17 +805,12 @@ const DOMAINS: Domain[] = [
         align-items: center;
         gap: 2rem;
         min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
-        padding: var(--inset) 0 var(--inset) var(--inset);
-        background:
-            radial-gradient(
-                80% 90% at 100% 0%,
-                color-mix(in srgb, var(--tint) 20%, transparent),
-                transparent 70%
-            ),
-            color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
-        // Edged in the open tab's line colour, so the tab and its panel
-        // read as one.
-        box-shadow: inset 0 0 0 1px var(--tint);
+        // Even margins all round, so the topology sits centred between
+        // the copy and the panel's right edge.
+        padding: var(--inset);
+        // A white panel on the block's blue, as the AI block's nodes: the
+        // vertical's colour stays in its tab and its pixels.
+        background: var(--ks-background-body);
         opacity: 0;
         visibility: hidden;
         transition:
@@ -799,7 +826,9 @@ const DOMAINS: Domain[] = [
         &.active {
             opacity: 1;
             visibility: visible;
-            transition: opacity 0.5s ease;
+            transition:
+                opacity 0.5s ease,
+                box-shadow 0.5s ease;
 
             > .panel-copy,
             > .panel-topology {
@@ -810,17 +839,6 @@ const DOMAINS: Domain[] = [
         @include media-breakpoint-down(xl) {
             grid-template-columns: minmax(0, 1fr);
             align-content: start;
-            padding-right: var(--inset);
-        }
-
-        :global(html.dark) & {
-            background:
-                radial-gradient(
-                    80% 90% at 100% 0%,
-                    color-mix(in srgb, var(--tint) 12%, transparent),
-                    transparent 70%
-                ),
-                color-mix(in srgb, var(--tint) 3%, var(--ks-background-body));
         }
 
         .pixels {
@@ -869,5 +887,32 @@ const DOMAINS: Domain[] = [
         display: flex;
         align-self: stretch;
         min-height: 20rem;
+    }
+
+    @keyframes bridge-run {
+        0% {
+            opacity: 0;
+            transform: translateY(0);
+        }
+
+        12% {
+            opacity: 1;
+        }
+
+        75% {
+            opacity: 1;
+            transform: translateY(calc(2 * clamp(2.5rem, 4vw, 3.5rem) - 14px));
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateY(calc(2 * clamp(2.5rem, 4vw, 3.5rem) - 14px));
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bridge .run {
+            animation: none;
+        }
     }
 </style>

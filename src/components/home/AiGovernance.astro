@@ -8,108 +8,189 @@
  * Without JavaScript, or with reduced motion, the stack stands still.
  */
 import { Icon } from "astro-icon/components"
-import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+import agentBackground from "./assets/ai/agent-background.webp"
+import kestraLogo from "./assets/ai/kestra-logo-full-on-dark.svg"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 
-// The drawing's grid, in viewBox units.
+// The drawing's grid, in viewBox units, read left to right: the mascot,
+// the agents, Kestra, then the domains, with the audit trail looping back
+// along the floor.
 const W = 1200
-const AGENT_Y = 28
-const AGENT_H = 48
-const BAND_Y = 216
-const BAND_H = 88
-const DOMAIN_Y = 404
-const DOMAIN_H = 72
-const AUDIT_Y = 548
-const AUDIT_X = 34
+const H = 420
+// The drawing starts a little left of the agents.
+const VIEW_X = 150
+const AGENT_X = 190
+const AGENT_W = 180
+const AGENT_H = 58
+const BAND_X = 470
+const BAND_W = 300
+const BAND_Y = 74
+const BAND_H = 252
+const DOMAIN_X = 830
+const DOMAIN_W = 200
+const DOMAIN_H = 56
+const AUDIT_X = 1190
+const AUDIT_Y = 398
 
 const AGENTS = [
-    { id: "support", name: "Support", cx: 300 },
-    { id: "ops", name: "Ops", cx: 600 },
-    { id: "finance", name: "Finance", cx: 900 },
+    { id: "support", name: "Support", cy: 110 },
+    { id: "ops", name: "Ops", cy: 200 },
+    { id: "finance", name: "Finance", cy: 290 },
 ]
 
 // The control plane block's four domains, in its order.
 const DOMAINS = [
-    { id: "infra", name: "Infrastructure", cx: 195 },
-    { id: "data", name: "Data pipelines", cx: 465 },
-    { id: "business", name: "Business processes", cx: 735 },
-    { id: "it", name: "IT operations", cx: 1005 },
+    { id: "infra", name: "Infrastructure", cy: 80 },
+    { id: "data", name: "Data pipelines", cy: 160 },
+    { id: "business", name: "Business processes", cy: 240 },
+    { id: "it", name: "IT operations", cy: 320 },
 ]
-const DOMAIN_W = 210
 
 const CONTROLS = [
-    { id: "permissions", name: "Permissions", x: 610 },
-    { id: "approvals", name: "Approvals", x: 785 },
-    { id: "audit", name: "Audit trail", x: 960 },
+    { id: "permissions", name: "Permissions", y: BAND_Y + 92 },
+    { id: "approvals", name: "Approvals", y: BAND_Y + 140 },
+    { id: "audit", name: "Audit trail", y: BAND_Y + 188 },
 ]
-const CONTROL_W = 160
+const CONTROL_W = 240
 
-// Above the agents: room for the wires down from the mascot.
-const TOP = -140
-const BUS_Y = -4
-// From the mascot, down a trunk and along a bus to an agent's top. The
-// faint wires draw the shared trunk once (the middle agent's), so it is no
-// brighter than the rest; the pulses run the whole way.
-const briefPath = (cx: number, branchOnly = false) =>
-    cx === W / 2
-        ? `M ${cx} ${TOP} V ${AGENT_Y}`
-        : [
-              `M ${W / 2} ${branchOnly ? BUS_Y - 14 : TOP}`,
-              `V ${BUS_Y - 14}`,
-              `Q ${W / 2} ${BUS_Y} ${W / 2 + Math.sign(cx - W / 2) * 14} ${BUS_Y}`,
-              `H ${cx - Math.sign(cx - W / 2) * 14}`,
-              `Q ${cx} ${BUS_Y} ${cx} ${BUS_Y + 14}`,
-              `V ${AGENT_Y}`,
-          ].join(" ")
-const agentPath = (cx: number) => `M ${cx} ${AGENT_Y + AGENT_H} V ${BAND_Y}`
-const domainPath = (cx: number) => `M ${cx} ${BAND_Y + BAND_H} V ${DOMAIN_Y}`
-// From a domain's foot, along the floor and up the left side, back into
-// the band: every outcome ends in the one audit trail.
-const auditPath = (cx: number) =>
+const agentPath = (cy: number) => `M ${AGENT_X + AGENT_W} ${cy} H ${BAND_X}`
+const domainPath = (cy: number) => `M ${BAND_X + BAND_W} ${cy} H ${DOMAIN_X}`
+// From a domain's right edge, down the right side and back along the
+// floor into the band's foot: every outcome ends in the one audit trail.
+// Each domain joins one shared line on the right; only the top one turns
+// into it, the others meet it square, so the turns do not pile up.
+const FIRST_CY = 80
+const auditBranch = (cy: number) =>
+    cy === FIRST_CY
+        ? `M ${DOMAIN_X + DOMAIN_W} ${cy} H ${AUDIT_X - 20} Q ${AUDIT_X} ${cy} ${AUDIT_X} ${cy + 20}`
+        : `M ${DOMAIN_X + DOMAIN_W} ${cy} H ${AUDIT_X}`
+// The shared line, down and back along the floor into the band's foot.
+const auditTrunk = [
+    `M ${AUDIT_X} ${FIRST_CY + 20}`,
+    `V ${AUDIT_Y - 20}`,
+    `Q ${AUDIT_X} ${AUDIT_Y} ${AUDIT_X - 20} ${AUDIT_Y}`,
+    `H ${BAND_X + BAND_W / 2 + 20}`,
+    `Q ${BAND_X + BAND_W / 2} ${AUDIT_Y} ${BAND_X + BAND_W / 2} ${AUDIT_Y - 20}`,
+    `V ${BAND_Y + BAND_H}`,
+].join(" ")
+// A pulse's whole way: its branch, then down the shared line.
+const auditPath = (cy: number) =>
     [
-        `M ${cx} ${DOMAIN_Y + DOMAIN_H}`,
+        `M ${DOMAIN_X + DOMAIN_W} ${cy}`,
+        `H ${AUDIT_X}`,
         `V ${AUDIT_Y - 20}`,
-        `Q ${cx} ${AUDIT_Y} ${cx - 20} ${AUDIT_Y}`,
-        `H ${AUDIT_X + 20}`,
-        `Q ${AUDIT_X} ${AUDIT_Y} ${AUDIT_X} ${AUDIT_Y - 20}`,
-        `V ${BAND_Y + BAND_H / 2 + 20}`,
-        `Q ${AUDIT_X} ${BAND_Y + BAND_H / 2} ${AUDIT_X + 20} ${BAND_Y + BAND_H / 2}`,
-        `H 60`,
+        `Q ${AUDIT_X} ${AUDIT_Y} ${AUDIT_X - 20} ${AUDIT_Y}`,
+        `H ${BAND_X + BAND_W / 2 + 20}`,
+        `Q ${BAND_X + BAND_W / 2} ${AUDIT_Y} ${BAND_X + BAND_W / 2} ${AUDIT_Y - 20}`,
+        `V ${BAND_Y + BAND_H}`,
     ].join(" ")
 ---
 
 <section
-    class="ai-governance surface-dark"
+    class="ai-governance is-light is-aurora"
     aria-labelledby="ai-governance"
-    data-header-dark
 >
     {/* The About us pixel art, as in the blocks above. */}
     <PixelEdges left="wide" right="tall" />
     {/* A faint technical grid behind the stack, fading out at the edges. */}
     <span class="texture" aria-hidden="true"></span>
+    {
+        /* Two small pixel clusters in Kestra's violet, as on the control plane's panels. */
+    }
+    <span
+        class="cluster top"
+        aria-hidden="true"
+        style={`--pixels: url("${pixelCluster}")`}></span>
+    <span
+        class="cluster bottom"
+        aria-hidden="true"
+        style={`--pixels: url("${pixelCluster}")`}></span>
     {/* A soft light that follows the pointer across the block. */}
     <span class="glow" aria-hidden="true" data-glow></span>
     <div class="container-xl">
         <div class="rails">
+            {
+                /* The link to the control plane above: its dashed line,
+                from a node on its panel's foot, carries on down to the
+                agent, with a run travelling along it. */
+            }
+            <span class="bridge" aria-hidden="true"></span>
             <div class="head">
-                <h2 id="ai-governance">
-                    AI agents cross systems seamlessly. <span
-                        >Enforce governance at every step.</span
-                    >
-                </h2>
-                <p class="lead">
-                    Permissions, approvals, and audit trails apply to every
-                    action an agent takes.
-                </p>
-                {/* The hero's primary button. */}
-                <a href="/ai-automation" class="btn-solid">
-                    How agents fit <Icon name="mdi:chevron-right" />
-                </a>
+                <div>
+                    {
+                        /* The agent from the launch video: the bridge from the
+                        control plane lands on it, and it greets the block. */
+                    }
+                    <div class="mascot" data-mascot aria-hidden="true">
+                        <span class="ring"></span>
+                        <span class="ring outer"></span>
+                        <span class="disc">
+                            <svg viewBox="0 0 48 48">
+                                <rect
+                                    class="antenna"
+                                    x="20"
+                                    y="6"
+                                    width="8"
+                                    height="7"
+                                    rx="3.5"></rect>
+                                <rect
+                                    x="5"
+                                    y="19"
+                                    width="5"
+                                    height="12"
+                                    rx="2.5"></rect>
+                                <rect
+                                    x="38"
+                                    y="19"
+                                    width="5"
+                                    height="12"
+                                    rx="2.5"></rect>
+                                <rect
+                                    class="face"
+                                    x="11.5"
+                                    y="12.5"
+                                    width="25"
+                                    height="24"
+                                    rx="3.5"></rect>
+                                <g class="eyes" data-eyes>
+                                    <circle
+                                        class="eye"
+                                        cx="19.5"
+                                        cy="22"
+                                        r="2.4"></circle>
+                                    <circle
+                                        class="eye wink"
+                                        cx="28.5"
+                                        cy="22"
+                                        r="2.4"></circle>
+                                </g>
+                                <rect
+                                    class="mouth"
+                                    x="18"
+                                    y="29"
+                                    width="12"
+                                    height="2.75"
+                                    rx="1"></rect>
+                            </svg>
+                        </span>
+                    </div>
+                    <h2 id="ai-governance">
+                        AI agents cross systems seamlessly. <span
+                            >Enforce governance at every step.</span
+                        >
+                    </h2>
+                    <p class="lead">
+                        Permissions, approvals, and audit trails apply to every
+                        action an agent takes.
+                    </p>
+                </div>
             </div>
 
             <figure
                 class="stack"
                 aria-label="AI agents call into Kestra, which checks permissions, holds approvals and keeps the audit trail before any action reaches infrastructure, data pipelines, business processes or IT operations. A drop_table call from the finance agent is blocked by policy."
+                style={`--backdrop: url(${agentBackground.src})`}
                 data-ai-stack
             >
                 {
@@ -117,250 +198,239 @@ const auditPath = (cx: number) =>
                     then follows the pointer with its eyes. It briefs the three agents
                     below, one wire each. */
                 }
-                <div class="mascot" data-mascot aria-hidden="true">
-                    <span class="ring"></span>
-                    <span class="ring outer"></span>
-                    <span class="disc">
-                        <svg viewBox="0 0 48 48">
-                            <rect x="20" y="6" width="8" height="7" rx="3.5"
-                            ></rect>
-                            <rect x="5" y="19" width="5" height="12" rx="2.5"
-                            ></rect>
-                            <rect x="38" y="19" width="5" height="12" rx="2.5"
-                            ></rect>
-                            <rect
-                                class="face"
-                                x="11.5"
-                                y="12.5"
-                                width="25"
-                                height="24"
-                                rx="3.5"></rect>
-                            <g class="eyes" data-eyes>
-                                <circle class="eye" cx="19.5" cy="22" r="2.4"
-                                ></circle>
-                                <circle
-                                    class="eye wink"
-                                    cx="28.5"
-                                    cy="22"
-                                    r="2.4"></circle>
-                            </g>
-                            <rect
-                                class="mouth"
-                                x="18"
-                                y="29"
-                                width="12"
-                                height="2.75"
-                                rx="1"></rect>
-                        </svg>
-                    </span>
-                </div>
-                <svg
-                    viewBox={`0 ${TOP} ${W} ${580 - TOP}`}
-                    role="presentation"
-                    aria-hidden="true"
-                >
-                    {/* The wires, faint; the pulses run on copies of them. */}
-                    <g class="wires">
+                <div class="canvas">
+                    <svg
+                        viewBox={`${VIEW_X} 0 ${W - VIEW_X} ${H}`}
+                        role="presentation"
+                        aria-hidden="true"
+                    >
                         {
-                            AGENTS.map((agent) => (
-                                <path d={briefPath(agent.cx, true)} />
-                            ))
+                            /* The wires, faint; the pulses run on copies of them. */
                         }
-                        {
-                            AGENTS.map((agent) => (
-                                <path d={agentPath(agent.cx)} />
-                            ))
-                        }
-                        {
-                            DOMAINS.map((domain) => (
-                                <path d={domainPath(domain.cx)} />
-                            ))
-                        }
-                        {
-                            DOMAINS.map((domain) => (
-                                <path class="dashed" d={auditPath(domain.cx)} />
-                            ))
-                        }
-                    </g>
-
-                    <g class="pulses">
-                        {
-                            AGENTS.map((agent) => (
-                                <path
-                                    d={briefPath(agent.cx)}
-                                    data-pulse={`brief-${agent.id}`}
-                                />
-                            ))
-                        }
-                        {
-                            AGENTS.map((agent) => (
-                                <path
-                                    d={agentPath(agent.cx)}
-                                    data-pulse={`agent-${agent.id}`}
-                                />
-                            ))
-                        }
-                        {
-                            DOMAINS.map((domain) => (
-                                <path
-                                    d={domainPath(domain.cx)}
-                                    data-pulse={`domain-${domain.id}`}
-                                />
-                            ))
-                        }
-                        {
-                            DOMAINS.map((domain) => (
-                                <path
-                                    d={auditPath(domain.cx)}
-                                    data-pulse={`audit-${domain.id}`}
-                                />
-                            ))
-                        }
-                    </g>
-
-                    {/* The agents, each with the call it is making. */}
-                    {
-                        AGENTS.map((agent) => (
-                            <g class="agent" data-agent={agent.id}>
-                                <rect
-                                    x={agent.cx - 120}
-                                    y={AGENT_Y}
-                                    width="240"
-                                    height={AGENT_H}
-                                    rx="10"
-                                />
-                                <g
-                                    class="glyph"
-                                    transform={`translate(${agent.cx - 102} ${AGENT_Y + 15})`}
-                                >
-                                    <Icon
-                                        name="mdi:robot-outline"
-                                        width="18"
-                                        height="18"
+                        <g class="wires">
+                            {
+                                AGENTS.map((agent) => (
+                                    <path d={agentPath(agent.cy)} />
+                                ))
+                            }
+                            {
+                                DOMAINS.map((domain) => (
+                                    <path d={domainPath(domain.cy)} />
+                                ))
+                            }
+                            {
+                                DOMAINS.map((domain) => (
+                                    <path
+                                        class="dashed"
+                                        d={auditBranch(domain.cy)}
                                     />
-                                </g>
-                                <text
-                                    x={agent.cx - 74}
-                                    y={AGENT_Y + AGENT_H / 2 + 4}
-                                >
-                                    <tspan class="strong">{agent.name}</tspan>{" "}
-                                    agent
-                                </text>
-                                <circle
-                                    class="dot"
-                                    cx={agent.cx}
-                                    cy={AGENT_Y + AGENT_H + 12}
-                                    r="2.5"
-                                />
-                                <text
-                                    class="call"
-                                    x={agent.cx + 14}
-                                    y={AGENT_Y + AGENT_H + 70}
-                                    data-call
-                                />
-                            </g>
-                        ))
-                    }
+                                ))
+                            }
+                            <path class="dashed" d={auditTrunk}></path>
+                        </g>
 
-                    {/* Kestra: the one layer every action crosses. */}
-                    <g class="band" data-band>
-                        <rect
-                            x="60"
-                            y={BAND_Y}
-                            width={W - 120}
-                            height={BAND_H}
-                            rx="14"></rect>
-                        <image
-                            href={kestraMark.src}
-                            x="88"
-                            y={BAND_Y + BAND_H / 2 - 16}
-                            width="32"
-                            height="32"
-                        />
-                        <text
-                            class="band-name"
-                            x="136"
-                            y={BAND_Y + BAND_H / 2 - 2}
-                        >
-                            Kestra
-                        </text>
-                        <text
-                            class="band-role"
-                            x="136"
-                            y={BAND_Y + BAND_H / 2 + 18}
-                        >
-                            One control plane for every action
-                        </text>
+                        <g class="pulses">
+                            {
+                                AGENTS.map((agent) => (
+                                    <path
+                                        d={agentPath(agent.cy)}
+                                        data-pulse={`agent-${agent.id}`}
+                                    />
+                                ))
+                            }
+                            {
+                                DOMAINS.map((domain) => (
+                                    <path
+                                        d={domainPath(domain.cy)}
+                                        data-pulse={`domain-${domain.id}`}
+                                    />
+                                ))
+                            }
+                            {
+                                DOMAINS.map((domain) => (
+                                    <path
+                                        d={auditPath(domain.cy)}
+                                        data-pulse={`audit-${domain.id}`}
+                                    />
+                                ))
+                            }
+                        </g>
+
                         {
-                            CONTROLS.map((control) => (
-                                <g class="control" data-control={control.id}>
+                            /* The agents, each with the call it is making under it. */
+                        }
+                        {
+                            AGENTS.map((agent) => (
+                                <g class="agent" data-agent={agent.id}>
                                     <rect
-                                        x={control.x}
-                                        y={BAND_Y + BAND_H / 2 - 18}
-                                        width={CONTROL_W}
-                                        height="36"
+                                        class="halo"
+                                        x={AGENT_X - 6}
+                                        y={agent.cy - AGENT_H / 2 - 6}
+                                        width={AGENT_W + 12}
+                                        height={AGENT_H + 12}
+                                        rx="13"
+                                    />
+                                    <rect
+                                        class="tile"
+                                        x={AGENT_X}
+                                        y={agent.cy - AGENT_H / 2}
+                                        width={AGENT_W}
+                                        height={AGENT_H}
                                         rx="8"
                                     />
+                                    <g
+                                        class="glyph"
+                                        transform={`translate(${AGENT_X + 16} ${agent.cy - 9})`}
+                                    >
+                                        <Icon
+                                            name="mdi:robot-outline"
+                                            width="18"
+                                            height="18"
+                                        />
+                                    </g>
+                                    <text x={AGENT_X + 44} y={agent.cy - 3}>
+                                        <tspan class="strong">
+                                            {agent.name}
+                                        </tspan>{" "}
+                                        agent
+                                    </text>
                                     <circle
-                                        class="state"
-                                        cx={control.x + 18}
-                                        cy={BAND_Y + BAND_H / 2}
-                                        r="3.5"
+                                        class="dot"
+                                        cx={AGENT_X + AGENT_W + 12}
+                                        cy={agent.cy}
+                                        r="2.5"
+                                    />
+                                    {/* The call it makes, under its name, inside
+                                    the tile: as a task's type in a topology. */}
+                                    <text
+                                        class="call"
+                                        x={AGENT_X + 44}
+                                        y={agent.cy + 15}
+                                        data-call
+                                    />
+                                </g>
+                            ))
+                        }
+
+                        {/* Kestra: the one layer every action crosses. */}
+                        <g class="band" data-band>
+                            <rect
+                                class="halo"
+                                x={BAND_X - 8}
+                                y={BAND_Y - 8}
+                                width={BAND_W + 16}
+                                height={BAND_H + 16}
+                                rx="18"></rect>
+                            <rect
+                                class="tile"
+                                x={BAND_X}
+                                y={BAND_Y}
+                                width={BAND_W}
+                                height={BAND_H}
+                                rx="12"></rect>
+                            {/* The full logo, wordmark and red dot. */}
+                            <image
+                                href={kestraLogo.src}
+                                x={BAND_X + BAND_W / 2 - 60}
+                                y={BAND_Y + 24}
+                                width="120"
+                                height={(120 * 203) / 889}
+                            />
+                            {
+                                /* A hairline between the name and its controls. */
+                            }
+                            <path
+                                class="band-rule"
+                                d={`M ${BAND_X + 30} ${BAND_Y + 74} H ${BAND_X + BAND_W - 30}`}
+                            ></path>
+                            {
+                                CONTROLS.map((control) => (
+                                    <g
+                                        class="control"
+                                        data-control={control.id}
+                                    >
+                                        <rect
+                                            x={BAND_X + 30}
+                                            y={control.y}
+                                            width={CONTROL_W}
+                                            height="36"
+                                            rx="7"
+                                        />
+                                        <circle
+                                            class="state"
+                                            cx={BAND_X + 48}
+                                            cy={control.y + 18}
+                                            r="3.5"
+                                        />
+                                        <text
+                                            x={BAND_X + 62}
+                                            y={control.y + 22}
+                                            data-label={control.name}
+                                        >
+                                            {control.name}
+                                        </text>
+                                    </g>
+                                ))
+                            }
+                            <text
+                                class="verdict"
+                                x={BAND_X + BAND_W / 2}
+                                y={BAND_Y + BAND_H + 30}
+                                data-verdict></text>
+                        </g>
+
+                        {/* The control plane block's four domains. */}
+                        {
+                            DOMAINS.map((domain) => (
+                                <g class="domain" data-domain={domain.id}>
+                                    <rect
+                                        class="outline"
+                                        x={DOMAIN_X}
+                                        y={domain.cy - DOMAIN_H / 2}
+                                        width={DOMAIN_W}
+                                        height={DOMAIN_H}
+                                        rx="10"
+                                    />
+                                    <rect
+                                        class="inner"
+                                        x={DOMAIN_X + 6}
+                                        y={domain.cy - DOMAIN_H / 2 + 6}
+                                        width={DOMAIN_W - 12}
+                                        height={DOMAIN_H - 12}
+                                        rx="6"
                                     />
                                     <text
-                                        x={control.x + 32}
-                                        y={BAND_Y + BAND_H / 2 + 4}
-                                        data-label={control.name}
+                                        x={DOMAIN_X + DOMAIN_W / 2}
+                                        y={domain.cy + 5}
                                     >
-                                        {control.name}
+                                        {domain.name}
                                     </text>
                                 </g>
                             ))
                         }
-                        <text
-                            class="verdict"
-                            x={W / 2}
-                            y={BAND_Y + BAND_H + 34}
-                            data-verdict></text>
-                    </g>
-
-                    {/* The control plane block's four domains. */}
+                    </svg>
+                    {
+                        /* The outcomes, as glass pills over their wires: HTML, so
+                    they can blur what runs behind them. */
+                    }
                     {
                         DOMAINS.map((domain) => (
-                            <g class="domain" data-domain={domain.id}>
-                                <rect
-                                    class="outline"
-                                    x={domain.cx - DOMAIN_W / 2}
-                                    y={DOMAIN_Y}
-                                    width={DOMAIN_W}
-                                    height={DOMAIN_H}
-                                    rx="12"
-                                />
-                                <rect
-                                    class="inner"
-                                    x={domain.cx - DOMAIN_W / 2 + 8}
-                                    y={DOMAIN_Y + 8}
-                                    width={DOMAIN_W - 16}
-                                    height={DOMAIN_H - 16}
-                                    rx="7"
-                                />
-                                <text
-                                    x={domain.cx}
-                                    y={DOMAIN_Y + DOMAIN_H / 2 + 4}
-                                >
-                                    {domain.name}
-                                </text>
-                                <text
-                                    class="result"
-                                    x={domain.cx}
-                                    y={DOMAIN_Y + DOMAIN_H + 24}
-                                    data-result
-                                />
-                            </g>
+                            <span
+                                class="result"
+                                style={`left: ${((DOMAIN_X + DOMAIN_W + 18 - VIEW_X) / (W - VIEW_X)) * 100}%; top: ${(domain.cy / H) * 100}%`}
+                                data-result={domain.id}
+                            />
                         ))
                     }
-                </svg>
+                </div>
             </figure>
+
+            {/* A secondary button, under the schema. */}
+            <div class="foot">
+                <a href="/ai-automation" class="btn-ghost">
+                    How agents fit <Icon name="mdi:chevron-right" />
+                </a>
+            </div>
         </div>
     </div>
 </section>
@@ -478,7 +548,9 @@ const auditPath = (cx: number) =>
             })
 
         // The mascot reacts to each step, and looks where it happens.
-        const mascot = root.querySelector<HTMLElement>("[data-mascot]")
+        const mascot = root
+            .closest("section")
+            ?.querySelector<HTMLElement>("[data-mascot]")
         const mood = (name: string, target: Element | null = null) => {
             if (!mascot) return
             if (name) mascot.dataset.mood = name
@@ -514,7 +586,7 @@ const auditPath = (cx: number) =>
             const domain = q<SVGGElement>(`[data-domain="${call.domain}"]`)
             // The mascot hands the agent its task.
             mood("send", agent)
-            await pulse(`brief-${call.agent}`, 800)
+            await wait(600)
             set(agent, "active")
             agent.querySelector("[data-call]")!.textContent = call.call
             await wait(500)
@@ -556,8 +628,7 @@ const auditPath = (cx: number) =>
             await pulse(`domain-${call.domain}`, 700)
             set(domain, "ok")
             mood("happy", domain)
-            domain.querySelector("[data-result]")!.textContent =
-                `${call.call} ✓`
+            q(`[data-result="${call.domain}"]`).textContent = `✓ ${call.call}`
             await wait(400)
             await pulse(`audit-${call.domain}`, 1300, "audit")
             audited += 1
@@ -617,17 +688,17 @@ const auditPath = (cx: number) =>
                 3500 + Math.random() * 3000,
             )
         }
-        const seen = new IntersectionObserver(
-            ([entry]) => {
-                if (!entry.isIntersecting) return
-                seen.disconnect()
+        // It comes in when the bridge from the control plane lands on it
+        // (see arriveAi).
+        root.addEventListener(
+            "mascot:arrive",
+            () => {
                 root.classList.add("in")
-                setTimeout(() => flash("winking", 500), 800)
+                setTimeout(() => flash("winking", 500), 700)
                 setTimeout(blinkLater, 1400)
             },
-            { threshold: 0.6 },
+            { once: true },
         )
-        seen.observe(root)
 
         let frame = 0
         let pointer = { x: 0, y: 0 }
@@ -661,7 +732,6 @@ const auditPath = (cx: number) =>
             () => {
                 window.removeEventListener("pointermove", follow)
                 clearTimeout(timer)
-                seen.disconnect()
             },
             { once: true },
         )
@@ -714,6 +784,91 @@ const auditPath = (cx: number) =>
 
     document.addEventListener("astro:page-load", trackGlows)
     trackGlows()
+
+    // The arrival on the block, as the agent comes into view: the
+    // control plane's open panel lights up, the bridge's node pops in at
+    // its foot, then travels down, drawing the dashed line, and lands on
+    // the agent, which greets the block with a wink. Then the title, the
+    // copy, the schema and the button rise in turn. Hidden only once
+    // armed, so all of it shows without JavaScript.
+    function arriveAi() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        document
+            .querySelectorAll<HTMLElement>(".ai-governance:not(.armed)")
+            .forEach((section) => {
+                const mascot =
+                    section.querySelector<HTMLElement>("[data-mascot]")
+                const lower = section.querySelector<HTMLElement>(".bridge")
+                const upper = document.querySelector<HTMLElement>(
+                    ".control-plane .grid > .bridge",
+                )
+                const panel = document.querySelector<HTMLElement>(
+                    ".control-plane .visuals",
+                )
+                const node = upper?.querySelector<HTMLElement>(".node")
+                if (!mascot) return
+                section.classList.add("armed")
+                upper?.classList.add("armed")
+
+                const later = (ms: number, step: () => void) =>
+                    window.setTimeout(step, ms)
+
+                const play = () => {
+                    panel?.classList.add("lit")
+                    // The panel lights up first, on its own, then sends the
+                    // node out.
+                    later(600, () => upper?.classList.add("on"))
+                    later(1000, () => {
+                        upper?.classList.add("drawn")
+                        if (!node || !lower) return
+                        // To the foot of the lower dashed line, the top of
+                        // the agent's rings; read from the layout, which the
+                        // animations do not move.
+                        const from = node.getBoundingClientRect()
+                        const target =
+                            section.getBoundingClientRect().top +
+                            lower.offsetTop +
+                            lower.offsetHeight
+                        node.animate(
+                            [
+                                { transform: "translateY(0)" },
+                                {
+                                    transform: `translateY(${target - (from.top + from.height / 2)}px)`,
+                                },
+                            ],
+                            {
+                                duration: 900,
+                                easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+                                fill: "forwards",
+                            },
+                        )
+                    })
+                    later(1450, () => lower?.classList.add("drawn"))
+                    // The node lands: the agent pops in and winks, and the
+                    // rest of the block follows.
+                    later(1900, () => {
+                        mascot.dispatchEvent(new Event("mascot:arrive"))
+                        upper?.classList.add("done")
+                    })
+                    later(2300, () => section.classList.add("in"))
+                    // The panel stays lit until the agent has greeted.
+                    later(3000, () => panel?.classList.remove("lit"))
+                }
+
+                const seen = new IntersectionObserver(
+                    ([entry]) => {
+                        if (!entry.isIntersecting) return
+                        seen.disconnect()
+                        play()
+                    },
+                    { rootMargin: "0px 0px -15% 0px" },
+                )
+                seen.observe(mascot)
+            })
+    }
+
+    document.addEventListener("astro:page-load", arriveAi)
+    arriveAi()
 </script>
 
 <style lang="scss">
@@ -721,7 +876,15 @@ const auditPath = (cx: number) =>
 
     // Dark in both themes.
     .ai-governance {
-        --bg: #0b0b0e;
+        --bg: #110c1b;
+        --ink: #ffffff;
+        --ink-2: #d6d6de;
+        --node: #141418;
+        --node-hi: #2c2c33;
+        --glow: 255, 255, 255;
+        --glow-a: 1;
+        --pulse: #ffffff;
+        --pulse-kestra: #b48cff;
         --line: rgba(255, 255, 255, 0.08);
         --wire: rgba(255, 255, 255, 0.14);
         --text: #ffffff;
@@ -740,6 +903,46 @@ const auditPath = (cx: number) =>
         overflow: hidden;
         background: var(--bg);
         color: var(--text);
+
+        // The block on the site's palest violet, as on the light pages:
+        // white nodes, ink for white, Kestra's violet in the runs.
+        &.is-light {
+            --tint: #3b5bdb;
+            --bg: color-mix(in srgb, var(--tint) 3%, #ffffff);
+            --ink: #1b1530;
+            --ink-2: #3a3452;
+            --node: #ffffff;
+            --node-hi: #ffffff;
+            // A barely-there white light on the lavender.
+            --glow: 255, 255, 255;
+            --glow-a: 9;
+            --pulse: #5c5b64;
+            --pulse-kestra: #5c5b64;
+            --line: rgba(27, 21, 48, 0.08);
+            --wire: rgba(27, 21, 48, 0.16);
+            --text: #1b1530;
+            --muted: #6b6585;
+            --faint: #a39fb8;
+            --ks-content-primary: #{$base-grey-700};
+            --ks-content-secondary: #{$base-grey-600};
+            --ks-content-tertiary: #{$base-grey-500};
+
+            // The control plane's blue carries on: the glow it ends on, low
+            // on the right, picks up here at the same strength, and a
+            // softer one rises from the bottom left.
+            background:
+                radial-gradient(
+                    70% 80% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 14%, transparent),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    60% 70% at 0% 100%,
+                    color-mix(in srgb, var(--tint) 10%, transparent),
+                    transparent 70%
+                ),
+                var(--bg);
+        }
     }
 
     // The section is dark in both themes: the pixels take their dark-theme
@@ -748,11 +951,56 @@ const auditPath = (cx: number) =>
         --pixel: rgba(167, 150, 255, 0.07);
     }
 
+    // On the light block: the About us pixels in their light-theme tint,
+    // and no dots behind the schema.
+    .ai-governance.is-light {
+        :global(.pixel-edges) {
+            --pixel: rgba(99, 27, 255, 0.1);
+        }
+
+        // Only the left edge's pixels; the right one is left out.
+        :global(.pixel-edges .edge.right) {
+            display: none;
+        }
+
+        .texture {
+            display: none;
+        }
+    }
+
+    // The pixel clusters: one in the top right, by the button, one low on
+    // the left, under the mascot.
+    .cluster {
+        position: absolute;
+        width: 96px;
+        aspect-ratio: 194 / 168;
+        background: #8405ff;
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.22;
+        pointer-events: none;
+
+        &.top {
+            top: 2.5rem;
+            right: clamp(1.5rem, 6vw, 6rem);
+        }
+
+        &.bottom {
+            bottom: 2.5rem;
+            left: clamp(1.5rem, 6vw, 6rem);
+            transform: scaleX(-1);
+            opacity: 0.14;
+        }
+
+        .ai-governance:not(.is-light) & {
+            display: none;
+        }
+    }
+
     // Hairline rails down the sides, on the other blocks' lines.
     .rails {
         position: relative;
-        // More black above the title, straight after the last domain row.
-        padding: clamp(6rem, 9vw, 8.5rem) 0 clamp(4rem, 6vw, 5.5rem);
+        // Close under the control plane, the bridge between the two.
+        padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(4rem, 6vw, 5.5rem);
 
         &::before,
         &::after {
@@ -775,34 +1023,45 @@ const auditPath = (cx: number) =>
         }
     }
 
+    // Centred: the agent, then the title and the copy under it.
     .head {
         position: relative;
-        max-width: 50rem;
-        margin: 0 auto 4.5rem;
-        padding-inline: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2.5rem;
+        padding-inline: clamp(1.5rem, 4vw, 3.5rem);
         text-align: center;
 
         @include media-breakpoint-down(md) {
-            margin-bottom: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 56rem;
         }
     }
 
     // The agent from the launch video: a robot in a dark disc, ringed
     // with dashes. It pops in, winks, and its eyes follow the pointer.
     .mascot {
-        position: relative;
         display: grid;
         place-items: center;
         z-index: 1;
-        width: 12rem;
-        height: 12rem;
-        // Its centre on the drawing's top edge, where the wires start.
-        margin: 0 auto -6rem;
+        position: relative;
+        width: 9rem;
+        height: 9rem;
+        // Atop the head, where the bridge from the control plane lands.
+        margin: 0 auto 1.25rem;
 
         .ring {
             position: absolute;
-            inset: 1.75rem;
-            border: 1px dashed rgba(255, 255, 255, 0.24);
+            inset: 1.25rem;
+            border: 1px dashed color-mix(in srgb, var(--ink) 24%, transparent);
             border-radius: 50%;
             opacity: 0;
             transform: scale(0.6);
@@ -812,7 +1071,7 @@ const auditPath = (cx: number) =>
 
             &.outer {
                 inset: 0;
-                border-color: rgba(255, 255, 255, 0.12);
+                border-color: color-mix(in srgb, var(--ink) 12%, transparent);
                 transition-delay: 0.4s;
             }
         }
@@ -820,11 +1079,16 @@ const auditPath = (cx: number) =>
         .disc {
             display: grid;
             place-items: center;
-            width: 6rem;
-            height: 6rem;
+            width: 4.75rem;
+            height: 4.75rem;
             border-radius: 50%;
-            background: linear-gradient(180deg, #2c2c33 0%, #141418 100%);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
+            background: linear-gradient(
+                180deg,
+                var(--node-hi) 0%,
+                var(--node) 100%
+            );
+            box-shadow: 0 0 0 1px
+                color-mix(in srgb, var(--ink) 16%, transparent);
             opacity: 0;
             transform: scale(0.3);
             transition:
@@ -833,14 +1097,14 @@ const auditPath = (cx: number) =>
         }
 
         svg {
-            width: 3.75rem;
-            height: 3.75rem;
-            fill: #ffffff;
+            width: 3rem;
+            height: 3rem;
+            fill: var(--ink);
         }
 
         .face {
             fill: none;
-            stroke: #ffffff;
+            stroke: var(--ink);
             stroke-width: 3.25;
         }
 
@@ -860,6 +1124,38 @@ const auditPath = (cx: number) =>
             .disc {
                 opacity: 1;
                 transform: none;
+            }
+        }
+
+        // On the light block, in the logo's hue: a violet disc with a
+        // white robot, and violet rings.
+        .is-light & {
+            .ring {
+                border-color: rgba(169, 80, 255, 0.4);
+
+                &.outer {
+                    border-color: rgba(169, 80, 255, 0.2);
+                }
+            }
+
+            .disc {
+                // The logo's violet, a step quieter than the brand's.
+                background: linear-gradient(180deg, #a982ff 0%, #7448e8 100%);
+                box-shadow:
+                    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+                    0 8px 22px -10px rgba(91, 40, 210, 0.5);
+            }
+
+            svg {
+                fill: #ffffff;
+            }
+
+            .face {
+                stroke: #ffffff;
+            }
+
+            .antenna {
+                fill: #ffffff;
             }
         }
 
@@ -918,6 +1214,13 @@ const auditPath = (cx: number) =>
         }
     }
 
+    @keyframes result-in {
+        from {
+            opacity: 0;
+            scale: 0.85;
+        }
+    }
+
     @keyframes nod {
         40% {
             transform: translateY(4px) scale(0.97);
@@ -973,22 +1276,96 @@ const auditPath = (cx: number) =>
         color: var(--text);
         text-wrap: balance;
 
-        // The second sentence in grey, the promise after the fact.
+        // The second sentence, the promise, a step lighter: the statement
+        // above carries the colour.
         span {
-            color: #a9a9b8;
+            color: var(--muted);
+        }
+    }
+
+    // The bridge from the control plane, its lower half: the dashed line
+    // down to the agent. The control plane draws the node and
+    // the run.
+    .bridge {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 1px;
+        height: clamp(2.5rem, 4vw, 3.5rem);
+        background: repeating-linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--ink) 28%, transparent) 0 4px,
+            transparent 4px 8px
+        );
+        transform-origin: top;
+        transition: transform 0.45s linear;
+        pointer-events: none;
+    }
+
+    // The arrival (see arriveAi): each part waits hidden once armed, and
+    // comes in on the block's "in", one after the other.
+    .ai-governance:global(.armed) {
+        .bridge {
+            transform: scaleY(0);
+        }
+
+        .bridge:global(.drawn) {
+            transform: none;
+        }
+
+        h2,
+        .lead,
+        .stack,
+        .foot {
+            transition:
+                opacity 0.7s ease,
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        h2,
+        .lead,
+        .stack,
+        .foot {
+            opacity: 0;
+            transform: translateY(1.25rem);
+        }
+
+        &:global(.in) {
+            h2,
+            .lead,
+            .stack,
+            .foot {
+                opacity: 1;
+                transform: none;
+            }
+
+            .lead {
+                transition-delay: 0.15s;
+            }
+
+            .stack {
+                transition-delay: 0.3s;
+            }
+
+            .foot {
+                transition-delay: 0.5s;
+            }
         }
     }
 
     .lead {
-        margin: 1.25rem auto 0;
-        max-width: 36rem;
-        font-size: 1.25rem;
+        margin: 1.25rem 0 0;
+        max-width: 44rem;
+        font-size: 1.125rem;
         line-height: 1.55;
-        color: #cfcfda;
+        color: var(--ink-2);
     }
 
-    .btn-solid {
-        margin-top: 2rem;
+    .foot {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.5rem;
     }
 
     // The dots of the product's topology canvas, faded to nothing away
@@ -998,7 +1375,7 @@ const auditPath = (cx: number) =>
         inset: 0;
         background: radial-gradient(
                 circle,
-                rgba(255, 255, 255, 0.07) 1px,
+                color-mix(in srgb, var(--ink) 7%, transparent) 1px,
                 transparent 1.5px
             )
             0 0 / 20px 20px;
@@ -1022,9 +1399,9 @@ const auditPath = (cx: number) =>
         border-radius: 50%;
         background: radial-gradient(
             circle,
-            rgba(255, 255, 255, 0.05) 0%,
-            rgba(255, 255, 255, 0.03) 22%,
-            rgba(255, 255, 255, 0.012) 45%,
+            rgba(var(--glow), calc(var(--glow-a) * 0.05)) 0%,
+            rgba(var(--glow), calc(var(--glow-a) * 0.03)) 22%,
+            rgba(var(--glow), calc(var(--glow-a) * 0.012)) 45%,
             transparent 70%
         );
         opacity: 0;
@@ -1042,20 +1419,65 @@ const auditPath = (cx: number) =>
 
     // The stack: one drawing, scaled to the stage. On a phone it keeps a
     // readable size and scrolls sideways.
+    // The schema on a white panel between the rails, as the control
+    // plane's topology, with hairlines above and below.
     .stack {
         position: relative;
-        max-width: 72rem;
-        margin: 0 auto;
-        padding-inline: clamp(1rem, 3vw, 2.5rem);
+        margin: 0;
+        padding: clamp(2.5rem, 4.5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem);
+        border-block: 1px solid var(--line);
+        background: var(--node);
 
         @include media-breakpoint-down(md) {
             overflow-x: auto;
+        }
+    }
+
+    // The drawing, kept to a finer size in the middle of its panel; it
+    // scrolls sideways on a phone.
+    .canvas {
+        position: relative;
+        // Over the panel's grain.
+        z-index: 1;
+        max-width: 64rem;
+        min-width: 46rem;
+        margin: 0 auto;
+        container-type: inline-size;
+
+        // The outcomes, in glass over their wires; empty until a call lands.
+        > .result {
+            position: absolute;
+            translate: 0 -50%;
+            padding: 0.3em 0.75em;
+            // In step with the drawing, which scales with the canvas.
+            font-size: calc(12.5 / 1050 * 100cqi);
+            font-weight: 500;
+            line-height: 1.2;
+            white-space: nowrap;
+            color: #7af0c2;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.16),
+                rgba(255, 255, 255, 0.04)
+            );
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 999px;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                0 4px 16px rgba(10, 8, 30, 0.35),
+                0 0 18px rgba(94, 230, 176, 0.18);
+            backdrop-filter: blur(10px) saturate(160%);
+            -webkit-backdrop-filter: blur(10px) saturate(160%);
+            animation: result-in 0.4s ease-out;
+
+            &:empty {
+                display: none;
+            }
         }
 
         > svg {
             display: block;
             width: 100%;
-            min-width: 46rem;
             height: auto;
             overflow: visible;
             // The site's typeface, not the code one.
@@ -1071,7 +1493,7 @@ const auditPath = (cx: number) =>
         stroke-width: 1;
 
         &.dashed {
-            stroke: rgba(255, 255, 255, 0.1);
+            stroke: color-mix(in srgb, var(--ink) 10%, transparent);
             stroke-dasharray: 4 5;
         }
     }
@@ -1079,11 +1501,13 @@ const auditPath = (cx: number) =>
     // The pulses ride on copies of the wires, invisible until lit.
     .pulses path {
         fill: none;
-        stroke: #ffffff;
+        stroke: var(--pulse);
         stroke-width: 1.5;
         stroke-linecap: round;
         opacity: 0;
-        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+        filter: drop-shadow(
+            0 0 4px color-mix(in srgb, var(--ink) 80%, transparent)
+        );
 
         &:global(.lit) {
             opacity: 1;
@@ -1091,7 +1515,15 @@ const auditPath = (cx: number) =>
 
         // The audit pulse, a touch softer.
         &[data-tone="audit"] {
-            stroke: rgba(255, 255, 255, 0.7);
+            stroke: color-mix(in srgb, var(--ink) 70%, transparent);
+        }
+
+        // Once through Kestra, a call runs on in Kestra's violet: to its
+        // domain, and back into the audit trail.
+        &[data-pulse^="domain-"],
+        &[data-pulse^="audit-"] {
+            stroke: var(--pulse-kestra);
+            filter: drop-shadow(0 0 4px rgba(169, 80, 255, 0.8));
         }
     }
 
@@ -1102,9 +1534,9 @@ const auditPath = (cx: number) =>
 
     // An agent: a dark chip with its icon, its name lit while it calls.
     .agent {
-        rect:first-child {
-            fill: #141418;
-            stroke: rgba(255, 255, 255, 0.1);
+        rect.tile {
+            fill: var(--node);
+            stroke: color-mix(in srgb, var(--ink) 10%, transparent);
             transition: stroke 0.3s ease;
         }
 
@@ -1115,29 +1547,30 @@ const auditPath = (cx: number) =>
         }
 
         .strong {
-            fill: #d6d6de;
+            fill: var(--ink-2);
         }
 
         .dot {
             fill: var(--faint);
         }
 
+        // The call it makes, small and grey.
         .call {
-            font-size: 13.5px;
-            fill: var(--text);
+            font-size: 12.5px;
+            fill: var(--muted);
         }
 
         &[data-state="active"] {
-            rect:first-child {
-                stroke: rgba(255, 255, 255, 0.35);
+            rect.tile {
+                stroke: color-mix(in srgb, var(--ink) 35%, transparent);
             }
 
             .glyph {
-                color: #ffffff;
+                color: var(--ink);
             }
 
             .dot {
-                fill: #ffffff;
+                fill: var(--ink);
             }
         }
     }
@@ -1145,28 +1578,28 @@ const auditPath = (cx: number) =>
     // Kestra: the band every call crosses. Colour stays in the controls'
     // tags only.
     .band {
-        > rect {
-            fill: #121216;
-            stroke: rgba(255, 255, 255, 0.16);
+        > rect.tile {
+            fill: var(--node);
+            stroke: color-mix(in srgb, var(--ink) 16%, transparent);
             transition:
                 stroke 0.3s ease,
                 fill 0.3s ease;
         }
 
+        .band-rule {
+            stroke: color-mix(in srgb, var(--ink) 8%, transparent);
+        }
+
         .band-name {
             font-size: 17px;
             font-weight: 600;
-            fill: #ffffff;
+            fill: var(--ink);
         }
 
-        .band-role {
-            font-size: 13.5px;
-            fill: var(--muted);
-        }
-
-        &[data-state="busy"] > rect,
-        &[data-state="denied"] > rect {
-            stroke: rgba(255, 255, 255, 0.4);
+        // Edged in Kestra's violet while a call is in it.
+        &[data-state="busy"] > rect.tile,
+        &[data-state="denied"] > rect.tile {
+            stroke: var(--pulse-kestra);
         }
 
         // Edged in the background colour, so the wires it crosses break
@@ -1179,7 +1612,7 @@ const auditPath = (cx: number) =>
             stroke-width: 8px;
 
             &[data-state="denied"] {
-                fill: #d6d6de;
+                fill: var(--ink-2);
             }
         }
     }
@@ -1187,8 +1620,8 @@ const auditPath = (cx: number) =>
     // A control in the band: its dot and label light with its verdict.
     .control {
         rect {
-            fill: rgba(255, 255, 255, 0.03);
-            stroke: rgba(255, 255, 255, 0.08);
+            fill: color-mix(in srgb, var(--ink) 3%, transparent);
+            stroke: color-mix(in srgb, var(--ink) 8%, transparent);
             transition: stroke 0.3s ease;
         }
 
@@ -1205,27 +1638,27 @@ const auditPath = (cx: number) =>
 
         &[data-state="ok"] {
             rect {
-                stroke: rgba(255, 255, 255, 0.22);
+                stroke: color-mix(in srgb, var(--ink) 22%, transparent);
             }
 
             .state {
-                fill: #ffffff;
+                fill: var(--ink);
             }
 
             text {
-                fill: #ffffff;
+                fill: var(--ink);
             }
         }
 
         // Held for a person: the dot breathes until the approval comes.
         &[data-state="waiting"] {
             .state {
-                fill: #d6d6de;
+                fill: var(--ink-2);
                 animation: breathe 1s ease-in-out infinite alternate;
             }
 
             text {
-                fill: #d6d6de;
+                fill: var(--ink-2);
             }
         }
 
@@ -1250,13 +1683,13 @@ const auditPath = (cx: number) =>
         // Filled with the background, so the wires stop at its edge.
         .outline {
             fill: var(--bg);
-            stroke: rgba(255, 255, 255, 0.14);
+            stroke: color-mix(in srgb, var(--ink) 14%, transparent);
             stroke-dasharray: 4 4;
         }
 
         .inner {
-            fill: #121216;
-            stroke: rgba(255, 255, 255, 0.08);
+            fill: var(--node);
+            stroke: color-mix(in srgb, var(--ink) 8%, transparent);
             transition: stroke 0.3s ease;
         }
 
@@ -1265,17 +1698,299 @@ const auditPath = (cx: number) =>
             font-size: 13.5px;
         }
 
-        .result {
-            fill: #d6d6de;
-        }
-
         &[data-state="ok"] {
             .inner {
-                stroke: rgba(255, 255, 255, 0.4);
+                stroke: color-mix(in srgb, var(--ink) 40%, transparent);
             }
 
-            text:not(.result) {
+            text {
+                fill: var(--ink);
+            }
+        }
+    }
+
+    // On the light block, the schema is drawn as the product's 2.0
+    // topology: white nodes on a hairline with a soft shadow, dashed edges,
+    // and the topology's state colours: violet while running, green once
+    // done, amber while paused, red when refused.
+    .is-light {
+        --node-border: #e4e4ec;
+        --node-shadow: drop-shadow(0 1px 4px rgba(43, 43, 51, 0.1));
+
+        text {
+            fill: #8a8a97;
+        }
+
+        .wires path {
+            stroke: #cfcfdb;
+            stroke-dasharray: 4 4;
+        }
+
+        // Runs in grey all the way, softly lit.
+        .pulses path[data-pulse^="domain-"],
+        .pulses path[data-pulse^="audit-"] {
+            filter: drop-shadow(0 0 3px rgba(43, 43, 51, 0.3));
+        }
+
+        .agent rect.tile,
+        .band > rect.tile,
+        .domain .inner {
+            fill: #ffffff;
+            stroke: var(--node-border);
+            filter: var(--node-shadow);
+        }
+
+        .agent {
+            .strong {
+                fill: #2b2b33;
+            }
+
+            .glyph {
+                color: #8a8a97;
+            }
+
+            // While it calls: edged in violet, the colour kept for the
+            // nodes; the wires and runs stay grey.
+            &[data-state="active"] {
+                rect.tile {
+                    stroke: #a950ff;
+                }
+
+                .glyph {
+                    color: #8405ff;
+                }
+
+                .dot {
+                    fill: #2b2b33;
+                }
+            }
+        }
+
+        .band {
+            .band-name {
+                fill: #2b2b33;
+            }
+
+            .band-rule {
+                stroke: #ebebf0;
+            }
+
+            &[data-state="busy"] > rect.tile,
+            &[data-state="denied"] > rect.tile {
+                stroke: #a950ff;
+            }
+
+            .verdict[data-state="denied"] {
+                fill: #5c5b64;
+            }
+        }
+
+        // The controls stay neutral; only their dot takes the state's
+        // colour.
+        .control {
+            rect {
+                fill: #f7f7fa;
+                stroke: #ebebf0;
+            }
+
+            .state {
+                fill: #c4c4cf;
+            }
+
+            text {
+                fill: #8a8a97;
+            }
+
+            &[data-state="ok"],
+            &[data-state="waiting"],
+            &[data-state="denied"] {
+                rect {
+                    fill: #ffffff;
+                    stroke: #d9d9e3;
+                }
+
+                text {
+                    fill: #2b2b33;
+                }
+            }
+
+            &[data-state="ok"] .state {
+                fill: #1e875e;
+            }
+
+            &[data-state="waiting"] .state {
+                fill: #e0a03a;
+            }
+
+            &[data-state="denied"] .state {
+                fill: #d4344b;
+            }
+        }
+
+        .domain {
+            .outline {
+                stroke: #d9d9e3;
+            }
+
+            text {
+                fill: #2b2b33;
+            }
+
+            &[data-state="ok"] {
+                .inner {
+                    fill: #ffffff;
+                    stroke: #a5a4aa;
+                }
+            }
+        }
+    }
+
+    // The halos round the tiles: none, unless the aurora draws them.
+    .halo {
+        fill: none;
+        stroke: none;
+    }
+
+    // A test: the aurora background of the brand visuals, from black at
+    // the top to indigo, with a violet-to-pink arc of light and a grain;
+    // the schema as glowing white tiles in translucent halos, Kestra a
+    // black tile lit in violet, and violet dashed wires.
+    .ai-governance.is-aurora {
+        --muted-on-bg: #c3c0e4;
+
+        // The schema's panel in the aurora of the brand visuals: black at
+        // the top to indigo, with a violet-to-pink arc of light, and a
+        // grain over it.
+        // A card, no wider than the schema needs, centred between the
+        // rails.
+        .stack {
+            max-width: 74rem;
+            margin-inline: auto;
+            border-block: 0;
+            border-radius: 1.25rem;
+            // Black falling to blue, with a violet light rising from below.
+            background: #161618 var(--backdrop) center 65% / cover no-repeat;
+
+            @include media-breakpoint-down(md) {
+                border-radius: 0;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
+                    0 0 / 160px 160px;
+                opacity: 0.16;
+                mix-blend-mode: overlay;
+                pointer-events: none;
+            }
+        }
+
+        .wires path,
+        .wires path.dashed {
+            stroke: rgba(200, 170, 255, 0.6);
+            stroke-dasharray: 4 5;
+        }
+
+        .pulses path {
+            stroke: #ffffff;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+        }
+
+        .agent .call {
+            fill: #8a8a97;
+        }
+
+        .band .verdict {
+            fill: var(--muted-on-bg);
+            stroke: none;
+        }
+
+        .band .verdict[data-state="denied"] {
+            fill: #ffffff;
+        }
+
+        // White tiles, lit, in a translucent halo.
+        .halo {
+            fill: rgba(255, 255, 255, 0.07);
+            stroke: rgba(255, 255, 255, 0.3);
+        }
+
+        .agent rect.tile,
+        .domain .inner {
+            fill: #f6f6f8;
+            stroke: rgba(255, 255, 255, 0.9);
+            filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.22))
+                drop-shadow(0 10px 20px rgba(20, 10, 60, 0.45));
+        }
+
+        .agent[data-state="active"] rect.tile {
+            stroke: #cd88ff;
+            filter: drop-shadow(0 0 16px rgba(205, 136, 255, 0.7));
+        }
+
+        // A domain's outline as its halo.
+        .domain .outline {
+            fill: rgba(255, 255, 255, 0.07);
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-dasharray: none;
+        }
+
+        // Kestra: a black tile, lit in violet.
+        .band {
+            > rect.tile {
+                fill: #0b0b0e;
+                stroke: rgba(205, 136, 255, 0.55);
+                filter: drop-shadow(0 0 28px rgba(169, 80, 255, 0.55));
+            }
+
+            > .halo {
+                fill: rgba(169, 80, 255, 0.1);
+                stroke: rgba(205, 136, 255, 0.35);
+            }
+
+            .band-name {
                 fill: #ffffff;
+            }
+
+            .band-rule {
+                stroke: rgba(255, 255, 255, 0.1);
+            }
+
+            &[data-state="busy"] > rect.tile,
+            &[data-state="denied"] > rect.tile {
+                stroke: #cd88ff;
+                filter: drop-shadow(0 0 40px rgba(169, 80, 255, 0.85));
+            }
+        }
+
+        .control {
+            rect {
+                fill: rgba(255, 255, 255, 0.06);
+                stroke: rgba(255, 255, 255, 0.12);
+            }
+
+            text {
+                fill: #a3a0c4;
+            }
+
+            .state {
+                fill: #5c5b74;
+            }
+
+            &[data-state="ok"],
+            &[data-state="waiting"],
+            &[data-state="denied"] {
+                rect {
+                    fill: rgba(255, 255, 255, 0.1);
+                    stroke: rgba(255, 255, 255, 0.2);
+                }
+
+                text {
+                    fill: #ffffff;
+                }
             }
         }
     }

@@ -503,8 +503,10 @@ const clock = (seconds: number) => {
         // Drawn at a fixed width and scaled to sit inside the panel.
         zoom: var(--z);
 
+        // Beside the copy, between 1200 and 1400px wide, the column is
+        // narrow: drawn smaller, so it keeps a margin on both sides.
         @include media-breakpoint-down(xxl) {
-            --z: 0.78;
+            --z: 0.62;
         }
 
         @include media-breakpoint-down(xl) {

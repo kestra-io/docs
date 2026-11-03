@@ -183,14 +183,12 @@ import Enterprise from "~/components/home/Enterprise.astro"
             }
         }
 
+        // The secondary button: white with a black edge on light
+        // backgrounds.
         :global(.btn-ghost) {
-            border: 1px solid var(--ks-border-primary);
-            background: color-mix(
-                in srgb,
-                var(--ks-content-primary) 4%,
-                transparent
-            );
-            color: var(--ks-content-primary);
+            border: 1px solid #131316;
+            background: #ffffff;
+            color: #131316;
             transition:
                 background-color 0.2s ease,
                 border-color 0.2s ease;
@@ -202,20 +200,14 @@ import Enterprise from "~/components/home/Enterprise.astro"
 
             &:hover,
             &:focus-visible {
-                border-color: color-mix(
-                    in srgb,
-                    var(--ks-content-primary) 25%,
-                    transparent
-                );
-                background: color-mix(
-                    in srgb,
-                    var(--ks-content-primary) 8%,
-                    transparent
-                );
-                color: var(--ks-content-primary);
+                background: #f2f2f5;
+                color: #131316;
             }
         }
 
+        // On dark backgrounds, and in the dark theme, the exception: a
+        // faint fill and a light edge.
+        :global(html.dark) & :global(.btn-ghost),
         :global(.surface-dark .btn-ghost) {
             border-color: rgba(255, 255, 255, 0.12);
             background: rgba(255, 255, 255, 0.06);
@@ -226,6 +218,20 @@ import Enterprise from "~/components/home/Enterprise.astro"
                 border-color: rgba(255, 255, 255, 0.2);
                 background: rgba(255, 255, 255, 0.12);
                 color: #ffffff;
+            }
+        }
+
+        // A block that stays light in the dark theme keeps the light one.
+        :global(html.dark) & :global(.is-light .btn-ghost) {
+            border-color: #131316;
+            background: #ffffff;
+            color: #131316;
+
+            &:hover,
+            &:focus-visible {
+                border-color: #131316;
+                background: #f2f2f5;
+                color: #131316;
             }
         }
 
