@@ -22,7 +22,7 @@ const pluginMetadata: PluginMetadata[] = [
 describe("getPluginInstallCommand", () => {
     it("returns the install command for the matching plugin artifact", () => {
         expect(
-            getPluginInstallCommand("io.kestra.plugin.aws.S3.List", pluginMetadata),
+            getPluginInstallCommand("io.kestra.plugin.aws.s3.List", pluginMetadata),
         ).toBe("./kestra plugins install io.kestra.plugin:plugin-aws-s3:LATEST")
     })
 
