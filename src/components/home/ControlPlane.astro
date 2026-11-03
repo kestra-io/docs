@@ -1,7 +1,9 @@
 ---
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
-import TopologyMock, { type Props as TopologyProps } from "./TopologyMock.astro"
+import ControlPlaneTopology, {
+    type Props as TopologyProps,
+} from "./ControlPlaneTopology.astro"
 
 interface Domain {
     id: string
@@ -369,7 +371,9 @@ const DOMAINS: Domain[] = [
                                     </a>
                                 </div>
                                 <div class="panel-topology">
-                                    <TopologyMock {...domain.topology} />
+                                    <ControlPlaneTopology
+                                        {...domain.topology}
+                                    />
                                 </div>
                             </div>
                         ))

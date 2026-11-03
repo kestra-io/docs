@@ -1,0 +1,174 @@
+---
+import { Image } from "astro:assets"
+import manu from "./assets/manu.jpg"
+import Rails from "./Rails.astro"
+---
+
+<section class="founder-quote">
+    <Rails />
+    <div class="container">
+        <div class="frame">
+            <figure class="quote">
+                <div class="words">
+                    <svg viewBox="0 0 46 40" class="glyph" aria-hidden="true">
+                        <path
+                            d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z"
+                        ></path>
+                        <path
+                            d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z"
+                        ></path>
+                    </svg>
+                    <blockquote>
+                        <p>
+                            Every decade, one coordination problem grows large
+                            enough to become its own category. Today, that
+                            problem is orchestrating everything a company runs:
+                            infrastructure, data, AI, business processes. We
+                            started building Kestra before anyone gave it a
+                            name, and we kept going. Now engineers at some of
+                            the world's largest companies trust it with their
+                            business-critical operations. Our goal is to lead
+                            this market.
+                        </p>
+                    </blockquote>
+                    <figcaption>
+                        <span class="avatar">
+                            <Image
+                                src={manu}
+                                alt=""
+                                width={112}
+                                densities={[1, 2]}
+                            />
+                        </span>
+                        <span>
+                            <strong>Emmanuel Darras</strong>
+                            Co-founder and CEO
+                        </span>
+                    </figcaption>
+                </div>
+            </figure>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .founder-quote {
+        position: relative;
+        padding-bottom: 7.5rem;
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-down(md) {
+            padding-bottom: 4.5rem;
+        }
+    }
+
+    .frame {
+        --line: var(--ks-border-primary);
+        --inset: 3rem;
+
+        position: relative;
+        margin: 0 calc(var(--inset) * -1);
+        border-inline: 1px solid var(--line);
+
+        @include media-breakpoint-down(md) {
+            --inset: 1.5rem;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--line);
+            pointer-events: none;
+        }
+
+        &::before {
+            top: 0;
+        }
+
+        &::after {
+            bottom: 0;
+        }
+    }
+
+    .quote {
+        --surface: #f0f0fd;
+        --glyph: #4f6df7;
+
+        margin: 0;
+        background: var(--surface);
+
+        :global(html.dark) & {
+            --surface: #1c1b2e;
+            --glyph: #a796ff;
+        }
+    }
+
+    .words {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 2.5rem;
+        padding: 3rem var(--inset);
+
+        .glyph {
+            width: 2.25rem;
+            height: 2rem;
+            fill: var(--glyph);
+            transform: scaleX(-1);
+        }
+    }
+
+    blockquote {
+        margin: 0;
+
+        p {
+            margin: 0;
+            font-size: clamp(1.25rem, 2.2vw, 1.875rem);
+            font-weight: 500;
+            line-height: 1.4;
+            text-wrap: pretty;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    figcaption {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .avatar {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            overflow: hidden;
+
+            :global(img) {
+                display: block;
+                width: 100%;
+                height: auto;
+                transform: scale(1.8);
+                transform-origin: 50% 20%;
+            }
+        }
+
+        span:not(.avatar) {
+            display: flex;
+            flex-direction: column;
+            font-size: $font-size-sm;
+            line-height: 1.4;
+            color: var(--ks-content-tertiary);
+        }
+
+        strong {
+            font-size: $font-size-base;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+    }
+</style>

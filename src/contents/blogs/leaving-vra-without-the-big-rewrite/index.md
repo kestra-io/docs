@@ -19,6 +19,12 @@ Now at Kestra, I talk with teams that want to leave vRA, often because of licens
 
 That's why we built the **Kestra Migration Assistant for vRA**. Kestra is an open-source orchestrator that infrastructure teams at [Crédit Agricole](/customers/credit-agricole) and [Dataport](/customers/dataport) run in production. The Migration Assistant's open-source assessment runs locally against your vRA and vRO exports, inventories the automation, and recommends what to retire, merge, wrap, convert or rebuild. Your engineers review the plan, and we help you migrate the remaining work in waves while vRA keeps running.
 
+Here's what that looks like in practice, in an 8-minute demo:
+
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/brZo-5NdP2E" title="Kestra replacing vRA: the VM lifecycle on vSphere" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Know What Every Workflow Does, and What to Do With It
 
 The Migration Assistant takes your exported vRO packages and vRA content and produces a migration brief:
@@ -131,9 +137,6 @@ To run the open-source assessment on your own export, or see a sample migration 
 
 **→ [Get the Kestra Migration Assistant for vRA](/resources/migration/vra/assistant)**
 
-You can also see the Migration Assistant in action, starting from the [sample vRO and vRA export](/kestra-migration-assistant-sample-vra-load-balancer.zip) (free to download) and its [migration brief](/resources/migration/vra/assistant), through to a converted flow tested in the VMware Migration Lab. I'm hosting the European session, and my colleague Parham Parvizi is hosting the Americas session, both with live Q&A:
+You can also see the Migration Assistant in action, starting from the [sample vRO and vRA export](/kestra-migration-assistant-sample-vra-load-balancer.zip) (free to download) and its [migration brief](/resources/migration/vra/assistant), through to a converted flow tested in the VMware Migration Lab. I'm hosting it with my colleague Fernando Mattos, live on LinkedIn and YouTube, with Q&A, on **Wednesday, November 4 at 2 PM CET (8 AM ET)**.
 
-- **Europe:** Wednesday, November 4 at 2 PM CET (8 AM ET)
-- **Americas:** Thursday, November 5 at 11 AM PT
-
-**→ Register: [EU session](https://watch.getcontrast.io/register/kestra-leaving-vra-without-the-big-rewrite) · [US session](https://watch.getcontrast.io/register/kestra-leaving-vra-without-the-big-rewrite-9061c391)**
+**→ [Register](https://luma.com/2ng7260z)**

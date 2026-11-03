@@ -130,37 +130,39 @@ const jsonLinkedData = {
     canonical={page.canonical}
     lang={lang}
 >
+    {/* Direct child of Layout: Astro only honours `slot` on direct children,
+        so inside <section> these tags rendered in the body, not <head>. */}
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        <meta
+            property="article:published_time"
+            content={new Date(date).toISOString()}
+        />
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        {
+            languages.map((l) => (
+                <link
+                    rel="alternate"
+                    hreflang={l.code}
+                    href={new URL(l.href, Astro.url.origin).href}
+                />
+            ))
+        }
+        {
+            page.schema && (
+                <script
+                    is:inline
+                    type="application/ld+json"
+                    set:html={JSON.stringify(page.schema)}
+                />
+            )
+        }
+    </Fragment>
     <section>
-        <Fragment slot="head">
-            <meta property="og:type" content="article" />
-            <meta
-                property="article:published_time"
-                content={new Date(date).toISOString()}
-            />
-            <script
-                is:inline
-                type="application/ld+json"
-                set:html={JSON.stringify(jsonLinkedData)}
-            />
-            {
-                languages.map((l) => (
-                    <link
-                        rel="alternate"
-                        hreflang={l.code}
-                        href={new URL(l.href, Astro.url.origin).href}
-                    />
-                ))
-            }
-            {
-                page.schema && (
-                    <script
-                        is:inline
-                        type="application/ld+json"
-                        set:html={JSON.stringify(page.schema)}
-                    />
-                )
-            }
-        </Fragment>
         <div class="hero-blog">
             <Mesh client:visible>
                 <div
