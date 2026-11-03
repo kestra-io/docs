@@ -33,7 +33,7 @@ Select an asset to open its detail page. It has three tabs:
 | **Executions** | Every execution that used the asset as an input or an output, linked to the execution page |
 | **Dependencies** | The dependencies graph centered on the asset |
 
-Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger). Deleting a parent asset detaches its parts by default. See [Relations](#relations).
+Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. To change the [owner](../01.declare-assets/index.md#lifecycle-fields), select the pencil icon next to **Owner** on the **Overview** tab and pick a user or group. Kestra stores the choice as `user:<name>` or `group:<name>` and shows it without the prefix. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger). Deleting a parent asset detaches its parts by default. See [Relations](#relations).
 
 To run an [asset action](../01.declare-assets/index.md#asset-actions), select **Open actions** in the **Actions** card on the **Overview** tab, pick the action, and fill in its inputs. An action whose `when` conditions don't hold is disabled, and the list shows each unmet condition with the asset's current value, for example *status must equal active (currently decommissioned)*. On a destroyed asset, every action is disabled. Running an action needs `ASSET:UPDATE` on the asset and `FLOW:EXECUTE` on the action flow's namespace.
 

@@ -47,7 +47,7 @@ Each deployment carries the standard asset lifecycle properties:
 
 Kestra stores these internally as `system.status`, `system.ttl`, and `system.owner` — those are the keys used in dashboard queries and filter expressions.
 
-These properties appear as dedicated columns on the Deployments screen and support filtering by expiry bucket:
+These properties appear as dedicated columns on the Deployments screen and support filtering by expiry bucket. A **Deployment leases** banner above the list counts the deployments that expire within 7 days and those that have expired.
 
 | Bucket | Description |
 |---|---|
@@ -115,12 +115,12 @@ A confirmation shows how many assets were imported and into which deployment.
 
 | Asset field | Terraform state | Table or records file |
 |---|---|---|
-| ID | `tf:<deployment>:<resource address>` | Value of the **Id column** |
+| ID | `tf:<deployment>:<resource address>`, with unsupported characters replaced, so `aws_instance.web[0]` becomes `aws_instance.web-0` | Value of the **Id column** |
 | Display name | Resource address, for example `aws_instance.web` | Value of the **Name column**, or the ID |
 | Type | Resource type in PascalCase, for example `AwsInstance` | Value of the **Resource type column** |
 | Metadata | `provider` and `externalId` (the resource's `arn` or `id`) | Every other column |
 
-A Terraform state imports one asset per instance of each managed resource. Data sources are skipped. The output of `terraform show -json` isn't accepted. Import the state file itself, for example the output of `terraform state pull`.
+A Terraform state imports one asset per instance of each managed resource. Data sources are skipped. The deployment gets a `terraformVersion` metadata entry from the state file. The output of `terraform show -json` isn't accepted. Import the state file itself, for example the output of `terraform state pull`.
 
 For a table or records file:
 
@@ -129,7 +129,7 @@ For a table or records file:
 - Rows with an empty ID, or an ID already used earlier in the file, are skipped. The preview shows how many.
 - Columns named `deployment` or starting with `system.` aren't imported as metadata.
 
-Each imported resource is linked to its deployment with `partOf`, so it appears under the deployment's **Parts**. The resources and the deployment also get a `system.source` value of `terraform`, `csv`, `json`, or `yaml`, shown in the **Source** column of Deployments and Inventory.
+Each imported resource is linked to its deployment with `partOf`, so it appears in the **Inventory** card of the deployment's page and in the **Deployment** column of Inventory. The resources and the deployment also get a `system.source` value of `terraform`, `csv`, `json`, or `yaml`. To see it, add the **Source** column to Deployments or Inventory from the column settings. It's hidden by default.
 
 If you leave **Namespace** empty and the deployment already exists, new resources go into the deployment's namespace.
 
@@ -214,6 +214,8 @@ When an Infrastructure tenant is created, Kestra seeds it with an example enviro
 The bootstrap flow triggers one execution to populate the Inventory with example deployments. Nothing is fetched from the network. The bundle ships inside the JAR.
 
 Example resources are tagged so they can be hidden in the Catalog using the **Hide examples** toggle.
+
+To delete the example environment, an Instance Owner can select **Remove examples** in the banner on the Catalog, Deployments, and Inventory pages, or **Remove** next to **Example resources** in the tenant's settings. This deletes the example apps, flows, dashboards, assets, and the `infrastructure.examples` namespace, and can't be undone. Through the API, call `DELETE /api/v1/tenants/{id}/examples`. Members of the tenant who can delete flows, apps, dashboards, assets, and namespaces in the examples namespace can call it too.
 
 ### Product tour
 

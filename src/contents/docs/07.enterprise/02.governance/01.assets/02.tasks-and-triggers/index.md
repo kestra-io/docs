@@ -282,7 +282,7 @@ On a deployment's **TTL & Lease** card, **On expiring** and **On expired** open 
 | One namespace | **Edit for namespace `<namespace>`** | `ttl_expiring_namespace_<namespace>` | `namespace` |
 | All deployments | **Edit for all deployments** | `ttl_expiring` | None |
 
-`EXPIRED` flows follow the same pattern with `ttl_expired` in place of `ttl_expiring`. If an asset ID or namespace contains characters that aren't allowed in a flow ID, or the ID would exceed 100 characters, Kestra sanitizes it and appends a hash. Create those flows from the menu rather than by hand.
+`EXPIRED` flows follow the same pattern with `ttl_expired` in place of `ttl_expiring`. If an asset ID or namespace contains characters that aren't allowed in a flow ID, or the ID would exceed 100 characters, Kestra sanitizes it and appends a hash. Create those flows from the menu rather than by hand. A deployment without a namespace has no namespace level.
 
 For each asset, Kestra starts only the most specific level that exists. For example, if both `ttl_expiring_namespace_company.infra` and `ttl_expiring` exist, deployments in `company.infra` start only the namespace-level flow. A level flow must contain a `TtlTrigger`, and that trigger's filters apply on top of the level. `TtlTrigger` flows with other IDs, or outside the system namespace, aren't part of this hierarchy and start whenever their trigger matches.
 
