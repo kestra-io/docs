@@ -10,7 +10,7 @@ This group is more situational, but it becomes valuable in complex flows where y
 
 ## `loopOutputs()`
 
-Extracts a named output from every iteration of a [Loop](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task and returns the values as an ordered list.
+Extracts a named output from every iteration of a [Loop](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task and returns the values as a list.
 
 **Prerequisite**: the Loop task must declare an `outputs:` block. Without it, `outputs.loop.outputs` does not exist and this function will fail.
 
@@ -18,21 +18,24 @@ Extracts a named output from every iteration of a [Loop](../../../05.workflow-co
 {{ loopOutputs(outputs.myLoop.outputs, 'result') }}
 ```
 
-The first argument must be the loop task's `.outputs` list. The second argument is the output ID — it must match an output ID declared in the Loop task's `outputs:` block. The function returns one value per iteration in order, with `null` for iterations where that key is missing.
+The first argument must be the loop task's `.outputs` list. The second argument is the output ID, which must match an output ID declared in the Loop task's `outputs:` block. The function returns one value per iteration, with `null` for iterations where that key is missing.
+
+The values follow the order in which iterations finished, not the order of `values`. With `concurrencyLimit: 1`, iterations run one at a time, so the two orders match. When iterations run in parallel, which is the `Loop` default, the order can change from one execution to the next. Sort the list when you need a stable result.
 
 For a `Loop` over `["a", "b", "c"]` with a declared output `result`:
 
 ```twig
 {{ loopOutputs(outputs.loop.outputs, 'result') }}
+{# → ["processed c", "processed a", "processed b"], in completion order #}
+
+{{ loopOutputs(outputs.loop.outputs, 'result') | sort }}
 {# → ["processed a", "processed b", "processed c"] #}
 ```
 
-To access a single iteration directly, use list index notation:
+Each entry in `outputs.loop.outputs` holds one iteration: `item.iteration` is its zero-based index, `item.value` its input value, and `outputs` its declared outputs. Because the list is in completion order, `outputs.loop.outputs[0]` is the first iteration to finish. To read a specific iteration, filter on `item.iteration`:
 
 ```twig
-{{ outputs.loop.outputs[0].outputs.result }}   {# first iteration's declared output #}
-{{ outputs.loop.outputs[0].item.value }}        {# first iteration's input value #}
-{{ outputs.loop.outputs[0].item.iteration }}    {# first iteration's zero-based index #}
+{{ outputs.loop.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.result') | first }}
 ```
 
 ## `errorLogs()`
