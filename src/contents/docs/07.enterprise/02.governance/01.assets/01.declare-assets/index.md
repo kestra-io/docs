@@ -19,7 +19,7 @@ Every task accepts an `assets` property:
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `inputs` | List of asset references | — | Assets the task reads. Each entry needs an `id`. Add `type` to type an asset that doesn't exist yet. |
-| `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id` and a `type`. |
+| `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id`. Add `type` to create a new asset with a real type. |
 | `enableAuto` | Boolean | `false` | Accept assets emitted by the plugin or by script log lines. See [Automatic emission](#automatic-emission). |
 | `assetFailureBehavior` | `WARN`, `FAIL`, or `IGNORE` | `WARN` | What happens to the task state when an asset can't be written. See [Failure behavior](#failure-behavior). |
 
@@ -99,7 +99,7 @@ An asset in `outputs` has these fields:
 | Field | Required | Description |
 | --- | --- | --- |
 | `id` | Yes | Unique within the tenant. Starts with a letter or digit, then letters, digits, `.`, `_`, `:`, or `-`. Up to 150 characters. |
-| `type` | Yes | A [built-in type](#built-in-asset-types) or any custom string. |
+| `type` | No | A [built-in type](#built-in-asset-types) or any custom string. Without it, an existing asset keeps its stored type, and a new asset is created as an `External` placeholder. |
 | `namespace` | No | Namespace the asset belongs to, used for filtering and access control. Lowercase letters, digits, `.`, `_`, and `-`. See [Namespace and Global assets](#namespace-and-global-assets). |
 | `displayName` | No | Human-readable name shown in the UI |
 | `description` | No | Markdown description |
@@ -140,7 +140,7 @@ When a task writes an asset that already exists, Kestra merges the new declarati
 
 | Field | Rule |
 | --- | --- |
-| `type` | The declared type replaces the stored one. An `External` placeholder never replaces a real type. |
+| `type` | The declared type replaces the stored one. An omitted type keeps the stored one. An `External` placeholder never replaces a real type. |
 | `namespace` | A declared namespace replaces the stored one. An omitted namespace keeps the stored one. |
 | `displayName`, `description` | A declared value replaces the stored one. An omitted value keeps the stored one. |
 | `metadata` | Merged key by key. Declared keys replace stored keys. Keys you don't declare are kept. A flow can't remove a key; to remove one, edit the asset in the UI or through the API. |
@@ -257,7 +257,7 @@ Running an action starts an execution of its flow with the labels `system.from: 
 | `io.kestra.plugin.ee.assets.File` | `system`, `path` |
 | `io.kestra.plugin.ee.assets.VM` | `provider`, `region`, `state` |
 | `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/infrastructure/index.md) lists under **Deployments**. |
-| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs. You can't declare it as a type. |
+| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs and from new outputs declared without a `type`. You can't declare it as a type. |
 
 The metadata keys are conventions. Kestra stores them in `metadata` like any other key, and the [dependencies graph](../03.manage-assets/index.md#explore-the-dependencies-graph) uses `system` and `schema` for grouping.
 

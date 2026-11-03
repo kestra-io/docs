@@ -86,7 +86,7 @@ outputs:
     value: "{{ outputs.mytask.values.result }}"
 ```
 
-Supported output types: `ARRAY`, `BOOL`, `DATE`, `DATETIME`, `DURATION`, `EMAIL`, `SELECT`, `FILE`, `FLOAT`, `INT`, `JSON`, `MULTISELECT`, `SECRET`, `STRING`, `TIME`, `URI`, `YAML`.
+Supported output types: `ARRAY`, `BOOL`, `DATE`, `DATETIME`, `DURATION`, `EMAIL`, `FILE`, `FLOAT`, `INT`, `JSON`, `MULTISELECT`, `SECRET`, `SELECT`, `STRING`, `TIME`, `URI`, `YAML`.
 
 ### Child flow output access
 

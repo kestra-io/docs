@@ -8,6 +8,7 @@ import Link from "~/components/common/Link.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
 import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
+import WebinarBanner from "~/components/vra-migration-guide/WebinarBanner.astro"
 import StartHere, {
     getHeadings as startHereHeadings,
 } from "~/components/vra-migration-guide/StartHere.mdx"
@@ -54,8 +55,7 @@ const INSIDE = [
 
 const updated = page.lastUpdated ?? page.date
 const META = [
-    "Four enterprise VMware estates behind the method",
-    "Three handouts for review teams",
+    'See Kestra replace vRA in an <a href="#demo-video">8-minute demo</a>',
     ...(updated
         ? [
               `Updated ${new Date(updated).toLocaleDateString("en-US", {
@@ -127,6 +127,7 @@ const jsonLinkedData = {
         meta={META}
         codeHints
     />
+    <WebinarBanner />
     <GuideBand><StartHere /></GuideBand>
     <section class="guide-content">
         <TwoColumnStickyLayout>

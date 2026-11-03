@@ -78,8 +78,8 @@ const techArticleSchema = {
 >
     <Fragment slot="head">
         <script is:inline type="application/ld+json" set:html={JSON.stringify(techArticleSchema)} />
+        <link rel="preload" as="image" href={squaredGrid.src} />
     </Fragment>
-    <link rel="preload" as="image" href={squaredGrid.src} />
     <div
         style={{
             backgroundImage: `url(${squaredGrid.src})`,
