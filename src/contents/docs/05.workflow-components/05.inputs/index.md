@@ -80,6 +80,7 @@ Inputs are strongly typed and validated before execution starts.
 | `SECRET` | Encrypted string, decrypted at runtime and masked in UI and logs | `validator` (regex); requires [encryption key](../../configuration/05.security-and-secrets/index.md) |
 | `ARRAY` | JSON array or YAML list | `itemType` (required) |
 | `FORM` | Groups child inputs as a multi-step wizard in the Execute modal | Cannot nest; no `defaults`/`prefill` on the FORM itself |
+| `TABLE` | Ordered list of typed records, entered as rows in a grid (Enterprise Edition) | `columns` (required), `minRows`, `maxRows`; see [TABLE inputs](#table-inputs) |
 | `REUSABLE_INPUTS` | References a namespace-level named input group (Enterprise Edition) | See [Reusable Inputs](../22.reusable-inputs/index.md) |
 
 :::alert{type="info"}
@@ -175,6 +176,8 @@ tasks:
     message: "Hello, {{ inputs.payload.name }}!"
 ```
 
+Kestra reports each schema error as a separate message, so a payload with several problems shows all of them at once. An error on a nested value, such as a property of the wrong type, also names its location, for example `payload.name`.
+
 To validate JSON at any point in a flow — not just at execution start — use the [ValidateJsonSchema](../../15.how-to-guides/validate-json-schema/index.md) task from plugin-serdes.
 
 ## Nested inputs
@@ -255,6 +258,100 @@ curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/provisio
   -F "environment.region=eu-central-1" \
   -F "environment.instance_type=t3.large"
 ```
+
+## TABLE inputs
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+`TABLE` collects a list of records with the same typed fields, such as the disks to attach to a VM or a set of firewall rules. The Execute modal and [Apps](../../07.enterprise/04.scalability/apps/index.md) forms render it as a grid with one column per field, each header showing the column's type. Users add rows with **Click to add a row** and remove them with the delete icon. The grid keeps at least `minRows` rows.
+
+Declare each column under `columns` as a regular input. Its rules, such as `min`, `max`, or `validator`, apply to that column in every row. `minRows` and `maxRows` limit the number of rows:
+
+```yaml
+id: provision_vm
+namespace: company.team
+
+inputs:
+  - id: disks
+    type: TABLE
+    displayName: Additional disks
+    minRows: 1
+    maxRows: 8
+    columns:
+      - id: size_gb
+        type: INT
+        min: 10
+        max: 2048
+      - id: mountpoint
+        type: STRING
+        validator: "^/[a-zA-Z0-9/_-]*$"
+      - id: label
+        type: STRING
+        required: false
+
+tasks:
+  - id: first_disk
+    type: io.kestra.plugin.core.log.Log
+    message: "First disk: {{ inputs.disks[0].size_gb }} GB at {{ inputs.disks[0].mountpoint }}"
+
+  - id: attach
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ inputs.disks }}"
+    parseValues: true
+    tasks:
+      - id: log
+        type: io.kestra.plugin.core.log.Log
+        message: "Attaching {{ item.value.size_gb }} GB at {{ item.value.mountpoint }}"
+```
+
+![The Execute modal showing the Additional disks TABLE input as a grid with size_gb INT, mountpoint STRING, and label STRING columns, two filled rows, and a Click to add a row control](./table-input-execute-modal.png)
+
+The value is a list of objects, one per row, keyed by column `id`. Reference a cell with `{{ inputs.disks[0].size_gb }}`, where the index starts at 0. To loop over the rows, pass the input to a [Loop](../01.tasks/00.flowable-tasks/index.md#loop) task with `parseValues: true` so `item.value` is the row object.
+
+Columns are required by default, like any input. Set `required: false` on a column to let users leave its cells empty. An omitted cell resolves to `null`, and so does an empty value in a column of a non-text type such as `INT` or `DATE`.
+
+A `TABLE` can sit inside a [FORM](#form-inputs). Reference it with the form's path, such as `{{ inputs.environment.disks }}`.
+
+### Column rules
+
+Kestra checks the columns when you save the flow:
+
+- **Types:** `STRING`, `INT`, `FLOAT`, `BOOL`, `DATE`, `DATETIME`, `TIME`, `DURATION`, `EMAIL`, `URI`, `SELECT`, and `MULTISELECT`.
+- **IDs:** each column `id` must be unique within the table and cannot contain a `.`.
+- **Properties:** a column cannot declare `defaults`, `prefill`, `dependsOn`, or `expression`. A `SELECT` or `MULTISELECT` column takes static `values`.
+- **Row limits:** `minRows` cannot be greater than `maxRows`.
+
+`TABLE` cannot be used as the `itemType` of an `ARRAY` or `MULTISELECT` input. In the open-source edition, saving a flow with a `TABLE` input fails with an error that names the input.
+
+### Validation errors
+
+Kestra validates every cell of every row and reports all errors at once, so the user can fix them in one pass. Each message names the row, counted from 1, and the column:
+
+```text
+Invalid value for input `disks`. Cause: row 3, column `size_gb`: it must be less than `2048`
+Invalid value for input `disks`. Cause: row 4, column `mountpoint`: missing required value
+```
+
+A row with a key that isn't a declared column, or a row that isn't an object, is also rejected. Kestra checks `minRows` and `maxRows` once every cell is valid. In the Execute modal, each error appears below its cell:
+
+![The Execute modal after submitting a third row with 4096 and var/log, showing a range error below the size_gb cell and a pattern error below the mountpoint cell](./table-input-cell-errors.png)
+
+To check values without creating an execution, send them to `POST /api/v1/{tenant}/executions/{namespace}/{id}/validate`. The response returns each cell error with a `path` field that locates the cell, such as `disks[2].size_gb`, where the row index starts at 0. An error about the input as a whole, such as the row count, has no `path`.
+
+### Pass a TABLE input via the API
+
+Send the rows as one JSON-encoded field, the same way as an `ARRAY` or `JSON` input:
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/provision_vm" \
+  -H "Content-Type: multipart/form-data" \
+  -F 'disks=[{"size_gb": 100, "mountpoint": "/data"}, {"size_gb": 50, "mountpoint": "/logs", "label": "logs"}]'
+```
+
+Invalid rows return a `422` response whose `detail` lists every error.
+
+<!-- TODO(2.1 RC): confirm availability on Cloud. -->
 
 ## Array inputs
 
