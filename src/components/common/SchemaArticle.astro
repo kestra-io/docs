@@ -12,13 +12,10 @@ type Author =
 interface Props {
     headline: string
     description?: string
-    /** Absolute image URL. Defaults to the site OG image. */
     image?: string
-    /** Defaults to the site-wide Organization node emitted by the layout. */
     author?: Author
     datePublished?: string | Date
     dateModified?: string | Date
-    /** Defaults to the current URL. */
     url?: string
 }
 
