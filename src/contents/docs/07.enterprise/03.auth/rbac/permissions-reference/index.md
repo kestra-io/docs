@@ -31,6 +31,7 @@ This reference maps each RBAC resource and action to the API endpoints that enfo
 - `VALIDATE`: validate flow YAML. (Accessible with any `FLOW` action — no dedicated check.)
 - `EXPORT`: export flows as a ZIP archive.
 - `IMPORT`: import flows from an archive.
+- `UPDATE_CONCURRENCY_LIMIT`: reset the running counter of a flow, namespace, or tenant concurrency limit. Only the managed Admin role includes it.
 
 **Endpoints**
 
@@ -42,6 +43,8 @@ VIEW
 - `GET /api/v1/{tenant}/flows/{namespace}/{id}/dependencies`
 - `GET /api/v1/{tenant}/namespaces/{namespace}/dependencies`
 - `POST /api/v1/{tenant}/flows/expressions`
+- `GET /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}`
+- `GET /api/v1/{tenant}/concurrency-limit/search` (returns only the counters of namespaces where the user has `VIEW`; the tenant counter requires `VIEW` on the whole tenant)
 
 LIST
 - `GET /api/v1/{tenant}/flows/search`
@@ -87,6 +90,9 @@ EXPORT
 IMPORT
 - `POST /api/v1/{tenant}/flows/import`
 
+UPDATE_CONCURRENCY_LIMIT
+- `PUT /api/v1/{tenant}/concurrency-limit` (checked on the namespace in the body; the tenant counter, sent without a namespace, requires the action on the whole tenant)
+
 VALIDATE (any `FLOW` action — no dedicated check)
 - `POST /api/v1/{tenant}/flows/validate`
 - `POST /api/v1/{tenant}/flows/validate/task`
@@ -95,6 +101,7 @@ VALIDATE (any `FLOW` action — no dedicated check)
 Notes
 - Webhook execution endpoints (`/executions/webhook/{namespace}/{id}/{key}`) are authorized by webhook key, not RBAC.
 - `POST /api/v1/{tenant}/flows/graph` has no action check.
+- Instance Owners can search and reset concurrency counters in any tenant without a role in it.
 :::
 
 ---
@@ -632,6 +639,7 @@ VIEW / LIST
 - `GET /api/v1/{tenant}/assets/usages/search`
 - `GET /api/v1/{tenant}/assets/{id}/relations`
 - `GET /api/v1/{tenant}/assets/{id}/relations/summary`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` (also requires `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace)
 
 CREATE
 - `POST /api/v1/{tenant}/assets`
@@ -711,29 +719,9 @@ Notes
 - `GET /api/v1/{tenant}/auditlogs/history/{detailId}` and `GET /api/v1/{tenant}/auditlogs/{id}/diff` are not controlled by `AUDITLOG`. They check your permission on the audited resource instead:
   - Most entries require `VIEW` on the audited resource type in the entry's namespace. Entries without a namespace, such as App, Asset, Case, Namespace, Test suite, and Dashboard entries, require a tenant-wide `VIEW` grant.
   - Namespace file entries require `NAMESPACE` `MANAGE_FILES`.
-  - Entries for instance-level resources, such as banners, tenants, worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
+  - Entries for instance-level resources, such as banners, tenants, settings (`SYSTEM_SETTINGS`), worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
   - An instance owner with `AUDITLOG` `VIEW` can view entries for `ROLE`, `INVITATION`, `GROUP`, `BINDING`, `USER`, and `SERVICE_ACCOUNT`.
   - The history endpoint returns every entry with the given resource ID, including entries for resources with the same ID in other namespaces. If you lack permission on any of them, the request fails.
-:::
-
----
-
-:::collapse{title="SYSTEM_SETTINGS"}
-**Scope:** Tenant
-
-**Actions and their meaning**
-- `VIEW`: read instance-level settings.
-- `UPDATE`: modify instance-level settings.
-:::
-
----
-
-:::collapse{title="TENANT_SETTINGS"}
-**Scope:** Tenant
-
-**Actions and their meaning**
-- `VIEW`: read tenant-level settings.
-- `UPDATE`: modify tenant-level settings.
 :::
 
 ---

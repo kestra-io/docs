@@ -17,10 +17,11 @@ The `sla` property at the root of a flow declares one or more SLA checks. Each S
 
 ## SLA types
 
-Kestra supports two SLA types:
+Kestra supports three SLA types:
 
 1. **MAX_DURATION**: the maximum allowed execution duration before the SLA is breached
-2. **EXECUTION_ASSERTION**: a Pebble expression that must evaluate to `true` during execution. If it evaluates to `false`, the SLA is breached.
+2. **AVG_DURATION**: the flow's average execution duration, plus an optional margin, before the SLA is breached
+3. **EXECUTION_ASSERTION**: a Pebble expression that must evaluate to `true` during execution. If it evaluates to `false`, the SLA is breached.
 
 ### MAX_DURATION
 
@@ -52,6 +53,55 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: This task will never start because the SLA was breached
 ```
+
+### AVG_DURATION
+
+`AVG_DURATION` breaches when an execution runs longer than the flow's recent average duration. Use it to catch executions that are slower than usual when you have no fixed ceiling to set with `MAX_DURATION`.
+
+When an execution is created, Kestra averages the durations of the flow's executions that ended within the `lookbackPeriod` and whose final state is listed in `averageOverStates`. The SLA deadline is that average plus the threshold, counted from the moment the execution is created, like `MAX_DURATION`. Kestra computes the deadline once per execution, so it does not change while the execution runs.
+
+The following SLA labels any execution that runs 50% longer than the average of the last 30 days, without stopping it:
+
+```yaml
+id: sla_avg_duration
+namespace: company.team
+
+sla:
+  - id: slowerThanUsual
+    type: AVG_DURATION
+    lookbackPeriod: P30D
+    percentageThreshold: 0.5
+    minExecutions: 10
+    behavior: NONE
+    labels:
+      sla: miss
+      reason: slowerThanUsual
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+```
+
+`AVG_DURATION` accepts the following properties in addition to `id`, `type`, `behavior`, and `labels`:
+
+| Property | Required | Default | Description |
+|---|---|---|---|
+| `lookbackPeriod` | Yes | | ISO 8601 duration, such as `P30D`. Executions that ended within this period before the new execution was created count towards the average. |
+| `percentageThreshold` | No | | Margin as a fraction of the average. For example, `0.2` breaches at 120% of the average. Must be greater than `0`. |
+| `durationThreshold` | No | | Fixed margin added to the average, as an ISO 8601 duration such as `PT5M`. Must be positive. |
+| `minExecutions` | No | `5` | Minimum number of matching executions in the lookback period. Below this number, the SLA does not apply to the new execution. Must be at least `1`. |
+| `averageOverStates` | No | `[SUCCESS, WARNING]` | Final execution states that count towards the average. |
+
+Set `percentageThreshold` or `durationThreshold`, not both; a flow that sets both fails validation. Without either, the SLA is breached as soon as an execution runs longer than the average.
+
+The average is based on the following executions:
+
+- Only executions of the same flow that have ended count. Executions created by tests or the Playground don't count.
+- An execution's duration runs from its creation to its end, so time spent in `QUEUED` is included.
+- The default `averageOverStates` leaves out `FAILED`, `KILLED`, and `CANCELLED` executions. These often end early, such as executions cancelled by a concurrency limit, and would lower the average. It also leaves out executions that this SLA failed or cancelled, so slow executions don't raise later averages.
+
+When the flow has fewer than `minExecutions` matching executions, for example a new flow or one that rarely runs, Kestra skips the SLA for that execution without logging a message.
 
 ### EXECUTION_ASSERTION
 
@@ -109,5 +159,7 @@ triggers:
           sla: miss
         states: [FAILED, WARNING, CANCELLED]
 ```
+
+An SLA with `behavior: NONE` adds its labels without changing the execution state, so the execution can still end `SUCCESS`. To alert on these breaches, add `SUCCESS` to `states`.
 
 The interval at which the executor checks for SLA breaches is configurable via [`kestra.executor.monitor-sla-loop-periodicity-ms`](../../configuration/04.plugins-and-execution/index.md#executor-loop-intervals) (default: 1000ms).

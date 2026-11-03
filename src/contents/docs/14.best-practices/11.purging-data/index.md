@@ -119,7 +119,7 @@ Best practice:
 
 ## When to purge assets and lineage
 
-Use [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) when you need retention for asset metadata, asset usage records, or lineage data.
+Use [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) when you need retention for assets and asset usage records. Purging an asset also deletes its lineage.
 
 This is different from purging executions or logs. Asset retention is its own concern and should be managed separately.
 

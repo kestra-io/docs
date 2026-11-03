@@ -358,7 +358,7 @@ kestra:
     basic-auth:
       password-max-age: P90D
       password-expiry-warning: P7D
-      password-history-size: 5
+      prevent-reuse-of-last-passwords: 5
 ```
 
 See [Password expiration and reuse](../../07.enterprise/03.auth/rbac/index.md#password-expiration-and-reuse) for how they behave and what they do not cover.

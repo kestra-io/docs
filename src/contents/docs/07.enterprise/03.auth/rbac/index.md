@@ -99,8 +99,6 @@ A resource is a category of product entity or capability that can be controlled 
 | `INVITATION` | User invitations |
 | `AUDITLOG` | Audit log entries |
 | `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
-| `SYSTEM_SETTINGS` | Instance-level settings |
-| `TENANT_SETTINGS` | Tenant-level settings |
 
 ### Actions
 
@@ -120,7 +118,7 @@ Each resource defines its own set of allowed actions. Not every action applies t
 
 | Resource | Additional actions |
 |---|---|
-| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
+| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT`, `UPDATE_CONCURRENCY_LIMIT` (reset [concurrency counters](../../../05.workflow-components/14.concurrency/index.md#reset-a-stuck-running-counter)) |
 | `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
 | `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
@@ -131,8 +129,6 @@ Each resource defines its own set of allowed actions. Not every action applies t
 | `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
 | `GROUP` | `MANAGE_MEMBERS` |
 | `COPILOT` | `USE` (only action) |
-| `SYSTEM_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
-| `TENANT_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
 
 :::alert{type="info"}
 For a complete resource-to-endpoint mapping, see the [Permissions reference](./permissions-reference/index.md).
@@ -163,7 +159,7 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 |---|---|
 | **Admin** | All actions on all resources, including granting any access to anyone. See [Who can grant access](#who-can-grant-access). |
 | **Developer** | Everything Editor has, plus: full namespace management (including file management), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
-| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
+| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
@@ -306,12 +302,12 @@ Kestra can make Basic Auth passwords expire after a set age, and stop users from
 kestra:
   security:
     basic-auth:
-      password-max-age: P90D        # How long a password stays valid. Unset by default: passwords never expire
-      password-expiry-warning: P7D  # How long before expiry users are warned. Default: P7D
-      password-history-size: 5      # How many passwords, counting the current one, cannot be reused. Default: 0 (no check)
+      password-max-age: P90D              # How long a password stays valid. Unset by default: passwords never expire
+      password-expiry-warning: P7D        # How long before expiry users are warned. Default: P7D
+      prevent-reuse-of-last-passwords: 5  # How many passwords, counting the current one, cannot be reused. Default: 0 (no check)
 ```
 
-`password-max-age` must be a positive duration, and `password-history-size` must be zero or more. Kestra refuses to start otherwise.
+`password-max-age` must be a positive duration, and `prevent-reuse-of-last-passwords` must be zero or more. Kestra refuses to start otherwise.
 
 Password expiry applies to users only. Service account passwords never expire because of `password-max-age`, and API tokens are not affected. The reuse check applies to every password, service accounts included.
 
@@ -336,12 +332,12 @@ Passwords set before this feature have no recorded change date. During the upgra
 
 ### Password reuse
 
-With `password-history-size` set to `N`, a new password is rejected if it matches the current password or one of the `N - 1` before it. The check applies everywhere a password is set: the user profile, the reset page, and the user detail page used by an Instance Owner. A rejected password does not change anything, and the user can try another one.
+With `prevent-reuse-of-last-passwords` set to `N`, a new password is rejected if it matches the current password or one of the `N - 1` before it. The check applies everywhere a password is set: the user profile, the reset page, and the user detail page used by an Instance Owner. A rejected password does not change anything, and the user can try another one.
 
 The history has these limits:
 
 - Previous passwords are only recorded from the moment the setting is enabled. When you turn it on, only each user's current password is known, so older ones can be reused once.
-- Lowering `password-history-size` takes effect immediately, and the extra entries are deleted at the user's next password change. Raising it again after that does not bring them back.
+- Lowering `prevent-reuse-of-last-passwords` takes effect immediately, and the extra entries are deleted at the user's next password change. Raising it again after that does not bring them back.
 - Each stored password is checked with the same deliberately slow hash as a login, so a large history makes every password change slower. Keep it to a small number, such as 5 to 10.
 
 ### Password reset links

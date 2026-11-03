@@ -51,7 +51,7 @@ Executor server exclusive:
 * `kestra_executor_processing_flow_trigger_duration_seconds` (summary): Flow trigger processing duration inside the Executor.
 * `kestra_executor_processing_flow_trigger_duration_seconds_max` (gauge): Maximum observed flow trigger processing duration inside the Executor.
 * `kestra_executor_quota_exceeded_total` (counter): The total number of exceeded quotas evaluated by the Executor (Enterprise Edition).
-* `kestra_executor_sla_expired_count_total` (counter): The total number of `MAX_DURATION` SLAs that expired.
+* `kestra_executor_sla_expired_count_total` (counter): The total number of `MAX_DURATION` and `AVG_DURATION` SLAs that expired.
 * `kestra_executor_sla_violation_count_total` (counter): The total number of SLA violations of any type.
 * `kestra_executor_taskrun_created_count_total` (counter): The total number of tasks created by the Executor.
 * `kestra_executor_taskrun_ended_count_total` (counter): The total number of tasks ended by the Executor.
