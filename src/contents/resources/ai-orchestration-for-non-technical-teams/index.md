@@ -108,7 +108,7 @@ These tools are excellent for SaaS-to-SaaS integrations and straightforward busi
 
 ### Which multi-agent AI platform is best for non-technical teams?
 
-As workflows become more sophisticated, they often require multiple specialized [AI agents](/docs/ai-tools/ai-agents) to collaborate. The best platform for managing these multi-agent systems for a non-technical audience is one that abstracts away the complexity of agent coordination. It should allow a user to define the roles and goals of each agent visually or through guided prompts, while the platform handles the communication and state management behind the scenes.
+As workflows become more sophisticated, they often require multiple specialized [AI agents](/docs/ai-orchestration/ai-agents) to collaborate. The best platform for managing these multi-agent systems for a non-technical audience is one that abstracts away the complexity of agent coordination. It should allow a user to define the roles and goals of each agent visually or through guided prompts, while the platform handles the communication and state management behind the scenes.
 
 ### Kestra: The declarative AI orchestration control plane for all teams
 
@@ -184,7 +184,7 @@ Platforms will continue to abstract away technical jargon and complex concepts. 
 
 ### How AI helps non-technical teams
 
-The rise of AI-powered assistants within orchestration platforms will be a game-changer. Features like an [AI Copilot](/docs/ai-tools/ai-copilot) will become standard, offering capabilities such as:
+The rise of AI-powered assistants within orchestration platforms will be a game-changer. Features like an [AI Copilot](/docs/develop-with-ai/ai-copilot) will become standard, offering capabilities such as:
 *   **Workflow Generation:** Creating entire workflows from a simple English description.
 *   **Intelligent Debugging:** Not just identifying errors, but suggesting concrete fixes in plain language.
 *   **Optimization Suggestions:** Proactively recommending ways to make existing workflows more efficient or resilient.

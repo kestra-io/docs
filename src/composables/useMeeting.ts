@@ -1,4 +1,8 @@
 import { TERRITORY_ATTR, type VisitorTerritory } from "~/utils/territory"
+import { tierFromEmployees, type Tier } from "~/utils/leadTier"
+
+export { tierFromEmployees }
+export type { Tier }
 
 export const CONNOR_MEETING_LINK =
     "https://meetings-eu1.hubspot.com/connor-alkin/website?embed=true"
@@ -11,12 +15,9 @@ export const LUKE_MEETING_LINK =
 export const JONATHAN_MEETING_LINK =
     "https://meetings-eu1.hubspot.com/jonathan-lowe?embed=true"
 
-export type Tier = "T1" | "T2" | "T3"
-
-export function tierFromEmployees(value: string): Tier {
-    if (value === "1000+") return "T1"
-    if (value === "between 100 and 999") return "T2"
-    return "T3"
+export interface MeetingOptions {
+    fallback?: string
+    territory?: VisitorTerritory
 }
 
 export function isAmericasTimezone() {
@@ -35,13 +36,16 @@ function americasMeetingUrl(territory: VisitorTerritory) {
     return undefined
 }
 
-export function getGeoMeetingUrl() {
-    return americasMeetingUrl(visitorTerritory()) ?? DAVID_MEETING_LINK
+export function getGeoMeetingUrl(territory: VisitorTerritory = visitorTerritory()) {
+    return americasMeetingUrl(territory) ?? DAVID_MEETING_LINK
 }
 
-export function getMeetingUrl(tier?: Tier, fallback = CONNOR_MEETING_LINK) {
-    if (tier === "T1") return getGeoMeetingUrl()
-    if (tier === "T2") return americasMeetingUrl(visitorTerritory()) ?? fallback
+export function getMeetingUrl(
+    tier?: Tier,
+    { fallback = CONNOR_MEETING_LINK, territory }: MeetingOptions = {},
+) {
+    if (tier === "T1") return getGeoMeetingUrl(territory)
+    if (tier === "T2") return americasMeetingUrl(territory ?? visitorTerritory()) ?? fallback
     return fallback
 }
 

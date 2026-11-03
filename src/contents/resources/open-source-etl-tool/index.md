@@ -133,7 +133,7 @@ Talend Open Studio is a long-standing, open-source data integration tool that of
 
 ### Pentaho Data Integration (PDI): Classic ETL with Business Intelligence Focus
 
-Pentaho Data Integration, also known as Kettle, is another mature, GUI-based ETL tool. It uses a visual workflow designer called Spoon to create transformations (data flows) and jobs (process flows). PDI is part of the broader Pentaho business analytics platform, which gives it strong integration with business intelligence and reporting tools. It's a solid choice for traditional data warehousing use cases.
+[Pentaho](/resources/data/pentaho-alternatives) Data Integration, also known as Kettle, is another mature, GUI-based ETL tool. It uses a visual workflow designer called Spoon to create transformations (data flows) and jobs (process flows). PDI is part of the broader Pentaho business analytics platform, which gives it strong integration with business intelligence and reporting tools. It's a solid choice for traditional data warehousing use cases.
 
 **Best for:** Enterprises with a focus on traditional ETL for data warehousing and strong integration with business intelligence tools.
 
@@ -166,7 +166,7 @@ This is where an orchestrator like Kestra provides immense value. Instead of rep
 ## The Future of ETL: AI, Automation, and Unified Orchestration
 
 The ETL landscape is being reshaped by two major trends: the rise of AI and the move towards [unified orchestration](/resources/orchestration/unified-orchestration).
-*   **AI's Role in Enhancing ETL:** AI is not replacing ETL but augmenting it. Tools like Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) can generate workflow code from natural language prompts, while [AI agents](/resources/ai/ai-agent) can be used within an [AI pipeline](/resources/ai/ai-pipeline) to perform intelligent data validation or enrichment.
+*   **AI's Role in Enhancing ETL:** AI is not replacing ETL but augmenting it. Tools like Kestra's [AI Copilot](/docs/develop-with-ai/ai-copilot) can generate workflow code from natural language prompts, while [AI agents](/resources/ai/ai-agent) can be used within an [AI pipeline](/resources/ai/ai-pipeline) to perform intelligent data validation or enrichment.
 *   **Unified Orchestration:** The most effective data teams are breaking down silos between data, operations, and application development. The future lies in platforms that can orchestrate workflows across all these domains. A single control plane that can manage a data ingestion job, trigger an infrastructure update with Terraform, and run a machine learning model deployment creates a more efficient and reliable system.
 
 ## Choosing the Right Open-Source ETL Tool for Your Project

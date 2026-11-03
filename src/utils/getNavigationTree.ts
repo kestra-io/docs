@@ -5,6 +5,7 @@ export type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 export const navigationTree = {
     "Get Started with Kestra": [
         "Quickstart",
+        "Claude Code Quickstart",
         "Installation Guide",
         "Tutorial",
         "Architecture",
@@ -16,8 +17,12 @@ export const navigationTree = {
         "Workflow Components",
         "Concepts",
         "Multi-Language Script Tasks",
-        "AI Tools",
+        "AI Orchestration",
         "Version Control & CI/CD",
+        "Develop with AI",
+        // Split into AI Orchestration and Develop with AI; kept so older
+        // versioned docs, which fall back to this map, still group their page.
+        "AI Tools",
         "Plugin Developer Guide",
         "Use Cases",
         "How-to Guides",

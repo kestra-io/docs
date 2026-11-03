@@ -5,26 +5,27 @@ import SectionTitle from "~/components/security/SectionTitle.astro"
 const STEPS = [
     {
         title: "Export",
-        text: "A vRO administrator exports a .package from the Orchestrator client. If vRA starts your workflows, export the vRA content from VMware Build Tools as well, so the brief can see what triggers them. Put both in one folder.",
+        text: "A vRO administrator exports a .package from the Orchestrator client. If vRA starts your workflows, export the vRA content as well, so the brief can see what triggers them. Put both in one folder. Only the vRO package is required.",
         code: `my-estate/
-├─ lb-usecase.package
-└─ vra-export/`,
+├─ my-estate.package
+└─ my-estate.vra-ng`,
         lang: "text",
     },
     {
         title: "Run",
-        text: "The first time, init creates a config file in your home folder where you choose your model and settings. Then run sanitizes the export, maps every workflow and the systems it touches, and writes the brief to a kestra-assessment folder next to the exports.",
-        code: `$ kestra-migrate init
-$ kestra-migrate vra run ./my-estate`,
+        text: "One command. It shows the model it will use, which you can change or switch off, and asks four questions about how your estate works, such as where settings and secrets come from. Then it analyzes every workflow and writes the brief. It tells you the cost before anything is billed.",
+        code: `$ kestra-migrate vra run ./my-estate
+
+Before the analysis, 4 questions about your estate.`,
         lang: "bash",
     },
     {
-        title: "Answer and run again",
-        text: "When the exports can't answer something, such as how often a workflow runs or what else starts it, the tool writes the question to answers.yaml, with a suggested answer where the code points to one. Fill in the answers and run the same command again. When there are no open questions left, the plan is final.",
-        code: `- id: auth.avi-controller
-  question: How do the flows sign in to Avi?
-  suggested: basic authentication, as today`,
-        lang: "yaml",
+        title: "Read the brief, then sharpen it",
+        text: "The brief opens in your browser, with every assumption the tool made listed in it. To make it sharper, run the same command again: it asks the few questions that change the brief most, and you can skip any of them or stop and carry on later. Your answers are kept in answers.yaml.",
+        code: `$ kestra-migrate vra run ./my-estate
+
+To sharpen the brief: 5 questions (about 2 minutes), the ones that change it most first.`,
+        lang: "bash",
     },
 ]
 ---

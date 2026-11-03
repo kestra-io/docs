@@ -45,7 +45,7 @@ Frameworks like LangGraph, CrewAI, and AutoGen are purpose-built for orchestrati
 -   **Tool Use:** Deciding which tools (APIs, functions, databases) an agent should call to gather information or perform actions.
 -   **Multi-agent Handoffs:** Defining how agents with different roles (e.g., a "researcher" agent and a "writer" agent) collaborate, pass information, and review each other's work.
 
-Commercial platforms built on these frameworks often add enterprise features like Role-Based Access Control (RBAC), audit logs, and Human-in-the-Loop (HITL) validation. That governance, though, stops at the agent's runtime. The platform can tell you what the agent did, but it has limited visibility or control over the systems and processes *outside* of its immediate execution context. This is where its governance stops, creating a critical gap for production use cases that involve more than just the agent itself. For more details on Kestra's approach, see the documentation on [AI Agents](/docs/ai-tools/ai-agents) and our guide to [AI agent orchestration](/resources/ai/ai-agent-orchestration).
+Commercial platforms built on these frameworks often add enterprise features like Role-Based Access Control (RBAC), audit logs, and Human-in-the-Loop (HITL) validation. That governance, though, stops at the agent's runtime. The platform can tell you what the agent did, but it has limited visibility or control over the systems and processes *outside* of its immediate execution context. This is where its governance stops, creating a critical gap for production use cases that involve more than just the agent itself. For more details on Kestra's approach, see the documentation on [AI Agents](/docs/ai-orchestration/ai-agents) and our guide to [AI agent orchestration](/resources/ai/ai-agent-orchestration).
 
 ## Agentic Orchestration: Governing AI Steps in End-to-End Workflows
 
@@ -174,7 +174,7 @@ This example shows the clear separation of concerns:
 -   **The Human Validates:** An operator must manually resume the workflow from the UI.
 -   **The System Acts:** Only after approval does the `execute-remediation` task run, against a script you wrote and reviewed.
 
-This pattern provides a safe, auditable way to integrate powerful but nondeterministic AI into critical processes. For more on building with Kestra's AI capabilities, explore the [AI tools documentation](/docs/ai-tools) and learn about the [MCP Server](/docs/ai-tools/mcp-server) for advanced tool use. You can also read more about [Kestra's autonomous AI agents](/blogs/introducing-ai-agents).
+This pattern provides a safe, auditable way to integrate powerful but nondeterministic AI into critical processes. For more on building with Kestra's AI capabilities, explore the [AI orchestration documentation](/docs/ai-orchestration) and learn about the [MCP Server](/docs/ai-orchestration/mcp-server) for advanced tool use. You can also read more about [Kestra's autonomous AI agents](/blogs/introducing-ai-agents).
 
 ## Real-World Pattern: Security Operations Automation
 
