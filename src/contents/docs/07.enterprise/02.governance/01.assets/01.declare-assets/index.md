@@ -246,7 +246,7 @@ The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_C
 
 A field the asset doesn't have, or an empty one, counts as unset, so `NOT_EQUAL_TO`, `NOT_IN`, and `NOT_CONTAINS` hold on it. An asset without a `status` counts as `active`. An asset can have up to 100 actions. To add actions or edit their conditions in the UI, see [Manage assets](../03.manage-assets/index.md#asset-detail-page).
 
-Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/types/infrastructure/index.md#day-2-actions) on a deployment's page.
+Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/infrastructure/index.md#day-2-actions) on a deployment's page.
 
 ## Built-in asset types
 
@@ -256,7 +256,7 @@ Running an action starts an execution of its flow with the labels `system.from: 
 | `io.kestra.plugin.ee.assets.Dataset` | `system`, `location`, `format` |
 | `io.kestra.plugin.ee.assets.File` | `system`, `path` |
 | `io.kestra.plugin.ee.assets.VM` | `provider`, `region`, `state` |
-| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/types/infrastructure/index.md) lists under **Deployments**. |
+| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/infrastructure/index.md) lists under **Deployments**. |
 | `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs. You can't declare it as a type. |
 
 The metadata keys are conventions. Kestra stores them in `metadata` like any other key, and the [dependencies graph](../03.manage-assets/index.md#explore-the-dependencies-graph) uses `system` and `schema` for grouping.
@@ -287,9 +287,6 @@ Emitted assets and declared assets combine. You can turn on `enableAuto` and als
 | Qlik Cloud `apps.Reload` | One `io.kestra.plugin.qlikcloud.assets.App` output for the reloaded app. Set the task's `emitAssets` to `false` to turn this off. | The app ID |
 | Ansible `AnsibleCLI` | One `VM` input per host in an INI inventory file named exactly `inventory.ini` at the working directory root | The host name |
 | Helm `Upgrade`, `Rollback`, `Status`, and `Uninstall` | One `io.kestra.plugin.ee.assets.HelmRelease` output, with the chart and `valuesFrom` files as inputs, plus one `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource. `Uninstall` deletes these assets. | Built from the cluster, Kubernetes namespace, and release name |
-
-<!-- TODO: the Fivetran row describes plugin-fivetran 2.0.0 (kestra-io/plugin-fivetran#116 and #117, merged
-     2026-10-28, still 2.0.0-SNAPSHOT). Confirm the release has shipped before publishing. -->
 
 dbt and Fivetran use the same `<database>.<schema>.<table>` ID format, so a Fivetran table and the dbt source that reads it join into one lineage chain. JDBC IDs leave out the schema, so they don't join with dbt or Fivetran IDs. To connect them, declare the matching IDs yourself.
 

@@ -51,10 +51,27 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 
 ## Tenant types
 
-Every tenant has a **type** that determines its home page and sidebar navigation. The type is set during creation and can be changed in tenant settings at any time.
+Every tenant has a **type** that sets the home page, sidebar layout, and vocabulary for everyone in the tenant. The engine, API, and data model are the same for every type, and no type removes a feature.
 
-- **`DEFAULT`**: the standard Kestra experience. Home is Dashboards; all features are visible in their usual places.
-- **`INFRASTRUCTURE`**: home is the Catalog, with a Self-Service sidebar group (Catalog, Requests, Deployments, Inventory, Cases, Dashboards) above the standard sections. Designed for infrastructure self-service provisioning and day-2 operations.
+| Type | Home page | Use case |
+|---|---|---|
+| `DEFAULT` | Dashboards | General-purpose workflow orchestration. Every feature appears in its usual place. Tenants get this type unless you choose another. |
+| `INFRASTRUCTURE` | Catalog | Infrastructure self-service and day-2 operations. See [Infrastructure tenant](./infrastructure/index.md). |
+
+Creating an `INFRASTRUCTURE` tenant, or changing a tenant to that type, requires a license that includes Infrastructure tenants.
+
+### Set the type
+
+- **When you create a tenant**: the creation wizard has a **Type** step. The type also appears in the final review step.
+- **On an existing tenant**: open **Instance Owner → Tenants**, open the tenant's **Settings** page, and change the type. Members see the new navigation and home page on their next page load. Switching a tenant to `INFRASTRUCTURE` also seeds it with the [example environment](./infrastructure/index.md#example-environment).
+- **Through the API**: set `type` in the body of `POST /api/v1/tenants` or `PUT /api/v1/tenants/{id}`. `kestractl` and the Terraform provider don't set the type.
+
+A type change is recorded in the audit log as a tenant update.
+
+### See a tenant's type
+
+- The **Instance Owner → Tenants** list has a **Tenant type** column with a colored badge.
+- In the tenant switcher, each tenant shows an icon in its type's color, and tenants other than `DEFAULT` are labeled with their type.
 
 <ChildCard />
 
@@ -94,6 +111,8 @@ curl -X POST "https://demo.kestra.io/api/v1/tenants" \
   -H "Content-Type: application/json" \
   -d "{ \"id\": \"stage\", \"name\": \"staging\", \"deleted\": false}"
 ```
+
+To create an [Infrastructure tenant](./infrastructure/index.md), add `"type": "INFRASTRUCTURE"` to the body.
 
 ### Creating a tenant from Terraform
 

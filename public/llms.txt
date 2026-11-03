@@ -129,8 +129,8 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 
 **Governance**
 - [Tenants](https://kestra.io/docs/enterprise/governance/tenants.md): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
-- [Infrastructure Tenant](https://kestra.io/docs/enterprise/governance/tenants/types/infrastructure.md): Purpose-built tenant type for infrastructure self-service — Catalog home, Requests history, Deployments screen, Inventory, day-2 actions, and asset lifecycle management
-- [App templates](https://kestra.io/docs/enterprise/governance/app-templates.md): Create a flow and the app that runs it from one reusable template, in a namespace chosen at use time; use it to publish self-service catalog entries with fixed platform choices
+- [Infrastructure Tenant](https://kestra.io/docs/enterprise/governance/tenants/infrastructure.md): Purpose-built tenant type for infrastructure self-service — Catalog home, Requests history, Deployments screen, Inventory, day-2 actions, and asset lifecycle management
+- [App templates](https://kestra.io/docs/enterprise/governance/tenants/infrastructure/app-templates.md): Create a flow and the app that runs it from one reusable template, in a namespace chosen at use time; use it to publish self-service catalog entries with fixed platform choices
 - [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs.md): Immutable record of all user and system actions across the platform
 - [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager.md): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
 - [Assets](https://kestra.io/docs/enterprise/governance/assets.md): Start here for lineage and inventory. Explains how tasks declare `assets.inputs`/`outputs`, then routes to the declaration reference, the triggers/tasks reference (correct FQCNs: `io.kestra.plugin.ee.assets.EventTrigger`, `io.kestra.plugin.kestra.ee.assets.FreshnessTrigger`), UI/API/CLI management, and use-case how-to guides
@@ -301,7 +301,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Set Up Okta OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/okta.md)
 - [Governance in Kestra Enterprise: Security and Control](https://kestra.io/docs/enterprise/governance.md)
 - [Allowed & Restricted Plugins in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/allowed-plugins.md)
-- [App Templates in Kestra: Self-Service Flows and Apps](https://kestra.io/docs/enterprise/governance/app-templates.md)
+- [App Templates in Kestra: Self-Service Flows and Apps](https://kestra.io/docs/enterprise/governance/tenants/infrastructure/app-templates.md)
 - [Audit Logs in Kestra: Governance and Compliance](https://kestra.io/docs/enterprise/governance/audit-logs.md)
 - [Custom Blueprints in Kestra Enterprise: Templates](https://kestra.io/docs/enterprise/governance/custom-blueprints.md)
 - [Log Shipper in Kestra Enterprise: Centralize Logs](https://kestra.io/docs/enterprise/governance/logshipper.md)
@@ -309,8 +309,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Namespace Management in Kestra Enterprise: Isolation](https://kestra.io/docs/enterprise/governance/namespace-management.md)
 - [External Secrets Manager in Kestra: AWS, Azure, GCP](https://kestra.io/docs/enterprise/governance/secrets-manager.md)
 - [Multi-Tenancy in Kestra: Configure Tenants](https://kestra.io/docs/enterprise/governance/tenants.md)
-- [Tenant Types in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/tenants/types.md)
-- [Infrastructure Tenant in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/tenants/types/infrastructure.md)
+- [Infrastructure Tenant in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/tenants/infrastructure.md)
 - [Unit Tests in Kestra Enterprise: Validate Flows](https://kestra.io/docs/enterprise/governance/unit-tests.md)
 - [Worker Isolation in Kestra Enterprise: Separation](https://kestra.io/docs/enterprise/governance/worker-isolation.md)
 - [Cases in Kestra: Incident Management for Executions](https://kestra.io/docs/enterprise/governance/cases.md)

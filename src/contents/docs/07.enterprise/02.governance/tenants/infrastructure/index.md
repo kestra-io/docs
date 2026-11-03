@@ -14,8 +14,8 @@ An Infrastructure tenant is a Kestra tenant configured for infrastructure self-s
 When a tenant's type is set to `INFRASTRUCTURE`, all users in that tenant see a different home and sidebar:
 
 - **Home**: Catalog (instead of Dashboards)
-- **Self-Service** sidebar group: Catalog, Requests, Deployments, Inventory, Cases, Dashboards
-- **Automation**, **Infrastructure**, and **Tenant** sidebar groups remain below, giving access to flows, executions, namespaces, and all standard settings. **Automation** starts with **Templates**, where you manage [app templates](../../../app-templates/index.md) that publish new catalog entries.
+- **Self-Service** sidebar group: Catalog, Requests, Deployments, Inventory, Approvals, Cases, Dashboards
+- **Automation**, **Infrastructure**, and **Tenant** sidebar groups remain below, giving access to flows, executions, namespaces, and all standard settings. **Automation** starts with **Templates**, where you manage [app templates](./app-templates/index.md) that publish new catalog entries. **Templates** appears only in Infrastructure tenants.
 
 Everything available in a `DEFAULT` tenant is still accessible. The Infrastructure layout surfaces the most relevant screens first.
 
@@ -23,7 +23,7 @@ Everything available in a `DEFAULT` tenant is still accessible. The Infrastructu
 
 The Catalog is the home page of an Infrastructure tenant. It shows the Apps available for users to request — for example, provisioning a VM, requesting a database, or creating a cloud bucket.
 
-Each catalog entry is a Kestra [App](../../../../04.scalability/apps/index.md) visible to users with the appropriate RBAC. When a user submits a catalog form, it creates a Request and triggers the underlying flow. When the flow finishes, the example catalog apps list the resources it provisioned with the [`Assets` block](../../../../04.scalability/apps/index.md#assets-emitted-by-an-execution).
+Each catalog entry is a Kestra [App](../../../04.scalability/apps/index.md) visible to users with the appropriate RBAC. When a user submits a catalog form, it creates a Request and triggers the underlying flow. When the flow finishes, the example catalog apps list the resources it provisioned with the [`Assets` block](../../../04.scalability/apps/index.md#assets-emitted-by-an-execution).
 
 The catalog title, colors, and banner are configurable per tenant. Open **Instance Owner → Tenants**, find the tenant, and open its **Apps Catalog** page to customize them.
 
@@ -61,16 +61,16 @@ These properties appear as dedicated columns on the Deployments screen and suppo
 The **TTL & Lease** card on a deployment's page shows when its lease expires. If you can update assets in the deployment's namespace and the deployment isn't destroyed, you can change the expiry from the card:
 
 1. Click the pencil icon next to **Expires**.
-2. Choose **Keep current**, **No expiry**, a preset of 7, 30, 60, or 90 days from now, or **Pick a date and time**. A picked time uses the time zone from your [UI settings](../../../../../09.ui/06.settings/index.md) and defaults to 23:59:59 if you only pick a day. Past dates and times are disabled.
+2. Choose **Keep current**, **No expiry**, a preset of 7, 30, 60, or 90 days from now, or **Pick a date and time**. A picked time uses the time zone from your [UI settings](../../../../09.ui/06.settings/index.md) and defaults to 23:59:59 if you only pick a day. Past dates and times are disabled.
 3. Click **Save**. A confirmation shows the new expiry.
 
-Changing the expiry updates only the deployment's `ttl`, not the underlying infrastructure. To act on the resource when its lease is about to expire or has expired, attach a flow with **On expiring** or **On expired** on the same card. These flows use the [`TtlTrigger`](../../../01.assets/02.tasks-and-triggers/index.md#ttltrigger) and can apply to one deployment, to a namespace, or to every deployment in the tenant.
+Changing the expiry updates only the deployment's `ttl`, not the underlying infrastructure. To act on the resource when its lease is about to expire or has expired, attach a flow with **On expiring** or **On expired** on the same card. These flows use the [`TtlTrigger`](../../01.assets/02.tasks-and-triggers/index.md#ttltrigger) and can apply to one deployment, to a namespace, or to every deployment in the tenant.
 
 ### Day-2 actions
 
 Day-2 actions are flows attached to a deployment that can be run directly from its page. Common actions include resizing a resource or decommissioning it. The execution is stamped with the asset ID it was started from, linking it back to the deployment in the Deployments screen.
 
-Attach day-2 actions to a deployment by declaring `assetActions` on the asset in `assets.outputs`. Each action names a flow by namespace and flow ID and provides a label for the button shown on the deployment's page. To limit when an action can run, or to run one through the API, see [Asset actions](../../../01.assets/01.declare-assets/index.md#asset-actions). For example:
+Attach day-2 actions to a deployment by declaring `assetActions` on the asset in `assets.outputs`. Each action names a flow by namespace and flow ID and provides a label for the button shown on the deployment's page. To limit when an action can run, or to run one through the API, see [Asset actions](../../01.assets/01.declare-assets/index.md#asset-actions). For example:
 
 ```yaml
 assets:
@@ -178,7 +178,7 @@ The response lists asset IDs under `created`, `updated`, and `skipped`, which ma
 
 ## Asset lifecycle properties
 
-The `status`, `ttl`, and `owner` fields are top-level properties on any asset declaration, not entries in the `metadata` map, and they apply to every asset type. See [Lifecycle fields](../../../01.assets/01.declare-assets/index.md#lifecycle-fields) for their formats and the `system.` keys used in queries.
+The `status`, `ttl`, and `owner` fields are top-level properties on any asset declaration, not entries in the `metadata` map, and they apply to every asset type. See [Lifecycle fields](../../01.assets/01.declare-assets/index.md#lifecycle-fields) for their formats and the `system.` keys used in queries.
 
 Set lifecycle properties as top-level fields in a task's `assets.outputs` declaration:
 
@@ -208,12 +208,16 @@ When an Infrastructure tenant is created, Kestra seeds it with an example enviro
 - Flows: provisioning policy, allowed regions, VM provisioning, resource registration, database/environment/bucket requests, resize, decommission, and a lease watchdog whose daily schedule is disabled by default
 - Apps: four self-service catalog entries (provision VM, request database, environment, and bucket)
 - A dashboard: Infrastructure Overview
-- An [app template](../../../app-templates/index.md): **New application environment**, which creates a flow and the catalog app that runs it
+- An [app template](./app-templates/index.md): **New application environment**, which creates a flow and the catalog app that runs it
 - A bootstrap flow (`setup_demo_environment`) that runs once on creation to populate demo inventory
 
 The bootstrap flow triggers one execution to populate the Inventory with example deployments. Nothing is fetched from the network. The bundle ships inside the JAR.
 
 Example resources are tagged so they can be hidden in the Catalog using the **Hide examples** toggle.
+
+### Product tour
+
+When the example flows are present, the Catalog offers a guided tour built on them. It walks through requesting a resource from the catalog, following the request, the flow behind the app, the resulting deployment and its decommission action, and the dashboard. A tenant without the example environment, for example with seeding disabled, doesn't offer the tour.
 
 ### Seeding on type change
 
@@ -243,4 +247,4 @@ Kestra creates the tenant, seeds the example environment (unless disabled), and 
 
 The following capabilities are planned and not yet available:
 
-- Auto-emission of assets by Terraform and cloud provider plugins. Declare those resources explicitly in tasks. Ansible and Helm tasks can [emit assets automatically](../../../01.assets/01.declare-assets/index.md#plugins-that-emit-assets).
+- Auto-emission of assets by Terraform and cloud provider plugins. Declare those resources explicitly in tasks. Ansible and Helm tasks can [emit assets automatically](../../01.assets/01.declare-assets/index.md#plugins-that-emit-assets).
