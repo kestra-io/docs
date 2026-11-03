@@ -1058,6 +1058,8 @@ A subscriber whose reading fails, for example on a network error, a throttled na
 
 A service that shuts down gracefully gives up its partitions at once. When a service crashes, the other services take over its partitions once their ownership expires, after 6 × `load-balancing-interval`.
 
+The new owner of a partition reads it again from its last checkpoint, so the messages the previous owner processed after that checkpoint are processed again. Event Hubs delivers at least once.
+
 #### Configuration reference
 
 | Property | Description | Default |
