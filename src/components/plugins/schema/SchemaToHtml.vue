@@ -53,11 +53,13 @@
                             If you use one of our Docker images tagged <code>*-full</code>, this plugin is already included.
                             Otherwise, install it with the following command:
                         </p>
-                        <SchemaToCode
-                            :highlighter="highlighter"
-                            language="bash"
-                            :theme="codeTheme"
-                            :code="installCommand"
+                        <CodeTabs
+                            :tabs="[
+                                { label: 'kestractl', code: kestractlInstallCommand },
+                                { label: 'Kestra CLI', code: installCommand },
+                            ]"
+                            storage-key="plugin-install-command"
+                            lang="bash"
                         />
                         <p class="mb-0">
                             This command installs the latest available version. Replace <code>LATEST</code> with a specific
@@ -137,6 +139,7 @@
     import type {JSONProperty, JSONSchema} from "../../../utils/plugins/schema";
     import Collapsible from "./Collapsible.vue";
     import CollapsibleProperties from "./CollapsibleProperties.vue";
+    import CodeTabs from "~/components/common/CodeTabs.vue";
 
     const props = withDefaults(defineProps<{
         schema: JSONSchema,
@@ -180,6 +183,13 @@
 
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);
+
+    const kestractlInstallCommand = computed(() => {
+        const coordinate = props.installCommand
+            ?.replace(/^\.\/kestra plugins install\s+/, "")
+            .trim();
+        return coordinate ? `kestractl plugins get ${coordinate}` : "";
+    });
 
     const examples = computed(() => props.schema.properties?.$examples);
     const hasOutputs = computed(() => !!props.schema.outputs?.properties && Object.keys(props.schema.outputs.properties).length > 0);
