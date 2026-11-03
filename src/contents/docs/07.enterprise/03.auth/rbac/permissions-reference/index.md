@@ -31,6 +31,7 @@ This reference maps each RBAC resource and action to the API endpoints that enfo
 - `VALIDATE`: validate flow YAML. (Accessible with any `FLOW` action — no dedicated check.)
 - `EXPORT`: export flows as a ZIP archive.
 - `IMPORT`: import flows from an archive.
+- `UPDATE_CONCURRENCY_LIMIT`: reset the running counter of a flow, namespace, or tenant concurrency limit. Only the managed Admin role includes it.
 
 **Endpoints**
 
@@ -42,6 +43,8 @@ VIEW
 - `GET /api/v1/{tenant}/flows/{namespace}/{id}/dependencies`
 - `GET /api/v1/{tenant}/namespaces/{namespace}/dependencies`
 - `POST /api/v1/{tenant}/flows/expressions`
+- `GET /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}`
+- `GET /api/v1/{tenant}/concurrency-limit/search` (returns only the counters of namespaces where the user has `VIEW`; the tenant counter requires `VIEW` on the whole tenant)
 
 LIST
 - `GET /api/v1/{tenant}/flows/search`
@@ -87,6 +90,9 @@ EXPORT
 IMPORT
 - `POST /api/v1/{tenant}/flows/import`
 
+UPDATE_CONCURRENCY_LIMIT
+- `PUT /api/v1/{tenant}/concurrency-limit` (checked on the namespace in the body; the tenant counter, sent without a namespace, requires the action on the whole tenant)
+
 VALIDATE (any `FLOW` action — no dedicated check)
 - `POST /api/v1/{tenant}/flows/validate`
 - `POST /api/v1/{tenant}/flows/validate/task`
@@ -95,6 +101,7 @@ VALIDATE (any `FLOW` action — no dedicated check)
 Notes
 - Webhook execution endpoints (`/executions/webhook/{namespace}/{id}/{key}`) are authorized by webhook key, not RBAC.
 - `POST /api/v1/{tenant}/flows/graph` has no action check.
+- Instance Owners can search and reset concurrency counters in any tenant without a role in it.
 :::
 
 ---

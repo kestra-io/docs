@@ -118,7 +118,7 @@ Each resource defines its own set of allowed actions. Not every action applies t
 
 | Resource | Additional actions |
 |---|---|
-| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
+| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT`, `UPDATE_CONCURRENCY_LIMIT` (reset [concurrency counters](../../../05.workflow-components/14.concurrency/index.md#reset-a-stuck-running-counter)) |
 | `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
 | `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
