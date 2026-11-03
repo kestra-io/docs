@@ -39,6 +39,8 @@ To run an [asset action](../01.declare-assets/index.md#asset-actions), select **
 
 With `ASSET:UPDATE`, select **Manage actions** in the same dialog to edit or remove actions, or select **Add action** to attach a new one. In the dialog, select the flow the action runs and set its **Display name**. The **Availability** section then appears. Select **Add condition** and pick a field, an operator, and a value for each condition. An action without conditions is always offered. The field list includes the asset's metadata keys, and you can type any other key as `metadata.<key>`.
 
+Kestra doesn't write UI or API changes to actions back to the flow. If a flow declares `assetActions` for the asset, each run of that flow replaces the stored actions, including your edits. Manage an asset's actions either in the flow or in the UI and API, not both.
+
 ### Plugin footers on asset cards
 
 A plugin can add a footer below an asset's card, for example to show test results that its tasks stored in the asset's metadata. The footer is a plugin artifact, and it shows the asset's latest metadata. See [Plugin artifacts and assets](../../../../06.concepts/plugin-artifacts-vs-assets/index.md).
@@ -85,6 +87,9 @@ Use **Group by** to cluster asset nodes:
 | **Plugins** | The plugin of the task that produced the asset, for example `jdbc` or `dbt` |
 | **System** | The `system` metadata key |
 | **Namespace** | The asset or flow namespace |
+| **Consumer** | The flow that reads the asset. An asset that several flows read belongs to each of their groups. Assets no flow reads are grouped under **No consumer**, and flows you can't see under **Hidden flow**. |
+
+Each option appears only when it produces at least one group, and **Consumer** only when a flow in the graph reads an asset.
 
 Hover a group to fade the other nodes. Select it to keep it highlighted, and select it again or select an empty area to release it.
 

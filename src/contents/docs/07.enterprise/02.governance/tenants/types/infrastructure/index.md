@@ -129,7 +129,7 @@ For a table or records file:
 - Rows with an empty ID, or an ID already used earlier in the file, are skipped. The preview shows how many.
 - Columns named `deployment` or starting with `system.` aren't imported as metadata.
 
-Each imported resource gets a `deployment` metadata entry that links it to its deployment. The resources and the deployment also get a `system.source` value of `terraform`, `csv`, `json`, or `yaml`, shown in the **Source** column of Deployments and Inventory.
+Each imported resource is linked to its deployment with `partOf`, so it appears under the deployment's **Parts**. The resources and the deployment also get a `system.source` value of `terraform`, `csv`, `json`, or `yaml`, shown in the **Source** column of Deployments and Inventory.
 
 If you leave **Namespace** empty and the deployment already exists, new resources go into the deployment's namespace.
 
@@ -159,8 +159,9 @@ namespace: company.infra
 id: vm-web-01
 type: VirtualMachine
 namespace: company.infra
+partOf:
+  id: web-prod
 metadata:
-  deployment: web-prod
   region: eu-west-1
 ```
 
@@ -204,7 +205,7 @@ Kestra rejects a `ttl` value that is not in the expected UTC format. An empty `t
 When an Infrastructure tenant is created, Kestra seeds it with an example environment so the vertical opens with content rather than empty screens. The seed includes:
 
 - A namespace (`infrastructure.examples`) with a description
-- Flows: provisioning policy, allowed regions, VM provisioning, database/environment/bucket requests, resize, decommission, and a lease watchdog trigger
+- Flows: provisioning policy, allowed regions, VM provisioning, resource registration, database/environment/bucket requests, resize, decommission, and a lease watchdog whose daily schedule is disabled by default
 - Apps: four self-service catalog entries (provision VM, request database, environment, and bucket)
 - A dashboard: Infrastructure Overview
 - An [app template](../../../app-templates/index.md): **New application environment**, which creates a flow and the catalog app that runs it

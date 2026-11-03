@@ -590,7 +590,7 @@ To share one Kafka cluster between several Kestra instances, give each instance 
 
 To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
 
-The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
+The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset relations in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
 ## Message broker queue backends
 

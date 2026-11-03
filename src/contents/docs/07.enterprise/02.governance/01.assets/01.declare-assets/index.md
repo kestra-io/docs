@@ -384,7 +384,7 @@ assets:
       type: io.kestra.plugin.ee.assets.Table
 ```
 
-An invalid declaration is different. If a rendered asset breaks a [field](#asset-fields) rule, for example an `id` with a space, the task fails regardless of `assetFailureBehavior`.
+An invalid declaration is different. Kestra checks literal values in the `assets` block when you save the flow, so a declaration that breaks a [field](#asset-fields) rule, for example an `id` with a space, is rejected before the flow runs. Values written as expressions are checked only after they render: if a rendered asset breaks a field rule, the task fails regardless of `assetFailureBehavior`.
 
 The value accepts expressions. To set it across many tasks without editing each flow, use a [Policy](../../policies/index.md) `Add` rule with `values: {assets: {assetFailureBehavior: FAIL}}`.
 

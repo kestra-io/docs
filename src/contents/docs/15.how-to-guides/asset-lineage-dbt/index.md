@@ -131,9 +131,9 @@ tasks:
             - id: reports.second_model_report
               namespace: company.data
               type: io.kestra.plugin.ee.assets.File
+              owner: group:analytics-team
               metadata:
                 path: second_model_report.csv
-                owner: analytics-team
 ```
 
 If the IDs you found in step 2 differ, use yours in `assets.inputs`. An input ID that doesn't match an existing asset creates a separate `External` placeholder instead of joining the dbt model.
