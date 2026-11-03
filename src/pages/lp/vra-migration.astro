@@ -302,29 +302,6 @@ const faqItems = [
             sub="Kestra runs alongside vRA until each wave is verified."
             steps={stages}
         />
-        <section class="demo-video">
-            <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
-                <h2>See it in 8 minutes</h2>
-                <p>
-                    Kestra runs the whole VM lifecycle on vSphere: it builds the
-                    VM, waits for the patch approval in ServiceNow, and keeps
-                    every system up to date. Only the vCenter steps are tied to
-                    VMware, so you can move to another hypervisor later without
-                    rebuilding the rest.
-                </p>
-            </div>
-            <div class="player">
-                <div class="video-container">
-                    <iframe
-                        src="https://www.youtube.com/embed/brZo-5NdP2E"
-                        title="Kestra replacing vRA: the VM lifecycle on vSphere"
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
         <Platform
             heading="Switch to orchestration without lock-in"
             cards={reasons}
@@ -382,46 +359,5 @@ const faqItems = [
 
     :global(html) {
         --top-bar-height: 80px;
-    }
-
-    /* Same head as the four stages section above it, which already supplies
-     * the top padding. */
-    .demo-video {
-        padding: 0 1rem 5rem;
-        background-color: #ffffff;
-
-        .head {
-            max-width: 900px;
-            margin: 0 auto 2.5rem;
-            text-align: center;
-
-            h2 {
-                margin: 0 0 2rem;
-                color: var(--lp-content-primary);
-                font-size: 1.875rem;
-                font-weight: 600;
-                line-height: 1.0417;
-                letter-spacing: -0.045rem;
-                @include media-breakpoint-up(lg) {
-                    font-size: 3rem;
-                }
-            }
-
-            p {
-                margin: 0;
-                color: var(--lp-content-secondary);
-                font-size: 1.25rem;
-                line-height: 1.4;
-            }
-        }
-
-        /* The capped wrapper keeps the global .video-container ratio, whose
-         * padding is a percentage of its parent's width. */
-        .player {
-            max-width: 900px;
-            margin-inline: auto;
-            border-radius: 10px;
-            overflow: hidden;
-        }
     }
 </style>

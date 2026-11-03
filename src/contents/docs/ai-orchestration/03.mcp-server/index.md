@@ -28,34 +28,29 @@ This page covers Kestra as an MCP server. To call external MCP servers from a fl
 
 ## Default server
 
-A `default` MCP server is automatically provisioned for every tenant on startup. You can use it immediately with no setup needed. The `McpToolTrigger`'s `mcpServer` property defaults to `"default"`, so a minimal trigger requires no explicit server reference. The `default` server cannot be deleted, and you cannot create another server with the ID `default`.
+A `default` MCP server is automatically provisioned for every tenant on startup. You can use it immediately with no setup needed. The `McpToolTrigger`'s `mcpServer` property defaults to `"default"`, so a minimal trigger requires no explicit server reference.
 
 ## Managing MCP servers
 
 Navigate to **Tenant → MCP Servers** in the left sidebar to view, create, edit, and manage MCP servers.
 
-To script the same tasks, use the [`kestractl mcp-servers` commands](../../kestra-cli/kestractl/index.md#mcp-servers) or call the REST API at `/api/v1/{tenant}/mcp-servers`.
-
 Each server has the following fields:
 
 | Field | Description |
 |---|---|
-| `id` | Server ID, shown as **Server ID** in the UI. Must start with a lowercase letter or digit and contain only lowercase letters, digits, hyphens, and underscores. |
+| `name` | Display name for the server. |
 | `description` | Optional description shown in the UI. |
-| `instructions` | Optional instructions that the server sends to MCP clients when they connect. Use them to guide agent behavior, for example to restrict which tools to call. |
+| `systemPrompt` | Instructions prepended to every AI agent session connected to this server. Use this to guide agent behavior, for example to restrict which tools to call or define the agent's persona. |
 | `serverType` | `PRIVATE` (default) or `PUBLIC`. A private server requires authentication; a public server accepts unauthenticated connections. |
-| `authType` | `BASIC` (default), `API_TOKEN`, or `OAUTH`. See [Authentication types](#authentication-types). |
-| `oauthProvider` | Name of the OIDC provider to accept tokens from. Required when `authType` is `OAUTH`, and must not be set otherwise. |
-| `oauthScopesSupported` | Scopes advertised in the server's OAuth Protected Resource Metadata document, for example `openid`, `profile`, `email`. Required when `authType` is `OAUTH`, and must not be set otherwise. |
-| `disabled` | Whether the server is disabled. |
+| `authType` | `BASIC` (username/password, available in OSS and EE), `API_TOKEN` (EE and Cloud only), or `OAUTH` (EE and Cloud only). |
 
 ### Authentication types
 
 | Auth type | Available in | Notes |
 |---|---|---|
 | `BASIC` | OSS, EE | Username and password required on connect. |
-| `API_TOKEN` | EE and Cloud | API token required on connect. Rejected on OSS with a `403` error. |
-| `OAUTH` | EE and Cloud | OAuth 2.0 flow. Required for browser-based MCP clients such as Claude web. Rejected on OSS with a `403` error. Requires `oauthProvider` and `oauthScopesSupported`. |
+| `API_TOKEN` | EE and Cloud | API token required on connect. Rejected on OSS. |
+| `OAUTH` | EE and Cloud | OAuth 2.0 flow. Required for browser-based MCP clients such as Claude web. Configure the OAuth provider name via `oauthProvider`. |
 
 Keep servers private unless you have a specific reason to expose them publicly. A public server allows any MCP client to call any flow registered on it without authentication.
 
@@ -63,7 +58,7 @@ Keep servers private unless you have a specific reason to expose them publicly. 
 
 `OAUTH` auth requires an OIDC provider configured in your Kestra instance (the same configuration used for SSO). See [SSO configuration](../../07.enterprise/03.auth/sso/index.md) for how to set up an OIDC provider under `micronaut.security.oauth2.clients`.
 
-Once a provider is configured, set `authType` to `OAUTH` on the MCP server and set `oauthProvider` to the provider's configured name, `my-oidc-provider` in the following example. Kestra rejects a name that doesn't match a configured provider.
+Once a provider is configured, set `authType` to `OAUTH` on the MCP server. The `oauthProvider` field specifies which provider to use by its configured name:
 
 ```yaml
 # kestra.yml
@@ -84,16 +79,16 @@ When a client connects to an `OAUTH`-protected MCP server and presents no token,
 The authenticating user must already have a Kestra account. The OAuth token's `email` or `preferred_username` claim is matched against existing Kestra users. If no matching user is found, the connection is rejected.
 :::
 
-Kestra accepts a token only if its issuer matches the provider named in `oauthProvider`. Also set `oauthScopesSupported` to the scopes MCP clients should request, for example `openid`, `profile`, and `email`. Kestra advertises them in the Protected Resource Metadata document.
+If multiple OIDC providers are configured, set `oauthProvider` to the name of the specific provider (e.g. `my-oidc-provider` from the example above). If `oauthProvider` is omitted, the provider is matched automatically by the JWT's issuer claim.
 
 ## Connect an AI agent client
 
-Open a server in the UI and click the **Connect** tab. It shows the server URL, `<kestra-url>/api/v1/<tenant>/mcp/<server-id>`, and ready-to-paste configuration snippets for each supported client:
+Open a server in the UI and click the **Connect** tab. It shows the server URL and ready-to-paste configuration snippets for each supported client:
 
-- **Claude Desktop**: a JSON block to add to `claude_desktop_config.json`. Claude Desktop does not support HTTP MCP servers natively, so the snippet uses `npx mcp-remote` as a bridge.
+- **Claude Desktop**: a JSON block to add to `claude_desktop_config.json`. Claude Desktop does not support HTTP MCP servers natively, so the snippet uses `npx mcp-remote` as a bridge over SSE.
 - **Claude Code**: a `claude mcp add` command that uses `--transport http`.
-- **Cursor**: a JSON block to add to `~/.cursor/mcp.json`.
-- **Codex (OpenAI)**: a TOML block to add to `~/.codex/config.toml`.
+- **Cursor**: the server URL to paste into **Cursor Settings > MCP > Add new MCP server**.
+- **Codex**: the connection configuration.
 
 For Basic Auth, the snippets contain a `${KESTRA_BASIC_AUTH}` placeholder. MCP clients store this text literally and do not expand it when they connect, so replace it with the base64-encoded `username:password` value. In Claude Code, let your shell compute the value when you add the server:
 
@@ -107,13 +102,11 @@ claude mcp add <server-id> <server-url> \
 
 The **Tool Flows** tab on each server lists all flows that have an `McpToolTrigger` pointing at that server. Use this to audit which flows are exposed and to navigate directly to a flow's trigger configuration.
 
-To list the same tools from the command line, run `kestractl mcp-servers tools <server-id>`.
-
 ## RBAC (Enterprise)
 
 In the Enterprise Edition, `MCP_SERVER` is a first-class RBAC resource. See [RBAC](../../07.enterprise/03.auth/rbac/index.md#mcp-server-permissions) for the default role assignments.
 
-Access to a private server is also flow-scoped: a user can connect to a private MCP server only if they have `FLOW: EXECUTE` permission on at least one namespace that has a flow with an `McpToolTrigger` pointing at that server. If no flow points at the server yet, any authenticated user can connect.
+Access to a private server is also flow-scoped: a user can connect to a private MCP server only if they have `FLOW: EXECUTE` permission on at least one namespace that has a flow with an `McpToolTrigger` pointing at that server.
 
 ## MCP server cache configuration
 

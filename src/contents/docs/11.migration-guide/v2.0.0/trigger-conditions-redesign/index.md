@@ -397,8 +397,6 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 | `Expression` on webhook headers | `{{ trigger.headers['X-Key'] contains 'value' }}` — header values are lists; use `contains` not `==`. The header name must match the exact casing the sender uses. |
 | Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
 
-Custom Condition plugins, which extend `io.kestra.core.models.conditions.Condition`, are no longer supported because the `Condition` class is removed. Rewrite the logic of a custom condition as a `when` expression.
-
 For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, `isDateBetween`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference. The `timestamp` filter used for 2.0.0 to 2.0.3 is documented with the [date filters](../../../expressions/03.filters/04.dates/index.mdx).
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers

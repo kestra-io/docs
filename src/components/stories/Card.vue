@@ -1,8 +1,8 @@
 <template>
-    <article
+    <a
+        :href="`/stories/${story.slug}`"
         class="story-card"
         :class="{ 'is-highlighted': highlighted }"
-        @click="onCardClick"
     >
         <div class="card-flip">
             <div class="card-face card-face-stats">
@@ -22,24 +22,18 @@
                         <span v-else class="card-initial">{{ initial }}</span>
                     </div>
                     <div class="card-info">
-                        <a
-                            ref="link"
-                            :href="`/stories/${story.slug}`"
-                            class="card-company stretched-link"
-                        >
-                            {{ displayName }}
-                        </a>
+                        <span class="card-company">{{ displayName }}</span>
                         <p v-if="shortDesc" class="card-short-desc">{{ shortDesc }}</p>
                     </div>
                 </div>
 
                 <div class="card-bottom">
-                    <dl v-if="kpis.length" class="card-kpis">
-                        <div v-for="(kpi, i) in kpis" :key="i" class="card-kpi">
-                            <dt class="card-kpi-value" v-html="kpi.value"></dt>
-                            <dd class="card-kpi-label">{{ kpi.label }}</dd>
-                        </div>
-                    </dl>
+                    <div v-if="kpis.length" class="card-kpis">
+                        <p v-for="(kpi, i) in kpis" :key="i" class="card-kpi">
+                            <span class="card-kpi-value" v-html="kpi.value"></span>
+                            <span class="card-kpi-label">{{ kpi.label }}</span>
+                        </p>
+                    </div>
 
                     <div v-if="story.tasks?.length" class="card-footer">
                         <span class="card-plugins-label">Plugins Used :</span>
@@ -103,11 +97,11 @@
                 </div>
             </div>
         </div>
-    </article>
+    </a>
 </template>
 
 <script setup lang="ts">
-    import { computed, ref } from "vue"
+    import { computed } from "vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
 
     const MAX_TASKS = 3
@@ -149,29 +143,6 @@
                 .filter(Boolean) as { value: string; label: string }[]
         ).slice(0, MAX_KPIS),
     )
-
-    const link = ref<HTMLAnchorElement | null>(null)
-
-    // The company name is the card's only link and its stretched overlay
-    // covers the card, except the plugin icons (kept above it for their
-    // tooltips) and the quote face of a highlighted card (hit-tested even
-    // when flipped away). Forward those clicks to the link, modifiers
-    // included, so the whole card keeps navigating as the old <a> root did.
-    function onCardClick(event: MouseEvent) {
-        const anchor = link.value
-        if (!anchor || event.defaultPrevented) return
-        if (event.target instanceof Node && anchor.contains(event.target)) return
-        anchor.dispatchEvent(
-            new MouseEvent("click", {
-                cancelable: true,
-                button: event.button,
-                ctrlKey: event.ctrlKey,
-                metaKey: event.metaKey,
-                shiftKey: event.shiftKey,
-                altKey: event.altKey,
-            }),
-        )
-    }
 </script>
 
 <style scoped lang="scss">
@@ -184,17 +155,10 @@
         display: block;
         position: relative;
         height: 100%;
+        text-decoration: none;
+        color: inherit;
         border-radius: $card-radius;
-        cursor: pointer;
-
-        &:has(.stretched-link:focus-visible) {
-            outline: 2px solid var(--ks-border-active);
-            outline-offset: 4px;
-        }
-    }
-
-    .stretched-link:focus-visible {
-        outline: none;
+        outline-offset: 4px;
     }
 
     .card-flip {
@@ -220,7 +184,7 @@
         }
 
         &:hover,
-        &:has(.stretched-link:focus-visible) {
+        &:focus-visible {
             transform: translateY(-2px);
 
             .card-face-stats {
@@ -248,7 +212,7 @@
         }
 
         &:hover .card-flip,
-        &:has(.stretched-link:focus-visible) .card-flip {
+        &:focus-visible .card-flip {
             transform: rotateY(180deg);
         }
 
@@ -351,7 +315,6 @@
         letter-spacing: -0.1px;
         line-height: 1.5rem;
         color: var(--ks-content-primary);
-        text-decoration: none;
     }
 
     .card-short-desc {
@@ -372,19 +335,17 @@
         gap: 1rem;
     }
 
-    // A description list, so value and label stay separate lines once the
-    // page is converted to Markdown (adjacent inline spans concatenate).
     .card-kpis {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.5rem;
-        margin: 0;
         padding: 1rem 0;
         border-top: 1px solid var(--ks-border-primary);
         border-bottom: 1px solid var(--ks-border-primary);
     }
 
     .card-kpi {
+        margin: 0;
         min-width: 0;
         font-size: 0.875rem;
         line-height: 1.25rem;
@@ -392,11 +353,11 @@
     }
 
     .card-kpi-value {
+        display: block;
         font-weight: 600;
     }
 
     .card-kpi-label {
-        margin: 0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -422,8 +383,6 @@
         display: flex;
         gap: 0.25rem;
         align-items: center;
-        position: relative;
-        z-index: 2;
     }
 
     .task-icon-wrap {

@@ -48,7 +48,7 @@ To generate this file automatically, use the following Bash script:
 
 ```bash
 while IFS='=' read -r key value; do
-    echo "SECRET_$key=$(echo -n "$value" | openssl base64 -A)";
+    echo "SECRET_$key=$(echo -n "$value" | base64)";
 done < .env > .env_encoded
 ```
 
@@ -57,13 +57,7 @@ This script:
 2. Adds the `SECRET_` prefix to all variable names.
 3. Saves the result as `.env_encoded`.
 
-The script uses `openssl base64 -A` instead of plain `base64` because each encoded value must stay on a single line. On Linux, `base64` wraps output every 76 characters, so a long secret such as an API token or private key splits across several lines. Docker Compose reads only the first line of the value, and Kestra receives a truncated secret without logging an error. The `-A` flag disables wrapping, and the command works the same on Linux and macOS. To encode a single value, run:
-
-```bash
-echo -n "<SECRET>" | openssl base64 -A
-```
-
-Verify the output by opening `.env_encoded`. Each line should match the format in the example above, with one `SECRET_` variable per line.
+You can verify the output by opening `.env_encoded` — it should look like the example above.
 
 Alternatively, you can manually write the file using macros to encode secrets dynamically:
 

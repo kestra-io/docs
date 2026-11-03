@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import { GUIDE_HREF, WEBINAR_HREF } from "./links"
+import { GUIDE_HREF, WEBINAR_HREF_EU, WEBINAR_HREF_US } from "./links"
 
 const STEPS = [
     {
@@ -9,9 +9,14 @@ const STEPS = [
         href: GUIDE_HREF,
     },
     {
-        title: "November 4, 2 PM CET (8 AM ET)",
-        text: "Join the live webinar on LinkedIn and YouTube: Moving off VMware? Start with the orchestrator.",
-        href: WEBINAR_HREF,
+        title: "November 4 · Europe and Asia",
+        text: "Join the live webinar: Moving off VMware? Start with the orchestrator.",
+        href: WEBINAR_HREF_EU,
+    },
+    {
+        title: "November 5 · Americas",
+        text: "Join the live webinar: Moving off VMware? Start with the orchestrator.",
+        href: WEBINAR_HREF_US,
     },
 ]
 ---

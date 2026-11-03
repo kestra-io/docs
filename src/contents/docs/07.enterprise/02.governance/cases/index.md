@@ -209,7 +209,7 @@ Case events are wired into the in-app notification system (the bell icon). Seven
 
 ## Permissions and audit
 
-- RBAC: a new `CASE` permission resource with actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`, optionally scoped to a namespace (_creating a case requires `CREATE` on its namespace, transitions, linking and commenting require `UPDATE`_).
+- RBAC: a new `CASE` permission resource with actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`, optionally scoped to a namespace (_creating a case requires `CREATE` on its namespace, transitions and linking require `UPDATE`, commenting only requires `VIEW`_).
 - Audit: create, update, and delete of cases and case templates are recorded in the [audit log](../06.audit-logs/index.md) (resource types `CASE` and `CASE_TEMPLATE`). Timeline events and comments are not separately audited.
 - Backup: cases, templates, timeline events, and execution links are included in backup and restore.
 

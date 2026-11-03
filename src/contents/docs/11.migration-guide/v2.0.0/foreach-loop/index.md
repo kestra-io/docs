@@ -38,7 +38,7 @@ The table below maps every `ForEach` expression to its `Loop` equivalent. The se
 | `parents[0].taskrun.value` | `item.parent.value` | Only when inside the inner Loop of two nested Loops. When used inside a nested flowable (If, Parallel) within a single Loop, use `item.value` instead |
 | `parents[1].taskrun.value` | `item.parents[0].value` (three nested Loops) | `item.parents` counts from the outermost loop, the reverse of ForEach `parents`. Count from the outermost loop to pick the index |
 | `outputs.task_id[taskrun.value].value` | `outputs.task_id.value` | Inside the iteration; task outputs are scoped to the current sub-execution |
-| `outputs.foreach_id[value].field` (after the loop) | `loopOutputs(outputs.loop_id.outputs, 'output_id')` (all values as a list) or a `jq` filter on `item.iteration` (one iteration) | Outside the loop; outputs are now a list in completion order; key-based access by value string is no longer supported |
+| `outputs.foreach_id[value].field` (after the loop) | `outputs.loop_id.outputs[n].outputs.output_id` (by index) or `loopOutputs(outputs.loop_id.outputs, 'output_id')` (all values as a list) | Outside the loop; outputs are now a list; key-based access by value string is no longer supported |
 
 ## Pattern quick reference
 
@@ -317,7 +317,7 @@ In `Loop`, each iteration runs in its own sub-execution. Task outputs inside an 
 | `FETCH` | `outputs.<loop_id>.outputs`: in-memory list of all iterations | Small iteration counts |
 | `STORE` | `outputs.<loop_id>.uri`: URI to a file in internal storage | Large iteration counts |
 
-With `FETCH`, after the loop completes, `outputs.<loop_id>.outputs` is a list of iteration results; each entry has an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. The list follows the order in which iterations finished, so when iterations run in parallel, `outputs.<loop_id>.outputs[0]` isn't necessarily the first iteration. To read one iteration, filter on `item.iteration`, as in the example below. To extract one output across all iterations as a list, use the [`loopOutputs()` function](../../../expressions/04.functions/04.workflow/index.mdx#loopoutputs). With `STORE`, the results are written to internal storage and exposed as `outputs.<loop_id>.uri`; use this for loops with large iteration counts where loading everything into memory is not practical.
+With `FETCH`, after the loop completes, `outputs.<loop_id>.outputs` is a list of iteration results; each entry has an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. Access a single iteration by index: `outputs.<loop_id>.outputs[n].outputs.<output_id>`. To extract one output across all iterations as a list, use the [`loopOutputs()` function](../../../expressions/04.functions/04.workflow/index.mdx#loopoutputs). With `STORE`, the results are written to internal storage and exposed as `outputs.<loop_id>.uri`; use this for loops with large iteration counts where loading everything into memory is not practical.
 
 **Before**
 
@@ -359,38 +359,8 @@ tasks:
     message: |
       Loop ran {{ outputs.loop.iterationCount }} iterations.
       All results: {{ loopOutputs(outputs.loop.outputs, 'result') }}
-      First result: {{ outputs.loop.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.result') | first }}
+      First result: {{ outputs.loop.outputs[0].outputs.result }}
 ```
-
-### Unit tests
-
-If you use [unit tests](../../../07.enterprise/02.governance/unit-tests/index.md), review the test suites of every flow you migrate. A test suite is stored separately from its flow, so rewriting `ForEach` as `Loop` leaves the suite unchanged. A suite written for `ForEach` can then fail, or pass while it no longer tests what you expect.
-
-Update each suite as follows:
-
-- Remove `value` from task fixtures on tasks inside the loop. In `ForEach`, a fixture with `value` matched only the iteration with that value. Tasks inside a `Loop` iteration have no value, so a fixture with `value` never matches and the real task runs. A fixture without `value` applies to every iteration; you can't mock a single iteration.
-- Rewrite assertions that read task outputs by value. `outputs.<task_id>['<value>']` doesn't exist after a `Loop`, and the test case reports an error such as ``Unable to find `process` used in the expression``. Declare the value in the `Loop` `outputs:` block and assert on `loopOutputs()` instead.
-- Don't assert on the order of `loopOutputs()`. The list follows the order in which iterations finished, and iterations that run in parallel can finish in a different order on each run. Sort the list before you compare it, or set `concurrencyLimit: 1` on the `Loop`.
-
-For the flows in the [Outputs](#outputs) example, an assertion on the `ForEach` flow changes as follows.
-
-**Before**
-
-```yaml
-assertions:
-  - value: "{{ outputs.process['b'].values.result }}"
-    equalTo: "processed b"
-```
-
-**After**
-
-```yaml
-assertions:
-  - value: "{{ loopOutputs(outputs.loop.outputs, 'result') | sort | join(',') }}"
-    equalTo: "processed a,processed b,processed c"
-```
-
-After you update a suite, run it and confirm that every test case passes before you rely on it.
 
 ## Migrating `ForEachItem`
 
@@ -496,7 +466,6 @@ For flows that used `ForEachItem` with batch sizes larger than 1, set `rows` on 
 2. Replace every `{{ taskrun.value }}` inside the loop with `{{ item.value }}`.
 3. Replace every `{{ taskrun.iteration }}` inside the loop with `{{ item.index }}`.
 4. Remove `parent.taskrun.value` and `parents[0].taskrun.value` references inside nested flowables; `{{ item.value }}` works directly at any nesting depth.
-5. Update post-loop output access: declare `outputs` on the Loop task and set `fetchType`. With `FETCH`, `outputs.<loop_id>.outputs` is an in-memory list of iteration results in completion order; extract one field across all iterations as a list with `{{ loopOutputs(outputs.<loop_id>.outputs, '<output_id>') }}`, or filter on `item.iteration` to read one iteration. With `STORE`, results are written to internal storage and exposed as `outputs.<loop_id>.uri`. See the [fetchType table](#outputs) in the Outputs section for all modes.
+5. Update post-loop output access: declare `outputs` on the Loop task and set `fetchType`. With `FETCH`, `outputs.<loop_id>.outputs` is an in-memory list of iteration results; access a single entry by index with `outputs.<loop_id>.outputs[n].outputs.<output_id>`, or extract one field across all iterations as a list with `{{ loopOutputs(outputs.<loop_id>.outputs, '<output_id>') }}`. With `STORE`, results are written to internal storage and exposed as `outputs.<loop_id>.uri`. See the [fetchType table](#outputs) in the Outputs section for all modes.
 6. Search all flows for `io.kestra.plugin.core.flow.ForEachItem` and migrate to `Loop` with a URI value as described above.
 7. Validate each updated flow by saving it in the Kestra UI or via the API and confirming no parse errors.
-8. If a migrated flow has unit tests, update its test suites as described in [Unit tests](#unit-tests), then run them.

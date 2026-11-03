@@ -3,7 +3,6 @@ import Layout from "~/components/layout.astro"
 import AboutHero from "~/components/about/AboutHero.astro"
 import Company from "~/components/about/Company.astro"
 import WhyWeExist from "~/components/about/WhyWeExist.astro"
-import FounderQuote from "~/components/about/FounderQuote.astro"
 import Numbers from "~/components/about/Numbers.astro"
 import Customers from "~/components/about/Customers.astro"
 import Principles from "~/components/about/Principles.astro"
@@ -28,7 +27,6 @@ const description =
         <AboutHero />
         <Company />
         <WhyWeExist />
-        <FounderQuote />
         <Numbers />
         <Customers />
         <Principles />
@@ -59,17 +57,15 @@ const description =
 
     .about-us {
         overflow-x: clip;
-        --ks-border-primary: #e2e2e8;
-
         background: var(--ks-background-body);
 
         :global(html.dark) & {
-            --ks-border-primary: #46454d;
+            --ks-border-primary: #2c2b31;
         }
 
         :global(.container) {
             @include media-breakpoint-up(xxl) {
-                max-width: 1424px;
+                max-width: 1320px;
             }
 
             @include media-breakpoint-down(md) {

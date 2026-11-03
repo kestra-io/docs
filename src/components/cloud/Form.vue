@@ -100,8 +100,10 @@
                                     : "Select a range"
                             }}
                         </option>
-                        <option value="<100">below 100</option>
-                        <option value="100-999">between 100 and 999</option>
+                        <option value="below 100">below 100</option>
+                        <option value="between 100 and 999">
+                            between 100 and 999
+                        </option>
                         <option value="1000+">1000+</option>
                     </select>
                 </div>

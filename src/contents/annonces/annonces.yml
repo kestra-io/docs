@@ -9,7 +9,7 @@
   tail: "Infrastructure Automation, AI Workflows and Data Pipelines courses"
   href: "https://academy.kestra.io/"
 - id: 2
-  tag: "Live webinar"
-  linkText: "Moving off VMware? Start with the orchestrator."
-  tail: "Wed, Nov 4, 2 PM CET on LinkedIn Live"
-  href: "https://www.linkedin.com/posts/if-youre-planning-to-leave-vmware-whether-ugcPost-7523066355202424833-RHOA/"
+  tag: "VMware migration"
+  linkText: "Leaving vRA?"
+  tail: "Get the migration guide and plan your move off Aria Automation in waves"
+  href: "/lp/vra-migration"

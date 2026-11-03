@@ -55,7 +55,7 @@ namespace: company.team
 
 inputs:
   - id: debug
-    type: BOOL
+    type: BOOLEAN
 
 tasks:
   - id: return

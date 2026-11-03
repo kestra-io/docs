@@ -34,7 +34,7 @@ const tagsList = tags?.length
     : (blueprint.tags ?? [])
 ---
 
-<article class="blueprint">
+<a href={href} class="blueprint">
     {
         isCustomerSuccess && (
             <span class="cs-badge" title={CUSTOMER_SUCCESS_LABEL}>
@@ -44,7 +44,7 @@ const tagsList = tags?.length
         )
     }
     <h6 class="title">
-                <a href={href} class="stretched-link">{capitalizedTitle}</a>
+        {capitalizedTitle}
     </h6>
     {
         blueprint.shortDescription && (
@@ -88,13 +88,12 @@ const tagsList = tags?.length
             }
         </div>
     </div>
-</article>
+</a>
 
 <style lang="scss">
     @use "/src/components/blueprints/_blueprintCard.scss" as blueprintCard;
 
     .blueprint {
-position: relative;
         @include blueprintCard.blueprint-card-base;
 
         .cs-badge {

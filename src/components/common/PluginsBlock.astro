@@ -3,6 +3,7 @@ import { $fetchApiCachedOptional } from "~/utils/fetch"
 import { type PluginMetadata } from "~/utils/plugins/plugin"
 
 import Link from "~/components/common/Link.astro"
+import TaskIcon from "~/components/common/TaskIcon.astro"
 
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { randomSortFunction } from "~/utils/random"
@@ -28,15 +29,10 @@ const plugins = metadata
         }
     })
 
-// The logos leave the SSR HTML entirely: each row ships as a JSON payload
-// and a client script stamps it twice (the marquee's translateX(-50%) needs
-// two copies). Rendering 160 `<a><img>` server-side put two ~10K-char lines
-// of icon links into the Markdown that Cloudflare derives from this HTML for
-// AI agents (#5661). `cls` is the icon class, `link` the plugin group page.
 const rows = [
     plugins.slice(0, plugins.length / 2),
     plugins.slice(plugins.length / 2),
-].map((items) => items.map(({ group, link }) => ({ cls: group, link })))
+]
 ---
 
 <section class="plugins">
@@ -54,8 +50,8 @@ const rows = [
                         Connect with third-party systems, data sources, and
                         applications.
                         <br class="d-none d-lg-block" />
-                        And if you require a custom integration, our platform
-                        makes it easy to build custom plugins.
+                        And if you require a custom integration, our platform makes
+                        it easy to build custom plugins.
                     </slot>
                 </p>
             </div>
@@ -72,98 +68,23 @@ const rows = [
     </div>
 
     <div class="carousel">
-        {rows.map((items) => (
-            <div class="carousel-row">
-                <div
-                    class="carousel-track"
-                    data-plugins={JSON.stringify(items)}
-                />
-            </div>
-        ))}
+        {
+            rows.map((items) => (
+                <div class="carousel-row">
+                    <div class="carousel-track">
+                        {[...items, ...items].map((plugin) => (
+                            <a href={plugin.link} class="plugin-logo">
+                                <TaskIcon cls={plugin.group} />
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            ))
+        }
     </div>
 </section>
 
-<script>
-    import { themeIconSrc, watchThemeIcons } from "~/utils/themeIcons"
-
-    type TickerPlugin = { cls: string; link: string }
-
-    // Same markup TaskIcon.astro renders, built on the client. Astro scopes
-    // this component's styles with a `data-astro-cid-*` attribute, so the
-    // stamped anchors copy it from the track to pick up `.plugin-logo`.
-    function pluginLogo(plugin: TickerPlugin, scope: Attr[]): HTMLElement {
-        const name = plugin.cls.split(".").pop() ?? plugin.cls
-
-        const anchor = document.createElement("a")
-        anchor.href = plugin.link
-        anchor.className = "plugin-logo"
-        for (const attr of scope) {
-            anchor.setAttribute(attr.name, attr.value)
-        }
-
-        const wrapper = document.createElement("div")
-        wrapper.className = "icon-wrapper"
-        wrapper.dataset.tooltip = name
-
-        const img = document.createElement("img")
-        img.dataset.themeResponsive = ""
-        // resolved against the current theme up front so the neutral
-        // `/icons/<cls>.svg` is never requested
-        img.src = themeIconSrc(`/icons/${plugin.cls}.svg`)
-        img.alt = `${name} icon`
-        img.width = 32
-        img.height = 32
-        img.loading = "lazy"
-        img.decoding = "async"
-        img.onerror = () => {
-            wrapper.style.display = "none"
-        }
-
-        wrapper.appendChild(img)
-        anchor.appendChild(wrapper)
-        return anchor
-    }
-
-    // re-run on every page load: the ClientRouter swaps in fresh, empty tracks
-    // without re-running this module
-    function stampPluginTickers() {
-        const tracks = document.querySelectorAll<HTMLElement>(
-            "section.plugins .carousel-track[data-plugins]",
-        )
-        for (const track of tracks) {
-            // already stamped (bfcache restore, repeated page-load)
-            if (track.childElementCount) continue
-
-            const plugins: TickerPlugin[] = JSON.parse(
-                track.dataset.plugins ?? "[]",
-            )
-            const scope = [...track.attributes].filter((attr) =>
-                attr.name.startsWith("data-astro-cid-"),
-            )
-            const fragment = document.createDocumentFragment()
-            for (const plugin of [...plugins, ...plugins]) {
-                fragment.append(pluginLogo(plugin, scope))
-            }
-            track.appendChild(fragment)
-        }
-    }
-
-    // keeps the stamped icons following the theme toggle even on pages where
-    // TaskIcon.astro itself never rendered
-    watchThemeIcons()
-
-    document.addEventListener("astro:page-load", stampPluginTickers)
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", stampPluginTickers)
-    } else {
-        stampPluginTickers()
-    }
-</script>
-
 <style lang="scss">
-    $logo-size: 79px;
-    $logo-size-sm: 65px;
-
     section.plugins {
         padding: 6rem 0;
         display: flex;
@@ -226,19 +147,6 @@ const rows = [
                 align-items: center;
                 position: relative;
                 z-index: 1;
-                // the logos are stamped after first paint: reserve their
-                // height (plus the first track's padding) so nothing shifts
-                min-height: $logo-size;
-                &:nth-child(1) {
-                    min-height: calc(#{$logo-size} + 0.5rem);
-                }
-                @include media-breakpoint-down(sm) {
-                    min-height: $logo-size-sm;
-                    &:nth-child(1) {
-                        min-height: calc(#{$logo-size-sm} + 0.5rem);
-                    }
-                }
-
                 .carousel-track {
                     display: flex;
                     gap: 10px;
@@ -256,8 +164,8 @@ const rows = [
             }
 
             .plugin-logo {
-                width: $logo-size;
-                height: $logo-size;
+                width: 79px;
+                height: 79px;
                 background: var(--ks-background-primary);
                 border-radius: 12px;
                 border: $block-border;
@@ -272,46 +180,15 @@ const rows = [
                 transition: all 0.2s ease;
 
                 @include media-breakpoint-down(sm) {
-                    width: $logo-size-sm;
-                    height: $logo-size-sm;
+                    width: 65px;
+                    height: 65px;
                 }
 
-                // stamped on the client, so TaskIcon.astro's scoped styles
-                // never reach these nodes: the wrapper and tooltip live here
-                :global(.icon-wrapper) {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-                    position: relative;
-                    touch-action: pan-y;
-                    pointer-events: auto;
-                    aspect-ratio: 1 / 1;
-
-                    &[data-tooltip]:hover::after {
-                        content: attr(data-tooltip);
-                        position: absolute;
-                        bottom: calc(100% + 16px);
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background: var(--ks-background-body);
-                        border: 1px solid var(--ks-border-secondary);
-                        border-radius: 8px;
-                        color: var(--ks-content-primary);
-                        font-size: $font-size-xs;
-                        padding: 0.25rem 0.5rem;
-                        white-space: nowrap;
-                        z-index: 1000;
-                        pointer-events: none;
-                    }
-                }
-
+                :global(svg),
                 :global(img) {
                     width: 100%;
                     height: 100%;
                     object-fit: contain;
-                    aspect-ratio: 1 / 1;
                 }
 
                 &:hover {

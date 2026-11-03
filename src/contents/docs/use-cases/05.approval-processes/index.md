@@ -62,7 +62,7 @@ tasks:
     type: io.kestra.plugin.core.flow.Pause
     onResume:
       - id: approved
-        type: BOOL
+        type: BOOLEAN
         description: Approve this request?
       - id: reason
         type: STRING
@@ -99,7 +99,7 @@ Add approval steps with structured inputs to any workflow:
     type: io.kestra.plugin.core.flow.Pause
     onResume:
       - id: approved
-        type: BOOL
+        type: BOOLEAN
         displayName: Approve this request?
       - id: reason
         type: STRING
@@ -365,7 +365,7 @@ Since Kestra 0.24, there’s [no longer](https://github.com/kestra-io/kestra/pul
      type: io.kestra.plugin.core.flow.Pause
      onResume:
        - id: signoff
-         type: BOOL
+         type: BOOLEAN
          required: true
    ```
 3. **Configure Notifications** – Use Slack, Teams, or Email plugins to notify users about pending approvals:

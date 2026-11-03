@@ -1,4 +1,5 @@
 import {
+    higherTier,
     tierFromCompany,
     tierFromEmployees,
     type Tier,
@@ -116,11 +117,13 @@ function toRouting(
     properties: Properties,
     employees?: string,
 ): Routing | undefined {
-    const tier =
+    const tier = higherTier(
         tierFromCompany({
             leadTier: properties.lead_tier,
             employees: properties.numberofemployees,
-        }) ?? (employees ? tierFromEmployees(employees) : undefined)
+        }),
+        employees ? tierFromEmployees(employees) : undefined,
+    )
     const territory = territoryFromHq({
         countryCode: properties.hs_country_code,
         country: properties.country,

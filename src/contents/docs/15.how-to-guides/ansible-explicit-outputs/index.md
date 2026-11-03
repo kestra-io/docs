@@ -17,7 +17,7 @@ When `outputsMode: EXPLICIT` is set, the AnsibleCLI task passes `KESTRA_OUTPUTS_
 
 1. Collects outputs only from `kestra` module calls — `kestra: outputs: { key: value }` in your playbook.
 2. Merges all declared outputs into a single flat dict (last write wins across hosts and module calls).
-3. Replaces each host's full result payload in `playbooks` with `{"changed": <bool>}`. Failed, unreachable, and ignored hosts also retain `msg`, unless the task sets `no_log`. To also keep the return code and a stderr tail, see [Debug failures in EXPLICIT mode](#debug-failures-in-explicit-mode).
+3. Replaces each host's full result payload in `playbooks` with `{"changed": <bool>}`. Failures and unreachable hosts also retain `msg`.
 4. Preserves task status (ok, failed, skipped, unreachable) so you can still inspect play health.
 
 The `kestra` module is bundled with the plugin and injected automatically — no extra installation is needed.
@@ -165,33 +165,6 @@ Both modes share the same `vars.outputs` shape — a flat map of keys declared v
 ```
 
 By default, full per-host results are offloaded to a file at `resultsUri` (`resultsStorage: STORE`), and `playbooks` keeps a light result per host. Set `resultsStorage: INLINE` to keep the full results in `playbooks`, for example when a downstream task templates `stdout`. See [`resultsStorage` and `resultsUri`](#resultsstorage-and-resultsuri) for details and size limits.
-
-## Debug failures in EXPLICIT mode
-
-By default, a failed host in EXPLICIT mode keeps only `msg`, which for `shell` and `command` tasks is often just `non-zero return code`. Set `logFailureDetails: true` to also keep the return code and the end of stderr for failed hosts:
-
-```yaml
-tasks:
-  - id: run_playbook
-    type: io.kestra.plugin.ansible.cli.AnsibleCLI
-    outputsMode: EXPLICIT
-    logFailureDetails: true
-    ...
-```
-
-For failed, unreachable, and ignored hosts, the task then adds `rc` and the last 1 KB of `stderr` to the host's `result` in `playbooks` and to its failure log line. For example, a failed `shell` task logs:
-
-```
-[localhost] failed => non-zero return code (rc=2) | stderr: Permission denied
-```
-
-For a loop task, each failed or unreachable item also keeps its `msg`, `rc`, and `stderr` tail, up to 50 items per host and task, and gets its own log line. Item values stay redacted, so the lines do not show which item failed. Successful, changed, and skipped hosts stay redacted, `stdout` is never kept, and results from tasks or loop items that set `no_log` get no details.
-
-`logFailureDetails` has no effect with `outputsMode: ALL`, which already keeps `rc` and the `stderr` tail for failed hosts.
-
-:::alert{type="warning"}
-stderr can contain passwords, tokens, or other secrets, for example when a command prints a credential in an error message. Enable `logFailureDetails` only when stderr is safe to show to anyone with access to the execution's outputs and logs.
-:::
 
 ## `resultsStorage` and `resultsUri`
 

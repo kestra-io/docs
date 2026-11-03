@@ -1,9 +1,9 @@
 ---
-import { WEBINAR_HREF } from "./assistant/links"
+import { WEBINAR_HREF_EU, WEBINAR_HREF_US } from "./assistant/links"
 
-// The session is November 4 at 2 PM CET (13:00 UTC); the banner hides itself
-// client-side once it is over (15:00 UTC).
-const endsAt = Date.UTC(2026, 10, 4, 15)
+// The Americas session is November 5 at 11 AM PT; the banner stays up until
+// the end of that day in PT (PST, UTC-8), then hides itself client-side.
+const endsAt = Date.UTC(2026, 10, 6, 8)
 ---
 
 <aside class="webinar-banner" aria-label="Webinar">
@@ -11,10 +11,16 @@ const endsAt = Date.UTC(2026, 10, 4, 15)
         <strong>Live webinar:</strong> Moving off VMware? Start with the orchestrator.
         <span class="sessions">
             <a
-                href={WEBINAR_HREF}
+                href={WEBINAR_HREF_EU}
                 target="_blank"
                 rel="noopener"
-                data-webinar-session="eu">Wed Nov 4, 2 PM CET (8 AM ET)</a
+                data-webinar-session="eu">Wed Nov 4, 2 PM CET</a
+            >
+            <a
+                href={WEBINAR_HREF_US}
+                target="_blank"
+                rel="noopener"
+                data-webinar-session="us">Thu Nov 5, 11 AM PT</a
             >
         </span>
     </p>
@@ -26,8 +32,8 @@ const endsAt = Date.UTC(2026, 10, 4, 15)
 
 <script>
     // Each click is pushed to the dataLayer for GTM, like the webinar line in
-    // the LP's Assistant section: registrations happen on Luma, which reports
-    // nothing back.
+    // the LP's Assistant section: registrations happen on Contrast, which
+    // reports nothing back.
     function trackWebinarBanner() {
         for (const link of document.querySelectorAll<HTMLAnchorElement>(
             ".webinar-banner a[data-webinar-session]",
