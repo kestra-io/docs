@@ -1037,7 +1037,7 @@ Azure can take a few minutes to propagate a new role assignment.
 
 - Each queue is an event hub named `<kestra.queue.prefix>__<queue>`. A keyed dispatch queue has one event hub per routing key, named `<kestra.queue.prefix>__<queue>__<token>`, where the token encodes the routing key. An empty routing key gives the token `default`.
 - Kestra creates or checks an event hub the first time a queue is used, not at startup, so a missing or misconfigured event hub is reported on first use.
-- When `subscription-id` and `resource-group` are set, Kestra creates the missing event hubs and consumer groups through Azure Resource Manager. Otherwise, create them in advance, for example with Terraform. Broadcast hubs need the consumer groups `kestra-broadcast-00`, `kestra-broadcast-01`, and so on, as many as `broadcast-consumer-groups`. Kestra refuses an existing event hub with fewer partitions than it needs, and names the setting to change.
+- When `subscription-id` and `resource-group` are set, Kestra creates the missing event hubs and consumer groups through Azure Resource Manager. Otherwise, create them in advance, for example with Terraform. Broadcast hubs need the consumer groups `kestra-broadcast-00`, `kestra-broadcast-01`, and so on, as many as `broadcast-consumer-groups`. Kestra refuses an existing event hub with fewer partitions than it needs, and names the setting to change. Kestra never changes the partitions of an existing event hub. A Premium or Dedicated namespace allows increasing them, but that moves keys to other partitions, so drain the queues first.
 - Kestra never deletes an event hub.
 - Dispatch queues share the `$Default` consumer group of their event hub, and the Kestra services balance its partitions between them. Kestra creates the checkpoint container when it is missing.
 - An Event Hubs consumer group accepts 5 readers, so a broadcast hub accepts at most `broadcast-consumer-groups` × 5 services. The default of 20 consumer groups allows 100 services.
@@ -1049,7 +1049,7 @@ A prefix can contain only letters, digits, `.`, `-`, and `_`, and must start wit
 Event Hubs confirms a publish only once the event is durably stored. Publishing therefore costs a network round trip to Event Hubs, and Kestra waits for each confirmation before going on. That latency stays the same as load grows, but it limits how many messages one subscriber processes per second, because a subscriber hands its messages to Kestra one at a time.
 
 - Run Kestra in the same Azure region as the namespace. The round trip from outside the region multiplies the time each message takes.
-- `partition-count` doesn't make one Kestra instance faster. More partitions only help when several instances consume the same queue, each taking part of the partitions. To process more executions, add Executor instances and set `partition-count` to at least their number.
+- `partition-count` doesn't make one Kestra instance faster. More partitions only help when several instances consume the same queue, each taking part of the partitions. With the default of `4`, at most 4 Executors share the execution queue. To process more executions, add Executor instances and set `partition-count` to at least their number.
 - Processing units don't lower the latency of a publish. Add some only when Event Hubs throttles the namespace.
 
 #### Failures
@@ -1076,7 +1076,7 @@ A service that shuts down gracefully gives up its partitions at once. When a ser
 | `kestra.queue.azure-eventhub.broadcast-consumer-groups` | Consumer groups of a broadcast hub, from `1` to `100`. | `20` |
 | `kestra.queue.azure-eventhub.batch-size` | Events a subscriber processes together. | `100` |
 | `kestra.queue.azure-eventhub.load-balancing-interval` | How often the services rebalance the partitions of an event hub. A partition's ownership expires after 6 times this, and a paused subscriber gives its partitions up after this. | `PT5S` |
-| `kestra.queue.azure-eventhub.message-retention` | Retention of the event hubs Kestra creates, from `P1D` to `P90D`. | `P1D` |
+| `kestra.queue.azure-eventhub.message-retention` | Retention of the event hubs Kestra creates, from `P1D` to `P90D`. | `P7D` |
 | `kestra.queue.azure-eventhub.refusal-tolerance` | How long Event Hubs can refuse a subscriber for good before Kestra stops. | `PT5M` |
 
 ## MCP server cache
