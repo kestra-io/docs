@@ -28,12 +28,12 @@
                 </div>
 
                 <div class="card-bottom">
-                    <div v-if="kpis.length" class="card-kpis">
-                        <p v-for="(kpi, i) in kpis" :key="i" class="card-kpi">
-                            <span class="card-kpi-value" v-html="kpi.value"></span>
-                            <span class="card-kpi-label">{{ kpi.label }}</span>
-                        </p>
-                    </div>
+                    <dl v-if="kpis.length" class="card-kpis">
+                        <div v-for="(kpi, i) in kpis" :key="i" class="card-kpi">
+                            <dt class="card-kpi-value" v-html="kpi.value"></dt>
+                            <dd class="card-kpi-label">{{ kpi.label }}</dd>
+                        </div>
+                    </dl>
 
                     <div v-if="story.tasks?.length" class="card-footer">
                         <span class="card-plugins-label">Plugins Used :</span>
@@ -335,17 +335,19 @@
         gap: 1rem;
     }
 
+    // A description list, so value and label stay separate lines once the
+    // page is converted to Markdown (adjacent inline spans concatenate).
     .card-kpis {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.5rem;
+        margin: 0;
         padding: 1rem 0;
         border-top: 1px solid var(--ks-border-primary);
         border-bottom: 1px solid var(--ks-border-primary);
     }
 
     .card-kpi {
-        margin: 0;
         min-width: 0;
         font-size: 0.875rem;
         line-height: 1.25rem;
@@ -353,11 +355,11 @@
     }
 
     .card-kpi-value {
-        display: block;
         font-weight: 600;
     }
 
     .card-kpi-label {
+        margin: 0;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
