@@ -50,8 +50,8 @@
                 <template #content>
                     <div class="d-flex flex-column gap-3">
                         <p class="mb-0">
-                            If you use one of our Docker images tagged <code>*-full</code>, this plugin is already included.
-                            Otherwise, install it with the following command:
+                            Our standard Docker images already include this plugin. If you use a <code>-slim</code> image or another setup,
+                            install it with the following command:
                         </p>
                         <CodeTabs
                             :tabs="[
