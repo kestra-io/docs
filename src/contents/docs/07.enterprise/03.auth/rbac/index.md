@@ -48,6 +48,8 @@ A binding scoped to a namespace can only use a role whose permissions are all na
 
 Of the [managed roles](#managed-roles), only Launcher can be bound to a namespace. To give a team access to one namespace, bind Launcher or a custom role that only holds namespace-level permissions to that namespace. `GET /api/v1/{tenant}/acls/scopes` returns the scope of each resource and action.
 
+In the UI, the role editor marks tenant-level permissions with a **Tenant** tag. When you pick a role for a binding restricted to one or more namespaces, roles that hold a tenant-level permission are disabled and list the tenant-level resources they grant. If such a role is already selected when you restrict the binding to a namespace, it is removed and a warning names it.
+
 When upgrading to 2.1.0, existing namespace bindings of roles with tenant-level permissions move to a `<Role name> (namespace)` role that only holds the namespace-level permissions. Keep those roles free of tenant-level permissions. See the [2.1.0 migration guide](../../../11.migration-guide/v2.1.0/namespace-binding-scope/index.md).
 
 ## Impersonate
