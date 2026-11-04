@@ -3,7 +3,7 @@ title: Develop Plugin Artifacts
 h1: How to Build Custom Vue.js UI Components for Your Kestra Plugin
 sidebarTitle: Develop Plugin Artifacts
 icon: /src/contents/docs/icons/dev.svg
-description: Build custom Vue.js UI components for your Kestra plugin using Module Federation and the artifact-sdk. Use the execution-artifact slot on Kestra 2.1.0 and later.
+description: Build custom Vue.js UI components for your Kestra plugin using Module Federation and the artifact-sdk. Register the execution-artifact slot for Kestra 2.1 and later, and the topology slots for Kestra 2.0.x.
 version: ">= 2.0.0"
 ---
 
@@ -11,14 +11,16 @@ Plugins can ship custom Vue.js frontend components that load directly into the K
 
 This lets you build domain-specific experiences in the Kestra UI: show a model graph, a compiled query or a report in the **Artifacts** tab of an execution, or add a line of metadata to an asset card. The core UI stays lean; each plugin brings exactly the UI it needs.
 
-:::alert{type="info"}
-**Which slot should I use?** From Kestra 2.1.0, use the [`execution-artifact`](#execution-artifact) slot. The `topology-details`, `topology-task-drawer` and `topology-task-modal` slots were removed from Kestra core in 2.1.0 and are deprecated. They are only needed for Kestra 2.0.x, see [Kestra 2.0.x: topology slots (deprecated)](#kestra-20x-topology-slots-deprecated). A manifest can list both sets: each host ignores the slots it does not know.
-:::
+Register **both slot sets** in the same manifest, so one plugin version works on Kestra 2.0.x and on 2.1 and later. No `kestraVersion` bump and no newer Java version is needed for this.
 
-| Kestra version | Slot to register |
-|---|---|
-| 2.1.0 and later | `execution-artifact` (and `asset-card-footer` in the Enterprise Edition) |
-| 2.0.x | `topology-details`, `topology-task-drawer`, `topology-task-modal` (deprecated) |
+| Kestra version | What the host does | Slots to register |
+|---|---|---|
+| 2.0.x | Renders the topology slots | `topology-details`, `topology-task-drawer`, `topology-task-modal` (deprecated) |
+| 2.1 and later | Ignores the topology slots and renders `execution-artifact` | `execution-artifact` (and `asset-card-footer` in the Enterprise Edition) |
+
+:::alert{type="info"}
+**Which slot should I use?** Both. Register [`execution-artifact`](#execution-artifact) for Kestra 2.1 and later, and keep the `topology-details`, `topology-task-drawer` and `topology-task-modal` slots for Kestra 2.0.x, see [Kestra 2.0.x: topology slots (deprecated)](#kestra-20x-topology-slots-deprecated). Each host ignores the slots it does not know. The topology slots are deprecated and can be dropped once Kestra 2.0.x is out of support.
+:::
 
 ## Why plugin artifacts?
 
@@ -72,13 +74,13 @@ graph LR
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot**, a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Two slots are available from Kestra 2.1.0: `execution-artifact` and `asset-card-footer`. The three topology slots of Kestra 2.0.x are documented [at the end of this page](#kestra-20x-topology-slots-deprecated).
+Each plugin component targets a specific **slot**, a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Two slots are used by Kestra 2.1 and later: `execution-artifact` and `asset-card-footer`. The three deprecated topology slots, still rendered by Kestra 2.0.x, are documented [at the end of this page](#kestra-20x-topology-slots-deprecated).
 
 ### `execution-artifact`
 
-Renders in the **Artifacts tab** of an execution, next to Overview, Gantt and Logs. Use it for a result a user wants to open full size after a run, such as a model graph, a compiled query or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
+Renders behind the **Artifacts** button of a task and in the **Artifacts** tab of the task popup. Kestra 2.1 and later show the same component there, in place of the topology slots. Use it for a result a user wants to open full size after a run, such as a model graph, a compiled query or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
 
-The component receives `taskType`, `task`, `execution`, `namespace`, `flowId`, `tenant`, `source`, `fetchOutputs`, `fetchMetrics` and `fetchEndpoint` (see [Fetching outputs and metrics](#fetching-outputs-and-metrics)). Read them with `defineProps<KnownSlotProps["execution-artifact"]>()`. There is no `progress` prop and no `displayMode` attribute. The tab only appears when the flow contains at least one task type that declares an artifact, and it shows the number of artifacts as a count. Artifacts are grouped by task, and each one opens in a viewer beside the list.
+The component receives `taskType`, `task`, `execution`, `namespace`, `flowId`, `tenant`, `source`, `fetchOutputs`, `fetchMetrics` and `fetchEndpoint` (see [Fetching outputs and metrics](#fetching-outputs-and-metrics)). Read them with `defineProps<KnownSlotProps["execution-artifact"]>()`. There is no `progress` prop and no `displayMode` attribute. The Artifacts button and tab only appear for a task whose type declares an artifact.
 
 A task type can ship several artifacts. Each one is its own component, registered as `execution-artifact/<id>`, and every module has its own entry in the manifest:
 
@@ -116,7 +118,7 @@ export async function getSubtitle({ fetchOutputs }) {
 `getSubtitle` receives `{ task, execution, fetchOutputs, fetchMetrics }`. `fetchOutputs` and `fetchMetrics` accept an optional `taskRunId`, and default to the latest run of the task. Return a string, or `undefined` to show only the description.
 
 :::alert{type="warning"}
-A version of `@kestra-io/artifact-sdk` released before this slot rejects the `execution-artifact/<id>` slot name at build time. Use a version that knows the slot. The slot requires Kestra 2.1.0 or later.
+A version of `@kestra-io/artifact-sdk` released before this slot rejects the `execution-artifact/<id>` slot name at build time. Use a version that knows the slot. Kestra 2.0.x does not render it, which is why plugins that support 2.0.x also register the topology slots.
 :::
 
 ### `asset-card-footer`
@@ -292,20 +294,29 @@ export default defaultViteConfig({
 - **`path`**: path to the Vue component, relative to `ui/`.
 - **`additionalProperties`**: static metadata written to the manifest (see [below](#additional-properties)).
 
-A single task can expose components for several slots. To support Kestra 2.0.x and 2.1.0+ with one plugin version, list both sets: each host ignores the slots it does not know. The component for the 2.1.0 slot and the one for 2.0.x can be the same file if it only reads props both slots share.
+A single task can expose components for several slots. **Register both sets** to support Kestra 2.0.x and 2.1 and later with one plugin version: each host ignores the slots it does not know. The topology slots are deprecated, so drop them once Kestra 2.0.x is out of support. The same component file can back all of them if it only reads props the slots share.
 
 ```ts
 "query.RunQuery": [
+  // Kestra 2.1 and later
   {
-    slotName: "execution-artifact/query",
+    slotName: "execution-artifact/details",
     path: "./src/components/QueryRunQueryExecutionArtifact.vue",
     additionalProperties: { title: "Query" },
   },
-  // Kestra 2.0.x only (deprecated), ignored by Kestra 2.1.0+
+  // Kestra 2.0.x (deprecated), ignored by Kestra 2.1 and later
   {
     slotName: "topology-details",
     path: "./src/components/QueryRunQueryTopologyDetails.vue",
-    additionalProperties: { height: 120 },
+    additionalProperties: { height: 120, heightWithExecution: 150 },
+  },
+  {
+    slotName: "topology-task-drawer",
+    path: "./src/components/QueryRunQueryTopologyDetails.vue",
+  },
+  {
+    slotName: "topology-task-modal",
+    path: "./src/components/QueryRunQueryTopologyDetails.vue",
   },
 ],
 ```
@@ -649,7 +660,7 @@ The properties of the deprecated topology slots are listed in [Kestra 2.0.x: top
 ## Kestra 2.0.x: topology slots (deprecated)
 
 :::alert{type="warning"}
-The `topology-details`, `topology-task-drawer` and `topology-task-modal` slots are **deprecated**. Kestra 2.0.x renders plugin UIs through them. They were removed from Kestra core in 2.1.0, where plugins use the [`execution-artifact`](#execution-artifact) slot instead. Register them only if your plugin must still support Kestra 2.0.x, and list them next to the `execution-artifact` slot (see [Configuring the exposed components](#configuring-the-exposed-components)): each host ignores the slots it does not know. In the SDK, they are only scaffolded with the `--legacy` flag, and `@kestra-io/artifact-sdk` prints a build warning for them.
+The `topology-details`, `topology-task-drawer` and `topology-task-modal` slots are **deprecated**. Kestra 2.0.x renders plugin UIs through them. Kestra 2.1 and later ignore them and show the [`execution-artifact`](#execution-artifact) component instead. Keep them registered next to `execution-artifact` for as long as your plugin supports Kestra 2.0.x (see [Configuring the exposed components](#configuring-the-exposed-components)): each host ignores the slots it does not know, and no `kestraVersion` bump is needed. They can be dropped once Kestra 2.0.x is out of support. The `@kestra-io/artifact-sdk` deprecates them: they are only scaffolded with the `--legacy` flag, and `viteArtifact` prints a build warning when one is exposed.
 :::
 
 ### `topology-details`
@@ -811,7 +822,7 @@ Commonly used properties for `topology-details`:
 | Property | Type | Description |
 |---|---|---|
 | `height` | `number` | Height (in px) of the detail panel before execution |
-| `heightWithExecution` | `number` | Height (in px) of the detail panel after execution |
+| `heightWithExecution` | `number` | Height (in px) of the detail panel after execution, `height` + 30 (see [Sizing the node](#sizing-the-node)) |
 | `customAction` | `object` | Adds a button on the task node that opens a drawer for a specific task property (e.g. a SQL query) |
 
 #### Sizing the node
@@ -821,7 +832,7 @@ Commonly used properties for `topology-details`:
 - **Too small**: your content overflows the reserved box, so the bottom connector is drawn behind the node body and appears stunted or missing, while the top connector still looks normal.
 - **Too large**: an empty gap appears between the end of your content and the start of the bottom connector.
 
-The two values are read in different contexts: the flow editor topology (no execution) uses `height`, and the execution topology uses `heightWithExecution`. Set **both**, typically to the same value, since a component with a fixed layout renders at the same height either way. Setting only one leaves the node mis-sized on the other view.
+The two values are read in different contexts: the flow editor topology (no execution) uses `height`, and the execution topology uses `heightWithExecution`. Set **both**. With an execution, the host adds a badge row of about 30 px under the node, so `heightWithExecution` should be `height` + 30. Setting only one leaves the node mis-sized on the other view.
 
 Because these values are static, measure the rendered component once and re-measure only if its layout changes.
 
@@ -967,7 +978,7 @@ export default defaultViteConfig({
         path: "./src/components/QueryRunQueryTopologyDetails.vue",
         additionalProperties: {
           height: 108,
-          heightWithExecution: 135,
+          heightWithExecution: 138,
           customAction: { label: "Show query", taskProp: "sql", lang: "sql" },
         },
       },
