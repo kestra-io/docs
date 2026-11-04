@@ -16,7 +16,7 @@ authors:
 DRAFT NOTES (remove before publishing)
 - Sources: Release=2.1 + kind/highlight issues (project 15) and docs/release-2-1 branch content.
 - Embargoed: Data Orchestration Artifacts (dbt/Airbyte/Fivetran/JDBC) stay out of this post (changelog only). Plugin endpoints are described generically for that reason.
-- Left out on purpose: Bring Your Own Worker (Cloud, PoC Q1 2027), auto-emitted Terraform/OpenTofu assets (not shipped, ee#9222 not planned), plugin auto-install on EE (ee#11724 not planned), Failure Debug panel (kestra#19317 still open; add if it lands), Health Center/Diagnostics (open), Source Search (shipped in 2.0).
+- Left out on purpose: Bring Your Own Worker (Cloud, PoC Q1 2027), asset health (ee#10810 closed for ee#11937, still open), dataURL() (shipped 2.0.8), by-query flat-param rejection (backported 2.0.7), auto-emitted Terraform/OpenTofu assets (not shipped, ee#9222 not planned), plugin auto-install on EE (ee#11724 not planned), Failure Debug panel (kestra#19317 still open; add if it lands), Health Center/Diagnostics (open), Source Search (shipped in 2.0).
 - Items marked "VERIFY" in comments need confirmation before publishing.
 -->
 
@@ -45,10 +45,8 @@ The table below lists the main features in this release and the edition they bel
 | New queue backends | Google Cloud Pub/Sub, NATS JetStream, and Amazon SQS/SNS | EE |
 | Dedicated queue database | Run the JDBC queue in its own database | OSS, EE |
 
-<!-- VERIFY: edition for checkpoints (no edition marker on the page), execution timeline (kestra#19334, OSS per PR), and AVG_DURATION SLA. -->
-
 :::alert{type="info"}
-**Upgrading from 2.0?** A few API and configuration changes need attention, including the concurrency limit API, removed settings permissions, and stricter `by-query` filters. See [Upgrade and Migration](#upgrade-and-migration) and the [v2.1.0 migration hub](/docs/migration-guide/v2.1.0).
+**Upgrading from 2.0?** A few API and configuration changes need attention, including the concurrency limit API, removed settings permissions, and POST-only logout for SSO deployments. See [Upgrade and Migration](#upgrade-and-migration) and the [v2.1.0 migration hub](/docs/migration-guide/v2.1.0).
 :::
 
 ## Infrastructure Tenants
@@ -59,7 +57,7 @@ Each tenant now has a `type`, either `DEFAULT` or `INFRASTRUCTURE`. An Infrastru
 
 A new Infrastructure tenant comes with a working example environment (catalog apps, flows, an overview dashboard, and an app template) and a product tour, so the moving parts can be explored before anything is built. The examples can be removed in one call, and seeding can be disabled with `kestra.ee.tenant-examples.enabled: false`.
 
-<!-- TODO: screenshot of the Infrastructure tenant Catalog -->
+<!-- TODO(arcade, priority 1): Infrastructure tenant end to end: open the Catalog, request a resource from a catalog app, follow it under Requests, then open the resulting deployment with its TTL & Lease card and a day-2 action. Highest value: the tenant is a new set of screens, and the flow across them is hard to show with static images. Could replace the Catalog screenshot. -->
 
 ### App templates
 
@@ -75,11 +73,15 @@ inputs:
 
 Templates can start from a working example or be generated from an existing flow. They are managed under **Templates** in Infrastructure tenants and through the `/app-templates` API in any tenant. See [App templates](/docs/enterprise/governance/tenants/infrastructure/app-templates).
 
+<!-- TODO(arcade, priority 2): App templates: build a template **From a flow**, define arguments, then use it as another team would (fill the form, pick a namespace) and land on the new App Catalog entry. Shows both sides of the platform-team/consumer handoff. -->
+
 ### Inventory import
 
 Most teams adopting Kestra for infrastructure already have resources that Kestra didn't provision. The **Import** button on the Deployments and Inventory pages accepts Terraform state files, CSV or TSV, and JSON, JSONL, or YAML. Each resource becomes an asset, grouped under a single deployment. A preview shows which resources are new, which will be updated, and which belong to another deployment before anything is written, and the import is all-or-nothing.
 
 For scripted imports, the same thing is available through `POST /api/v1/<tenant>/assets/bulk`, with `dryRun=true` for a preview. See [Import an existing inventory](/docs/enterprise/governance/tenants/infrastructure#import-an-existing-inventory).
+
+<!-- TODO(arcade, priority 3): Inventory import: upload a .tfstate file, walk the preview (New / Will be updated / Outside this deployment), import, and open the grouped deployment in Inventory. The preview step is the part readers need to see. -->
 
 <!-- VERIFY: inventory import is source-verified only, not runtime-tested. -->
 
@@ -154,6 +156,8 @@ outputs:
 
 A searchable `ARRAY` stores each item separately, so one execution can be found by any of the order IDs it handled, which labels can't do. Values are filtered from the **Inputs & Outputs** filter on the Executions page or with `filters[searchableData][EQUALS][orderIds]=ORD-8841` on the executions API. Input values are indexed when the execution is created and output values when it ends. Matching is exact and case-sensitive, and only new executions are indexed. See [Searchable outputs](/docs/workflow-components/outputs#searchable-outputs) and [Searchable inputs](/docs/workflow-components/inputs#searchable-inputs).
 
+<!-- TODO(arcade, priority 5): Searchable values: run a flow with a searchable output, then find the execution from the Executions page with the Inputs & Outputs filter by typing an order ID. Short, and shows the payoff of one YAML line. -->
+
 ## TABLE Input
 
 The `TABLE` input collects a list of typed records in a grid, for cases like a set of disks, firewall rules, or users to onboard, where a JSON input would push the formatting work onto the person filling the form.
@@ -219,9 +223,9 @@ Checkpoints are read back as `{{ checkpoints.next_batch }}`, as `CHECKPOINTS_*` 
 
 ## Execution Timeline
 
-The Executions page has a **Timeline** view next to the table. Each execution is drawn as a bar on a time axis, grouped by namespace and flow, so overlapping runs, gaps in a schedule, and the run that held a concurrency slot for too long are visible at a glance.
+The Executions page has a **Timeline** view next to the table. Each execution is drawn as a bar on a time axis, grouped by namespace and flow, so overlapping runs, gaps in a schedule, and the run that held a concurrency slot for too long are visible at a glance. Click a bar to open the execution or filter to its flow, and drill down from namespaces into flows. See [Timeline](/docs/ui/executions#timeline).
 
-<!-- VERIFY: kestra#19334 merged to develop 2026-10-30, not in RC cut. No docs yet. Add screenshot. -->
+<!-- TODO(arcade, priority 4): Execution timeline: switch Counts to Timeline, zoom and pan, drill from a namespace into its flows, click a bar and use Show only this flow. Interaction-heavy; a screenshot only shows the static chart. OSS, so it can be recorded on any instance. -->
 
 ## SLA and Concurrency
 
@@ -272,15 +276,16 @@ Apps get layout and data blocks that make them usable as internal dashboards and
 - The `Chart` block embeds any dashboard chart definition in an app, read with the viewer's permissions.
 - The `Assets` block shows the assets an execution emitted or updated, grouped by their parent deployment with status, lease, and owner.
 - `watermark` removes the Kestra watermark or replaces it with your own Markdown.
-- The new `dataURL()` function inlines a namespace file as a `data:` URI, so PNG and SVG images can be shown without external hosting.
 
 See [Apps](/docs/enterprise/scalability/apps).
 
-<!-- VERIFY: Assets block docs are already on main (ee#9958 is 2.1); add a version badge there. A PUBLIC app's Chart shows no data from protected sources; worth a note? -->
+<!-- VERIFY: A PUBLIC app's Chart shows no data from protected sources; worth a note? -->
 
 ## AI Copilot: Generate a Unit Test
 
 From a flow's menu, **Generate a unit test** asks Copilot to draft a test with fixtures, mocks, and assertions based on the flow definition. The draft can be applied directly or opened in the editor for review. Unit test fixtures also now render `dependsOn` and `defaults` expressions the same way a live run does, so tests exercise the real input logic. See [Generate a unit test](/docs/develop-with-ai/ai-copilot#generate-a-unit-test).
+
+<!-- TODO(arcade, priority 6): Copilot unit test: flow menu > Generate a unit test, review the drafted fixtures and assertions, Apply, then run the test. Lower priority than the above, since the AI Copilot already has 2.0 demo material. -->
 
 ## SAML 2.0 and Password Policies
 
@@ -315,7 +320,7 @@ Kestra creates and deletes its own topics, queues, and subscriptions, so the ide
 
 For JDBC deployments, the queue can now run in its own database, even on a different engine from the repository, to split load across two database servers. Moving the queue of an existing instance to an empty database isn't supported yet. See [Dedicated queue database](/docs/configuration/runtime-and-storage#dedicated-queue-database).
 
-<!-- VERIFY: are the new backends packaged as plugins? Docs don't say so. SQS/SNS missing from several backend lists (EE overview, oss-vs-paid, deployment architecture). -->
+<!-- VERIFY: are the new backends packaged as plugins? Docs don't say so. -->
 
 ## Additional Improvements
 
@@ -325,21 +330,20 @@ For JDBC deployments, the queue can now run in its own database, even on a diffe
 - [`descriptionDisplayMode`](/docs/workflow-components/inputs#description-display-mode): set `TOOLTIP` to show an input's description as a help icon, keeping long forms compact.
 - [Reusable Inputs audit logs](/docs/workflow-components/reusable-inputs#audit-logs): every change to a shared input set is recorded with its revision.
 - [Context panel](/docs/ui/flows#context-panel-enterprise) (EE): the flow editor's Context panel shows inputs, variables, KV pairs, and secrets across the namespace hierarchy in one searchable tree, with click-to-copy expressions.
-- Bulk operation notifications: bulk actions on executions, such as replaying a selection, now report completion in the notifications bell.
+- [Notifications](/docs/ui#notifications): the notifications bell comes to the open-source edition. Bulk actions on executions, triggers, and backfills (kill, replay, restart, set labels, disable, and others) run in the background and report their progress and outcome there, to the user who started them.
 - [PEM certificates for gRPC](/docs/configuration/enterprise-and-advanced#pem-certificates) (EE): controller and worker mTLS can use PEM files directly, with hot reload, so cert-manager and Kubernetes `tls` Secrets work without conversion.
 - [Executor loop intervals](/docs/configuration/plugins-and-execution#executor-loop-intervals): tune how often the executor checks SLA deadlines and delayed executions.
 - [`PurgeMetrics`](/docs/administrator-guide/purge#purge-metrics): a dedicated task to bulk-delete execution metrics, much cheaper than cleaning them through `PurgeExecutions`.
-- [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 users at once with the same groups and roles.
+- [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 users at once with the same groups and roles, from the UI or the new `POST /invitations/bulk` endpoint.
+- [Installed plugins](/docs/enterprise/instance/versioned-plugins#list-installed-plugins) (EE): `GET /api/v1/plugins/installed` lists every plugin loaded on the instance, whether it ships with the image or was installed through plugin management, and whether a newer version is available.
 - [Change password in OSS](/docs/administrator-guide/basic-auth-troubleshooting#change-password): users with database-stored Basic Auth credentials can change their password from the user menu.
 - Task runner details: the topology views for Kubernetes, AWS Batch, Azure Batch, Google Batch, and Cloud Run task runners show the configuration a run actually used.
 - [Plugin endpoints](/docs/plugin-developer-guide/plugin-ui#running-backend-logic-with-plugin-endpoints) (preview): plugin UI components can call server-side logic defined in the plugin, with RBAC checks in the Enterprise Edition.
 
 <!--
 VERIFY before publishing:
-- Bulk notifications: only execution bulk ops confirmed (ee#7453); no docs.
-- Plugin endpoints: fetchEndpoint (kestra#21653) and execution-artifact slot (kestra#21611) not in RC per source TODOs. Keep generic (embargo).
-- Image digest pinning for containerImage: possibly 2.0.x; left out.
-- Instance-plugins endpoint (ee#11203): small; left out.
+- Plugin endpoints: confirm fetchEndpoint (kestra#21653) and the execution-artifact slot (kestra#21611) ship in GA. Keep generic (embargo).
+- Image digest pinning for containerImage is a 2.1-only fix (kestra#19667); left out as minor.
 -->
 
 ## Upgrade and Migration
@@ -350,17 +354,11 @@ Upgrading from 2.0 to 2.1 needs no flow rewrites, but some API, CLI, and configu
 |---|---|
 | [Concurrency limit API](/docs/migration-guide/v2.1.0/concurrency-limit-api) | `PUT /concurrency-limit/{namespace}/{flowId}` is replaced by `PUT /concurrency-limit` with the scope in the body. The search endpoint is now paged. |
 | [`SYSTEM_SETTINGS` and `TENANT_SETTINGS` removed](/docs/migration-guide/v2.1.0/settings-permissions-removed) | Role definitions that include them now fail with a 422 in the API, `kestractl`, and Terraform. Remove them; stored roles need no change. |
-| [Flat parameters on `by-query` endpoints](/docs/api-reference/problems/invalid-query-filters) | Mutating `by-query` endpoints reject flat parameters with a 400. Rewrite `?namespace=x` as `?filters[namespace][EQUALS]=x`. |
 | [Server CLI commands deprecated](/docs/migration-guide/v2.1.0/server-cli-commands-deprecated) | Seven `kestra` server commands are deprecated in favor of `kestractl`, and now print a deprecation line to stdout. Scripts that capture their output need updating. |
 | [Queue configuration keys](/docs/migration-guide/v2.1.0/queue-backend-configuration) | Kafka, Redis, and AMQP settings move under `kestra.queue.<type>`. The old keys still work but log a warning. |
+| [POST-only logout](/docs/migration-guide/v2.1.0/sso-logout-post-only) (EE) | `GET /logout` now returns 405. Register `<your Kestra URL>/ui` as the post-logout redirect URI in your identity provider, and remove any `get-allowed: true` override from your configuration. |
 | [Asset lineage events removed](/docs/migration-guide/v2.1.0/asset-relations) | The lineage-events API, `kestractl assets lineage-events`, and `PurgeAssets` lineage options are removed. Back up before upgrading; the migration drops the old tables. |
 
-<!--
-VERIFY:
-- by-query flat params: no v2.1.0 migration page exists yet; one is recommended.
-- SSO logout: docs now drop micronaut get-allowed and change post-logout redirect to /ui (Keycloak, Okta). Add a row if engineering confirms it's a user-facing change.
-- Migration hub index description still says "TBD".
--->
 
 ## Get Started
 
