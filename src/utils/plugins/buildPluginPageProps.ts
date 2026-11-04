@@ -300,7 +300,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
               : pluginToc
 
         const tocLinks = [...baseTocLinks]
-        if (pluginInstallCommand) {
+        if (pluginArtifactCoordinate) {
             const propertiesIndex = tocLinks.findIndex((link) => link.id === "properties")
             tocLinks.splice(
                 propertiesIndex === -1 ? tocLinks.length : propertiesIndex,
