@@ -22,10 +22,10 @@ Both tasks write output to Kestra internal storage.
 ## Prerequisites
 
 - A running Kestra instance
-- `plugin-datagen` installed — add it from **Administration → Plugins** or via the CLI:
+- `plugin-datagen` installed. In Enterprise, add it from **Administration → Plugins**. Otherwise, download it with [`kestractl`](../../kestra-cli/kestractl/index.md#installation) and add it to your instance as described in [Install Selected Plugins on a Slim Kestra Image](../slim-image-plugins/index.md):
 
 ```bash
-kestra plugins install io.kestra.plugin:plugin-datagen:LATEST
+kestractl plugins get io.kestra.plugin:plugin-datagen --compatible-for <version>
 ```
 
 ---

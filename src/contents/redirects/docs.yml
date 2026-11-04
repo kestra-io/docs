@@ -228,3 +228,5 @@
   to: "/docs/ai-orchestration/$1$2"
 - regexp: "^/docs/ai-tools(\\.md)?/?$"
   to: "/docs/develop-with-ai$1"
+- regexp: "^/docs/how-to-guides/selected-plugin-installation(\\.md|/.*)?$"
+  to: "/docs/how-to-guides/slim-image-plugins"
