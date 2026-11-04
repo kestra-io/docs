@@ -84,7 +84,7 @@ tasks:
 | `outputs` (deprecated) | Passes subflow outputs to the parent flow. Use [flow outputs](../06.outputs/index.md#pass-data-between-flows-using-flow-outputs) instead. |
 | `revision`             | The subflow revision to execute (defaults to the latest)                   |
 | `scheduleDate`         | Schedule subflow execution on a specific date rather than immediately.      |
-| `transmitFailed`       | If true, parent flow fails when the subflow execution fails or is killed (requires `wait` to be true; default: true). |
+| `transmitFailed`       | If true, parent flow fails when the subflow execution fails or is killed (requires `wait` to be true; default: true). A [cancelled subflow execution](#cancelled-subflow-executions) ends the `Subflow` task `CANCELLED` instead, and the parent continues. |
 | `wait`                 | If true, parent flow waits for subflow completion (default: true).         |
 
 ## Killing parent and subflow executions
@@ -112,6 +112,22 @@ When you kill a subflow execution directly, the parent treats it as a failure of
 
 A [`retry`](../12.retries/index.md) on the `Subflow` task does not restart a killed subflow execution.
 
+## Cancelled subflow executions
+
+A subflow execution ends `CANCELLED` when the system cancels it, for example when the subflow's [concurrency limit](../14.concurrency/index.md) is reached with `behavior: CANCEL`. Unlike a failed or killed subflow execution, a cancelled one does not stop the parent: the parent runs its next tasks either way. `transmitFailed` and `allowFailure` decide how the `Subflow` task run and the parent end:
+
+| `Subflow` task configuration | `Subflow` task run | Parent execution |
+|---|---|---|
+| `transmitFailed: true` | `CANCELLED` | Continues with the next tasks, does not run [`errors`](../11.errors/index.md) tasks, and ends `CANCELLED`. |
+| `transmitFailed: true` and `allowFailure: true` | `WARNING` | Continues with the next tasks and ends `WARNING`. |
+| `transmitFailed: true`, `allowFailure: true`, and `allowWarning: true` | `SUCCESS` | Continues with the next tasks. |
+| `transmitFailed: false` | `SUCCESS` | Continues with the next tasks. |
+
+When the `Subflow` task run ends `CANCELLED`, its logs include a warning: `Subflow execution ... ends in CANCELLED state`.
+
+:::alert{type="info"}
+Before Kestra 2.0.9, a cancelled subflow execution left the `Subflow` task run `SUCCESS` whatever its configuration, so the parent ended `SUCCESS`. If your alerting or downstream triggers rely on that, review them after upgrading.
+:::
 
 ## Passing data between parent and child flows
 
