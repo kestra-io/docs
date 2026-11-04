@@ -151,6 +151,7 @@ describe("buildPluginPageProps", () => {
         })
 
         expect(props.headingTitle).toBe("AWS S3 Upload")
+        expect(props.pluginInstallCommand).toBe("./kestra plugins install io.kestra.plugin:plugin-aws-s3:LATEST")
         expect(props.currentSubgroupPlugin).toBeUndefined()
         expect(props.currentPluginCategories).toEqual(["CLOUD", "DATA", "AI", "INFRASTRUCTURE"])
         expect(props.currentPluginMetadata.map((m) => m.group)).toEqual([
