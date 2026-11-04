@@ -1,0 +1,9 @@
+title: "Best Practices for Upgrading to Kestra 2.0"
+description: "Kestra 2.0 introduces a rebuilt engine with network-agnostic workers,
+  customizable queue backends, and enforced governance. This session covers key architectural
+  changes, flow migration requirements, and how to prepare for your upgrade."
+category: "Webinar"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=afVQsI9uNyI"
+publicationDate: "2026-11-04T00:00:00.000"
+contentType: "Webinar"
