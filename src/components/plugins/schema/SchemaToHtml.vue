@@ -49,9 +49,12 @@
             >
                 <template #content>
                     <div class="d-flex flex-column gap-3">
-                        <p class="mb-0">
+                        <p v-if="!isEnterprisePlugin" class="mb-0">
                             Our standard Docker images already include this plugin. If you use a <code>-slim</code> image or another setup,
                             install it with the following command:
+                        </p>
+                        <p v-else class="mb-0">
+                            This Enterprise plugin requires an Enterprise image and access to the plugin registry. Install it with the following command:
                         </p>
                         <CodeTabs
                             :tabs="[
@@ -62,8 +65,8 @@
                             lang="bash"
                         />
                         <p class="mb-0">
-                            This command installs the latest available version. Replace <code>LATEST</code> with a specific
-                            version or version range to pin the plugin version.
+                            For <strong>Kestra CLI</strong>, replace <code>LATEST</code> with a specific version or version range to pin the plugin version.
+                            For <strong>kestractl</strong>, use your Kestra version with <code>--compatible-for</code>, or specify an exact plugin version.
                         </p>
                     </div>
                 </template>
@@ -184,12 +187,14 @@
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);
 
-    const kestractlInstallCommand = computed(() => {
-        const coordinate = props.installCommand
-            ?.replace(/^\.\/kestra plugins install\s+/, "")
-            .trim();
-        return coordinate ? `kestractl plugins get ${coordinate}` : "";
-    });
+    import { getKestractlPluginGetCommand } from "~/utils/plugins/kestractlInstallCommand";
+
+    const kestractlInstallCommand = computed(() =>
+        getKestractlPluginGetCommand(props.installCommand)
+    );
+    const isEnterprisePlugin = computed(() =>
+        props.installCommand?.startsWith("io.kestra.plugin.ee:")
+    );
 
     const examples = computed(() => props.schema.properties?.$examples);
     const hasOutputs = computed(() => !!props.schema.outputs?.properties && Object.keys(props.schema.outputs.properties).length > 0);
