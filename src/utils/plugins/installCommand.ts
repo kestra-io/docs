@@ -24,5 +24,5 @@ export function getPluginInstallCommand(
 
     if (!matchingMetadata) return undefined
 
-    return `./kestra plugins install ${matchingMetadata.artifactGroupId}:${matchingMetadata.artifactId}:LATEST`
+    return `${matchingMetadata.artifactGroupId}:${matchingMetadata.artifactId}`
 }
