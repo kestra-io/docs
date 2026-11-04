@@ -81,6 +81,14 @@ Whatever the tooling, a mature self-service flow follows the same lifecycle. Eac
 
 Stages 1 and 2 are what users see. Stages 3 to 8 are where self-service succeeds or fails.
 
+Here is that lifecycle running as one workflow for a VM request. The request comes in with a hostname. When the change needs sign-off, the owner approves it, then Terraform creates the VM, Ansible configures it, and the CMDB record is updated. If a step fails, the run stops there with its logs, and you restart it from that step.
+
+<FlowTopologyFigure
+    nodes={provisionVm}
+    label="Kestra topology of a provision_vm flow running: request form, owner approval, Terraform apply, Ansible configuration and CMDB update run one after the other"
+    caption="Each node is a task in one YAML file, versioned in Git."
+/>
+
 ## The five building blocks
 
 ### 1. A service catalog
@@ -157,16 +165,6 @@ Kestra is an open-source orchestration platform with declarative YAML workflows.
 *   **Day 2 with the same engine.** Resizing, patching, rotating, and decommissioning are workflows too, triggered on demand, on a schedule, or by an event.
 
 [Kestra for Infrastructure](/infra-automation) brings this model to platform and infrastructure teams in Kestra Enterprise Edition: self-service without losing control, on the same Kestra that already runs data and AI workflows.
-
-### Request, approve, provision, configure
-
-Here is one catalog item as it runs: a VM request. The request comes in with a hostname. When the change needs sign-off, the owner approves it, then Terraform creates the VM, your Ansible playbook configures it, and the CMDB record is updated. If a step fails, the run stops there with its logs, and you restart it from that step.
-
-<FlowTopologyFigure
-    nodes={provisionVm}
-    label="Kestra topology of a provision_vm flow running: request form, owner approval, Terraform apply, Ansible configuration and CMDB update run one after the other"
-    caption="Each node is a task in one YAML file, versioned in Git."
-/>
 
 ### Example: an environment request with risk-based approval
 
