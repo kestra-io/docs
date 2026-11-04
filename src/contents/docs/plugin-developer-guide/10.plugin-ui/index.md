@@ -15,11 +15,11 @@ Register **both slot sets** in the same manifest, so one plugin version works on
 
 | Kestra version | What the host does | Slots to register |
 |---|---|---|
-| 2.0.x | Renders the topology slots | `topology-details`, `topology-task-drawer`, `topology-task-modal` (deprecated) |
+| 2.0.x | Renders the topology slots | `topology-details`, `topology-task-drawer`, `topology-task-modal` |
 | 2.1 and later | Ignores the topology slots and renders `execution-artifact` | `execution-artifact` (and `asset-card-footer` in the Enterprise Edition) |
 
 :::alert{type="info"}
-**Which slot should I use?** Both. Register [`execution-artifact`](#execution-artifact) for Kestra 2.1 and later, and keep the `topology-details`, `topology-task-drawer` and `topology-task-modal` slots for Kestra 2.0.x, see [Kestra 2.0.x: topology slots (deprecated)](#kestra-20x-topology-slots-deprecated). Each host ignores the slots it does not know. The topology slots are deprecated and can be dropped once Kestra 2.0.x is out of support.
+**Which slot should I use?** Both. Register [`execution-artifact`](#execution-artifact) for Kestra 2.1 and later, and keep the `topology-details`, `topology-task-drawer` and `topology-task-modal` slots for Kestra 2.0.x, see [Kestra 2.0.x: topology slots](#kestra-20x-topology-slots). Each host ignores the slots it does not know. The topology slots are kept for Kestra 2.0.x support and can be dropped once Kestra 2.0.x is out of support.
 :::
 
 ## Why plugin artifacts?
@@ -47,7 +47,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 ```mermaid
 graph LR
     subgraph CORE["Kestra Core"]
-        SC["slot-contracts\n(execution-artifact\nasset-card-footer\n+ deprecated topology slots\nfor Kestra 2.0.x)"]
+        SC["slot-contracts\n(execution-artifact\nasset-card-footer\n+ topology slots\nfor Kestra 2.0.x)"]
         HOST["Host UI\nconfigureAxios\nkestra:openTaskModal"]
         MFH["Module Federation\nruntime loader"]
     end
@@ -74,7 +74,7 @@ graph LR
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot**, a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Two slots are used by Kestra 2.1 and later: `execution-artifact` and `asset-card-footer`. The three deprecated topology slots, still rendered by Kestra 2.0.x, are documented [at the end of this page](#kestra-20x-topology-slots-deprecated).
+Each plugin component targets a specific **slot**, a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Two slots are used by Kestra 2.1 and later: `execution-artifact` and `asset-card-footer`. The three topology slots, rendered only by Kestra 2.0.x, are documented [at the end of this page](#kestra-20x-topology-slots).
 
 ### `execution-artifact`
 
@@ -160,7 +160,7 @@ The CLI will:
 
 1. **Detect your plugin**, reads `settings.gradle[.kts]` to infer the plugin group ID (e.g. `io.kestra.plugin.example`).
 2. **Ask which task** you want to add UI for (e.g. `query.RunQuery`).
-3. **Ask which UI slot** to target. `execution-artifact` is the default. The deprecated topology slots are only listed when you pass `--legacy`, see [Kestra 2.0.x](#kestra-20x-topology-slots-deprecated).
+3. **Ask which UI slot** to target. `execution-artifact` is the default. For the topology slots used by Kestra 2.0.x, see [Kestra 2.0.x](#kestra-20x-topology-slots).
 4. **Ask whether to add `@kestra-io/kestra-sdk`** as a dependency (default: no, see [Calling the Kestra API](#calling-the-kestra-api) for why an artifact component should almost never need it).
 5. **Show a summary** and ask for confirmation before writing anything.
 6. **Scaffold the `ui/` directory** with all required files and run `npm install`.
@@ -294,7 +294,7 @@ export default defaultViteConfig({
 - **`path`**: path to the Vue component, relative to `ui/`.
 - **`additionalProperties`**: static metadata written to the manifest (see [below](#additional-properties)).
 
-A single task can expose components for several slots. **Register both sets** to support Kestra 2.0.x and 2.1 and later with one plugin version: each host ignores the slots it does not know. The topology slots are deprecated, so drop them once Kestra 2.0.x is out of support. The same component file can back all of them if it only reads props the slots share.
+A single task can expose components for several slots. **Register both sets** to support Kestra 2.0.x and 2.1 and later with one plugin version: each host ignores the slots it does not know. The topology slots are kept for Kestra 2.0.x support, so drop them once Kestra 2.0.x is out of support. The same component file can back all of them if it only reads props the slots share.
 
 ```ts
 "query.RunQuery": [
@@ -304,7 +304,7 @@ A single task can expose components for several slots. **Register both sets** to
     path: "./src/components/QueryRunQueryExecutionArtifact.vue",
     additionalProperties: { title: "Query" },
   },
-  // Kestra 2.0.x (deprecated), ignored by Kestra 2.1 and later
+  // Kestra 2.0.x, ignored by Kestra 2.1 and later
   {
     slotName: "topology-details",
     path: "./src/components/QueryRunQueryTopologyDetails.vue",
@@ -651,16 +651,16 @@ Properties for `asset-card-footer`:
 |---|---|---|
 | `footerHeight` | `number` | Extra height (in px) the footer adds below an asset card |
 
-The properties of the deprecated topology slots are listed in [Kestra 2.0.x: topology slots](#additional-properties-for-topology-details).
+The properties of the topology slots are listed in [Kestra 2.0.x: topology slots](#additional-properties-for-topology-details).
 
 :::alert{type="info"}
 `additionalProperties` values are static: they are evaluated at build time and embedded in the manifest. They cannot reference runtime task values.
 :::
 
-## Kestra 2.0.x: topology slots (deprecated)
+## Kestra 2.0.x: topology slots
 
 :::alert{type="warning"}
-The `topology-details`, `topology-task-drawer` and `topology-task-modal` slots are **deprecated**. Kestra 2.0.x renders plugin UIs through them. Kestra 2.1 and later ignore them and show the [`execution-artifact`](#execution-artifact) component instead. Keep them registered next to `execution-artifact` for as long as your plugin supports Kestra 2.0.x (see [Configuring the exposed components](#configuring-the-exposed-components)): each host ignores the slots it does not know, and no `kestraVersion` bump is needed. They can be dropped once Kestra 2.0.x is out of support. The `@kestra-io/artifact-sdk` deprecates them: they are only scaffolded with the `--legacy` flag, and `viteArtifact` prints a build warning when one is exposed.
+The `topology-details`, `topology-task-drawer` and `topology-task-modal` slots are kept for Kestra 2.0.x support. Kestra 2.0.x renders plugin UIs through them. Kestra 2.1 and later ignore them and show the [`execution-artifact`](#execution-artifact) component instead. Keep them registered next to `execution-artifact` for as long as your plugin supports Kestra 2.0.x (see [Configuring the exposed components](#configuring-the-exposed-components)): each host ignores the slots it does not know, and no `kestraVersion` bump is needed. They can be dropped once Kestra 2.0.x is out of support.
 :::
 
 ### `topology-details`
