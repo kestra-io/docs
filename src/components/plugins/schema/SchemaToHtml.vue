@@ -188,7 +188,7 @@
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);
 
-    import { getKestractlPluginGetCommand } from "~/utils/plugins/kestractlInstallCommand";
+
 
     const kestractlInstallCommand = computed(() =>
         getKestractlPluginGetCommand(props.pluginArtifactCoordinate)
@@ -230,7 +230,7 @@
     const {getHighlighterCore} = await import("./shikiToolset");
 
     const initialLanguages = new Set<string>(["yaml"])
-    if (props.installCommand) initialLanguages.add("bash")
+    if (props.pluginArtifactCoordinate) initialLanguages.add("bash")
     highlighter.value = await getHighlighterCore(exampleLangs(props.schema, initialLanguages));
 </script>
 
