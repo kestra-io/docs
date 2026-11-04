@@ -82,7 +82,7 @@ easeOfUse:
   title: "Declarative Orchestration vs. UI-First Job Templates"
   kestra:
     title: "Kestra: Readable, reviewable, deployable"
-    description: "YAML workflows read like documentation. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes them for you. Every workflow goes through Git and CI/CD—no hidden state in a UI. Approvals, retries, PagerDuty alert triggers, and ITSM integration are first-class YAML constructs."
+    description: "YAML workflows read like documentation. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes them for you. Every workflow goes through Git and CI/CD—no hidden state in a UI. Approvals, retries, PagerDuty alert triggers, and ITSM integration are first-class YAML constructs."
     code: |
       id: incident_auto_remediate
       namespace: ops.incident

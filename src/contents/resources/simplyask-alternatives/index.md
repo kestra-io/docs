@@ -45,7 +45,7 @@ Where SimplyAsk offers a no-code interface for business efficiency, Kestra provi
 
 Kestra's architecture is event-driven by default and features {totalPlugins}+ plugins, native AI agents, and a built-in Copilot for generating YAML from natural language. It supports [agentic workflows](/resources/ai/agentic-workflows) and [RAG pipelines](/resources/ai/rag-pipeline) natively, making it a strong fit for modern AI-driven automation. Its scalability is proven, with over 2 billion workflows executed in 2025 across more than 30,000 organizations.
 
-- **Best for:** Engineering teams (Data, Platform, ML/AI) seeking a single, auditable, and scalable platform to orchestrate mission-critical [workflows](/docs/workflow-components/flow) across all domains, including [AI Automation](/ai-automation) and [agentic workflows](/docs/ai-tools/ai-agents).
+- **Best for:** Engineering teams (Data, Platform, ML/AI) seeking a single, auditable, and scalable platform to orchestrate mission-critical [workflows](/docs/workflow-components/flow) across all domains, including [AI Automation](/ai-automation) and [agentic workflows](/docs/ai-orchestration/ai-agents).
 - **Limitation:** Kestra's power comes from its declarative, code-centric nature. It requires technical expertise in YAML and engineering best practices, making it less suitable for non-technical users who prefer a purely visual, drag-and-drop interface.
 
 ## 2. Capital Numbers: Agile Consulting & Development

@@ -124,9 +124,9 @@ Make provides a powerful middle ground between no-code simplicity and the flexib
 
 ### How AI is transforming workflow orchestration
 
-Artificial intelligence is fundamentally changing how automation is built and executed. Modern workflow tools are moving beyond simple task scheduling to incorporate AI at every level. [AI Copilots](/docs/ai-tools/ai-copilot) can now generate complex workflow definitions from a simple natural language prompt, drastically reducing development time.
+Artificial intelligence is fundamentally changing how automation is built and executed. Modern workflow tools are moving beyond simple task scheduling to incorporate AI at every level. [AI Copilots](/docs/develop-with-ai/ai-copilot) can now generate complex workflow definitions from a simple natural language prompt, drastically reducing development time.
 
-Furthermore, the concept of [agentic workflows](/resources/ai/agentic-workflows) is gaining traction. Instead of pre-defining every step, developers can deploy autonomous [AI agents](/docs/ai-tools/ai-agents) that use tools to achieve a high-level goal, adapting their approach based on real-time information. This enables more dynamic and resilient automation. As these systems become more powerful, [AI governance workflows](/resources/ai/ai-governance-workflows) are becoming critical to ensure that AI-driven actions are auditable, secure, and aligned with business rules.
+Furthermore, the concept of [agentic workflows](/resources/ai/agentic-workflows) is gaining traction. Instead of pre-defining every step, developers can deploy autonomous [AI agents](/docs/ai-orchestration/ai-agents) that use tools to achieve a high-level goal, adapting their approach based on real-time information. This enables more dynamic and resilient automation. As these systems become more powerful, [AI governance workflows](/resources/ai/ai-governance-workflows) are becoming critical to ensure that AI-driven actions are auditable, secure, and aligned with business rules.
 
 ### The role of low-code in accelerating automation
 
@@ -134,7 +134,7 @@ Low-code platforms are democratizing automation, allowing a broader range of use
 
 ### Can AI tools like ChatGPT create workflows?
 
-Yes, a large language model like ChatGPT can generate code snippets or configuration files for various workflow tools. You can ask it to write a Python DAG for Airflow or a YAML file for Kestra. However, this is only part of the solution. A truly integrated platform like Kestra, with its native [AI Copilot](/docs/ai-tools/ai-copilot), offers a more seamless and governed experience. The Copilot is context-aware, understanding Kestra's plugins and syntax, and operates within a version-controlled environment. While ChatGPT is a powerful general-purpose tool for code generation, a dedicated, platform-specific AI assistant provides superior accuracy, integration, and governance for building production-grade workflows.
+Yes, a large language model like ChatGPT can generate code snippets or configuration files for various workflow tools. You can ask it to write a Python DAG for Airflow or a YAML file for Kestra. However, this is only part of the solution. A truly integrated platform like Kestra, with its native [AI Copilot](/docs/develop-with-ai/ai-copilot), offers a more seamless and governed experience. The Copilot is context-aware, understanding Kestra's plugins and syntax, and operates within a version-controlled environment. While ChatGPT is a powerful general-purpose tool for code generation, a dedicated, platform-specific AI assistant provides superior accuracy, integration, and governance for building production-grade workflows.
 
 ## Comparison Table: Workflow Tools at a Glance
 

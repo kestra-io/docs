@@ -80,6 +80,8 @@ kestra:
 
 `isolation` is the key control to understand here: it limits which Kestra services are allowed to resolve secrets, which is useful when you want workers or executors to have narrower access than the whole platform.
 
+To keep secrets manager credentials off workers entirely, set `kestra.secret.worker-access: CONTROLLER` on the workers and `kestra.controller.secret-api.enabled: true` on the controller. Workers then read secrets through the controller over gRPC. See [Worker access to secrets](../../07.enterprise/02.governance/secrets-manager/index.md#worker-access-to-secrets).
+
 The Azure service principal referenced in the base structure above must have the following Key Vault access policy permissions: `Get`, `List`, `Set`, `Delete`, `Recover`, `Backup`, `Restore`, `Purge`.
 
 Representative backend examples:

@@ -25,9 +25,11 @@ A task run is counted when it finishes in one of four states: `SUCCESS`, `WARNIN
 
 **Every task type counts.** A `gcp.bigquery.Query`, a Slack notification, an HTTP request, a Python script: each is one task run when it finishes.
 
+**`WorkingDirectory` counts.** It looks like a flow-control task, but it is the one that also does real work: it runs on a worker to set up the shared directory and to move namespace files, input files, and output files. That work is a task run of its own, counted once per `WorkingDirectory`, on top of the tasks inside it. A `WorkingDirectory` wrapping one Python task is two task runs, not one.
+
 ## What does not count
 
-**Flow-control tasks.** `Parallel`, `Sequential`, `Loop`, `LoopUntil`, `Subflow`, `WorkingDirectory`, `If`, `Switch`, `Dag`, `AllowFailure`, and `Pause` are handled by the orchestrator. They are not counted; only the tasks inside them are. Nesting flow-control tasks adds nothing on its own. The one exception is a `WorkingDirectory` whose own setup fails before its children run: that failure is recorded against the `WorkingDirectory` itself and counts once.
+**Flow-control tasks.** `Parallel`, `Sequential`, `Loop`, `LoopUntil`, `Subflow`, `If`, `Switch`, `Dag`, `AllowFailure`, and `Pause` are handled by the orchestrator. They are not counted; only the tasks inside them are. Nesting flow-control tasks adds nothing on its own. `WorkingDirectory` is the exception: it is counted, see above.
 
 **Execution-level tasks.** `core.execution.Labels`, `SetVariables`, `UnsetVariables`, and `Exit` are handled by the orchestrator and are not counted.
 
@@ -45,9 +47,13 @@ The `Subflow` task itself is not counted. Every task inside the child execution 
 
 ## How to estimate your task runs
 
-Estimate from loops, not from executions. Work through each flow:
+There are two ways, depending on whether the flow has run yet.
 
-1. Count the tasks that do work (skip flow-control and execution-level tasks).
+**If it is already running, read it.** In your Kestra instance, go to **Tenant → System Overview → Usage** and set the period to 7 or 30 days. The **task runs** card gives you a real count over that window. Treat it as an upper bound: it counts every task, including the flow-control tasks Cloud does not bill. A loop-heavy flow reads well above its bill, a flat one reads close to it.
+
+**If it does not exist yet, or you are changing it, estimate it.** Work from loops, not from executions:
+
+1. Count the tasks that do work (skip flow-control and execution-level tasks), then add one for each `WorkingDirectory`.
 2. For each task inside a `Loop`, multiply by the number of items. For nested loops, multiply again.
 3. For each subflow call, add the child flow's count, multiplied by how often it is called.
 4. Multiply by the number of executions you expect, then add a margin for retries.
@@ -58,7 +64,11 @@ Where it fits the work, process a list inside one task instead of one task per i
 
 **My flow has 12 tasks and a `Loop` over 50 rows around 3 of them. How many task runs per execution?**
 
-9 plain tasks plus 3 × 50 in the loop: 159. The `Loop` itself is not counted.
+9 plain tasks plus 3 × 50 in the loop: 159. The `Loop` itself is not counted. If that number is higher than you want, the lever is the loop: passing the 50 rows into a single task that iterates internally turns 150 task runs into 3.
+
+**I wrap every Python task in a `WorkingDirectory`. Does that double my count?**
+
+Close to it: a flow of 10 scripts each in its own `WorkingDirectory` is 20 task runs. You probably do not need one per task. `WorkingDirectory` exists so that several tasks can share one filesystem; a single script task does not need it, because `namespaceFiles`, `inputFiles` and `outputFiles` work directly on the task. Drop the wrapper where a task stands alone, and where tasks genuinely do share files, put them inside one `WorkingDirectory` rather than one each: that adds a single task run for the whole group.
 
 **Does a task killed before it started count?**
 
@@ -70,4 +80,4 @@ No. A task run is a task run whether it took a second or an hour. Duration matte
 
 **Where can I see how many task runs I produce?**
 
-In your Kestra instance, go to **Tenant → System Overview → Usage** for recent task run totals. Use the period selector in the **Usage** header to cover the last 24 hours (default), 7 days or 30 days, which helps estimate your monthly volume. When the tenant is younger than the selected period, the figures cover the time since its first execution. The count there is rolled up from execution statistics and includes flow-control tasks, so it reads higher than the billed count for any flow that uses loops or branches. For a single execution, open it: every task run is listed with its state, including one per retry attempt, and each `Loop` iteration appears as its own sub-execution.
+Go to **Tenant → System Overview → Usage** and set the period to 7 or 30 days: the **task runs** card counts them over that window. It counts flow-control tasks too, which Cloud does not bill, so read it as an upper bound. For a single execution, open it: every task run is listed with its state, including one per retry attempt, and each `Loop` iteration appears as its own sub-execution. On Kestra Cloud, your invoice is the authoritative total.

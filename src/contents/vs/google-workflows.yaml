@@ -92,7 +92,7 @@ easeOfUse:
   title: Workflows Your Whole Team Can Read
   kestra:
     title: "Kestra: Run Code Directly, No Wrappers Required"
-    description: "Write Python, SQL, or Bash inline in your YAML. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> generates workflows from a prompt, or start from our library of Blueprints. No Cloud Functions to deploy, no service accounts to wire up per task."
+    description: "Write Python, SQL, or Bash inline in your YAML. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> generates workflows from a prompt, or start from our library of Blueprints. No Cloud Functions to deploy, no service accounts to wire up per task."
     code: |
       id: daily_etl
       namespace: analytics

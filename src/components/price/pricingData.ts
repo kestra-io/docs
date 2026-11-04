@@ -102,7 +102,7 @@ export const getSections = (totalPlugins: string): Section[] => [
                 values: BOTH,
                 description: {
                     text: "Generate and edit flows from a natural language prompt with Gemini",
-                    link: "/docs/ai-tools/ai-copilot",
+                    link: "/docs/develop-with-ai/ai-copilot",
                 },
             },
             {
@@ -110,7 +110,7 @@ export const getSections = (totalPlugins: string): Section[] => [
                 values: BOTH,
                 description: {
                     text: "Run autonomous tasks with an LLM, memory, tools, and guardrails",
-                    link: "/docs/ai-tools/ai-agents",
+                    link: "/docs/ai-orchestration/ai-agents",
                 },
             },
             {
@@ -118,7 +118,7 @@ export const getSections = (totalPlugins: string): Section[] => [
                 values: BOTH,
                 description: {
                     text: "Expose any flow as a tool for AI agents, and drive Kestra from any MCP client",
-                    link: "/docs/ai-tools/mcp-server",
+                    link: "/docs/ai-orchestration/mcp-server",
                 },
             },
         ],
@@ -147,7 +147,7 @@ export const getSections = (totalPlugins: string): Section[] => [
                 values: ENTERPRISE,
                 description: {
                     text: "Edit, Plan, and Ask modes with memory and a confirmation step, on any cloud or self-hosted LLM",
-                    link: "/docs/ai-tools/ai-copilot",
+                    link: "/docs/develop-with-ai/ai-copilot",
                 },
             },
             {

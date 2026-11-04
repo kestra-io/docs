@@ -181,7 +181,7 @@ tasks:
 
 The Python script runs in its own Docker container with Polars installed, exactly as it would standalone. The YAML handles task ordering and passes outputs between steps. The SQL query doesn't know Python ran before it — it just reads the file the orchestrator passed in.
 
-Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) extends this further: describe the workflow in plain language and it generates schema-validated YAML. The AI generates the coordination layer; your team writes the execution scripts. Teams migrating from Python-first orchestrators can compare the approach directly: [Kestra vs Airflow](/vs/airflow) and [Kestra vs Prefect](/vs/prefect) both cover what changes when you move the workflow definition out of Python.
+Kestra's [AI Copilot](/docs/develop-with-ai/ai-copilot) extends this further: describe the workflow in plain language and it generates schema-validated YAML. The AI generates the coordination layer; your team writes the execution scripts. Teams migrating from Python-first orchestrators can compare the approach directly: [Kestra vs Airflow](/vs/airflow) and [Kestra vs Prefect](/vs/prefect) both cover what changes when you move the workflow definition out of Python.
 
 ## Where to go from here
 

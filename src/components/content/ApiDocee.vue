@@ -1,7 +1,7 @@
 <template>
     <rapi-doc
         :spec-url="specUrl"
-        theme="dark"
+        :color-scheme="colorScheme"
         render-style="view"
         show-header="false"
         show-info="false"
@@ -13,10 +13,30 @@
 
 <script setup>
     import "rapidoc"
+    import { computed, onMounted, onUnmounted, ref } from "vue"
 
     defineProps({
         specUrl: { type: String, default: "/kestra-ee.yml" },
     })
+
+    // RapiDoc 11 takes its light/dark surface from `color-scheme`; follow the site theme.
+    const isDark = ref(true)
+    const colorScheme = computed(() => (isDark.value ? "dark" : "light"))
+    let observer
+
+    onMounted(() => {
+        const update = () => {
+            isDark.value = document.documentElement.classList.contains("dark")
+        }
+        update()
+        observer = new MutationObserver(update)
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+        })
+    })
+
+    onUnmounted(() => observer?.disconnect())
 </script>
 
 <style lang="scss" scoped>
@@ -26,16 +46,11 @@
         --textarea-height: auto;
         --textarea-min-height: 100px;
         --code-block-max-height: 600px;
+        --background: transparent;
+        --foreground: var(--ks-content-primary);
+        --border: var(--ks-border-primary);
+        --font-sans: var(--font-family-mono-sans);
         --font-mono: var(--font-family-jetbrains-mono);
-        --font-regular: var(--font-family-mono-sans);
-        --light-border-color: var(--ks-border-primary);
-        --light-green: var(--ks-background-secondary);
-        --light-blue: var(--ks-background-secondary);
-        --light-orange: var(--ks-background-secondary);
-        --light-red: var(--ks-background-secondary);
-        --input-bg: var(--ks-background-input);
-        --border-color: var(--ks-border-primary);
-        --fg: var(--ks-content-primary);
         &::part(section-endpoint) {
             white-space: nowrap;
         }

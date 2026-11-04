@@ -239,7 +239,7 @@ AI and ML are moving from being features within data observability tools to beco
 
 -   **Predict data issues:** Analyze trends to forecast potential data quality problems before they occur.
 -   **Provide intelligent root cause analysis:** Go beyond lineage to suggest the most likely cause of an issue based on historical data and code changes.
--   **Enable self-healing pipelines:** Automatically initiate and execute remediation actions for common failure modes, moving towards fully autonomous data operations. Kestra's vision for [AI automation](https://kestra.io/ai-automation) and the use of [AI Agents](https://kestra.io/docs/ai-tools/ai-agents) aligns directly with this trend.
+-   **Enable self-healing pipelines:** Automatically initiate and execute remediation actions for common failure modes, moving towards fully autonomous data operations. Kestra's vision for [AI automation](https://kestra.io/ai-automation) and the use of [AI Agents](https://kestra.io/docs/ai-orchestration/ai-agents) aligns directly with this trend.
 
 ### Data + AI Observability: What's Next?
 

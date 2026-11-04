@@ -155,11 +155,11 @@ Traditional automation follows a strict script. AI introduces the ability to int
 
 ### Key AI-powered features in modern orchestration platforms
 
-Modern platforms are integrating [AI tools](/docs/ai-tools) to simplify and enhance the user experience:
+Modern platforms are integrating [AI tools](/docs/develop-with-ai) to simplify and enhance the user experience:
 
 *   **AI Copilot:** Natural language prompts are used to generate complex workflow definitions in seconds, dramatically lowering the barrier to entry and accelerating development.
 *   **Autonomous Agents:** AI-driven agents can execute multi-step tasks, use external tools, and even self-correct based on outcomes, handling dynamic and unpredictable situations.
-*   **RAG Workflows:** Retrieval-Augmented Generation ([RAG](/docs/ai-tools/ai-rag-workflows)) pipelines can be orchestrated to build sophisticated question-answering systems that query internal knowledge bases to provide contextually-aware AI responses.
+*   **RAG Workflows:** Retrieval-Augmented Generation ([RAG](/docs/ai-orchestration/ai-rag-workflows)) pipelines can be orchestrated to build sophisticated question-answering systems that query internal knowledge bases to provide contextually-aware AI responses.
 
 ## Choosing the Right Automation Software for Your Enterprise
 

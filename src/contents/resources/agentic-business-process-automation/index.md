@@ -130,7 +130,7 @@ tasks:
 ```
 
 ### Worth noticing in this workflow:
-- **Declarative YAML definition:** The entire end-to-end process—including data extraction, AI evaluation, conditional routing, and human-in-the-loop pauses—is defined in clean, version-controlled code, matching practices outlined in documentation on [AI Agents in Kestra](/docs/ai-tools/ai-agents).
+- **Declarative YAML definition:** The entire end-to-end process—including data extraction, AI evaluation, conditional routing, and human-in-the-loop pauses—is defined in clean, version-controlled code, matching practices outlined in documentation on [AI Agents in Kestra](/docs/ai-orchestration/ai-agents).
 - **Native human-in-the-loop control:** The `Pause` task halts execution when an anomaly is detected, preventing automated errors from resulting in improper financial disbursements.
 - **Secure credential management:** Sensitive endpoints like the Slack webhook URL are injected securely using runtime secrets (`{{ secret('...') }}`), keeping credentials out of source control.
 - **Complete auditability:** Every intermediate output, agent evaluation decision, and human sign-off is preserved in Kestra's execution history, satisfying strict enterprise governance requirements.

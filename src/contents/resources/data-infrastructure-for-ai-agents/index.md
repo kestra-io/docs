@@ -97,7 +97,7 @@ Kestra is an orchestration control plane that covers these four pillars in one p
 
 Kestra's {totalPlugins}+ plugins connect to databases, warehouses, APIs, and cloud storage. You can use pre-built tasks for databases, data warehouses, APIs, and cloud storage.
 
-Kestra can also expose any flow as a tool for agents. The [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) publishes a flow on Kestra's [MCP server](/docs/ai-tools/mcp-server): its inputs become the tool's parameters and its outputs the tool's response, so an agent calls a governed workflow instead of the database itself.
+Kestra can also expose any flow as a tool for agents. The [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) publishes a flow on Kestra's [MCP server](/docs/ai-orchestration/mcp-server): its inputs become the tool's parameters and its outputs the tool's response, so an agent calls a governed workflow instead of the database itself.
 
 ### Managing Secure Access with Kestra's Governance Features
 

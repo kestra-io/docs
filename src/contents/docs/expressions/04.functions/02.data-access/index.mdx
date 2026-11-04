@@ -123,6 +123,40 @@ For files in CSV, JSON, XML, YAML, or any other non-ION format, `read()` returns
 
 Do not perform string operations such as `contains` directly on `read()` when the URI points to an ION task output — use `fromIon()` first.
 
+## `dataURL()`
+
+`dataURL()` converts a file to a `data:` URI — a base64-encoded inline representation suitable for use in HTML `src` attributes, App block properties, and anywhere a URL is expected but an external host is not available.
+
+```twig
+{{ dataURL('nsfile:///logo.svg') }}
+{{ dataURL('nsfile:///report.png', namespace='other.namespace') }}
+{{ dataURL(outputs.someTask.uri) }}
+```
+
+Arguments:
+
+- `path` — the file path. Accepts `nsfile:///`, `kestra:///`, and `file://` URIs, or a bare path (treated as a namespace file in the flow's namespace).
+- `namespace` — defaults to the flow's namespace.
+- `revision` — integer; reads a specific version of a namespace file.
+- `mimeType` — overrides MIME type detection. If omitted, the type is inferred from the file extension. Throws if the extension is not recognized.
+- `contentOnly` — when `true`, returns only the base64 string without the `data:...;base64,` prefix.
+
+`dataURL()` returns `data:<mimeType>;base64,<base64content>` by default. Pass `contentOnly=true` to get only the base64 string, for example when composing a custom prefix.
+
+```twig
+{# Full data URI — use in <img src> or App Image.source #}
+{{ dataURL('nsfile:///logo.svg') }}
+
+{# Explicit MIME type for files with unrecognized extensions #}
+{{ dataURL('nsfile:///logo.custom', mimeType='image/svg+xml') }}
+
+{# Specific revision #}
+{{ dataURL('nsfile:///logo.svg', revision=1) }}
+
+{# Base64 content only #}
+{{ dataURL('nsfile:///logo.svg', contentOnly=true) }}
+```
+
 ## `fileURI()`
 
 Returns the internal URI of a namespace file without reading its contents. Use `fileURI()` when a task parameter expects a URI rather than inline content:

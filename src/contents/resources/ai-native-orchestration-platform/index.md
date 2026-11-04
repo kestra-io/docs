@@ -80,7 +80,7 @@ When evaluating platforms, several key features distinguish a truly AI-native so
 
 ### Multi-Agent Orchestration and Collaboration
 
-The cutting edge of AI involves not just single models but systems of multiple, collaborating AI agents. A forward-looking platform must be able to orchestrate these multi-agent systems, managing their communication, state, and access to tools. This includes the ability to define workflows where [AI agents](https://kestra.io/docs/ai-tools/ai-agents) can be triggered, run in parallel, and hand off tasks to one another to achieve a common goal.
+The cutting edge of AI involves not just single models but systems of multiple, collaborating AI agents. A forward-looking platform must be able to orchestrate these multi-agent systems, managing their communication, state, and access to tools. This includes the ability to define workflows where [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) can be triggered, run in parallel, and hand off tasks to one another to achieve a common goal.
 
 ### Data Pipeline Integration and Unification
 
@@ -182,7 +182,7 @@ The role of orchestration will only become more critical as AI becomes more deep
 
 ### Trends in AI-Native Development
 
-We are seeing a move towards more specialized yet unified platforms. The rise of low-code and no-code interfaces, such as Kestra's [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot), is making it easier for a broader range of users, not just data scientists, to build and manage AI workflows. This democratization of AI development will accelerate adoption across the enterprise.
+We are seeing a move towards more specialized yet unified platforms. The rise of low-code and no-code interfaces, such as Kestra's [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot), is making it easier for a broader range of users, not just data scientists, to build and manage AI workflows. This democratization of AI development will accelerate adoption across the enterprise.
 
 ### How Orchestration Will Drive AI Innovation
 
@@ -190,4 +190,4 @@ Orchestration is the backbone that enables more complex and innovative AI applic
 
 ### What's Next for AI Agent Orchestration
 
-The future of AI agent orchestration points towards greater autonomy and more sophisticated collaboration models. We will see platforms that provide even more robust governance and observability for AI agents, allowing them to operate safely and predictably within enterprise environments. The ultimate goal is to create a seamless control plane where human teams and [AI agents](https://kestra.io/docs/ai-tools/ai-agents) can collaborate effectively, with the orchestration platform providing the visibility, reliability, and security needed to manage this new, hybrid workforce.
+The future of AI agent orchestration points towards greater autonomy and more sophisticated collaboration models. We will see platforms that provide even more robust governance and observability for AI agents, allowing them to operate safely and predictably within enterprise environments. The ultimate goal is to create a seamless control plane where human teams and [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) can collaborate effectively, with the orchestration platform providing the visibility, reliability, and security needed to manage this new, hybrid workforce.
