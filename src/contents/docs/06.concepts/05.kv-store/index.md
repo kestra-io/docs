@@ -50,7 +50,7 @@ KV pairs can be managed from the UI, in flows via tasks, through the REST API, v
 4. **Terraform**: use the `kestra_kv` resource.
 5. **Pebble function**: use `kv()` to retrieve a value inline in a flow expression.
 6. **GitHub Actions**: manage KV pairs in your CI/CD pipeline.
-7. **kestractl**: use `kestractl kv` to list, set, get, and delete from the command line. See the [kestractl docs](../../kestra-cli/kestractl/index.md) for setup.
+7. **kestractl**: use `kestractl kv` to list, set, get, and delete from the command line. See [kestractl installation](../../kestra-cli/kestractl/index.md#installation) for setup.
 
 ### Create a KV pair from the UI
 

@@ -73,7 +73,7 @@ You can register assets in several ways, and you can mix them:
 | Turn on `assets.enableAuto` on a plugin that emits assets | The plugin can detect resources itself, for example dbt models or tables created by a SQL query. |
 | Print an asset line from a script task | A Python, Shell, or other script task creates resources that only the script knows about. |
 | Run the `Set` task | You want to register or update an asset as its own step, without tying it to another task. |
-| Use the UI, the API, or `kestractl` | You want to register resources that no flow manages, or automate registration from outside Kestra. |
+| Use the UI, the API, or [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) | You want to register resources that no flow manages, or automate registration from outside Kestra. |
 
 The [asset declaration reference](./01.declare-assets/index.md) covers the first three methods. The [asset tasks and triggers reference](./02.tasks-and-triggers/index.md) covers `Set`. [Manage assets in the UI, API, and CLI](./03.manage-assets/index.md) covers the rest.
 

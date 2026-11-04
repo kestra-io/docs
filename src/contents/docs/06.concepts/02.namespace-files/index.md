@@ -194,7 +194,7 @@ resource "kestra_namespace_file" "prod_scripts" {
 
 ### Deploy namespace files via kestractl
 
-[kestractl](../../kestra-cli/kestractl/index.md) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
+[kestractl](../../kestra-cli/kestractl/index.md#installation) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
 
 ```bash
 kestractl nsfiles upload prod ./scripts --override
