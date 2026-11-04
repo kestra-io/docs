@@ -208,7 +208,7 @@ Pass `scheduleDate` to create an execution that stays in the `CREATED` state unt
 curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/hello_world?scheduleDate=2026-11-01T09:00:00Z"
 ```
 
-To move the start of a scheduled execution that has not started yet, call the `reschedule` action with the new date:
+Starting in 2.1, to move the start of a scheduled execution that has not started yet, call the `reschedule` action with the new date:
 
 ```bash
 curl -X POST "http://localhost:8080/api/v1/main/executions/{executionId}/actions/reschedule?scheduleDate=2026-11-02T09:00:00Z"

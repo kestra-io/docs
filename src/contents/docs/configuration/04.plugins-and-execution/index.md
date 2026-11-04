@@ -317,6 +317,9 @@ Use Micronaut file watching only when you want local flow synchronization from d
 
 ### Executor loop intervals
 
+:::badge{version=">=2.1" editions="OSS,EE"}
+:::
+
 Two properties control how often the executor checks delayed executions and evaluates SLA deadlines:
 
 ```yaml

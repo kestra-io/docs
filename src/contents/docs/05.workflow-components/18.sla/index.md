@@ -56,6 +56,9 @@ tasks:
 
 ### AVG_DURATION
 
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
 `AVG_DURATION` breaches when an execution runs longer than the flow's recent average duration. Use it to catch executions that are slower than usual when you have no fixed ceiling to set with `MAX_DURATION`.
 
 When an execution is created, Kestra averages the durations of the flow's executions that ended within the `lookbackPeriod` and whose final state is listed in `averageOverStates`. The SLA deadline is that average plus the threshold, counted from the moment the execution is created, like `MAX_DURATION`. Kestra computes the deadline once per execution, so it does not change while the execution runs.

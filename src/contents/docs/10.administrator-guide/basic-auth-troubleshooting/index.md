@@ -74,6 +74,9 @@ In this scenario, the Setup page is publicly reachable until credentials are sub
 
 ### Change Password
 
+:::badge{version=">=2.1" editions="OSS"}
+:::
+
 To change credentials stored in the database, click your username in the sidebar and select **Change Password**.
 
 ![Change Password option in the user menu](./change-password-menu.png)

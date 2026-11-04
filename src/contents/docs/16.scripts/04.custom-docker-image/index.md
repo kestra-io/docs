@@ -196,6 +196,9 @@ If you want to run languages other than Python using a custom Docker image, here
 
 ## Pinning images by digest
 
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
 For reproducible builds and supply-chain security, you can pin `containerImage` to a specific digest using the `image:tag@sha256:...` format:
 
 ```yaml
@@ -203,3 +206,5 @@ containerImage: cytopia/ansible:2.20-tools@sha256:b273f5b1c7af55cf885fa29fc83c94
 ```
 
 Kestra passes the digest directly to the Docker daemon, which resolves the exact manifest rather than the mutable tag. This guarantees the same image is pulled on every execution, regardless of whether the tag has been updated since.
+
+In 2.0, a `containerImage` with a digest fails with `400 invalid reference format`.

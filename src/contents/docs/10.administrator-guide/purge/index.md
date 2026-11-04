@@ -132,6 +132,9 @@ triggers:
 
 ## Purge metrics
 
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
 `PurgeMetrics` removes execution metrics from the metrics table in bulk. Use it instead of `PurgeExecutions` when your goal is metric cleanup: `PurgeExecutions` issues a separate `DELETE FROM metrics` query for every batch of executions it processes, even when those executions have no metrics. `PurgeMetrics` deletes all matching rows in a single query filtered by date range.
 
 ```yaml

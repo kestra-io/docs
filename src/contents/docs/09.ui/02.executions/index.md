@@ -39,6 +39,23 @@ Executions can be filtered by namespace, flow ID, labels, state, start date, or 
 
 <div style="position: relative; padding-bottom: calc(54.828% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/1zqBYvR7JifFkwNSa7Qh?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
+## Timeline
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+The chart at the top of the Executions page has two modes: **Counts**, which shows the number of executions per state over time, and **Timeline**, which draws each execution as a bar from its start date to its end date. Use the timeline to spot overlapping runs, gaps in a schedule, or an execution that held a concurrency slot longer than expected. Kestra remembers the mode you last picked.
+
+- **Rows**: executions are grouped by namespace. Click a namespace to drill into its flows; the breadcrumb shows the total and failed run counts for the current level.
+- **Bars**: each bar takes its color from the execution state, and running executions extend to the current time. When a row has too many executions to draw individually, bars are aggregated into buckets tinted by the most common state. Zoom in for execution-level detail.
+- **Bar details**: click a bar to see its namespace, flow, state, and dates, then **Open execution** or **Show only this flow**.
+- **Legend**: shows the count per state. Click a state to dim it.
+- **Time range**: zoom, pan, or jump to **Now** from the toolbar, or drag across the density bar to select a range. The default range is 24 hours, from 5 minutes up to 1 year.
+
+The filters applied to the Executions page also apply to the timeline. The timeline loads at most 1,000 executions, newest first; narrow the time range or filters to see the rest.
+
+<!-- TODO: screenshot. kestra#19334 merged to develop 2026-10-30, not in the v2.1.x RC cut; confirm it ships in 2.1 GA. Not verified: which filters the density bar ignores. -->
+
 ## Gantt
 
 The **Gantt** tab visualizes each task's duration. From this view, a specific task can be replayed, its source code viewed, status changed, or metrics and outputs inspected.

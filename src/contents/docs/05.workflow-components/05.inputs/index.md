@@ -111,6 +111,9 @@ Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510),
 
 ### Description display mode
 
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
 Long descriptions make forms unwieldy. Set `descriptionDisplayMode: TOOLTIP` to keep the form compact and show the description only when the user hovers the help icon next to the label. This applies to the Execute modal and to [Apps](../../07.enterprise/04.scalability/apps/index.md) forms.
 
 ```yaml

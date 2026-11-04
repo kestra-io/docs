@@ -1,14 +1,14 @@
 ---
 title: "Kestra Deployment Architectures: Postgres, AMQP, and Kafka"
 h1: Choose a Deployment Architecture for Kestra
-description: Choose your Kestra deployment architecture. Compare standalone vs distributed deployments and Postgres, AMQP/Redis, and Kafka backends.
+description: Choose your Kestra deployment architecture. Compare standalone vs distributed deployments and Postgres, AMQP/Redis/NATS, cloud-managed, and Kafka queue backends.
 sidebarTitle: Deployment architecture
 icon: /src/contents/docs/icons/architecture.svg
 ---
 
 Choosing a Kestra deployment architecture involves two decisions: how server roles are deployed (standalone vs distributed), and which queue and repository backends they use.
 
-The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, NATS, Kafka, and Elasticsearch.
+The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, NATS, GCP Pub/Sub, Amazon SQS and SNS, Kafka, and Elasticsearch.
 
 ## Standalone vs distributed
 
@@ -55,6 +55,14 @@ When queue latency matters, replace the database queue with an AMQP broker, Redi
 - Can reduce queue latency significantly compared to a database queue, depending on workload
 - Also raises the throughput ceiling; use Kafka for the highest throughput requirements
 - RabbitMQ is recommended for simpler operation and fewer edge cases
+
+### GCP Pub/Sub / Amazon SQS and SNS (Enterprise)
+
+When your platform already runs on Google Cloud or AWS, use the cloud provider's managed messaging service as the queue instead of operating a broker yourself.
+
+- **Dependencies**: GCP Pub/Sub, or Amazon SQS and SNS
+- Kestra creates and deletes its own topics, queues, and subscriptions, so the identity it runs as needs the permissions listed in [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends)
+- Delivery settings such as message ordering apply only when Kestra creates a subscription (Pub/Sub) or queue (SQS), so choose them before the first start
 
 ### Kafka (Enterprise)
 
