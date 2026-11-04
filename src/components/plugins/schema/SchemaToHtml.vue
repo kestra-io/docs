@@ -40,7 +40,7 @@
             </Collapsible>
 
             <Collapsible
-                v-if="installCommand"
+                v-if="pluginArtifactCoordinate"
                 class="plugin-section"
                 title="Installation"
                 href="installation"
@@ -59,7 +59,7 @@
                         <CodeTabs
                             :tabs="[
                                 { label: 'kestractl', code: kestractlInstallCommand },
-                                { label: 'Kestra CLI', code: installCommand },
+                                { label: 'Kestra CLI', code: kestraCliInstallCommand },
                             ]"
                             storage-key="plugin-install-command"
                             lang="bash"
@@ -148,7 +148,7 @@
     const props = withDefaults(defineProps<{
         schema: JSONSchema,
         pluginType: string,
-        installCommand?: string,
+        pluginArtifactCoordinate?: string,
         darkMode?: boolean,
         propsInitiallyExpanded?: boolean,
         forceIncludeProperties?: string[],
@@ -191,10 +191,15 @@
     import { getKestractlPluginGetCommand } from "~/utils/plugins/kestractlInstallCommand";
 
     const kestractlInstallCommand = computed(() =>
-        getKestractlPluginGetCommand(props.installCommand)
+        getKestractlPluginGetCommand(props.pluginArtifactCoordinate)
+    );
+    const kestraCliInstallCommand = computed(() =>
+        props.pluginArtifactCoordinate
+            ? `./kestra plugins install ${props.pluginArtifactCoordinate}:LATEST`
+            : ""
     );
     const isEnterprisePlugin = computed(() =>
-        props.installCommand?.startsWith("io.kestra.plugin.ee:")
+        props.pluginArtifactCoordinate?.startsWith("io.kestra.plugin.ee:") ?? false
     );
 
     const examples = computed(() => props.schema.properties?.$examples);

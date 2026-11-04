@@ -147,9 +147,6 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     })()
 
     const pluginArtifactCoordinate = getPluginInstallCommand(pluginType, currentPluginMetadata)
-    const pluginInstallCommand = pluginArtifactCoordinate
-        ? `./kestra plugins install ${pluginArtifactCoordinate}:LATEST`
-        : undefined
 
     const metadataMap: Record<string, PluginMetadata> = Object.fromEntries(
         currentPluginMetadata.map((m) => [m.group, m]),
@@ -380,7 +377,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         prunedPluginsWithoutDeprecated,
         pageWithToc,
         currentPluginMetadata,
-        pluginInstallCommand,
+        pluginArtifactCoordinate,
         currentPluginCategories,
         sidebarPluginDataResult: sidebarPluginData,
 

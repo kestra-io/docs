@@ -5,17 +5,17 @@ import PluginDocsFrame from "./PluginDocsFrame.astro"
 interface Props {
     schema: any
     pluginType: string
-    installCommand?: string
+    pluginArtifactCoordinate?: string
 }
 
-const { schema, pluginType, installCommand } = Astro.props
+const { schema, pluginType, pluginArtifactCoordinate } = Astro.props
 ---
 
 <PluginDocsFrame>
     <PluginsMarkdownRender
         {schema}
         {pluginType}
-        {installCommand}
+        {pluginArtifactCoordinate}
         client:idle
     />
 </PluginDocsFrame>

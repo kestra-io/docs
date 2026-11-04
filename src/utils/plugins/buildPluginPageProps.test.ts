@@ -133,8 +133,8 @@ describe("buildPluginPageProps", () => {
             pageNames: {},
             allPlugins: plugins,
             allPluginMetadata: [
-                { name: "aws", group: "io.kestra.plugin.aws", title: "AWS" },
-                { name: "aws", group: "io.kestra.plugin.aws.s3", title: "AWS S3" },
+                { name: "aws", group: "io.kestra.plugin.aws", title: "AWS", artifactGroupId: "io.kestra.plugin", artifactId: "plugin-aws" },
+                { name: "aws", group: "io.kestra.plugin.aws.s3", title: "AWS S3", artifactGroupId: "io.kestra.plugin", artifactId: "plugin-aws-s3" },
             ] as any,
             blueprintCounts: {},
             relatedBlogs: [],
@@ -151,7 +151,7 @@ describe("buildPluginPageProps", () => {
         })
 
         expect(props.headingTitle).toBe("AWS S3 Upload")
-        expect(props.pluginInstallCommand).toBe("./kestra plugins install io.kestra.plugin:plugin-aws-s3:LATEST")
+        expect(props.pluginArtifactCoordinate).toBe("io.kestra.plugin:plugin-aws-s3")
         expect(props.currentSubgroupPlugin).toBeUndefined()
         expect(props.currentPluginCategories).toEqual(["CLOUD", "DATA", "AI", "INFRASTRUCTURE"])
         expect(props.currentPluginMetadata.map((m) => m.group)).toEqual([

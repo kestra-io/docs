@@ -4,7 +4,7 @@
             class="plugin-schema"
             :schema
             :plugin-type
-            :install-command="installCommand"
+            :plugin-artifact-coordinate="pluginArtifactCoordinate"
             :props-initially-expanded="true"
         >
             <template #markdown="{ content }">
@@ -26,7 +26,7 @@
     defineProps<{
         schema: JSONSchema
         pluginType: string
-        installCommand?: string
+        pluginArtifactCoordinate?: string
     }>()
 </script>
 
