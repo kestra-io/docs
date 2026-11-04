@@ -1,0 +1,95 @@
+---
+import TopologyMock from "~/components/home/TopologyMock.astro"
+import type { TopologyNode } from "~/components/home/TopologyMock.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+
+interface Props {
+    nodes: TopologyNode[]
+    label: string
+    caption?: string
+}
+
+const { nodes, label, caption } = Astro.props
+---
+
+<figure class="flow-topology">
+    <div class="visual" style={`--pixels: url("${pixelCluster}")`}>
+        <span class="pixels" aria-hidden="true"></span>
+        <TopologyMock {nodes} {label} />
+    </div>
+    {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style lang="scss">
+    .flow-topology {
+        margin: 1.75rem 0;
+
+        figcaption {
+            margin-top: 0.75rem;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-sm;
+            text-align: center;
+        }
+    }
+
+    .visual {
+        --tint: #e6c359;
+
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        height: 16rem;
+        overflow: hidden;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 12px;
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, #ffffff);
+
+        :global(html.dark) & {
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 8%, transparent),
+                    transparent 70%
+                ),
+                var(--ks-background-secondary);
+        }
+
+        @include media-breakpoint-down(md) {
+            height: 12rem;
+        }
+
+        // The resources column is narrower than the landing pages the mock
+        // was sized for: 880px canvas at zoom 1.18 has to fit in ~768px.
+        :global(.topology) {
+            --z: 0.66;
+
+            @include media-breakpoint-down(md) {
+                --z: 0.5;
+            }
+
+            @include media-breakpoint-down(sm) {
+                --z: 0.32;
+            }
+        }
+    }
+
+    .pixels {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.25rem;
+        width: 80px;
+        aspect-ratio: 194 / 168;
+        background: var(--tint);
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+</style>

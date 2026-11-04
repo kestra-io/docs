@@ -31,7 +31,7 @@ pillars:
       description: "Run the playbook with <code>--check --diff</code> on a nightly schedule. The Kestra Ansible callback emits per-host changes, the flow surfaces only the hosts that drifted, and the diff lands in Slack. No enforcement, no surprises, the whole fleet audited overnight."
     - icon: "mdi:transit-connection-variant"
       title: "Inventory built at run time from Terraform, NetBox, or vCenter"
-      description: "A <code>terraform output</code>, a NetBox API call, or <code>vmware.vcenter.ListVms</code> writes the inventory at the start of the flow. The next task templates it into <code>inventory.ini</code>. No stale static inventory file, no manual sync between source of truth and what Ansible reads."
+      description: "A <code>terraform output</code>, a NetBox API call, or <code>vmware.vcenter.ListVms</code> writes the inventory at the start of the flow. The next task templates it into <code>inventory.ini</code>. No stale static inventory file, no manual sync between source of truth and what Ansible reads. See <a href='/resources/infrastructure/terraform-and-ansible'>how to pass Terraform outputs to Ansible</a>."
     - icon: "mdi:format-list-bulleted-square"
       title: "Per-host results from the Kestra Ansible callback, iterable in YAML"
       description: "The Kestra Ansible callback emits structured per-host outputs after each play. A <code>ForEach</code> task loops over the hosts and branches on <code>changed</code>, <code>failed</code>, or any fact. Route alerts by tag, hand failing hosts to a remediation flow, or upload the play recap to S3."
