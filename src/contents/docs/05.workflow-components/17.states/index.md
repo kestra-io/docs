@@ -67,4 +67,4 @@ Task run states represent the status of a single task run within an execution. T
 | `SKIPPED` | Skipped. Did not run due to a condition or policy. |
 | `PAUSED` | Paused, for example by a [`Pause`](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task, until the execution is resumed. |
 | `BREAKPOINT` | Stopped at a debug breakpoint before running, until the execution is resumed. |
-| `CANCELLED` | A `Subflow` task run whose subflow execution was cancelled. See [Cancelled subflow executions](../10.subflows/index.md#cancelled-subflow-executions). |
+| `CANCELLED` | Cancelled by the system, for example a sibling task of a failed task in `Parallel` or `Dag` with `onChildFailure: CANCEL`, or a `Subflow` task whose subflow execution was cancelled. See [Cancelled subflow executions](../10.subflows/index.md#cancelled-subflow-executions). |
