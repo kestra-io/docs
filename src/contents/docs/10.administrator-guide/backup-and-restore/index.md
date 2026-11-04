@@ -147,6 +147,8 @@ docker exec your_container bash -c "./kestra backups restore kestra:///backups/f
 
 Use the database's native backup tools to back up and restore Kestra when running the JDBC backend.
 
+If the queue runs on a [dedicated queue database](../../configuration/02.runtime-and-storage/index.md#dedicated-queue-database), back up and restore both databases. Kestra doesn't recreate the `queues` table in an empty queue database, so restoring only the main database leaves Kestra unable to start.
+
 #### PostgreSQL
 
 Stop Kestra first to ensure the database is in a stable state.

@@ -100,7 +100,7 @@ Inside a [Loop](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md
 | Expression | Description |
 |---|---|
 | `{{ item.index }}` | Zero-based index of the current iteration |
-| `{{ item.value }}` | Value of the current iteration |
+| `{{ item.value }}` | Value of the current iteration; a string, or a map when the Loop sets [`parseValues: true`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#read-object-fields-with-parsevalues) |
 | `{{ item.key }}` | Map key of the current iteration; only set when `values` is a map |
 | `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
 | `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |

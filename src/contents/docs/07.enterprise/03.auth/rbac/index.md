@@ -99,8 +99,6 @@ A resource is a category of product entity or capability that can be controlled 
 | `INVITATION` | User invitations |
 | `AUDITLOG` | Audit log entries |
 | `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
-| `SYSTEM_SETTINGS` | Instance-level settings |
-| `TENANT_SETTINGS` | Tenant-level settings |
 
 ### Actions
 
@@ -120,7 +118,7 @@ Each resource defines its own set of allowed actions. Not every action applies t
 
 | Resource | Additional actions |
 |---|---|
-| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
+| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT`, `UPDATE_CONCURRENCY_LIMIT` (reset [concurrency counters](../../../05.workflow-components/14.concurrency/index.md#reset-a-stuck-running-counter)) |
 | `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
 | `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
@@ -131,8 +129,6 @@ Each resource defines its own set of allowed actions. Not every action applies t
 | `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
 | `GROUP` | `MANAGE_MEMBERS` |
 | `COPILOT` | `USE` (only action) |
-| `SYSTEM_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
-| `TENANT_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
 
 :::alert{type="info"}
 For a complete resource-to-endpoint mapping, see the [Permissions reference](./permissions-reference/index.md).
@@ -163,7 +159,7 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 |---|---|
 | **Admin** | All actions on all resources, including granting any access to anyone. See [Who can grant access](#who-can-grant-access). |
 | **Developer** | Everything Editor has, plus: full namespace management (including file management), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
-| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
+| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
@@ -239,13 +235,15 @@ If you see an error when creating a new User or Service Account, it might be cau
 
 ## Creating a user with an Admin role
 
-Admin users are created via the [Setup Page](../../01.overview/02.setup/index.md) on first launch, or by assigning the Admin role to a user via IAM or the CLI with `--admin`:
+Admin users are created via the [Setup Page](../../01.overview/02.setup/index.md) on first launch, or by assigning the Admin role to a user in IAM or with [`kestractl`](../../../kestra-cli/kestractl/index.md#iam-management-enterprise-edition):
 
 ```bash
-kestra auths users create prod.admin@kestra.io TopSecret42 --admin
+# Create the user
+kestractl users create --email prod.admin@kestra.io --user-password 'TopSecret42'
 
-## schema:
-kestra auths users create <username> <password> --admin
+# Find the Admin role ID, then bind it to the user in the active tenant
+kestractl roles list
+kestractl bindings create --type USER --external-id <user_id> --role <admin_role_id>
 ```
 
 ## User lockout
@@ -292,6 +290,59 @@ Users can reset their password via the Forgot Password link on the login page. A
 ![Reset Password](./forgot-password.png)
 
 ![Instance Owner Change Password](./create-user-password.png)
+
+## Password expiration and reuse
+
+:::badge{version=">=2.1" editions="EE"}
+:::
+
+Kestra can make Basic Auth passwords expire after a set age, and stop users from setting a password they used recently. Both are off by default.
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-max-age: P90D              # How long a password stays valid. Unset by default: passwords never expire
+      password-expiry-warning: P7D        # How long before expiry users are warned. Default: P7D
+      prevent-reuse-of-last-passwords: 5  # How many passwords, counting the current one, cannot be reused. Default: 0 (no check)
+```
+
+`password-max-age` must be a positive duration, and `prevent-reuse-of-last-passwords` must be zero or more. Kestra refuses to start otherwise.
+
+Password expiry applies to users only. Service account passwords never expire because of `password-max-age`, and API tokens are not affected. The reuse check applies to every password, service accounts included.
+
+### Expired passwords
+
+A password expires `password-max-age` after it was last changed, whoever changed it: the user from their profile or the reset page, or an Instance Owner from the user's detail page.
+
+- **Warning:** during the last `password-expiry-warning` before expiry, a banner at the top of the UI tells the user when their password expires, with a link to their profile to change it.
+- **Login:** a user who signs in with an expired password is not logged in. Kestra sends them to the reset page with a message explaining that their password has expired, where they choose a new one. This link is valid for one hour and does not need the mail service.
+- **API requests:** requests that authenticate with the username and password (HTTP Basic) are rejected once the password has expired.
+- **Open sessions:** a session opened with the password cannot be refreshed once the password has expired, so it ends when its current access token does.
+
+When Kestra issues a link for an expired password, it records the attempt as **Password expired** in the instance-level audit logs. The attempt never counts toward the [user lockout](#user-lockout) threshold.
+
+These links follow the same limits as **Forgot password?**: `password-reset.cooldown` per user and `password-reset.rate-limit` per IP address. When a limit is reached, no new link is issued and nothing is recorded. The user is asked to use **Forgot password?**, which requires the mail service, or to sign in again a few minutes later. Any reset link already sent stays valid.
+
+Expiry only applies to signing in with the password. A user who also signs in through [SSO](../sso/index.md) or a one-time code can keep doing so, and does not see the banner in those sessions.
+
+:::alert{type="info"}
+Passwords set before this feature have no recorded change date. During the upgrade, every existing password is considered changed at the time of the upgrade, so the upgrade itself expires no password, and the first expiry happens `password-max-age` after it.
+:::
+
+### Password reuse
+
+With `prevent-reuse-of-last-passwords` set to `N`, a new password is rejected if it matches the current password or one of the `N - 1` before it. The check applies everywhere a password is set: the user profile, the reset page, and the user detail page used by an Instance Owner. A rejected password does not change anything, and the user can try another one.
+
+The history has these limits:
+
+- Previous passwords are only recorded from the moment the setting is enabled. When you turn it on, only each user's current password is known, so older ones can be reused once.
+- Lowering `prevent-reuse-of-last-passwords` takes effect immediately, and the extra entries are deleted at the user's next password change. Raising it again after that does not bring them back.
+- Each stored password is checked with the same deliberately slow hash as a login, so a large history makes every password change slower. Keep it to a small number, such as 5 to 10.
+
+### Password reset links
+
+A user has at most one pending reset link. Requesting a new one, from **Forgot password?** or by signing in with an expired password, cancels the previous link, and any password change cancels the pending one.
 
 ## RBAC design notes
 

@@ -56,6 +56,7 @@ tasks:
           type: io.kestra.plugin.ee.assets.VM
           displayName: "{{ inputs.hostname }}"
           description: "Provisioned by execution {{ execution.id }}."
+          owner: group:platform-team
           metadata:
             provider: gcp
             region: "{{ inputs.region }}"
@@ -63,7 +64,6 @@ tasks:
             env: "{{ inputs.env }}"
             os: ubuntu-22.04
             private_ip: "{{ outputs.create_vm.value }}"
-            owner: platform-team
 ```
 
 Notice these parts of the declaration:

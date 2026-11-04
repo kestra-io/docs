@@ -51,6 +51,23 @@ The sidebar is customizable from **Settings → Preferences → Customize Sideba
 
 ![Customize Sidebar](./customize-sidebar.png)
 
+## Notifications
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+The bell icon in the top navigation bar lists your in-app notifications, with **All** and **Unread** tabs and **Mark all as read**. Notifications arrive live, and the bell pulses while one of your operations is still running.
+
+When you run a bulk action from the Executions, Triggers, or Backfills pages, Kestra processes it in the background and reports its progress in the bell, for example "Killing 3 executions", with the number of items processed and rejected. Only the user who started the operation sees it. These bulk actions send notifications:
+
+- Executions: kill, pause, resume, restart, replay, force run, unqueue, change status, and set labels. Deleting executions doesn't send a notification.
+- Triggers: unlock, delete, disable, and enable.
+- Backfills: pause, resume, and delete.
+
+In the Enterprise Edition, the bell also receives [Cases](../07.enterprise/02.governance/cases/index.md#notifications) events and [asset expiry](../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#owner-notifications) notifications for the assets you own, and shows only notifications from tenants you can access.
+
+Read notifications are deleted after 7 days and unread ones after 30 days. A background job removes them every hour; it can be configured with `kestra.notifications.purge-expired.enabled`, `initial-delay`, and `fixed-delay`.
+
 <div class="video-container">
     <iframe
         src="https://www.youtube.com/embed/6o0PNVrA84k?si=QyjOSo5HMZ-wKHol"

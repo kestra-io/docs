@@ -477,9 +477,11 @@ When you open an execution in the topology view, the topology node for a Google 
 - Project ID and region
 - Service account
 - Staging GCS bucket
-- Whether the job deletes on completion (`delete` flag)
-- Whether an existing job will be resumed on Worker restart (`resume` flag)
-- Configured timeout
+- Whether the job deletes on completion (`delete` flag), before an execution only
+- Whether an existing job will be resumed on Worker restart (`resume` flag), before an execution only
+- Timeout
+
+Before an execution, the modal shows values from the task definition and marks any value that contains a Pebble expression as a template. After an execution, it shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
 
 *Post-execution:*
 - Job name — GCP resource identifier for the Cloud Run job

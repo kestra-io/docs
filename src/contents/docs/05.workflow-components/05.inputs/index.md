@@ -80,6 +80,7 @@ Inputs are strongly typed and validated before execution starts.
 | `SECRET` | Encrypted string, decrypted at runtime and masked in UI and logs | `validator` (regex); requires [encryption key](../../configuration/05.security-and-secrets/index.md) |
 | `ARRAY` | JSON array or YAML list | `itemType` (required) |
 | `FORM` | Groups child inputs as a multi-step wizard in the Execute modal | Cannot nest; no `defaults`/`prefill` on the FORM itself |
+| `TABLE` | Ordered list of typed records, entered as rows in a grid (Enterprise Edition) | `columns` (required), `minRows`, `maxRows`; see [TABLE inputs](#table-inputs) |
 | `REUSABLE_INPUTS` | References a namespace-level named input group (Enterprise Edition) | See [Reusable Inputs](../22.reusable-inputs/index.md) |
 
 :::alert{type="info"}
@@ -101,10 +102,31 @@ Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510),
 | `prefill` | Initial value shown in the UI that can be cleared to `null`. Unlike `defaults`, a cleared prefill resolves to `null`. |
 | `displayName` | Label shown in the UI instead of the `id`. |
 | `description` | Markdown description displayed in the UI. |
+| `descriptionDisplayMode` | How the `description` is displayed: `TEXT` (default) renders it between the label and the field, `TOOLTIP` renders it as a hoverable help icon next to the label. |
 | `validator` | Regex pattern for `STRING` and `SECRET` types. |
 | `expression` | Pebble expression used to populate `SELECT` and `MULTISELECT` values dynamically, e.g. `{{ kv('MY_LIST') }}`. |
 | `dependsOn` | Makes this input conditional on other inputs being provided or matching a `condition`. |
 | `autoSelectFirst` | Auto-selects the first value in `SELECT`/`MULTISELECT` lists as the default. |
+| `searchable` | Stores the input value so you can find executions by it. Defaults to `false`. See [Searchable inputs](#searchable-inputs). |
+
+### Description display mode
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Long descriptions make forms unwieldy. Set `descriptionDisplayMode: TOOLTIP` to keep the form compact and show the description only when the user hovers the help icon next to the label. This applies to the Execute modal and to [Apps](../../07.enterprise/04.scalability/apps/index.md) forms.
+
+```yaml
+inputs:
+  - id: environment
+    type: SELECT
+    displayName: Environment
+    description: The target environment for deploying VMs. Pick `prod` only after the change was approved.
+    descriptionDisplayMode: TOOLTIP
+    values:
+      - dev
+      - prod
+```
 
 ## Input validation
 
@@ -156,6 +178,8 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "Hello, {{ inputs.payload.name }}!"
 ```
+
+Kestra reports each schema error as a separate message, so a payload with several problems shows all of them at once. An error on a nested value, such as a property of the wrong type, also names its location, for example `payload.name`.
 
 To validate JSON at any point in a flow — not just at execution start — use the [ValidateJsonSchema](../../15.how-to-guides/validate-json-schema/index.md) task from plugin-serdes.
 
@@ -226,6 +250,8 @@ tasks:
 A FORM cannot contain another FORM. `defaults` and `prefill` belong on individual child inputs, not on the FORM itself.
 :::
 
+A `FORM` also accepts [`descriptionDisplayMode: TOOLTIP`](#description-display-mode), which shows its description as a help icon next to the group title in the wizard instead of a text block, in the Execute modal and in Apps.
+
 When triggering a flow with FORM inputs via the API, use flat dotted field names:
 
 ```bash
@@ -235,6 +261,100 @@ curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/provisio
   -F "environment.region=eu-central-1" \
   -F "environment.instance_type=t3.large"
 ```
+
+## TABLE inputs
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+`TABLE` collects a list of records with the same typed fields, such as the disks to attach to a VM or a set of firewall rules. The Execute modal and [Apps](../../07.enterprise/04.scalability/apps/index.md) forms render it as a grid with one column per field, each header showing the column's type. Users add rows with **Click to add a row** and remove them with the delete icon. The grid keeps at least `minRows` rows.
+
+Declare each column under `columns` as a regular input. Its rules, such as `min`, `max`, or `validator`, apply to that column in every row. `minRows` and `maxRows` limit the number of rows:
+
+```yaml
+id: provision_vm
+namespace: company.team
+
+inputs:
+  - id: disks
+    type: TABLE
+    displayName: Additional disks
+    minRows: 1
+    maxRows: 8
+    columns:
+      - id: size_gb
+        type: INT
+        min: 10
+        max: 2048
+      - id: mountpoint
+        type: STRING
+        validator: "^/[a-zA-Z0-9/_-]*$"
+      - id: label
+        type: STRING
+        required: false
+
+tasks:
+  - id: first_disk
+    type: io.kestra.plugin.core.log.Log
+    message: "First disk: {{ inputs.disks[0].size_gb }} GB at {{ inputs.disks[0].mountpoint }}"
+
+  - id: attach
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ inputs.disks }}"
+    parseValues: true
+    tasks:
+      - id: log
+        type: io.kestra.plugin.core.log.Log
+        message: "Attaching {{ item.value.size_gb }} GB at {{ item.value.mountpoint }}"
+```
+
+![The Execute modal showing the Additional disks TABLE input as a grid with size_gb INT, mountpoint STRING, and label STRING columns, two filled rows, and a Click to add a row control](./table-input-execute-modal.png)
+
+The value is a list of objects, one per row, keyed by column `id`. Reference a cell with `{{ inputs.disks[0].size_gb }}`, where the index starts at 0. To loop over the rows, pass the input to a [Loop](../01.tasks/00.flowable-tasks/index.md#loop) task with `parseValues: true` so `item.value` is the row object.
+
+Columns are required by default, like any input. Set `required: false` on a column to let users leave its cells empty. An omitted cell resolves to `null`, and so does an empty value in a column of a non-text type such as `INT` or `DATE`.
+
+A `TABLE` can sit inside a [FORM](#form-inputs). Reference it with the form's path, such as `{{ inputs.environment.disks }}`.
+
+### Column rules
+
+Kestra checks the columns when you save the flow:
+
+- **Types:** `STRING`, `INT`, `FLOAT`, `BOOL`, `DATE`, `DATETIME`, `TIME`, `DURATION`, `EMAIL`, `URI`, `SELECT`, and `MULTISELECT`.
+- **IDs:** each column `id` must be unique within the table and cannot contain a `.`.
+- **Properties:** a column cannot declare `defaults`, `prefill`, `dependsOn`, or `expression`. A `SELECT` or `MULTISELECT` column takes static `values`.
+- **Row limits:** `minRows` cannot be greater than `maxRows`.
+
+`TABLE` cannot be used as the `itemType` of an `ARRAY` or `MULTISELECT` input. In the open-source edition, saving a flow with a `TABLE` input fails with an error that names the input.
+
+### Validation errors
+
+Kestra validates every cell of every row and reports all errors at once, so the user can fix them in one pass. Each message names the row, counted from 1, and the column:
+
+```text
+Invalid value for input `disks`. Cause: row 3, column `size_gb`: it must be less than `2048`
+Invalid value for input `disks`. Cause: row 4, column `mountpoint`: missing required value
+```
+
+A row with a key that isn't a declared column, or a row that isn't an object, is also rejected. Kestra checks `minRows` and `maxRows` once every cell is valid. In the Execute modal, each error appears below its cell:
+
+![The Execute modal after submitting a third row with 4096 and var/log, showing a range error below the size_gb cell and a pattern error below the mountpoint cell](./table-input-cell-errors.png)
+
+To check values without creating an execution, send them to `POST /api/v1/{tenant}/executions/{namespace}/{id}/validate`. The response returns each cell error with a `path` field that locates the cell, such as `disks[2].size_gb`, where the row index starts at 0. An error about the input as a whole, such as the row count, has no `path`.
+
+### Pass a TABLE input via the API
+
+Send the rows as one JSON-encoded field, the same way as an `ARRAY` or `JSON` input:
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/provision_vm" \
+  -H "Content-Type: multipart/form-data" \
+  -F 'disks=[{"size_gb": 100, "mountpoint": "/data"}, {"size_gb": 50, "mountpoint": "/logs", "label": "logs"}]'
+```
+
+Invalid rows return a `422` response whose `detail` lists every error.
+
+<!-- TODO(2.1 RC): confirm availability on Cloud. -->
 
 ## Array inputs
 
@@ -247,6 +367,46 @@ inputs:
     itemType: INT
     defaults: [1, 2, 3]
 ```
+
+## Searchable inputs
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `searchable: true` on an input to find executions by its value, such as an order ID or a customer code. Kestra stores the value when the execution is created, so you can find executions that are still running.
+
+```yaml
+id: process_orders
+namespace: company.sales
+
+inputs:
+  - id: customerId
+    type: STRING
+    searchable: true
+
+  - id: orderIds
+    type: ARRAY
+    itemType: STRING
+    searchable: true
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing {{ inputs.orderIds | length }} orders for {{ inputs.customerId }}"
+```
+
+Kestra stores each item of an `ARRAY` input separately, so a search for one order ID finds this execution. Use an `ARRAY` input rather than `MULTISELECT` to search on several values.
+
+Searchable inputs follow these rules:
+
+- **Types:** `STRING`, `EMAIL`, `SELECT`, `INT`, `FLOAT`, `BOOL`, `URI`, `DATE`, `DATETIME`, `TIME`, `DURATION`, and `ARRAY` of those scalar values. Saving a flow that marks an input of any other type as searchable, such as `SECRET`, `FILE`, or `MULTISELECT`, fails with an error that names the input.
+- **When values are stored:** after all inputs pass validation. An execution rejected for invalid inputs stores no searchable values. An input left empty has no searchable value.
+- **IDs:** an ID can be searchable on an input or on an output of the same flow, not both.
+- **Size limits, errors, replays, and cleanup:** the same as for [searchable outputs](../06.outputs/index.md#searchable-outputs). A value that can't be stored is logged as an error, and the execution still runs.
+
+<!-- TODO(runtime, 2.1 RC): confirm that executions started by a Flow trigger store searchable inputs, and the filter key for a searchable input inside a FORM input (dotted ID such as `environment.region`?). -->
+
+To find executions by a searchable input, use the **Inputs & Outputs** filter on the **Executions** page or the `searchableData` API filter. See [Find executions by searchable value](../06.outputs/index.md#find-executions-by-searchable-value).
 
 ## Using inputs in a flow
 

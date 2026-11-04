@@ -126,6 +126,8 @@ curl -X DELETE http://0.0.0.0:8080/api/v1/instance/versioned-plugins/uninstall \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:0.21.0"]}'
 ```
 
+Starting in 2.1, only plugins installed through plugin management can be uninstalled. A plugin bundled with the Kestra image returns a `409 Conflict` with the message `Plugin artifact '<coordinates>' was not installed through plugin management and cannot be uninstalled.`, and a plugin that isn't installed returns a `404`. In 2.0, uninstalling a bundled plugin returned `200` without removing anything.
+
 To check for all available versions of a plugin, you can use the following API request to resolve:
 
 ```bash
@@ -143,6 +145,31 @@ curl -X POST http://0.0.0.0:8080/api/v1/instance/versioned-plugins/install \
 -H "Content-Type: application/json" \
 -d '{"plugins":["io.kestra.plugin:plugin-airbyte:LATEST"]}'
 ```
+
+#### List installed plugins
+
+:::badge{version=">=2.1" editions="EE"}
+:::
+
+To see every plugin loaded on the instance, whether it ships with the image or was installed through plugin management, use the installed plugins endpoint. Any authenticated user can call it.
+
+```bash
+curl http://0.0.0.0:8080/api/v1/plugins/installed \
+-H "Authorization: Bearer YOUR-API-TOKEN"
+```
+
+The endpoint isn't tenant-scoped and returns up to 1,000 plugins per page (`size`, default and maximum `1000`). Filter with `filters[q][EQUALS]=<text>` to search plugins, or `filters[artifactId][IN]=<artifactId>` to match artifact IDs. To get a single plugin, use `GET /api/v1/plugins/installed/{groupId}/{artifactId}`.
+
+Each plugin lists its installed `versions`, highest first. Two flags on each version tell you where it came from:
+
+- `bundled`: the plugin ships with the Kestra image.
+- `managed`: the plugin was installed through plugin management and can be uninstalled.
+
+A version can be both. `updateStatus` reports `UP_TO_DATE`, `UPDATE_AVAILABLE`, or `UNKNOWN` when Kestra can't check for a newer version, alongside `latestVersion` and `latestReleaseNotesUrl`.
+
+The `/api/v1/instance/versioned-plugins` endpoints are unchanged: they remain restricted to Instance Owners and list only plugins installed through plugin management.
+
+<!-- Runtime-verified 2026-11-04 on EE develop c1ec09b: response shape, 401 anonymous, size/q/artifactId IN filters. Uninstall 409/404 is source-verified only (needs an Instance Owner). -->
 
 ### From the CLI
 

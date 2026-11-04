@@ -886,6 +886,8 @@ All six steps are always shown in the tracker; steps that do not apply (no input
 - CPU and memory requests and limits (when set)
 - Node selector labels (when set)
 
+Until the task run finishes, the configuration comes from the task definition, and any value that contains a Pebble expression is marked as a template. Once the task run finishes, the modal shows the values the pod used, read from the task outputs, and `—` for any value the run didn't report.
+
 **Show Details modal — Pod details (post-execution):**
 - Pod name and node it ran on, useful for `kubectl logs` and `kubectl exec` debugging
 - Pod phase badge (Succeeded / Failed)

@@ -345,7 +345,7 @@ Registration tokens must not appear as plaintext in a committed configuration fi
 - **`token-file`** — path to a file containing the pre-generated token. Preferred in Kubernetes environments where Secrets mount as files. The file must exist and be non-empty at startup.
 - **`token: "${ENV_VAR}"`** — environment variable placeholder resolved at startup. Simpler outside Kubernetes, but environment variables are readable from `/proc/<pid>/environ` and may appear in crash dumps.
 
-Exactly one of the two is required. Use `kestra workers registration-tokens generate` to mint a token offline before deployment.
+Exactly one of the two is required. Use [`kestractl workers registration-tokens generate`](../../../kestra-cli/kestractl/index.md#worker-management) to mint a token offline before deployment.
 
 ### The default group
 

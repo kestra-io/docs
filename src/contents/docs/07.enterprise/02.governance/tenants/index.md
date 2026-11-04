@@ -9,6 +9,8 @@ version: ">= 0.13.0"
 docId: tenants
 ---
 
+import ChildCard from "~/components/docs/ChildCard.astro"
+
 Multi-tenancy lets you run isolated environments for different teams, projects, or customers within a single Kestra instance.
 
 <div class="video-container">
@@ -47,51 +49,57 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 4. **Intuitive UI Navigation**: the UI provides a dropdown as well as tenant identifiers included in the URL to make switching between tenants seamless.
 
 
+## Tenant types
+
+Every tenant has a **type** that sets the home page, sidebar layout, and vocabulary for everyone in the tenant. The engine, API, and data model are the same for every type, and no type removes a feature.
+
+| Type | Home page | Use case |
+|---|---|---|
+| `DEFAULT` | Dashboards | General-purpose workflow orchestration. Every feature appears in its usual place. Tenants get this type unless you choose another. |
+| `INFRASTRUCTURE` | Catalog | Infrastructure self-service and day-2 operations. See [Infrastructure tenant](./infrastructure/index.md). |
+
+Creating an `INFRASTRUCTURE` tenant, or changing a tenant to that type, requires a license that includes Infrastructure tenants.
+
+### Set the type
+
+- **When you create a tenant**: the creation wizard has a **Type** step. The type also appears in the final review step.
+- **On an existing tenant**: open **Instance Owner → Tenants**, open the tenant's **Settings** page, and change the type. Members see the new navigation and home page on their next page load. Switching a tenant to `INFRASTRUCTURE` also seeds it with the [example environment](./infrastructure/index.md#example-environment).
+- **Through the API**: set `type` in the body of `POST /api/v1/tenants` or `PUT /api/v1/tenants/{id}`. `kestractl` and the Terraform provider don't set the type.
+
+A type change is recorded in the audit log as a tenant update.
+
+### See a tenant's type
+
+- The **Instance Owner → Tenants** list has a **Tenant type** column with a colored badge.
+- In the tenant switcher, each tenant shows an icon in its type's color, and tenants other than `DEFAULT` are labeled with their type.
+
+<ChildCard />
+
 ## Creating and managing tenants
 
 Tenants are created and managed through the **Instance Owner console** — only users with the Instance Owner privilege can create, edit, or delete tenants. The console is accessible from **Instance Owner → Tenants** in the UI. Tenants can also be managed via the CLI, API, or Terraform.
 
 ### Creating a tenant from the UI
 
-Tenants are created from **Instance Owner → Tenants**. The user who creates a tenant is automatically granted the Admin Role for that tenant.
+Go to **Instance Owner → Tenants** and click **Create**. The wizard steps through identity (ID and name), type, worker selector, and optionally storage and secrets. On the **Type** step, select `DEFAULT` for the standard experience or `INFRASTRUCTURE` for the self-service vertical. Click **Save** on the final review step.
+
+The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 
 ### Creating a tenant from the CLI
 
-Kestra provides CLI commands for tenant creation. The following command creates a tenant with the identifier `stage` and the name `Staging`:
+Use [`kestractl`](../../../kestra-cli/kestractl/index.md#tenant-management-enterprise-edition) to create a tenant. The following command creates a tenant with the identifier `stage` and the name `Staging`:
 
 ```bash
-kestra tenants create --tenant stage --name "Staging"
+kestractl tenants create stage --name "Staging"
 ```
 
-Running `kestra tenants create --help` shows you all available properties:
+As in the UI, you are granted the Admin role in the new tenant. To make another user an admin of the tenant, create a binding:
 
 ```bash
-$ kestra tenants create --help
-Usage: kestra tenants create [-hVv] [--internal-log]
-                                [--admin-username=<adminUser>] [-c=<config>]
-                                [-l=<logLevel>] [--name=<tenantName>]
-                                [-p=<pluginsPath>] [--tenant=<tenantId>]
-create a tenant and assign admin roles to an existing admin user
-      --admin-username=<adminUser>
-                            Username of an existing admin user that will be
-                              admin of this tenant
-  -c, --config=<config>     Path to a configuration file, default: /Users/anna/.
-                              kestra/config.yml)
-  -h, --help                Show this help message and exit.
-      --internal-log        Change also log level for internal log, default:
-                              false)
-  -l, --log-level=<logLevel>
-                            Change log level (values: TRACE, DEBUG, INFO, WARN,
-                              ERROR; default: INFO)
-      --name=<tenantName>   tenant description
-  -p, --plugins=<pluginsPath>
-                            Path to plugins directory , default:
-                              /Users/anna/dev/plugins)
-      --tenant=<tenantId>   tenant identifier
-  -v, --verbose             Change log level. Multiple -v options increase the
-                              verbosity.
-  -V, --version             Print version information and exit.
+kestractl bindings create --tenant stage --type USER --external-id <user_id> --role <admin_role_id>
 ```
+
+Run `kestractl tenants create --help` to see all available options, including concurrency limits and execution quotas.
 
 ### Creating a tenant from the API
 
@@ -103,6 +111,8 @@ curl -X POST "https://demo.kestra.io/api/v1/tenants" \
   -H "Content-Type: application/json" \
   -d "{ \"id\": \"stage\", \"name\": \"staging\", \"deleted\": false}"
 ```
+
+To create an [Infrastructure tenant](./infrastructure/index.md), add `"type": "INFRASTRUCTURE"` to the body.
 
 ### Creating a tenant from Terraform
 
@@ -141,13 +151,23 @@ Note that there is an exception to this rule if a tenant is created by an Instan
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-A dedicated storage and secrets backend is configured from the tenant's **Settings** page, under **Dedicated internal storage** and **Dedicated secrets manager**. Each section provides a storage type selector and a YAML configuration editor.
+A dedicated storage and secrets backend is configured from the tenant's **Settings** page. Turn on **Dedicated internal storage** in the **Internal storage** section or **Dedicated secrets manager** in the **Secrets manager** section, then select the storage or secret type. Namespaces have the same sections on their **Edit** tab.
+
+The configuration is a form built from the selected plugin's properties: required properties come first, and optional ones are grouped below them. Select **Code** to edit the same properties as YAML, or **Documentation** to open the reference for the selected type. A property the plugin doesn't define is flagged so you can remove it before saving.
+
+On a namespace, saved values are never shown again. Each one appears as **Set**: select **Replace** to enter a new value, or delete it to remove the property. Saving keeps every value you didn't change. Changing the storage or secret type clears the configuration, because the saved values belong to the previous backend.
 
 For storage configuration examples, refer to [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md). For secrets backend options, refer to the [Secret Managers documentation](../secrets-manager/index.md).
 
 :::alert{type="warning"}
-Make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
+Properties use the plugin's `camelCase` names, in the form and in **Code**. For example, the `GCS` storage backend takes `projectId`, not `project-id` as in the Kestra configuration file.
 :::
+
+#### Through the API
+
+The namespace API never returns the saved storage or secrets configuration. `GET /api/v1/{tenant}/namespaces/{id}/stored-configuration` lists the configured properties, each with the value `__KESTRA_SET__` in place of the saved one. When you update the namespace, send `__KESTRA_SET__` back for a property to keep its saved value, or leave `storageConfiguration` or `secretConfiguration` out of the request to keep the whole configuration. This endpoint requires the `UPDATE` action on the `NAMESPACE` permission.
+
+An invalid secrets manager configuration, such as a missing required property or a property the plugin doesn't define, is rejected with a `422` error that lists the properties to fix.
 
 ### Isolate Kestra services
 

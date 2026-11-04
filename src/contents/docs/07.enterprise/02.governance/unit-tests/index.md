@@ -25,6 +25,8 @@ Unit tests are configured for and connected to their respective flows. They are 
 
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
 
+To have AI Copilot draft a test for you, open a flow, open the three-dot menu, and select **Generate a unit test**. Copilot reads the flow, proposes a test in the chat, and creates it only when you select **Apply**. See [Generate a unit test](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test) for details.
+
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
 ![Tests Tree Diagram](./unittest.png)
@@ -490,6 +492,55 @@ testCases:
 When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test case reports `ERROR` with both the expected and actual states.
 
 The same assertion works for a flow [check](../../../05.workflow-components/07.checks/index.md) with `behavior: FAIL_EXECUTION`: when the fixture inputs fail the check, Kestra creates the test execution in the `FAILED` state. A failed `BLOCK_EXECUTION` check creates no execution, so the test case reports `ERROR` whatever `expectedState` you set.
+
+## Dynamic input defaults in fixtures
+
+When a flow input uses `dependsOn` with a `defaults` expression that references another input, the fixture only needs to supply the upstream input. The downstream default is rendered automatically from the fixture values, the same way as in a live execution.
+
+The following flow derives `category_label` from `category`:
+
+```yaml
+id: order_lookup
+namespace: company.team
+
+inputs:
+  - id: category
+    type: STRING
+
+  - id: category_label
+    type: STRING
+    dependsOn:
+      inputs:
+        - category
+    defaults: "{{ inputs.category | capitalize }} orders"
+
+tasks:
+  - id: log_label
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing: {{ inputs.category_label }}"
+```
+
+The test supplies only `category`. The `category_label` default is rendered from it and can be asserted directly:
+
+```yaml
+id: order_lookup_tests
+namespace: company.team
+flowId: order_lookup
+
+testCases:
+  - id: label_derived_from_category
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      inputs:
+        category: electronics
+    assertions:
+      - value: "{{ inputs.category_label }}"
+        equalTo: "Electronics orders"
+```
+
+:::alert{type="info"}
+If a fixture input fails validation (for example, a `FILE`-type input whose value is not a valid URI, or a `SECRET`-type input when no encryption key is configured), the test case reports `ERROR` with `Invalid fixture inputs: <reason>` rather than a server error.
+:::
 
 ## Assert that a task ran
 

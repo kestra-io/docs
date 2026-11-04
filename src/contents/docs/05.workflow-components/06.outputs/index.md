@@ -141,6 +141,75 @@ outputs:
     value: "{{ tasks.main.state != 'SKIPPED' ? outputs.main.values.result : outputs.fallback.values.result }}"
 ```
 
+### Searchable outputs
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `searchable: true` on a flow output to find executions by its value, such as an order ID or a customer code. When the execution ends, Kestra stores the value in a separate index that the executions list can filter on. To search by a value known when the execution starts, mark the input as searchable instead. See [Searchable inputs](../05.inputs/index.md#searchable-inputs).
+
+```yaml
+id: process_orders
+namespace: company.sales
+
+tasks:
+  - id: parse
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      customerId: CUST-12
+      orderIds:
+        - ORD-8841
+        - ORD-8842
+
+outputs:
+  - id: customerId
+    type: STRING
+    value: "{{ outputs.parse.values.customerId }}"
+    searchable: true
+
+  - id: orderIds
+    type: ARRAY
+    value: "{{ outputs.parse.values.orderIds }}"
+    searchable: true
+```
+
+Kestra stores each item of an `ARRAY` output separately, so a search for `ORD-8841` finds this execution. [Labels](../08.labels/index.md) hold one value per key and can be changed after the execution ends. Searchable outputs can hold many values and are written once.
+
+Searchable outputs follow these rules:
+
+- **Types:** `STRING`, `EMAIL`, `SELECT`, `INT`, `FLOAT`, `BOOL`, `URI`, `DATE`, `DATETIME`, `TIME`, `DURATION`, and `ARRAY` of those scalar values. Saving a flow that marks an output of any other type as searchable fails with an error that names the output.
+- **When values are stored:** at the end of the execution, in any final state, once the flow outputs render. A running execution has no searchable values yet. Executions of [Loop](../01.tasks/00.flowable-tasks/index.md#loop) iterations don't compute flow outputs, so only the execution that runs the Loop task stores searchable values.
+- **Size limits:** each value is stored up to 2,048 characters, and an array up to its first 1,000 items. Kestra truncates longer values and arrays and logs a warning in the execution logs.
+- **Errors:** if an array item is not a scalar value or the value can't be stored, Kestra logs an error and the output is not searchable. The execution state doesn't change.
+- **IDs:** an ID can be searchable on an input or on an output of the same flow, not both. Saving a flow that marks both as searchable fails.
+- **Existing executions:** adding `searchable: true` to a flow applies to new executions only.
+- **Replays:** a replayed execution starts with the searchable values of the original execution.
+- **Cleanup:** purging executions, for example with the [PurgeExecutions](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions) task, also removes their searchable values.
+
+<!-- TODO(runtime, 2.1 RC): verify the stored string form of DATE, DATETIME, TIME, DURATION, FLOAT, and BOOL values and document it here, since filters match the exact string. -->
+
+#### Find executions by searchable value
+
+Searchable inputs and searchable outputs share one filter. On the **Executions** page, add the **Inputs & Outputs** filter, enter the input or output ID as the key, and enter the value. The filter supports equals, not equals, in, and not in. Matching is exact and case-sensitive, and the filter combines with the namespace, flow, state, and date filters. The search box does not match searchable values.
+
+<!-- TODO(runtime, 2.1 RC): confirm the comparator labels shown in the filter UI and add a screenshot of the filter. -->
+
+The execution's **Overview** tab shows up to 10 searchable values as `id: value`, followed by a count of the remaining values. The **Input/Output** tab marks searchable inputs and searchable flow outputs with a **Searchable** tag.
+
+<!-- TODO(runtime, 2.1 RC): screenshots of the Overview header values and the Searchable tag on an input and an output. -->
+
+Through the API, filter executions with the `searchableData` field. See [Filter on searchable values](../../api-reference/04.query-filters.md#filter-on-searchable-values):
+
+```
+GET /api/v1/{tenant}/executions/search?filters[searchableData][EQUALS][orderIds]=ORD-8841
+```
+
+To list the searchable values of one execution, call `GET /api/v1/{tenant}/searchable_data/{executionId}`. Each result has a `dataId` (the input or output ID) and a `value`. Results are paginated with `page` and `size`.
+
+:::alert{type="info"}
+In the Enterprise Edition, filtering by searchable values and listing an execution's searchable values both require the `ACCESS_OUTPUTS` action on `EXECUTION`, for inputs as well as outputs. See [RBAC](../../07.enterprise/03.auth/rbac/index.md).
+:::
+
 ## Encrypted outputs
 
 :::badge{version=">=0.23" editions="EE,Cloud"}

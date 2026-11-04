@@ -31,7 +31,7 @@ In **General Settings**, give your App integration a name and select **Authoriza
 
 ![Okta app integration general settings with grant type selection](./okta-3.png)
 
-Set the **Sign-in redirect URI** to `http://localhost:8080/oauth/callback/okta` and the **Sign-out redirect URI** to `http://localhost:8080/logout` (adjust to match your environment). Configure optional **Trusted Origins** and **Assignments** as needed.
+Set the **Sign-in redirect URI** to `http://localhost:8080/oauth/callback/okta` and the **Sign-out redirect URI** to `http://localhost:8080/ui` (adjust to match your environment). Configure optional **Trusted Origins** and **Assignments** as needed.
 
 Set access to **Everyone** or to a more restricted group. Uncheck **Enable immediate access with Federation Broker Mode** to control app access manually. Click **Save**.
 

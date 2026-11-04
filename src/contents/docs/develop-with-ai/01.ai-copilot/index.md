@@ -133,6 +133,17 @@ Use Plan mode for tasks like:
 
 From the **Logs** and **Gantt** views of an execution, open the three-dot menu on a failed task and select **Fix with AI**. The flow editor opens with Copilot in Edit mode, loaded with the error context and ready to propose a fix.
 
+## Generate a unit test
+
+On a flow page, open the three-dot menu and select **Generate a unit test**. Copilot opens a new chat and sends a prompt for that flow. It reads the flow's source and drafts a [unit test](../../07.enterprise/02.governance/unit-tests/index.md) that mocks tasks calling external systems and asserts the outputs of the tasks that do the work. The draft appears as a card in the chat. Nothing is saved until you apply it.
+
+- Select **Open in editor** to review and edit the draft in the test editor before you save it.
+- Select **Apply** to create the test and open it. If a test with the same namespace and ID already exists, Apply overwrites it after you confirm.
+
+To change the draft, reply in the chat, for example "Add a test case where the API returns an empty list."
+
+The menu entry appears if you have the `TESTSUITE` `CREATE` permission on the flow's namespace. Overwriting an existing test also requires `TESTSUITE` `UPDATE`. Unit tests are available in Enterprise Edition and Kestra Cloud.
+
 ## Starter prompts
 
 :::collapse{title="Edit mode prompts"}

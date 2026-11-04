@@ -795,6 +795,8 @@ When you open an execution in the topology view, the topology node for an AWS Ba
 - Configured CPU and memory
 - S3 bucket used for file staging
 
+Before an execution, the modal shows values from the task definition and marks any value that contains a Pebble expression as a template. After an execution, it shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
+
 *Post-execution:*
 - Job ID — reference for looking up the job in the AWS Console or CLI
 - Status and reason — SUCCEEDED or FAILED; `statusReason` shown when the job fails

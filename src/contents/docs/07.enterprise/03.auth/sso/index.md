@@ -64,6 +64,10 @@ After group sync, a returning user must still have access to a tenant, or the lo
 Before 2.0.9, SSO logins created every group of the groups claim in every tenant, and a new user needed a default role or an invitation. See the [migration guide](../../../11.migration-guide/v2.0.0/idp-groups-existing-only/index.md).
 :::
 
+## SAML 2.0
+
+Kestra Enterprise Edition also supports SSO with a SAML 2.0 identity provider, including group sync and Single Logout. See [SAML 2.0](./saml/index.md).
+
 ## Provider guides
 
 Provider-specific setup guides:
@@ -73,3 +77,4 @@ Provider-specific setup guides:
 - [Okta](/docs/enterprise/auth/sso/okta)
 - [authentik](/docs/enterprise/auth/sso/authentik)
 - [LDAP](/docs/enterprise/auth/sso/ldap)
+- [SAML 2.0](/docs/enterprise/auth/sso/saml)
