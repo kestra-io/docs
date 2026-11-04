@@ -54,7 +54,7 @@ Executions and task runs move through the following states:
 | `SUBMITTED` | Submitted to the Executor queue but not yet running. |
 | `RUNNING` | Currently being processed. |
 | `PAUSED` | Paused for manual validation or a configured delay. |
-| `BREAKPOINT` | Paused at a debug breakpoint (Enterprise Edition). Resume via the **Resume from Breakpoint** command. |
+| `BREAKPOINT` | Paused at a debug breakpoint. Resume with the **Resume** button on the execution, or bulk-resume from the **Executions** page. |
 | `RESTARTED` | Transitional state equivalent to `CREATED` for a restarted failed execution. |
 | `RETRYING` | Currently being [retried](../12.retries/index.md). |
 | `KILLING` | Kill command issued; system is terminating associated tasks. |
