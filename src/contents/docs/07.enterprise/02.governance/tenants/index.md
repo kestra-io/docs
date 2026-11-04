@@ -151,13 +151,23 @@ Note that there is an exception to this rule if a tenant is created by an Instan
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-A dedicated storage and secrets backend is configured from the tenant's **Settings** page, under **Dedicated internal storage** and **Dedicated secrets manager**. Each section provides a storage type selector and a YAML configuration editor.
+A dedicated storage and secrets backend is configured from the tenant's **Settings** page. Turn on **Dedicated internal storage** in the **Internal storage** section or **Dedicated secrets manager** in the **Secrets manager** section, then select the storage or secret type. Namespaces have the same sections on their **Edit** tab.
+
+The configuration is a form built from the selected plugin's properties: required properties come first, and optional ones are grouped below them. Select **Code** to edit the same properties as YAML, or **Documentation** to open the reference for the selected type. A property the plugin doesn't define is flagged so you can remove it before saving.
+
+On a namespace, saved values are never shown again. Each one appears as **Set**: select **Replace** to enter a new value, or delete it to remove the property. Saving keeps every value you didn't change. Changing the storage or secret type clears the configuration, because the saved values belong to the previous backend.
 
 For storage configuration examples, refer to [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md). For secrets backend options, refer to the [Secret Managers documentation](../secrets-manager/index.md).
 
 :::alert{type="warning"}
-Make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
+Properties use the plugin's `camelCase` names, in the form and in **Code**. For example, the `GCS` storage backend takes `projectId`, not `project-id` as in the Kestra configuration file.
 :::
+
+#### Through the API
+
+The namespace API never returns the saved storage or secrets configuration. `GET /api/v1/{tenant}/namespaces/{id}/stored-configuration` lists the configured properties, each with the value `__KESTRA_SET__` in place of the saved one. When you update the namespace, send `__KESTRA_SET__` back for a property to keep its saved value, or leave `storageConfiguration` or `secretConfiguration` out of the request to keep the whole configuration. This endpoint requires the `UPDATE` action on the `NAMESPACE` permission.
+
+An invalid secrets manager configuration, such as a missing required property or a property the plugin doesn't define, is rejected with a `422` error that lists the properties to fix.
 
 ### Isolate Kestra services
 
