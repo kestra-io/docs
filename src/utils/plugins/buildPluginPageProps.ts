@@ -146,7 +146,10 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         return []
     })()
 
-    const pluginInstallCommand = getPluginInstallCommand(pluginType, currentPluginMetadata)
+    const pluginArtifactCoordinate = getPluginInstallCommand(pluginType, currentPluginMetadata)
+    const pluginInstallCommand = pluginArtifactCoordinate
+        ? `./kestra plugins install ${pluginArtifactCoordinate}:LATEST`
+        : undefined
 
     const metadataMap: Record<string, PluginMetadata> = Object.fromEntries(
         currentPluginMetadata.map((m) => [m.group, m]),
