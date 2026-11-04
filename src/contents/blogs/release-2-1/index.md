@@ -33,7 +33,7 @@ The table below lists the main features in this release and the edition they bel
 | Asset relations | `partOf` and `related` to model deployments and their resources | EE, Cloud |
 | Searchable inputs and outputs | Find executions by a business value such as an order ID | OSS, EE, Cloud |
 | TABLE input | Collect rows of typed records in a grid | EE, Cloud |
-| Webhook custom responses | Set the status code, headers, and body returned to the caller | OSS, EE, Cloud |
+| Webhook responses and signatures | Set the status code, headers, and body returned to the caller, and verify HMAC request signatures | OSS, EE, Cloud |
 | Script checkpoints (beta) | Resume a script from its last checkpoint after a retry or restart | OSS, EE, Cloud |
 | Execution timeline | A time-axis view of executions grouped by namespace and flow | OSS, EE, Cloud |
 | `AVG_DURATION` SLA | Breach when a run is slower than the flow's recent average | OSS, EE, Cloud |
@@ -178,9 +178,9 @@ Every cell is validated and all errors are shown at once. Rows are referenced as
 
 <!-- VERIFY: TABLE input Cloud availability (TODO in source). -->
 
-## Webhook Custom Responses
+## Webhook Responses and Signatures
 
-Several providers verify a webhook URL before sending events to it, and expect a specific response: Meta echoes `hub.challenge`, Microsoft Graph sends a `validationToken`, and Asana sends an `X-Hook-Secret` header. The Webhook trigger now accepts `responseCode`, `responseHeaders`, and `responseBody`, all of which support expressions:
+Several providers verify a webhook URL before sending events to it, and expect a specific response: Meta echoes `hub.challenge`, Microsoft Graph sends a `validationToken`, and Asana sends an `X-Hook-Secret` header. The Webhook trigger gains `responseHeaders` and `responseBody`, and `responseCode` no longer requires `wait` and `returnOutputs`. All three support expressions:
 
 ```yaml
 triggers:
@@ -195,7 +195,23 @@ triggers:
 
 Reading flow `outputs` in the response requires `wait: true`, and `responseBody` can't be combined with `returnOutputs`. See [Customize the webhook response](/docs/workflow-components/triggers/webhook-trigger#customize-the-webhook-response).
 
-<!-- VERIFY: Asana handshake not confirmed; check responseCode-without-wait behavior and body serialization without Content-Type. Example trigger id/key lines are mine, not from the docs page. -->
+Providers such as GitHub also sign each request with a shared secret. Set `signature` on the trigger, and Kestra checks the HMAC of the raw request body before creating an execution, returning `401` for a missing or wrong signature:
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    signature:
+      header: X-Hub-Signature-256
+      algorithm: HMAC_SHA256
+      secret: "{{ secret('GITHUB_WEBHOOK_SECRET') }}"
+      prefix: "sha256="
+```
+
+`HMAC_SHA1`, `HMAC_SHA256`, and `HMAC_SHA512` are supported. Until now, checking a signature meant a script task in the flow or a reverse proxy in front of Kestra. See [Verify the request signature](/docs/workflow-components/triggers/webhook-trigger#verify-the-request-signature).
+
+<!-- VERIFY: Asana handshake not confirmed; check body serialization without Content-Type. Example trigger id/key lines are mine, not from the docs page. HMAC signature (kestra#19659) is source-verified only; live test pending (see project_webhook_hmac_live_test). -->
 
 ## Script Checkpoints (Beta)
 
