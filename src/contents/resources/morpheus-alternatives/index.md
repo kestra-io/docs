@@ -20,6 +20,8 @@ faq:
 
 The landscape of enterprise cloud management is in constant flux, and the recent acquisition of Morpheus Data by HPE in 2024 has introduced new considerations for IT and platform teams. Coupled with the ongoing ripple effects of Broadcom's acquisition of VMware and its subsequent licensing changes, many organizations are re-evaluating their infrastructure automation strategies. This article will help you navigate the top alternatives to HPE Morpheus Enterprise Software, offering a comprehensive comparison to find the ideal solution for your specific needs in 2026. From multi-cloud governance to universal workflow orchestration, we’ll explore how different tools address the evolving challenges of enterprise IT.
 
+Replacing VMware Aria Automation as well? Our [vRA to Kestra migration guide](/resources/migration/vra) covers that move in four stages, from assessing the estate to retiring vRA at renewal.
+
 ## Quick disambiguation — HPE Morpheus software vs Morpheus8 treatment
 
 This article focuses exclusively on HPE Morpheus, an enterprise software platform for hybrid cloud management and orchestration. We will not be covering Morpheus8, which is a cosmetic microneedling treatment. All comparisons and alternatives discussed here relate to the IT and infrastructure software domain.
@@ -30,7 +32,7 @@ Several market shifts have prompted enterprises to explore alternatives to HPE M
 
 *   **The HPE Acquisition and Product Shift:** Since being acquired by HPE in 2024, the Morpheus product line has been restructured. This has led to a two-tiered offering that can be confusing for new and existing customers trying to align features with their needs.
 *   **Per-Socket Licensing Model:** HPE Morpheus employs a per-socket licensing model, which can be costly and difficult to predict. The **HPE Morpheus VM Essentials** tier, focused on VMware vSphere and KVM, is priced around **$600 to $740 per socket per year**. The full **HPE Morpheus Enterprise** platform, which includes multi-cloud orchestration and FinOps, ranges from **$2,500 to $4,400 per socket per year**, often with additional workload quotas. For larger deployments, an enterprise pack on the AWS Marketplace can cost nearly $200,000 per year.
-*   **The VMware/Broadcom Ripple Effect:** Broadcom's acquisition of VMware has caused widespread uncertainty in the virtualization market, pushing many companies to seek more vendor-neutral and flexible solutions. This has intensified the search for alternatives that are not tightly coupled to a single hypervisor ecosystem. For more on this, see our analysis of [VMware Cloud Foundation alternatives](/vs/vmware-cloud-foundation).
+*   **The VMware/Broadcom Ripple Effect:** Broadcom's acquisition of VMware has caused widespread uncertainty in the virtualization market, pushing many companies to seek more vendor-neutral and flexible solutions. This has intensified the search for alternatives that are not tightly coupled to a single hypervisor ecosystem. For more on this, see our analysis of [VMware Cloud Foundation alternatives](/resources/infrastructure/vmware-cloud-alternatives).
 
 ## Top 7 Morpheus alternatives for enterprise software
 
@@ -41,7 +43,7 @@ Navigating the landscape of [infrastructure automation resources](/resources/inf
 | Alternative | Best for | Pricing model | Deployment |
 |---|---|---|---|
 | **Kestra** | Universal workflow orchestration (data, infra, AI, business) | Open-source + Enterprise tier | Self-hosted / Cloud |
-| **VMware Aria Automation** | Multi-cloud automation in VMware shops | Per-CPU subscription | Self-hosted / SaaS |
+| **VMware Aria Automation** | Multi-cloud automation in VMware shops | Per core, inside VMware Cloud Foundation | Self-hosted / SaaS |
 | **Flexera Cloud Management Platform** | FinOps and cost governance | Per-managed-resource | SaaS |
 | **IBM Terraform / Cloudability** | IaC + cost visibility | Per-user / consumption | SaaS |
 | **Cycloid** | Internal developer platform + FinOps | Per-user subscription | SaaS / Self-hosted |

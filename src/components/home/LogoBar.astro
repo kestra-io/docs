@@ -1,15 +1,22 @@
 ---
 import { Image } from "astro:assets"
 
-const COMPANIES = [
-    "fila",
-    "bloomberg",
-    "amdocs",
-    "xiaomi",
-    "apple",
-    "jpmorgan",
-    "t-system",
-]
+interface Props {
+    /** File names under assets/companies/, in display order. */
+    companies?: string[]
+}
+
+const {
+    companies = [
+        "fila",
+        "bloomberg",
+        "amdocs",
+        "xiaomi",
+        "apple",
+        "jpmorgan",
+        "t-system",
+    ],
+} = Astro.props
 const logos = import.meta.glob<{ default: ImageMetadata }>(
     "/src/components/home/assets/companies/*.svg",
     { eager: true },
@@ -20,7 +27,7 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
     <div class="companies-container">
         <div class="companies">
             {
-                COMPANIES.map((company) => (
+                companies.map((company) => (
                     <div class="logo-wrapper">
                         <Image
                             src={

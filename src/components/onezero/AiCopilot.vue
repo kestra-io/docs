@@ -32,7 +32,6 @@
                     :width="block.width"
                     :height="block.height"
                     data-usal="zoomin"
-                    format="webp"
                     loading="lazy"
                 />
             </div>
@@ -47,7 +46,6 @@
                     width="2280"
                     height="722"
                     data-usal="fade-u"
-                    format="webp"
                     loading="lazy"
                 />
             </div>
@@ -62,7 +60,6 @@
                     :width="block.width"
                     :height="block.height"
                     data-usal="zoomin"
-                    format="webp"
                     loading="lazy"
                 />
             </div>

@@ -6,7 +6,6 @@
                 width="222.67px"
                 height="auto"
                 loading="lazy"
-                format="webp"
                 :src="dark.src"
             />
             <p class="title">Dark version</p>
@@ -22,7 +21,6 @@
                 width="222.67px"
                 height="auto"
                 loading="lazy"
-                format="webp"
                 :src="light.src"
             />
             <p class="title">Light version</p>
@@ -37,7 +35,6 @@
                 width="222.67px"
                 height="auto"
                 loading="lazy"
-                format="webp"
                 :src="monogram.src"
             />
             <p class="title">Monogram</p>

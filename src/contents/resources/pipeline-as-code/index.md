@@ -52,7 +52,7 @@ While both are forms of "code," modern orchestration platforms increasingly favo
 
 ## Core Benefits of Version-Controlled Workflows
 
-Adopting a pipeline as code approach provides immediate and tangible benefits for [workflow governance](/resources/infrastructure/workflow-governance) and operational stability.
+Adopting a pipeline as code approach provides immediate and tangible benefits for [workflow governance](/resources/ai/ai-governance-workflows) and operational stability.
 
 ### Auditability, Compliance, and Change Management
 
@@ -144,7 +144,7 @@ This is the classic use case. Developers define build, test, and deployment stag
 
 ### Data Engineering, ETL, and Analytics Workflows
 
-Data teams use pipeline as code to manage complex ETL/ELT processes. A pipeline might define a sequence of tasks to extract data from an API, load it into a data warehouse, and then run dbt transformations. Storing this logic in Git allows data engineers and analytics engineers to collaborate on data models and their orchestration simultaneously, making it easier to [automate data pipelines](/resources/data/automate-data-pipeline).
+Data teams use pipeline as code to manage complex ETL/ELT processes. A pipeline might define a sequence of tasks to extract data from an API, load it into a data warehouse, and then run dbt transformations. Storing this logic in Git allows data engineers and analytics engineers to collaborate on data models and their orchestration simultaneously, making it easier to [automate data pipelines](/resources/data/create-data-pipeline).
 
 ### Infrastructure Automation and GitOps
 

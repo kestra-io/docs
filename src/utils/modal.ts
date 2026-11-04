@@ -9,3 +9,11 @@ export function openModal(selector: string): HTMLDialogElement | null {
     dialog.dispatchEvent(new Event(MODAL_SHOWN_EVENT))
     return dialog
 }
+
+/** Whether `event` came from inside the open `dialog`, not from another dialog stacked over it. */
+export function isEventInModal(
+    dialog: Pick<HTMLDialogElement, "open" | "contains"> | null | undefined,
+    event: Pick<Event, "target">,
+): boolean {
+    return !!dialog?.open && dialog.contains(event.target as Node | null)
+}

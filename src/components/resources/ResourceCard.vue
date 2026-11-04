@@ -23,6 +23,7 @@
     import infraBg from "~/assets/landing/infrastructure/desk-bkg-infra.webp?url"
     import businessBg from "~/assets/landing/business/desk-bkg-business.webp?url"
     import orchestrationBg from "~/assets/landing/orchestration/desk-bkg-orchestration.webp?url"
+    import migrationBg from "~/assets/landing/migration/desk-bkg-migration.webp?url"
     import whitepapersBg from "~/assets/landing/whitepapers/desk-bkg-whitepapers.webp?url"
 
     const props = defineProps<{
@@ -42,6 +43,7 @@
         infrastructure: infraBg,
         business: businessBg,
         orchestration: orchestrationBg,
+        migration: migrationBg,
         whitepapers: whitepapersBg,
     }
 

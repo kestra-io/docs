@@ -66,7 +66,7 @@ An AI agent is only as powerful as the systems it can reach. Enterprise technolo
 
 ### Reliability, error handling, and the "30% rule"
 
-In artificial intelligence circles, the "30% rule" highlights that a significant percentage of AI-generated decisions or outputs require validation, refinement, or correction. Network timeouts, rate limits, API schema changes, and model hallucinations are inevitable in production. Orchestration provides enterprise-grade resilience primitives—such as exponential backoffs, automated retries, dead-letter queues, and fallback branches—ensuring that transient errors do not derail core business processes. For a deeper dive into maintaining secure operational control, see resources on [Workflow Governance](/resources/infrastructure/workflow-governance).
+In artificial intelligence circles, the "30% rule" highlights that a significant percentage of AI-generated decisions or outputs require validation, refinement, or correction. Network timeouts, rate limits, API schema changes, and model hallucinations are inevitable in production. Orchestration provides enterprise-grade resilience primitives—such as exponential backoffs, automated retries, dead-letter queues, and fallback branches—ensuring that transient errors do not derail core business processes. For a deeper dive into maintaining secure operational control, see resources on [Workflow Governance](/resources/ai/ai-governance-workflows).
 
 ## Orchestrating agentic business processes with Kestra: An expense approval flow
 
@@ -130,7 +130,7 @@ tasks:
 ```
 
 ### Worth noticing in this workflow:
-- **Declarative YAML definition:** The entire end-to-end process—including data extraction, AI evaluation, conditional routing, and human-in-the-loop pauses—is defined in clean, version-controlled code, matching practices outlined in documentation on [AI Agents in Kestra](/docs/ai-tools/ai-agents).
+- **Declarative YAML definition:** The entire end-to-end process—including data extraction, AI evaluation, conditional routing, and human-in-the-loop pauses—is defined in clean, version-controlled code, matching practices outlined in documentation on [AI Agents in Kestra](/docs/ai-orchestration/ai-agents).
 - **Native human-in-the-loop control:** The `Pause` task halts execution when an anomaly is detected, preventing automated errors from resulting in improper financial disbursements.
 - **Secure credential management:** Sensitive endpoints like the Slack webhook URL are injected securely using runtime secrets (`{{ secret('...') }}`), keeping credentials out of source control.
 - **Complete auditability:** Every intermediate output, agent evaluation decision, and human sign-off is preserved in Kestra's execution history, satisfying strict enterprise governance requirements.

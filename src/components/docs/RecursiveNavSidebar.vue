@@ -106,8 +106,10 @@
     const toggled = ref<boolean>(isActive.value || props.item.isSection === true)
     const title = computed(() => props.item.sidebarTitle ?? props.item.title)
 
-    watch(activeSlug, (v) => {
-        if (isActive.value && (props.item.hideSubMenus || !props.item.isPage)) {
+    watch(activeSlug, () => {
+        if (!isActive.value) return
+        toggled.value = true
+        if (props.item.hideSubMenus || !props.item.isPage) {
             setTimeout(() => {
                 scrollIntoViewIfNotVisible(rootLink.value)
             }, 200)

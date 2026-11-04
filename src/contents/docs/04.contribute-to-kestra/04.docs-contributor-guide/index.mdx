@@ -443,11 +443,13 @@ The plugin documentation will generally look like the following:
                     prompt: "{{ inputs.prompt }}"
 
                   - id: response
-                    type: io.kestra.plugin.core.debug.Return
-                    format: {{ outputs.completion.choices[0].message.content }}"
+                    type: io.kestra.plugin.core.log.Log
+                    message: "{{ outputs.completion.choices[0].message.content }}"
                 """
         ),
 ```
+
+Use `io.kestra.plugin.core.log.Log` for non-sensitive display and `io.kestra.plugin.core.output.OutputValues` when another task or flow consumes a value. Reference emitted values as `outputs.task_id.values.key`. Reserve `debug.Return` for deliberate debugging, and pass secrets directly to the task properties that need them.
 
 The key properties to consider are:
 - `title`: A concise single sentence describing the task's objective that is displayed in the Kestra in-app contextual docs.

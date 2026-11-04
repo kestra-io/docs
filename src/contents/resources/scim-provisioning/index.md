@@ -142,7 +142,7 @@ Adopting SCIM and orchestrating it effectively delivers significant benefits acr
 *   **Enhanced Security & Compliance:** Automation eliminates the risk of human error and ensures that access is revoked promptly when an employee leaves, reducing the attack surface from orphaned accounts. This also provides the auditability needed for compliance.
 *   **Reduced IT Overhead:** By automating repetitive manual tasks, SCIM frees up IT and security teams to focus on more strategic initiatives instead of managing user accounts.
 *   **Improved User Experience:** New hires are productive from day one with immediate access to all their required applications.
-*   **Centralized Identity Governance:** SCIM helps establish the IdP as a single source of truth for user identities, leading to better [workflow governance](/resources/infrastructure/workflow-governance) and more effective [role-based access control (RBAC)](/resources/infrastructure/rbac-workflow-orchestration).
+*   **Centralized Identity Governance:** SCIM helps establish the IdP as a single source of truth for user identities, leading to better [workflow governance](/resources/ai/ai-governance-workflows) and more effective [role-based access control (RBAC)](/resources/infrastructure/rbac-workflow-orchestration).
 
 ## SCIM Compared: SAML, SSO, and JIT Provisioning
 
@@ -176,6 +176,6 @@ Kestra's [Enterprise Edition](/enterprise) supports SCIM, SSO, and other advance
 *   [Automate User Provisioning with SCIM Directory Sync](/docs/enterprise/auth/scim)
 *   [What's New in Kestra 0.18.0: SCIM Provisioning and More](/blogs/2024-08-06-release-0-18)
 *   [Manage Workflow Assets for Governance and Lineage](/docs/enterprise/governance/assets)
-*   [Declarative Workflow Management for Modern Infrastructure](/resources/infrastructure/workflow-management)
+*   [Declarative Workflow Management for Modern Infrastructure](/resources/infrastructure/workflow-orchestration-tools)
 *   [Enterprise Job Scheduler for Mission-Critical Workloads](/resources/infrastructure/job-scheduler)
 *   [Kestra Documentation Hub](/docs)

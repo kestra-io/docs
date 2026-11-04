@@ -5,6 +5,7 @@ metaTitle: "RAG Pipeline Orchestration: Production Guide | Kestra"
 metaDescription: "Learn how RAG pipeline orchestration coordinates retrievers, re-rankers, LLMs, and post-processors from query to response. Covers components, RAGOps, and tools."
 tag: ai
 date: 2026-04-21
+lastUpdated: 2026-10-26
 faq:
   - question: "What is orchestration in RAG?"
     answer: "RAG orchestration coordinates the components of a retrieval-augmented generation system — retrievers, re-rankers, context builders, LLMs, and post-processors. It manages the flow from user query to final response, handling state, errors, retries, and optimization across the pipeline."
@@ -18,6 +19,10 @@ faq:
     answer: "Seven commonly cited RAG architectures are: Naïve (simple retrieval + generation), Advanced (with pre/post-processing), GraphRAG (knowledge-graph-based retrieval), Hybrid (combining vector + keyword search), Agentic (agent-directed retrieval), Multi-Hop (chained queries for complex questions), and Adaptive/Iterative RAG (self-correcting through feedback loops)."
   - question: "What is orchestration used for?"
     answer: "Orchestration coordinates the execution of multiple automated tasks or processes across systems and applications. In RAG specifically, orchestration manages document ingestion, embedding generation, vector indexing, retrieval calls, LLM generation, and output validation — ensuring each step runs in the right sequence with proper error handling."
+  - question: "What is a vector database in a RAG pipeline?"
+    answer: "It is the store that holds embeddings of your source documents and returns the chunks closest to a query. The RAG data pipeline chunks documents, embeds them, and writes the vectors with their metadata. At query time, the question is embedded with the same model, the database runs an approximate nearest neighbor search, and the top chunks go to the LLM as context. If a policy document changes and the pipeline does not re-index it, the database keeps returning the old wording and the LLM answers from it with full confidence."
+  - question: "How is a vector database different from a traditional database?"
+    answer: "A relational database answers exact questions: rows where status = 'open', joined on a key. A vector database answers similarity questions: the ten chunks whose embeddings are closest to this query embedding, ranked by cosine similarity or dot product through an ANN index such as HNSW or IVF. A search for 'reset my password' can return a chunk titled 'Recovering account access' that shares no keyword with the query. Extensions such as pgvector add vector search to PostgreSQL, so one database can serve both kinds of query."
 ---
 
 Most Retrieval-Augmented Generation pipelines start the same way. An engineer writes a prototype in a Jupyter notebook using LangChain or LlamaIndex: load some documents, embed them, store them in a vector database, write a retrieval function, wire it to an LLM. The demo works. It's impressive. It gets shown to leadership, and leadership asks the obvious next question: can we put this in production?
@@ -82,12 +87,91 @@ Five components define what a production RAG orchestration layer must handle:
 These components are not specific to retrieval. They are the general shape of [the layer that sequences AI workloads](/resources/ai/ai-orchestration), applied to a RAG use case.
 
 - **Data preparation and chunking.** Scheduled or event-driven ingestion of source documents. Chunking strategy choices (fixed-size, semantic, recursive). Quality tests on chunks (length distribution, overlap, deduplication). Source freshness monitoring.
-- **Vector indexing and retrieval.** Embedding generation (batched for efficiency), upsert to the [vector database](/resources/ai/vector-database), index freshness tracking, retrieval quality monitoring (are relevant documents being returned?).
+- **Vector indexing and retrieval.** Embedding generation (batched for efficiency), upsert to the vector database, index freshness tracking, retrieval quality monitoring (are relevant documents being returned?).
 - **Prompt augmentation and context building.** Token budget management, context-window packing, deduplication of similar retrieved chunks, metadata injection (timestamps, source attribution). This is where "how much context" is decided dynamically.
 - **LLM generation.** Model routing (fast cheap model for simple queries, better model for complex ones), retry-on-timeout, fallback model chains, structured output validation.
 - **Post-processing and evaluation.** Groundedness checks (is the answer supported by retrieved context?), output validation against schemas, toxicity filters, citation generation.
 
 Each of these is an orchestration concern as much as a framework concern. Frameworks provide the primitives; orchestration decides when they run, how they recover from failure, and how they're observed.
+
+## The Vector Database in a RAG Pipeline
+
+The vector database is the one component both halves of a RAG system share. The data pipeline writes to it and the query pipeline reads from it. Its job is narrow: store embeddings next to the chunk text and metadata, and return the chunks whose embeddings sit closest to a query embedding, fast enough to fit inside the query's latency budget.
+
+### What the vector store holds
+
+Each record carries three things. The embedding, a fixed-length array of floats produced by an embedding model, is what gets searched. The chunk text is what gets sent to the LLM. The metadata (document ID, source path, version, timestamp, access level) is what makes the index operable: filtering by tenant at query time, attributing citations, and deleting every chunk of a document when that document changes upstream.
+
+The embedding model fixes the vector dimension, and vectors from two different models are not comparable even when the dimensions match. The model used at query time must be the one used at indexing time. Changing embedding models means re-embedding the whole corpus.
+
+### Indexing and similarity search
+
+Comparing a query vector against every stored vector (exact k-nearest-neighbor search) is accurate but gets too slow as the corpus grows. Vector databases build approximate nearest neighbor (ANN) indexes instead, giving up a little recall for a large gain in speed. HNSW (Hierarchical Navigable Small World) builds a layered proximity graph and is the most widely used option, at the cost of memory and slower builds. IVF (inverted file) clusters vectors and searches only the clusters nearest the query, which builds faster and uses less memory with a weaker speed/recall tradeoff.
+
+Similarity is scored with a distance metric: cosine similarity for most text embeddings, dot product for normalized vectors (where it ranks the same as cosine and costs less), Euclidean distance for some image models. Use the metric the embedding model was trained for. A mismatched metric does not fail loudly; it returns plausible, worse neighbors.
+
+This is the same retrieval that powers [semantic search](/resources/ai/semantic-search), and it shares the same weakness: exact terms such as product codes, error IDs, and names. Production systems often pair it with keyword (BM25) search, as in the Hybrid RAG pattern above, and set a minimum similarity score so weak matches are dropped instead of being passed to the LLM as context.
+
+### Choosing a vector database
+
+The options split into dedicated vector databases (Pinecone, Qdrant, Weaviate, Milvus, Chroma) and existing databases with vector support (PostgreSQL with pgvector, Elasticsearch, OpenSearch, MongoDB Atlas, Redis). A few questions narrow the choice quickly:
+
+- Scale and latency: how many vectors, and how much of the query budget can retrieval take?
+- Filtering: can metadata filters run alongside the ANN search without collapsing recall? Multi-tenant RAG depends on it.
+- Hosting: managed service, or self-hosted for data residency and private networks?
+- Operational fit: if the source data already lives in Postgres, pgvector removes a system to run and keeps vectors next to the rows they describe.
+- Update pattern: how cheaply does it handle deletes and re-inserts when documents change?
+
+The last question decides more projects than it should, because index freshness is where RAG systems degrade first.
+
+### Keeping embeddings fresh
+
+A vector index is a derived copy of source data, and it goes stale as soon as the source changes. New documents need to be embedded and inserted. Updated documents need their old chunks deleted by source ID before re-insertion, or the index serves both versions. Deleted documents need their chunks purged, which an object-store trigger does not report since there is no new object to see. An embedding model upgrade needs a full re-index, ideally into a new table or collection that the query pipeline switches to once it is complete.
+
+That is scheduling, event handling, and retry work, so it belongs in the orchestration layer. In Kestra, the `IngestDocument` task from the AI plugin splits documents, calls the embedding model, and writes to the configured store (pgvector, Pinecone, Qdrant, Weaviate, Milvus, Chroma, Elasticsearch, MongoDB Atlas, Redis, and others) without custom Python. This flow indexes each new file that lands in S3:
+
+```yaml
+id: index_new_documents
+namespace: company.ai
+
+triggers:
+  - id: on_new_document
+    type: io.kestra.plugin.aws.s3.Trigger
+    bucket: rag-source-corpus
+    on: CREATE
+    action: NONE
+    interval: PT1M
+
+tasks:
+  - id: index_each_document
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ trigger.objects | toJson }}"
+    tasks:
+      - id: embed_and_store
+        type: io.kestra.plugin.ai.rag.IngestDocument
+        provider:
+          type: io.kestra.plugin.ai.provider.OpenAI
+          apiKey: "{{ secret('OPENAI_API_KEY') }}"
+          modelName: text-embedding-3-small
+        embeddings:
+          type: io.kestra.plugin.ai.embeddings.PGVector
+          host: pgvector.internal
+          port: 5432
+          user: "{{ secret('PG_USER') }}"
+          password: "{{ secret('PG_PASSWORD') }}"
+          database: rag
+          table: document_chunks
+        documentSplitter:
+          splitter: RECURSIVE
+          maxSegmentSizeInChars: 1000
+          maxOverlapSizeInChars: 200
+        fromInternalURIs:
+          - "{{ fromJson(item.value).uri }}"
+        metadata:
+          source: "{{ fromJson(item.value).key }}"
+```
+
+The `source` metadata is what lets a later task find and replace a document's chunks when it is updated. Pair this event-driven flow with a scheduled reconciliation flow that compares the bucket with the index, purges chunks whose source file is gone, and re-indexes anything a failed execution skipped.
 
 ## A Production RAG Orchestration Example
 
@@ -122,13 +206,15 @@ tasks:
 
   - id: chunk_and_embed
     type: io.kestra.plugin.scripts.python.Script
+    inputFiles:
+      document.txt: "{{ outputs.download_document.uri }}"
     beforeCommands:
       - pip install langchain-text-splitters openai
     script: |
       from langchain_text_splitters import RecursiveCharacterTextSplitter
       from openai import OpenAI
 
-      with open("{{ outputs.download_document.outputFiles['document'] }}") as f:
+      with open("document.txt") as f:
           text = f.read()
 
       splitter = RecursiveCharacterTextSplitter(

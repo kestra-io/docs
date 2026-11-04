@@ -5,6 +5,7 @@ description: Use flow-level quotas in Kestra Enterprise to cap how many executio
 sidebarTitle: Quotas
 icon: /src/contents/docs/icons/flow.svg
 editions: ["EE", "Cloud"]
+docId: quotas
 ---
 
 Cap the number of executions created within a time window, at the flow, namespace, or tenant level. This is different from [`concurrency`](../14.concurrency/index.md), which limits how many executions **run simultaneously**.

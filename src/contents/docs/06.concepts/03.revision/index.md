@@ -4,6 +4,7 @@ h1: Version and Roll Back Your Flows with Revisions
 description: Track and manage flow versions in Kestra with built-in revision history. Roll back to any previous version to undo changes and maintain reliability.
 sidebarTitle: Revision
 icon: /src/contents/docs/icons/concepts.svg
+docId: revisions
 ---
 
 Every time you save a flow, Kestra creates a new revision. The **Revisions** tab lists all revisions for a flow — compare any two side-by-side or line-by-line, and roll back to a previous version at any time.

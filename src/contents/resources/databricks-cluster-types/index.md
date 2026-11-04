@@ -71,7 +71,7 @@ Simply choosing a cluster type isn't enough. Managing the lifecycle of these clu
 
 ## Orchestrate Databricks Clusters with Kestra: Dynamic Provisioning & Cleanup
 
-Kestra's declarative, YAML-based approach allows you to define the entire lifecycle of a Databricks cluster as code. This makes your infrastructure repeatable, version-controlled, and easy to audit.
+Kestra's declarative, YAML-based approach allows you to define the entire lifecycle of a Databricks cluster as code. This makes your infrastructure repeatable, version-controlled, and easy to audit. For the full set of Databricks tasks and patterns, see [Databricks orchestration with Kestra](/orchestration/databricks).
 
 The following flow demonstrates how to create a Databricks cluster on-demand, submit a notebook job, and then automatically terminate the cluster upon completion, ensuring no resources are left idle.
 
@@ -150,12 +150,12 @@ Databricks allows clusters to auto-scale worker nodes based on workload demands.
 
 ### Monitoring and Governance with Integrated Workflows
 
-By centralizing Databricks operations within Kestra, you gain a single point of control for monitoring and governance. You can build workflows that check for idle clusters, enforce tagging policies for cost allocation, or trigger alerts based on job duration or failure rates. This level of [workflow governance](/resources/infrastructure/workflow-governance) is detailed in our [Kestra Administrator Guide](/docs/administrator-guide).
+By centralizing Databricks operations within Kestra, you gain a single point of control for monitoring and governance. You can build workflows that check for idle clusters, enforce tagging policies for cost allocation, or trigger alerts based on job duration or failure rates. This level of [workflow governance](/resources/ai/ai-governance-workflows) is detailed in our [Kestra Administrator Guide](/docs/administrator-guide).
 
 ## Related Concepts
 
 - [ETL Workflow: Definition, Types & Automation](/resources/data/etl-workflow)
-- [Data Pipeline: Definition, Architecture, and Examples](/resources/data/data-pipeline)
+- [Data Pipeline: Definition, Architecture, and Examples](/resources/data/create-data-pipeline)
 - [What is Data Ingestion? Types, Challenges & Best Practices](/resources/data/what-is-data-ingestion)
 - [dbt Tests Explained: Types, Benefits & Best Practices](/resources/data/dbt-tests-explained)
 - [What is a Machine Learning Pipeline?](/resources/ai/what-is-a-machine-learning-pipeline)

@@ -50,7 +50,7 @@ While specialized Loan Origination Systems (LOS) handle parts of this process, t
 -   **Compliance and Audit Trails**: Financial regulations require a complete, auditable record of every decision. An orchestration platform provides centralized logging and a clear [audit trail](/resources/infrastructure/audit-logs-orchestration) for every step, simplifying compliance.
 -   **Human-in-the-Loop**: Not every decision can be fully automated. When an application is flagged for review, an orchestration platform can create a human task, assign it to the right underwriter, and resume the automated workflow once a decision is made. This is a key part of any effective [approval workflow](/resources/business/approval-workflow).
 -   **Error Reduction and Resilience**: By automating data transfers and repetitive tasks, orchestration minimizes the risk of human error. It also provides built-in retry mechanisms and error handling, ensuring that a temporary API failure doesn't derail the entire process.
--   **Scalability and Governance**: Orchestration platforms allow financial institutions to handle fluctuating loan application volumes without scaling their manual workforce. Centralized [workflow governance](/resources/infrastructure/workflow-governance) ensures that all processes adhere to company policies.
+-   **Scalability and Governance**: Orchestration platforms allow financial institutions to handle fluctuating loan application volumes without scaling their manual workforce. Centralized [workflow governance](/resources/ai/ai-governance-workflows) ensures that all processes adhere to company policies.
 
 ## Orchestrate Loan Origination with Kestra: Automated Application Processing
 

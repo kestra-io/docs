@@ -32,7 +32,7 @@ Ansible's success is built on a solid foundation: its agentless, SSH-based appro
 
 However, the landscape of modern infrastructure is shifting. Platform teams now manage complex ecosystems spanning multiple clouds, on-premise data centers, and a growing array of SaaS tools. This new reality highlights some of Ansible's limitations:
 - **Evolving Needs:** Modern workflows are increasingly event-driven and require coordination across disparate domains like data engineering, AI/ML, and business applications. Ansible's focus on host-based configuration can be cumbersome for orchestrating these end-to-end processes.
-- **Imperative vs. Declarative:** Ansible is largely imperative—you define the steps to reach a state. This contrasts with declarative tools like Terraform that define the desired end state, leaving the "how" to the tool. For complex [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code), a declarative model is often more robust.
+- **Imperative vs. Declarative:** Ansible is largely imperative—you define the steps to reach a state. This contrasts with declarative tools like Terraform that define the desired end state, leaving the "how" to the tool. For complex [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code), a declarative model is often more robust.
 - **GitOps and Polyglot Teams:** The rise of [GitOps](/resources/infrastructure/gitops) and polyglot engineering teams requires automation tools that are language-agnostic and treat configuration as a first-class citizen in version control. While Ansible uses YAML, its reliance on Python modules can create dependencies that complicate orchestration for non-Python teams.
 - **Multi-Cloud Complexity:** Managing state and dependencies across AWS, Azure, and GCP requires a control plane designed for [multi-cloud orchestration](/resources/infrastructure/multi-cloud-orchestration), a task that can stretch the limits of a traditional configuration management tool.
 
@@ -47,7 +47,7 @@ So, what is replacing Ansible? The answer isn't a single tool, but a strategic s
 - **Scope of Automation:** Are you focused purely on server configuration, or do you need to orchestrate broader workflows that include data pipelines, AI models, and ITSM integrations?
 - **Operational Overhead:** Consider the complexity of setting up and maintaining the tool itself. Does it require a dedicated team to manage?
 
-Is Ansible still relevant? Absolutely. For its core competency—configuring software on existing servers—it remains a powerful and effective tool. The search for alternatives is driven not by Ansible's failure, but by the need for a higher-level [workflow management](/resources/infrastructure/workflow-management) layer that can coordinate Ansible alongside other specialized tools in a modern, multi-domain environment.
+Is Ansible still relevant? Absolutely. For its core competency—configuring software on existing servers—it remains a powerful and effective tool. The search for alternatives is driven not by Ansible's failure, but by the need for a higher-level [workflow management](/resources/infrastructure/workflow-orchestration-tools) layer that can coordinate Ansible alongside other specialized tools in a modern, multi-domain environment.
 
 ## How We Evaluated These Alternatives
 
@@ -72,7 +72,7 @@ Terraform is HashiCorp's open-source tool for building, changing, and versioning
 - **Weaknesses:** Terraform is primarily for provisioning and lifecycle management of infrastructure resources (VMs, networks, databases). It is not designed for configuration management *within* an operating system or for application deployment, which is where it is often paired with Ansible.
 - **Best for:** Provisioning, managing, and versioning cloud and on-prem infrastructure resources declaratively.
 
-Read more about the relationship between [IaC and orchestration](/resources/infrastructure/what-is-infrastructure-as-code).
+Read more about the relationship between [IaC and orchestration](/resources/infrastructure/everything-as-code).
 
 ## 3. Puppet: Model-Driven Configuration Management
 

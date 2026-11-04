@@ -31,8 +31,8 @@ description: |
 
 tasks:
   - id: out
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | toJson }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.body | toJson }}"
 
 
 triggers:
@@ -54,10 +54,12 @@ where:
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr \
+  -H 'Content-Type: application/json' \
+  -d '{"event":"example","message":"Hello from webhook"}'
 ```
 
-You can also copy the formed Webhook URL from the **Triggers** tab.
+You can also copy the formed Webhook URL from the **Triggers** tab. These examples log the request body. Use only non-sensitive payloads, and redact or select fields before logging a body that contains credentials or personal data. Avoid logging the full trigger, which may contain credentials in headers or parameters.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -84,8 +86,8 @@ description: |
 
 tasks:
   - id: out
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | toJson }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.body | toJson }}"
 
 triggers:
   - id: webhook_trigger
@@ -109,5 +111,7 @@ where:
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://localhost:8080/api/v1/my_tenant/executions/webhook/company.team/webhook_ee_example/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/my_tenant/executions/webhook/company.team/webhook_ee_example/1KERKzRQZSMtLdMdNI7Nkr \
+  -H 'Content-Type: application/json' \
+  -d '{"event":"example","message":"Hello from webhook"}'
 ```

@@ -1,0 +1,111 @@
+---
+/* The hero card: the call form stays the primary ask, with the gated guide PDF
+ * as a lighter second option under it. The dialog is the guide page's own
+ * (same HubSpot form and fields); only the pageUri differs, so HubSpot records
+ * this page as the one the lead converted on. After the download, the dialog
+ * offers the call (#contact-sales) so the PDF is not the end of the visit. */
+import Meeting from "~/components/demo/Meeting.vue"
+import DownloadDialog from "~/components/vra-migration-guide/DownloadDialog.astro"
+import {
+    DOWNLOAD_DIALOG_TARGET,
+    GUIDE_DOWNLOAD,
+} from "~/components/vra-migration-guide/download"
+
+interface Props {
+    /** Passed to HubSpot as the originating page URI. */
+    routePath: string
+    /** Forwarded to the call form, e.g. its button label. */
+    formProps?: Record<string, unknown>
+}
+
+const { routePath, formProps = {} } = Astro.props
+const form = {
+    ...GUIDE_DOWNLOAD,
+    pageUri: routePath.replace(/^\//, ""),
+    followUpHref: "#contact-sales",
+    followUpLabel: "Book a 30-minute call",
+}
+---
+
+<Meeting {routePath} variant="plain" {...formProps} client:idle />
+
+<div class="pdf">
+    <button type="button" data-modal-target={DOWNLOAD_DIALOG_TARGET}>
+        Get the migration guide (PDF)
+    </button>
+</div>
+
+<DownloadDialog {form} />
+
+<style lang="scss">
+    .pdf {
+        margin-top: 0.75rem;
+
+        /* Same box and type as the call form's submit button above it, so the
+         * two asks read as a pair; outlined so the call stays the first. */
+        button {
+            width: 100%;
+            min-height: 52px;
+            padding: 0.875rem 1.75rem;
+            border: 1px solid var(--lp-purple);
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: var(--lp-purple);
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.00625rem;
+            cursor: pointer;
+            &:hover {
+                background-color: var(--lp-purple-light);
+            }
+        }
+    }
+</style>
+
+<script>
+    /* A visitor who started the call form and then asks for the PDF should not
+     * type the same details twice: carry what the hero form already holds into
+     * the download dialog (empty fields only), then focus the first field left
+     * to fill, usually Company, which the call form does not ask for. */
+    const FIELD_MAP: Record<string, string> = {
+        "first-name": "firstname",
+        "last-name": "lastname",
+        email: "email",
+        "job-title": "jobtitle",
+    }
+
+    function prefillGuideDialog(event: Event) {
+        const trigger = (event.target as Element | null)?.closest(
+            '[data-modal-target="#guide-download"]',
+        )
+        if (!trigger) return
+        const source = document.querySelector<HTMLFormElement>(
+            ".lp-hero .meeting-plain form",
+        )
+        const target = document.querySelector<HTMLFormElement>(
+            "#guide-download form",
+        )
+        if (!source || !target) return
+
+        for (const [from, to] of Object.entries(FIELD_MAP)) {
+            const value = (
+                source.elements.namedItem(from) as HTMLInputElement | null
+            )?.value.trim()
+            const input = target.elements.namedItem(
+                to,
+            ) as HTMLInputElement | null
+            if (value && input && !input.value) input.value = value
+        }
+
+        // After the dialog opens, so the focus is not lost to it.
+        requestAnimationFrame(() => {
+            const firstEmpty = [
+                ...target.querySelectorAll<HTMLInputElement>("input"),
+            ].find((input) => !input.value)
+            firstEmpty?.focus()
+        })
+    }
+
+    document.addEventListener("click", prefillGuideDialog, true)
+</script>

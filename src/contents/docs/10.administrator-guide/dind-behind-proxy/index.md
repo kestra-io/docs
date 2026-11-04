@@ -21,7 +21,7 @@ Create a file `daemon.json`:
     "proxies": {
         "http-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
         "https-proxy": "http://mitmproxy.default.svc.cluster.local:8000",
-        "no-proxy": "localhost,127.0.0.1,.svc,.cluster.local,your.nexus.domain.com,kestra-minio"
+        "no-proxy": "localhost,127.0.0.1,.svc,.cluster.local,your.nexus.domain.com,your.object-storage.domain.com"
     }
 }
 ```
@@ -104,7 +104,7 @@ Here, `volume-enabled: true` ensures that the CA certificate is mounted from the
 This configuration will help the DinD pod pull the required container images successfully through the MITM proxy.
 
 For Kestra tasks that run in Docker containers (e.g., [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script)), you also need to set the `HTTPS_PROXY` environment variable and trust the certificate using `beforeCommands` as shown below.
-For consistency across tasks, consider configuring these settings as plugin defaults.
+In Enterprise Edition, a [Policy](../../07.enterprise/02.governance/policies/index.md) can add these settings to every script task in a namespace or tenant.
 
 ```yaml
 id: mitm_proxy

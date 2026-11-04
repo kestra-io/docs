@@ -44,7 +44,7 @@ When moving beyond traditional RPA, it's essential to evaluate alternatives agai
 *   **Polyglot Execution Support:** The ideal platform shouldn't force you into a single language. It should natively support tasks written in Python, Bash, SQL, Java, and run containerized applications, allowing teams to use the best tool for each job.
 *   **Event-Driven Capabilities:** Modern automation is not just about schedules. It's about reacting to events in real-time—an API call, a new file in storage, a message in a queue. Robust event-driven triggers are a must.
 *   **Scalability and Performance:** The architecture should be designed for horizontal scaling to handle thousands of concurrent workflows without performance degradation.
-*   **Governance:** Enterprise-grade features are non-negotiable. This includes Role-Based Access Control (RBAC), audit logs, centralized secrets management, and multi-tenancy for secure [workflow governance](/resources/infrastructure/workflow-governance).
+*   **Governance:** Enterprise-grade features are non-negotiable. This includes Role-Based Access Control (RBAC), audit logs, centralized secrets management, and multi-tenancy for secure [workflow governance](/resources/ai/ai-governance-workflows).
 *   **Integration Ecosystem:** A rich library of pre-built plugins for databases, cloud services, messaging systems, and data tools is critical to avoid writing boilerplate code and accelerate development.
 *   **Deployment Flexibility:** The platform should be deployable anywhere—on-premises, in any cloud, in hybrid environments, or even air-gapped networks—to meet diverse security and operational requirements.
 

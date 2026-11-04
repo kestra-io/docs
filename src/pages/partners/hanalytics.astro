@@ -1,0 +1,70 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Hanalytics & Kestra: Analytics Stacks for Business Teams"
+const description =
+    "Hanalytics helps data-rich organizations unlock the insights in their data, aligning data strategy with business goals and implementing analytics stacks."
+
+const about =
+    "Hanalytics builds analytics stacks that are easy to adopt and scale with their clients, for companies such as BlaBlaCar, Tui, Bouygues Immobilier, Sanofi and Sephora. Kestra is its go-to orchestration platform, and its certified team has implemented it at Bouygues Immobilier (Valorissimo), Copines de Voyage and Tui."
+
+const facts = [
+    { label: "Headquarters", value: "France" },
+    {
+        label: "Kestra expertise",
+        value: "Analytics stacks, marketing data, data modernization",
+    },
+    { label: "Profile", value: "Data and analytics consulting firm" },
+]
+
+const quote = {
+    text: "When we discovered Kestra, it was instant love at first sight! It's the perfect solution to streamline all our projects, and it's now become our go-to orchestration platform.",
+    author: "Hamis Badarou",
+    role: "Founder & Chief Analytics Officer, Hanalytics",
+}
+
+const expertise = [
+    {
+        icon: "mdi:layers-triple-outline",
+        title: "Analytics stacks, end to end",
+        text: "Ingestion, warehouse, transformation and activation, orchestrated with Kestra.",
+    },
+    {
+        icon: "mdi:bullhorn-outline",
+        title: "Marketing activation",
+        text: "At Valorissimo, personalized marketing automation that doubled conversion rates.",
+    },
+    {
+        icon: "mdi:swap-horizontal",
+        title: "Legacy to modern data stack",
+        text: "At Copines de Voyage, a move from a legacy system to a modern data stack.",
+    },
+    {
+        icon: "mdi:account-group-outline",
+        title: "Built for business teams",
+        text: "Data that business teams can use on their own, without waiting on engineers.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Hanalytics">
+    <PartnerProfile
+        name="Hanalytics"
+        tagline={description}
+        {about}
+        expertiseTitle="Hanalytics: Kestra at the heart of the analytics stack"
+        {expertise}
+        {quote}
+        {facts}
+        contact={{
+            text: "Contact Hanalytics",
+            href: "https://data-hanalytics.io/contact/?utm_source=kestra&utm_medium=referral&utm_campaign=partners",
+        }}
+        closing={{
+            title: "Work with Hanalytics",
+            text: "Building an analytics stack your business teams will use? Hanalytics can help.",
+        }}
+        website="https://data-hanalytics.io/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

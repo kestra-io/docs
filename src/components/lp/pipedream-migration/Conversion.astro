@@ -1,0 +1,174 @@
+---
+/* Stage 3 made concrete: one Pipedream workflow as one Kestra flow. The visual
+ * is the migration guide's hero (section 5.1's worked conversion); keep the
+ * points in step with that section. The CTA stays on this page: the paid
+ * visitor starts the trial here rather than leaving for the guide. */
+import { Icon } from "astro-icon/components"
+
+import HeroVisual from "~/components/pipedream-migration-guide/HeroVisual.astro"
+
+const points = [
+    "Node.js, Python and Bash logic copies into script tasks; only the input read and the return change",
+    "Pre-built actions become plugin tasks; anything without a plugin is one HTTP request",
+    "Connected accounts become secrets you own, scoped to a namespace",
+    "An errors block replaces the per-step error handling you built by hand",
+]
+---
+
+<section class="conversion">
+    <div class="inner">
+        <div class="copy" data-usal="fade-r delay-0 duration-500 ease-out">
+            <h2>Your export is the spec</h2>
+            <p class="lead-copy">
+                A webhook, a code step, a call to a business system and a
+                notification: four Pipedream steps and a connected account
+                become one Kestra flow, and the code step is copied almost
+                unchanged.
+            </p>
+            <ul class="points">
+                {
+                    points.map((point) => (
+                        <li>
+                            <Icon
+                                name="mdi:check-circle-outline"
+                                class="check"
+                            />
+                            <span>{point}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+            <a href="#contact-sales" class="cta">Convert yours on Cloud</a>
+        </div>
+
+        <figure
+            class="visual"
+            data-usal="fade-l delay-100 duration-500 ease-out"
+        >
+            <HeroVisual />
+            <figcaption>
+                The invoice-intake flow from the migration guide, converted from
+                a Pipedream export.
+            </figcaption>
+        </figure>
+    </div>
+</section>
+
+<style lang="scss">
+    /* Same dark band as the vRA page's Migration Assistant section. */
+    .conversion {
+        position: relative;
+        overflow: clip;
+        padding: 6rem 1rem 5rem;
+        background-color: var(--lp-bg-dark);
+        background-image: radial-gradient(
+            60% 55% at 85% 50%,
+            rgba(109, 40, 217, 0.45) 0%,
+            rgba(17, 17, 21, 0) 75%
+        );
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        max-width: 1140px;
+        margin-inline: auto;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            gap: 4rem;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 440px;
+        }
+    }
+
+    h2 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1.0417;
+        letter-spacing: -0.045rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .lead-copy {
+        margin: 0;
+        color: var(--lp-content-dark-secondary);
+        font-size: 1.125rem;
+        line-height: 1.5;
+    }
+
+    .points {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-size: $font-size-md;
+            line-height: 1.5;
+        }
+    }
+
+    .check {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        margin-top: 0.125rem;
+        color: var(--lp-purple-mid);
+    }
+
+    .cta {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        justify-content: center;
+        min-width: 160px;
+        height: 50px;
+        padding: 0.5rem 1.25rem;
+        border: 1px solid #ffffff;
+        border-radius: 8px;
+        background-color: var(--lp-purple);
+        color: #ffffff;
+        font-size: $font-size-lg;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow:
+            inset 0 0 14px 0 #be62ff,
+            2px 2px 5.5px rgba(0, 0, 0, 0.1);
+        &:hover {
+            background-color: #7737fe;
+        }
+    }
+
+    .visual {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: 568px;
+        margin: 0 auto;
+    }
+
+    figcaption {
+        margin-top: 1rem;
+        color: var(--lp-content-dark-secondary);
+        font-size: $font-size-sm;
+        text-align: center;
+    }
+</style>

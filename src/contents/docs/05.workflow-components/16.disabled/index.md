@@ -98,8 +98,8 @@ tasks:
     message: this task will run
 
   - id: disabled
-    type: io.kestra.plugin.core.debug.Return
-    format: this task will be skipped
+    type: io.kestra.plugin.core.log.Log
+    message: "this task will be skipped"
     disabled: true
 ```
 

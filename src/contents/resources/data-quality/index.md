@@ -94,7 +94,7 @@ Despite its importance, maintaining high data quality is a persistent challenge.
 - **Manual Data Entry:** Human error is a leading cause of inaccuracies. Typos, inconsistent abbreviations, and missing fields are common in manually entered data.
 - **Lack of Standardization:** Without clear, enforced standards for data entry and storage, variations will proliferate (e.g., "USA," "U.S.A.," "United States").
 - **Data Decay:** Information naturally becomes outdated over time. Customers move, change their names, or switch email addresses. Without regular maintenance, data quality degrades.
-- **Complex Integration Processes:** During ETL/ELT processes, data transformations or schema mismatches can introduce errors or data loss. Robust [data pipeline](/resources/data/data-pipeline) design is critical to preventing these quality regressions at ingestion time.
+- **Complex Integration Processes:** During ETL/ELT processes, data transformations or schema mismatches can introduce errors or data loss. Robust [data pipeline](/resources/data/create-data-pipeline) design is critical to preventing these quality regressions at ingestion time.
 
 ### Identifying and Preventing Common Issues
 

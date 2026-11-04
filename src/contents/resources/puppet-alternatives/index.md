@@ -50,7 +50,7 @@ Despite its strengths, several common challenges and evolving IT needs lead orga
 *   **Resource Intensity:** The Puppet Master can become a performance bottleneck in very large deployments, requiring significant hardware and careful tuning.
 *   **Limited Scope:** While excellent for configuration management, Puppet is less suited for broader orchestration tasks like provisioning cloud resources, managing CI/CD pipelines, or coordinating multi-step application deployments. Modern automation often requires a tool that can orchestrate workflows beyond just server configuration.
 
-For a more detailed comparison of how Puppet's model contrasts with modern orchestration, see our analysis of [Kestra vs. alternatives](/vs). You can also explore the broader landscape of [IT automation platforms](/resources/infrastructure/it-automation-platform) and [infrastructure as code](/resources/infrastructure/what-is-infrastructure-as-code).
+For a more detailed comparison of how Puppet's model contrasts with modern orchestration, see our analysis of [Kestra vs. alternatives](/vs). You can also explore the broader landscape of [IT automation platforms](/resources/infrastructure/it-automation-platform) and [infrastructure as code](/resources/infrastructure/everything-as-code).
 
 ## How We Evaluated These Alternatives
 
@@ -187,7 +187,7 @@ Selecting the right tool depends entirely on your team's priorities and the prob
 *   **For Teams Seeking Agentless & Declarative Approaches:** To reduce agent management overhead and simplify deployments, **Ansible** is the most direct agentless alternative. For a broader, declarative approach that can coordinate multiple tools (including Ansible), **Kestra** offers a YAML-based orchestration layer that sits above your entire stack.
 *   **For Small Teams & Open-Source Adopters:** If you need a cost-effective and flexible solution, open-source tools are the best starting point. **Ansible**, **OpenTofu**, **Windmill**, and the **Kestra Open-Source** edition all provide powerful capabilities without licensing fees.
 
-For more resources on modern infrastructure practices, explore our guides on [event-driven orchestration](/resources/infrastructure/event-driven-orchestration), [GitOps](/resources/infrastructure/gitops), and [workflow management](/resources/infrastructure/workflow-management).
+For more resources on modern infrastructure practices, explore our guides on [event-driven orchestration](/resources/infrastructure/event-driven-orchestration), [GitOps](/resources/infrastructure/gitops), and [workflow management](/resources/infrastructure/workflow-orchestration-tools).
 
 ## Conclusion
 

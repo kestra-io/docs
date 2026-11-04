@@ -4,7 +4,13 @@ import { Icon } from "astro-icon/components"
 
 import dashboard from "./assets/dashboard.png"
 
-const features = [
+interface Props {
+    heading?: string
+    /** Defaults to the self-hosted Enterprise copy below. */
+    features?: { icon: string; title: string; body: string }[]
+}
+
+const defaultFeatures = [
     {
         icon: "mdi:shield-lock-outline",
         title: "Security & Compliance",
@@ -21,11 +27,16 @@ const features = [
         body: "Worker groups, high availability, and unlimited executions, deployed with Docker, Kubernetes, a single VM, or managed Cloud, with backup, restore, and cluster health monitoring.",
     },
 ]
+
+const {
+    heading = "Powerful features for reliable workflows",
+    features = defaultFeatures,
+} = Astro.props
 ---
 
 <section class="features">
     <h2 data-usal="fade-u delay-50 duration-500 ease-out">
-        Powerful features for reliable workflows
+        {heading}
     </h2>
 
     <div class="split">

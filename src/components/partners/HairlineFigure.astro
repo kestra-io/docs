@@ -1,0 +1,90 @@
+---
+interface Props {
+    name: "deploy" | "plugins" | "padlock" | "servers" | "patch" | "opensource"
+    // Draws the figure in its dark palette on this ground colour, whatever
+    // the page's theme: for figures that sit on a dark tile.
+    dark?: string
+}
+
+const { name, dark } = Astro.props
+---
+
+<div
+    class="hairline-figure"
+    data-figure={name}
+    data-hairline-theme={dark ? "dark" : undefined}
+    style={dark ? `--hairline-plate: ${dark}` : undefined}
+>
+</div>
+
+<script>
+    import HL from "./illustrations/hairline-kernel.js"
+    import deploy from "./illustrations/deploy.js"
+    import plugins from "./illustrations/plugins.js"
+    import padlock from "./illustrations/padlock.js"
+    import servers from "./illustrations/servers.js"
+    import patch from "./illustrations/patch.js"
+    import opensource from "./illustrations/opensource.js"
+
+    const FIGURES = {
+        deploy,
+        plugins,
+        padlock,
+        servers,
+        patch,
+        opensource,
+    }
+
+    function mountAll() {
+        document
+            .querySelectorAll<HTMLElement>(
+                ".hairline-figure:not([data-hairline])",
+            )
+            .forEach((stage) => {
+                const define =
+                    FIGURES[stage.dataset.figure as keyof typeof FIGURES]
+                if (!define) return
+                define(HL, (figure: any) => {
+                    HL.inject(document)
+                    stage.setAttribute("data-hairline", figure.name)
+                    stage.setAttribute("role", "img")
+                    stage.setAttribute("aria-label", figure.means)
+                    const svg = HL.mk(
+                        "svg",
+                        { viewBox: "0 0 400 320", "aria-hidden": "true" },
+                        stage,
+                    )
+                    figure.mount(
+                        { stage, svg, read: { textContent: "" } },
+                        figure.range[1],
+                    )
+                    HL.tour(stage, figure.tour || HL.LAP)
+                })
+            })
+    }
+
+    mountAll()
+    document.addEventListener("astro:page-load", mountAll)
+</script>
+
+<style lang="scss">
+    .hairline-figure {
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+        --hairline-plate: var(--ks-background-body);
+        --hairline-hi: #8405ff;
+
+        :global(.kpink) {
+            fill: #f62e76;
+        }
+
+        :global(html.dark) &,
+        &[data-hairline-theme="dark"] {
+            --hairline-hi: #a796ff;
+            --hairline-edge: #7e7e88;
+            --hairline-mid: #4d4d55;
+            --hairline-lo: #35353b;
+        }
+    }
+</style>

@@ -45,7 +45,7 @@ Traditional job scheduling tools are defined by their simplicity and focus on ti
 ### What is Infrastructure Orchestration?
 Infrastructure orchestration is the automated, end-to-end coordination and management of resources, applications, services, and workflows across an entire technology stack. It goes beyond simple scheduling to manage the entire lifecycle of a complex process, answering not just *when* tasks run, but *how*, *why*, and in what order across multiple systems.
 
-Orchestration is about creating a cohesive, automated process from a series of smaller, interdependent tasks. This includes provisioning servers, configuring networks, deploying applications, and managing data pipelines, all while handling dependencies and errors gracefully. This approach is fundamental to modern practices like [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code) and GitOps.
+Orchestration is about creating a cohesive, automated process from a series of smaller, interdependent tasks. This includes provisioning servers, configuring networks, deploying applications, and managing data pipelines, all while handling dependencies and errors gracefully. This approach is fundamental to modern practices like [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code) and GitOps.
 
 ### How Workflow Orchestration Differs from Simple Scheduling
 Workflow orchestration elevates automation from simple time-based triggers to a sophisticated, logic-driven process. Key differences include:

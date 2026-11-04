@@ -193,7 +193,7 @@ Security teams usually work from one of two models, and both map well to an auto
 
 Whichever model you follow, the automation opportunities are the same: detection and identification produce the trigger, containment and recovery are the runbooks, and the lessons-learned step relies on the execution history the workflow leaves behind.
 
-Effective [workflow governance](/resources/infrastructure/workflow-governance) ensures these steps are consistently followed.
+Effective [workflow governance](/resources/ai/ai-governance-workflows) ensures these steps are consistently followed.
 
 ## Where Automated Incident Management Pays Off
 

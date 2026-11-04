@@ -425,7 +425,7 @@ async function deleteFile() {
 Test suites require Kestra Enterprise Edition.
 :::
 
-Create, run, and fetch results for unit test suites. The example below assumes `my_flow` declares an `inputA` input and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
+Create, run, and fetch results for unit test suites. The example below assumes `my_flow` declares an `inputA` input and a `return` task of type `io.kestra.plugin.core.output.OutputValues` that emits it under `values.result`.
 
 ### Create a test suite
 
@@ -443,7 +443,7 @@ testCases:
       inputs:
         inputA: "Hi there"
     assertions:
-      - value: "{{ outputs.return.value }}"
+      - value: "{{ outputs.return.values.result }}"
         equalTo: "Hi there"
 `;
   const suite = await TestSuites.createTestSuite({ body });

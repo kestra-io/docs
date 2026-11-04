@@ -69,17 +69,18 @@ tasks:
   - id: hello
     type: io.kestra.plugin.core.log.Log
     description: "Log the input value passed at execution time."
-    message: "Hello, {{ inputs.['my-value'] }}!"
+    message: "Hello, {{ inputs['my-value'] }}!"
 
   - id: date
-    type: io.kestra.plugin.core.debug.Return
-    description: "Return the current date as a task output."
-    format: "{{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    description: "Emit the current date as a task output."
+    values:
+      result: "{{ taskrun.startDate }}"
 
 outputs:
   - id: execution_date
     type: STRING
-    value: "{{ outputs.date.value }}"
+    value: "{{ outputs.date.values.result }}"
 
 triggers:
   - id: daily

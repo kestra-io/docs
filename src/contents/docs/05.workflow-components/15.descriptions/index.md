@@ -141,15 +141,16 @@ tasks:
     body: "{{ inputs.payload }}"
 
   - id: print_status
-    type: io.kestra.plugin.core.debug.Return
-    description: Prints the API request date # Task description example
-    format: hello on {{ outputs.send_data.headers.date | first }}
+    type: io.kestra.plugin.core.output.OutputValues
+    description: Emits the API request date # Task description example
+    values:
+      result: hello on {{ outputs.send_data.headers.date | first }}
 
 outputs:
   - id: final
     type: STRING
     description: Final flow output derived from the task result
-    value: "{{ outputs.print_status.value }}"
+    value: "{{ outputs.print_status.values.result }}"
 
 triggers:
   - id: daily

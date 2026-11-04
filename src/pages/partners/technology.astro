@@ -1,0 +1,73 @@
+---
+import Layout from "~/components/layout.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import Benefits from "~/components/partners/Benefits.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import PartnersLists from "~/components/partners/PartnersLists.vue"
+import PartnerCta from "~/components/partners/PartnerCta.astro"
+import { listPartners } from "~/components/partners/partners"
+import dltLogo from "~/components/partners/assets/dltLogo.svg?raw"
+import airbyteLogo from "~/components/partners/assets/airbyte.svg?raw"
+
+const title =
+    "Kestra Technology Partners: Cloud, Data and Infrastructure Platforms"
+const description =
+    "The cloud, data and infrastructure platforms Kestra integrates with, searchable by category, and how to become a technology partner with a plugin in the catalog."
+
+const partners = listPartners("Technology")
+
+const FILTERS: { key: "expertise"; label: string }[] = [
+    { key: "expertise", label: "Expertise" },
+]
+
+const BENEFITS = [
+    {
+        title: "A plugin in the catalog",
+        text: "Your integration listed among 2,200+ plugins, with its own documentation page, found by every team that searches the catalog for your product.",
+    },
+    {
+        title: "A launch, together",
+        text: "A joint announcement on the Kestra blog and social channels, the partner badge, and co-marketing material for your own site.",
+    },
+    {
+        title: "Direct access to the plugin team",
+        text: "Early access to plugin APIs and new platform capabilities, and an engineer to talk to while you build and maintain the integration.",
+    },
+    {
+        title: "Open by design",
+        text: "Plugins are public and Apache 2.0, the API is documented, and there is no paid listing. What you build stays yours.",
+    },
+]
+
+const QUOTES = [
+    {
+        quote: "Airbyte and Kestra share a common vision: to simplify data pipeline creation. This partnership brings together the strengths of two leading data management companies, so our customers can get the most out of their data and achieve their business goals.",
+        author: "Chris Tata - Head of Partnerships, <strong>Airbyte</strong>",
+        smallLogoSvg: airbyteLogo,
+    },
+    {
+        quote: "Kestra and dlt share a vision of simplifying data pipeline creation. Thanks to Kestra's and dlt's declarative interface, you can deploy existing pipelines in seconds or build new ones from scratch with ease.",
+        author: "Co-Founder @ <strong>dlthub</strong>",
+        smallLogoSvg: dltLogo,
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Technology Partners">
+    <PartnersLists
+        client:load
+        partners={partners}
+        filters={FILTERS}
+        title="Technology partners"
+        subtitle="Kestra integrates with all major cloud providers and the data and infrastructure platforms teams run on them. Each one has an integration in the plugin catalog. Ship yours and reach every team orchestrating with Kestra."
+        searchPlaceholder="Search by name or expertise"
+    />
+    <PluginsBlock />
+    <Benefits
+        title="What technology partners get"
+        intro="An integration is only worth building if people find it. The program puts yours in front of them and keeps the engine open underneath."
+        benefits={BENEFITS}
+    />
+    <Quotes quotes={QUOTES} />
+    <PartnerCta track="technology" />
+</Layout>

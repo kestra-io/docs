@@ -50,7 +50,7 @@ Migrating from cron to Kestra is more than a simple replacement; it's a shift in
 
 ## Translating Your Crontab: Syntax Mapping
 
-One of the most immediate benefits of migrating to Kestra is the ability to directly translate your existing scheduling logic. Kestra uses the same standard [cron expression syntax](/resources/infrastructure/cron-expression) you're already familiar with.
+One of the most immediate benefits of migrating to Kestra is the ability to directly translate your existing scheduling logic. Kestra uses the same standard [cron expression syntax](/resources/infrastructure/cron-replacement) you're already familiar with.
 
 ### A crontab line becomes a Kestra Schedule trigger
 

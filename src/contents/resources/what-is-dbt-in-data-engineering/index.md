@@ -33,7 +33,7 @@ dbt has become the industry standard for the "T" (transform) in [ELT (Extract, L
 
 ### Defining dbt: a software engineering approach to data
 
-At its core, dbt is a development framework that brings software engineering principles to analytics and data modeling. It allows data teams to write modular, version-controlled, and testable SQL. By treating analytics code like application code, dbt enables teams to build more reliable and maintainable [data pipelines](/resources/data/data-pipeline).
+At its core, dbt is a development framework that brings software engineering principles to analytics and data modeling. It allows data teams to write modular, version-controlled, and testable SQL. By treating analytics code like application code, dbt enables teams to build more reliable and maintainable [data pipelines](/resources/data/create-data-pipeline).
 
 Transformations in dbt are written as `SELECT` statements, and dbt handles the boilerplate Data Definition Language (DDL) to materialize these queries as tables or views in the target database. It uses Jinja, a popular templating language, to inject logic like `if` statements, loops, and macros into SQL, making the code more dynamic and reusable. This approach helps manage dependencies between models, ensuring that transformations run in the correct order.
 

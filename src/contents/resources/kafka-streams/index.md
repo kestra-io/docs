@@ -153,7 +153,7 @@ A notable example is Netflix, which uses Kafka extensively. Their Title Health m
 
 ## Related concepts
 - [Data Orchestration](/resources/data/data-orchestration)
-- [Data Pipeline](/resources/data/data-pipeline)
+- [Data Pipeline](/resources/data/create-data-pipeline)
 - [ETL Workflow](/resources/data/etl-workflow)
 - [Debezium Alternatives for Change Data Capture](/resources/data/debezium-alternatives)
 

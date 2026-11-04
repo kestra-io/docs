@@ -72,7 +72,7 @@ If you already have an existing `.env` file, you can use the following bash scri
 ENV_FILENAME=.env_encoded
 
 while IFS='=' read -r key value; do
-  echo "SECRET_$key=$(echo -n "$value" | base64)";
+  echo "SECRET_$key=$(echo -n "$value" | openssl base64 -A)";
 done < .env > $ENV_FILENAME
 
 ## Encodes the service account file without line wrapping to make sure the whole JSON value is intact.
@@ -242,7 +242,7 @@ services:
             basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
-              password: kestra
+              password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
           repository:
             type: postgres
           storage:

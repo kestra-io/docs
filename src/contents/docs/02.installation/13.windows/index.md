@@ -26,24 +26,32 @@ The standalone JAR ships without plugins. You must install them before starting 
 
 ### Install specific plugins
 
-Install only the plugins you need by listing them explicitly:
+[Install `kestractl`](../../kestra-cli/kestractl/index.md#installation) and download only the plugins you need with [`kestractl plugins download`](../../kestra-cli/kestractl/index.md#plugin-management). Windows binaries are on the [kestractl releases page](https://github.com/kestra-io/kestractl/releases).
+
+```bat
+kestractl plugins download --compatible-for <version> --plugins io.kestra.plugin:plugin-script-powershell --plugins io.kestra.plugin:plugin-script-python --plugins-dir C:\kestra\plugins
+```
+
+Replace `<version>` with your Kestra version. Run `kestractl plugins list <version>` to find plugin identifiers. Then point Kestra to the directory as described in [Use a plugins directory](#use-a-plugins-directory).
+
+You can also install plugins with the bundled server CLI:
 
 ```bat
 .\kestra.bat plugins install io.kestra.plugin:plugin-script-powershell:LATEST io.kestra.plugin:plugin-script-python:LATEST
 ```
 
-Find plugin identifiers in the [full plugins list](https://github.com/kestra-io/kestra/blob/develop/.plugins).
-
 ### Install all plugins
 
-To install every available plugin at once, use the `--all` flag:
+To download every plugin compatible with your Kestra version, pass the version without `--plugins`:
 
 ```bat
-.\kestra.bat plugins install --all
+kestractl plugins download <version> --plugins-dir C:\kestra\plugins
 ```
 
+With the bundled server CLI, use `.\kestra.bat plugins install --all` instead.
+
 :::alert{type="info"}
-Installing all plugins downloads approximately 3 GB of files sequentially and can take a significant amount of time. Prefer installing specific plugins when possible.
+Installing all plugins downloads approximately 3 GB of files and can take a significant amount of time. Prefer installing specific plugins when possible, or add `--concurrency` to `kestractl plugins download` to run downloads in parallel.
 :::
 
 ### Use a plugins directory

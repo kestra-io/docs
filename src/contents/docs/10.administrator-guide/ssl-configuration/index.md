@@ -188,7 +188,7 @@ Ensure that you expose the secure port of the connection if different from the d
             basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
-              password: kestra
+              password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
           repository:
             type: postgres
           storage:
@@ -260,7 +260,7 @@ The following example shows the full service configuration with `JAVA_OPTS` set:
             basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
-              password: kestra
+              password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
           repository:
             type: postgres
           storage:

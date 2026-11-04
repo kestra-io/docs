@@ -1,0 +1,158 @@
+{
+  "_source": "Reference implementation of the payback calculator, confirmed final by the product team",
+  "_referenceSha256": "dfed6ff94524eec28b40679bb37520c93a2b5b5f2476ba37eed77d2478f7f2d3",
+  "cases": [
+    {
+      "name": "defaults",
+      "payback": {
+        "head": {
+          "text": "Pays back in month 14, in year 2.",
+          "className": "kvc-head"
+        },
+        "renewLine": "At renewal you would pay about <b>€1.5M</b> a year for vRA and vRO.",
+        "anchor": "Avoiding <b>€1.5M</b> a year, from the renewal in <b>12</b> months.",
+        "sub": "Over 3 years, you save <b class=\"kvc-pos\">€2.8M</b> by migrating to Kestra, after <b>€210K</b> in migration costs (before Kestra licensing).",
+        "solve": "You'd still save at any Kestra price up to <b>€930K</b> a year.<br><em style=\"display:block;margin-top:.4rem;color:var(--kvc-ink2)\">For reference, a <a class=\"kvc-inline\" href=\"https://kestra.io/customers/fortune-500-company\" target=\"_blank\" rel=\"noopener\">Fortune 500 manufacturer</a> that replaced vRA reports licensing costs 90% below Aria Automation.</em>"
+      },
+      "funnel": {
+        "rScope": "340",
+        "careful": "127",
+        "distinctN": "170",
+        "wrapN": "43"
+      }
+    },
+    {
+      "name": "large-estate-with-quote",
+      "payback": {
+        "head": {
+          "text": "Pays back in month 20, in year 2.",
+          "className": "kvc-head"
+        },
+        "renewLine": "At renewal you would pay about <b>$10M</b> a year for vRA and vRO, plus <b>$50K</b> in other annual costs.",
+        "anchor": "Avoiding <b>$10M</b> a year, from the renewal in <b>18</b> months.",
+        "sub": "Over 5 years, you save <b class=\"kvc-pos\">$33M</b> by migrating to Kestra, after <b>$1.2M</b> in migration costs.",
+        "solve": ""
+      },
+      "funnel": {
+        "rScope": "1,600",
+        "careful": "448",
+        "distinctN": "640",
+        "wrapN": "192"
+      }
+    },
+    {
+      "name": "custom-multiple-gbp-renew-now",
+      "payback": {
+        "head": {
+          "text": "Pays back in month 2, in year 1.",
+          "className": "kvc-head"
+        },
+        "renewLine": "At renewal you would pay about <b>£1.8M</b> a year for vRA and vRO.",
+        "anchor": "Avoiding <b>£1.8M</b> a year, from the renewal in <b>0</b> months.",
+        "sub": "Over 3 years, you save <b class=\"kvc-pos\">£5M</b> by migrating to Kestra, after <b>£210K</b> in migration costs.",
+        "solve": ""
+      },
+      "funnel": {
+        "rScope": "340",
+        "careful": "127",
+        "distinctN": "170",
+        "wrapN": "43"
+      }
+    },
+    {
+      "name": "never-pays-back",
+      "payback": {
+        "head": {
+          "text": "Does not pay back within fifteen years.",
+          "className": "kvc-head"
+        },
+        "renewLine": "At renewal you would pay about <b>€10K</b> a year for vRA and vRO.",
+        "anchor": "Avoiding <b>€10K</b> a year, from the renewal in <b>12</b> months.",
+        "sub": "Over 3 years, migrating costs <b class=\"kvc-neg\">€1.9M</b> more than renewing, after <b>€1.6M</b> in migration costs.",
+        "solve": ""
+      },
+      "funnel": {
+        "rScope": "2,550",
+        "careful": "956",
+        "distinctN": "1,275",
+        "wrapN": "319"
+      }
+    },
+    {
+      "name": "blank-kestra-break-even-only-over-longer-horizon",
+      "payback": {
+        "head": {
+          "text": "Pays back in year 2, past your 1-year horizon.",
+          "className": "kvc-head"
+        },
+        "renewLine": "At renewal you would pay about <b>€1.5M</b> a year for vRA and vRO.",
+        "anchor": "Avoiding <b>€1.5M</b> a year, from the renewal in <b>12</b> months.",
+        "sub": "Over 1 years, migrating costs <b class=\"kvc-neg\">€210K</b> more than renewing, after <b>€210K</b> in migration costs (before Kestra licensing).",
+        "solve": "This does not save money over 1 years even before Kestra licensing. Over 3 years, you'd save at any Kestra price up to <b>€930K</b> a year.<br><em style=\"display:block;margin-top:.4rem;color:var(--kvc-ink2)\">For reference, a <a class=\"kvc-inline\" href=\"https://kestra.io/customers/fortune-500-company\" target=\"_blank\" rel=\"noopener\">Fortune 500 manufacturer</a> that replaced vRA reports licensing costs 90% below Aria Automation.</em>"
+      },
+      "funnel": {
+        "rScope": "340",
+        "careful": "127",
+        "distinctN": "170",
+        "wrapN": "43"
+      }
+    },
+    {
+      "name": "max-horizon-max-renew",
+      "payback": {
+        "head": {
+          "text": "Pays back in month 62, in year 6.",
+          "className": "kvc-head"
+        },
+        "renewLine": "At renewal you would pay about <b>€1.5M</b> a year for vRA and vRO.",
+        "anchor": "Avoiding <b>€1.5M</b> a year, from the renewal in <b>60</b> months.",
+        "sub": "Over 10 years, you save <b class=\"kvc-pos\">€7.3M</b> by migrating to Kestra, after <b>€210K</b> in migration costs (before Kestra licensing).",
+        "solve": "You'd still save at any Kestra price up to <b>€729K</b> a year.<br><em style=\"display:block;margin-top:.4rem;color:var(--kvc-ink2)\">For reference, a <a class=\"kvc-inline\" href=\"https://kestra.io/customers/fortune-500-company\" target=\"_blank\" rel=\"noopener\">Fortune 500 manufacturer</a> that replaced vRA reports licensing costs 90% below Aria Automation.</em>"
+      },
+      "funnel": {
+        "rScope": "340",
+        "careful": "127",
+        "distinctN": "170",
+        "wrapN": "43"
+      }
+    },
+    {
+      "name": "funnel-errors",
+      "payback": {
+        "head": {
+          "text": "Fix the inputs to see a payback.",
+          "className": "kvc-head kvc-pending"
+        },
+        "renewLine": "&mdash;",
+        "anchor": "",
+        "sub": "",
+        "solve": ""
+      },
+      "funnel": {
+        "rScope": "&mdash;",
+        "careful": "&mdash;",
+        "distinctN": "&mdash;",
+        "wrapN": "&mdash;"
+      }
+    },
+    {
+      "name": "payback-errors",
+      "payback": {
+        "head": {
+          "text": "Fix the inputs to see a payback.",
+          "className": "kvc-head kvc-pending"
+        },
+        "renewLine": "&mdash;",
+        "anchor": "",
+        "sub": "",
+        "solve": ""
+      },
+      "funnel": {
+        "rScope": "340",
+        "careful": "127",
+        "distinctN": "170",
+        "wrapN": "43"
+      }
+    }
+  ]
+}

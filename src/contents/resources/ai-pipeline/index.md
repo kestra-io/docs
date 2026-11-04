@@ -26,7 +26,7 @@ This guide will demystify the AI pipeline, exploring its fundamental definition,
 
 An AI pipeline is an automated, end-to-end workflow that manages the entire lifecycle of an AI model. Also known as a [machine learning (ML) pipeline](/resources/ai/what-is-a-machine-learning-pipeline) or AI workflow, it encompasses every step from raw data ingestion to the deployment and monitoring of a production-ready model. Think of it as the assembly line for AI: a series of interconnected, automated processes that transform raw inputs into a valuable, functional product.
 
-The core purpose of an AI pipeline is to replace manual, error-prone handoffs with a reliable, repeatable, and automated system. It connects disparate stages like [data ingestion](/resources/data/what-is-data-ingestion), preprocessing, model training, and deployment into a single, cohesive [data pipeline](/resources/data/data-pipeline) process. Effective [data orchestration](/resources/data/data-orchestration) is the backbone of this process, ensuring that each step executes in the correct sequence, with the right data, and under the right conditions. By automating this journey, teams can [stop writing glue code](/ai-automation) and focus on improving model performance and delivering business value.
+The core purpose of an AI pipeline is to replace manual, error-prone handoffs with a reliable, repeatable, and automated system. It connects disparate stages like [data ingestion](/resources/data/what-is-data-ingestion), preprocessing, model training, and deployment into a single, cohesive [data pipeline](/resources/data/create-data-pipeline) process. Effective [data orchestration](/resources/data/data-orchestration) is the backbone of this process, ensuring that each step executes in the correct sequence, with the right data, and under the right conditions. By automating this journey, teams can [stop writing glue code](/ai-automation) and focus on improving model performance and delivering business value.
 
 ## Key Stages and Architecture of an AI Pipeline
 
@@ -63,7 +63,7 @@ Implementing a well-structured AI pipeline moves AI development from an artisana
 
 ## Building and Automating Your AI Pipeline with Kestra
 
-While the benefits are clear, building and managing AI pipelines presents significant challenges. Teams often struggle with fragmented tools, brittle custom scripts, and a lack of visibility across the data, infrastructure, and ML domains. Kestra provides a unified, declarative control plane to [orchestrate AI workflows](/docs/ai-tools/ai-workflows) and overcome these hurdles.
+While the benefits are clear, building and managing AI pipelines presents significant challenges. Teams often struggle with fragmented tools, brittle custom scripts, and a lack of visibility across the data, infrastructure, and ML domains. Kestra provides a unified, declarative control plane to [orchestrate AI workflows](/docs/ai-orchestration/ai-agents#call-an-llm-as-a-task) and overcome these hurdles.
 
 A single pipeline is straightforward. Running dozens of them alongside inference, evaluation and agents is where [AI orchestration best practices](/resources/ai/ai-orchestration) start to matter.
 

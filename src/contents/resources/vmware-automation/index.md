@@ -22,6 +22,8 @@ The landscape of IT infrastructure is constantly evolving, and VMware has long b
 
 This guide explores the essentials of VMware automation, from native platforms like Aria Automation and VCF to powerful SDKs and integrations with tools like Ansible and Puppet. We'll delve into common challenges, discuss the future of VMware in a multi-cloud world, and show how Kestra's declarative, event-driven orchestration platform can unify and enhance your VMware automation strategy, providing a flexible control plane across your entire hybrid infrastructure.
 
+Replacing Aria Automation rather than extending it? Our [vRA to Kestra migration guide](/resources/migration/vra) covers the move in four stages, from assessing your estate to retiring vRA at renewal.
+
 ## Understanding VMware Automation
 
 VMware automation involves using software to execute tasks and processes related to virtual machines (VMs), networks, storage, and cloud resources within VMware ecosystems. The primary goal is to replace repetitive, manual operations with automated, consistent workflows. This is a critical component of modern [infrastructure automation](https://kestra.io/resources/infrastructure/automation), where speed, reliability, and scale are paramount. Most of that work tracks the machine itself from provisioning through to decommissioning, a sequence covered in [VM lifecycle management](/resources/infrastructure/vm-lifecycle-management).
@@ -33,7 +35,7 @@ The importance of this practice cannot be overstated. Effective automation leads
 *   **Improved Scalability:** Managing hundreds or thousands of VMs becomes feasible without a linear increase in operational staff.
 *   **Better Governance and Compliance:** Automated policies and audit trails ensure that infrastructure changes are tracked and compliant with security requirements.
 
-Ultimately, robust VMware automation is foundational to effective [workflow management](https://kestra.io/resources/infrastructure/workflow-management) in any enterprise running on a vSphere-based stack.
+Ultimately, robust VMware automation is foundational to effective [workflow management](https://kestra.io/resources/infrastructure/workflow-orchestration-tools) in any enterprise running on a vSphere-based stack.
 
 ## Native VMware Automation Platforms
 
@@ -57,7 +59,7 @@ For teams that need granular control, the vSphere Automation SDKs provide a powe
 
 ### Integrating with Infrastructure-as-Code (IaC) Tools
 
-VMware environments rarely exist in isolation. They are often managed alongside other tools as part of a broader [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) strategy. Two of the most common integrations are with Red Hat Ansible and Puppet:
+VMware environments rarely exist in isolation. They are often managed alongside other tools as part of a broader [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) strategy. Two of the most common integrations are with Red Hat Ansible and Puppet:
 
 *   **Red Hat Ansible:** As an agentless automation engine, Ansible is excellent for configuration management, application deployment, and orchestrating tasks across a VMware estate. You can [orchestrate Ansible with Kestra](https://kestra.io/orchestration/ansible) to manage everything from initial VM provisioning to ongoing software configuration. For more options, explore these [Ansible alternatives](/resources/infrastructure/alternatives-to-ansible).
 *   **Puppet:** Puppet uses a desired-state model to enforce configuration consistency across your VMs. It ensures that systems remain in a known, compliant state over time. While powerful, many teams are exploring [Puppet alternatives](https://kestra.io/resources/infrastructure/puppet-alternatives) to align with more modern, declarative workflow patterns.
@@ -117,7 +119,7 @@ The acquisition of VMware by Broadcom has prompted many organizations to reasses
 
 As a result, technologies like Kubernetes-native virtualization (e.g., KubeVirt) and open-source hypervisors are gaining traction as complementary or alternative solutions. In this evolving landscape, a vendor-neutral control plane becomes essential. Kestra provides this layer of abstraction, allowing teams to orchestrate workflows across VMware, public clouds, and open-source platforms without being tied to a single vendor's automation stack. This flexibility is crucial for long-term resilience and cost management, a theme also seen in the move away from legacy tools like Control-M and toward more modern [Control-M alternatives](https://kestra.io/resources/infrastructure/control-m-alternatives).
 
-This modernization is not just about replacing tools but rethinking the orchestration paradigm, similar to how developers are choosing modern frameworks over older ones, as seen in the search for [Temporal alternatives](https://kestra.io/resources/infrastructure/temporal-alternatives). The goal is a more agile, code-driven, and interoperable automation strategy. One Fortune 500 industrial company successfully replaced VMware Aria Automation with Kestra, cutting costs and securing OT operations. Similarly, another Fortune 500 mining enterprise reduced its provisioning time from six months to just six days by modernizing its VMware automation with Kestra.
+This modernization is not just about replacing tools but rethinking the orchestration paradigm, similar to how developers are choosing modern frameworks over older ones, as seen in the search for [Temporal alternatives](https://kestra.io/resources/infrastructure/temporal-alternatives). The goal is a more agile, code-driven, and interoperable automation strategy. One [Fortune 500 manufacturer](/stories/fortune-500-company) replaced VMware Aria Automation with Kestra, cutting licensing costs by 90% and delivery time from six months to six days, with automation isolated across its OT environments.
 
 ## Conclusion: Unifying Your Infrastructure Automation
 

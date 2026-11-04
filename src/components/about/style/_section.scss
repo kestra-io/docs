@@ -1,0 +1,60 @@
+@use "/src/assets/styles/variable" as *;
+
+@mixin eyebrow {
+    display: block;
+    margin: 0 0 1rem;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: var(--ks-content-link);
+}
+
+@mixin title {
+    margin: 0;
+    font-size: clamp(2.25rem, 4.4vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+}
+
+@mixin lead {
+    margin: 1.25rem 0 0;
+    font-size: $font-size-lg;
+    line-height: 1.6;
+    color: var(--ks-content-secondary);
+}
+
+@mixin section {
+    padding: 7.5rem 0;
+
+    @include media-breakpoint-down(md) {
+        padding: 4.5rem 0;
+    }
+}
+
+@mixin text-link {
+    font-weight: 600;
+    color: var(--ks-content-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--ks-border-secondary);
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color 0.2s ease;
+
+    &:hover {
+        text-decoration-color: var(--ks-content-link);
+    }
+
+    @include arrow-nudge;
+}
+
+@mixin arrow-nudge {
+    .arrow {
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+
+    &:hover .arrow,
+    &:focus-visible .arrow {
+        transform: translateX(0.25em);
+    }
+}

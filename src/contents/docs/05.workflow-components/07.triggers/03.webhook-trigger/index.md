@@ -246,13 +246,14 @@ namespace: company.team
 
 tasks:
   - id: make_payload
-    type: io.kestra.plugin.core.debug.Return
-    format: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
 
 outputs:
   - id: greeting
     type: STRING
-    value: "{{ outputs.make_payload.value }}"
+    value: "{{ outputs.make_payload.values.result }}"
 
 triggers:
   - id: webhook

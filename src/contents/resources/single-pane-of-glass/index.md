@@ -138,7 +138,7 @@ This is where a dedicated orchestration platform provides value. It is designed 
 *   [Job Scheduler: Declarative Orchestration for Workflows](/resources/infrastructure/job-scheduler)
 *   [IT Automation Platform](/resources/infrastructure/it-automation-platform)
 *   [Workflow Observability: Monitoring for Complex Systems](/resources/infrastructure/workflow-observability)
-*   [Workflow Governance: Ensuring Security and Compliance](/resources/infrastructure/workflow-governance)
+*   [Workflow Governance: Ensuring Security and Compliance](/resources/ai/ai-governance-workflows)
 *   [Data Orchestration: The Definitive Guide](/resources/data/data-orchestration)
 *   [AI Orchestration: Automating Complex AI Systems](/resources/ai/ai-orchestration)
 
