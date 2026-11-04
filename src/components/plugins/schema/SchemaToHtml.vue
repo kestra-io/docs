@@ -143,6 +143,7 @@
     import Collapsible from "./Collapsible.vue";
     import CollapsibleProperties from "./CollapsibleProperties.vue";
     import CodeTabs from "~/components/common/CodeTabs.vue";
+    import { getKestractlPluginGetCommand } from "~/utils/plugins/kestractlInstallCommand";
 
     const props = withDefaults(defineProps<{
         schema: JSONSchema,
