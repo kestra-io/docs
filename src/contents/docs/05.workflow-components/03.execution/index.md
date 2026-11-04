@@ -231,6 +231,8 @@ with open("/tmp/128M.txt", 'rb') as fh:
 
 ## Execute via kestractl
 
+With [`kestractl`](../../kestra-cli/kestractl/index.md#installation) installed and configured, run a flow from the command line:
+
 ```bash
 # Run a flow and wait for completion
 kestractl executions run prod nightly-refresh --wait

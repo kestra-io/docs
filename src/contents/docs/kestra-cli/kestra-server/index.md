@@ -19,7 +19,7 @@ The Kestra Server CLI (`kestra`) is not a separate tool to install. It is the sa
 
 - **Docker / Docker Compose / Kubernetes**: the CLI is already included in the `kestra/kestra` image.
 - **Standalone JAR**: the downloaded executable (`./kestra-VERSION`) is the CLI.
-- **Managed environments (e.g. Kestra Cloud)**: host-level server commands are typically not available. Use [`kestractl`](../kestractl/index.md) for API-level operations.
+- **Managed environments (e.g. Kestra Cloud)**: host-level server commands are typically not available. Use [`kestractl`](../kestractl/index.md#installation) for API-level operations.
 
 To install Kestra first, follow one of these guides:
 
@@ -302,6 +302,8 @@ Install one or more plugins by Maven coordinates.
 ```bash
 kestra plugins install io.kestra.plugin.jdbc:mysql:1.2.3
 ```
+
+To download plugins outside a Kestra installation, for example before building a custom Docker image, use [`kestractl plugins`](../kestractl/index.md#plugin-management) instead.
 
 ### `kestra plugins uninstall`
 
