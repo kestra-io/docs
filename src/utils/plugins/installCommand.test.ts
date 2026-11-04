@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { PluginMetadata } from "./plugin"
 import { getPluginInstallCommand } from "./installCommand"
+import { getKestractlPluginGetCommand } from "./kestractlInstallCommand"
 
 const pluginMetadata: PluginMetadata[] = [
     {
@@ -23,13 +24,13 @@ describe("getPluginInstallCommand", () => {
     it("returns the install command for the matching plugin artifact", () => {
         expect(
             getPluginInstallCommand("io.kestra.plugin.aws.s3.List", pluginMetadata),
-        ).toBe("./kestra plugins install io.kestra.plugin:plugin-aws-s3:LATEST")
+        ).toBe("io.kestra.plugin:plugin-aws-s3")
     })
 
     it("uses the most specific matching metadata group", () => {
         expect(
             getPluginInstallCommand("io.kestra.plugin.aws.Ec2.Start", pluginMetadata),
-        ).toBe("./kestra plugins install io.kestra.plugin:plugin-aws:LATEST")
+        ).toBe("io.kestra.plugin:plugin-aws")
     })
 
     it("does not return a command for Core plugins", () => {
@@ -53,5 +54,24 @@ describe("getPluginInstallCommand", () => {
             getPluginInstallCommand("io.kestra.plugin.unknown.Task", pluginMetadata),
         ).toBeUndefined()
         expect(getPluginInstallCommand(undefined, pluginMetadata)).toBeUndefined()
+    })
+})
+
+
+describe("getKestractlPluginGetCommand", () => {
+    it("uses Kestra compatibility instead of an unsupported symbolic plugin version", () => {
+        expect(
+            getKestractlPluginGetCommand("io.kestra.plugin:plugin-aws-s3"),
+        ).toBe("kestractl plugins get io.kestra.plugin:plugin-aws-s3 --compatible-for $KESTRA_VERSION")
+    })
+
+    it("accepts an exact plugin version when one is supplied", () => {
+        expect(
+            getKestractlPluginGetCommand("io.kestra.plugin:plugin-aws-s3", "1.2.3"),
+        ).toBe("kestractl plugins get io.kestra.plugin:plugin-aws-s3:1.2.3")
+    })
+
+    it("returns no command when the artifact coordinate is missing", () => {
+        expect(getKestractlPluginGetCommand(undefined)).toBe("")
     })
 })
