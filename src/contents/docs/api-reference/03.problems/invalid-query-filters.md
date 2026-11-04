@@ -19,7 +19,7 @@ The `filters` on a list endpoint could not be parsed, or they reference somethin
 - The operator does not apply to that field's type.
 - A mutating by-query endpoint (`DELETE`, `POST`, or `PUT` on a `.../by-query` path) received a filter as a flat query parameter, such as `?namespace=x`, instead of the `filters[...]` form.
 
-The last case applies to bulk endpoints for executions, flows, and triggers (delete, kill, restart, replay, change-status, labels, pause/resume, unqueue, force-run, enable/disable, and similar). Read-only exports (`GET .../export/by-query`) are not affected.
+Since Kestra 2.0.7, the last case applies to bulk endpoints for executions, flows, and triggers (delete, kill, restart, replay, change-status, labels, pause/resume, unqueue, force-run, enable/disable, and similar). Read-only exports (`GET .../export/by-query`) are not affected. Before 2.0.7, these endpoints silently dropped flat parameters, so a call such as `DELETE /api/v1/main/flows/delete/by-query?namespace=x` ran with no filter and deleted every flow in the tenant, not only those in `x`. Review any scripts that call by-query endpoints with flat parameters.
 
 ## Example responses
 

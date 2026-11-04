@@ -21,6 +21,24 @@ From the main Flows page, filter flows by namespace, scope, labels, or free text
 
 <div style="position: relative; padding-bottom: calc(54.828% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/azAPQSNOo4z4I3CZcF9c?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows Filters | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
+## Source search
+
+**Source search** finds a value across your flows and replaces it in bulk, for example to find every flow that uses a plugin, a property, or a secret name, and rename it everywhere. Open it from the actions menu (**⋮**) next to **Create** at the top of the Flows page, or go to `/ui/<tenant>/flows/search`.
+
+Pick what to search under **Search in**:
+
+- **Flows**: searches the flow source. Narrow it with a namespace and a **Scope** (**All source**, **Tasks**, **Triggers**, or **Inputs**), and turn on **Match case**, **Match whole word**, or **Use regular expression**.
+- **Namespace files**: matches file paths only, not file content.
+- **KV keys** and **Secret keys**: match key names only. Values are never searched or shown.
+
+Results are grouped by flow, with a preview of each match. Select **Show replace** to enter a replacement, then use **Replace this match**, **Replace all in flow**, or **Replace all** for every selected match. Kestra shows a diff of the change before applying it. Replace applies to flows only; the other result types are search-only.
+
+Some flows are excluded from a replace and are marked **Read-only**: flows synced from Git (with the `system.readOnly` label) and, in the Enterprise Edition, flows in namespaces where you don't have the `UPDATE` permission on `FLOW`. A flow is also skipped if the replacement would make it invalid. Kestra reports how many flows were updated and why any were skipped.
+
+When a search returns more matches than it can show, **Replace all** applies only to the matches shown, so narrow the query first.
+
+<!-- Source-verified against kestra#17438 (2.0, merged 2026-08-10) and releases/v2.0.x en.json; not runtime-tested. TODO: screenshot. -->
+
 ## Edit
 
 The **Edit** tab is the main authoring environment. Open panels from the tab bar and arrange them side by side:

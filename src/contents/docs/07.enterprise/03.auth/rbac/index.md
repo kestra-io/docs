@@ -52,7 +52,7 @@ curl -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
   -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
 
-**From kestractl:** use the `users impersonate` command, which calls the same endpoint and prints the token:
+**From kestractl:** use the [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) `users impersonate` command, which calls the same endpoint and prints the token:
 
 ```bash
 kestractl users impersonate <user_id>

@@ -958,4 +958,4 @@ Notes
 
 - [RBAC overview](../index.md) — resources, actions, and managed roles explained
 - [RBAC action model migration guide](../../../../11.migration-guide/v2.0.0/rbac-action-model/index.md) — how old CRUD permissions map to the new actions when upgrading from 1.x
-- [kestractl roles](../../../../kestra-cli/kestractl/index.md#roles) — create and manage roles from the CLI
+- [kestractl roles](../../../../kestra-cli/kestractl/index.md#roles) — create and manage roles from the CLI ([install kestractl](../../../../kestra-cli/kestractl/index.md#installation))
