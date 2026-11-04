@@ -870,6 +870,94 @@ const auditPath = (cy: number) =>
 
     document.addEventListener("astro:page-load", arriveAi)
     arriveAi()
+
+    // Once the agent has arrived, and while the control plane is still in
+    // sight above it, each task that succeeds there sends a packet, in the
+    // open use case's tint, down to the agent: out of the node, down to the
+    // panel's foot, along it to the bridge, then down the bridge, where the
+    // agent's rings take it in.
+    function feedAgent() {
+        if (document.documentElement.dataset.feedingAgent) return
+        document.documentElement.dataset.feedingAgent = "true"
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        const inView = (box: DOMRect) =>
+            box.bottom > 0 && box.top < window.innerHeight
+
+        document.addEventListener("topology:progress", (event) => {
+            const section =
+                document.querySelector<HTMLElement>(".ai-governance.in")
+            const mascot = section?.querySelector<HTMLElement>("[data-mascot]")
+            const topology = event.target as HTMLElement
+            const visual = topology.closest<HTMLElement>(
+                "[data-domain-visual].active",
+            )
+            const bridge = document.querySelector<HTMLElement>(
+                ".control-plane .grid > .bridge",
+            )
+            if (!mascot || !visual || !bridge) return
+
+            const nodes = topology.querySelectorAll<HTMLElement>("[data-node]")
+            const detail = (event as CustomEvent<number>).detail
+            const node = nodes[Math.round(detail * nodes.length) - 1]
+            if (!node) return
+            const from = node.getBoundingClientRect()
+            const to = mascot.getBoundingClientRect()
+            if (!inView(from) || !inView(to)) return
+
+            // The route, in page coordinates, read from the layout.
+            const foot = visual.getBoundingClientRect().bottom - 14
+            const x = bridge.getBoundingClientRect().left
+            const points = [
+                [from.left + from.width / 2, from.bottom],
+                [from.left + from.width / 2, foot],
+                [x, foot],
+                [x, to.top],
+            ].map(([px, py]) => [px + window.scrollX, py + window.scrollY])
+            const legs = points
+                .slice(1)
+                .map((p, i) =>
+                    Math.hypot(p[0] - points[i][0], p[1] - points[i][1]),
+                )
+            const length = legs.reduce((sum, leg) => sum + leg, 0)
+            let run = 0
+            const offsets = [0, ...legs.map((leg) => (run += leg) / length)]
+
+            const tint = getComputedStyle(visual).getPropertyValue("--tint")
+            const packet = document.createElement("span")
+            packet.className = "agent-packet"
+            packet.style.setProperty("--tint", tint)
+            document.body.append(packet)
+            const flight = packet.animate(
+                points.map(([px, py], i) => ({
+                    offset: offsets[i],
+                    transform: `translate(${px}px, ${py}px)`,
+                    opacity: i === 0 ? 0 : 1,
+                })),
+                {
+                    duration: Math.min(2200, Math.max(1100, length * 1.6)),
+                    easing: "cubic-bezier(0.45, 0, 0.25, 1)",
+                },
+            )
+            flight.onfinish = () => {
+                packet.remove()
+                // The rings take it in.
+                mascot
+                    .querySelector(".ring.outer")
+                    ?.animate(
+                        [
+                            { transform: "scale(1)", borderColor: tint },
+                            { transform: "scale(1.12)", offset: 0.4 },
+                            { transform: "scale(1)" },
+                        ],
+                        { duration: 600, easing: "ease-out" },
+                    )
+            }
+        })
+    }
+
+    document.addEventListener("astro:page-load", feedAgent)
+    feedAgent()
 </script>
 
 <style lang="scss">
@@ -1213,6 +1301,24 @@ const auditPath = (cy: number) =>
                 transform: scaleX(0.55);
             }
         }
+    }
+
+    // A packet from the control plane to the agent (see feedAgent): a dot
+    // in the use case's tint, with a short tail of light behind it.
+    :global(.agent-packet) {
+        position: absolute;
+        z-index: 3;
+        top: -4px;
+        left: -4px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--tint);
+        box-shadow:
+            0 0 0 3px color-mix(in srgb, var(--tint) 22%, transparent),
+            0 0 14px color-mix(in srgb, var(--tint) 60%, transparent);
+        pointer-events: none;
+        will-change: transform;
     }
 
     @keyframes result-in {
