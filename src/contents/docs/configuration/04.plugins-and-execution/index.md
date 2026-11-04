@@ -23,11 +23,15 @@ This area includes:
 
 For many teams, this is the most important section after runtime setup because it centralizes behavior shared across many flows.
 
-Install a plugin from Maven repositories with:
+[Install `kestractl`](../../kestra-cli/kestractl/index.md#installation), then download plugins with [`kestractl plugins`](../../kestra-cli/kestractl/index.md#plugin-management) and copy or mount the JARs into the Kestra plugins directory:
 
 ```bash
-kestra plugins install io.kestra.plugin:plugin-script-python:LATEST
+kestractl plugins get io.kestra.plugin:plugin-script-python --compatible-for <version>
 ```
+
+See [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md) for the full workflow. From inside a Kestra image, the server CLI can also install plugins directly with [`kestra plugins install`](../../kestra-cli/kestra-server/index.md#kestra-plugins-install).
+
+The repositories below are used when the Kestra server downloads plugins itself, for example with `kestra plugins install` or [Versioned Plugins](../../07.enterprise/05.instance/versioned-plugins/index.md). `kestractl` takes its repository and credentials as flags instead.
 
 Add custom repositories:
 

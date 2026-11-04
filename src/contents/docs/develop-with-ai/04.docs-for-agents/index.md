@@ -30,7 +30,7 @@ No authentication required for the public server. For per-tool configuration, se
 
 ## Agent Skills
 
-Agent Skills are structured knowledge files that teach AI coding agents how to generate valid Kestra flows, harden them for production, operate Kestra environments with `kestractl`, and migrate to Kestra 2.0.
+Agent Skills are structured knowledge files that teach AI coding agents how to generate valid Kestra flows, harden them for production, operate Kestra environments with [`kestractl`](../../kestra-cli/kestractl/index.md#installation), and migrate to Kestra 2.0.
 
 Install all Kestra skills with:
 
