@@ -12,7 +12,7 @@ author:
   role: Global Field CTO
 ---
 
-Most infrastructure teams have automated every tool they run. What usually isn't automated is the handoff between those tools, and Day 2 operations are where that gap tends to show up. Take a routine patch.
+Most infrastructure teams have automated every tool they run. What usually isn't automated is the handoff between those tools, and [Day 2 operations](/resources/infrastructure/day-2-operations) are where that gap tends to show up. Take a routine patch.
 
 A critical CVE lands late on a weekday. In many enterprises, it passes through five tools in sequence:
 
