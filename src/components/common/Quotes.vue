@@ -4,12 +4,12 @@
             <div class="tabs" role="tablist">
                 <button
                     v-for="(quote, index) in quotes"
-                    :id="`quote-tab-${index}`"
+                    :id="`${uid}-quote-tab-${index}`"
                     :key="quote.quote"
                     role="tab"
                     class="tab"
                     :aria-selected="activeQuote === index"
-                    :aria-controls="`quote-panel-${index}`"
+                    :aria-controls="`${uid}-quote-panel-${index}`"
                     @click="activeQuote = index"
                     v-html="quote.smallLogoSvg"
                 />
@@ -39,45 +39,61 @@
             </div>
         </div>
 
-        <div class="content">
-            <img v-if="activeItem.bigLogoSrc" :src="activeItem.bigLogoSrc" class="big-logo" />
-            <figure class="text" :class="{ 'text-center': !activeItem.bigLogoSrc }">
-                <blockquote class="quote-content" data-usal="fade-r">{{ activeItem.quote }}</blockquote>
-                <figcaption v-html="activeItem.author" data-usal="fade-l" />
-                <div
-                    v-if="quotes.length === 1 && activeItem.smallLogoSvg"
-                    class="small-logo"
-                    v-html="activeItem.smallLogoSvg"
-                />
-            </figure>
+        <div
+            v-for="(quote, index) in quotes"
+            v-show="activeQuote === index"
+            :id="`${uid}-quote-panel-${index}`"
+            :key="quote.quote"
+            role="tabpanel"
+            :aria-labelledby="quotes.length > 1 ? `${uid}-quote-tab-${index}` : undefined"
+        >
+            <div class="content">
+                <img v-if="quote.bigLogoSrc" :src="quote.bigLogoSrc" class="big-logo" loading="lazy" />
+                <figure class="text" :class="{ 'text-center': !quote.bigLogoSrc }">
+                    <blockquote class="quote-content" data-usal="fade-r">{{ quote.quote }}</blockquote>
+                    <figcaption v-html="quote.author" data-usal="fade-l" />
+                    <div
+                        v-if="quotes.length === 1 && quote.smallLogoSvg"
+                        class="small-logo"
+                        v-html="quote.smallLogoSvg"
+                    />
+                </figure>
+            </div>
+
+            <dl v-if="quote.kpis" class="kpis">
+                <div v-for="kpi in quote.kpis" :key="kpi.name" class="kpi">
+                    <dt class="kpi-value">{{ kpi.value }}</dt>
+                    <dd>{{ kpi.name }}</dd>
+                </div>
+            </dl>
         </div>
 
-        <dl v-if="activeItem.kpis" class="kpis">
-            <div v-for="kpi in activeItem.kpis" :key="kpi.name" class="kpi">
-                <dt class="kpi-value">{{ kpi.value }}</dt>
-                <dd>{{ kpi.name }}</dd>
-            </div>
-        </dl>
-
         <div class="navigation">
-            <a
-                v-if="activeItem.storyLink"
-                :href="activeItem.storyLink"
-                target="_blank"
-                rel="noopener noreferrer"
+            <div
+                v-for="(quote, index) in quotes"
+                v-show="activeQuote === index"
+                :key="quote.quote"
+                class="quote-links"
             >
-                Read the Story
-            </a>
-            <a
-                v-if="activeItem.sourceUrl"
-                :href="activeItem.sourceUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="source-link"
-            >
-                {{ activeItem.sourceLabel || "View source" }}
-                <OpenInNew class="source-icon" />
-            </a>
+                <a
+                    v-if="quote.storyLink"
+                    :href="quote.storyLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Read the Story
+                </a>
+                <a
+                    v-if="quote.sourceUrl"
+                    :href="quote.sourceUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="source-link"
+                >
+                    {{ quote.sourceLabel || "View source" }}
+                    <OpenInNew class="source-icon" />
+                </a>
+            </div>
             <button v-if="quotes.length > 1" :disabled="activeQuote === 0" @click="onPrev">
                 <ChevronLeft />
             </button>
@@ -89,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, ref } from "vue"
+    import { computed, ref, useId } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
@@ -108,6 +124,7 @@
         }[]
     }>()
 
+    const uid = useId()
     const activeQuote = ref(0)
     const isDropdownOpen = ref(false)
 
@@ -397,6 +414,10 @@
         justify-content: flex-end;
         gap: 0.5rem;
         padding: 1rem;
+
+        .quote-links {
+            display: contents;
+        }
 
         a,
         button {
