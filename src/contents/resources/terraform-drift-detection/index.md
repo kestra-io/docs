@@ -1,10 +1,11 @@
 ---
-title: "Terraform Drift Detection: How to Find and Fix Drift Automatically"
-description: "Terraform drift can lead to security vulnerabilities and operational chaos. Understand what causes drift, how to detect it, and how Kestra orchestrates automated checks to keep your infrastructure in sync."
-metaTitle: "Terraform Drift Detection: Native Commands & Automation"
-metaDescription: "How Terraform detects drift with plan -refresh-only and -detailed-exitcode, which tools help, and how to run a scheduled drift check that alerts your team."
+title: "Terraform Drift Detection and Drift Management: Find, Triage, and Fix Drift"
+description: "Terraform drift can lead to security vulnerabilities and operational chaos. Understand what causes drift, how to detect it, how to manage it from triage to resolution, and how Kestra runs automated checks to keep your infrastructure in sync."
+metaTitle: "Terraform Drift Detection & Drift Management Guide"
+metaDescription: "Detect Terraform drift with plan -refresh-only, then manage it: triage, accept or revert, reconcile, and prevent it. Includes a scheduled drift check you can run today."
 tag: "infrastructure"
 date: 2026-10-23
+lastUpdated: 2026-11-04
 slug: "terraform-drift-detection"
 faq:
   - question: "What is Terraform drift?"
@@ -16,18 +17,22 @@ faq:
   - question: "What tools can I use for Terraform drift detection?"
     answer: "The Terraform CLI itself is enough for managed resources. HCP Terraform offers health assessments that run drift detection on workspaces. For resources created outside Terraform, `driftctl` scanned cloud accounts but is now in maintenance mode. Orchestrators like Kestra schedule the checks, collect the results, and route alerts."
   - question: "How can Kestra automate Terraform drift detection?"
-    answer: "Kestra can orchestrate automated Terraform drift detection by scheduling `terraform plan` commands, pulling code from Git repositories, and reading the exit code of `terraform plan -detailed-exitcode` (2 means drift). It can then send alerts, open tickets, or start a remediation workflow with an approval step, and it keeps the history of every check."
+    answer: "Kestra can orchestrate automated Terraform drift detection by scheduling `terraform plan` commands, pulling code from Git repositories, and reading the exit code of `terraform plan -detailed-exitcode` (2 means drift). It can then send alerts, open a ticket or a pull request for the owner, and it keeps the history of every check."
+  - question: "What is drift management?"
+    answer: "Drift management is the practice of detecting, triaging, resolving, and preventing differences between the declared configuration of infrastructure and what is actually running. Detection finds the difference; management decides whether to accept it into the code or revert it, reconciles the two, and removes the cause so the same drift does not come back."
+  - question: "Should you revert drift or accept it?"
+    answer: "Revert drift when it weakens security or compliance, was made by mistake, or nobody owns it. Accept it, by updating the code or importing the resource, when it is an incident fix that should become the standard. When another system legitimately manages an attribute, such as an autoscaler, exclude that attribute with lifecycle ignore_changes instead of fighting it."
   - question: "Can Terraform drift be prevented?"
     answer: "While completely preventing drift is challenging, its impact can be minimized through strict GitOps practices, limiting direct console access, and enforcing change management policies. Scheduled drift detection then catches what still slips through."
   - question: "What is the difference between managed and unmanaged drift?"
     answer: "Managed drift refers to changes made to resources that are still tracked by Terraform but have diverged from the configuration. Unmanaged drift occurs when resources exist in the cloud but are not defined in Terraform, or when Terraform-managed resources are deleted out-of-band. Both types compromise the integrity of your IaC."
 ---
 
-> **TL;DR** — Terraform drift is any difference between your Terraform configuration and the resources actually running, usually caused by manual or out-of-band changes. `terraform plan -refresh-only -detailed-exitcode` detects it for managed resources. Running that check on a schedule, with alerts and a recorded history, turns drift from a surprise into a routine ticket.
+> **TL;DR** — Terraform drift is any difference between your Terraform configuration and the resources actually running, usually caused by manual or out-of-band changes. `terraform plan -refresh-only -detailed-exitcode` detects it for managed resources. Drift management is what happens next: triage, a decision to accept or revert, reconciliation, and prevention. Running the check on a schedule, with alerts and a recorded history, turns drift from a surprise into a routine ticket.
 
 Infrastructure-as-Code (IaC) promises consistent, predictable environments, but the reality often involves unexpected deviations. These inconsistencies, known as Terraform drift, occur when your live infrastructure no longer matches the state defined in your Terraform configurations. Whether it's a manual change, an emergency fix, or an update from another automated system, drift erodes the reliability and security benefits of IaC.
 
-This guide explains what Terraform drift is, why it matters, how Terraform detects it natively, and how to run drift detection automatically with Kestra.
+This guide explains what Terraform drift is, why it matters, how Terraform detects it natively, how to manage drift once it is found, and how to run drift detection automatically with Kestra.
 
 ## Understanding Terraform Drift and Its Impact
 
@@ -80,6 +85,36 @@ Drift can be categorized into two types:
 
 This guide focuses on detecting managed drift, which is the most common and immediate challenge for teams using [Terraform for orchestration](/orchestration/terraform).
 
+## Drift Management: From Detection to Resolution
+
+Detection only tells you that something changed. Drift management is the practice of detecting, triaging, resolving, and preventing differences between the declared configuration of your infrastructure and what is actually running. Without it, drift reports pile up in a channel and nobody acts on them.
+
+| Step | Question it answers | Typical practice |
+|---|---|---|
+| **1. Detect** | What changed, and where? | Scheduled `plan -refresh-only` runs per workspace, cloud inventory scans for unmanaged resources, Ansible check mode for server configuration |
+| **2. Triage** | How serious is it? | Security-relevant resources first (IAM, security groups, encryption, public access), production before staging and dev, cosmetic changes such as tags last |
+| **3. Decide** | Keep the change or revert it? | The resource owner decides, using the rule of thumb below, and the decision is recorded with the drift report |
+| **4. Reconcile** | Is the code the source of truth again? | Accept: a pull request that updates the configuration or imports the resource. Revert: re-apply the code through your normal reviewed pipeline. The next check comes back clean |
+| **5. Prevent** | Why did it happen? | Read-only console access by default, audited break-glass accounts, [policy as code](/resources/infrastructure/policy-as-code), and `lifecycle { ignore_changes }` for attributes another system owns |
+| **6. Measure** | Is drift going down? | Share of workspaces drifted per week, mean time to resolve, and repeat offenders by resource type or team |
+
+### Accept or Revert: A Rule of Thumb
+
+*   **Revert** when the change weakens security or compliance, was made by mistake, or nobody claims it.
+*   **Accept** when it was an incident fix that should become the standard, or a resource someone created that should be managed from now on. Update the code, or use `terraform import`, so the next plan is clean.
+*   **Exclude** attributes that another system legitimately manages, such as an autoscaling group's desired capacity, with `ignore_changes`, so they stop showing up as drift.
+*   **Never leave drift open.** An unresolved difference makes the next `apply` unpredictable: it may silently undo an emergency fix or fail halfway through.
+
+### Configuration Drift Beyond Terraform
+
+Terraform state is one place drift shows up. Configuration drift happens at every layer, and a drift management practice should cover the layers you own:
+
+*   **Inside servers:** packages, files, users, and services diverge from the playbook. `ansible-playbook --check --diff` reports the difference without changing anything; see this [Ansible configuration drift blueprint](/blueprints/ansible-config-drift).
+*   **Unmanaged cloud resources:** resources created outside any IaC never appear in a plan. Compare the cloud inventory (AWS Config, Azure Resource Graph, Google Cloud Asset Inventory) with your state files to find them.
+*   **Kubernetes:** GitOps controllers such as Argo CD or Flux detect and reconcile manifest drift continuously; cluster add-ons and settings outside Git still need their own checks.
+
+Drift checks are recurring work, not a project: they belong with the other scheduled [day 2 operations](/resources/infrastructure/day-2-operations) that keep infrastructure correct after go-live.
+
 ## Why Terraform Drift Detection Needs Orchestration
 
 Running `terraform plan` by hand works for one workspace. Across many environments, teams, and clouds, the check needs to run on its own and route its results.
@@ -87,7 +122,7 @@ Running `terraform plan` by hand works for one workspace. Across many environmen
 An [orchestration platform](/orchestration) adds what a one-off CI job does not. HCP Terraform users also get [health assessments](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/health) for their workspaces; an orchestrator covers the rest of the estate:
 *   **Scheduled, Continuous Checks:** Run drift detection on a recurring schedule (e.g., daily or hourly) to catch deviations quickly, not just when a pull request is opened.
 *   **Centralized Alerting:** Automatically route notifications to the right team via Slack, Teams, or PagerDuty when drift is detected, ensuring it doesn't go unnoticed.
-*   **Conditional Logic:** Parse exit codes and plan outputs to trigger different workflows, such as creating an incident ticket for critical drift or attempting automated remediation for safe changes.
+*   **Conditional Logic:** Parse exit codes and plan outputs to trigger different workflows, such as creating an incident ticket for critical drift or opening a pull request for a change the owner wants to keep.
 *   **Cross-System Coordination:** Manage drift detection across dozens of Terraform projects, each with its own state file and cloud credentials, from a single control plane.
 *   **Auditability:** Maintain a historical record of all drift checks, providing a clear audit trail for compliance and security reviews.
 
@@ -163,7 +198,7 @@ What's worth noticing in this workflow:
 
 Automated drift detection helps in several places:
 *   **Compliance evidence:** a dated record of every check helps show auditors that changes outside the approved process are caught and handled, for frameworks such as PCI DSS, SOC 2, or HIPAA.
-*   **Maintaining Security Posture:** By immediately flagging unauthorized changes, you can close security gaps before they are exploited. Reverting a change to a security group or IAM policy can be added behind an approval step.
+*   **Maintaining Security Posture:** By immediately flagging unauthorized changes, you can close security gaps before they are exploited. Reverting a change to a security group or IAM policy then goes through the same reviewed pipeline as any other change.
 *   **Preventing Outages:** Drift in networking rules, database configurations, or auto-scaling groups can lead to performance degradation or outages. Early detection allows you to fix these issues proactively.
 *   **[GitOps](/resources/infrastructure/gitops):** drift detection enforces the rule that Git is the source of truth for your infrastructure.
 *   **Reducing Manual Toil:** Automating these checks frees up your platform engineering team from tedious manual validation, allowing them to focus on building new capabilities. You can even use this pattern to detect drift in specific resources like a [GCS bucket retention policy](/blueprints/gcp-gcs-bucket-retention-lifecycle-drift-sentinel).
