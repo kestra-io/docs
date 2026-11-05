@@ -166,6 +166,7 @@ Pairing a policy engine like OPA with an orchestrator like Kestra turns governan
 
 ## Related Concepts
 - [Orchestrate Terraform with Kestra](/orchestration/terraform)
+- [Self-service infrastructure](/resources/infrastructure/self-service-infrastructure)
 - [Workflow governance](/resources/ai/ai-governance-workflows)
 - [Human-in-the-loop orchestration](/resources/ai/human-in-the-loop-orchestration)
 - [Incident response automation](/resources/infrastructure/incident-response-automation)
