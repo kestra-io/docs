@@ -39,6 +39,39 @@
                 </template>
             </Collapsible>
 
+            <Collapsible
+                v-if="pluginArtifactCoordinate"
+                class="plugin-section"
+                title="Installation"
+                href="installation"
+                :initially-expanded="true"
+                :no-url-change
+            >
+                <template #content>
+                    <div class="d-flex flex-column gap-3">
+                        <p v-if="!isEnterprisePlugin" class="mb-0">
+                            Our standard Docker images already include this plugin. If you use a <code>-slim</code> image or another setup,
+                            install it with the following command:
+                        </p>
+                        <p v-else class="mb-0">
+                            This Enterprise plugin requires an Enterprise image and access to the plugin registry. Install it with the following command:
+                        </p>
+                        <CodeTabs
+                            :tabs="[
+                                { label: 'kestractl', code: kestractlInstallCommand },
+                                { label: 'Kestra CLI', code: kestraCliInstallCommand },
+                            ]"
+                            storage-key="plugin-install-command"
+                            lang="bash"
+                        />
+                        <p class="mb-0">
+                            For <strong>Kestra CLI</strong>, replace <code>LATEST</code> with a specific version or version range to pin the plugin version.
+                            For <a href="/docs/kestra-cli/kestractl#installation"><strong>kestractl</strong></a>, use your Kestra version with <code>--compatible-for</code>, or specify an exact plugin version.
+                        </p>
+                    </div>
+                </template>
+            </Collapsible>
+
             <CollapsibleProperties
                 v-if="schema.properties?.properties"
                 class="plugin-section"
@@ -109,10 +142,13 @@
     import type {JSONProperty, JSONSchema} from "../../../utils/plugins/schema";
     import Collapsible from "./Collapsible.vue";
     import CollapsibleProperties from "./CollapsibleProperties.vue";
+    import CodeTabs from "~/components/common/CodeTabs.vue";
+    import { getKestractlPluginGetCommand } from "~/utils/plugins/kestractlInstallCommand";
 
     const props = withDefaults(defineProps<{
         schema: JSONSchema,
         pluginType: string,
+        pluginArtifactCoordinate?: string,
         darkMode?: boolean,
         propsInitiallyExpanded?: boolean,
         forceIncludeProperties?: string[],
@@ -152,6 +188,20 @@
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);
 
+
+
+    const kestractlInstallCommand = computed(() =>
+        getKestractlPluginGetCommand(props.pluginArtifactCoordinate)
+    );
+    const kestraCliInstallCommand = computed(() =>
+        props.pluginArtifactCoordinate
+            ? `./kestra plugins install ${props.pluginArtifactCoordinate}:LATEST`
+            : ""
+    );
+    const isEnterprisePlugin = computed(() =>
+        props.pluginArtifactCoordinate?.startsWith("io.kestra.plugin.ee:") ?? false
+    );
+
     const examples = computed(() => props.schema.properties?.$examples);
     const hasOutputs = computed(() => !!props.schema.outputs?.properties && Object.keys(props.schema.outputs.properties).length > 0);
 
@@ -179,7 +229,9 @@
 
     const {getHighlighterCore} = await import("./shikiToolset");
 
-    highlighter.value = await getHighlighterCore(exampleLangs(props.schema));
+    const initialLanguages = new Set<string>(["yaml"])
+    if (props.pluginArtifactCoordinate) initialLanguages.add("bash")
+    highlighter.value = await getHighlighterCore(exampleLangs(props.schema, initialLanguages));
 </script>
 
 <style scoped lang="scss">
