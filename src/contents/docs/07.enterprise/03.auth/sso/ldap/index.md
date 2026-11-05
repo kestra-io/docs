@@ -28,13 +28,13 @@ LDAP is configured under the security context of your [Kestra Security and Secre
 
 The `user-attributes` section maps LDAP attributes such as `givenName`, `sn`, and `mail` to Kestra user properties (first name, last name, and email).
 
-The `mode` property controls how Kestra uses the LDAP connection:
+The `mode` property controls how Kestra uses the LDAP connection. Users who log in with LDAP are synced with their LDAP groups in every mode where LDAP login is enabled. Group sync in the mode names means resolving LDAP groups for users who log in through OIDC SSO.
 
 | Mode | Description |
 |---|---|
-| `AUTHENTICATION` | LDAP handles user login only. No group sync. **This is the default.** |
-| `AUTHENTICATION_AND_GROUP_SYNC` | LDAP handles both user login and group membership sync. |
-| `GROUP_SYNC_ONLY` | LDAP is used only to resolve group memberships. Users log in via an existing SSO provider. |
+| `AUTHENTICATION` | LDAP handles user login, and syncs the groups of users who log in with LDAP. **This is the default.** |
+| `AUTHENTICATION_AND_GROUP_SYNC` | LDAP handles user login, and also resolves the LDAP groups of users who log in through OIDC SSO. |
+| `GROUP_SYNC_ONLY` | LDAP only resolves the LDAP groups of users who log in through OIDC SSO. LDAP login is turned off. |
 
 The examples below extend the base Micronaut LDAP configuration with these Kestra-specific mappings.
 
@@ -45,7 +45,7 @@ micronaut:
   security:
     ldap:
       default:
-        mode: AUTHENTICATION_AND_GROUP_SYNC  # or AUTHENTICATION to skip group sync
+        mode: AUTHENTICATION_AND_GROUP_SYNC  # or AUTHENTICATION if no users log in through OIDC SSO
         user-attributes:
           firstName: givenName
           lastName: sn
@@ -78,7 +78,7 @@ micronaut:
     ldap:
       default:
         enabled: true
-        mode: AUTHENTICATION_AND_GROUP_SYNC  # or AUTHENTICATION to skip group sync
+        mode: AUTHENTICATION_AND_GROUP_SYNC  # or AUTHENTICATION if no users log in through OIDC SSO
         user-attributes:
           firstName: givenName
           lastName: sn
@@ -158,7 +158,7 @@ Replace the identity string with the DN of your target group.
 
 ### Group sync with SSO (GROUP_SYNC_ONLY)
 
-If your users already authenticate via SSO, Basic auth, or Passwordless, you can use LDAP solely to resolve group memberships without changing how users log in. Set `mode: GROUP_SYNC_ONLY` and configure the `groups` block. No `user-attributes` mapping is required.
+If your users already log in through an OIDC SSO provider, you can use LDAP solely to resolve group memberships without changing how users log in. Set `mode: GROUP_SYNC_ONLY` and configure the `groups` block. No `user-attributes` mapping is required.
 
 ```yaml
 micronaut:
@@ -207,6 +207,14 @@ On first login with LDAP, Kestra validates the user's credentials against the di
 - The user has a pending [invitation](../../invitations/index.md). Kestra accepts it at login.
 
 Otherwise, the login is refused and no user is created. If an account already exists, the user authenticates with their LDAP credentials.
+
+Kestra uses the attribute mapped by `user-attributes.email` as the user's username and email. When no email attribute is mapped, or the directory doesn't return it for that user, Kestra uses the name the user logged in with. At login, Kestra looks for an existing user with the mapped email first, then with the login name.
+
+:::alert{type="info"}
+Before 2.1, Kestra ignored the `user-attributes` mapping: LDAP users were created with their login name as username and email, and without a first or last name. These users keep their login name as their username and sign in to the same account after the upgrade. Kestra doesn't fill in their first and last name, which are only set when a user is created.
+:::
+
+<!-- TODO(runtime test): ee#8785 (PR ee#12256, merge 0122853f76) documented from source only. On a build containing it, with an LDAP directory: user-attributes sets email/firstName/lastName on a new user; a user created before the fix (stored under the login name) still signs in to the same account; a missing mapped email attribute falls back to the login name; AUTHENTICATION mode still syncs LDAP groups for LDAP logins. See memory project_ldap_user_attributes_live_test. -->
 
 Group sync never creates groups. Create the groups in Kestra first, with the same names as the LDAP groups, and bind them to roles in each tenant (see [RBAC](../../rbac/index.md)). At every login, the user joins the existing Kestra groups that match their LDAP groups and leaves the ones LDAP no longer returns, following the [group sync rules](../index.md#group-sync). Leaving the last group that gave them access to a tenant can remove their access to that tenant.
 
