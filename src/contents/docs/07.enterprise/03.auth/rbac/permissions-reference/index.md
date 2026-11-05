@@ -733,7 +733,6 @@ Notes
 - `VIEW` / `LIST`: view user details and group membership.
 - `CREATE` / `UPDATE` / `DELETE`: manage users.
 - `MANAGE_GROUP_MEMBERSHIP`: update a user's group assignments.
-- `IMPERSONATE`: impersonate a user to test their access.
 
 Notes
 - `USER` is not included in any of the standard managed roles (Viewer, Launcher, Editor, Developer). Only Admin includes it. Custom roles with `USER` actions are intended for platform administrators.

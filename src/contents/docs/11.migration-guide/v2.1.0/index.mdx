@@ -1,7 +1,7 @@
 ---
 title: 2.1.0
 h1: What Changed in Kestra 2.1.0 and How to Migrate
-description: Migration guide for upgrading from Kestra 2.0 to 2.1.0, covering the concurrency limit API, removed settings permissions, deprecated server CLI commands, queue configuration keys, and asset relations.
+description: Migration guide for upgrading from Kestra 2.0 to 2.1.0, covering the concurrency limit API, removed settings and impersonate permissions, deprecated server CLI commands, queue configuration keys, and asset relations.
 sidebarTitle: 2.1.0
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.1.0
@@ -21,6 +21,7 @@ Kestra 2.1.0 requires no flow rewrites. The changes below affect API clients, CL
 |---|---|---|
 | [Concurrency limit API](./concurrency-limit-api) | API clients and scripts that read or update concurrency limits | Switch to `PUT /api/v1/{tenant}/concurrency-limit` with the scope in the body, and page through search results. |
 | [`SYSTEM_SETTINGS` and `TENANT_SETTINGS` removed](./settings-permissions-removed) (EE) | Role definitions in the API, `kestractl`, or Terraform | Remove both permissions. Requests that include them fail with a 422. Stored roles need no change. |
+| [`USER: IMPERSONATE` removed](./impersonate-permission-removed) (EE) | Role definitions in the API, `kestractl`, or Terraform, and API clients that impersonate with the `X-Kestra-Impersonate` header | Remove the action from your roles. Requests that include it fail with a 422. Only Instance Owners can impersonate. |
 | [Server CLI commands deprecated](./server-cli-commands-deprecated) | Scripts that call `kestra flow`, `kestra namespace kv`, `kestra auths`, `kestra tenants`, or `kestra workers` commands | Move to the `kestractl` equivalents. Deprecated commands now print a deprecation line to stdout. |
 | [Queue configuration keys](./queue-backend-configuration) (EE) | Kafka, Redis, and AMQP deployments | Move settings under `kestra.queue.<type>`. The old keys still work but log a deprecation warning. |
 | [POST-only logout](./sso-logout-post-only) (EE) | SSO deployments, configurations with `get-allowed: true`, and direct links to `/logout` | Register `<your Kestra URL>/ui` as the post-logout redirect URI in your identity provider and remove `get-allowed` overrides. `GET /logout` now returns 405. |
