@@ -43,7 +43,7 @@ import {
     resolveVersionedShortElementSlug,
 } from "~/utils/plugins/shortElementSlug"
 import { subGroupName } from "~/utils/plugins/plugin"
-import { findOrchestrationLinks } from "~/utils/plugins/orchestrationLinks"
+import { findPluginOrchestrationLinks } from "~/utils/orchestrationLink"
 import { slugify } from "~/utils/slugify"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
@@ -328,7 +328,7 @@ const subGroupFqcn = subGroup
       )?.subGroup
     : undefined
 const scopeElement = pluginType ?? subGroupFqcn
-const orchestrationLinks = await findOrchestrationLinks(
+const orchestrationLinks = findPluginOrchestrationLinks(
     pluginEntries[0]?.group,
     subGroupFqcn ??
         (pluginType
