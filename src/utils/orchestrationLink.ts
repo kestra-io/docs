@@ -63,10 +63,20 @@ export function getOrchestrationEntries(): OrchestrationEntryLike[] {
     return cachedEntries
 }
 
+/** The plugin page an orchestration page points to: /plugins/plugin-gcp, /plugins/plugin-ee-vmware… */
+export function pluginDocsPath(pluginClass: string): string | null {
+    const parts = pluginClass.split(".")
+    if (parts.length > 4 && parts[3] === "ee") return `/plugins/plugin-ee-${parts[4]}`
+    return parts.length > 3 ? `/plugins/plugin-${parts[3]}` : null
+}
+
+// Tools that are one product of a wider plugin (GitHub Actions in plugin-github),
+// rather than the plugin itself: only their own subgroup's pages link to them.
+const SUBGROUP_ONLY_TOOLS = new Set(["github-actions"])
+
 export interface PluginOrchestrationLink {
     slug: string
     toolName: string
-    description: string
 }
 
 /**
@@ -76,7 +86,8 @@ export interface PluginOrchestrationLink {
  * /orchestration/terraform), and every page of that plugin links to it. Groups
  * that cover several tools (plugin-gcp: BigQuery, GCS, Dataproc…, plugin-dbt:
  * dbt Core and dbt Cloud) list all of them on the root page and only the
- * matching one on a subgroup or element page.
+ * matching one on a subgroup or element page. The same scoping applies to
+ * SUBGROUP_ONLY_TOOLS, so GitHub Issues pages don't point to GitHub Actions.
  */
 export function findPluginOrchestrationLinks(
     group: string | undefined,
@@ -87,17 +98,15 @@ export function findPluginOrchestrationLinks(
     const entries = getOrchestrationEntries().filter((entry) =>
         entry.data.tool.pluginClass.startsWith(`${group}.`),
     )
+    const scopeBySubGroup =
+        entries.length > 1 || entries.some((entry) => SUBGROUP_ONLY_TOOLS.has(entry.id))
     const scoped =
-        entries.length > 1 && subGroup
+        scopeBySubGroup && subGroup
             ? entries.filter((entry) => entry.data.tool.pluginClass.startsWith(`${subGroup}.`))
             : entries
 
     return scoped
-        .map((entry) => ({
-            slug: entry.id,
-            toolName: entry.data.tool.name,
-            description: entry.data.description,
-        }))
+        .map((entry) => ({ slug: entry.id, toolName: entry.data.tool.name }))
         .sort((a, b) => a.toolName.localeCompare(b.toolName))
 }
 

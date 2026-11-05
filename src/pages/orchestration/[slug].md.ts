@@ -2,6 +2,7 @@ import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
 import type { OrchestrationData } from "~/schemas/orchestration"
 import { entryCacheKey } from "~/utils/incrementalCacheKey"
+import { pluginDocsPath } from "~/utils/orchestrationLink"
 import {
     fetchTotalPluginsCount,
     pluginCountScope,
@@ -10,11 +11,21 @@ import {
 
 const SITE = "https://kestra.io"
 
+function decodeEntities(text: string): string {
+    return text.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+}
+
 // The YAML copy carries a little inline HTML (code, links, emphasis): turn it
-// into Markdown so agents get the same text the page renders.
+// into Markdown so agents get the same text the page renders. Code spans are
+// set aside first, so placeholders like `<digest>` inside them survive the
+// tag stripping.
 function toMarkdown(html: string): string {
-    return html
-        .replace(/<code>(.*?)<\/code>/g, "`$1`")
+    const codeSpans: string[] = []
+    const text = html
+        .replace(/<code>(.*?)<\/code>/g, (_, code: string) => {
+            codeSpans.push(decodeEntities(code))
+            return `\uE000${codeSpans.length - 1}\uE000`
+        })
         .replace(
             /<a\s+href=['"]([^'"]+)['"][^>]*>(.*?)<\/a>/g,
             (_, href: string, text: string) =>
@@ -24,9 +35,8 @@ function toMarkdown(html: string): string {
         .replace(/<\/?(em|i)>/g, "_")
         .replace(/<br\s*\/?>/g, " ")
         .replace(/<[^>]+>/g, "")
-        .replace(/&amp;/g, "&")
-        .replace(/&lt;/g, "<")
-        .replace(/&gt;/g, ">")
+    return decodeEntities(text)
+        .replace(/\uE000(\d+)\uE000/g, (_, idx: string) => `\`${codeSpans[Number(idx)]}\``)
         .trim()
 }
 
@@ -99,7 +109,10 @@ function render(data: OrchestrationData): string {
         lines.push("")
     }
 
-    lines.push(`Plugin reference: ${SITE}/plugins — \`${data.tool.pluginClass}\``)
+    const pluginDocs = pluginDocsPath(data.tool.pluginClass)
+    lines.push(
+        `Plugin reference: ${pluginDocs ? SITE + pluginDocs : `${SITE}/plugins`} — \`${data.tool.pluginClass}\``,
+    )
     return lines.join("\n") + "\n"
 }
 
