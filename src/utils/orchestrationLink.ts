@@ -29,8 +29,8 @@ export interface OrchestrationEntryLike {
 // /plugins and /blueprints are SSR, so they can't call getCollection("orchestration")
 // (it would bundle every collection into the worker). Read the few fields they need
 // straight from the raw YAML instead. Each file starts with a one-line, double-quoted
-// `description:` and a `tool:` block whose first keys are `name` then `pluginClass`;
-// orchestrationLink.test.ts fails if a file stops matching that shape.
+// `description:` and a `tool:` block whose first keys are `name` then `pluginClass`.
+// Keep that shape when adding a page: a file that doesn't match is skipped silently.
 const orchestrationFiles = import.meta.glob<string>("../contents/orchestration/*.yaml", {
     query: "?raw",
     import: "default",
