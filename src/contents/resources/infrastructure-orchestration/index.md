@@ -47,7 +47,7 @@ This process typically coordinates four distinct layers of operation:
 1.  **Provisioning:** Creating the foundational resources like virtual machines, networks, and storage using tools like Terraform or cloud provider APIs.
 2.  **Configuration:** Applying specific settings, installing software, and ensuring compliance on provisioned resources with tools like Ansible or Puppet.
 3.  **Deployment:** Deploying applications and services onto the configured infrastructure, often involving CI/CD pipelines or container orchestrators.
-4.  **Day-2 Operations:** Managing the ongoing lifecycle of infrastructure, including patching, scaling, incident remediation, and decommissioning.
+4.  **[Day-2 Operations](/resources/infrastructure/day-2-operations):** Managing the ongoing lifecycle of infrastructure, including patching, scaling, incident remediation, and decommissioning.
 
 ### What are examples of infrastructure software?
 
@@ -88,6 +88,7 @@ This pattern is widely used in production. A software vendor uses orchestration 
 
 Other key use cases include:
 *   **Server Provisioning and Decommissioning:** Fully automated lifecycle management of virtual machines and cloud instances.
+*   **[Self-Service Infrastructure](/resources/infrastructure/self-service-infrastructure):** Engineers request environments and VMs from a catalog of pre-approved offerings, and the orchestration layer checks policy, routes approvals by risk, and provisions them across tools.
 *   **Patching and Compliance Remediation:** Scheduled workflows that scan for vulnerabilities, apply patches, and report on compliance status across the fleet. See this blueprint for [UAT-to-Prod Patch Orchestration](/blueprints/patch-orchestration-uat-prod).
 *   **Multi-Cloud and Hybrid Resource Management:** A single control plane to manage resources across AWS, Azure, GCP, and on-premises data centers.
 *   **Incident Remediation:** Event-driven workflows that trigger automatically in response to a monitoring alert, perform diagnostic steps, and can include human approval gates before taking corrective action. This can also include workflows for [CIS compliance scan and remediation](/blueprints/cis-compliance-scan-remediation).
