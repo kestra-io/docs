@@ -1979,10 +1979,10 @@ const auditPath = (cy: number) =>
             background:
                 radial-gradient(
                     ellipse 70% 60% at 50% 110%,
-                    rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.06),
                     transparent 70%
                 ),
-                linear-gradient(180deg, #0e0e10 0%, #18181b 45%, #2e2e33 100%);
+                linear-gradient(180deg, #0b0b0d 0%, #121214 50%, #1d1d21 100%);
 
             @include media-breakpoint-down(md) {
                 border-radius: 0;
@@ -2090,8 +2090,11 @@ const auditPath = (cy: number) =>
                 fill: #a3a0c4;
             }
 
+            // The dots in colour: a dim green while the control stands
+            // ready, then lit in the state's colour, the green of the
+            // outcomes' pills when a check passes.
             .state {
-                fill: #5c5b74;
+                fill: rgba(122, 240, 194, 0.35);
             }
 
             &[data-state="ok"],
@@ -2105,6 +2108,21 @@ const auditPath = (cy: number) =>
                 text {
                     fill: #ffffff;
                 }
+            }
+
+            &[data-state="ok"] .state {
+                fill: #7af0c2;
+                filter: drop-shadow(0 0 4px rgba(122, 240, 194, 0.8));
+            }
+
+            &[data-state="waiting"] .state {
+                fill: #f5b544;
+                filter: drop-shadow(0 0 4px rgba(245, 181, 68, 0.8));
+            }
+
+            &[data-state="denied"] .state {
+                fill: #ff5c7a;
+                filter: drop-shadow(0 0 4px rgba(255, 92, 122, 0.8));
             }
         }
     }

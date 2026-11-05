@@ -33,9 +33,16 @@ const CUSTOMERS = [
     { file: "fila", name: "FILA", scale: 0.8 },
     { file: "xiaomi", name: "Xiaomi" },
     { file: "toyota", name: "Toyota" },
-    { file: "bundesagentur", name: "Bundesagentur für Arbeit" },
     { file: "brainlab", name: "Brainlab" },
 ]
+// Specks of light that twinkle round the mark, at scattered angles and
+// distances, out of step.
+const SPARKS = Array.from({ length: 14 }, (_, idx) => ({
+    a: Math.round((idx * 137.5) % 360),
+    r: (3.4 + ((idx * 7) % 5) * 0.55).toFixed(2),
+    s: 2 + (idx % 3),
+    delay: -((idx * 0.83) % 4.2).toFixed(2),
+}))
 // The plugins that fly at you behind the title: everything, everywhere.
 const PLUGINS = [
     "aws.s3.Upload",
@@ -201,6 +208,14 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                     </h1>
                     {/* Kestra, where every plugin flies out from. */}
                     <span class="mark" aria-hidden="true" data-hero-mark>
+                        {
+                            SPARKS.map((spark) => (
+                                <span
+                                    class="spark"
+                                    style={`--a: ${spark.a}deg; --r: ${spark.r}rem; --s: ${spark.s}px; --delay: ${spark.delay}s`}
+                                />
+                            ))
+                        }
                         <img src={kestraMark.src} alt="" />
                     </span>
                     <p class="lead">
@@ -236,8 +251,8 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 // Sized to a like area rather than a like height, so a
                 // square mark doesn't shrink and a long word doesn't shout.
                 const height = Math.min(
-                    1.5,
-                    1.1 / Math.sqrt(logo.width / logo.height / 4.5),
+                    1.75,
+                    1.3 / Math.sqrt(logo.width / logo.height / 4.5),
                 )
                 return (
                     <li>
@@ -436,18 +451,115 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             height: auto;
         }
 
-        // A soft white light round it, the source of the field.
-        &::before {
+        // Its aura, soft and with no edge: a white light that breathes,
+        // the source of the field; round it a slow mist in the mark's own
+        // colours that drifts and turns; and specks of light that twinkle
+        // in and out. All of it only turns, scales and fades.
+        &::before,
+        &::after {
             content: "";
             position: absolute;
-            inset: -150%;
             z-index: -1;
+            pointer-events: none;
+        }
+
+        // Each light fades out well inside its box, so no edge shows.
+        &::before {
+            inset: -150%;
             background: radial-gradient(
                 closest-side,
-                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.12),
                 transparent
             );
-            pointer-events: none;
+            animation: breathe 6s ease-in-out infinite;
+        }
+
+        &::after {
+            inset: -90%;
+            background:
+                radial-gradient(
+                    circle at 32% 38%,
+                    rgba(169, 80, 255, 0.26),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 70% 64%,
+                    rgba(246, 46, 118, 0.16),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 62% 28%,
+                    rgba(233, 193, 255, 0.14),
+                    transparent 24%
+                );
+            animation: mist 22s ease-in-out infinite;
+        }
+
+        .spark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: var(--s);
+            height: var(--s);
+            margin: calc(var(--s) / -2);
+            border-radius: 50%;
+            background: #fff;
+            box-shadow:
+                0 0 6px rgba(233, 193, 255, 0.9),
+                0 0 14px rgba(169, 80, 255, 0.5);
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(var(--r));
+            animation: twinkle 4.2s ease-in-out var(--delay) infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &::before,
+            &::after {
+                animation: none;
+            }
+
+            .spark {
+                display: none;
+            }
+        }
+    }
+
+    @keyframes breathe {
+        50% {
+            opacity: 0.65;
+            transform: scale(0.92);
+        }
+    }
+
+    @keyframes mist {
+        0%,
+        100% {
+            transform: rotate(0deg) scale(1);
+        }
+
+        50% {
+            transform: rotate(180deg) scale(1.12);
+        }
+    }
+
+    // Each speck lights up, drifting a little outwards, and goes out.
+    @keyframes twinkle {
+        0%,
+        100% {
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(var(--r)) scale(0.4);
+        }
+
+        45% {
+            opacity: 1;
+            transform: rotate(var(--a)) translateX(calc(var(--r) + 0.4rem))
+                scale(1);
+        }
+
+        70% {
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(calc(var(--r) + 0.7rem))
+                scale(0.6);
         }
     }
 
