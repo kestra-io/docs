@@ -65,8 +65,10 @@
                             lang="bash"
                         />
                         <p class="mb-0">
-                            For <strong>Kestra CLI</strong>, replace <code>LATEST</code> with a specific version or version range to pin the plugin version.
                             For <a href="/docs/kestra-cli/kestractl#installation"><strong>kestractl</strong></a>, use your Kestra version with <code>--compatible-for</code>, or specify an exact plugin version.
+                        </p>
+                        <p class="mb-0">
+                            For <strong>Kestra CLI</strong>, replace <code>LATEST</code> with a specific version or version range to pin the plugin version.
                         </p>
                     </div>
                 </template>
