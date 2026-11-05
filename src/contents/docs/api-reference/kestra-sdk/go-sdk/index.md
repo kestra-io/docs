@@ -536,7 +536,7 @@ Create, run, and fetch results for unit test suites.
 
 ### Create a test suite
 
-A test suite targets one flow (`flowId`) and lists its `testCases`. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
+A test suite targets one flow (`flowId`) and lists its `testCases`. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.output.OutputValues` that emits it under `values.result`.
 
 ```go
 func createTestSuite(ctx context.Context, client *kestra.KestraClient) {
@@ -551,7 +551,7 @@ testCases:
       inputs:
         inputA: "Hi there"
     assertions:
-      - value: "{{ outputs.return.value }}"
+      - value: "{{ outputs.return.values.result }}"
         equalTo: "Hi there"
 `
     suite, err := client.TestSuites().CreateTestSuite(ctx, tenant, body)

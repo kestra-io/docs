@@ -57,7 +57,7 @@ Implementing firewall automation successfully requires a strategic shift in how 
 
 ### Embracing Declarative Security Policies
 
-The foundation of modern firewall automation is treating your security policies as code. A declarative approach means you define the desired state of your firewall rules in a structured, version-controlled format, and the automation platform ensures the live environment matches that state. This is a core tenet of [Infrastructure as Code](/resources/infrastructure/what-is-infrastructure-as-code), applied to network security.
+The foundation of modern firewall automation is treating your security policies as code. A declarative approach means you define the desired state of your firewall rules in a structured, version-controlled format, and the automation platform ensures the live environment matches that state. This is a core tenet of [Infrastructure as Code](/resources/infrastructure/everything-as-code), applied to network security.
 
 By using a GitOps workflow, every change to a firewall policy goes through a pull request, peer review, and automated testing before being applied. This makes the entire process transparent, auditable, and collaborative.
 
@@ -179,7 +179,7 @@ Not all automation tools are created equal. When evaluating platforms for securi
 
 ### Kestra as a Unified Control Plane for Security Operations
 
-Kestra meets these criteria, providing a powerful, open-source solution for firewall automation and broader security orchestration. Its declarative YAML interface, extensive plugin library, and mature enterprise features for governance and [security hardening](/docs/administrator-guide/security-hardening) make it an ideal choice for teams looking to modernize their security operations. By unifying disparate tools and processes, Kestra becomes a single control plane for all your [infrastructure automation](/infra-automation) needs.
+Kestra meets these criteria, providing a powerful, open-source solution for firewall automation and broader security orchestration. Its declarative YAML interface, extensive plugin library, and mature enterprise features for governance and [security hardening](/docs/security-hardening) make it an ideal choice for teams looking to modernize their security operations. By unifying disparate tools and processes, Kestra becomes a single control plane for all your [infrastructure automation](/infra-automation) needs.
 
 Unlike legacy job schedulers such as [Stonebranch](/vs/stonebranch), Kestra is built for modern, event-driven, and code-centric workflows, making it a better fit for the dynamic nature of security automation.
 

@@ -174,7 +174,7 @@ Now that all the services are connected, edit `alertmanager.yml` to send alerts 
 receivers:
   - name: 'kestra-webhook'
     webhook_configs:
-      - url: 'https://<your-kestra-host>/api/v1/triggers/webhook'
+      - url: 'https://<your-kestra-host>/api/v1/main/executions/webhook/system/prometheus-alert/prometheus'
         send_resolved: true
 
 route:
@@ -215,7 +215,7 @@ Once the flow is written, you can verify the trigger is active from the **Flows 
 * The `Webhook` trigger listens for HTTP POST requests to:
 
   ```text
-  https://<your-kestra-host>/api/v1/triggers/webhook/prometheus
+  https://<your-kestra-host>/api/v1/main/executions/webhook/system/prometheus-alert/prometheus
   ```
 - Prometheus Alertmanager sends alerts to this endpoint.
 - The flow is executed with the alert content available as `{{ trigger.body }}`.

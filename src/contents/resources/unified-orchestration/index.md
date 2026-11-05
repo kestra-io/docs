@@ -80,7 +80,7 @@ Agentic AI is not a fifth silo; it's a powerful capability that acts across all 
 3. Calls an external API to enrich information (application).
 4. Requests human approval for a remediation action (business).
 
-A unified orchestration platform is essential for managing this new paradigm. It must not only orchestrate the agents but also govern the agentic process itself. This means providing audit trails for AI-driven actions, managing credentials securely, and enabling human-in-the-loop oversight. This is the core difference between simply [orchestrating agents](/resources/ai/agentic-orchestration-vs-orchestrating-agents) and building a true [agentic business process automation](/resources/business/agentic-business-process-automation) system. The platform provides the tools, like an [MCP server for agent communication](/docs/ai-tools/mcp-server), and the governance framework to make [AI-native orchestration](/resources/ai/ai-native-orchestration-platform) safe and scalable.
+A unified orchestration platform is essential for managing this new paradigm. It must not only orchestrate the agents but also govern the agentic process itself. This means providing audit trails for AI-driven actions, managing credentials securely, and enabling human-in-the-loop oversight. This is the core difference between simply [orchestrating agents](/resources/ai/agentic-orchestration-vs-orchestrating-agents) and building a true [agentic business process automation](/resources/business/agentic-business-process-automation) system. The platform provides the tools, like an [MCP server for agent communication](/docs/ai-orchestration/mcp-server), and the governance framework to make [AI-native orchestration](/resources/ai/ai-native-orchestration-platform) safe and scalable.
 
 ## The seven requirements of a unified orchestration platform
 
@@ -131,10 +131,10 @@ Finally, this concept of enterprise-wide orchestration is distinct from telecom-
 
 The value of a unified control plane becomes clear in use cases that inherently cross domains.
 
-- **Cybersecurity:** a security workflow might start with a SIEM alert (data), trigger an infrastructure scan (infrastructure), call a SOAR platform API (application), and create an ITSM ticket for human review (business). With a unified orchestrator, this entire process has a single, auditable trail. Cybersecurity analytics orchestration at firms like [JPMorgan Chase](/customers/jpmorgan-chase) demonstrates this power, processing billions of rows to automate detection and response.
+- **Cybersecurity:** a security workflow might start with a SIEM alert (data), trigger an infrastructure scan (infrastructure), call a SOAR platform API (application), and create an ITSM ticket for human review (business). With a unified orchestrator, this entire process has a single, auditable trail. Cybersecurity analytics orchestration at firms like [JPMorgan Chase](/stories/jpmorgan-chase) demonstrates this power, processing billions of rows to automate detection and response.
 - **Manufacturing:** as described by Kai Waehner in the [unified orchestration whitepaper](/resources/whitepapers/unified-orchestration), unified orchestration can connect shop-floor OT systems to cloud-based IT platforms, creating a seamless flow of information from industrial sensors to business analytics.
-- **Legacy modernization:** companies like [Quadis](/customers/quadis), a car retail leader, use orchestration to automate financial reporting and replace legacy ETL tools. Public-sector providers like [Dataport](/customers/dataport) leverage it to build sovereign cloud automation platforms, ensuring data stays within jurisdictional boundaries.
-- **IT process automation displacement:** a [Fortune 500 industrial company](/customers/fortune-500-company) moved its infrastructure provisioning workflows off VMware Aria Automation onto an open engine, with the estate underneath unchanged.
+- **Legacy modernization:** companies like [Quadis](/stories/quadis), a car retail leader, use orchestration to automate financial reporting and replace legacy ETL tools. Public-sector providers like [Dataport](/stories/dataport) leverage it to build sovereign cloud automation platforms, ensuring data stays within jurisdictional boundaries.
+- **IT process automation displacement:** a [Fortune 500 industrial company](/stories/fortune-500-company) moved its infrastructure provisioning workflows off VMware Aria Automation onto an open engine, with the estate underneath unchanged.
 
 ## Kestra's approach to unified orchestration
 

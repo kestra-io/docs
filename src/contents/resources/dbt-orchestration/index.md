@@ -35,7 +35,7 @@ The orchestrator's job is to trigger dbt CLI commands (like `dbt build` or `dbt 
 - **Dependency management:** Ensuring that upstream tasks (like data loading) are complete before starting a dbt run, and that downstream tasks (like updating a BI dashboard) are triggered upon its successful completion.
 - **Parameterization:** Passing dynamic parameters to dbt runs, such as dates or environment-specific configurations.
 
-This coordination turns standalone dbt models into reliable components of a fully automated [data pipeline](/resources/data/data-pipeline). A well-defined [orchestration flow](/docs/workflow-components/flow) provides the control and visibility necessary for production environments.
+This coordination turns standalone dbt models into reliable components of a fully automated [data pipeline](/resources/data/create-data-pipeline). A well-defined [orchestration flow](/docs/workflow-components/flow) provides the control and visibility necessary for production environments.
 
 ## Why dbt projects need an orchestrator
 

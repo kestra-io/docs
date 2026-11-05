@@ -21,13 +21,14 @@ id: myflow
 namespace: company.team
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: hello from kestra
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: hello from kestra
 
 outputs:
   - id: mydata
     type: STRING
-    value: "{{ outputs.mytask.value }}"
+    value: "{{ outputs.mytask.values.result }}"
     description: return some data
 ```
 
@@ -161,7 +162,7 @@ Here is the output of this API invocation:
 }
 ```
 
-The API response includes the flow-level `outputs` (the values explicitly declared in the flow's `outputs:` block) and the execution state. Task run outputs are not included in the execution response — use `GET /api/v1/{tenant}/outputs/{executionId}/{taskRunId}` to retrieve per-task outputs.
+The API response includes the flow-level `outputs` (the values explicitly declared in the flow's `outputs:` block) and the execution state. Task run outputs are not included in the execution response. Use `GET /api/v1/{tenant}/outputs/tasks/{executionId}/{taskRunId}` to retrieve per-task outputs.
 
 ## Authentication
 

@@ -1,4 +1,5 @@
 ---
+import CalloutCard from "~/components/common/CalloutCard.astro"
 import { Icon } from "astro-icon/components"
 import Snippets from "~/components/common/SnippetsIsland.astro"
 import Topology from "~/components/blueprints/Topology.client.vue"
@@ -7,17 +8,20 @@ interface BlueprintItem {
     name: string
     title: string
     description: string
-    code?: string
-    plugins?: string[]
-    href?: string
-    blueprintId?: string
-    blueprintPlaceholder?: boolean
+    blueprintId: string
     render?: { source: string; graph: unknown } | null
 }
 
 interface Props {
     heading?: string
     nutshell?: string
+    callout?: {
+        eyebrow?: string
+        title: string
+        description: string
+        cta: { label: string; href: string }
+    }
+    video?: { youtubeId: string; caption: string }
     blueprints: BlueprintItem[]
     toolColor?: string
     toolName?: string
@@ -27,6 +31,8 @@ interface Props {
 const {
     heading,
     nutshell,
+    callout,
+    video,
     blueprints,
     toolColor,
     toolName,
@@ -45,6 +51,24 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
         <div class="pattern-head">
             {heading && <h2 class="pattern-title">{heading}</h2>}
             {nutshell && <p class="nutshell" set:html={nutshell} />}
+            {callout && <CalloutCard class="pattern-callout" {...callout} />}
+            {
+                video && (
+                    <figure class="pattern-video">
+                        <div class="video-container">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${video.youtubeId}`}
+                                title={video.caption}
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen
+                            />
+                        </div>
+                        <figcaption>{video.caption}</figcaption>
+                    </figure>
+                )
+            }
 
             {
                 hasTabs && (
@@ -95,31 +119,21 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
                                             <span class="code-caption">
                                                 {bp.title}
                                             </span>
-                                            {(bp.blueprintId || bp.href) && (
-                                                <a
-                                                    class="code-link"
-                                                    href={
-                                                        bp.blueprintId
-                                                            ? `/blueprints/${bp.blueprintId}`
-                                                            : bp.href
-                                                    }
-                                                >
-                                                    Open blueprint
-                                                    <Icon
-                                                        name="mdi:chevron-right"
-                                                        width={14}
-                                                        height={14}
-                                                    />
-                                                </a>
-                                            )}
+                                            <a
+                                                class="code-link"
+                                                href={`/blueprints/${bp.blueprintId}`}
+                                            >
+                                                Open blueprint
+                                                <Icon
+                                                    name="mdi:chevron-right"
+                                                    width={14}
+                                                    height={14}
+                                                />
+                                            </a>
                                         </div>
-                                        {bp.render?.source || bp.code ? (
+                                        {bp.render?.source ? (
                                             <Snippets
-                                                code={
-                                                    bp.render?.source ??
-                                                    bp.code ??
-                                                    ""
-                                                }
+                                                code={bp.render.source}
                                                 lang="yaml"
                                             />
                                         ) : (
@@ -136,20 +150,18 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
                                                     blueprint is published in
                                                     the catalog.
                                                 </p>
-                                                {bp.blueprintId && (
-                                                    <a
-                                                        class="code-link"
-                                                        href={`/blueprints/${bp.blueprintId}`}
-                                                    >
-                                                        View on the blueprints
-                                                        catalog
-                                                        <Icon
-                                                            name="mdi:chevron-right"
-                                                            width={14}
-                                                            height={14}
-                                                        />
-                                                    </a>
-                                                )}
+                                                <a
+                                                    class="code-link"
+                                                    href={`/blueprints/${bp.blueprintId}`}
+                                                >
+                                                    View on the blueprints
+                                                    catalog
+                                                    <Icon
+                                                        name="mdi:chevron-right"
+                                                        width={14}
+                                                        height={14}
+                                                    />
+                                                </a>
                                             </div>
                                         )}
                                     </div>
@@ -161,10 +173,7 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
                                                     client:only="vue"
                                                     flowGraph={bp.render.graph}
                                                     source={bp.render.source}
-                                                    id={
-                                                        bp.blueprintId ||
-                                                        `orch-${idx}`
-                                                    }
+                                                    id={bp.blueprintId}
                                                 />
                                             </div>
                                         </div>
@@ -322,6 +331,28 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
 
         @include media-breakpoint-down(md) {
             font-size: 1.625rem;
+        }
+    }
+
+    :global(.pattern-callout) {
+        margin-top: 1.5rem;
+    }
+
+    /* Framed like the callout above it so the two read as one block. */
+    .pattern-video {
+        margin: 1.5rem 0 0;
+
+        .video-container {
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.625rem;
+            box-shadow: 2px 3px 12px 0 var(--ks-shadows-light);
+        }
+
+        figcaption {
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
         }
     }
 

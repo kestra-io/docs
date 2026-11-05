@@ -18,30 +18,32 @@ namespace: company.team
 
 inputs:
   - id: runTask
-    type: BOOLEAN
+    type: BOOL
     defaults: true
 
 tasks:
   - id: taskA
     runIf: "{{ inputs.runTask }}"
-    type: io.kestra.plugin.core.debug.Return
-    format: Hello World!
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: Hello World!
 
   - id: taskB
-    type: io.kestra.plugin.core.debug.Return
-    format: Fallback output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: Fallback output
 
 outputs:
   - id: flowOutput
     type: STRING
-    value: "{{ tasks.taskA.state != 'SKIPPED' ? outputs.taskA.value : outputs.taskB.value }}"
+    value: "{{ tasks.taskA.state != 'SKIPPED' ? outputs.taskA.values.result : outputs.taskB.values.result }}"
 ```
 
 ## Purging large output files
 
-If a flow generates large output files that are not needed after execution, you can use the [io.kestra.plugin.core.storage.PurgeExecutionFiles](/plugins/core/storage/io.kestra.plugin.core.storage.purgeexecutionfiles) task to delete those files from internal storage.
+If a flow generates large output files that are not needed after execution, you can use the [io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles](/plugins/core/storage/io.kestra.plugin.core.storage.purgecurrentexecutionfiles) task to delete those files from internal storage.
 
-In the example below, the flow downloads a large file from an HTTP API and uploads it to an S3 bucket. Once the file is uploaded, it’s no longer needed locally, so the `PurgeExecutionFiles` task is used to remove it from internal storage.
+In the example below, the flow downloads a large file from an HTTP API and uploads it to an S3 bucket. Once the file is uploaded, it’s no longer needed locally, so the `PurgeCurrentExecutionFiles` task is used to remove it from internal storage.
 
 ```yaml
 id: extractLoadPurge

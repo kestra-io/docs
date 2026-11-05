@@ -35,7 +35,7 @@ At its core, data aggregation is about transforming volume and complexity into c
 Data aggregation is the process of collecting raw data from various sources, combining it, and presenting it in a summarized format. The goal is to produce a more manageable and informative dataset that is suitable for analysis. This process simplifies large volumes of granular data into high-level summaries, such as totals, averages, counts, or minimums/maximums, grouped by specific dimensions like time, region, or product category. This summarized information forms the backbone of reports, dashboards, and analytical models.
 
 ### Why data aggregation matters for modern analytics
-Aggregation is the bridge between raw, unprocessed data and actionable business intelligence. Without it, analysts would be forced to work with individual records, making it nearly impossible to spot trends, patterns, or anomalies at scale. It's a fundamental component of building a reliable [data pipeline](/resources/data/data-pipeline) that feeds analytics systems.
+Aggregation is the bridge between raw, unprocessed data and actionable business intelligence. Without it, analysts would be forced to work with individual records, making it nearly impossible to spot trends, patterns, or anomalies at scale. It's a fundamental component of building a reliable [data pipeline](/resources/data/create-data-pipeline) that feeds analytics systems.
 
 Key characteristics of effective data aggregation include:
 *   **Summarization:** Condensing large datasets into concise summaries.
@@ -92,7 +92,7 @@ Aggregating inaccurate or incomplete data leads to flawed insights and poor busi
 ### Security and privacy considerations in aggregated data
 Aggregated datasets, while summarized, can still contain sensitive information. In cybersecurity, data aggregation is a powerful tool for threat detection, where logs from various systems are consolidated to identify attack patterns. But this also creates a high-value target for attackers. Similarly, in Operational Security (Opsec), preventing adversaries from aggregating public data to reveal sensitive intelligence is a key concern.
 
-Effective [workflow governance](/resources/infrastructure/workflow-governance) is essential. This includes using role-based access control (RBAC) to restrict access to sensitive data, managing credentials securely, and ensuring that the aggregation process complies with regulations like GDPR and CCPA.
+Effective [workflow governance](/resources/ai/ai-governance-workflows) is essential. This includes using role-based access control (RBAC) to restrict access to sensitive data, managing credentials securely, and ensuring that the aggregation process complies with regulations like GDPR and CCPA.
 
 ## Orchestrate Data Aggregation with Kestra: A Practical Example
 
@@ -186,7 +186,7 @@ This is the most common application. Aggregated data powers dashboards and repor
 By aggregating customer behavior data—such as purchase history, website clicks, and support interactions—companies can build a 360-degree view of their customers. This aggregated data is used to segment audiences, personalize marketing campaigns, and predict future customer behavior.
 
 ### Operational efficiency and cost optimization
-Aggregating operational data from various systems can reveal inefficiencies and opportunities for cost savings. For instance, a logistics company might aggregate shipping data to optimize routes, or a cloud engineering team might aggregate resource usage data to identify underutilized infrastructure. The results of these aggregations are often loaded into a [data warehouse for further analysis](/resources/data/data-warehouse-etl).
+Aggregating operational data from various systems can reveal inefficiencies and opportunities for cost savings. For instance, a logistics company might aggregate shipping data to optimize routes, or a cloud engineering team might aggregate resource usage data to identify underutilized infrastructure. The results of these aggregations are often loaded into a [data warehouse for further analysis](/resources/data/etl-workflow).
 
 ## Related concepts
 

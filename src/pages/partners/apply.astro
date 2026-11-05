@@ -1,0 +1,39 @@
+---
+import Layout from "~/components/layout.astro"
+import Squared from "~/components/layout/Squared.vue"
+import PartnerApplication from "~/components/partners/PartnerApplication.vue"
+
+const title = "Apply to the Kestra Partner Program"
+const description =
+    "Apply as a Solution, Services or Reseller partner, or as a technology partner. Three steps, and an answer within a week."
+---
+
+<Layout {title} {description} breadcrumbTitle="Apply">
+    <Squared>
+        <div class="content">
+            <h1>Become a Kestra partner</h1>
+            <p>
+                Three steps. Pick your track, tell us about your company and
+                about you. The partnerships team reads every application and
+                answers within a week.
+            </p>
+        </div>
+    </Squared>
+    <PartnerApplication routePath={Astro.url.pathname} client:load />
+</Layout>
+
+<style lang="scss">
+    .content {
+        text-align: center;
+        max-width: 100%;
+        margin: 0 auto;
+
+        @include media-breakpoint-up(md) {
+            max-width: 640px;
+        }
+
+        p {
+            margin: 1.5rem 0 0;
+        }
+    }
+</style>

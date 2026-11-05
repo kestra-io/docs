@@ -387,8 +387,9 @@ inputs:
 
 tasks:
   - id: log
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ inputs.row }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ inputs.row }}"
 ```
 
 The parent flow queries a dataset, stores the result as a URI, then loops over each row and passes it to the subflow:

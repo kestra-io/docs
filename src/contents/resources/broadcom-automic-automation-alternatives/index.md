@@ -67,7 +67,7 @@ Kestra is an [open-source](https://github.com/kestra-io/kestra) (Apache 2.0), ev
 
 Its language-agnostic architecture allows teams to orchestrate any tool or script, from Python and Shell to SQL and Docker containers, using a library of {totalPlugins}+ plugins. Kestra’s event-driven nature makes it ideal for modern, reactive workflows that go beyond simple cron-based scheduling.
 
-For enterprises, Kestra offers an Enterprise Edition with features like multi-tenancy, advanced security (RBAC, SSO), and high-availability deployments. This makes it a powerful choice for organizations looking to standardize automation across diverse teams. For instance, [CAGIP, Crédit Agricole's IT production arm](/customers/credit-agricole), transformed its infrastructure operations and scaled data workflows across more than 100 clusters with Kestra. Similarly, a [Fortune 500 industrial company](/customers/fortune-500-company) replaced VMware Aria Automation with Kestra to secure hybrid cloud automation across IT and OT environments.
+For enterprises, Kestra offers an Enterprise Edition with features like multi-tenancy, advanced security (RBAC, SSO), and high-availability deployments. This makes it a powerful choice for organizations looking to standardize automation across diverse teams. For instance, [CAGIP, Crédit Agricole's IT production arm](/stories/credit-agricole), transformed its infrastructure operations and scaled data workflows across more than 100 clusters with Kestra. Similarly, a [Fortune 500 industrial company](/stories/fortune-500-company) replaced VMware Aria Automation with Kestra to secure hybrid cloud automation across IT and OT environments.
 
 **Best for:** Organizations seeking a developer-friendly, unified platform to orchestrate diverse workflows across data, infrastructure, and AI with a declarative, GitOps-aligned approach.
 
@@ -150,7 +150,7 @@ Teams focused on reliability, governance, and migrating from legacy systems shou
 
 ### For Platform and DevOps Engineers
 
-Engineers who value automation as code, CI/CD integration, and infrastructure flexibility will gravitate towards declarative, API-first platforms. Kestra's YAML-based workflows and GitOps alignment are ideal for this group. The ability to manage [Kubernetes workflow orchestration](/resources/infrastructure/kubernetes-workflow-orchestration) and plug into the [CI/CD pipeline](/resources/infrastructure/ci-cd-pipeline) are critical decision factors.
+Engineers who value automation as code, CI/CD integration, and infrastructure flexibility will gravitate towards declarative, API-first platforms. Kestra's YAML-based workflows and GitOps alignment are ideal for this group. The ability to manage [Kubernetes workflow orchestration](/resources/infrastructure/kubernetes-workflow-orchestration) and plug into the [CI/CD pipeline](/resources/infrastructure/ci-cd-orchestration) are critical decision factors.
 
 ### For Data and AI Teams
 

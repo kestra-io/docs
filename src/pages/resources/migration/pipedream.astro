@@ -1,0 +1,185 @@
+---
+import { getEntry, render } from "astro:content"
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Link from "~/components/common/Link.astro"
+import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
+import GuideHero from "~/components/vra-migration-guide/GuideHero.astro"
+import GuideBand from "~/components/vra-migration-guide/GuideBand.astro"
+import StartHere, {
+    getHeadings as startHereHeadings,
+} from "~/components/pipedream-migration-guide/StartHere.mdx"
+import GuideToc from "~/components/vra-migration-guide/GuideToc.vue"
+import HeroVisual from "~/components/pipedream-migration-guide/HeroVisual.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
+
+const post = await getEntry("resources", "pipedream-migration-guide")
+if (!post) throw new Error("resources/pipedream-migration-guide entry missing")
+const { Content, headings } = await render(post)
+const page = post.data
+const totalPlugins = await fetchTotalPluginsCount()
+
+const description = page.metaDescription ?? page.description
+const faqItems = page.faq ?? []
+
+// h2, h3 and numbered h4 headings, same rule as the vRA guide
+const links = [...startHereHeadings(), ...headings]
+    .filter(
+        ({ depth, text }) =>
+            depth === 2 ||
+            depth === 3 ||
+            (depth === 4 && /^\d+\.\d+\.\d+\s/.test(text)),
+    )
+    .map(({ depth, slug, text }) => ({ text, id: slug, depth }))
+    .concat(
+        faqItems.length > 0 ? [{ text: "Questions", id: "faq", depth: 2 }] : [],
+    )
+
+const INSIDE = [
+    "The seven parts of a Pipedream estate, and a verdict for each one before you convert a single workflow",
+    "A concept-by-concept mapping from Pipedream triggers, steps, actions and data stores to Kestra flows",
+    "The four stages, from export and triage through a measured Cloud trial to cutting Pipedream off before the deadline",
+    "A full worked conversion: webhook, code step, business-system call and notification, as one flow",
+]
+
+const updated = page.lastUpdated ?? page.date
+const META = [
+    "Built from Pipedream migrations in progress",
+    "14-day Cloud trial, no credit card",
+    ...(updated
+        ? [
+              `Updated ${new Date(updated).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "UTC",
+              })}`,
+          ]
+        : []),
+]
+
+const jsonLinkedData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    mainEntityOfPage: { "@type": "WebPage", "@id": Astro.url.href },
+    headline: page.title,
+    image: [`${Astro.url.origin}/og-image.png`],
+    author: { "@id": "https://kestra.io/#organization" },
+    ...(page.date ? { datePublished: page.date } : {}),
+    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
+    publisher: {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        name: "Kestra",
+        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
+    },
+    description,
+}
+---
+
+<Layout
+    title={page.metaTitle ?? page.title}
+    {description}
+    breadcrumbTitle={page.title}
+    headerTheme="lightText"
+>
+    <Fragment slot="head">
+        <meta property="og:type" content="article" />
+        {
+            page.date && (
+                <meta
+                    property="article:published_time"
+                    content={new Date(page.date).toISOString()}
+                />
+            )
+        }
+        {
+            page.lastUpdated && (
+                <meta
+                    property="article:modified_time"
+                    content={new Date(page.lastUpdated).toISOString()}
+                />
+            )
+        }
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLinkedData)}
+        />
+        <SchemaFAQ items={faqItems} />
+    </Fragment>
+    {
+        /* No PDF card: the visual slot shows the conversion, the actions carry the Cloud CTA. */
+    }
+    <GuideHero
+        title={page.title}
+        deck={page.description}
+        inside={INSIDE}
+        meta={META}
+        pill="Migration guide · Workflow Automation"
+        card={false}
+    >
+        <Fragment slot="actions">
+            <a class="btn btn-primary btn-lg" href="/cloud"
+                >Start your Cloud trial</a
+            >
+            <a class="btn btn-secondary btn-lg" href="/demo">Talk to our team</a
+            >
+        </Fragment>
+        <HeroVisual slot="visual" />
+    </GuideHero>
+    <GuideBand><StartHere /></GuideBand>
+    <section class="guide-content">
+        <TwoColumnStickyLayout>
+            <div slot="sidebar" class="guide-sidebar">
+                <GuideToc client:load links={links}>
+                    <Fragment slot="footer">
+                        <a class="btn btn-primary" href="/cloud"
+                            >Start your Cloud trial</a
+                        >
+                        <a href="/demo">Talk to our team</a>
+                    </Fragment>
+                </GuideToc>
+            </div>
+            <div class="bd-content">
+                <Content totalPlugins={totalPlugins} />
+            </div>
+        </TwoColumnStickyLayout>
+    </section>
+    {
+        faqItems.length > 0 && (
+            <div class="guide-faq" id="faq">
+                <Faq
+                    title="Questions Pipedream teams ask"
+                    items={faqItems}
+                    client:visible
+                />
+            </div>
+        )
+    }
+    <div>
+        <SeeHow
+            imgSrc={shapesImage}
+            cta={{ text: "Start your Cloud trial", href: "/cloud" }}
+        >
+            <Fragment slot="title">Export today, convert this week</Fragment>
+            Export every project today and start your Cloud trial: your first run
+            takes minutes. Bring your integration list and your monthly step count,
+            and we will tell you which plugins cover it before you commit.
+            <Fragment slot="footer">
+                <Link href="/demo" class="btn btn-secondary"
+                    >Talk to our team</Link
+                >
+            </Fragment>
+        </SeeHow>
+    </div>
+</Layout>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+
+    @include guide-page;
+</style>

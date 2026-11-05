@@ -227,12 +227,12 @@ The field of data integration is constantly evolving, with AI and automation poi
 
 Automation is moving beyond simple scheduling. Modern tools aim to automate the entire pipeline lifecycle:
 *   **Automated Schema Detection:** Tools can automatically infer the structure of source data, reducing manual setup.
-*   **Code Generation:** Platforms can generate boilerplate code for extraction and loading, freeing up engineers to focus on custom logic. Kestra's [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) allows you to generate entire workflow definitions from a natural language prompt.
+*   **Code Generation:** Platforms can generate boilerplate code for extraction and loading, freeing up engineers to focus on custom logic. Kestra's [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot) allows you to generate entire workflow definitions from a natural language prompt.
 *   **Self-healing Pipelines:** Advanced orchestrators can automatically retry failed tasks, route around issues, and even scale resources up or down based on workload.
 
 ### Will ETL be Replaced by AI?
 
-AI will not replace ETL, but it will augment it significantly. Instead of replacing the core process, AI will make it smarter, faster, and more reliable. Key applications of [AI in ETL](https://kestra.io/docs/ai-tools) include:
+AI will not replace ETL, but it will augment it significantly. Instead of replacing the core process, AI will make it smarter, faster, and more reliable. Key applications of [AI in ETL](https://kestra.io/docs/ai-orchestration) include:
 *   **Intelligent Data Quality:** AI models can learn to identify and flag anomalies in data that traditional validation rules might miss.
 *   **Automated Data Mapping:** AI can suggest mappings between source and target schemas, accelerating pipeline development.
 *   **Predictive Monitoring:** Machine learning can be used to predict potential pipeline failures before they happen based on historical performance data.

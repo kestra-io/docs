@@ -177,4 +177,4 @@ Network automation is the key to building a modern, agile, and resilient infrast
 
 Kestra provides the unified control plane to make this a reality. By orchestrating all your existing tools—from Ansible playbooks and Python scripts to cloud APIs and ITSM platforms—Kestra breaks down operational silos. It enables you to manage your entire [infrastructure automation](/infra-automation) lifecycle as code, governed and visible in one place.
 
-To see how teams are using Kestra to solve real-world problems, explore our library of [infrastructure automation resources](/resources/infrastructure) and see how a solopreneur like René Molenaar of [NetworkLessons automated his business operations](/customers/networklessons).
+To see how teams are using Kestra to solve real-world problems, explore our library of [infrastructure automation resources](/resources/infrastructure) and see how a solopreneur like René Molenaar of [NetworkLessons automated his business operations](/stories/networklessons).

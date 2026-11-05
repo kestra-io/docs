@@ -158,7 +158,7 @@ This is optional — Kestra supports multiple controllers for load balancing, so
 
 Worker authentication secures the gRPC channel between workers and controllers with JWT tokens. It is **disabled by default** and requires explicit opt-in.
 
-When enabled, workers present a registration token generated for their Worker Group. On first connect, the worker exchanges this token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically; revoking or deleting a token immediately invalidates any workers that used it.
+When enabled, workers present a registration token generated for their Worker Group. On first connect, the worker exchanges this token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically. Revoking or deleting a token, or deleting its Worker Group, disconnects the workers that used it immediately.
 
 ### Server-side configuration
 

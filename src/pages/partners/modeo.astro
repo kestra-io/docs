@@ -1,0 +1,80 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Modeo & Kestra: Modern Data Platforms and DataOps Orchestration"
+const description =
+    "Modeo, an independent data and AI consultancy, designs and industrializes modern, sovereign Data Platforms with Kestra orchestrating every data flow."
+
+const facts = [
+    { label: "Headquarters", value: "Paris, France" },
+    {
+        label: "Kestra expertise",
+        value: "Data Platform orchestration and DataOps",
+    },
+    {
+        label: "Profile",
+        value: "Independent 100% data and AI consultancy: 30+ data and AI engineers and 100+ Data Platforms built",
+    },
+]
+
+const quote = {
+    text: "Kestra has become the orchestration solution we recommend by default to the companies we work with. It is easy to adopt and maintain, and its breadth of features makes it extremely effective for orchestrating data pipelines.",
+    author: "Matthieu Rousseau",
+    role: "Founder, Modeo (translated from French)",
+}
+
+const expertise = [
+    {
+        icon: "mdi:sitemap-outline",
+        title: "Data audit and architecture",
+        text: "Modeo audits the existing infrastructure, maps the constraints (sovereignty, GDPR, cost, carbon footprint) and compares architecture scenarios component by component, from ingestion to activation. Kestra is the central orchestrator: one place to trigger, monitor and rerun every job.",
+    },
+    {
+        icon: "mdi:database-cog-outline",
+        title: "End-to-end Data Platforms",
+        text: "Ingestion, data warehouse, SQL transformation with dbt, observability: Modeo builds the full platform and hands Kestra the coordination of loads and transformations. Flows are declared in YAML, versioned in Git and triggered on a schedule or by events.",
+    },
+    {
+        icon: "mdi:source-branch",
+        title: "DataOps and industrialization",
+        text: "Generic CI/CD, template projects, quality tests and flow monitoring: Modeo standardizes how data teams work. With Kestra, every pipeline follows the same review and deployment cycle, and adding a new source becomes a routine task rather than a project.",
+    },
+    {
+        icon: "mdi:swap-horizontal",
+        title: "Legacy stack migration",
+        text: "Cron scripts, aging ETL, legacy orchestrators: Modeo maps the use cases and migrates them step by step to Kestra flows, with the same method it uses for Data Platform migrations: audit, migration one use case at a time, and service continuity during the switch.",
+    },
+    {
+        icon: "mdi:school-outline",
+        title: "Training and team autonomy",
+        text: "Training, hands-on workshops and a data service offer: Modeo makes teams autonomous on the platform and on Kestra, so they launch new use cases without depending on a contractor.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Modeo">
+    <PartnerProfile
+        languages={[
+            { code: "en", label: "English", href: "/partners/modeo" },
+            { code: "fr", label: "Français", href: "/partners/modeo/fr" },
+        ]}
+        languageNote="Modeo works with customers in French."
+        name="Modeo"
+        tagline="Modeo designs, deploys and evolves modern, sovereign Data Platforms, with Kestra orchestrating every data flow."
+        about="Founded by Matthieu Rousseau, an expert in Data Engineering and DataOps, Modeo works with large enterprises, mid-size companies, SMBs and start-ups, from audit to production. Kestra, an open source orchestrator born in France, fits naturally into the sovereign stacks Modeo champions with the French Data Stack."
+        expertiseTitle="Modeo: Data Platform expertise, orchestrated with Kestra"
+        expertise={expertise}
+        quote={quote}
+        facts={facts}
+        contact={{
+            text: "Contact Modeo",
+            href: "https://modeo.ai/contact?utm_source=kestra&utm_medium=referral&utm_campaign=partners",
+        }}
+        closing={{
+            title: "Contact Modeo",
+            text: "Want to modernize your Data Platform or industrialize your pipelines with Kestra? Modeo's data engineers can help.",
+        }}
+        website="https://www.modeo.ai/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

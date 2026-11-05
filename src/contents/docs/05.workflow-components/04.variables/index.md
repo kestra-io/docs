@@ -29,8 +29,8 @@ variables:
 
 tasks:
   - id: log
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ vars.myvar }} world {{ vars.numeric_variable }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ vars.myvar }} world {{ vars.numeric_variable }}"
 ```
 
 ## Rendering
@@ -125,8 +125,8 @@ variables:
 
 tasks:
   - id: formatted
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ execution.startDate | date(vars.DATE_FORMAT) }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ execution.startDate | date(vars.DATE_FORMAT) }}"
 ```
 
 See the [Expressions reference](../../expressions/index.mdx) for the full list of available filters and functions.

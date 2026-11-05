@@ -1,4 +1,4 @@
-# Customer page slug changes — /customers/[old-slug] → /customers/[company-slug]
+# Customer story URL changes — /customers/[old-slug] → /stories/[company-slug]
 #
 # When companyName was added (or changed) for a story, the URL moved from the
 # directory-name slug to the company-name slug. These redirects cover:
@@ -8,114 +8,128 @@
 
 # Víssimo — legacy slugs
 - regexp: "^/customers/vissimo-how-vissimo-consolidated-an-ipaas-and-aws-lambdas-onto-one-orchestration-platform/?$"
-  to: "/customers/vissimo-group"
+  to: "/stories/vissimo-group"
 - regexp: "^/customers/vissimo/?$"
-  to: "/customers/vissimo-group"
+  to: "/stories/vissimo-group"
 - regexp: "^/customers/modernizing-mission-critical-e-commerce-integrations-with-kestra/?$"
-  to: "/customers/vissimo-group"
+  to: "/stories/vissimo-group"
 
 # Software provider — legacy slug
 - regexp: "^/customers/software-provider-serving-regulated-industries/?$"
-  to: "/customers/software-provider"
+  to: "/stories/software-provider"
 - regexp: "^/customers/governed-self-service-cloud-automation-in-regulated-environments-with-kestra/?$"
-  to: "/customers/software-provider"
+  to: "/stories/software-provider"
 
 # NetworkLessons
 - regexp: "^/customers/a-solopreneurs-journey-how-networklessons-leverage-kestra-to-automate-his-business/?$"
-  to: "/customers/networklessons"
+  to: "/stories/networklessons"
 
 # Airpaz
 - regexp: "^/customers/airpaz-optimizes-travel-data-workflows-with-kestra/?$"
-  to: "/customers/airpaz"
+  to: "/stories/airpaz"
 
 # Amdocs
 - regexp: "^/customers/amdocs-delivers-integration-environments-as-a-service-with-kestra/?$"
-  to: "/customers/amdocs"
+  to: "/stories/amdocs"
 
 # Apple
 - regexp: "^/customers/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra/?$"
-  to: "/customers/apple"
+  to: "/stories/apple"
 
 # Foundation Data
 - regexp: "^/customers/boosted-productivity-slashed-costs-and-accelerated-delivery/?$"
-  to: "/customers/foundation-data"
+  to: "/stories/foundation-data"
 
 # Dataport
 - regexp: "^/customers/building-a-government-grade-orchestration-control-plane-with-kestra/?$"
-  to: "/customers/dataport"
+  to: "/stories/dataport"
 
 # CleverConnect
 - regexp: "^/customers/cleverconnect-enhances-hr-integration-platform-with-kestra/?$"
-  to: "/customers/cleverconnect"
+  to: "/stories/cleverconnect"
 
 # Copines de Voyage
 - regexp: "^/customers/copines-de-voyage-enhancing-travel-experiences-through-advanced-data-orchestration-with-kestra/?$"
-  to: "/customers/copines-de-voyage"
+  to: "/stories/copines-de-voyage"
 
 # Leroy Merlin France
 - regexp: "^/customers/datamesh-at-scale-increased-its-data-production-by-900percent/?$"
-  to: "/customers/leroy-merlin-france"
+  to: "/stories/leroy-merlin-france"
 
 # Displayce
 - regexp: "^/customers/displayce-optimized-workflow-orchestration-and-enhanced-data-management/?$"
-  to: "/customers/displayce"
+  to: "/stories/displayce"
 
 # Fila
 - regexp: "^/customers/erp-transformation-smarter-faster-fully-automated/?$"
-  to: "/customers/fila"
+  to: "/stories/fila"
 
 # Gorgias
 - regexp: "^/customers/gorgias-using-declarative-data-engineering-orchestration-with-kestra/?$"
-  to: "/customers/gorgias"
+  to: "/stories/gorgias"
 
 # Government IT Provider
 - regexp: "^/customers/government-soc-team/?$"
-  to: "/customers/government-it-provider"
+  to: "/stories/government-it-provider"
 
 # HTCH
 - regexp: "^/customers/htch-building-the-best-architect-collaborative-web-tool-with-kestra/?$"
-  to: "/customers/htch"
+  to: "/stories/htch"
 
 # Pharmacy Retailer
 - regexp: "^/customers/modernizing-mission-critical-workflows-in-a-highly-regulated-environment/?$"
-  to: "/customers/pharmacy-retailer"
+  to: "/stories/pharmacy-retailer"
 
 # Ntico
 - regexp: "^/customers/ntico-manage-geospatial-data-operations-with-kestra/?$"
-  to: "/customers/ntico"
+  to: "/stories/ntico"
 
 # JPMorgan Chase
 - regexp: "^/customers/orchestrating-cybersecurity-for-100-users-and-billions-of-rows/?$"
-  to: "/customers/jpmorgan-chase"
+  to: "/stories/jpmorgan-chase"
 
 # Quadis
 - regexp: "^/customers/quadis-drives-innovation-transforming-car-retail-operations-with-kestra/?$"
-  to: "/customers/quadis"
+  to: "/stories/quadis"
 
 # Reglo
 - regexp: "^/customers/reglo-automating-etl-process-with-a-simple-slack-command/?$"
-  to: "/customers/reglo"
+  to: "/stories/reglo"
 
 # Riverside
 - regexp: "^/customers/riverside-orchestrates-dbt-cloud-analytics-stack-with-kestra/?$"
-  to: "/customers/riverside"
+  to: "/stories/riverside"
 
 # Acxiom
 - regexp: "^/customers/scaling-big-data-operations/?$"
-  to: "/customers/acxiom"
+  to: "/stories/acxiom"
 
 # Crédit Agricole
 - regexp: "^/customers/scaling-secure-infrastructure-at-credit-agricole-with-kestra/?$"
-  to: "/customers/credit-agricole"
+  to: "/stories/credit-agricole"
 
 # Fortune 500 Company
 - regexp: "^/customers/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra/?$"
-  to: "/customers/fortune-500-company"
+  to: "/stories/fortune-500-company"
 
 # Sopht
 - regexp: "^/customers/sopht-scales-its-green-itops-platform-with-kestra/?$"
-  to: "/customers/sopht"
+  to: "/stories/sopht"
 
 # Gravitee
 - regexp: "^/customers/when-your-api-writes-its-own-docs-with-kestra/?$"
-  to: "/customers/gravitee"
+  to: "/stories/gravitee"
+
+# Bouygues Immobilier
+- regexp: "^/customers/bouygues-immobilier-platform-orchestrate-its-marketing-data-with-kestra/?$"
+  to: "/stories/bouygues-immobilier"
+
+# Clever Cloud
+- regexp: "^/customers/clever-cloud-offloading-terabytes-of-data-with-kestra-every-month/?$"
+  to: "/stories/clever-cloud"
+
+# Everything else under /customers moved to /stories (same slugs)
+- regexp: "^/customers/?$"
+  to: "/stories"
+- regexp: "^/customers/(.+)$"
+  to: "/stories/$1"

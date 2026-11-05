@@ -283,7 +283,7 @@ If needed, you can orchestrate multiple dbt projects from a single flow:
 
 ### Scale dbt Workflows in the Cloud
 
-Add a `taskRunner` property to the dbt task to run it on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes, leveraging [Kestra's task runners](../../task-runners/index.mdx):
+Add a `taskRunner` property to the dbt task to run it on AWS Batch, Google Batch, Azure Batch, or Kubernetes, leveraging [Kestra's task runners](../../task-runners/index.mdx):
 
 ```yaml
 - id: dbt

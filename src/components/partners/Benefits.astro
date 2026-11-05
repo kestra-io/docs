@@ -1,0 +1,111 @@
+---
+interface Benefit {
+    title: string
+    text: string
+}
+
+interface Props {
+    title: string
+    intro: string
+    label?: string
+    benefits: Benefit[]
+}
+
+const { title, intro, label, benefits } = Astro.props
+---
+
+<section class="benefits">
+    <div class="container">
+        <div class="row g-5 align-items-start">
+            <div class="col-12 col-lg-5">
+                <h2>{title}</h2>
+                <p class="intro">{intro}</p>
+            </div>
+            <div class="col-12 col-lg-7">
+                {label && <p class="label">{label}</p>}
+                <ul>
+                    {
+                        benefits.map((b) => (
+                            <li>
+                                <h3>{b.title}</h3>
+                                <p>{b.text}</p>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .benefits {
+        --benefits-border: var(--ks-border-default, #e9e9ee);
+
+        padding: 5rem 0;
+        border-top: 1px solid var(--benefits-border);
+        border-bottom: 1px solid var(--benefits-border);
+        background: var(--ks-background-secondary)
+            url("~/assets/landing/partners/benefits-grid.svg") no-repeat top
+            center / 1900px auto;
+
+        :global(html.dark) & {
+            --benefits-border: var(--ks-border-default, #2e2e3c);
+        }
+
+        h2 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin: 0 0 1rem;
+            text-wrap: balance;
+        }
+
+        .intro {
+            margin: 0;
+            font-size: $font-size-md;
+            line-height: 1.65;
+        }
+
+        .label {
+            margin: 0 0 1rem;
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        li {
+            padding: 1.25rem 1.25rem 1.5rem;
+            border-radius: 8px;
+            background: var(--ks-background-body);
+            border: 1px solid var(--benefits-border);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+            h3 {
+                font-size: $font-size-lg;
+                font-weight: 600;
+                line-height: 1.4;
+                margin: 0 0 0.5rem;
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                line-height: 1.6;
+            }
+        }
+    }
+</style>

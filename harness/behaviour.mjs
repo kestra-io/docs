@@ -65,6 +65,46 @@ for (const [name, sel] of [["docs menu", "#docs-menu nav"], ["toc", "#tocContent
     check(`${name} open by default on desktop`, hh > 50, `h=${hh}`)
 }
 
+{
+    const state = () => dp.evaluate(() => {
+        const active = [...document.querySelectorAll(".bd-sidebar a.active")].map((a) => a.getAttribute("href"))
+        const link = (href) => document.querySelector(`.bd-sidebar a[href="${href}"]`)
+        const branchOpen = (href) => link(href)?.closest("li")?.nextElementSibling?.classList.contains("ks-open") ?? false
+        // A link keeps its own box inside a collapsed list (`height: 0;
+        // overflow: hidden`), so measure the list it sits in.
+        const visible = (href) => (link(href)?.closest("ul")?.getBoundingClientRect().height ?? 0) > 0
+        return {
+            active,
+            secondOpen: branchOpen("/docs/second"),
+            thirdOpen: branchOpen("/docs/third"),
+            childAVisible: visible("/docs/second/child-a"),
+            childBVisible: visible("/docs/second/child-b"),
+            childCVisible: visible("/docs/third/child-c"),
+        }
+    })
+    const onLoad = await state()
+    check("sidebar marks the nested page and its parent active on load",
+        JSON.stringify(onLoad.active) === JSON.stringify(["/docs/second", "/docs/second/child-b"]), JSON.stringify(onLoad.active))
+    check("sidebar opens the active branch on load", onLoad.secondOpen && onLoad.childBVisible, JSON.stringify(onLoad))
+    check("sidebar keeps the other branch closed on load", !onLoad.thirdOpen && !onLoad.childCVisible, JSON.stringify(onLoad))
+    await dp.click('.bd-sidebar a[href="/docs/second"] + .accordion-button')
+    await dp.waitForTimeout(400)
+    const collapsed = await state()
+    check("sidebar closes a branch from its chevron", !collapsed.secondOpen && !collapsed.childBVisible, JSON.stringify(collapsed))
+    await dp.click(".harness-navigate-sibling")
+    await dp.waitForTimeout(600)
+    const withinBranch = await state()
+    check("sidebar reopens a hand-closed branch when navigating inside it",
+        withinBranch.secondOpen && withinBranch.childAVisible
+            && JSON.stringify(withinBranch.active) === JSON.stringify(["/docs/second", "/docs/second/child-a"]), JSON.stringify(withinBranch))
+    await dp.click(".harness-navigate")
+    await dp.waitForTimeout(600)
+    const afterNav = await state()
+    check("sidebar moves the active entry when the slug changes",
+        JSON.stringify(afterNav.active) === JSON.stringify(["/docs/third", "/docs/third/child-c"]), JSON.stringify(afterNav.active))
+    check("sidebar opens the newly active branch", afterNav.thirdOpen && afterNav.childCVisible, JSON.stringify(afterNav))
+}
+
 // markdown actions dropdown
 const trigger = dp.locator(".markdown-actions-trigger").first()
 check("markdown actions trigger present", (await trigger.count()) > 0)

@@ -74,7 +74,7 @@ At the heart of hybrid automation is an orchestration platform. This tool acts a
 
 ### Infrastructure as Code (IaC) principles
 
-Infrastructure as Code (IaC) is the practice of managing and provisioning infrastructure through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools. Tools like Terraform, OpenTofu, and Ansible allow teams to define their infrastructure declaratively. This approach is fundamental to hybrid automation, as it enables versioning, testing, and consistent deployment of infrastructure components across any environment. You can learn more in our guide on [what is Infrastructure as Code](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code).
+Infrastructure as Code (IaC) is the practice of managing and provisioning infrastructure through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools. Tools like Terraform, OpenTofu, and Ansible allow teams to define their infrastructure declaratively. This approach is fundamental to hybrid automation, as it enables versioning, testing, and consistent deployment of infrastructure components across any environment. You can learn more in our guide on [what is Infrastructure as Code](https://kestra.io/resources/infrastructure/everything-as-code).
 
 ### Integration with existing IT ecosystems
 
@@ -150,7 +150,7 @@ tasks:
   # ... more tasks for apply, configure, and close ticket
 ```
 
-This declarative model provides a consistent, auditable, and version-controlled way to manage automation across any environment. Kestra can be deployed on Kubernetes, as a standalone binary, or in air-gapped environments, providing the flexibility needed for complex hybrid and regulated industries. This approach has enabled [Fortune 500 enterprises to replace legacy tools like VMware Aria Automation](https://kestra.io/customers/fortune-500-company), cutting provisioning times from months to days. Similarly, [Crédit Agricole used Kestra to unify fragmented scripts](https://kestra.io/customers/credit-agricole) into a single, secure control plane. With [Enterprise-grade features](https://kestra.io/enterprise), Kestra scales to meet the most demanding governance and security requirements.
+This declarative model provides a consistent, auditable, and version-controlled way to manage automation across any environment. Kestra can be deployed on Kubernetes, as a standalone binary, or in air-gapped environments, providing the flexibility needed for complex hybrid and regulated industries. This approach has enabled [Fortune 500 enterprises to replace legacy tools like VMware Aria Automation](https://kestra.io/stories/fortune-500-company), cutting provisioning times from months to days. Similarly, [Crédit Agricole used Kestra to unify fragmented scripts](https://kestra.io/stories/credit-agricole) into a single, secure control plane. With [Enterprise-grade features](https://kestra.io/enterprise), Kestra scales to meet the most demanding governance and security requirements.
 
 ## Conclusion: Embracing the Automated Hybrid Future
 

@@ -6,7 +6,7 @@ import { sitemapResponse, formatLastMod, gitLastModified } from "~/utils/sitemap
 /**
  * Routes under /use-cases that only 301 elsewhere, so they must not be submitted.
  *
- * - /use-cases/stories redirects to /customers (the stories now live there).
+ * - /use-cases/stories redirects to /stories (the stories now live there).
  */
 const REDIRECTING_ROUTES = new Set(["/use-cases/stories"])
 
@@ -28,7 +28,7 @@ export const GET: APIRoute = async () => {
 
     const allUseCases = await getCollection("customerStories")
 
-    // Mirror the canonical slug logic from src/pages/customers/[slug].astro
+    // Mirror the canonical slug logic from src/pages/stories/[slug].astro
     const toSlug = (story: (typeof allUseCases)[number]) =>
         story.data.companyName ? slugify(story.data.companyName) : story.id
 
@@ -40,7 +40,7 @@ export const GET: APIRoute = async () => {
         }
 
         return {
-            loc: `https://kestra.io/customers/${toSlug(story)}`,
+            loc: `https://kestra.io/stories/${toSlug(story)}`,
             lastmod,
         }
     })

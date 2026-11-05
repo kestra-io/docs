@@ -125,7 +125,7 @@ Transitioning to an automated ITSM model is a journey. A phased approach focused
 5.  **Measure, Iterate, and Scale:** Track key metrics like resolution time, ticket volume, and engineering hours saved. Use this data to justify expanding automation to more complex processes like incident and change management.
 
 ### Overcoming Common Organizational Silos
-ITSM automation often crosses traditional organizational boundaries between IT operations, security, networking, and application teams. Success requires a collaborative approach. A platform engineering mindset, where a central team provides a shared automation platform for other teams to use, is highly effective. This model is how one [Fortune 500 industrial company](/customers/fortune-500-company) successfully replaced legacy tools like [VMware Aria Automation](/vs/vmware-cloud-foundation) to bridge the gap between IT and operational technology (OT).
+ITSM automation often crosses traditional organizational boundaries between IT operations, security, networking, and application teams. Success requires a collaborative approach. A platform engineering mindset, where a central team provides a shared automation platform for other teams to use, is highly effective. This model is how one [Fortune 500 industrial company](/stories/fortune-500-company) successfully replaced legacy tools like [VMware Aria Automation](/vs/vmware-cloud-foundation) to bridge the gap between IT and operational technology (OT).
 
 ### Measuring ROI and Operational Efficiency
 The return on investment (ROI) for ITSM automation comes from several areas:

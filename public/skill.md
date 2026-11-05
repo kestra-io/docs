@@ -86,4 +86,4 @@ Run analytics.jobs.nightly-refresh, wait for completion, and report the executio
 - MCP server: `https://api.kestra.io/v1/mcp`
 - Documentation index: `https://kestra.io/llms.txt`
 - Agent Skills repo: `https://github.com/kestra-io/agent-skills`
-- Full docs: `https://kestra.io/docs/ai-tools/agent-skills`
+- Full docs: `https://kestra.io/docs/develop-with-ai/agent-skills`

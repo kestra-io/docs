@@ -45,7 +45,7 @@ Workflows in Kestra are defined in declarative YAML, making them easy to version
 
 With an extensive plugin ecosystem, Kestra connects to virtually any tool in the modern data stack, including databases, cloud services, messaging queues, and specialized tools like dbt and Airbyte. This makes it an ideal solution for replacing legacy data integration jobs or building a robust foundation for a modern [data platform](/data). For instance, JPMorgan Chase uses Kestra for cybersecurity analytics orchestration, processing billions of rows of data that feed their analytical systems. Similarly, Leroy Merlin France leveraged Kestra to build a DataMesh at scale, increasing their data production by 900%.
 
-**Best for:** Data, analytics, and platform engineering teams seeking a unified, flexible, and auditable platform to prepare and deliver data to BI tools. It's a strong alternative for the data integration and automation capabilities found in Qlik Replicate or Qlik Talend Cloud, providing a more versatile and open control plane for all your [data pipeline](/resources/data/data-pipeline) needs.
+**Best for:** Data, analytics, and platform engineering teams seeking a unified, flexible, and auditable platform to prepare and deliver data to BI tools. It's a strong alternative for the data integration and automation capabilities found in Qlik Replicate or Qlik Talend Cloud, providing a more versatile and open control plane for all your [data pipeline](/resources/data/create-data-pipeline) needs.
 
 ## Top Qlik Sense Alternatives for Business Intelligence and Analytics
 
@@ -168,7 +168,7 @@ Explore how to build a unified control plane for all your automation needs on ou
 
 The modern data landscape is defined by constant change. To stay agile, organizations are moving away from monolithic, all-in-one platforms toward more flexible, composable architectures. This approach, often aligned with the principles of [Everything as Code](/resources/infrastructure/everything-as-code), allows teams to select the best tool for each specific job—be it visualization, replication, or transformation.
 
-An agnostic orchestration layer is the key to making this composable stack work. By separating the "how" (the workflow logic) from the "what" (the individual tools), a platform like Kestra provides a stable, unified control plane. This enables you to swap tools in and out of your [data pipelines](/resources/data/data-pipeline) without rewriting your entire orchestration logic, ensuring your data stack is resilient and future-ready.
+An agnostic orchestration layer is the key to making this composable stack work. By separating the "how" (the workflow logic) from the "what" (the individual tools), a platform like Kestra provides a stable, unified control plane. This enables you to swap tools in and out of your [data pipelines](/resources/data/create-data-pipeline) without rewriting your entire orchestration logic, ensuring your data stack is resilient and future-ready.
 
 ## Conclusion: Beyond Qlik – Orchestrating Your Modern Data Ecosystem
 

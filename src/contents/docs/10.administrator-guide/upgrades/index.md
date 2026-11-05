@@ -52,9 +52,9 @@ The `Breaking Changes` section appears at the end of the [release notes](https:/
 If you run Kestra as separate components, you should:
 
 - Stop the executors and the scheduler
-- Stop the workers — a graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminationGracePeriod = 'PT5M'`, configurable in your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md).
-- If the job finishes within five minutes, the worker shuts down immediately. Otherwise, the task is killed and restarts when the worker restarts.
-- Stop the webserver (and the indexer if using EE with Kafka).
+- Stop the workers. A graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminationGracePeriod = 'PT5M'`, configurable in [Liveness and worker task restarts](../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts).
+- If the job finishes within the grace period, the worker shuts down as soon as it does. Otherwise, the worker stops the task, and the Executor resubmits it to an available worker unless `kestra.server.worker-task-restart-strategy` is `NEVER`.
+- Stop the webserver, and the indexer and Worker Controller if you run them as separate components.
 
 All components support graceful shutdown, so no data is lost. Afterward, update and restart everything in the opposite order (or in any order, as components are independent).
 

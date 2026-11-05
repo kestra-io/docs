@@ -44,7 +44,7 @@ We evaluated each alternative on its deployment model (self-hosted, cloud), lice
 
 [Kestra](/) is an open-source, declarative orchestration platform built for [unified orchestration](/resources/orchestration/unified-orchestration): data, AI, infrastructure, and business workflows under a single, YAML-defined control plane. It's built for engineers who need to orchestrate complex, polyglot tasks across diverse systems with reliability and visibility.
 
--   **Declarative YAML:** Workflows are defined in human-readable YAML, making them easy to version-control, review, and audit, aligning perfectly with [Infrastructure as Code (IaC) principles](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code).
+-   **Declarative YAML:** Workflows are defined in human-readable YAML, making them easy to version-control, review, and audit, aligning perfectly with [Infrastructure as Code (IaC) principles](https://kestra.io/resources/infrastructure/everything-as-code).
 -   **Language-Agnostic:** Kestra natively runs Python, Go, Rust, TypeScript, SQL, shell scripts, Java, and Docker containers as first-class citizens, eliminating the need for wrapper code.
 -   **Unified Scope:** Unlike specialized tools, Kestra orchestrates everything from data pipelines and AI/ML workflows to infrastructure automation (Terraform, Ansible) and business processes, providing a single source of truth for all automation.
 -   **Event-Driven by Default:** The platform has native support for real-time triggers and event-driven architectures, making it ideal for reactive and modern application workflows.
@@ -68,6 +68,8 @@ n8n is an open-source workflow automation tool that allows users to connect APIs
 ### 3. Pipedream: Developer-Centric Serverless Workflows
 
 Pipedream is a low-code integration platform that allows developers to connect APIs, write custom code (Node.js, Python, Go, PHP), and build serverless workflows quickly. It bridges the gap between no-code tools and custom development.
+
+> **Pipedream Workflows is shutting down.** It stops on March 31, 2027 and is closed to new signups. If your workflows run on it today, the [Pipedream migration guide](/resources/migration/pipedream) covers the export, the move and the cutover.
 
 -   **Developer Experience:** Designed for developers, it offers a seamless experience for writing, deploying, and debugging code snippets within a workflow.
 -   **Event-Driven:** It has strong, native support for webhooks, HTTP requests, and scheduled events as triggers.

@@ -32,7 +32,7 @@ To understand Day-2 operations, it’s essential to place it within the full con
 **Day-0: Planning and Provisioning**
 Day-0 is the design and setup phase. It's where all the foundational work happens before any code is deployed. Activities include:
 - **Architecture Design:** Defining the system's structure, components, and interactions.
-- **Environment Provisioning:** Setting up the necessary infrastructure, such as virtual machines, Kubernetes clusters, networks, and storage. This is often managed using [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code) tools like Terraform or OpenTofu.
+- **Environment Provisioning:** Setting up the necessary infrastructure, such as virtual machines, Kubernetes clusters, networks, and storage. This is often managed using [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code) tools like Terraform or OpenTofu.
 - **Tool Selection:** Choosing the technologies, frameworks, and platforms that will be used.
 - **Security and Compliance Planning:** Defining security policies, access controls, and compliance requirements.
 

@@ -1,0 +1,104 @@
+---
+import Meeting from "~/components/demo/Meeting.vue"
+import { DEMO_DIALOG_ID } from "./download"
+
+interface Props {
+    routePath: string
+}
+
+const { routePath } = Astro.props
+---
+
+<dialog
+    class="modal ks-dialog"
+    id={DEMO_DIALOG_ID}
+    aria-label="Book a demo"
+    closedby="any"
+    style="--ks-modal-width: 640px"
+>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button
+                type="button"
+                class="btn-close"
+                commandfor={DEMO_DIALOG_ID}
+                command="close"
+                aria-label="Close">X</button
+            >
+            <div class="demo-card">
+                <h3 class="form-title">Book a Demo</h3>
+                <Meeting {routePath} variant="plain" client:idle />
+            </div>
+        </div>
+    </div>
+</dialog>
+
+<script>
+    import { openModal } from "~/utils/modal"
+    import { DEMO_DIALOG_TARGET } from "./download"
+
+    document.addEventListener("click", (event) => {
+        if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+        )
+            return
+        const target = event.target instanceof Element ? event.target : null
+        const link = target?.closest<HTMLAnchorElement>('main a[href="/demo"]')
+        if (!link || link.closest("header, footer, dialog, .faq")) return
+        if (!openModal(DEMO_DIALOG_TARGET)) return
+        event.preventDefault()
+    })
+</script>
+
+<style lang="scss">
+    .modal-dialog {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - var(--ks-modal-margin) * 2);
+    }
+
+    .modal-content {
+        border: 0;
+        max-height: calc(100vh - var(--ks-modal-margin) * 2);
+        overflow-y: auto;
+    }
+
+    .demo-card {
+        padding: 2rem;
+        background: var(--ks-background-primary);
+        border-radius: $border-radius-lg;
+        border: 1px solid var(--ks-border-secondary);
+
+        @include media-breakpoint-up(md) {
+            padding: 2.5rem;
+        }
+    }
+
+    .form-title {
+        font-size: $font-size-xl;
+        font-weight: 600;
+        margin: 0 0 1.5rem;
+        padding-right: 2rem;
+        color: var(--ks-content-primary);
+    }
+
+    .btn-close {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        z-index: 2;
+        border: 0;
+        background: transparent;
+        color: var(--ks-content-secondary);
+        font-size: $font-size-md;
+
+        &:hover {
+            color: var(--ks-content-primary);
+        }
+    }
+</style>

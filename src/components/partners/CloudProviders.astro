@@ -1,0 +1,384 @@
+---
+import Link from "~/components/common/Link.astro"
+import awsSVG from "~/assets/enterprise/aws.svg?raw"
+import azureSVG from "~/assets/enterprise/azure.svg?raw"
+import googleSVG from "~/assets/enterprise/google.svg?raw"
+import homeRoofSVG from "~/assets/enterprise/home-roof.svg?raw"
+
+const CLOUDS = [
+    {
+        name: "AWS",
+        logo: awsSVG,
+        href: "/plugins/plugin-aws",
+        cta: "Explore the AWS plugin",
+        tasks: "60+",
+        services:
+            "S3, Lambda, Glue, Athena, EMR, SQS, SNS, EventBridge, Kinesis, Bedrock and more",
+        storage: "S3",
+        secrets: "AWS Secrets Manager",
+    },
+    {
+        name: "Azure",
+        logo: azureSVG,
+        href: "/plugins/plugin-azure",
+        cta: "Explore the Azure plugin",
+        tasks: "80+",
+        services:
+            "Blob Storage, Data Factory, Synapse, Functions, Event Hubs, Service Bus, Batch, AI Foundry and more",
+        storage: "Blob Storage",
+        secrets: "Azure Key Vault",
+    },
+    {
+        name: "Google Cloud",
+        logo: googleSVG,
+        href: "/plugins/plugin-gcp",
+        cta: "Explore the Google Cloud plugin",
+        tasks: "80+",
+        services:
+            "BigQuery, Cloud Storage, Pub/Sub, Dataproc, Dataflow, Vertex AI, Cloud Functions, GKE and more",
+        storage: "Cloud Storage",
+        secrets: "Google Secret Manager",
+    },
+]
+
+const cardLogo = (svg: string) =>
+    svg.replace(/id="/g, 'id="card-').replace(/url\(#/g, "url(#card-")
+
+const ROWS = [
+    { label: "Tasks and triggers", note: "In the plugin group" },
+    { label: "Internal storage", note: "For outputs and namespace files" },
+    { label: "Secrets backend", note: "In the Enterprise Edition" },
+]
+---
+
+<section class="clouds">
+    <div class="container">
+        <div class="heading">
+            <h2>Partnering with the major cloud providers</h2>
+            <p>
+                To give you the best integrations, each cloud is a plugin group,
+                a storage backend and a secrets backend, so workflows run next
+                to the data and services they orchestrate.
+            </p>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col"
+                            ><span class="sr-only">Capability</span></th
+                        >
+                        {
+                            CLOUDS.map((cloud) => (
+                                <th scope="col">
+                                    <span class="cloud-head">
+                                        <span
+                                            class="logo"
+                                            set:html={cloud.logo}
+                                        />
+                                        {cloud.name}
+                                    </span>
+                                </th>
+                            ))
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            {ROWS[0].label}
+                            <small>{ROWS[0].note}</small>
+                        </th>
+                        {
+                            CLOUDS.map((cloud) => (
+                                <td>
+                                    <strong class="big">{cloud.tasks}</strong>
+                                    <small>{cloud.services}</small>
+                                </td>
+                            ))
+                        }
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            {ROWS[1].label}
+                            <small>{ROWS[1].note}</small>
+                        </th>
+                        {CLOUDS.map((cloud) => <td>{cloud.storage}</td>)}
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            {ROWS[2].label}
+                            <small>{ROWS[2].note}</small>
+                        </th>
+                        {CLOUDS.map((cloud) => <td>{cloud.secrets}</td>)}
+                    </tr>
+                    <tr class="links">
+                        <th scope="row"><span class="sr-only">Plugin</span></th>
+                        {
+                            CLOUDS.map((cloud) => (
+                                <td>
+                                    <Link href={cloud.href} class="more">
+                                        {cloud.cta}
+                                    </Link>
+                                </td>
+                            ))
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ul class="cloud-cards">
+            {
+                CLOUDS.map((cloud) => (
+                    <li class="cloud-card">
+                        <span class="cloud-head">
+                            <span
+                                class="logo"
+                                set:html={cardLogo(cloud.logo)}
+                            />
+                            {cloud.name}
+                        </span>
+                        <dl>
+                            <div>
+                                <dt>{ROWS[0].label}</dt>
+                                <dd>
+                                    <strong class="big">{cloud.tasks}</strong>
+                                    <small>{cloud.services}</small>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>{ROWS[1].label}</dt>
+                                <dd>{cloud.storage}</dd>
+                            </div>
+                            <div>
+                                <dt>{ROWS[2].label}</dt>
+                                <dd>{cloud.secrets}</dd>
+                            </div>
+                        </dl>
+                        <Link href={cloud.href} class="more">
+                            {cloud.cta}
+                        </Link>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <p class="anywhere">
+            <span class="logo" set:html={homeRoofSVG} />
+            Not on one of these? Kestra runs on any Kubernetes cluster, Docker host
+            or bare metal server, in the cloud or on-premises.
+        </p>
+    </div>
+</section>
+
+<style lang="scss">
+    .clouds {
+        --clouds-border: var(--ks-border-default, #e9e9ee);
+
+        padding: 5rem 0;
+        background: var(--ks-background-body);
+
+        :global(html.dark) & {
+            --clouds-border: var(--ks-border-default, #2e2e3c);
+        }
+
+        .heading {
+            max-width: 640px;
+            margin-bottom: 2.5rem;
+
+            h2 {
+                font-size: clamp(1.75rem, 3vw, 2.25rem);
+                font-weight: 600;
+                letter-spacing: -0.015em;
+                margin: 0 0 1rem;
+                text-wrap: balance;
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-secondary);
+                line-height: 1.6;
+            }
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--clouds-border);
+            border-radius: 0.8125rem;
+
+            @include media-breakpoint-down(md) {
+                display: none;
+            }
+        }
+
+        .cloud-cards {
+            display: none;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            @include media-breakpoint-down(md) {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .cloud-card {
+            padding: 1.25rem;
+            border: 1px solid var(--clouds-border);
+            border-radius: 0.8125rem;
+
+            .cloud-head {
+                margin-bottom: 1rem;
+            }
+
+            dl {
+                margin: 0 0 1rem;
+            }
+
+            div {
+                padding: 0.75rem 0;
+                border-top: 1px solid var(--clouds-border);
+            }
+
+            dt {
+                margin-bottom: 0.25rem;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: var(--ks-content-tertiary);
+            }
+
+            dd {
+                margin: 0;
+                font-weight: 500;
+                color: var(--ks-content-primary);
+            }
+
+            .big {
+                display: block;
+                font-size: 1.5rem;
+            }
+        }
+
+        table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--clouds-border);
+        }
+
+        tr:last-child > * {
+            border-bottom: 0;
+        }
+
+        thead th {
+            background: var(--ks-background-secondary);
+        }
+
+        tbody th {
+            width: 22%;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        td {
+            font-size: $font-size-md;
+            font-weight: 500;
+            color: var(--ks-content-primary);
+        }
+
+        small {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: $font-size-xs;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ks-content-tertiary);
+        }
+
+        .big {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+
+        .cloud-head {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            font-size: $font-size-lg;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        .links td {
+            padding-top: 1rem;
+            padding-bottom: 1.25rem;
+        }
+
+        :global(.more) {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-link);
+        }
+
+        .logo {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: #fff;
+            color: #232f3e;
+
+            :global(svg) {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+
+        .anywhere {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            margin: 2rem 0 0;
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+
+            .logo {
+                width: 36px;
+                height: 36px;
+                background: #f7f7f7;
+
+                :global(svg) {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+</style>

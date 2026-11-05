@@ -28,6 +28,13 @@ Follow these baseline rules for every pull request.
 - Use `runContext.logger()` to log important information with the right level (DEBUG, INFO, WARN, or ERROR), without leaking secrets in the message.
 - Use `var` for local variables whenever the type is already obvious from the right-hand side; keep an explicit type only when it improves readability or resolves ambiguity.
 - Default to no code comments. Only add one when the *why* is non-obvious (a hidden constraint, a subtle invariant, a workaround for an external bug); never restate what the code already says.
+- Avoid reflection (`Class.forName`, `getMethod`, `getDeclaredField`, `setAccessible`, `MethodHandles` lookups by name). It hides calls from the compiler, so a renamed or re-typed core or SDK method breaks at runtime instead of at build time. Call the API directly. Use reflection only when no typed alternative exists, and justify it in the PR description.
+
+---
+
+## Supporting multiple Kestra versions
+
+When a change needs a core API that differs between Kestra 1.3.x and 2.0.x, bump `kestraVersion` in `gradle.properties` to the 2.0.x line and call the 2.0 API directly. Do not keep the plugin on 1.3.x by picking the API at runtime through reflection: the code compiles against one signature, invokes another by name, and breaks silently on the next core change.
 
 ---
 

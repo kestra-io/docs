@@ -63,4 +63,4 @@ ports:
 Re-opening these endpoints restores the previous behavior but also restores the associated security risks — unauthenticated access to environment variables, the ability to change log levels, and exposure of running task and trigger details. Only opt back in if you understand the implications and can restrict access at the network layer.
 :::
 
-See [Management endpoint access](../../../10.administrator-guide/security-hardening/index.md#management-endpoint-access) for the recommended hardening approach.
+See [Management endpoint access](../../../security-hardening/index.md#management-endpoint-access) for the recommended hardening approach.

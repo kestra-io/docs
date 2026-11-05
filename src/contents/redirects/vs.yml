@@ -1,0 +1,2 @@
+- regexp: "^/vs/vmware-aria/?$"
+  to: "/vs/vmware-cloud-foundation"

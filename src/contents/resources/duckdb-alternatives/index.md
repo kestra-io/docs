@@ -39,7 +39,7 @@ As you scale beyond a single machine, you need a different architecture. For tea
 
 Managed data platforms like Snowflake or BigQuery come with a suite of enterprise-grade features out of the box, including Role-Based Access Control (RBAC), advanced security protocols, and comprehensive monitoring tools. DuckDB, being a lightweight library, lacks these built-in features. Implementing robust security, governance, and observability requires significant manual effort and additional tooling around it.
 
-This is where an orchestration layer becomes crucial. A platform like Kestra can unify diverse data stacks, providing the governance and visibility needed to manage a complex data ecosystem. It allows teams to build robust [data warehouse ETL pipelines](/resources/data/data-warehouse-etl) that incorporate various tools while maintaining centralized control.
+This is where an orchestration layer becomes crucial. A platform like Kestra can unify diverse data stacks, providing the governance and visibility needed to manage a complex data ecosystem. It allows teams to build robust [data warehouse ETL pipelines](/resources/data/etl-workflow) that incorporate various tools while maintaining centralized control.
 
 ### When DuckDB is Not the Optimal Solution
 

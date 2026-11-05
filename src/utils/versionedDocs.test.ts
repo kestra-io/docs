@@ -16,6 +16,7 @@ import {
     isVersionedAssetRef,
     resolveRelativeAssetRef,
     resolveVersionedDocLink,
+    versionedDocLinkResolver,
     versionedAssetUrl,
     versionedSpecHref,
     versionedSpecSourceUrl,
@@ -233,6 +234,16 @@ describe("resolveVersionedDocLink", () => {
         expect(
             resolveVersionedDocLink("1.0", "tutorial", "../expressions/index.md#syntax"),
         ).toBe("/docs/1.0/expressions#syntax")
+    })
+
+    it("strips .mdx like .md", () => {
+        expect(
+            resolveVersionedDocLink(
+                "1.3",
+                "workflow-components/concurrency",
+                "../07.triggers/index.mdx#locked-triggers",
+            ),
+        ).toBe("/docs/1.3/workflow-components/triggers#locked-triggers")
     })
 
     it("clamps .. at the docs root", () => {
@@ -677,6 +688,30 @@ describe("isAssetShapedDocPath", () => {
     })
 })
 
+describe("versionedDocLinkResolver", () => {
+    const resolve = versionedDocLinkResolver("1.3", "tutorial/fundamentals", "https://api.kestra.io/v1")
+
+    it("re-roots page links under the version, absolute, keeping anchors", () => {
+        expect(resolve("../../01.quickstart/index.md")).toBe("https://kestra.io/docs/1.3/quickstart")
+        expect(resolve("../02.inputs/index.md#x")).toBe("https://kestra.io/docs/1.3/tutorial/inputs#x")
+        expect(resolve("./index.md")).toBe("https://kestra.io/docs/1.3/tutorial/fundamentals")
+    })
+
+    it("maps a colocated asset to its versioned API file", () => {
+        expect(resolve("./create-button.png")).toBe(
+            "https://api.kestra.io/v1/docs/docs/tutorial/fundamentals/create-button.png/versions/1.3.0",
+        )
+        expect(resolve("../okta/sso.png#zoom")).toBe(
+            "https://api.kestra.io/v1/docs/docs/tutorial/okta/sso.png/versions/1.3.0#zoom",
+        )
+    })
+
+    it("treats a .md or .mdx target as a page even though its extension is asset-shaped", () => {
+        expect(resolve("./x.md")).toBe("https://kestra.io/docs/1.3/tutorial/fundamentals/x")
+        expect(resolve("../../02.installation/index.mdx")).toBe("https://kestra.io/docs/1.3/installation")
+    })
+})
+
 describe("frontmatterField", () => {
     const md = `---
 title: "Add Inputs to Kestra Workflows"
@@ -735,6 +770,15 @@ description: This is a demo flow
     it("handles CRLF frontmatter", () => {
         const crlf = "---\r\ntitle: CRLF Title\r\n---\r\n# Body"
         expect(frontmatterField(crlf, "title")).toBe("CRLF Title")
+    })
+
+    it("returns undefined for a block scalar, whose value isn't on its line", () => {
+        const folded = `---\ntitle: T\ndescription: >\n  Folded over\n  two lines.\n---\n`
+        expect(frontmatterField(folded, "description")).toBeUndefined()
+        expect(frontmatterField(folded.replace(">", "|-"), "description")).toBeUndefined()
+        expect(frontmatterField(folded.replace(">", "|2-"), "description")).toBeUndefined()
+        expect(frontmatterField(folded.replace(">", ">+"), "description")).toBeUndefined()
+        expect(frontmatterField(folded, "title")).toBe("T")
     })
 })
 

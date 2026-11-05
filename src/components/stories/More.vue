@@ -6,7 +6,7 @@
                 <Card v-for="story in related.results" :key="story.id" :story />
             </div>
             <div class="bottom">
-                <Link href="/customers" text="See all stories" class="read-link" />
+                <Link href="/stories" text="See all stories" class="read-link" />
             </div>
         </div>
     </section>

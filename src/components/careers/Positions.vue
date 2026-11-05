@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
     import type { AshbyJob } from "~/utils/careers.ts"
-    import { jobPath, OPEN_APPLICATION_PATH } from "~/utils/careersPath.ts"
+    import { jobPath, OPEN_APPLICATION_URL } from "~/utils/careersPath.ts"
     import {
         searchDepartment,
         searchLocation,
@@ -118,7 +118,12 @@
                     >
                         Clear all filters
                     </button>
-                    <a :href="OPEN_APPLICATION_PATH" class="btn btn-primary">
+                    <a
+                        :href="OPEN_APPLICATION_URL"
+                        target="_blank"
+                        rel="noopener"
+                        class="btn btn-primary"
+                    >
                         Send an Open Application
                     </a>
                 </div>
@@ -131,7 +136,12 @@
                     with us.
                 </p>
                 <div class="no-results-actions">
-                    <a :href="OPEN_APPLICATION_PATH" class="btn btn-primary">
+                    <a
+                        :href="OPEN_APPLICATION_URL"
+                        target="_blank"
+                        rel="noopener"
+                        class="btn btn-primary"
+                    >
                         Send an Open Application
                     </a>
                 </div>

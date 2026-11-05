@@ -34,7 +34,7 @@ To fully harness the power of AI in development, it's crucial to think beyond in
 
 ### What are AI code generation pipelines?
 
-An AI code generation pipeline is an automated, multi-stage workflow that uses AI to generate, test, review, and deploy code. Unlike a simple AI assistant that suggests code snippets in an IDE, a full pipeline automates the end-to-end process. This typically includes stages for pre-checks, code generation, quality and security reviews, and finally, integration and deployment. The goal is to create a reliable, repeatable system where [AI agents](https://kestra.io/docs/ai-tools/ai-agents) can perform complex coding tasks with minimal human intervention, governed by a robust orchestration layer. This approach moves from AI-assisted coding to a more comprehensive model of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration).
+An AI code generation pipeline is an automated, multi-stage workflow that uses AI to generate, test, review, and deploy code. Unlike a simple AI assistant that suggests code snippets in an IDE, a full pipeline automates the end-to-end process. This typically includes stages for pre-checks, code generation, quality and security reviews, and finally, integration and deployment. The goal is to create a reliable, repeatable system where [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) can perform complex coding tasks with minimal human intervention, governed by a robust orchestration layer. This approach moves from AI-assisted coding to a more comprehensive model of [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration).
 
 ### Why are AI code generation pipelines essential for modern development?
 
@@ -66,7 +66,7 @@ The most immediate impact of AI code generation is a dramatic reduction in the t
 
 ### Automating code reviews and release notes
 
-The review process can be a significant bottleneck. AI can help by generating summaries of changes for pull requests, suggesting reviewers, and even performing a preliminary review to flag potential issues. After a successful merge, the same AI capabilities can be used to draft release notes, further reducing manual effort. Tools like Kestra's [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) can be orchestrated to perform these text-generation tasks as part of the post-merge workflow.
+The review process can be a significant bottleneck. AI can help by generating summaries of changes for pull requests, suggesting reviewers, and even performing a preliminary review to flag potential issues. After a successful merge, the same AI capabilities can be used to draft release notes, further reducing manual effort. Tools like Kestra's [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot) can be orchestrated to perform these text-generation tasks as part of the post-merge workflow.
 
 ### Handling increased code volume efficiently
 
@@ -112,7 +112,7 @@ There are several ways to integrate AI into your workflows. The most direct meth
 
 ### Examples from large-scale data pipelines
 
-Leading tech companies are already leveraging AI in their complex pipelines. Meta, for instance, used AI to map undocumented dependencies in their vast data processing systems. At Apple, Kestra is used to orchestrate [large-scale machine learning and data pipelines](https://kestra.io/customers/apple), where the principles of automated generation and validation are critical. These examples show that orchestrating complex, polyglot environments is key to successfully applying AI at scale, a task for which a universal orchestrator is perfectly suited when building [ETL pipelines](https://kestra.io/docs/how-to-guides/etl-pipelines).
+Leading tech companies are already leveraging AI in their complex pipelines. Meta, for instance, used AI to map undocumented dependencies in their vast data processing systems. At Apple, Kestra is used to orchestrate [large-scale machine learning and data pipelines](https://kestra.io/stories/apple), where the principles of automated generation and validation are critical. These examples show that orchestrating complex, polyglot environments is key to successfully applying AI at scale, a task for which a universal orchestrator is perfectly suited when building [ETL pipelines](https://kestra.io/docs/how-to-guides/etl-pipelines).
 
 ## Benefits and Challenges of AI Code Generation Pipelines
 
@@ -128,7 +128,7 @@ A common challenge is that the increased code output from AI-assisted developers
 
 ### Future of AI in software development
 
-The evolution of AI in software development is heading towards more autonomous systems. We are moving into an era of [multi-agent collaboration](https://kestra.io/resources/ai/multi-agent-collaboration-evolving-orchestration), where specialized AI agents will handle different aspects of the development lifecycle. These agents will require structured knowledge and skills to operate effectively, highlighting the growing importance of platforms that provide robust [agent skills](https://kestra.io/docs/ai-tools/agent-skills) and orchestration capabilities.
+The evolution of AI in software development is heading towards more autonomous systems. We are moving into an era of [multi-agent collaboration](https://kestra.io/resources/ai/multi-agent-collaboration-evolving-orchestration), where specialized AI agents will handle different aspects of the development lifecycle. These agents will require structured knowledge and skills to operate effectively, highlighting the growing importance of platforms that provide robust [agent skills](https://kestra.io/docs/develop-with-ai/agent-skills) and orchestration capabilities.
 
 ## Kestra: The Orchestration Control Plane for AI Code Generation
 
@@ -136,7 +136,7 @@ Kestra is uniquely positioned to serve as the backbone for AI code generation pi
 
 Code generation is one AI workload among many, which is [why teams end up putting every AI workload on the same scheduler](/resources/ai/ai-orchestration) instead of running a separate tool per use case.
 
-With native [AI tools](https://kestra.io/docs/ai-tools) like the AI Copilot and autonomous agents, Kestra is not just an orchestrator but an active participant in the AI-driven development lifecycle. It provides the unified control plane needed to manage these complex workflows, from data ingestion for RAG systems to the final deployment of AI-generated code. This is [why Kestra](https://kestra.io/docs/why-kestra) is a powerful choice for teams looking to build the next generation of software delivery pipelines.
+With native [AI tools](https://kestra.io/docs/develop-with-ai) like the AI Copilot and autonomous agents, Kestra is not just an orchestrator but an active participant in the AI-driven development lifecycle. It provides the unified control plane needed to manage these complex workflows, from data ingestion for RAG systems to the final deployment of AI-generated code. This is [why Kestra](https://kestra.io/docs/why-kestra) is a powerful choice for teams looking to build the next generation of software delivery pipelines.
 
 ## Conclusion
 

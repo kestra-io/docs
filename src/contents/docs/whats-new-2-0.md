@@ -13,7 +13,7 @@ Kestra 2.0 is a major release introducing AI-native orchestration, redesigned go
   <iframe src="https://www.youtube.com/embed/UYR8a2inCqc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-For breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx). For a hands-on walkthrough with real command output, see the [migration tutorial](./11.migration-guide/v2.0.0/migration-tutorial/index.mdx).
+For breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx). For a hands-on walkthrough with real command output, see the [migration tutorial](./11.migration-guide/v2.0.0/00.migration-tutorial/index.mdx).
 
 ## AI
 
@@ -21,7 +21,7 @@ Native AI capabilities built into the platform for flow authoring, agent orchest
 
 ### AI Copilot
 
-The [AI Copilot](./ai-tools/01.ai-copilot/index.md) has been redesigned as a persistent sidebar with three modes:
+The [AI Copilot](./develop-with-ai/01.ai-copilot/index.md) has been redesigned as a persistent sidebar with three modes:
 
 - **Ask** — answers questions about Kestra using docs-grounded responses
 - **Edit** — generates and iteratively refines flow YAML with a confirmation step before applying changes
@@ -31,15 +31,15 @@ Context pills attach the resource you are viewing automatically. The Copilot rea
 
 ### AI Agents
 
-[AI Agents](./ai-tools/05.ai-agents/index.md) let you build agentic pipelines using LLM task orchestration within flows. Agents emit usage metrics so you can track token consumption per execution.
+[AI Agents](./ai-orchestration/01.ai-agents/index.md) let you build agentic pipelines using LLM task orchestration within flows. Agents emit usage metrics so you can track token consumption per execution.
 
 ### AI RAG Workflows
 
-[RAG Workflows](./ai-tools/07.ai-rag-workflows/index.md) provide native support for retrieval-augmented generation pipelines, including vector store integration and chunking tasks.
+[RAG Workflows](./ai-orchestration/02.ai-rag-workflows/index.md) provide native support for retrieval-augmented generation pipelines, including vector store integration and chunking tasks.
 
 ### MCP Server and MCP Tool Trigger
 
-The [Kestra MCP server](./ai-tools/03.mcp-server/index.md) exposes flows as tools AI agents can call. The complementary [MCP Tool Trigger](./05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) lets flows be invoked directly by MCP-compatible agents. [Agent Skills](./ai-tools/04.agent-skills/index.md) extend this with reusable tool definitions.
+A [flow MCP server](./ai-orchestration/03.mcp-server/index.md) exposes flows as tools AI agents can call. The complementary [MCP Tool Trigger](./05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md) lets flows be invoked directly by MCP-compatible agents. [Agent Skills](./develop-with-ai/03.agent-skills/index.md) extend this with reusable tool definitions.
 
 ---
 
@@ -99,7 +99,7 @@ New controls for what flows can access and how they are governed.
 
 ### HTTP task URL filtering
 
-[HTTP task filtering](./10.administrator-guide/security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
+[HTTP task filtering](./security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
 
 ---
 
@@ -165,7 +165,7 @@ A new `FORM` input type groups related inputs into a labeled multi-step wizard i
 
 ### `kestractl` IAM commands
 
-The `kestractl` CLI now supports IAM management: roles, role bindings, service accounts, and invitations. See the [kestractl reference](./kestra-cli/kestractl/index.md).
+The [`kestractl`](./kestra-cli/kestractl/index.md#installation) CLI now supports IAM management: roles, role bindings, service accounts, and invitations. See the [kestractl reference](./kestra-cli/kestractl/index.md).
 
 ### Plugin Artifacts
 
@@ -182,9 +182,9 @@ Changes to deployment, storage, and runtime behavior.
 Four new task runners ship in 2.0 for workloads that require direct VM control:
 
 - [AWS EC2 Task Runner](./task-runners/04.types/05.aws-ec2-task-runner/index.md) — runs commands on EC2 via AWS Systems Manager Run Command; no SSH required. Supports Spot instances and reattaches mid-run if the Kestra Worker restarts.
-- [Azure Virtual Machine Task Runner](./task-runners/04.types/07.azure-virtualmachine-task-runner/index.md) — runs commands on Azure VMs via the Azure Run Command API; no SSH and no public IP required.
-- [Google Compute Engine Task Runner](./task-runners/04.types/09.google-computeengine-task-runner/index.md) — runs commands directly on a Compute Engine VM as a startup script; no SSH or IAP tunnel.
-- [Huawei Cloud CCI Task Runner](./task-runners/04.types/11.huawei-cci-task-runner/index.md) (EE) — runs tasks as bare Pods on Huawei Cloud CCI with OBS file staging, flavor-tier resource sizing, and AK/SK or temporary credential authentication.
+- [Azure Virtual Machine Task Runner](./task-runners/04.types/08.azure-virtualmachine-task-runner/index.md) — runs commands on Azure VMs via the Azure Run Command API; no SSH and no public IP required.
+- [Google Compute Engine Task Runner](./task-runners/04.types/10.google-computeengine-task-runner/index.md) — runs commands directly on a Compute Engine VM as a startup script; no SSH or IAP tunnel.
+- [Huawei Cloud CCI Task Runner](./task-runners/04.types/12.huawei-cci-task-runner/index.md) (EE) — runs tasks as bare Pods on Huawei Cloud CCI with OBS file staging, flavor-tier resource sizing, and AK/SK or temporary credential authentication.
 
 ### Worker Groups 2.0 (EE)
 

@@ -10,7 +10,7 @@ Contribute to the Kestra open-source project.
 
 ## Contribute to the Kestra codebase
 
-You can contribute to Kestra in many ways, depending on your skills and interests. The issues with the label `good first issue` are a great place to start and get familiar with the codebase. Check out the current list of [good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen&type=issues) and start contributing.
+You can contribute to Kestra in many ways, depending on your skills and interests. The issues with the label `good first issue` are a great place to start and get familiar with the codebase. Check out the current list of [good first issues](https://github.com/search?q=org%3Akestra-io+label%3A%22good+first+issue%22+is%3Aopen+no%3Aassignee&type=issues&p=1) and start contributing.
 
 
 <div class="video-container">

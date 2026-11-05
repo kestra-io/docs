@@ -147,8 +147,8 @@ This architectural pattern delivers significant value across various industries 
 
 *   **SaaS Provider Backends:** Automate customer-specific data processing, reporting, and integration workflows while maintaining strict data isolation. This is a core use case for [workflow orchestration for software providers](/use-cases/software-providers).
 *   **Internal Developer Platforms (IDPs):** Provide engineering teams with self-service, isolated environments for CI/CD, testing, and application deployment on a shared platform infrastructure.
-*   **Public Sector and Regulated Industries:** Manage workflows for different business units or clients while enforcing strict compliance and auditability. [Dataport](/customers/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud with Kestra, a government-grade orchestration control plane.
-*   **Shared Platforms at Scale:** [CAGIP, Crédit Agricole's IT production arm](/customers/credit-agricole), transformed infrastructure operations and scaled data workflows across more than 100 clusters, and [Acxiom](/customers/acxiom) modernized its Big Data orchestration with Kestra while keeping its existing DevOps and GitOps practices.
+*   **Public Sector and Regulated Industries:** Manage workflows for different business units or clients while enforcing strict compliance and auditability. [Dataport](/stories/dataport), Germany's public-sector IT services provider, standardized API-driven cloud orchestration on private cloud with Kestra, a government-grade orchestration control plane.
+*   **Shared Platforms at Scale:** [CAGIP, Crédit Agricole's IT production arm](/stories/credit-agricole), transformed infrastructure operations and scaled data workflows across more than 100 clusters, and [Acxiom](/stories/acxiom) modernized its Big Data orchestration with Kestra while keeping its existing DevOps and GitOps practices.
 *   **Cost Reduction:** Consolidate disparate automation scripts and scheduling tools onto a single platform, reducing infrastructure footprint and operational overhead.
 
 ## Related concepts

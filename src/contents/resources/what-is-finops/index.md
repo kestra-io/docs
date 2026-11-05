@@ -67,7 +67,7 @@ By giving teams visibility into their cloud spend, FinOps allows them to make sm
 FinOps creates a culture of financial accountability. When engineering teams can see the cost implications of their architectural choices in near-real-time, they are naturally incentivized to build more efficient systems. This leads to better forecasting, more predictable budgets, and a significant reduction in wasted cloud spend.
 
 ### Leveraging automation and AI-powered insights for optimization
-Modern FinOps practices leverage automation to continuously monitor and optimize cloud environments. With the rise of AI, teams can now use [AI agents](https://kestra.io/docs/ai-tools/ai-agents) to analyze complex usage patterns, predict future costs, and even take automated actions to right-size resources or purchase savings plans, further enhancing efficiency.
+Modern FinOps practices leverage automation to continuously monitor and optimize cloud environments. With the rise of AI, teams can now use [AI agents](https://kestra.io/docs/ai-orchestration/ai-agents) to analyze complex usage patterns, predict future costs, and even take automated actions to right-size resources or purchase savings plans, further enhancing efficiency.
 
 ## Implementing FinOps: Practices and Tools for the Agentic Era
 
@@ -75,7 +75,7 @@ Modern FinOps practices leverage automation to continuously monitor and optimize
 While FinOps was born in the public cloud, its principles are applicable to any technology service with a variable cost model. This includes SaaS subscriptions, data platforms like Snowflake or Databricks, and even internal data center resources that are billed back to business units. The core idea is to bring financial discipline to any consumption-based IT service.
 
 ### Collaborative teams: Unifying finance, operations, and engineering
-Successful FinOps implementation relies on creating cross-functional teams. These "FinOps teams" typically include a mix of finance professionals, cloud engineers, and product managers. They work together to set standards, define KPIs, and build the tools and processes that empower the rest of the organization to manage their cloud spend effectively. As seen in the [Víssimo customer story](https://kestra.io/customers/vissimo-group), a formal FinOps initiative can be key to scaling sustainably.
+Successful FinOps implementation relies on creating cross-functional teams. These "FinOps teams" typically include a mix of finance professionals, cloud engineers, and product managers. They work together to set standards, define KPIs, and build the tools and processes that empower the rest of the organization to manage their cloud spend effectively. As seen in the [Víssimo customer story](https://kestra.io/stories/vissimo-group), a formal FinOps initiative can be key to scaling sustainably.
 
 ### Kestra: Orchestrating FinOps for the agentic era
 A mature FinOps practice requires robust automation and orchestration. This is where Kestra provides a powerful control plane. By defining FinOps processes as declarative YAML workflows, organizations can automate tasks like:
@@ -83,7 +83,7 @@ A mature FinOps practice requires robust automation and orchestration. This is w
 *   **Cost and Usage Reporting**: Schedule workflows to ingest billing data from tools like [CloudQuery](https://kestra.io/blogs/2024-03-12-introduction-to-cloudquery) and generate custom cost reports.
 *   **Anomaly Detection**: Automatically monitor spending patterns and trigger alerts when costs spike unexpectedly.
 *   **Resource Optimization**: Run scheduled jobs to identify and terminate idle resources, downsize underutilized instances, or apply cost-saving tags.
-*   **Governance and Compliance**: Enforce budget policies and tagging standards as part of your [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) deployment pipelines.
+*   **Governance and Compliance**: Enforce budget policies and tagging standards as part of your [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) deployment pipelines.
 
 Here is an example Kestra flow that uses the AWS CLI to find untagged EC2 instances and sends a report to Slack:
 

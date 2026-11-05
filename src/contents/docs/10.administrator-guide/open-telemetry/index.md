@@ -76,7 +76,7 @@ tasks:
           pass  # spans here appear as children of the Kestra task span
 ```
 
-`TRACEPARENT` is recognized by all major OTel SDKs and works the same way for Node.js, Bash, and any other script type. The variable is also usable in HTTP task headers and any other [expression-capable property](../../expressions/index.md#default-execution-context-variables).
+`TRACEPARENT` is recognized by all major OTel SDKs and works the same way for Node.js, Bash, and any other script type. The variable is also usable in HTTP task headers and any other [expression-capable property](../../expressions/01.context/index.mdx#default-execution-context-variables).
 
 ### Example: Jaeger with Docker Compose
 
@@ -133,17 +133,38 @@ kestra:
   traces:
     root: DEFAULT
     categories:
-      io.kestra.core.runners.Executor: DISABLED
+      io.kestra.executor.DefaultExecutor: DISABLED
 ```
 
 #### Supported categories
 
 | Category                               | Description                                       |
 |----------------------------------------|---------------------------------------------------|
-| `io.kestra.core.runners.Executor`      | Spans for each message in the execution queue     |
+| `io.kestra.executor.DefaultExecutor`   | Spans for each message in the execution queue     |
 | `io.kestra.core.runners.Worker`        | Spans for each runnable task execution            |
 | `io.kestra.plugin.core.flow.Subflow`   | Spans for each `Subflow` task execution           |
 | `io.kestra.plugin.core.flow.Loop` | Spans for each `Loop` sub-execution     |
+
+### Span attributes
+
+Kestra attaches `kestra.*` attributes to spans. The attributes available depend on the span type.
+
+| Attribute | Worker task spans | Executor spans | Subflow / Loop spans |
+|---|---|---|---|
+| `kestra.source` | ✓ | ✓ | ✓ |
+| `kestra.namespace` | ✓ | ✓ | ✓ |
+| `kestra.flowId` | ✓ | ✓ | ✓ |
+| `kestra.executionId` | ✓ | ✓ | ✓ |
+| `kestra.tenantId` | When set | When set | When set |
+| `kestra.taskId` | ✓ | — | — |
+| `kestra.uid` | ✓ | — | — |
+| `kestra.state` | ✓ | ✓ | — |
+
+- **Worker task spans** are emitted by `io.kestra.core.runners.Worker` for each runnable task execution. `kestra.taskId` is the task's YAML-defined `id` (for example, `send-alert` or `transform-data`), making spans from multiple tasks of the same type distinguishable without additional API lookups. `kestra.uid` is the task run UID. `kestra.state` is the final state of the task run, such as `SUCCESS` or `FAILED`.
+- **Executor spans** are emitted by `io.kestra.executor.DefaultExecutor` for execution-level orchestration messages. No single task is in scope at this level, so `kestra.taskId` and `kestra.uid` are not set. `kestra.state` is the execution state when the Executor received the message, not the state the message produced. The first Executor span of an execution carries `CREATED`, and the terminal state, such as `SUCCESS` or `FAILED`, appears on the last Executor spans.
+- **Subflow / Loop spans** are emitted by `io.kestra.plugin.core.flow.Subflow` and `io.kestra.plugin.core.flow.Loop` for child execution boundaries. These spans carry execution-level attributes only; `kestra.taskId`, `kestra.uid`, and `kestra.state` are not set.
+
+An execution can have more than one Executor span with its terminal state, and a restarted execution reaches a terminal state again under the same `kestra.executionId`. Sampling, exporter queues, and disabled trace categories can also drop spans. Use `kestra.state` to filter and inspect traces, not to count executions.
 
 ## Metrics
 

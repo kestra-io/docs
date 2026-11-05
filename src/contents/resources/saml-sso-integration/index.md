@@ -209,6 +209,6 @@ SSO is only the first step. True security requires enforcing the principle of le
 -   [Keycloak Workflow Integration](/resources/infrastructure/keycloak-workflow-integration)
 -   [RBAC: Role-Based Access Control Explained](/resources/infrastructure/rbac)
 -   [Audit Logs Orchestration](/resources/infrastructure/audit-logs-orchestration)
--   [Workflow Governance](/resources/infrastructure/workflow-governance)
+-   [Workflow Governance](/resources/ai/ai-governance-workflows)
 -   [Workflow Secret Management](/resources/infrastructure/workflow-secret-management)
 -   [Kestra SSO configuration](/docs/enterprise/auth/sso)

@@ -13,7 +13,7 @@ First, let us remember the organization of a plugin project:
 
 - The Gradle project can contain several plugins, we call it a group of plugins.
 - The package in which a plugin is written in is called a sub-group of plugins. Sometimes, there is only one sub-group, in which case the group and the sub-group are the same.
-- Each class is a plugin that provides one task, trigger, condition, etc.
+- Each class is a plugin that provides one task, trigger, etc.
 
 The plugin documentation will be used on the Kestra website and the Kestra UI.
 
@@ -213,12 +213,12 @@ To use the JSON Schema in Visual Studio Code (VSCode), follow these steps:
 ```json
 {
   "yaml.schemas": {
-    "https://your-kestra-instance.com/api/v1/main/schemas/flow.json": "/*.yaml"
+    "https://your-kestra-instance.com/api/v1/plugins/schemas/flow": "/*.yaml"
   }
 }
 ```
 
-Replace `https://your-kestra-instance.com/api/v1/main/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
+Replace `https://your-kestra-instance.com/api/v1/plugins/schemas/flow` with the actual URL of your Kestra JSON Schema.
 
 ### Example of Using JSON Schema in Flow Editor
 
@@ -240,7 +240,7 @@ When you open this flow in the editor, the JSON Schema will validate the structu
 The JSON Schema for Kestra flows is available at the following URL:
 
 ```plaintext
-https://your-kestra-instance.com/api/v1/main/schemas/flow.json
+https://your-kestra-instance.com/api/v1/plugins/schemas/flow
 ```
 
 Replace `https://your-kestra-instance.com` with the actual URL of your Kestra instance.

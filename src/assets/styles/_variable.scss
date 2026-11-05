@@ -120,4 +120,13 @@ $gutters: (
     5: $spacer * 3,
 );
 
+// Colours with no token in the generated _color-palette.scss; the dark-* ones
+// stay dark in both themes. The vRA pages' own palette is in their _shared.scss.
+$dark-bg-control: #23252e;
+$dark-raised: #2e2e3c;
+$dark-border-strong: #424256;
+$dark-text-secondary: #adadbf;
+$dark-accent: #9869f7;
+$copied-green: #6bd37a;
+
 @import "breakpoints";

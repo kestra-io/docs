@@ -5,7 +5,6 @@
                 <NuxtImg
                     src="/landing/onezero/one.png"
                     alt="1-0"
-                    format="webp"
                     loading="lazy"
                     class="img-fluid"
                     data-usal="zoomin"

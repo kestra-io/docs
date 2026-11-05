@@ -35,7 +35,7 @@ The primary objectives of underwriting management include:
 *   **Accurate Pricing:** Developing models and guidelines to ensure that premiums, interest rates, or prices accurately reflect the level of risk.
 *   **Profitability and Stability:** Balancing risk assumption with financial returns to maintain a profitable and stable portfolio.
 *   **Compliance and Governance:** Ensuring all underwriting activities adhere to regulatory requirements and internal policies.
-*   **Operational Efficiency:** Optimizing the [workflow management](/resources/infrastructure/workflow-management) to improve speed, accuracy, and customer experience.
+*   **Operational Efficiency:** Optimizing the [workflow management](/resources/infrastructure/workflow-orchestration-tools) to improve speed, accuracy, and customer experience.
 
 An underwriting manager leads this function, guiding a team of underwriters, setting performance targets, and adapting the strategy to market changes. They are the bridge between high-level financial strategy and the day-to-day decisions that build the company's risk portfolio.
 
@@ -179,7 +179,7 @@ Modernizing underwriting requires more than just technology; it demands a strate
 *   **Embrace Data and Analytics:** Make data-driven decision-making the cornerstone of your underwriting strategy. Continuously evaluate the performance of your risk models and use insights to refine your policies.
 *   **Foster Cross-Team Collaboration:** Break down silos between underwriting, data science, IT, and business teams. A collaborative approach ensures that automation initiatives are aligned with business goals and technically feasible.
 *   **Implement Continuous Improvement:** Treat your underwriting workflow as a living process. Use the data and logs from your orchestration platform to identify bottlenecks, refine rules, and continuously optimize for speed and accuracy.
-*   **Prioritize Governance and Compliance:** Build compliance checks directly into your automated workflows. Strong [workflow governance](/resources/infrastructure/workflow-governance) ensures that every decision is auditable and that policies are applied consistently, reducing regulatory risk.
+*   **Prioritize Governance and Compliance:** Build compliance checks directly into your automated workflows. Strong [workflow governance](/resources/ai/ai-governance-workflows) ensures that every decision is auditable and that policies are applied consistently, reducing regulatory risk.
 
 ## The Evolving Role of Underwriting Professionals
 

@@ -35,13 +35,13 @@ Kestra 2.0 moves task run outputs to a dedicated storage layer and changes what 
 If your integration reads `taskRunList[*].outputs` from the execution response, use the dedicated outputs endpoint instead:
 
 ```bash
-GET /api/v1/{tenant}/outputs/{executionId}/{taskRunId}
+GET /api/v1/{tenant}/outputs/tasks/{executionId}/{taskRunId}
 ```
 
 Or to list all task output information for an execution:
 
 ```bash
-GET /api/v1/{tenant}/outputs/{executionId}
+GET /api/v1/{tenant}/outputs/tasks/{executionId}
 ```
 
 ## Before and after
@@ -82,6 +82,6 @@ Kestra does not require a migration script for existing task run outputs. The ba
 
 ## Migration steps
 
-1. If your code reads `taskRunList[*].outputs` from a single execution response, switch to `GET /api/v1/{tenant}/outputs/{executionId}/{taskRunId}`.
+1. If your code reads `taskRunList[*].outputs` from a single execution response, switch to `GET /api/v1/{tenant}/outputs/tasks/{executionId}/{taskRunId}`.
 2. If your code reads `taskRunList` from a paginated execution list response, switch to fetching individual executions by ID when task run detail is needed.
 3. If your code checks for `deleted: false` in the response, remove that check — the field is no longer returned.

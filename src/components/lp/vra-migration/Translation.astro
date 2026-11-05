@@ -1,0 +1,242 @@
+---
+import { Icon } from "astro-icon/components"
+
+import KestraMark from "./assets/kestra-mark.svg"
+
+interface Props {
+    heading?: string
+    sub?: string
+    /** Header of the left column, the system being left. */
+    fromLabel?: string
+    rows?: { from: string; to: string }[]
+}
+
+/* A condensed cut of the guide's capability map (Appendix A). Keep the rows in
+ * step with it: the map is what the sales team hands the architect. */
+const vraRows = [
+    {
+        from: "Service Broker catalog items and request forms",
+        to: "Kestra Apps as the self-service form, or your ITSM portal calling Kestra",
+    },
+    {
+        from: "Cloud templates",
+        to: "A flow per template pattern, provisioning through Terraform or the vSphere and Nutanix plugins",
+    },
+    {
+        from: "vRO workflows and actions",
+        to: "Flows and subflows, with the JavaScript moved to Python, PowerShell or Shell tasks",
+    },
+    {
+        from: "Event subscriptions and vRO schedules",
+        to: "Triggers: webhook, message queue, another flow, or a schedule",
+    },
+    {
+        from: "Configuration elements and SecureStrings",
+        to: "KV Store and secrets",
+    },
+    {
+        from: "Resource elements and script modules",
+        to: "Namespace files, minus the modules a plugin already covers",
+    },
+    {
+        from: "Deployment records and inventory",
+        to: "Kestra Assets, or the CMDB you already run",
+    },
+    {
+        from: "Resource actions: resize, snapshot, power",
+        to: "Flows run against the asset or the CMDB record",
+    },
+    {
+        from: "Approval policies",
+        to: "A human approval step in the flow, or your ITSM approval",
+    },
+]
+
+const {
+    heading = "What vRA and vRO become in Kestra",
+    sub = "A starting map. Many objects are retired or merged before anything is converted.",
+    fromLabel = "vRA / vRO",
+    rows = vraRows,
+} = Astro.props
+---
+
+<section class="translation">
+    <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
+        <h2>{heading}</h2>
+        <p>{sub}</p>
+    </div>
+
+    <table data-usal="fade-u delay-100 duration-500 ease-out">
+        <thead>
+            <tr>
+                <th scope="col">{fromLabel}</th>
+                <th scope="col" class="arrow-col">
+                    <span class="visually-hidden">becomes</span>
+                </th>
+                <th scope="col">
+                    <span class="brand">
+                        <KestraMark class="kestra-mark" aria-hidden="true" />
+                        Kestra
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {
+                rows.map((row) => (
+                    <tr>
+                        <th scope="row">{row.from}</th>
+                        <td class="arrow-col" aria-hidden="true">
+                            <Icon name="mdi:arrow-right" class="arrow" />
+                        </td>
+                        <td>{row.to}</td>
+                    </tr>
+                ))
+            }
+        </tbody>
+    </table>
+</section>
+
+<style lang="scss">
+    .translation {
+        padding: 5rem 1rem;
+        background-color: #ffffff;
+    }
+
+    .head {
+        max-width: 900px;
+        margin: 0 auto 2.5rem;
+        text-align: center;
+
+        h2 {
+            margin: 0 0 2rem;
+            color: var(--lp-content-primary);
+            font-size: 1.875rem;
+            font-weight: 600;
+            line-height: 1.0417;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+    }
+
+    table {
+        width: 100%;
+        max-width: 960px;
+        margin-inline: auto;
+        overflow: hidden;
+        border: 1px solid var(--lp-purple);
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 2px 3px 16px 0 var(--lp-shadow-light);
+    }
+
+    thead th {
+        padding: 1rem 1.5rem;
+        background-color: var(--lp-bg-dark);
+        color: #ffffff;
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    .brand {
+        display: inline-flex;
+        vertical-align: middle;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Not `.mark`: Bootstrap styles that class as a highlight. */
+    .kestra-mark {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+    tbody th,
+    tbody td {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--lp-border-subtle);
+        font-size: $font-size-md;
+        line-height: 1.5;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    tbody tr:first-child > * {
+        border-top: none;
+    }
+
+    tbody th {
+        width: 40%;
+        color: var(--lp-content-primary);
+        font-weight: 600;
+    }
+
+    tbody td {
+        color: var(--lp-content-secondary);
+    }
+
+    /* Scoped to table so it outranks the `tbody td` rules above. */
+    table .arrow-col {
+        width: 2.5rem;
+        padding-inline: 0;
+        text-align: center;
+    }
+
+    .arrow {
+        width: 20px;
+        height: 20px;
+        margin-top: 0.125rem;
+        color: var(--lp-purple);
+    }
+
+    /* Below md each row stacks: the vRA object over what it becomes, so the
+     * Kestra side never gets squeezed into a third of a phone screen. */
+    @include media-breakpoint-down(md) {
+        thead {
+            display: none;
+        }
+
+        tbody,
+        tr,
+        tbody th,
+        tbody td {
+            display: block;
+            width: auto;
+        }
+
+        tr + tr {
+            border-top: 1px solid var(--lp-border-subtle);
+        }
+
+        tbody th,
+        tbody td {
+            border-top: none;
+        }
+
+        tbody th {
+            padding: 1rem 1.25rem 0.25rem;
+        }
+
+        tbody td {
+            padding: 0 1.25rem 1rem;
+        }
+
+        table .arrow-col {
+            display: none;
+        }
+    }
+</style>

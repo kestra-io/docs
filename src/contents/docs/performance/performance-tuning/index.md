@@ -22,13 +22,21 @@ Before you read on, please familiarize yourself with the [Kestra architecture](.
 
 The [Worker](../../08.architecture/02.server-components/index.md#worker) executes your tasks, and tuning it depends on the type of workloads you run.
 
-The most useful configuration is the number of Worker threads, which is 8 times the number of available cores by default.
+The most useful configuration is the number of Worker threads, which is 8 times the number of available processors by default. `kestra.allocated-cpu-cores` doesn't change this default.
 
 You can increase it to boost parallel task execution. Depending on how you start Kestra, use one of the following methods:
 
 - If using the standalone, set `--worker-thread` in the standalone command line.
 - If using separate component processes, set `--thread` in the Worker command line.
 - If using our Helm chart, set `deployments.worker.workerThreads` in the values.
+
+A Worker also holds a buffer of jobs it has already fetched while all its threads are busy. Set its size with `kestra.worker.job-buffer-size`. It defaults to the thread count, which is also its maximum. A smaller buffer leaves more of the backlog with the Worker Controller, so newly started Workers can pick it up, at the cost of some dispatch throughput for short tasks. `0` makes a Worker request a job only when a thread is idle.
+
+```yaml
+kestra:
+  worker:
+    job-buffer-size: 0
+```
 
 ## JDBC backend
 
@@ -68,14 +76,15 @@ You can configure the number of threads used by the Executor with the following 
 
 ```yaml
 kestra:
-  jdbc:
-    executor:
-      thread-count: 0
+  executor:
+    thread-count: 0
 ```
 
-By default, it's 0, which means the number of available CPUs. Two thread pools are started, effectively using 2 times the number of available CPUs by default.
+The Executor starts two thread pools of this size: one for execution events and one for worker task results. The default, `0`, sizes each pool to the number of [allocated CPU cores](../../configuration/02.runtime-and-storage/index.md#allocated-cpu-cores), with a minimum of 4.
 
 ## MySQL-specific tuning
+
+Before tuning MySQL for throughput, confirm the server meets Kestra's [MySQL settings](../../10.administrator-guide/00.requirements/index.md#mysql-settings), including the required `READ COMMITTED` transaction isolation level.
 
 If you run the JDBC backend on MySQL, you may see meaningfully lower executor throughput than on PostgreSQL on comparable hardware, even after tuning the JDBC queue settings above. This comes from a MySQL server default, not from the JDBC queue itself.
 

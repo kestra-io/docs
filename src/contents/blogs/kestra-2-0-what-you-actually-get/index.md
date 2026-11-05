@@ -81,7 +81,7 @@ One execution, one audit trail: an event, an AI step, a human decision, and a re
 
 ![The demo flow: an incoming_batch trigger, an assess_batch AI agent step running on Gemini, create_case, approval, and a load_approved_batch Python task on Kubernetes](./demo-flow.png)
 
-A webhook delivers a batch of data. An [AI agent](/docs/ai-tools/ai-agents), running as a task inside the flow, assesses it: right format, plausible row count, safe to load? Agents do not always get this right. Sometimes they hallucinate. So the flow does not act on the answer. It opens a case and pauses.
+A webhook delivers a batch of data. An [AI agent](/docs/ai-orchestration/ai-agents), running as a task inside the flow, assesses it: right format, plausible row count, safe to load? Agents do not always get this right. Sometimes they hallucinate. So the flow does not act on the answer. It opens a case and pauses.
 
 A human opens the case. The agent has written the description itself: more rows than expected, a missing column, an extra column, recommendation to skip. The human agrees, resolves the case with *No action needed*, and resumes the execution. A Python script runs on a [Kubernetes task runner](/docs/task-runners/overview) in a fresh pod and, because the human agreed with the agent, loads nothing. In a second run where the data was clean, the results are viewable directly in Kestra.
 
@@ -99,11 +99,11 @@ The hard part is the other direction. Agents that create real value reach across
 
 ![MCP three ways: the flow calls tools, AI clients inspect flows, a flow becomes a tool](./mcp-three-ways.png)
 
-[MCP](/docs/ai-tools/mcp-server) shows up three ways in 2.0, all under the same rules.
+[MCP](/docs/ai-orchestration/mcp-server) shows up three ways in 2.0, all under the same rules.
 
 A flow can call external MCP tools, with the choice logged and an approval gate in front if you want one.
 
-Claude, Cursor or Codex can inspect your flows, executions and logs in natural language, and with Kestra's [Agent Skills](/docs/ai-tools/agent-skills) installed they write flows that work first time, because they know how Kestra works rather than guessing from training data.
+Claude, Cursor or Codex can inspect your flows, executions and logs in natural language, and with Kestra's [Agent Skills](/docs/develop-with-ai/agent-skills) installed they write flows that work first time, because they know how Kestra works rather than guessing from training data.
 
 And the one that is least obvious and matters most: **any flow becomes a tool.** [One trigger](/docs/workflow-components/triggers/mcp-tool-trigger) publishes it as a named, typed tool. An agent discovers it and calls it. The entire process you deployed as YAML is now callable from outside, with namespace-scoped access control, versioned definitions, an audit log on every call, and human approval where it matters. The protocol is the easy part. The architecture decides what an agent may reach, and proves afterwards what it reached.
 

@@ -165,7 +165,7 @@ Hybrid is the default for any system that serves both analytical and operational
 - **ML training**: most training pipelines run on bounded historical data and do not benefit from streaming input.
 - **Historical backfills**: recomputing a year of aggregates is a batch job by definition, regardless of how the live pipeline is implemented.
 - **Regulatory exports**: formal deliverables to regulators on a fixed schedule.
-- **Classic ETL**: source-to-warehouse pipelines feeding BI tools that refresh hourly or daily — the core of most [data pipeline](/resources/data/data-pipeline) work.
+- **Classic ETL**: source-to-warehouse pipelines feeding BI tools that refresh hourly or daily — the core of most [data pipeline](/resources/data/create-data-pipeline) work.
 
 ### Streaming-first
 

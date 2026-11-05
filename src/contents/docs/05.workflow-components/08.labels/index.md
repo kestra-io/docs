@@ -69,13 +69,14 @@ labels:
 
 tasks:
   - id: get
-    type: io.kestra.plugin.core.debug.Return
-    format: never_gonna_stop
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: never_gonna_stop
 
   - id: update_labels
     type: io.kestra.plugin.core.execution.Labels
     labels:
-      song: "{{ outputs.get.value }}"
+      song: "{{ outputs.get.values.result }}"
       artist: rick_astley # new label
 ```
 
@@ -101,14 +102,15 @@ tasks:
       customerId: "{{ inputs.user }}"
 
   - id: get
-    type: io.kestra.plugin.core.debug.Return
-    format: https://t.ly/Vemr0
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: https://t.ly/Vemr0
 
   - id: update_labels_with_list
     type: io.kestra.plugin.core.execution.Labels
     labels:
       - key: "{{ inputs.url }}"
-        value: "{{ outputs.get.value }}"
+        value: "{{ outputs.get.values.result }}"
 ```
 
 ### Overriding flow labels at runtime
@@ -128,13 +130,14 @@ labels:
 
 tasks:
   - id: get
-    type: io.kestra.plugin.core.debug.Return
-    format: never_gonna_stop
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: never_gonna_stop
 
   - id: update-list
     type: io.kestra.plugin.core.execution.Labels
     labels:
-      song: "{{ outputs.get.value }}"
+      song: "{{ outputs.get.values.result }}"
 ```
 
 In this example, the default label `song` is overridden by the output of the `get` task.

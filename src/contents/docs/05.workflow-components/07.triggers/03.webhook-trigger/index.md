@@ -182,7 +182,7 @@ Pass the value through `env` instead. The interpreter receives it as data and ne
 
 The same applies to other languages: in a Python `Script`, read the value with `os.environ["NAME"]` rather than writing `{{ trigger.body.name }}` into the script. To pass a whole JSON body, set `BODY: "{{ trigger.body | toJson }}"` and parse it in the script. Never wrap request data in the `render()` function, which evaluates any expression the caller sends.
 
-See [Security hardening](../../../10.administrator-guide/security-hardening/index.md#webhook-endpoints) for how to protect the webhook endpoint itself.
+See [Security hardening](../../../security-hardening/index.md#webhook-endpoints) for how to protect the webhook endpoint itself.
 
 ## Filtering webhook executions with `when`
 
@@ -246,13 +246,14 @@ namespace: company.team
 
 tasks:
   - id: make_payload
-    type: io.kestra.plugin.core.debug.Return
-    format: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Hello {{ trigger.parameters.name[0] ?? 'world' }}!"
 
 outputs:
   - id: greeting
     type: STRING
-    value: "{{ outputs.make_payload.value }}"
+    value: "{{ outputs.make_payload.values.result }}"
 
 triggers:
   - id: webhook

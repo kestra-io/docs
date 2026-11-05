@@ -1,0 +1,242 @@
+---
+import PixelEdges from "./PixelEdges.astro"
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import manu from "./assets/manu.jpg"
+import ludo from "./assets/ludo.jpg"
+import anna from "./assets/anna.jpg"
+import kai from "./assets/kai.jpg"
+import terry from "./assets/terry.jpg"
+
+const LEADERS = [
+    {
+        name: "Emmanuel Darras",
+        role: "Co-founder and CEO",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/emmanuel-darras",
+            },
+        ],
+        photo: manu,
+    },
+    {
+        name: "Ludovic Dehon",
+        role: "Co-founder and CTO",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/ludovic-dehon/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/tchiotludo",
+            },
+        ],
+        photo: ludo,
+    },
+    {
+        name: "Anna Geller",
+        role: "Head of Product",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/geller-anna/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/anna-geller",
+            },
+        ],
+        photo: anna,
+    },
+    {
+        name: "Kai Waehner",
+        role: "Global Field CTO",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/kaiwaehner/",
+            },
+            {
+                icon: "mdi:web",
+                label: "Website",
+                href: "https://www.kai-waehner.de/",
+            },
+        ],
+        photo: kai,
+    },
+    {
+        name: "Terry Flowers",
+        role: "Head of Sales",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/terryflowers/",
+            },
+        ],
+        photo: terry,
+    },
+]
+---
+
+<section class="people">
+    <PixelEdges left="cluster" right="wide" />
+    <div class="container">
+        <header>
+            <h2>Leadership.</h2>
+        </header>
+
+        <ul>
+            {
+                LEADERS.map((l) => (
+                    <li>
+                        <figure>
+                            <Image
+                                src={l.photo}
+                                alt={l.name}
+                                widths={[480, 720, 960]}
+                                sizes="(min-width: 1200px) 250px, (min-width: 768px) 33vw, 50vw"
+                            />
+                        </figure>
+                        <h3>{l.name}</h3>
+                        <span class="role">{l.role}</span>
+                        <div class="links">
+                            {l.links.map((link) => (
+                                <a
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={`${l.name} on ${link.label}`}
+                                    title={link.label}
+                                >
+                                    <Icon name={link.icon} />
+                                </a>
+                            ))}
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "./style/section" as *;
+
+    .people {
+        @include section;
+        position: relative;
+        border-top: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    header {
+        margin-bottom: 3.5rem;
+
+        @include media-breakpoint-down(md) {
+            margin-bottom: 2.5rem;
+        }
+    }
+
+    h2 {
+        @include title;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 3rem 1.5rem;
+
+        @include media-breakpoint-down(xl) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2.5rem 1rem;
+        }
+
+        @media (min-width: 1600px) {
+            margin-inline: calc((min(100vw - 8rem, 1600px) - 100%) / -2);
+        }
+    }
+
+    figure {
+        position: relative;
+        margin: 0 0 1rem;
+        overflow: hidden;
+        aspect-ratio: 4 / 5;
+        background: var(--ks-background-tertiary);
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            background: #fe0071;
+        }
+
+        :global(img) {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            transition: transform 0.6s ease;
+        }
+    }
+
+    li:hover figure :global(img) {
+        transform: scale(1.03);
+    }
+
+    h3 {
+        margin: 0;
+        font-size: $font-size-lg;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+    }
+
+    .role {
+        display: block;
+        margin-top: 0.25rem;
+        font-family: var(--bs-font-monospace);
+        font-size: $font-size-sm;
+        color: var(--ks-content-tertiary);
+    }
+
+    .links {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+
+    .links a {
+        display: inline-flex;
+        color: var(--ks-content-secondary);
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: var(--ks-content-primary);
+        }
+
+        :global(svg) {
+            width: 1.375rem;
+            height: 1.375rem;
+        }
+    }
+</style>

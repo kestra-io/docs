@@ -94,7 +94,7 @@ Despite its importance, maintaining high data quality is a persistent challenge.
 - **Manual Data Entry:** Human error is a leading cause of inaccuracies. Typos, inconsistent abbreviations, and missing fields are common in manually entered data.
 - **Lack of Standardization:** Without clear, enforced standards for data entry and storage, variations will proliferate (e.g., "USA," "U.S.A.," "United States").
 - **Data Decay:** Information naturally becomes outdated over time. Customers move, change their names, or switch email addresses. Without regular maintenance, data quality degrades.
-- **Complex Integration Processes:** During ETL/ELT processes, data transformations or schema mismatches can introduce errors or data loss. Robust [data pipeline](/resources/data/data-pipeline) design is critical to preventing these quality regressions at ingestion time.
+- **Complex Integration Processes:** During ETL/ELT processes, data transformations or schema mismatches can introduce errors or data loss. Robust [data pipeline](/resources/data/create-data-pipeline) design is critical to preventing these quality regressions at ingestion time.
 
 ### Identifying and Preventing Common Issues
 
@@ -170,7 +170,7 @@ The rewards for investing in data quality are substantial, impacting everything 
 
 ### Enhanced Customer Satisfaction and Trust
 
-When customer data is accurate and consistent, businesses can provide better, more personalized experiences. This builds trust and loyalty. Companies like [Displayce have optimized their operations](https://kestra.io/customers/displayce) by centralizing data flows, which is a prerequisite for ensuring quality.
+When customer data is accurate and consistent, businesses can provide better, more personalized experiences. This builds trust and loyalty. Companies like [Displayce have optimized their operations](https://kestra.io/stories/displayce) by centralizing data flows, which is a prerequisite for ensuring quality.
 
 ### Operational Efficiency and Cost Savings
 
@@ -178,7 +178,7 @@ Clean data reduces the time employees spend hunting for information and correcti
 
 ### Competitive Advantage Through Reliable Data
 
-Organizations that trust their data can move faster and make smarter decisions. They can identify market trends, optimize pricing, and innovate with confidence. For companies like [Leroy Merlin France, implementing a Data Mesh](https://kestra.io/customers/leroy-merlin-france) with strong orchestration was key to scaling their data production and ensuring its quality and reliability.
+Organizations that trust their data can move faster and make smarter decisions. They can identify market trends, optimize pricing, and innovate with confidence. For companies like [Leroy Merlin France, implementing a Data Mesh](https://kestra.io/stories/leroy-merlin-france) with strong orchestration was key to scaling their data production and ensuring its quality and reliability.
 
 ## How Kestra Orchestrates Data Quality
 

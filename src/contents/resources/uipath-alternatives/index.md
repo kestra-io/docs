@@ -44,7 +44,7 @@ Choosing a UiPath alternative requires looking beyond a simple feature-for-featu
 *   **Deployment Flexibility:** Can the platform run where you need it to? Options range from fully managed SaaS to [self-hosted workflow orchestration](/resources/infrastructure/self-hosted-workflow-orchestration) on-premises, in a private cloud, or in air-gapped environments. Hybrid capabilities are critical for enterprises with diverse infrastructure.
 *   **Core Automation Paradigm:** Is the tool primarily RPA-centric, low-code/no-code, declarative (configuration-as-code), or code-first? This determines who can build workflows (citizen developers vs. engineers) and how those workflows are managed, versioned, and audited.
 *   **Scope of Automation:** Does the platform excel at UI automation, API integration, data processing, infrastructure management, AI agent orchestration, or long-running business processes? A truly universal platform should handle multiple types of workloads effectively.
-*   **Scalability and Enterprise Readiness:** Look for features that support large-scale deployment, such as high availability, robust security models (RBAC, SSO), comprehensive audit logs, and observability. Strong [workflow governance](/resources/infrastructure/workflow-governance) is non-negotiable for mission-critical processes.
+*   **Scalability and Enterprise Readiness:** Look for features that support large-scale deployment, such as high availability, robust security models (RBAC, SSO), comprehensive audit logs, and observability. Strong [workflow governance](/resources/ai/ai-governance-workflows) is non-negotiable for mission-critical processes.
 *   **Pricing Model Transparency:** Evaluate the total cost of ownership (TCO). Is pricing based on users, tasks, bots, or resources? A transparent and predictable pricing model is crucial for avoiding unexpected costs as your usage grows.
 *   **Open-Source Availability and Community:** An open-source core can offer significant advantages, including cost savings, customization flexibility, and a vibrant community for support and innovation.
 
@@ -160,7 +160,7 @@ If your primary need is to automate data pipelines, ML workflows, or RAG applica
 ### For Infrastructure and DevOps Teams
 
 These teams require tools that align with Infrastructure as Code (IaC) and GitOps principles. Automation must be auditable, version-controlled, and API-driven.
-*   **Top Recommendation: Kestra.** Its YAML-based workflows and API-first design are a natural fit for platform and DevOps engineers. Kestra can orchestrate Terraform, Ansible, Kubernetes, and custom scripts as part of a unified [infra automation](/infra-automation) strategy, enabling true [GitOps for operations](/resources/infrastructure/gitops-for-operations).
+*   **Top Recommendation: Kestra.** Its YAML-based workflows and API-first design are a natural fit for platform and DevOps engineers. Kestra can orchestrate Terraform, Ansible, Kubernetes, and custom scripts as part of a unified [infra automation](/infra-automation) strategy, enabling true [GitOps for operations](/resources/infrastructure/gitops).
 
 ### For Business and Citizen Developers
 

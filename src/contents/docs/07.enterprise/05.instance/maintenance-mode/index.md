@@ -18,9 +18,10 @@ Prepare your Kestra instance for maintenance or migration.
 
 When activated:
 
-- The [executor](../../../08.architecture/02.server-components/index.md#executor) stops processing new executions and queues them automatically.
-- [Workers](../../../08.architecture/02.server-components/index.md#worker) finish their current tasks without picking up new ones.
-- The [web server](../../../08.architecture/02.server-components/index.md#webserver) and [scheduler](../../../08.architecture/02.server-components/index.md#scheduler) remain active — no requests are lost.
+- The [executor](../../../08.architecture/02.server-components/index.md#executor) pauses. Requests to create or restart executions are held until maintenance ends, and running executions don't move to their next task. Retry, pause, and SLA timers also wait, as do the [liveness checks](../../../10.administrator-guide/server-lifecycle/index.md) that detect unresponsive servers. Everything resumes when you exit maintenance mode.
+- [Workers](../../../08.architecture/02.server-components/index.md#worker) finish their current tasks without picking up new ones, and stop their running realtime triggers.
+- The [scheduler](../../../08.architecture/02.server-components/index.md#scheduler) stops evaluating triggers until maintenance ends.
+- The [web server](../../../08.architecture/02.server-components/index.md#webserver) stays available, so the UI and API keep responding.
 
 ## Enabling maintenance mode
 

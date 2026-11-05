@@ -536,7 +536,7 @@ Create, run, and fetch results for unit test suites.
 
 ### Create a test suite
 
-A test suite targets one flow through `flowId` and must define at least one entry in `testCases`. The flow must already exist. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.debug.Return` that outputs it.
+A test suite targets one flow through `flowId` and must define at least one entry in `testCases`. The flow must already exist. This example assumes `my_flow` has a `STRING` input `inputA` and a `return` task of type `io.kestra.plugin.core.output.OutputValues` that emits it under `values.result`.
 
 ```python
 def create_test_suite():
@@ -552,7 +552,7 @@ def create_test_suite():
           inputs:
             inputA: "Hi there"
         assertions:
-          - value: "{{ outputs.return.value }}"
+          - value: "{{ outputs.return.values.result }}"
             equalTo: "Hi there"
     """
     suite = kestra_client.test_suites.create_test_suite(tenant=tenant, yaml_body=body)

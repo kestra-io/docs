@@ -1,0 +1,122 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    command: string
+    note?: string
+}
+
+const { command, note } = Astro.props
+---
+
+<div>
+    <div class="command">
+        <span class="prompt" aria-hidden="true">$</span>
+        <code>{command}</code>
+        <button
+            type="button"
+            class="copy-btn"
+            title="Copy command"
+            aria-label="Copy install command"
+            data-install-copy
+        >
+            <Icon name="mdi:content-copy" class="icon-copy" />
+            <Icon name="mdi:check" class="icon-check" />
+        </button>
+    </div>
+    {note && <p class="note">{note}</p>}
+</div>
+
+<script>
+    import { copyWithFeedback } from "~/utils/code-copy"
+
+    /** Delegated on `document`, so it survives ClientRouter page swaps. */
+    document.addEventListener("click", ({ target }) => {
+        if (!(target instanceof Element)) return
+        const button = target.closest<HTMLButtonElement>("[data-install-copy]")
+        const command = button?.parentElement?.querySelector("code")
+        if (button && command) {
+            void copyWithFeedback(button, command.textContent?.trim() ?? "")
+        }
+    })
+</script>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    @use "/src/assets/styles/color-palette" as *;
+
+    .command {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 100%;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        border: 1px solid $dark-border-strong;
+        border-radius: $border-radius-lg;
+        background: $dark-bg-input;
+        font-family: $font-family-monospace;
+        font-size: 1rem;
+        line-height: 1.75rem;
+
+        .prompt {
+            color: $base-grey-400;
+        }
+
+        code {
+            min-width: 0;
+            overflow-x: auto;
+            padding: 0;
+            background: none;
+            font-size: inherit;
+            white-space: nowrap;
+            color: $base-grey-200;
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            border: 1px solid $dark-raised;
+            border-radius: $border-radius;
+            background: $dark-bg-control;
+            color: #7e7e9b;
+            cursor: pointer;
+            @include guide-focus-ring;
+
+            &:hover {
+                color: $white;
+            }
+
+            :global(svg) {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+
+            :global(.icon-check) {
+                display: none;
+            }
+
+            &:global(.copied) {
+                :global(.icon-copy) {
+                    display: none;
+                }
+
+                :global(.icon-check) {
+                    display: inline-block;
+                    color: $copied-green;
+                }
+            }
+        }
+    }
+
+    .note {
+        margin: 0.5rem 0 0;
+        font-size: $font-size-sm;
+        line-height: 1.25rem;
+        color: $dark-text-secondary;
+    }
+</style>

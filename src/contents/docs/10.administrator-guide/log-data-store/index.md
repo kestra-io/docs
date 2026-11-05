@@ -22,11 +22,11 @@ Logs are high-volume, write-heavy data. Keeping them in the main database create
 
 ## How it works
 
-The Indexer writes logs to the configured log store in real time. The log UI and dashboards read from the same store. The main database stores only flows, executions, and state.
+The Indexer writes logs to the configured log store, and the log UI and dashboards read from the same store. Everything else stays in the main database: the Indexer still writes metrics, execution statistics, and audit logs there, and the other components write flows, executions, and triggers there directly.
 
 ```mermaid
 graph LR
-    I[Kestra Indexer] -->|writes state| M[Main DB]
+    I[Kestra Indexer] -->|writes metrics, execution statistics, audit logs| M[Main DB]
     I -->|writes logs| L[Log data store]
 ```
 

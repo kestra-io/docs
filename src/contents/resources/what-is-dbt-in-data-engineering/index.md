@@ -33,7 +33,7 @@ dbt has become the industry standard for the "T" (transform) in [ELT (Extract, L
 
 ### Defining dbt: a software engineering approach to data
 
-At its core, dbt is a development framework that brings software engineering principles to analytics and data modeling. It allows data teams to write modular, version-controlled, and testable SQL. By treating analytics code like application code, dbt enables teams to build more reliable and maintainable [data pipelines](/resources/data/data-pipeline).
+At its core, dbt is a development framework that brings software engineering principles to analytics and data modeling. It allows data teams to write modular, version-controlled, and testable SQL. By treating analytics code like application code, dbt enables teams to build more reliable and maintainable [data pipelines](/resources/data/create-data-pipeline).
 
 Transformations in dbt are written as `SELECT` statements, and dbt handles the boilerplate Data Definition Language (DDL) to materialize these queries as tables or views in the target database. It uses Jinja, a popular templating language, to inject logic like `if` statements, loops, and macros into SQL, making the code more dynamic and reusable. This approach helps manage dependencies between models, ensuring that transformations run in the correct order.
 
@@ -118,7 +118,7 @@ Adopting dbt brings significant benefits, transforming how data teams operate an
 *   **Improved Data Quality and Reliability:** With integrated testing, data teams can catch issues early, ensuring that the data delivered to stakeholders is accurate and trustworthy.
 *   **Increased Productivity:** Reusable models, macros, and automated documentation significantly speed up the development process. Analytics engineers can build and iterate on data models much faster.
 *   **Enhanced Collaboration:** By using Git for version control and promoting code reviews, dbt fosters a collaborative environment where team members can work together on a shared codebase. As seen in the [Gorgias case study](/blogs/2024-01-16-gorgias), applying Infrastructure as Code best practices to data engineering with dbt and Kestra leads to more reliable and scalable systems.
-*   **Better Governance and Lineage:** The auto-generated documentation and clear dependency graph provide transparency into how data is transformed, making it easier to govern data assets and comply with regulations. For example, [Riverside's analytics team used Kestra](/customers/riverside) to connect dbt Cloud, Snowflake, and Hightouch into a single dependency-aware pipeline, gaining full control and visibility.
+*   **Better Governance and Lineage:** The auto-generated documentation and clear dependency graph provide transparency into how data is transformed, making it easier to govern data assets and comply with regulations. For example, [Riverside's analytics team used Kestra](/stories/riverside) to connect dbt Cloud, Snowflake, and Hightouch into a single dependency-aware pipeline, gaining full control and visibility.
 
 ## Related concepts in data engineering
 

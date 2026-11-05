@@ -52,8 +52,8 @@ tasks:
 
 errors:
   - id: never_happen
-    type: io.kestra.plugin.core.debug.Return
-    format: "Never happened {{ task.id }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "Never happened {{ task.id }}"
 ```
 
 ### Timeout vs. Max Retry Duration
@@ -112,8 +112,9 @@ tasks:
       interval: PT1S
     tasks:
       - id: get_token
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ now() }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ now() }}"
       - id: call_api
         type: io.kestra.plugin.core.execution.Fail
         errorMessage: "Token expired"
@@ -139,11 +140,12 @@ tasks:
       behavior: RETRY_FLOWABLE
     tasks:
       - id: get_token
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ now() }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ now() }}"
       - id: call_api
         type: io.kestra.plugin.core.execution.Fail
-        errorMessage: "Calling API with {{ outputs.get_token.value }}"
+        errorMessage: "Calling API with {{ outputs.get_token.values.result }}"
 ```
 
 When `call_api` fails, `get_token` runs again on the next attempt, producing a fresh token.

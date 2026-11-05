@@ -85,7 +85,7 @@ easeOfUse:
   title: Built for Engineers vs. Built for Analysts
   kestra:
     title: "Kestra: Readable by your whole team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No special training required."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No special training required."
     code: |
       id: daily_report
       namespace: analytics
@@ -191,7 +191,7 @@ testimonials:
         name: Dropped jobs since migration
       - value: "3x"
         name: Faster mean time to resolution
-    storyLink: "/customers/jpmorgan-chase"
+    storyLink: "/stories/jpmorgan-chase"
 
 platformStrengths:
   title: Kestra Is Built for Engineering Teams, Not Just Operations

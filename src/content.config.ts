@@ -80,6 +80,16 @@ export const collections = {
                 // Override the canonical URL, e.g. for content syndicated from
                 // another site. Rendered in <head> by the layout.
                 canonical: z.string().optional(),
+                lang: z.string().optional(),
+                languages: z
+                    .array(
+                        z.object({
+                            code: z.string(),
+                            label: z.string(),
+                            href: z.string(),
+                        }),
+                    )
+                    .optional(),
             }),
     }),
     legal: defineCollection({
@@ -224,6 +234,7 @@ export const collections = {
                     "ai",
                     "business",
                     "orchestration",
+                    "migration",
                     "whitepapers",
                 ]),
                 date: z.coerce.date().optional(),
@@ -231,6 +242,20 @@ export const collections = {
                 author: z.string().optional(),
                 image: image().optional(),
                 href: z.string().optional(),
+                sectionIds: z.boolean().optional(),
+                resourceCta: z.boolean().optional(),
+                // Replaces Get Started in the injected CTA pair (Book a Demo
+                // stays secondary). Taglines fall back to the tag defaults.
+                resourceCtaOverride: z
+                    .object({
+                        href: z.string(),
+                        label: z.string(),
+                        tagline: z.string().optional(),
+                        taglineEnd: z.string().optional(),
+                        // `resource_<placement>_cta_<action>_click`
+                        action: z.string().default("guide"),
+                    })
+                    .optional(),
                 faq: z
                     .array(
                         z.object({
