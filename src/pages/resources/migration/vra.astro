@@ -3,6 +3,7 @@ import { getEntry, render } from "astro:content"
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaArticle from "~/components/common/SchemaArticle.astro"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import Link from "~/components/common/Link.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
@@ -67,26 +68,6 @@ const META = [
         : []),
 ]
 
-const jsonLinkedData = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    mainEntityOfPage: {
-        "@type": "WebPage",
-        "@id": Astro.url.href,
-    },
-    headline: page.title,
-    image: [`${Astro.url.origin}/og-image.png`],
-    author: { "@id": "https://kestra.io/#organization" },
-    ...(page.date ? { datePublished: page.date } : {}),
-    ...(page.lastUpdated ? { dateModified: page.lastUpdated } : {}),
-    publisher: {
-        "@type": "Organization",
-        "@id": "https://kestra.io/#organization",
-        name: "Kestra",
-        logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
-    },
-    description,
-}
 ---
 
 <Layout
@@ -113,10 +94,11 @@ const jsonLinkedData = {
                 />
             )
         }
-        <script
-            is:inline
-            type="application/ld+json"
-            set:html={JSON.stringify(jsonLinkedData)}
+        <SchemaArticle
+            headline={page.title}
+            {description}
+            datePublished={page.date}
+            dateModified={page.lastUpdated}
         />
         <SchemaFAQ items={faqItems} />
     </Fragment>
