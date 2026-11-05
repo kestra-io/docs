@@ -65,7 +65,7 @@ The rules teams write first are usually the same:
 | Production changes happen inside maintenance windows | Change request | Workflow before execution |
 | Only approved regions are used | Plan, request | Plan time, request form |
 
-Here is the first rule written in Rego for Conftest. It reads the JSON output of `terraform show -json` and reports every created or updated resource that is missing a required tag:
+Here is the first rule written in Rego for Conftest. It reads the JSON output of `terraform show -json` and reports every created or updated resource that supports tags but is missing a required one:
 
 ```rego
 package main
@@ -78,6 +78,7 @@ deny contains msg if {
 	some rc in input.resource_changes
 	some action in rc.change.actions
 	action in {"create", "update"}
+	"tags" in object.keys(rc.change.after)
 	tags := object.get(rc.change.after, "tags", {})
 	missing := required_tags - {key | some key, _ in tags}
 	count(missing) > 0
@@ -164,7 +165,7 @@ Kestra is an open-source orchestration platform with declarative YAML workflows.
 
 ### Example: a policy gate on a Terraform plan
 
-The workflow below clones the repository that holds the Terraform code and the Rego policies, runs `terraform plan`, exports it as JSON, and tests it with Conftest. Any `deny` rule that matches, such as the tagging rule above, makes Conftest exit with an error, which fails the execution and notifies Slack.
+The workflow below clones the repository that holds the Terraform code (in a `terraform/` folder) and the Rego policies (in `policy/`), runs `terraform plan`, exports it as JSON, and tests it with Conftest. Any `deny` rule that matches, such as the tagging rule above, makes Conftest exit with an error, which fails the execution and notifies Slack.
 
 ```yaml
 id: terraform_policy_gate
@@ -185,15 +186,14 @@ tasks:
         branch: main
 
       - id: terraform_plan
-        type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.scripts.runner.docker.Docker
+        type: io.kestra.plugin.terraform.cli.TerraformCLI
         containerImage: hashicorp/terraform:1.9
         env:
           AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
           AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-        commands:
+        beforeCommands:
           - terraform -chdir=terraform init -input=false
+        commands:
           - terraform -chdir=terraform plan -input=false -out=tfplan
           - terraform -chdir=terraform show -json tfplan > plan.json
 
@@ -201,7 +201,7 @@ tasks:
         type: io.kestra.plugin.scripts.shell.Commands
         taskRunner:
           type: io.kestra.plugin.scripts.runner.docker.Docker
-        containerImage: openpolicyagent/conftest:v0.56.0
+        containerImage: openpolicyagent/conftest:v0.71.1
         commands:
           - conftest test plan.json --policy policy/
 
