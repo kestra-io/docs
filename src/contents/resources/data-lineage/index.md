@@ -74,7 +74,7 @@ Implementing data lineage involves discovering, capturing, and visualizing the r
 *   **Pros:** Highly accurate, scalable, always up-to-date, provides deep granularity (often to the column level).
 *   **Cons:** Requires investment in tooling, can be complex to set up and integrate across a diverse data stack.
 
-For most organizations, a hybrid approach is most effective, combining automated discovery with manual enrichment to add business context and validate the generated lineage. The goal is to [automate your data pipeline](https://kestra.io/resources/data/automate-data-pipeline) not just for execution but for governance and observability as well.
+For most organizations, a hybrid approach is most effective, combining automated discovery with manual enrichment to add business context and validate the generated lineage. The goal is to [automate your data pipeline](https://kestra.io/resources/data/create-data-pipeline) not just for execution but for governance and observability as well.
 
 ### The role of metadata in building a comprehensive lineage graph
 

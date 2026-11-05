@@ -85,7 +85,7 @@ To provide a clear comparison, we evaluated each alternative based on a consiste
 
 Kestra is an open-source, declarative orchestration platform designed to unify data, AI, infrastructure, and business workflows under a single control plane. Instead of defining pipelines in a specific programming language, Kestra uses a simple, declarative YAML interface. This makes workflows easy to create, review, and manage, following GitOps best practices.
 
-Its language-agnostic architecture allows you to run tasks in Python, SQL, Bash, Go, Java, or as Docker containers, providing maximum flexibility for polyglot teams. Kestra is event-driven by default, making it ideal for modern, real-time data stacks. With over 1,400 [plugins](https://kestra.io/plugins), it integrates seamlessly with your existing tools, including Databricks.
+Its language-agnostic architecture allows you to run tasks in Python, SQL, Bash, Go, Java, or as Docker containers, providing maximum flexibility for polyglot teams. Kestra is event-driven by default, making it ideal for modern, real-time data stacks. With over 1,400 [plugins](https://kestra.io/plugins), it integrates seamlessly with your existing tools, including Databricks: see [how Kestra orchestrates Databricks jobs](/orchestration/databricks).
 
 Leading enterprises like Apple, JPMorgan Chase, and Toyota use Kestra to manage large-scale data and AI pipelines, demonstrating its scalability and reliability in mission-critical environments.
 
@@ -150,7 +150,7 @@ Selecting the right orchestrator depends on your team's specific needs, existing
 
 If your primary focus is on robust, scalable, and maintainable ETL/ELT pipelines, you need a tool that handles complex dependencies and integrates with a wide range of data sources and destinations.
 *   **Recommendation**: **Kestra** for its polyglot support and declarative YAML, which simplifies complex data pipelines. **Airflow** is a solid choice for teams deeply invested in the Python ecosystem.
-*   **Learn more**: Explore how to [automate data pipelines](/resources/data/automate-data-pipeline) and see how you can [schedule data workflows](/resources/data/schedule-data-workflows) effectively.
+*   **Learn more**: Explore how to [automate data pipelines](/resources/data/create-data-pipeline) and see how you can [schedule data workflows](/resources/data/schedule-data-workflows) effectively.
 
 ### For AI / ML Platform teams
 

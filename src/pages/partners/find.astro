@@ -26,8 +26,12 @@ const FILTERS: {
         partners={partners}
         filters={FILTERS}
         title="Find a partner"
-        subtitle="Services partners who deliver and sell Kestra, and the technology platforms it integrates with."
-        searchPlaceholder="Search by name, country or expertise"
+        subtitle="Services partners help you implement Kestra. Technology partners make sure it works with the rest of your stack."
+        searchPlaceholder="Search by name, country or service"
+        defaultSelected={{ type: ["Services"] }}
+        helpText="Need help finding a partner?"
+        helpCtaText="Contact us"
+        helpHref="/partners/contact"
     />
     <PartnerCta />
 </Layout>

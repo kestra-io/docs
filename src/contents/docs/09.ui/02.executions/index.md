@@ -45,7 +45,7 @@ The **Gantt** tab visualizes each task's duration. From this view, a specific ta
 
 ![Kestra User Interface Execution Gantt](./execution-gantt-view.png)
 
-The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/01.ai-copilot/index.md) pre-loaded with the error context.
+The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) pre-loaded with the error context.
 
 ## Logs
 
@@ -53,7 +53,7 @@ The **Logs** tab displays task logs, filterable by log level. Logs can be copied
 
 ![Kestra User Interface Execution Log](./execution-logs-view.png)
 
-For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/01.ai-copilot/index.md) pre-loaded with the error context.
+For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) pre-loaded with the error context.
 
 ![Fix with AI](./fix-with-ai-logs.png)
 

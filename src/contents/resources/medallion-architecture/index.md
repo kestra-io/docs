@@ -37,7 +37,7 @@ The core principles of this architecture are:
 - **Support for Diverse Workloads**: The multi-layered approach caters to a wide range of use cases, from raw data exploration for data scientists to aggregated business intelligence for analysts.
 - **Improved Governance**: By segregating data based on its quality and state, organizations can implement more granular access controls and audit trails.
 
-This structured approach transforms a potentially chaotic data lake into a well-organized, reliable asset, forming the backbone of a modern [data pipeline](/resources/data/data-pipeline).
+This structured approach transforms a potentially chaotic data lake into a well-organized, reliable asset, forming the backbone of a modern [data pipeline](/resources/data/create-data-pipeline).
 
 ## The Three Layers of Medallion Architecture Explained
 
@@ -226,7 +226,7 @@ By structuring data with clear quality gates, organizations like Crédit Agricol
 ## Related concepts
 - [What Is Data Mesh Architecture? Principles & Examples](/resources/data/data-mesh-architecture)
 - [Lakehouse Architecture: Principles & Benefits](/resources/data/lakehouse-architecture)
-- [Data Pipeline Explained: Stages, Architecture, and Automation](/resources/data/data-pipeline)
+- [Data Pipeline Explained: Stages, Architecture, and Automation](/resources/data/create-data-pipeline)
 - [Data Quality: Ensuring Trust in Your Data Pipelines](/resources/data/data-quality)
 - [ETL vs. ELT: The Data Pipeline Showdown](/resources/data/etl-vs-elt)
 - [Data Orchestration: The Engine of Modern Data Stacks](/resources/data/data-orchestration)

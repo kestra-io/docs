@@ -86,7 +86,7 @@ easeOfUse:
   title: "Readable YAML vs. Proprietary Graphical Flow Designer"
   kestra:
     title: "Kestra: YAML Workflows Anyone Can Review"
-    description: "Write orchestration logic in YAML that reads like documentation. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> helps draft workflows. Every flow is a file in Git—reviewable in pull requests, testable in CI/CD, and deployable via Terraform or GitOps. No proprietary designer required."
+    description: "Write orchestration logic in YAML that reads like documentation. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> helps draft workflows. Every flow is a file in Git—reviewable in pull requests, testable in CI/CD, and deployable via Terraform or GitOps. No proprietary designer required."
     code: |
       id: incident_remediation
       namespace: ops.itsm

@@ -6,6 +6,7 @@ sidebarTitle: System Flows
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]
 version: ">= 0.19.0"
+docId: system-flows
 ---
 
 System Flows are flows in the `system` namespace that automate recurring platform maintenance — running on a fixed cadence and kept separate from your user-facing executions.

@@ -270,7 +270,7 @@ triggers:
 
 ## Filtering with `when` expressions
 
-Use `when` on a `dependsOn` entry to apply Pebble conditions against the upstream execution. The available variables are `flow.namespace`, `flow.id`, `labels`, `execution.outputs`, and `execution.state` — where `flow` is the upstream flow. The variable `state` (without the `execution.` prefix) is not available; use the `states` list on the `dependsOn` entry for declarative state filtering, or `execution.state` for expression-based checks such as `when: "{{ execution.state != 'SUCCESS' }}"`.
+Use `when` on a `dependsOn` entry to apply Pebble conditions against the upstream execution. The available variables are `flow.namespace`, `flow.id`, `labels`, `execution.outputs`, `execution.state` and `execution.attemptNumber` — where `flow` is the upstream flow and `execution` its execution. The bare `namespace`, `flowId`, `state` and `hasRetryAttempt` variables, as well as `execution.namespace` and `execution.flowId`, are not available; use the `states` list on the `dependsOn` entry for declarative state filtering, or `execution.state` for expression-based checks such as `when: "{{ execution.state != 'SUCCESS' }}"`.
 
 Filter on a flow-level output value using `execution.outputs.<key>`:
 
@@ -288,18 +288,20 @@ triggers:
 `execution.outputs.<key>` accesses the upstream flow's declared **flow-level outputs**. `outputs` is also available in `when` but holds **task outputs** — use `execution.outputs` to filter on flow outputs.
 :::
 
-Filter on retry attempts:
+Filter on an upstream execution that was restarted or replayed, using `execution.attemptNumber`, which starts at `1` and is incremented on each restart or replay. Retries of individual tasks are not exposed in the `when` context:
 
 ```yaml
 triggers:
-  - id: after_flaky
+  - id: after_restart
     type: io.kestra.plugin.core.trigger.Flow
     dependsOn:
       - flowId: flaky_pipeline
         namespace: company.team
         states: [SUCCESS]
-        when: "{{ hasRetryAttempt == true }}"
+        when: "{{ execution.attemptNumber > 1 }}"
 ```
+
+A `when` expression that cannot be rendered, for example because it references a variable that does not exist, does not fire the trigger. The error is logged as a `WARN` on the upstream execution and as an `ERROR` on the flow that owns the trigger.
 
 ## SLA deadline window
 

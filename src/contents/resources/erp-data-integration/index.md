@@ -42,7 +42,7 @@ When an ERP system is not integrated, its data becomes isolated. This leads to s
 *   **Brittle Processes:** Without automated data flows, businesses rely on fragile, manual workarounds. A single missed email or incorrect spreadsheet upload can disrupt critical processes like order fulfillment or financial closing.
 *   **Point-to-Point Sprawl:** Each new connection is built in isolation, so nobody owns the end-to-end sequence. Coordinating those calls as one flow is the job of [API orchestration](/resources/infrastructure/api-orchestration).
 
-A modern [data pipeline](/resources/data/data-pipeline) architecture requires that the ERP is a connected source, not an island.
+A modern [data pipeline](/resources/data/create-data-pipeline) architecture requires that the ERP is a connected source, not an island.
 
 ## Core benefits of unifying your ERP data layer
 
@@ -55,7 +55,7 @@ Automation is the most immediate benefit of ERP integration. When a new sales or
 With integrated systems, stakeholders get a real-time, consolidated view of business performance. A sales manager can see up-to-the-minute revenue figures, while an operations manager can monitor inventory levels across all channels. This visibility allows for proactive decision-making rather than reactive problem-solving based on stale, batch-processed reports. Global brands like **FILA**, a leader in sportswear, rely on orchestrating complex ERP and supply-chain workflows to maintain this level of operational clarity across continents.
 
 ### Powering modern analytics and AI pipelines
-Raw ERP data is vital for advanced analytics, but it's most powerful when combined with data from other sources. By integrating your ERP with a [data warehouse for analytics](/resources/data/data-warehouse-etl), you can build richer models for demand forecasting, customer lifetime value, and supply chain optimization. This unified data layer becomes the foundation for business intelligence dashboards and machine learning applications that drive strategic growth.
+Raw ERP data is vital for advanced analytics, but it's most powerful when combined with data from other sources. By integrating your ERP with a [data warehouse for analytics](/resources/data/etl-workflow), you can build richer models for demand forecasting, customer lifetime value, and supply chain optimization. This unified data layer becomes the foundation for business intelligence dashboards and machine learning applications that drive strategic growth.
 
 ## Common architectural patterns for ERP connectivity
 

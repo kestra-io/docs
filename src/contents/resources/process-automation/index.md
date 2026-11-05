@@ -48,7 +48,7 @@ Implementing process automation without a central orchestration layer often lead
 
 -   **Improve Efficiency and Productivity:** By automating manual toil, teams can focus on strategic initiatives. Global sportswear leader FILA, for example, orchestrates complex ERP and supply-chain workflows to maintain operational efficiency across continents.
 -   **Reduce Operational Costs and Errors:** Automation eliminates the risk of human error in repetitive tasks, leading to higher accuracy and lower costs associated with rework. This focus on [automation ROI](/resources/business/automation-roi) is a key driver for adoption.
--   **Enhance Compliance and Data Security:** A centralized orchestrator enforces consistent, auditable execution paths. Features like audit logs and role-based access control are essential for [workflow governance](/resources/infrastructure/workflow-governance) and meeting standards like [SOC 2 compliance](/resources/infrastructure/soc2-compliance).
+-   **Enhance Compliance and Data Security:** A centralized orchestrator enforces consistent, auditable execution paths. Features like audit logs and role-based access control are essential for [workflow governance](/resources/ai/ai-governance-workflows) and meeting standards like [SOC 2 compliance](/resources/infrastructure/soc2-compliance).
 -   **Drive Innovation and Digital Transformation:** Freeing up skilled employees from mundane work allows them to innovate. HR tech company CleverConnect built an advanced integration platform on Kestra, enabling them to deliver new services faster.
 
 ## Orchestrate IT Service Request Approvals with Kestra: A Declarative Approach
@@ -167,7 +167,7 @@ This evolution demands a powerful control plane capable of coordinating a divers
 
 ## Related Concepts
 -   [Business Workflow: Definition, Types & Automation](/resources/business/business-workflow)
--   [Workflow Management](/resources/infrastructure/workflow-management)
+-   [Workflow Management](/resources/infrastructure/workflow-orchestration-tools)
 -   [IT Process Automation: Orchestrating Efficiency](/resources/infrastructure/it-process-automation)
 -   [Approval Workflow Automation & Governance](/resources/business/approval-workflow)
 -   [Human-in-the-Loop Orchestration](/resources/ai/human-in-the-loop-orchestration)

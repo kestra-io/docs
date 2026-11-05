@@ -308,12 +308,12 @@ A dotted namespace such as `company.team` maps to a folder **literally named `co
 
 #### How resource identity works
 
-**The filename stem is the resource ID.** For flows, apps, unit tests, and dashboards the part of the filename before `.yaml` is used as the object's ID during sync — not the `id` field written inside the YAML. Custom blueprints are an exception: the sync reads the `id` field from the YAML content and falls back to the filename stem only when the field is absent. Namespace files use their full relative path under `<namespace>/files/` as the file path identity.
+**The filename stem is the resource ID.** For flows, unit tests, and dashboards the part of the filename before `.yaml` is used as the object's ID during sync — not the `id` field written inside the YAML. Apps and custom blueprints are exceptions. `TenantSync` identifies an app by the `namespace` and `id` written inside the YAML, so the filename does not affect matching. Blueprint sync reads the `id` field from the YAML content and falls back to the filename stem only when the field is absent. Namespace files use their full relative path under `<namespace>/files/` as the file path identity.
 
 This has an important consequence: **the filename must match the `id` inside the YAML**. When Kestra pushes objects from the UI to Git (for example with `sourceOfTruth: KESTRA`), it generates filenames from the object's ID automatically. If you later rename a file in Git, the sync treats the old filename as a deleted object and the new filename as a new object. When it tries to create the new object, Kestra rejects it because a resource with that ID already exists in the instance — resulting in an error like:
 
 ```
-Invalid entity: App already exists for id 'solutions_ai_search_annual_report'
+Invalid entity: Flow already exists for id 'solutions_ai_search_annual_report'
 ```
 
 To avoid this error, keep filenames in sync with the `id` field inside each YAML. If you need to rename a file, also update the `id` inside the YAML at the same time.

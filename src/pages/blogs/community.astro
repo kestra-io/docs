@@ -10,7 +10,7 @@ const externalNews = await Promise.all(
     allExternalBlogs
         .sort((a, b) => b.data.publicationDate.getTime() - a.data.publicationDate.getTime())
         .map(async (entry) => {
-            const image = await getImage({ src: entry.data.image, format: "webp", width: 800 })
+            const image = await getImage({ src: entry.data.image, width: 800 })
             return {
                 id: entry.id,
                 path: entry.data.link,

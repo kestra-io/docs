@@ -1,0 +1,154 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    href: string
+}
+
+const { href } = Astro.props
+
+const PERKS = [
+    { icon: "mdi:tshirt-crew-outline", text: "Access Kestra swag" },
+    {
+        icon: "mdi:rocket-launch-outline",
+        text: "Early access to Kestra products and roadmaps",
+    },
+    {
+        icon: "mdi:account-group-outline",
+        text: "Access to Kestra staff and subject matter experts at monthly meetups",
+    },
+    {
+        icon: "mdi:card-account-details-outline",
+        text: "Dedicated personal space on the Kestra Ambassadors page",
+    },
+    {
+        icon: "mdi:bullhorn-outline",
+        text: "Recognition of your role and contributions on Kestra’s social media space",
+    },
+    {
+        icon: "mdi:medal-outline",
+        text: "Being an ambassador demonstrates expertise and a significant influence in the open source community",
+    },
+]
+---
+
+<section class="perks">
+    <div class="container">
+        <div class="intro">
+            <h2>
+                Perks of being in the <span>Ambassador Program</span>
+            </h2>
+            <p>
+                Share what you build with Kestra, help others get started, and
+                grow with the team behind the product.
+            </p>
+            <a {href} class="btn btn-primary" target="_blank" rel="noopener">
+                Join the Ambassadors Program
+                <Icon name="mdi:arrow-right" />
+            </a>
+        </div>
+
+        <ul>
+            {
+                PERKS.map((perk) => (
+                    <li>
+                        <Icon name={perk.icon} />
+                        {perk.text}
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    .perks {
+        padding: 7.5rem 0;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-secondary);
+
+        @include media-breakpoint-down(md) {
+            padding: 4.5rem 0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: minmax(0, 388px) minmax(0, 1fr);
+            gap: 4rem;
+            align-items: start;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+        }
+    }
+
+    h2 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(2.25rem, 4vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        line-height: 1.04;
+        color: var(--ks-content-primary);
+
+        span {
+            color: var(--ks-content-link);
+        }
+    }
+
+    p {
+        margin: 0 0 2.25rem;
+        font-size: $font-size-lg;
+        line-height: 1.55;
+        color: var(--ks-content-primary);
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.625rem;
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        overflow: hidden;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: $border-radius-lg;
+        background: var(--ks-background-body);
+        box-shadow: 0 8px 24px rgba(58, 29, 109, 0.08);
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    li {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 2rem;
+        margin: 0 -1px -1px 0;
+        border-right: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
+        font-size: $font-size-lg;
+        font-weight: 600;
+        line-height: 1.55;
+        color: var(--ks-content-primary);
+
+        :global(svg) {
+            width: 2rem;
+            height: 2rem;
+            color: var(--ks-content-link);
+        }
+    }
+</style>

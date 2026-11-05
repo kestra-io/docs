@@ -149,7 +149,7 @@ Start with your most critical and regulated data first. Implement automation for
 
 ### Ensuring Comprehensive Auditability and Reporting
 
-Every action taken by your automation system must be logged. Your orchestration tool should provide detailed execution logs that show which workflow ran, what data it processed, and what actions it took. This is non-negotiable for compliance. Reports should be generated regularly to demonstrate that policies are being followed and to identify any exceptions or failures. Strong [workflow governance](/resources/infrastructure/workflow-governance) and [role-based access control (RBAC)](/resources/infrastructure/rbac-workflow-orchestration) ensure that only authorized processes can modify or delete data.
+Every action taken by your automation system must be logged. Your orchestration tool should provide detailed execution logs that show which workflow ran, what data it processed, and what actions it took. This is non-negotiable for compliance. Reports should be generated regularly to demonstrate that policies are being followed and to identify any exceptions or failures. Strong [workflow governance](/resources/ai/ai-governance-workflows) and [role-based access control (RBAC)](/resources/infrastructure/rbac-workflow-orchestration) ensure that only authorized processes can modify or delete data.
 
 ### Fostering Team Buy-In and Continuous Training
 

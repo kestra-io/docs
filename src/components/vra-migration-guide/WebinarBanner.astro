@@ -1,0 +1,90 @@
+---
+import { WEBINAR_HREF } from "./assistant/links"
+---
+
+<aside class="webinar-banner" aria-label="Webinar">
+    <p>
+        <strong>Webinar replay:</strong> Moving off VMware? Start with the orchestrator.
+        <span class="sessions">
+            <a href={WEBINAR_HREF} target="_blank" rel="noopener"
+                >Watch the replay</a
+            >
+        </span>
+    </p>
+</aside>
+
+<script>
+    // Each click is pushed to the dataLayer for GTM, like the webinar line in
+    // the LP's Assistant section: the replay is on YouTube, which reports
+    // nothing back.
+    function trackWebinarBanner() {
+        for (const link of document.querySelectorAll<HTMLAnchorElement>(
+            ".webinar-banner a",
+        )) {
+            if (link.dataset.tracked !== undefined) continue
+            link.dataset.tracked = ""
+            const track = () => {
+                window.dataLayer = window.dataLayer || []
+                window.dataLayer.push({
+                    event: "vra_webinar_replay_click",
+                    placement: "banner",
+                })
+            }
+            link.addEventListener("click", track)
+            // Middle-click opens the replay too; right-click only opens a menu.
+            link.addEventListener("auxclick", (event) => {
+                if (event.button === 1) track()
+            })
+        }
+    }
+
+    trackWebinarBanner()
+    document.addEventListener("astro:page-load", trackWebinarBanner)
+</script>
+
+<style lang="scss">
+    @use "/src/assets/styles/variable" as *;
+
+    .webinar-banner {
+        background: #631bff;
+        color: $white;
+        padding: 0.625rem 1.5rem;
+        text-align: center;
+
+        p {
+            margin: 0;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        .sessions {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.25rem 1rem;
+            margin-left: 0.75rem;
+        }
+
+        a {
+            color: $white;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+
+            &:hover {
+                color: rgba($white, 0.85);
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .sessions {
+                display: flex;
+                margin: 0.25rem 0 0;
+            }
+        }
+    }
+</style>

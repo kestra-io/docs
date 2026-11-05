@@ -61,7 +61,7 @@ Agents need to access data wherever it lives. This requires a connectivity layer
 *   **Data Warehouses:** Systems like Snowflake, BigQuery, and Redshift.
 *   **APIs:** Internal microservices and external SaaS platforms.
 *   **File Systems:** S3, GCS, Azure Blob Storage, and local files.
-*   **Vector Databases:** Specialized [vector databases](/resources/ai/vector-database) for semantic search in [RAG architectures](/resources/ai/rag-architecture).
+*   **Vector Databases:** Specialized [vector databases](/resources/ai/rag-pipeline) for semantic search in [RAG architectures](/resources/ai/rag-architecture).
 
 This layer often uses a [Model Context Protocol (MCP) server](/resources/ai/mcp-server), as defined in the [MCP architecture](https://modelcontextprotocol.io/docs/learn/architecture), to expose these sources as standardized, callable tools, abstracting away the complexity of each individual system and improving the agent's [context engineering](/resources/ai/context-engineering) capabilities.
 
@@ -97,7 +97,7 @@ Kestra is an orchestration control plane that covers these four pillars in one p
 
 Kestra's {totalPlugins}+ plugins connect to databases, warehouses, APIs, and cloud storage. You can use pre-built tasks for databases, data warehouses, APIs, and cloud storage.
 
-Kestra can also expose any flow as a tool for agents. The [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) publishes a flow on Kestra's [MCP server](/docs/ai-tools/mcp-server): its inputs become the tool's parameters and its outputs the tool's response, so an agent calls a governed workflow instead of the database itself.
+Kestra can also expose any flow as a tool for agents. The [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) publishes a flow on Kestra's [MCP server](/docs/ai-orchestration/mcp-server): its inputs become the tool's parameters and its outputs the tool's response, so an agent calls a governed workflow instead of the database itself.
 
 ### Managing Secure Access with Kestra's Governance Features
 

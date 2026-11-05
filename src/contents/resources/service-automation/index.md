@@ -157,7 +157,7 @@ Service automation is also applied to core business processes. Employee onboardi
 
 *   [Hybrid Infrastructure Automation](/resources/infrastructure/hybrid-infrastructure-automation): Extending automation across on-premise and cloud environments.
 *   [Runbook Automation Tools](/resources/infrastructure/runbook-automation-tools-2026): Automating operational procedures and incident response.
-*   [Workflow Governance](/resources/infrastructure/workflow-governance): Implementing policies and controls for automated processes.
+*   [Workflow Governance](/resources/ai/ai-governance-workflows): Implementing policies and controls for automated processes.
 *   [Kestra vs. Control-M](/vs/control-m): Comparing modern orchestration with legacy job schedulers.
 *   [Kestra vs. PagerDuty Process Automation](/vs/pagerduty): A look at runbook automation platforms.
 *   [Kestra vs. VMware Aria Automation](/vs/vmware-cloud-foundation): Contrasting declarative orchestration with platform-specific automation.

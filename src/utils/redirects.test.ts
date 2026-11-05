@@ -48,6 +48,10 @@ describe("docs redirects", () => {
             "/docs/enterprise/auditing/audit-logs",
             "/docs/enterprise/governance/audit-logs",
         ],
+        // Still linked from the dashboard editor in released Kestra versions
+        // (kestra-io/docs#6034).
+        ["/docs/ui/dashboards", "/docs/ui/dashboard"],
+        ["/docs/ui/dashboards/foo", "/docs/ui/dashboard"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, docsRules)).toBe(to)
     })
@@ -113,6 +117,8 @@ describe("blogs redirects", () => {
 describe("index redirects", () => {
     it.each([
         ["/blog", "/blogs"],
+        ["/write-for-us", "/community"],
+        ["/write-for-us/", "/community"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, indexRules)).toBe(to)
     })
@@ -120,6 +126,7 @@ describe("index redirects", () => {
     it.each([
         ["/blogs.md"],
         ["/blogss.md"],
+        ["/write-for-usx"],
     ])("%s resolves to null", (from) => {
         expect(resolveRedirect(from, indexRules)).toBeNull()
     })
@@ -127,14 +134,20 @@ describe("index redirects", () => {
 
 describe("resources redirects", () => {
     it.each([
+        ["/resources/data/data-pipeline", "/resources/data/create-data-pipeline"],
+        ["/resources/data/automate-data-pipeline/", "/resources/data/create-data-pipeline"],
+        ["/resources/infrastructure/gitops-for-operations", "/resources/infrastructure/gitops"],
+        ["/resources/infrastructure/workflow-governance", "/resources/ai/ai-governance-workflows"],
         ["/resources/infrastructure/orchestration-problems-complexity", "/resources/orchestration"],
         ["/resources/infrastructure/orchestration-problems-complexity/", "/resources/orchestration"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, resourcesRules)).toBe(to)
     })
 
-    it("leaves live resource pages alone", () => {
+    it("leaves the consolidation targets alone", () => {
+        expect(resolveRedirect("/resources/data/create-data-pipeline", resourcesRules)).toBeNull()
+        expect(resolveRedirect("/resources/infrastructure/gitops", resourcesRules)).toBeNull()
+        expect(resolveRedirect("/resources/data/data-pipeline-monitoring", resourcesRules)).toBeNull()
         expect(resolveRedirect("/resources/orchestration", resourcesRules)).toBeNull()
-        expect(resolveRedirect("/resources/infrastructure/infrastructure-orchestration", resourcesRules)).toBeNull()
     })
 })

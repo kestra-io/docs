@@ -1,0 +1,255 @@
+---
+title: "Self-Service Infrastructure: How It Works and What It Takes"
+description: "Self-service infrastructure lets engineers request environments, VMs, and cloud resources through a governed catalog instead of a ticket queue. This guide covers how a self-service request works end to end, the five building blocks, the guardrails that keep it safe, the platforms that deliver it, and how to roll it out."
+metaTitle: "Self-Service Infrastructure: Model, Guardrails & Platforms"
+metaDescription: "How self-service infrastructure works: catalog, request form, policy checks, risk-based approvals, provisioning, and Day 2. Compare platforms and build one with Kestra."
+tag: "infrastructure"
+date: 2026-05-27
+lastUpdated: 2026-11-04
+slug: "self-service-infrastructure"
+faq:
+  - question: "What is self-service infrastructure?"
+    answer: "Self-service infrastructure is an operating model where engineers get the infrastructure they need (an environment, a VM, a database, a namespace) by picking a pre-approved offering from a catalog and filling in a short request, instead of opening a ticket. The platform team defines what can be requested and the rules that apply; an automation engine validates the request, asks for approval when the risk justifies it, provisions the resource, and records who owns it."
+  - question: "How is self-service infrastructure different from ticket-based provisioning?"
+    answer: "In ticket-based provisioning, a person reads each request and runs the steps by hand, so lead time depends on the queue and every fulfillment can differ. In self-service, the steps are codified once, policy checks run automatically, and only requests that exceed a risk threshold wait for a human. The result is faster delivery, consistent configurations, and an audit trail produced by the system rather than reconstructed from tickets."
+  - question: "Does self-service infrastructure mean no approvals?"
+    answer: "No. Good self-service removes approvals where they add nothing (a small dev environment from a standard template) and keeps them where they matter (production, large sizes, sensitive networks, high cost). Approvals become a rule in the workflow, triggered by the request's attributes, instead of a default step on every ticket."
+  - question: "What is the difference between self-service infrastructure and an internal developer platform?"
+    answer: "An internal developer platform (IDP) is the broader product a platform team builds for developers: portal, golden paths, CI/CD, observability, and self-service. Self-service infrastructure is one capability inside it, focused on requesting and operating infrastructure. Many teams start with self-service infrastructure and add a developer portal such as Backstage on top later."
+  - question: "Which tools provide self-service infrastructure?"
+    answer: "There are five broad families: developer portals (Backstage, Port), IaC automation platforms (HCP Terraform, Spacelift, env zero), cloud-native catalogs (AWS Service Catalog), ITSM catalogs (ServiceNow), and cloud management platforms (VMware Aria Automation, Morpheus). Orchestration platforms such as Kestra provide the engine behind the request: validation, approvals, provisioning across tools, and Day 2 operations."
+  - question: "Can self-service infrastructure work on-premises?"
+    answer: "Yes. Self-service is a model, not a cloud feature. On-premises teams expose VM, network, storage, or database requests through the same catalog-and-form pattern, with the automation calling vSphere, Ansible, Terraform, or internal APIs. It is also the main capability teams need to replace when they move away from VMware Aria Automation (formerly vRealize Automation)."
+author: "elliot"
+---
+
+import FlowTopologyFigure from "~/components/resources/FlowTopologyFigure.astro"
+
+export const provisionVm = [
+    { id: "request_form", type: "core.trigger.Webhook", plugin: "core.trigger.Webhook", fallback: "mdi:webhook", x: 0, y: 0, status: "success", duration: "0.4s", seconds: 0.4 },
+    { id: "owner_approval", type: "core.flow.Pause", plugin: "core.flow.Pause", fallback: "mdi:pause-circle-outline", x: 0, y: 140, status: "success", duration: "2m 31s", seconds: 151 },
+    { id: "terraform_apply", type: "terraform.cli.TerraformCLI", plugin: "terraform.cli.TerraformCLI", fallback: "mdi:terraform", runner: "kubernetes", x: 310, y: 0, status: "success", duration: "3m 05s", seconds: 185, artifacts: 1 },
+    { id: "ansible_config", type: "ansible.cli.AnsibleCLI", plugin: "ansible.cli.AnsibleCLI", fallback: "mdi:ansible", x: 310, y: 140, status: "running", duration: "1m 12s", seconds: 72 },
+    { id: "update_cmdb", type: "servicenow.Post", plugin: "servicenow.Post", fallback: "mdi:database-sync-outline", x: 620, y: 0, status: "created", duration: "0.8s", seconds: 0.8 },
+]
+
+> **TL;DR** — Self-service infrastructure replaces the ticket queue with a catalog of pre-approved offerings. An engineer picks one, fills in a short form, and an automation engine checks the request against policy, asks for approval only when the risk justifies it, provisions the resource, and records who owns it. It needs five parts: a catalog, a request interface, guardrails as code, an orchestration engine, and a record of what exists. Portals alone are not enough; the engine behind them does the work.
+
+Most infrastructure teams don't struggle with how to create a VM or a Kubernetes namespace. They struggle with how many requests arrive, how differently each one is fulfilled, and how little is known about the resource six months later. A ticket queue handles that volume with people. Self-service handles it with a catalog and an engine, and keeps people for the requests that need judgment.
+
+This guide explains what self-service infrastructure is, how a request flows from catalog to decommissioning, what the platform needs, where self-service projects usually fail, which tools cover which part, and how to build it with Kestra.
+
+## What is self-service infrastructure?
+
+Self-service infrastructure is an operating model in which engineers obtain and manage infrastructure by choosing a pre-approved offering from a catalog and submitting a short request, without opening a ticket or touching the underlying tools. The platform team decides what can be requested, which inputs are allowed, and which rules apply. An automation engine does the rest.
+
+Three things make it different from simply giving people access to a cloud console or to `terraform apply`:
+
+*   **The offering is curated.** Requesters choose "PostgreSQL for a dev environment" or "Linux VM, standard hardening", not raw resources. Sizes, regions, images, and network zones are limited to what the platform team supports.
+*   **The rules are enforced by the system.** Naming, tagging, quotas, and security baselines are checked automatically on every request, not remembered by whoever handles the ticket.
+*   **The result is recorded.** Every resource created through self-service has an owner, a request history, and a known configuration, which is what makes Day 2 operations possible.
+
+## Self-service vs. ticket-based provisioning
+
+The ticket model and the self-service model both deliver infrastructure. They differ in where the effort goes and what you know afterwards.
+
+| | Ticket-based provisioning | Self-service infrastructure |
+|---|---|---|
+| **Entry point** | Free-text ticket in an ITSM queue | Catalog item with a structured form |
+| **Who executes** | An operator, by hand or with personal scripts | An automation engine, from versioned workflows |
+| **Policy checks** | Depend on the operator's attention | Run automatically on every request |
+| **Approvals** | Often on every ticket, by default | Only when the request crosses a risk threshold |
+| **Lead time** | Queue time plus execution, often days | Minutes for standard requests |
+| **Consistency** | Varies by operator | Identical for identical inputs |
+| **Audit trail** | Reconstructed from ticket comments | Produced by the system: who asked, who approved, what ran |
+| **After delivery** | Ownership and configuration often unknown | Owner, inputs, and outputs recorded |
+
+The goal is not to remove the infrastructure team from the loop. It is to move the team from fulfilling requests one by one to maintaining the catalog and the rules, and to spend human time on the requests that need it.
+
+## How a self-service request works, end to end
+
+Whatever the tooling, a mature self-service flow follows the same lifecycle. Each stage maps to something the platform must provide.
+
+1.  **Browse the catalog.** The requester sees the offerings available to their team: environments, VMs, databases, network changes, access requests. Each offering is a template maintained by the platform team.
+2.  **Fill in the request.** A form asks only for what varies: environment, size, region, cost center, justification. Choices are lists, not free text, so invalid requests can't be expressed.
+3.  **Validate against policy.** The engine checks quotas, naming rules, allowed sizes per environment, and budget. A request that breaks a rule is rejected immediately with the reason, before any resource exists.
+4.  **Approve when the risk justifies it.** Production targets, large sizes, or sensitive network zones route to an approver. Everything else proceeds directly. The approver sees the full request and records a decision with a reason.
+5.  **Provision across tools.** The engine runs the actual steps: Terraform or OpenTofu for cloud resources, Ansible for configuration, vSphere or Kubernetes APIs, DNS, CMDB updates. These are often several tools in sequence, which is why an orchestration layer matters.
+6.  **Record and hand over.** The engine stores what was created, for whom, from which request, and returns the connection details to the requester.
+7.  **Operate on Day 2.** Resize, patch, rotate a certificate, add a disk, extend or shorten the resource's life. These actions use the same catalog-and-rules pattern as the initial request. See [Day 2 operations](/resources/infrastructure/day-2-operations).
+8.  **Decommission.** Every resource has an end: when the project closes, when its owner leaves, or when a temporary environment is no longer used. Self-service that only creates resources produces sprawl.
+
+Stages 1 and 2 are what users see. Stages 3 to 8 are where self-service succeeds or fails.
+
+Here is that lifecycle running as one workflow for a VM request. The request comes in with a hostname. When the change needs sign-off, the owner approves it, then Terraform creates the VM, Ansible configures it, and the CMDB record is updated. If a step fails, the run stops there with its logs, and you restart it from that step.
+
+<FlowTopologyFigure
+    nodes={provisionVm}
+    label="Kestra topology of a provision_vm flow running: request form, owner approval, Terraform apply, Ansible configuration and CMDB update run one after the other"
+    caption="Each node is a task in one YAML file, versioned in Git."
+/>
+
+## The five building blocks
+
+### 1. A service catalog
+
+The catalog is the list of things that can be requested, each defined once by the platform team: the inputs it accepts, the defaults, the rules, and the workflow behind it. Treat catalog items as products, versioned and owned. A catalog of 10 well-maintained offerings that cover 80% of requests beats a catalog of 200 items nobody updates.
+
+### 2. A request interface
+
+Requesters need a form, not a repository. The interface can be a developer portal, an ITSM catalog such as ServiceNow, a chat command, or a UI generated from the workflow's own input definitions. What matters is that inputs are typed and constrained, and that the requester can follow the status of the request after submitting it.
+
+### 3. Guardrails as code
+
+Rules live in code and run on every request: allowed sizes per environment, mandatory tags, quotas per team, approved images, budget limits. [Policy as code](/resources/infrastructure/policy-as-code) tools such as Open Policy Agent apply here, as do checks written directly in the workflow. The rules must produce a clear rejection message, so requesters fix their request instead of opening a ticket about it.
+
+### 4. An orchestration engine
+
+The engine executes the request: it calls the IaC tools, configuration management, cloud and virtualization APIs, and notification channels, in order, with retries and error handling. It pauses for approvals and resumes with the approver's decision. Because most real requests touch several tools, the engine has to coordinate them rather than run one. This is the difference between [infrastructure automation and infrastructure orchestration](/resources/infrastructure/infrastructure-orchestration).
+
+### 5. A record of what exists
+
+Each delivered resource needs an owner, a link to the request that created it, and its current configuration. Without this record, Day 2 actions and decommissioning fall back to guesswork, and [drift](/resources/infrastructure/terraform-drift-detection) goes unnoticed. The record can live in a CMDB, in IaC state, or in the orchestration platform itself, as long as every self-service workflow updates it.
+
+## Guardrails that keep self-service safe
+
+Self-service fails in two opposite ways: so many controls that it is slower than the ticket queue, or so few that costs and security drift. These patterns hold the balance.
+
+*   **Approve by risk, not by default.** Define what triggers an approval (production, size above a threshold, a sensitive network zone, an estimated monthly cost) and let everything else through. Measure how often approvers say no; if it is almost never, the threshold is too low.
+*   **Constrain inputs instead of reviewing outputs.** A dropdown with three sizes prevents more mistakes than a reviewer reading a Terraform plan.
+*   **Give every resource an owner and an end.** Ownership is recorded at request time. Temporary environments get an expiry, and owners are notified before it arrives.
+*   **Keep credentials out of the requester's hands.** The engine holds cloud and hypervisor credentials; requesters never see them.
+*   **Version everything.** Catalog items, rules, and workflows go through pull requests, following [GitOps](/resources/infrastructure/gitops) practices, so a change to what can be requested gets reviewed like any other change.
+
+## Where self-service infrastructure projects fail
+
+*   **A portal without an engine.** A developer portal makes requests look self-service, but if the form opens a ticket that an operator fulfills by hand, nothing has changed except the UI.
+*   **The IaC-only assumption.** Terraform modules are necessary but not sufficient. Someone still has to run them with the right credentials, check the rules, collect approvals, configure the machine afterwards, and update the record.
+*   **Approvals on everything.** When every request waits for a human, the platform team becomes a queue again, with more steps.
+*   **Create-only catalogs.** If the catalog can create a VM but not resize, patch, or delete it, Day 2 work goes back to tickets and resources accumulate.
+*   **Cloud-only scope.** Many organizations run most of their requests on VMs, on-premises networks, and legacy systems. A self-service model that covers only Kubernetes namespaces solves a fraction of the queue.
+
+## Self-service infrastructure tools and platforms
+
+No single category covers the whole lifecycle. Most organizations combine a front end with an engine.
+
+| Category | Examples | What it covers | What it usually leaves to you |
+|---|---|---|---|
+| **Developer portals** | Backstage, Port | Catalog UI, software templates, service ownership | Executing multi-tool provisioning, approvals, Day 2 actions |
+| **IaC automation platforms** | HCP Terraform, Spacelift, env zero | Governed Terraform and OpenTofu runs, policies, templates for self-service | Workflows beyond the IaC run: configuration, ITSM, non-IaC systems |
+| **Cloud-native catalogs** | AWS Service Catalog | Pre-approved products within one cloud | Multi-cloud and on-premises resources |
+| **ITSM catalogs** | ServiceNow | Request forms, approvals, IT process | Execution, which is delegated to scripts or other tools |
+| **Cloud management platforms** | VMware Aria Automation, Morpheus | VM catalog and provisioning, mainly for virtualized estates | Flexibility outside the platform's model; licensing changes have pushed many [Aria users to look for alternatives](/resources/infrastructure/vmware-aria-automation-alternatives) |
+| **Orchestration platforms** | Kestra | The engine: validation, approvals, multi-tool provisioning, Day 2, record of what was provisioned | A dedicated developer portal, if you want one on top |
+
+A common architecture uses an existing front end (ServiceNow or Backstage) for the request, and an orchestration platform as the engine that every catalog item calls. Teams comparing IaC platforms specifically can read our overview of [Spacelift alternatives](/resources/infrastructure/spacelift-alternatives).
+
+## How to roll out self-service infrastructure
+
+1.  **Start from the ticket queue.** Export three months of infrastructure tickets and group them. The top five request types usually account for most of the volume. These are the first catalog items.
+2.  **Write the contract for each item.** List the inputs, the allowed values, the defaults, and who can request it. If you can't write the contract, the request is not ready for self-service.
+3.  **Codify the fulfillment.** Turn the runbook into a workflow that calls the same tools operators use today. Reuse existing Terraform modules and Ansible playbooks rather than rewriting them.
+4.  **Add rules and the approval threshold.** Encode the checks operators apply implicitly. Decide what requires approval and who approves.
+5.  **Record ownership and plan the end of life.** Decide where the record lives and how expiry and decommissioning work before the first request goes live.
+6.  **Measure the queue, not the speed.** Track the share of requests fulfilled without human intervention, the ticket volume for covered request types, approval turnaround, and the number of resources without an owner. Speed follows when the volume moves out of the queue.
+
+## Self-service infrastructure with Kestra
+
+Kestra is an open-source orchestration platform with declarative YAML workflows. For self-service, it acts as the engine behind the catalog: each catalog item is a workflow, and the request form, the policy checks, the approval, the provisioning steps, and the record of what was created all live in that workflow or next to it.
+
+*   **Typed request forms from the workflow itself.** [Inputs](/docs/workflow-components/inputs) define the fields, their types, and their allowed values. In Kestra Enterprise Edition, [Apps](/docs/enterprise/scalability/apps) turn a workflow into a request page for people who never open Kestra, with a stage for submission, progress, approval, and the delivered result.
+*   **Risk-based approvals.** A `Pause` task stops the execution, notifies approvers, and resumes with their decision and reason, which stay in the execution history.
+*   **Guardrails.** Checks can run inside the workflow, call OPA, or be enforced platform-wide with [Policies](/docs/enterprise/governance/policies), which validate and inject configuration across namespaces.
+*   **Provisioning across tools.** Plugins for [Terraform](/orchestration/terraform), OpenTofu, [Ansible](/orchestration/ansible), Kubernetes, the major clouds, VMware, and any script or API run as steps of the same workflow.
+*   **A record of what was provisioned.** Workflows can register what they create as [assets](/docs/enterprise/governance/assets), which keeps an [up-to-date record of provisioned infrastructure](/docs/how-to-guides/asset-infrastructure-inventory) linked to the executions that created it.
+*   **Day 2 with the same engine.** Resizing, patching, rotating, and decommissioning are workflows too, triggered on demand, on a schedule, or by an event.
+
+[Kestra for Infrastructure](/infra-automation) brings this model to platform and infrastructure teams in Kestra Enterprise Edition: self-service without losing control, on the same Kestra that already runs data and AI workflows.
+
+### Example: an environment request with risk-based approval
+
+The workflow below is the engine behind one catalog item. Dev environments up to medium size are provisioned immediately. Anything else waits for an approver, who records a decision and a reason. The provisioning itself is a separate, reusable workflow owned by the platform team.
+
+```yaml
+id: request_environment
+namespace: platform.self_service
+
+inputs:
+  - id: team
+    type: SELECT
+    values: [payments, search, data-platform]
+
+  - id: environment
+    type: SELECT
+    values: [dev, staging, prod]
+    defaults: dev
+
+  - id: size
+    type: SELECT
+    values: [small, medium, large]
+    defaults: small
+
+  - id: justification
+    type: STRING
+
+tasks:
+  - id: check_rules
+    type: io.kestra.plugin.core.execution.Fail
+    condition: "{{ inputs.environment == 'prod' and inputs.size == 'small' }}"
+    errorMessage: "Production environments start at size medium."
+
+  - id: approval_if_needed
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ inputs.environment != 'dev' or inputs.size == 'large' }}"
+    then:
+      - id: notify_approvers
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+        url: "{{ secret('SLACK_PLATFORM_APPROVALS') }}"
+        payload: |
+          {
+            "text": "Approval needed: {{ inputs.team }} requests a {{ inputs.size }} {{ inputs.environment }} environment. Reason: {{ inputs.justification }}. Review execution {{ execution.id }}."
+          }
+
+      - id: wait_for_approval
+        type: io.kestra.plugin.core.flow.Pause
+        onResume:
+          - id: approved
+            type: BOOL
+            defaults: false
+          - id: reason
+            type: STRING
+
+      - id: stop_if_rejected
+        type: io.kestra.plugin.core.execution.Fail
+        condition: "{{ outputs.wait_for_approval.onResume.approved == false }}"
+        errorMessage: "Request rejected: {{ outputs.wait_for_approval.onResume.reason }}"
+
+  - id: provision
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: platform.provisioning
+    flowId: create_environment
+    inputs:
+      team: "{{ inputs.team }}"
+      environment: "{{ inputs.environment }}"
+      size: "{{ inputs.size }}"
+    wait: true
+    transmitFailed: true
+
+  - id: notify_requester
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+    url: "{{ secret('SLACK_PLATFORM_REQUESTS') }}"
+    payload: |
+      {
+        "text": "The {{ inputs.environment }} environment for {{ inputs.team }} is ready. Request: {{ execution.id }}."
+      }
+```
+
+The same pattern extends to every catalog item: change the inputs, the rules, the approval condition, and the subflow that does the provisioning. Because the request, the decision, and the provisioning run in one execution, the audit trail is the execution history.
+
+## Related reading
+
+*   [Day 2 operations](/resources/infrastructure/day-2-operations): what happens after a resource is delivered.
+*   [Policy as code](/resources/infrastructure/policy-as-code): how to express guardrails as versioned rules.
+*   [Infrastructure orchestration](/resources/infrastructure/infrastructure-orchestration): coordinating Terraform, Ansible, and APIs in one workflow.
+*   [Open-source VMware vRA replacement](/resources/infrastructure/open-source-vmware-vra-replacement): rebuilding a self-service VM catalog outside Aria Automation.
+*   [AWX alternatives](/resources/infrastructure/awx-alternatives): options for teams running Ansible at scale.

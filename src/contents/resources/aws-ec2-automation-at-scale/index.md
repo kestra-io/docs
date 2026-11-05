@@ -115,7 +115,7 @@ Kestra allows you to coordinate EC2 automation with the rest of your stack. For 
 
 ### Declarative infrastructure as code for EC2
 
-With Kestra, your entire automation logic is defined in simple, declarative YAML. This treats your workflows as code, enabling version control, peer reviews, and GitOps practices. Every change is auditable, providing a level of governance that is essential for managing [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) at scale and implementing [GitOps principles](https://kestra.io/resources/infrastructure/gitops).
+With Kestra, your entire automation logic is defined in simple, declarative YAML. This treats your workflows as code, enabling version control, peer reviews, and GitOps practices. Every change is auditable, providing a level of governance that is essential for managing [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) at scale and implementing [GitOps principles](https://kestra.io/resources/infrastructure/gitops).
 
 ```yaml
 id: scale_ec2_on_data_load

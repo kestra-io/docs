@@ -1,11 +1,21 @@
 ---
+import { getImage } from "astro:assets"
 import Link from "~/components/common/Link.astro"
 
 interface Props {
     track?: "services" | "technology"
+    /** Replaces the partner copy, for pages outside the program. */
+    custom?: {
+        title: string
+        text: string
+        cta: string
+        href: string
+        /** A photo behind the panel, under a dark veil. */
+        image?: ImageMetadata
+    }
 }
 
-const { track } = Astro.props
+const { track, custom } = Astro.props
 
 const COPY = {
     services: {
@@ -25,15 +35,24 @@ const COPY = {
     },
 }
 
-const copy = COPY[track ?? "default"]
-const href = track ? `/partners/apply?track=${track}` : "/partners/apply"
-const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
+const copy = custom ?? COPY[track ?? "default"]
+const href =
+    custom?.href ??
+    (track ? `/partners/apply?track=${track}` : "/partners/apply")
+const showFind =
+    !custom && !track && !Astro.url.pathname.startsWith("/partners/find")
+const photo = custom?.image
+    ? await getImage({ src: custom.image, width: 1800, format: "webp" })
+    : undefined
 ---
 
-<section class="partner-cta" id="form">
+<section class="partner-cta" id={custom ? undefined : "form"}>
     <div class="container">
         <div class="frame">
-            <div class="panel">
+            <div
+                class:list={["panel", { photo }]}
+                style={photo ? `--cta-photo: url(${photo.src})` : undefined}
+            >
                 <h2>{copy.title}.</h2>
                 <p>{copy.text}</p>
                 <div class="actions">
@@ -95,6 +114,15 @@ const showFind = !track && !Astro.url.pathname.startsWith("/partners/find")
 
             @include media-breakpoint-down(md) {
                 padding: 4.5rem 1.25rem;
+            }
+
+            &.photo {
+                background:
+                    linear-gradient(
+                        rgba(12, 10, 18, 0.55),
+                        rgba(12, 10, 18, 0.78)
+                    ),
+                    #121214 var(--cta-photo) center / cover no-repeat;
             }
         }
 

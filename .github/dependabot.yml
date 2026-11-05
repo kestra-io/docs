@@ -12,6 +12,8 @@ updates:
       day: "wednesday"
       timezone: "Europe/Paris"
       time: "08:00"
+    cooldown:
+      default-days: 3
     open-pull-requests-limit: 50
     labels: ["dependency-upgrade", "area/devops"]
 
@@ -26,9 +28,19 @@ updates:
       day: "wednesday"
       time: "08:00"
       timezone: "Europe/Paris"
+    # cooldown never delays security updates
+    cooldown:
+      default-days: 3
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
     open-pull-requests-limit: 50
     labels: ["dependency-upgrade", "area/frontend"]
     groups:
+      security-updates:
+        applies-to: security-updates
+        patterns: ["*"]
+
       types:
         applies-to: version-updates
         patterns: ["@types/*"]

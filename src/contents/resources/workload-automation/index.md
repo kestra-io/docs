@@ -142,7 +142,7 @@ For more detailed comparisons, explore guides on [IBM Workload Automation altern
 
 ## Real-World Applications of Workload Automation
 WLA is applied across industries to solve complex operational challenges. Practical use cases include:
-- **Data Pipeline Orchestration:** Automating complex [data pipeline](/resources/data/data-pipeline) workflows for ETL and ELT processes.
+- **Data Pipeline Orchestration:** Automating complex [data pipeline](/resources/data/create-data-pipeline) workflows for ETL and ELT processes.
 - **Incident Response:** Triggering automated diagnostic and remediation workflows in response to system alerts, as part of an [incident response automation](/resources/infrastructure/incident-response-automation) strategy.
 - **User Provisioning:** Automating employee onboarding and offboarding by orchestrating tasks across [Active Directory](/resources/infrastructure/active-directory-automation), HR systems, and SaaS applications.
 - **Financial Close:** Coordinating the sequence of jobs across ERP, CRM, and financial reporting systems to ensure a timely and accurate monthly close. FILA uses Kestra to manage such complex ERP and supply-chain workflows.

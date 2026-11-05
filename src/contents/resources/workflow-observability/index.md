@@ -152,7 +152,7 @@ A strong observability practice delivers value across numerous use cases, turnin
 
 ## Related Concepts
 *   [Python Logging & Centralized Workflow Management](/resources/data/python-logging)
-*   [Workflow Governance: Manage & Automate Operations](/resources/infrastructure/workflow-governance)
+*   [Workflow Governance: Manage & Automate Operations](/resources/ai/ai-governance-workflows)
 *   [Workflow Orchestration Security](/resources/infrastructure/workflow-orchestration-security)
 *   [Workflow Errors in Kestra – Handling Strategies](/docs/workflow-components/errors)
 *   [Workflow SLAs in Kestra – Assert Duration Targets](/docs/workflow-components/sla)

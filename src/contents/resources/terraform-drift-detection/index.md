@@ -43,7 +43,7 @@ This divergence can happen for several reasons:
 *   **Human Error:** A resource is deleted or modified accidentally outside of the standard Terraform workflow.
 *   **Resource Decay:** Cloud providers sometimes make automatic changes to resources, such as updating a managed database version, which may not be reflected in your code.
 
-Understanding the principles of [Infrastructure-as-Code](/resources/infrastructure/what-is-infrastructure-as-code) explains why drift matters so much.
+Understanding the principles of [Infrastructure-as-Code](/resources/infrastructure/everything-as-code) explains why drift matters so much.
 
 ### Why Unmanaged Drift is a Risk
 
@@ -175,4 +175,4 @@ Automated drift detection helps in several places:
 *   [Orchestrate Ansible with Kestra](/orchestration/ansible): Learn how to combine configuration management with workflow orchestration.
 *   [Orchestrate Jenkins with Kestra](/orchestration/jenkins): Integrate your CI/CD pipelines with broader infrastructure automation workflows.
 
-Automated drift detection keeps Infrastructure as Code true after the first apply. Kestra runs the checks on schedule, keeps their history, and connects the result to the people and systems that act on it.
+Automated drift detection keeps Infrastructure as Code true after the first apply, and it is one of the recurring [day 2 operations](/resources/infrastructure/day-2-operations) every infrastructure team runs. Kestra runs the checks on schedule, keeps their history, and connects the result to the people and systems that act on it.

@@ -4,6 +4,7 @@ h1: Manage Namespace Files and Use Them in Your Flows
 description: Manage Namespace Files in Kestra and use them in your flows. Store scripts, configs, and assets at the namespace level for centralized file management.
 sidebarTitle: Namespace Files
 icon: /src/contents/docs/icons/concepts.svg
+docId: files
 ---
 
 Namespace Files are files tied to a namespace — scripts, queries, configs, and other assets you can reference in any flow within that namespace.
@@ -193,7 +194,7 @@ resource "kestra_namespace_file" "prod_scripts" {
 
 ### Deploy namespace files via kestractl
 
-[kestractl](../../kestra-cli/kestractl/index.md) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
+[kestractl](../../kestra-cli/kestractl/index.md#installation) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
 
 ```bash
 kestractl nsfiles upload prod ./scripts --override
@@ -462,7 +463,7 @@ Patterns without a leading `/` are automatically prefixed with `**/`, which make
 ## Dedicated-storage workers
 
 :::alert{type="info"}
-This configuration applies to Enterprise Edition deployments where workers use dedicated storage that differs from the deployment's.
+This configuration applies to Enterprise Edition deployments where workers use dedicated storage, separate from the internal storage that the webserver and Worker Controller use.
 :::
 
 Workers with dedicated storage read and write namespace file content against their own bucket by default. A file uploaded from the UI is listed on the worker but its content is unreachable, and a file written by a task on the worker cannot be read from anywhere else. Set `kestra.namespace-files.worker-access: CONTROLLER` to route all namespace file operations through the controller instead:

@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import { GUIDE_HREF, WEBINAR_HREF_EU, WEBINAR_HREF_US } from "./links"
+import { GUIDE_HREF, WEBINAR_HREF } from "./links"
 
 const STEPS = [
     {
@@ -9,16 +9,9 @@ const STEPS = [
         href: GUIDE_HREF,
     },
     {
-        title: "November 4 · Europe and Asia",
-        text: "Join the webinar to see the Migration Assistant run end to end.",
-        href: WEBINAR_HREF_EU,
-        session: true,
-    },
-    {
-        title: "November 5 · Americas",
-        text: "Join the webinar to see the Migration Assistant run end to end.",
-        href: WEBINAR_HREF_US,
-        session: true,
+        title: "Watch the webinar replay",
+        text: "Moving off VMware? Start with the orchestrator. The Migration Assistant run end to end with our team.",
+        href: WEBINAR_HREF,
     },
 ]
 ---
@@ -30,10 +23,7 @@ const STEPS = [
             {
                 STEPS.map((step) => (
                     <li>
-                        <a
-                            href={step.href}
-                            data-webinar-session={step.session ? "" : undefined}
-                        >
+                        <a href={step.href}>
                             <span class="copy">
                                 <strong>{step.title}</strong>
                                 <span>{step.text}</span>

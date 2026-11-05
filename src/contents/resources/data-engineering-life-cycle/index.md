@@ -132,7 +132,7 @@ Data security is a shared responsibility that spans the entire lifecycle. A comp
 
 ### The Role of Automation and Orchestration
 
-Manually running each stage of the lifecycle is untenable at scale. Automation is the key to efficiency and reliability. This is where [data pipeline automation](/resources/data/automate-data-pipeline) comes in.
+Manually running each stage of the lifecycle is untenable at scale. Automation is the key to efficiency and reliability. This is where [data pipeline automation](/resources/data/create-data-pipeline) comes in.
 
 An orchestration platform sits at the heart of the lifecycle, acting as the control plane that coordinates all activities. A modern orchestrator should:
 

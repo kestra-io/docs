@@ -87,7 +87,7 @@ Achieving compliance is an ongoing process of auditing, enforcement, and strateg
 
 ### Conducting regular data audits and mapping lineage
 
-You can't enforce residency if you don't know where your data is or where it's going. The first step is to create and maintain an inventory of your data assets. This involves mapping data flows from ingestion to storage, processing, and analytics. Effective [workflow governance](/resources/infrastructure/workflow-governance) requires tools that can automatically track data lineage and provide a clear picture of your data's journey.
+You can't enforce residency if you don't know where your data is or where it's going. The first step is to create and maintain an inventory of your data assets. This involves mapping data flows from ingestion to storage, processing, and analytics. Effective [workflow governance](/resources/ai/ai-governance-workflows) requires tools that can automatically track data lineage and provide a clear picture of your data's journey.
 
 ### Selecting compliant cloud regions and storage providers
 

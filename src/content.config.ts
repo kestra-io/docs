@@ -80,6 +80,16 @@ export const collections = {
                 // Override the canonical URL, e.g. for content syndicated from
                 // another site. Rendered in <head> by the layout.
                 canonical: z.string().optional(),
+                lang: z.string().optional(),
+                languages: z
+                    .array(
+                        z.object({
+                            code: z.string(),
+                            label: z.string(),
+                            href: z.string(),
+                        }),
+                    )
+                    .optional(),
             }),
     }),
     legal: defineCollection({

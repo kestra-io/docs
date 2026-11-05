@@ -1,0 +1,31 @@
+@use "/src/components/vra-migration-guide/shared" as *;
+
+// Article layout of the whitepaper landing pages. Include it at the top level
+// of the page's <style> so the selectors stay scoped.
+@mixin whitepaper-content {
+    // The layout adds its own top padding, so the section only pads below,
+    // as on the vRA migration guide.
+    .whitepaper-content {
+        padding: 0 0 3rem;
+    }
+
+    // Side margins of the hero and the cards above, in place of the layout's
+    // narrower 1180px column and its own side padding.
+    .whitepaper-content :global(.layout-wrapper) {
+        padding-inline: 0;
+    }
+
+    .whitepaper-content :global(.layout-wrapper > .container) {
+        @include guide-container;
+    }
+
+    // Lighter edge than the site-wide Get Started / Book a Demo block.
+    .whitepaper-content :global(.bd-content .resource-cta) {
+        border-color: var(--ks-border-primary);
+    }
+
+    // A paper that opens on a heading lines it up with the top of the sidebar.
+    .whitepaper-content :global(.bd-content > h2:first-child) {
+        margin-top: 0;
+    }
+}

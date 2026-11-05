@@ -5,6 +5,7 @@ metaTitle: "Cron Alternatives & Replacement: Modern Schedulers | Kestra"
 metaDescription: "Explore modern cron replacement options, from systemd-timers to workflow orchestrators. Monitor, backfill and scale scheduled jobs beyond cron."
 tag: "infrastructure"
 date: 2026-07-14
+lastUpdated: 2026-10-26
 slug: "cron-replacement"
 faq:
   - question: "Why is cron often insufficient for modern IT environments?"
@@ -29,12 +30,16 @@ faq:
     answer: "Cron uses the server's local time, which makes DST transitions a yearly hazard: jobs can run twice or be skipped when clocks change, and multi-region setups drift apart. Best practice is either to run all servers on UTC, or to use a scheduler that supports explicit per-schedule timezones. Kestra's Schedule trigger accepts a timezone property (e.g. Europe/Paris) and resolves DST deterministically, so one flow definition behaves correctly across regions."
   - question: "Is Zapier or n8n a good cron replacement for engineering teams?"
     answer: "For light SaaS-to-SaaS automation, yes. For engineering-grade scheduling, usually not — the per-execution or per-task billing model means costs scale linearly with every workflow run, which becomes prohibitive for jobs running every few minutes. These tools also lack orchestration primitives like backfill, DAG dependencies, and granular RBAC. Engineering teams typically move to an orchestration platform where execution volume doesn't drive the bill and workflows are versioned as code."
+  - question: "What is a cron expression?"
+    answer: "A cron expression is a five-field string (minute, hour, day of month, month, day of week) that tells a scheduler when to run a job. Each field takes a value, a list, a range, or a step: `30 6 * * MON-FRI` means 06:30 every weekday, and `0 0 1 * *` means midnight on the first of each month. The same syntax works in crontab, Kubernetes CronJob, CI schedulers, and Kestra's Schedule trigger, which is why it survives a move away from cron itself."
+  - question: "How do you write a cron expression for every 5 minutes?"
+    answer: "Use `*/5 * * * *`. The `*/5` step in the minute field fires at :00, :05, :10 and so on, and the four asterisks mean every hour, day, month, and weekday. Steps restart at each hour, so `*/5` divides the hour evenly but `*/7` does not: it fires at :56 and then again at :00, four minutes later. To limit the job to business hours, add a range: `*/5 9-17 * * MON-FRI`."
 author: "elliot"
 ---
 
 If you're reading this, cron is probably already hurting. Maybe a nightly job silently skipped a run and nobody noticed until the data was wrong. Maybe you've lost track of which crontab on which server owns which job. Cron is a Linux staple, and it's excellent at what it was designed for — but it was designed decades before distributed systems, multi-cloud infrastructure, and event-driven architectures.
 
-This guide compares the main families of cron alternatives — from native Linux schedulers to CI/CD tools, iPaaS platforms, cloud-managed services, and dedicated workflow orchestration platforms — and gives you a decision framework to pick the right replacement for your scale. (If you're looking for help writing schedules rather than replacing cron, see our guide to [cron expression syntax](/resources/infrastructure/cron-expression).)
+This guide compares the main families of cron alternatives — from native Linux schedulers to CI/CD tools, iPaaS platforms, cloud-managed services, and dedicated workflow orchestration platforms — and gives you a decision framework to pick the right replacement for your scale. (If you only need help writing schedules, the cron expression syntax reference near the end of this guide covers fields, special characters, common patterns, and pitfalls.)
 
 ## Why Teams Outgrow Cron
 
@@ -169,6 +174,72 @@ Kestra goes further than scheduling these workloads: flows can be exposed as **M
 
 Whatever you pick, evaluate against the failure modes that made you leave cron: Can you see every job in one place? What happens when a run is missed — is there backfill? How are timezones and DST handled? Can jobs depend on each other? Who can change a schedule, and is it audited?
 
+## Cron Expression Syntax Reference
+
+Whichever replacement you pick, you will keep writing cron expressions: Kubernetes CronJob, GitHub Actions, GitLab CI, and Kestra all accept the same five-field format (systemd-timers uses its own `OnCalendar` syntax). The fields read left to right:
+
+```
+*  *  *  *  *
+|  |  |  |  |
+|  |  |  |  +--- day of week   (0-7, where 0 and 7 are Sunday, or SUN-SAT)
+|  |  |  +------ month         (1-12, or JAN-DEC)
+|  |  +--------- day of month  (1-31)
+|  +------------ hour          (0-23)
++--------------- minute        (0-59)
+```
+
+Four special characters cover almost every schedule:
+
+| Character | Meaning | Example |
+|---|---|---|
+| `*` | Every value of the field | `*` in hour = every hour |
+| `,` | List of values | `1,15` in day of month = the 1st and the 15th |
+| `-` | Range | `MON-FRI` in day of week = weekdays |
+| `/` | Step | `*/15` in minute = every 15 minutes |
+
+`L` (last), `W` (nearest weekday), `#` (nth weekday of the month), and `?` (no specific value) come from Quartz-style schedulers. They are not part of classic Unix cron and support varies elsewhere, so check your scheduler before relying on them.
+
+### Common cron expression examples
+
+| Expression | Runs |
+|---|---|
+| `*/5 * * * *` | Every 5 minutes |
+| `0 * * * *` | Every hour, on the hour |
+| `0 9 * * *` | Every day at 09:00 |
+| `30 6 * * MON-FRI` | 06:30 on weekdays |
+| `*/15 9-17 * * MON-FRI` | Every 15 minutes from 09:00 to 17:45 on weekdays (the `17` hour is included) |
+| `0 0 1 * *` | Midnight on the 1st of every month |
+| `0 0 1 */3 *` | Midnight on the first day of each quarter (January, April, July, October) |
+| `0 2 * * 0` | 02:00 every Sunday, a classic backup slot and a DST trap (see below) |
+
+### Cron pitfalls that survive any migration
+
+- Day of month and day of week combine with OR. In standard cron, `0 9 1 * MON` runs on the 1st of the month and on every Monday, not only on Mondays that fall on the 1st. Express "first Monday of the month" with a scheduler-level condition instead (Kestra's version is shown below).
+- Steps restart at each boundary. `*/45` in the minute field fires at :00 and :45, so the gap alternates between 45 and 15 minutes.
+- Daylight saving time. Cron evaluates the expression in server local time unless you set a timezone. A job inside the hour the clocks skip does not fire that night, and a job inside the hour that repeats can fire twice, depending on the implementation. Schedule in UTC, or pin an explicit timezone and keep critical jobs out of the 01:00-03:00 local window.
+- Field count mismatches. Quartz-style schedulers use six or seven fields, with seconds first. Drop the seconds field and replace `?` with `*`: Quartz `0 0 12 * * ?` (noon daily) becomes `0 12 * * *`.
+
 ## From Cron to Kestra in Practice
 
 Migrating doesn't mean rewriting everything at once. The typical path: inventory your crontabs, port schedules one-to-one into Kestra Schedule triggers (the cron syntax carries over unchanged), then progressively add what cron never gave you — retries, dependencies, alerting, backfill. Our step-by-step guide covers the full process: [migrate from cron to Kestra](/resources/infrastructure/migrate-from-cron).
+
+### How Kestra's Schedule trigger reads cron expressions
+
+The `cron` property of the [Schedule trigger](/docs/workflow-components/triggers/schedule-trigger) takes a standard five-field expression, so crontab entries paste in unchanged. Other properties close the gaps listed above:
+
+- `timezone` sets the zone the expression is evaluated in (an IANA name such as `America/New_York`). Without it, Kestra uses the server's configured timezone.
+- `when` takes a Pebble expression evaluated at trigger time. Date helpers such as `isDayWeekInMonth()` and `isLastWorkingDay()` express "first Monday" or "last working day of the month" without the OR behavior of the two day fields.
+- `withSeconds: true` adds a seconds field. Nicknames such as `@daily` and `@hourly` work, and so does `L` for the last day of the month.
+- `recoverMissedSchedules` (`ALL`, `LAST`, or `NONE`) decides what happens to runs missed while Kestra was unavailable, and `allowConcurrent` defaults to `false`, so a slow run never overlaps the next one.
+
+```yaml
+triggers:
+  - id: month-end-close
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * MON-FRI"
+    timezone: America/New_York
+    when: "{{ isLastWorkingDay(trigger.date) }}"
+    recoverMissedSchedules: LAST
+```
+
+This trigger fires at 06:00 New York time on the last working day of each month, follows DST changes without edits, and after an outage runs only the most recent missed occurrence instead of replaying every skipped day.

@@ -41,7 +41,7 @@ Data Vault 2.0 builds upon the original methodology by incorporating best practi
 *   **Big Data and NoSQL Integration:** It explicitly addresses the integration of structured, semi-structured, and unstructured data from various sources.
 *   **Methodology:** It incorporates elements of Agile, Scrum, and Six Sigma to ensure consistent and high-quality delivery.
 *   **Governance and Security:** It provides a framework for managing data quality, master data, and security within the warehouse.
-*   **Raw and Business Vaults:** It distinguishes between a Raw Vault (containing unaltered source data) and a Business Vault (containing derived data and applied business rules), providing a clear separation for a more robust [data warehouse ETL](/resources/data/data-warehouse-etl).
+*   **Raw and Business Vaults:** It distinguishes between a Raw Vault (containing unaltered source data) and a Business Vault (containing derived data and applied business rules), providing a clear separation for a more robust [data warehouse ETL](/resources/data/etl-workflow).
 
 ## Deconstructing Data Vault Architecture: Hubs, Links, and Satellites
 
@@ -193,7 +193,7 @@ Data Vault's unique characteristics make it particularly valuable in several bus
 *   **Master Data Management (MDM):** Hubs naturally serve as a repository for master data keys, helping to create a single view of core business entities. This is common in [retail](/use-cases/retail) and the [public sector](/use-cases/public-services).
 
 ## Related Concepts
-*   [What Is a Data Pipeline?](/resources/data/data-pipeline)
+*   [What Is a Data Pipeline?](/resources/data/create-data-pipeline)
 *   [Data Orchestration](/data)
 *   [What is Data Quality?](/resources/data/data-quality)
 *   [Top Open Source ETL Tools](/resources/data/open-source-etl-tool)

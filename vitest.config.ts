@@ -13,5 +13,7 @@ export default defineConfig({
     },
     test: {
         include: ["src/**/*.test.ts"],
+        // Run the adapter through Vite so its `import.meta.env.BASE_URL` resolves.
+        server: { deps: { inline: ["@astrojs/cloudflare"] } },
     },
 })

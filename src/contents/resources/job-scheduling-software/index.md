@@ -95,7 +95,7 @@ A job scheduler must seamlessly connect with the tools and systems you already u
 
 The best tool is one that your team will actually use. A positive developer experience is crucial for adoption and productivity. This includes clear documentation, an intuitive authoring process (e.g., declarative YAML vs. complex code), and tools for local testing and debugging.
 
-Simultaneously, the platform must provide strong [workflow governance](/resources/infrastructure/workflow-governance) to ensure consistency and compliance. Features like version control integration (GitOps), reusable templates (subflows), and multi-tenancy for isolating teams or environments are essential for managing automation at scale. The ability to leverage [open-source cost savings](/resources/infrastructure/open-source-orchestration-cost-savings) while having a clear path to enterprise-grade governance is a significant advantage.
+Simultaneously, the platform must provide strong [workflow governance](/resources/ai/ai-governance-workflows) to ensure consistency and compliance. Features like version control integration (GitOps), reusable templates (subflows), and multi-tenancy for isolating teams or environments are essential for managing automation at scale. The ability to leverage [open-source cost savings](/resources/infrastructure/open-source-orchestration-cost-savings) while having a clear path to enterprise-grade governance is a significant advantage.
 
 ## Unifying job scheduling with declarative orchestration in Kestra
 

@@ -13,6 +13,8 @@ const totalPlugins = await fetchTotalPluginsCount()
 const images = [
     {
         src: code,
+        // AVIF is ~2.4x larger than WebP for this screenshot.
+        format: "webp",
         alt: "Code workflows",
         className: "code-workflow",
         title: "Declarative Orchestration",
@@ -74,12 +76,21 @@ const pluginIcons = await Promise.all(
             {
                 images.map(
                     (
-                        { src, alt, title, description, className, connectors },
+                        {
+                            src,
+                            format,
+                            alt,
+                            title,
+                            description,
+                            className,
+                            connectors,
+                        },
                         i,
                     ) => (
                         <figure style={`--i: ${i - (images.length - 1) / 2};`}>
                             <Image
                                 src={src}
+                                format={format}
                                 alt={alt}
                                 class="stack-image"
                                 loading="lazy"

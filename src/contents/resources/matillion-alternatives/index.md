@@ -32,7 +32,7 @@ Matillion carved out a significant niche by providing a powerful, low-code inter
 However, the modern data stack is rarely homogenous. Teams often find themselves looking for alternatives for several common reasons:
 *   **Pricing Complexity:** Matillion's credit-based pricing can become costly and unpredictable as data volumes and compute usage scale. Teams often seek more transparent or consumption-based models.
 *   **Limited Customization:** While the visual interface is a strength, it can become a constraint for complex logic, non-SQL transformations, or integrating custom Python scripts, which can feel less integrated into the core workflow.
-*   **Narrow Orchestration Scope:** Matillion excels at ELT but is not designed to be a general-purpose orchestrator. As pipelines grow, teams need to manage dependencies that extend beyond the [data warehouse ETL](/resources/data/data-warehouse-etl) process, involving infrastructure tasks, API calls, or AI model training.
+*   **Narrow Orchestration Scope:** Matillion excels at ELT but is not designed to be a general-purpose orchestrator. As pipelines grow, teams need to manage dependencies that extend beyond the [data warehouse ETL](/resources/data/etl-workflow) process, involving infrastructure tasks, API calls, or AI model training.
 *   **Vendor Lock-in:** Being tightly coupled to a specific cloud data warehouse can be a concern for organizations adopting a multi-cloud strategy or wishing to avoid deep dependencies on a single vendor's ecosystem.
 
 ## Our Evaluation Criteria for Data Integration Alternatives
@@ -166,7 +166,7 @@ The trade-offs include a potentially steep learning curve and high resource requ
 
 Selecting the right tool depends entirely on your team's specific needs, skills, and strategic goals. Here’s a framework to guide your decision:
 
-*   **For Data Engineering Teams:** If your priority is developer experience, custom code support, and seamless integration with tools like dbt and Airbyte, a modular stack orchestrated by a platform like Kestra is ideal. This approach provides maximum flexibility and control over your [data pipelines](/resources/data/data-pipeline).
+*   **For Data Engineering Teams:** If your priority is developer experience, custom code support, and seamless integration with tools like dbt and Airbyte, a modular stack orchestrated by a platform like Kestra is ideal. This approach provides maximum flexibility and control over your [data pipelines](/resources/data/create-data-pipeline).
 *   **For Platform Engineering Teams:** If you are building an internal data platform, focus on tools that support GitOps, declarative configurations (YAML), and can unify data and infrastructure workflows. Kestra excels here, providing a single control plane for both [infrastructure automation](/infra-automation) and data processes.
 *   **For Small Teams or Startups:** If your goal is quick time-to-value and low operational overhead, a managed ingestion tool like Fivetran or Airbyte Cloud can be highly effective. Pair it with dbt Cloud for transformations to get a powerful, scalable stack without managing infrastructure.
 *   **For Business and Analytics Teams:** If your users are less technical and prefer a visual, low-code interface, a direct competitor like Talend or a cloud-native service like Azure Data Factory might be a better fit than more code-centric options.

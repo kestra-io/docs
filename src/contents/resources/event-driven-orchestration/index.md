@@ -20,7 +20,7 @@ faq:
     answer: "Avoid it for simple, strictly sequential workflows that run on a predictable schedule, small applications where a single cron job is enough, or strongly consistent transactions that require synchronous commits across systems. Event-driven patterns pay off when you have multiple upstream systems, unpredictable arrival times, or workloads that need to react in near real time."
 ---
 
-Event-driven orchestration has moved from a niche integration pattern to the default way modern teams connect [data pipelines](/resources/data/data-pipeline), microservices, and infrastructure operations. Files land in object storage, messages arrive on Kafka, webhooks fire from SaaS tools, and workflows need to start immediately, not at the next scheduled run.
+Event-driven orchestration has moved from a niche integration pattern to the default way modern teams connect [data pipelines](/resources/data/create-data-pipeline), microservices, and infrastructure operations. Files land in object storage, messages arrive on Kafka, webhooks fire from SaaS tools, and workflows need to start immediately, not at the next scheduled run.
 
 This guide defines event-driven orchestration, contrasts it with choreography, SOA, and domain-driven design, walks through an implementation with real YAML examples, and covers the trade-offs you should know before adopting it.
 
@@ -222,6 +222,6 @@ Event-driven orchestration shows up in three recurring patterns worth recognizin
 
 **Microservice coordination.** An order event triggers a workflow that calls payment, inventory, shipping, and notification services in a defined sequence, with compensating actions on failure. The orchestrator acts as a saga coordinator — the same model used in [data orchestration](/resources/data/data-orchestration) pipelines that span multiple services end-to-end.
 
-**Infrastructure automation.** A webhook from a monitoring system triggers a remediation workflow: scale a cluster, rotate credentials, run a diagnostic, open an incident. The orchestrator ties together the cloud APIs, scripts, and notifications — a pattern covered in depth in [workflow management](/resources/infrastructure/workflow-management) guides.
+**Infrastructure automation.** A webhook from a monitoring system triggers a remediation workflow: scale a cluster, rotate credentials, run a diagnostic, open an incident. The orchestrator ties together the cloud APIs, scripts, and notifications — a pattern covered in depth in [workflow management](/resources/infrastructure/workflow-orchestration-tools) guides.
 
 All three patterns share the same shape: an external event, a declarative workflow, and a single place to observe and debug every run.

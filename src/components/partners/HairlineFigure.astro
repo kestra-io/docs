@@ -1,19 +1,39 @@
 ---
 interface Props {
-    name: "deploy" | "plugins"
+    name: "deploy" | "plugins" | "padlock" | "servers" | "patch" | "opensource"
+    // Draws the figure in its dark palette on this ground colour, whatever
+    // the page's theme: for figures that sit on a dark tile.
+    dark?: string
 }
 
-const { name } = Astro.props
+const { name, dark } = Astro.props
 ---
 
-<div class="hairline-figure" data-figure={name}></div>
+<div
+    class="hairline-figure"
+    data-figure={name}
+    data-hairline-theme={dark ? "dark" : undefined}
+    style={dark ? `--hairline-plate: ${dark}` : undefined}
+>
+</div>
 
 <script>
     import HL from "./illustrations/hairline-kernel.js"
     import deploy from "./illustrations/deploy.js"
     import plugins from "./illustrations/plugins.js"
+    import padlock from "./illustrations/padlock.js"
+    import servers from "./illustrations/servers.js"
+    import patch from "./illustrations/patch.js"
+    import opensource from "./illustrations/opensource.js"
 
-    const FIGURES = { deploy, plugins }
+    const FIGURES = {
+        deploy,
+        plugins,
+        padlock,
+        servers,
+        patch,
+        opensource,
+    }
 
     function mountAll() {
         document
@@ -59,7 +79,8 @@ const { name } = Astro.props
             fill: #f62e76;
         }
 
-        :global(html.dark) & {
+        :global(html.dark) &,
+        &[data-hairline-theme="dark"] {
             --hairline-hi: #a796ff;
             --hairline-edge: #7e7e88;
             --hairline-mid: #4d4d55;

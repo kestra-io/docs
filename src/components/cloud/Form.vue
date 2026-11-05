@@ -100,10 +100,8 @@
                                     : "Select a range"
                             }}
                         </option>
-                        <option value="below 100">below 100</option>
-                        <option value="between 100 and 999">
-                            between 100 and 999
-                        </option>
+                        <option value="<100">below 100</option>
+                        <option value="100-999">between 100 and 999</option>
                         <option value="1000+">1000+</option>
                     </select>
                 </div>
@@ -167,12 +165,11 @@
     import { $fetch } from "~/utils/fetch"
     import {
         CONNOR_CLOUD_MEETING_LINK,
-        LUKE_MEETING_LINK,
         ensureMeetingsScriptLoaded,
-        getGeoMeetingUrl,
-        isAmericasTimezone,
+        getMeetingUrl,
         tierFromEmployees,
     } from "~/composables/useMeeting"
+    import type { Routing } from "~/utils/hubspotRouting"
 
     const {
         variant = "default",
@@ -204,11 +201,11 @@
     const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
     const COMPANY_SIZE_PROPERTY = "number_of_employees"
 
-    function cloudMeetingUrl(employees: string) {
-        const tier = tierFromEmployees(employees)
-        if (tier === "T1") return getGeoMeetingUrl()
-        if (tier === "T2" && isAmericasTimezone()) return LUKE_MEETING_LINK
-        return CONNOR_CLOUD_MEETING_LINK
+    function cloudMeetingUrl(employees: string, routing?: Routing) {
+        return getMeetingUrl(routing?.tier ?? tierFromEmployees(employees), {
+            fallback: CONNOR_CLOUD_MEETING_LINK,
+            territory: routing?.territory,
+        })
     }
 
     function withContactParams(
@@ -294,10 +291,15 @@
                 },
             }
 
-            await submitHubspotForm(HUBSPOT_FORM_ID, payload)
+            const result = await submitHubspotForm<{ routing?: Routing }>(
+                HUBSPOT_FORM_ID,
+                payload,
+            )
 
             valid.value = true
-            meetingUrl.value = withContactParams(cloudMeetingUrl(employees), {
+            meetingUrl.value = withContactParams(
+                cloudMeetingUrl(employees, result?.routing),
+                {
                 firstname,
                 lastname,
                 email,
