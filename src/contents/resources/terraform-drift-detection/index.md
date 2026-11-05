@@ -175,4 +175,4 @@ Automated drift detection helps in several places:
 *   [Orchestrate Ansible with Kestra](/orchestration/ansible): Learn how to combine configuration management with workflow orchestration.
 *   [Orchestrate Jenkins with Kestra](/orchestration/jenkins): Integrate your CI/CD pipelines with broader infrastructure automation workflows.
 
-Automated drift detection keeps Infrastructure as Code true after the first apply. Kestra runs the checks on schedule, keeps their history, and connects the result to the people and systems that act on it.
+Automated drift detection keeps Infrastructure as Code true after the first apply, and it is one of the recurring [day 2 operations](/resources/infrastructure/day-2-operations) every infrastructure team runs. Kestra runs the checks on schedule, keeps their history, and connects the result to the people and systems that act on it.

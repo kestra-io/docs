@@ -22,7 +22,7 @@ faq:
 author: "elliot"
 ---
 
-Managing virtual machines (VMs) effectively across their entire lifespan is a core challenge for platform and infrastructure engineers. From initial provisioning to ongoing operations, security, and eventual decommissioning, the VM lifecycle is complex, often fragmented, and prone to manual errors. Traditional tools struggle to provide a unified view or automate across heterogeneous virtualization platforms.
+Managing virtual machines (VMs) effectively across their entire lifespan is a core challenge for platform and infrastructure engineers. From initial provisioning to [ongoing day 2 operations](/resources/infrastructure/day-2-operations), security, and eventual decommissioning, the VM lifecycle is complex, often fragmented, and prone to manual errors. Traditional tools struggle to provide a unified view or automate across heterogeneous virtualization platforms.
 
 This guide delves into VM lifecycle management, outlining its key stages, critical security considerations, and the immense benefits of automation. We'll explore how modern orchestration platforms like Kestra provide a declarative, event-driven control plane to streamline VM operations, integrate with your existing IaC tools, and ensure auditability from cloud to edge.
 

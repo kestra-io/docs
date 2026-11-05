@@ -47,7 +47,7 @@ This process typically coordinates four distinct layers of operation:
 1.  **Provisioning:** Creating the foundational resources like virtual machines, networks, and storage using tools like Terraform or cloud provider APIs.
 2.  **Configuration:** Applying specific settings, installing software, and ensuring compliance on provisioned resources with tools like Ansible or Puppet.
 3.  **Deployment:** Deploying applications and services onto the configured infrastructure, often involving CI/CD pipelines or container orchestrators.
-4.  **Day-2 Operations:** Managing the ongoing lifecycle of infrastructure, including patching, scaling, incident remediation, and decommissioning.
+4.  **[Day-2 Operations](/resources/infrastructure/day-2-operations):** Managing the ongoing lifecycle of infrastructure, including patching, scaling, incident remediation, and decommissioning.
 
 ### What are examples of infrastructure software?
 
