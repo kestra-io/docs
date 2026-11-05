@@ -348,6 +348,9 @@ triggers:
 
 ## Suppressing intermediate failure alerts during retries
 
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
 When an upstream flow uses a flow-level `retry`, the execution passes through a `FAILED` state before each retry attempt. A Flow trigger listening for `FAILED` fires on that intermediate state — even if the execution ultimately succeeds — producing a false alarm.
 
 Set `waitForAllRetries: true` on the trigger to skip evaluation on intermediate `FAILED` states. The trigger fires only when the upstream execution exhausts all retries and ends in `FAILED`.

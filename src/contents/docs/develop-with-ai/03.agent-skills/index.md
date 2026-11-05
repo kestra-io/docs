@@ -12,7 +12,7 @@ This page is for developers who build flows in Claude Code, Cursor, Windsurf, Co
 
 ## What Agent Skills are
 
-Agent Skills are structured knowledge files (`SKILL.md`) that give an external coding agent the context, commands, and guardrails it needs to generate valid flow YAML or operate a Kestra environment with `kestractl`. They follow the [Agent Skills](https://agentskills.io/home) format, which many coding agents support.
+Agent Skills are structured knowledge files (`SKILL.md`) that give an external coding agent the context, commands, and guardrails it needs to generate valid flow YAML or operate a Kestra environment with [`kestractl`](../../kestra-cli/kestractl/index.md#installation). They follow the [Agent Skills](https://agentskills.io/home) format, which many coding agents support.
 
 Skills work best alongside two other pieces:
 

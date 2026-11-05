@@ -74,7 +74,7 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 - `CANCEL`: immediately mark the execution as `CANCELLED`.
 - `FAIL`: immediately mark the execution as `FAILED`.
 
-When using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
+Starting in 2.1, when using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
 
 A queued execution starts when another execution under the same limit ends and releases its slot.
 

@@ -132,6 +132,9 @@ triggers:
 
 ## Purge metrics
 
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
 `PurgeMetrics` removes execution metrics from the metrics table in bulk. Use it instead of `PurgeExecutions` when your goal is metric cleanup: `PurgeExecutions` issues a separate `DELETE FROM metrics` query for every batch of executions it processes, even when those executions have no metrics. `PurgeMetrics` deletes all matching rows in a single query filtered by date range.
 
 ```yaml
@@ -314,7 +317,7 @@ Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin
 
 ## Purge assets and lineage (retention)
 
-Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task hard-deletes two kinds of records that match the filters: [assets](../../07.enterprise/02.governance/01.assets/index.md) and asset usage records (shown on each asset's **Executions** tab). You can turn off either one. The lineage and history of a purged asset are deleted with it.
+Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task hard-deletes two kinds of records that match the filters: [assets](../../07.enterprise/02.governance/01.assets/index.md) and asset usage records (shown on each asset's **Executions** tab). You can turn off either one. The lineage and history of a purged asset are deleted with it. Purging a parent asset, such as a deployment, detaches its parts instead of deleting them.
 
 **Filters:**
 

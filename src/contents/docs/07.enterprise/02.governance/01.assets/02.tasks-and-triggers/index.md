@@ -77,6 +77,8 @@ Kestra emits each event in these situations:
 | `DELETED` | An asset is deleted or purged. |
 | `USED` | A task declares the asset as an input or an output. Kestra emits `USED` for every such task run, including failed ones. |
 
+An `UPDATED` event from a task carries the asset as the task declared it, not the merged stored asset. If the task leaves out `namespace` or a metadata key, the event doesn't have it either, so a trigger that filters on `namespace` or `metadataQuery` doesn't match. Declare the filtered fields on every output that should start the flow.
+
 The execution exposes the asset that matched as `trigger.asset`:
 
 | Variable | Description |
@@ -280,7 +282,7 @@ On a deployment's **TTL & Lease** card, **On expiring** and **On expired** open 
 | One namespace | **Edit for namespace `<namespace>`** | `ttl_expiring_namespace_<namespace>` | `namespace` |
 | All deployments | **Edit for all deployments** | `ttl_expiring` | None |
 
-`EXPIRED` flows follow the same pattern with `ttl_expired` in place of `ttl_expiring`. If an asset ID or namespace contains characters that aren't allowed in a flow ID, or the ID would exceed 100 characters, Kestra sanitizes it and appends a hash. Create those flows from the menu rather than by hand.
+`EXPIRED` flows follow the same pattern with `ttl_expired` in place of `ttl_expiring`. If an asset ID or namespace contains characters that aren't allowed in a flow ID, or the ID would exceed 100 characters, Kestra sanitizes it and appends a hash. Create those flows from the menu rather than by hand. A deployment without a namespace has no namespace level.
 
 For each asset, Kestra starts only the most specific level that exists. For example, if both `ttl_expiring_namespace_company.infra` and `ttl_expiring` exist, deployments in `company.infra` start only the namespace-level flow. A level flow must contain a `TtlTrigger`, and that trigger's filters apply on top of the level. `TtlTrigger` flows with other IDs, or outside the system namespace, aren't part of this hierarchy and start whenever their trigger matches.
 
@@ -407,7 +409,7 @@ assets(id=null, type=null, namespace=null, metadata=null)
 | --- | --- |
 | `id` | Only return the asset with this ID. IDs are unique per tenant, so this returns at most one asset. |
 | `type` | Only return assets of this exact type. |
-| `namespace` | Only return assets in this namespace and its child namespaces. When omitted, the function doesn't filter by namespace. |
+| `namespace` | Only return assets whose namespace starts with this value. This includes child namespaces, and also sibling namespaces that share the prefix: `company.infra` matches `company.infrastructure`. When omitted, the function doesn't filter by namespace. |
 | `metadata` | Only return assets whose metadata contains every key-value pair in this map, for example `{"environment": "prod"}`. |
 
 When you pass `namespace`, Kestra also checks [allowed namespaces](../../07.namespace-management/index.md#allowed-namespaces): if any namespace in the tenant restricts its allowed namespaces without listing the namespace you pass, the function fails with `All namespaces are not allowed`. Namespaces allow all others by default, so this only matters once you restrict them. To avoid the check, filter by `type` or `metadata` instead.

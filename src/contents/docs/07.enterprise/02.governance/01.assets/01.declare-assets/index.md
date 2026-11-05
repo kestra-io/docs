@@ -19,7 +19,7 @@ Every task accepts an `assets` property:
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `inputs` | List of asset references | — | Assets the task reads. Each entry needs an `id`. Add `type` to type an asset that doesn't exist yet. |
-| `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id` and a `type`. |
+| `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id`. Add `type` to create a new asset with a real type. |
 | `enableAuto` | Boolean | `false` | Accept assets emitted by the plugin or by script log lines. See [Automatic emission](#automatic-emission). |
 | `assetFailureBehavior` | `WARN`, `FAIL`, or `IGNORE` | `WARN` | What happens to the task state when an asset can't be written. See [Failure behavior](#failure-behavior). |
 
@@ -99,7 +99,7 @@ An asset in `outputs` has these fields:
 | Field | Required | Description |
 | --- | --- | --- |
 | `id` | Yes | Unique within the tenant. Starts with a letter or digit, then letters, digits, `.`, `_`, `:`, or `-`. Up to 150 characters. |
-| `type` | Yes | A [built-in type](#built-in-asset-types) or any custom string. |
+| `type` | No | A [built-in type](#built-in-asset-types) or any custom string. Without it, an existing asset keeps its stored type, and a new asset is created as an `External` placeholder. |
 | `namespace` | No | Namespace the asset belongs to, used for filtering and access control. Lowercase letters, digits, `.`, `_`, and `-`. See [Namespace and Global assets](#namespace-and-global-assets). |
 | `displayName` | No | Human-readable name shown in the UI |
 | `description` | No | Markdown description |
@@ -140,7 +140,7 @@ When a task writes an asset that already exists, Kestra merges the new declarati
 
 | Field | Rule |
 | --- | --- |
-| `type` | The declared type replaces the stored one. An `External` placeholder never replaces a real type. |
+| `type` | The declared type replaces the stored one. An omitted type keeps the stored one. An `External` placeholder never replaces a real type. |
 | `namespace` | A declared namespace replaces the stored one. An omitted namespace keeps the stored one. |
 | `displayName`, `description` | A declared value replaces the stored one. An omitted value keeps the stored one. |
 | `metadata` | Merged key by key. Declared keys replace stored keys. Keys you don't declare are kept. A flow can't remove a key; to remove one, edit the asset in the UI or through the API. |
@@ -246,7 +246,7 @@ The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_C
 
 A field the asset doesn't have, or an empty one, counts as unset, so `NOT_EQUAL_TO`, `NOT_IN`, and `NOT_CONTAINS` hold on it. An asset without a `status` counts as `active`. An asset can have up to 100 actions. To add actions or edit their conditions in the UI, see [Manage assets](../03.manage-assets/index.md#asset-detail-page).
 
-Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/types/infrastructure/index.md#day-2-actions) on a deployment's page.
+Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/infrastructure/index.md#day-2-actions) on a deployment's page.
 
 ## Built-in asset types
 
@@ -256,8 +256,8 @@ Running an action starts an execution of its flow with the labels `system.from: 
 | `io.kestra.plugin.ee.assets.Dataset` | `system`, `location`, `format` |
 | `io.kestra.plugin.ee.assets.File` | `system`, `path` |
 | `io.kestra.plugin.ee.assets.VM` | `provider`, `region`, `state` |
-| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/types/infrastructure/index.md) lists under **Deployments**. |
-| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs. You can't declare it as a type. |
+| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/infrastructure/index.md) lists under **Deployments**. |
+| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs and from new outputs declared without a `type`. You can't declare it as a type. |
 
 The metadata keys are conventions. Kestra stores them in `metadata` like any other key, and the [dependencies graph](../03.manage-assets/index.md#explore-the-dependencies-graph) uses `system` and `schema` for grouping.
 
@@ -287,9 +287,6 @@ Emitted assets and declared assets combine. You can turn on `enableAuto` and als
 | Qlik Cloud `apps.Reload` | One `io.kestra.plugin.qlikcloud.assets.App` output for the reloaded app. Set the task's `emitAssets` to `false` to turn this off. | The app ID |
 | Ansible `AnsibleCLI` | One `VM` input per host in an INI inventory file named exactly `inventory.ini` at the working directory root | The host name |
 | Helm `Upgrade`, `Rollback`, `Status`, and `Uninstall` | One `io.kestra.plugin.ee.assets.HelmRelease` output, with the chart and `valuesFrom` files as inputs, plus one `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource. `Uninstall` deletes these assets. | Built from the cluster, Kubernetes namespace, and release name |
-
-<!-- TODO: the Fivetran row describes plugin-fivetran 2.0.0 (kestra-io/plugin-fivetran#116 and #117, merged
-     2026-10-28, still 2.0.0-SNAPSHOT). Confirm the release has shipped before publishing. -->
 
 dbt and Fivetran use the same `<database>.<schema>.<table>` ID format, so a Fivetran table and the dbt source that reads it join into one lineage chain. JDBC IDs leave out the schema, so they don't join with dbt or Fivetran IDs. To connect them, declare the matching IDs yourself.
 
@@ -384,7 +381,7 @@ assets:
       type: io.kestra.plugin.ee.assets.Table
 ```
 
-An invalid declaration is different. If a rendered asset breaks a [field](#asset-fields) rule, for example an `id` with a space, the task fails regardless of `assetFailureBehavior`.
+An invalid declaration is different. Kestra checks literal values in the `assets` block when you save the flow, so a declaration that breaks a [field](#asset-fields) rule, for example an `id` with a space, is rejected before the flow runs. Values written as expressions are checked only after they render: if a rendered asset breaks a field rule, the task fails regardless of `assetFailureBehavior`.
 
 The value accepts expressions. To set it across many tasks without editing each flow, use a [Policy](../../policies/index.md) `Add` rule with `values: {assets: {assetFailureBehavior: FAIL}}`.
 

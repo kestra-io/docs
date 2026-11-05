@@ -30,7 +30,7 @@ Platform teams build templates once; business users instantiate them by filling 
 
 **How it works:** Templated Blueprints use [Pebble templating](../../../06.concepts/06.pebble/index.md), with custom delimiters to avoid conflicts with Kestra expressions.
 
-To create a flow and the app that runs it from one template, use [app templates](../app-templates/index.md) instead.
+To create a flow and the app that runs it from one template, use [app templates](../tenants/infrastructure/app-templates/index.md) instead.
 
 ### Define Template Arguments
 
@@ -50,6 +50,30 @@ extend:
 
 All Kestra [input types](../../../05.workflow-components/05.inputs/index.md) and their validation rules are supported. These arguments automatically generate a UI form when the blueprint is instantiated.
 
+### Conditional Template Arguments
+
+A template argument can depend on other arguments with `dependsOn`, the same way as [conditional inputs](../../../05.workflow-components/05.inputs/index.md#conditional-inputs). The form shows it only once its condition is true. The condition reads the other arguments through `arg` (or `inputs`), and can be written with `<< >>` or `{{ }}`.
+
+```yaml
+extend:
+  templateArguments:
+    - id: target
+      type: SELECT
+      values:
+        - Postgres
+        - Oracle
+
+    - id: oracle_sid
+      displayName: Oracle SID
+      type: STRING
+      required: true
+      dependsOn:
+        inputs:
+          - target
+        condition: "<< arg.target == 'Oracle' >>"
+```
+
+Here `oracle_sid` is asked for, and required, only when `target` is `Oracle`. When the condition is false, the argument is not required and `<< arg.oracle_sid >>` renders as an empty string.
 
 ### Use Template Arguments
 
@@ -90,7 +114,19 @@ tasks:
   <% endfor %>
 ```
 
-This allows you to dynamically generate tasks or include them conditionally.
+This allows you to dynamically generate tasks or include them conditionally. A line that holds only `<% %>` tags is removed from the generated flow, so loops and conditions leave no blank lines behind.
+
+### Comments and Kestra Expressions
+
+| Syntax | Rendered when the blueprint is used |
+| --- | --- |
+| `<< ... >>` | Prints a value, such as `<< arg.env >>` |
+| `<% ... %>` | Runs a tag, such as `for` or `if` |
+| `<# ... #>` | A comment, removed from the generated flow |
+
+Kestra expressions such as `{{ outputs.download.uri }}` or `{{ secret('API_KEY') }}`, and `{% %}` tags, are copied into the generated flow unchanged and evaluated when the flow runs.
+
+These functions are not available in template expressions: `kv()`, `http()`, `assets()`, `printContext()`, `fetchContext()`, `errorLogs()`, `tasksWithState()` and `currentEachOutput()`. Using one fails with `Function or Macro [kv] does not exist`. Call them in a `{{ }}` expression instead, which is evaluated when the flow runs.
 
 
 ### Example: Data Ingestion Template
@@ -109,7 +145,7 @@ extend:
       displayName: Domains
       type: MULTISELECT
       values:
-        - Online Shop
+        - Sales
         - Manufacture
         - HR
         - Finance
@@ -119,7 +155,7 @@ extend:
       values:
         - Postgres
         - Oracle
-    
+
     - id: env
       type: SELECT
       values:
@@ -131,35 +167,33 @@ tasks:
   - id: parallel_<< arg.env >>
     type: io.kestra.plugin.core.flow.Parallel
     tasks:
-<% for domain in arg.domains %>
+      <% for domain in arg.domains %>
       - id: sequential_<< domain | slugify >>
         type: io.kestra.plugin.core.flow.Sequential
         tasks:
-        - id: << domain | slugify >>-download
-          type: io.kestra.plugin.jdbc.postgresql.CopyOut
-          url: jdbc:postgresql://sample_postgres:5432/<<arg.env>>
-          username: '{{ secret("POSTGRES_USERNAME") }}'
-          password: '{{ secret("POSTGRES_PASSWORD") }}'
-          format: CSV
-          sql: SELECT * FROM public.<< domain | slugify >>
-        - id: << domain | slugify >>-ingest
-          <% if arg.target == 'Oracle' %>
-          type: io.kestra.plugin.jdbc.oracle.Batch
-          url: jdbc:oracle:thin:@<< arg.env >>:49161:XE
-          username: '{{ secret("ORACLE_USERNAME") }}'
-          password: '{{ secret("ORACLE_USERNAME") }}'
-          from: "{{ << domain | slugify >>-download.uri }}"
-          table: public.< domain | slugify >>
-          <% elseif arg.target == 'Postgres' %>
-          type: io.kestra.plugin.jdbc.postgresql.CopyIn
-          url: jdbc:postgres://sample_<< arg.target | lower>>:5432/<<arg.env>>
-          username: '{{ secret("POSTGRES_USERNAME") }}'
-          password: '{{ secret("POSTGRES_PASSWORD") }}'
-          format: CSV
-          from: "{{ outputs.<< domain | slugify >>-download.uri }}"
-          table: public.< domain | slugify >>
-          <% endif %>
-<% endfor %>
+          - id: << domain | slugify >>_download
+            type: io.kestra.plugin.jdbc.postgresql.Query
+            url: jdbc:postgresql://sample_postgres:5432/<< arg.env >>
+            username: "{{ secret('POSTGRES_USERNAME') }}"
+            password: "{{ secret('POSTGRES_PASSWORD') }}"
+            sql: SELECT * FROM public.<< domain | slugify >>
+            fetchType: STORE
+
+          - id: << domain | slugify >>_ingest
+            <% if arg.target == 'Oracle' %>
+            type: io.kestra.plugin.jdbc.oracle.Batch
+            url: jdbc:oracle:thin:@<< arg.env >>:49161:XE
+            username: "{{ secret('ORACLE_USERNAME') }}"
+            password: "{{ secret('ORACLE_PASSWORD') }}"
+            <% elseif arg.target == 'Postgres' %>
+            type: io.kestra.plugin.jdbc.postgresql.Batch
+            url: jdbc:postgresql://warehouse_postgres:5432/<< arg.env >>
+            username: "{{ secret('POSTGRES_USERNAME') }}"
+            password: "{{ secret('POSTGRES_PASSWORD') }}"
+            <% endif %>
+            from: "{{ outputs.<< domain | slugify >>_download.uri }}"
+            table: << domain | slugify >>
+      <% endfor %>
 ```
 
 :::
@@ -176,44 +210,46 @@ tasks:
   - id: parallel_dev
     type: io.kestra.plugin.core.flow.Parallel
     tasks:
-
       - id: sequential_hr
         type: io.kestra.plugin.core.flow.Sequential
         tasks:
-        - id: hr-download
-          type: io.kestra.plugin.jdbc.postgresql.CopyOut
-          url: jdbc:postgresql://sample_postgres:5432/dev
-          username: '{{ secret("POSTGRES_USERNAME") }}'
-          password: '{{ secret("POSTGRES_PASSWORD") }}'
-          format: CSV
-          sql: SELECT * FROM public.hr
-        - id: hr-ingest
-          type: io.kestra.plugin.jdbc.oracle.Batch
-          url: jdbc:oracle:thin:@dev:49161:XE
-          username: '{{ secret("ORACLE_USERNAME") }}'
-          password: '{{ secret("ORACLE_USERNAME") }}'
-          from: "{{ hr-download.uri }}"
-          table: public.< domain | slugify >>
+          - id: hr_download
+            type: io.kestra.plugin.jdbc.postgresql.Query
+            url: jdbc:postgresql://sample_postgres:5432/dev
+            username: "{{ secret('POSTGRES_USERNAME') }}"
+            password: "{{ secret('POSTGRES_PASSWORD') }}"
+            sql: SELECT * FROM public.hr
+            fetchType: STORE
 
+          - id: hr_ingest
+            type: io.kestra.plugin.jdbc.oracle.Batch
+            url: jdbc:oracle:thin:@dev:49161:XE
+            username: "{{ secret('ORACLE_USERNAME') }}"
+            password: "{{ secret('ORACLE_PASSWORD') }}"
+            from: "{{ outputs.hr_download.uri }}"
+            table: hr
       - id: sequential_manufacture
         type: io.kestra.plugin.core.flow.Sequential
         tasks:
-        - id: manufacture-download
-          type: io.kestra.plugin.jdbc.postgresql.CopyOut
-          url: jdbc:postgresql://sample_postgres:5432/dev
-          username: '{{ secret("POSTGRES_USERNAME") }}'
-          password: '{{ secret("POSTGRES_PASSWORD") }}'
-          format: CSV
-          sql: SELECT * FROM public.manufacture
-        - id: manufacture-ingest
-          type: io.kestra.plugin.jdbc.oracle.Batch
-          url: jdbc:oracle:thin:@dev:49161:XE
-          username: '{{ secret("ORACLE_USERNAME") }}'
-          password: '{{ secret("ORACLE_USERNAME") }}'
-          from: "{{ manufacture-download.uri }}"
-          table: public.< domain | slugify >>
+          - id: manufacture_download
+            type: io.kestra.plugin.jdbc.postgresql.Query
+            url: jdbc:postgresql://sample_postgres:5432/dev
+            username: "{{ secret('POSTGRES_USERNAME') }}"
+            password: "{{ secret('POSTGRES_PASSWORD') }}"
+            sql: SELECT * FROM public.manufacture
+            fetchType: STORE
+
+          - id: manufacture_ingest
+            type: io.kestra.plugin.jdbc.oracle.Batch
+            url: jdbc:oracle:thin:@dev:49161:XE
+            username: "{{ secret('ORACLE_USERNAME') }}"
+            password: "{{ secret('ORACLE_PASSWORD') }}"
+            from: "{{ outputs.manufacture_download.uri }}"
+            table: manufacture
 ```
 :::
+
+`slugify` turns an argument value into a lowercase id, but a value with several words keeps a dash: `Online Shop` becomes `online-shop`. Reference the output of such a task with bracket notation, `outputs['online-shop_download'].uri`, since `outputs.online-shop_download.uri` is rejected when the flow is saved.
 
 ## Version control for Custom Blueprints
 

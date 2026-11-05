@@ -590,7 +590,7 @@ To share one Kafka cluster between several Kestra instances, give each instance 
 
 To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
 
-The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
+The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset relations in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
 ## Message broker queue backends
 
@@ -1204,7 +1204,7 @@ These properties appear inside the `configuration:` block of a provider entry. N
 | Property | Description |
 |---|---|
 | `thinking-enabled` | When `true`, enables the provider's extended reasoning or thinking mode. Supported by OpenAI, Azure OpenAI, Gemini, Anthropic, and Amazon Bedrock. Anthropic requires `temperature: 1` and disables `top-p` and `top-k` when thinking is on — these constraints are applied automatically. |
-| `thinking-effort` | Provider-neutral reasoning effort: `LOW`, `MEDIUM`, or `HIGH`. Supported by OpenAI, Azure OpenAI, and Gemini. Each provider maps this to its own vocabulary (e.g. OpenAI `reasoning_effort`, Gemini `thinkingLevel`). |
+| `thinking-effort` | Provider-neutral reasoning effort: `NONE`, `LOW`, `MEDIUM`, or `HIGH` (case-insensitive). Supported by OpenAI, Azure OpenAI, and Gemini. Each provider maps this to its own vocabulary (e.g. OpenAI `reasoning_effort`, Gemini `thinkingLevel`). `LOW`, `MEDIUM`, and `HIGH` apply only when `thinking-enabled` is `true`. `NONE` is sent to OpenAI and Azure OpenAI even when thinking is disabled: set it for reasoning models that reject tool calls unless the reasoning effort is `none`. Gemini doesn't support `NONE`: the Gemini provider isn't created, and the server logs `Failed to create AI service for provider` with the reason. |
 | `thinking-budget-tokens` | Token budget for the reasoning process. Supported by Gemini, Anthropic, and Amazon Bedrock. Anthropic requires a minimum of `1024`; when `thinking-enabled` is `true` and no budget is set, `1024` is used automatically. |
 
 **Network and connectivity**
@@ -1236,7 +1236,7 @@ Each provider section lists only its required fields and properties unique to th
 | `temperature` | ❌ | `1` |
 | `max-output-tokens` | ❌ | `8000` |
 
-Supports `thinking-enabled` and `thinking-effort`. Supports `base-url` for OpenAI-compatible self-hosted endpoints.
+Supports `thinking-enabled` and `thinking-effort`, including `thinking-effort: none` for reasoning models that reject tool calls unless reasoning is off. Supports `base-url` for OpenAI-compatible self-hosted endpoints.
 
 Does not support `top-k`.
 
@@ -1256,7 +1256,7 @@ Supports two authentication methods: API key or Azure Active Directory (AAD).
 | `temperature` | ❌ | `1` |
 | `max-output-tokens` | ❌ | `8000` |
 
-Supports `thinking-enabled` and `thinking-effort`.
+Supports `thinking-enabled` and `thinking-effort`. Some Azure reasoning deployments reject every Copilot request with `Function tools with reasoning_effort are not supported` unless the reasoning effort is `none`; for those, set `thinking-effort: none`.
 
 Uses `log-requests-and-responses` instead of separate `log-requests` / `log-responses` toggles. Does not support `top-k`, `base-url`, `client-pem`, or `ca-pem`.
 

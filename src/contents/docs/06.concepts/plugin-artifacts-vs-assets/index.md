@@ -35,10 +35,7 @@ Kestra renders artifacts in slots. A plugin declares which slots its artifacts f
 
 For the topology slots, Kestra picks the artifact from the task's type, or from its task runner's type when the runner ships its own artifact.
 
-<!-- TODO: asset-card-footer currently picks the artifact from the task type that produced the asset
-     (DagCanvas.vue on develop). The 2026-10-20 Artifacts & Assets meeting decided to match on
-     asset type instead, with plugin-specific asset types (e.g. dbt model, test, snapshot, seed).
-     Describe the matching rule here once that change lands in core. -->
+For `asset-card-footer`, Kestra picks the artifact from the type of the task that produced the asset, which is the task of the asset's newest successful write. An asset that no task has written, such as an `External` placeholder or an asset created through the API, has no footer.
 
 To build an artifact, see [Develop Plugin Artifacts](../../plugin-developer-guide/10.plugin-ui/index.md).
 
