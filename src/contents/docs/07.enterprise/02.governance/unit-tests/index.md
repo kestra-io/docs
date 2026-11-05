@@ -44,6 +44,7 @@ Common fixture types:
 - **inputs**: set flow input values without changing the flow definition.
 - **tasks**: skip or mock task execution, override outputs, or force a state.
 - **triggers**: simulate an incoming event (e.g., webhook payload) that starts the flow.
+- **labels**: set [execution labels](#set-execution-labels-in-fixtures) on the test execution.
 
 Keep the following in mind when you write fixtures:
 
@@ -338,6 +339,48 @@ testCases:
       - value: "{{ read(inputs.orders) }}"
         contains: "103,2"
 ```
+
+## Set execution labels in fixtures
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+A flow that reads `{{ labels.<key> }}`, for example to route work by team, takes a different path when a label is missing. Set `fixtures.labels` to give the test execution the labels it would have in production.
+
+Example flow:
+
+```yaml
+id: route_by_team
+namespace: company.team
+
+tasks:
+  - id: team
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ labels.team ?? 'unassigned' }}"
+```
+
+Example unit test:
+
+```yaml
+id: route_by_team_test
+namespace: company.team
+flowId: route_by_team
+testCases:
+  - id: data_team
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      labels:
+        team: data
+    assertions:
+      - value: "{{ outputs.team.value }}"
+        equalTo: data
+```
+
+`labels` takes a map, as above, or a list of `key` and `value` pairs, like [flow labels](../../../05.workflow-components/08.labels/index.md). The test execution gets these labels in addition to the flow's own labels and the `system.test` and `system.from` labels Kestra sets on every test execution.
+
+A [trigger fixture](#trigger-fixture-example) doesn't apply the trigger's own `labels`. When the flow depends on labels the trigger sets, declare them in `fixtures.labels`.
+
+<!-- TODO(runtime test): fixtures.labels (kestra-ee#11810, kestra-ee#12182, kestra#22174) is documented from source only. Verify on a build containing ee 8fa05f2094: map and list forms both apply; whether expressions in label values are rendered; which value wins when a fixture label has the same key as a flow label; that trigger fixture labels are not applied; how labels appear in the test results. See memory project_fixtures_labels_live_test. -->
 
 ## Trigger fixture example
 
