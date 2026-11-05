@@ -1101,6 +1101,34 @@ kestra:
 
 Tune these only if you have a large number of MCP servers or tight memory constraints. The defaults are sufficient for most deployments.
 
+## Platform MCP server
+
+:::badge{version=">=2.1" editions="OSS,EE"}
+:::
+
+The [platform MCP server](../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server) exposes the AI Copilot's tools at `/api/v1/mcp`. Configure it under `kestra.mcp.platform-server`:
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.mcp.platform-server.enabled` | Serves the platform MCP server. | `false` |
+| `kestra.mcp.platform-server.tenants` | Tenants the tools can act on. Empty means every tenant the caller can access. | `[]` |
+| `kestra.mcp.platform-server.instructions` | Instructions sent to MCP clients when they connect. | None |
+| `kestra.mcp.platform-server.auth-methods` | Enterprise Edition only. Accepted authentication methods: `BASIC`, `API_TOKEN`, `OAUTH`. Empty accepts all three. | `[]` |
+| `kestra.mcp.platform-server.oauth-provider` | Enterprise Edition only. Name of the OIDC provider whose tokens are accepted. Unset accepts every configured provider. | None |
+
+```yaml
+kestra:
+  mcp:
+    platform-server:
+      enabled: true
+      tenants:
+        - dev
+        - staging
+      auth-methods:
+        - API_TOKEN
+        - OAUTH
+```
+
 ## AI and isolated environments
 
 These are the most optional settings on the page. They matter only if you are enabling Copilot integrations or operating Kestra in restricted network environments.
