@@ -2143,7 +2143,7 @@ const WORKERS = [
             const date = note.querySelector(".date")
             if (date) date.textContent = "just now"
             note.classList.add("enter")
-            stack.prepend(note)
+            stack.insertBefore(note, stack.firstChild)
             void note.offsetWidth
             note.classList.remove("enter")
             // The one that leaves goes back to the end of the queue.

@@ -927,7 +927,7 @@ const auditPath = (cy: number) =>
             const packet = document.createElement("span")
             packet.className = "agent-packet"
             packet.style.setProperty("--tint", tint)
-            document.body.append(packet)
+            document.body.appendChild(packet)
             const flight = packet.animate(
                 points.map(([px, py], i) => ({
                     offset: offsets[i],
