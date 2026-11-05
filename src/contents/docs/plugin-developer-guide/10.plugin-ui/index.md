@@ -68,7 +68,7 @@ Each plugin component targets a specific **slot** — a named extension point in
 | [`topology-details`](#topology-details) | Inside a task node in the execution topology |
 | [`topology-task-drawer`](#topology-task-drawer) | The task drawer in the flow editor |
 | [`topology-task-modal`](#topology-task-modal) | A full-screen dialog opened from a task node |
-| [`execution-artifact`](#execution-artifact) | The **Artifacts** tab of an execution |
+| [`execution-artifact`](#execution-artifact) | The **Artifacts** tab of an execution, and the **Artifacts** tab of a task run's popup |
 | [`asset-card-footer`](#asset-card-footer) | Below an asset's card in the dependency graph |
 
 ### `topology-details`
@@ -102,9 +102,6 @@ export const propsSchema = z.object({
 ```
 
 The core contract imports `Task`, `Execution`, and `PagedResultsMetricEntry` from `@kestra-io/kestra-sdk` for typing only. `@kestra-io/artifact-sdk` ships its own structural copies of these types, so your plugin doesn't depend on `@kestra-io/kestra-sdk`.
-
-<!-- TODO: `fetchEndpoint` (kestra#21653) is on kestra develop but not on the releases/v2.1.x RC branch as of
-     2026-10-29. Confirm it is in 2.1 GA scope before publishing. -->
 
 
 - **`task`** is complete — the host merges the graph node's task with the same task parsed out of `source`, so you never need to fetch the flow definition to fill in properties missing from the execution-graph node.
@@ -170,10 +167,7 @@ This slot is the right choice when a task needs a rich detail view that goes bey
 
 ### `execution-artifact`
 
-<!-- TODO: kestra#21611 merged to kestra develop on 2026-10-23 and is not on the releases/v2.1.x RC branch
-     as of 2026-10-29. The RC branch isn't the full 2.1 scope. Confirm it is in 2.1 GA scope before publishing. -->
-
-Renders in the **Artifacts** tab of an execution, next to **Overview**, **Gantt**, and **Logs**. Use it for a result that a user opens full size after a run, such as a model graph, a compiled query, or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
+Renders in the **Artifacts** tab of an execution, next to **Overview**, **Gantt**, and **Logs**, and in the **Artifacts** tab of a task run's popup, which opens from the artifact count on the task's node in the execution topology. Use it for a result that a user opens full size after a run, such as a model graph, a compiled query, or a report, rather than a summary inside a topology node. The contract is defined in [`ui/packages/slot-contracts/src/execution-artifact.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/execution-artifact.ts) in Kestra core.
 
 The component receives the same props as `topology-details`, without `progress`. The tab appears only when the flow contains at least one task whose type declares an artifact, and its badge shows the number of artifacts. The tab groups artifacts by task and opens the selected one in a viewer beside the list.
 
