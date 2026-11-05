@@ -626,7 +626,7 @@ The fetch logic is unchanged apart from the XCom calls, which become one `Kestra
 - **The function only calls an API.** `io.kestra.plugin.core.http.Request` replaces it without any Python, and the loop reads `{{ fromJson(outputs.get_astronauts.body).people }}`.
 - **The DAG Factory file has non-linear `dependencies`.** Wrap the tasks in an `io.kestra.plugin.core.flow.Dag` task and copy each list to `dependsOn`. Keep longer callables as Namespace Files run by `io.kestra.plugin.scripts.python.Commands`, so the code is versioned with the flow instead of being referenced by path.
 
-The complete example, with both Airflow versions and several Kestra patterns (single script, subflow, `Dag`), is in the [airflow-to-kestra-migration repository](https://github.com/kestra-io/airflow-to-kestra-migration). Its flows were written before Kestra 2.0: when you reuse them, replace `ForEach` with `Loop`, `taskrun.value` with `item.value` and `maxAttempt` with `maxAttempts`.
+The complete example, with both Airflow versions and several Kestra patterns (single script, subflow, `Dag`), is in the [airflow-to-kestra-migration repository](https://github.com/kestra-io/airflow-to-kestra-migration). Its flows target Kestra 2.0.
 
 ## 9. Already refactoring for Airflow 3? Read this before the playbook
 
