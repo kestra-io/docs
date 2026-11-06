@@ -3,6 +3,34 @@ import { Icon } from "astro-icon/components"
 import { API_URL } from "astro:env/client"
 import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
 
+// The layers Enterprise adds on the open-source core, bottom up, for the
+// head's visual.
+const LAYERS = [
+    { name: "Open source", note: "the core" },
+    { name: "Security", note: "SSO · RBAC · secrets" },
+    { name: "Governance", note: "audit logs · approvals" },
+    { name: "Reliability", note: "worker groups · backup" },
+]
+
+// The backdrop's squares, after the 2.0 page: a ring of twelve on a grid
+// of 7 by 5, drawn here rather than from its raster, one ring cut by each
+// side of the section. A few are lit a little brighter.
+const RING = [
+    [2, 0],
+    [3, 0],
+    [4, 0],
+    [1, 1],
+    [5, 1],
+    [0, 2],
+    [6, 2],
+    [1, 3],
+    [5, 3],
+    [2, 4],
+    [3, 4],
+    [4, 4],
+]
+const LIT = [3, 8]
+
 // Four reasons, each under a glimpse of the product that proves it.
 const FEATURES = [
     {
@@ -27,12 +55,6 @@ const FEATURES = [
     },
 ]
 
-// The page each windowed glimpse would sit on in Kestra; the others are
-// drawn free, without a window, so the four do not all look alike.
-const PAGES: Record<string, string> = {
-    reliability: "Worker groups",
-}
-
 // The Infrastructure tenant, open on its namespaces and a flow.
 const ROOT = "acme"
 const NAMESPACES = [
@@ -51,10 +73,15 @@ const PEOPLE = [
     { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
 ]
 
-// The queues the worker group serves, with the slots in use.
-const QUEUES = [
-    { name: "ml-training", mode: "Elastic 25%", used: 8, slots: 10 },
-    { name: "Default", mode: "Shared", used: 4, slots: 24 },
+// One execution, task by task, on a shared timeline (0 to 100). Halfway
+// through post_ledger its worker goes down; a second attempt runs on
+// another worker and the execution still ends in success.
+const RUN = [
+    { id: "extract", start: 0, end: 22, worker: "worker-1" },
+    { id: "reconcile", start: 22, end: 44, worker: "worker-2" },
+    { id: "post_ledger", start: 44, end: 60, worker: "worker-2", fails: true },
+    { id: "retry", start: 62, end: 82, worker: "worker-3", retry: true },
+    { id: "report", start: 82, end: 100, worker: "worker-1" },
 ]
 
 // The audit log as the product lists it: what changed, how, by whom,
@@ -125,6 +152,13 @@ const AUDIT = [
         age: 0,
     },
 ]
+// Each action with its icon, after the product's status tags.
+const ACTION_ICONS: Record<string, string> = {
+    Created: "mdi:plus-circle-outline",
+    Updated: "mdi:pencil-outline",
+    Resumed: "mdi:play-circle-outline",
+    Login: "mdi:login",
+}
 const ago = (seconds: number) =>
     seconds < 60
         ? "just now"
@@ -193,6 +227,27 @@ const WORKERS = [
     aria-labelledby="enterprise"
     data-header-dark
 >
+    {
+        ["left", "right"].map((side) => (
+            <svg
+                class:list={["squares", side]}
+                viewBox="0 0 500 352"
+                aria-hidden="true"
+            >
+                {RING.map(([col, row], idx) => (
+                    <rect
+                        class:list={{ lit: LIT.includes(idx) }}
+                        x={col * 74 + 0.5}
+                        y={row * 74 + 0.5}
+                        width="55"
+                        height="55"
+                        rx="3"
+                        style={`--d: ${(side === "left" ? col : 6 - col) * 0.45}s`}
+                    />
+                ))}
+            </svg>
+        ))
+    }
     <div class="container-xl">
         <div class="grid">
             <header class="head">
@@ -207,12 +262,63 @@ const WORKERS = [
                         whole organization. Run it self-hosted, in your cloud or
                         air-gapped.
                     </p>
+                    <div class="actions">
+                        <a href="/enterprise" class="btn-solid">
+                            Explore Enterprise
+                        </a>
+                        <a href="/demo" class="btn-ghost">Book a demo</a>
+                    </div>
                 </div>
-                <div class="actions">
-                    <a href="/enterprise" class="btn-solid">
-                        Explore Enterprise
-                    </a>
-                    <a href="/demo" class="btn-ghost">Book a demo</a>
+                {
+                    /* Kestra Enterprise as layers on the open-source core,
+                    in glass, seen from above: each layer a promise of the
+                    cells below, Kestra on top. */
+                }
+                <div class="layers" aria-hidden="true" data-layers>
+                    <div class="tower">
+                        {
+                            LAYERS.map((_, idx) => (
+                                <div
+                                    class:list={["plate", { core: idx === 0 }]}
+                                    style={`--i: ${idx}`}
+                                    data-plate
+                                >
+                                    <span class="handle tl" />
+                                    <span class="handle tr" />
+                                    <span class="handle br" />
+                                    <span class="handle bl" />
+                                </div>
+                            ))
+                        }
+                        <div
+                            class="plate top"
+                            style={`--i: ${LAYERS.length}`}
+                            data-plate
+                        >
+                            <img
+                                src={kestraMark.src}
+                                alt=""
+                                width="96"
+                                height="96"
+                            />
+                            <span class="handle tl"></span>
+                            <span class="handle tr"></span>
+                            <span class="handle br"></span>
+                            <span class="handle bl"></span>
+                        </div>
+                    </div>
+                    {
+                        LAYERS.map((layer) => (
+                            <span class="label" data-label>
+                                <strong>{layer.name}</strong>
+                                {layer.note}
+                            </span>
+                        ))
+                    }
+                    <span class="label" data-label>
+                        <strong>Kestra Enterprise</strong>
+                        all of it, in one platform
+                    </span>
                 </div>
             </header>
 
@@ -222,23 +328,9 @@ const WORKERS = [
                         <li>
                             <div class="stage" aria-hidden="true">
                                 <div
-                                    class:list={[
-                                        "glimpse",
-                                        { free: !PAGES[feature.id] },
-                                    ]}
+                                    class="glimpse free"
                                     data-card={feature.id}
                                 >
-                                    {PAGES[feature.id] && (
-                                        <p class="glimpse-head">
-                                            {PAGES[feature.id]}
-                                            {feature.id === "access" && (
-                                                <span class="pill">
-                                                    <span class="dot" />
-                                                    Infrastructure
-                                                </span>
-                                            )}
-                                        </p>
-                                    )}
                                     {feature.id === "access" && (
                                         <div
                                             class="glimpse-body tenant"
@@ -358,54 +450,19 @@ const WORKERS = [
                                     )}
                                     {feature.id === "reliability" && (
                                         <div
-                                            class="glimpse-body routing"
+                                            class="glimpse-body timeline"
                                             data-routing
                                         >
-                                            <p class="group">
-                                                <strong>gpu-a100</strong>
-                                                <span class="tag">
-                                                    Reserved
-                                                </span>
-                                                <span class="pill ok">
-                                                    <span class="dot" />
-                                                    Online
-                                                </span>
-                                            </p>
-                                            <p class="stats">
-                                                <span>
-                                                    <b>8</b> workers online
-                                                </span>
-                                                <span>
-                                                    <b data-tps>0.8</b> tasks/s
-                                                </span>
-                                            </p>
-                                            {QUEUES.map((queue) => (
-                                                <div
-                                                    class="queue"
-                                                    data-queue
-                                                    data-slots={queue.slots}
+                                            {/* Drawn at its end, success
+                                            after the retry; the script
+                                            plays it from the start. */}
+                                            <p class="run-head">
+                                                <Icon name="mdi:file-tree-outline" />
+                                                <strong>close_books</strong>
+                                                <span
+                                                    class="run-tag is-success"
+                                                    data-run-state
                                                 >
-                                                    <p>
-                                                        {queue.name}
-                                                        <span class="tag">
-                                                            {queue.mode}
-                                                        </span>
-                                                        <span class="ratio">
-                                                            <span data-used>
-                                                                {queue.used}
-                                                            </span>
-                                                            {` / ${queue.slots}`}
-                                                        </span>
-                                                    </p>
-                                                    <span
-                                                        class="meter"
-                                                        style={`--fill: ${queue.used / queue.slots}`}
-                                                    />
-                                                </div>
-                                            ))}
-                                            <dl class="facts">
-                                                <dt>Backup</dt>
-                                                <dd data-backup>
                                                     <Icon
                                                         name="mdi:check-circle-outline"
                                                         class="done"
@@ -414,18 +471,63 @@ const WORKERS = [
                                                         name="mdi:loading"
                                                         class="spin"
                                                     />
-                                                    <span data-backup-text>
-                                                        Last successful 3m ago
+                                                    <span data-run-time>
+                                                        Success
                                                     </span>
-                                                </dd>
-                                                <dt>Maintenance mode</dt>
-                                                <dd>
-                                                    <span class="switch" />
-                                                    Off
-                                                </dd>
-                                                <dt>SLA target</dt>
-                                                <dd>99.99%</dd>
-                                            </dl>
+                                                </span>
+                                            </p>
+                                            <div class="rows">
+                                                {RUN.map((step) => (
+                                                    <p
+                                                        class:list={[
+                                                            "row",
+                                                            {
+                                                                retry: step.retry,
+                                                                failed: step.fails,
+                                                            },
+                                                        ]}
+                                                        data-step={step.id}
+                                                    >
+                                                        <span class="name">
+                                                            {step.retry
+                                                                ? "↳ attempt 2"
+                                                                : step.id}
+                                                        </span>
+                                                        <span class="track">
+                                                            <span
+                                                                class:list={[
+                                                                    "attempt",
+                                                                    "go",
+                                                                    step.fails
+                                                                        ? "broken"
+                                                                        : "done",
+                                                                ]}
+                                                                style={`left: ${step.start}%; width: ${step.end - step.start}%; --ms: ${(step.end - step.start) * 45}ms`}
+                                                            >
+                                                                {step.worker}
+                                                            </span>
+                                                            {step.fails && (
+                                                                <span
+                                                                    class="down"
+                                                                    style={`left: ${step.end}%`}
+                                                                >
+                                                                    <Icon name="mdi:close-circle-outline" />
+                                                                    {
+                                                                        step.worker
+                                                                    }{" "}
+                                                                    down
+                                                                </span>
+                                                            )}
+                                                        </span>
+                                                    </p>
+                                                ))}
+                                            </div>
+                                            <p class="status ok" data-status>
+                                                <span class="live" />
+                                                <span data-status-text>
+                                                    Success · 0 executions lost
+                                                </span>
+                                            </p>
                                         </div>
                                     )}
                                     {feature.id === "governance" && (
@@ -450,6 +552,14 @@ const WORKERS = [
                                                                         line.action.toLowerCase(),
                                                                     ]}
                                                                 >
+                                                                    <Icon
+                                                                        name={
+                                                                            ACTION_ICONS[
+                                                                                line
+                                                                                    .action
+                                                                            ]
+                                                                        }
+                                                                    />
                                                                     {
                                                                         line.action
                                                                     }
@@ -490,6 +600,14 @@ const WORKERS = [
                                                                     line.action.toLowerCase(),
                                                                 ]}
                                                             >
+                                                                <Icon
+                                                                    name={
+                                                                        ACTION_ICONS[
+                                                                            line
+                                                                                .action
+                                                                        ]
+                                                                    }
+                                                                />
                                                                 {line.action}
                                                             </span>
                                                             <span class="date">
@@ -704,11 +822,25 @@ const WORKERS = [
         --text: #ffffff;
         --muted: #9a9aa8;
         --faint: #5c5c68;
+        // The states, in the colours of the product's status tags
+        // (KsExecutionStatus), on every glimpse.
+        --created: #8b98ff;
+        --success: #5ee3ae;
+        --running: #9d78ff;
+        --warning: #f28c5c;
+        --danger: #ff6b6b;
+        --neutral: #b9b9c6;
 
         position: relative;
         overflow: hidden;
-        background: var(--bg);
+        // As on the 2.0 page: black, easing to a blue-grey at the foot.
+        background: linear-gradient(180deg, #000000 30%, #17181e 100%);
         color: var(--text);
+
+        > .container-xl {
+            position: relative;
+            z-index: 1;
+        }
 
         // The rule between the AI block and this one, as faint as the
         // grid's.
@@ -724,6 +856,70 @@ const WORKERS = [
         }
     }
 
+    // The 2.0 page's squares, a ring at each side of the section's foot,
+    // cut by its edges: pale fills with a lighter outline, lighting up in a
+    // slow wave across each ring.
+    .squares {
+        position: absolute;
+        width: 520px;
+        pointer-events: none;
+
+        &.left {
+            bottom: -96px;
+            left: -100px;
+        }
+
+        &.right {
+            right: -260px;
+            bottom: 140px;
+        }
+
+        // On narrower screens the rings sit further out, in the margins,
+        // clear of the cells' pictures.
+        @media (max-width: 1700px) {
+            &.left {
+                left: -200px;
+            }
+
+            &.right {
+                right: -380px;
+            }
+        }
+
+        rect {
+            fill: rgba(196, 200, 255, 0.05);
+            stroke: rgba(196, 200, 255, 0.16);
+            stroke-width: 1;
+            animation: glint 9s ease-in-out var(--d) infinite;
+
+            &.lit {
+                fill: rgba(196, 200, 255, 0.08);
+                stroke: rgba(196, 200, 255, 0.4);
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    @keyframes glint {
+        0%,
+        100% {
+            opacity: 0.6;
+        }
+
+        20% {
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .squares rect {
+            animation: none;
+        }
+    }
+
     // The hairline grid, in white on black: rails on both sides, on the AI
     // block's lines, and full-width rules around the four cells.
     .grid {
@@ -732,16 +928,23 @@ const WORKERS = [
         position: relative;
         border-left: var(--rule);
         border-right: var(--rule);
+        // An empty closing row between the rails, so the last cells' copy
+        // does not sit on the section's edge.
+        padding-bottom: clamp(3rem, 5vw, 4.5rem);
     }
 
     // The title and copy on the left, the two ways on the right.
+    // The title, copy and two ways on the left, the layers on the right.
     .head {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+        align-items: center;
         gap: 2rem 3rem;
-        padding: 8.5rem var(--inset) 4rem;
+        padding: 6.5rem var(--inset) 4.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
 
         @include media-breakpoint-down(md) {
             padding-block: 4.5rem 3rem;
@@ -768,7 +971,7 @@ const WORKERS = [
         }
 
         p {
-            max-width: 44rem;
+            max-width: 40rem;
             margin: 1.25rem 0 0;
             font-size: 1.125rem;
             line-height: 1.55;
@@ -781,6 +984,193 @@ const WORKERS = [
         display: flex;
         flex-wrap: wrap;
         gap: 0.75rem;
+        margin-top: 2rem;
+    }
+
+    // The layers: glass plates stacked over the core, seen from above.
+    // Pointing at one picks it and shows its label; left alone, they are
+    // picked in turn, bottom up.
+    .layers {
+        --gap: 3rem;
+
+        position: relative;
+        display: grid;
+        place-items: center start;
+        height: 24rem;
+        padding-left: 3rem;
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    .tower {
+        position: relative;
+        // The stack drawn centred on the copy beside it: the plates rise
+        // from the tower's box, so it sits lower.
+        top: 2.1rem;
+        width: 13rem;
+        height: 13rem;
+        margin-top: 6rem;
+        transform: rotateX(58deg) rotateZ(-42deg);
+        transform-style: preserve-3d;
+    }
+
+    .plate {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 1.25rem;
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.02) 60%
+            ),
+            rgba(20, 20, 24, 0.55);
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+            0 30px 50px -20px rgba(0, 0, 0, 0.8);
+        transform: translateZ(calc(var(--i) * var(--gap)));
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+        // Picked, as in a design tool: a bright edge with a handle at each
+        // corner, the layer lifted a little.
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .handle {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            margin: -4.5px;
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            background: #0d0d10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+
+            &.tl {
+                top: 0;
+                left: 0;
+            }
+
+            &.tr {
+                top: 0;
+                right: 0;
+            }
+
+            &.br {
+                right: 0;
+                bottom: 0;
+            }
+
+            &.bl {
+                bottom: 0;
+                left: 0;
+            }
+        }
+
+        &:global(.active) {
+            transform: translateZ(calc(var(--i) * var(--gap) + 0.75rem));
+
+            &::after,
+            .handle {
+                opacity: 1;
+            }
+        }
+
+        // The core: a plain grid, the base the others stand on.
+        &.core {
+            border-style: dashed;
+            border-color: rgba(255, 255, 255, 0.12);
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0) 0
+                    0 / 1.625rem 1.625rem,
+                linear-gradient(
+                        90deg,
+                        rgba(255, 255, 255, 0.05) 1px,
+                        transparent 0
+                    )
+                    0 0 / 1.625rem 1.625rem,
+                rgba(14, 14, 17, 0.7);
+        }
+
+        // Kestra on top, lit from within.
+        &.top {
+            border-color: rgba(255, 255, 255, 0.3);
+            background:
+                radial-gradient(
+                    circle at 50% 50%,
+                    rgba(255, 255, 255, 0.14),
+                    transparent 65%
+                ),
+                linear-gradient(135deg, #2a2a31, #151519);
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+                0 0 60px rgba(255, 255, 255, 0.08),
+                0 30px 50px -20px rgba(0, 0, 0, 0.8);
+
+            img {
+                width: 6.5rem;
+                height: 6.5rem;
+                // Upright again, so the mark reads.
+                transform: rotateZ(42deg);
+            }
+        }
+    }
+
+    // Each label flat, on one line, out from its plate's right corner,
+    // where the script sets it; shown only while its layer is picked.
+    .label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        gap: 0.5rem;
+        padding-left: 2.25rem;
+        font-size: 0.8125rem;
+        white-space: nowrap;
+        color: var(--muted);
+        opacity: 0;
+        transform: translateY(-50%);
+        transition: opacity 0.2s ease;
+
+        // The leader from the corner.
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 1.75rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        strong {
+            font-weight: 500;
+            color: #ededf1;
+        }
+
+        &:global(.placed.active) {
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .plate {
+            transition: none;
+        }
     }
 
     // Four cells, two by two, between full-width rules: in each, the
@@ -792,25 +1182,19 @@ const WORKERS = [
         margin: 0;
         padding: 0;
         list-style: none;
-        border-block: var(--rule);
+        // A rule above the cells only: under them, the closing row runs
+        // straight to the section's edge.
+        border-top: var(--rule);
 
-        &::before,
-        &::after {
+        &::before {
             content: "";
             position: absolute;
+            top: -1px;
             left: -100vw;
             right: -100vw;
             height: 1px;
             background: var(--rule-color);
             pointer-events: none;
-        }
-
-        &::before {
-            top: -1px;
-        }
-
-        &::after {
-            bottom: -1px;
         }
 
         @include media-breakpoint-down(md) {
@@ -821,7 +1205,7 @@ const WORKERS = [
             display: flex;
             flex-direction: column;
             gap: 2rem;
-            padding: 0 0 clamp(3rem, 5vw, 4rem) var(--inset);
+            padding: 0 0 clamp(3.5rem, 5.5vw, 4.75rem) var(--inset);
             overflow: hidden;
             transition: background-color 0.3s ease;
 
@@ -850,8 +1234,9 @@ const WORKERS = [
 
         h3 {
             margin: 0 0 0.5rem;
-            font-size: 1.125rem;
-            font-weight: 500;
+            font-size: 1.375rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
             line-height: 1.35;
             color: var(--text);
         }
@@ -920,17 +1305,6 @@ const WORKERS = [
         }
     }
 
-    .glimpse-head {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        font-size: 1rem;
-        color: #ededf1;
-
-        .pill {
-            margin-left: 0.5rem;
-        }
-    }
-
     // The content runs the card's full width.
     .glimpse-body {
         display: flex;
@@ -940,17 +1314,17 @@ const WORKERS = [
         padding: 1.125rem 1.25rem 1.5rem;
     }
 
-    // Labels and states in thin pills, colour only in the state's text.
+    // Labels and states as the product tags them: filled, small corners,
+    // no edge, colour only for a state.
     .pill,
     .tag {
         display: inline-flex;
         align-items: center;
         gap: 0.3125rem;
-        padding: 0.0625rem 0.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        border-radius: 1rem;
-        background: rgba(255, 255, 255, 0.03);
-        font-size: 0.8125rem;
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.375rem;
+        background: rgba(255, 255, 255, 0.07);
+        font-size: 0.75rem;
         font-weight: 500;
         line-height: 1.5;
         white-space: nowrap;
@@ -980,22 +1354,26 @@ const WORKERS = [
     .pill {
         transition:
             color 0.3s ease,
-            border-color 0.3s ease;
+            background-color 0.3s ease;
 
         &.ok {
-            color: #4cc38a;
+            background: color-mix(in srgb, var(--success) 14%, transparent);
+            color: var(--success);
         }
 
         &.bad {
-            color: #ff7a8a;
+            background: color-mix(in srgb, var(--danger) 14%, transparent);
+            color: var(--danger);
         }
 
         &.run {
-            color: #b796ff;
+            background: color-mix(in srgb, var(--running) 14%, transparent);
+            color: var(--running);
         }
 
         &.wait {
-            color: #e8b45a;
+            background: color-mix(in srgb, var(--warning) 14%, transparent);
+            color: var(--warning);
         }
     }
 
@@ -1010,8 +1388,8 @@ const WORKERS = [
 
     // The tenant named over its tree, with its kind.
     .tenant-label {
-        font-size: 1rem;
-        color: #ededf1;
+        font-size: 0.875rem;
+        color: var(--muted);
 
         :global(svg) {
             width: 1.125rem;
@@ -1019,8 +1397,9 @@ const WORKERS = [
             color: var(--muted);
         }
 
+        // The tenant's kind at the far right.
         .pill {
-            margin-left: 0.25rem;
+            margin-left: auto;
         }
     }
 
@@ -1231,161 +1610,217 @@ const WORKERS = [
         }
     }
 
-    // A worker group as the product shows it: its name and label, the
-    // workers online, each queue it serves with its live capacity meter,
-    // then its continuity settings.
-    .routing {
-        .group {
-            strong {
-                font-weight: 500;
-                color: #ffffff;
-            }
+    // One execution as a timeline, each task a bar under the last. A
+    // worker goes down halfway through a task: its bar breaks in red, a
+    // second attempt starts on another worker under it, and the run still
+    // ends in success.
+    .timeline {
+        gap: 1.25rem;
+        width: 100%;
+        max-width: 34rem;
+        margin-inline: auto;
+    }
 
-            .pill {
-                margin-left: auto;
-            }
-        }
+    .run-head {
+        font-size: 0.875rem;
+        color: var(--muted);
 
-        .stats {
-            gap: 1.25rem;
-            color: var(--muted);
-
-            b {
-                margin-right: 0.125rem;
-                font-size: 1.125rem;
-                font-weight: 500;
-                font-variant-numeric: tabular-nums;
-                color: #ffffff;
-            }
-        }
-
-        .queue {
-            display: flex;
-            flex-direction: column;
-            gap: 0.375rem;
-
-            p {
-                color: #e6e6ea;
-            }
-        }
-
-        .ratio {
-            margin-left: auto;
-            font-size: 0.875rem;
-            font-variant-numeric: tabular-nums;
-            color: var(--muted);
-        }
-
-        // Segments over the green-to-red scale; what is free is dimmed,
-        // and the dim part slides as the load moves.
-        .meter {
-            position: relative;
-            display: block;
-            height: 0.4375rem;
-            background: linear-gradient(90deg, #5fb98a, #d9a96b 55%, #e8846f);
-            -webkit-mask: repeating-linear-gradient(
-                90deg,
-                #000 0 3px,
-                transparent 3px 5px
-            );
-            mask: repeating-linear-gradient(
-                90deg,
-                #000 0 3px,
-                transparent 3px 5px
-            );
-
-            &::after {
-                content: "";
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: calc((1 - var(--fill)) * 100%);
-                background: rgba(28, 28, 33, 0.8);
-                transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-            }
+        strong {
+            font-weight: 400;
         }
     }
 
-    // Settings and figures as a two-column list under a hairline.
-    .facts {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0.5rem 1.5rem;
-        // Held at the card's foot, under the rows.
-        margin: auto 0 0;
-        padding-top: 0.875rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        font-size: 0.875rem;
+    // The execution's state as the UI tags it: a spinner while it runs, a
+    // check once it succeeds.
+    .run-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition:
+            color 0.3s ease,
+            background-color 0.3s ease;
 
-        dt {
-            font-weight: 400;
-            color: var(--muted);
-        }
-
-        dd {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            margin: 0;
-            color: #e6e6ea;
-
-            b {
-                font-weight: 500;
-                font-variant-numeric: tabular-nums;
-            }
+        :global(svg) {
+            width: 14px;
+            height: 14px;
+            color: currentColor;
         }
 
         :global(.done),
-        :global(.secure) {
-            color: #4cc38a;
-        }
-
-        // The backup's check, or its spinner while it runs.
-        [data-backup] :global(.spin) {
+        :global(.spin) {
             display: none;
         }
 
-        [data-backup]:global(.busy) {
+        &:global(.is-running) {
+            background: color-mix(in srgb, var(--running) 14%, transparent);
+            color: var(--running);
+
             :global(.spin) {
                 display: block;
             }
+        }
+
+        &:global(.is-success) {
+            background: color-mix(in srgb, var(--success) 18%, transparent);
+            color: var(--success);
 
             :global(.done) {
-                display: none;
+                display: block;
             }
         }
     }
 
-    // A switch, off.
-    .switch {
-        position: relative;
-        width: 1.75rem;
-        height: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        border-radius: 1rem;
+    .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
 
-        &::after {
-            content: "";
-            position: absolute;
-            top: 0.125rem;
-            left: 0.125rem;
-            width: 0.625rem;
-            height: 0.625rem;
-            border-radius: 50%;
-            background: var(--muted);
+    .row {
+        gap: 0.75rem;
+        font-size: 0.8125rem;
+
+        .name {
+            flex: none;
+            width: 6.5rem;
+            color: #c9c9d2;
+        }
+
+        &.retry .name {
+            color: var(--muted);
         }
     }
 
-    // Free glimpses: no window, the drawing on the section itself.
+    .track {
+        position: relative;
+        display: block;
+        flex: 1;
+        height: 1.375rem;
+        // The timeline's hairline.
+        background: linear-gradient(
+                rgba(255, 255, 255, 0.06),
+                rgba(255, 255, 255, 0.06)
+            )
+            0 50% / 100% 1px no-repeat;
+    }
+
+    // A task's bar: it draws itself over the task's time, then turns green
+    // once done, or red where its worker went down.
+    .attempt {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding-left: 0.375rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        font-size: 0.6875rem;
+        white-space: nowrap;
+        color: #c9c9d2;
+        clip-path: inset(0 100% 0 0);
+        transition:
+            clip-path var(--ms) linear,
+            background-color 0.3s ease,
+            border-color 0.3s ease;
+
+        &:global(.go) {
+            clip-path: inset(0);
+        }
+
+        &:global(.done) {
+            border-color: color-mix(in srgb, var(--success) 50%, transparent);
+            background: color-mix(in srgb, var(--success) 16%, transparent);
+            color: #e6e6ea;
+        }
+
+        &:global(.broken) {
+            border-color: color-mix(in srgb, var(--danger) 55%, transparent);
+            background: color-mix(in srgb, var(--danger) 14%, transparent);
+        }
+    }
+
+    // Where the worker went down, after the broken bar.
+    .down {
+        position: absolute;
+        top: 50%;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        color: var(--danger);
+        opacity: 0;
+        transform: translateY(-50%);
+        transition: opacity 0.3s ease;
+
+        :global(svg) {
+            width: 0.8125rem;
+            height: 0.8125rem;
+            color: currentColor;
+        }
+    }
+
+    .row:global(.failed) .down {
+        opacity: 1;
+    }
+
+    // The run's outcome under it; amber while a task is retried, green
+    // once the run succeeds.
+    .status {
+        font-size: 0.8125rem;
+        color: var(--muted);
+        transition: color 0.3s ease;
+
+        .live {
+            background: var(--faint);
+        }
+
+        &:global(.warn) {
+            color: var(--warning);
+
+            .live {
+                background: var(--warning);
+
+                &::after {
+                    border-color: var(--warning);
+                }
+            }
+        }
+
+        &:global(.ok) {
+            color: var(--success);
+
+            .live {
+                background: var(--success);
+            }
+        }
+    }
+
+    // Each glimpse on its own soft panel, so it reads as a picture of the
+    // product, apart from the cell's title and copy.
     .glimpse.free {
-        border-color: transparent;
-        background: none;
-        box-shadow: none;
+        border-color: rgba(255, 255, 255, 0.055);
+        background:
+            radial-gradient(
+                120% 90% at 50% 0%,
+                rgba(255, 255, 255, 0.03),
+                transparent 70%
+            ),
+            rgba(255, 255, 255, 0.007);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
         .glimpse-body {
             justify-content: center;
-            padding: 0;
+            padding: 1.5rem 1.75rem;
         }
     }
 
@@ -1464,32 +1899,33 @@ const WORKERS = [
     }
 
     .note-top {
-        // The action in the topology's state colours: created as success,
-        // updated as running, resumed as paused, a login as a runner.
+        // The action as a status tag: created in its blue with a plus,
+        // resumed running, the others neutral.
         .state {
-            --tone: 201, 201, 210;
+            --tone: var(--neutral);
 
-            padding: 0.0625rem 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3125rem;
+            padding: 0.125rem 0.5rem;
             border-radius: 0.375rem;
-            background: rgba(var(--tone), 0.14);
-            font-size: 0.8125rem;
+            background: color-mix(in srgb, var(--tone) 16%, transparent);
+            font-size: 0.75rem;
             font-weight: 500;
-            color: rgb(var(--tone));
+            color: var(--tone);
 
-            &.created {
-                --tone: 62, 224, 166;
+            :global(svg) {
+                width: 0.875rem;
+                height: 0.875rem;
+                color: currentColor;
             }
 
-            &.updated {
-                --tone: 152, 105, 247;
+            &.created {
+                --tone: var(--created);
             }
 
             &.resumed {
-                --tone: 255, 181, 71;
-            }
-
-            &.login {
-                --tone: 113, 139, 254;
+                --tone: var(--running);
             }
         }
 
@@ -1522,14 +1958,14 @@ const WORKERS = [
         width: 0.4375rem;
         height: 0.4375rem;
         border-radius: 50%;
-        background: #4cc38a;
+        background: var(--success);
 
         &::after {
             content: "";
             position: absolute;
             inset: -0.25rem;
             border-radius: 50%;
-            border: 1px solid #4cc38a;
+            border: 1px solid var(--success);
             opacity: 0;
             animation: ping 2s ease-out infinite;
         }
@@ -1589,7 +2025,7 @@ const WORKERS = [
 
         // The small red cross where it is stopped.
         .cut {
-            stroke: #ff7a8a;
+            stroke: var(--danger);
             stroke-width: 1.5;
             stroke-linecap: round;
             opacity: 0;
@@ -1618,7 +2054,7 @@ const WORKERS = [
     // Once stopped: the link dashed in red, and the cross.
     .schema:global(.blocked) {
         .lines .intruder {
-            stroke: rgba(255, 122, 138, 0.55);
+            stroke: color-mix(in srgb, var(--danger) 55%, transparent);
             stroke-dasharray: 3 3;
         }
 
@@ -1669,16 +2105,16 @@ const WORKERS = [
             width: 0.4375rem;
             height: 0.4375rem;
             border-radius: 50%;
-            background: #4cc38a;
+            background: var(--success);
             transition: background-color 0.3s ease;
         }
 
         &.refused {
-            border-color: rgba(255, 122, 138, 0.3);
+            border-color: color-mix(in srgb, var(--danger) 30%, transparent);
             color: var(--muted);
 
             .state {
-                background: #ff7a8a;
+                background: var(--danger);
             }
         }
 
@@ -2062,50 +2498,94 @@ const WORKERS = [
         )
     }
 
-    // The worker group at work: the load on each queue and the tasks per
-    // second move, and now and then a backup runs and completes.
+    // The run plays from the start: each task draws its bar on a worker
+    // and turns green. On post_ledger the worker goes down: the bar breaks
+    // in red, a second attempt runs on another worker, and the run ends in
+    // success with nothing lost. Then it starts over. It holds while off
+    // screen.
     function playRouting() {
         const card = document.querySelector<HTMLElement>("[data-routing]")
         if (!card || reduced()) return
-        const tps = card.querySelector<HTMLElement>("[data-tps]")
-        const queues = [...card.querySelectorAll<HTMLElement>("[data-queue]")]
-        const backup = card.querySelector<HTMLElement>("[data-backup]")
-        const backupText = card.querySelector<HTMLElement>("[data-backup-text]")
-        let tick = 0
-        let timer = 0
+        const state = card.querySelector<HTMLElement>("[data-run-state]")
+        const status = card.querySelector<HTMLElement>("[data-status]")
+        const statusText = card.querySelector<HTMLElement>("[data-status-text]")
+        const rows = [...card.querySelectorAll<HTMLElement>("[data-step]")]
+        const bar = (row: HTMLElement) =>
+            row.querySelector<HTMLElement>(".attempt")!
 
-        const step = () => {
-            tick++
-            queues.forEach((queue) => {
-                const slots = Number(queue.dataset.slots)
-                const used = queue.querySelector<HTMLElement>("[data-used]")
-                const meter = queue.querySelector<HTMLElement>(".meter")
-                if (!used || !meter) return
-                const now = Number(used.textContent)
-                const next = Math.max(
-                    Math.round(slots * 0.15),
-                    Math.min(slots, now + Math.round(Math.random() * 2 - 1)),
-                )
-                used.textContent = String(next)
-                meter.style.setProperty("--fill", String(next / slots))
-            })
-            if (tps) tps.textContent = (0.6 + Math.random() * 0.7).toFixed(1)
-            // A backup every so often: running, then done just now.
-            if (backup && backupText && tick % 8 === 0) {
-                backup.classList.add("busy")
-                backupText.textContent = "Backing up…"
-                window.setTimeout(() => {
-                    backup.classList.remove("busy")
-                    backupText.textContent = "Last successful just now"
-                }, 2400)
-            }
-        }
-
+        let visible = false
+        let waiters: (() => void)[] = []
         whileVisible(
             card,
-            () => (timer = window.setInterval(step, 1500)),
-            () => window.clearInterval(timer),
+            () => {
+                visible = true
+                waiters.splice(0).forEach((go) => go())
+            },
+            () => (visible = false),
         )
+        const wait = async (ms: number) => {
+            await new Promise((done) => setTimeout(done, ms))
+            if (!visible) await new Promise<void>((go) => waiters.push(go))
+        }
+
+        const say = (text: string, tone = "") => {
+            if (statusText) statusText.textContent = text
+            status?.classList.toggle("warn", tone === "warn")
+            status?.classList.toggle("ok", tone === "ok")
+        }
+        // Running while it goes, Success once it has.
+        const time = card.querySelector<HTMLElement>("[data-run-time]")
+        const total = time?.textContent ?? ""
+        const setState = (running: boolean) => {
+            state?.classList.toggle("is-running", running)
+            state?.classList.toggle("is-success", !running)
+            if (time) time.textContent = running ? "Running" : total
+        }
+
+        const reset = () => {
+            rows.forEach((row) => {
+                row.classList.remove("failed")
+                bar(row).classList.remove("go", "done", "broken")
+            })
+            setState(true)
+            say("Running on 3 workers")
+        }
+
+        const loop = async () => {
+            for (;;) {
+                // Back to the start without drawing back.
+                rows.forEach((row) => (bar(row).style.transition = "none"))
+                reset()
+                void card.offsetWidth
+                rows.forEach((row) => (bar(row).style.transition = ""))
+                await wait(900)
+
+                for (const row of rows) {
+                    const step = bar(row)
+                    step.classList.add("go")
+                    const ms = parseFloat(step.style.getPropertyValue("--ms"))
+                    if (row.dataset.step === "post_ledger") {
+                        await wait(ms)
+                        step.classList.add("broken")
+                        row.classList.add("failed")
+                        say(
+                            "worker-2 down · retrying post_ledger on worker-3",
+                            "warn",
+                        )
+                        await wait(1200)
+                        continue
+                    }
+                    await wait(ms)
+                    step.classList.add("done")
+                    await wait(150)
+                }
+
+                setState(false)
+                say("Success · 0 executions lost", "ok")
+                await wait(3600)
+            }
+        }
+        loop()
     }
 
     // The audit log as a stack: every few seconds a new event drops in on
@@ -2289,6 +2769,77 @@ const WORKERS = [
         })
     }
 
+    // The head's layers: each label set flat out from its plate's right
+    // corner, read from where the 3D puts the plate.
+    function placeLabels() {
+        const box = document.querySelector<HTMLElement>("[data-layers]")
+        if (!box) return
+        const plates = [...box.querySelectorAll<HTMLElement>("[data-plate]")]
+        const labels = [...box.querySelectorAll<HTMLElement>("[data-label]")]
+        // A label's line starts at its plate's right-hand handle, read
+        // where the 3D puts it with the plate lifted.
+        const place = (idx: number) => {
+            const label = labels[idx]
+            const handles = [...plates[idx].querySelectorAll(".handle")]
+            if (!label || !handles.length) return
+            const origin = box.getBoundingClientRect()
+            const right = handles
+                .map((handle) => handle.getBoundingClientRect())
+                .reduce((a, b) => (b.right > a.right ? b : a))
+            label.style.left = `${right.right - origin.left}px`
+            label.style.top = `${right.top + right.height / 2 - origin.top}px`
+            label.classList.add("placed")
+        }
+        new ResizeObserver(() => {
+            const idx = plates.findIndex((plate) =>
+                plate.classList.contains("active"),
+            )
+            if (idx >= 0) place(idx)
+        }).observe(box)
+
+        // One layer picked at a time: by the pointer, or in turn.
+        const pick = (idx: number) => {
+            const plate = plates[idx]
+            if (plate.classList.contains("active")) return
+            // Read where its handle will be once lifted, lifting it for a
+            // moment without the transition, so the label shows at once.
+            plates.forEach((other) => other.classList.remove("active"))
+            plate.style.transition = "none"
+            plate.classList.add("active")
+            place(idx)
+            plate.classList.remove("active")
+            void plate.offsetWidth
+            plate.style.transition = ""
+            plates.forEach((plate, i) =>
+                plate.classList.toggle("active", i === idx),
+            )
+            labels.forEach((label, i) =>
+                label.classList.toggle("active", i === idx),
+            )
+        }
+        let turn = 0
+        let timer = 0
+        const cycle = () => {
+            window.clearInterval(timer)
+            if (reduced()) return pick(plates.length - 1)
+            pick(turn)
+            timer = window.setInterval(() => {
+                turn = (turn + 1) % plates.length
+                pick(turn)
+            }, 2600)
+        }
+        plates.forEach((plate, idx) => {
+            plate.addEventListener("pointerenter", () => {
+                window.clearInterval(timer)
+                turn = idx
+                pick(idx)
+            })
+        })
+        box.addEventListener("pointerleave", cycle)
+        whileVisible(box, cycle, () => window.clearInterval(timer))
+    }
+
+    placeLabels()
     playTenants()
     playRouting()
     playAudit()
