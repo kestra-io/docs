@@ -251,12 +251,15 @@ kestractl executions restart   2TLGqHrXC9k8BczKJe5djX
 kestractl executions force-run 2TLGqHrXC9k8BczKJe5djX
 kestractl executions unqueue   2TLGqHrXC9k8BczKJe5djX
 
-# Replay an execution
-kestractl executions replay             2TLGqHrXC9k8BczKJe5djX
+# Replay an execution with its original inputs
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX
 
-# Replay from a specific task run (optionally targeting a revision or setting breakpoints)
-kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId>
-kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX --revision 3
+# Replay from a specific task run, optionally on another flow revision
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId>
+kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId> --revision 3
+
+# replay-with-inputs has no option to send inputs, so every input takes its default value
+kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX
 
 # Bulk operations by IDs (positional execution IDs)
 kestractl executions kill-bulk        id1 id2 id3
