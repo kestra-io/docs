@@ -1,18 +1,18 @@
 ---
 import Layout from "~/components/layout.astro"
 
-import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
-import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
-import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
-import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
-import Features from "~/components/lp/workflow-orchestration/Features.astro"
-import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
+import LpHeader from "~/components/lp/shared/LpHeader.astro"
+import LpFooter from "~/components/lp/shared/LpFooter.astro"
+import Hero from "~/components/lp/shared/Hero.astro"
+import Platform from "~/components/lp/shared/Platform.astro"
+import Features from "~/components/lp/shared/Features.astro"
+import Stack from "~/components/lp/shared/Stack.astro"
 import Roi from "~/components/lp/workflow-orchestration/Roi.astro"
 import Trusted from "~/components/lp/workflow-orchestration/Trusted.astro"
-import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
-import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
-import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
-import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
+import Migration from "~/components/lp/shared/Migration.astro"
+import UseCases from "~/components/lp/shared/UseCases.astro"
+import Faq from "~/components/lp/shared/Faq.astro"
+import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
 
 const title = "Unified Workflow Orchestration Platform for the AI era"
 const description =
@@ -53,7 +53,7 @@ const faqItems = [
 ---
 
 <Layout {title} {description} noindex bareChrome>
-    <div class="lp-workflow-orchestration">
+    <div class="lp-page">
         <LpHeader />
         <Hero {routePath} />
         <Platform />
@@ -76,7 +76,7 @@ const faqItems = [
      * The values below that DO have a token are the light-theme value of it;
      * the rest come from the newer Figma set that the palette doesn't carry
      * yet. Swap them for --ks-* once that set lands in _color-palette.scss. */
-    .lp-workflow-orchestration {
+    .lp-page {
         --lp-purple: #631bff; /* --ks-content-color-highlight */
         --lp-purple-light: #f1efff; /* --ks-background-purple-light */
         --lp-purple-rail: #cdc5ff; /* --ks-background-purple-hover */
