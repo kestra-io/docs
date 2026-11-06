@@ -48,7 +48,7 @@
                                     </label>
                                 </div>
 
-                                <div v-if="form.track === 'services'" class="form-group">
+                                <div v-if="form.track === 'services'" class="types">
                                     <span class="label">
                                         Which partner types describe you? Pick all that apply.
                                         <span class="required-field">*</span>
@@ -57,7 +57,7 @@
                                         <label
                                             v-for="p in PARTNER_TYPES"
                                             :key="p.id"
-                                            class="choice"
+                                            class="choice multi"
                                             :class="{ selected: form.kind.includes(p.id) }"
                                         >
                                             <input type="checkbox" :value="p.id" v-model="form.kind" />
@@ -460,6 +460,19 @@
         &:focus-within {
             outline: 2px solid var(--ks-border-active);
             outline-offset: 2px;
+        }
+
+        &.multi {
+            padding-right: 3rem;
+
+            input {
+                opacity: 1;
+                top: 1.25rem;
+                right: 1.25rem;
+                width: 1.125rem;
+                height: 1.125rem;
+                accent-color: var(--ks-border-active);
+            }
         }
     }
 
