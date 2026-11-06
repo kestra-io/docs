@@ -48,15 +48,21 @@
                                     </label>
                                 </div>
 
-                                <div v-if="form.track" class="form-group">
+                                <div v-if="form.track === 'services'" class="form-group">
                                     <span class="label">
-                                        {{ form.track === "consulting" ? "Your areas of expertise. Pick all that apply." : "What do you build? Pick all that apply." }}
+                                        Which partner types describe you? Pick all that apply.
                                         <span class="required-field">*</span>
                                     </span>
-                                    <div class="checks">
-                                        <label v-for="k in kinds" :key="k" class="check">
-                                            <input type="checkbox" :value="k" v-model="form.kind" />
-                                            {{ k }}
+                                    <div class="choice-grid">
+                                        <label
+                                            v-for="p in PARTNER_TYPES"
+                                            :key="p.id"
+                                            class="choice"
+                                            :class="{ selected: form.kind.includes(p.id) }"
+                                        >
+                                            <input type="checkbox" :value="p.id" v-model="form.kind" />
+                                            <strong>{{ p.title }}</strong>
+                                            <span>{{ p.text }}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -74,7 +80,7 @@
                                 </div>
                                 <div class="form-group">
                                     <span class="label">
-                                        {{ form.track === "consulting" ? "Regions you serve" : "Regions where your customers are" }}
+                                        {{ form.track === "services" ? "Regions you serve" : "Regions where your customers are" }}
                                         <span class="required-field">*</span>
                                     </span>
                                     <div class="checks">
@@ -86,7 +92,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="apply-experience">
-                                        {{ form.track === "consulting" ? "Your experience with Kestra" : "Where is the integration today?" }}
+                                        {{ form.track === "services" ? "Your experience with Kestra" : "Where is the integration today?" }}
                                         <span class="required-field">*</span>
                                     </label>
                                     <select id="apply-experience" v-model="form.experience" class="form-control" required>
@@ -96,10 +102,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="apply-plan">
-                                        {{ form.track === "consulting" ? "What do you want to do with Kestra?" : "What would the integration do?" }}
+                                        {{ form.track === "services" ? "What do you want to do with Kestra?" : "What would the integration do?" }}
                                         <span class="required-field">*</span>
                                     </label>
-                                    <textarea id="apply-plan" v-model.trim="form.plan" class="form-control" rows="4" :placeholder="form.track === 'consulting' ? 'Customers you have in mind, services you want to offer, migrations you run (VMware, Airflow, Control-M...)' : 'Which of your products, which Kestra tasks or triggers, who asked for it'" />
+                                    <textarea id="apply-plan" v-model.trim="form.plan" class="form-control" rows="4" :placeholder="form.track === 'services' ? 'Customers you have in mind, services you want to offer, migrations you run (VMware, Airflow, Control-M...)' : 'Which of your products, which Kestra tasks or triggers, who asked for it'" />
                                 </div>
                             </fieldset>
 
@@ -158,7 +164,7 @@
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
 
-    type Track = "consulting" | "technology"
+    type Track = "services" | "technology"
 
     const props = defineProps<{ routePath: string; initialTrack?: Track }>()
 
@@ -166,9 +172,9 @@
     const STEPS = ["Partner type", "Your company", "You"]
     const TRACKS = [
         {
-            id: "consulting" as Track,
+            id: "services" as Track,
             title: "Services partner",
-            text: "Consulting firm, systems integrator, managed service provider or reseller. You deliver or sell Kestra for your clients.",
+            text: "Solution, managed services or implementation partner. You demo, sell, deliver or run Kestra for your clients.",
         },
         {
             id: "technology" as Track,
@@ -176,28 +182,29 @@
             text: "Cloud, data or infrastructure platform. You ship an integration with Kestra and we list and launch it together.",
         },
     ]
-    const KINDS: Record<Track, string[]> = {
-        consulting: ["Data engineering and analytics", "Infrastructure and DevOps", "Cloud and Kubernetes", "AI and machine learning", "Business process automation", "Legacy scheduler migration"],
-        technology: ["Cloud provider", "Data platform", "Data integration", "Infrastructure or DevOps tool", "AI or model provider", "Other ISV"],
-    }
+    const PARTNER_TYPES = [
+        {
+            id: "solution",
+            title: "Solution partner",
+            text: "You demo Kestra and sell or co-sell it to your clients.",
+        },
+        {
+            id: "managed_services",
+            title: "Managed services partner",
+            text: "You install, upgrade and support the Kestra infrastructure of your clients.",
+        },
+        {
+            id: "implementation",
+            title: "Implementation partner",
+            text: "You author, test and productionize Kestra workflows for your clients.",
+        },
+    ]
     const EXPERIENCES: Record<Track, string[]> = {
-        consulting: ["No Kestra project yet", "Evaluating Kestra for a customer", "Delivered at least one Kestra project", "Several customers running Kestra"],
+        services: ["No Kestra project yet", "Evaluating Kestra for a customer", "Delivered at least one Kestra project", "Several customers running Kestra"],
         technology: ["Not started", "Prototype in progress", "Working plugin, not published", "Published and in use by customers"],
     }
     const REGIONS = ["Europe", "North America", "Latin America", "Asia-Pacific", "Middle East and Africa"]
     const HUBSPOT_VALUES: Record<string, string> = {
-        "Data engineering and analytics": "data",
-        "Infrastructure and DevOps": "infrastructure_devops",
-        "Cloud and Kubernetes": "cloud_kubernetes",
-        "AI and machine learning": "ai_ml",
-        "Business process automation": "business_automation",
-        "Legacy scheduler migration": "legacy_migration",
-        "Cloud provider": "cloud",
-        "Data platform": "data_platform",
-        "Data integration": "data_integration",
-        "Infrastructure or DevOps tool": "infrastructure",
-        "AI or model provider": "ai",
-        "Other ISV": "isv",
         "No Kestra project yet": "none",
         "Evaluating Kestra for a customer": "evaluating",
         "Delivered at least one Kestra project": "one_project",
@@ -234,7 +241,6 @@
         consent: false,
     })
 
-    const kinds = computed(() => (form.track ? KINDS[form.track] : []))
     watch(() => form.track, () => { form.kind = [] })
     const experiences = computed(() => (form.track ? EXPERIENCES[form.track] : []))
     const trackLabel = computed(() => (form.track === "technology" ? "technology partners" : "services partners"))
@@ -242,14 +248,14 @@
 
     onMounted(() => {
         const fromUrl = new URLSearchParams(window.location.search).get("track")
-        const initial = props.initialTrack ?? (fromUrl === "services" || fromUrl === "consulting" ? "consulting" : fromUrl === "technology" ? fromUrl : "")
+        const initial = props.initialTrack ?? (fromUrl === "services" || fromUrl === "consulting" ? "services" : fromUrl === "technology" ? fromUrl : "")
         if (initial) form.track = initial
     })
 
     const validateStep = (): string => {
         if (step.value === 0) {
             if (!form.track) return "Choose the partner track that matches you."
-            if (form.kind.length === 0) return form.track === "consulting" ? "Pick at least one area of expertise." : "Pick at least one partner type."
+            if (form.track === "services" && form.kind.length === 0) return "Pick at least one partner type."
         }
         if (step.value === 1) {
             if (!form.company || !form.website) return "Company name and website are required."
@@ -301,7 +307,7 @@
                     company("name", form.company),
                     company("website", form.website),
                     company("partner_track", form.track),
-                    company(form.track === "consulting" ? "partner_expertise" : "partner_type", form.kind.map((k) => HUBSPOT_VALUES[k]).join(";")),
+                    ...(form.track === "services" ? [company("partner_type", form.kind.join(";"))] : []),
                     company("partner_regions", form.regions.map((r) => HUBSPOT_VALUES[r]).join(";")),
                     company("partner_experience", HUBSPOT_VALUES[form.experience]),
                     company("partner_plan", form.plan),
