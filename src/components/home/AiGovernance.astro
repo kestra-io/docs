@@ -15,6 +15,14 @@ import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 // The drawing's grid, in viewBox units, read left to right: the mascot,
 // the agents, Kestra, then the domains, with the audit trail looping back
 // along the floor.
+interface Props {
+    eyebrow?: string
+    bridge?: boolean
+    foot?: boolean
+}
+
+const { eyebrow, bridge = true, foot = true } = Astro.props
+
 const W = 1200
 const H = 420
 // The drawing starts a little left of the agents.
@@ -114,7 +122,7 @@ const auditPath = (cy: number) =>
                 from a node on its panel's foot, carries on down to the
                 agent, with a run travelling along it. */
             }
-            <span class="bridge" aria-hidden="true"></span>
+            {bridge && <span class="bridge" aria-hidden="true" />}
             <div class="head">
                 <div>
                     {
@@ -174,17 +182,24 @@ const auditPath = (cy: number) =>
                             </svg>
                         </span>
                     </div>
+                    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
                     <h2 id="ai-governance">
-                        AI agents cross systems seamlessly. <span
-                            >Enforce governance at every step.</span
-                        >
+                        <slot name="title">
+                            AI agents cross systems seamlessly. <span
+                                >Enforce governance at every step.</span
+                            >
+                        </slot>
                     </h2>
                     <p class="lead">
-                        Permissions, approvals, and audit trails apply to every
-                        action an agent takes.
+                        <slot name="lead">
+                            Permissions, approvals, and audit trails apply to
+                            every action an agent takes.
+                        </slot>
                     </p>
                 </div>
             </div>
+
+            <slot name="cards" />
 
             <figure
                 class="stack"
@@ -424,11 +439,15 @@ const auditPath = (cy: number) =>
             </figure>
 
             {/* A secondary button, under the schema. */}
-            <div class="foot">
-                <a href="/ai-automation" class="btn-ghost">
-                    How agents fit <Icon name="mdi:chevron-right" />
-                </a>
-            </div>
+            {
+                foot && (
+                    <div class="foot">
+                        <a href="/ai-automation" class="btn-ghost">
+                            How agents fit <Icon name="mdi:chevron-right" />
+                        </a>
+                    </div>
+                )
+            }
         </div>
     </div>
 </section>
@@ -1459,6 +1478,15 @@ const auditPath = (cy: number) =>
                 transition-delay: 0.5s;
             }
         }
+    }
+
+    .eyebrow {
+        margin: 0 0 1rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #7448e8;
     }
 
     .lead {

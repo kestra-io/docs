@@ -1,0 +1,194 @@
+---
+import { Icon } from "astro-icon/components"
+
+const PLANS = ["Standard", "Premium", "Platinum"]
+
+const ROWS: { label: string; values: (string | boolean)[] }[] = [
+    {
+        label: "Channels",
+        values: [
+            "E-mail",
+            "E-mail + dedicated Teams/Slack",
+            "E-mail + dedicated Teams/Slack",
+        ],
+    },
+    { label: "P0 response", values: ["24h", "6h", "1h"] },
+    { label: "Coverage", values: ["8×5", "8×5", "24×7"] },
+    { label: "Customer Success program", values: [false, false, true] },
+    {
+        label: "Expert advisory",
+        values: ["Add-on", "Add-on", "6 hours / month"],
+    },
+]
+---
+
+<section class="ee-support" aria-labelledby="ee-support">
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head">
+                <h2 id="ee-support">Support and Customer Success</h2>
+                <p>
+                    Enterprise includes Standard support. Premium and Platinum
+                    add channels, response times and the Customer Success
+                    program.
+                </p>
+            </header>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <td></td>
+                            {PLANS.map((plan) => <th scope="col">{plan}</th>)}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            ROWS.map((row) => (
+                                <tr>
+                                    <th scope="row">{row.label}</th>
+                                    {row.values.map((value) => (
+                                        <td>
+                                            {value === true ? (
+                                                <Icon
+                                                    name="mdi:check"
+                                                    class="yes"
+                                                    aria-label="Included"
+                                                />
+                                            ) : value === false ? (
+                                                <span
+                                                    class="no"
+                                                    aria-label="Not included"
+                                                >
+                                                    ·
+                                                </span>
+                                            ) : (
+                                                value
+                                            )}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .ee-support {
+        position: relative;
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .grid {
+        --rule: 1px solid var(--ks-border-primary);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        border-left: var(--rule);
+        border-right: var(--rule);
+        padding-bottom: clamp(4rem, 6vw, 5.5rem);
+    }
+
+    .head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 1.25rem 3rem;
+        align-items: end;
+        padding: 8.5rem var(--inset) 3.5rem;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 2.5rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: var(--ks-content-primary);
+            text-wrap: balance;
+        }
+
+        p {
+            max-width: 32rem;
+            margin: 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+        border-block: var(--rule);
+    }
+
+    table {
+        width: 100%;
+        min-width: 640px;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        padding: 1.25rem var(--inset);
+        border-bottom: var(--rule);
+        font-size: 1rem;
+        text-align: left;
+        vertical-align: top;
+        color: var(--ks-content-secondary);
+    }
+
+    tbody tr:last-child {
+        th,
+        td {
+            border-bottom: 0;
+        }
+    }
+
+    td + td,
+    th + td,
+    td + th,
+    th + th {
+        border-left: var(--rule);
+    }
+
+    thead th {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+    }
+
+    thead th:last-child {
+        background: var(--ks-background-secondary);
+    }
+
+    tbody th {
+        font-weight: 500;
+        color: var(--ks-content-primary);
+    }
+
+    tbody td:last-child {
+        background: var(--ks-background-secondary);
+    }
+
+    .yes {
+        width: 1.25rem;
+        height: 1.25rem;
+        color: var(--ks-content-success, #21ce9c);
+    }
+
+    .no {
+        color: var(--ks-content-tertiary);
+    }
+</style>

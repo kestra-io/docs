@@ -5,6 +5,7 @@ import applePhoto from "./assets/customers/apple.jpg"
 import filaPhoto from "./assets/customers/fila.jpg"
 import jpmorganPhoto from "./assets/customers/jpmorgan.jpg"
 import PixelEdges from "~/components/about/PixelEdges.astro"
+import { flat } from "./flatLogo"
 import { getCollection } from "astro:content"
 import { toSlug } from "~/utils/stories"
 import jpmorgan from "~/assets/teams/jpmorgan.svg?raw"
@@ -12,28 +13,37 @@ import fila from "~/assets/companies/fila.svg?raw"
 import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
 import apple from "~/contents/customer-stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra/logo.svg?raw"
 
-// Every fill takes the text color, so each logo reads in both themes. Masks
-// keep their own fills, or they would hide the drawing.
-const flat = (svg: string) => {
-    const [head, body] = svg.includes("</mask>")
-        ? [
-              svg.slice(0, svg.lastIndexOf("</mask>")),
-              svg.slice(svg.lastIndexOf("</mask>")),
-          ]
-        : ["", svg]
-    return head + body.replace(/fill="(?!none)[^"]+"/gi, 'fill="currentColor"')
-}
-
 // Each story links to its customer story page, found by company name.
 const stories = await getCollection("customerStories")
-const storyHref = (company: string) => {
+const storyHref = (company?: string) => {
+    if (!company) return undefined
     const entry = stories.find((e) => e.data.companyName === company)
     return entry ? `/stories/${toSlug(entry)}` : undefined
 }
 
+export interface Story {
+    company: string
+    story?: string
+    photo?: ImageMetadata
+    logo?: string
+    height?: number
+    industry?: string
+    stat: string
+    label: string
+    quote?: string
+    author?: string
+    detail?: string
+}
+
+interface Props {
+    stories?: Story[]
+    foot?: boolean
+    placeholder?: boolean
+}
+
 // Melissa's stories, each with its logo for the tab, its industry and,
 // when there is one yet, its photo.
-const STORIES = [
+const DEFAULT_STORIES: Story[] = [
     {
         company: "Apple",
         photo: applePhoto,
@@ -80,6 +90,12 @@ const STORIES = [
         detail: "ERP, PLM and supply chain in 70+ countries.",
     },
 ]
+
+const {
+    stories: STORIES = DEFAULT_STORIES,
+    foot = true,
+    placeholder = true,
+} = Astro.props
 ---
 
 {
@@ -94,11 +110,13 @@ const STORIES = [
         <div class="grid">
             <header class="head">
                 <h2 id="customers">
-                    In production, at scale
-                    <span
-                        >Teams across banking, manufacturing, technology and the
-                        public sector run Kestra in production.</span
-                    >
+                    <slot name="title">
+                        In production, at scale
+                        <span
+                            >Teams across banking, manufacturing, technology and
+                            the public sector run Kestra in production.</span
+                        >
+                    </slot>
                 </h2>
             </header>
 
@@ -114,7 +132,13 @@ const STORIES = [
                             style={`--logo-height: ${story.height}px`}
                         >
                             <span class="bar" aria-hidden="true" />
-                            <span class="logo" set:html={story.logo} />
+                            {story.logo ? (
+                                <span class="logo" set:html={story.logo} />
+                            ) : (
+                                <span class="name" aria-hidden="true">
+                                    {story.company}
+                                </span>
+                            )}
                             <span class="visually-hidden">{story.company}</span>
                         </button>
                     ))
@@ -127,28 +151,44 @@ const STORIES = [
                         <div
                             id={`story-${idx}`}
                             role="tabpanel"
-                            class:list={["panel", { active: idx === 0 }]}
+                            class:list={[
+                                "panel",
+                                {
+                                    active: idx === 0,
+                                    bare: !story.photo && !placeholder,
+                                },
+                            ]}
                         >
                             <figure class="story">
                                 <div class="figure">
-                                    <p class="industry">{story.industry}</p>
+                                    {story.industry && (
+                                        <p class="industry">{story.industry}</p>
+                                    )}
                                     <p class="stat">
-                                        {story.stat} <span>{story.label}</span>
+                                        {story.stat}{" "}
+                                        <span set:html={story.label} />
                                     </p>
                                 </div>
                                 <figcaption class="words">
-                                    <svg
-                                        viewBox="0 0 46 40"
-                                        class="glyph"
-                                        aria-hidden="true"
-                                    >
-                                        <path d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z" />
-                                        <path d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z" />
-                                    </svg>
+                                    {(story.quote || story.detail) && (
+                                        <svg
+                                            viewBox="0 0 46 40"
+                                            class="glyph"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z" />
+                                            <path d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z" />
+                                        </svg>
+                                    )}
                                     {story.quote ? (
                                         <blockquote>{story.quote}</blockquote>
                                     ) : (
-                                        <p class="detail">{story.detail}</p>
+                                        story.detail && (
+                                            <p class="detail">{story.detail}</p>
+                                        )
+                                    )}
+                                    {story.author && (
+                                        <p class="author">{story.author}</p>
                                     )}
                                     {storyHref(story.story) && (
                                         <a
@@ -162,17 +202,19 @@ const STORIES = [
                                 </figcaption>
                             </figure>
                             {/* The story's photo; black while it has none yet. */}
-                            <div class="photo" aria-hidden="true">
-                                {story.photo && (
-                                    <Image
-                                        src={story.photo}
-                                        alt=""
-                                        widths={[480, 720, 960]}
-                                        sizes="(max-width: 992px) 100vw, 40vw"
-                                        loading="lazy"
-                                    />
-                                )}
-                            </div>
+                            {(story.photo || placeholder) && (
+                                <div class="photo" aria-hidden="true">
+                                    {story.photo && (
+                                        <Image
+                                            src={story.photo}
+                                            alt=""
+                                            widths={[480, 720, 960]}
+                                            sizes="(max-width: 992px) 100vw, 40vw"
+                                            loading="lazy"
+                                        />
+                                    )}
+                                </div>
+                            )}
                         </div>
                     ))
                 }
@@ -180,15 +222,20 @@ const STORIES = [
 
             {/* The closing row, as See the platform and the whitepaper. */}
             {/* The reach in one line, with the way to every story. */}
-            <div class="foot">
-                <p>
-                    More than <strong>40,000</strong> organizations run Kestra, including
-                    nearly 800 companies with over 1,000 employees.
-                </p>
-                <a href="/stories" class="all">
-                    See all stories <span aria-hidden="true">→</span>
-                </a>
-            </div>
+            {
+                foot && (
+                    <div class="foot">
+                        <p>
+                            More than <strong>40,000</strong> organizations run
+                            Kestra, including nearly 800 companies with over
+                            1,000 employees.
+                        </p>
+                        <a href="/stories" class="all">
+                            See all stories <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                )
+            }
         </div>
     </div>
 </section>
@@ -423,6 +470,12 @@ const STORIES = [
             animation: turn 6s linear forwards;
         }
 
+        .name {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
         .logo {
             display: flex;
             height: var(--logo-height);
@@ -469,6 +522,11 @@ const STORIES = [
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
         }
+
+        &.bare {
+            grid-template-columns: minmax(0, 1fr);
+            min-height: 24rem;
+        }
     }
 
     // The story on the quotes' lavender: the industry and the figure at the
@@ -497,6 +555,12 @@ const STORIES = [
             font-weight: 500;
             line-height: 1.45;
             color: var(--ks-content-primary);
+        }
+
+        .author {
+            margin: 1rem 0 0;
+            font-size: 0.9375rem;
+            color: var(--ks-content-tertiary);
         }
 
         .industry {

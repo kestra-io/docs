@@ -2,7 +2,28 @@
 import { Icon } from "astro-icon/components"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 
-const PROBLEMS = [
+interface Item {
+    icon?: string
+    title?: string
+    text?: string
+    list?: string[]
+}
+
+interface Cta {
+    label: string
+    href: string
+    solid?: boolean
+    external?: boolean
+}
+
+interface Props {
+    id?: string
+    items?: Item[]
+    ctas?: Cta[]
+    tone?: "default" | "muted"
+}
+
+const DEFAULT_PROBLEMS: Item[] = [
     {
         icon: "mdi:link-variant-off",
         title: "Inconsistent reliability",
@@ -19,6 +40,19 @@ const PROBLEMS = [
         text: "Agents make decisions and take actions across systems autonomously, but fragmented orchestration leaves permissions, approvals, and audit trails disconnected. Actions can bypass controls, which makes failures harder to trace and contain.",
     },
 ]
+
+const {
+    id = "replace",
+    items = DEFAULT_PROBLEMS,
+    ctas = [
+        {
+            label: "Read the whitepaper",
+            href: "/unified-orchestration-whitepaper-kestra.pdf",
+            external: true,
+        },
+    ],
+    tone = "default",
+} = Astro.props
 ---
 
 {
@@ -26,35 +60,60 @@ const PROBLEMS = [
     the whitepaper on its right, then the three problems in cells between
     rules. */
 }
-<section class="replace" aria-labelledby="replace">
+<section class:list={["replace", tone]} aria-labelledby={id}>
     <PixelEdges left="tall" right="wide" />
     <div class="container-xl">
         <div class="grid">
             <header class="head">
-                <h2 id="replace">Replace what no longer serves you</h2>
-                <p>
-                    Fragmented orchestration slows recovery, drives up costs,
-                    and leaves gaps in AI governance. Bring your workflows
-                    together while keeping the code and systems they already run
-                    on.
-                </p>
-                <a
-                    href="/unified-orchestration-whitepaper-kestra.pdf"
-                    class="btn-ghost whitepaper"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    Read the whitepaper
-                </a>
+                <h2 {id}>
+                    <slot name="title">Replace what no longer serves you</slot>
+                </h2>
+                {
+                    (Astro.slots.has("lead") || !Astro.slots.has("title")) && (
+                        <p>
+                            <slot name="lead">
+                                Fragmented orchestration slows recovery, drives
+                                up costs, and leaves gaps in AI governance.
+                                Bring your workflows together while keeping the
+                                code and systems they already run on.
+                            </slot>
+                        </p>
+                    )
+                }
+                {
+                    ctas.length > 0 && (
+                        <div class="ctas">
+                            {ctas.map((cta) => (
+                                <a
+                                    href={cta.href}
+                                    class={
+                                        cta.solid ? "btn-solid" : "btn-ghost"
+                                    }
+                                    target={cta.external ? "_blank" : undefined}
+                                    rel={cta.external ? "noopener" : undefined}
+                                >
+                                    {cta.label}
+                                </a>
+                            ))}
+                        </div>
+                    )
+                }
             </header>
 
-            <ul class="problems">
+            <ul class="problems" style={`--columns: ${items.length}`}>
                 {
-                    PROBLEMS.map((problem, idx) => (
+                    items.map((problem, idx) => (
                         <li class={`problem-${idx}`}>
-                            <Icon name={problem.icon} />
-                            <h3>{problem.title}</h3>
-                            <p>{problem.text}</p>
+                            {problem.icon && <Icon name={problem.icon} />}
+                            {problem.title && <h3>{problem.title}</h3>}
+                            {problem.text && <p>{problem.text}</p>}
+                            {problem.list && (
+                                <ul class="list">
+                                    {problem.list.map((entry) => (
+                                        <li>{entry}</li>
+                                    ))}
+                                </ul>
+                            )}
                         </li>
                     ))
                 }
@@ -68,6 +127,11 @@ const PROBLEMS = [
         position: relative;
         background: var(--ks-background-body);
         border-bottom: 1px solid var(--ks-border-primary);
+
+        &.muted,
+        &.muted .grid {
+            background: var(--ks-background-secondary);
+        }
     }
 
     // The control plane block's hairline grid: rails on both sides, and
@@ -158,11 +222,13 @@ const PROBLEMS = [
 
         // A button keeps its own width, so its inset goes on a margin, and
         // its padding stays the button's own.
-        .whitepaper {
+        .ctas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
             justify-self: end;
             margin-inline: var(--inset);
-            padding-inline: 1.5rem;
-            white-space: nowrap;
+            padding-inline: 0;
 
             @include media-breakpoint-down(lg) {
                 justify-self: start;
@@ -173,7 +239,7 @@ const PROBLEMS = [
     // Three cells between the rules: an icon, the problem, its copy.
     .problems {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
         margin: 0;
         padding: 0;
         list-style: none;
@@ -263,6 +329,34 @@ const PROBLEMS = [
             font-size: 1rem;
             line-height: 1.7;
             color: var(--ks-content-secondary);
+        }
+
+        .list {
+            display: grid;
+            gap: 1rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                position: relative;
+                padding-left: 1.75rem;
+                font-size: 1.0625rem;
+                line-height: 1.55;
+                color: var(--ks-content-secondary);
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0.35em;
+                    left: 0;
+                    width: 1rem;
+                    height: 0.5rem;
+                    border-left: 2px solid var(--ks-content-link);
+                    border-bottom: 2px solid var(--ks-content-link);
+                    transform: rotate(-45deg);
+                }
+            }
         }
     }
 
