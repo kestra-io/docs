@@ -64,6 +64,24 @@ The **Gantt** tab visualizes each task's duration. From this view, a specific ta
 
 The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../develop-with-ai/01.ai-copilot/index.md) pre-loaded with the error context.
 
+Click a row, or select it and press Enter, to open its details in a resizable panel next to the Gantt. For a task run, the panel shows where the task sits in the flow, its attempts, and its logs. Press Escape to close the panel.
+
+### Loop iterations
+
+Each [`Loop`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) iteration runs as its own execution, and the Gantt shows those iterations in place, without leaving the execution you have open:
+
+- A Loop row shows its number of iterations and, when some failed, a failed count. Expand the row with its chevron to list its iterations, each with its value, state, and duration. Click the failed count to expand the loop and keep only its failed iterations.
+- Expand an iteration to list its task runs. A Loop inside an iteration expands the same way, at any depth.
+- Select an iteration to see its first failure and its task runs in the panel. **Open iteration** opens its execution page.
+- Select a Loop row to browse its iterations in the panel, 10 at a time. Filter them by state, search them by exact value, or select **Show all executions** to open the executions list filtered on this loop.
+- With a task run inside an iteration selected, press `[` or `]`, or use **Previous iteration** and **Next iteration**, to open the same task in the neighboring iteration.
+
+Above the Gantt, **Failed only** keeps only failed task runs and iterations, so stepping between iterations hops from one failure to the next. **Go to first failure** walks down nested loops to the first task that failed and selects it.
+
+If the same Loop task runs more than once in an execution, for example after a retry, the Gantt can't tell its iterations apart and shows them together.
+
+<!-- TODO(runtime test): Gantt panel and in-place Loop iterations (kestra#19603, PRs kestra#19989 and kestra#21564, merged to develop 2026-10-21 and 2026-10-30) documented from source only. Check in the UI on a 2.1 build: chips and failed-chip filter, panel content per row type, [ / ] stepping, Failed only, Go to first failure, the duplicate-Loop behavior. Retake execution-gantt-view.png and add a screenshot of an expanded nested Loop with the panel open. -->
+
 ## Logs
 
 The **Logs** tab displays task logs, filterable by log level. Logs can be copied to clipboard or downloaded as a file. Logs can be viewed per task in the **Default View** or temporally based on timestamp in the **Temporal View**.

@@ -107,7 +107,7 @@ tasks:
         uri: "https://openlibrary.org/search.json?author={{ item.value }}&sort=new"
 ```
 
-After execution, the Gantt view shows the main Loop task with the sub-executions for each loop through the values list for each author. Click into **Iterations** to view each loop individually.
+After execution, the **Gantt** tab shows the Loop task with its number of iterations, one per author. Expand it to list the iterations in place, and select one to see its task runs in the side panel.
 
 ![Loop Execution](./loop-authors-2-0.png)
 
