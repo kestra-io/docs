@@ -1,0 +1,59 @@
+---
+interface Props {
+    id: string
+    eyebrow?: string
+    align?: "center" | "start"
+}
+
+const { id, eyebrow, align = "center" } = Astro.props
+---
+
+<div class:list={["section-head", align]}>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h2 {id}><slot /></h2>
+    {
+        Astro.slots.has("lead") && (
+            <p class="lead">
+                <slot name="lead" />
+            </p>
+        )
+    }
+</div>
+
+<style lang="scss">
+    .section-head {
+        max-width: 760px;
+        margin-bottom: 3rem;
+
+        &.center {
+            margin-inline: auto;
+            text-align: center;
+        }
+    }
+
+    .eyebrow {
+        margin: 0 0 0.75rem;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ks-content-link);
+    }
+
+    h2 {
+        margin: 0;
+        // The homepage's one h2 scale, as in the control plane block.
+        font-size: clamp(2rem, 3.6vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--ks-content-primary);
+    }
+
+    .lead {
+        margin: 1rem 0 0;
+        font-size: $font-size-lg;
+        line-height: 1.55;
+        color: var(--ks-content-secondary);
+    }
+</style>

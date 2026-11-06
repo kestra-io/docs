@@ -1,0 +1,337 @@
+---
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+
+interface Layer {
+    name: string
+    note: string
+}
+
+interface Props {
+    layers?: Layer[]
+    top?: Layer
+}
+
+// The layers Enterprise adds on the open-source core, bottom up, for the
+// head's visual.
+const DEFAULT_LAYERS: Layer[] = [
+    { name: "Open source", note: "the core" },
+    { name: "Security", note: "SSO · RBAC · secrets" },
+    { name: "Governance", note: "audit logs · approvals" },
+    { name: "Reliability", note: "worker groups · backup" },
+]
+
+const {
+    layers: LAYERS = DEFAULT_LAYERS,
+    top = { name: "Kestra Enterprise", note: "all of it, in one platform" },
+} = Astro.props
+---
+
+<div class="layers" aria-hidden="true" data-layers>
+    <div class="tower">
+        {
+            LAYERS.map((_, idx) => (
+                <div
+                    class:list={["plate", { core: idx === 0 }]}
+                    style={`--i: ${idx}`}
+                    data-plate
+                >
+                    <span class="handle tl" />
+                    <span class="handle tr" />
+                    <span class="handle br" />
+                    <span class="handle bl" />
+                </div>
+            ))
+        }
+        <div class="plate top" style={`--i: ${LAYERS.length}`} data-plate>
+            <img src={kestraMark.src} alt="" width="96" height="96" />
+            <span class="handle tl"></span>
+            <span class="handle tr"></span>
+            <span class="handle br"></span>
+            <span class="handle bl"></span>
+        </div>
+    </div>
+    {
+        LAYERS.map((layer) => (
+            <span class="label" data-label>
+                <strong>{layer.name}</strong>
+                {layer.note}
+            </span>
+        ))
+    }
+    <span class="label" data-label>
+        <strong>{top.name}</strong>
+        {top.note}
+    </span>
+</div>
+
+<style lang="scss">
+    // The layers: glass plates stacked over the core, seen from above.
+    // Pointing at one picks it and shows its label; left alone, they are
+    // picked in turn, bottom up.
+    .layers {
+        --gap: 3rem;
+
+        position: relative;
+        display: grid;
+        place-items: center start;
+        height: 24rem;
+        padding-left: 3rem;
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    .tower {
+        position: relative;
+        // The stack drawn centred on the copy beside it: the plates rise
+        // from the tower's box, so it sits lower.
+        top: 2.1rem;
+        width: 13rem;
+        height: 13rem;
+        margin-top: 6rem;
+        transform: rotateX(58deg) rotateZ(-42deg);
+        transform-style: preserve-3d;
+    }
+
+    .plate {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 1.25rem;
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.02) 60%
+            ),
+            rgba(20, 20, 24, 0.55);
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+            0 30px 50px -20px rgba(0, 0, 0, 0.8);
+        transform: translateZ(calc(var(--i) * var(--gap)));
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+        // Picked, as in a design tool: a bright edge with a handle at each
+        // corner, the layer lifted a little.
+        &::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .handle {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            margin: -4.5px;
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            background: #0d0d10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+
+            &.tl {
+                top: 0;
+                left: 0;
+            }
+
+            &.tr {
+                top: 0;
+                right: 0;
+            }
+
+            &.br {
+                right: 0;
+                bottom: 0;
+            }
+
+            &.bl {
+                bottom: 0;
+                left: 0;
+            }
+        }
+
+        &:global(.active) {
+            transform: translateZ(calc(var(--i) * var(--gap) + 0.75rem));
+
+            &::after,
+            .handle {
+                opacity: 1;
+            }
+        }
+
+        // The core: a plain grid, the base the others stand on.
+        &.core {
+            border-style: dashed;
+            border-color: rgba(255, 255, 255, 0.12);
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0) 0
+                    0 / 1.625rem 1.625rem,
+                linear-gradient(
+                        90deg,
+                        rgba(255, 255, 255, 0.05) 1px,
+                        transparent 0
+                    )
+                    0 0 / 1.625rem 1.625rem,
+                rgba(14, 14, 17, 0.7);
+        }
+
+        // Kestra on top, lit from within.
+        &.top {
+            border-color: rgba(255, 255, 255, 0.3);
+            background:
+                radial-gradient(
+                    circle at 50% 50%,
+                    rgba(255, 255, 255, 0.14),
+                    transparent 65%
+                ),
+                linear-gradient(135deg, #2a2a31, #151519);
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+                0 0 60px rgba(255, 255, 255, 0.08),
+                0 30px 50px -20px rgba(0, 0, 0, 0.8);
+
+            img {
+                width: 6.5rem;
+                height: 6.5rem;
+                // Upright again, so the mark reads.
+                transform: rotateZ(42deg);
+            }
+        }
+    }
+
+    // Each label flat, on one line, out from its plate's right corner,
+    // where the script sets it; shown only while its layer is picked.
+    .label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        gap: 0.5rem;
+        padding-left: 2.25rem;
+        font-size: 0.8125rem;
+        white-space: nowrap;
+        color: var(--muted, #9a9aa8);
+        opacity: 0;
+        transform: translateY(-50%);
+        transition: opacity 0.2s ease;
+
+        // The leader from the corner.
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 1.75rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        strong {
+            font-weight: 500;
+            color: #ededf1;
+        }
+
+        &:global(.placed.active) {
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .plate {
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    function whileVisible(el: Element, start: () => void, stop: () => void) {
+        new IntersectionObserver(([entry]) =>
+            entry.isIntersecting ? start() : stop(),
+        ).observe(el)
+    }
+
+    // The head's layers: each label set flat out from its plate's right
+    // corner, read from where the 3D puts the plate.
+    function placeLabels() {
+        document.querySelectorAll<HTMLElement>("[data-layers]").forEach(placeIn)
+    }
+
+    function placeIn(box: HTMLElement) {
+        const plates = [...box.querySelectorAll<HTMLElement>("[data-plate]")]
+        const labels = [...box.querySelectorAll<HTMLElement>("[data-label]")]
+        // A label's line starts at its plate's right-hand handle, read
+        // where the 3D puts it with the plate lifted.
+        const place = (idx: number) => {
+            const label = labels[idx]
+            const handles = [...plates[idx].querySelectorAll(".handle")]
+            if (!label || !handles.length) return
+            const origin = box.getBoundingClientRect()
+            const right = handles
+                .map((handle) => handle.getBoundingClientRect())
+                .reduce((a, b) => (b.right > a.right ? b : a))
+            label.style.left = `${right.right - origin.left}px`
+            label.style.top = `${right.top + right.height / 2 - origin.top}px`
+            label.classList.add("placed")
+        }
+        new ResizeObserver(() => {
+            const idx = plates.findIndex((plate) =>
+                plate.classList.contains("active"),
+            )
+            if (idx >= 0) place(idx)
+        }).observe(box)
+
+        // One layer picked at a time: by the pointer, or in turn.
+        const pick = (idx: number) => {
+            const plate = plates[idx]
+            if (plate.classList.contains("active")) return
+            // Read where its handle will be once lifted, lifting it for a
+            // moment without the transition, so the label shows at once.
+            plates.forEach((other) => other.classList.remove("active"))
+            plate.style.transition = "none"
+            plate.classList.add("active")
+            place(idx)
+            plate.classList.remove("active")
+            void plate.offsetWidth
+            plate.style.transition = ""
+            plates.forEach((plate, i) =>
+                plate.classList.toggle("active", i === idx),
+            )
+            labels.forEach((label, i) =>
+                label.classList.toggle("active", i === idx),
+            )
+        }
+        let turn = 0
+        let timer = 0
+        const cycle = () => {
+            window.clearInterval(timer)
+            if (reduced()) return pick(plates.length - 1)
+            pick(turn)
+            timer = window.setInterval(() => {
+                turn = (turn + 1) % plates.length
+                pick(turn)
+            }, 2600)
+        }
+        plates.forEach((plate, idx) => {
+            plate.addEventListener("pointerenter", () => {
+                window.clearInterval(timer)
+                turn = idx
+                pick(idx)
+            })
+        })
+        box.addEventListener("pointerleave", cycle)
+        whileVisible(box, cycle, () => window.clearInterval(timer))
+    }
+
+    placeLabels()
+</script>

@@ -1,0 +1,290 @@
+---
+import { Image } from "astro:assets"
+import productScreen from "./assets/run/flows-edit.png"
+---
+
+{
+    /* On black, on the hairline grid of the blocks above: the title with
+    Pricing on its right, then the product on the left, lit from above and
+    fading out, and the three editions stacked on the right. */
+}
+<section class="run-kestra" aria-labelledby="run-kestra">
+    <div class="container-xl">
+        <div class="grid">
+            <header class="head surface-dark">
+                <div>
+                    <h2 id="run-kestra">Three ways to run Kestra</h2>
+                    <p>
+                        Try it alone, try it managed, or talk to an expert who
+                        has done the migration before.
+                    </p>
+                </div>
+                {/* One way to compare the three. */}
+                <a href="/pricing" class="btn-ghost">Pricing</a>
+            </header>
+
+            <div class="body">
+                <div class="showcase">
+                    <div class="window">
+                        <Image
+                            src={productScreen}
+                            alt="The Kestra UI: a flow's code next to its topology"
+                            widths={[800, 1200, 1600, 2400]}
+                            sizes="(max-width: 992px) 200vw, 2000px"
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+
+                <div class="editions surface-dark">
+                    <article class="edition">
+                        <h3>Open Source</h3>
+                        <p>
+                            Where most teams start, and where many experiment
+                            with a first production. Self-hosted and free, with
+                            no limits on flows or executions.
+                        </p>
+                        <a href="/get-started" class="btn-ghost compact">
+                            Get started
+                        </a>
+                    </article>
+
+                    <article class="edition">
+                        <p class="badge">Early Access</p>
+                        <h3>Scale with Kestra Cloud</h3>
+                        <p>
+                            Managed by the people who build Kestra. No platform
+                            to run, pay for what you use. Join the early adopter
+                            program: onboarding with the Cloud team and a say in
+                            what we build next.
+                        </p>
+                        <a href="/cloud" class="btn-ghost compact">
+                            Try Kestra Cloud
+                        </a>
+                    </article>
+
+                    <article class="edition featured">
+                        <h3>Enterprise</h3>
+                        <p>
+                            The Kestra experience scaled for the enterprise:
+                            multi-team organization, security and governance,
+                            support with SLAs. Self-hosted, cloud or air-gapped.
+                        </p>
+                        <p>
+                            Book a demo with an engineer who has replaced vRA,
+                            Airflow, or Control-M before, on your use case.
+                        </p>
+                        <a href="/demo" class="btn-solid compact">Book a demo</a
+                        >
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    // Black, like the hero. It stays dark in both themes.
+    .run-kestra {
+        position: relative;
+        overflow: hidden;
+        background: #0d0d0f;
+        color: #ffffff;
+    }
+
+    // The hairline grid of the blocks above, in white on black: rails on
+    // both sides, and a full-width rule over the body.
+    .grid {
+        --rule-color: rgba(255, 255, 255, 0.1);
+        --rule: 1px solid var(--rule-color);
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
+        border-left: var(--rule);
+        border-right: var(--rule);
+    }
+
+    // The title and lead on the left, Pricing on the right.
+    .head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.5rem 3rem;
+        padding: 8.5rem var(--inset) 4rem;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 4.5rem 3rem;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.6vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            color: #ffffff;
+        }
+
+        // One line where there is room, two even ones where there is not.
+        p {
+            max-width: 50rem;
+            margin: 1.25rem 0 0;
+            font-size: 1.125rem;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.6);
+            text-wrap: balance;
+        }
+
+        .btn-ghost {
+            flex-shrink: 0;
+        }
+    }
+
+    // The product on the left, the editions on the right.
+    .body {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        border-top: var(--rule);
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: -100vw;
+            right: -100vw;
+            height: 1px;
+            background: var(--rule-color);
+            pointer-events: none;
+        }
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    // The product, lit from above in grey. Its window is set in from the
+    // top right and runs off the left and the bottom, where it fades out,
+    // so the topology and the toolbar lead.
+    .showcase {
+        position: relative;
+        overflow: hidden;
+        min-height: 28rem;
+        border-right: var(--rule);
+        background:
+            radial-gradient(
+                80% 60% at 75% 0%,
+                rgba(255, 255, 255, 0.16),
+                transparent 70%
+            ),
+            #0d0d0f;
+
+        // The fades into the black, on the panel's left and bottom edges.
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, #0d0d0f 0%, transparent 30%),
+                linear-gradient(0deg, #0d0d0f 0%, transparent 45%);
+            pointer-events: none;
+        }
+
+        @include media-breakpoint-down(lg) {
+            border-right: 0;
+            border-bottom: var(--rule);
+        }
+    }
+
+    .window {
+        position: absolute;
+        top: clamp(3rem, 5vw, 4.5rem);
+        right: clamp(2rem, 4vw, 4rem);
+        bottom: 0;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-bottom: 0;
+        border-radius: 0.75rem 0.75rem 0 0;
+        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9);
+
+        :global(img) {
+            display: block;
+            width: auto;
+            max-width: none;
+            height: 100%;
+            border-radius: inherit;
+        }
+    }
+
+    // The three editions, stacked between rules.
+    .editions {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .edition {
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem clamp(1.5rem, 2.5vw, 2.5rem) 2.5rem;
+        transition: background-color 0.3s ease;
+
+        // More room under the last one, so its button sits clear of the
+        // block's foot.
+        &:last-child {
+            padding-bottom: clamp(3rem, 5vw, 4.5rem);
+        }
+
+        & + & {
+            border-top: var(--rule);
+        }
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        // Enterprise stands out on a slightly lighter ground.
+        &.featured {
+            background: rgba(255, 255, 255, 0.04);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.06);
+            }
+        }
+
+        > a {
+            margin-top: auto;
+        }
+    }
+
+    // Square, like everything else on the page.
+    .badge {
+        margin: 0 0 0.75rem;
+        padding: 0.125rem 0.625rem;
+        background: rgba(167, 150, 255, 0.16);
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #c4b8ff;
+    }
+
+    h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .edition p:not(.badge) {
+        max-width: 30rem;
+        margin: 0 0 0.75rem;
+        font-size: 0.9375rem;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.6);
+
+        &:last-of-type {
+            margin-bottom: 1.25rem;
+        }
+    }
+</style>
