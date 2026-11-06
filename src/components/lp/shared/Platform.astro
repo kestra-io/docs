@@ -57,25 +57,17 @@ const {
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     .platform {
-        padding: 5rem 1rem;
         /* The design's stack of white-to-transparent washes composites to flat
          * white here — verified against the Figma render. */
-        background-color: #ffffff;
+        @include lp-section;
     }
 
     h2 {
-        max-width: 1140px;
-        margin: 0 auto 2.5rem;
-        color: var(--lp-content-primary);
-        font-size: 1.875rem;
-        font-weight: 600;
-        line-height: 1.0417;
-        letter-spacing: -0.045rem;
-        text-align: center;
-        @include media-breakpoint-up(lg) {
-            font-size: 3rem;
-        }
+        @include lp-section-head(1140px);
+        @include lp-heading;
     }
 
     .cards {

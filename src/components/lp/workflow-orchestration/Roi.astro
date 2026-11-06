@@ -114,13 +114,14 @@ const quotes = [
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     .roi {
-        padding: 5rem 1rem;
         /* The one light section the design does NOT leave flat white: a soft
          * lavender wash sits over it, densest across the top and down the left,
          * clearing to white before the bottom edge. (In Figma this is a raster
          * texture at 10% opacity; sampling its render gives #f3edff at peak.) */
-        background-color: #ffffff;
+        @include lp-section;
         background-image:
             radial-gradient(
                 90% 70% at 50% -10%,
@@ -141,27 +142,16 @@ const quotes = [
     }
 
     .head {
-        max-width: 900px;
-        margin: 0 auto 2.5rem;
-        text-align: center;
+        @include lp-section-head;
 
         h2 {
             margin: 0 0 2rem;
-            color: var(--lp-content-primary);
-            font-size: 1.875rem;
-            font-weight: 600;
-            line-height: 1.0417;
-            letter-spacing: -0.045rem;
-            @include media-breakpoint-up(lg) {
-                font-size: 3rem;
-            }
+            @include lp-heading;
         }
 
         p {
             margin: 0;
-            color: var(--lp-content-secondary);
-            font-size: 1.25rem;
-            line-height: 1.4;
+            @include lp-lead;
         }
     }
 

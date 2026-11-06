@@ -34,31 +34,22 @@ const { items, heading = "Frequently asked questions" } = Astro.props
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     .faq {
-        padding: 5rem 1rem;
-        background-color: #ffffff;
+        @include lp-section;
     }
 
     h2 {
-        max-width: 1140px;
-        margin: 0 auto 2.5rem;
-        color: var(--lp-content-primary);
-        font-size: 1.875rem;
-        font-weight: 600;
-        line-height: 1.0417;
-        letter-spacing: -0.045rem;
-        text-align: center;
-        @include media-breakpoint-up(lg) {
-            font-size: 3rem;
-        }
+        @include lp-section-head(1140px);
+        @include lp-heading;
     }
 
     .items {
         display: flex;
         flex-direction: column;
         gap: 0.375rem;
-        max-width: 1140px;
-        margin-inline: auto;
+        @include lp-container;
     }
 
     details {
