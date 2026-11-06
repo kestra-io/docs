@@ -111,17 +111,6 @@ const alt = "The whole Kestra team on the stairs of the office"
         aspect-ratio: 4 / 5;
         overflow: hidden;
 
-        &::before {
-            content: "";
-            position: absolute;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            width: 10px;
-            height: 10px;
-            background: #fe0071;
-        }
-
         @include media-breakpoint-down(lg) {
             order: -1;
             aspect-ratio: auto;
