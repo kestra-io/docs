@@ -14,7 +14,9 @@ const LAYERS = [
 
 // The backdrop's squares, after the 2.0 page: a ring of twelve on a grid
 // of 7 by 5, drawn here rather than from its raster, one ring cut by each
-// side of the section. A few are lit a little brighter.
+// side of the section, outlined in a light gradient. Away from the middle
+// they blur and their outline fades, a little more at each column, as if
+// further off.
 const RING = [
     [2, 0],
     [3, 0],
@@ -29,7 +31,8 @@ const RING = [
     [3, 4],
     [4, 4],
 ]
-const LIT = [3, 8]
+// How far a column sits from the section's middle, 0 the nearest.
+const depth = (side: string, col: number) => (side === "left" ? 6 - col : col)
 
 // Four reasons, each under a glimpse of the product that proves it.
 const FEATURES = [
@@ -234,17 +237,55 @@ const WORKERS = [
                 viewBox="0 0 500 352"
                 aria-hidden="true"
             >
-                {RING.map(([col, row], idx) => (
-                    <rect
-                        class:list={{ lit: LIT.includes(idx) }}
-                        x={col * 74 + 0.5}
-                        y={row * 74 + 0.5}
-                        width="55"
-                        height="55"
-                        rx="3"
-                        style={`--d: ${(side === "left" ? col : 6 - col) * 0.45}s`}
-                    />
-                ))}
+                <defs>
+                    <linearGradient
+                        id={`squares-edge-${side}`}
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1"
+                    >
+                        <stop
+                            offset="0"
+                            stop-color="#e4e6ff"
+                            stop-opacity="0.6"
+                        />
+                        <stop
+                            offset="1"
+                            stop-color="#6a73e8"
+                            stop-opacity="0.45"
+                        />
+                    </linearGradient>
+                    {[1, 2, 3, 4, 5, 6].map((far) => (
+                        <filter
+                            id={`squares-blur-${side}-${far}`}
+                            x="-30%"
+                            y="-30%"
+                            width="160%"
+                            height="160%"
+                        >
+                            <feGaussianBlur stdDeviation={far * 0.75} />
+                        </filter>
+                    ))}
+                </defs>
+                {RING.map(([col, row]) => {
+                    const far = depth(side, col)
+                    return (
+                        <rect
+                            x={col * 74 + 0.5}
+                            y={row * 74 + 0.5}
+                            width="55"
+                            height="55"
+                            rx="3"
+                            filter={
+                                far
+                                    ? `url(#squares-blur-${side}-${far})`
+                                    : undefined
+                            }
+                            style={`--d: ${(6 - far) * 0.45}s; --edge: ${Math.max(0, 1 - far * 0.2).toFixed(2)}; stroke: url(#squares-edge-${side})`}
+                        />
+                    )
+                })}
             </svg>
         ))
     }
@@ -864,9 +905,11 @@ const WORKERS = [
         width: 520px;
         pointer-events: none;
 
+        // Halfway down the section on the left, low on the right.
         &.left {
-            bottom: -96px;
+            top: 50%;
             left: -100px;
+            transform: translateY(-50%);
         }
 
         &.right {
@@ -878,7 +921,7 @@ const WORKERS = [
         // clear of the cells' pictures.
         @media (max-width: 1700px) {
             &.left {
-                left: -200px;
+                left: -330px;
             }
 
             &.right {
@@ -886,16 +929,13 @@ const WORKERS = [
             }
         }
 
+        // Every square outlined in the gradient, the outline fading
+        // and the blur growing, column by column, away from the middle.
         rect {
             fill: rgba(196, 200, 255, 0.05);
-            stroke: rgba(196, 200, 255, 0.16);
-            stroke-width: 1;
+            stroke-width: 1.25;
+            stroke-opacity: calc(0.15 + var(--edge) * 0.85);
             animation: glint 9s ease-in-out var(--d) infinite;
-
-            &.lit {
-                fill: rgba(196, 200, 255, 0.08);
-                stroke: rgba(196, 200, 255, 0.4);
-            }
         }
 
         @include media-breakpoint-down(lg) {
@@ -1684,6 +1724,7 @@ const WORKERS = [
     .row {
         gap: 0.75rem;
         font-size: 0.8125rem;
+        transition: opacity 0.3s ease;
 
         .name {
             flex: none;
@@ -1693,6 +1734,11 @@ const WORKERS = [
 
         &.retry .name {
             color: var(--muted);
+        }
+
+        // Hidden until the first attempt fails.
+        &:global(.pending) {
+            opacity: 0;
         }
     }
 
@@ -1852,8 +1898,8 @@ const WORKERS = [
         box-shadow: 0 16px 32px -16px rgba(0, 0, 0, 0.9);
         transform-origin: bottom center;
         transition:
-            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 0.7s ease;
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.45s ease;
 
         &:nth-child(1) {
             z-index: 3;
@@ -2545,6 +2591,8 @@ const WORKERS = [
         const reset = () => {
             rows.forEach((row) => {
                 row.classList.remove("failed")
+                // The second attempt only shows once the first has failed.
+                row.classList.toggle("pending", row.classList.contains("retry"))
                 bar(row).classList.remove("go", "done", "broken")
             })
             setState(true)
@@ -2568,6 +2616,9 @@ const WORKERS = [
                         await wait(ms)
                         step.classList.add("broken")
                         row.classList.add("failed")
+                        rows.forEach((other) =>
+                            other.classList.remove("pending"),
+                        )
                         say(
                             "worker-2 down · retrying post_ledger on worker-3",
                             "warn",
@@ -2588,7 +2639,7 @@ const WORKERS = [
         loop()
     }
 
-    // The audit log as a stack: every few seconds a new event drops in on
+    // The audit log as a stack: every second or two a new event drops in on
     // top, the others move back and fade, the last one goes, and each event
     // is counted as it streams out to the SIEM.
     function playAudit() {
@@ -2629,14 +2680,14 @@ const WORKERS = [
             // The one that leaves goes back to the end of the queue.
             const last = stack.children[4] as HTMLElement | undefined
             if (last)
-                window.setTimeout(() => (last.remove(), queue.push(last)), 700)
+                window.setTimeout(() => (last.remove(), queue.push(last)), 450)
             total++
             if (exported) exported.textContent = total.toLocaleString("en-US")
         }
 
         whileVisible(
             card,
-            () => (timer = window.setInterval(step, 3000)),
+            () => (timer = window.setInterval(step, 1600)),
             () => window.clearInterval(timer),
         )
     }
