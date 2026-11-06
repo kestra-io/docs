@@ -15,12 +15,14 @@ import florianCailles from "./assets/florian-cailles.jpg"
 import will from "./assets/will.jpg"
 import florianHussonnois from "./assets/florian-hussonnois.jpg"
 import francois from "./assets/francois.jpg"
+import martin from "./assets/martin.jpg"
+import loic from "./assets/loic.jpg"
 
 const LEADERS: {
     name: string
     role: string
     links: { icon: string; label: string; href: string }[]
-    photo?: ImageMetadata
+    photo: ImageMetadata
 }[] = [
     {
         name: "Emmanuel Darras",
@@ -107,6 +109,7 @@ const LEADERS: {
                 href: "https://www.linkedin.com/in/martin-pierre-roset/",
             },
         ],
+        photo: martin,
     },
     {
         name: "Paul Grainger",
@@ -205,6 +208,7 @@ const LEADERS: {
                 href: "https://github.com/loicmathieu",
             },
         ],
+        photo: loic,
     },
     {
         name: "Florian Hussonnois",
@@ -255,18 +259,12 @@ const LEADERS: {
                 LEADERS.map((l) => (
                     <li>
                         <figure>
-                            {l.photo ? (
-                                <Image
-                                    src={l.photo}
-                                    alt={l.name}
-                                    widths={[480, 720, 960]}
-                                    sizes="(min-width: 1200px) 250px, (min-width: 768px) 33vw, 50vw"
-                                />
-                            ) : (
-                                <span class="initials" aria-hidden="true">
-                                    {`${l.name[0]}${l.name.split(" ").at(-1)?.[0]}`}
-                                </span>
-                            )}
+                            <Image
+                                src={l.photo}
+                                alt={l.name}
+                                widths={[480, 720, 960]}
+                                sizes="(min-width: 1200px) 250px, (min-width: 768px) 33vw, 50vw"
+                            />
                         </figure>
                         <h3>{l.name}</h3>
                         <span class="role">{l.role}</span>
@@ -431,18 +429,6 @@ const LEADERS: {
             object-position: center 20%;
             transition: transform 0.6s ease;
         }
-    }
-
-    .initials {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.5rem;
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        color: var(--ks-content-tertiary);
     }
 
     li:hover figure :global(img) {
