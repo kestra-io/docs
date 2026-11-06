@@ -320,3 +320,16 @@ kestra_password = "your-kestra-password"
 The `allowedNamespaces` setting controls which namespaces can access a namespace's flows and resources. Configure it on the **Edit** tab of any namespace.
 
 By default, all namespaces are allowed. To restrict access, select specific namespaces — access automatically extends to each selected namespace's children.
+
+The setting covers:
+
+- Subflow calls
+- Flow triggers
+- namespace files
+- KV store
+- secrets
+- assets
+
+A Flow trigger in a flow whose namespace isn't allowed doesn't receive the executions of the restricted namespace. When an execution would otherwise have fired the trigger, because it matches its `states`, `dependsOn`, and `when` conditions, Kestra logs a warning on the flow that owns the trigger. The warning names the namespace whose Allowed Namespaces blocks it, which can be a parent of the execution's namespace. Nothing is logged on the restricted namespace's execution.
+
+[System Flows](../../../06.concepts/system-flows/index.md), such as alerts, need the system flows namespace (`system` by default) in the list to react to the executions of this namespace.
