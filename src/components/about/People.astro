@@ -7,8 +7,21 @@ import ludo from "./assets/ludo.jpg"
 import anna from "./assets/anna.jpg"
 import kai from "./assets/kai.jpg"
 import terry from "./assets/terry.jpg"
+import paul from "./assets/paul.jpg"
+import antoine from "./assets/antoine.jpg"
+import david from "./assets/david.jpg"
+import nicolas from "./assets/nicolas.jpg"
+import florianCailles from "./assets/florian-cailles.jpg"
+import will from "./assets/will.jpg"
+import florianHussonnois from "./assets/florian-hussonnois.jpg"
+import francois from "./assets/francois.jpg"
 
-const LEADERS = [
+const LEADERS: {
+    name: string
+    role: string
+    links: { icon: string; label: string; href: string }[]
+    photo?: ImageMetadata
+}[] = [
     {
         name: "Emmanuel Darras",
         role: "Co-founder and CEO",
@@ -84,6 +97,149 @@ const LEADERS = [
         ],
         photo: terry,
     },
+    {
+        name: "Martin-Pierre Roset",
+        role: "Marketing Manager",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/martin-pierre-roset/",
+            },
+        ],
+    },
+    {
+        name: "Paul Grainger",
+        role: "Lead Field Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/paul-grainger-65653115/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/paulgrainger85",
+            },
+        ],
+        photo: paul,
+    },
+    {
+        name: "Antoine Lin",
+        role: "Head of Finance",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/antoine-lin-a49aaa74/",
+            },
+        ],
+        photo: antoine,
+    },
+    {
+        name: "David Khan",
+        role: "Customer Operations Manager",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/david-khan-40399419/",
+            },
+        ],
+        photo: david,
+    },
+    {
+        name: "Nicolas Callens",
+        role: "Founding Designer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/todobai/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/Nico-Kestra",
+            },
+        ],
+        photo: nicolas,
+    },
+    {
+        name: "Florian Cailles",
+        role: "Lead Growth Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/florian-cailles-growth/",
+            },
+        ],
+        photo: florianCailles,
+    },
+    {
+        name: "Will Russell",
+        role: "Developer Relations Lead",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/wrussell1999/",
+            },
+        ],
+        photo: will,
+    },
+    {
+        name: "Loïc Mathieu",
+        role: "Lead Software Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/loicmathieu",
+            },
+        ],
+    },
+    {
+        name: "Florian Hussonnois",
+        role: "Lead Software Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/florian-hussonnois/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/fhussonnois",
+            },
+        ],
+        photo: florianHussonnois,
+    },
+    {
+        name: "François Delbrayelle",
+        role: "Lead Software Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/fdelbrayelle/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/fdelbrayelle",
+            },
+        ],
+        photo: francois,
+    },
 ]
 ---
 
@@ -94,17 +250,23 @@ const LEADERS = [
             <h2>Leadership.</h2>
         </header>
 
-        <ul>
+        <ul class="strip" data-leaders tabindex="0" aria-label="Leadership">
             {
                 LEADERS.map((l) => (
                     <li>
                         <figure>
-                            <Image
-                                src={l.photo}
-                                alt={l.name}
-                                widths={[480, 720, 960]}
-                                sizes="(min-width: 1200px) 250px, (min-width: 768px) 33vw, 50vw"
-                            />
+                            {l.photo ? (
+                                <Image
+                                    src={l.photo}
+                                    alt={l.name}
+                                    widths={[480, 720, 960]}
+                                    sizes="(min-width: 1200px) 250px, (min-width: 768px) 33vw, 50vw"
+                                />
+                            ) : (
+                                <span class="initials" aria-hidden="true">
+                                    {`${l.name[0]}${l.name.split(" ").at(-1)?.[0]}`}
+                                </span>
+                            )}
                         </figure>
                         <h3>{l.name}</h3>
                         <span class="role">{l.role}</span>
@@ -128,6 +290,65 @@ const LEADERS = [
     </div>
 </section>
 
+<script>
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>("[data-leaders]:not([data-ready])")
+            .forEach((strip) => {
+                strip.dataset.ready = "true"
+
+                let drag: { x: number; left: number; moved: boolean } | null =
+                    null
+                strip.addEventListener("pointerdown", (e) => {
+                    if (e.pointerType !== "mouse") return
+                    drag = {
+                        x: e.clientX,
+                        left: strip.scrollLeft,
+                        moved: false,
+                    }
+                })
+                strip.addEventListener("pointermove", (e) => {
+                    if (!drag) return
+                    const dx = e.clientX - drag.x
+                    if (!drag.moved && Math.abs(dx) > 4) {
+                        drag.moved = true
+                        strip.classList.add("dragging")
+                        strip.setPointerCapture(e.pointerId)
+                    }
+                    if (drag.moved) strip.scrollLeft = drag.left - dx
+                })
+                const release = () => {
+                    drag = null
+                    setTimeout(() => strip.classList.remove("dragging"))
+                }
+                strip.addEventListener("pointerup", release)
+                strip.addEventListener("pointercancel", release)
+                strip.addEventListener(
+                    "click",
+                    (e) => {
+                        if (strip.classList.contains("dragging")) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                        }
+                    },
+                    true,
+                )
+
+                strip.addEventListener("keydown", (e) => {
+                    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
+                    e.preventDefault()
+                    const step = strip.querySelector("li")!.clientWidth + 24
+                    strip.scrollBy({
+                        left: e.key === "ArrowRight" ? step : -step,
+                        behavior: "smooth",
+                    })
+                })
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
 <style lang="scss">
     @use "./style/section" as *;
 
@@ -150,25 +371,48 @@ const LEADERS = [
         @include title;
     }
 
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 3rem 1.5rem;
+    .strip {
+        --bleed: calc((100vw - 100%) / 2);
 
-        @include media-breakpoint-down(xl) {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        display: flex;
+        gap: 1.5rem;
+        margin: 0 calc(var(--bleed) * -1);
+        padding: 0 var(--bleed);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        cursor: grab;
+        user-select: none;
+        outline: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        &.dragging {
+            cursor: grabbing;
+        }
+
+        &:focus-visible {
+            box-shadow: inset 0 0 0 2px var(--ks-content-color-highlight);
         }
 
         @include media-breakpoint-down(md) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 2.5rem 1rem;
+            gap: 1rem;
         }
 
-        @media (min-width: 1600px) {
-            margin-inline: calc((min(100vw - 8rem, 1600px) - 100%) / -2);
+        li {
+            flex: none;
+            width: clamp(200px, 18vw, 260px);
+
+            @include media-breakpoint-down(md) {
+                width: 42vw;
+            }
+        }
+
+        :global(img) {
+            pointer-events: none;
         }
     }
 
@@ -198,6 +442,18 @@ const LEADERS = [
             object-position: center 20%;
             transition: transform 0.6s ease;
         }
+    }
+
+    .initials {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--ks-content-tertiary);
     }
 
     li:hover figure :global(img) {
