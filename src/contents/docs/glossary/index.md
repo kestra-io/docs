@@ -38,7 +38,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 <span id="context"></span>
 - [Context](#context) - typically referred to as "execution context" or a collection of variables and metadata that allows for dynamic rendering of flow properties during a workflow's execution.
 <span id="control-plane"></span>
-- [Control plane](#control-plane) - the centralized layer that orchestrates and manages workflows: the [server components](../08.architecture/02.server-components/index.md) responsible for scheduling, coordinating, and exposing the API and UI (Scheduler, Executor, Webserver). It governs *what* runs and *when*, while [Workers](#workers) execute the actual tasks and handle your data.
+- [Control plane](#control-plane) - the centralized layer that orchestrates and manages workflows: the [server components](../08.architecture/02.server-components/index.mdx) responsible for scheduling, coordinating, and exposing the API and UI (Scheduler, Executor, Webserver). It governs *what* runs and *when*, while [Workers](#workers) execute the actual tasks and handle your data.
 <span id="cron"></span>
 - [Cron](#cron) - a standard syntax for expressing recurring schedules as a string of time fields (e.g. `0 9 * * *` for every day at 9am). Kestra uses cron expressions in the [Schedule trigger](../05.workflow-components/07.triggers/01.schedule-trigger/index.md) to run flows at precise times.
 
@@ -62,7 +62,7 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 <span id="execution-context"></span>
 - [Execution context](#execution-context) - a collection of variables and metadata that allows for dynamic rendering of flow properties during a workflow's execution.
 <span id="executor"></span>
-- [Executor](#executor) - the [server component](../08.architecture/02.server-components/index.md#executor) that drives the execution state machine: given a flow and an execution, it decides which task runs next, which state the execution is in, and when it terminates. It dispatches runnable tasks to [Workers](#workers) instead of running them itself, so it stays lightweight and rarely needs scaling.
+- [Executor](#executor) - the [server component](../08.architecture/02.server-components/index.mdx#executor) that drives the execution state machine: given a flow and an execution, it decides which task runs next, which state the execution is in, and when it terminates. It dispatches runnable tasks to [Workers](#workers) instead of running them itself, so it stays lightweight and rarely needs scaling.
 <span id="expressions"></span>
 - [Expressions](#expressions) - accessing and using variables in flows, combining the Pebble templating engine with the execution context to dynamically render flow properties. [Expressions](../expressions/index.mdx) allow you to dynamically set values within your workflows. Expression syntax uses curly braces, e.g., `{{ your_expression }}`.
 
