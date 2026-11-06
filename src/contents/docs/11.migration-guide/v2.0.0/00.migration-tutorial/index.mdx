@@ -471,6 +471,8 @@ grep -rn "plugin.core.flow.ForEach\|plugin.core.flow.EachSequential\|plugin.core
 
 All four flow-iteration task types (`ForEach`, `ForEachItem`, `EachSequential`, and `EachParallel`) are removed in 2.0 and replaced by `Loop`. `kestra-migrate` flags each with `⚠ ✗` and writes the files through unchanged — the grep confirms which flows still need rewriting after Step 3.
 
+`kestra-migrate` copies [unit test](../../../07.enterprise/02.governance/unit-tests/index.md) suites unchanged and warns when a fixture or assertion targets a task inside a `ForEach`. Migrate each suite in the same run as its flow so the warning is precise rather than a guess, then update the suite as described in [Unit tests](../foreach-loop/index.md#unit-tests).
+
 **`ForEach` → `Loop`**
 
 The minimum change is a type rename and expression rename:
