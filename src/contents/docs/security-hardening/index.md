@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/admin.svg
 description: Best practices for hardening Kestra security, including network isolation, host-level controls, and plugin validation.
 ---
 
-Secure a Kestra deployment with credential setup, network and worker isolation, transport security, request filtering, and endpoint protection.
+Secure a Kestra deployment with credential setup, network and worker isolation, transport security, request filtering, endpoint protection, and release verification.
 
 ## Credential initialization
 
@@ -252,6 +252,57 @@ Both `max-number-of-entries` and `max-entry-size` are required when `enabled: tr
 The protection applies only to user-uploaded ZIPs (flow import and namespace file upload). Internal Kestra archives used for task execution caching are not affected.
 :::
 
+## Release verification
+
+Open-source Kestra releases on GitHub include a software bill of materials (SBOM) and signed build attestations, starting with 2.0.9. Use them to audit the dependencies of a release and to confirm that the `kestra` executable you run was built by Kestra's release workflow.
+
+Each [GitHub release](https://github.com/kestra-io/kestra/releases) lists these assets:
+
+| Asset | Contents |
+|---|---|
+| `kestra-<version>` | The Kestra executable. |
+| `kestra-v<version>-sbom.json` | A [CycloneDX](https://cyclonedx.org/) SBOM of the Java and npm dependencies bundled in the executable. |
+| `checksums_sha256.txt` | SHA-256 checksums of the executable and the SBOM. |
+
+To check your downloads against the published checksums, run this command in the download directory:
+
+```bash
+shasum -a 256 -c checksums_sha256.txt
+```
+
+### Verify attestations
+
+Attestations prove where the executable came from, which a checksum alone cannot. To verify them, install the [GitHub CLI](https://cli.github.com/) and sign in with `gh auth login`. Any GitHub account works.
+
+Verify the build provenance of the executable:
+
+```bash
+VERSION=2.0.9
+gh attestation verify kestra-$VERSION --repo kestra-io/kestra --signer-repo kestra-io/actions
+```
+
+The command checks a [SLSA provenance](https://slsa.dev/) attestation. It confirms that the file was built from `kestra-io/kestra` at the release tag and signed by the shared build workflow in `kestra-io/actions`. The `--signer-repo` flag is required because that workflow signs the attestation, not a workflow in `kestra-io/kestra`.
+
+Verify that the SBOM was generated for the same executable:
+
+```bash
+gh attestation verify kestra-$VERSION --repo kestra-io/kestra --signer-repo kestra-io/actions \
+  --predicate-type https://cyclonedx.org/bom
+```
+
+Both commands print `✓ Verification succeeded!` and the build and signer workflows that produced the attestation.
+
+Run both commands against the executable, not against the SBOM file. The SBOM attestation is bound to the executable's digest and embeds the full SBOM. To extract the attested copy instead of using the downloaded file, add `--format json`:
+
+```bash
+gh attestation verify kestra-$VERSION --repo kestra-io/kestra --signer-repo kestra-io/actions \
+  --predicate-type https://cyclonedx.org/bom \
+  --format json --jq '.[0].verificationResult.statement.predicate' > kestra-sbom-attested.json
+```
+
+:::alert{type="info"}
+Enterprise Edition is not distributed through GitHub releases, so Enterprise builds do not include an SBOM or attestations.
+:::
 
 ## Related configuration
 
