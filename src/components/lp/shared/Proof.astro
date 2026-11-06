@@ -93,6 +93,8 @@ const columns = Math.min(cases.length, 3)
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     /* Same card as the template's Trusted block, with a status line where the
      * logo was: these estates are anonymised. */
     .proof {
@@ -101,27 +103,16 @@ const columns = Math.min(cases.length, 3)
     }
 
     .head {
-        max-width: 900px;
-        margin: 0 auto 2.5rem;
-        text-align: center;
+        @include lp-section-head;
 
         h2 {
             margin: 0 0 2rem;
-            color: var(--lp-content-primary);
-            font-size: 1.875rem;
-            font-weight: 600;
-            line-height: 1.0417;
-            letter-spacing: -0.045rem;
-            @include media-breakpoint-up(lg) {
-                font-size: 3rem;
-            }
+            @include lp-heading;
         }
 
         p {
             margin: 0;
-            color: var(--lp-content-secondary);
-            font-size: 1.25rem;
-            line-height: 1.4;
+            @include lp-lead;
         }
     }
 
