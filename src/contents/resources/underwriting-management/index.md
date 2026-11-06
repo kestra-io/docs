@@ -67,7 +67,7 @@ Despite its critical importance, the underwriting function in many organizations
 *   **Slow Decision Cycles:** The reliance on manual steps and hand-offs between teams creates bottlenecks, leading to long turnaround times. This can result in a poor customer experience and lost business to more agile competitors.
 *   **Inconsistent Risk Assessment:** When underwriters rely solely on manual checklists and individual judgment, decisions can vary from person to person. This inconsistency can lead to suboptimal risk selection and pricing across the portfolio.
 *   **Heavy Compliance Burden:** The financial and insurance industries are heavily regulated. Manual processes make it difficult to consistently enforce rules, maintain a clear audit trail, and adapt to changing compliance requirements. Proving that every decision followed the correct procedure can be a significant challenge.
-*   **System Integration Complexity:** Underwriting requires data from CRMs, core banking or policy admin systems, third-party data providers, and fraud detection tools. Integrating these systems is a major source of [orchestration complexity](/resources/infrastructure/orchestration-problems-complexity), often resulting in fragmented workflows and data silos.
+*   **System Integration Complexity:** Underwriting requires data from CRMs, core banking or policy admin systems, third-party data providers, and fraud detection tools. Integrating these systems is a major source of [orchestration complexity](/resources/orchestration), often resulting in fragmented workflows and data silos.
 
 ## Modernizing Underwriting with Automation and Orchestration
 

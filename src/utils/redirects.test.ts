@@ -138,6 +138,8 @@ describe("resources redirects", () => {
         ["/resources/data/automate-data-pipeline/", "/resources/data/create-data-pipeline"],
         ["/resources/infrastructure/gitops-for-operations", "/resources/infrastructure/gitops"],
         ["/resources/infrastructure/workflow-governance", "/resources/ai/ai-governance-workflows"],
+        ["/resources/infrastructure/orchestration-problems-complexity", "/resources/orchestration"],
+        ["/resources/infrastructure/orchestration-problems-complexity/", "/resources/orchestration"],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, resourcesRules)).toBe(to)
     })
@@ -146,5 +148,6 @@ describe("resources redirects", () => {
         expect(resolveRedirect("/resources/data/create-data-pipeline", resourcesRules)).toBeNull()
         expect(resolveRedirect("/resources/infrastructure/gitops", resourcesRules)).toBeNull()
         expect(resolveRedirect("/resources/data/data-pipeline-monitoring", resourcesRules)).toBeNull()
+        expect(resolveRedirect("/resources/orchestration", resourcesRules)).toBeNull()
     })
 })

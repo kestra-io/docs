@@ -20,3 +20,5 @@
   to: "/resources/infrastructure/ci-cd-orchestration"
 - regexp: "^/resources/infrastructure/gitops-for-operations/?$"
   to: "/resources/infrastructure/gitops"
+- regexp: "^/resources/infrastructure/orchestration-problems-complexity/?$"
+  to: "/resources/orchestration"

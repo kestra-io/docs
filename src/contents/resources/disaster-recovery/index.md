@@ -4,6 +4,7 @@ description: "Understand what disaster recovery is and how it protects your IT i
 metaTitle: "Disaster Recovery Planning & Automation | Kestra"
 metaDescription: "Learn how to build, test, and automate a disaster recovery plan. Reduce RTO and RPO with declarative orchestration workflows. Improve resilience today."
 tag: infrastructure
+noindex: true
 date: 2026-07-01
 faq:
   - question: "What is IT disaster recovery?"

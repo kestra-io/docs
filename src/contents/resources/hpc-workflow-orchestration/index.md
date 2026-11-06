@@ -62,7 +62,7 @@ Schedulers like SLURM are excellent at queuing jobs and allocating resources ins
 *   **Guarantee reproducibility and auditability:** in research and regulated industries, reproducing a result is mandatory. Orchestration keeps a version-controlled record of the exact workflow, parameters, and data used for every run.
 *   **Use expensive hardware efficiently:** a single view across all workflows lets the platform decide when and where to run jobs, preventing contention and idle GPU time.
 *   **Recover from failure:** retries, error branches, and alerting mean a single failed step can trigger a recovery, notify an operator, or run a cleanup, instead of killing a multi-day computation.
-*   **Connect heterogeneous stacks:** modern HPC mixes schedulers, storage systems, cloud APIs, and many languages. Orchestration is the layer that lets them work together, which helps [solve complex orchestration problems](/resources/infrastructure/orchestration-problems-complexity) without piling on more tooling.
+*   **Connect heterogeneous stacks:** modern HPC mixes schedulers, storage systems, cloud APIs, and many languages. Orchestration is the layer that lets them work together, which helps [solve complex orchestration problems](/resources/orchestration) without piling on more tooling.
 
 ### Where does orchestration sit in the HPC stack?
 

@@ -34,7 +34,7 @@ Teams are increasingly seeking alternatives due to several recurring pain points
 *   **Scalability Limits:** GUI-based automation is inherently slower and more resource-intensive than API-based automation. Scaling RPA to handle high-volume or time-sensitive processes is often complex and expensive, requiring numerous virtual machines and licenses.
 *   **Governance Challenges:** Managing a large fleet of bots, controlling access, and maintaining a clear audit trail can become a significant governance burden. It can be difficult to enforce standards and track changes when automation logic is tied to individual bot configurations.
 *   **Lack of Intelligence:** Traditional RPA is designed for simple, rules-based tasks. It struggles with processes that require complex decision-making, exception handling, or adaptation to variable inputs. Integrating AI and machine learning capabilities can be cumbersome.
-*   **Integration Difficulties:** While RPA can connect to systems without APIs, it does so at the surface level. This creates a fragile integration point that bypasses the more stable, secure, and performant backend interfaces. This can create significant [orchestration problems and complexity](/resources/infrastructure/orchestration-problems-complexity) as automation efforts grow.
+*   **Integration Difficulties:** While RPA can connect to systems without APIs, it does so at the surface level. This creates a fragile integration point that bypasses the more stable, secure, and performant backend interfaces. This can create significant [orchestration problems and complexity](/resources/orchestration) as automation efforts grow.
 
 ## Evaluating RPA Alternatives: Key Criteria for Modern Automation
 
