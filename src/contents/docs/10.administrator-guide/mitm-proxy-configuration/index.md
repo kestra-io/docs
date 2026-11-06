@@ -62,6 +62,16 @@ configurations:
             type: "JKS"
 ```
 
+`micronaut.http.client.proxy-*` applies to every server-side HTTP call made by Kestra, including calls to `api.kestra.io` (community blueprints, plugin catalog) and the OpenID Connect discovery of your SSO provider. Starting with Kestra 2.1, these calls skip the proxy for any host listed in the JVM `http.nonProxyHosts` property (see [JVM environment variables](#3-jvm-environment-variables-java_opts) below). Add internal hosts the proxy cannot reach to that list, such as an on-premises identity provider (Keycloak, PingFederate, ADFS):
+
+```
+-Dhttp.nonProxyHosts=localhost|127.0.0.1|keycloak.internal.example.com|*.internal.example.com
+```
+
+:::alert{type="warning"}
+Before Kestra 2.1, the Micronaut HTTP client ignores `http.nonProxyHosts`, so SSO login fails when the identity provider is only reachable without the proxy. As a workaround, leave `micronaut.http.client.proxy-*` unset. Community blueprints are then unavailable, while custom blueprints keep working.
+:::
+
 ### 2. Mount the truststore inside the container
 
 **Kubernetes (Helm `values.yaml`)**
@@ -106,7 +116,7 @@ common:
         -Dhttp.proxyPort=8000
         -Dhttps.proxyHost=your.proxy.net
         -Dhttps.proxyPort=8000
-        -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|your.object-storage.domain.com
+        -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|*.svc|*.cluster.local|your.nexus.domain.com|your.object-storage.domain.com
 ```
 
 **Docker Compose**
