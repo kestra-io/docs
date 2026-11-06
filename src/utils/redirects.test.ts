@@ -52,6 +52,46 @@ describe("docs redirects", () => {
         // (kestra-io/docs#6034).
         ["/docs/ui/dashboards", "/docs/ui/dashboard"],
         ["/docs/ui/dashboards/foo", "/docs/ui/dashboard"],
+        // Reported as broken in docs analytics: the .md variants of moved pages,
+        // and old routes still linked from outside the site (go.kestra.io).
+        [
+            "/docs/concepts/backfill.md",
+            "/docs/workflow-components/triggers/schedule-trigger.md",
+        ],
+        ["/docs/concepts/replay.md", "/docs/how-to-guides/replay.md"],
+        [
+            "/docs/enterprise/cloud-getting-started.md",
+            "/docs/enterprise/cloud/getting-started.md",
+        ],
+        ["/docs/enterprise/ee-faq.md", "/docs/enterprise/auth/authentication.md"],
+        ["/docs/quickstart/quickstart", "/docs/quickstart"],
+        ["/docs/quickstart/quickstart.md", "/docs/quickstart.md"],
+        [
+            "/docs/configuration-guide/setup",
+            "/docs/configuration/configuration-basics",
+        ],
+        ["/docs/expression", "/docs/expressions"],
+        ["/docs/expression.md", "/docs/expressions.md"],
+        ["/docs/configuration-guide", "/docs/configuration"],
+        ["/docs/api-guide", "/docs/api-reference"],
+        ["/docs/workflow-components/flows", "/docs/workflow-components/flow"],
+        [
+            "/docs/workflow-components/flowable-tasks",
+            "/docs/workflow-components/tasks/flowable-tasks",
+        ],
+        ["/docs/concepts/executions", "/docs/workflow-components/execution"],
+        ["/docs/tutorials/slack-webhook", "/docs/how-to-guides/slack-webhook"],
+        ["/docs/01.quickstart/index.md", "/docs/quickstart.md"],
+        ["/docs/plugins", "/plugins"],
+        [
+            "/docs/how-to-guides/minio.md",
+            "/docs/configuration/runtime-and-storage.md",
+        ],
+        ["/docs/changelog/v1.3.34.md", "/docs/changelog/v1.3.34"],
+        [
+            "/docs/changelog/v1.2.9",
+            "https://github.com/kestra-io/kestra/releases/tag/v1.2.9",
+        ],
     ])("%s resolves to %s", (from, to) => {
         expect(resolveRedirect(from, docsRules)).toBe(to)
     })
