@@ -71,7 +71,7 @@ Simply choosing a cluster type isn't enough. Managing the lifecycle of these clu
 
 ## Orchestrate Databricks Clusters with Kestra: Dynamic Provisioning & Cleanup
 
-Kestra's declarative, YAML-based approach allows you to define the entire lifecycle of a Databricks cluster as code. This makes your infrastructure repeatable, version-controlled, and easy to audit.
+Kestra's declarative, YAML-based approach allows you to define the entire lifecycle of a Databricks cluster as code. This makes your infrastructure repeatable, version-controlled, and easy to audit. For the full set of Databricks tasks and patterns, see [Databricks orchestration with Kestra](/orchestration/databricks).
 
 The following flow demonstrates how to create a Databricks cluster on-demand, submit a notebook job, and then automatically terminate the cluster upon completion, ensuring no resources are left idle.
 

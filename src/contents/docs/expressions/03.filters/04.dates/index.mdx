@@ -22,6 +22,22 @@ You can also provide existing and target formats with named arguments:
 
 When you are formatting an already parsed datetime, only `format` is usually needed. Use `existingFormat` when the source is still a plain string.
 
+### Epoch timestamps
+
+`date` also formats a Unix timestamp. A 13-digit number is read as epoch milliseconds, and a 10-digit number as epoch seconds:
+
+```twig
+{{ 1735689600000 | date("yyyy-MM-dd HH:mm:ss", timeZone="UTC") }}
+```
+
+This returns `2025-01-01 00:00:00`. When the timestamp is a string, for example a field from a JSON payload, convert it with `number('LONG')` first. Without the `LONG` type, `number` returns an integer for a 10-digit value, and `date` fails on it.
+
+```twig
+{{ "1735689600" | number('LONG') | date("yyyy-MM-dd HH:mm:ss", timeZone="UTC") }}
+```
+
+To go the other way, from a date to epoch milliseconds, use [`timestampMilli`](#timestamp-helpers).
+
 ### Time zones
 
 Specify a target time zone when downstream systems require a local representation rather than UTC:
@@ -67,6 +83,8 @@ All timestamp filters accept the same arguments as the `date` filter: `existingF
 {{ now() | timestamp(timeZone="Europe/Paris") }}
 {{ now() | timestampMilli(timeZone="Asia/Kolkata") }}
 ```
+
+They also accept an ISO 8601 string. For example, `{{ "2025-01-01T00:00:00Z" | timestampMilli }}` returns `1735689600000`.
 
 Supported date formats include standard Java `DateTimeFormatter` patterns and shortcuts such as `iso`, `sql`, `iso_date_time`, and `iso_zoned_date_time`.
 

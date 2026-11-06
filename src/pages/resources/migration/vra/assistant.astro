@@ -22,7 +22,7 @@ import {
 const faqItems = [
     {
         question: "Does it convert vRO workflows to Kestra?",
-        answer: "The open-source tool assesses and plans. It reads the exports and writes the brief, including whether each workflow converts directly or needs a redesign and which Kestra plugins it would use. Conversion, tests and verification are done with Kestra, starting from the final brief.",
+        answer: "The open-source tool assesses and plans. It reads the exports and writes the brief, including whether each workflow converts directly or needs a redesign and which Kestra plugins it would use. Conversion, tests and verification are done with Kestra, starting from the brief.",
     },
     {
         question: "What leaves my network?",
@@ -30,7 +30,7 @@ const faqItems = [
     },
     {
         question: "Which models does it work with?",
-        answer: "It uses one model for everything, connected through a Claude Code login, an Anthropic API key, or any OpenAI-compatible endpoint, including Azure OpenAI and Amazon Bedrock through a proxy. The default is Claude Opus 5.5 (claude-opus-5-5), and the README lists the models we've tested. Keys never go in the config file.",
+        answer: "It uses one model for everything, connected through a Claude Code login, an Anthropic API key, or any OpenAI-compatible endpoint, including Azure OpenAI and Amazon Bedrock through a proxy. The default is Claude Opus 5.5 (claude-opus-5-5), and the README lists the models we've tested. An API key is read from an environment variable the config file names, or from the file itself if only you can read it.",
     },
     {
         question: "Do I need the vRA export?",

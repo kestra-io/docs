@@ -91,7 +91,7 @@ The table below shows exactly how the migration expands each old CRUD action. Ac
 
 ## kestractl: updating role definitions
 
-The `kestractl roles create` and `kestractl roles update` commands use `--permission RESOURCE:ACTION[,ACTION]` syntax. The action values are now specific names like `VIEW`, `EXECUTE`, and `ACCESS_LOGS`, not CRUD verbs.
+The [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) `roles create` and `roles update` commands use `--permission RESOURCE:ACTION[,ACTION]` syntax. The action values are now specific names like `VIEW`, `EXECUTE`, and `ACCESS_LOGS`, not CRUD verbs.
 
 :::alert{type="warning"}
 `READ` is still accepted as a legacy alias and maps to `VIEW` only; it does **not** expand to `VIEW` + `LIST` + `ACCESS_LOGS` + other actions the way the automatic database migration does. Using old CRUD values in new role definitions will silently under-grant permissions.

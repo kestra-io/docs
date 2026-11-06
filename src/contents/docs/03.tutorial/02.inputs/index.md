@@ -57,7 +57,7 @@ Here are the most common input types:
 |---------|-------------------------------------------------------------------------------------------------------|
 | STRING  | It can be any string value. Strings are not parsed, they are passed as-is to any task that uses them. |
 | INT     | It can be any valid integer number (without decimals).                                                |
-| BOOLEAN | It must be either `true` or `false`.                                                                  |
+| BOOL    | It must be either `true` or `false`.                                                                  |
 
 This is a very basic list to get started. Check the [Inputs documentation](../../05.workflow-components/05.inputs/index.md) for an extensive list of supported input types and properties.
 

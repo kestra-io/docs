@@ -27,6 +27,10 @@ guideCta:
     label: "Read the guide"
     href: "/resources/migration/vra"
 
+video:
+  youtubeId: "brZo-5NdP2E"
+  caption: "See it end to end: an 8-minute demo of Kestra running the VM lifecycle on vSphere."
+
 pillars:
   title: "Above vCenter, around every VM operation."
   subtitle: "What Kestra wraps around vSphere: when actions fire, what gets a snapshot first, who approves a delete, and where the audit lives. Your vCenter and ESXi hosts stay in place. vRO is replaced, and the catalog moves to Kestra Apps or stays in your existing portal, such as ServiceNow."

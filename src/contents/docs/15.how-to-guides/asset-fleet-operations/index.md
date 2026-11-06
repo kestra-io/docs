@@ -64,7 +64,7 @@ tasks:
 
 Notice these parts of the flow:
 
-- `assets()` filters on the full type string, a namespace, and two metadata values. The `namespace` argument also matches child namespaces such as `company.infra.eu`. Without it, the function doesn't filter by namespace. If you restrict allowed namespaces in your tenant, read the `namespace` note in the [assets() reference](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#assets-pebble-function).
+- `assets()` filters on the full type string, a namespace, and two metadata values. The `namespace` argument matches by prefix, so it also matches child namespaces such as `company.infra.eu`, and siblings such as `company.infrastructure`. Without it, the function doesn't filter by namespace. If you restrict allowed namespaces in your tenant, read the `namespace` note in the [assets() reference](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#assets-pebble-function).
 - `assets(id=item.value) | jq('.[0].metadata.private_ip') | first` looks up one value for the current server. `jq` returns a list, and `first` takes its only item.
 - The `patch` task declares the server as an output with only the keys that change. Kestra merges metadata key by key, so `env`, `os`, `private_ip`, and the other stored keys stay unchanged. `namespace` is omitted because the asset already exists, so its stored namespace is kept.
 - If `patch` fails for a server, Kestra doesn't update that server's asset, so `last_patched` only moves forward on success.
@@ -120,7 +120,7 @@ triggers:
     cron: "0 2 * * 0"
 ```
 
-`List` and `assets()` filter namespaces differently. `List` matches the exact namespace only, while `assets()` also matches child namespaces. `List` calls the Kestra API with the credentials configured for SDK tasks. See [Connection properties](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#connection-properties-for-api-based-tasks).
+`List` and `assets()` filter namespaces differently. `List` matches the exact namespace only, while `assets()` matches every namespace that starts with the value, including child namespaces. `List` calls the Kestra API with the credentials configured for SDK tasks. See [Connection properties](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#connection-properties-for-api-based-tasks).
 
 ## Audit compliance and remediate
 

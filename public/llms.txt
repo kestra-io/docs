@@ -27,6 +27,7 @@ This section covers two distinct things: (1) guidance for AI agents interacting 
 - [Agent Skills](https://kestra.io/docs/develop-with-ai/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
 - [Docs MCP Server](https://kestra.io/docs/develop-with-ai/kestra-mcp-resources.md): Connect Claude Code, Cursor, or any MCP-compatible coding agent to the hosted, read-only Kestra MCP server for live plugin schemas, blueprints, and documentation
 - [Docs for Agents](https://kestra.io/docs/develop-with-ai/docs-for-agents.md): All machine-readable Kestra resources in one place — MCP server, Agent Skills, llms.txt endpoints, plain Markdown docs, plugin schemas, and OpenAPI specs
+- [Claude Code Quickstart](https://kestra.io/docs/claude-code-quickstart.md): Step-by-step setup that connects Claude Code to the Docs MCP server, Agent Skills, and kestractl, then writes, deploys, and runs a flow
 - [Develop with AI overview](https://kestra.io/docs/develop-with-ai.md): Use AI to build and operate Kestra, with AI Copilot in the UI or a coding agent with the Docs MCP server, Agent Skills, and kestractl
 - [AI Copilot](https://kestra.io/docs/develop-with-ai/ai-copilot.md): Build and edit flows, diagnose failed executions, and run approved plans from a chat sidebar inside the Kestra UI
 - [AI Orchestration overview](https://kestra.io/docs/ai-orchestration.md): Run AI inside flows with LLM tasks, AI agents, and RAG, and expose flows to external AI agents as MCP tools
@@ -414,11 +415,10 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/how-to-guides/replay.md)
 - [Build SecOps Workflows with Kestra](https://kestra.io/docs/how-to-guides/secops-with-kestra.md)
 - [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
-- [Install Only Selected Plugins in Kestra OSS](https://kestra.io/docs/how-to-guides/selected-plugin-installation.md)
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
 - [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
-- [Add Plugins to a Slim Kestra Docker Image](https://kestra.io/docs/how-to-guides/slim-image-plugins.md)
+- [Install Selected Plugins on a Slim Kestra Image](https://kestra.io/docs/how-to-guides/slim-image-plugins.md)
 - [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
 - [Use SQLMesh to Run dbt Projects](https://kestra.io/docs/how-to-guides/sqlmesh.md)
 - [Subflow Retries, Restarts, and Replays in Kestra](https://kestra.io/docs/how-to-guides/subflow-executions.md)
@@ -566,7 +566,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Performance Tuning in Kestra: Workers, JDBC, Kafka](https://kestra.io/docs/performance/performance-tuning.md)
 - [Size & Scale Kestra: Executors, Workers, Schedulers](https://kestra.io/docs/performance/sizing-and-scaling-infrastructure.md)
 - [Plugin Developer Guide: Build & Publish in Kestra](https://kestra.io/docs/plugin-developer-guide.md)
-- [Develop a Kestra Condition Plugin](https://kestra.io/docs/plugin-developer-guide/condition.md)
 - [Plugin Contribution Guidelines for Kestra](https://kestra.io/docs/plugin-developer-guide/contribution-guidelines.md)
 - [Document Your Kestra Plugin with Annotations](https://kestra.io/docs/plugin-developer-guide/document.md)
 - [Develop a Kestra File Renderer Plugin](https://kestra.io/docs/plugin-developer-guide/file-renderer.md)

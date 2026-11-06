@@ -19,8 +19,16 @@ Source code and releases are available at [github.com/kestra-io/kestractl](https
 curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
 ```
 
-:::alert{type="warning"}
-The default install script installs kestractl 2.0, compatible with Kestra 2.0 only. For Kestra 1.x, pass `VERSION=1`:
+The script installs to `/usr/local/bin` when that folder is writable, and to `~/.local/bin` otherwise. To choose the folder, set `INSTALL_DIR`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | INSTALL_DIR=~/.local/bin bash
+```
+
+Binaries for every platform, including Windows, are on the [releases page](https://github.com/kestra-io/kestractl/releases).
+
+:::alert{type="info"}
+The install script installs the latest kestractl 3.x release, which works with Kestra 2.x and Kestra 1.3. For an earlier Kestra 1.x version, install the legacy kestractl 1.x line with `VERSION=1`:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | VERSION=1 bash
@@ -81,7 +89,7 @@ kestractl flows list my.namespace --output json
 - `flows`: list, get, deploy, validate, enable, disable, delete, export, import, and sync flows.
 - `executions`: run, inspect, control, and bulk-manage executions.
 - `triggers`: list, enable, disable, unlock, delete, manage backfills, and export triggers.
-- `namespaces`: list, get, create, update, delete namespaces and manage their plugin defaults.
+- `namespaces`: list, get, search, create, update, and delete namespaces, manage their variables, and list inherited secrets and variables.
 - `nsfiles`: list, get, upload, search, move, export, manage revisions, and delete namespace files.
 - `kv`: list, set (with optional TTL), update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
 - `dashboards`: list, get, create, update, and delete dashboards. Requires Kestra EE.
@@ -1104,7 +1112,7 @@ kestractl server generate --from 2024-01-01
 
 ## Plugin management
 
-The `plugins` command group manages the plugins a Kestra worker needs to start. Use it when deploying standalone or remote workers without Docker, where plugins must be pre-installed as JAR files.
+The `plugins` command group is the recommended way to download Kestra plugins. It writes plugin JARs to a local directory that you then copy into a custom Docker image, mount into a container, or point a standalone server or remote worker at. For an end-to-end walkthrough, see [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md).
 
 ### `kestractl plugins list <version>`
 
@@ -1130,16 +1138,25 @@ Download a single plugin JAR by its Maven coordinates (`groupId:artifactId:versi
 kestractl plugins get io.kestra.plugin:plugin-kafka:1.6.0
 ```
 
+To let `kestractl` pick the plugin version that matches your Kestra release, omit the version and pass `--compatible-for`:
+
+```bash
+kestractl plugins get io.kestra.storage:storage-s3 --compatible-for 2.0.2
+```
+
+The version is resolved from the same compatibility catalog that `plugins list` prints. If the artifact isn't in that catalog, the command fails and names it.
+
 | Flag | Default | Description |
 |---|---|---|
 | `--plugins-dir` | `./plugins` | Directory to write the downloaded JAR into |
+| `--compatible-for` | — | Kestra version to resolve the plugin version against when the coordinates omit it (`groupId:artifactId`) |
 | `--force-redownload` | `false` | Re-download even if the JAR already exists |
 | `--global-timeout` | `5m` | Maximum time allowed for the download |
 | `--maven-repository` | Maven Central | Custom Maven repository base URL |
 | `--maven-username` | — | Username for Maven basic authentication |
 | `--maven-password` | — | Password for Maven basic authentication |
 
-If the JAR already exists on disk, the download is skipped unless `--force-redownload` is set. For new downloads, the JAR is verified against its published SHA-1 checksum when available. The version must be an exact version number — symbolic aliases like `latest` and `develop` are not supported and produce an error.
+If the JAR already exists on disk, the download is skipped unless `--force-redownload` is set. For new downloads, the JAR is verified against its published SHA-1 checksum when available. A version in the coordinates must be an exact version number. Symbolic aliases like `latest` and `develop` are not supported and produce an error; use `--compatible-for` instead.
 
 Use `--maven-repository`, `--maven-username`, and `--maven-password` to pull from a private registry, or the global `--header` flag for bearer token authentication. For example, to install an Enterprise Edition plugin from a private registry:
 
@@ -1167,13 +1184,20 @@ Download plugins to a local directory. By default, all compatible plugins for th
 kestractl plugins download 2.0.0
 ```
 
-The version argument is required unless `--plugins` is set.
+The version argument is required unless `--plugins` is set. To download only selected plugins at the versions compatible with your Kestra release, pass unversioned coordinates with `--compatible-for`:
+
+```bash
+kestractl plugins download --compatible-for 2.0.2 \
+  --plugins io.kestra.storage:storage-s3 \
+  --plugins io.kestra.plugin:plugin-dbt
+```
 
 | Flag | Default | Description |
 |---|---|---|
 | `--plugins-dir` | `./plugins` | Directory to write downloaded JARs into |
 | `--edition` | `ALL` | Filter by edition: `ALL`, `OSS`, or `EE` |
-| `--plugins` | — | Explicit coordinates to download (`groupId:artifactId:version`, space-separated or repeated); bypasses API lookup and makes version optional |
+| `--plugins` | — | Explicit coordinates to download (`groupId:artifactId:version`, space-separated or repeated); bypasses API lookup and makes version optional. The coordinate version can be omitted when `--compatible-for` or a version argument is given |
+| `--compatible-for` | — | Kestra version to resolve unversioned `--plugins` coordinates against; requires `--plugins` and can't be combined with `--from-config` |
 | `--from-config` | — | Download only the core plugins required by one or more config files; requires a version argument (see below) |
 | `--concurrency` | `1` | Number of parallel downloads |
 | `--keep-only-last-version` | `true` | Remove older versions of each plugin from the plugins directory after downloading |

@@ -397,6 +397,8 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 | `Expression` on webhook headers | `{{ trigger.headers['X-Key'] contains 'value' }}` — header values are lists; use `contains` not `==`. The header name must match the exact casing the sender uses. |
 | Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
 
+Custom Condition plugins, which extend `io.kestra.core.models.conditions.Condition`, are no longer supported because the `Condition` class is removed. Rewrite the logic of a custom condition as a `when` expression.
+
 ### Conditions with a custom `date`
 
 The `DayWeek`, `DayWeekInMonth`, `Weekend`, `PublicHoliday`, `DateTimeBetween`, and `TimeBetween` conditions accept a `date` property that defaults to `{{ trigger.date }}`. If a condition sets `date` to another value, pass that value to the replacement function instead of `trigger.date`. Otherwise the migrated trigger checks a different day.
