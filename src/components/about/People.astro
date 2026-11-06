@@ -252,6 +252,23 @@ const LEADERS: {
     <div class="container">
         <header>
             <h2>Leadership.</h2>
+            <div class="nav">
+                <button
+                    type="button"
+                    data-leaders-prev
+                    aria-label="Previous leaders"
+                    disabled
+                >
+                    <Icon name="mdi:arrow-left" />
+                </button>
+                <button
+                    type="button"
+                    data-leaders-next
+                    aria-label="Next leaders"
+                >
+                    <Icon name="mdi:arrow-right" />
+                </button>
+            </div>
         </header>
 
         <ul class="strip" data-leaders tabindex="0" aria-label="Leadership">
@@ -332,14 +349,40 @@ const LEADERS: {
                     true,
                 )
 
+                const section = strip.closest("section")!
+                const header = section.querySelector("header")!
+                const prev = section.querySelector<HTMLButtonElement>(
+                    "[data-leaders-prev]",
+                )!
+                const next = section.querySelector<HTMLButtonElement>(
+                    "[data-leaders-next]",
+                )!
+                const step = () => {
+                    const items = strip.querySelectorAll("li")
+                    return items[1].offsetLeft - items[0].offsetLeft
+                }
+                const go = (dir: number, cards = 1) =>
+                    strip.scrollBy({
+                        left: dir * cards * step(),
+                        behavior: "smooth",
+                    })
+                const page = () =>
+                    Math.max(1, Math.floor(header.clientWidth / step()))
+                const update = () => {
+                    const end = strip.scrollWidth - strip.clientWidth - 2
+                    prev.disabled = strip.scrollLeft <= 2
+                    next.disabled = strip.scrollLeft >= end
+                }
+                prev.addEventListener("click", () => go(-1, page()))
+                next.addEventListener("click", () => go(1, page()))
+                strip.addEventListener("scroll", update, { passive: true })
+                new ResizeObserver(update).observe(strip)
+                update()
+
                 strip.addEventListener("keydown", (e) => {
                     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
                     e.preventDefault()
-                    const step = strip.querySelector("li")!.clientWidth + 24
-                    strip.scrollBy({
-                        left: e.key === "ArrowRight" ? step : -step,
-                        behavior: "smooth",
-                    })
+                    go(e.key === "ArrowRight" ? 1 : -1)
                 })
             })
     }
@@ -358,6 +401,10 @@ const LEADERS: {
     }
 
     header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.5rem;
         margin-bottom: 3.5rem;
 
         @include media-breakpoint-down(md) {
@@ -367,6 +414,47 @@ const LEADERS: {
 
     h2 {
         @include title;
+    }
+
+    .nav {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            padding: 0;
+            border: 1px solid var(--ks-border-primary);
+            background: var(--ks-background-body);
+            color: var(--ks-content-primary);
+            cursor: pointer;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                opacity 0.2s ease;
+
+            &:hover:not(:disabled) {
+                background: var(--ks-background-secondary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--ks-content-color-highlight);
+                outline-offset: 2px;
+            }
+
+            &:disabled {
+                opacity: 0.35;
+                cursor: default;
+            }
+
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
     }
 
     .strip {
