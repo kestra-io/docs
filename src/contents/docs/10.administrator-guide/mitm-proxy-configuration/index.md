@@ -62,14 +62,14 @@ configurations:
             type: "JKS"
 ```
 
-`micronaut.http.client.proxy-*` applies to every server-side HTTP call made by Kestra, including calls to `api.kestra.io` (community blueprints, plugin catalog) and the OpenID Connect discovery of your SSO provider. Starting with Kestra 2.0.10, these calls skip the proxy for any host listed in the JVM `http.nonProxyHosts` property (see [JVM environment variables](#3-jvm-environment-variables-java_opts) below). Add internal hosts the proxy cannot reach to that list, such as an on-premises identity provider (Keycloak, PingFederate, ADFS):
+`micronaut.http.client.proxy-*` applies to every server-side HTTP call made by Kestra, including calls to `api.kestra.io` (community blueprints, plugin catalog) and the OpenID Connect discovery of your SSO provider. Starting with Kestra 2.0.10 and 1.3.47, these calls skip the proxy for any host listed in the JVM `http.nonProxyHosts` property (see [JVM environment variables](#3-jvm-environment-variables-java_opts) below). Add internal hosts the proxy cannot reach to that list, such as an on-premises identity provider (Keycloak, PingFederate, ADFS):
 
 ```
 -Dhttp.nonProxyHosts=localhost|127.0.0.1|keycloak.internal.example.com|*.internal.example.com
 ```
 
 :::alert{type="warning"}
-Before Kestra 2.0.10, the Micronaut HTTP client ignores `http.nonProxyHosts`, so SSO login fails when the identity provider is only reachable without the proxy. As a workaround, leave `micronaut.http.client.proxy-*` unset. Community blueprints are then unavailable, while custom blueprints keep working.
+Before Kestra 2.0.10 (or 1.3.47 on the 1.3 line), the Micronaut HTTP client ignores `http.nonProxyHosts`, so SSO login fails when the identity provider is only reachable without the proxy. As a workaround, leave `micronaut.http.client.proxy-*` unset. Community blueprints are then unavailable, while custom blueprints keep working.
 :::
 
 ### 2. Mount the truststore inside the container
