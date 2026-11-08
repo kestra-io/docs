@@ -12,6 +12,11 @@ Install Kestra in a Kubernetes cluster using a Helm chart.
   <iframe src="https://www.youtube.com/embed/SV7C2eHiuV0?si=jq8sgQgilYspGosx" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+:::alert{type="info"}
+**Target environment: Production and distributed cloud deployments**  
+Kubernetes is the primary deployment method for mission-critical production workloads. It supports independent scaling of Kestra components (webservers, executors, schedulers, and workers) with high availability and external storage backends. For rapid local evaluation or single-host testing, consider [Docker](../02.docker/index.md) or [Docker Compose](../03.docker-compose/index.md).
+:::
+
 ## Prerequisites
 
 - **[kubectl](https://kubernetes.io/docs/tasks/tools/)** — to interact with your cluster
