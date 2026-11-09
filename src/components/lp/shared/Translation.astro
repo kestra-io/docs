@@ -3,61 +3,15 @@ import { Icon } from "astro-icon/components"
 
 import KestraMark from "./assets/kestra-mark.svg"
 
-interface Props {
-    heading?: string
-    sub?: string
+export interface Props {
+    heading: string
+    sub: string
     /** Header of the left column, the system being left. */
-    fromLabel?: string
-    rows?: { from: string; to: string }[]
+    fromLabel: string
+    rows: { from: string; to: string }[]
 }
 
-/* A condensed cut of the guide's capability map (Appendix A). Keep the rows in
- * step with it: the map is what the sales team hands the architect. */
-const vraRows = [
-    {
-        from: "Service Broker catalog items and request forms",
-        to: "Kestra Apps as the self-service form, or your ITSM portal calling Kestra",
-    },
-    {
-        from: "Cloud templates",
-        to: "A flow per template pattern, provisioning through Terraform or the vSphere and Nutanix plugins",
-    },
-    {
-        from: "vRO workflows and actions",
-        to: "Flows and subflows, with the JavaScript moved to Python, PowerShell or Shell tasks",
-    },
-    {
-        from: "Event subscriptions and vRO schedules",
-        to: "Triggers: webhook, message queue, another flow, or a schedule",
-    },
-    {
-        from: "Configuration elements and SecureStrings",
-        to: "KV Store and secrets",
-    },
-    {
-        from: "Resource elements and script modules",
-        to: "Namespace files, minus the modules a plugin already covers",
-    },
-    {
-        from: "Deployment records and inventory",
-        to: "Kestra Assets, or the CMDB you already run",
-    },
-    {
-        from: "Resource actions: resize, snapshot, power",
-        to: "Flows run against the asset or the CMDB record",
-    },
-    {
-        from: "Approval policies",
-        to: "A human approval step in the flow, or your ITSM approval",
-    },
-]
-
-const {
-    heading = "What vRA and vRO become in Kestra",
-    sub = "A starting map. Many objects are retired or merged before anything is converted.",
-    fromLabel = "vRA / vRO",
-    rows = vraRows,
-} = Astro.props
+const { heading, sub, fromLabel, rows } = Astro.props
 ---
 
 <section class="translation">

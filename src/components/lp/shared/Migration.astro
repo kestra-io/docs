@@ -1,38 +1,21 @@
 ---
-interface Props {
-    heading?: string
-    sub?: string
+export interface Props {
+    heading: string
+    sub: string
     /** Any count: the grid and the rail size themselves to it. */
-    steps?: { number: string; title: string; body: string; wash: string }[]
+    steps: { number: string; title: string; body: string }[]
 }
 
-const defaultSteps = [
-    {
-        number: "01",
-        title: "Run your first workflow",
-        body: "Take one you already have. Your scripts run as they are, in whatever language they were written in. No rewrite, no commitment.",
-        // Each badge carries its own radial wash over the same near-black base.
-        wash: "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
-    },
-    {
-        number: "02",
-        title: "Migrate at your own pace",
-        body: "Move the workflows that hurt the most first. The old tools keep running next to Kestra until you decide otherwise, team by team.",
-        wash: "radial-gradient(150% 170% at -20% 140%, rgba(99, 27, 255, 1) 0%, rgba(24, 227, 61, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
-    },
-    {
-        number: "03",
-        title: "Switch off your old stack",
-        body: "When the last workflow moves, decommission what it replaced: the licenses, the servers, and the maintenance nobody will miss.",
-        wash: "radial-gradient(130% 150% at -30% -30%, rgba(99, 27, 255, 1) 0%, rgba(24, 166, 227, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
-    },
+/* Each badge carries its own radial wash over the same near-black base, taken
+ * in this order so every page's stages read the same. */
+const washes = [
+    "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    "radial-gradient(150% 170% at -20% 140%, rgba(99, 27, 255, 1) 0%, rgba(24, 227, 61, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    "radial-gradient(130% 150% at -30% -30%, rgba(99, 27, 255, 1) 0%, rgba(24, 166, 227, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    "radial-gradient(140% 160% at 110% 130%, rgba(99, 27, 255, 1) 0%, rgba(255, 168, 24, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
 ]
 
-const {
-    heading = "Replace your Legacy Scheduler",
-    sub = "Kestra runs alongside your current tools for as long as you need them.",
-    steps = defaultSteps,
-} = Astro.props
+const { heading, sub, steps } = Astro.props
 ---
 
 <section class="migration">
@@ -50,7 +33,7 @@ const {
                 >
                     <span
                         class="numero"
-                        style={`background-image: ${step.wash}`}
+                        style={`background-image: ${washes[index % washes.length]}`}
                     >
                         {step.number}
                     </span>

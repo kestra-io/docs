@@ -1,16 +1,16 @@
 ---
 import Link from "~/components/common/Link.astro"
 
-interface Props {
-    heading?: string
-    sub?: string
+export interface Props {
+    heading: string
+    sub: string
     cta?: { text: string; href: string }
     reassurance?: string
 }
 
 const {
-    heading = "Bring your own list of questions",
-    sub = "We'll go through them against your own architecture.",
+    heading,
+    sub,
     cta = { text: "Book a demo", href: "/demo" },
     reassurance = "Self-managed or air-gapped. Your data never leaves your network.",
 } = Astro.props

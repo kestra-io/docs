@@ -3,37 +3,17 @@ import { Icon } from "astro-icon/components"
 
 import Meeting from "~/components/demo/Meeting.vue"
 
-interface Props {
+export interface Props {
     /** Passed to HubSpot as the originating page URI. */
     routePath: string
     /** Each line renders on its own row. */
-    headingLines?: string[]
-    bullets?: { text: string; strong: boolean }[]
+    headingLines: string[]
+    bullets: { text: string; strong: boolean }[]
     /** Forwarded to the form, e.g. its button label. */
     formProps?: Record<string, unknown>
 }
 
-const defaultBullets = [
-    {
-        text: "We'll discuss your requirements for security, scale, and language-agnostic support.",
-        strong: true,
-    },
-    {
-        text: "See exactly how Kestra's architecture resolves the friction points in your stack.",
-        strong: false,
-    },
-    {
-        text: "See how Kestra fits your platform, and get a roadmap for your orchestration needs.",
-        strong: false,
-    },
-]
-
-const {
-    routePath,
-    headingLines = ["See it on", "your use cases"],
-    bullets = defaultBullets,
-    formProps = {},
-} = Astro.props
+const { routePath, headingLines, bullets, formProps = {} } = Astro.props
 ---
 
 <section class="use-cases">

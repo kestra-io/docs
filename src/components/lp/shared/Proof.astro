@@ -1,62 +1,18 @@
 ---
-/* The guide's case studies (section 2.5). The status line stays on every card:
- * only the first estate has finished migrating, and a paid page must not imply
- * otherwise. Figures for the first card are the public ones from
- * /customers/fortune-500-company. */
-interface Case {
-    status: string
-    title: string
-    stats: { value: string; label: string }[]
-    body: string
+/* The status line stays on every card: a paid page must not imply a migration
+ * has finished when it has not. */
+export interface Props {
+    heading: string
+    sub: string
+    cases: {
+        status: string
+        title: string
+        stats: { value: string; label: string }[]
+        body: string
+    }[]
 }
 
-interface Props {
-    heading?: string
-    sub?: string
-    cases?: Case[]
-}
-
-const vraCases: Case[] = [
-    {
-        status: "Migration complete",
-        title: "Fortune 500 manufacturer, off Aria Automation across IT and OT",
-        stats: [
-            {
-                value: "90%",
-                label: "lower licensing cost than Aria Automation",
-            },
-            { value: "30×", label: "faster delivery" },
-            { value: "4 + 1", label: "isolated platforms, for OT and IT" },
-        ],
-        body: "vRA and vRO replaced together: catalog, request forms, orchestration and the vCenter integration. Ansible and ServiceNow stayed.",
-    },
-    {
-        status: "Go-live targeted January 2027",
-        title: "Bundesagentur für Arbeit, fully air-gapped",
-        stats: [
-            { value: "1,600", label: "vRO workflows" },
-            { value: "2,000", label: "vRO actions" },
-            { value: "50,000+", label: "cloud resources supported" },
-        ],
-        body: "On-premises with no outbound connectivity. Kestra Apps for the catalog, Kestra Assets for the resource inventory.",
-    },
-    {
-        status: "Assessed",
-        title: "Global systems integrator, several vRO instances",
-        stats: [
-            { value: "3,000", label: "workflows" },
-            { value: "3", label: "production vRO nodes" },
-            { value: "100+", label: "services in its ServiceNow catalog" },
-        ],
-        body: "The assessment sized several thousand workflows spread across instances and tied to an established service catalog.",
-    },
-]
-
-const {
-    heading = "Enterprise vRA environments, at every stage",
-    sub = "From assessment to completed migration.",
-    cases = vraCases,
-} = Astro.props
+const { heading, sub, cases } = Astro.props
 
 // Fewer cards keep their width instead of stretching across the row.
 const columns = Math.min(cases.length, 3)
