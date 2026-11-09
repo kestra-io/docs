@@ -2,13 +2,28 @@
 import PixelEdges from "./PixelEdges.astro"
 import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
-import manu from "./assets/manu.jpg"
-import ludo from "./assets/ludo.jpg"
-import anna from "./assets/anna.jpg"
-import kai from "./assets/kai.jpg"
-import terry from "./assets/terry.jpg"
+import manu from "./assets/leaders/manu.jpg"
+import ludo from "./assets/leaders/ludo.jpg"
+import anna from "./assets/leaders/anna.jpg"
+import kai from "./assets/leaders/kai.jpg"
+import terry from "./assets/leaders/terry.jpg"
+import paul from "./assets/leaders/paul.jpg"
+import antoine from "./assets/leaders/antoine.jpg"
+import david from "./assets/leaders/david.jpg"
+import nicolas from "./assets/leaders/nicolas.jpg"
+import florianCailles from "./assets/leaders/florian-cailles.jpg"
+import will from "./assets/leaders/will.jpg"
+import florianHussonnois from "./assets/leaders/florian-hussonnois.jpg"
+import francois from "./assets/leaders/francois.jpg"
+import martin from "./assets/leaders/martin.jpg"
+import loic from "./assets/leaders/loic.jpg"
 
-const LEADERS = [
+const LEADERS: {
+    name: string
+    role: string
+    links: { icon: string; label: string; href: string }[]
+    photo: ImageMetadata
+}[] = [
     {
         name: "Emmanuel Darras",
         role: "Co-founder and CEO",
@@ -84,6 +99,151 @@ const LEADERS = [
         ],
         photo: terry,
     },
+    {
+        name: "Martin-Pierre Roset",
+        role: "Marketing Manager",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/martin-pierre-roset/",
+            },
+        ],
+        photo: martin,
+    },
+    {
+        name: "Paul Grainger",
+        role: "Lead Field Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/paul-grainger-65653115/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/paulgrainger85",
+            },
+        ],
+        photo: paul,
+    },
+    {
+        name: "Antoine Lin",
+        role: "Head of Finance",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/antoine-lin-a49aaa74/",
+            },
+        ],
+        photo: antoine,
+    },
+    {
+        name: "David Khan",
+        role: "Sales Lead",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/david-khan-40399419/",
+            },
+        ],
+        photo: david,
+    },
+    {
+        name: "Nicolas Callens",
+        role: "Founding Designer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/todobai/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/Nico-Kestra",
+            },
+        ],
+        photo: nicolas,
+    },
+    {
+        name: "Florian Cailles",
+        role: "Lead Growth",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/florian-cailles-growth/",
+            },
+        ],
+        photo: florianCailles,
+    },
+    {
+        name: "Will Russell",
+        role: "Lead Developer Relations",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/wrussell1999/",
+            },
+        ],
+        photo: will,
+    },
+    {
+        name: "Loïc Mathieu",
+        role: "Lead Software Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/loicmathieu",
+            },
+        ],
+        photo: loic,
+    },
+    {
+        name: "Florian Hussonnois",
+        role: "Lead Software Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/florian-hussonnois/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/fhussonnois",
+            },
+        ],
+        photo: florianHussonnois,
+    },
+    {
+        name: "François Delbrayelle",
+        role: "Lead Software Engineer",
+        links: [
+            {
+                icon: "mdi:linkedin",
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/fdelbrayelle/",
+            },
+            {
+                icon: "mdi:github",
+                label: "GitHub",
+                href: "https://github.com/fdelbrayelle",
+            },
+        ],
+        photo: francois,
+    },
 ]
 ---
 
@@ -92,9 +252,26 @@ const LEADERS = [
     <div class="container">
         <header>
             <h2>Leadership.</h2>
+            <div class="nav">
+                <button
+                    type="button"
+                    data-leaders-prev
+                    aria-label="Previous leaders"
+                    disabled
+                >
+                    <Icon name="mdi:arrow-left" />
+                </button>
+                <button
+                    type="button"
+                    data-leaders-next
+                    aria-label="Next leaders"
+                >
+                    <Icon name="mdi:arrow-right" />
+                </button>
+            </div>
         </header>
 
-        <ul>
+        <ul class="strip" data-leaders tabindex="0" aria-label="Leadership">
             {
                 LEADERS.map((l) => (
                     <li>
@@ -128,6 +305,91 @@ const LEADERS = [
     </div>
 </section>
 
+<script>
+    function init() {
+        document
+            .querySelectorAll<HTMLElement>("[data-leaders]:not([data-ready])")
+            .forEach((strip) => {
+                strip.dataset.ready = "true"
+
+                let drag: { x: number; left: number; moved: boolean } | null =
+                    null
+                strip.addEventListener("pointerdown", (e) => {
+                    if (e.pointerType !== "mouse") return
+                    drag = {
+                        x: e.clientX,
+                        left: strip.scrollLeft,
+                        moved: false,
+                    }
+                })
+                strip.addEventListener("pointermove", (e) => {
+                    if (!drag) return
+                    const dx = e.clientX - drag.x
+                    if (!drag.moved && Math.abs(dx) > 4) {
+                        drag.moved = true
+                        strip.classList.add("dragging")
+                        strip.setPointerCapture(e.pointerId)
+                    }
+                    if (drag.moved) strip.scrollLeft = drag.left - dx
+                })
+                const release = () => {
+                    drag = null
+                    setTimeout(() => strip.classList.remove("dragging"))
+                }
+                strip.addEventListener("pointerup", release)
+                strip.addEventListener("pointercancel", release)
+                strip.addEventListener(
+                    "click",
+                    (e) => {
+                        if (strip.classList.contains("dragging")) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                        }
+                    },
+                    true,
+                )
+
+                const section = strip.closest("section")!
+                const header = section.querySelector("header")!
+                const prev = section.querySelector<HTMLButtonElement>(
+                    "[data-leaders-prev]",
+                )!
+                const next = section.querySelector<HTMLButtonElement>(
+                    "[data-leaders-next]",
+                )!
+                const step = () => {
+                    const items = strip.querySelectorAll("li")
+                    return items[1].offsetLeft - items[0].offsetLeft
+                }
+                const go = (dir: number, cards = 1) =>
+                    strip.scrollBy({
+                        left: dir * cards * step(),
+                        behavior: "smooth",
+                    })
+                const page = () =>
+                    Math.max(1, Math.floor(header.clientWidth / step()))
+                const update = () => {
+                    const end = strip.scrollWidth - strip.clientWidth - 2
+                    prev.disabled = strip.scrollLeft <= 2
+                    next.disabled = strip.scrollLeft >= end
+                }
+                prev.addEventListener("click", () => go(-1, page()))
+                next.addEventListener("click", () => go(1, page()))
+                strip.addEventListener("scroll", update, { passive: true })
+                new ResizeObserver(update).observe(strip)
+                update()
+
+                strip.addEventListener("keydown", (e) => {
+                    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return
+                    e.preventDefault()
+                    go(e.key === "ArrowRight" ? 1 : -1)
+                })
+            })
+    }
+    document.addEventListener("astro:page-load", init)
+    init()
+</script>
+
 <style lang="scss">
     @use "./style/section" as *;
 
@@ -139,6 +401,10 @@ const LEADERS = [
     }
 
     header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1.5rem;
         margin-bottom: 3.5rem;
 
         @include media-breakpoint-down(md) {
@@ -150,25 +416,89 @@ const LEADERS = [
         @include title;
     }
 
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 3rem 1.5rem;
+    .nav {
+        display: flex;
+        gap: 0.5rem;
 
-        @include media-breakpoint-down(xl) {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            padding: 0;
+            border: 1px solid var(--ks-border-primary);
+            background: var(--ks-background-body);
+            color: var(--ks-content-primary);
+            cursor: pointer;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                opacity 0.2s ease;
+
+            &:hover:not(:disabled) {
+                background: var(--ks-background-secondary);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--ks-content-color-highlight);
+                outline-offset: 2px;
+            }
+
+            &:disabled {
+                opacity: 0.35;
+                cursor: default;
+            }
+
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+    }
+
+    .strip {
+        --bleed: calc((100vw - 100%) / 2);
+
+        list-style: none;
+        display: flex;
+        gap: 1.5rem;
+        margin: 0 calc(var(--bleed) * -1);
+        padding: 0 var(--bleed);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        cursor: grab;
+        user-select: none;
+        outline: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        &.dragging {
+            cursor: grabbing;
+        }
+
+        &:focus-visible {
+            box-shadow: inset 0 0 0 2px var(--ks-content-color-highlight);
         }
 
         @include media-breakpoint-down(md) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 2.5rem 1rem;
+            gap: 1rem;
         }
 
-        @media (min-width: 1600px) {
-            margin-inline: calc((min(100vw - 8rem, 1600px) - 100%) / -2);
+        li {
+            flex: none;
+            width: clamp(200px, 18vw, 260px);
+
+            @include media-breakpoint-down(md) {
+                width: 42vw;
+            }
+        }
+
+        :global(img) {
+            pointer-events: none;
         }
     }
 
@@ -178,17 +508,6 @@ const LEADERS = [
         overflow: hidden;
         aspect-ratio: 4 / 5;
         background: var(--ks-background-tertiary);
-
-        &::before {
-            content: "";
-            position: absolute;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            width: 10px;
-            height: 10px;
-            background: #fe0071;
-        }
 
         :global(img) {
             display: block;

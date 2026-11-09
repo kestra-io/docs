@@ -133,8 +133,8 @@ describe("buildPluginPageProps", () => {
             pageNames: {},
             allPlugins: plugins,
             allPluginMetadata: [
-                { name: "aws", group: "io.kestra.plugin.aws", title: "AWS" },
-                { name: "aws", group: "io.kestra.plugin.aws.s3", title: "AWS S3" },
+                { name: "aws", group: "io.kestra.plugin.aws", title: "AWS", artifactGroupId: "io.kestra.plugin", artifactId: "plugin-aws" },
+                { name: "aws", group: "io.kestra.plugin.aws.s3", title: "AWS S3", artifactGroupId: "io.kestra.plugin", artifactId: "plugin-aws-s3" },
             ] as any,
             blueprintCounts: {},
             relatedBlogs: [],
@@ -151,6 +151,7 @@ describe("buildPluginPageProps", () => {
         })
 
         expect(props.headingTitle).toBe("AWS S3 Upload")
+        expect(props.pluginArtifactCoordinate).toBe("io.kestra.plugin:plugin-aws-s3")
         expect(props.currentSubgroupPlugin).toBeUndefined()
         expect(props.currentPluginCategories).toEqual(["CLOUD", "DATA", "AI", "INFRASTRUCTURE"])
         expect(props.currentPluginMetadata.map((m) => m.group)).toEqual([
@@ -400,4 +401,97 @@ describe("buildPluginPageProps", () => {
         expect(props.headingTitle).toBe("Google Cloud BigQuery Query")
         expect(props.pageNamesHeading[pathname]).toBe("Google Cloud BigQuery Query")
     })
+
+    it.each([
+        {
+            pluginName: "plugin-script-dotnet",
+            rootGroup: "io.kestra.plugin.scripts.dotnet",
+            pluginType: "io.kestra.plugin.scripts.csharp.Script",
+            subGroup: undefined,
+            artifactGroupId: "io.kestra.plugin",
+            artifactId: "plugin-script-dotnet",
+        },
+        {
+            pluginName: "plugin-ee-git",
+            rootGroup: "io.kestra.plugin.ee.git",
+            pluginType: "io.kestra.plugin.git.NamespaceSync",
+            subGroup: "io.kestra.plugin.git",
+            artifactGroupId: "io.kestra.plugin.ee",
+            artifactId: "plugin-ee-git",
+        },
+        {
+            pluginName: "plugin-ee-new-relic",
+            rootGroup: "io.kestra.plugin.ee.new-relic",
+            pluginType: "io.kestra.plugin.ee.newrelic.LogExporter",
+            subGroup: "io.kestra.plugin.ee.newrelic",
+            artifactGroupId: "io.kestra.plugin.ee",
+            artifactId: "plugin-ee-new-relic",
+        },
+    ])(
+        "uses the page artifact when $pluginType is outside the $pluginName group",
+        ({
+            pluginName,
+            rootGroup,
+            pluginType,
+            subGroup,
+            artifactGroupId,
+            artifactId,
+        }) => {
+            const rootPlugin: Plugin = {
+                name: pluginName,
+                title: pluginName,
+                group: rootGroup,
+                tasks: [{ cls: pluginType }],
+            }
+            const plugins: Plugin[] = subGroup
+                ? [
+                      rootPlugin,
+                      {
+                          name: pluginName,
+                          title: pluginName,
+                          group: rootGroup,
+                          subGroup,
+                          tasks: [{ cls: pluginType }],
+                      },
+                  ]
+                : [rootPlugin]
+
+            const props = buildPluginPageProps({
+                pluginName,
+                subGroup: undefined,
+                pluginType,
+                pathname: `/plugins/${pluginName}/${pluginType.toLowerCase()}`,
+                pageNames: {},
+                allPlugins: plugins,
+                allPluginMetadata: [
+                    {
+                        name: pluginName,
+                        group: rootGroup,
+                        title: pluginName,
+                        artifactGroupId,
+                        artifactId,
+                    },
+                    // Same package published by another artifact must not be picked up.
+                    {
+                        name: "other",
+                        group: pluginType.split(".").slice(0, -1).join("."),
+                        title: "Other",
+                        artifactGroupId: "io.kestra.plugin",
+                        artifactId: "plugin-other",
+                    },
+                ] as any,
+                blueprintCounts: {},
+                relatedBlogs: [],
+                page: { title: pluginType.split(".").at(-1)!, body: {} },
+                sidebarPluginData: { body: { group: rootGroup, plugins } },
+            })
+
+            expect(props.pluginArtifactCoordinate).toBe(
+                `${artifactGroupId}:${artifactId}`,
+            )
+            expect(props.pageWithToc.body.toc.links.map((l) => l.id)).toContain(
+                "installation",
+            )
+        },
+    )
 })

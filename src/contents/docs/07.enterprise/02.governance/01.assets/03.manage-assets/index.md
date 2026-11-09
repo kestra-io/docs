@@ -8,7 +8,7 @@ editions: ["EE", "Cloud"]
 version: ">= 1.2.0"
 ---
 
-This reference covers the Assets pages in the UI, the dependencies graph, locking, and the API and `kestractl` commands that do the same work.
+This reference covers the Assets pages in the UI, the dependencies graph, locking, and the API and [`kestractl`](../../../../kestra-cli/kestractl/index.md#installation) commands that do the same work.
 
 Most assets come from flows. Use the UI, the API, or `kestractl` to inspect them, to register resources that no flow manages, and to fix metadata by hand.
 

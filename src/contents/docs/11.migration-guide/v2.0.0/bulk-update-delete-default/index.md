@@ -8,7 +8,7 @@ editions: ["OSS", "EE"]
 description: The --delete flag on kestractl flows bulk-update now defaults to false. Pipelines that relied on the previous default will no longer delete flows absent from the file unless --delete is passed explicitly.
 ---
 
-The `--delete` flag on `kestractl flows bulk-update` now defaults to `false` instead of `true`.
+The `--delete` flag on the [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) `flows bulk-update` command now defaults to `false` instead of `true`.
 
 :::alert{type="warning"}
 Pipelines that ran `kestractl flows bulk-update` without an explicit `--delete` flag previously deleted every flow absent from the file. After upgrading, those flows are left in place. Pass `--delete` explicitly to retain the old behavior.
