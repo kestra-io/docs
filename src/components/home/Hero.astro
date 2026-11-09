@@ -914,12 +914,13 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         padding-block: clamp(3rem, 6vw, 5rem) clamp(1rem, 2vw, 1.5rem);
     }
 
+    // Below a wide screen, two even rows: five, then four centred under
+    // them, on a ten-column grid where each logo takes two.
     .customers {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
         align-items: center;
-        justify-content: center;
-        gap: 1.75rem clamp(1.75rem, 3.2vw, 3.5rem);
+        gap: 1.75rem clamp(0.75rem, 3vw, 2.5rem);
         max-width: 92rem;
         margin: 0 auto;
         padding: clamp(2.5rem, 4vw, 3.5rem) var(--bs-gutter-x, 1.5rem);
@@ -927,12 +928,32 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 
         > li {
             display: flex;
+            justify-content: center;
+            grid-column: span 2;
+            min-width: 0;
+        }
+
+        > li:nth-child(6) {
+            grid-column: 2 / span 2;
+        }
+
+        // Each logo fits its cell, shrinking with it on a phone, where the
+        // compact marks are held down too, so none outweighs the others.
+        :global(.brand-logo) {
+            max-width: 100%;
+            object-fit: contain;
+
+            @include media-breakpoint-down(md) {
+                max-height: 1.25rem;
+            }
         }
 
         // Spread across the page when it fits on one line, the gaps
         // growing with the screen.
         @include media-breakpoint-up(xl) {
+            display: flex;
             flex-wrap: nowrap;
+            align-items: center;
             justify-content: space-between;
             max-width: 108rem;
             padding-inline: clamp(2.5rem, 6.4vw, 7rem);

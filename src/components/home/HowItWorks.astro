@@ -783,6 +783,13 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         border-left: var(--rule);
         border-right: var(--rule);
 
+        // Below a wide screen the rails would sit a few pixels in from the
+        // screen's edge, with the rules running past them: the rules alone
+        // carry the grid there.
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+
         :global(html.dark) & {
             --tint: #9869f7;
         }
@@ -2285,6 +2292,134 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         pre :global(.line),
         .tile {
             animation: none !important;
+        }
+    }
+    // On a tablet or a phone, no tabs: each step reads in turn, its text
+    // then its screens under it. Declare: the flow in the editor, then Git
+    // and CI/CD; Connect: the plugins rolling by; Run and govern: the
+    // approvals and the executions. The steps and the panel open up into
+    // one column, ordered step by step, all of it shown at once.
+    @include media-breakpoint-down(lg) {
+        .grid {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 1rem;
+        }
+
+        .grid > .steps,
+        .grid > .body {
+            display: contents;
+        }
+
+        .grid > .steps::before,
+        .grid > .body::before,
+        .grid > .body::after,
+        .body .pixels,
+        .body .crowd,
+        .body .links {
+            display: none;
+        }
+
+        .head {
+            order: 0;
+        }
+
+        // Each step: a plain heading and text, nothing to press.
+        .step {
+            border-top: var(--rule);
+
+            & + & {
+                border-left: 0;
+            }
+
+            button {
+                padding: 2rem var(--inset) 1.25rem;
+                cursor: default;
+                pointer-events: none;
+            }
+
+            .bar {
+                display: none;
+            }
+
+            h3 {
+                color: var(--ks-content-primary);
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+            }
+        }
+
+        .step[data-step="0"] {
+            order: 1;
+        }
+
+        .body .editor {
+            order: 2;
+        }
+
+        .body .git {
+            order: 3;
+        }
+
+        .body .ci {
+            order: 4;
+        }
+
+        .step[data-step="1"] {
+            order: 5;
+        }
+
+        .body .carousel {
+            order: 6;
+        }
+
+        .step[data-step="2"] {
+            order: 7;
+        }
+
+        .body .gov {
+            order: 8;
+        }
+
+        .body .dash {
+            order: 9;
+        }
+
+        // The screens, in the page's flow, at full width.
+        .body .card {
+            inset: auto;
+            width: auto;
+            height: auto;
+            margin: 0 var(--inset) 1rem;
+            border-radius: 16px;
+            transform: none;
+        }
+
+        .body .editor {
+            max-height: 22rem;
+        }
+
+        .body[data-at] .side[data-scene] {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+        }
+
+        // The plugins, one row rolling by under Connect.
+        .body .carousel {
+            display: flex;
+            position: relative;
+            inset: auto;
+            height: 5rem;
+            margin-bottom: 1rem;
+            opacity: 1;
+
+            .lane {
+                animation-play-state: running;
+            }
         }
     }
 </style>

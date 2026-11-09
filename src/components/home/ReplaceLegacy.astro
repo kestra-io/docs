@@ -143,6 +143,12 @@ const {
         position: relative;
         border-left: var(--rule);
         border-right: var(--rule);
+
+        // Below a wide screen the rails would sit a few pixels in from the
+        // screen's edge: the rules alone carry the grid there.
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
         // White between the rails, so the edge pixels never show through the
         // cells on narrower screens.
         background: var(--ks-background-body);
