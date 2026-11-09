@@ -337,17 +337,45 @@ const {
 
         position: relative;
         background: var(--ks-background-body);
+        // Rails on both sides, on the other blocks' lines, so they run on
+        // unbroken from Replace down to Three ways.
+        border-left: var(--gap) solid var(--ks-border-primary);
+        border-right: var(--gap) solid var(--ks-border-primary);
 
-        // The rules show through the gaps, and frame the whole: the tabs
-        // and the story under them as one bordered piece.
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
+
+        // The rules show through the gaps; above the tabs and under the
+        // story, a rule across the page, as between the other blocks' rows.
         > .tabs {
-            border: var(--gap) solid var(--ks-border-primary);
+            position: relative;
+            border-block: var(--gap) solid var(--ks-border-primary);
             background: var(--ks-border-primary);
         }
 
         > .panels {
-            border: var(--gap) solid var(--ks-border-primary);
-            border-top: 0;
+            position: relative;
+            border-bottom: var(--gap) solid var(--ks-border-primary);
+        }
+
+        > .tabs::before,
+        > .panels::after {
+            content: "";
+            position: absolute;
+            left: -100vw;
+            right: -100vw;
+            height: var(--gap);
+            background: var(--ks-border-primary);
+            pointer-events: none;
+        }
+
+        > .tabs::before {
+            top: calc(-1 * var(--gap));
+        }
+
+        > .panels::after {
+            bottom: calc(-1 * var(--gap));
         }
     }
 
@@ -357,12 +385,11 @@ const {
         flex-direction: column;
         align-items: flex-start;
         gap: 2rem;
-        // Flush with the lavender piece's left edge, as there are no rails.
-        padding: 8.5rem 0 4rem;
+        // Inside the rails, in line with the story's words.
+        padding: 8.5rem var(--inset) 4rem;
 
         @include media-breakpoint-down(md) {
-            // Off the screen's edge, in line with the story's words.
-            padding: 4.5rem var(--inset) 3rem;
+            padding-block: 4.5rem 3rem;
         }
 
         h2 {
@@ -389,7 +416,8 @@ const {
         justify-content: space-between;
         gap: 1rem 2rem;
         // More room under the line, before Three ways.
-        padding: clamp(2rem, 3vw, 2.75rem) 0 clamp(4.5rem, 8vw, 7rem);
+        padding: clamp(2rem, 3vw, 2.75rem) var(--inset)
+            clamp(4.5rem, 8vw, 7rem);
         font-size: 1.0625rem;
 
         p {

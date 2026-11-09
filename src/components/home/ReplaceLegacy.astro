@@ -175,6 +175,16 @@ const {
             &::after {
                 bottom: -1px;
             }
+
+            // Last in the block: the section's own rule closes it, so it
+            // draws none of its own, or the two would read as one thick line.
+            &:last-child {
+                border-bottom: 0;
+
+                &::after {
+                    display: none;
+                }
+            }
         }
     }
 

@@ -514,8 +514,9 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         --glow-a: 1;
         --pulse: #ffffff;
         --pulse-kestra: #b48cff;
-        // The rails, in the control plane's rule colour above.
-        --line: var(--ks-border-primary);
+        // The rails, in the dark theme's rule colour: the block stays dark
+        // in both themes, so the light theme's pale rule would glare here.
+        --line: #46454d;
         --wire: rgba(255, 255, 255, 0.14);
         --text: #ffffff;
         --muted: #a3a3b1;

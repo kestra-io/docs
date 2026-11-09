@@ -716,7 +716,9 @@ const DOMAINS: Domain[] = [
         gap: 0.625rem;
         padding: 1.375rem 1rem;
         border: 0;
-        background: none;
+        // On the page's own background, as the panel under them: white in
+        // the light theme, over the block's tint.
+        background: var(--ks-background-body);
         font-size: 1.0625rem;
         font-weight: 500;
         text-align: center;
@@ -741,7 +743,11 @@ const DOMAINS: Domain[] = [
         }
 
         &:hover {
-            background: color-mix(in srgb, var(--tint) 4%, transparent);
+            background: color-mix(
+                in srgb,
+                var(--tint) 4%,
+                var(--ks-background-body)
+            );
         }
 
         &:focus-visible {

@@ -881,7 +881,7 @@ const WORKERS = [
     // themes.
     .enterprise {
         --bg: #0d0d10;
-        --rule-color: rgba(255, 255, 255, 0.16);
+        --rule-color: rgba(255, 255, 255, 0.11);
         --rule: 1px solid var(--rule-color);
         --text: #ffffff;
         --muted: #9a9aa8;
@@ -994,9 +994,8 @@ const WORKERS = [
         @include media-breakpoint-down(xl) {
             border-inline: 0;
         }
-        // An empty closing row between the rails, so the last cells' copy
-        // does not sit on the section's edge.
-        padding-bottom: clamp(3rem, 5vw, 4.5rem);
+        // The room under the last cells' copy is theirs (see .features), so
+        // the rule between them runs to the section's edge.
     }
 
     // The title and copy on the left, the two ways on the right.
@@ -1103,6 +1102,26 @@ const WORKERS = [
 
             &:nth-child(n + 3) {
                 border-top: var(--rule);
+            }
+
+            // The last row runs on to the section's edge, its rules with it.
+            &:nth-last-child(-n + 2) {
+                padding-bottom: calc(
+                    clamp(3.5rem, 5.5vw, 4.75rem) + clamp(3rem, 5vw, 4.5rem)
+                );
+
+                @include media-breakpoint-down(md) {
+                    padding-bottom: clamp(3.5rem, 5.5vw, 4.75rem);
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                &:last-child {
+                    padding-bottom: calc(
+                        clamp(3.5rem, 5.5vw, 4.75rem) +
+                            clamp(3rem, 5vw, 4.5rem)
+                    );
+                }
             }
 
             &:hover {
