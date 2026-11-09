@@ -879,10 +879,10 @@ const WORKERS = [
         width: 520px;
         pointer-events: none;
 
-        // In the margins only: each ring's inner edge stops on the rail of
-        // its side, so it never runs under the cells. Where the page has no
-        // margin, the rings go with it.
-        --rail: calc(min(50vw, 760px) - 7px);
+        // In the margins only: each ring's inner edge stops a breath short
+        // of the rail of its side, so it never runs under the cells nor
+        // touches them. Where the page has no margin, the rings go with it.
+        --rail: calc(min(50vw, 760px) - 7px + 4rem);
 
         // Halfway down the section on the left, low on the right.
         &.left {
@@ -896,7 +896,7 @@ const WORKERS = [
             bottom: 140px;
         }
 
-        @media (max-width: 1640px) {
+        @media (max-width: 1760px) {
             display: none;
         }
 
