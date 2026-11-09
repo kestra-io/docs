@@ -1270,48 +1270,19 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
     .ai-governance.is-aurora {
         --muted-on-bg: #c3c0e4;
 
-        // The schema's panel in the aurora of the brand visuals: black at
-        // the top to indigo, with a violet-to-pink arc of light, and a
-        // grain over it.
-        // A card, no wider than the schema needs, centred between the
-        // rails.
+        // No card: the flow sits on the block itself, its own frame
+        // enough, no wider than it needs, centred between the rails.
         .stack {
             max-width: 74rem;
             margin-inline: auto;
+            padding-block: 0;
             border-block: 0;
-            border-radius: 1.25rem;
-            // Black fading to grey toward the foot, no colour.
-            background:
-                radial-gradient(
-                    ellipse 70% 60% at 50% 110%,
-                    rgba(255, 255, 255, 0.06),
-                    transparent 70%
-                ),
-                linear-gradient(180deg, #0b0b0d 0%, #121214 50%, #1d1d21 100%);
+            background: none;
 
-            // On a phone no card: the flow sits on the block itself, its
-            // own frame enough, with no square-cut panel behind it.
+            // The page's gutter on a phone, so the frame keeps off the
+            // screen's edge.
             @include media-breakpoint-down(md) {
-                // The page's gutter, so the frame keeps off the screen's edge.
                 padding: 0 1.25rem;
-                border-radius: 0;
-                background: none;
-
-                &::after {
-                    display: none;
-                }
-            }
-
-            &::after {
-                content: "";
-                position: absolute;
-                inset: 0;
-                border-radius: inherit;
-                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
-                    0 0 / 160px 160px;
-                opacity: 0.16;
-                mix-blend-mode: overlay;
-                pointer-events: none;
             }
         }
     }
