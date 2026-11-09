@@ -356,10 +356,12 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
 
                 const play = () => {
                     panel?.classList.add("lit")
-                    // The panel lights up first, on its own, then sends the
-                    // node out.
-                    later(600, () => upper?.classList.add("on"))
-                    later(1000, () => {
+                    // The title and lead come in at once, so the block is
+                    // never empty on arrival.
+                    later(100, () => section.classList.add("in"))
+                    // The panel lights up, then sends the node out.
+                    later(200, () => upper?.classList.add("on"))
+                    later(400, () => {
                         upper?.classList.add("drawn")
                         if (!node || !lower) return
                         // To the foot of the lower dashed line, the top of
@@ -378,22 +380,21 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                                 },
                             ],
                             {
-                                duration: 900,
+                                duration: 600,
                                 easing: "cubic-bezier(0.65, 0, 0.35, 1)",
                                 fill: "forwards",
                             },
                         )
                     })
-                    later(1450, () => lower?.classList.add("drawn"))
+                    later(700, () => lower?.classList.add("drawn"))
                     // The node lands: the agent pops in and winks, and the
                     // rest of the block follows.
-                    later(1900, () => {
+                    later(1000, () => {
                         mascot.dispatchEvent(new Event("mascot:arrive"))
                         upper?.classList.add("done")
                     })
-                    later(2300, () => section.classList.add("in"))
                     // The panel stays lit until the agent has greeted.
-                    later(3000, () => panel?.classList.remove("lit"))
+                    later(1800, () => panel?.classList.remove("lit"))
                 }
 
                 const seen = new IntersectionObserver(
@@ -402,9 +403,10 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                         seen.disconnect()
                         play()
                     },
-                    { rootMargin: "0px 0px -15% 0px" },
+                    // As soon as the block's top is a little way into view.
+                    { rootMargin: "0px 0px -10% 0px" },
                 )
-                seen.observe(mascot)
+                seen.observe(section)
             })
     }
 
