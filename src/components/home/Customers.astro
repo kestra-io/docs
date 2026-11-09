@@ -10,7 +10,8 @@ import { getCollection } from "astro:content"
 import { toSlug } from "~/utils/stories"
 import jpmorgan from "~/assets/teams/jpmorgan.svg?raw"
 import fila from "~/assets/companies/fila.svg?raw"
-import creditAgricole from "~/contents/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra/logo.svg?raw"
+import amdocs from "./assets/companies/amdocs.svg?raw"
+import amdocsPhoto from "~/contents/customer-stories/amdocs-delivers-integration-environments-as-a-service-with-kestra/hero.jpeg"
 import apple from "~/contents/customer-stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra/logo.svg?raw"
 
 // Each story links to its customer story page, found by company name.
@@ -68,15 +69,17 @@ const DEFAULT_STORIES: Story[] = [
         label: "of cybersecurity records processed",
         detail: "100+ analysts define their own secure workflows.",
     },
+    // From the Amdocs customer story: its KPI and its quote.
     {
-        company: "Crédit Agricole",
-        story: "Crédit Agricole",
-        logo: flat(creditAgricole),
-        height: 32,
-        industry: "Infrastructure",
-        stat: "7 teams",
-        label: "unified on 100+ managed clusters",
-        quote: "From fragmented automation to a unified control plane.",
+        company: "Amdocs",
+        photo: amdocsPhoto,
+        story: "Amdocs",
+        logo: flat(amdocs),
+        height: 22,
+        industry: "Telecom",
+        stat: "Days → hours",
+        label: "to deliver a validated integration environment",
+        quote: "From a technical point of view, Kestra sits at the first place.",
     },
     {
         company: "FILA",
