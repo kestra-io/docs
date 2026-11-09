@@ -80,11 +80,10 @@ const points = [
             </p>
             <a href="#contact-sales" class="cta">Run it with us</a>
             <p class="webinar">
-                See it run live with our team:
-                <strong>November 4, 2 PM CET</strong> (8 AM ET), on LinkedIn and
-                YouTube.
+                See it run with our team in the
+                <strong>webinar replay</strong>.
                 <a href={WEBINAR_HREF} target="_blank" rel="noopener"
-                    >Register →</a
+                    >Watch it →</a
                 >
             </p>
         </div>
@@ -416,30 +415,21 @@ const points = [
 </style>
 
 <script>
-    // The session ends on November 4 at 4 PM CET (15:00 UTC). After that the
-    // line goes, until it is removed from the source.
-    const WEBINAR_ENDS = Date.UTC(2026, 10, 4, 15)
-
-    // Each click is pushed to the dataLayer for GTM: registrations happen on
-    // Luma, which reports nothing back.
+    // Each click is pushed to the dataLayer for GTM: the replay is on YouTube,
+    // which reports nothing back.
     function setUpWebinarLine() {
         const line = document.querySelector<HTMLElement>(".assistant .webinar")
         if (!line || line.dataset.ready !== undefined) return
-        if (Date.now() > WEBINAR_ENDS) {
-            line.remove()
-            return
-        }
         line.dataset.ready = ""
         const link = line.querySelector("a")!
         const track = () => {
             window.dataLayer = window.dataLayer || []
             window.dataLayer.push({
-                event: "vra_webinar_register_click",
-                webinar_session: "eu",
+                event: "vra_webinar_replay_click",
             })
         }
         link.addEventListener("click", track)
-        // Middle-click opens the session too; right-click only opens a menu.
+        // Middle-click opens the replay too; right-click only opens a menu.
         link.addEventListener("auxclick", (event) => {
             if (event.button === 1) track()
         })

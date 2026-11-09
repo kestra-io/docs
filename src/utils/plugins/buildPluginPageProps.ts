@@ -17,6 +17,7 @@ import {
     isElementNameRedundant,
 } from "~/utils/plugins/pluginUtils"
 import { prunePluginsForSidebar } from "./pruneForClient"
+import { getPluginInstallCommand } from "./installCommand"
 import { matchesSubGroup } from "./subgroupMatcher"
 import type { PluginPage, PluginPageWithToc, TocLink } from "./types"
 
@@ -160,6 +161,12 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         )
     })()
 
+    const pluginArtifactCoordinate = getPluginInstallCommand(
+        pluginType,
+        currentPluginMetadata,
+        currentPageMetadata,
+    )
+
     // Title of the plugin/subgroup container this page belongs to, e.g.
     // "AWS S3", "Google Cloud BigQuery", "PostgreSQL".
     const containerTitle =
@@ -296,6 +303,16 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
               ? []
               : pluginToc
 
+        const tocLinks = [...baseTocLinks]
+        if (pluginArtifactCoordinate) {
+            const propertiesIndex = tocLinks.findIndex((link) => link.id === "properties")
+            tocLinks.splice(
+                propertiesIndex === -1 ? tocLinks.length : propertiesIndex,
+                0,
+                tocEntry("installation", "Installation"),
+            )
+        }
+
         const hasBlueprints = pluginType
             ? blueprintCounts?.[pluginType] > 0
             : effectiveSubGroup
@@ -306,7 +323,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         const isRootPluginPage = isRootView && subGroup === undefined
 
         return [
-            ...baseTocLinks,
+            ...tocLinks,
             ...(isRootPluginPage && rootPlugin?.longDescription
                 ? [tocEntry("how-to-use-this-plugin", extractFirstHeading(rootPlugin.longDescription) ?? "How to use this plugin")]
                 : []),
@@ -364,6 +381,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         prunedPluginsWithoutDeprecated,
         pageWithToc,
         currentPluginMetadata,
+        pluginArtifactCoordinate,
         currentPluginCategories,
         sidebarPluginDataResult: sidebarPluginData,
 

@@ -65,12 +65,29 @@ Changes that affect how flows are written or behave at runtime. Review all of th
 |---|---|---|
 | [ForEach replaced by Loop](./foreach-loop) | OSS, EE | `ForEach` and `ForEachItem` are removed. Migrate all uses to the `Loop` task before upgrading; flows that reference either task fail to parse in 2.0. |
 | [Trigger conditions redesign](./trigger-conditions-redesign) | OSS, EE | The `conditions` list and `preconditions` block on triggers are removed. All trigger types now use a top-level `when` Pebble expression. |
-| [condition → when (Checks)](./checks-condition-renamed-when) | OSS, EE | The `condition` property on flow-level checks is renamed to `when`. |
+| [condition → when (Checks)](./checks-condition-renamed-when) | OSS, EE | The `condition` property on flow-level checks is renamed to `when`. `kestra-migrate` rewrites it automatically. |
 | [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function and `\| json` filter are removed. Replace `json(x)` with `fromJson(x)` and `\| json` with `\| toJson`. `kestra-migrate` rewrites both automatically. |
-| [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. |
+| [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. `kestra-migrate` adds `recursive: true` to keep the 1.x behavior. |
 | [Parallel and Dag onChildFailure](./parallel-dag-on-child-failure) | OSS, EE | `Parallel` and `Dag` now interrupt their other running tasks when one task fails. Set `onChildFailure: CONTINUE` to keep the 1.x behavior. `Dag` uses this default from 2.0.8. |
 
-Two additional removals have no dedicated guide. The four tasks `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed from core; replace them with the equivalent tasks from `plugin-kestra`. The `CANCELED` state name (single-L) was never a valid `State.Type` value and is not accepted in `states:` lists on either 1.x or 2.0. `kestra-migrate` rewrites any occurrences to `CANCELLED` (double-L) automatically. Update any external API clients or tooling that sends `CANCELED`.
+Two additional removals have no dedicated guide. The four tasks `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed from core; replace them with the equivalent tasks from `plugin-kestra`. `kestra-migrate` renames `log.Fetch` to `io.kestra.plugin.kestra.logs.Fetch` and flags the other three for a manual rewrite. The `CANCELED` state name (single-L) was never a valid `State.Type` value and is not accepted in `states:` lists on either 1.x or 2.0. `kestra-migrate` rewrites any occurrences to `CANCELLED` (double-L) automatically. Update any external API clients or tooling that sends `CANCELED`.
+
+#### HTTP task and trigger properties
+
+The deprecated HTTP properties are removed from `io.kestra.plugin.core.http.Request`, `Download`, and `Trigger`. Flows that still set them return `422 Unrecognized field` on save. Move each one under `options`:
+
+| Removed property | Replacement |
+|---|---|
+| `sslOptions` | `options.ssl` |
+| `allowFailed` | `options.allowFailed` |
+| `options.basicAuthUser`, `options.basicAuthPassword` | `options.auth: {type: BASIC, username, password}` |
+| `options.connectTimeout` | `options.timeout.connectTimeout` |
+| `options.readTimeout` | `options.timeout.readIdleTimeout` |
+| `options.proxyType`, `proxyAddress`, `proxyPort`, `proxyUsername`, `proxyPassword` | `options.proxy.type`, `address`, `port`, `username`, `password` |
+| `options.logLevel` | `options.logs`, a list of `REQUEST_HEADERS`, `REQUEST_BODY`, `RESPONSE_HEADERS`, `RESPONSE_BODY` |
+| `options.readIdleTimeout`, `options.connectionPoolIdleTimeout`, `options.maxContentLength` | None. Remove them. |
+
+`kestra-migrate` rewrites the basic auth properties, removes `connectionPoolIdleTimeout`, and moves `sslOptions` to `options.ssl` on HTTP triggers. When a trigger sets both, the existing `options.ssl` wins, as it did in 1.3. Move the other properties by hand, including `sslOptions` on `Request` and `Download`.
 
 ### Governance and plugins
 
@@ -84,6 +101,7 @@ Changes to flow configuration, permissions, and plugin defaults. The SDK auth an
 | [pluginDefaults removed](./plugin-defaults-removed) | OSS, EE | The `pluginDefaults` keyword is removed at all scopes. EE users migrate to Policies; OSS users inline task values manually. |
 | [pluginDefaults.forced removed from flows](./plugin-defaults-forced-removed) | OSS, EE | The `forced` property on flow-level `pluginDefaults` is removed. Use `Add` rules with `override: true` in a Policy (EE) or inline the values (OSS). |
 | [RBAC action model](./rbac-action-model) | EE | The CRUD-based permission model is replaced by a resource and action model. Existing roles are migrated automatically; CLI role definitions require updates. |
+| [Group sync joins existing groups](./idp-groups-existing-only) | EE | From 2.0.9, LDAP and OIDC logins no longer create groups. Users join only the groups created in Kestra with the same name as their identity provider groups, and LDAP creates a user only when a group, a default role, or an invitation gives them access. |
 
 ### Data and storage
 
@@ -117,7 +135,7 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 
 ### CLI
 
-Changes to `kestractl` behavior. Relevant for teams using the CLI in CI/CD pipelines.
+Changes to [`kestractl`](../../kestra-cli/kestractl/index.md#installation) behavior. Relevant for teams using the CLI in CI/CD pipelines.
 
 | Guide | Editions | What changed |
 |---|---|---|

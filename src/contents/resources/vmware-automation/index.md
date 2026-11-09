@@ -43,7 +43,7 @@ VMware offers a suite of powerful tools designed to automate and manage its soft
 
 ### Exploring VMware Aria Automation
 
-VMware Aria Automation (formerly known as vRealize Automation) is a multi-cloud automation platform designed for self-service infrastructure consumption. It allows platform engineering teams to create a catalog of services—from single VMs to complex application stacks—that developers can provision on-demand through a portal or API. Its key capabilities include infrastructure-as-code (IaC) integration, robust governance policies to control costs and configurations, and lifecycle management for deployed resources. For a detailed comparison of its capabilities against modern orchestration, see our analysis of [VMware Aria Automation vs Kestra](https://kestra.io/vs/vmware-cloud-foundation).
+VMware Aria Automation (formerly known as vRealize Automation) is a multi-cloud automation platform designed for [self-service infrastructure](/resources/infrastructure/self-service-infrastructure) consumption. It allows platform engineering teams to create a catalog of services—from single VMs to complex application stacks—that developers can provision on-demand through a portal or API. Its key capabilities include infrastructure-as-code (IaC) integration, robust governance policies to control costs and configurations, and lifecycle management for deployed resources. For a detailed comparison of its capabilities against modern orchestration, see our analysis of [VMware Aria Automation vs Kestra](https://kestra.io/vs/vmware-cloud-foundation).
 
 ### Understanding VMware Cloud Foundation (VCF) Automation
 

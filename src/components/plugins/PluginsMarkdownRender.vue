@@ -4,6 +4,7 @@
             class="plugin-schema"
             :schema
             :plugin-type
+            :plugin-artifact-coordinate="pluginArtifactCoordinate"
             :props-initially-expanded="true"
         >
             <template #markdown="{ content }">
@@ -25,6 +26,7 @@
     defineProps<{
         schema: JSONSchema
         pluginType: string
+        pluginArtifactCoordinate?: string
     }>()
 </script>
 
