@@ -271,6 +271,11 @@ const {
                 clamp(5rem, 8.5vw, 7.5rem);
             transition: background-color 0.3s ease;
 
+            // Stacked, each problem is a compact row of the list.
+            @include media-breakpoint-down(lg) {
+                padding-block: 2.25rem 2.5rem;
+            }
+
             // On hover the cell draws its top edge, like the How it works
             // steps, and its icon acts the problem out.
             &::before {
@@ -308,6 +313,10 @@ const {
                 height: 1.5rem;
                 margin-bottom: 3rem;
                 color: var(--ks-content-primary);
+
+                @include media-breakpoint-down(lg) {
+                    margin-bottom: 1.25rem;
+                }
             }
         }
 
@@ -337,6 +346,11 @@ const {
             font-weight: 600;
             letter-spacing: -0.01em;
             color: var(--ks-content-primary);
+
+            @include media-breakpoint-down(lg) {
+                margin-bottom: 0.75rem;
+                font-size: 1.25rem;
+            }
         }
 
         p {
@@ -345,6 +359,11 @@ const {
             font-size: 1rem;
             line-height: 1.7;
             color: var(--ks-content-secondary);
+
+            @include media-breakpoint-down(lg) {
+                font-size: 0.9375rem;
+                line-height: 1.6;
+            }
         }
 
         .list {
