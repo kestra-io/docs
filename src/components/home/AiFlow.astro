@@ -546,12 +546,28 @@ const GUARDS = [
         // a column (see the end of the file).
     }
 
-    // The flow: one frame, everything inside it is governed.
+    // The flow: one frame, everything inside it is governed. A pane of
+    // liquid glass: what runs behind it (the planet's arc) blurs through,
+    // a light catches its top edge, and a sheen falls from its top-left.
     .frame {
+        position: relative;
         padding: 1.25rem 1rem 1rem;
         border: 1px solid var(--frame);
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.02);
+        background:
+            linear-gradient(
+                160deg,
+                rgba(255, 255, 255, 0.07) 0%,
+                rgba(255, 255, 255, 0.02) 35%,
+                rgba(255, 255, 255, 0.015) 100%
+            ),
+            rgba(18, 18, 24, 0.35);
+        backdrop-filter: blur(18px) saturate(150%);
+        -webkit-backdrop-filter: blur(18px) saturate(150%);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+            0 24px 60px -24px rgba(0, 0, 0, 0.6);
     }
 
     .head {
