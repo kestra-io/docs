@@ -245,29 +245,34 @@
             plume.height = Math.round(reach + pad * 2)
             const pctx = plume.getContext("2d")
             if (!pctx) return
+            // Soft by gradients alone, with no canvas blur, which some
+            // browsers (Safari) ignore: the colours along the way back,
+            // then faded out toward both sides and in at the head.
+            const W = plume.width
+            const H = plume.height
             const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
             g.addColorStop(0, "rgba(255, 130, 70, 0.95)")
             g.addColorStop(0.18, "rgba(255, 60, 200, 0.95)")
             g.addColorStop(0.5, "rgba(140, 70, 255, 0.75)")
             g.addColorStop(0.8, "rgba(50, 70, 255, 0.4)")
             g.addColorStop(1, "rgba(40, 50, 255, 0)")
-            if ("filter" in pctx)
-                pctx.filter = `blur(${Math.round(unit * 3)}px)`
             pctx.fillStyle = g
-            pctx.beginPath()
-            pctx.ellipse(
-                pad + w / 2,
-                pad + w * 0.4,
-                w / 2,
-                w * 0.4,
-                0,
-                Math.PI,
-                0,
-            )
-            pctx.lineTo(pad + w * 0.9, pad + reach)
-            pctx.lineTo(pad + w * 0.1, pad + reach)
-            pctx.closePath()
-            pctx.fill()
+            pctx.fillRect(0, 0, W, H)
+            pctx.globalCompositeOperation = "destination-in"
+            const sides = pctx.createLinearGradient(0, 0, W, 0)
+            sides.addColorStop(0, "rgba(0, 0, 0, 0)")
+            sides.addColorStop(0.22, "rgba(0, 0, 0, 0.55)")
+            sides.addColorStop(0.5, "rgba(0, 0, 0, 1)")
+            sides.addColorStop(0.78, "rgba(0, 0, 0, 0.55)")
+            sides.addColorStop(1, "rgba(0, 0, 0, 0)")
+            pctx.fillStyle = sides
+            pctx.fillRect(0, 0, W, H)
+            const head = pctx.createLinearGradient(0, 0, 0, pad + w * 0.6)
+            head.addColorStop(0, "rgba(0, 0, 0, 0)")
+            head.addColorStop(1, "rgba(0, 0, 0, 1)")
+            pctx.fillStyle = head
+            pctx.fillRect(0, 0, W, H)
+            pctx.globalCompositeOperation = "source-over"
         }
 
         const frame = (time: number) => {
