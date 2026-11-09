@@ -1,7 +1,5 @@
 @use "/src/assets/styles/variable" as *;
 
-// The colours come from the --lp-* palette that LpLayout sets on .lp-page.
-
 @mixin lp-section($bg: #ffffff) {
     padding: 5rem 1rem;
     background-color: $bg;
