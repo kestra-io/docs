@@ -23,17 +23,17 @@ const KEY_FACTS = [
 // The customers under the frame, from the logo bar of the previous
 // hero.
 const CUSTOMERS = [
-    { file: "jpmorgan", name: "JPMorgan Chase" },
-    // Optical corrections: the apple's leaf lifts its box, FILA's heavy
-    // capitals fill theirs.
-    { file: "apple", name: "Apple", scale: 1.15, lift: 0.12 },
-    { file: "bloomberg", name: "Bloomberg" },
-    { file: "amdocs", name: "Amdocs" },
-    { file: "t-system", name: "T-Systems" },
-    { file: "fila", name: "FILA", scale: 0.8 },
-    { file: "xiaomi", name: "Xiaomi" },
-    { file: "toyota", name: "Toyota" },
-    { file: "brainlab", name: "Brainlab" },
+    // Optical corrections, so each logo carries a like weight: thin
+    // wordmarks up, heavy ones down, the apple's leaf lifts its box.
+    { file: "jpmorgan", name: "JPMorgan Chase", scale: 1.12 },
+    { file: "apple", name: "Apple", scale: 1, lift: 0.12 },
+    { file: "bloomberg", name: "Bloomberg", scale: 0.86 },
+    { file: "amdocs", name: "Amdocs", scale: 0.9 },
+    { file: "t-system", name: "T-Systems", scale: 0.86 },
+    { file: "fila", name: "FILA", scale: 0.72 },
+    { file: "xiaomi", name: "Xiaomi", scale: 0.95 },
+    { file: "toyota", name: "Toyota", scale: 0.92 },
+    { file: "brainlab", name: "Brainlab", scale: 1.1 },
 ]
 // Specks of light that twinkle round the mark, at scattered angles and
 // distances, out of step.
@@ -263,7 +263,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                             src={logo}
                             alt={company.name}
                             class="brand-logo"
-                            style={`height: ${(height * (company.scale ?? 1)).toFixed(3)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
+                            style={`--h: ${(height * (company.scale ?? 1)).toFixed(3)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
                         />
                     </li>
                 )
@@ -740,6 +740,10 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     // The field: a deep box seen from the title, its orbits flat on the
     // screen and the tiles crossing it from far to near.
     .field {
+        // How far out the tiles fly from the middle, across the screen's
+        // width.
+        --spread: 1;
+
         position: absolute;
         inset: 0;
         overflow: hidden;
@@ -795,7 +799,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             animation: none;
             opacity: 0.6;
             transform: translate3d(
-                calc(var(--dx) * 1vw),
+                calc(var(--dx) * var(--spread, 1) * 1vw),
                 calc(var(--dy) * 1vh),
                 -300px
             );
@@ -881,7 +885,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         0% {
             opacity: 0;
             transform: translate3d(
-                calc(var(--dx) * 1vw),
+                calc(var(--dx) * var(--spread, 1) * 1vw),
                 calc(var(--dy) * 1vh),
                 -1600px
             );
@@ -898,10 +902,38 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         100% {
             opacity: 0;
             transform: translate3d(
-                calc(var(--dx) * 1vw),
+                calc(var(--dx) * var(--spread, 1) * 1vw),
                 calc(var(--dy) * 1vh),
                 350px
             );
+        }
+    }
+
+    // On a phone the field is lighter: one tile in four, smaller and
+    // dimmer, flying wide of the middle so they stay off the copy, which
+    // keeps a larger clear centre.
+    @include media-breakpoint-down(md) {
+        .field {
+            --spread: 1.9;
+
+            opacity: 0.6;
+            mask-image: radial-gradient(
+                ellipse 58% 36% at 50% var(--oy, 46%),
+                transparent 50%,
+                #000 100%
+            );
+        }
+
+        .orbit:nth-child(n + 3) {
+            display: none;
+        }
+
+        .tile {
+            scale: 0.7;
+
+            &:not(:nth-child(4n)) {
+                display: none;
+            }
         }
     }
 
@@ -937,14 +969,18 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             grid-column: 2 / span 2;
         }
 
-        // Each logo fits its cell, shrinking with it on a phone, where the
-        // compact marks are held down too, so none outweighs the others.
+        // In two rows every logo shrinks by the same factor, so they keep
+        // the balance they have on one line.
         :global(.brand-logo) {
             max-width: 100%;
             object-fit: contain;
 
+            @include media-breakpoint-down(xl) {
+                height: calc(var(--h) * 0.85);
+            }
+
             @include media-breakpoint-down(md) {
-                max-height: 1.25rem;
+                height: calc(var(--h) * 0.62);
             }
         }
 
@@ -963,6 +999,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     .brand-logo {
         flex-shrink: 0;
         width: auto;
+        height: var(--h);
         // In black, on white.
         filter: brightness(0);
 
