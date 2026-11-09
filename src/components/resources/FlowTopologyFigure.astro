@@ -1,0 +1,134 @@
+---
+import TopologyMock from "~/components/home/TopologyMock.astro"
+import type { TopologyNode } from "~/components/home/TopologyMock.astro"
+import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
+
+interface Props {
+    nodes: TopologyNode[]
+    label: string
+    caption?: string
+}
+
+const { nodes, label, caption } = Astro.props
+
+const CANVAS_W = 880
+const CANVAS_H = 250
+const NODE_W = 260
+const NODE_H = 76
+const PILLS_BELOW = 27
+const TRIGGER = { left: 14, top: 47, right: 25, below: 38 }
+
+const boxes = nodes.map(({ x, y, plugin }) => {
+    const trigger = plugin.startsWith("core.trigger.")
+    return {
+        left: x - (trigger ? TRIGGER.left : 0),
+        top: y - (trigger ? TRIGGER.top : 0),
+        right: x + NODE_W + (trigger ? TRIGGER.right : 0),
+        bottom: y + NODE_H + (trigger ? TRIGGER.below : PILLS_BELOW),
+    }
+})
+const left = Math.min(...boxes.map((box) => box.left))
+const top = Math.min(...boxes.map((box) => box.top))
+const right = Math.max(...boxes.map((box) => box.right))
+const bottom = Math.max(...boxes.map((box) => box.bottom))
+const shiftX = (CANVAS_W - left - right) / 2
+const shiftY = (CANVAS_H - top - bottom) / 2
+---
+
+<figure class="flow-topology">
+    <div
+        class="visual"
+        style={`--pixels: url("${pixelCluster}"); --shift-x: ${shiftX}px; --shift-y: ${shiftY}px`}
+    >
+        <span class="pixels" aria-hidden="true"></span>
+        <TopologyMock {nodes} {label} />
+    </div>
+    {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style lang="scss">
+    .flow-topology {
+        margin: 1.75rem 0;
+
+        figcaption {
+            margin-top: 0.75rem;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-sm;
+            text-align: center;
+        }
+    }
+
+    .visual {
+        --tint: #e6c359;
+
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        height: 16rem;
+        overflow: hidden;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 12px;
+        background:
+            radial-gradient(
+                80% 90% at 100% 0%,
+                color-mix(in srgb, var(--tint) 20%, transparent),
+                transparent 70%
+            ),
+            color-mix(in srgb, var(--tint) 3%, #ffffff);
+
+        :global(html.dark) & {
+            background:
+                radial-gradient(
+                    80% 90% at 100% 0%,
+                    color-mix(in srgb, var(--tint) 8%, transparent),
+                    transparent 70%
+                ),
+                var(--ks-background-secondary);
+        }
+
+        @include media-breakpoint-down(md) {
+            height: 12rem;
+        }
+
+        :global(.canvas) {
+            translate: var(--shift-x) var(--shift-y);
+        }
+
+        // The resources column is narrower than the landing pages the mock
+        // was sized for. The drawing is ~1055 × 342px at zoom 1; each step
+        // keeps at least 16px around it in the figure.
+        :global(.topology) {
+            --z: 0.64;
+
+            @include media-breakpoint-between(lg, xl) {
+                --z: 0.55;
+            }
+
+            @include media-breakpoint-down(md) {
+                --z: 0.46;
+            }
+
+            @include media-breakpoint-down(sm) {
+                --z: 0.28;
+            }
+
+            @media (max-width: 359.98px) {
+                --z: 0.24;
+            }
+        }
+    }
+
+    .pixels {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.25rem;
+        width: 80px;
+        aspect-ratio: 194 / 168;
+        background: var(--tint);
+        mask: var(--pixels) no-repeat center / contain;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+</style>
