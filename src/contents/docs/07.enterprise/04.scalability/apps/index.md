@@ -780,6 +780,49 @@ Once added, open the **Apps Catalog** — a new thumbnail displays on the connec
 
 ---
 
+## App window width
+
+Use the `window.width` property to choose how wide the app is rendered. Pick a preset that adapts to the screen, or pin the app to a fixed CSS length.
+
+```yaml
+id: survey_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Q2 Survey
+namespace: company.team
+flowId: survey_processor
+access:
+  type: PUBLIC
+window:
+  width: NARROW
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "## Please complete the survey."
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+```
+
+| Value | Best for | Behavior |
+| --- | --- | --- |
+| `AUTO` | Most apps. Same as leaving `window` out. | The app grows with the window up to `1440px`. Text, forms, alerts and buttons stay in a centered `768px` reading column, while data blocks such as `Table`, `Logs`, `Gantt` and `Grid` take the full width of the app. |
+| `NARROW` | Apps that only hold a form. | The app stays at the width of the reading column on large screens, and takes the whole width on small ones. |
+| `WIDE` | Apps that show a lot of data, such as tables, logs, charts or multi-column grids. | The app uses the whole window on large screens, without the `1440px` limit of `AUTO`. Text and forms stay in the reading column. |
+| A CSS length | Apps that need an exact width. | The app is as wide as the value you set, for example `800px`, `60rem` or `75%`. It never gets wider than the window. |
+
+Presets are written in upper case. A CSS length is a number followed by one of `px`, `rem`, `em`, `ch`, `vw` or `%`. Any other value is rejected when you save the app, with the message `must be AUTO, NARROW, WIDE or a CSS length such as 800px, 60rem or 100%`.
+
+The same app and execution on a 2560px wide screen, with `NARROW`, `AUTO` and `WIDE`:
+
+![App with width NARROW](./app-window-narrow.png)
+
+![App with width AUTO](./app-window-auto.png)
+
+![App with width WIDE](./app-window-wide.png)
+
+---
+
 ## App layout blocks
 
 Each app layout is a list of stage-specific blocks. Each block renders when the execution reaches the matching stage (`OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`). Combine blocks to guide users through the full lifecycle of a request — form on `OPEN`, progress indicator on `RUNNING`, download link and logs on `SUCCESS`.
