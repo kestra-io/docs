@@ -146,8 +146,6 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         return []
     })()
 
-    const pluginArtifactCoordinate = getPluginInstallCommand(pluginType, currentPluginMetadata)
-
     const metadataMap: Record<string, PluginMetadata> = Object.fromEntries(
         currentPluginMetadata.map((m) => [m.group, m]),
     )
@@ -162,6 +160,12 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             ) ?? null
         )
     })()
+
+    const pluginArtifactCoordinate = getPluginInstallCommand(
+        pluginType,
+        currentPluginMetadata,
+        currentPageMetadata,
+    )
 
     // Title of the plugin/subgroup container this page belongs to, e.g.
     // "AWS S3", "Google Cloud BigQuery", "PostgreSQL".
