@@ -200,10 +200,13 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             <div class="intro">
                 <div class="copy">
                     <h1 id="hero-title">
-                        Orchestrate everything, everywhere<span
-                            class="brand-dot"
-                            aria-hidden="true"></span><span
-                            class="visually-hidden">.</span
+                        <span class="beat">Orchestrate everything,</span>
+                        <span class="beat"
+                            >everywhere<span
+                                class="brand-dot"
+                                aria-hidden="true"></span><span
+                                class="visually-hidden">.</span
+                            ></span
                         >
                     </h1>
                     {/* Kestra, where every plugin flies out from. */}
@@ -411,7 +414,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     }
 
     h1 {
-        max-width: 46rem;
+        max-width: none;
         margin: 0 auto;
         font-size: clamp(2.5rem, 5.2vw, 4.25rem);
         font-weight: 600;
@@ -419,6 +422,27 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         line-height: 1.04;
         color: #ffffff;
         text-wrap: balance;
+
+        // Two beats, not a wrapped line: the claim first, softer, then the
+        // punchline in full white, arriving a moment later.
+        .beat {
+            display: block;
+            animation: beat-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        }
+
+        .beat:first-child {
+            color: rgba(255, 255, 255, 0.58);
+        }
+
+        .beat + .beat {
+            animation-delay: 0.45s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .beat {
+                animation: none;
+            }
+        }
 
         .brand-dot {
             display: inline-block;
@@ -521,6 +545,14 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             .spark {
                 display: none;
             }
+        }
+    }
+
+    @keyframes beat-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.35em);
+            filter: blur(6px);
         }
     }
 
