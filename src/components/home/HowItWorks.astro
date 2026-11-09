@@ -254,7 +254,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         >
                             <button type="button" aria-pressed={idx === 0}>
                                 <span class="bar" aria-hidden="true" />
-                                <span class="number">0{idx + 1}</span>
                                 <h3>{step.title}</h3>
                                 <p>{step.text}</p>
                             </button>
@@ -929,17 +928,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             animation: step-time var(--dur) linear forwards;
         }
 
-        .number {
-            display: block;
-            margin-bottom: 1rem;
-            font-family: $font-family-monospace;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.12em;
-            color: var(--ks-content-tertiary);
-            transition: color 0.25s ease;
-        }
-
         h3 {
             margin: 0 0 0.5rem;
             font-size: 1.25rem;
@@ -958,10 +946,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
 
         &.active {
-            .number {
-                color: var(--tint);
-            }
-
             h3 {
                 color: var(--ks-content-primary);
             }

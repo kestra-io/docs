@@ -5,7 +5,6 @@
  * task, agent, approval, task, with RBAC, approvals and audit logs around
  * the whole run, and the control plane's four domains in context.
  */
-import { Icon } from "astro-icon/components"
 import AiFlow from "./AiFlow.astro"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
@@ -20,7 +19,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
 ---
 
 <section
-    class="ai-governance is-aurora"
+    class="ai-governance is-aurora surface-dark"
     aria-labelledby="ai-governance"
     data-header-dark
 >
@@ -51,6 +50,11 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         <span class="rim"></span>
         <span class="limb"></span>
     </div>
+    {
+        /* The block's end: a horizon of light where the planet is cut, the
+        Enterprise block's black beyond it. */
+    }
+    <span class="horizon" aria-hidden="true"></span>
     <div class="container-xl">
         <div class="rails">
             {
@@ -146,7 +150,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                 foot && (
                     <div class="foot">
                         <a href="/ai-automation" class="btn-ghost">
-                            How agents fit <Icon name="mdi:chevron-right" />
+                            How agents fit
                         </a>
                     </div>
                 )
@@ -524,9 +528,29 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         --ks-content-tertiary: #{$base-grey-300};
         --ks-content-link: #{$base-primary-200};
 
+        // The planet's night side, which the foot of the block fades into.
+        --night: #060609;
+
         position: relative;
         overflow: hidden;
-        background: var(--bg);
+        // The control plane's grey at the top, down to the planet's night
+        // at the foot, so its dark side melts into the block, and the black
+        // Enterprise block follows on. The planet's indigo rises from the
+        // foot into it, wide and faint, on both sides of its arc.
+        background:
+            radial-gradient(
+                ellipse 75% 55% at 50% 100%,
+                rgba(70, 44, 255, 0.16),
+                rgba(60, 30, 240, 0.06) 55%,
+                transparent 80%
+            ),
+            linear-gradient(
+                180deg,
+                var(--bg) 0%,
+                var(--bg) 30%,
+                #100e1c 70%,
+                var(--night) 100%
+            );
         color: var(--text);
     }
 
@@ -892,43 +916,30 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             transform: none;
         }
 
+        // The title and lead only: the flow and its button are there from
+        // the start, so the planet never shows on its own.
         h2,
-        .lead,
-        .stack,
-        .foot {
+        .lead {
             transition:
                 opacity 0.7s ease,
-                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-                clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         h2,
-        .lead,
-        .stack,
-        .foot {
+        .lead {
             opacity: 0;
             transform: translateY(1.25rem);
         }
 
         &:global(.in) {
             h2,
-            .lead,
-            .stack,
-            .foot {
+            .lead {
                 opacity: 1;
                 transform: none;
             }
 
             .lead {
                 transition-delay: 0.15s;
-            }
-
-            .stack {
-                transition-delay: 0.3s;
-            }
-
-            .foot {
-                transition-delay: 0.5s;
             }
         }
     }
@@ -1000,14 +1011,14 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         // Lit from above: a pale cap that fades into the night side. No
         // texture, light only.
         background:
-            linear-gradient(transparent 20%, var(--bg) 48%),
+            linear-gradient(transparent 20%, var(--night) 48%),
             radial-gradient(
                 ellipse 62% 26% at 50% 0%,
                 rgba(200, 200, 216, 0.24),
                 rgba(130, 130, 150, 0.1) 40%,
                 transparent 72%
             ),
-            #060609;
+            var(--night);
         pointer-events: none;
 
         @include media-breakpoint-down(lg) {
@@ -1118,6 +1129,82 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             rgba(200, 200, 220, 0.04) 55%,
             transparent
         );
+    }
+
+    // The horizon: where the planet meets the foot of the block, a hairline
+    // of light, white at the middle, the planet's indigo along it, fading
+    // out at the edges; a glow rises from it, and a brighter core breathes
+    // slowly at its middle.
+    .horizon {
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.08) 12%,
+            rgba(95, 77, 255, 0.55) 32%,
+            rgba(224, 220, 255, 0.95) 50%,
+            rgba(95, 77, 255, 0.55) 68%,
+            rgba(255, 255, 255, 0.08) 88%,
+            transparent 100%
+        );
+        pointer-events: none;
+
+        // The glow over the line, on the block's side only.
+        &::before {
+            content: "";
+            position: absolute;
+            left: 15%;
+            right: 15%;
+            bottom: 0;
+            height: 9rem;
+            background: radial-gradient(
+                ellipse 50% 100% at 50% 100%,
+                rgba(120, 100, 255, 0.4),
+                rgba(70, 44, 255, 0.14) 45%,
+                transparent 75%
+            );
+        }
+
+        // The core: a short, brighter stretch of the line, blurred.
+        &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -1px;
+            width: 22rem;
+            height: 3px;
+            translate: -50% 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                closest-side,
+                #ffffff,
+                rgba(190, 180, 255, 0.6) 50%,
+                transparent
+            );
+            filter: blur(1.5px);
+            animation: horizon 6s ease-in-out infinite alternate;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &::after {
+                animation: none;
+            }
+        }
+    }
+
+    @keyframes horizon {
+        from {
+            opacity: 0.7;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     // A soft light under the pointer, shown only while it is over the
