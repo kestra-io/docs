@@ -1,18 +1,18 @@
 ---
 import Layout from "~/components/layout.astro"
 
-import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
-import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
-import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
-import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
-import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
-import Features from "~/components/lp/workflow-orchestration/Features.astro"
-import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
-import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
-import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
-import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
-import Translation from "~/components/lp/vra-migration/Translation.astro"
-import Proof from "~/components/lp/vra-migration/Proof.astro"
+import LpHeader from "~/components/lp/shared/LpHeader.astro"
+import LpFooter from "~/components/lp/shared/LpFooter.astro"
+import Hero from "~/components/lp/shared/Hero.astro"
+import Platform from "~/components/lp/shared/Platform.astro"
+import Migration from "~/components/lp/shared/Migration.astro"
+import Features from "~/components/lp/shared/Features.astro"
+import Stack from "~/components/lp/shared/Stack.astro"
+import UseCases from "~/components/lp/shared/UseCases.astro"
+import Faq from "~/components/lp/shared/Faq.astro"
+import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
+import Translation from "~/components/lp/shared/Translation.astro"
+import Proof from "~/components/lp/shared/Proof.astro"
 import Payback from "~/components/lp/vra-migration/Payback.astro"
 import Assistant from "~/components/lp/vra-migration/Assistant.astro"
 import HeroActions from "~/components/lp/vra-migration/HeroActions.astro"
@@ -190,7 +190,7 @@ const faqItems = [
 ---
 
 <Layout {title} {description} noindex bareChrome forceTheme="light">
-    <div class="lp-workflow-orchestration">
+    <div class="lp-page">
         <LpHeader />
         <Hero
             {routePath}
@@ -360,7 +360,7 @@ const faqItems = [
     /* Same pinned palette as /lp/workflow-orchestration: the wrapper class is
      * shared on purpose, so this page inherits its section components' tokens.
      * Keep the two lists identical. */
-    .lp-workflow-orchestration {
+    .lp-page {
         --lp-purple: #631bff;
         --lp-purple-light: #f1efff;
         --lp-purple-rail: #cdc5ff;
