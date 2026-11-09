@@ -62,6 +62,17 @@
 
         overflow: clip;
 
+        // Below a wide screen the blocks' grids lose their rails: their
+        // container's few pixels of gutter then only leave a strip either
+        // side of the cells while the rules run on to the edge. The grids
+        // go edge to edge there, their insets keeping the words off it.
+        @include media-breakpoint-down(xl) {
+            :global(.container-xl:has(> .grid)),
+            :global(.container-xl:has(> .rails)) {
+                padding-inline: 0;
+            }
+        }
+
         // See pauseOffscreen above.
         :global([data-offscreen]) :global(*),
         :global([data-offscreen]) :global(*::before),

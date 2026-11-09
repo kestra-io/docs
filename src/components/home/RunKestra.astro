@@ -102,6 +102,12 @@ import productScreen from "./assets/run/flows-edit.png"
         position: relative;
         border-left: var(--rule);
         border-right: var(--rule);
+
+        // Below a wide screen, as in the other blocks: no rails, the rules
+        // alone carry the grid.
+        @include media-breakpoint-down(xl) {
+            border-inline: 0;
+        }
     }
 
     // The title and lead on the left, Pricing on the right.
