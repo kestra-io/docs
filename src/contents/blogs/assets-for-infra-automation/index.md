@@ -12,7 +12,7 @@ authors:
 image: ./main.jpg
 ---
 
-We are moving beyond simple "fire-and-forget" task execution. By leveraging **Kestra Assets**, we treat our infrastructure as a stateful inventory of resources, complete with lineage and metadata tracking. Instead of disparate scripts, we define a **chain of workflows** that build a dependency graph linking Day 1 provisioning (resource creation) to Day 2 operations (snapshots, patching, etc.). This approach yields a live catalog of all infrastructure components and their relationships, enabling full traceability and auditability.
+We are moving beyond simple "fire-and-forget" task execution. By leveraging **Kestra Assets**, we treat our infrastructure as a stateful inventory of resources, complete with lineage and metadata tracking. Instead of disparate scripts, we define a **chain of workflows** that build a dependency graph linking Day 1 provisioning (resource creation) to [Day 2 operations](/resources/infrastructure/day-2-operations) (snapshots, patching, etc.). This approach yields a live catalog of all infrastructure components and their relationships, enabling full traceability and auditability.
 
 In this guide, we outline a standard operating procedure for provisioning and maintaining Windows VMs on GCP using Kestra Assets. Each step in the lifecycle is implemented as a workflow that **registers assets** (like VMs, IPs, users, licenses) into Kestra's Asset Inventory. The result is an always-updated catalog of resources with lineage information, so you can answer questions such as *"Which VM has which IP and certificate?"* or *"When was this user added to the VM and by which process?"*.
 

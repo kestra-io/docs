@@ -215,7 +215,7 @@ The 2.0 cycle also produced a category of Enterprise plugins that has nothing to
 
 The stated strategy is that the winning position in private infrastructure is a tightly integrated orchestration layer across compute, network, storage and management. Compute existed already, with VMware, Nutanix and Proxmox. Network existed, with Infoblox, Netbox and phpIPAM. Storage, load balancing, a new hyperscaler family, and log and secret backends are the pieces 2.0 added, all named individually under [New plugins since 1.3](#new-plugins-since-13) below.
 
-The use cases those enable are day two operations rather than analytics: snapshot before patching, clone a volume for a dev and test environment, check replication health on a schedule, provision a VM and register it in IPAM and put it behind a load balancer in one flow. Combine that with asset locking, which stops two executions mutating the same VM at once, and Kestra starts being the thing running your infrastructure changes rather than the thing reporting on them.
+The use cases those enable are [day two operations](/resources/infrastructure/day-2-operations) rather than analytics: snapshot before patching, clone a volume for a dev and test environment, check replication health on a schedule, provision a VM and register it in IPAM and put it behind a load balancer in one flow. Combine that with asset locking, which stops two executions mutating the same VM at once, and Kestra starts being the thing running your infrastructure changes rather than the thing reporting on them.
 
 ## New task runners
 
