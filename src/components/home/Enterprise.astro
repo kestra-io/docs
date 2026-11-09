@@ -879,28 +879,25 @@ const WORKERS = [
         width: 520px;
         pointer-events: none;
 
+        // In the margins only: each ring's inner edge stops on the rail of
+        // its side, so it never runs under the cells. Where the page has no
+        // margin, the rings go with it.
+        --rail: calc(min(50vw, 760px) - 7px);
+
         // Halfway down the section on the left, low on the right.
         &.left {
             top: 50%;
-            left: -100px;
+            right: calc(50% + var(--rail));
             transform: translateY(-50%);
         }
 
         &.right {
-            right: -260px;
+            left: calc(50% + var(--rail));
             bottom: 140px;
         }
 
-        // On narrower screens the rings sit further out, in the margins,
-        // clear of the cells' pictures.
-        @media (max-width: 1700px) {
-            &.left {
-                left: -330px;
-            }
-
-            &.right {
-                right: -380px;
-            }
+        @media (max-width: 1640px) {
+            display: none;
         }
 
         // Every square outlined in the gradient, the outline fading
