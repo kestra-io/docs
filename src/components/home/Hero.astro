@@ -1073,11 +1073,17 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             color: var(--ks-content-primary);
         }
 
-        // Without a pointer to hover with, it shows all the time.
+        // On touch screens and phones, no "Read story": it would sit on
+        // the next row's logos. The logo alone still opens the story.
         @media (hover: none) {
             .read {
-                opacity: 1;
-                translate: -50% 0;
+                display: none;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .read {
+                display: none;
             }
         }
     }

@@ -1069,14 +1069,12 @@ const WORKERS = [
         margin: 0;
         padding: 0;
         list-style: none;
-        // A rule above the cells only: under them, the closing row runs
-        // straight to the section's edge.
-        border-top: var(--rule);
-
+        // A rule above the cells only, drawn once, edge to edge: under
+        // them, the closing row runs straight to the section's edge.
         &::before {
             content: "";
             position: absolute;
-            top: -1px;
+            top: 0;
             left: -100vw;
             right: -100vw;
             height: 1px;

@@ -479,12 +479,14 @@ const {
             color 0.25s ease;
 
         &:hover {
-            background: color-mix(in srgb, var(--glyph) 8%, var(--surface));
+            background: color-mix(in srgb, var(--glyph) 4%, var(--surface));
             color: var(--ks-content-primary);
         }
 
-        // The open one: its logo in full, its top edge drawn.
+        // The open one: its logo in full, its top edge drawn, on a deeper
+        // lavender, so the story being read is plain to see.
         &.active {
+            background: color-mix(in srgb, var(--glyph) 8%, var(--surface));
             color: var(--ks-content-primary);
         }
 
