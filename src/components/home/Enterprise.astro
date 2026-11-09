@@ -516,7 +516,7 @@ const WORKERS = [
                                                                 ]}
                                                                 style={`left: ${step.start}%; width: ${step.end - step.start}%; --ms: ${(step.end - step.start) * 45}ms`}
                                                             >
-                                                                {step.worker}
+                                                                <span class="worker-long">worker-</span><span class="worker-short">w</span>{step.worker.split("-")[1]}
                                                             </span>
                                                             {step.fails && (
                                                                 <span
@@ -524,10 +524,12 @@ const WORKERS = [
                                                                     style={`left: ${step.end}%`}
                                                                 >
                                                                     <Icon name="mdi:close-circle-outline" />
-                                                                    {
-                                                                        step.worker
-                                                                    }{" "}
-                                                                    down
+                                                                    <span class="down-text">
+                                                                        {
+                                                                            step.worker
+                                                                        }{" "}
+                                                                        down
+                                                                    </span>
                                                                 </span>
                                                             )}
                                                         </span>
@@ -1168,6 +1170,42 @@ const WORKERS = [
         padding-right: var(--inset);
     }
 
+    // On a phone: the title, then the glimpse, then the copy.
+    @include media-breakpoint-down(md) {
+        .features > li {
+            gap: 0;
+        }
+
+        .copy {
+            display: contents;
+        }
+
+        .features > li {
+            padding-top: 2.5rem;
+        }
+
+        .features .kicker,
+        .features h3 {
+            order: -1;
+            padding-right: var(--inset);
+        }
+
+        .features h3 {
+            margin-bottom: 0;
+        }
+
+        .stage {
+            order: 0;
+            padding-top: 1.5rem;
+        }
+
+        .features .text {
+            order: 1;
+            margin-top: 1.5rem;
+            padding-right: var(--inset);
+        }
+    }
+
     // The glimpse's stage, above the copy.
     .stage {
         padding-top: clamp(2.5rem, 4vw, 3.5rem);
@@ -1664,6 +1702,31 @@ const WORKERS = [
         &:global(.broken) {
             border-color: color-mix(in srgb, var(--danger) 55%, transparent);
             background: color-mix(in srgb, var(--danger) 14%, transparent);
+        }
+    }
+
+    // On a phone the bars are short: "w1" for "worker-1", and the fall
+    // shown by its icon alone, the status line saying which went down.
+    .worker-short {
+        display: none;
+    }
+
+    @include media-breakpoint-down(md) {
+        .attempt {
+            padding-left: 0.25rem;
+        }
+
+        .worker-long,
+        .down-text {
+            display: none;
+        }
+
+        .worker-short {
+            display: inline;
+        }
+
+        .row .name {
+            width: 5.5rem;
         }
     }
 
