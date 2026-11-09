@@ -56,8 +56,8 @@ const {
 ---
 
 {
-    /* On the hairline grid of the blocks above: the head on two columns with
-    the whitepaper on its right, then the three problems in cells between
+    /* On the hairline grid of the blocks above: the head in one column
+    (title, copy, whitepaper), then the three problems in cells between
     rules. */
 }
 <section class:list={["replace", tone]} aria-labelledby={id}>
@@ -188,24 +188,19 @@ const {
         }
     }
 
-    // The homepage's two-column head: the title on the left, the copy on the
-    // right, both from the top, and the whitepaper at the far right.
+    // The head reads top to bottom: the title, its copy, the whitepaper.
     .head {
         display: grid;
-        grid-template-columns: minmax(0, 34rem) minmax(0, 1fr) auto;
-        row-gap: 1.25rem;
-        align-items: start;
+        justify-items: start;
+        row-gap: 1.5rem;
         padding: 8.5rem 0 4rem;
 
         > * {
             padding-inline: var(--inset);
         }
 
-        @include media-breakpoint-down(lg) {
-            grid-template-columns: minmax(0, 1fr);
-        }
-
         @include media-breakpoint-down(md) {
+            row-gap: 1.25rem;
             padding-block: 4.5rem 3rem;
         }
 
@@ -217,18 +212,10 @@ const {
             line-height: 1.1;
             color: var(--ks-content-primary);
             text-wrap: balance;
-
-            // Two lines, free to run past its column into the gutter
-            // before the copy, as in the control plane block.
-            @include media-breakpoint-up(lg) {
-                width: max-content;
-                max-width: 10em;
-                padding-right: 0;
-            }
         }
 
         p {
-            max-width: calc(26rem + 2 * var(--inset));
+            max-width: calc(38rem + 2 * var(--inset));
             margin: 0;
             font-size: 1.125rem;
             line-height: 1.55;
@@ -242,13 +229,9 @@ const {
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
-            justify-self: end;
+            margin-top: 0.75rem;
             margin-inline: var(--inset);
             padding-inline: 0;
-
-            @include media-breakpoint-down(lg) {
-                justify-self: start;
-            }
         }
     }
 
