@@ -16,7 +16,6 @@
     text-align: center;
 }
 
-// $color: null for a dark section that sets its text colour on itself.
 @mixin lp-heading($color: var(--lp-content-primary), $size: 1.875rem) {
     color: $color;
     font-size: $size;
