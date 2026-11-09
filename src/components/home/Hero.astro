@@ -13,7 +13,6 @@ const totalPlugins = await fetchTotalPluginsCount()
 
 // Melissa's keyword bar ("Kestra at a glance").
 const KEY_FACTS = [
-    "Open Source",
     "Declarative",
     "Language-Agnostic",
     `${totalPlugins}+ Plugins`,
@@ -54,9 +53,7 @@ const storyHref = (company?: string) => {
 // Only out to the sides of the mark: the title sits above it and the lead
 // under it, so no speck ever crosses the words.
 const SPARKS = Array.from({ length: 14 }, (_, idx) => ({
-    a: Math.round(
-        (idx % 2 ? 180 : 0) + (((idx * 37) % 50) - 25),
-    ),
+    a: Math.round((idx % 2 ? 180 : 0) + (((idx * 37) % 50) - 25)),
     r: (3.4 + ((idx * 7) % 5) * 0.55).toFixed(2),
     s: 2 + (idx % 3),
     delay: -((idx * 0.83) % 4.2).toFixed(2),
@@ -241,7 +238,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                     </span>
                     <p class="lead">
                         Use any language, connect your systems, and run
-                        anywhere. Built on open source.
+                        anywhere. Open source under Apache 2.0.
                     </p>
                     <div class="buttons">
                         <a href="/get-started" class="btn-solid">

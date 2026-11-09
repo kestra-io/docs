@@ -24,7 +24,7 @@ const DOMAINS: Domain[] = [
         tint: "#E6C359",
         title: "Infrastructure automation",
         description:
-            "Accelerate infrastructure delivery with consistent controls. Coordinate provisioning, deployment, and operations across clouds, hypervisors, and bare metal environments with approvals and audit trails.",
+            "Accelerate infrastructure delivery with consistent controls. Provision and configure across clouds, hypervisors, and bare metal with Terraform and Ansible, with approvals and audit trails on every change.",
         solutionHref: "/infra-automation",
         topology: {
             label: "Kestra topology of the provision_vm flow running: request form, owner approval, Terraform apply, Ansible config and CMDB update run one after the other",
@@ -95,7 +95,7 @@ const DOMAINS: Domain[] = [
         tint: "#59E659",
         title: "IT operations",
         description:
-            "Modernize scheduling and batch operations. Replace cron jobs and aging schedulers with observable, versioned workflows, with dependencies, SLAs, retries, and alerts in one place, so teams can find and fix failures fast.",
+            "Run day 2 operations from one place. Respond to incidents, run runbooks, roll out patches, and rotate certificates, with ServiceNow tickets, approvals, retries, and alerts in every step.",
         topology: {
             label: "Kestra topology of the nightly_batch flow running: 2 AM schedule, SFTP download, ERP batch load, archive to S3 and on-call alert run one after the other",
             nodes: [
@@ -316,8 +316,8 @@ const DOMAINS: Domain[] = [
             <header class="head">
                 <h2 id="control-plane">One control plane for every workflow</h2>
                 <p>
-                    Give teams shared visibility and consistent governance
-                    across workflows.
+                    Unified orchestration, with shared visibility and consistent
+                    governance across every team's workflows.
                 </p>
             </header>
             <div class="body">

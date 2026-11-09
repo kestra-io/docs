@@ -125,15 +125,16 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
                     <h2 id="ai-governance">
                         <slot name="title">
-                            AI agents cross systems seamlessly. <span
-                                >Enforce governance at every step.</span
+                            Every action an agent takes is <span
+                                >a governed step in a Kestra flow.</span
                             >
                         </slot>
                     </h2>
                     <p class="lead">
                         <slot name="lead">
-                            Permissions, approvals, and audit trails apply to
-                            every action an agent takes.
+                            Build agents with any framework. Kestra adds
+                            permissions, approvals, audit trails, state and
+                            retries to every step they take.
                         </slot>
                     </p>
                 </div>
@@ -1258,8 +1259,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         padding: clamp(2rem, 3.5vw, 3rem) clamp(1rem, 2.5vw, 2.5rem);
         border-block: 1px solid var(--line);
         background: var(--node);
-
-
     }
 
     // A test: the aurora background of the brand visuals, from black at
