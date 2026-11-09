@@ -921,4 +921,58 @@ const DOMAINS: Domain[] = [
             animation: none;
         }
     }
+    // On a tablet or a phone, no tabs: each use case reads in turn, its
+    // title in its colour, its copy and its way on, then its run under it,
+    // all four one after the other between rules.
+    @include media-breakpoint-down(lg) {
+        .tabs {
+            display: none;
+        }
+
+        .visuals {
+            display: block;
+            overflow: visible;
+        }
+
+        .visual {
+            min-height: 0;
+            gap: 1.5rem;
+            opacity: 1;
+            visibility: visible;
+
+            & + & {
+                border-top: var(--rule);
+            }
+
+            > .panel-copy,
+            > .panel-topology {
+                transform: none;
+            }
+
+            .pixels {
+                width: 64px;
+            }
+        }
+
+        // The use case's colour, as on its tab, before its title.
+        .panel-copy h3::before {
+            content: "";
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            margin: 0 0.625rem 0.2em 0;
+            border-radius: 2px;
+            background: var(--tint);
+            vertical-align: middle;
+        }
+
+        .solution {
+            margin-top: 1.25rem;
+        }
+
+        // As tall as its scaled graph (see the topology's fit).
+        .panel-topology {
+            min-height: 0;
+        }
+    }
 </style>

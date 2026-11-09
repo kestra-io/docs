@@ -375,10 +375,28 @@ const clock = (seconds: number) => {
 
         // Shown means on screen and, inside a tab panel, in the open tab.
         const host = root.closest<HTMLElement>("[data-domain-visual]")
+        // On a tablet or a phone the use cases are all laid out, no tabs:
+        // each runs when on screen, and its graph is scaled to the width it
+        // has, whole, with its panel just as tall as it.
+        const stacked = matchMedia("(max-width: 991.98px)")
+        const panel = root.parentElement!
+        const fit = () => {
+            if (!stacked.matches) {
+                root.style.removeProperty("--z")
+                panel.style.removeProperty("min-height")
+                return
+            }
+            // The canvas, its zoom and a little room on either side.
+            const z = Math.min(0.65, panel.clientWidth / (880 * 1.04 + 24))
+            root.style.setProperty("--z", z.toFixed(3))
+            panel.style.minHeight = `${Math.round(250 * 1.04 * z + 40)}px`
+        }
+        new ResizeObserver(fit).observe(panel)
+        stacked.addEventListener("change", fit)
         const shown = () =>
             visible &&
             root.offsetParent !== null &&
-            (!host || host.classList.contains("active"))
+            (!host || stacked.matches || host.classList.contains("active"))
 
         // Each time the topology comes into view it builds itself quickly
         // (nodes, then edges, then the Gantt) before the run starts.
