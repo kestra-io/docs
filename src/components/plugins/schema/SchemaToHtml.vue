@@ -229,7 +229,8 @@
         return found;
     };
 
-    const {getHighlighterCore} = await import("./shikiToolset");
+    const {getHighlighterCore, pebbleTransformer} = await import("./shikiToolset");
+    provide("pebbleTransformer", pebbleTransformer);
 
     const initialLanguages = new Set<string>(["yaml"])
     if (props.pluginArtifactCoordinate) initialLanguages.add("bash")

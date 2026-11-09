@@ -20,11 +20,11 @@
 </template>
 
 <script setup lang="ts">
-    import {computed, nextTick, ref, shallowRef} from "vue";
+    import {computed, inject, nextTick, ref, shallowRef} from "vue";
     import {createPopper} from "@popperjs/core";
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
-    import {pebbleTransformer} from "@kestra-io/plumage";
+    import type {pebbleTransformer as createPebbleTransformer} from "@kestra-io/plumage";
 
     const icons = {
         ContentCopy: shallowRef(ContentCopy),
@@ -54,6 +54,7 @@
     const copyIcon = shallowRef(icons.ContentCopy.value)
     const copyButton = ref<HTMLButtonElement>()
     const copyTooltip = ref<HTMLDivElement>()
+    const pebbleTransformer = inject<typeof createPebbleTransformer>("pebbleTransformer")!
 
     // Grammars load on demand, so one the highlighter doesn't carry yet
     // renders as plain text instead of throwing out of the computed.
