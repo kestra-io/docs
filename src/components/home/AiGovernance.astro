@@ -41,6 +41,16 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         style={`--pixels: url("${pixelCluster}")`}></span>
     {/* A soft light that follows the pointer across the block. */}
     <span class="glow" aria-hidden="true" data-glow></span>
+    {
+        /* A planet rising from the foot of the section, cut by its edge, in
+        the 2.0 page's colours: its lit limb arcs behind the flow. */
+    }
+    <div class="planet" aria-hidden="true">
+        <span class="haze"></span>
+        <span class="atmosphere"></span>
+        <span class="rim"></span>
+        <span class="limb"></span>
+    </div>
     <div class="container-xl">
         <div class="rails">
             {
@@ -963,6 +973,151 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             transparent 75%
         );
         pointer-events: none;
+    }
+
+    // Over the planet.
+    .ai-governance > .container-xl {
+        position: relative;
+        z-index: 1;
+    }
+
+    // The planet: a disc wider than the page, centred, rising from the
+    // section's foot, which cuts it: only its lit cap shows, behind the
+    // flow. Static, so it costs nothing while the run plays.
+    .planet {
+        --size: 84rem;
+        // How much of the cap rises above the foot.
+        --rise: 30rem;
+
+        position: absolute;
+        z-index: 0;
+        bottom: calc(var(--rise) - var(--size));
+        left: 50%;
+        width: var(--size);
+        aspect-ratio: 1;
+        translate: -50% 0;
+        border-radius: 50%;
+        // Lit from above: a pale cap that fades into the night side. No
+        // texture, light only.
+        background:
+            linear-gradient(transparent 20%, var(--bg) 48%),
+            radial-gradient(
+                ellipse 62% 26% at 50% 0%,
+                rgba(200, 200, 216, 0.24),
+                rgba(130, 130, 150, 0.1) 40%,
+                transparent 72%
+            ),
+            #060609;
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            --size: 60rem;
+            --rise: 22rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    // The limb: a soft edge of light fading inwards, pale where the light
+    // falls on top, indigo down both sides.
+    .limb {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+            from -90deg,
+            transparent 0deg,
+            #3a26ff 22deg,
+            #5f4dff 52deg,
+            rgba(216, 214, 236, 0.45) 80deg,
+            rgba(255, 255, 255, 0.55) 90deg,
+            rgba(216, 214, 236, 0.45) 100deg,
+            #5f4dff 128deg,
+            #3a26ff 158deg,
+            transparent 180deg
+        );
+        mask:
+            radial-gradient(
+                farthest-side,
+                transparent calc(100% - 16px),
+                #000 100%
+            ),
+            linear-gradient(#000 15%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    // The glow around the planet: an indigo halo hugging the edge, fading
+    // down the sides, the top left pale.
+    .atmosphere {
+        position: absolute;
+        z-index: -1;
+        inset: -20rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent calc(100% - 20rem),
+            rgba(80, 56, 255, 0.5) calc(100% - 20rem + 1px),
+            rgba(70, 44, 255, 0.22) calc(100% - 18rem),
+            rgba(60, 30, 240, 0.08) calc(100% - 14rem),
+            transparent calc(100% - 9rem)
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 45deg,
+                transparent 78deg,
+                transparent 102deg,
+                #000 135deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 4%, transparent 46%);
+        mask-composite: intersect;
+    }
+
+    // Inside the edge, the same indigo glow down both sides.
+    .rim {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle closest-side,
+            transparent 82%,
+            rgba(50, 28, 220, 0.16) 92%,
+            rgba(72, 48, 255, 0.5) 98.5%,
+            rgba(118, 100, 255, 0.7) 100%
+        );
+        mask:
+            conic-gradient(
+                from -90deg,
+                #000 0deg,
+                #000 40deg,
+                transparent 75deg,
+                transparent 105deg,
+                #000 140deg,
+                #000 360deg
+            ),
+            linear-gradient(#000 20%, transparent 48%);
+        mask-composite: intersect;
+    }
+
+    // A pale haze over the lit top.
+    .haze {
+        position: absolute;
+        z-index: -1;
+        top: -7rem;
+        left: 50%;
+        width: 44rem;
+        height: 16rem;
+        translate: -50% 0;
+        background: radial-gradient(
+            closest-side,
+            rgba(230, 230, 242, 0.1),
+            rgba(200, 200, 220, 0.04) 55%,
+            transparent
+        );
     }
 
     // A soft light under the pointer, shown only while it is over the
