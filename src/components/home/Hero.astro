@@ -423,15 +423,11 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         color: #ffffff;
         text-wrap: balance;
 
-        // Two beats, not a wrapped line: the claim first, softer, then the
-        // punchline in full white, arriving a moment later.
+        // Two beats, not a wrapped line: the claim first, then the
+        // punchline, arriving a moment later. Both in full white.
         .beat {
             display: block;
             animation: beat-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-        }
-
-        .beat:first-child {
-            color: rgba(255, 255, 255, 0.58);
         }
 
         .beat + .beat {
