@@ -2387,6 +2387,11 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             order: 9;
         }
 
+        // The way into the platform, after the three steps.
+        .grid > .foot {
+            order: 10;
+        }
+
         // The screens, in the page's flow, at full width.
         .body .card {
             inset: auto;
@@ -2419,6 +2424,13 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 
             .lane {
                 animation-play-state: running;
+            }
+
+            // In their own colours here, nothing to pick them out from.
+            .chip {
+                filter: none;
+                opacity: 1;
+                animation: none;
             }
         }
     }
