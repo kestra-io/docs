@@ -176,6 +176,29 @@ const icons = new Map(
     ),
 )
 
+// Each flow's steps run one after the other, so each node's Gantt slot
+// starts where the previous one ends, its length its share of the run, as
+// in the control plane's topologies. Very short steps keep a sliver.
+const seconds = (duration: string) =>
+    [...duration.matchAll(/([\d.]+)\s*(m|s)/g)].reduce(
+        (sum, [, value, unit]) => sum + Number(value) * (unit === "m" ? 60 : 1),
+        0,
+    )
+const MIN_LENGTH = 0.015
+const slots = (steps: Step[]) => {
+    const total = steps.reduce((sum, step) => sum + seconds(step.duration), 0)
+    const shown = steps.map((step) =>
+        Math.max(seconds(step.duration) / total, MIN_LENGTH),
+    )
+    const span = shown.reduce((sum, length) => sum + length, 0)
+    let start = 0
+    return shown.map((length) => {
+        const slot = `--start: ${start / span}; --length: ${length / span}`
+        start += length
+        return slot
+    })
+}
+
 const GUARDS = [
     { id: "rbac", name: "RBAC", icon: "mdi:shield-account-outline" },
     { id: "approvals", name: "Approvals", icon: "mdi:account-check-outline" },
@@ -218,7 +241,7 @@ const GUARDS = [
                     </div>
 
                     <div class="steps">
-                        {flow.steps.map((step, i) => (
+                        {flow.steps.map((step, i, steps) => (
                             <>
                                 {i > 0 && (
                                     <span
@@ -259,7 +282,7 @@ const GUARDS = [
                                                   ? "trigger"
                                                   : undefined
                                         }
-                                        style={`--i: ${i}`}
+                                        style={`--i: ${i}; ${slots(steps)[i]}`}
                                         data-node={i}
                                     >
                                         <span slot="action" class="action" />
@@ -373,10 +396,33 @@ const GUARDS = [
             }
             const id = (node: HTMLElement) =>
                 node.querySelector("strong")!.textContent!.trim()
+            // The step's Gantt slot draws itself over the time it runs,
+            // from its start to its full length.
+            const bar = (node: HTMLElement) =>
+                node.querySelector<HTMLElement>(".progress")
+            const grow = (node: HTMLElement, ms: number) => {
+                const el = bar(node)
+                if (!el) return
+                const start = Number(node.style.getPropertyValue("--start"))
+                const length = Number(node.style.getPropertyValue("--length"))
+                const at = `translateX(${start * 100}%)`
+                el.animate(
+                    [
+                        { transform: `${at} scaleX(0)` },
+                        { transform: `${at} scaleX(${length})` },
+                    ],
+                    { duration: ms, easing: "linear", fill: "forwards" },
+                )
+            }
 
             // A fresh run.
             run.classList.add("resetting")
-            nodes.forEach((node) => set(node, "created"))
+            nodes.forEach((node) => {
+                set(node, "created")
+                bar(node)
+                    ?.getAnimations()
+                    .forEach((animation) => animation.cancel())
+            })
             edges.forEach((edge) => edge.classList.remove("active", "done"))
             run.querySelectorAll("[data-guard]").forEach((el) => {
                 delete (el as HTMLElement).dataset.state
@@ -401,6 +447,7 @@ const GUARDS = [
                 if (kind === "approval") {
                     // The run holds until a person resumes it.
                     set(node, "paused")
+                    grow(node, 1700)
                     pillText(node, `Waiting for ${approver}`)
                     guard("approvals").dataset.state = "wait"
                     mood("wait", node)
@@ -415,6 +462,7 @@ const GUARDS = [
                 }
 
                 set(node, "running")
+                grow(node, kind === "agent" ? 2000 : kind === "trigger" ? 600 : 1000)
                 if (kind === "agent") {
                     // The agent works inside its step, with the rights the
                     // flow gives it.
