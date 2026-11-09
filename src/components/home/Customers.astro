@@ -355,7 +355,8 @@ const {
         padding: 8.5rem 0 4rem;
 
         @include media-breakpoint-down(md) {
-            padding-block: 4.5rem 3rem;
+            // Off the screen's edge, in line with the story's words.
+            padding: 4.5rem var(--inset) 3rem;
         }
 
         h2 {
@@ -526,6 +527,11 @@ const {
             grid-template-columns: minmax(0, 1fr);
         }
 
+        // Without its photo on a phone, as tall as its words.
+        @include media-breakpoint-down(md) {
+            min-height: 0;
+        }
+
         &.bare {
             grid-template-columns: minmax(0, 1fr);
             min-height: 24rem;
@@ -602,6 +608,11 @@ const {
         min-height: 20rem;
         background: #0d0d10;
         overflow: hidden;
+
+        // On a phone the words carry the story alone.
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
 
         :global(img) {
             position: absolute;

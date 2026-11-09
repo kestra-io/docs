@@ -943,6 +943,13 @@ const DOMAINS: Domain[] = [
         .visual {
             min-height: 0;
             gap: 1.5rem;
+            // Room between one use case and the next.
+            padding-block: 3rem;
+
+            // No lit edge on the open one: they all show alike here.
+            :global(.lit) > &.active {
+                box-shadow: none;
+            }
             opacity: 1;
             visibility: visible;
 
@@ -979,6 +986,30 @@ const DOMAINS: Domain[] = [
         // As tall as its scaled graph (see the topology's fit).
         .panel-topology {
             min-height: 0;
+        }
+
+        // In this order: the title, the run, the copy, the way on.
+        .panel-copy {
+            display: contents;
+
+            h3 {
+                order: 1;
+                margin: 0;
+            }
+
+            p {
+                order: 3;
+            }
+        }
+
+        .panel-topology {
+            order: 2;
+        }
+
+        .solution {
+            order: 4;
+            justify-self: start;
+            margin-top: 0;
         }
     }
 </style>

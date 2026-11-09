@@ -702,6 +702,55 @@ const WORKERS = [
                                                         <path d="M140 170 H308 C354 170 354 228 400 228" />
                                                     </g>
                                                 </svg>
+                                                {/* The same links top to bottom, for a phone:
+                                                the workers above, Kestra in the middle, the
+                                                backends under it. */}
+                                                <svg
+                                                    class="lines vertical"
+                                                    viewBox="0 0 340 420"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        class="wire"
+                                                        d="M60 40 C60 106 170 106 170 172"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M170 40 V172"
+                                                    />
+                                                    <path
+                                                        class="wire intruder"
+                                                        d="M280 40 C280 106 170 106 170 172"
+                                                    />
+                                                    <path
+                                                        class="jet"
+                                                        d="M280 40 C280 106 170 106 170 172"
+                                                        pathLength="138"
+                                                        data-jet
+                                                    />
+                                                    <path
+                                                        class="cut"
+                                                        d="M221.5 102.5 l7 7 M228.5 102.5 l-7 7"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M170 228 C170 284 85 284 85 340"
+                                                    />
+                                                    <path
+                                                        class="wire"
+                                                        d="M170 228 C170 284 255 284 255 340"
+                                                    />
+                                                    <g class="flows">
+                                                        <path
+                                                            d="M60 40 C60 106 170 106 170 172 V228 C170 284 85 284 85 340"
+                                                            pathLength="640"
+                                                        />
+                                                        <path
+                                                            d="M170 40 V228 C170 284 255 284 255 340"
+                                                            pathLength="640"
+                                                        />
+                                                    </g>
+                                                </svg>
                                                 <p
                                                     class="workers"
                                                     data-handshake
@@ -1799,6 +1848,27 @@ const WORKERS = [
         font-size: 0.875rem;
         color: var(--muted);
 
+        // On a phone, a line of text: the dot runs with its words, the
+        // count goes under them. (Over the glimpses' flex paragraphs.)
+        @include media-breakpoint-down(md) {
+            .glimpse & {
+                display: block;
+            }
+
+            text-align: center;
+
+            .live {
+                display: inline-block;
+                margin-right: 0.5rem;
+                vertical-align: 0.05em;
+            }
+
+            .count {
+                display: block;
+                margin: 0.25rem 0 0;
+            }
+        }
+
         .count {
             margin-left: 0.75rem;
             font-variant-numeric: tabular-nums;
@@ -1809,6 +1879,8 @@ const WORKERS = [
     // The log's live dot.
     .live {
         position: relative;
+        // Round whatever the line does: never squeezed when it wraps.
+        flex-shrink: 0;
         width: 0.4375rem;
         height: 0.4375rem;
         border-radius: 50%;
@@ -1844,9 +1916,76 @@ const WORKERS = [
             zoom: 0.8;
         }
 
-        // Drawn smaller on a phone, so it all still shows.
+        // On a phone it stands upright (see below), at nearly full size.
         @include media-breakpoint-down(md) {
-            zoom: 0.55;
+            width: 340px;
+            height: 420px;
+            zoom: 0.9;
+        }
+    }
+
+    // The upright links show on a phone only, the ones across elsewhere.
+    .schema > .lines.vertical {
+        display: none;
+        width: 340px;
+        height: 420px;
+    }
+
+    // On a phone, top to bottom: the three workers in a row, Kestra under
+    // them with its name beside it, the repository and the queue side by
+    // side at the foot.
+    @include media-breakpoint-down(md) {
+        .schema > .lines:not(.vertical) {
+            display: none;
+        }
+
+        .schema > .lines.vertical {
+            display: block;
+        }
+
+        .schema .worker {
+            top: 40px !important;
+            width: 104px;
+            margin-top: -20px;
+            padding: 0 0.625rem;
+            font-size: 0.8125rem;
+
+            &:nth-child(1) {
+                left: 8px;
+            }
+
+            &:nth-child(2) {
+                left: 118px;
+            }
+
+            &:nth-child(3) {
+                left: 228px;
+            }
+        }
+
+        .schema .hub {
+            top: 172px;
+            left: 142px;
+        }
+
+        .schema .hub-label {
+            top: 191px;
+            left: 208px;
+            width: auto;
+            text-align: left;
+        }
+
+        .schema .lane {
+            top: 340px !important;
+            width: 150px;
+
+            &.repository {
+                left: 10px;
+            }
+
+            &.queue {
+                left: 180px;
+            }
         }
     }
 
@@ -2586,11 +2725,15 @@ const WORKERS = [
     function playIntruder() {
         const schema = document.querySelector<HTMLElement>("[data-intruder]")
         if (!schema || reduced()) return
-        const jet = schema.querySelector<SVGPathElement>("[data-jet]")
+        // The jet of the drawing on show: across, or top to bottom on a
+        // phone.
+        const jets = [...schema.querySelectorAll<SVGPathElement>("[data-jet]")]
+        const visibleJet = () =>
+            jets.find((path) => path.getClientRects().length) ?? jets[0]
         const worker = schema.querySelector<HTMLElement>(
             '[data-worker="refused"]',
         )
-        if (!jet || !worker) return
+        if (!jets.length || !worker) return
         let timers: number[] = []
 
         const attempt = () => {
@@ -2598,6 +2741,7 @@ const WORKERS = [
             worker.classList.add("checking")
             timers = [
                 window.setTimeout(() => {
+                    const jet = visibleJet()
                     const run = jet.animate(
                         [
                             { strokeDashoffset: 14, opacity: 1 },

@@ -2402,16 +2402,23 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             transform: none;
         }
 
+        // The whole flow, a little more of it in view, the rest a scroll
+        // away, both ways, inside the editor.
         .body .editor {
-            max-height: 18rem;
+            max-height: 26rem;
 
             // Room off the card's edge for the tab and the line numbers.
             .tabs {
+                flex-shrink: 0;
                 padding-inline: 1.25rem;
             }
 
             pre {
+                flex: 1;
+                min-height: 0;
                 padding-left: 0.5rem;
+                overflow: auto;
+                overscroll-behavior: contain;
             }
         }
 
