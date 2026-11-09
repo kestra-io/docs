@@ -24,6 +24,7 @@
     import {createPopper} from "@popperjs/core";
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
     import Check from "vue-material-design-icons/Check.vue";
+    import {pebbleTransformer} from "@kestra-io/plumage";
 
     const icons = {
         ContentCopy: shallowRef(ContentCopy),
@@ -45,7 +46,7 @@
             filename: null,
             highlights: () => [],
             meta: null,
-            theme: "github-dark-default"
+            theme: "kestra-dark"
         })
 
     const isHoveringCode = ref(false)
@@ -62,6 +63,7 @@
         return props.highlighter.codeToHtml(props.code, {
             lang: loaded ? lang : "text",
             theme: props.theme,
+            transformers: [pebbleTransformer()],
         })
     })
 

@@ -185,7 +185,7 @@
         observer?.disconnect();
     });
 
-    const codeTheme = computed(() => isDark.value ? "github-dark-default" : "github-light-default");
+    const codeTheme = computed(() => isDark.value ? "kestra-dark" : "kestra-light");
 
     provide("highlighter", highlighter);
     provide("codeTheme", codeTheme);

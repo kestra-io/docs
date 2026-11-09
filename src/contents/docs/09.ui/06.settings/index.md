@@ -48,7 +48,8 @@ Below is a detailed list of the Appearance options you can configure:
 
 - **Theme Mode**: Dark or Light
 - **Chart Color Scheme**: Classic (red-green) or Kestra (pink-purple)
-- **Editor Theme**: Dark or Light
+- **Editor Theme in Dark Mode**: syntax colors of the code editor when the app is in Dark mode. Match the app theme (default), Kestra Dark, Kestra Dark Classic, Kestra Midnight or Kestra Dark High Contrast
+- **Editor Theme in Light Mode**: syntax colors of the code editor when the app is in Light mode. Match the app theme (default), Kestra Light or Kestra Light High Contrast
 - **Editor Font Size**: e.g., 12 — arbitrary integer number
 - **Editor Font Family**: one of the following:
   - Source Code Pro
