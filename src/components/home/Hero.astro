@@ -334,6 +334,20 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     document.addEventListener("astro:page-load", leanField)
     leanField()
 
+    // The menu stays clear over this hero only, which runs up under it.
+    function clearMenu() {
+        if (!document.querySelector("[data-hero-frame]")) return
+        document.body.setAttribute("data-header-clear", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clear"),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", clearMenu)
+    clearMenu()
+
     // The field's vanishing point sits on the Kestra mark, wherever the
     // copy puts it.
     function centreOnMark() {
@@ -364,9 +378,10 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     // key facts centred in a field of plugins, over the customers.
     .home-hero {
         position: relative;
-        // Up under the fixed menu, so no strip of white shows between them
-        // (the page's top padding runs a little taller than the menu).
-        margin-top: -1rem;
+        // All the way up under the fixed menu, over the page's 67px top
+        // offset (app.scss): the menu stays clear over the hero until the
+        // page scrolls.
+        margin-top: -67px;
         // A hairline across the page between the customers and what follows.
         border-bottom: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
@@ -378,8 +393,11 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         position: relative;
         display: flex;
         flex-direction: column;
-        // Most of the first screen, the copy centred in it.
-        min-height: min(86vh, 860px);
+        // Most of the first screen, the copy centred in it, with the room
+        // the menu takes over it on top, so the copy sits where it did.
+        --menu: calc(67px - 1rem);
+        padding-top: var(--menu);
+        min-height: calc(min(80vh, 800px) + var(--menu));
         // Square, edge to edge: a global .frame rule rounds it otherwise.
         border-radius: 0;
         overflow: hidden;
@@ -891,8 +909,9 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         display: flex;
         flex: 1;
         align-items: center;
-        // On the Kestra logo of the menu.
-        padding-block: clamp(3rem, 6vw, 5rem);
+        // On the Kestra logo of the menu; less under the buttons, so the
+        // key facts follow them closely.
+        padding-block: clamp(3rem, 6vw, 5rem) clamp(1rem, 2vw, 1.5rem);
     }
 
     .customers {

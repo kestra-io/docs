@@ -112,7 +112,8 @@
                     <span class="menu-text">{{
                         isOpen ? "Close" : "Menu"
                     }}</span>
-                    <Segment v-if="!isOpen" />
+                    <Segment v-if="!isOpen" class="icon-segment" />
+                    <MenuIcon v-if="!isOpen" class="icon-even" />
                     <Close v-if="isOpen" />
                 </button>
             </div>
@@ -727,6 +728,7 @@
     import Close from "vue-material-design-icons/Close.vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
+    import MenuIcon from "vue-material-design-icons/Menu.vue"
     import Slack from "vue-material-design-icons/Slack.vue"
     import { menuWidths } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
@@ -1675,7 +1677,52 @@
             // quieter menu: a plain opaque bar, with a hairline once scrolled
             // instead of the blur, a smaller logo, flat buttons and a bare
             // GitHub star count.
+            // The even menu icon is the clean menu's only.
+            .navbar-toggler .icon-even {
+                display: none;
+            }
+
             body[data-header-clean] & {
+                // The menu button, on a phone or tablet: a tile like the
+                // search one beside it, in the site's typeface, with an even
+                // three-line icon.
+                .navbar-toggler {
+                    gap: 0.375rem !important;
+                    // The buttons' height, as the search tile.
+                    height: 38px;
+                    padding: 0 0.75rem;
+                    border-radius: 0.5rem;
+                    background: #2a2a30;
+                    font-family: inherit;
+                    font-size: 0.9375rem;
+                    font-weight: 500;
+                    line-height: 1.461;
+                    color: #ffffff;
+
+                    &:hover {
+                        background: #36363d;
+                    }
+
+                    span.menu-text {
+                        margin-top: 0;
+                        color: inherit !important;
+                    }
+
+                    .icon-segment {
+                        display: none;
+                    }
+
+                    .icon-even {
+                        display: inline-flex;
+                    }
+
+                    :deep(.material-design-icon),
+                    :deep(.material-design-icon__svg) {
+                        width: 1.125rem;
+                        height: 1.125rem;
+                    }
+                }
+
                 // Opaque from the top, so nothing shows through while the
                 // background would otherwise fade in on the first scroll.
                 &,
@@ -1698,7 +1745,8 @@
                         padding: 0.5rem 0.875rem;
                         border: 0;
                         border-radius: 0.5rem;
-                        font-size: 0.8125rem;
+                        // A step up from the default, closer to the links.
+                        font-size: 0.9375rem;
                         font-weight: 500;
                         line-height: 1.461;
                         box-shadow: none;
@@ -1726,8 +1774,8 @@
                     .btn.icon-button {
                         align-items: center;
                         justify-content: center;
-                        width: 2.1875rem;
-                        height: 2.1875rem;
+                        width: 2.375rem;
+                        height: 2.375rem;
                         padding: 0 !important;
                         border-radius: 0.5rem;
                         background: #eeeef1;
@@ -1822,6 +1870,16 @@
                         }
                     }
                 }
+            }
+
+            // At the very top of a dark hero that runs up under it (the
+            // homepage's, which sets data-header-clear), the menu is clear:
+            // no fill, no hairline, the hero shows through. It fills in and
+            // draws its hairline as soon as the page scrolls.
+            body[data-header-clear][data-header-over-dark]
+                &:not(.open):not(.scrolled) {
+                background-color: transparent !important;
+                box-shadow: none !important;
             }
 
             // A page section marked [data-header-dark] is under the menu: the
