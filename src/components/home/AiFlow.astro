@@ -494,9 +494,8 @@ const GUARDS = [
         margin: 0 auto;
         font-family: var(--font-family-mona-sans), system-ui, sans-serif;
 
-        @media (max-width: 1100px) {
-            min-width: 64rem;
-        }
+        // Under 1100px the five steps no longer fit in a row: they stand in
+        // a column (see the end of the file).
     }
 
     // The flow: one frame, everything inside it is governed.
@@ -784,6 +783,116 @@ const GUARDS = [
     @media (prefers-reduced-motion: reduce) {
         .edge.active {
             animation: none;
+        }
+    }
+    // Under 1100px, on a tablet or a phone, the flow reads top to bottom: the steps in a
+    // column joined by short dashed edges, the agent's decision on its own
+    // line above it, the head and its tags wrapping.
+    @media (max-width: 1100px) {
+        .frame {
+            padding: 1rem 1rem 0.75rem;
+        }
+
+        .head {
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .guards {
+            flex-wrap: wrap;
+            margin-left: 0;
+        }
+
+        .steps {
+            grid-template-columns: minmax(0, 1fr);
+            max-width: 22rem;
+            margin-inline: auto;
+            padding-bottom: 1.75rem;
+        }
+
+        // Each step leaves room under it for its state pill.
+        .step {
+            padding-bottom: 1.625rem;
+        }
+
+        .edge {
+            justify-self: center;
+            width: 1px;
+            height: 0.875rem;
+            margin: 0;
+            background: repeating-linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.28) 0 4px,
+                transparent 4px 8px
+            );
+
+            &::after {
+                top: auto;
+                right: auto;
+                bottom: -2px;
+                left: 50%;
+                border: 4px solid transparent;
+                border-top: 5px solid rgba(255, 255, 255, 0.4);
+                border-bottom: 0;
+                translate: -50% 0;
+            }
+
+            &.active {
+                background: repeating-linear-gradient(
+                    180deg,
+                    var(--running) 0 4px,
+                    transparent 4px 8px
+                );
+                background-size: 1px 16px;
+                animation: march-down 0.5s linear infinite;
+
+                &::after {
+                    border-top-color: var(--running);
+                }
+            }
+
+            &.done {
+                background: rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .decision {
+            position: static;
+            display: flex;
+            width: fit-content;
+            margin: 0 auto 0.625rem;
+            translate: none;
+
+            :global([data-playing]) & {
+                translate: 0 4px;
+            }
+
+            :global([data-playing]) &:global(.shown) {
+                translate: none;
+            }
+        }
+
+        .audit {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+
+            :global(li) {
+                grid-template-columns: 4rem 4.5rem minmax(0, 1fr);
+                gap: 0.5rem;
+            }
+
+            :global(.what) {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    @keyframes march-down {
+        to {
+            background-position: 0 16px;
         }
     }
 </style>

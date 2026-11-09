@@ -509,6 +509,12 @@ const DOMAINS: Domain[] = [
         :global(html.dark) & {
             background: var(--ks-background-body);
             border-bottom: 1px solid var(--ks-border-primary);
+
+            // Without the rails the closing row reads as a second rule just
+            // under the panel's: only the bridge crosses it there.
+            @include media-breakpoint-down(xl) {
+                border-bottom: 0;
+            }
         }
     }
 

@@ -1257,9 +1257,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         border-block: 1px solid var(--line);
         background: var(--node);
 
-        @include media-breakpoint-down(md) {
-            overflow-x: auto;
-        }
+
     }
 
     // A test: the aurora background of the brand visuals, from black at
@@ -1288,8 +1286,17 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                 ),
                 linear-gradient(180deg, #0b0b0d 0%, #121214 50%, #1d1d21 100%);
 
+            // On a phone no card: the flow sits on the block itself, its
+            // own frame enough, with no square-cut panel behind it.
             @include media-breakpoint-down(md) {
+                // The page's gutter, so the frame keeps off the screen's edge.
+                padding: 0 0.5rem;
                 border-radius: 0;
+                background: none;
+
+                &::after {
+                    display: none;
+                }
             }
 
             &::after {
