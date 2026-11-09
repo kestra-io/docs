@@ -55,6 +55,60 @@ describe("getPluginInstallCommand", () => {
         ).toBeUndefined()
         expect(getPluginInstallCommand(undefined, pluginMetadata)).toBeUndefined()
     })
+
+    it("falls back to the page artifact when no metadata group matches the task package", () => {
+        const dotnetMetadata: PluginMetadata = {
+            group: "io.kestra.plugin.scripts.dotnet",
+            artifactGroupId: "io.kestra.plugin",
+            artifactId: "plugin-script-dotnet",
+            name: "dotnet",
+            title: ".NET",
+        }
+
+        expect(
+            getPluginInstallCommand(
+                "io.kestra.plugin.scripts.csharp.Script",
+                [dotnetMetadata],
+                dotnetMetadata,
+            ),
+        ).toBe("io.kestra.plugin:plugin-script-dotnet")
+    })
+
+    it("does not fall back to the page artifact when a Core group matches the task", () => {
+        const coreMetadata: PluginMetadata = {
+            group: "io.kestra.plugin.core",
+            artifactGroupId: "io.kestra.plugin",
+            artifactId: "core",
+            name: "core",
+            title: "Core",
+        }
+
+        expect(
+            getPluginInstallCommand(
+                "io.kestra.plugin.core.log.Log",
+                [coreMetadata],
+                pluginMetadata[0],
+            ),
+        ).toBeUndefined()
+    })
+
+    it("does not use a Core page artifact as a fallback", () => {
+        const eeCoreMetadata: PluginMetadata = {
+            group: "io.kestra.plugin.ee",
+            artifactGroupId: "io.kestra.plugin.ee",
+            artifactId: "core",
+            name: "ee",
+            title: "Enterprise",
+        }
+
+        expect(
+            getPluginInstallCommand(
+                "io.kestra.plugin.other.Task",
+                [],
+                eeCoreMetadata,
+            ),
+        ).toBeUndefined()
+    })
 })
 
 
