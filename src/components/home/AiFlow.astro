@@ -198,7 +198,7 @@ const GUARDS = [
                 >
                     {/* The flow, as named in the product, and what governs it. */}
                     <div class="head">
-                        <img class="mark" src={kestraMark.src} alt="" />
+                        <img class="flow-mark" src={kestraMark.src} alt="" />
                         <span class="name">
                             <span class="ns">{flow.namespace}</span>
                             <span class="sep">/</span>
@@ -516,7 +516,8 @@ const GUARDS = [
         font-size: 0.875rem;
     }
 
-    .mark {
+    // Not ".mark": Bootstrap highlights that class in pale yellow.
+    .flow-mark {
         width: 1.25rem;
         height: 1.25rem;
     }

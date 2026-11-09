@@ -214,7 +214,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                         >
                     </h1>
                     {/* Kestra, where every plugin flies out from. */}
-                    <span class="mark" aria-hidden="true" data-hero-mark>
+                    <span class="hero-mark" aria-hidden="true" data-hero-mark>
                         {
                             SPARKS.map((spark) => (
                                 <span
@@ -487,7 +487,8 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     // The mark in a tile, filling it, and lit: a deep
     // night tile, edged in the mark's own violet and pink, in a lavender
     // and indigo glow, the source of the field.
-    .mark {
+    // Not ".mark": Bootstrap highlights that class.
+    .hero-mark {
         display: grid;
         place-items: center;
         position: relative;

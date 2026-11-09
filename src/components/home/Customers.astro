@@ -338,10 +338,16 @@ const {
         position: relative;
         background: var(--ks-background-body);
 
-        // The rules show through the gaps.
+        // The rules show through the gaps, and frame the whole: the tabs
+        // and the story under them as one bordered piece.
         > .tabs {
-            border-bottom: var(--gap) solid var(--ks-border-primary);
+            border: var(--gap) solid var(--ks-border-primary);
             background: var(--ks-border-primary);
+        }
+
+        > .panels {
+            border: var(--gap) solid var(--ks-border-primary);
+            border-top: 0;
         }
     }
 
