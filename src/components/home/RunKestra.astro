@@ -89,7 +89,6 @@
         // Heading: up and to the right.
         const HEADING = (-29 * Math.PI) / 180
         const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
-        const SIDE = { x: -Math.sin(HEADING), y: Math.cos(HEADING) }
 
         // The craft in fine pixels, nose to the right, as it is drawn on
         // its own turned grid: a spine at the back, five prongs forward
@@ -270,12 +269,6 @@
             pctx.closePath()
             pctx.fill()
         }
-
-        // A point behind the craft: so far back, so far to the side.
-        const behind = (along: number, lane: number) => ({
-            x: at.x - FWD.x * along + SIDE.x * lane,
-            y: at.y - FWD.y * along + SIDE.y * lane,
-        })
 
         const frame = (time: number) => {
             const t = time / 1000
