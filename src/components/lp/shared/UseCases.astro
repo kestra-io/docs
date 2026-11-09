@@ -85,11 +85,12 @@ const {
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     .use-cases {
         position: relative;
         overflow: clip;
-        padding: 5rem 1rem;
-        background-color: var(--lp-bg-dark);
+        @include lp-section(var(--lp-bg-dark));
         background-image:
             radial-gradient(
                 70% 60% at 12% 8%,
@@ -108,8 +109,7 @@ const {
         display: flex;
         flex-direction: column;
         gap: 3rem;
-        max-width: 1140px;
-        margin-inline: auto;
+        @include lp-container;
         @include media-breakpoint-up(lg) {
             flex-direction: row;
             align-items: center;
@@ -129,14 +129,7 @@ const {
 
     h2 {
         margin: 0;
-        color: #ffffff;
-        font-size: 2.25rem;
-        font-weight: 600;
-        line-height: 1.0417;
-        letter-spacing: -0.045rem;
-        @include media-breakpoint-up(lg) {
-            font-size: 3rem;
-        }
+        @include lp-heading($color: #ffffff, $size: 2.25rem);
     }
 
     .bullets {

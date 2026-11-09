@@ -74,6 +74,8 @@ const {
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     /* Deliberately NOT `.hero`: app.scss owns that class as a site component and
      * its `.hero h1, .hero p { max-width: 730px }` would clamp the copy here. */
     .lp-hero {
@@ -104,8 +106,7 @@ const {
         display: flex;
         flex-direction: column;
         gap: 3rem;
-        max-width: 1140px;
-        margin-inline: auto;
+        @include lp-container;
         padding: 0;
         @include media-breakpoint-up(lg) {
             flex-direction: row;
