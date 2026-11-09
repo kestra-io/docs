@@ -3,14 +3,14 @@ import Layout from "~/components/layout.astro"
 import TopologyMock from "~/components/home/TopologyMock.astro"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
 
-import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
-import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
-import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
-import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
-import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
-import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
-import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
-import Translation from "~/components/lp/vra-migration/Translation.astro"
+import LpHeader from "~/components/lp/shared/LpHeader.astro"
+import LpFooter from "~/components/lp/shared/LpFooter.astro"
+import Hero from "~/components/lp/shared/Hero.astro"
+import Platform from "~/components/lp/shared/Platform.astro"
+import UseCases from "~/components/lp/shared/UseCases.astro"
+import Faq from "~/components/lp/shared/Faq.astro"
+import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
+import Translation from "~/components/lp/shared/Translation.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
 
 import { Icon } from "astro-icon/components"
@@ -244,7 +244,7 @@ const faqItems = [
 ---
 
 <Layout {title} {description} noindex bareChrome forceTheme="light">
-    <div class="lp-workflow-orchestration">
+    <div class="lp-page">
         <LpHeader />
         <Hero {routePath} formTitle="Try it on your own infrastructure">
             <Fragment slot="title">
@@ -489,7 +489,7 @@ const faqItems = [
 </Layout>
 
 <style lang="scss">
-    .lp-workflow-orchestration {
+    .lp-page {
         --lp-purple: #631bff;
         --lp-purple-light: #f1efff;
         --lp-purple-rail: #cdc5ff;
