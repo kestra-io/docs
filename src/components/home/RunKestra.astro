@@ -1,41 +1,30 @@
 ---
-import { Image } from "astro:assets"
-import productScreen from "./assets/run/flows-edit.png"
 ---
 
-{
-    /* On black, on the hairline grid of the blocks above: the title with
-    Pricing on its right, then the product on the left, lit from above and
-    fading out, and the three editions stacked on the right. */
-}
-<section class="run-kestra" aria-labelledby="run-kestra">
+<section class="run-kestra" aria-labelledby="run-kestra" data-run-showcase>
+    {/* The field of strokes across the whole section, shimmering in slow
+    waves and lighting up in Kestra's colours under the pointer. Without
+    JavaScript, or with reduced motion, it stands still. */}
+    <canvas class="strokes" aria-hidden="true" data-strokes></canvas>
     <div class="container-xl">
-        <div class="grid">
-            <header class="head surface-dark">
-                <div>
-                    <h2 id="run-kestra">Three ways to run Kestra</h2>
-                    <p>
-                        Try it alone, try it managed, or talk to an expert who
-                        has done the migration before.
-                    </p>
-                </div>
-                {/* One way to compare the three. */}
-                <a href="/pricing" class="btn-ghost">Pricing</a>
+        <div class="stage">
+            {/* From the top: the title on the field, the code in its frame,
+            then the three editions side by side and the way to compare
+            them. */}
+            <header class="head">
+                <h2 id="run-kestra">Three ways to run Kestra</h2>
+                <p>
+                    Try it alone, try it managed, or talk to an expert who has
+                    done the migration before.
+                </p>
             </header>
-
-            <div class="body">
-                <div class="showcase">
-                    <div class="window">
-                        <Image
-                            src={productScreen}
-                            alt="The Kestra UI: a flow's code next to its topology"
-                            widths={[800, 1200, 1600, 2400]}
-                            sizes="(max-width: 992px) 200vw, 2000px"
-                            loading="lazy"
-                        />
-                    </div>
+            <div class="panel">
+                <div class="terminal" aria-hidden="true">
+                    <pre class="term-body"><span class="line cmd" data-type="docker run -p 8080:8080 kestra/kestra server local"><span class="prompt">$</span> <span class="typed">docker run -p 8080:8080 kestra/kestra server local</span><span class="rest"></span></span><span class="line out" data-at="1"><span class="ok">✓</span> Pulled kestra/kestra:latest</span><span class="line out" data-at="2"><span class="ok">✓</span> Server running on <span class="link">localhost:8080</span></span><span class="line cmd" data-type="kestra flow namespace update company.prod ./flows"><span class="prompt">$</span> <span class="typed">kestra flow namespace update company.prod ./flows</span><span class="rest"></span></span><span class="line out" data-at="4"><span class="ok">✓</span> 3 flows deployed to <span class="prod">production</span></span></pre>
                 </div>
+            </div>
 
+            <div class="side">
                 <div class="editions surface-dark">
                     <article class="edition">
                         <h3>Open Source</h3>
@@ -74,54 +63,395 @@ import productScreen from "./assets/run/flows-edit.png"
                             Book a demo with an engineer who has replaced vRA,
                             Airflow, or Control-M before, on your use case.
                         </p>
-                        <a href="/demo" class="btn-solid compact">Book a demo</a
-                        >
+                        <a href="/demo" class="btn-solid compact">
+                            Book a demo
+                        </a>
                     </article>
                 </div>
+                <a href="/pricing" class="compare">
+                    Compare the three on Pricing{" "}
+                    <span aria-hidden="true">→</span>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
+<script>
+    // Plays the terminal while the showcase is on screen: types the start
+    // command, the server comes up, then the flows are deployed to
+    // production; a pause, and again.
+    function playRunShowcase() {
+        const root = document.querySelector<HTMLElement>("[data-run-showcase]")
+        if (!root || root.dataset.wired) return
+        root.dataset.wired = "true"
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        const lines = [...root.querySelectorAll<HTMLElement>(".line")]
+        let visible = false
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+        }).observe(root)
+        const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+        const wait = async (ms: number) => {
+            await sleep(ms)
+            while (!visible) await sleep(250)
+        }
+
+        // The rest of the command waits in place, unseen, so the line
+        // keeps its full length, and the card its height, as it is typed.
+        const type = async (line: HTMLElement) => {
+            const typed = line.querySelector<HTMLElement>(".typed")!
+            const rest = line.querySelector<HTMLElement>(".rest")!
+            const text = line.dataset.type ?? ""
+            typed.textContent = ""
+            rest.textContent = text
+            line.classList.add("on", "typing")
+            for (let i = 1; i <= text.length; i++) {
+                typed.textContent = text.slice(0, i)
+                rest.textContent = text.slice(i)
+                await wait(28)
+            }
+            await wait(350)
+            line.classList.remove("typing")
+        }
+
+        const loop = async () => {
+            root.classList.add("playing")
+            for (;;) {
+                await wait(400)
+                lines.forEach((line) => line.classList.remove("on"))
+                await wait(600)
+                for (const line of lines) {
+                    if (line.classList.contains("cmd")) await type(line)
+                    else {
+                        await wait(700)
+                        line.classList.add("on")
+                    }
+                }
+                await wait(4500)
+            }
+        }
+        loop()
+    }
+
+    document.addEventListener("astro:page-load", playRunShowcase)
+    playRunShowcase()
+    // The field round the code: columns of short vertical strokes, as fine
+    // ASCII bars, brighter along slow waves that roll across the stage,
+    // faint elsewhere, quiet behind the code, lit in Kestra's colours round
+    // the pointer. They shimmer and drift down slowly while the block is on
+    // screen.
+    function drawStrokes() {
+        const canvas =
+            document.querySelector<HTMLCanvasElement>("[data-strokes]")
+        if (!canvas || canvas.dataset.wired) return
+        canvas.dataset.wired = "true"
+        const ctx = canvas.getContext("2d")
+        if (!ctx) return
+        const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+
+        const COL = 9
+        const ROW = 18
+
+        let width = 0
+        let height = 0
+        const resize = () => {
+            const box = canvas.getBoundingClientRect()
+            const ratio = Math.min(2, window.devicePixelRatio || 1)
+            width = box.width
+            height = box.height
+            canvas.width = Math.round(width * ratio)
+            canvas.height = Math.round(height * ratio)
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
+        }
+
+        // Each column's own phase, so they flicker out of step.
+        const phase = (i: number) => ((i * 9301 + 49297) % 233280) / 233280
+
+        // The code's box, read from the layout: the strokes fade out round
+        // it, so it reads on calm black.
+        const words = [
+            ...canvas.parentElement!.querySelectorAll<HTMLElement>(
+                "[data-clear]",
+            ),
+        ]
+        let clears: { x0: number; y0: number; x1: number; y1: number }[] = []
+        const measure = () => {
+            const a = canvas.getBoundingClientRect()
+            clears = words.map((el) => {
+                const b = el.getBoundingClientRect()
+                return {
+                    x0: b.left - a.left,
+                    y0: b.top - a.top,
+                    x1: b.right - a.left,
+                    y1: b.bottom - a.top,
+                }
+            })
+        }
+        // 0 round the code and the title, rising softly to 1 away from
+        // them: an ellipse around each box, wide enough to take in its
+        // corners, so the clearing has no edge and no corner to show.
+        const quiet = (x: number, y: number) =>
+            Math.min(
+                1,
+                ...clears.map((c) => {
+                    const cx = (c.x0 + c.x1) / 2
+                    const cy = (c.y0 + c.y1) / 2
+                    const rx = ((c.x1 - c.x0) / 2) * 1.3 + 24
+                    const ry = ((c.y1 - c.y0) / 2) * 1.3 + 24
+                    const d = Math.hypot((x - cx) / rx, (y - cy) / ry)
+                    // Clear inside, fading out between 0.9 and 1.7.
+                    const t = Math.min(1, Math.max(0, (d - 0.9) / 0.8))
+                    return t * t * (3 - 2 * t)
+                }),
+            )
+
+        // Under the pointer the strokes light up in Kestra's blue, violet
+        // and red, mixed by place, as if a light raised the field there.
+        const COLOURS = [
+            [92, 141, 255],
+            [169, 80, 255],
+            [246, 46, 118],
+        ]
+        const pointer = { x: -999, y: -999, on: 0, target: 0 }
+        const stage = canvas.parentElement!
+        stage.addEventListener("pointermove", (event) => {
+            const box = canvas.getBoundingClientRect()
+            pointer.x = event.clientX - box.left
+            pointer.y = event.clientY - box.top
+            pointer.target = 1
+        })
+        stage.addEventListener("pointerleave", () => (pointer.target = 0))
+        const tint = (x: number, y: number) => {
+            // Smoothly across the three colours, by place.
+            const k =
+                (Math.sin(x * 0.03 + y * 0.022) * 0.5 + 0.5) *
+                (COLOURS.length - 1)
+            const i = Math.min(COLOURS.length - 2, Math.floor(k))
+            const f = k - i
+            return COLOURS[i].map((v, j) =>
+                Math.round(v + (COLOURS[i + 1][j] - v) * f),
+            )
+        }
+
+        // The code's lines catch the light too: each glows in the colour
+        // of the field where it sits, the more the nearer the pointer.
+        const codeLines = [
+            ...stage.querySelectorAll<HTMLElement>(".term-body .line"),
+        ]
+        const lightLines = () => {
+            const box = canvas.getBoundingClientRect()
+            for (const line of codeLines) {
+                const r = line.getBoundingClientRect()
+                const cx = Math.min(
+                    Math.max(pointer.x, r.left - box.left),
+                    r.right - box.left,
+                )
+                const cy = r.top - box.top + r.height / 2
+                const d = Math.hypot(cx - pointer.x, cy - pointer.y)
+                const g = pointer.on * Math.max(0, 1 - d / 220) ** 1.4
+                const [cr, cg, cb] = tint(cx, cy)
+                line.style.setProperty("--g", g.toFixed(3))
+                line.style.setProperty("--glow", `${cr}, ${cg}, ${cb}`)
+            }
+        }
+
+        const frame = (time: number) => {
+            ctx.clearRect(0, 0, width, height)
+            // The light eases in and out with the pointer.
+            pointer.on += (pointer.target - pointer.on) * 0.12
+            lightLines()
+            const t = time / 1000
+            const cols = Math.ceil(width / COL)
+            const rows = Math.ceil(height / ROW) + 1
+            for (let c = 0; c < cols; c++) {
+                const x = c * COL + 2
+                const p = phase(c)
+                // The column drifts down, each at its own pace.
+                // Each column set off by its own fraction of a row, so no
+                // row of strokes lines up across the field.
+                const drift = ((t * (6 + p * 10) + p * ROW) % ROW) - ROW
+                for (let r = 0; r < rows; r++) {
+                    const y = r * ROW + drift
+                    // Each stroke flickers at its own pace and moment, so
+                    // no column reads as a stripe.
+                    const h = Math.sin(c * 12.9898 + r * 78.233) * 43758.5453
+                    const own = h - Math.floor(h)
+                    const wave =
+                        0.5 + 0.5 * Math.sin(t * (0.9 + own * 1.4) + own * 6.28)
+                    // Light rising from the foot, as the hero's indigo: it
+                    // fills the bottom, wide in the middle, and dies out
+                    // toward the top, where the title sits in the night.
+                    const yy = y / height
+                    const up = Math.min(1, Math.max(0, (yy - 0.3) / 0.7))
+                    const rise = up * up * (3 - 2 * up)
+                    const xx = (x / width - 0.5) / 0.55
+                    const spread = Math.exp(-xx * xx)
+                    // It breathes in a slow swell along the floor.
+                    const swell =
+                        0.7 + 0.3 * Math.sin(x * 0.006 - t * 0.5 + yy * 2)
+                    const light = rise * spread * swell
+                    const value =
+                        (0.035 + light * (0.55 + 0.25 * wave)) * quiet(x, y)
+                    // The light round the pointer: brighter, longer, in colour.
+                    const d = Math.hypot(x - pointer.x, y - pointer.y)
+                    const glow =
+                        pointer.on *
+                        Math.max(0, 1 - d / 210) ** 1.6 *
+                        (0.6 + 0.4 * wave) *
+                        quiet(x, y)
+                    const lit = value + glow * 1.1
+                    if (lit < 0.02) continue
+                    // Long bars where it is bright, short ticks where faint.
+                    const length = 3 + Math.round(Math.min(1, lit) * 14)
+                    if (glow > 0.02) {
+                        const [cr, cg, cb] = tint(x, y)
+                        const m = Math.min(1, glow * 2.2)
+                        ctx.fillStyle = `rgba(${Math.round(255 + (cr - 255) * m)}, ${Math.round(255 + (cg - 255) * m)}, ${Math.round(255 + (cb - 255) * m)}, ${Math.min(1, lit)})`
+                    } else {
+                        // Indigo where faint, lavender, then near white
+                        // where the light is strongest.
+                        const pale = Math.min(1, light * 1.3)
+                        ctx.fillStyle = `rgba(${Math.round(110 + 140 * pale)}, ${Math.round(95 + 145 * pale)}, 255, ${value})`
+                    }
+                    ctx.fillRect(x, y + (ROW - length) / 2, 1.25, length)
+                }
+            }
+        }
+
+        resize()
+        measure()
+        new ResizeObserver(() => {
+            resize()
+            measure()
+            if (still) frame(0)
+        }).observe(canvas)
+        if (still) {
+            frame(0)
+            return
+        }
+
+        let visible = false
+        let raf = 0
+        let last = 0
+        const tick = (time: number) => {
+            raf = 0
+            if (!visible) return
+            // About 24 frames a second is plenty for a shimmer.
+            if (time - last > 40) {
+                last = time
+                frame(time)
+            }
+            raf = requestAnimationFrame(tick)
+        }
+        new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting
+            if (visible && !raf) raf = requestAnimationFrame(tick)
+        }).observe(canvas)
+    }
+
+    document.addEventListener("astro:page-load", drawStrokes)
+    drawStrokes()
+</script>
+
 <style lang="scss">
     // Black, like the hero. It stays dark in both themes.
+    // The hero's night, to close the page as it opened: the menu's black
+    // with the planet's indigo rising from the foot, and a faint light from
+    // the top right.
     .run-kestra {
         position: relative;
         overflow: hidden;
-        background: #0d0d0f;
+        background:
+            radial-gradient(
+                ellipse 70% 80% at 50% 100%,
+                rgba(80, 56, 255, 0.28),
+                rgba(80, 56, 255, 0.16) 40%,
+                rgba(70, 44, 255, 0.06) 70%,
+                transparent 100%
+            ),
+            radial-gradient(
+                90% 80% at 85% 0%,
+                rgba(150, 130, 255, 0.1),
+                transparent 60%
+            ),
+            #111114;
         color: #ffffff;
     }
 
-    // The hairline grid of the blocks above, in white on black: rails on
-    // both sides, and a full-width rule over the body.
-    .grid {
+    .run-kestra {
         --rule-color: rgba(255, 255, 255, 0.13);
         --rule: 1px solid var(--rule-color);
-        --inset: clamp(1.5rem, 4vw, 3.5rem);
+        --inset: clamp(1.5rem, 3vw, 2.75rem);
+    }
 
+    // The field, drawn by the script across the whole section: columns of
+    // short vertical strokes, brighter along slow waves.
+    .strokes {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    // On the field, one column: the title, the code's frame, then the
+    // three editions in a row.
+    .stage {
         position: relative;
-        border-left: var(--rule);
-        border-right: var(--rule);
+        z-index: 1;
+        display: grid;
+        justify-items: center;
+        gap: clamp(2.5rem, 4vw, 3.5rem);
+        // Set in from the screen's edges, so the field shows all round.
+        max-width: 76rem;
+        margin-inline: auto;
+        padding: clamp(5rem, 9vw, 8rem) clamp(1rem, 5vw, 4rem);
+    }
 
-        // Below a wide screen, as in the other blocks: no rails, the rules
-        // alone carry the grid.
-        @include media-breakpoint-down(xl) {
-            border-inline: 0;
+    // The code's frame and the editions: black, framed.
+    .panel,
+    .editions {
+        border: var(--rule);
+        // Night glass over the field: dark enough to read on, the light
+        // still felt through it.
+        background: rgba(12, 12, 18, 0.82);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+
+    .panel {
+        position: relative;
+        width: min(46rem, 100%);
+
+        // Two small squares on its corners, top left and bottom right, as
+        // marks on a technical frame.
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            width: 0.5rem;
+            height: 0.5rem;
+            background: rgba(255, 255, 255, 0.32);
+            pointer-events: none;
+        }
+
+        &::before {
+            top: -1px;
+            left: -1px;
+        }
+
+        &::after {
+            right: -1px;
+            bottom: -1px;
         }
     }
 
-    // The title and lead on the left, Pricing on the right.
+    // The title and its line, free on the field, centred.
     .head {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 1.5rem 3rem;
-        padding: 8.5rem var(--inset) 4rem;
-
-        @include media-breakpoint-down(md) {
-            padding-block: 4.5rem 3rem;
-        }
+        max-width: 44rem;
+        text-align: center;
 
         h2 {
             margin: 0;
@@ -132,100 +462,135 @@ import productScreen from "./assets/run/flows-edit.png"
             color: #ffffff;
         }
 
-        // One line where there is room, two even ones where there is not.
         p {
-            max-width: 50rem;
-            margin: 1.25rem 0 0;
+            max-width: 32rem;
+            margin: 1.25rem auto 0;
             font-size: 1.125rem;
             line-height: 1.55;
             color: rgba(255, 255, 255, 0.6);
             text-wrap: balance;
         }
+    }
 
-        .btn-ghost {
-            flex-shrink: 0;
+    .side {
+        width: 100%;
+    }
+
+    .terminal {
+        padding: clamp(2.5rem, 5vw, 4rem) var(--inset);
+    }
+
+    .term-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: none;
+        font-family: $font-family-monospace;
+        font-size: 0.875rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #f2f2f5;
+
+        .prompt {
+            color: #8a8a97;
+        }
+
+        .out {
+            color: #a3a3b1;
+        }
+
+        .ok {
+            color: #5ee3ae;
+        }
+
+        .link {
+            color: #f2f2f5;
+        }
+
+        .prod {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        // Lit by the pointer (see drawStrokes): a glow in the field's colour
+        // there, and the words a touch brighter.
+        .line {
+            --g: 0;
+            --glow: 169, 80, 255;
+
+            text-shadow:
+                0 0 calc(var(--g) * 10px)
+                    rgba(var(--glow), calc(var(--g) * 0.9)),
+                0 0 calc(var(--g) * 24px)
+                    rgba(var(--glow), calc(var(--g) * 0.55));
+            filter: brightness(calc(1 + var(--g) * 0.35));
         }
     }
 
-    // The product on the left, the editions on the right.
-    .body {
-        position: relative;
-        display: grid;
-        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-        border-top: var(--rule);
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: -1px;
-            left: -100vw;
-            right: -100vw;
-            height: 1px;
-            background: var(--rule-color);
-            pointer-events: none;
+    // Playing: every line keeps its place, unseen until its turn, so the
+    // card never changes height; a typed command shows a caret while it
+    // is written, the rest of it waiting unseen.
+    .run-kestra:global(.playing) {
+        .line {
+            visibility: hidden;
         }
+
+        .line:global(.on) {
+            visibility: visible;
+            animation: line-in 0.25s ease-out;
+        }
+
+        .rest {
+            visibility: hidden;
+        }
+
+        .cmd:global(.typing) .typed::after {
+            content: "";
+            display: inline-block;
+            width: 0.5em;
+            height: 1.1em;
+            // Over the next character, taking no room of its own.
+            margin-right: -0.5em;
+            vertical-align: -0.2em;
+            background: #d6d6e0;
+            animation: caret 0.8s steps(1) infinite;
+        }
+    }
+
+    @keyframes line-in {
+        from {
+            opacity: 0;
+        }
+    }
+
+    @keyframes caret {
+        50% {
+            opacity: 0;
+        }
+    }
+
+    // The three editions side by side, between rules. A thinner glass than
+    // the code's frame: the field's light rises through their foot, so they
+    // sit in the ambience rather than on it.
+    .editions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        background: linear-gradient(
+            to bottom,
+            rgba(12, 12, 18, 0.78) 0%,
+            rgba(16, 14, 32, 0.6) 60%,
+            rgba(28, 22, 64, 0.42) 100%
+        );
+        backdrop-filter: blur(14px) saturate(140%);
+        -webkit-backdrop-filter: blur(14px) saturate(140%);
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
         }
-    }
-
-    // The product, lit from above in grey. Its window is set in from the
-    // top right and runs off the left and the bottom, where it fades out,
-    // so the topology and the toolbar lead.
-    .showcase {
-        position: relative;
-        overflow: hidden;
-        min-height: 28rem;
-        border-right: var(--rule);
-        background:
-            radial-gradient(
-                80% 60% at 75% 0%,
-                rgba(255, 255, 255, 0.16),
-                transparent 70%
-            ),
-            #0d0d0f;
-
-        // The fades into the black, on the panel's left and bottom edges.
-        &::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(90deg, #0d0d0f 0%, transparent 30%),
-                linear-gradient(0deg, #0d0d0f 0%, transparent 45%);
-            pointer-events: none;
-        }
-
-        @include media-breakpoint-down(lg) {
-            border-right: 0;
-            border-bottom: var(--rule);
-        }
-    }
-
-    .window {
-        position: absolute;
-        top: clamp(3rem, 5vw, 4.5rem);
-        right: clamp(2rem, 4vw, 4rem);
-        bottom: 0;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-bottom: 0;
-        border-radius: 0.75rem 0.75rem 0 0;
-        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9);
-
-        :global(img) {
-            display: block;
-            width: auto;
-            max-width: none;
-            height: 100%;
-            border-radius: inherit;
-        }
-    }
-
-    // The three editions, stacked between rules.
-    .editions {
-        display: flex;
-        flex-direction: column;
     }
 
     .edition {
@@ -234,29 +599,76 @@ import productScreen from "./assets/run/flows-edit.png"
         flex: 1;
         flex-direction: column;
         align-items: flex-start;
-        padding: 2rem clamp(1.5rem, 2.5vw, 2.5rem) 2.5rem;
-        transition: background-color 0.3s ease;
+        padding: 2rem var(--inset) 2.25rem;
+        isolation: isolate;
 
-        // More room under the last one, so its button sits clear of the
-        // block's foot.
-        &:last-child {
-            padding-bottom: clamp(3rem, 5vw, 4.5rem);
+        // The field's light, caught at each card's foot; it rises on hover.
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(
+                120% 70% at 50% 100%,
+                rgba(114, 92, 255, 0.16),
+                rgba(114, 92, 255, 0) 70%
+            );
+            opacity: 0.6;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        // A hairline of light along the top, lit on hover.
+        &::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                rgba(167, 150, 255, 0),
+                rgba(196, 184, 255, 0.7),
+                rgba(167, 150, 255, 0)
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
         }
 
         & + & {
-            border-top: var(--rule);
+            border-left: var(--rule);
+
+            @include media-breakpoint-down(lg) {
+                border-left: 0;
+                border-top: var(--rule);
+            }
         }
 
-        &:hover {
-            background: rgba(255, 255, 255, 0.03);
+        &:hover::before,
+        &:hover::after {
+            opacity: 1;
         }
 
-        // Enterprise stands out on a slightly lighter ground.
+        // Enterprise stands out: more of the light at its foot, its top
+        // edge lit for good.
         &.featured {
-            background: rgba(255, 255, 255, 0.04);
+            &::before {
+                background: radial-gradient(
+                    130% 85% at 50% 100%,
+                    rgba(114, 92, 255, 0.3),
+                    rgba(114, 92, 255, 0) 72%
+                );
+                opacity: 1;
+            }
 
-            &:hover {
-                background: rgba(255, 255, 255, 0.06);
+            &::after {
+                opacity: 0.8;
+            }
+
+            &:hover::after {
+                opacity: 1;
             }
         }
 
@@ -265,7 +677,33 @@ import productScreen from "./assets/run/flows-edit.png"
         }
     }
 
-    // Square, like everything else on the page.
+    // Under the three, the way to compare them: a quiet link.
+    .compare {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        justify-content: center;
+        padding: 1.5rem var(--inset) 0;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.72);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        span {
+            transition: translate 0.2s ease;
+        }
+
+        &:hover {
+            color: #ffffff;
+
+            span {
+                translate: 0.25em 0;
+            }
+        }
+    }
+
     .badge {
         margin: 0 0 0.75rem;
         padding: 0.125rem 0.625rem;
