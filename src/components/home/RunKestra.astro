@@ -1,16 +1,14 @@
 ---
 ---
 
-<section class="run-kestra" aria-labelledby="run-kestra" data-run-showcase>
-    {/* The field of strokes across the whole section, shimmering in slow
-    waves and lighting up in Kestra's colours under the pointer. Without
-    JavaScript, or with reduced motion, it stands still. */}
-    <canvas class="strokes" aria-hidden="true" data-strokes></canvas>
+<section class="run-kestra" aria-labelledby="run-kestra">
+    {/* A rocket in ASCII pixel art, flat out toward the top right, its
+    trail streaming back behind the title and the editions. Without
+    JavaScript the section keeps its night; with reduced motion the rocket
+    stands still. */}
+    <canvas class="sky" aria-hidden="true" data-rocket></canvas>
     <div class="container-xl">
         <div class="stage">
-            {/* From the top: the title on the field, the code in its frame,
-            then the three editions side by side and the way to compare
-            them. */}
             <header class="head">
                 <h2 id="run-kestra">Three ways to run Kestra</h2>
                 <p>
@@ -18,11 +16,6 @@
                     done the migration before.
                 </p>
             </header>
-            <div class="panel">
-                <div class="terminal" aria-hidden="true">
-                    <pre class="term-body"><span class="line cmd" data-type="docker run -p 8080:8080 kestra/kestra server local"><span class="prompt">$</span> <span class="typed">docker run -p 8080:8080 kestra/kestra server local</span><span class="rest"></span></span><span class="line out" data-at="1"><span class="ok">✓</span> Pulled kestra/kestra:latest</span><span class="line out" data-at="2"><span class="ok">✓</span> Server running on <span class="link">localhost:8080</span></span><span class="line cmd" data-type="kestra flow namespace update company.prod ./flows"><span class="prompt">$</span> <span class="typed">kestra flow namespace update company.prod ./flows</span><span class="rest"></span></span><span class="line out" data-at="4"><span class="ok">✓</span> 3 flows deployed to <span class="prod">production</span></span></pre>
-                </div>
-            </div>
 
             <div class="side">
                 <div class="editions surface-dark">
@@ -39,8 +32,8 @@
                     </article>
 
                     <article class="edition">
-                        <p class="badge">Early Access</p>
                         <h3>Scale with Kestra Cloud</h3>
+                        <p class="badge">Early Access</p>
                         <p>
                             Managed by the people who build Kestra. No platform
                             to run, pay for what you use. Join the early adopter
@@ -78,85 +71,142 @@
 </section>
 
 <script>
-    // Plays the terminal while the showcase is on screen: types the start
-    // command, the server comes up, then the flows are deployed to
-    // production; a pause, and again.
-    function playRunShowcase() {
-        const root = document.querySelector<HTMLElement>("[data-run-showcase]")
-        if (!root || root.dataset.wired) return
-        root.dataset.wired = "true"
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-        const lines = [...root.querySelectorAll<HTMLElement>(".line")]
-        let visible = false
-        new IntersectionObserver(([entry]) => {
-            visible = entry.isIntersecting
-        }).observe(root)
-        const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
-        const wait = async (ms: number) => {
-            await sleep(ms)
-            while (!visible) await sleep(250)
-        }
-
-        // The rest of the command waits in place, unseen, so the line
-        // keeps its full length, and the card its height, as it is typed.
-        const type = async (line: HTMLElement) => {
-            const typed = line.querySelector<HTMLElement>(".typed")!
-            const rest = line.querySelector<HTMLElement>(".rest")!
-            const text = line.dataset.type ?? ""
-            typed.textContent = ""
-            rest.textContent = text
-            line.classList.add("on", "typing")
-            for (let i = 1; i <= text.length; i++) {
-                typed.textContent = text.slice(0, i)
-                rest.textContent = text.slice(i)
-                await wait(28)
-            }
-            await wait(350)
-            line.classList.remove("typing")
-        }
-
-        const loop = async () => {
-            root.classList.add("playing")
-            for (;;) {
-                await wait(400)
-                lines.forEach((line) => line.classList.remove("on"))
-                await wait(600)
-                for (const line of lines) {
-                    if (line.classList.contains("cmd")) await type(line)
-                    else {
-                        await wait(700)
-                        line.classList.add("on")
-                    }
-                }
-                await wait(4500)
-            }
-        }
-        loop()
-    }
-
-    document.addEventListener("astro:page-load", playRunShowcase)
-    playRunShowcase()
-    // The field round the code: columns of short vertical strokes, as fine
-    // ASCII bars, brighter along slow waves that roll across the stage,
-    // faint elsewhere, quiet behind the code, lit in Kestra's colours round
-    // the pointer. They shimmer and drift down slowly while the block is on
-    // screen.
-    function drawStrokes() {
+    // The rocket, in very fine pixels on a grid turned to its heading: a
+    // spine at the back, five prongs forward tipped in magenta, the middle
+    // one longest with a checkered window. It holds still in the sky, but
+    // everything round it says flat out: the plume streams back, fine
+    // dust rushes through it, speed lines and pink sparks fly past, and
+    // the craft shivers.
+    function flyRocket() {
         const canvas =
-            document.querySelector<HTMLCanvasElement>("[data-strokes]")
+            document.querySelector<HTMLCanvasElement>("[data-rocket]")
         if (!canvas || canvas.dataset.wired) return
         canvas.dataset.wired = "true"
         const ctx = canvas.getContext("2d")
         if (!ctx) return
         const still = matchMedia("(prefers-reduced-motion: reduce)").matches
 
-        const COL = 9
-        const ROW = 18
+        // Heading: up and to the right.
+        const HEADING = (-29 * Math.PI) / 180
+        const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
+        const SIDE = { x: -Math.sin(HEADING), y: Math.cos(HEADING) }
+
+        // The craft in fine pixels, nose to the right, as it is drawn on
+        // its own turned grid: a spine at the back, five prongs forward
+        // tipped in magenta, the middle one longest, a window of light
+        // squares, deep blue plates on its flanks.
+        const SPRITE = [
+            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            ".....BBBBBBBBBBBB",
+            ".....BBBBBBBBBBBB",
+            ".....BBBBBBBBBBBB",
+            "........BBBBBBBBBBBB",
+            "........BBBBBBBBBBBB",
+            "........BBBBBBBBBBBB",
+            "...........BBBBBBBBBBBBBBBPPPPPP",
+            "...........BBBBBBBBBBBBBBBPPPPPP",
+            "...........BBBBBBBBBBBBBBBPPPPPP",
+            ".......DDDDBBBBBBBBBBDD",
+            "..DDDDDDDDDBBBBBBBBBDDD",
+            "..DDDDDDDDDBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBBBDDD",
+            "......DDDDDBBBBBBBBBBBBBDD",
+            "......DDDDDDBBBBBBBBBBBBDD",
+            "......BBBBBBBBBBBBLLLBBBBBDDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDD",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
+            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
+            "BBBBBBBBBBBBLLLBBBLLLBBBLLLBBBBBBBBBBBBBBBBBBPPPPPP",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBBBBLLLBBBBBBBBBBBBBBB",
+            ".........BBBBBBBBBLLLBBBBBBDDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDDD",
+            "......BBBBBBBBBBBBLLLBBBBBBDDD",
+            "......BBBBDDBBBBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBBBBDDD",
+            "......DDDDDDBBBBBBBBBDDD",
+            "...DDDDDDDDDBBBBBBBBBDDD",
+            "...DDDDDDDDDBBBBBBBBBDDD",
+            "...DD.......BBBBBBBBBBBBBBBPPPPPP",
+            "............BBBBBBBBBBBBBBBPPPPPP",
+            "............BBBBBBBBBBBBBBBPPPPPP",
+            "............BBBBBBBBB",
+            ".........BBBBBBBBBBBB",
+            ".........BBBBBBBBBBBB",
+            ".........BBBBBBBBB",
+            "......BBBBBBBBBBBB",
+            "......BBBBBBBBBBBB",
+            "......BBBBBBBBBBBB",
+            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+            "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
+        ]
+        // Where the plume starts: the heart of the spine.
+        const HEART = { x: 14, y: 25.5 }
+        const INK: Record<string, string> = {
+            B: "rgb(92, 84, 255)",
+            D: "rgb(33, 66, 255)",
+            L: "rgb(184, 176, 255)",
+            P: "rgb(255, 4, 254)",
+        }
+        // Three fine pixels to a unit of the craft.
+        const STEPS = 3
 
         let width = 0
         let height = 0
-        const resize = () => {
+        let unit = 14
+        let at = { x: 0, y: 0 }
+        let reach = 600
+        let plume: HTMLCanvasElement | null = null
+        let cells: { u: number; v: number; ink: string }[] = []
+
+        const rand = (i: number, k: number) => {
+            const h = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453
+            return h - Math.floor(h)
+        }
+        const LINES = Array.from({ length: 8 }, (_, i) => ({
+            lane: rand(i, 1) * 2 - 1,
+            pace: 0.8 + rand(i, 2) * 0.7,
+            length: 0.6 + rand(i, 3) * 0.8,
+            offset: rand(i, 4),
+        }))
+        // The sky behind: fine pixel stars on three depths, drifting back
+        // as the craft flies, the far ones slow and dim, the near ones
+        // quicker and brighter; a few of the near ones are small crosses.
+        const STARS = Array.from({ length: 140 }, (_, i) => {
+            const depth = rand(i, 11) < 0.55 ? 0 : rand(i, 12) < 0.7 ? 1 : 2
+            const tone = rand(i, 13)
+            return {
+                x: rand(i, 14),
+                y: rand(i, 15),
+                depth,
+                cross: depth === 2 && rand(i, 16) < 0.35,
+                colour:
+                    tone < 0.6
+                        ? "255, 255, 255"
+                        : tone < 0.82
+                          ? "196, 184, 255"
+                          : tone < 0.93
+                            ? "120, 140, 255"
+                            : "255, 90, 220",
+                pace: 0.6 + rand(i, 17) * 0.8,
+                phase: rand(i, 18) * 6.28,
+            }
+        })
+        const SPARKS = [
+            { lane: -4.5, pace: 0.6, offset: 0 },
+            { lane: 4, pace: 0.5, offset: 0.45 },
+        ]
+
+        const layout = () => {
             const box = canvas.getBoundingClientRect()
             const ratio = Math.min(2, window.devicePixelRatio || 1)
             width = box.width
@@ -164,167 +214,194 @@
             canvas.width = Math.round(width * ratio)
             canvas.height = Math.round(height * ratio)
             ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
-        }
 
-        // Each column's own phase, so they flicker out of step.
-        const phase = (i: number) => ((i * 9301 + 49297) % 233280) / 233280
+            const wide = width >= 992
+            unit = wide
+                ? Math.max(10, Math.min(19, width / 100))
+                : Math.max(6, width / 60)
+            at = wide
+                ? { x: width * 0.81, y: Math.max(unit * 13, height * 0.28) }
+                : { x: width * 0.55, y: unit * 13 }
+            reach = wide ? Math.min(width * 0.45, 820) : width * 0.8
 
-        // The code's box, read from the layout: the strokes fade out round
-        // it, so it reads on calm black.
-        const words = [
-            ...canvas.parentElement!.querySelectorAll<HTMLElement>(
-                "[data-clear]",
-            ),
-        ]
-        let clears: { x0: number; y0: number; x1: number; y1: number }[] = []
-        const measure = () => {
-            const a = canvas.getBoundingClientRect()
-            clears = words.map((el) => {
-                const b = el.getBoundingClientRect()
-                return {
-                    x0: b.left - a.left,
-                    y0: b.top - a.top,
-                    x1: b.right - a.left,
-                    y1: b.bottom - a.top,
-                }
+            // The craft's fine pixels, read once from the sprite.
+            cells = []
+            SPRITE.forEach((line, row) => {
+                ;[...line].forEach((key, col) => {
+                    if (INK[key])
+                        cells.push({
+                            u: col - HEART.x,
+                            v: row - HEART.y,
+                            ink: key,
+                        })
+                })
             })
-        }
-        // 0 round the code and the title, rising softly to 1 away from
-        // them: an ellipse around each box, wide enough to take in its
-        // corners, so the clearing has no edge and no corner to show.
-        const quiet = (x: number, y: number) =>
-            Math.min(
-                1,
-                ...clears.map((c) => {
-                    const cx = (c.x0 + c.x1) / 2
-                    const cy = (c.y0 + c.y1) / 2
-                    const rx = ((c.x1 - c.x0) / 2) * 1.3 + 24
-                    const ry = ((c.y1 - c.y0) / 2) * 1.3 + 24
-                    const d = Math.hypot((x - cx) / rx, (y - cy) / ry)
-                    // Clear inside, fading out between 0.9 and 1.7.
-                    const t = Math.min(1, Math.max(0, (d - 0.9) / 0.8))
-                    return t * t * (3 - 2 * t)
-                }),
-            )
 
-        // Under the pointer the strokes light up in Kestra's blue, violet
-        // and red, mixed by place, as if a light raised the field there.
-        const COLOURS = [
-            [92, 141, 255],
-            [169, 80, 255],
-            [246, 46, 118],
-        ]
-        const pointer = { x: -999, y: -999, on: 0, target: 0 }
-        const stage = canvas.parentElement!
-        stage.addEventListener("pointermove", (event) => {
-            const box = canvas.getBoundingClientRect()
-            pointer.x = event.clientX - box.left
-            pointer.y = event.clientY - box.top
-            pointer.target = 1
+            // The plume, drawn once: a long soft glow, hot right behind
+            // the craft, then pink, violet, and blue far behind.
+            const w = unit * 20
+            const pad = unit * 6
+            plume = document.createElement("canvas")
+            plume.width = Math.round(w + pad * 2)
+            plume.height = Math.round(reach + pad * 2)
+            const pctx = plume.getContext("2d")
+            if (!pctx) return
+            const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
+            g.addColorStop(0, "rgba(255, 130, 70, 0.95)")
+            g.addColorStop(0.18, "rgba(255, 60, 200, 0.95)")
+            g.addColorStop(0.5, "rgba(140, 70, 255, 0.75)")
+            g.addColorStop(0.8, "rgba(50, 70, 255, 0.4)")
+            g.addColorStop(1, "rgba(40, 50, 255, 0)")
+            if ("filter" in pctx)
+                pctx.filter = `blur(${Math.round(unit * 3)}px)`
+            pctx.fillStyle = g
+            pctx.beginPath()
+            pctx.ellipse(
+                pad + w / 2,
+                pad + w * 0.4,
+                w / 2,
+                w * 0.4,
+                0,
+                Math.PI,
+                0,
+            )
+            pctx.lineTo(pad + w * 0.9, pad + reach)
+            pctx.lineTo(pad + w * 0.1, pad + reach)
+            pctx.closePath()
+            pctx.fill()
+        }
+
+        // A point behind the craft: so far back, so far to the side.
+        const behind = (along: number, lane: number) => ({
+            x: at.x - FWD.x * along + SIDE.x * lane,
+            y: at.y - FWD.y * along + SIDE.y * lane,
         })
-        stage.addEventListener("pointerleave", () => (pointer.target = 0))
-        const tint = (x: number, y: number) => {
-            // Smoothly across the three colours, by place.
-            const k =
-                (Math.sin(x * 0.03 + y * 0.022) * 0.5 + 0.5) *
-                (COLOURS.length - 1)
-            const i = Math.min(COLOURS.length - 2, Math.floor(k))
-            const f = k - i
-            return COLOURS[i].map((v, j) =>
-                Math.round(v + (COLOURS[i + 1][j] - v) * f),
-            )
-        }
-
-        // The code's lines catch the light too: each glows in the colour
-        // of the field where it sits, the more the nearer the pointer.
-        const codeLines = [
-            ...stage.querySelectorAll<HTMLElement>(".term-body .line"),
-        ]
-        const lightLines = () => {
-            const box = canvas.getBoundingClientRect()
-            for (const line of codeLines) {
-                const r = line.getBoundingClientRect()
-                const cx = Math.min(
-                    Math.max(pointer.x, r.left - box.left),
-                    r.right - box.left,
-                )
-                const cy = r.top - box.top + r.height / 2
-                const d = Math.hypot(cx - pointer.x, cy - pointer.y)
-                const g = pointer.on * Math.max(0, 1 - d / 220) ** 1.4
-                const [cr, cg, cb] = tint(cx, cy)
-                line.style.setProperty("--g", g.toFixed(3))
-                line.style.setProperty("--glow", `${cr}, ${cg}, ${cb}`)
-            }
-        }
 
         const frame = (time: number) => {
-            ctx.clearRect(0, 0, width, height)
-            // The light eases in and out with the pointer.
-            pointer.on += (pointer.target - pointer.on) * 0.12
-            lightLines()
             const t = time / 1000
-            const cols = Math.ceil(width / COL)
-            const rows = Math.ceil(height / ROW) + 1
-            for (let c = 0; c < cols; c++) {
-                const x = c * COL + 2
-                const p = phase(c)
-                // The column drifts down, each at its own pace.
-                // Each column set off by its own fraction of a row, so no
-                // row of strokes lines up across the field.
-                const drift = ((t * (6 + p * 10) + p * ROW) % ROW) - ROW
-                for (let r = 0; r < rows; r++) {
-                    const y = r * ROW + drift
-                    // Each stroke flickers at its own pace and moment, so
-                    // no column reads as a stripe.
-                    const h = Math.sin(c * 12.9898 + r * 78.233) * 43758.5453
-                    const own = h - Math.floor(h)
-                    const wave =
-                        0.5 + 0.5 * Math.sin(t * (0.9 + own * 1.4) + own * 6.28)
-                    // Light rising from the foot, as the hero's indigo: it
-                    // fills the bottom, wide in the middle, and dies out
-                    // toward the top, where the title sits in the night.
-                    const yy = y / height
-                    const up = Math.min(1, Math.max(0, (yy - 0.3) / 0.7))
-                    const rise = up * up * (3 - 2 * up)
-                    const xx = (x / width - 0.5) / 0.55
-                    const spread = Math.exp(-xx * xx)
-                    // It breathes in a slow swell along the floor.
-                    const swell =
-                        0.7 + 0.3 * Math.sin(x * 0.006 - t * 0.5 + yy * 2)
-                    const light = rise * spread * swell
-                    const value =
-                        (0.035 + light * (0.55 + 0.25 * wave)) * quiet(x, y)
-                    // The light round the pointer: brighter, longer, in colour.
-                    const d = Math.hypot(x - pointer.x, y - pointer.y)
-                    const glow =
-                        pointer.on *
-                        Math.max(0, 1 - d / 210) ** 1.6 *
-                        (0.6 + 0.4 * wave) *
-                        quiet(x, y)
-                    const lit = value + glow * 1.1
-                    if (lit < 0.02) continue
-                    // Long bars where it is bright, short ticks where faint.
-                    const length = 3 + Math.round(Math.min(1, lit) * 14)
-                    if (glow > 0.02) {
-                        const [cr, cg, cb] = tint(x, y)
-                        const m = Math.min(1, glow * 2.2)
-                        ctx.fillStyle = `rgba(${Math.round(255 + (cr - 255) * m)}, ${Math.round(255 + (cg - 255) * m)}, ${Math.round(255 + (cb - 255) * m)}, ${Math.min(1, lit)})`
-                    } else {
-                        // Indigo where faint, lavender, then near white
-                        // where the light is strongest.
-                        const pale = Math.min(1, light * 1.3)
-                        ctx.fillStyle = `rgba(${Math.round(110 + 140 * pale)}, ${Math.round(95 + 145 * pale)}, 255, ${value})`
-                    }
-                    ctx.fillRect(x, y + (ROW - length) / 2, 1.25, length)
+            ctx.clearRect(0, 0, width, height)
+
+            // The stars, drifting back, twinkling.
+            const dot = Math.max(2, Math.round(unit / STEPS))
+            for (const star of STARS) {
+                const speed = [5, 14, 34][star.depth] * star.pace
+                const x =
+                    (((star.x * width - FWD.x * speed * t) % width) + width) %
+                    width
+                const y =
+                    (((star.y * height - FWD.y * speed * t) % height) +
+                        height) %
+                    height
+                const twinkle =
+                    0.55 + 0.45 * Math.sin(t * 1.6 * star.pace + star.phase)
+                const alpha = [0.22, 0.4, 0.7][star.depth] * twinkle
+                const size = [0.5, 0.75, 1][star.depth] * dot
+                const sx = Math.round(x)
+                const sy = Math.round(y)
+                ctx.fillStyle = `rgba(${star.colour}, ${alpha})`
+                ctx.fillRect(sx, sy, size, size)
+                if (star.cross) {
+                    ctx.fillStyle = `rgba(${star.colour}, ${alpha * 0.5})`
+                    ctx.fillRect(sx - size, sy, size, size)
+                    ctx.fillRect(sx + size, sy, size, size)
+                    ctx.fillRect(sx, sy - size, size, size)
+                    ctx.fillRect(sx, sy + size, size, size)
                 }
             }
+
+            // The plume, breathing, laid along the way back.
+            if (plume) {
+                ctx.save()
+                ctx.translate(at.x, at.y)
+                ctx.rotate(HEADING + Math.PI / 2)
+                ctx.globalAlpha = 0.85 + 0.15 * Math.sin(t * 8)
+                ctx.drawImage(plume, -plume.width / 2, -unit * 6)
+                ctx.restore()
+            }
+
+            // Everything streaming back is laid on the craft's own grid.
+            ctx.save()
+            ctx.translate(at.x, at.y)
+            ctx.rotate(HEADING)
+
+            // Fine dust rushing back through the plume.
+            const fine = unit / STEPS
+            const flow = t * unit * 30
+            for (let row = 4; row * fine < reach * 0.8; row += 1) {
+                const fade = 1 - (row * fine) / (reach * 0.8)
+                const slot = Math.floor((row * fine + flow) / fine)
+                for (let lane = -24; lane <= 24; lane += 2) {
+                    const spread = Math.exp(-((lane / 14) ** 2))
+                    const n = rand(lane + 80, slot - row * 2)
+                    if (n > spread * fade * 0.06) continue
+                    ctx.fillStyle = `rgba(255, 235, 250, ${0.2 + 0.35 * fade})`
+                    ctx.fillRect(
+                        -row * fine - unit * 4,
+                        lane * fine,
+                        fine * 0.7,
+                        fine * 0.7,
+                    )
+                }
+            }
+
+            // Speed lines, white, rushing back past the craft.
+            ctx.lineCap = "round"
+            for (const line of LINES) {
+                const k = (line.offset + t * line.pace * 1.4) % 1
+                const x = -unit * 5 - k * reach * 0.6
+                const y = line.lane * unit * 12
+                const length = unit * 4 * line.length
+                const fade = Math.sin(k * Math.PI)
+                const g = ctx.createLinearGradient(x, y, x - length, y)
+                g.addColorStop(0, `rgba(255, 255, 255, ${0.9 * fade})`)
+                g.addColorStop(1, "rgba(255, 255, 255, 0)")
+                ctx.strokeStyle = g
+                ctx.lineWidth = Math.max(1.5, unit * 0.18)
+                ctx.beginPath()
+                ctx.moveTo(x, y)
+                ctx.lineTo(x - length, y)
+                ctx.stroke()
+            }
+
+            // Pink sparks shed by the prongs: three in a line, growing as
+            // they near the craft.
+            for (const spark of SPARKS) {
+                const k = (spark.offset + t * spark.pace) % 1
+                const fade = Math.sin(k * Math.PI)
+                for (let i = 0; i < 3; i++) {
+                    const x = -unit * 6 - k * reach * 0.35 - i * unit * 2.2
+                    const w = unit * (1.6 - i * 0.35)
+                    const h = unit * (0.9 - i * 0.12)
+                    ctx.fillStyle =
+                        i === 0
+                            ? `rgba(255, 28, 226, ${fade})`
+                            : `rgba(255, 54, 120, ${fade * (1 - i * 0.2)})`
+                    ctx.fillRect(x - w, spark.lane * unit - h / 2, w, h)
+                }
+            }
+
+            // The craft, in fine pixels, shivering a little.
+            const shake = still ? 0 : 0.9
+            ctx.translate(
+                (rand(t * 60, 1) - 0.5) * shake * 2,
+                (rand(t * 60, 2) - 0.5) * shake * 2,
+            )
+            const gap = fine > 4 ? 0.6 : 0
+            for (const cell of cells) {
+                ctx.fillStyle = INK[cell.ink]
+                ctx.fillRect(
+                    cell.u * fine,
+                    cell.v * fine,
+                    fine - gap,
+                    fine - gap,
+                )
+            }
+            ctx.restore()
         }
 
-        resize()
-        measure()
+        layout()
         new ResizeObserver(() => {
-            resize()
-            measure()
+            layout()
             if (still) frame(0)
         }).observe(canvas)
         if (still) {
@@ -338,7 +415,6 @@
         const tick = (time: number) => {
             raf = 0
             if (!visible) return
-            // About 24 frames a second is plenty for a shimmer.
             if (time - last > 40) {
                 last = time
                 frame(time)
@@ -351,44 +427,31 @@
         }).observe(canvas)
     }
 
-    document.addEventListener("astro:page-load", drawStrokes)
-    drawStrokes()
+    document.addEventListener("astro:page-load", flyRocket)
+    flyRocket()
 </script>
 
 <style lang="scss">
-    // Black, like the hero. It stays dark in both themes.
-    // The hero's night, to close the page as it opened: the menu's black
-    // with the planet's indigo rising from the foot, and a faint light from
-    // the top right.
+    // The night, as in the hero, with a faint violet where the rocket
+    // flies. It stays dark in both themes.
     .run-kestra {
         position: relative;
         overflow: hidden;
         background:
             radial-gradient(
-                ellipse 70% 80% at 50% 100%,
-                rgba(80, 56, 255, 0.28),
-                rgba(80, 56, 255, 0.16) 40%,
-                rgba(70, 44, 255, 0.06) 70%,
-                transparent 100%
+                50% 60% at 78% 30%,
+                rgba(120, 70, 255, 0.14),
+                transparent 70%
             ),
-            radial-gradient(
-                90% 80% at 85% 0%,
-                rgba(150, 130, 255, 0.1),
-                transparent 60%
-            ),
-            #111114;
+            #08070d;
         color: #ffffff;
-    }
-
-    .run-kestra {
         --rule-color: rgba(255, 255, 255, 0.13);
         --rule: 1px solid var(--rule-color);
         --inset: clamp(1.5rem, 3vw, 2.75rem);
     }
 
-    // The field, drawn by the script across the whole section: columns of
-    // short vertical strokes, brighter along slow waves.
-    .strokes {
+    // The sky the rocket is drawn in, across the whole section.
+    .sky {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -396,62 +459,26 @@
         pointer-events: none;
     }
 
-    // On the field, one column: the title, the code's frame, then the
-    // three editions in a row.
+    // The title, then the editions under it, set to the left; the rocket
+    // takes the right.
     .stage {
         position: relative;
         z-index: 1;
         display: grid;
-        justify-items: center;
+        justify-items: start;
         gap: clamp(2.5rem, 4vw, 3.5rem);
-        // Set in from the screen's edges, so the field shows all round.
         max-width: 76rem;
         margin-inline: auto;
         padding: clamp(5rem, 9vw, 8rem) clamp(1rem, 5vw, 4rem);
-    }
 
-    // The code's frame and the editions: black, framed.
-    .panel,
-    .editions {
-        border: var(--rule);
-        // Night glass over the field: dark enough to read on, the light
-        // still felt through it.
-        background: rgba(12, 12, 18, 0.82);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-    }
-
-    .panel {
-        position: relative;
-        width: min(46rem, 100%);
-
-        // Two small squares on its corners, top left and bottom right, as
-        // marks on a technical frame.
-        &::before,
-        &::after {
-            content: "";
-            position: absolute;
-            width: 0.5rem;
-            height: 0.5rem;
-            background: rgba(255, 255, 255, 0.32);
-            pointer-events: none;
-        }
-
-        &::before {
-            top: -1px;
-            left: -1px;
-        }
-
-        &::after {
-            right: -1px;
-            bottom: -1px;
+        // On narrow screens the rocket flies above the title.
+        @include media-breakpoint-down(lg) {
+            padding-top: 15rem;
         }
     }
 
-    // The title and its line, free on the field, centred.
     .head {
-        max-width: 44rem;
-        text-align: center;
+        max-width: 40rem;
 
         h2 {
             margin: 0;
@@ -460,133 +487,38 @@
             letter-spacing: -0.02em;
             line-height: 1.1;
             color: #ffffff;
+            text-shadow: 0 0 1.5rem rgba(8, 7, 13, 0.8);
         }
 
         p {
-            max-width: 32rem;
-            margin: 1.25rem auto 0;
+            max-width: 34rem;
+            margin: 1.25rem 0 0;
             font-size: 1.125rem;
             line-height: 1.55;
-            color: rgba(255, 255, 255, 0.6);
-            text-wrap: balance;
+            color: rgba(255, 255, 255, 0.72);
+            text-shadow: 0 0 1rem rgba(8, 7, 13, 0.8);
         }
     }
 
     .side {
-        width: 100%;
+        width: min(61rem, 100%);
     }
 
-    .terminal {
-        padding: clamp(2.5rem, 5vw, 4rem) var(--inset);
+    // The editions' frame: night glass, the plume glowing through it.
+    .editions {
+        border: var(--rule);
+        border-radius: 10px;
+        background: rgba(14, 12, 22, 0.55);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
     }
 
-    .term-body {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: none;
-        font-family: $font-family-monospace;
-        font-size: 0.875rem;
-        line-height: 1.55;
-        white-space: pre-wrap;
-        word-break: break-word;
-        color: #f2f2f5;
-
-        .prompt {
-            color: #8a8a97;
-        }
-
-        .out {
-            color: #a3a3b1;
-        }
-
-        .ok {
-            color: #5ee3ae;
-        }
-
-        .link {
-            color: #f2f2f5;
-        }
-
-        .prod {
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        // Lit by the pointer (see drawStrokes): a glow in the field's colour
-        // there, and the words a touch brighter.
-        .line {
-            --g: 0;
-            --glow: 169, 80, 255;
-
-            text-shadow:
-                0 0 calc(var(--g) * 10px)
-                    rgba(var(--glow), calc(var(--g) * 0.9)),
-                0 0 calc(var(--g) * 24px)
-                    rgba(var(--glow), calc(var(--g) * 0.55));
-            filter: brightness(calc(1 + var(--g) * 0.35));
-        }
-    }
-
-    // Playing: every line keeps its place, unseen until its turn, so the
-    // card never changes height; a typed command shows a caret while it
-    // is written, the rest of it waiting unseen.
-    .run-kestra:global(.playing) {
-        .line {
-            visibility: hidden;
-        }
-
-        .line:global(.on) {
-            visibility: visible;
-            animation: line-in 0.25s ease-out;
-        }
-
-        .rest {
-            visibility: hidden;
-        }
-
-        .cmd:global(.typing) .typed::after {
-            content: "";
-            display: inline-block;
-            width: 0.5em;
-            height: 1.1em;
-            // Over the next character, taking no room of its own.
-            margin-right: -0.5em;
-            vertical-align: -0.2em;
-            background: #d6d6e0;
-            animation: caret 0.8s steps(1) infinite;
-        }
-    }
-
-    @keyframes line-in {
-        from {
-            opacity: 0;
-        }
-    }
-
-    @keyframes caret {
-        50% {
-            opacity: 0;
-        }
-    }
-
-    // The three editions side by side, between rules. A thinner glass than
-    // the code's frame: the field's light rises through their foot, so they
-    // sit in the ambience rather than on it.
+    // The three editions side by side in one frame, between rules.
     .editions {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        background: linear-gradient(
-            to bottom,
-            rgba(12, 12, 18, 0.78) 0%,
-            rgba(16, 14, 32, 0.6) 60%,
-            rgba(28, 22, 64, 0.42) 100%
-        );
-        backdrop-filter: blur(14px) saturate(140%);
-        -webkit-backdrop-filter: blur(14px) saturate(140%);
+        width: 100%;
+        overflow: hidden;
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
@@ -600,42 +532,6 @@
         flex-direction: column;
         align-items: flex-start;
         padding: 2rem var(--inset) 2.25rem;
-        isolation: isolate;
-
-        // The field's light, caught at each card's foot; it rises on hover.
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            background: radial-gradient(
-                120% 70% at 50% 100%,
-                rgba(114, 92, 255, 0.16),
-                rgba(114, 92, 255, 0) 70%
-            );
-            opacity: 0.6;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-
-        // A hairline of light along the top, lit on hover.
-        &::after {
-            content: "";
-            position: absolute;
-            top: -1px;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                rgba(167, 150, 255, 0),
-                rgba(196, 184, 255, 0.7),
-                rgba(167, 150, 255, 0)
-            );
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
 
         & + & {
             border-left: var(--rule);
@@ -646,33 +542,11 @@
             }
         }
 
-        &:hover::before,
-        &:hover::after {
-            opacity: 1;
-        }
-
-        // Enterprise stands out: more of the light at its foot, its top
-        // edge lit for good.
-        &.featured {
-            &::before {
-                background: radial-gradient(
-                    130% 85% at 50% 100%,
-                    rgba(114, 92, 255, 0.3),
-                    rgba(114, 92, 255, 0) 72%
-                );
-                opacity: 1;
-            }
-
-            &::after {
-                opacity: 0.8;
-            }
-
-            &:hover::after {
-                opacity: 1;
-            }
-        }
-
+        // The way in, as wide as its edition.
         > a {
+            display: flex;
+            justify-content: center;
+            width: 100%;
             margin-top: auto;
         }
     }
@@ -683,11 +557,12 @@
         display: flex;
         align-items: center;
         gap: 0.375rem;
-        justify-content: center;
-        padding: 1.5rem var(--inset) 0;
+        justify-content: flex-start;
+        padding: 1.5rem 0 0;
         font-size: 0.9375rem;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.72);
+        font-weight: 600;
+        color: #ffffff;
+        text-shadow: 0 0 0.75rem rgba(8, 6, 18, 0.9);
         text-decoration: none;
         transition: color 0.2s ease;
 
@@ -696,7 +571,7 @@
         }
 
         &:hover {
-            color: #ffffff;
+            color: #c4b8ff;
 
             span {
                 translate: 0.25em 0;
@@ -706,6 +581,7 @@
 
     .badge {
         margin: 0 0 0.75rem;
+        align-self: flex-start;
         padding: 0.125rem 0.625rem;
         background: rgba(167, 150, 255, 0.16);
         font-size: 0.75rem;
@@ -725,7 +601,7 @@
         margin: 0 0 0.75rem;
         font-size: 0.9375rem;
         line-height: 1.55;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.7);
 
         &:last-of-type {
             margin-bottom: 1.25rem;
