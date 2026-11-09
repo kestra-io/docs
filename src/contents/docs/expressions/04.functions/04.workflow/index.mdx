@@ -38,6 +38,15 @@ Each entry in `outputs.loop.outputs` holds one iteration: `item.iteration` is it
 {{ outputs.loop.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.result') | first }}
 ```
 
+`loopOutputs()` returns the output values only, so don't match its list to `values` by position. To keep each result with its input, read `item.value` and `outputs` from the same entry of `outputs.loop.outputs`, or declare an output that carries both:
+
+```yaml
+outputs:
+  - id: result
+    type: STRING
+    value: "{{ item.value }}: {{ outputs.process.value }}"
+```
+
 ## `errorLogs()`
 
 Prints all error logs from the current execution:
