@@ -46,9 +46,10 @@ inputs:
 
 tasks:
   - id: create_vm
-    type: io.kestra.plugin.core.debug.Return
+    type: io.kestra.plugin.core.output.OutputValues
     description: Stand-in. Replace with your provisioning task, for example a Terraform or cloud CLI task that outputs the VM's private IP.
-    format: "10.0.12.34"
+    values:
+      private_ip: "10.0.12.34"
     assets:
       outputs:
         - id: "{{ inputs.hostname | slugify }}"
@@ -62,7 +63,7 @@ tasks:
             state: running
             env: "{{ inputs.env }}"
             os: ubuntu-22.04
-            private_ip: "{{ outputs.create_vm.value }}"
+            private_ip: "{{ outputs.create_vm.values.private_ip }}"
             owner: platform-team
 ```
 
@@ -91,9 +92,10 @@ inputs:
 
 tasks:
   - id: reserve_ip
-    type: io.kestra.plugin.core.debug.Return
+    type: io.kestra.plugin.core.output.OutputValues
     description: Stand-in. Replace with your IP reservation task, for example gcloud compute addresses create.
-    format: "35.202.10.100"
+    values:
+      address: "35.202.10.100"
     assets:
       inputs:
         - id: "{{ inputs.vm_id }}"
@@ -102,7 +104,7 @@ tasks:
           namespace: "{{ flow.namespace }}"
           type: company.infra.IPAddress
           metadata:
-            address: "{{ outputs.reserve_ip.value }}"
+            address: "{{ outputs.reserve_ip.values.address }}"
             kind: static
             vm: "{{ inputs.vm_id }}"
 ```
