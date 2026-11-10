@@ -301,13 +301,16 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             "[data-hero-frame]:not([data-leaning])",
         )) {
             frame.dataset.leaning = "true"
+            const leaning =
+                frame.querySelectorAll<HTMLElement>(".field, .space")
             let queued = 0
             const update = () => {
                 queued = 0
                 const box = frame.getBoundingClientRect()
                 if (box.bottom < 0) return
                 const progress = Math.min(1, Math.max(0, -box.top / box.height))
-                frame.style.setProperty("--py", (progress * 0.7).toFixed(3))
+                const lean = (progress * 0.7).toFixed(3)
+                for (const el of leaning) el.style.setProperty("--py", lean)
             }
             const schedule = () => {
                 queued ||= requestAnimationFrame(update)
@@ -687,6 +690,12 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         20% {
             color: #ffffff;
         }
+    }
+
+    @property --py {
+        syntax: "<number>";
+        inherits: false;
+        initial-value: 0;
     }
 
     .field {
