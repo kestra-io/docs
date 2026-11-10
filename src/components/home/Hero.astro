@@ -295,36 +295,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     document.addEventListener("astro:page-load", loopKeyFacts)
     loopKeyFacts()
 
-    function leanField() {
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
-        for (const frame of document.querySelectorAll<HTMLElement>(
-            "[data-hero-frame]:not([data-leaning])",
-        )) {
-            frame.dataset.leaning = "true"
-            let queued = 0
-            const update = () => {
-                queued = 0
-                const box = frame.getBoundingClientRect()
-                if (box.bottom < 0) return
-                const progress = Math.min(1, Math.max(0, -box.top / box.height))
-                frame.style.setProperty("--py", (progress * 0.7).toFixed(3))
-            }
-            const schedule = () => {
-                queued ||= requestAnimationFrame(update)
-            }
-            window.addEventListener("scroll", schedule, { passive: true })
-            document.addEventListener(
-                "astro:before-swap",
-                () => window.removeEventListener("scroll", schedule),
-                { once: true },
-            )
-            update()
-        }
-    }
-
-    document.addEventListener("astro:page-load", leanField)
-    leanField()
-
     function clearMenu() {
         if (!document.querySelector("[data-hero-frame]")) return
         document.body.setAttribute("data-header-clear", "")
@@ -695,10 +665,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         position: absolute;
         inset: 0;
         overflow: hidden;
-        perspective: 900px;
-        perspective-origin: calc(50% + var(--px, 0) * -260px)
-            calc(var(--oy, 50%) + var(--py, 0) * -180px);
-        transition: perspective-origin 0.5s ease-out;
         pointer-events: none;
         mask-image: radial-gradient(
             ellipse 30% 34% at 50% var(--oy, 46%),
@@ -710,11 +676,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     .space {
         position: absolute;
         inset: 0;
-        transform: rotateY(calc(var(--px, 0) * 14deg))
-            rotateX(calc(var(--py, 0) * -10deg));
-        transform-origin: 50% var(--oy, 50%);
-        transform-style: preserve-3d;
-        transition: transform 0.2s ease-out;
     }
 
     // The rings and tiles rest at 48% and are moved onto the mark with a
@@ -740,17 +701,16 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
         animation: fly 22s linear infinite;
         animation-delay: var(--delay);
-        will-change: transform, opacity;
         opacity: 0;
 
         @media (prefers-reduced-motion: reduce) {
             animation: none;
             opacity: 0.6;
-            transform: translate3d(
-                calc(var(--dx) * var(--spread, 1) * 1vw),
-                calc(var(--dy) * 1vh),
-                -300px
-            );
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.7500vw),
+                    calc(var(--dy) * 0.7500vh)
+                )
+                scale(0.7500);
         }
     }
 
@@ -823,31 +783,120 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
+    // A flight toward the viewer, drawn in plain 2D: at each stop the tile
+    // sits where a 900px perspective would put it between 1600px behind
+    // and 350px in front, and is scaled to match. No 3D transform is
+    // involved, so the browser paints each tile once and only moves it.
     @keyframes fly {
         0% {
             opacity: 0;
-            transform: translate3d(
-                calc(var(--dx) * var(--spread, 1) * 1vw),
-                calc(var(--dy) * 1vh),
-                -1600px
-            );
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.3600vw),
+                    calc(var(--dy) * 0.3600vh)
+                )
+                scale(0.3600);
+        }
+
+        10% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.3905vw),
+                    calc(var(--dy) * 0.3905vh)
+                )
+                scale(0.3905);
         }
 
         15% {
             opacity: 1;
         }
 
+        20% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.4265vw),
+                    calc(var(--dy) * 0.4265vh)
+                )
+                scale(0.4265);
+        }
+
+        30% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.4700vw),
+                    calc(var(--dy) * 0.4700vh)
+                )
+                scale(0.4700);
+        }
+
+        40% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.5233vw),
+                    calc(var(--dy) * 0.5233vh)
+                )
+                scale(0.5233);
+        }
+
+        50% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.5902vw),
+                    calc(var(--dy) * 0.5902vh)
+                )
+                scale(0.5902);
+        }
+
+        60% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.6767vw),
+                    calc(var(--dy) * 0.6767vh)
+                )
+                scale(0.6767);
+        }
+
+        70% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.7930vw),
+                    calc(var(--dy) * 0.7930vh)
+                )
+                scale(0.7930);
+        }
+
+        80% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 0.9574vw),
+                    calc(var(--dy) * 0.9574vh)
+                )
+                scale(0.9574);
+        }
+
+        85% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.0682vw),
+                    calc(var(--dy) * 1.0682vh)
+                )
+                scale(1.0682);
+        }
+
         90% {
             opacity: 1;
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.2081vw),
+                    calc(var(--dy) * 1.2081vh)
+                )
+                scale(1.2081);
+        }
+
+        95% {
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.3900vw),
+                    calc(var(--dy) * 1.3900vh)
+                )
+                scale(1.3900);
         }
 
         100% {
             opacity: 0;
-            transform: translate3d(
-                calc(var(--dx) * var(--spread, 1) * 1vw),
-                calc(var(--dy) * 1vh),
-                350px
-            );
+            transform: translate(
+                    calc(var(--dx) * var(--spread, 1) * 1.6364vw),
+                    calc(var(--dy) * 1.6364vh)
+                )
+                scale(1.6364);
         }
     }
 
