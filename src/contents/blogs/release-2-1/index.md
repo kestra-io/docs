@@ -1,6 +1,6 @@
 ---
 title: "Kestra 2.1: Infrastructure Self-Service, Searchable Executions, and Durable Scripts"
-description: "Infrastructure tenants give platform teams a self-service catalog with leases and day-2 actions. Executions can be found by business values, scripts can resume from checkpoints, and SAML 2.0 and three new queue backends join the Enterprise Edition."
+description: "Infrastructure tenants give platform teams a self-service catalog with leases and day-2 actions. Executions can be found by business values, scripts can resume from checkpoints, and SAML 2.0 and four new queue backends join the Enterprise Edition."
 date: 2026-12-02T10:00:00
 category: News & Product Updates
 authors:
@@ -16,6 +16,7 @@ authors:
 DRAFT NOTES (remove before publishing)
 - Sources: Release=2.1 + kind/highlight issues (project 15) and docs/release-2-1 branch content.
 - Embargoed: Data Orchestration Artifacts (dbt/Airbyte/Fivetran/JDBC) stay out of this post (changelog only). Plugin endpoints are described generically for that reason.
+- The dbt asset types migration guide (v2.1.0/dbt-asset-types) is left out of the upgrade table because of the embargo.
 - Left out on purpose: Bring Your Own Worker (Cloud, PoC Q1 2027), asset health (ee#10810 closed for ee#11937, still open), dataURL() (shipped 2.0.8), by-query flat-param rejection (backported 2.0.7), auto-emitted Terraform/OpenTofu assets (not shipped, ee#9222 not planned), plugin auto-install on EE (ee#11724 not planned), Failure Debug panel (kestra#19317 still open; add if it lands), Health Center/Diagnostics (open), Source Search (shipped in 2.0).
 - Items marked "VERIFY" in comments need confirmation before publishing.
 -->
@@ -36,17 +37,21 @@ The table below lists the main features in this release and the edition they bel
 | Webhook responses and signatures | Set the status code, headers, and body returned to the caller, and verify HMAC request signatures | OSS, EE, Cloud |
 | Script checkpoints (beta) | Resume a script from its last checkpoint after a retry or restart | OSS, EE, Cloud |
 | Execution timeline | A time-axis view of executions grouped by namespace and flow | OSS, EE, Cloud |
+| Loop iterations in the Gantt | Expand a `Loop` to its iterations and step between failures without leaving the execution | OSS, EE, Cloud |
 | `AVG_DURATION` SLA | Breach when a run is slower than the flow's recent average | OSS, EE, Cloud |
 | Cases tickets and events | Link external tickets to cases and trigger flows on case events | EE, Cloud |
 | Apps: Grid and Chart blocks | Multi-column layouts and dashboard charts inside apps | EE, Cloud |
 | AI Copilot unit tests | Generate a unit test for an existing flow | EE, Cloud |
+| Platform MCP server | Give external AI agents Kestra's own tools for flows and executions | OSS, EE |
+| OIDC issuer | Exchange a short-lived Kestra token for AWS or Google Cloud credentials, with no stored keys | EE, Cloud |
+| Default retention policy | Pick how long to keep executions and logs when creating a tenant, and get the purge flow generated | EE |
 | SAML 2.0 SSO | SP-initiated SAML login with group sync and Single Logout | EE |
 | Password expiration and reuse prevention | Basic Auth password policies | EE |
-| New queue backends | Google Cloud Pub/Sub, NATS JetStream, and Amazon SQS/SNS | EE |
+| New queue backends | Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs | EE |
 | Dedicated queue database | Run the JDBC queue in its own database | OSS, EE |
 
 :::alert{type="info"}
-**Upgrading from 2.0?** A few API and configuration changes need attention, including the concurrency limit API, removed settings permissions, and POST-only logout for SSO deployments. See [Upgrade and Migration](#upgrade-and-migration) and the [v2.1.0 migration hub](/docs/migration-guide/v2.1.0).
+**Upgrading from 2.0?** A few API and configuration changes need attention, including the concurrency limit API, removed role permissions, namespace binding scope, and POST-only logout for SSO deployments. See [Upgrade and Migration](#upgrade-and-migration) and the [v2.1.0 migration hub](/docs/migration-guide/v2.1.0).
 :::
 
 ## Infrastructure Tenants
@@ -243,6 +248,14 @@ The Executions page has a **Timeline** view next to the table. Each execution is
 
 <!-- TODO(arcade, priority 4): Execution timeline: switch Counts to Timeline, zoom and pan, drill from a namespace into its flows, click a bar and use Show only this flow. Interaction-heavy; a screenshot only shows the static chart. OSS, so it can be recorded on any instance. -->
 
+## Loop Iterations in the Gantt
+
+Each `Loop` iteration runs as its own execution, which used to mean opening iterations one by one to find the one that failed. In 2.1 the **Gantt** tab shows a Loop row with its iteration count and a failed count. Expand it to list the iterations in place, each with its value, state, and duration, and expand an iteration to see its task runs. Nested loops expand the same way.
+
+Selecting a row opens a side panel with the task's position in the flow, its attempts, and its logs. With a task run selected inside an iteration, `[` and `]` jump to the same task in the previous or next iteration. **Failed only** turns that into hopping from one failure to the next, and **Go to first failure** walks down nested loops to the first task that failed. See [Loop iterations](/docs/ui/executions#loop-iterations).
+
+<!-- VERIFY: Gantt panel and Loop iterations (kestra#19603) are source-verified only; screenshot or Arcade pending. -->
+
 ## SLA and Concurrency
 
 The new `AVG_DURATION` SLA breaches when an execution runs longer than the flow's recent average plus a margin, so slow runs are caught without maintaining a fixed ceiling per flow:
@@ -291,7 +304,7 @@ Apps get layout and data blocks that make them usable as internal dashboards and
 - The `Grid` block lays out other blocks in up to 12 columns, can be nested, and collapses to a single column on narrow screens.
 - The `Chart` block embeds any dashboard chart definition in an app, read with the viewer's permissions.
 - The `Assets` block shows the assets an execution emitted or updated, grouped by their parent deployment with status, lease, and owner.
-- `watermark` removes the Kestra watermark or replaces it with your own Markdown.
+- `window.width` picks how wide the app renders: `NARROW` for a form, `WIDE` for tables and charts, `AUTO` by default, or a fixed CSS length such as `800px`.
 
 See [Apps](/docs/enterprise/scalability/apps).
 
@@ -302,6 +315,47 @@ See [Apps](/docs/enterprise/scalability/apps).
 From a flow's menu, **Generate a unit test** asks Copilot to draft a test with fixtures, mocks, and assertions based on the flow definition. The draft can be applied directly or opened in the editor for review. Unit test fixtures also now render `dependsOn` and `defaults` expressions the same way a live run does, so tests exercise the real input logic. See [Generate a unit test](/docs/develop-with-ai/ai-copilot#generate-a-unit-test).
 
 <!-- TODO(arcade, priority 6): Copilot unit test: flow menu > Generate a unit test, review the drafted fixtures and assertions, Apply, then run the test. Lower priority than the above, since the AI Copilot already has 2.0 demo material. -->
+
+## Platform MCP Server
+
+Flow MCP servers, added in 2.0, expose your flows as tools. The new platform MCP server exposes Kestra's own tools instead, the ones AI Copilot uses, so Claude, Cursor, or another MCP client can read flows and executions or restart an execution without a flow written for it. It is off by default and is enabled in the configuration, not the UI:
+
+```yaml
+kestra:
+  mcp:
+    platform-server:
+      enabled: true
+      instructions: "Only restart executions in the dev tenant."
+```
+
+Clients connect to `/api/v1/mcp`. In the Enterprise Edition each call runs as the caller, so RBAC applies to every tool, and the accepted authentication methods (basic auth, API tokens, OAuth) can be restricted. See [Platform MCP server](/docs/ai-orchestration/mcp-server#platform-mcp-server).
+
+<!-- VERIFY: platform MCP server (ee#11922) is source-verified only; live test pending. -->
+
+## Keyless Cloud Access with an OIDC Issuer
+
+Flows that call AWS or Google Cloud usually carry an access key or a service account key in a secret. In 2.1 the Enterprise Edition can act as an OpenID Connect issuer, the same model GitHub Actions uses: the `oidcToken()` function signs a short-lived token for the running execution, and the cloud provider exchanges it for temporary credentials.
+
+```yaml
+- id: list_objects
+  type: io.kestra.plugin.aws.s3.List
+  region: eu-west-1
+  bucket: my-bucket
+  stsRoleArn: arn:aws:iam::123456789012:role/kestra-data
+  webIdentityToken: "{{ oidcToken(audience='sts.amazonaws.com') }}"
+```
+
+The token's subject is built from the execution, as `tenant:<tenant>:namespace:<namespace>:flow:<flow>`, never from the flow's code, so a trust policy can allow one flow or every flow in a namespace. Issuers can also be dedicated to a tenant or namespace with their own keys. See [OIDC issuer](/docs/enterprise/auth/oidc-issuer).
+
+<!-- VERIFY: OIDC issuer is live-verified on self-hosted EE; Cloud setup (who enables it, issuer URL) is still open on the docs page. -->
+
+## Default Retention Policy
+
+Executions, logs, and output files pile up until someone writes a purge flow, which is usually after the database has slowed down. The Enterprise Edition setup wizard and the tenant creation wizard now ask how long to keep executions and logs, with an option to keep failed executions forever, and generate a `retention` flow in the tenant's system flows namespace. It runs daily at 02:00, each tenant on a different minute.
+
+The flow is the policy. There's no hidden setting, so changing retention means editing the flow, in the editor or through Git. The same policy can be passed as `retentionPolicy` to the setup and tenants APIs. See [Default retention flow](/docs/administrator-guide/purge#default-retention-flow).
+
+<!-- VERIFY: retention policy (ee#11845, merged 2026-11-10) is source-verified only; runtime test and Cloud behavior pending. -->
 
 ## SAML 2.0 and Password Policies
 
@@ -322,12 +376,12 @@ Both are off by default and apply to users, not service accounts or API tokens. 
 
 ## Queue Backends
 
-2.0 made the queue independent of the repository. 2.1 adds three managed brokers to the Enterprise Edition alongside Kafka, Redis, and AMQP: Google Cloud Pub/Sub, NATS JetStream, and Amazon SQS/SNS. Teams already running one of these don't need to operate Kafka to get a broker-backed queue.
+2.0 made the queue independent of the repository. 2.1 adds four brokers to the Enterprise Edition alongside Kafka, Redis, and AMQP: Google Cloud Pub/Sub, NATS JetStream, Amazon SQS/SNS, and Azure Event Hubs. Teams already running one of these don't need to operate Kafka to get a broker-backed queue.
 
 ```yaml
 kestra:
   queue:
-    type: gcp-pubsub   # or nats, aws
+    type: gcp-pubsub   # or nats, aws, azure-eventhub
     gcp-pubsub:
       project-id: my-gcp-project
 ```
@@ -344,21 +398,27 @@ For JDBC deployments, the queue can now run in its own database, even on a diffe
 - [Reschedule an execution](/docs/workflow-components/execution#schedule-and-reschedule-an-execution): move the `scheduleDate` of an execution that hasn't started yet with `POST /executions/{id}/actions/reschedule`, instead of deleting and recreating it.
 - [`isLastDayOfMonth()`](/docs/expressions/functions/dates#islastdayofmonth): a Pebble function for month-end logic in `runIf` and trigger conditions.
 - [`descriptionDisplayMode`](/docs/workflow-components/inputs#description-display-mode): set `TOOLTIP` to show an input's description as a help icon, keeping long forms compact.
-- [Reusable Inputs audit logs](/docs/workflow-components/reusable-inputs#audit-logs): every change to a shared input set is recorded with its revision.
+- [Replay with modified inputs](/docs/how-to-guides/replay#replay-with-modified-inputs): replaying a whole execution can reuse its inputs or open the input form prefilled with them, and `POST /executions/{id}/actions/replay-with-inputs` does the same from a script.
+- [Bulk resume of breakpoints](/docs/how-to-guides/pause-resume#bulk-resuming-paused-workflows): the **Resume** bulk action and the `resume/by-ids` and `resume/by-query` endpoints now resume executions stopped at a debug breakpoint along with paused ones.
+- [Docker `tmpfs` mounts](/docs/task-runners/types/docker-task-runner#in-memory-mounts-tmpfs): give a task container an in-memory scratch directory, sized against its memory limit.
+- [Execution labels in test fixtures](/docs/enterprise/governance/unit-tests#set-execution-labels-in-fixtures) (EE): `fixtures.labels` sets the labels a flow would get in production, for flows that branch on `{{ labels.<key> }}`.
 - [Context panel](/docs/ui/flows#context-panel-enterprise) (EE): the flow editor's Context panel shows inputs, variables, KV pairs, and secrets across the namespace hierarchy in one searchable tree, with click-to-copy expressions.
 - [Notifications](/docs/ui#notifications): the notifications bell comes to the open-source edition. Bulk actions on executions, triggers, and backfills (kill, replay, restart, set labels, disable, and others) run in the background and report their progress and outcome there, to the user who started them.
 - [PEM certificates for gRPC](/docs/configuration/enterprise-and-advanced#pem-certificates) (EE): controller and worker mTLS can use PEM files directly, with hot reload, so cert-manager and Kubernetes `tls` Secrets work without conversion.
 - [Executor loop intervals](/docs/configuration/plugins-and-execution#executor-loop-intervals): tune how often the executor checks SLA deadlines and delayed executions.
 - [`PurgeMetrics`](/docs/administrator-guide/purge#purge-metrics): a dedicated task to bulk-delete execution metrics, much cheaper than cleaning them through `PurgeExecutions`.
-- [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 users at once with the same groups and roles, from the UI or the new `POST /invitations/bulk` endpoint.
+- [Invitations](/docs/enterprise/auth/invitations) (EE): invite up to 25 users at once with the same groups and roles, from the UI or the new `POST /invitations/bulk` endpoint. Invited users can accept with their SSO provider, and instances with SSO as the only login method no longer ask them for a password.
+- [Impersonate service accounts](/docs/enterprise/auth/rbac#impersonate) (EE): Instance Owners can impersonate a service account to check its access, as they already could for users. Impersonation is now reserved to Instance Owners.
+- [LDAP user attributes](/docs/enterprise/auth/sso/ldap) (EE): the `user-attributes` mapping now sets new users' email, first name, and last name. Existing LDAP users keep signing in to the same account.
+- [`thinking-effort: none`](/docs/configuration/enterprise-and-advanced) (EE): AI Copilot works with OpenAI and Azure OpenAI reasoning deployments that reject tool calls unless reasoning is off.
 - [Installed plugins](/docs/enterprise/instance/versioned-plugins#list-installed-plugins) (EE): `GET /api/v1/plugins/installed` lists every plugin loaded on the instance, whether it ships with the image or was installed through plugin management, and whether a newer version is available.
 - [Change password in OSS](/docs/administrator-guide/basic-auth-troubleshooting#change-password): users with database-stored Basic Auth credentials can change their password from the user menu.
-- Task runner details: the topology views for Kubernetes, AWS Batch, Azure Batch, Google Batch, and Cloud Run task runners show the configuration a run actually used.
+- [Task runner details](/docs/task-runners/types/kubernetes-task-runner) (EE): the Kubernetes, AWS Batch, Azure Batch, Azure VM, Google Batch, and Cloud Run task runners add a **Runner details** artifact to the execution's **Artifacts** tab, with the configuration the run actually used. The Kubernetes one also tracks the pod's lifecycle.
 - [Plugin endpoints](/docs/plugin-developer-guide/plugin-ui#running-backend-logic-with-plugin-endpoints) (preview): plugin UI components can call server-side logic defined in the plugin, with RBAC checks in the Enterprise Edition.
 
 <!--
 VERIFY before publishing:
-- Plugin endpoints: confirm fetchEndpoint (kestra#21653) and the execution-artifact slot (kestra#21611) ship in GA. Keep generic (embargo).
+- Plugin endpoints: fetchEndpoint and the execution-artifact slot are on develop, which 2.1 ships from (checked 2026-11-10). Keep generic (embargo).
 - Image digest pinning for containerImage is a 2.1-only fix (kestra#19667); left out as minor.
 -->
 
@@ -370,6 +430,8 @@ Upgrading from 2.0 to 2.1 needs no flow rewrites, but some API, CLI, and configu
 |---|---|
 | [Concurrency limit API](/docs/migration-guide/v2.1.0/concurrency-limit-api) | `PUT /concurrency-limit/{namespace}/{flowId}` is replaced by `PUT /concurrency-limit` with the scope in the body. The search endpoint is now paged. |
 | [`SYSTEM_SETTINGS` and `TENANT_SETTINGS` removed](/docs/migration-guide/v2.1.0/settings-permissions-removed) | Role definitions that include them now fail with a 422 in the API, `kestractl`, and Terraform. Remove them; stored roles need no change. |
+| [`USER: IMPERSONATE` removed](/docs/migration-guide/v2.1.0/impersonate-permission-removed) (EE) | Impersonation is Instance Owner only. Role definitions that include the action fail with a 422, and basic-auth requests with the `X-Kestra-Impersonate` header fail unless they come from an Instance Owner. |
+| [Namespace binding scope](/docs/migration-guide/v2.1.0/namespace-binding-scope) (EE) | A binding scoped to a namespace can only grant namespace-level permissions. The upgrade moves existing namespace bindings of roles with tenant-level permissions to a `<Role name> (namespace)` copy, and API or Terraform calls that bind such a role to a namespace fail with a 422. |
 | [Server CLI commands deprecated](/docs/migration-guide/v2.1.0/server-cli-commands-deprecated) | Seven `kestra` server commands are deprecated in favor of `kestractl`, and now print a deprecation line to stdout. Scripts that capture their output need updating. |
 | [Queue configuration keys](/docs/migration-guide/v2.1.0/queue-backend-configuration) | Kafka, Redis, and AMQP settings move under `kestra.queue.<type>`. The old keys still work but log a warning. |
 | [POST-only logout](/docs/migration-guide/v2.1.0/sso-logout-post-only) (EE) | `GET /logout` now returns 405. Register `<your Kestra URL>/ui` as the post-logout redirect URI in your identity provider, and remove any `get-allowed: true` override from your configuration. |
