@@ -2277,7 +2277,8 @@ const WORKERS = [
 
     function playTenants() {
         const stage = document.querySelector<HTMLElement>("[data-tenants]")
-        if (!stage || reduced()) return
+        if (!stage || stage.dataset.wired || reduced()) return
+        stage.dataset.wired = "true"
         const row = (name: string) =>
             stage.querySelector<HTMLElement>(`[data-row="${name}"]`)
         const person = (name: string) =>
@@ -2409,18 +2410,24 @@ const WORKERS = [
             () => (reset(), play()),
             () => (timers.forEach(window.clearTimeout), (timers = [])),
         )
-        window.addEventListener("resize", () =>
+        const reposition = () =>
             snap(() =>
                 at.forEach(([target, lane], who) =>
                     go(who, target.dataset.row ?? "foot", lane),
                 ),
-            ),
+            )
+        window.addEventListener("resize", reposition)
+        document.addEventListener(
+            "astro:before-swap",
+            () => window.removeEventListener("resize", reposition),
+            { once: true },
         )
     }
 
     function playRouting() {
         const card = document.querySelector<HTMLElement>("[data-routing]")
-        if (!card || reduced()) return
+        if (!card || card.dataset.wired || reduced()) return
+        card.dataset.wired = "true"
         const state = card.querySelector<HTMLElement>("[data-run-state]")
         const status = card.querySelector<HTMLElement>("[data-status]")
         const statusText = card.querySelector<HTMLElement>("[data-status-text]")
@@ -2506,8 +2513,11 @@ const WORKERS = [
     }
 
     function playAudit() {
-        const card = document.querySelector<HTMLElement>("[data-audit]")
-        if (!card || reduced()) return
+        const card = document.querySelector<HTMLElement>(
+            ".enterprise [data-audit]",
+        )
+        if (!card || card.dataset.wired || reduced()) return
+        card.dataset.wired = "true"
         const stack = card.querySelector<HTMLElement>("[data-stack]")
         const pool = card.querySelector<HTMLTemplateElement>("[data-pool]")
         const exported = card.querySelector<HTMLElement>("[data-exported]")
@@ -2556,7 +2566,8 @@ const WORKERS = [
 
     function playBackends() {
         const card = document.querySelector<HTMLElement>("[data-backends]")
-        if (!card || reduced()) return
+        if (!card || card.dataset.wired || reduced()) return
+        card.dataset.wired = "true"
         const setups = JSON.parse(card.dataset.setups ?? "[]") as string[][]
         const columns = [...card.querySelectorAll<HTMLElement>("[data-column]")]
         const CLOCK = 3200
@@ -2602,7 +2613,8 @@ const WORKERS = [
 
     function playHandshake() {
         const strip = document.querySelector<HTMLElement>("[data-handshake]")
-        if (!strip || reduced()) return
+        if (!strip || strip.dataset.wired || reduced()) return
+        strip.dataset.wired = "true"
         const workers = [
             ...strip.querySelectorAll<HTMLElement>('[data-worker="ok"]'),
         ]
@@ -2629,7 +2641,8 @@ const WORKERS = [
 
     function playIntruder() {
         const schema = document.querySelector<HTMLElement>("[data-intruder]")
-        if (!schema || reduced()) return
+        if (!schema || schema.dataset.wired || reduced()) return
+        schema.dataset.wired = "true"
         const jets = [...schema.querySelectorAll<SVGPathElement>("[data-jet]")]
         const visibleJet = () =>
             jets.find((path) => path.getClientRects().length) ?? jets[0]
@@ -2675,10 +2688,15 @@ const WORKERS = [
         })
     }
 
-    playTenants()
-    playRouting()
-    playAudit()
-    playBackends()
-    playHandshake()
-    playIntruder()
+    function init() {
+        playTenants()
+        playRouting()
+        playAudit()
+        playBackends()
+        playHandshake()
+        playIntruder()
+    }
+
+    document.addEventListener("astro:page-load", init)
+    init()
 </script>

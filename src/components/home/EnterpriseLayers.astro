@@ -247,10 +247,13 @@ const {
     }
 
     function placeLabels() {
-        document.querySelectorAll<HTMLElement>("[data-layers]").forEach(placeIn)
+        document
+            .querySelectorAll<HTMLElement>("[data-layers]:not([data-wired])")
+            .forEach(placeIn)
     }
 
     function placeIn(box: HTMLElement) {
+        box.dataset.wired = "true"
         const plates = [...box.querySelectorAll<HTMLElement>("[data-plate]")]
         const labels = [...box.querySelectorAll<HTMLElement>("[data-label]")]
         const place = (idx: number) => {
@@ -311,5 +314,6 @@ const {
         whileVisible(box, cycle, () => window.clearInterval(timer))
     }
 
+    document.addEventListener("astro:page-load", placeLabels)
     placeLabels()
 </script>
