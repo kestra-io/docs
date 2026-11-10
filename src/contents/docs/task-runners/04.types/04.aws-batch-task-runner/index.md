@@ -837,7 +837,7 @@ taskRunner:
   computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
 ```
 
-**OIDC / Web Identity Federation is not currently supported.** Kestra Cloud does not act as an OIDC identity provider, so `AssumeRoleWithWebIdentity` (the approach used by GitHub Actions and similar systems) is not available. There is no fully keyless path from Kestra Cloud to your AWS account today. If your security policy requires no long-lived static credentials, contact [Kestra support](https://kestra.io/slack) to discuss alternatives or to ask about roadmap plans for a keyless Cloud-to-AWS path.
+**The AWS Batch task runner doesn't support OIDC web identity federation.** Kestra Enterprise can act as an [OIDC issuer](../../../07.enterprise/03.auth/oidc-issuer/index.md) so that AWS plugin tasks assume a role through `AssumeRoleWithWebIdentity`, the approach GitHub Actions uses, but the Batch task runner has no `webIdentityToken` property. There is no fully keyless path from Kestra Cloud to AWS Batch today. If your security policy requires no long-lived static credentials, contact [Kestra support](https://kestra.io/slack) to discuss alternatives or to ask about roadmap plans for a keyless Cloud-to-AWS path.
 
 ### Network access
 
