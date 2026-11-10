@@ -408,6 +408,8 @@ After the run, the `outputFiles` property allows you to preview or download `sys
 
 ![Ansible File Output](./ansible-outputs.png)
 
+To change how the playbook runs without editing `commands`, set the task's typed options: `checkMode` (`--check`), `diff` (`--diff`), `limit`, `tags`, `skipTags`, `verbosity` (`0` to `4`), and `forks`. Kestra adds the matching flags to every `ansible-playbook` command in the task, so `checkMode: true` with `diff: true` reports what the playbook would change without applying it.
+
 ### Install Galaxy collections and Python packages
 
 When your playbooks use Galaxy collections or Python libraries that the image doesn't include, declare them on the task with `galaxyDependencies` and `pythonDependencies`. For example, if you extend the playbook with the `community.general.json_query` filter, it needs the `community.general` collection and the `jmespath` package:
