@@ -277,11 +277,17 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 strip.classList.add("running")
             }
             let visible = false
-            new IntersectionObserver(([entry]) => {
+            const observer = new IntersectionObserver(([entry]) => {
                 if (entry.isIntersecting && !visible) run()
                 visible = entry.isIntersecting
-            }).observe(strip)
-            setInterval(() => {
+            })
+            observer.observe(strip)
+            const timer = setInterval(() => {
+                if (!strip.isConnected) {
+                    clearInterval(timer)
+                    observer.disconnect()
+                    return
+                }
                 if (visible && !document.hidden) run()
             }, REPLAY_MS)
         }

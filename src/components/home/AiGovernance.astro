@@ -356,8 +356,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
     arriveAi()
 
     function feedAgent() {
-        if (document.documentElement.dataset.feedingAgent) return
-        document.documentElement.dataset.feedingAgent = "true"
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
         const inView = (box: DOMRect) =>
@@ -433,7 +431,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         })
     }
 
-    document.addEventListener("astro:page-load", feedAgent)
     feedAgent()
 </script>
 

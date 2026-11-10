@@ -310,6 +310,7 @@ const clock = (seconds: number) => {
         const tick = (idx: number) => {
             const began = performance.now()
             const step = (now: number) => {
+                if (!root.isConnected) return
                 const t = Math.min(1, (now - began) / RUN_MS)
                 layout(starts[idx] + t * seconds[idx])
                 if (t < 1) requestAnimationFrame(step)
@@ -348,10 +349,15 @@ const clock = (seconds: number) => {
 
         let built = false
         const waitVisible = async () => {
-            if (shown()) return
+            if (!root.isConnected) return false
+            if (shown()) return true
             built = false
             root.classList.add("building")
-            while (!shown()) await sleep(200)
+            while (!shown()) {
+                await sleep(200)
+                if (!root.isConnected) return false
+            }
+            return true
         }
         const build = async () => {
             reset()
@@ -367,24 +373,26 @@ const clock = (seconds: number) => {
 
         const loop = async () => {
             run: for (;;) {
-                await waitVisible()
+                if (!(await waitVisible())) break
                 if (!built) await build()
                 else {
                     reset()
                     await sleep(500)
                 }
                 for (let idx = 0; idx < nodes.length; idx++) {
-                    await waitVisible()
+                    if (!(await waitVisible())) break run
                     if (!built) continue run
                     set(idx, "running")
                     tick(idx)
                     await sleep(RUN_MS)
+                    if (!root.isConnected) break run
                     set(idx, "success")
                     report("topology:progress", (idx + 1) / nodes.length)
                     const edge = edges[idx]
                     if (edge) {
                         edge.classList.add("active")
                         await sleep(HANDOVER_MS)
+                        if (!root.isConnected) break run
                         edge.classList.remove("active")
                         edge.classList.add("done")
                     }
@@ -393,7 +401,7 @@ const clock = (seconds: number) => {
                 await sleep(HOLD_MS)
             }
         }
-        loop()
+        loop().finally(() => stacked.removeEventListener("change", fit))
     }
 
     function init() {

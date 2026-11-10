@@ -312,7 +312,9 @@ const GUARDS = [
 
         const wait = async (ms: number) => {
             await sleep(ms)
-            while (!visible) await sleep(200)
+            while (root.isConnected && !visible) await sleep(200)
+            if (!root.isConnected)
+                throw new DOMException("detached", "AbortError")
         }
 
         const clock = () => {
@@ -486,7 +488,9 @@ const GUARDS = [
                 seen = open
             }
         }
-        loop()
+        loop().catch((error) => {
+            if (error?.name !== "AbortError") throw error
+        })
     }
 
     function startFlows() {
