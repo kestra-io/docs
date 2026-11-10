@@ -81,7 +81,9 @@ Tenants are created and managed through the **Instance Owner console** — only 
 
 ### Creating a tenant from the UI
 
-Go to **Instance Owner → Tenants** and click **Create**. The wizard steps through identity (ID and name), type, worker selector, and optionally storage and secrets. On the **Type** step, select `DEFAULT` for the standard experience or `INFRASTRUCTURE` for the self-service vertical. Click **Save** on the final review step.
+Go to **Instance Owner → Tenants** and click **Create**. The wizard steps through identity (ID and name), type, worker selector, optionally storage and secrets, and the retention policy. On the **Type** step, select `DEFAULT` for the standard experience or `INFRASTRUCTURE` for the self-service vertical. Click **Create** on the final review step.
+
+On the **Retention policy** step, set how long the tenant keeps finished executions and logs, and whether it keeps `FAILED` executions forever. The form starts from the default policy chosen at [instance setup](../../01.overview/02.setup/index.md#step-3-choose-a-retention-policy), or from 90 days for both when there is none. Kestra generates a daily `retention` flow in the tenant's system flows namespace from these values. Click **Skip**, or keep both executions and logs forever, to create the tenant without the flow. See [Default retention flow](../../../10.administrator-guide/purge/index.md#default-retention-flow).
 
 The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 
@@ -93,7 +95,7 @@ Use [`kestractl`](../../../kestra-cli/kestractl/index.md#tenant-management-enter
 kestractl tenants create stage --name "Staging"
 ```
 
-As in the UI, you are granted the Admin role in the new tenant. To make another user an admin of the tenant, create a binding:
+As in the UI, you are granted the Admin role in the new tenant. The tenant also gets a `retention` flow generated from the instance's default retention policy, when one was set at instance setup. To make another user an admin of the tenant, create a binding:
 
 ```bash
 kestractl bindings create --tenant stage --type USER --external-id <user_id> --role <admin_role_id>
@@ -113,6 +115,22 @@ curl -X POST "https://demo.kestra.io/api/v1/tenants" \
 ```
 
 To create an [Infrastructure tenant](./infrastructure/index.md), add `"type": "INFRASTRUCTURE"` to the body.
+
+To choose the tenant's retention policy, add `retentionPolicy` to the body. `executionsDays` and `logsDays` are numbers of days, or `null` to keep forever, and `keepFailedExecutions` keeps `FAILED` executions and their logs forever:
+
+```json
+{
+  "id": "stage",
+  "name": "staging",
+  "retentionPolicy": {
+    "executionsDays": 30,
+    "logsDays": 14,
+    "keepFailedExecutions": true
+  }
+}
+```
+
+Without `retentionPolicy`, the tenant gets the instance's default policy, if one was set at instance setup. A policy with both `executionsDays` and `logsDays` set to `null` creates no flow. Instance Owners can read the default policy with `GET /api/v1/instance/retention-policy`, which returns `404` when none was set.
 
 ### Creating a tenant from Terraform
 
