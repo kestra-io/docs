@@ -15,7 +15,6 @@ import ApiIcon from "~/components/lp/shared/assets/stack-app-microservices.svg"
 
 const GUIDE = "/resources/migration/pipedream"
 
-/** The header CTA and the closing banner both point at the trial form. */
 const trialCta = { text: "Start your Cloud trial", href: "#contact-sales" }
 
 const reasons: PlatformProps["cards"] = [
@@ -160,7 +159,7 @@ const ctaBullets: UseCasesProps["bullets"] = [
 ]
 
 // The Cloud offer, in the words of kestra.io/cloud (the official source for
-// Cloud claims). The shared component's default copy is self-hosted Enterprise.
+// Cloud claims).
 const cloudFeatures: NonNullable<FeaturesProps["features"]> = [
     {
         icon: "mdi:shield-lock-outline",
@@ -215,10 +214,9 @@ const faqItems: FaqProps["items"] = [
     },
 ]
 
-/** Copy for /lp/pipedream-migration. Paid traffic only: every ad group lands
- * here and is told apart by its utm_content. The organic page for the topic is
- * the migration guide. The conversion is a Kestra Cloud trial (the /cloud
- * form), not a demo. */
+/** Paid traffic only: every ad group lands here and is told apart by its
+ * utm_content. The organic page for the topic is the migration guide. The
+ * conversion is a Kestra Cloud trial (the /cloud form), not a demo. */
 export const pipedreamMigrationContent = {
     title: "Migrate off Pipedream Workflows",
     description:

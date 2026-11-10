@@ -5,14 +5,14 @@ export interface Props {
     heading: string
     sub: string
     cta?: { text: string; href: string }
-    reassurance?: string
+    reassurance: string
 }
 
 const {
     heading,
     sub,
     cta = { text: "Book a demo", href: "/demo" },
-    reassurance = "Self-managed or air-gapped. Your data never leaves your network.",
+    reassurance,
 } = Astro.props
 ---
 

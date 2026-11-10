@@ -6,32 +6,11 @@ import dashboard from "./assets/dashboard.png"
 
 export interface Props {
     heading?: string
-    /** Defaults to the self-hosted Enterprise copy below. */
-    features?: { icon: string; title: string; body: string }[]
+    features: { icon: string; title: string; body: string }[]
 }
 
-const defaultFeatures = [
-    {
-        icon: "mdi:shield-lock-outline",
-        title: "Security & Compliance",
-        body: "SSO and SCIM, role-based access control, internal or external secrets managers, and full audit logs, on infrastructure you control, air-gapped included.",
-    },
-    {
-        icon: "mdi:hexagon-outline",
-        title: "Governance & Productivity",
-        body: "Namespaces and multi-tenancy, Git integration and versioning with revision history, human-in-the-loop approvals, custom blueprints, and built-in observability across every run.",
-    },
-    {
-        icon: "mdi:view-grid-outline",
-        title: "Scalability & Infrastructure",
-        body: "Worker groups, high availability, and unlimited executions, deployed with Docker, Kubernetes, a single VM, or managed Cloud, with backup, restore, and cluster health monitoring.",
-    },
-]
-
-const {
-    heading = "Powerful features for reliable workflows",
-    features = defaultFeatures,
-} = Astro.props
+const { heading = "Powerful features for reliable workflows", features } =
+    Astro.props
 ---
 
 <section class="features">

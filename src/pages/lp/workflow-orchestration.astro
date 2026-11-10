@@ -14,7 +14,6 @@ import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { getWorkflowOrchestrationContent } from "~/components/lp/workflow-orchestration/workflowOrchestrationContent"
 
-/** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/workflow-orchestration"
 
 const content = getWorkflowOrchestrationContent(await fetchTotalPluginsCount())
@@ -40,7 +39,7 @@ const content = getWorkflowOrchestrationContent(await fetchTotalPluginsCount())
     </Hero>
     <Platform {...content.platform} />
     <Migration {...content.migration} />
-    <Features />
+    <Features {...content.features} />
     <Stack {...content.stack} />
     <Trusted />
     <UseCases {routePath} {...content.useCases} />

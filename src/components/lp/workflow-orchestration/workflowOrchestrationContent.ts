@@ -1,6 +1,7 @@
 import type { Props as HeroProps } from "~/components/lp/shared/Hero.astro"
 import type { Props as PlatformProps } from "~/components/lp/shared/Platform.astro"
 import type { Props as MigrationProps } from "~/components/lp/shared/Migration.astro"
+import type { Props as FeaturesProps } from "~/components/lp/shared/Features.astro"
 import type { Props as StackProps } from "~/components/lp/shared/Stack.astro"
 import type { Props as UseCasesProps } from "~/components/lp/shared/UseCases.astro"
 import type { Props as FaqProps } from "~/components/lp/shared/Faq.astro"
@@ -10,6 +11,11 @@ import DataPipelinesIcon from "~/components/lp/shared/assets/stack-data-pipeline
 import InfraPlatformIcon from "~/components/lp/shared/assets/stack-infra-platform.svg"
 import AppMicroservicesIcon from "~/components/lp/shared/assets/stack-app-microservices.svg"
 import BusinessProcessesIcon from "~/components/lp/shared/assets/stack-business-processes.svg"
+
+import {
+    selfHostedFeatures,
+    selfHostedReassurance,
+} from "~/components/lp/shared/selfHostedCopy"
 
 const stages: MigrationProps["steps"] = [
     {
@@ -117,8 +123,7 @@ const faqItems: FaqProps["items"] = [
     },
 ]
 
-/** Copy for /lp/workflow-orchestration. Takes the formatted plugin count,
- * which the Platform and Stack copy quote. */
+/** Takes the formatted plugin count, which the Platform and Stack copy quote. */
 export const getWorkflowOrchestrationContent = (totalPlugins: string) => ({
     title: "Unified Workflow Orchestration Platform for the AI era",
     description:
@@ -158,6 +163,8 @@ export const getWorkflowOrchestrationContent = (totalPlugins: string) => ({
         steps: stages,
     } satisfies MigrationProps,
 
+    features: { features: selfHostedFeatures } satisfies FeaturesProps,
+
     stack: {
         heading: "Unified Orchestration Across Your Stack",
         sub: `API-first, with ${totalPlugins}+ plugins for your databases, clouds, and internal systems`,
@@ -174,5 +181,6 @@ export const getWorkflowOrchestrationContent = (totalPlugins: string) => ({
     closingBanner: {
         heading: "Bring your own list of questions",
         sub: "We'll go through them against your own architecture.",
+        reassurance: selfHostedReassurance,
     } satisfies ClosingBannerProps,
 })

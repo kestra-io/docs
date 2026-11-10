@@ -3,6 +3,7 @@ import type { Props as PlatformProps } from "~/components/lp/shared/Platform.ast
 import type { Props as MigrationProps } from "~/components/lp/shared/Migration.astro"
 import type { Props as TranslationProps } from "~/components/lp/shared/Translation.astro"
 import type { Props as ProofProps } from "~/components/lp/shared/Proof.astro"
+import type { Props as FeaturesProps } from "~/components/lp/shared/Features.astro"
 import type { Props as StackProps } from "~/components/lp/shared/Stack.astro"
 import type { Props as UseCasesProps } from "~/components/lp/shared/UseCases.astro"
 import type { Props as FaqProps } from "~/components/lp/shared/Faq.astro"
@@ -12,6 +13,11 @@ import SelfServiceIcon from "./assets/automate-self-service.svg"
 import DayTwoIcon from "./assets/automate-day-2.svg"
 import DecommissioningIcon from "./assets/automate-decommissioning.svg"
 import IntegrationsIcon from "./assets/automate-integrations.svg"
+
+import {
+    selfHostedFeatures,
+    selfHostedReassurance,
+} from "~/components/lp/shared/selfHostedCopy"
 
 const reasons: PlatformProps["cards"] = [
     {
@@ -240,9 +246,8 @@ const faqItems: FaqProps["items"] = [
     },
 ]
 
-/** Copy for /lp/vra-migration. Paid traffic only: every ad group lands here
- * and is told apart by its utm_content. The organic page for the topic is the
- * migration guide. */
+/** Paid traffic only: every ad group lands here and is told apart by its
+ * utm_content. The organic page for the topic is the migration guide. */
 export const vraMigrationContent = {
     title: "Migrate off VMware vRA, Aria and VCF Automation",
     description:
@@ -287,6 +292,8 @@ export const vraMigrationContent = {
         cases,
     } satisfies ProofProps,
 
+    features: { features: selfHostedFeatures } satisfies FeaturesProps,
+
     stack: {
         heading: "What teams automate after vRA",
         sub: "The VMware automation that ran in vRA and vRO, rebuilt as flows that also reach beyond vSphere.",
@@ -304,5 +311,6 @@ export const vraMigrationContent = {
     closingBanner: {
         heading: "Bring your VMware renewal quote",
         sub: "We'll set the exit plan against your renewal date.",
+        reassurance: selfHostedReassurance,
     } satisfies ClosingBannerProps,
 }

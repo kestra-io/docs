@@ -87,7 +87,6 @@ const faqItems: FaqProps["items"] = [
     },
 ]
 
-/** Copy for /lp/automate-infra. */
 export const automateInfraContent = {
     title: "Infrastructure automation, as code | Kestra",
     description:

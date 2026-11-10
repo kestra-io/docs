@@ -19,7 +19,6 @@ import WebinarBanner from "~/components/vra-migration-guide/WebinarBanner.astro"
 
 import { vraMigrationContent as content } from "~/components/lp/vra-migration/vraMigrationContent"
 
-/** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/vra-migration"
 
 /* The call form lower on the page (#contact-sales): same HubSpot form as
@@ -148,7 +147,7 @@ const formProps = { submitLabel: "Get my migration estimate" }
     <Proof {...content.proof} />
     <GuideOffer />
     <Assistant />
-    <Features />
+    <Features {...content.features} />
     <Stack {...content.stack} />
     <UseCases {routePath} {...content.useCases} {formProps} />
     <Payback />

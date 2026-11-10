@@ -6,10 +6,8 @@ import Meeting from "~/components/demo/Meeting.vue"
 export interface Props {
     /** Passed to HubSpot as the originating page URI. */
     routePath: string
-    /** Each line renders on its own row. */
     headingLines: string[]
     bullets: { text: string; strong: boolean }[]
-    /** Forwarded to the form, e.g. its button label. */
     formProps?: Record<string, unknown>
 }
 
