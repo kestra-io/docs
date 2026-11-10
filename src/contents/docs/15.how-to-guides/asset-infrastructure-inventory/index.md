@@ -20,7 +20,7 @@ Provisioning flows usually create a VM, then other flows attach an IP address, i
 - Permission to create and execute flows in the `company.infra` namespace, and the `ASSET` `VIEW` and `LIST` permissions to see the inventory.
 - For the optional `Delete` step, SDK credentials with the `ASSET` `DELETE` permission.
 
-The flows in this guide use [`Log`](/plugins/core/log/io.kestra.plugin.core.log.log) and [`Return`](/plugins/core/debug/io.kestra.plugin.core.debug.return) tasks as stand-ins for real provisioning tasks, so you can run them without cloud credentials. Each stand-in says which real task to put in its place.
+The flows in this guide use [`Log`](/plugins/core/log/io.kestra.plugin.core.log.log) and [`OutputValues`](/plugins/core/output/io.kestra.plugin.core.output.outputvalues) tasks as stand-ins for real provisioning tasks, so you can run them without cloud credentials. Each stand-in says which real task to put in its place.
 
 ## Register a VM when you provision it
 
@@ -71,7 +71,7 @@ Notice these parts of the declaration:
 
 - `id` turns `Web Server 01` into `web-server-01`. Running the flow again for the same hostname updates the same asset instead of creating a second one.
 - `namespace` is set explicitly. A new output asset without a namespace becomes a Global asset, visible to every namespace. See [Namespace and Global assets](../../07.enterprise/02.governance/01.assets/01.declare-assets/index.md#namespace-and-global-assets) before you choose.
-- `private_ip` reads `outputs.create_vm.value`. Kestra renders the `assets` block after the task finishes, so the declaration can use the task's own outputs.
+- `private_ip` reads `outputs.create_vm.values.private_ip`. Kestra renders the `assets` block after the task finishes, so the declaration can use the task's own outputs.
 
 Execute the flow with the default inputs.
 
