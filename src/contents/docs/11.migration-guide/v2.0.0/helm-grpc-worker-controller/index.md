@@ -102,9 +102,12 @@ The registration token is what assigns the worker to a group, so no `extraArgs` 
 
 The signing key for worker access tokens defaults to `kestra.encryption.secret-key`. To set a separate `kestra.ee.worker.auth.jwt-signing-key`, keep it out of `configurations.application`, which the chart renders into a plaintext `ConfigMap`. Mount it from a Kubernetes Secret with `configurations.secrets` instead. Workers ignore the signing key.
 
-If you previously ran multiple worker groups in parallel (for example `wg-1` and `wg-2`), each group needs its own worker deployment with its own token. Add an entry under `workerGroups` for each additional group:
+If you previously ran multiple worker groups in parallel (for example `wg-1` and `wg-2`), each group needs its own worker deployment with its own token. Add an entry under `workerGroups` for each additional group.
+
+`workerGroups` is a top-level key in `values.yaml`, at the same level as `deployments` and `configurations`, not nested under `deployments`. Each entry adds one worker deployment, and the entry name (`wg-2` below) only names that deployment. The registration token in its `extraEnv` decides which Worker Group its workers join, so the entry name does not have to match the group id.
 
 ```yaml
+# Top level of values.yaml, next to deployments and configurations
 workerGroups:
   wg-2:
     enabled: true
@@ -225,6 +228,34 @@ In a Helm release, the settings split like this:
 See [Using the `workerGroups` Helm key](#using-the-workergroups-helm-key-enterprise-edition) for a complete `values.yaml` example, and [Where each setting goes](../../../07.enterprise/04.scalability/worker-group/index.md#where-each-setting-goes) for the same split outside Helm.
 
 Generate registration tokens from **Infrastructure → Worker Groups → [group] → Tokens** in the Instance Owner console, or via `POST /api/v1/instance/worker-groups/{id}/tokens`. The plaintext token is shown only once, so copy it before closing the dialog.
+
+The controllers never need the registration token in their configuration. Kestra stores a hash of each generated token in the database, and the controller checks the token a worker presents against it. The only exception is [declarative setup](../../../07.enterprise/04.scalability/worker-group/index.md#declarative-configuration), where you list a pre-generated token under `kestra.ee.setup` so that Kestra registers it at startup.
+
+### Only the default Worker Group
+
+Once worker authentication is enabled, every detached worker needs a registration token, even when you use only the built-in `default` group. A worker without a token is rejected. Generate a token for the `default` group (**Infrastructure → Worker Groups → default → Tokens**, or `POST /api/v1/instance/worker-groups/default/tokens`), store it in a Kubernetes Secret, and pass it to the worker deployment:
+
+```yaml
+configurations:
+  application:
+    kestra:
+      ee:
+        worker:
+          auth:
+            enabled: true
+
+deployments:
+  worker:
+    enabled: true
+    extraEnv:
+      - name: KESTRA_WORKER_AUTH_REGISTRATION_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: kestra-default-worker-token
+            key: token
+```
+
+Detached workers also need `kestra.worker.controllers` from your [deployment pattern](#deployment-patterns). No `workerGroups` entry is needed. The standalone pod's embedded worker is the exception: the standalone server generates its own token at startup, so a standalone-only installation needs no token configuration.
 
 To encrypt the gRPC channel, configure [TLS](../../../07.enterprise/04.scalability/worker-group/index.md#transport-security-tls) in `configurations.application`, and mount the keystore and truststore files from Kubernetes Secrets with `extraVolumes` and `extraVolumeMounts`.
 
