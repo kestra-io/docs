@@ -1,12 +1,4 @@
 ---
-/**
- * One task of an executed Kestra 2.0 topology, after the product's node
- * design: plugin icon, task id and type, a status border with the task's
- * Gantt slot as a line along the bottom, and the duration (and artifact)
- * pills under it. The page's script moves it between states with the
- * is-created / is-running / is-paused / is-success classes, and places its
- * Gantt slot with --start and --length.
- */
 import { Icon } from "astro-icon/components"
 
 export type NodeStatus = "success" | "running" | "paused" | "created"
@@ -14,14 +6,12 @@ export type NodeStatus = "success" | "running" | "paused" | "created"
 export interface Props {
     id: string
     type: string
-    /** Plugin icon as a data URI, or null to use the fallback. */
     icon: string | null
     fallback: string
     status: NodeStatus
     duration: string
     artifacts?: number
     runner?: string
-    /** Position and Gantt slot, set by the page. */
     style?: string
     [key: `data-${string}`]: string | number | undefined
 }
@@ -56,10 +46,6 @@ const {
         <span class="type">{type}</span>
     </span>
     {
-        /* The page can put an action in place of the info icon, like a
-        Pause task's Resume button. */
-    }
-    {
         Astro.slots.has("action") ? (
             <slot name="action" />
         ) : (
@@ -89,8 +75,6 @@ const {
 
 <style lang="scss">
     .node {
-        // Light values from the 2.0 node design; dark ones below, also on a
-        // section that stays dark in both themes.
         --node-bg: #ffffff;
         --node-border: #ebebf0;
         --node-text: #2b2b33;
@@ -132,12 +116,10 @@ const {
         gap: 0.875rem;
         width: 260px;
         height: 76px;
-        // Room under the text for the progress track.
         padding: 0 0.875rem 10px;
         border: 1px solid var(--node-border);
         border-radius: 8px;
         background: var(--node-bg);
-        // Light drop shadow from the 2.0 tokens.
         box-shadow: 0 1px 4px 0 var(--ks-shadows-light);
         font-family: var(--font-family-mona-sans), system-ui, sans-serif;
         color: var(--node-text);
@@ -148,7 +130,6 @@ const {
             transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)
                 calc(var(--i, 0) * 70ms);
 
-        // A topology building itself in: nodes appear one after the other.
         :global(.building) & {
             opacity: 0;
             transform: translateY(6px) scale(0.98);
@@ -173,8 +154,6 @@ const {
                 0 2px 6px 0 var(--ks-shadows-light);
         }
 
-        // Light grey track across the node, so a task's slot reads against
-        // the whole run.
         &::after {
             content: "";
             position: absolute;
@@ -248,9 +227,6 @@ const {
         color: var(--node-muted);
     }
 
-    // The task's Gantt slot across the node's inner width. Moved and sized
-    // with a transform, so the page can redraw it every frame without
-    // layout.
     .progress {
         position: absolute;
         z-index: 1;
@@ -338,7 +314,6 @@ const {
             color: var(--paused);
         }
 
-        // One status icon at a time.
         :global(.done),
         :global(.spin),
         :global(.wait) {

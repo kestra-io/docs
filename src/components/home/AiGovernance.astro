@@ -1,10 +1,4 @@
 ---
-/**
- * Melissa's AI orchestration block. The agent is not a gateway in front of
- * the systems but one step inside a governed flow (see AiFlow): trigger,
- * task, agent, approval, task, with RBAC, approvals and audit logs around
- * the whole run, and the control plane's four domains in context.
- */
 import AiFlow from "./AiFlow.astro"
 import PixelEdges from "~/components/about/PixelEdges.astro"
 import pixelCluster from "~/components/about/assets/patterns/cluster.svg?url"
@@ -23,13 +17,8 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
     aria-labelledby="ai-governance"
     data-header-dark
 >
-    {/* The About us pixel art, as in the blocks above. */}
     <PixelEdges left="wide" right="tall" />
-    {/* A faint technical grid behind the stack, fading out at the edges. */}
     <span class="texture" aria-hidden="true"></span>
-    {
-        /* Two small pixel clusters in Kestra's violet, as on the control plane's panels. */
-    }
     <span
         class="cluster top"
         aria-hidden="true"
@@ -38,37 +27,19 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         class="cluster bottom"
         aria-hidden="true"
         style={`--pixels: url("${pixelCluster}")`}></span>
-    {/* A soft light that follows the pointer across the block. */}
     <span class="glow" aria-hidden="true" data-glow></span>
-    {
-        /* A planet rising from the foot of the section, cut by its edge, in
-        the 2.0 page's colours: its lit limb arcs behind the flow. */
-    }
     <div class="planet" aria-hidden="true">
         <span class="haze"></span>
         <span class="atmosphere"></span>
         <span class="rim"></span>
         <span class="limb"></span>
     </div>
-    {
-        /* The block's end: a horizon of light where the planet is cut, the
-        Enterprise block's black beyond it. */
-    }
     <span class="horizon" aria-hidden="true"></span>
     <div class="container-xl">
         <div class="rails">
-            {
-                /* The link to the control plane above: its dashed line,
-                from a node on its panel's foot, carries on down to the
-                agent, with a run travelling along it. */
-            }
             {bridge && <span class="bridge" aria-hidden="true" />}
             <div class="head">
                 <div>
-                    {
-                        /* The agent from the launch video: the bridge from the
-                        control plane lands on it, and it greets the block. */
-                    }
                     <div class="mascot" data-mascot aria-hidden="true">
                         <span class="ring"></span>
                         <span class="ring outer"></span>
@@ -146,7 +117,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                 <AiFlow />
             </figure>
 
-            {/* A secondary button, under the schema. */}
             {
                 foot && (
                     <div class="foot">
@@ -161,8 +131,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
 </section>
 
 <script>
-    // While a [data-header-dark] section sits under the fixed menu, the menu
-    // turns dark too (Header.vue reads body[data-header-over-dark]).
     function watchDarkSections() {
         const sections =
             document.querySelectorAll<HTMLElement>("[data-header-dark]")
@@ -173,12 +141,10 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         const update = () => {
             frame = 0
             const bar = document.getElementById("top-bar")
-            // The menu mounts after this script: wait for it.
             if (!bar) return setTimeout(schedule, 100)
             const line = bar.getBoundingClientRect().bottom - 1
             const over = [...sections].some((section) => {
                 const box = section.getBoundingClientRect()
-                // A few pixels' grace: the hero starts just under the menu.
                 return box.top <= line + 4 && box.bottom > line
             })
             document.body.toggleAttribute("data-header-over-dark", over)
@@ -204,8 +170,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
     document.addEventListener("astro:page-load", watchDarkSections)
     watchDarkSections()
 
-    // The agent pops in once in view and winks, then blinks now and then;
-    // its eyes follow the pointer, a couple of units at most.
     function wakeMascot(root: HTMLElement) {
         if (root.dataset.awake) return
         root.dataset.awake = "true"
@@ -229,8 +193,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                 3500 + Math.random() * 3000,
             )
         }
-        // It comes in when the bridge from the control plane lands on it
-        // (see arriveAi).
         root.addEventListener(
             "mascot:arrive",
             () => {
@@ -243,7 +205,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
 
         let frame = 0
         let pointer = { x: 0, y: 0 }
-        // While the stack points it at a step, it looks there instead.
         let target: Element | null = null
         const look = () => {
             frame = 0
@@ -287,7 +248,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
     document.addEventListener("astro:page-load", wakeMascots)
     wakeMascots()
 
-    // The light follows the pointer while it is over the block.
     function trackGlow(glow: HTMLElement) {
         if (glow.dataset.tracking) return
         glow.dataset.tracking = "true"
@@ -303,8 +263,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         section.addEventListener("pointermove", (event) => {
             const box = section.getBoundingClientRect()
             point = { x: event.clientX - box.left, y: event.clientY - box.top }
-            // Coming in, it lights where the pointer is, without sliding
-            // over from where it last was.
             if (!glow.classList.contains("on")) {
                 glow.style.transition = "opacity 0.6s ease"
                 move()
@@ -326,12 +284,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
     document.addEventListener("astro:page-load", trackGlows)
     trackGlows()
 
-    // The arrival on the block, as the agent comes into view: the
-    // control plane's open panel lights up, the bridge's node pops in at
-    // its foot, then travels down, drawing the dashed line, and lands on
-    // the agent, which greets the block with a wink. Then the title, the
-    // copy, the schema and the button rise in turn. Hidden only once
-    // armed, so all of it shows without JavaScript.
     function arriveAi() {
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
         document
@@ -356,17 +308,11 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
 
                 const play = () => {
                     panel?.classList.add("lit")
-                    // The title and lead come in at once, so the block is
-                    // never empty on arrival.
                     later(100, () => section.classList.add("in"))
-                    // The panel lights up, then sends the node out.
                     later(200, () => upper?.classList.add("on"))
                     later(400, () => {
                         upper?.classList.add("drawn")
                         if (!node || !lower) return
-                        // To the foot of the lower dashed line, the top of
-                        // the agent's rings; read from the layout, which the
-                        // animations do not move.
                         const from = node.getBoundingClientRect()
                         const target =
                             section.getBoundingClientRect().top +
@@ -387,13 +333,10 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                         )
                     })
                     later(700, () => lower?.classList.add("drawn"))
-                    // The node lands: the agent pops in and winks, and the
-                    // rest of the block follows.
                     later(1000, () => {
                         mascot.dispatchEvent(new Event("mascot:arrive"))
                         upper?.classList.add("done")
                     })
-                    // The panel stays lit until the agent has greeted.
                     later(1800, () => panel?.classList.remove("lit"))
                 }
 
@@ -403,7 +346,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                         seen.disconnect()
                         play()
                     },
-                    // As soon as the block's top is a little way into view.
                     { rootMargin: "0px 0px -10% 0px" },
                 )
                 seen.observe(section)
@@ -413,11 +355,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
     document.addEventListener("astro:page-load", arriveAi)
     arriveAi()
 
-    // Once the agent has arrived, and while the control plane is still in
-    // sight above it, each task that succeeds there sends a packet, in the
-    // open use case's tint, down to the agent: out of the node, down to the
-    // panel's foot, along it to the bridge, then down the bridge, where the
-    // agent's rings take it in.
     function feedAgent() {
         if (document.documentElement.dataset.feedingAgent) return
         document.documentElement.dataset.feedingAgent = "true"
@@ -447,7 +384,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             const to = mascot.getBoundingClientRect()
             if (!inView(from) || !inView(to)) return
 
-            // The route, in page coordinates, read from the layout.
             const foot = visual.getBoundingClientRect().bottom - 14
             const x = bridge.getBoundingClientRect().left
             const points = [
@@ -483,7 +419,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             )
             flight.onfinish = () => {
                 packet.remove()
-                // The rings take it in.
                 mascot
                     .querySelector(".ring.outer")
                     ?.animate(
@@ -505,9 +440,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
 <style lang="scss">
     @use "/src/assets/styles/color-palette" as *;
 
-    // Dark in both themes.
     .ai-governance {
-        // The page's dark grey, as the control plane above.
         --bg: #1c1c20;
         --ink: #ffffff;
         --ink-2: #d6d6de;
@@ -517,31 +450,22 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         --glow-a: 1;
         --pulse: #ffffff;
         --pulse-kestra: #b48cff;
-        // The rails, in the dark theme's rule colour: the block stays dark
-        // in both themes, so the light theme's pale rule would glare here.
         --line: #46454d;
         --wire: rgba(255, 255, 255, 0.14);
         --text: #ffffff;
         --muted: #a3a3b1;
         --faint: #5c5c68;
-        // Grey and white throughout; red only in a refused check's tag.
         --danger: #ff5c7a;
 
-        // The menu reads these while it sits over the section.
         --ks-content-primary: #{$base-grey-white};
         --ks-content-secondary: #{$base-grey-200};
         --ks-content-tertiary: #{$base-grey-300};
         --ks-content-link: #{$base-primary-200};
 
-        // The planet's night side, which the foot of the block fades into.
         --night: #060609;
 
         position: relative;
         overflow: hidden;
-        // The control plane's grey at the top, down to the planet's night
-        // at the foot, so its dark side melts into the block, and the black
-        // Enterprise block follows on. The planet's indigo rises from the
-        // foot into it, wide and faint, on both sides of its arc.
         background:
             radial-gradient(
                 ellipse 75% 55% at 50% 100%,
@@ -559,14 +483,10 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         color: var(--text);
     }
 
-    // The section is dark in both themes: the pixels take their dark-theme
-    // tint.
     .ai-governance :global(.pixel-edges) {
         --pixel: rgba(167, 150, 255, 0.07);
     }
 
-    // The pixel clusters: one in the top right, by the button, one low on
-    // the left, under the mascot.
     .cluster {
         position: absolute;
         width: 96px;
@@ -593,10 +513,8 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    // Hairline rails down the sides, on the other blocks' lines.
     .rails {
         position: relative;
-        // Close under the control plane, the bridge between the two.
         padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(4rem, 6vw, 5.5rem);
 
         &::before,
@@ -615,8 +533,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             left: 0;
         }
 
-        // Below a wide screen they would sit a few pixels in from the
-        // screen's edge: none there.
         @include media-breakpoint-down(xl) {
             &::before,
             &::after {
@@ -629,7 +545,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    // Centred: the agent, then the title and the copy under it.
     .head {
         position: relative;
         display: flex;
@@ -652,8 +567,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    // The agent from the launch video: a robot in a dark disc, ringed
-    // with dashes. It pops in, winks, and its eyes follow the pointer.
     .mascot {
         display: grid;
         place-items: center;
@@ -661,7 +574,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         position: relative;
         width: 9rem;
         height: 9rem;
-        // Atop the head, where the bridge from the control plane lands.
         margin: 0 auto 1.25rem;
 
         .ring {
@@ -733,8 +645,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             }
         }
 
-        // On the light block, in the logo's hue: a violet disc with a
-        // white robot, and violet rings.
         .is-light & {
             .ring {
                 border-color: rgba(169, 80, 255, 0.4);
@@ -745,7 +655,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             }
 
             .disc {
-                // The logo's violet, a step quieter than the brand's.
                 background: linear-gradient(180deg, #a982ff 0%, #7448e8 100%);
                 box-shadow:
                     inset 0 1px 0 rgba(255, 255, 255, 0.35),
@@ -773,23 +682,18 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             animation: shut 0.22s ease-in-out;
         }
 
-        // Its moods, as the calls go through the stack.
-        // Sending a task: a nod towards the agent.
         &[data-mood="send"] .disc {
             animation: nod 0.5s ease;
         }
 
-        // A check passes: eyes narrowed, content.
         &[data-mood="ok"] .eye {
             transform: scaleY(0.55);
         }
 
-        // Held for a person: the dashed ring turns while it waits.
         &[data-mood="wait"] .ring:not(.outer) {
             animation: turn 6s linear infinite;
         }
 
-        // Done: a hop, a grin.
         &[data-mood="happy"] {
             .disc {
                 animation: hop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -804,7 +708,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             }
         }
 
-        // Turned back by policy: wide eyes, a shake of the head.
         &[data-mood="denied"] {
             .disc {
                 animation: shake 0.5s ease;
@@ -820,8 +723,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    // A packet from the control plane to the agent (see feedAgent): a dot
-    // in the use case's tint, with a short tail of light behind it.
     :global(.agent-packet) {
         position: absolute;
         z-index: 3;
@@ -893,16 +794,11 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         color: var(--text);
         text-wrap: balance;
 
-        // The second sentence, the promise, a step lighter: the statement
-        // above carries the colour.
         span {
             color: var(--muted);
         }
     }
 
-    // The bridge from the control plane, its lower half: the dashed line
-    // down to the agent. The control plane draws the node and
-    // the run.
     .bridge {
         position: absolute;
         top: 0;
@@ -919,8 +815,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         pointer-events: none;
     }
 
-    // The arrival (see arriveAi): each part waits hidden once armed, and
-    // comes in on the block's "in", one after the other.
     .ai-governance:global(.armed) {
         .bridge {
             transform: scaleY(0);
@@ -930,8 +824,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             transform: none;
         }
 
-        // The title and lead only: the flow and its button are there from
-        // the start, so the planet never shows on its own.
         h2,
         .lead {
             transition:
@@ -981,8 +873,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         margin-top: 2.5rem;
     }
 
-    // The dots of the product's topology canvas, faded to nothing away
-    // from the stack.
     .texture {
         position: absolute;
         inset: 0;
@@ -1000,18 +890,13 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         pointer-events: none;
     }
 
-    // Over the planet.
     .ai-governance > .container-xl {
         position: relative;
         z-index: 1;
     }
 
-    // The planet: a disc wider than the page, centred, rising from the
-    // section's foot, which cuts it: only its lit cap shows, behind the
-    // flow. Static, so it costs nothing while the run plays.
     .planet {
         --size: 84rem;
-        // How much of the cap rises above the foot.
         --rise: 30rem;
 
         position: absolute;
@@ -1022,8 +907,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         aspect-ratio: 1;
         translate: -50% 0;
         border-radius: 50%;
-        // Lit from above: a pale cap that fades into the night side. No
-        // texture, light only.
         background:
             linear-gradient(transparent 20%, var(--night) 48%),
             radial-gradient(
@@ -1045,8 +928,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    // The limb: a soft edge of light fading inwards, pale where the light
-    // falls on top, indigo down both sides.
     .limb {
         position: absolute;
         inset: 0;
@@ -1073,8 +954,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         mask-composite: intersect;
     }
 
-    // The glow around the planet: an indigo halo hugging the edge, fading
-    // down the sides, the top left pale.
     .atmosphere {
         position: absolute;
         z-index: -1;
@@ -1102,7 +981,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         mask-composite: intersect;
     }
 
-    // Inside the edge, the same indigo glow down both sides.
     .rim {
         position: absolute;
         inset: 0;
@@ -1128,7 +1006,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         mask-composite: intersect;
     }
 
-    // A pale haze over the lit top.
     .haze {
         position: absolute;
         z-index: -1;
@@ -1145,10 +1022,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         );
     }
 
-    // The horizon: where the planet meets the foot of the block, a hairline
-    // of light, white at the middle, the planet's indigo along it, fading
-    // out at the edges; a glow rises from it, and a brighter core breathes
-    // slowly at its middle.
     .horizon {
         position: absolute;
         z-index: 0;
@@ -1168,7 +1041,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         );
         pointer-events: none;
 
-        // The glow over the line, on the block's side only.
         &::before {
             content: "";
             position: absolute;
@@ -1184,7 +1056,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             );
         }
 
-        // The core: a short, brighter stretch of the line, blurred.
         &::after {
             content: "";
             position: absolute;
@@ -1221,8 +1092,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    // A soft light under the pointer, shown only while it is over the
-    // block, on devices with a mouse.
     .glow {
         position: absolute;
         top: 0;
@@ -1240,7 +1109,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         );
         opacity: 0;
         transform: translate(var(--x, 0), var(--y, 0));
-        // It trails the pointer a little, softly.
         transition:
             opacity 0.6s ease,
             transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1251,10 +1119,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    // The stack: one drawing, scaled to the stage. On a phone it keeps a
-    // readable size and scrolls sideways.
-    // The schema on a white panel between the rails, as the control
-    // plane's topology, with hairlines above and below.
     .stack {
         position: relative;
         margin: 0;
@@ -1263,15 +1127,9 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         background: var(--node);
     }
 
-    // A test: the aurora background of the brand visuals, from black at
-    // the top to indigo, with a violet-to-pink arc of light and a grain;
-    // the schema as glowing white tiles in translucent halos, Kestra a
-    // black tile lit in violet, and violet dashed wires.
     .ai-governance.is-aurora {
         --muted-on-bg: #c3c0e4;
 
-        // No card: the flow sits on the block itself, its own frame
-        // enough, no wider than it needs, centred between the rails.
         .stack {
             max-width: 74rem;
             margin-inline: auto;
@@ -1279,8 +1137,6 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
             border-block: 0;
             background: none;
 
-            // The page's gutter on a phone, so the frame keeps off the
-            // screen's edge.
             @include media-breakpoint-down(md) {
                 padding: 0 1.25rem;
             }

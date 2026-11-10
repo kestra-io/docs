@@ -11,7 +11,6 @@ import { toSlug } from "~/utils/stories"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-// Melissa's keyword bar ("Kestra at a glance").
 const KEY_FACTS = [
     "Declarative",
     "Language-Agnostic",
@@ -21,11 +20,7 @@ const KEY_FACTS = [
     "API-First",
 ]
 
-// The customers under the frame, from the logo bar of the previous
-// hero.
 const CUSTOMERS = [
-    // Optical corrections, so each logo carries a like weight: thin
-    // wordmarks up, heavy ones down, the apple's leaf lifts its box.
     {
         file: "jpmorgan",
         name: "JPMorgan Chase",
@@ -41,24 +36,17 @@ const CUSTOMERS = [
     { file: "toyota", name: "Toyota", scale: 0.92 },
     { file: "brainlab", name: "Brainlab", scale: 1.1 },
 ]
-// The customers with a story link to it, by company name.
 const stories = await getCollection("customerStories")
 const storyHref = (company?: string) => {
-    const entry =
-        company && stories.find((e) => e.data.companyName === company)
+    const entry = company && stories.find((e) => e.data.companyName === company)
     return entry ? `/stories/${toSlug(entry)}` : undefined
 }
-// Specks of light that twinkle round the mark, at scattered angles and
-// distances, out of step.
-// Only out to the sides of the mark: the title sits above it and the lead
-// under it, so no speck ever crosses the words.
 const SPARKS = Array.from({ length: 14 }, (_, idx) => ({
     a: Math.round((idx % 2 ? 180 : 0) + (((idx * 37) % 50) - 25)),
     r: (3.4 + ((idx * 7) % 5) * 0.55).toFixed(2),
     s: 2 + (idx % 3),
     delay: -((idx * 0.83) % 4.2).toFixed(2),
 }))
-// The plugins that fly at you behind the title: everything, everywhere.
 const PLUGINS = [
     "aws.s3.Upload",
     "jdbc.postgresql.Query",
@@ -108,12 +96,9 @@ const fetchIcon = async (type: string) => {
         return null
     }
 }
-// The API answers an unknown plugin with a generic icon: those stay out.
 const [generic, ...fetched] = await Promise.all(
     ["unknown.Plugin", ...PLUGINS].map(fetchIcon),
 )
-// A logo drawn in black would vanish on the dark: its mean lightness,
-// read off a small render, says which ones to turn white.
 const isDark = async (svg: string) => {
     try {
         const { data } = await sharp(Buffer.from(svg, "base64"))
@@ -143,12 +128,8 @@ const icons = await Promise.all(
             dark: await isDark(svg),
         })),
 )
-// Each tile on its own line of flight, spread by the golden angle so none
-// share one, and set off at its own point in the loop.
 const GOLDEN = 2.39996
-// Each icon twice, on two lines of flight, so the field stays full.
 const flights = [...icons, ...icons]
-// Each icon written once, as a variable on the field the tiles point to.
 const iconVars = icons
     .map((icon, idx) => `--icon-${idx}: url(${icon.src})`)
     .join("; ")
@@ -162,7 +143,6 @@ const tiles = flights.map((icon, idx) => {
         dy: (Math.sin(angle) * reach * 30).toFixed(2),
         size: (3 + ((idx * 5) % 4) * 0.45).toFixed(2),
         delay: (-(idx / flights.length) * 22).toFixed(2),
-        // One in five lit.
         lit: idx % 5 === 2,
     }
 })
@@ -173,22 +153,9 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 )
 ---
 
-{
-    /* Deliberately not `.hero`: app.scss owns that class as a site component
-    and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
-}
 <section class="home-hero" aria-labelledby="hero-title">
     <PixelEdges left="tall" right="wide" />
-    {
-        /* Full width and dark, like the AI block further down; the copy sits
-    in container-xl, on the page's text line. The frame stands in for the
-    hero visual until it is ready. */
-    }
     <div class="frame surface-dark" data-hero-frame data-header-dark>
-        {
-            /* Orbits round the title and the plugins flying out of the dark
-            through them, toward you. */
-        }
         <div class="field" aria-hidden="true" style={iconVars}>
             <div class="space">
                 <span class="orbit" style="--d: 34rem"></span>
@@ -224,7 +191,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                             ></span
                         >
                     </h1>
-                    {/* Kestra, where every plugin flies out from. */}
                     <span class="hero-mark" aria-hidden="true" data-hero-mark>
                         {
                             SPARKS.map((spark) => (
@@ -248,7 +214,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                     </div>
                 </div>
             </div>
-            {/* The key facts, a quiet line at the frame's foot. */}
             <ul class="key" aria-label="Kestra at a glance" data-key-facts>
                 {
                     KEY_FACTS.map((fact, idx) => (
@@ -258,7 +223,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             </ul>
         </div>
     </div>
-    {/* The customers, one still row under the frame, on white. */}
     <ul class="customers" aria-label="Companies running Kestra in production">
         {
             CUSTOMERS.map((company) => {
@@ -266,8 +230,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                     companyLogos[
                         `/src/components/home/assets/companies/${company.file}.svg`
                     ].default
-                // Sized to a like area rather than a like height, so a
-                // square mark doesn't shrink and a long word doesn't shout.
                 const height = Math.min(
                     1.75,
                     1.3 / Math.sqrt(logo.width / logo.height / 4.5),
@@ -281,8 +243,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                         style={`--h: ${(height * (company.scale ?? 1)).toFixed(3)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
                     />
                 )
-                // With a story, the logo opens it, "Read story" showing
-                // under it when pointed at.
                 return (
                     <li>
                         {href ? (
@@ -303,8 +263,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 </section>
 
 <script>
-    // The key facts run on arrival, then again every few seconds while the
-    // line is in view. Without JavaScript they simply show, lit.
     const REPLAY_MS = 9000
 
     function loopKeyFacts() {
@@ -332,8 +290,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     document.addEventListener("astro:page-load", loopKeyFacts)
     loopKeyFacts()
 
-    // The field leans back as the page scrolls past it, as if you rose
-    // over it; the pointer does not move it.
     function leanField() {
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
         for (const frame of document.querySelectorAll<HTMLElement>(
@@ -364,7 +320,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     document.addEventListener("astro:page-load", leanField)
     leanField()
 
-    // The menu stays clear over this hero only, which runs up under it.
     function clearMenu() {
         if (!document.querySelector("[data-hero-frame]")) return
         document.body.setAttribute("data-header-clear", "")
@@ -378,8 +333,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     document.addEventListener("astro:page-load", clearMenu)
     clearMenu()
 
-    // The field's vanishing point sits on the Kestra mark, wherever the
-    // copy puts it.
     function centreOnMark() {
         for (const frame of document.querySelectorAll<HTMLElement>(
             "[data-hero-frame]",
@@ -404,15 +357,9 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 </script>
 
 <style lang="scss">
-    // One dark frame across the page under the menu, with the copy and its
-    // key facts centred in a field of plugins, over the customers.
     .home-hero {
         position: relative;
-        // All the way up under the fixed menu, over the page's 67px top
-        // offset (app.scss): the menu stays clear over the hero until the
-        // page scrolls.
         margin-top: -67px;
-        // A hairline across the page between the customers and what follows.
         border-bottom: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
     }
@@ -423,19 +370,12 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         position: relative;
         display: flex;
         flex-direction: column;
-        // Most of the first screen, the copy centred in it, with the room
-        // the menu takes over it on top, so the copy sits where it did.
         --menu: calc(67px - 1rem);
         padding-top: var(--menu);
         min-height: calc(min(80vh, 800px) + var(--menu));
-        // Square, edge to edge: a global .frame rule rounds it otherwise.
         border-radius: 0;
         overflow: hidden;
-        // The menu's black, warmed with the AI block's planet: its indigo
-        // rises from the foot up through the mark, in one light, with a
-        // faint light from the top right.
         background:
-            // One light, rising from the foot up through the mark.
             radial-gradient(
                 ellipse 62% 78% at 50% 82%,
                 rgba(80, 56, 255, 0.26),
@@ -448,7 +388,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 rgba(150, 130, 255, 0.1),
                 transparent 60%
             ),
-            // The dark menu's own black, so the two read as one.
             #111114;
         color: #ffffff;
 
@@ -456,7 +395,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             min-height: 560px;
         }
 
-        // The copy, over the field.
         > .stage {
             position: relative;
             z-index: 1;
@@ -466,8 +404,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // The title and lead keep their own measure, so the key facts line can
-    // run wider than them.
     .copy {
         min-width: 0;
         margin-inline: auto;
@@ -484,8 +420,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         color: #ffffff;
         text-wrap: balance;
 
-        // Two beats, not a wrapped line: the claim first, then the
-        // punchline, arriving a moment later. Both in full white.
         .beat {
             display: block;
             animation: beat-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
@@ -510,10 +444,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // The mark in a tile, filling it, and lit: a deep
-    // night tile, edged in the mark's own violet and pink, in a lavender
-    // and indigo glow, the source of the field.
-    // Not ".mark": Bootstrap highlights that class.
     .hero-mark {
         display: grid;
         place-items: center;
@@ -523,8 +453,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         margin: 1.75rem auto 0;
         border: 1.5px solid transparent;
         border-radius: 0.875rem;
-        // The edge: the mark's violet, pink and blue, turning round the
-        // tile with a bright white stretch, as a light running along it.
         background:
             radial-gradient(
                     120% 90% at 30% 0%,
@@ -554,15 +482,10 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 
         img {
             position: relative;
-            // The mark fills the tile, as in the brand visuals.
             width: 80%;
             height: auto;
         }
 
-        // Its aura, soft and with no edge: a lavender light that breathes,
-        // the source of the field; round it a slow, diffuse mist in the
-        // mark's own colours; and specks of light that twinkle
-        // in and out. All of it only turns, scales and fades.
         &::before,
         &::after {
             content: "";
@@ -571,7 +494,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             pointer-events: none;
         }
 
-        // Each light fades out well inside its box, so no edge shows.
         &::before {
             inset: -60% -120%;
             background: radial-gradient(
@@ -583,9 +505,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             animation: breathe 6s ease-in-out infinite;
         }
 
-        // A slow mist in the mark's own colours, as before but more
-        // diffuse: wide, faint patches, each fading out well inside its
-        // box and blurred, so none of them reads as a circle.
         &::after {
             inset: -160%;
             background:
@@ -665,7 +584,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // The edge's light, turning: an animatable angle.
     @property --edge-turn {
         syntax: "<angle>";
         inherits: false;
@@ -678,7 +596,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // Each speck lights up, drifting a little outwards, and goes out.
     @keyframes twinkle {
         0%,
         100% {
@@ -715,14 +632,11 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         gap: 0.75rem;
     }
 
-    // Key facts as one quiet line at the frame's foot, dot
-    // between dot. They light up one after the other, like a run.
     .key {
         --run: 0.25s;
 
         display: flex;
         flex-wrap: wrap;
-        // Plain gaps while the line wraps, so no row opens on a dot.
         justify-content: center;
         gap: 0.625rem 1.5rem;
         margin: 0;
@@ -748,8 +662,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             }
         }
 
-        // A run: the script adds this class on arrival, then again every
-        // few seconds while the line is in view.
         &.running li {
             animation: fact-lit 1.2s ease;
             animation-delay: calc(0.6s + var(--i) * var(--run));
@@ -768,11 +680,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // The field: a deep box seen from the title, its orbits flat on the
-    // screen and the tiles crossing it from far to near.
     .field {
-        // How far out the tiles fly from the middle, across the screen's
-        // width.
         --spread: 1;
 
         position: absolute;
@@ -783,7 +691,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             calc(var(--oy, 50%) + var(--py, 0) * -180px);
         transition: perspective-origin 0.5s ease-out;
         pointer-events: none;
-        // The title keeps a clear, dark middle.
         mask-image: radial-gradient(
             ellipse 30% 34% at 50% var(--oy, 46%),
             transparent 45%,
@@ -791,7 +698,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         );
     }
 
-    // The whole field leans back with the scroll, orbits and tiles together.
     .space {
         position: absolute;
         inset: 0;
@@ -825,7 +731,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         will-change: transform, opacity;
         opacity: 0;
 
-        // Still, at a middle depth, without motion.
         @media (prefers-reduced-motion: reduce) {
             animation: none;
             opacity: 0.6;
@@ -837,8 +742,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // The tile itself, sharp, and a copy blurred once that takes over as
-    // it nears you: only their opacities move, never the blur.
     .face {
         position: absolute;
         inset: 0;
@@ -858,12 +761,10 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             background: var(--icon) center / contain no-repeat;
         }
 
-        // A black logo, in white.
         .dark > &::before {
             filter: brightness(0) invert(1);
         }
 
-        // Lit in white.
         .lit > & {
             border-color: rgba(255, 255, 255, 0.45);
             box-shadow:
@@ -910,8 +811,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // From the far dark, past you at the end. Transform and opacity only,
-    // which the compositor runs without repainting.
     @keyframes fly {
         0% {
             opacity: 0;
@@ -940,9 +839,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // On a phone the field is lighter: one tile in four, smaller and
-    // dimmer, flying wide of the middle so they stay off the copy, which
-    // keeps a larger clear centre.
     @include media-breakpoint-down(md) {
         .field {
             --spread: 1.9;
@@ -972,13 +868,9 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         display: flex;
         flex: 1;
         align-items: center;
-        // On the Kestra logo of the menu; less under the buttons, so the
-        // key facts follow them closely.
         padding-block: clamp(3rem, 6vw, 5rem) clamp(1rem, 2vw, 1.5rem);
     }
 
-    // Below a wide screen, two even rows: five, then four centred under
-    // them, on a ten-column grid where each logo takes two.
     .customers {
         display: grid;
         grid-template-columns: repeat(10, minmax(0, 1fr));
@@ -1000,8 +892,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             grid-column: 2 / span 2;
         }
 
-        // In two rows every logo shrinks by the same factor, so they keep
-        // the balance they have on one line.
         :global(.brand-logo) {
             max-width: 100%;
             object-fit: contain;
@@ -1015,8 +905,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             }
         }
 
-        // Spread across the page when it fits on one line, the gaps
-        // growing with the screen.
         @include media-breakpoint-up(xl) {
             display: flex;
             flex-wrap: nowrap;
@@ -1027,8 +915,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
     }
 
-    // A customer with a story: its logo opens it, and "Read story" shows
-    // under it, small, while pointed at.
     .has-story {
         position: relative;
         display: flex;
@@ -1036,8 +922,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         color: inherit;
         text-decoration: none;
 
-        // Hanging from the logo with no gap (its padding is the room), so
-        // the pointer can move onto it without losing it.
         .read {
             position: absolute;
             top: 100%;
@@ -1073,8 +957,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             color: var(--ks-content-primary);
         }
 
-        // On touch screens and phones, no "Read story": it would sit on
-        // the next row's logos. The logo alone still opens the story.
         @media (hover: none) {
             .read {
                 display: none;
@@ -1092,7 +974,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         flex-shrink: 0;
         width: auto;
         height: var(--h);
-        // In black, on white.
         filter: brightness(0);
 
         :global(html.dark) & {

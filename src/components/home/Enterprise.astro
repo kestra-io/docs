@@ -4,11 +4,6 @@ import { API_URL } from "astro:env/client"
 import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
 import EnterpriseLayers from "./EnterpriseLayers.astro"
 
-// The backdrop's squares, after the 2.0 page: a ring of twelve on a grid
-// of 7 by 5, drawn here rather than from its raster, one ring cut by each
-// side of the section, outlined in a light gradient. Away from the middle
-// they blur and their outline fades, a little more at each column, as if
-// further off.
 const RING = [
     [2, 0],
     [3, 0],
@@ -23,7 +18,6 @@ const RING = [
     [3, 4],
     [4, 4],
 ]
-// How far a column sits from the section's middle, 0 the nearest.
 const depth = (side: string, col: number) => (side === "left" ? 6 - col : col)
 
 interface Feature {
@@ -39,7 +33,6 @@ interface Props {
     actions?: boolean
 }
 
-// Four reasons, each under a glimpse of the product that proves it.
 const DEFAULT_FEATURES: Feature[] = [
     {
         id: "access",
@@ -69,7 +62,6 @@ const {
     actions = true,
 } = Astro.props
 
-// The Infrastructure tenant, open on its namespaces and a flow.
 const ROOT = "acme"
 const NAMESPACES = [
     "acme.cloud",
@@ -78,18 +70,13 @@ const NAMESPACES = [
     "acme.monitoring",
 ]
 const FLOW = { parent: "acme.kubernetes", id: "scale_cluster" }
-// The namespace the admin removes in the story.
 const DELETED = "acme.network"
-// Three roles: one edits the flow, one runs it, one deletes a namespace.
 const PEOPLE = [
     { id: "launcher", name: "Launcher", icon: "mdi:play-circle-outline" },
     { id: "editor", name: "Editor", icon: "mdi:pencil" },
     { id: "admin", name: "Admin", icon: "mdi:shield-account-outline" },
 ]
 
-// One execution, task by task, on a shared timeline (0 to 100). Halfway
-// through post_ledger its worker goes down; a second attempt runs on
-// another worker and the execution still ends in success.
 const RUN = [
     { id: "extract", start: 0, end: 22, worker: "worker-1" },
     { id: "reconcile", start: 22, end: 44, worker: "worker-2" },
@@ -98,9 +85,6 @@ const RUN = [
     { id: "report", start: 82, end: 100, worker: "worker-1" },
 ]
 
-// The audit log as the product lists it: what changed, how, by whom,
-// one detail of it, and when. The first five show; the script streams the
-// others in on top, newest first.
 const AUDIT = [
     {
         type: "Execution",
@@ -166,7 +150,6 @@ const AUDIT = [
         age: 0,
     },
 ]
-// Each action with its icon, after the product's status tags.
 const ACTION_ICONS: Record<string, string> = {
     Created: "mdi:plus-circle-outline",
     Updated: "mdi:pencil-outline",
@@ -180,9 +163,6 @@ const ago = (seconds: number) =>
           ? `${Math.round(seconds / 60)} min ago`
           : `${Math.round(seconds / 3600)} hours ago`
 
-// The backends to pick from, each with its plugin's icon, fetched at
-// build. JDBC alone is open source; Enterprise adds the rest. The script
-// switches between a few setups.
 const BACKENDS = {
     repository: [
         { id: "jdbc", name: "JDBC" },
@@ -223,7 +203,6 @@ const icons = Object.fromEntries(
     ),
 ) as Record<string, string | null>
 
-// As on the 2.0 page: workers prove who they are before they join.
 const WORKERS = [
     { name: "onprem-01", ok: true },
     { name: "euwest-02", ok: true },
@@ -231,11 +210,6 @@ const WORKERS = [
 ]
 ---
 
-{
-    /* Kestra Enterprise, on black after the AI block, on the page's hairline
-    grid: the head with its two ways on, then four cells, each a glimpse of
-    the product, drawn in lines and fading out, over its promise. */
-}
 <section
     class="enterprise surface-dark"
     aria-labelledby="enterprise"
@@ -465,9 +439,6 @@ const WORKERS = [
                                             class="glimpse-body timeline"
                                             data-routing
                                         >
-                                            {/* Drawn at its end, success
-                                            after the retry; the script
-                                            plays it from the start. */}
                                             <p class="run-head">
                                                 <Icon name="mdi:file-tree-outline" />
                                                 <strong>close_books</strong>
@@ -516,7 +487,17 @@ const WORKERS = [
                                                                 ]}
                                                                 style={`left: ${step.start}%; width: ${step.end - step.start}%; --ms: ${(step.end - step.start) * 45}ms`}
                                                             >
-                                                                <span class="worker-long">worker-</span><span class="worker-short">w</span>{step.worker.split("-")[1]}
+                                                                <span class="worker-long">
+                                                                    worker-
+                                                                </span>
+                                                                <span class="worker-short">
+                                                                    w
+                                                                </span>
+                                                                {
+                                                                    step.worker.split(
+                                                                        "-",
+                                                                    )[1]
+                                                                }
                                                             </span>
                                                             {step.fails && (
                                                                 <span
@@ -675,9 +656,6 @@ const WORKERS = [
                                                         class="wire"
                                                         d="M140 170 H252"
                                                     />
-                                                    {/* The unknown worker sends its run like the
-                                                    others; it is stopped on the way, a cross
-                                                    appears and its link turns red. */}
                                                     <path
                                                         class="wire intruder"
                                                         d="M140 240 C196 240 196 170 252 170"
@@ -704,9 +682,6 @@ const WORKERS = [
                                                         <path d="M140 170 H308 C354 170 354 228 400 228" />
                                                     </g>
                                                 </svg>
-                                                {/* The same links top to bottom, for a phone:
-                                                the workers above, Kestra in the middle, the
-                                                backends under it. */}
                                                 <svg
                                                     class="lines vertical"
                                                     viewBox="0 0 340 420"
@@ -878,9 +853,6 @@ const WORKERS = [
 </section>
 
 <style lang="scss">
-    // A lifted black, a shade apart from the AI block above, so the two
-    // read as one dark run with a step between them. It stays dark in both
-    // themes.
     .enterprise {
         --bg: #0d0d10;
         --rule-color: rgba(255, 255, 255, 0.11);
@@ -888,8 +860,6 @@ const WORKERS = [
         --text: #ffffff;
         --muted: #9a9aa8;
         --faint: #5c5c68;
-        // The states, in the colours of the product's status tags
-        // (KsExecutionStatus), on every glimpse.
         --created: #8b98ff;
         --success: #5ee3ae;
         --running: #9d78ff;
@@ -899,7 +869,6 @@ const WORKERS = [
 
         position: relative;
         overflow: hidden;
-        // As on the 2.0 page: black, easing to a blue-grey at the foot.
         background: linear-gradient(180deg, #000000 30%, #17181e 100%);
         color: var(--text);
 
@@ -908,8 +877,6 @@ const WORKERS = [
             z-index: 1;
         }
 
-        // The rule between the AI block and this one, as faint as the
-        // grid's.
         &::before {
             content: "";
             position: absolute;
@@ -922,20 +889,13 @@ const WORKERS = [
         }
     }
 
-    // The 2.0 page's squares, a ring at each side of the section's foot,
-    // cut by its edges: pale fills with a lighter outline, lighting up in a
-    // slow wave across each ring.
     .squares {
         position: absolute;
         width: 520px;
         pointer-events: none;
 
-        // In the margins only: each ring's inner edge stops a breath short
-        // of the rail of its side, so it never runs under the cells nor
-        // touches them. Where the page has no margin, the rings go with it.
         --rail: calc(min(50vw, 760px) - 7px + 4rem);
 
-        // Halfway down the section on the left, low on the right.
         &.left {
             top: 50%;
             right: calc(50% + var(--rail));
@@ -951,8 +911,6 @@ const WORKERS = [
             display: none;
         }
 
-        // Every square outlined in the gradient, the outline fading
-        // and the blur growing, column by column, away from the middle.
         rect {
             fill: rgba(196, 200, 255, 0.05);
             stroke-width: 1.25;
@@ -982,8 +940,6 @@ const WORKERS = [
         }
     }
 
-    // The hairline grid, in white on black: rails on both sides, on the AI
-    // block's lines, and full-width rules around the four cells.
     .grid {
         --inset: clamp(1.5rem, 4vw, 3.5rem);
 
@@ -991,17 +947,11 @@ const WORKERS = [
         border-left: var(--rule);
         border-right: var(--rule);
 
-        // Below a wide screen the rails would sit a few pixels in from the
-        // screen's edge: the rules alone carry the grid there.
         @include media-breakpoint-down(xl) {
             border-inline: 0;
         }
-        // The room under the last cells' copy is theirs (see .features), so
-        // the rule between them runs to the section's edge.
     }
 
-    // The title and copy on the left, the two ways on the right.
-    // The title, copy and two ways on the left, the layers on the right.
     .head {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
@@ -1033,8 +983,6 @@ const WORKERS = [
             line-height: 1.1;
             color: var(--text);
 
-            // The lead-in in grey, so Kestra Enterprise stands out, as in
-            // the AI block's title.
             span {
                 color: #a9a9b8;
             }
@@ -1062,8 +1010,6 @@ const WORKERS = [
         margin-top: 2rem;
     }
 
-    // Four cells, two by two, between full-width rules: in each, the
-    // glimpse of the product above its promise.
     .features {
         position: relative;
         display: grid;
@@ -1071,8 +1017,6 @@ const WORKERS = [
         margin: 0;
         padding: 0;
         list-style: none;
-        // A rule above the cells only, drawn once, edge to edge: under
-        // them, the closing row runs straight to the section's edge.
         &::before {
             content: "";
             position: absolute;
@@ -1104,7 +1048,6 @@ const WORKERS = [
                 border-top: var(--rule);
             }
 
-            // The last row runs on to the section's edge, its rules with it.
             &:nth-last-child(-n + 2) {
                 padding-bottom: calc(
                     clamp(3.5rem, 5.5vw, 4.75rem) + clamp(3rem, 5vw, 4.5rem)
@@ -1118,8 +1061,7 @@ const WORKERS = [
             @include media-breakpoint-down(md) {
                 &:last-child {
                     padding-bottom: calc(
-                        clamp(3.5rem, 5.5vw, 4.75rem) +
-                            clamp(3rem, 5vw, 4.5rem)
+                        clamp(3.5rem, 5.5vw, 4.75rem) + clamp(3rem, 5vw, 4.5rem)
                     );
                 }
             }
@@ -1170,7 +1112,6 @@ const WORKERS = [
         padding-right: var(--inset);
     }
 
-    // On a phone: the title, then the glimpse, then the copy.
     @include media-breakpoint-down(md) {
         .features > li {
             gap: 0;
@@ -1206,21 +1147,17 @@ const WORKERS = [
         }
     }
 
-    // The glimpse's stage, above the copy.
     .stage {
         padding-top: clamp(2.5rem, 4vw, 3.5rem);
     }
 
     .glimpse {
-        // Fits the cell, short of its right rule, as the copy does, and
-        // all four are the same height.
         display: flex;
         flex-direction: column;
         width: calc(100% - var(--inset));
         height: 23.5rem;
         overflow: hidden;
 
-        // On a phone, one card per row: each as tall as its content.
         @include media-breakpoint-down(md) {
             height: auto;
             min-height: 25rem;
@@ -1257,7 +1194,6 @@ const WORKERS = [
         }
     }
 
-    // The content runs the card's full width.
     .glimpse-body {
         display: flex;
         flex: 1;
@@ -1266,8 +1202,6 @@ const WORKERS = [
         padding: 1.125rem 1.25rem 1.5rem;
     }
 
-    // Labels and states as the product tags them: filled, small corners,
-    // no edge, colour only for a state.
     .pill,
     .tag {
         display: inline-flex;
@@ -1329,16 +1263,12 @@ const WORKERS = [
         }
     }
 
-    // The tenant: its tree, and the people at work in it.
-    // It fills the card, so the editor's spot at the foot holds while a
-    // row folds away.
     .tenant {
         position: relative;
         flex: 1;
         gap: 1.25rem;
     }
 
-    // The tenant named over its tree, with its kind.
     .tenant-label {
         font-size: 0.875rem;
         color: var(--muted);
@@ -1349,15 +1279,11 @@ const WORKERS = [
             color: var(--muted);
         }
 
-        // The tenant's kind at the far right.
         .pill {
             margin-left: auto;
         }
     }
 
-    // A row's state as the story goes: the flow edited, run and done, the
-    // namespace deleted. One pill at a time, set by the script; none at
-    // rest.
     .row-state {
         display: grid;
         margin-left: auto;
@@ -1381,8 +1307,6 @@ const WORKERS = [
         }
     }
 
-    // Hairline branches, as in the illustration.
-    // Drawn large, straight on the section: the tree is the picture.
     .ns-tree {
         margin: 0;
         padding: 0;
@@ -1390,7 +1314,6 @@ const WORKERS = [
         font-size: 0.9375rem;
         color: var(--muted);
 
-        // Namespaces are folders, in the product's violet.
         :global(.folder) {
             color: #b48cff;
         }
@@ -1401,7 +1324,6 @@ const WORKERS = [
             list-style: none;
         }
 
-        // The root has no branch into it.
         > li {
             padding-left: 0;
 
@@ -1414,7 +1336,6 @@ const WORKERS = [
             position: relative;
             padding-left: 0.875rem;
 
-            // The namespace the admin deletes folds away, and back.
             &.doomed {
                 max-height: 2.25rem;
                 overflow: hidden;
@@ -1428,7 +1349,6 @@ const WORKERS = [
                 }
             }
 
-            // The branch to this item, from the line on its left.
             &::before {
                 content: "";
                 position: absolute;
@@ -1440,7 +1360,6 @@ const WORKERS = [
                 border-bottom: 1px solid rgba(255, 255, 255, 0.14);
             }
 
-            // The line goes on down to the next sibling.
             &:not(:last-child)::after {
                 content: "";
                 position: absolute;
@@ -1451,7 +1370,6 @@ const WORKERS = [
             }
         }
 
-        // A row lights up, in the person's colour, while they are on it.
         [data-row] {
             display: flex;
             align-items: center;
@@ -1466,7 +1384,6 @@ const WORKERS = [
                 border-color 0.4s ease,
                 color 0.4s ease;
 
-            // Struck through once deleted, until the story starts again.
             &:global(.gone) {
                 text-decoration: line-through;
                 opacity: 0.55;
@@ -1489,9 +1406,6 @@ const WORKERS = [
         }
     }
 
-    // A pointer with its person's chip, each in their own colour. The
-    // script glides them from row to row; without it they rest where they
-    // are placed here.
     .cursor {
         --tone: 240, 140, 190;
 
@@ -1562,10 +1476,6 @@ const WORKERS = [
         }
     }
 
-    // One execution as a timeline, each task a bar under the last. A
-    // worker goes down halfway through a task: its bar breaks in red, a
-    // second attempt starts on another worker under it, and the run still
-    // ends in success.
     .timeline {
         gap: 1.25rem;
         width: 100%;
@@ -1582,8 +1492,6 @@ const WORKERS = [
         }
     }
 
-    // The execution's state as the UI tags it: a spinner while it runs, a
-    // check once it succeeds.
     .run-tag {
         display: inline-flex;
         align-items: center;
@@ -1648,7 +1556,6 @@ const WORKERS = [
             color: var(--muted);
         }
 
-        // Hidden until the first attempt fails.
         &:global(.pending) {
             opacity: 0;
         }
@@ -1659,7 +1566,6 @@ const WORKERS = [
         display: block;
         flex: 1;
         height: 1.375rem;
-        // The timeline's hairline.
         background: linear-gradient(
                 rgba(255, 255, 255, 0.06),
                 rgba(255, 255, 255, 0.06)
@@ -1667,8 +1573,6 @@ const WORKERS = [
             0 50% / 100% 1px no-repeat;
     }
 
-    // A task's bar: it draws itself over the task's time, then turns green
-    // once done, or red where its worker went down.
     .attempt {
         position: absolute;
         top: 0;
@@ -1705,8 +1609,6 @@ const WORKERS = [
         }
     }
 
-    // On a phone the bars are short: "w1" for "worker-1", and the fall
-    // shown by its icon alone, the status line saying which went down.
     .worker-short {
         display: none;
     }
@@ -1730,7 +1632,6 @@ const WORKERS = [
         }
     }
 
-    // Where the worker went down, after the broken bar.
     .down {
         position: absolute;
         top: 50%;
@@ -1756,8 +1657,6 @@ const WORKERS = [
         opacity: 1;
     }
 
-    // The run's outcome under it; amber while a task is retried, green
-    // once the run succeeds.
     .status {
         font-size: 0.8125rem;
         color: var(--muted);
@@ -1788,8 +1687,6 @@ const WORKERS = [
         }
     }
 
-    // Each glimpse on its own soft panel, so it reads as a picture of the
-    // product, apart from the cell's title and copy.
     .glimpse.free {
         border-color: rgba(255, 255, 255, 0.055);
         background:
@@ -1807,8 +1704,6 @@ const WORKERS = [
         }
     }
 
-    // The audit log as a stack of events, as notifications: the newest in
-    // front, the ones before it fading behind. A new one drops in on top.
     .notes {
         align-items: center;
         gap: 2.5rem;
@@ -1846,7 +1741,6 @@ const WORKERS = [
             transition: opacity 0.4s ease;
         }
 
-        // Behind, only the cards' edges show, not what they say.
         &:nth-child(n + 2) > * {
             opacity: 0;
         }
@@ -1868,7 +1762,6 @@ const WORKERS = [
             transform: translateY(2.5rem) scale(0.85);
         }
 
-        // Where a new event starts, above the stack.
         &:global(.enter) {
             opacity: 0;
             transform: translateY(-1rem);
@@ -1882,8 +1775,6 @@ const WORKERS = [
     }
 
     .note-top {
-        // The action as a status tag: created in its blue with a plus,
-        // resumed running, the others neutral.
         .state {
             --tone: var(--neutral);
 
@@ -1928,8 +1819,6 @@ const WORKERS = [
         font-size: 0.875rem;
         color: var(--muted);
 
-        // On a phone, a line of text: the dot runs with its words, the
-        // count goes under them. (Over the glimpses' flex paragraphs.)
         @include media-breakpoint-down(md) {
             .glimpse & {
                 display: block;
@@ -1956,10 +1845,8 @@ const WORKERS = [
         }
     }
 
-    // The log's live dot.
     .live {
         position: relative;
-        // Round whatever the line does: never squeezed when it wraps.
         flex-shrink: 0;
         width: 0.4375rem;
         height: 0.4375rem;
@@ -1977,10 +1864,6 @@ const WORKERS = [
         }
     }
 
-    // The backend as a schema, after the 2.0 page: the workers on the left
-    // connect to Kestra over mTLS (the unknown one's link breaks on the
-    // way), and Kestra runs on the repository and queue picked on the
-    // right. Drawn on a fixed 560 by 340 box, in the AI block's nodes.
     .schema-body {
         align-items: center;
     }
@@ -1996,7 +1879,6 @@ const WORKERS = [
             zoom: 0.8;
         }
 
-        // On a phone it stands upright (see below), at nearly full size.
         @include media-breakpoint-down(md) {
             width: 340px;
             height: 420px;
@@ -2004,16 +1886,12 @@ const WORKERS = [
         }
     }
 
-    // The upright links show on a phone only, the ones across elsewhere.
     .schema > .lines.vertical {
         display: none;
         width: 340px;
         height: 420px;
     }
 
-    // On a phone, top to bottom: the three workers in a row, Kestra under
-    // them with its name beside it, the repository and the queue side by
-    // side at the foot.
     @include media-breakpoint-down(md) {
         .schema > .lines:not(.vertical) {
             display: none;
@@ -2086,7 +1964,6 @@ const WORKERS = [
             }
         }
 
-        // The unknown worker's run, sent by the script; it stops halfway.
         .jet {
             stroke: rgba(255, 255, 255, 0.7);
             stroke-width: 1.25;
@@ -2096,7 +1973,6 @@ const WORKERS = [
             opacity: 0;
         }
 
-        // The small red cross where it is stopped.
         .cut {
             stroke: var(--danger);
             stroke-width: 1.5;
@@ -2110,7 +1986,6 @@ const WORKERS = [
                 transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        // Runs travelling along the wires.
         .flows path {
             stroke: rgba(255, 255, 255, 0.7);
             stroke-width: 1.25;
@@ -2124,7 +1999,6 @@ const WORKERS = [
         }
     }
 
-    // Once stopped: the link dashed in red, and the cross.
     .schema:global(.blocked) {
         .lines .intruder {
             stroke: color-mix(in srgb, var(--danger) 55%, transparent);
@@ -2151,8 +2025,6 @@ const WORKERS = [
         display: contents;
     }
 
-    // A node, as in the AI block: a dark fill, a hairline edge, small
-    // corners.
     .worker,
     .bar {
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2191,7 +2063,6 @@ const WORKERS = [
             }
         }
 
-        // While it is checked: a grey, pulsing dot.
         &:global(.checking) {
             border-color: rgba(255, 255, 255, 0.1);
 
@@ -2206,7 +2077,6 @@ const WORKERS = [
         }
     }
 
-    // Kestra in the middle, on its black tile.
     .hub {
         position: absolute;
         top: 142px;
@@ -2218,13 +2088,9 @@ const WORKERS = [
         border-radius: 10px;
         background: #141418;
         box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
-        // Lights up as each run comes in, on the runs' own clock.
         animation: hub-in 3.2s linear infinite;
     }
 
-    // The runs' clock: the first reaches Kestra at 21% and its repository
-    // at 48%; the second, half a turn behind, Kestra at 67% and its queue
-    // at 94%.
     @keyframes hub-in {
         0%,
         16%,
@@ -2265,15 +2131,11 @@ const WORKERS = [
         color: var(--muted);
     }
 
-    // A lane: one node, its name at the top and the backend in use under
-    // it, the others waiting their turn.
     .lane {
         position: absolute;
         left: 400px;
         width: 160px;
 
-        // The repository's node tops out with the first worker, the
-        // queue's bottoms out with the last.
         &.repository {
             top: 80px;
         }
@@ -2283,7 +2145,6 @@ const WORKERS = [
         }
     }
 
-    // The lane's name, small, in the top of its node.
     .lane .lane-title {
         position: absolute;
         top: 8px;
@@ -2327,7 +2188,6 @@ const WORKERS = [
             transform: translateY(-50%);
         }
 
-        // The logo straight on the node, no tile behind it.
         .logo {
             display: grid;
             place-items: center;
@@ -2341,7 +2201,6 @@ const WORKERS = [
             object-fit: contain;
         }
 
-        // Kafka's mark is black: drawn in white on the dark node.
         &[data-option="kafka"] img {
             filter: invert(1);
         }
@@ -2410,17 +2269,12 @@ const WORKERS = [
 <script>
     const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches
 
-    // Runs `start` while the element is on screen and `stop` when it
-    // leaves.
     function whileVisible(el: Element, start: () => void, stop: () => void) {
         new IntersectionObserver(([entry]) =>
             entry.isIntersecting ? start() : stop(),
         ).observe(el)
     }
 
-    // A little story in the tenant, on a loop: the editor edits the flow,
-    // the launcher runs it and it succeeds, then the admin deletes a
-    // namespace. The row each of them works on lights up in their colour.
     function playTenants() {
         const stage = document.querySelector<HTMLElement>("[data-tenants]")
         if (!stage || reduced()) return
@@ -2439,8 +2293,6 @@ const WORKERS = [
         let lit: HTMLElement | undefined
         let timers: number[] = []
 
-        // Onto a row, at a point across the stage, in the stage's own
-        // pixels even when it is scaled. "foot" parks them under the rows.
         const go = (who: HTMLElement, name: string, lane: number) => {
             const target = name === "foot" ? stage : row(name)
             if (!target) return
@@ -2459,8 +2311,6 @@ const WORKERS = [
             who.style.bottom = "auto"
         }
 
-        // The row under someone lights up in their colour, or in red for
-        // a deletion.
         const light = (who?: HTMLElement, tone?: string) => {
             lit?.classList.remove("hot")
             lit = who ? at.get(who)?.[0] : undefined
@@ -2483,7 +2333,6 @@ const WORKERS = [
             go(editor, "foot", 0.04)
         }
 
-        // The one at work stands out; the others wait, dimmed.
         const people = [launcher, editor, admin]
         const focus = (who?: HTMLElement) =>
             people.forEach((person) =>
@@ -2531,7 +2380,6 @@ const WORKERS = [
                     doomed.classList.add("gone")
                 ),
             ],
-            // The row goes, the admin leaves, and it is back next turn.
             [
                 10000,
                 () => (light(), doomed.parentElement?.classList.add("removed")),
@@ -2548,7 +2396,6 @@ const WORKERS = [
             timers.push(window.setTimeout(play, LOOP))
         }
 
-        // Everyone at rest at once, before the story starts.
         const snap = (move: () => void) => {
             stage.classList.add("placing")
             move()
@@ -2571,11 +2418,6 @@ const WORKERS = [
         )
     }
 
-    // The run plays from the start: each task draws its bar on a worker
-    // and turns green. On post_ledger the worker goes down: the bar breaks
-    // in red, a second attempt runs on another worker, and the run ends in
-    // success with nothing lost. Then it starts over. It holds while off
-    // screen.
     function playRouting() {
         const card = document.querySelector<HTMLElement>("[data-routing]")
         if (!card || reduced()) return
@@ -2606,7 +2448,6 @@ const WORKERS = [
             status?.classList.toggle("warn", tone === "warn")
             status?.classList.toggle("ok", tone === "ok")
         }
-        // Running while it goes, Success once it has.
         const time = card.querySelector<HTMLElement>("[data-run-time]")
         const total = time?.textContent ?? ""
         const setState = (running: boolean) => {
@@ -2618,7 +2459,6 @@ const WORKERS = [
         const reset = () => {
             rows.forEach((row) => {
                 row.classList.remove("failed")
-                // The second attempt only shows once the first has failed.
                 row.classList.toggle("pending", row.classList.contains("retry"))
                 bar(row).classList.remove("go", "done", "broken")
             })
@@ -2628,7 +2468,6 @@ const WORKERS = [
 
         const loop = async () => {
             for (;;) {
-                // Back to the start without drawing back.
                 rows.forEach((row) => (bar(row).style.transition = "none"))
                 reset()
                 void card.offsetWidth
@@ -2666,9 +2505,6 @@ const WORKERS = [
         loop()
     }
 
-    // The audit log as a stack: every second or two a new event drops in on
-    // top, the others move back and fade, the last one goes, and each event
-    // is counted as it streams out to the SIEM.
     function playAudit() {
         const card = document.querySelector<HTMLElement>("[data-audit]")
         if (!card || reduced()) return
@@ -2704,7 +2540,6 @@ const WORKERS = [
             stack.insertBefore(note, stack.firstChild)
             void note.offsetWidth
             note.classList.remove("enter")
-            // The one that leaves goes back to the end of the queue.
             const last = stack.children[4] as HTMLElement | undefined
             if (last)
                 window.setTimeout(() => (last.remove(), queue.push(last)), 450)
@@ -2719,10 +2554,6 @@ const WORKERS = [
         )
     }
 
-    // Each lane changes backend on its own, never both at once: each
-    // switches as a run reaches it, every other run. The runs keep the
-    // CSS clock of 3.2s, the repository's arriving at 48% of it and the
-    // queue's at 94%.
     function playBackends() {
         const card = document.querySelector<HTMLElement>("[data-backends]")
         if (!card || reduced()) return
@@ -2748,7 +2579,6 @@ const WORKERS = [
         const start = () => {
             const now = Number(document.timeline.currentTime ?? 0)
             timers = ARRIVALS.flatMap((arrival, col) => {
-                // Wait for this lane's next run, then every other one.
                 const wait =
                     (((arrival * CLOCK - (now % CLOCK)) % CLOCK) + CLOCK) %
                     CLOCK
@@ -2770,8 +2600,6 @@ const WORKERS = [
         })
     }
 
-    // Workers shaking hands, one after the other: the trusted ones get in,
-    // the unknown one is refused.
     function playHandshake() {
         const strip = document.querySelector<HTMLElement>("[data-handshake]")
         if (!strip || reduced()) return
@@ -2799,14 +2627,9 @@ const WORKERS = [
         })
     }
 
-    // The unknown worker sends a run like the others; it is stopped
-    // halfway, a cross appears, its link turns red and it shakes. Then it
-    // tries again.
     function playIntruder() {
         const schema = document.querySelector<HTMLElement>("[data-intruder]")
         if (!schema || reduced()) return
-        // The jet of the drawing on show: across, or top to bottom on a
-        // phone.
         const jets = [...schema.querySelectorAll<SVGPathElement>("[data-jet]")]
         const visibleJet = () =>
             jets.find((path) => path.getClientRects().length) ?? jets[0]

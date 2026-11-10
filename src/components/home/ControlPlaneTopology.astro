@@ -1,13 +1,4 @@
 ---
-/**
- * An executed Kestra 2.0 topology, drawn in HTML after the product's node
- * design: plugin icon, task id and type, a status border with its progress
- * line, and the duration (and artifact) pills under each node, above a
- * Gantt strip. When on screen it plays the run: each task goes running, then
- * success, and its dashed edge carries the run on to the next task. The
- * progress line in a node sits where that task's Gantt bar sits. Without
- * JavaScript, or with reduced motion, it shows the snapshot in the props.
- */
 import { Icon } from "astro-icon/components"
 import { API_URL } from "astro:env/client"
 import TopologyNode from "./TopologyNode.astro"
@@ -16,30 +7,21 @@ type Status = "success" | "running" | "created"
 
 export interface TopologyNode {
     id: string
-    /** Short type shown under the id. */
     type: string
-    /** Plugin class after io.kestra.plugin., for its icon. */
     plugin: string
-    /** Fallback icon when the plugin icon cannot be fetched. */
     fallback: string
     x: number
     y: number
-    /** State in the static snapshot. */
     status: Status
-    /** Duration as shown in the pills and the Gantt. */
     duration: string
-    /** Duration in seconds, which places the task in the run. */
     seconds: number
     artifacts?: number
     runner?: string
 }
 
 export interface Props {
-    /** In run order; each node hands over to the next. */
     nodes: TopologyNode[]
     label: string
-    /** Shows the Gantt strip under the graph; off for now, the graph alone
-     * tells the run. */
     gantt?: boolean
 }
 
@@ -55,8 +37,6 @@ const icons = await Promise.all(
                 `${API_URL}/plugins/icons/io.kestra.plugin.${node.plugin}`,
             )
             if (!response.ok) return null
-            // Drawn as an image, not inline: some icon files carry a doctype
-            // or a <style> whose classes would leak into the page.
             const svg = Buffer.from(await response.arrayBuffer())
             return `data:image/svg+xml;base64,${svg.toString("base64")}`
         } catch {
@@ -65,15 +45,12 @@ const icons = await Promise.all(
     }),
 )
 
-// Right-angled edges: straight down a column, or out to the gap, across and
-// in to the next column.
 const edges = nodes.slice(0, -1).map((a, idx) => {
     const b = nodes[idx + 1]
     if (a.x === b.x) {
         const x = a.x + 40
         return `M${x} ${a.y + NODE_H} V${b.y - 2}`
     }
-    // Out to the gap, across and in, with small rounded bends.
     const x1 = a.x + NODE_W
     const y1 = a.y + NODE_H / 2
     const y2 = b.y + NODE_H / 2
@@ -91,9 +68,6 @@ const edges = nodes.slice(0, -1).map((a, idx) => {
     ].join(" ")
 })
 
-// Tasks run one after the other: each starts when the previous one ends.
-// Very short tasks keep a visible sliver, like the dot in the product, and
-// the next bar starts after that sliver, so bars never overlap.
 const total = nodes.reduce((sum, node) => sum + node.seconds, 0)
 const starts = nodes.map((_, idx) =>
     nodes.slice(0, idx).reduce((sum, node) => sum + node.seconds, 0),
@@ -120,16 +94,8 @@ const clock = (seconds: number) => {
     aria-label={label}
     data-topology
 >
-    {
-        /* The graph is centred in the space above the Gantt, which sits at the
-    bottom of the panel. */
-    }
     <div class="graph">
         <div class="canvas">
-            {
-                /* Triggers sit in their own cluster, as in the product: a green
-            capsule with its label and collapse button, under the edges. */
-            }
             {
                 nodes.map(
                     (node, idx) =>
@@ -238,17 +204,9 @@ const clock = (seconds: number) => {
         </div>
     </div>
 
-    {
-        /* The Gantt view, simplified: icon, task, start offset, bar, duration
-    and state. */
-    }
-    {/* Kept hidden when off: the run's timing is read from its rows. */}
     <div class="gantt" hidden={!gantt}>
         <div class="gantt-head">
             <span>0s</span>
-            {
-                /* Elapsed time; it only reaches the total at the end of the run. */
-            }
             <span data-elapsed>{clock(total)}</span>
         </div>
         <ul>
@@ -292,7 +250,6 @@ const clock = (seconds: number) => {
 </div>
 
 <script>
-    // Plays the run in a loop while the topology is on screen and shown.
     const RUN_MS = 1100
     const HANDOVER_MS = 450
     const HOLD_MS = 2200
@@ -316,10 +273,6 @@ const clock = (seconds: number) => {
             }
         }
 
-        // Live Gantt, as in the product: the scale ends at the time elapsed so
-        // far, so every started task's slot is redrawn each frame, in the
-        // Gantt rows and in the nodes alike. Very short tasks keep a sliver
-        // and the next slot starts after it.
         const elapsed = root.querySelector<HTMLElement>("[data-elapsed]")!
         const starts = bars.map((bar) => Number(bar.dataset.start))
         const seconds = bars.map((bar) => Number(bar.dataset.seconds))
@@ -373,11 +326,7 @@ const clock = (seconds: number) => {
             root.classList.remove("resetting")
         }
 
-        // Shown means on screen and, inside a tab panel, in the open tab.
         const host = root.closest<HTMLElement>("[data-domain-visual]")
-        // On a tablet or a phone the use cases are all laid out, no tabs:
-        // each runs when on screen, and its graph is scaled to the width it
-        // has, whole, with its panel just as tall as it.
         const stacked = matchMedia("(max-width: 991.98px)")
         const panel = root.parentElement!
         const fit = () => {
@@ -386,7 +335,6 @@ const clock = (seconds: number) => {
                 panel.style.removeProperty("min-height")
                 return
             }
-            // The canvas, its zoom and a little room on either side.
             const z = Math.min(0.65, panel.clientWidth / (880 * 1.04 + 24))
             root.style.setProperty("--z", z.toFixed(3))
             panel.style.minHeight = `${Math.round(250 * 1.04 * z + 40)}px`
@@ -398,8 +346,6 @@ const clock = (seconds: number) => {
             root.offsetParent !== null &&
             (!host || stacked.matches || host.classList.contains("active"))
 
-        // Each time the topology comes into view it builds itself quickly
-        // (nodes, then edges, then the Gantt) before the run starts.
         let built = false
         const waitVisible = async () => {
             if (shown()) return
@@ -416,7 +362,6 @@ const clock = (seconds: number) => {
             await sleep(900)
         }
 
-        // Tells the page how far the run is, so it can follow along.
         const report = (type: string, detail?: number) =>
             root.dispatchEvent(new CustomEvent(type, { bubbles: true, detail }))
 
@@ -467,7 +412,6 @@ const clock = (seconds: number) => {
 
 <style lang="scss">
     .topology {
-        // Light values from the 2.0 node design; dark ones below.
         --node-bg: #ffffff;
         --node-border: #ebebf0;
         --node-text: #2b2b33;
@@ -491,9 +435,6 @@ const clock = (seconds: number) => {
         --z: 0.85;
         --gantt-h: 156px;
 
-        // Fills the panel whatever the zoom; the graph keeps its drawn width.
-        // Zoom counts in the width but not in a percentage height, so the
-        // height comes from stretching in the panel instead.
         width: calc(100% / var(--z));
         align-self: stretch;
         font-family: var(--font-family-mona-sans), system-ui, sans-serif;
@@ -518,11 +459,8 @@ const clock = (seconds: number) => {
             --trigger-bg: rgba(6, 240, 177, 0.06);
         }
 
-        // Drawn at a fixed width and scaled to sit inside the panel.
         zoom: var(--z);
 
-        // Beside the copy, between 1200 and 1400px wide, the column is
-        // narrow: drawn smaller, so it keeps a margin on both sides.
         @include media-breakpoint-down(xxl) {
             --z: 0.62;
         }
@@ -539,7 +477,6 @@ const clock = (seconds: number) => {
             --gantt-h: 0px;
         }
 
-        // A reset jumps straight back to the start.
         &.resetting * {
             transition: none !important;
         }
@@ -556,8 +493,6 @@ const clock = (seconds: number) => {
         justify-content: center;
     }
 
-    // The topology is the star: drawn larger than the Gantt below it, as
-    // wide as the panel allows next to the wider domain column.
     .canvas {
         position: relative;
         width: 880px;
@@ -565,15 +500,12 @@ const clock = (seconds: number) => {
         zoom: 1.04;
     }
 
-    // Dashed edges; the one carrying the run on flows in violet.
     .edges {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
         overflow: visible;
-        // Its own layer: the flowing dashes repaint the edges alone, not
-        // the nodes over them.
         will-change: transform;
     }
 
@@ -601,7 +533,6 @@ const clock = (seconds: number) => {
         }
     }
 
-    // Arrow heads follow their edge's state.
     .arrow {
         fill: var(--edge);
 
@@ -633,10 +564,6 @@ const clock = (seconds: number) => {
         }
     }
 
-    // The trigger cluster around its node, with the label on its top left
-    // and the collapse button on its top right corner. Narrow at the sides,
-    // so the edges in the gap pass it by, and deep enough at the bottom for
-    // the node's pills.
     .trigger {
         position: absolute;
         width: calc(260px + 2 * 14px);
@@ -686,7 +613,6 @@ const clock = (seconds: number) => {
         }
     }
 
-    // The plugin icon tile, in the Gantt rows (the nodes draw their own).
     .icon {
         display: grid;
         place-items: center;
@@ -701,8 +627,6 @@ const clock = (seconds: number) => {
         }
     }
 
-    // The task's slot in its Gantt row, moved and sized with a transform
-    // so the per-frame redraws skip layout.
     .bar {
         position: absolute;
         left: 0;
@@ -731,9 +655,6 @@ const clock = (seconds: number) => {
         }
     }
 
-    // Gantt under the graph, after the product's Gantt tab: a scale on top,
-    // then one row per task. Docked along the bottom of the panel, full
-    // width, like a drawer.
     .gantt {
         position: absolute;
         left: 0;
@@ -741,7 +662,6 @@ const clock = (seconds: number) => {
         bottom: 0;
         min-height: var(--gantt-h);
         border-top: 1px solid var(--node-border);
-        // In support of the topology: lighter than the nodes.
         background: color-mix(in srgb, var(--node-bg) 72%, transparent);
         backdrop-filter: blur(6px);
         overflow: hidden;
@@ -773,8 +693,6 @@ const clock = (seconds: number) => {
                 border-top: 1px solid var(--node-border);
             }
 
-            // Rows are reserved from the start but stay empty, a pale track
-            // only, until their task starts and fills them.
             &.is-created {
                 .icon,
                 .gantt-task {
@@ -800,7 +718,6 @@ const clock = (seconds: number) => {
     .gantt-head {
         display: flex;
         justify-content: space-between;
-        // Lines the scale up with the bars' column.
         margin-left: calc(24px + 22px + 150px + 56px + 30px);
         margin-right: calc(24px + 52px + 76px + 20px);
         padding: 6px 0 4px;
@@ -834,7 +751,6 @@ const clock = (seconds: number) => {
         color: var(--node-text);
     }
 
-    // The start offset is only known once the task starts.
     .offset {
         text-align: right;
         color: var(--node-muted);

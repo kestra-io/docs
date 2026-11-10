@@ -1,13 +1,4 @@
 ---
-/**
- * The agent as one step of a governed flow, not a gateway in front of the
- * systems: trigger → task → AI agent → approval → task, drawn with the
- * product's 2.0 nodes inside one flow frame. RBAC, approvals and audit logs
- * belong to the flow and light as the run crosses them. The same shape
- * runs in each of the control plane's four domains: it follows the use case
- * open above, and takes turns otherwise.
- * Without JavaScript, or with reduced motion, the first flow stands done.
- */
 import { Icon } from "astro-icon/components"
 import { API_URL } from "astro:env/client"
 import TopologyNode from "./TopologyNode.astro"
@@ -30,7 +21,6 @@ interface Flow {
     namespace: string
     flow: string
     approver: string
-    /** What the agent decided, inside its step. */
     decision: string
     steps: Step[]
 }
@@ -73,7 +63,6 @@ const approval = (id: string): Step => ({
     duration: "2m 10s",
 })
 
-// The control plane's four domains, in its order.
 const FLOWS: Flow[] = [
     {
         id: "infrastructure",
@@ -152,7 +141,6 @@ const FLOWS: Flow[] = [
     },
 ]
 
-// Each plugin icon once, as in the control plane's topologies.
 const plugins = [
     ...new Set(FLOWS.flatMap((flow) => flow.steps.map((s) => s.plugin))),
 ]
@@ -176,9 +164,6 @@ const icons = new Map(
     ),
 )
 
-// Each flow's steps run one after the other, so each node's Gantt slot
-// starts where the previous one ends, its length its share of the run, as
-// in the control plane's topologies. Very short steps keep a sliver.
 const seconds = (duration: string) =>
     [...duration.matchAll(/([\d.]+)\s*(m|s)/g)].reduce(
         (sum, [, value, unit]) => sum + Number(value) * (unit === "m" ? 60 : 1),
@@ -219,7 +204,6 @@ const GUARDS = [
                     data-flow-domain={flow.id}
                     data-approver={flow.approver}
                 >
-                    {/* The flow, as named in the product, and what governs it. */}
                     <div class="head">
                         <img class="flow-mark" src={kestraMark.src} alt="" />
                         <span class="name">
@@ -294,15 +278,11 @@ const GUARDS = [
                 </div>
             ))
         }
-        {/* The flow's audit log: every step leaves a line. */}
         <ol class="audit" aria-hidden="true" data-audit></ol>
     </div>
 </div>
 
 <script>
-    // Plays each domain's run in turn while the flow is on screen: trigger,
-    // task, the agent deciding inside its step, the approval holding the
-    // run, then the last task. Every step leaves a line in the audit log.
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
     function playFlow(root: HTMLElement) {
@@ -316,7 +296,6 @@ const GUARDS = [
             .closest("section")
             ?.querySelector<HTMLElement>("[data-mascot]")
 
-        // The mascot watches the step at work.
         const mood = (name: string, target: Element | null = null) => {
             if (!mascot) return
             if (name) mascot.dataset.mood = name
@@ -331,7 +310,6 @@ const GUARDS = [
             visible = entry.isIntersecting
         }).observe(root)
 
-        // Waits, and holds while off screen.
         const wait = async (ms: number) => {
             await sleep(ms)
             while (!visible) await sleep(200)
@@ -396,8 +374,6 @@ const GUARDS = [
             }
             const id = (node: HTMLElement) =>
                 node.querySelector("strong")!.textContent!.trim()
-            // The step's Gantt slot draws itself over the time it runs,
-            // from its start to its full length.
             const bar = (node: HTMLElement) =>
                 node.querySelector<HTMLElement>(".progress")
             const grow = (node: HTMLElement, ms: number) => {
@@ -415,7 +391,6 @@ const GUARDS = [
                 )
             }
 
-            // A fresh run.
             run.classList.add("resetting")
             nodes.forEach((node) => {
                 set(node, "created")
@@ -445,7 +420,6 @@ const GUARDS = [
                 }
 
                 if (kind === "approval") {
-                    // The run holds until a person resumes it.
                     set(node, "paused")
                     grow(node, 1700)
                     pillText(node, `Waiting for ${approver}`)
@@ -462,10 +436,11 @@ const GUARDS = [
                 }
 
                 set(node, "running")
-                grow(node, kind === "agent" ? 2000 : kind === "trigger" ? 600 : 1000)
+                grow(
+                    node,
+                    kind === "agent" ? 2000 : kind === "trigger" ? 600 : 1000,
+                )
                 if (kind === "agent") {
-                    // The agent works inside its step, with the rights the
-                    // flow gives it.
                     guard("rbac").dataset.state = "ok"
                     mood("send", node)
                     await wait(900)
@@ -491,9 +466,6 @@ const GUARDS = [
             mood("")
         }
 
-        // The link with the control plane above: when its open use case
-        // has changed since the last run, that domain's flow plays next;
-        // otherwise the domains take turns.
         const openDomain = () =>
             document.querySelector<HTMLElement>("[data-domain-visual].active")
                 ?.dataset.domainVisual
@@ -541,14 +513,8 @@ const GUARDS = [
         max-width: 72rem;
         margin: 0 auto;
         font-family: var(--font-family-mona-sans), system-ui, sans-serif;
-
-        // Under 1100px the five steps no longer fit in a row: they stand in
-        // a column (see the end of the file).
     }
 
-    // The flow: one frame, everything inside it is governed. A pane of
-    // liquid glass: what runs behind it (the planet's arc) blurs through,
-    // a light catches its top edge, and a sheen falls from its top-left.
     .frame {
         position: relative;
         padding: 1.25rem 1rem 1rem;
@@ -580,7 +546,6 @@ const GUARDS = [
         font-size: 0.875rem;
     }
 
-    // Not ".mark": Bootstrap highlights that class in pale yellow.
     .flow-mark {
         width: 1.25rem;
         height: 1.25rem;
@@ -600,7 +565,6 @@ const GUARDS = [
         }
     }
 
-    // What governs the flow, lit as the run crosses it.
     .guards {
         display: flex;
         gap: 0.5rem;
@@ -614,7 +578,6 @@ const GUARDS = [
             gap: 0.375rem;
             padding: 0.25rem 0.625rem;
             border-radius: 6px;
-            // Filled, no border, as the product's tags.
             background: rgba(255, 255, 255, 0.06);
             font-size: 0.75rem;
             font-weight: 500;
@@ -649,7 +612,6 @@ const GUARDS = [
         }
     }
 
-    // The steps in one line, with the topology's dashed edges between them.
     .steps {
         display: grid;
         grid-template-columns:
@@ -662,7 +624,6 @@ const GUARDS = [
         position: relative;
         min-width: 0;
 
-        // The node's info slot is left empty here: its column goes too.
         :global(.node) {
             grid-template-columns: auto minmax(0, 1fr);
             width: 100%;
@@ -704,8 +665,6 @@ const GUARDS = [
         }
     }
 
-    // The agent: one step like the others, singled out by a violet ring
-    // and the decision it takes inside it.
     .step.agent :global(.node) {
         border-color: color-mix(in srgb, var(--running) 55%, transparent);
         box-shadow:
@@ -789,7 +748,6 @@ const GUARDS = [
         }
     }
 
-    // A run starts over with no transition.
     .resetting :global(*) {
         transition: none !important;
     }
@@ -800,7 +758,6 @@ const GUARDS = [
         }
     }
 
-    // The audit log: the last lines, newest on top.
     .audit {
         display: grid;
         gap: 0.375rem;
@@ -850,9 +807,6 @@ const GUARDS = [
             animation: none;
         }
     }
-    // Under 1100px, on a tablet or a phone, the flow reads top to bottom: the steps in a
-    // column joined by short dashed edges, the agent's decision on its own
-    // line above it, the head and its tags wrapping.
     @media (max-width: 1100px) {
         .frame {
             padding: 1rem 1rem 0.75rem;
@@ -876,7 +830,6 @@ const GUARDS = [
             padding-bottom: 1.75rem;
         }
 
-        // Each step leaves room under it for its state pill.
         .step {
             padding-bottom: 1.625rem;
         }

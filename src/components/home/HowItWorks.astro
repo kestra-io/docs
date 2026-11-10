@@ -44,14 +44,12 @@ tasks:
     script: |
       post_journal(read_csv('{{ outputs.extract.uri }}'))`
 
-// The flow's own plugins first, then a crowd of others around the editor.
 const USED = [
     "core.trigger.Schedule",
     "jdbc.postgresql.Query",
     "core.flow.Pause",
     "scripts.python.Script",
 ]
-// The carousel's plugins, the names people look for first.
 const CROWD = [
     "aws.s3.Upload",
     "azure.storage.blob.Upload",
@@ -92,8 +90,6 @@ const fetchIcon = async (type: string) => {
         return null
     }
 }
-// The API answers an unknown plugin with a generic icon: those are left
-// out of the crowd.
 const [generic, ...fetched] = await Promise.all(
     ["unknown.Plugin", ...USED, ...CROWD].map(fetchIcon),
 )
@@ -101,8 +97,6 @@ const dataUri = (svg: string | null) =>
     svg && svg !== generic ? `data:image/svg+xml;base64,${svg}` : null
 const icons = fetched.slice(0, USED.length).map(dataUri)
 
-// The carousel behind the editor: each plugin once, as a CSS variable on
-// the carousel so its icon is written out a single time.
 const crowd = [
     ...new Set(
         fetched
@@ -115,7 +109,6 @@ const CAROUSEL_ICONS = crowd
     .map((icon, idx) => `--p${idx}: url("${icon}")`)
     .join("; ")
 
-// The flow's own plugins, near the editor, over the carousel.
 const TILES = [
     { icon: icons[0], used: 0, x: 19, y: 24 },
     { icon: icons[1], used: 1, x: 81, y: 28 },
@@ -123,8 +116,6 @@ const TILES = [
     { icon: icons[3], used: 3, x: 81, y: 74 },
 ].filter((tile) => tile.icon)
 
-// The flow's lines, split into tokens for the editor's colors. Type lines
-// carry their plugin, and each task's lines its index, for the run.
 let plugin = 0
 let task = -1
 const LINES = FLOW.split("\n").map((text, row) => {
@@ -150,9 +141,6 @@ const LINES = FLOW.split("\n").map((text, row) => {
     return line
 })
 
-// Written out as one string: in a pre, the template's own line breaks and
-// indents would show. A type's class name is wrapped, to light up as in
-// the product's editor.
 const escape = (text: string) =>
     text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 const CODE = LINES.map((line) => {
@@ -173,15 +161,12 @@ const CODE = LINES.map((line) => {
     ].join("")
 }).join("")
 
-// The run, as the Gantt shows it: each task's slot along the run.
 const RUN = [
     { id: "extract", duration: "2.1s", start: 0, length: 0.14 },
     { id: "approve", duration: "3m 40s", start: 0.14, length: 0.6 },
     { id: "post_to_erp", duration: "4.6s", start: 0.74, length: 0.26 },
 ]
 
-// The run's logs, as the product's Logs tab shows them, each in when
-// its task gets there (ms from the step's start).
 const LOGS = [
     {
         at: 1500,
@@ -220,18 +205,10 @@ const LOGS = [
     },
 ]
 
-// The dashboard's executions over the last 24 hours, one bar an hour.
 const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 ---
 
-{
-    /* On the control plane block's hairline grid: the same two-column head,
-    then the three steps as a strip of cells taking turns, over a panel of
-    product screens in the 2.0 style: the flow in a white editor, with what
-    each step does around it. */
-}
 <section class="how-it-works" aria-labelledby="how-it-works" data-how>
-    {/* A few About us pixels at the edges, as on the blocks above. */}
     <PixelEdges left="wide" right="cluster" />
     <div class="container-xl">
         <div class="grid">
@@ -264,19 +241,11 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             </ol>
 
             <div class="body" data-at="0">
-                {/* Plugins all around: faint, until Connect brings them in. */}
-                {
-                    /* A small About us pixel cluster in the corner, as in the control plane's panel. */
-                }
                 <span
                     class="pixels"
                     aria-hidden="true"
                     style={`--pixels: url("${pixelCluster}")`}></span>
 
-                {
-                    /* Connect: the plugins roll by behind the editor, the
-                    list twice over so it loops. */
-                }
                 <div class="carousel" aria-hidden="true" style={CAROUSEL_ICONS}>
                     <div class="lane">
                         {
@@ -309,9 +278,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     </a>
                 </div>
 
-                {
-                    /* Connect: a dashed lead from each of the flow's plugins to its line. */
-                }
                 <svg class="links" aria-hidden="true">
                     {
                         USED.map(() => (
@@ -323,7 +289,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     }
                 </svg>
 
-                {/* The flow, in the product's editor. */}
                 <div class="card editor" aria-label="The nightly_close flow">
                     <div class="tabs">
                         <span class="tab active yaml-tab">
@@ -332,18 +297,12 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                             >
                             YAML
                         </span>
-                        {
-                            /* Run and govern: the run's own tab, once executed. */
-                        }
                         <span class="tab exec-tab">
                             <Icon name="mdi:play-outline" /> Execution
                         </span>
                         <span class="execute" aria-hidden="true">
                             <Icon name="mdi:play" /> Execute
                         </span>
-                        {
-                            /* Once pressed, Execute gives way to the run's state. */
-                        }
                         <span class="pill status">
                             <Icon name="mdi:loading" class="spin" />
                             <Icon name="mdi:pause" class="wait" />
@@ -359,7 +318,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     <div class="sheet">
                         <pre><code set:html={CODE} /></pre>
 
-                        {/* The run, as the product's Gantt view. */}
                         <div class="gantt" aria-hidden="true">
                             <div class="gantt-head">
                                 <span>
@@ -427,10 +385,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     </div>
                 </div>
 
-                {
-                    /* Declare: on the left, the change lands in Git and is
-                    reviewed; on the right, CI/CD checks and deploys it. */
-                }
                 <div class="card side git" data-scene="0">
                     <div class="card-head">
                         <Icon name="mdi:source-branch" />
@@ -497,10 +451,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     </ul>
                 </div>
 
-                {
-                    /* Run and govern: on the left, what governs the run; on
-                    the right, the dashboard that watches every execution. */
-                }
                 <div class="card side gov" data-scene="2">
                     <div class="card-head">
                         <Icon name="mdi:shield-check-outline" />
@@ -593,7 +543,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 </div>
             </div>
 
-            {/* The closing row, with the way into the platform. */}
             <div class="foot">
                 <a href="/features" class="btn-ghost">See the platform</a>
             </div>
@@ -602,12 +551,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
 </section>
 
 <script>
-    // The steps take turns while the block is in view: the open step's top
-    // edge fills as its time goes, then the next one opens. A click picks a
-    // step and stops the turns.
     const STEP_MS = [7000, 7000, 7000]
-    // The run's states over time, in ms from the step's start.
-    // Execute is pressed at 400ms, the Gantt replaces the code at 600ms.
     const RUN: [number, number, string][] = [
         [900, 0, "running"],
         [1500, 0, "success"],
@@ -643,8 +587,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     "is-success",
                 )
                 tasks[idx].classList.add(`is-${status}`)
-                // The editor lights the task that runs, and the card's head
-                // shows the execution's state.
                 const last = idx === tasks.length - 1
                 if (status !== "success") body.dataset.run = String(idx)
                 else if (last) delete body.dataset.run
@@ -656,8 +598,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                           : "running"
             }
 
-            // The leads run from each used plugin's tile to the editor's
-            // edge, level with its type line, in a soft S.
             const editor = root.querySelector<HTMLElement>(".editor")!
             const links = [...root.querySelectorAll<SVGGElement>(".links g")]
             const drawLinks = () => {
@@ -668,15 +608,10 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         `[data-used="${i}"]`,
                     )
                     if (!tile) return
-                    // The tile's resting centre, from the layout, so the
-                    // lead is right even while the tile is still on its way
-                    // out of the carousel. It starts there, behind the tile.
                     const x1 = tile.offsetLeft + tile.offsetWidth / 2
                     const y1 = tile.offsetTop + tile.offsetHeight / 2
                     const left = x1 + box.left < frame.left + frame.width / 2
                     const x2 = (left ? frame.left : frame.right) - box.left
-                    // A straight horizontal lead, from behind the tile to
-                    // the editor's edge, level with the tile.
                     link.querySelector("path")!.setAttribute(
                         "d",
                         `M${x1},${y1} H${x2}`,
@@ -699,14 +634,12 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                         i === idx,
                     )
                 })
-                // Restart the step's entrance.
                 body.dataset.at = String(idx)
                 if (idx === 1) drawLinks()
                 body.classList.remove("enter")
                 void body.offsetWidth
                 body.classList.add("enter")
 
-                // Timed details come on one after the other.
                 timed.forEach((el) => el.classList.remove("on"))
                 for (const el of timed)
                     later(Number(el.dataset.on), () => el.classList.add("on"))
@@ -725,8 +658,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                     for (const [at, task, status] of RUN)
                         later(at, () => setTask(task, status))
                 }
-                // The next step opens only while the block is in view;
-                // out of view, it waits for the block to come back.
                 if (auto)
                     later(STEP_MS[idx], () => {
                         const next = (idx + 1) % steps.length
@@ -742,8 +673,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 }),
             )
 
-            // Starts when the block comes into view, and picks up where it
-            // waited when it comes back.
             new IntersectionObserver(
                 ([entry]) => {
                     inView = entry.isIntersecting
@@ -773,8 +702,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         border-bottom: 1px solid var(--ks-border-primary);
     }
 
-    // The control plane block's hairline grid: rails on both sides, and
-    // full-width rules between rows.
     .grid {
         --rule: 1px solid var(--ks-border-primary);
         --inset: clamp(1.5rem, 4vw, 3.5rem);
@@ -784,9 +711,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         border-left: var(--rule);
         border-right: var(--rule);
 
-        // Below a wide screen the rails would sit a few pixels in from the
-        // screen's edge, with the rules running past them: the rules alone
-        // carry the grid there.
         @include media-breakpoint-down(xl) {
             border-inline: 0;
         }
@@ -828,8 +752,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // Same head as the control plane block: the title on the left, the
-    // copy on the right.
     .head {
         display: grid;
         grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
@@ -868,9 +790,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The steps: three hairline cells. The open one is lit, and while the
-    // steps take turns its top edge fills with the tint, like the control
-    // plane's domain marker.
     .steps {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -974,10 +893,7 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The panel: the control plane's tinted background, with product
-    // screens on it in the 2.0 style.
     .body {
-        // Screens, light in the light theme and dark in the dark one.
         --card: #ffffff;
         --card-head: #f7f7fa;
         --card-border: #e4e4ec;
@@ -1074,8 +990,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The editor in the middle, running off the panel's foot like the 2.0
-    // screens.
     .editor {
         top: 3.5rem;
         left: 50%;
@@ -1112,7 +1026,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         border-bottom: 0;
         border-radius: 8px 8px 0 0;
 
-        // The Kestra mark on a small black tile, as on the product's icon.
         .logo {
             display: grid;
             place-items: center;
@@ -1202,7 +1115,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             color 0.35s ease;
     }
 
-    // Declare: the flow writes itself in, line after line.
     .body[data-at="0"].enter pre :global(.line) {
         animation: line-in 0.3s ease backwards;
         animation-delay: calc(0.2s + var(--n) * 55ms);
@@ -1215,10 +1127,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // Connect: each plugin's class name lights up, as in the product's
-    // editor. Run: the task that runs lights up.
-    // Lit together with the leads, once the plugins are out of the
-    // carousel.
     .body[data-at="1"] pre :global(.cls) {
         background: var(--hl-cls);
         color: var(--text);
@@ -1253,7 +1161,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         padding: clamp(2.5rem, 4vw, 3.5rem) var(--inset);
     }
 
-    // The About us pixel cluster, in the tint, in the panel's top corner.
     .pixels {
         position: absolute;
         top: 1.5rem;
@@ -1266,10 +1173,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         pointer-events: none;
     }
 
-    // The plugins around the editor, shown by Connect only: a faint grey
-    // crowd, with the flow's own ones in colour.
-    // Connect's leads, dashed in the tint, the dashes flowing toward the
-    // editor.
     .links {
         position: absolute;
         inset: 0;
@@ -1315,8 +1218,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // Connect's carousel: one row of grey plugin chips rolling by behind
-    // the editor, across its middle, fading at the panel's edges.
     .carousel {
         position: absolute;
         inset: 0;
@@ -1347,7 +1248,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         display: flex;
         width: max-content;
         animation: roll 60s linear infinite;
-        // Rolls only while Connect shows it.
         animation-play-state: paused;
 
         .body[data-at="1"] & {
@@ -1359,8 +1259,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // A chip per plugin, its icon from the carousel's variables. The right
-    // margin, rather than a gap, keeps the two halves exactly equal.
     .chip {
         flex-shrink: 0;
         width: 4rem;
@@ -1372,8 +1270,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         filter: grayscale(1);
         opacity: 0.55;
 
-        // In colour as Connect opens, then grey as the flow's own plugins
-        // come out of the row.
         .body[data-at="1"].enter & {
             animation: dim-out 2.4s ease both;
         }
@@ -1398,8 +1294,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // Over the leads, so each one comes out from behind its tile; still
-    // under the editor, which comes later.
     .crowd {
         position: absolute;
         z-index: 2;
@@ -1421,13 +1315,10 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         border-radius: 10px;
         background: #ffffff;
         box-shadow: 0 4px 12px -6px rgba(43, 43, 51, 0.2);
-        // Only Connect shows the plugins; Declare and Run keep the panel to
-        // their own screens.
         opacity: 0;
         filter: grayscale(1);
         animation: drift 7s ease-in-out infinite alternate;
         animation-delay: calc(var(--k) * -0.9s);
-        // Drifts only while Connect shows it.
         animation-play-state: paused;
         transition:
             opacity 0.5s ease,
@@ -1440,8 +1331,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             height: 1.375rem;
         }
 
-        // The crowd stays grey: there are many, but only the flow's own
-        // plugins come forward, in color.
         .body[data-at="1"] & {
             animation-play-state: running;
             opacity: 0.5;
@@ -1460,7 +1349,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             }
         }
 
-        // Active, they grow and come forward.
         .body[data-at="1"] &.used {
             scale: 1.25;
             opacity: 1;
@@ -1470,8 +1358,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 color-mix(in srgb, var(--tint) 45%, transparent);
         }
 
-        // As Connect opens, the flow's own plugins come out of the carousel
-        // one after the other, still drifting.
         .body[data-at="1"].enter &.used {
             animation:
                 drift 7s ease-in-out infinite alternate,
@@ -1481,8 +1367,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // Out of the carousel: from the rolling row, grey and small like its
-    // chips, up or down to the tile's place, in colour.
     @keyframes emerge {
         from {
             translate: 0 var(--dy);
@@ -1530,7 +1414,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // A side screen shows with its step.
     [data-scene] {
         opacity: 0;
         visibility: hidden;
@@ -1610,9 +1493,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // Declare: the two side cards, either side of the editor and clear of
-    // it, using the panel's width.
-    // Both the same height, centred in the panel's height.
     .side {
         top: calc(50% - 9.25rem);
         display: flex;
@@ -1708,7 +1588,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             }
         }
 
-        // The new commit, marked as it lands; the older ones stay quiet.
         .fresh:global(.on) {
             background: var(--running-bg);
         }
@@ -1722,7 +1601,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
     .ci {
         left: calc(50% + min(19rem, 23%) + 2rem);
 
-        // Its three steps share the card's height.
         ul {
             display: flex;
             flex: 1;
@@ -1751,8 +1629,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         color: #ffffff;
     }
 
-    // Run and govern: Execute in the tab bar, pressed; the run's tab comes
-    // in before YAML, and the Gantt takes the code's place.
     .execute {
         align-self: center;
         display: none;
@@ -1880,9 +1756,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The run's logs, as in the product's Logs tab: the level in colour,
-    // the time and the task as a key:value pill, the message under them.
-    // Open at the foot, so it reads as running on under the editor's edge.
     .logs {
         margin: 1.5rem 0 0;
         padding: 0;
@@ -1987,7 +1860,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // A task's slot along the run, filling as it runs.
     .track {
         position: relative;
         height: 1.125rem;
@@ -2065,7 +1937,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The governance card's rows, as the Git card's, each with its glyph.
     .gov {
         right: calc(50% + min(19rem, 23%) + 2rem);
 
@@ -2101,7 +1972,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             }
         }
 
-        // The approval waits in amber, then shows who gave it.
         .approved {
             display: none;
         }
@@ -2130,7 +2000,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The dashboard's tiles, as the product's.
     .dash {
         left: calc(50% + min(19rem, 23%) + 2rem);
 
@@ -2211,8 +2080,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The counters move with the run: one more execution once it succeeds,
-    // one in progress while it runs.
     .total .after,
     .live .busy {
         display: none;
@@ -2241,7 +2108,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
         }
     }
 
-    // The execution's state in the card's head.
     .status {
         > *,
         > :global(svg) {
@@ -2295,11 +2161,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             animation: none !important;
         }
     }
-    // On a tablet or a phone, no tabs: each step reads in turn, its text
-    // then its screens under it. Declare: the flow in the editor, then Git
-    // and CI/CD; Connect: the plugins rolling by; Run and govern: the
-    // approvals and the executions. The steps and the panel open up into
-    // one column, ordered step by step, all of it shown at once.
     @include media-breakpoint-down(lg) {
         .grid {
             display: flex;
@@ -2325,7 +2186,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             order: 0;
         }
 
-        // Each step: a plain heading and text, nothing to press.
         .step {
             border-top: var(--rule);
 
@@ -2388,12 +2248,10 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             order: 9;
         }
 
-        // The way into the platform, after the three steps.
         .grid > .foot {
             order: 10;
         }
 
-        // The screens, in the page's flow, at full width.
         .body .card {
             inset: auto;
             width: auto;
@@ -2403,12 +2261,9 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             transform: none;
         }
 
-        // The whole flow, a little more of it in view, the rest a scroll
-        // away, both ways, inside the editor.
         .body .editor {
             max-height: 26rem;
 
-            // Room off the card's edge for the tab and the line numbers.
             .tabs {
                 flex-shrink: 0;
                 padding-inline: 1.25rem;
@@ -2423,26 +2278,20 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             }
         }
 
-        // Air between a step's last screen and the next step's rule.
         .step[data-step="1"],
         .step[data-step="2"],
         .grid > .foot {
             margin-top: 1.5rem;
         }
 
-        // The screens a size down, so they illustrate rather than fill the
-        // screen.
         .body .card {
             zoom: 0.88;
         }
 
-        // Their height follows their content here: each figure gets room
-        // of its own.
         .body .tile-kpi {
             padding-block: 0.875rem;
         }
 
-        // The hourly bars under their figure, on its left edge.
         .body .bars {
             width: auto;
             align-self: flex-start;
@@ -2455,7 +2304,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
             transform: none;
         }
 
-        // The plugins, one row rolling by under Connect.
         .body .carousel {
             display: flex;
             position: relative;
@@ -2468,8 +2316,6 @@ const HOURS = [5, 7, 4, 9, 6, 8, 11, 7, 10, 6, 9, 12]
                 animation-play-state: running;
             }
 
-            // In their own colours here, nothing to pick them out from, and
-            // a size down like the screens.
             .chip {
                 width: 3.25rem;
                 height: 3.25rem;

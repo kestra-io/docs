@@ -14,7 +14,6 @@ import amdocs from "./assets/companies/amdocs.svg?raw"
 import amdocsPhoto from "~/contents/customer-stories/amdocs-delivers-integration-environments-as-a-service-with-kestra/hero.jpeg"
 import apple from "~/contents/customer-stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra/logo.svg?raw"
 
-// Each story links to its customer story page, found by company name.
 const stories = await getCollection("customerStories")
 const storyHref = (company?: string) => {
     if (!company) return undefined
@@ -42,8 +41,6 @@ interface Props {
     placeholder?: boolean
 }
 
-// Melissa's stories, each with its logo for the tab, its industry and,
-// when there is one yet, its photo.
 const DEFAULT_STORIES: Story[] = [
     {
         company: "Apple",
@@ -69,7 +66,6 @@ const DEFAULT_STORIES: Story[] = [
         label: "of cybersecurity records processed",
         detail: "100+ analysts define their own secure workflows.",
     },
-    // From the Amdocs customer story: its KPI and its quote.
     {
         company: "Amdocs",
         photo: amdocsPhoto,
@@ -101,12 +97,6 @@ const {
 } = Astro.props
 ---
 
-{
-    /* On the hairline grid of the blocks above: the head, then the customers
-    as a row of logo tabs over one story at a time: its words and figure on
-    the quotes' lavender, the open tab in the same lavender, and the photo
-    of its customer story beside them. */
-}
 <section class="customers" aria-labelledby="customers" data-stories>
     <PixelEdges left="cluster" right="tall" />
     <div class="container-xl">
@@ -204,7 +194,6 @@ const {
                                     )}
                                 </figcaption>
                             </figure>
-                            {/* The story's photo; black while it has none yet. */}
                             {(story.photo || placeholder) && (
                                 <div class="photo" aria-hidden="true">
                                     {story.photo && (
@@ -223,8 +212,6 @@ const {
                 }
             </div>
 
-            {/* The closing row, as See the platform and the whitepaper. */}
-            {/* The reach in one line, with the way to every story. */}
             {
                 foot && (
                     <div class="foot">
@@ -244,9 +231,6 @@ const {
 </section>
 
 <script>
-    // One story at a time: the tabs take turns while the block is in view,
-    // the open tab's top edge filling as its time goes; a click picks one
-    // and stops the turns.
     const TURN_MS = 6000
 
     function wireStories() {
@@ -295,7 +279,6 @@ const {
                 }),
             )
 
-            // The turns run only while the block is in view.
             new IntersectionObserver(
                 ([entry]) => {
                     inView = entry.isIntersecting
@@ -320,13 +303,9 @@ const {
         background: var(--ks-background-body);
     }
 
-    // No hairline grid on the background here, to break the page's rhythm:
-    // the tabs and the story sit as one lavender piece, split by the grid's
-    // grey rules, on the same insets as the other blocks.
     .grid {
         --gap: 1px;
         --inset: clamp(1.5rem, 4vw, 3.5rem);
-        // The lavender of our quotes.
         --surface: #f0f0fd;
         --glyph: #4f6df7;
 
@@ -337,8 +316,6 @@ const {
 
         position: relative;
         background: var(--ks-background-body);
-        // Rails on both sides, on the other blocks' lines, so they run on
-        // unbroken from Replace down to Three ways.
         border-left: var(--gap) solid var(--ks-border-primary);
         border-right: var(--gap) solid var(--ks-border-primary);
 
@@ -346,8 +323,6 @@ const {
             border-inline: 0;
         }
 
-        // The rules show through the gaps; above the tabs and under the
-        // story, a rule across the page, as between the other blocks' rows.
         > .tabs {
             position: relative;
             border-block: var(--gap) solid var(--ks-border-primary);
@@ -379,13 +354,11 @@ const {
         }
     }
 
-    // The title in two tones, the lead as its grey second line.
     .head {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 2rem;
-        // Inside the rails, in line with the story's words.
         padding: 8.5rem var(--inset) 4rem;
 
         @include media-breakpoint-down(md) {
@@ -415,9 +388,7 @@ const {
         align-items: baseline;
         justify-content: space-between;
         gap: 1rem 2rem;
-        // More room under the line, before Three ways.
-        padding: clamp(2rem, 3vw, 2.75rem) var(--inset)
-            clamp(4.5rem, 8vw, 7rem);
+        padding: clamp(2rem, 3vw, 2.75rem) var(--inset) clamp(4.5rem, 8vw, 7rem);
         font-size: 1.0625rem;
 
         p {
@@ -452,8 +423,6 @@ const {
         }
     }
 
-    // The logo tabs: four cells between the rules; the open one is grey,
-    // its top edge filling while the stories take turns.
     .tabs {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -470,7 +439,6 @@ const {
         place-items: center;
         height: 6rem;
         border: 0;
-        // Every tab in the quotes' lavender, as the story under them.
         background: var(--surface);
         color: var(--ks-content-tertiary);
         cursor: pointer;
@@ -483,8 +451,6 @@ const {
             color: var(--ks-content-primary);
         }
 
-        // The open one: its logo in full, its top edge drawn, on a deeper
-        // lavender, so the story being read is plain to see.
         &.active {
             background: color-mix(in srgb, var(--glyph) 8%, var(--surface));
             color: var(--ks-content-primary);
@@ -534,8 +500,6 @@ const {
         }
     }
 
-    // One story at a time: its figure on the left, its words on the right
-    // on the lavender of our quotes.
     .panels {
         display: grid;
     }
@@ -545,7 +509,6 @@ const {
         display: grid;
         grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
         min-height: 32rem;
-        // One lavender card: the story's words and its photo, set in it.
         background: var(--surface);
         opacity: 0;
         visibility: hidden;
@@ -563,7 +526,6 @@ const {
             grid-template-columns: minmax(0, 1fr);
         }
 
-        // Without its photo on a phone, as tall as its words.
         @include media-breakpoint-down(md) {
             min-height: 0;
         }
@@ -574,8 +536,6 @@ const {
         }
     }
 
-    // The story on the quotes' lavender: the industry and the figure at the
-    // top, the quote at the foot.
     .story {
         display: flex;
         flex-direction: column;
@@ -637,15 +597,12 @@ const {
         }
     }
 
-    // The customer story's photo, upright, filling its column to the rules.
-    // Black while a story has none yet.
     .photo {
         position: relative;
         min-height: 20rem;
         background: #0d0d10;
         overflow: hidden;
 
-        // On a phone the words carry the story alone.
         @include media-breakpoint-down(md) {
             display: none;
         }
@@ -659,7 +616,6 @@ const {
         }
     }
 
-    // A quiet link that reads with the quote.
     .read {
         display: inline-flex;
         align-items: center;

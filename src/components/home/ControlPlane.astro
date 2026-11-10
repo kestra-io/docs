@@ -8,12 +8,10 @@ import ControlPlaneTopology, {
 interface Domain {
     id: string
     label: string
-    /** Vertical's color, from the color code started in Stacked.astro. */
     tint: string
     title: string
     description: string
     solutionHref?: string
-    /** An executed topology drawn after the 2.0 node design. */
     topology: TopologyProps
 }
 
@@ -127,7 +125,6 @@ const DOMAINS: Domain[] = [
                     plugin: "scripts.shell.Commands",
                     fallback: "mdi:console",
                     runner: "process",
-                    // Artifacts come from task runners, as in the product.
                     artifacts: 1,
                     x: 310,
                     y: 0,
@@ -302,15 +299,8 @@ const DOMAINS: Domain[] = [
 ]
 ---
 
-{
-    /* On the hairline grid of the About us Backers block, lined up with the
-    hero frame: a centred head, then the four use cases as tabs above one
-    tinted panel, where the open one's copy sits beside its product screen. */
-}
 <section class="control-plane" aria-labelledby="control-plane" data-domains>
-    {/* A few About us pixels at the edges, where the hero hands over. */}
     <PixelEdges left="cluster" right="wide" />
-    {/* container-xl, like the hero frame, so the rails sit on its edges. */}
     <div class="container-xl">
         <div class="grid">
             <header class="head">
@@ -352,13 +342,10 @@ const DOMAINS: Domain[] = [
                                 data-domain-visual={domain.id}
                                 style={`--tint: ${domain.tint}; --pixels: url("${pixelCluster}")`}
                             >
-                                {/* A small About us pixel cluster, in the vertical's color. */}
                                 <span class="pixels" aria-hidden="true" />
                                 <div class="panel-copy">
                                     <h3>{domain.title}</h3>
                                     <p>{domain.description}</p>
-                                    {/* The vertical's solution page, or its
-                                    blueprints when it has none yet. */}
                                     <a
                                         href={
                                             domain.solutionHref ?? "/blueprints"
@@ -380,10 +367,6 @@ const DOMAINS: Domain[] = [
                     }
                 </div>
             </div>
-            {
-                /* The start of the bridge to the AI block below: a node on the
-            panel's foot, and a dashed line down to the seam. */
-            }
             <span class="bridge" aria-hidden="true">
                 <span class="node"></span>
                 <span class="run"></span>
@@ -393,8 +376,6 @@ const DOMAINS: Domain[] = [
 </section>
 
 <script>
-    // One use case open at a time: its tab lights up and its panel, copy
-    // and screen together, fades in.
     function wireDomains() {
         for (const root of document.querySelectorAll<HTMLElement>(
             "[data-domains]",
@@ -418,9 +399,6 @@ const DOMAINS: Domain[] = [
                 )
             }
 
-            // Until the visitor picks one, the use cases take turns: the
-            // open tab's line fills as its run goes, and once the run is
-            // done the next one opens.
             let auto = !matchMedia("(prefers-reduced-motion: reduce)").matches
             if (auto) tabs[0].style.setProperty("--progress", "0")
             const shownIndex = (event: Event) =>
@@ -486,13 +464,8 @@ const DOMAINS: Domain[] = [
         --blue: #3b5bdb;
 
         position: relative;
-        // Above the AI block, so the bridge's run can cross into it.
         z-index: 1;
-        // Switching domains must not make the browser re-anchor the scroll.
         overflow-anchor: none;
-        // The AI block's blue, so the two read as one: a soft light from
-        // the top left, and a stronger one low on the right that carries
-        // on into the AI block below. No rule between them.
         background:
             radial-gradient(
                 60% 70% at 0% 0%,
@@ -510,18 +483,12 @@ const DOMAINS: Domain[] = [
             background: var(--ks-background-body);
             border-bottom: 1px solid var(--ks-border-primary);
 
-            // Without the rails the closing row reads as a second rule just
-            // under the panel's: only the bridge crosses it there.
             @include media-breakpoint-down(xl) {
                 border-bottom: 0;
             }
         }
     }
 
-    // Hairline grid: rails on both sides of the content, and full-width rules
-    // between rows, like the About us Backers block. The rails sit on the
-    // hero frame's edges and the inset matches its padding, so the copy lines
-    // up with the hero's.
     .grid {
         --rule: 1px solid var(--ks-border-primary);
         --inset: clamp(1.5rem, 4vw, 3.5rem);
@@ -530,17 +497,12 @@ const DOMAINS: Domain[] = [
         border-left: var(--rule);
         border-right: var(--rule);
 
-        // Below a wide screen the rails would sit a few pixels in from the
-        // screen's edge: the rules alone carry the grid there.
         @include media-breakpoint-down(xl) {
             border-inline: 0;
         }
 
-        // An empty closing row between the rails, so the panel does not run
-        // straight into the dark section below.
         padding-bottom: clamp(2.5rem, 4vw, 3.5rem);
 
-        // The bridge's upper half, through that closing row.
         > .bridge {
             position: absolute;
             bottom: 0;
@@ -549,8 +511,6 @@ const DOMAINS: Domain[] = [
             height: clamp(2.5rem, 4vw, 3.5rem);
             pointer-events: none;
 
-            // The dashed line, drawn downwards when the AI block plays its
-            // arrival (see arriveAi there).
             &::before {
                 content: "";
                 position: absolute;
@@ -585,8 +545,6 @@ const DOMAINS: Domain[] = [
                     transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
 
-            // A run from the node, all the way down to the AI block's
-            // statement: across this half and the AI block's.
             .run {
                 position: absolute;
                 z-index: 1;
@@ -600,7 +558,6 @@ const DOMAINS: Domain[] = [
                 animation: bridge-run 2.8s ease-in infinite;
             }
 
-            // Until the arrival: no line, no node, no run.
             &:global(.armed) {
                 &::before {
                     transform: scaleY(0);
@@ -651,9 +608,7 @@ const DOMAINS: Domain[] = [
         }
     }
 
-    // Compact head: the title on the left, Melissa's line on the right.
     .head {
-        // The title on one line, the copy under it, both centred.
         display: grid;
         justify-items: center;
         row-gap: 1.25rem;
@@ -668,7 +623,6 @@ const DOMAINS: Domain[] = [
             padding-block: 4.5rem 3rem;
         }
 
-        // Large, as the head of the AI block it hands over to.
         h2 {
             margin: 0;
             font-size: clamp(2.5rem, 5.5vw, 4.5rem);
@@ -677,12 +631,10 @@ const DOMAINS: Domain[] = [
             line-height: 1.05;
             color: var(--ks-content-primary);
             text-wrap: balance;
-            // Two balanced lines.
             max-width: 10.5em;
         }
 
         p {
-            // One line where there is room.
             max-width: calc(40rem + 2 * var(--inset));
             margin: 0;
             font-size: 1.125rem;
@@ -692,12 +644,10 @@ const DOMAINS: Domain[] = [
         }
     }
 
-    // The tabs on the block's blue; the panel brings its own tint.
     .body {
         background: none;
     }
 
-    // The four use cases, side by side between rules, above the panel.
     .tabs {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -716,14 +666,10 @@ const DOMAINS: Domain[] = [
         gap: 0.625rem;
         padding: 1.375rem 1rem;
         border: 0;
-        // On the page's own background, as the panel under them: white in
-        // the light theme, over the block's tint.
         background: var(--ks-background-body);
         font-size: 1.0625rem;
         font-weight: 500;
         text-align: center;
-        // The same text, open or not: only the square and the line under
-        // it take the vertical's colour.
         color: var(--ks-content-primary);
         cursor: pointer;
         transition: background-color 0.3s ease;
@@ -759,8 +705,6 @@ const DOMAINS: Domain[] = [
             cursor: default;
         }
 
-        // The tab's line, on the rule under it, in the vertical's color;
-        // it fills with the run while the use cases take turns.
         &::after {
             content: "";
             position: absolute;
@@ -798,15 +742,12 @@ const DOMAINS: Domain[] = [
         }
     }
 
-    // The panels are stacked and cross-fade, each tinted in its vertical's
-    // color, its copy on the left and its product screen on the right.
     .visuals {
         position: relative;
         display: grid;
         overflow: hidden;
     }
 
-    // The open panel lights up as the bridge to the AI block leaves it.
     .visual {
         :global(.lit) > &.active {
             box-shadow:
@@ -823,11 +764,7 @@ const DOMAINS: Domain[] = [
         align-items: center;
         gap: 2rem;
         min-height: max(28rem, min(32rem, calc(100vh - 14rem)));
-        // Even margins all round, so the topology sits centred between
-        // the copy and the panel's right edge.
         padding: var(--inset);
-        // A white panel on the block's blue, as the AI block's nodes: the
-        // vertical's colour stays in its tab and its pixels.
         background: var(--ks-background-body);
         opacity: 0;
         visibility: hidden;
@@ -893,13 +830,10 @@ const DOMAINS: Domain[] = [
         }
     }
 
-    // The way on, as a secondary button: the vertical's solution page, or
-    // its blueprints.
     .solution {
         margin-top: 1.75rem;
     }
 
-    // The topology fills the rest of the panel, edge to edge on the right.
     .panel-topology {
         position: relative;
         display: flex;
@@ -933,9 +867,6 @@ const DOMAINS: Domain[] = [
             animation: none;
         }
     }
-    // On a tablet or a phone, no tabs: each use case reads in turn, its
-    // title in its colour, its copy and its way on, then its run under it,
-    // all four one after the other between rules.
     @include media-breakpoint-down(lg) {
         .tabs {
             display: none;
@@ -949,10 +880,8 @@ const DOMAINS: Domain[] = [
         .visual {
             min-height: 0;
             gap: 1.5rem;
-            // Room between one use case and the next.
             padding-block: 3rem;
 
-            // No lit edge on the open one: they all show alike here.
             :global(.lit) > &.active {
                 box-shadow: none;
             }
@@ -973,7 +902,6 @@ const DOMAINS: Domain[] = [
             }
         }
 
-        // The use case's colour, as on its tab, before its title.
         .panel-copy h3::before {
             content: "";
             display: inline-block;
@@ -989,12 +917,10 @@ const DOMAINS: Domain[] = [
             margin-top: 1.25rem;
         }
 
-        // As tall as its scaled graph (see the topology's fit).
         .panel-topology {
             min-height: 0;
         }
 
-        // In this order: the title, the run, the copy, the way on.
         .panel-copy {
             display: contents;
 

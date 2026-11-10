@@ -1,11 +1,8 @@
 ---
+
 ---
 
 <section class="run-kestra" aria-labelledby="run-kestra">
-    {/* A rocket in ASCII pixel art, flat out toward the top right, its
-    trail streaming back behind the title and the editions. Without
-    JavaScript the section keeps its night; with reduced motion the rocket
-    stands still. */}
     <canvas class="sky" aria-hidden="true" data-rocket></canvas>
     <div class="container-xl">
         <div class="stage">
@@ -20,7 +17,8 @@
             <div class="side">
                 <div class="editions surface-dark">
                     <article class="edition">
-                        <h3>Open Source</h3>
+                        <h3>Kestra Core</h3>
+                        <p class="badge">Open Source</p>
                         <p>
                             Where most teams start, and where many experiment
                             with a first production. Self-hosted and free, with
@@ -32,13 +30,11 @@
                     </article>
 
                     <article class="edition">
-                        <h3>Scale with Kestra Cloud</h3>
+                        <h3>Kestra Cloud</h3>
                         <p class="badge">Early Access</p>
                         <p>
                             Managed by the people who build Kestra. No platform
-                            to run, pay for what you use. Join the early adopter
-                            program: onboarding with the Cloud team and a say in
-                            what we build next.
+                            to run, pay for what you use.
                         </p>
                         <a href="/cloud" class="btn-ghost compact">
                             Try Kestra Cloud
@@ -46,15 +42,11 @@
                     </article>
 
                     <article class="edition featured">
-                        <h3>Enterprise</h3>
+                        <h3>Kestra Enterprise</h3>
                         <p>
                             The Kestra experience scaled for the enterprise:
                             multi-team organization, security and governance,
                             support with SLAs. Self-hosted, cloud or air-gapped.
-                        </p>
-                        <p>
-                            Book a demo with an engineer who has replaced vRA,
-                            Airflow, or Control-M before, on your use case.
                         </p>
                         <a href="/demo" class="btn-solid compact">
                             Book a demo
@@ -71,12 +63,6 @@
 </section>
 
 <script>
-    // The rocket, in very fine pixels on a grid turned to its heading: a
-    // spine at the back, five prongs forward tipped in magenta, the middle
-    // one longest with a checkered window. It holds still in the sky, but
-    // everything round it says flat out: the plume streams back, fine
-    // dust rushes through it, speed lines and pink sparks fly past, and
-    // the craft shivers.
     function flyRocket() {
         const canvas =
             document.querySelector<HTMLCanvasElement>("[data-rocket]")
@@ -86,14 +72,9 @@
         if (!ctx) return
         const still = matchMedia("(prefers-reduced-motion: reduce)").matches
 
-        // Heading: up and to the right.
         const HEADING = (-29 * Math.PI) / 180
         const FWD = { x: Math.cos(HEADING), y: Math.sin(HEADING) }
 
-        // The craft in fine pixels, nose to the right, as it is drawn on
-        // its own turned grid: a spine at the back, five prongs forward
-        // tipped in magenta, the middle one longest, a window of light
-        // squares, deep blue plates on its flanks.
         const SPRITE = [
             "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
             "..BBBBBBBBBBBBBBBBBBBBBPPPPPP",
@@ -148,7 +129,6 @@
             "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
             "...BBBBBBBBBBBBBBBBBBBBBPPPPPP",
         ]
-        // Where the plume starts: the heart of the spine.
         const HEART = { x: 14, y: 25.5 }
         const INK: Record<string, string> = {
             B: "rgb(92, 84, 255)",
@@ -156,7 +136,6 @@
             L: "rgb(184, 176, 255)",
             P: "rgb(255, 4, 254)",
         }
-        // Three fine pixels to a unit of the craft.
         const STEPS = 3
 
         let width = 0
@@ -177,9 +156,6 @@
             length: 0.6 + rand(i, 3) * 0.8,
             offset: rand(i, 4),
         }))
-        // The sky behind: fine pixel stars on three depths, drifting back
-        // as the craft flies, the far ones slow and dim, the near ones
-        // quicker and brighter; a few of the near ones are small crosses.
         const STARS = Array.from({ length: 140 }, (_, i) => {
             const depth = rand(i, 11) < 0.55 ? 0 : rand(i, 12) < 0.7 ? 1 : 2
             const tone = rand(i, 13)
@@ -223,7 +199,6 @@
                 : { x: width * 0.55, y: unit * 13 }
             reach = wide ? Math.min(width * 0.45, 820) : width * 0.8
 
-            // The craft's fine pixels, read once from the sprite.
             cells = []
             SPRITE.forEach((line, row) => {
                 ;[...line].forEach((key, col) => {
@@ -236,8 +211,6 @@
                 })
             })
 
-            // The plume, drawn once: a long soft glow, hot right behind
-            // the craft, then pink, violet, and blue far behind.
             const w = unit * 20
             const pad = unit * 6
             plume = document.createElement("canvas")
@@ -245,9 +218,6 @@
             plume.height = Math.round(reach + pad * 2)
             const pctx = plume.getContext("2d")
             if (!pctx) return
-            // Soft by gradients alone, with no canvas blur, which some
-            // browsers (Safari) ignore: the colours along the way back,
-            // then faded out toward both sides and in at the head.
             const W = plume.width
             const H = plume.height
             const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
@@ -279,7 +249,6 @@
             const t = time / 1000
             ctx.clearRect(0, 0, width, height)
 
-            // The stars, drifting back, twinkling.
             const dot = Math.max(2, Math.round(unit / STEPS))
             for (const star of STARS) {
                 const speed = [5, 14, 34][star.depth] * star.pace
@@ -307,7 +276,6 @@
                 }
             }
 
-            // The plume, breathing, laid along the way back.
             if (plume) {
                 ctx.save()
                 ctx.translate(at.x, at.y)
@@ -317,12 +285,10 @@
                 ctx.restore()
             }
 
-            // Everything streaming back is laid on the craft's own grid.
             ctx.save()
             ctx.translate(at.x, at.y)
             ctx.rotate(HEADING)
 
-            // Fine dust rushing back through the plume.
             const fine = unit / STEPS
             const flow = t * unit * 30
             for (let row = 4; row * fine < reach * 0.8; row += 1) {
@@ -342,7 +308,6 @@
                 }
             }
 
-            // Speed lines, white, rushing back past the craft.
             ctx.lineCap = "round"
             for (const line of LINES) {
                 const k = (line.offset + t * line.pace * 1.4) % 1
@@ -361,8 +326,6 @@
                 ctx.stroke()
             }
 
-            // Pink sparks shed by the prongs: three in a line, growing as
-            // they near the craft.
             for (const spark of SPARKS) {
                 const k = (spark.offset + t * spark.pace) % 1
                 const fade = Math.sin(k * Math.PI)
@@ -378,7 +341,6 @@
                 }
             }
 
-            // The craft, in fine pixels, shivering a little.
             const shake = still ? 0 : 0.9
             ctx.translate(
                 (rand(t * 60, 1) - 0.5) * shake * 2,
@@ -430,8 +392,6 @@
 </script>
 
 <style lang="scss">
-    // The night, as in the hero, with a faint violet where the rocket
-    // flies. It stays dark in both themes.
     .run-kestra {
         position: relative;
         overflow: hidden;
@@ -448,7 +408,6 @@
         --inset: clamp(1.5rem, 3vw, 2.75rem);
     }
 
-    // The sky the rocket is drawn in, across the whole section.
     .sky {
         position: absolute;
         inset: 0;
@@ -457,8 +416,6 @@
         pointer-events: none;
     }
 
-    // The title, then the editions under it, set to the left; the rocket
-    // takes the right.
     .stage {
         position: relative;
         z-index: 1;
@@ -469,7 +426,6 @@
         margin-inline: auto;
         padding: clamp(5rem, 9vw, 8rem) clamp(1rem, 5vw, 4rem);
 
-        // On narrow screens the rocket flies above the title.
         @include media-breakpoint-down(lg) {
             padding-top: 15rem;
         }
@@ -502,7 +458,6 @@
         width: min(61rem, 100%);
     }
 
-    // The editions' frame: night glass, the plume glowing through it.
     .editions {
         border: var(--rule);
         border-radius: 10px;
@@ -511,7 +466,6 @@
         -webkit-backdrop-filter: blur(16px);
     }
 
-    // The three editions side by side in one frame, between rules.
     .editions {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -540,7 +494,6 @@
             }
         }
 
-        // The way in, as wide as its edition.
         > a {
             display: flex;
             justify-content: center;
@@ -549,7 +502,6 @@
         }
     }
 
-    // Under the three, the way to compare them: a quiet link.
     .compare {
         position: relative;
         display: flex;

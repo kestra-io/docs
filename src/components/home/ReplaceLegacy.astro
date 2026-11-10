@@ -55,11 +55,6 @@ const {
 } = Astro.props
 ---
 
-{
-    /* On the hairline grid of the blocks above: the head in one column
-    (title, copy, whitepaper), then the three problems in cells between
-    rules. */
-}
 <section class:list={["replace", tone]} aria-labelledby={id}>
     <PixelEdges left="tall" right="wide" />
     <div class="container-xl">
@@ -134,8 +129,6 @@ const {
         }
     }
 
-    // The control plane block's hairline grid: rails on both sides, and
-    // full-width rules around the problems' row.
     .grid {
         --rule: 1px solid var(--ks-border-primary);
         --inset: clamp(1.5rem, 4vw, 3.5rem);
@@ -144,13 +137,9 @@ const {
         border-left: var(--rule);
         border-right: var(--rule);
 
-        // Below a wide screen the rails would sit a few pixels in from the
-        // screen's edge: the rules alone carry the grid there.
         @include media-breakpoint-down(xl) {
             border-inline: 0;
         }
-        // White between the rails, so the edge pixels never show through the
-        // cells on narrower screens.
         background: var(--ks-background-body);
 
         > .problems {
@@ -176,8 +165,6 @@ const {
                 bottom: -1px;
             }
 
-            // Last in the block: the section's own rule closes it, so it
-            // draws none of its own, or the two would read as one thick line.
             &:last-child {
                 border-bottom: 0;
 
@@ -188,7 +175,6 @@ const {
         }
     }
 
-    // The head reads top to bottom: the title, its copy, the whitepaper.
     .head {
         display: grid;
         justify-items: start;
@@ -223,8 +209,6 @@ const {
             text-wrap: pretty;
         }
 
-        // A button keeps its own width, so its inset goes on a margin, and
-        // its padding stays the button's own.
         .ctas {
             display: flex;
             flex-wrap: wrap;
@@ -235,7 +219,6 @@ const {
         }
     }
 
-    // Three cells between the rules: an icon, the problem, its copy.
     .problems {
         display: grid;
         grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
@@ -249,18 +232,14 @@ const {
 
         > li {
             position: relative;
-            // Room around each problem, more below than above.
             padding: clamp(4rem, 6vw, 5.5rem) var(--inset)
                 clamp(5rem, 8.5vw, 7.5rem);
             transition: background-color 0.3s ease;
 
-            // Stacked, each problem is a compact row of the list.
             @include media-breakpoint-down(lg) {
                 padding-block: 2.25rem 2.5rem;
             }
 
-            // On hover the cell draws its top edge, like the How it works
-            // steps, and its icon acts the problem out.
             &::before {
                 content: "";
                 position: absolute;
@@ -303,8 +282,6 @@ const {
             }
         }
 
-        // The broken link jolts apart, the lock rattles, the shield sounds
-        // the alarm.
         .problem-0:hover > :global(svg) {
             animation: jolt 0.5s ease;
         }
