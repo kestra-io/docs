@@ -113,6 +113,9 @@
     },
     "astro-expressive-code": {
       "astro": "$astro"
+    },
+    "monaco-editor": {
+      "dompurify": "^3.4.17"
     }
   },
   "optionalDependencies": {
