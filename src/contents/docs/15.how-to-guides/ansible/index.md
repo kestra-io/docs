@@ -486,6 +486,8 @@ Ansible extra variables take precedence over the `vars` block in the playbook, s
 
 By default, the task fails when the run status is not `successful`. Set `failOnErrors: false` to let downstream tasks inspect `failedHosts` instead.
 
+As with the Ansible CLI task, each playbook task appears as its own task run in the execution's **Gantt** and **Logs** tabs, with its duration, its status, and the results of each host.
+
 ### Upload the report to S3
 
 Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.upload) and store credentials in [secrets](../../06.concepts/04.secret/index.md):
