@@ -211,10 +211,6 @@ Capacity reservations are live-configurable: updating a subscription's reserved 
 
 ## Worker authentication
 
-:::alert{type="info"}
-Worker authentication must be enabled server-side before registration tokens have any effect. A worker configured with a token but connecting to an instance where auth is disabled will join the default group instead.
-:::
-
 Workers join a group by presenting a registration token generated for that group. The token is stored as a hash and shown only once at creation — copy it immediately.
 
 On first connect, the worker exchanges the registration token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically before it expires. Revoking or deleting a token, or deleting its Worker Group, disconnects the workers that registered with it immediately. They cannot reconnect until they register with a new token.
@@ -229,9 +225,32 @@ In the Worker Groups UI, select a group and generate a token from the **Tokens**
 | Revoke token | `POST /api/v1/instance/worker-groups/{id}/tokens/{tokenId}/revoke` |
 | Delete token | `DELETE /api/v1/instance/worker-groups/{id}/tokens/{tokenId}` |
 
+### Where each setting goes
+
+Worker authentication is off by default. The settings use two prefixes that are easy to confuse:
+
+- `kestra.ee.worker.auth` turns authentication on and controls how Kestra signs worker tokens.
+- `kestra.worker.auth` holds the credentials of one worker.
+
+In a distributed deployment, each server role needs a different subset:
+
+| Setting | Webserver, executor, scheduler, Worker Controller | Worker |
+|---|---|---|
+| `kestra.ee.worker.auth.enabled: true` | Required | Required |
+| `kestra.ee.worker.auth.jwt-signing-key` | Optional. Same value on every server | Not used |
+| `kestra.ee.worker.auth.access-token-lifetime`, `refresh-token-lifetime` | Optional | Not used |
+| `kestra.worker.auth.registration-token` | Not used | Required |
+| `kestra.worker.controllers` | Not used | Required. The Helm chart preconfigures it |
+
+A standalone server runs every role in one process, so it needs only `kestra.ee.worker.auth.enabled: true`.
+
+:::alert{type="warning"}
+Set `kestra.ee.worker.auth.enabled: true` on the workers too. Without it, the worker ignores its registration token, and a controller with authentication enabled rejects the connection with `UNAUTHENTICATED: Missing or invalid authorization header`.
+:::
+
 ### Server-side configuration
 
-Enable worker authentication on every Kestra server except workers, including any dedicated Worker Controller:
+Add this block to the configuration of every server except workers, including any dedicated Worker Controller:
 
 ```yaml
 kestra:
@@ -244,12 +263,24 @@ kestra:
         refresh-token-lifetime: P7D    # optional, default P7D
 ```
 
+If you set `jwt-signing-key`, use the same value on every server. If you leave it out, every server must share the same `kestra.encryption.secret-key`.
+
 ### Worker-side configuration
 
-Each worker needs two things to join a group: a registration token that identifies the group, and a controller endpoint that tells the worker where to connect. Both are required — a worker started with only the token will try `localhost` and fail.
+Each worker needs three things to join a group:
+
+- `kestra.ee.worker.auth.enabled: true`, the same switch as on the other servers
+- a registration token that identifies the group
+- a controller endpoint that tells the worker where to connect
+
+A worker started without a controller endpoint tries `localhost` and fails. Workers do not sign tokens, so they need no `jwt-signing-key`.
 
 ```yaml
 kestra:
+  ee:
+    worker:
+      auth:
+        enabled: true                      # required on workers too
   worker:
     name: gpu-pool-1                       # optional display name
     auth:
@@ -345,7 +376,57 @@ Registration tokens must not appear as plaintext in a committed configuration fi
 - **`token-file`** — path to a file containing the pre-generated token. Preferred in Kubernetes environments where Secrets mount as files. The file must exist and be non-empty at startup.
 - **`token: "${ENV_VAR}"`** — environment variable placeholder resolved at startup. Simpler outside Kubernetes, but environment variables are readable from `/proc/<pid>/environ` and may appear in crash dumps.
 
-Exactly one of the two is required. Use `kestra workers registration-tokens generate` to mint a token offline before deployment.
+Exactly one of the two is required. Use [`kestractl workers registration-tokens generate`](../../../kestra-cli/kestractl/index.md#kestractl-workers-registration-tokens-generate) to mint a token offline before deployment.
+
+### Example: control plane and worker configuration
+
+A distributed deployment needs two configuration files: one shared by every non-worker server, and one per Worker Group. The token is the same value in both places. The control plane registers it on the group, and the worker presents it to join that group.
+
+The control plane file enables worker authentication and declares the topology. Use it for the webserver, executor, scheduler, and Worker Controller:
+
+```yaml
+# control-plane.yml
+kestra:
+  ee:
+    worker:
+      auth:
+        enabled: true
+    setup:
+      enabled: true
+      worker-queues:
+        - id: gpu
+          tags: [gpu]
+      worker-groups:
+        - id: gpu-workers
+          name: GPU workers
+          registration-tokens:
+            - name: bootstrap
+              token-file: /var/run/secrets/kestra/gpu-workers-token
+          subscriptions:
+            - worker-queue-id: gpu
+```
+
+The worker file enables worker authentication, presents the token, and points to the controller. It contains no `kestra.ee.setup` block and no signing key:
+
+```yaml
+# gpu-worker.yml
+kestra:
+  ee:
+    worker:
+      auth:
+        enabled: true
+  worker:
+    auth:
+      registration-token: "${GPU_WORKERS_TOKEN}"   # same token as in gpu-workers-token
+    controllers:
+      type: STATIC
+      static:
+        endpoints:
+          - host: kestra-controller.internal
+            port: 50051
+```
+
+When the worker connects, the controller logs `Worker [...] connected, workerGroup='gpu-workers'`. If the worker logs `The token is ignored and this worker joins the default worker group`, the worker is missing `kestra.ee.worker.auth.enabled: true`.
 
 ### The default group
 

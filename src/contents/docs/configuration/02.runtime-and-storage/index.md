@@ -254,6 +254,10 @@ Common options include:
 
 The default local storage is fine for local testing but not for every production topology. The important distinction is whether every Kestra component can see the same files.
 
+:::alert{type="info"}
+The examples on this page use the kebab-case keys of `application.yml`. To configure [dedicated storage for a tenant](../../07.enterprise/02.governance/tenants/index.md#dedicated-storage-and-secrets-backend-per-tenant) or a namespace in the UI, rename the keys to camelCase, for example `accessKey` instead of `access-key`. See [Use camelCase keys](../../07.enterprise/02.governance/tenants/index.md#use-camelcase-keys).
+:::
+
 ### Local storage deployment guidance
 
 Local storage works well for standalone deployments with a persistent volume. In distributed deployments, it only works safely when all components share the same filesystem through a `ReadWriteMany` volume or an equivalent shared storage layer.

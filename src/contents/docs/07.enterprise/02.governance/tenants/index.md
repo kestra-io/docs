@@ -141,13 +141,91 @@ Note that there is an exception to this rule if a tenant is created by an Instan
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-A dedicated storage and secrets backend is configured from the tenant's **Settings** page, under **Dedicated internal storage** and **Dedicated secrets manager**. Each section provides a storage type selector and a YAML configuration editor.
+Configure a dedicated backend from the tenant's **Settings** page, under **Dedicated internal storage** and **Dedicated secrets manager**. Each section has a type selector and a YAML configuration editor. The API (`storageType`, `storageConfiguration`, `secretType`, and `secretConfiguration` on the tenant) and the [Terraform `kestra_tenant` resource](../../../13.terraform/resources/tenant/index.md) accept the same fields.
 
-For storage configuration examples, refer to [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md). For secrets backend options, refer to the [Secret Managers documentation](../secrets-manager/index.md).
+#### Use camelCase keys
 
-:::alert{type="warning"}
-Make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.
-:::
+Write the configuration in camelCase, for example `accessKey` and `projectId`. In `application.yml` and Helm values, Kestra converts kebab-case keys such as `access-key` for you. Tenant settings pass your keys straight to the backend plugin with no conversion, so a kebab-case key fails when you save:
+
+```
+Failed to create storage 's3'. Error: Unrecognized field "access-key"
+```
+
+To reuse an existing instance configuration:
+
+1. Copy the properties nested under `kestra.storage.<type>` or `kestra.secret.<type>`.
+2. Remove that prefix and the `type` key. The type selector sets the backend type.
+3. Rename every kebab-case key to camelCase.
+
+Common keys:
+
+| `application.yml` or Helm key | Tenant settings key | Backend |
+|---|---|---|
+| `access-key`, `secret-key` | `accessKey`, `secretKey` | S3 storage |
+| `force-path-style` | `forcePathStyle` | S3 storage |
+| `project-id`, `service-account` | `projectId`, `serviceAccount` | GCS storage |
+| `connection-string` | `connectionString` | Azure Blob storage |
+| `shared-key-account-name`, `shared-key-account-access-key` | `sharedKeyAccountName`, `sharedKeyAccountAccessKey` | Azure Blob storage |
+| `access-key-id`, `secret-key-id` | `accessKeyId`, `secretKeyId` | AWS Secrets Manager |
+| `app-role.role-id`, `app-role.secret-id` | `appRole.roleId`, `appRole.secretId` | HashiCorp Vault |
+| `filter-on-tags`, `filter-on-prefix` | `filterOnTags`, `filterOnPrefix` | AWS, Azure, and Google secrets managers |
+
+Single-word keys such as `bucket`, `region`, `endpoint`, and `address` stay the same.
+
+#### Dedicated storage example
+
+An S3 bucket as the tenant's internal storage, entered in **Dedicated internal storage** with the type set to `s3`:
+
+```yaml
+bucket: tenant-a-kestra-storage
+region: eu-west-1
+accessKey: YOUR_ACCESS_KEY
+secretKey: YOUR_SECRET_KEY
+```
+
+The same bucket in `application.yml` uses kebab-case keys under `kestra.storage.s3`:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      bucket: tenant-a-kestra-storage
+      region: eu-west-1
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
+```
+
+For a GCS bucket, set the type to `gcs`:
+
+```yaml
+bucket: tenant-a-kestra-storage
+projectId: my-gcp-project
+serviceAccount: |
+  { "type": "service_account", ... }
+```
+
+#### Dedicated secrets manager example
+
+AWS Secrets Manager, entered in **Dedicated secrets manager** with the type set to `aws-secret-manager`:
+
+```yaml
+region: eu-west-1
+accessKeyId: YOUR_ACCESS_KEY_ID
+secretKeyId: YOUR_SECRET_ACCESS_KEY
+```
+
+HashiCorp Vault with AppRole authentication, with the type set to `vault`:
+
+```yaml
+address: https://vault.example.com:8200
+appRole:
+  path: approle
+  roleId: YOUR_ROLE_ID
+  secretId: YOUR_SECRET_ID
+```
+
+For every property of each backend, see [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md) and the [Secrets Manager documentation](../secrets-manager/index.md). Those pages show `application.yml` keys, so rename them to camelCase before you paste them here.
 
 ### Isolate Kestra services
 

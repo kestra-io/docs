@@ -45,10 +45,13 @@ For each group you previously defined in `workerGroups`, the manual path is:
 1. Start Kestra 2.0.0 and open the Instance Owner console. Navigate to **Infrastructure → Worker Groups**.
 2. Create a Worker Group with the same id you used in the old `workerGroups` key (e.g. `wg-1`).
 3. Generate a registration token for that group. Copy it immediately — it is shown only once.
-4. Enable worker authentication server-side and configure the worker deployment with the registration token:
+4. Store the token in a Kubernetes Secret, for example `kestra-wg-1-token` with the key `token`.
+5. Enable worker authentication for the release and give the worker deployment its token, as shown below.
+
+`configurations.application` is mounted on every pod in the release, workers included. Put the settings every pod shares there, and put each worker's registration token in that worker deployment's `extraEnv`:
 
 ```yaml
-# On the webserver or standalone pod — enables token auth
+# Shared by every pod: webserver, executor, scheduler, controller, and workers
 configurations:
   application:
     kestra:
@@ -56,26 +59,37 @@ configurations:
         worker:
           auth:
             enabled: true
-            jwt-signing-key: "{{ a strong shared secret, >= 32 bytes }}"
-```
-
-```yaml
-# On the worker deployment — presents the token to join wg-1
-configurations:
-  application:
-    kestra:
-      worker:
-        auth:
-          registration-token: "{{ token for wg-1 }}"
+            jwt-signing-key: "{{ a strong shared secret, >= 32 bytes }}"  # optional, defaults to kestra.encryption.secret-key
 
 deployments:
   worker:
     enabled: true
+    # Only this deployment receives the token, so its workers join wg-1
+    extraEnv:
+      - name: KESTRA_WORKER_AUTH_REGISTRATION_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: kestra-wg-1-token
+            key: token
 ```
 
-The registration token is what assigns the worker to a group — no `extraArgs` are needed. The `--worker-group` CLI flag was removed in 2.0. Without `kestra.ee.worker.auth.enabled: true`, tokens are ignored and all workers join the default group.
+The registration token is what assigns the worker to a group, so no `extraArgs` are needed. The `--worker-group` CLI flag was removed in 2.0. Workers ignore the signing key. They need `kestra.ee.worker.auth.enabled: true`, which they get from `configurations.application`. Without it, the worker ignores its token and the controller rejects the connection.
 
-If you previously had multiple worker groups running in parallel (e.g. `wg-1` and `wg-2`), you need a separate worker deployment per group, each configured with its own `registration-token`. Consult the [Helm chart `values.yaml`](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for the current syntax for multiple named worker deployments, or deploy each group as a separate Helm release with its own `values.yaml`.
+If you previously ran multiple worker groups in parallel (for example `wg-1` and `wg-2`), each group needs its own worker deployment with its own token. Add an entry under `workerGroups` for each additional group. The chart creates a worker deployment named `<release-name>-workergroup-<name>` for each entry:
+
+```yaml
+workerGroups:
+  wg-2:
+    enabled: true
+    extraEnv:
+      - name: KESTRA_WORKER_AUTH_REGISTRATION_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: kestra-wg-2-token
+            key: token
+```
+
+Do not put `kestra.worker.auth.registration-token` in `configurations.application`. Every worker deployment would receive the same token and join the same group.
 
 ## Deployment patterns
 
@@ -160,33 +174,15 @@ Worker authentication secures the gRPC channel between workers and controllers w
 
 When enabled, workers present a registration token generated for their Worker Group. On first connect, the worker exchanges this token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically. Revoking or deleting a token, or deleting its Worker Group, disconnects the workers that used it immediately.
 
-### Server-side configuration
+In a Helm release, the settings split like this:
 
-Enable on your webserver or standalone pod:
+| Setting | Where to put it | Pods that use it |
+|---|---|---|
+| `kestra.ee.worker.auth.enabled: true` | `configurations.application` | Every pod, workers included |
+| `kestra.ee.worker.auth.jwt-signing-key` (optional) | `configurations.application` | Every pod except workers. Workers ignore it |
+| `KESTRA_WORKER_AUTH_REGISTRATION_TOKEN` | `extraEnv` of each worker deployment (`deployments.worker` or a `workerGroups` entry) | Only the workers of that group |
 
-```yaml
-configurations:
-  application:
-    kestra:
-      ee:
-        worker:
-          auth:
-            enabled: true
-            jwt-signing-key: "{{ a strong shared secret, >= 32 bytes }}"
-```
-
-### Worker-side configuration
-
-Configure each worker with the registration token for its target group:
-
-```yaml
-configurations:
-  application:
-    kestra:
-      worker:
-        auth:
-          registration-token: "{{ token generated for the target group }}"
-```
+See [Using the `workerGroups` Helm key](#using-the-workergroups-helm-key) for a complete `values.yaml` example, and [Where each setting goes](../../../07.enterprise/04.scalability/worker-group/index.md#where-each-setting-goes) for the same split outside Helm.
 
 Generate registration tokens from **Infrastructure → Worker Groups → [group] → Tokens** in the Instance Owner console, or via `POST /api/v1/instance/worker-groups/{id}/tokens`. The plaintext token is shown only once — copy it before closing the dialog.
 
