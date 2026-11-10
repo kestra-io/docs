@@ -34,8 +34,6 @@ When you launch Kestra Enterprise Edition, it will check the license and display
 ## Step 1: Validate configuration
 
 The first screen shows the main configuration of your instance. It displays:
-- whether `multitenancy` is enabled
-- whether `default tenant` is enabled — if yes, you can skip Step 2 allowing you to create your first tenant
 - which `database` backend is configured (e.g., PostgreSQL or Elasticsearch)
 - which `queue` backend is configured (e.g., PostgreSQL or Kafka)
 - which `internal storage` backend is configured (e.g., S3, GCS, Azure Blob Storage, an S3-compatible store, or local storage)
@@ -47,11 +45,11 @@ This step asks you to confirm whether your configuration is valid. If not, you c
 
 ## Step 2: Create your first tenant
 
-If `multitenancy` is enabled, Kestra will prompt you to create your first tenant. Enter a Tenant ID and Tenant Name, for example:
-- tenant id: `stage`
-- tenant name: `Staging Environment`
+Enter an ID and a name for your first tenant, for example:
+- tenant id: `dev`
+- tenant name: `Development`
 
-If you enabled a default tenant, you can skip this step.
+Kestra skips this step when the `main` tenant already has flows, for example when you switch an instance from the open-source edition to the Enterprise Edition. Setup then continues in the `main` tenant, so your existing flows stay in place.
 
 ![Create first tenant form with ID and name fields](./setup_page2.png)
 

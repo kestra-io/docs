@@ -707,6 +707,14 @@ kestractl test-suites last-result    --ids my.namespace/suite-a --ids my.namespa
 kestractl test-suites get-result     <result_id>
 ```
 
+`run`, `run-by-query`, and `validate` print their results, then exit with code `1` when the outcome is a failure, so a CI job that runs them fails with the tests:
+
+- `run` exits `1` when the suite or any of its test cases ends `FAILED` or `ERROR`.
+- `run-by-query` exits `1` when any suite it runs, or any test case in one, ends `FAILED` or `ERROR`.
+- `validate` exits `1` when the definition has violations. Warnings don't change the exit code.
+
+A test case that ends `SUCCESS` or `SKIPPED` doesn't fail the command. The exit code is the same with `--output json` and table output.
+
 ## Reusable inputs (Enterprise Edition)
 
 A reusable inputs block is a named set of flow input definitions that flows reference through a `REUSABLE_INPUTS` input type. Requires Kestra Enterprise Edition 2.0.1 or later.

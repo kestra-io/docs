@@ -33,20 +33,21 @@ States represent where an execution or task run is in its lifecycle. Each state 
 | `RETRIED` | Terminal | The original execution failed and was retried under a flow-level retry policy set to `CREATE_NEW_EXECUTION`. The original execution is marked `RETRIED` and a new execution is created in its place. |
 | `RESUBMITTED` | Terminal | The execution was resubmitted directly (not via an automatic retry policy). The original execution is marked `RESUBMITTED` and a new execution continues in its place. |
 | `SKIPPED` | Terminal | The execution was skipped. A condition, SLA policy, or concurrency behavior prevented it from starting. |
-| `CANCELLED` | Terminal | Automatically cancelled by the system because the [concurrency](../14.concurrency/index.md) limit was reached and `behavior` was set to `CANCEL`. |
+| `CANCELLED` | Terminal | Automatically cancelled by the system because the [concurrency](../14.concurrency/index.md) limit was reached and `behavior` was set to `CANCEL`. A parent execution also ends `CANCELLED` when a subflow execution it waits on is cancelled; see [Cancelled subflow executions](../10.subflows/index.md#cancelled-subflow-executions). |
 | `KILLED` | Terminal | Killed on request by the user. No further tasks will run. |
 
 ## CANCELLED vs. KILLED
 
 Both are terminal states that stop an execution, but they have different causes:
 
-- **`CANCELLED`**: triggered by the **system** when the concurrency limit is reached and `behavior: CANCEL` is configured. No user action required.
+- **`CANCELLED`**: triggered by the **system** when the concurrency limit is reached and `behavior: CANCEL` is configured. No user action required. A cancelled subflow execution doesn't stop its parent, which runs its next tasks.
 - **`KILLED`**: triggered by the **user** via the **Kill** button in the UI or an API call. The execution first passes through `KILLING` while in-progress task runs are terminated, then settles in `KILLED`.
 
 ## Task run states
 
-Task run states represent the status of a single task run within an execution. The lifecycle is similar but not identical. Executions have `QUEUED`, `CANCELLED`, and `PAUSED` states that task runs do not, while task runs use `SUBMITTED` specifically to indicate they have been queued to a Worker and are waiting to run.
+Task run states represent the status of a single task run within an execution. The lifecycle is similar but not identical. Executions have a `QUEUED` state that task runs do not, while task runs use `SUBMITTED` specifically to indicate they have been queued to a Worker and are waiting to run.
 
+<!-- TODO: taskrun_states.png predates task-run PAUSED, BREAKPOINT, and CANCELLED; update the diagram. -->
 ![Diagram showing all possible task run states and the transitions between them](./taskrun_states.png)
 
 | State | Description |
@@ -64,3 +65,6 @@ Task run states represent the status of a single task run within an execution. T
 | `KILLING` | Kill in progress. |
 | `KILLED` | Killed on request by the user. |
 | `SKIPPED` | Skipped. Did not run due to a condition or policy. |
+| `PAUSED` | Paused, for example by a [`Pause`](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task, until the execution is resumed. |
+| `BREAKPOINT` | Stopped at a debug breakpoint before running, until the execution is resumed. |
+| `CANCELLED` | Cancelled by the system, for example a sibling task of a failed task in `Parallel` or `Dag` with `onChildFailure: CANCEL`, or a `Subflow` task whose subflow execution was cancelled. See [Cancelled subflow executions](../10.subflows/index.md#cancelled-subflow-executions). |

@@ -120,6 +120,9 @@ export const VISUAL_ONLY_PAGES = [
     { path: "/newsroom", label: "Newsroom" },
     { path: "/write-for-us", label: "Write For Us" },
     { path: "/lp/workflow-orchestration", label: "LP Workflow Orchestration" },
+    { path: "/lp/vra-migration", label: "LP vRA Migration" },
+    { path: "/lp/pipedream-migration", label: "LP Pipedream Migration" },
+    { path: "/lp/automate-infra", label: "LP Automate Infra" },
     { path: "/orchestration/ansible", label: "Orchestration Ansible" },
     {
         path: "/resources/airflow-2-eol-whitepaper",

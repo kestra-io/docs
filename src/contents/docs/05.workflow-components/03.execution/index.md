@@ -65,7 +65,7 @@ Executions and task runs move through the following states:
 | `RETRIED` | Stopped and created a new execution as defined by a [flow-level retry policy](../12.retries/index.md#flow-level-retries) with `CREATE_NEW_EXECUTION` behavior. |
 | `RESUBMITTED` | Resubmitted directly; a new execution continues in its place. |
 | `SKIPPED` | Skipped. Did not run due to a condition, SLA policy, or concurrency behavior. |
-| `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior. |
+| `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior, or ended after a [subflow execution it waited on was cancelled](../10.subflows/index.md#cancelled-subflow-executions). |
 | `KILLED` | Killed on request; no further tasks will run. |
 
 For a detailed overview of state transitions, see the [States](../17.states/index.md) page.

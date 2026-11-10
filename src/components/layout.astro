@@ -33,6 +33,16 @@ interface Props {
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
+    /**
+     * Header states the homepage's scripts set on `<body>`. Rendering them here
+     * puts them in the first paint; the scripts keep them in step afterwards.
+     * - `headerClean` — the quieter menu (`data-header-clean`).
+     * - `headerClear` — no fill at the very top of a dark hero (`data-header-clear`).
+     * - `headerOverDark` — the page opens on a dark section (`data-header-over-dark`).
+     */
+    headerClean?: boolean
+    headerClear?: boolean
+    headerOverDark?: boolean
     /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/all). */
     canonical?: string
     /** Breadcrumb JSON-LD name, for pages whose `title` carries a meta title distinct from the visible H1. Defaults to `title`. */
@@ -140,6 +150,10 @@ const announceContent = props.banner
       ? annonces
       : []
 const hasAnnounce = announceContent.length > 0
+// Same key Announce.vue stores on dismissal; empty for a page-only banner.
+const announceKey = announceContent
+    .map((slide: { id?: number }) => slide.id)
+    .join(",")
 
 const websiteSchema = isHomepage
     ? {
@@ -334,15 +348,76 @@ const organizationSchema = {
             lightText: "dark",
             darkText: "light",
         }[props.headerTheme!]}
+        data-header-clean={props.headerClean ? "" : undefined}
+        data-header-clear={props.headerClear ? "" : undefined}
+        data-header-over-dark={props.headerOverDark ? "" : undefined}
         style={props.headerBg
             ? `--header-dark-bg: ${props.headerBg}`
             : undefined}
         class={hasAnnounce ? "has-annonces" : ""}
+        data-announce-key={announceKey || undefined}
     >
+        <script is:inline>
+            // A dismissed announcement must not paint and then vanish: drop the
+            // space kept for it before first paint, and again for every page
+            // the router brings in (as theme.ts does for the theme).
+            ;(function () {
+                var apply = function (doc) {
+                    var key = doc.body.getAttribute("data-announce-key")
+                    try {
+                        if (!key || localStorage.getItem("announce-dismissed") !== key)
+                            return
+                    } catch (e) {
+                        return
+                    }
+                    doc.body.classList.remove("has-annonces")
+                }
+                apply(document)
+                document.addEventListener("astro:before-swap", function (event) {
+                    apply(event.newDocument)
+                })
+            })()
+        </script>
         {
             !props.bareChrome && (
                 <>
                     <Header client:load transition:persist />
+                    <script is:inline>
+                        // Until the header island hydrates nothing tracks the
+                        // scroll position, so a page loaded or restored
+                        // mid-scroll would paint the top-of-page header.
+                        ;(function () {
+                            var bar = document.getElementById("top-bar")
+                            var island = bar && bar.closest("astro-island")
+                            if (!island || !island.hasAttribute("ssr")) return
+                            var body = document.body
+                            var darkAtTop = body.hasAttribute("data-header-over-dark")
+                            var sync = function () {
+                                var scrolled = window.scrollY > 0
+                                bar.classList.toggle("scrolled", scrolled)
+                                if (!darkAtTop) return
+                                var line = bar.getBoundingClientRect().bottom - 1
+                                var over = !scrolled
+                                document
+                                    .querySelectorAll("[data-header-dark]")
+                                    .forEach(function (section) {
+                                        var box = section.getBoundingClientRect()
+                                        if (box.top <= line + 4 && box.bottom > line)
+                                            over = true
+                                    })
+                                body.toggleAttribute("data-header-over-dark", over)
+                            }
+                            window.addEventListener("scroll", sync, { passive: true })
+                            island.addEventListener(
+                                "astro:hydrate",
+                                function () {
+                                    window.removeEventListener("scroll", sync)
+                                },
+                                { once: true },
+                            )
+                            sync()
+                        })()
+                    </script>
                     <Search
                         randomAiQuestions={randomAiQuestions}
                         docsLatest={docsLatest}

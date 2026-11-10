@@ -1,18 +1,16 @@
 ---
-import Layout from "~/components/layout.astro"
+import LpLayout from "~/components/lp/LpLayout.astro"
 
-import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
-import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
-import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
-import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
-import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
-import Features from "~/components/lp/workflow-orchestration/Features.astro"
-import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
-import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
-import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
-import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
-import Translation from "~/components/lp/vra-migration/Translation.astro"
-import Proof from "~/components/lp/vra-migration/Proof.astro"
+import Hero from "~/components/lp/shared/Hero.astro"
+import Platform from "~/components/lp/shared/Platform.astro"
+import Migration from "~/components/lp/shared/Migration.astro"
+import Features from "~/components/lp/shared/Features.astro"
+import Stack from "~/components/lp/shared/Stack.astro"
+import UseCases from "~/components/lp/shared/UseCases.astro"
+import Faq from "~/components/lp/shared/Faq.astro"
+import ClosingBanner from "~/components/lp/shared/ClosingBanner.astro"
+import Translation from "~/components/lp/shared/Translation.astro"
+import Proof from "~/components/lp/shared/Proof.astro"
 import Payback from "~/components/lp/vra-migration/Payback.astro"
 import Assistant from "~/components/lp/vra-migration/Assistant.astro"
 import HeroActions from "~/components/lp/vra-migration/HeroActions.astro"
@@ -189,200 +187,171 @@ const faqItems = [
 ]
 ---
 
-<Layout {title} {description} noindex bareChrome forceTheme="light">
-    <div class="lp-workflow-orchestration">
-        <LpHeader />
-        <Hero
-            {routePath}
-            formTitle="Bring your VMware renewal quote."
-            companies={[
-                "bundesagentur",
-                "itzbund",
-                "jpmorgan",
-                "t-system",
-                "amdocs",
-                "fila",
-                "bloomberg",
-                "xiaomi",
-                "apple",
-            ]}
-        >
-            <Fragment slot="title">
-                Migrate off <span class="grad grad-a">VMware vRA</span>{" "}
-                and <span class="grad grad-b">vRO</span>, one wave at a time.
-            </Fragment>
-            <Fragment slot="lead">
-                Kestra replaces vRealize Automation (now Aria Automation and VCF
-                Automation) and vRealize Orchestrator (vRO) with one governed
-                orchestration platform on your own infrastructure.<br />
-                Keep your Terraform, Ansible and scripts. Retire the vRA licence at
-                renewal.<br />
-                <strong
-                    >Runs with vSphere today, and with Nutanix, Proxmox or
-                    whatever you move to next.</strong
-                >
-            </Fragment>
-            <Fragment slot="form-sub">
-                We map your environment and estimate the migration in a
-                30-minute call.
-            </Fragment>
-            <HeroActions slot="form" {routePath} {formProps} />
-        </Hero>
-        <WebinarBanner />
-        <script is:inline>
-            /* Echo the searched product and intent in the headline. The G_VRA
-             * final URL suffix passes the keyword as utm_term; the term is only
-             * matched against, never written, and without it the static
-             * headline above stays. */
-            ;(() => {
-                const term = (
-                    new URLSearchParams(location.search).get("utm_term") || ""
-                ).toLowerCase()
-                const h1 = document.querySelector(".lp-hero h1")
-                if (!term || !h1) return
-                const isProductSearch =
-                    /vra|vro|aria|vrealize|orchestrator|automation/.test(term)
-                const isVro = /orchestrator|\bvro\b/.test(term)
-                const product = /aria/.test(term)
-                    ? "Aria Automation"
-                    : isVro
-                      ? "vRO"
-                      : /vcf|cloud foundation/.test(term)
-                        ? "VCF Automation"
-                        : /vrealize/.test(term)
-                          ? "vRealize Automation"
-                          : "VMware vRA"
-                /* Clone a server-rendered span so the scoped gradient styles,
-                 * keyed on Astro's data-astro-cid attribute, still apply. */
-                const span = (variant, text) => {
-                    const el = h1.querySelector(".grad").cloneNode(false)
-                    el.className = `grad grad-${variant}`
-                    el.textContent = text
-                    return el.outerHTML
-                }
-                const a = (text) => span("a", text)
-                const b = (text) => span("b", text)
-                /* Broad VMware searches (no product named) get the
-                 * orchestrator-first pitch instead of a vRA headline. */
-                if (
-                    !isProductSearch &&
-                    /vmware|vcf|cloud foundation|vsphere|vvf|broadcom|esxi/.test(
-                        term,
+<LpLayout {title} {description}>
+    <Hero
+        {routePath}
+        formTitle="Bring your VMware renewal quote."
+        companies={[
+            "bundesagentur",
+            "itzbund",
+            "jpmorgan",
+            "t-system",
+            "amdocs",
+            "fila",
+            "bloomberg",
+            "xiaomi",
+            "apple",
+        ]}
+    >
+        <Fragment slot="title">
+            Migrate off <span class="grad grad-a">VMware vRA</span>{" "}
+            and <span class="grad grad-b">vRO</span>, one wave at a time.
+        </Fragment>
+        <Fragment slot="lead">
+            Kestra replaces vRealize Automation (now Aria Automation and VCF
+            Automation) and vRealize Orchestrator (vRO) with one governed
+            orchestration platform on your own infrastructure.<br />
+            Keep your Terraform, Ansible and scripts. Retire the vRA licence at
+            renewal.<br />
+            <strong
+                >Runs with vSphere today, and with Nutanix, Proxmox or
+                whatever you move to next.</strong
+            >
+        </Fragment>
+        <Fragment slot="form-sub">
+            We map your environment and estimate the migration in a
+            30-minute call.
+        </Fragment>
+        <HeroActions slot="form" {routePath} {formProps} />
+    </Hero>
+    <WebinarBanner />
+    <script is:inline>
+        /* Echo the searched product and intent in the headline. The G_VRA
+         * final URL suffix passes the keyword as utm_term; the term is only
+         * matched against, never written, and without it the static
+         * headline above stays. */
+        ;(() => {
+            const term = (
+                new URLSearchParams(location.search).get("utm_term") || ""
+            ).toLowerCase()
+            const h1 = document.querySelector(".lp-hero h1")
+            if (!term || !h1) return
+            const isProductSearch =
+                /vra|vro|aria|vrealize|orchestrator|automation/.test(term)
+            const isVro = /orchestrator|\bvro\b/.test(term)
+            const product = /aria/.test(term)
+                ? "Aria Automation"
+                : isVro
+                  ? "vRO"
+                  : /vcf|cloud foundation/.test(term)
+                    ? "VCF Automation"
+                    : /vrealize/.test(term)
+                      ? "vRealize Automation"
+                      : "VMware vRA"
+            /* Clone a server-rendered span so the scoped gradient styles,
+             * keyed on Astro's data-astro-cid attribute, still apply. */
+            const span = (variant, text) => {
+                const el = h1.querySelector(".grad").cloneNode(false)
+                el.className = `grad grad-${variant}`
+                el.textContent = text
+                return el.outerHTML
+            }
+            const a = (text) => span("a", text)
+            const b = (text) => span("b", text)
+            /* Broad VMware searches (no product named) get the
+             * orchestrator-first pitch instead of a vRA headline. */
+            if (
+                !isProductSearch &&
+                /vmware|vcf|cloud foundation|vsphere|vvf|broadcom|esxi/.test(
+                    term,
+                )
+            ) {
+                h1.innerHTML = `Moving off ${a("VMware")}? Start with the ${b("orchestrator")}.`
+                /* Keep the server-rendered bold line, as the static lead has it. */
+                const lead = document.querySelector(".lp-hero .lead-copy")
+                const strong = lead?.querySelector("strong")
+                if (lead)
+                    lead.replaceChildren(
+                        "Your vRO workflows are what tie you to vSphere. Replace them with Kestra first, and change the hypervisor when you're ready.",
+                        ...(strong
+                            ? [document.createElement("br"), strong]
+                            : []),
                     )
-                ) {
-                    h1.innerHTML = `Moving off ${a("VMware")}? Start with the ${b("orchestrator")}.`
-                    /* Keep the server-rendered bold line, as the static lead has it. */
-                    const lead = document.querySelector(".lp-hero .lead-copy")
-                    const strong = lead?.querySelector("strong")
-                    if (lead)
-                        lead.replaceChildren(
-                            "Your vRO workflows are what tie you to vSphere. Replace them with Kestra first, and change the hypervisor when you're ready.",
-                            ...(strong
-                                ? [document.createElement("br"), strong]
-                                : []),
-                        )
-                } else if (
-                    isProductSearch &&
-                    /pric|licens|cost|renewal/.test(term)
-                ) {
-                    h1.innerHTML = `Retire the ${a(`${product} licence`)} at ${b("renewal")}, one workflow at a time.`
-                } else if (/alternative|replacement/.test(term)) {
-                    h1.innerHTML = `The ${a(product === "VMware vRA" ? "vRA and vRO" : product)} ${b("alternative")} on your own infrastructure.`
-                } else if (/self.?service|portal/.test(term)) {
-                    h1.innerHTML = `Replace the ${a("VMware")} ${b("self-service portal")}, one workflow at a time.`
-                } else if (product !== "VMware vRA") {
-                    h1.innerHTML = isVro
-                        ? `Migrate off ${a("VMware")} ${b("vRO")}, one workflow at a time.`
-                        : `Migrate off ${a(product)} and ${b("vRO")}, one workflow at a time.`
-                }
-            })()
-        </script>
-        <Migration
-            heading="Leave vRA in four stages, with vRA still running"
-            sub="Kestra runs alongside vRA until each wave is verified."
-            steps={stages}
-        />
-        <section class="demo-video">
-            <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
-                <h2>See it in 8 minutes</h2>
-                <p>
-                    Kestra runs the whole VM lifecycle on vSphere: it builds the
-                    VM, waits for the patch approval in ServiceNow, and keeps
-                    every system up to date. Only the vCenter steps are tied to
-                    VMware, so you can move to another hypervisor later without
-                    rebuilding the rest.
-                </p>
+            } else if (
+                isProductSearch &&
+                /pric|licens|cost|renewal/.test(term)
+            ) {
+                h1.innerHTML = `Retire the ${a(`${product} licence`)} at ${b("renewal")}, one workflow at a time.`
+            } else if (/alternative|replacement/.test(term)) {
+                h1.innerHTML = `The ${a(product === "VMware vRA" ? "vRA and vRO" : product)} ${b("alternative")} on your own infrastructure.`
+            } else if (/self.?service|portal/.test(term)) {
+                h1.innerHTML = `Replace the ${a("VMware")} ${b("self-service portal")}, one workflow at a time.`
+            } else if (product !== "VMware vRA") {
+                h1.innerHTML = isVro
+                    ? `Migrate off ${a("VMware")} ${b("vRO")}, one workflow at a time.`
+                    : `Migrate off ${a(product)} and ${b("vRO")}, one workflow at a time.`
+            }
+        })()
+    </script>
+    <Migration
+        heading="Leave vRA in four stages, with vRA still running"
+        sub="Kestra runs alongside vRA until each wave is verified."
+        steps={stages}
+    />
+    <section class="demo-video">
+        <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
+            <h2>See it in 8 minutes</h2>
+            <p>
+                Kestra runs the whole VM lifecycle on vSphere: it builds the
+                VM, waits for the patch approval in ServiceNow, and keeps
+                every system up to date. Only the vCenter steps are tied to
+                VMware, so you can move to another hypervisor later without
+                rebuilding the rest.
+            </p>
+        </div>
+        <div class="player">
+            <div class="video-container">
+                <iframe
+                    src="https://www.youtube.com/embed/brZo-5NdP2E"
+                    title="Kestra replacing vRA: the VM lifecycle on vSphere"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen></iframe>
             </div>
-            <div class="player">
-                <div class="video-container">
-                    <iframe
-                        src="https://www.youtube.com/embed/brZo-5NdP2E"
-                        title="Kestra replacing vRA: the VM lifecycle on vSphere"
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-        <Platform
-            heading="Switch to orchestration without lock-in"
-            cards={reasons}
-        />
-        <Translation />
-        <Proof />
-        <GuideOffer />
-        <Assistant />
-        <Features />
-        <Stack
-            heading="What teams automate after vRA"
-            sub="The VMware automation that ran in vRA and vRO, rebuilt as flows that also reach beyond vSphere."
-            columns={automations}
-            glyphSize={72}
-        />
-        <UseCases
-            {routePath}
-            headingLines={["See it on your", "own vRO workflows"]}
-            bullets={ctaBullets}
-            {formProps}
-        />
-        <Payback />
-        <Faq items={faqItems} />
-        <ClosingBanner
-            heading="Bring your VMware renewal quote"
-            sub="We'll set the exit plan against your renewal date."
-        />
-        <LpFooter />
-    </div>
-</Layout>
+        </div>
+    </section>
+    <Platform
+        heading="Switch to orchestration without lock-in"
+        cards={reasons}
+    />
+    <Translation />
+    <Proof />
+    <GuideOffer />
+    <Assistant />
+    <Features />
+    <Stack
+        heading="What teams automate after vRA"
+        sub="The VMware automation that ran in vRA and vRO, rebuilt as flows that also reach beyond vSphere."
+        columns={automations}
+        glyphSize={72}
+    />
+    <UseCases
+        {routePath}
+        headingLines={["See it on your", "own vRO workflows"]}
+        bullets={ctaBullets}
+        {formProps}
+    />
+    <Payback />
+    <Faq items={faqItems} />
+    <ClosingBanner
+        heading="Bring your VMware renewal quote"
+        sub="We'll set the exit plan against your renewal date."
+    />
+</LpLayout>
 
 <style lang="scss">
-    /* Same pinned palette as /lp/workflow-orchestration: the wrapper class is
-     * shared on purpose, so this page inherits its section components' tokens.
-     * Keep the two lists identical. */
-    .lp-workflow-orchestration {
-        --lp-purple: #631bff;
-        --lp-purple-light: #f1efff;
-        --lp-purple-rail: #cdc5ff;
-        --lp-shadow-light: #3952f21a;
-        --lp-bg-dark: #111115;
-        --lp-purple-mid: #9869f7;
-        --lp-content-on-card: #3b3a41;
-        --lp-bg-base: #f7f7f8;
-        --lp-content-primary: #08090a;
-        --lp-content-secondary: #5f5f7c;
-        --lp-content-muted: #7e7e9b;
-        --lp-content-dark-secondary: #adadbf;
-        --lp-border: #d0d0da;
-        --lp-border-subtle: #e9e9ee;
-
-        background-color: #ffffff;
-        overflow-x: clip;
-    }
-
-    :global(html) {
-        --top-bar-height: 80px;
-    }
+    @use "/src/components/lp/shared/lp" as *;
 
     /* Same head as the four stages section above it, which already supplies
      * the top padding. */
@@ -391,35 +360,23 @@ const faqItems = [
         background-color: #ffffff;
 
         .head {
-            max-width: 900px;
-            margin: 0 auto 2.5rem;
-            text-align: center;
+            @include lp-section-head;
 
             h2 {
                 margin: 0 0 2rem;
-                color: var(--lp-content-primary);
-                font-size: 1.875rem;
-                font-weight: 600;
-                line-height: 1.0417;
-                letter-spacing: -0.045rem;
-                @include media-breakpoint-up(lg) {
-                    font-size: 3rem;
-                }
+                @include lp-heading;
             }
 
             p {
                 margin: 0;
-                color: var(--lp-content-secondary);
-                font-size: 1.25rem;
-                line-height: 1.4;
+                @include lp-lead;
             }
         }
 
         /* The capped wrapper keeps the global .video-container ratio, whose
          * padding is a percentage of its parent's width. */
         .player {
-            max-width: 900px;
-            margin-inline: auto;
+            @include lp-container(900px);
             border-radius: 10px;
             overflow: hidden;
         }

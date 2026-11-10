@@ -581,6 +581,7 @@ Published by each worker process — the worker-side view of capacity and throug
 | `worker.job.thread` | gauge | Configured thread count (maximum concurrent jobs) |
 | `worker.max.concurrency` | gauge | Maximum in-flight capacity: threads + buffered jobs (`kestra.worker.job-buffer-size`, which defaults to the thread count) |
 | `worker.running.count` | gauge | Tasks currently executing |
+| `worker.tasks.running.count` | gauge | Tasks currently executing, also tagged by task type, namespace, flow, and tenant |
 | `worker.pending.count` | gauge | Tasks waiting for a free thread slot |
 | `worker.abandoned.count` | gauge | Jobs the worker stopped waiting for, such as a polling trigger past its timeout, that still hold a thread |
 | `worker.queue.size` | gauge | Items currently held in a buffer, identified by the `name` tag (for example `workerjob`) |

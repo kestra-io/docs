@@ -20,6 +20,10 @@ The previous default of `true` made directory deletions recursive without any ex
 
 ## Migration steps
 
+`kestra-migrate` adds `recursive: true` to every `io.kestra.plugin.fs.local.Delete` task that does not set `recursive`, which keeps the 1.3 behavior. To opt in to the safer default instead, remove the property from tasks that should not delete subdirectories.
+
+To update flows by hand:
+
 1. Search all flows for tasks of type `io.kestra.plugin.fs.local.Delete`.
 2. For each task where `from` points to a directory and `recursive` is not set, add `recursive: true` to preserve the previous behavior.
 3. For tasks where `from` points to a single file, no change is needed — `recursive` has no effect on file targets.

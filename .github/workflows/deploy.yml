@@ -145,12 +145,14 @@ jobs:
             || echo "::warning::Slack notification failed; continuing"
 
       # Known upstream gaps (withastro/astro#17974, #17993) can restore a page whose
-      # assets this build pruned. Rebuild from scratch and re-check, strictly this time.
+      # assets this build pruned, and the content store keeps markdown rendered against
+      # an Expressive Code stylesheet that an ec.config.mjs change renamed. Rebuild from
+      # scratch and re-check, strictly this time.
       - name: Rebuild without the incremental cache
         if: steps.asset-links.outcome == 'failure'
         run: |
           echo "::warning title=Incremental cache discarded::Restored pages linked assets missing from dist (see the previous step). Rebuilt from scratch."
-          rm -rf dist node_modules/.astro/incremental-build.json node_modules/.astro/dist
+          rm -rf dist node_modules/.astro
           npm run build
           node scripts/check-dist-asset-links.mjs dist
 

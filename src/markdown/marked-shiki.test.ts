@@ -79,8 +79,8 @@ describe("shikiToolset", () => {
     it("loads both themes and no others", async () => {
         const highlighter = await getHighlighterCore([])
         expect(highlighter.getLoadedThemes().sort()).toEqual([
-            "github-dark-default",
-            "github-light-default",
+            "kestra-dark",
+            "kestra-light",
         ])
     })
 })
