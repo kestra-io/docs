@@ -775,29 +775,18 @@ Monitoring is not supported on local emulator (inferred EKS) compute environment
 
 ## Execution details
 
-When you open an execution in the topology view, the topology node for an AWS Batch task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.
+In an execution, open the **Artifacts** tab, or the **Artifacts** tab of the task run's popup, and select the task's **Runner details** artifact. It shows the job's configuration and, after the run, the job's details.
 
-**Topology node:**
-
-| Field | Description |
-|---|---|
-| Compute env | Compute environment name (tail of the ARN) |
-| Compute type | The resolved compute type (Fargate, EC2, or EKS) |
-| Status | Current or final job status (post-execution only) |
-| Duration | Elapsed or total execution time (post-execution only) |
-
-**Show Details modal:**
-
-*Configuration:*
-- Compute environment and compute type
+**Configuration:**
+- Compute environment (tail of the ARN) and the resolved compute type (Fargate, EC2, or EKS)
 - Job queue (tail of the ARN, or "auto-created" when not specified)
 - Region and AWS account ID
 - Configured CPU and memory
 - S3 bucket used for file staging
 
-Before an execution, the modal shows values from the task definition and marks any value that contains a Pebble expression as a template. After an execution, it shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
+Until the task run finishes, the artifact shows values from the task definition and marks any value that contains a Pebble expression as a template. Once it finishes, the artifact shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
 
-*Post-execution:*
+**Post-execution:**
 - Job ID — reference for looking up the job in the AWS Console or CLI
 - Status and reason — SUCCEEDED or FAILED; `statusReason` shown when the job fails
 - Duration — derived from the job's `startedAt` and `stoppedAt` timestamps
