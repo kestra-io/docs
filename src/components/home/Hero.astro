@@ -695,10 +695,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         position: absolute;
         inset: 0;
         overflow: hidden;
-        perspective: 900px;
-        perspective-origin: calc(50% + var(--px, 0) * -260px)
-            calc(var(--oy, 50%) + var(--py, 0) * -180px);
-        transition: perspective-origin 0.5s ease-out;
         pointer-events: none;
         mask-image: radial-gradient(
             ellipse 30% 34% at 50% var(--oy, 46%),
@@ -710,10 +706,12 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     .space {
         position: absolute;
         inset: 0;
-        transform: rotateY(calc(var(--px, 0) * 14deg))
-            rotateX(calc(var(--py, 0) * -10deg));
+        // The field leans back as the page scrolls. It is one flat picture:
+        // each tile carries its own perspective (see fly), so the browser
+        // has no shared 3D scene to sort, which made tiles vanish or draw
+        // cut in half on some machines.
+        transform: perspective(900px) rotateX(calc(var(--py, 0) * -10deg));
         transform-origin: 50% var(--oy, 50%);
-        transform-style: preserve-3d;
         transition: transform 0.2s ease-out;
     }
 
@@ -746,11 +744,12 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         @media (prefers-reduced-motion: reduce) {
             animation: none;
             opacity: 0.6;
-            transform: translate3d(
-                calc(var(--dx) * var(--spread, 1) * 1vw),
-                calc(var(--dy) * 1vh),
-                -300px
-            );
+            transform: perspective(900px)
+                translate3d(
+                    calc(var(--dx) * var(--spread, 1) * 1vw),
+                    calc(var(--dy) * 1vh),
+                    -300px
+                );
         }
     }
 
@@ -826,11 +825,12 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     @keyframes fly {
         0% {
             opacity: 0;
-            transform: translate3d(
-                calc(var(--dx) * var(--spread, 1) * 1vw),
-                calc(var(--dy) * 1vh),
-                -1600px
-            );
+            transform: perspective(900px)
+                translate3d(
+                    calc(var(--dx) * var(--spread, 1) * 1vw),
+                    calc(var(--dy) * 1vh),
+                    -1600px
+                );
         }
 
         15% {
@@ -843,11 +843,12 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 
         100% {
             opacity: 0;
-            transform: translate3d(
-                calc(var(--dx) * var(--spread, 1) * 1vw),
-                calc(var(--dy) * 1vh),
-                350px
-            );
+            transform: perspective(900px)
+                translate3d(
+                    calc(var(--dx) * var(--spread, 1) * 1vw),
+                    calc(var(--dy) * 1vh),
+                    350px
+                );
         }
     }
 
