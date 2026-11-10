@@ -150,6 +150,10 @@ const announceContent = props.banner
       ? annonces
       : []
 const hasAnnounce = announceContent.length > 0
+// Same key Announce.vue stores on dismissal; empty for a page-only banner.
+const announceKey = announceContent
+    .map((slide: { id?: number }) => slide.id)
+    .join(",")
 
 const websiteSchema = isHomepage
     ? {
@@ -351,7 +355,29 @@ const organizationSchema = {
             ? `--header-dark-bg: ${props.headerBg}`
             : undefined}
         class={hasAnnounce ? "has-annonces" : ""}
+        data-announce-key={announceKey || undefined}
     >
+        <script is:inline>
+            // A dismissed announcement must not paint and then vanish: drop the
+            // space kept for it before first paint, and again for every page
+            // the router brings in (as theme.ts does for the theme).
+            ;(function () {
+                var apply = function (doc) {
+                    var key = doc.body.getAttribute("data-announce-key")
+                    try {
+                        if (!key || localStorage.getItem("announce-dismissed") !== key)
+                            return
+                    } catch (e) {
+                        return
+                    }
+                    doc.body.classList.remove("has-annonces")
+                }
+                apply(document)
+                document.addEventListener("astro:before-swap", function (event) {
+                    apply(event.newDocument)
+                })
+            })()
+        </script>
         {
             !props.bareChrome && (
                 <>

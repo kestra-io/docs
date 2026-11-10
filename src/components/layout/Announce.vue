@@ -247,6 +247,12 @@
         }
     }
 
+    // Dismissed on an earlier visit: layout.astro drops the body class before
+    // first paint, so the bar must not show while this island hydrates.
+    :global(body:not(.has-annonces) .announce) {
+        display: none;
+    }
+
     // The homepage's quieter menu (body[data-header-clean]) pairs with a
     // plain black bar: one white sentence and an arrow, and a close button.
     // Written as whole global selectors: Vue drops nested :global() blocks.
