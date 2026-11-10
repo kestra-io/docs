@@ -1,0 +1,99 @@
+// Replaces bootstrap/scss/dropdown, trimmed to what the header uses: no
+// dropup/dropend/dropstart, no responsive alignment, no divider/header/text,
+// no dark variant. Positioning is plain CSS; bootstrap's popper hook
+// (`[data-bs-popper]`) is folded into the base rule.
+//
+// The item properties are declared on `.dropdown-menu`, never on
+// `.dropdown-item`, and read without fallbacks. That is load-bearing: the
+// header's mega-menu reuses `.dropdown-item` outside any menu, where the
+// variables resolve to nothing and every declaration below falls back to its
+// initial value. Giving them fallbacks would start painting padding and
+// colours onto the mega-menu.
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    white-space: nowrap;
+
+    &::after {
+        display: inline-block;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+    }
+
+    &:empty::after {
+        margin-left: 0;
+    }
+}
+
+.dropdown-menu {
+    --ks-dropdown-link-color: var(--ks-content-primary);
+    --ks-dropdown-link-hover-color: var(--ks-content-primary);
+    --ks-dropdown-link-hover-bg: var(--ks-background-secondary);
+    --ks-dropdown-link-active-color: #{$white};
+    --ks-dropdown-link-active-bg: var(--ks-background-button-primary);
+    --ks-dropdown-link-disabled-color: var(--ks-content-tertiary);
+    --ks-dropdown-item-padding-x: 1rem;
+    --ks-dropdown-item-padding-y: 0.25rem;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0;
+    margin-top: 0.125rem;
+    font-size: $font-size-base;
+    color: var(--ks-content-primary);
+    text-align: left;
+    list-style: none;
+    background-color: var(--ks-background-body);
+    background-clip: padding-box;
+    border: 1px solid var(--ks-border-primary);
+    border-radius: $border-radius;
+
+    &.show {
+        display: block;
+    }
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: var(--ks-dropdown-item-padding-y) var(--ks-dropdown-item-padding-x);
+    clear: both;
+    font-weight: 400;
+    color: var(--ks-dropdown-link-color);
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+
+    &:hover,
+    &:focus {
+        color: var(--ks-dropdown-link-hover-color);
+        background-color: var(--ks-dropdown-link-hover-bg);
+    }
+
+    &.active,
+    &:active {
+        color: var(--ks-dropdown-link-active-color);
+        text-decoration: none;
+        background-color: var(--ks-dropdown-link-active-bg);
+    }
+
+    &.disabled,
+    &:disabled {
+        color: var(--ks-dropdown-link-disabled-color);
+        pointer-events: none;
+        background-color: transparent;
+    }
+}

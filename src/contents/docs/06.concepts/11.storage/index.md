@@ -1,17 +1,14 @@
 ---
-title: Data Storage and Processing in Kestra – Where Data Lives
-description: Manage data processed by tasks.
+title: "Data Storage in Kestra: How Task Data Is Managed"
+h1: Understand How Kestra Stores and Processes Task Data
+description: Understand how Kestra stores and processes task data. Learn about internal storage, file handling, and how outputs are passed between tasks in your workflows.
 sidebarTitle: Data storage and processing
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
-Manage data processed by tasks.
+Kestra stores task data in the execution context, in internal storage, or in the KV store — each suited to different data sizes and lifetimes.
 
-## Data storage and processing
-
-Kestra's primary purpose is to orchestrate data processing via tasks, so data is central to each flow's execution.
-
-Depending on the task, data can be stored inside the execution context or inside Kestra's internal storage. You can also manually store data inside Kestra's KV store by using [dedicated tasks](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Set).
+Depending on the task, data can be stored inside the execution context or inside Kestra's internal storage. You can also store data in the KV store using [dedicated tasks](/plugins/core/kv/io.kestra.plugin.core.kv.set).
 
 Some tasks give you the choice of where you want to store the data, usually using a `fetchType` property or the three `fetch`/`fetchOne`/`store` properties.
 
@@ -41,9 +38,9 @@ The three `fetch`/`fetchOne`/`store` properties do the same but using three diff
 
 Data can be stored as variables inside the flow execution context. This can be convenient for sharing data between tasks.
 
-To do so, tasks store data as [output attributes](../../05.workflow-components/06.outputs/index.md) that are then available inside the flow via Pebble expressions like `{{outputs.taskName.attributeName}}`.
+To do so, tasks store data as [output attributes](../../05.workflow-components/06.outputs/index.md) that are then available inside the flow via Pebble expressions like `{{ outputs.taskName.attributeName }}`.
 
-Be careful, the size of the data is significant, this increases the size of the flow execution context, which can lead to slow execution and increase the size of the execution storage inside Kestra's repository.
+Large values stored in the execution context increase its size, which can slow execution and grow Kestra's repository storage.
 
 :::alert{type="warning"}
 Depending on the Kestra internal queue and repository implementation, there can be a hard limit on the size of the flow execution context as it is stored as a single row/message. Usually, this limit is around 1MB, so this is important to avoid storing large amounts of data inside the flow execution context.
@@ -57,7 +54,7 @@ When using the internal storage, data is, by default, stored using [Amazon Ion](
 
 Tasks that can store data inside the internal storage usually have an output attribute named `uri` that can be used to access this file in following tasks.
 
-The following example uses the [DynamoDB Query](/plugins/plugin-aws/dynamodb/io.kestra.plugin.aws.dynamodb.query) task to query a table and the [FTP Upload](/plugins/plugin-fs/ftp/io.kestra.plugin.fs.ftp.upload) task to send the retrieved rows to an external FTP server.
+The following example uses the [DynamoDB Query](/plugins/plugin-aws/aws-dynamodb/io.kestra.plugin.aws.dynamodb.query) task to query a table and the [FTP Upload](/plugins/plugin-fs/ftp-file-transfer-protocol/io.kestra.plugin.fs.ftp.upload) task to send the retrieved rows to an external FTP server.
 
 ```yaml
 tasks:
@@ -80,26 +77,25 @@ tasks:
 If you need to access data from the internal storage, you can use the `read()` function to read the file's content as a string.
 
 Dedicated tasks allow managing the files stored inside the internal storage:
-- [Concat](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Concat): concat multiple files.
-- [Delete](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Delete): delete a file.
-- [Size](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Size): get the size of a file.
-- [Split](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Split): split a file into multiple files depending on the size of the file or the number of rows.
+- [Concat](/plugins/core/storage/io.kestra.plugin.core.storage.concat): concat multiple files.
+- [Delete](/plugins/core/storage/io.kestra.plugin.core.storage.delete): delete a file.
+- [Size](/plugins/core/storage/io.kestra.plugin.core.storage.size): get the size of a file.
+- [Split](/plugins/core/storage/io.kestra.plugin.core.storage.split): split a file into multiple files depending on the size of the file or the number of rows.
 
 :::alert{type="warning"}
-This should be the main method for storing and carrying large data from task to task.
-As an example, if you know that a [HTTP Request](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Request) returns a heavy payload, you should consider using [HTTP Download](/plugins/plugin-fs/http/io.kestra.plugin.core.http.Download) along with a [Serdes](/plugins/plugin-serdes) instead of carrying raw data in [Flow Execution Context](#storing-data-inside-the-flow-execution-context)
+Large payloads belong in internal storage, not the execution context. For heavy HTTP responses, [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) paired with a [Serdes](/plugins/plugin-serdes) task avoids carrying raw data through the [execution context](#storing-data-inside-the-flow-execution-context).
 :::
 
 ### Storing data inside the KV store
 
 Dedicated tasks can store data inside Kestra's KV store. The KV store transparently uses Kestra's internal storage as its backend store.
 
-The KV store allows storing data that will be shared by all executions of the same namespace. You can think of it as a key/value store dedicated to a namespace.
+The KV store allows storing data that will be shared by all executions of the same namespace. The KV store is scoped to a namespace.
 
 The following tasks are available:
-- [Set](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Set): set data in key/value pair.
-- [Get](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Get): get data from key/value pair.
-- [Delete](/plugins/core/tasks/kv/io.kestra.plugin.core.kv.Delete): delete a key/value pair.
+- [Set](/plugins/core/kv/io.kestra.plugin.core.kv.set): set data in key/value pair.
+- [Get](/plugins/core/kv/io.kestra.plugin.core.kv.get): get data from key/value pair.
+- [Delete](/plugins/core/kv/io.kestra.plugin.core.kv.delete): delete a key/value pair.
 
 Example:
 
@@ -191,7 +187,7 @@ tasks:
 
 - id: convertToCsv
   type: io.kestra.plugin.serdes.csv.IonToCsv
-  from: "{{outputs.query.uri}}"
+  from: "{{ outputs.query.uri }}"
 
 - id: convertBackToIon
   type: io.kestra.plugin.serdes.csv.CsvToIon
@@ -200,9 +196,9 @@ tasks:
 
 ### Processing data using scripts
 
-Kestra can launch Python, R, Node.js, Shell, Powershell, and Go scripts. Depending on the `runner`, they can run directly in a local process on the host or inside Docker containers.
+Kestra can run Python, R, Node.js, Shell, PowerShell, and Go scripts in a local process or inside a Docker container, depending on the configured `runner`.
 
-Those script tasks are available in the [Scripts Plugin](https://github.com/kestra-io/plugin-scripts). Below is documentation for each of them:
+These script tasks are available in the [Scripts Plugin](https://github.com/kestra-io/plugin-scripts):
 - The [Python](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) task runs a Python script in a Docker container or in a local process.
 - The [Node](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script) task runs a Node.js script in a Docker container or in a local process.
 - The [R](/plugins/plugin-script-r/io.kestra.plugin.scripts.r.script) task runs an R script in a Docker container or in a local process.
@@ -227,16 +223,16 @@ tasks:
       LIMIT 10
     store: true
     projectId: geller
-    serviceAccount: "{{envs.gcp_creds}}"
+    serviceAccount: "{{ envs.gcp_creds }}"
 
   - id: write-csv
     type: io.kestra.plugin.serdes.csv.IonToCsv
-    from: "{{outputs.query.uri}}"
+    from: "{{ outputs.query.uri }}"
 
   - id: wdir
     type: io.kestra.plugin.core.flow.WorkingDirectory
     inputFiles:
-      data.csv: "{{outputs['write-csv'].uri}}"
+      data.csv: "{{ outputs['write-csv'].uri }}"
     tasks:
     - id: pandas
       type: io.kestra.plugin.scripts.python.Script
@@ -252,20 +248,20 @@ tasks:
 
 Kestra offers several plugins for ingesting and transforming data — check [the Plugin list](/plugins) for more details.
 
-Make sure to also check:
-1. The [Script documentation](../../16.scripts/index.mdx) for a detailed overview of how to work with Python, R, Node.js, Shell and Powershell scripts, and how to integrate them with Git and Docker.
-2. The [Blueprints](/blueprints) catalog — simply search for the relevant language (e.g., Python, R, Rust)  or use case (*ETL, Git, dbt, etc.*) to find the relevant examples.
+See also:
+1. The [Script documentation](../../16.scripts/index.mdx) for an overview of Python, R, Node.js, Shell, and PowerShell scripts and their integration with Git and Docker.
+2. The [Blueprints](/blueprints) catalog, searchable by language (Python, R, Rust) or use case (ETL, Git, dbt).
 
 
 ### Processing data using file transform
 
 Kestra can process data **row by row** using file transform tasks. The transformation is done with a small script written in Python, JavaScript, or Groovy.
 
-- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
-- The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
-- The [Groovy Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.Script) task allows running scripts with Groovy.
+- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
+- The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/js-graalvm/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
+- The [Groovy Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.script) task allows running scripts with Groovy.
 
-The following example queries the BigQuery public dataset for Wikipedia pages, convert it row by row with the Nashorn FileTransform, and write it in a CSV file.
+The following example queries the BigQuery public dataset for Wikipedia pages, transforms each row with the GraalVM Python FileTransform, and writes the result to a CSV file.
 
 ```yaml
 id: wikipedia-top-ten-file-transform
@@ -283,7 +279,7 @@ tasks:
 
   - id: file-transform
     type: io.kestra.plugin.graalvm.python.FileTransform
-    from: "{{outputs['query-top-ten'].uri}}"
+    from: "{{ outputs['query-top-ten'].uri }}"
     script: |
       logger.info('row: {}', row)
 
@@ -299,7 +295,7 @@ tasks:
 
   - id: write-csv
     type: io.kestra.plugin.serdes.csv.IonToCsv
-    from: "{{outputs['file-transform'].uri}}"
+    from: "{{ outputs['file-transform'].uri }}"
 ```
 
 :::alert{type="info"}
@@ -312,9 +308,7 @@ The script can access a logger to log messages. Each row is available in a `row`
   <iframe src="https://www.youtube.com/embed/XiPegyF6uJY?si=5OQgTZBqMBcu4gHZ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
-The [PurgeExecution](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Purgeexecution) task can purge all the files stored inside the internal context by a flow execution.
+The PurgeExecution task can purge all the files stored inside the internal context by a flow execution.
 It can be used at the end of a flow to purge all its generated files.
 
 ```yaml
@@ -326,7 +320,7 @@ tasks:
 The execution context itself is not available after the end of the execution and is automatically deleted from Kestra's repository after a retention period (seven days by default) that can be changed; see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 
 
-Also, the [Purge](/plugins/core/tasks/storages/io.kestra.plugin.core.storage.Purge) task can be used to purge storages, logs, and executions of previous execution. For example, this flow purges all of these every day:
+The [Purge](/plugins/core) task purges storages, logs, and executions of previous executions. This flow purges all of these every day:
 ```yaml
 id: purge
 namespace: company.team
@@ -342,13 +336,13 @@ triggers:
     cron: "0 0 * * *"
 ```
 
-## FAQ
+## Common patterns
 
-### Internal storage FAQ
+### Internal storage
 
-#### How to read a file from internal storage as a string
+#### Reading a file from internal storage as a string
 
-The `read()` function expects a `path` argument that points to a namespace file or an internal storage URI. Note that when using inputs, outputs, or trigger variables, you don't need any extra quotation marks. Here is how you can use those variables with the `read()` function:
+The `read()` function accepts a `path` argument pointing to a namespace file or an internal storage URI. When using inputs, outputs, or trigger variables, no extra quotation marks are needed:
 - `{{ read(inputs.file) }}` for a FILE-type input variable named `file`
 - `{{ read(outputs.mytaskid.uri) }}` for an output `uri` from a task named `mytaskid`
 - `{{ read(trigger.uri) }}` for a `uri` of many triggers incl. Kafka, AWS SQS, GCP PubSub, etc.
@@ -377,28 +371,28 @@ tasks:
 ```
 :::
 
-:::collapse{title="Example with the ForEachItem task reading file's content as a string"}
-When using the `ForEachItem` task, you can use the `read()` function to read the content of a file as a string. This is especially useful when you want to pass the content of a file as a raw string as an input to a subflow.
-
+:::collapse{title="Example with the Loop task passing row data to a subflow"}
+When using the `Loop` task with a storage URI, each iteration receives one row from the file as `item.value`. You can pass that value directly as an input to a subflow.
 
 Below is a simple subflow example that uses a string input:
 
 ```yaml
-id: subflow_raw_string_input
+id: subflow_row_input
 namespace: company.team
 
 inputs:
-  - id: string_input
+  - id: row
     type: STRING
-    defaults: hey there
+    defaults: "{}"
 
 tasks:
-  - id: for_each_item
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ inputs.string_input }}"
+  - id: log
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ inputs.row }}"
 ```
 
-Because the `ForEachItem` task splits the `items` file into batches of smaller files (one file per row by default), you can use the `read()` function to read the content of that file for a given batch as a string value and pass it as an input to that subflow shown above.
+The parent flow queries a dataset, stores the result as a URI, then loops over each row and passes it to the subflow:
 
 ```yaml
 id: parent_flow
@@ -414,25 +408,25 @@ tasks:
       FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
     store: true
 
-  - id: each_raw
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.outputs[0].uri }}"
-    namespace: company.team
-    flowId: subflow_raw_string_input
-    inputs:
-      string_input: "{{ read(taskrun.items) }}"
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.extract.outputs[0].uri }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.flow.Subflow
+        namespace: company.team
+        flowId: subflow_row_input
+        wait: true
+        inputs:
+          row: "{{ item.value | toJson }}"
 ```
 :::
 
----
+#### Reading a namespace file as a string
 
-#### How to read a Namespace File as a string?
+The same `read()` function reads a namespace file as a string. The path must point to a file in the **same namespace** as the executing flow.
 
-So far, you've seen how to read a file from the internal storage as a string. However, you can use the same `read()` function to read a Namespace File as a string. This is especially useful when you want to execute a Python script or a long SQL query stored in a dedicated SQL file.
-
-The `read()` function takes the absolute path to the file you want to read. The path must point to a file stored in the **same namespace** as the flow you are executing.
-
-Below is a simple example showing how you can read a file named `hello.py` stored in the `scripts` directory of the `company.team` namespace:
+This example reads `hello.py` from the `scripts` directory of the `company.team` namespace:
 
 ```yaml
 id: hello
@@ -446,21 +440,19 @@ tasks:
 
 The same syntax applies to SQL queries, custom scripts, and many more. Check the [Namespace Files](../../06.concepts/02.namespace-files/index.md) documentation for more details.
 
----
+#### Reading a file from internal storage as a JSON object
 
-#### How to read a file from the internal storage as a JSON object?
-
-You can use the Pebble function `{{ fromJson(myvar) }}` and a `{{ myvar | toJson }}` filter to process JSON data.
+The `{{ fromJson(myvar) }}` function and `{{ myvar | toJson }}` filter process JSON data.
 
 :::collapse{title="The fromJson() function"}
 
-The function is used to convert a string to a JSON object. For example, the following Pebble expression converts the string `{"foo": [666, 1, 2]}` to a JSON object and then returns the first value of the `foo` key, which is `42`:
+`fromJson()` converts a JSON string to an object. For example, this expression returns `42`:
 
 ```yaml
-{{ json('{"foo": [42, 43, 44]}').foo[0] }}
+{{ fromJson('{"foo": [42, 43, 44]}').foo[0] }}
 ```
 
-You can use the `read()` function to read the content of a file as a string and then apply the `json()` function to convert it to a JSON object. Afterwards, you can read the value of a specific key in that JSON object. For example, the following Pebble expression reads the content of a file named `my.json` and then returns the value of the `foo` key, which is `42`:
+Combine `read()` with `fromJson()` to load a file from internal storage and parse its contents:
 
 ```yaml
 id: extract_json
@@ -476,26 +468,22 @@ tasks:
 
   - id: read_as_json
     type: io.kestra.plugin.core.log.Log
-    message: "{{ json(read(outputs.extract.uri)) }}"
+    message: "{{ fromJson(read(outputs.extract.uri)) }}"
 
   - id: parse_json_elements
     type: io.kestra.plugin.core.log.Log
-    message: "{{ json(read(outputs.extract.uri)) | jq('map(.detail | fromjson | .message)') | first }}"
+    message: "{{ fromJson(read(outputs.extract.uri)) | jq('map(.detail | fromjson | .message)') | first }}"
 ```
-
-The above flow downloads a JSON file via an HTTP Request, reads its content as a string, converts it to a JSON object, and then in another task, it parses the JSON object and returns the value of a nested key.
 :::
 
-:::collapse{title="The json filter"}
+:::collapse{title="The toJson filter"}
 
-You can use the `json` filter to convert any variable to a JSON string. You can think of it as a reverse process to what the `json()` function does.
-
-The example below shows how you can convert a list of numbers to a JSON string `'[1, 2, 3]'` using the `| json` filter:
+The `| toJson` filter converts any variable to a JSON string — the reverse of `fromJson()`.
 
 ```yaml
-{{ [1, 2, 3] | json }}
+{{ [1, 2, 3] | toJson }}
 ```
 
 :::alert{type="info"}
-You typically would never used the `| json` filter in combination with the `read()` function. Anytime you need to read a file's content and then convert it to a JSON object, use a combination of the `read()` function and the `json()` function instead.
+To read a file's content as a JSON object, use `read()` combined with `fromJson()`, not `| toJson`.
 :::

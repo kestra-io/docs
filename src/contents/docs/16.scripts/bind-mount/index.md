@@ -1,5 +1,6 @@
 ---
 title: Bind Mount Scripts into Kestra – Run Local Code
+h1: Execute Local Scripts via Bind-Mount Without Importing Them
 sidebarTitle: Bind Mount
 icon: /src/contents/docs/icons/dev.svg
 description: Bind-mount locally stored scripts into Kestra containers to execute code from your filesystem without importing it.
@@ -13,7 +14,7 @@ To run a script stored locally, you can bind-mount it to your Kestra container.
 
 Bind-mounting local scripts to the Kestra server can also make the local scripts available to the Docker containers running the script tasks. This is useful when you want to test a script, and you don't want to use Namespace Files.
 
-First, make sure that your [Plugins and Execution configuration](../../configuration/04.plugins-and-execution/index.md) in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) allows volume mounting. Below is an example with the intended setting in the final line:
+First, ensure that your [Plugins and Execution configuration](../../configuration/04.plugins-and-execution/index.md) in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) allows volume mounting. Below is an example with the intended setting in the final line:
 
 ```yaml
   kestra:
@@ -40,7 +41,7 @@ First, make sure that your [Plugins and Execution configuration](../../configura
             basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
-              password: kestra
+              password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
           repository:
             type: postgres
           storage:

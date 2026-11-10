@@ -1,15 +1,21 @@
 ---
 import { Image } from "astro:assets"
 
-const COMPANIES = [
-    "xiaomi",
-    "bloomberg",
-    "toyota",
-    "fila",
-    "apple",
-    "jpmorgan",
-    "t-system",
-]
+interface Props {
+    companies?: string[]
+}
+
+const {
+    companies = [
+        "fila",
+        "bloomberg",
+        "amdocs",
+        "xiaomi",
+        "apple",
+        "jpmorgan",
+        "t-system",
+    ],
+} = Astro.props
 const logos = import.meta.glob<{ default: ImageMetadata }>(
     "/src/components/home/assets/companies/*.svg",
     { eager: true },
@@ -20,7 +26,7 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
     <div class="companies-container">
         <div class="companies">
             {
-                COMPANIES.map((company) => (
+                companies.map((company) => (
                     <div class="logo-wrapper">
                         <Image
                             src={
@@ -56,7 +62,6 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
 
     .companies-container {
         width: 100%;
-        overflow: hidden;
         @include media-breakpoint-down(sm) {
             margin-top: 1rem;
         }
@@ -67,10 +72,6 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
             justify-content: center;
             gap: 2rem;
 
-            @include media-breakpoint-up(sm) {
-                gap: 2rem;
-                margin-left: -14px;
-            }
             @include media-breakpoint-up(xl) {
                 gap: 3rem;
             }
@@ -82,7 +83,6 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
                 flex-wrap: wrap;
                 gap: 0;
                 row-gap: 2rem;
-                margin-left: 0;
             }
         }
 

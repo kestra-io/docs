@@ -1,5 +1,7 @@
 ---
-title: Use the Synchronous Executions API
+title: Synchronous Executions API in Kestra
+h1: Wait for Execution Results with the Synchronous API
+description: Trigger Kestra workflow executions synchronously via the REST API. Wait for completion and retrieve outputs in a single API call for real-time integrations.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -19,13 +21,14 @@ id: myflow
 namespace: company.team
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: hello from kestra
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: hello from kestra
 
 outputs:
   - id: mydata
     type: STRING
-    value: "{{ outputs.mytask.value }}"
+    value: "{{ outputs.mytask.values.result }}"
     description: return some data
 ```
 
@@ -55,7 +58,6 @@ By default, the Executions API is asynchronous. It will invoke the execution of 
     "startDate": "2024-07-12T05:07:28.447110427Z"
   },
   "originalId": "1KWLxLeaXEXNDaXWP7YSKA",
-  "deleted": false,
   "metadata": {
     "attemptNumber": 1,
     "originalCreatedDate": "2024-07-12T05:07:28.447113302Z"
@@ -65,10 +67,10 @@ By default, the Executions API is asynchronous. It will invoke the execution of 
 
 ## Synchronous Executions API
 
-In order to wait for an execution to finish and return the outputs from the flow in the response, you can call the Executions API with the `wait=true` query parameter. This would make the API call synchronous, and you will receive all outputs in the response that are explicitly exposed in the flow. You can invoke the Executions API in a synchronous fashion as follows:
+To wait for an execution to finish and return the flow outputs in the response, call the Executions API with the `wait=true` query parameter. This would make the API call synchronous, and you will receive all outputs in the response that are explicitly exposed in the flow. You can invoke the Executions API in a synchronous fashion as follows:
 
 ```bash
-curl -X POST 'http://localhost:8080e/api/v1/main/xecutions/company.team/myflow?wait=true'
+curl -X POST 'http://localhost:8080/api/v1/main/executions/company.team/myflow?wait=true'
 ```
 
 Here is the output of this API invocation:
@@ -82,9 +84,6 @@ Here is the output of this API invocation:
   "taskRunList": [
     {
       "id": "4536yghIDGwqeRWZEE7AEE",
-      "executionId": "24znmto07B2ZGrI9IQoSSH",
-      "namespace": "company.team",
-      "flowId": "myflow",
       "taskId": "mytask",
       "attempts": [
         {
@@ -110,9 +109,6 @@ Here is the output of this API invocation:
           }
         }
       ],
-      "outputs": {
-        "value": "hello from kestra"
-      },
       "state": {
         "current": "SUCCESS",
         "histories": [
@@ -159,7 +155,6 @@ Here is the output of this API invocation:
     "startDate": "2024-07-12T05:13:41.789Z"
   },
   "originalId": "24znmto07B2ZGrI9IQoSSH",
-  "deleted": false,
   "metadata": {
     "attemptNumber": 1,
     "originalCreatedDate": "2024-07-12T05:13:41.789Z"
@@ -167,7 +162,7 @@ Here is the output of this API invocation:
 }
 ```
 
-As expected, the API response returned the outputs from the flow. It also contains all execution states.
+The API response includes the flow-level `outputs` (the values explicitly declared in the flow's `outputs:` block) and the execution state. Task run outputs are not included in the execution response. Use `GET /api/v1/{tenant}/outputs/tasks/{executionId}/{taskRunId}` to retrieve per-task outputs.
 
 ## Authentication
 
@@ -175,7 +170,7 @@ You can use the same authentication mechanism for this API call as applicable to
 
 ### Basic Authentication
 
-First, make sure to base64 encode your username and password. You can do this using the following command:
+First, base64-encode your username and password. You can do this using the following command:
 
 ```bash
 echo -n "username:password" | base64

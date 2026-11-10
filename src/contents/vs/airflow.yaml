@@ -3,6 +3,11 @@ description: "Compare Kestra vs Apache Airflow: Declarative YAML orchestration f
 competitorName: Airflow
 category: Data Orchestration
 shortDescription: "Python-first DAG scheduling vs. universal YAML orchestration for any language and stack."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and scale beyond them."
+secondaryCta:
+  label: "Download the Guide"
+  href: "/resources/airflow-2-eol-whitepaper"
 
 brandColor:
   color: "#017cee"
@@ -83,7 +88,7 @@ easeOfUse:
   title: YAML Anyone Can Read vs. Python Only Devs Can Write
   kestra:
     title: "Kestra: Readable by Your Whole Team"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python knowledge required to understand or modify a workflow."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. No Python knowledge required to understand or modify a workflow."
     code: |
       id: daily_etl
       namespace: data.production
@@ -180,7 +185,7 @@ testimonials:
         name: "Faster workflow creation"
       - value: "0"
         name: "Pipeline failures"
-    storyLink: "/use-cases/stories/32-apples-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/stories/apple"
 
 platformStrengths:
   title: Kestra Is Built for How Data Teams Actually Work
@@ -213,20 +218,24 @@ decisionGuide:
     bulletColor: "#00C7D4"
 
 commonQuestions:
-  - question: How hard is it to migrate from Airflow to Kestra?
-    answer: "Kestra doesn't require you to refactor your business logic. Bring existing Python scripts, SQL queries, and Shell commands as-is and define orchestration in YAML. Most teams start new workflows in Kestra and migrate existing pipelines incrementally, using Kestra's Airflow REST API trigger to keep both systems running until the cutover is complete."
-  - question: I'm on Airflow 2 and evaluating whether to upgrade to Airflow 3 or switch to Kestra. How should I think about that decision?
-    answer: "Both paths require real work. Upgrading to Airflow 3 means removing SubDAGs, updating deprecated context variables, moving operators to the new providers package, and splitting your webserver into an API server and DAG processor—every change is Airflow-specific. Migrating to Kestra means extracting business logic from DAG files and defining orchestration in YAML; your Python, SQL, and Shell code stays unchanged and portable. The lift is similar. The difference is what you get at the end: Airflow 3 modernizes the scheduler and adds event-driven features, but DAGs are still Python. Kestra lets any team member contribute workflows in YAML, with tasks running in Python, SQL, Bash, or any language in isolated containers."
+  - question: "Airflow 2 is EOL. Now what?"
+    answer: "Apache Airflow 2 reached end of life in April 2026. No more security patches, bug fixes, or provider updates for 2.x. Teams still running it face a real decision: upgrade to Airflow 3 or migrate to a different orchestrator. Both paths require comparable work. Upgrading to Airflow 3 means removing SubDAGs, updating deprecated context variables, moving operators to the new providers package, and splitting the webserver into an API server and DAG processor—every change is Airflow-specific. Migrating to Kestra means extracting business logic from DAG files and defining orchestration in YAML; your Python, SQL, and Shell code stays unchanged and portable. The difference is what you get at the end: Airflow 3 modernizes the scheduler and adds event-driven features, but DAGs are still Python. Kestra lets any team member contribute workflows in YAML, with tasks running in any language in isolated containers. For a structured breakdown of both paths, see our <a href='/resources/airflow-2-eol-whitepaper'>Airflow 2 EOL guide</a>."
+  - question: "Do I have to migrate all my DAGs at once?"
+    answer: "No. Most teams run Airflow and Kestra side by side during a transition. Kestra can trigger Airflow jobs via its HTTP plugin, so you can migrate workflows incrementally while keeping production pipelines running. Start with new workflows in Kestra, migrate lower-risk DAGs next, and cut over the rest when you're confident. The <a href='/resources/migration/airflow'>Airflow to Kestra migration guide</a> covers the concept mapping and the cut-over playbook in detail."
+  - question: "What happens to my existing Python scripts and operators if I move to Kestra?"
+    answer: "They stay unchanged. Kestra orchestrates your existing code without modification. Python scripts run in Script tasks inside isolated containers. There's no refactoring into decorators or operator subclasses. Custom operator logic that calls APIs or runs transformations becomes a Script or HTTP task, with the same code you already have."
+  - question: "Is Kestra open source, like Airflow?"
+    answer: "Yes. Kestra is Apache 2.0 licensed and fully open source. The community edition includes unlimited workflows, all trigger types (including event-driven), most of Kestra's {totalPlugins}+ plugins, and the visual workflow editor. Enterprise features (RBAC, SSO, multi-tenancy, audit logs) are available in Kestra Enterprise."
   - question: I'm running Airflow on MWAA or Cloud Composer. How does that affect my options?
     answer: "Managed Airflow services mean you're on AWS or Google's upgrade timeline, not your own. Airflow 3 support on MWAA and Cloud Composer typically lags the open-source release by months. Kestra runs anywhere—Docker, Kubernetes, any cloud—and covers the same AWS, GCP, and Azure integrations you're already using."
   - question: Does Kestra support the same data pipeline use cases as Airflow?
-    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1200+ plugins, it covers the same integrations as Airflow's provider ecosystem: AWS, GCP, Azure, Snowflake, BigQuery, Databricks, Kafka, and more—defined in declarative YAML instead of Python operator classes."
+    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With {totalPlugins}+ plugins, it covers the same integrations as Airflow's provider ecosystem: AWS, GCP, Azure, Snowflake, BigQuery, Databricks, Kafka, and more—defined in declarative YAML instead of Python operator classes."
   - question: How does Kestra handle workflow versioning?
     answer: "Kestra stores a revision history for every workflow. Each save creates a new revision you can diff, roll back, or audit. Revisions integrate with Git-based CI/CD through the Kestra Terraform provider and GitHub Actions. Airflow requires external tooling to approximate the same."
   - question: How do Airflow 3 Assets compare to Kestra's asset model?
     answer: "Airflow 3 Assets trigger DAGs when upstream DAGs produce named data outputs—a data-aware scheduling mechanism scoped to the Airflow ecosystem. Kestra's approach is broader: workflows can be triggered by file arrivals in S3, Kafka messages, database row changes, API callbacks, or outputs from any other workflow. The dependency model isn't limited to Airflow-produced assets or data pipelines."
   - question: What about Airflow's ecosystem of providers and operators?
-    answer: "Kestra's 1200+ plugin library covers the same integrations as Airflow's provider ecosystem. Instead of Python operator classes, Kestra uses declarative plugin tasks in YAML. Your existing Python code runs directly in Script tasks without modification, and custom operator logic becomes a Script or HTTP task without any framework-specific wrapper."
+    answer: "Kestra's {totalPlugins}+ plugin library covers the same integrations as Airflow's provider ecosystem. Instead of Python operator classes, Kestra uses declarative plugin tasks in YAML. Your existing Python code runs directly in Script tasks without modification, and custom operator logic becomes a Script or HTTP task without any framework-specific wrapper."
   - question: How does Kestra's event-driven architecture differ from Airflow's?
     answer: "Airflow was built as a schedule-first orchestrator. Airflow 3 adds Asset Watchers and event-driven scheduling, which is a real improvement. Kestra was built event-driven from the start: webhooks, S3 and GCS uploads, Kafka and Pulsar messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows are available in the open-source version."
   - question: How does Kestra handle multi-tenancy and access control compared to Airflow?

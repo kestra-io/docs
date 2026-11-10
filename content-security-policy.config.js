@@ -8,6 +8,9 @@ export default {
         "https://*.cr-relay.com",
         "https://*.kestra-io.pages.dev",
         "https://kestra.io",
+        // Cloudflare Access re-auth redirect for preview (*.workers.dev)
+        // deploys, needed since manifest-src falls back to default-src.
+        "https://kestra-io-pages.cloudflareaccess.com",
     ],
     // scripts
     "script-src": [
@@ -34,6 +37,12 @@ export default {
         "https://www.google.com/recaptcha/",
         "https://www.gstatic.com/recaptcha/",
         "https://jobs.ashbyhq.com/",
+        "https://*.claydar.com",
+        "https://*.vector.co",
+        // gtag loads the Google Ads conversion pixel as a script and as an
+        // image; connect-src alone is not enough, both were blocked.
+        "https://*.g.doubleclick.net",
+        "https://www.googleadservices.com",
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
@@ -43,6 +52,8 @@ export default {
         "'self'",
         "data:",
         "blob:",
+        // versioned docs reference assets served from api.kestra.io
+        "https://*.kestra.io",
         "https://*.google.fr",
         "https://*.google.com",
         "https://*.linkedin.com",
@@ -54,6 +65,19 @@ export default {
         "https://*.ytimg.com",
         "https://*.googletagmanager.com",
         "https://*.githubusercontent.com/",
+        // Google Ads conversion pings fall back to an <img> beacon; the
+        // /ccm/conversion endpoint on googleadservices is one of them.
+        "https://*.g.doubleclick.net",
+        "https://www.googleadservices.com",
+    ],
+    // audio/video
+    "media-src": [
+        "'self'",
+        "https://*.cr-relay.com",
+        "https://*.kestra-io.pages.dev",
+        "https://kestra.io",
+        // versioned docs reference assets served from api.kestra.io
+        "https://*.kestra.io",
     ],
     // forms
     "form-action": ["'self'", "https://*.hsforms.com", "https://*.hsforms.net"],
@@ -71,11 +95,11 @@ export default {
         "https://*.hsforms.net",
         "http://*.hsforms.net",
         "https://jobs.ashbyhq.com/",
+        "https://*.vector.co",
     ],
     "connect-src": [
         "'self'",
         "cloudflareinsights.com",
-        "ws://localhost:4000",
         "https://kestra.io",
         "https://*.kestra.io",
         "https://*.google.com",
@@ -92,11 +116,25 @@ export default {
         "https://*.hsforms.net",
         "https://*.hsforms.com",
         "https://*.s3.amazonaws.com",
+        // GTM/gtag XHR-fetches its own resources here (and Tag Assistant's
+        // preview mode connects to it to attach a debug session). The domain
+        // is already trusted in script-src/img-src/frame-src, so allowing it
+        // to be fetched grants strictly less than it already has — without it,
+        // the container can't be debugged on any environment serving this CSP,
+        // which is how the Consent Mode signals went unverified for so long.
+        "https://*.googletagmanager.com",
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
+        // Google Ads conversion pings + Enhanced Conversions. The wildcard
+        // above only matches *.g.doubleclick.net, so ad.doubleclick.net (the
+        // conversion collect endpoint) was blocked and conversions failed.
+        "https://*.doubleclick.net",
+        "https://www.googleadservices.com",
         "https://*.ipify.org",
         "https://*.github.com",
         "https://jobs.ashbyhq.com/",
+        "https://*.claydar.com",
+        "https://*.vector.co",
     ],
     // workers
     "worker-src": ["'self'", "blob:"],

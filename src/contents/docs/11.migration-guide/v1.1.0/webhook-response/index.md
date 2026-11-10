@@ -1,5 +1,7 @@
 ---
-title: Webhook Execution API Return Type Changed
+title: Webhook Execution API Return Type Changed in 1.1.0
+h1: Webhook Execution API Now Returns a Generic Response Type
+sidebarTitle: Webhook Response Type Changed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.1.0
 editions: ["OSS", "EE"]

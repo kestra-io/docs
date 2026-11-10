@@ -211,11 +211,14 @@
     </div>
 </div>
 
-<script is:inline>
+<script is:inline data-astro-rerun>
     ;(function () {
         var root = document.querySelector(".oa-2")
+        if (!root) return
+        // a detached root means this run was superseded by a later page
+        // load, so it parks itself instead of animating nodes nobody sees
         function isPaused() {
-            return !!root.closest(".paused")
+            return !root.isConnected || !!root.closest(".paused")
         }
 
         var SW = 680,
@@ -486,13 +489,6 @@
             }, ms)
             tids.push(t)
         }
-        function clearAll() {
-            for (var i = 0; i < tids.length; i++) {
-                clearTimeout(tids[i])
-            }
-            tids = []
-        }
-
         function resetLang(i) {
             if (i < 0) return
             var card = root.querySelector("#oa2-card-" + LANGS[i].id)

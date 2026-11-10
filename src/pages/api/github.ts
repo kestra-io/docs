@@ -1,82 +1,25 @@
-import { $fetchCached } from "~/utils/fetch"
+import type { APIRoute } from "astro"
+import { loadGithubRepoStats } from "~/utils/githubRepoStats"
 
-export async function getValues() {
-    let contribCountRes: any
-    try {
-        contribCountRes = await $fetchCached(
-            "https://api.github.com/repos/kestra-io/kestra/contributors?anon=true&per_page=1",
-            { headers: { "User-Agent": "request" } },
-        )
-    } catch (error) {
-        console.error("Error fetching contributors count:", error)
-        return {
-            stargazers: 0,
-            watchers: 0,
-            issues: 0,
-            forks: 0,
-            network: 0,
-            subscribers: 0,
-            size: 0,
-            contributors: 0,
-        }
+export const prerender = false
+
+export const GET: APIRoute = async ({ locals }) => {
+    const stats = await loadGithubRepoStats(locals)
+
+    if (!stats) {
+        return new Response(JSON.stringify({ error: "unavailable" }), {
+            status: 503,
+            headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-store",
+            },
+        })
     }
 
-    if (!contribCountRes.ok) {
-        if (contribCountRes.status === 404) {
-            return {
-                stargazers: 0,
-                watchers: 0,
-                issues: 0,
-                forks: 0,
-                network: 0,
-                subscribers: 0,
-                size: 0,
-                contributors: 0,
-            }
-        }
-        // Handle other errors
-        console.error(
-            "Error fetching contributors count:",
-            contribCountRes.status,
-            contribCountRes.statusText,
-        )
-    }
-
-    const contribStr =
-        contribCountRes.headers
-            ?.get("Link")
-            ?.match(/page=(\d+)>; rel="last"/)?.[1] || "0"
-
-    const contributors = parseInt(contribStr, 10)
-    if (isNaN(contributors)) {
-        throw Error(
-            "Failed to parse contributors count" +
-                contribCountRes.headers.get("Link"),
-        )
-    }
-
-    return await $fetchCached("https://api.github.com/repos/kestra-io/kestra", {
-        headers: { "User-Agent": "request" },
-    }).then((value) => {
-        return {
-            stargazers: value.stargazers_count,
-            watchers: value.watchers_count,
-            issues: value.open_issues_count,
-            forks: value.forks,
-            network: value.network_count,
-            subscribers: value.subscribers_count,
-            size: value.size,
-            contributors,
-        }
-    })
-}
-
-export async function GET() {
-    const data = await getValues()
-    return new Response(JSON.stringify(data), {
+    return new Response(JSON.stringify(stats), {
         headers: {
             "Content-Type": "application/json",
-            "Cache-Control": "public, max-age=86400",
+            "Cache-Control": "public, max-age=300",
         },
     })
 }

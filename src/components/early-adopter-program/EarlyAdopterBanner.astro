@@ -1,0 +1,109 @@
+---
+import Link from "~/components/common/Link.astro"
+import version from "~/components/early-adopter-program/assets/version-2-0.svg"
+---
+
+<section class="banner" aria-labelledby="early-adopter">
+    <div class="container">
+        <div class="frame">
+            <div class="inner">
+                <div class="copy">
+                    <div class="heading">
+                        <h2 id="early-adopter">Join the Early Adopter Program</h2>
+                        <img src={version.src} class="version" alt="2.0" />
+                    </div>
+                    <p>
+                        The next release of Kestra, version 2.0, brings a 
+                        re-architected core, pluggable queue, database and
+                        workers. Join the Early Adopter Program for pre-release
+                        builds, weekly office hours, and a direct line to the
+                        team.
+                    </p>
+                </div>
+                <Link
+                    href="/early-adopter-program"
+                    text="Be an Early Adopter"
+                    class="btn btn-lg btn-primary cta"
+                />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .banner {
+        padding: 50px 1rem;
+        background: var(--ks-background-body);
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .frame {
+            padding: 3.95px;
+            border: 1.1px solid var(--ks-border-secondary);
+            border-radius: 11.86px;
+        }
+
+        .inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 2rem;
+            border-radius: 8px;
+            background:
+                radial-gradient(
+                    60% 180% at 65% -45%,
+                    rgba(122, 77, 255, 0.56) 0%,
+                    rgba(91, 46, 214, 0.59) 32%,
+                    rgba(58, 28, 150, 0.3) 55%,
+                    transparent 78%
+                ),
+                linear-gradient(180deg, #131313 0%, #0d0d0f 100%);
+
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .copy {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            @include media-breakpoint-down(lg) {
+                align-items: center;
+            }
+
+            .heading {
+                display: flex;
+                align-items: center;
+                gap: 1.25rem;
+
+                h2 {
+                    margin: 0;
+                }
+
+                .version {
+                    height: 3.5rem;
+                    width: auto;
+                    user-select: none;
+                }
+            }
+
+            p {
+                margin: 0;
+                max-width: 620px;
+                color: var(--hp-content-secondary-inverse);
+            }
+        }
+
+        .inner :global(.cta) {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+    }
+</style>

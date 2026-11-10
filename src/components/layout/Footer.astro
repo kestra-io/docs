@@ -30,7 +30,9 @@ const FOOTER_SECTIONS: Section[] = [
         title: "Learn",
         links: [
             { text: "Blogs", href: "/blogs" },
-            { text: "Videos", href: "/tutorial-videos" },
+            { text: "Resources", href: "/resources" },
+            { text: "Videos", href: "/videos" },
+            { text: "Kestra Academy", href: "https://academy.kestra.io", external: true },
             {
                 text: "Administrator Guide",
                 href: "/docs/administrator-guide",
@@ -40,13 +42,22 @@ const FOOTER_SECTIONS: Section[] = [
         ],
     },
     {
-        title: "Compare",
+        title: "Resources",
         links: [
-            { text: "View All Comparisons", href: "/vs" },
-            { text: "Airflow vs Kestra", href: "/vs/airflow" },
-            { text: "n8n vs Kestra", href: "/vs/n8n" },
-            { text: "Control-M vs Kestra", href: "/vs/control-m" },
-            { text: "Rundeck vs Kestra", href: "/vs/rundeck" },
+            { text: "All Comparisons", href: "/vs" },
+            { text: "All Integrations", href: "/orchestration" },
+            { text: "Resources Center", href: "/resources" },
+        ],
+    },
+    {
+        title: "Industries",
+        links: [
+            { text: "Finance", href: "/use-cases/financial-services" },
+            { text: "Healthcare", href: "/use-cases/healthcare" },
+            { text: "Public Services", href: "/use-cases/public-services" },
+            { text: "Software & Services", href: "/use-cases/software-providers" },
+            { text: "Retail", href: "/use-cases/retail" },
+            { text: "Automotive", href: "/use-cases/automotive" },
         ],
     },
     {
@@ -63,7 +74,6 @@ const FOOTER_SECTIONS: Section[] = [
                 href: "https://github.com/kestra-io/kestra",
                 external: true,
             },
-            { text: "Write for Us", href: "/write-for-us" },
         ],
     },
     {
@@ -72,6 +82,7 @@ const FOOTER_SECTIONS: Section[] = [
             { text: "About Us", href: "/about-us" },
             { text: "Partners", href: "/partners" },
             { text: "Careers", href: "/careers", badge: "Hiring!" },
+            { text: "Security", href: "/security" },
             { text: "Contact", href: "/contact-us" },
         ],
     },
@@ -117,9 +128,12 @@ const FOOTER_SECTIONS: Section[] = [
                                             >
                                                 {link.text}
                                                 {link.badge && (
-                                                    <span class="badge">
-                                                        {link.badge}
-                                                    </span>
+                                                    <>
+                                                        {" "}
+                                                        <span class="badge">
+                                                            {link.badge}
+                                                        </span>
+                                                    </>
                                                 )}
                                             </a>
                                         </li>
@@ -136,8 +150,8 @@ const FOOTER_SECTIONS: Section[] = [
         <div class="d-flex d-100">
             <div class="flex-grow-1">
                 <p class="mb-0 d-none d-md-inline">
-                    © {new Date().getFullYear()}
-                    <a href="/">Kestra Technologies</a>. Developed with
+                    © {new Date().getFullYear()}{" "}
+                    <a href="/">Kestra Technologies</a>. Developed with{" "}
                     <span class="text-danger">♥</span> on 🌎.
                 </p>
             </div>
@@ -155,7 +169,7 @@ const FOOTER_SECTIONS: Section[] = [
     footer {
         position: relative;
         z-index: 20;
-        font-size: var(--bs-font-size-sm);
+        font-size: var(--ks-font-size-sm);
         background-color: var(--ks-background-body);
         border-top: 1px solid var(--ks-border-primary);
 

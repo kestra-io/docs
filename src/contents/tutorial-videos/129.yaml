@@ -1,0 +1,7 @@
+title: "Install Kestra in your Home Lab"
+description: "The Raspberry Pi is one of the coolest gadgets to have in your home lab: cheap to buy, cheap to run, and Linux based, so you can run all your favourite dev tools and containers on it. Will walks through a lightweight Kestra setup on a Raspberry Pi to orchestrate his home lab."
+category: "Infrastructure"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=zLwQTxWXixg"
+publicationDate: "2026-08-12T00:00:00.000"
+contentType: "Infrastructure"

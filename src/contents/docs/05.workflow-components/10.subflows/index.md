@@ -1,45 +1,34 @@
 ---
 title: Subflows in Kestra – Modularize and Reuse Flows
+h1: Call Flows from Other Flows and Build Reusable Components
 description: Modularize your Kestra workflows with Subflows. Learn to call flows from other flows, pass inputs and outputs, and build reusable orchestration components.
 sidebarTitle: Subflows
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Subflows let you build **modular** and **reusable** workflow components.
-
-## Subflows – modularize and reuse flows
-
-They work like function calls: executing a subflow creates a new flow run from within another flow.
+Subflows let you build modular and reusable workflow components. Executing a subflow creates a new flow execution from within another flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/ZIwgNNtUf64?si=pCPFFFEgmuo77Zy8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Why use a subflow?
+## Declaring a subflow
 
-Subflows allow you to build modular and reusable components that you can use across multiple flows. For example, you might define a subflow that handles error alerts by posting to Slack and email. By using a Subflow, you can reuse these two tasks together for all flows that you want to send error notifications, instead of having to copy the individual tasks for every flow.
-
-:::alert{type="warning"}
-Recursive flows are not supported. Kestra doesn’t allow a flow to call itself (directly or indirectly). Any cycle **(flowA→flowA)** makes the flow invalid. Recursive execution can create infinite loops and unbounded fan-out.
-
-**Do instead:** Use **[ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach**)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
-:::
+For example, you might define a subflow that handles error alerts by posting to Slack and email. Any flow that needs error notifications calls this subflow rather than duplicating those tasks.
 
 ## How to declare a subflow
 
-To call a flow from another flow, use the `io.kestra.plugin.core.flow.Subflow` task, and in that task, specify the `flowId` and `namespace` of the subflow that you want to execute. You can also specify custom `inputs`, similar to passing arguments to a function.
+Use the [io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task and specify the `flowId` and `namespace` of the flow to execute. Pass custom `inputs` the same way you would pass arguments to a function.
 
-The optional properties `wait` and `transmitFailed` control the execution behavior. By default, if `wait` is omitted or set to `false`, the parent flow continues without waiting for the subflow to finish. The `transmitFailed` property determines whether a failure in the subflow execution should cause the parent flow to fail.
+The `wait` and `transmitFailed` properties control execution behavior. If `wait` is `false`, the parent flow continues without waiting for the subflow to finish. `transmitFailed` determines whether a failure in the subflow causes the parent flow to fail.
 
-:::alert{type="info"}
-A Subflow task acts like a trigger to execute the child flow. While not managed like [Triggers](../07.triggers/index.mdx) in the UI, it is conceptually similar.
+:::alert{type="warning"}
+Recursive flows are not supported. A flow cannot call itself directly or indirectly; any cycle makes the flow invalid and risks infinite loops and unbounded fan-out.
+
+**Do instead:** Use **[Loop](/plugins/core/flow/io.kestra.plugin.core.flow.loop)** and **[branching flowable](../01.tasks/00.flowable-tasks/index.md)** tasks to iterate or split work without creating cycles (e.g., [LoopUntil](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil)).
 :::
 
 ## Practical example
-
-A subflow can encapsulate critical business logic, making it reusable across flows and easier to test in isolation.
-
-Here is a simple example of a subflow:
 
 ```yaml
 id: critical_service
@@ -61,8 +50,6 @@ outputs:
     value: "{{ outputs.return_data.uri }}"
 ```
 
-In this example, `return_data` outputs `uri` of the query output. That URI is a reference to the internal storage location of the stored file. This output can be used in the parent flow to perform further processing.
-
 ```yaml
 id: parent_service
 namespace: company.team
@@ -83,11 +70,9 @@ tasks:
       - cat "{{ outputs.subflow_call.outputs.some_output }}"
 ```
 
-The `outputs` map task IDs to their results. Here, the parent flow accesses the `some_output` value from the `subflow_call` task.
-
 ## Subflow properties
 
-Below is a full list of all properties of the `io.kestra.plugin.core.flow.Subflow` task. You don’t need to memorize all properties — the task documentation always lists them.
+[io.kestra.plugin.core.flow.Subflow](/plugins/core/flow/io.kestra.plugin.core.flow.subflow) task properties:
 
 | Field                  | Description                                                                 |
 |------------------------|-----------------------------------------------------------------------------|
@@ -96,26 +81,61 @@ Below is a full list of all properties of the `io.kestra.plugin.core.flow.Subflo
 | `inheritLabels`        | Determines if the subflow inherits labels from the parent (default: false). |
 | `inputs`               | Inputs passed to the subflow                                               |
 | `labels`               | Labels assigned to the subflow                                             |
-| `outputs` (deprecated) | Allows passing outputs from the subflow execution to the parent flow.       |
+| `outputs` (deprecated) | Passes subflow outputs to the parent flow. Use [flow outputs](../06.outputs/index.md#pass-data-between-flows-using-flow-outputs) instead. |
 | `revision`             | The subflow revision to execute (defaults to the latest)                   |
 | `scheduleDate`         | Schedule subflow execution on a specific date rather than immediately.      |
-| `transmitFailed`       | If true, parent flow fails on subflow failure (requires `wait` to be true). |
+| `transmitFailed`       | If true, parent flow fails when the subflow execution fails or is killed (requires `wait` to be true; default: true). A [cancelled subflow execution](#cancelled-subflow-executions) ends the `Subflow` task `CANCELLED` instead, and the parent continues. |
 | `wait`                 | If true, parent flow waits for subflow completion (default: true).         |
 
+## Killing parent and subflow executions
+
+When a parent execution waits on a subflow, the final state of each execution depends on which one you kill and how.
+
+### Killing the parent execution
+
+Clicking **Kill** on a parent execution kills the parent and its running subflow executions. The dropdown next to **Kill** offers both options explicitly:
+
+- **Kill current and subflows** kills the parent and its running subflow executions. The parent, the `Subflow` task run, and the subflow execution all end `KILLED`.
+- **Kill current only** kills the parent and lets the subflow execution finish. The parent stays `KILLING` until the subflow execution ends, then ends `KILLED`. No further tasks run in the parent.
+
+Through the API, `DELETE /api/v1/{tenant}/executions/{executionId}/actions/kill` kills subflow executions by default. Add `?isOnKillCascade=false` to kill the current execution only. The bulk kill endpoints, `DELETE /api/v1/{tenant}/executions/kill/by-ids` and `DELETE /api/v1/{tenant}/executions/kill/by-query`, never kill subflow executions.
+
+### Killing the subflow execution
+
+When you kill a subflow execution directly, the parent treats it as a failure of the `Subflow` task, governed by `transmitFailed` and `allowFailure`:
+
+| `Subflow` task configuration | `Subflow` task run | Parent execution |
+|---|---|---|
+| `transmitFailed: true` | `KILLED` | Skips the remaining tasks, runs any [`errors`](../11.errors/index.md) tasks, and ends `FAILED`. |
+| `transmitFailed: true` and `allowFailure: true` | `WARNING` | Continues with the next tasks and ends `WARNING`. |
+| `transmitFailed: false` | `SUCCESS` | Continues with the next tasks. |
+
+A [`retry`](../12.retries/index.md) on the `Subflow` task does not restart a killed subflow execution.
+
+## Cancelled subflow executions
+
+A subflow execution ends `CANCELLED` when the system cancels it, for example when the subflow's [concurrency limit](../14.concurrency/index.md) is reached with `behavior: CANCEL`. Unlike a failed or killed subflow execution, a cancelled one does not stop the parent: the parent runs its next tasks either way. `transmitFailed` and `allowFailure` decide how the `Subflow` task run and the parent end:
+
+| `Subflow` task configuration | `Subflow` task run | Parent execution |
+|---|---|---|
+| `transmitFailed: true` | `CANCELLED` | Continues with the next tasks, does not run [`errors`](../11.errors/index.md) tasks, and ends `CANCELLED`. |
+| `transmitFailed: true` and `allowFailure: true` | `WARNING` | Continues with the next tasks and ends `WARNING`. |
+| `transmitFailed: true`, `allowFailure: true`, and `allowWarning: true` | `SUCCESS` | Continues with the next tasks. |
+| `transmitFailed: false` | `SUCCESS` | Continues with the next tasks. |
+
+When the `Subflow` task run ends `CANCELLED`, its logs include a warning: `Subflow execution ... ends in CANCELLED state`.
+
+:::alert{type="info"}
+Before Kestra 2.0.9, a cancelled subflow execution left the `Subflow` task run `SUCCESS` whatever its configuration, so the parent ended `SUCCESS`. If your alerting or downstream triggers rely on that, review them after upgrading.
+:::
 
 ## Passing data between parent and child flows
 
-Flows can emit outputs that can be accessed by the parent flow. Using the `io.kestra.plugin.core.flow.Subflow` task you can call any flow as a subflow and access its outputs in downstream tasks. For more details and examples, check the [Outputs page](../06.outputs/index.md#pass-data-between-flows-using-flow-outputs).
+Any flow can emit outputs accessible to the parent flow. For more details and examples, see the [Outputs page](../06.outputs/index.md#pass-data-between-flows-using-flow-outputs).
 
-### Accessing Outputs from a subflow execution
+### Accessing outputs from a subflow execution
 
-Outputs include the execution ID, extracted outputs, and the final state (if `wait` is true).
-
-:::alert{type="info"}
-To sum up, subflows improve maintainability of complex workflows. They allow you to build modular and reusable workflow components and share them across multiple namespaces, projects, and teams.
-:::
-
-Here’s an example of a subflow with explicitly defined outputs.
+Outputs include the execution ID, extracted outputs, and the final state (if `wait` is true). For example:
 
 ```yaml
 id: flow_outputs
@@ -123,16 +143,17 @@ namespace: company.team
 
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: this is a task output used as a final flow output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: this is a task output used as a final flow output
 
 outputs:
   - id: final
     type: STRING
-    value: "{{ outputs.mytask.value }}"
+    value: "{{ outputs.mytask.values.result }}"
 ```
 
-We can access these outputs from a parent task as seen in the example below:
+Access these outputs in the parent flow:
 
 ```yaml
 id: parent_flow
@@ -150,11 +171,10 @@ tasks:
     message: "{{ outputs.subflow.outputs.final }}"
 ```
 
-For more details, see the [sublow outputs documentation](../../11.migration-guide/v0.15.0/subflow-outputs/index.md).
 
 ### Passing inputs to a subflow
 
-You can pass inputs to a Subflow task. The example below passes two inputs to a subflow.
+The example below passes a URL input from the parent flow into the subflow.
 
 Subflow:
 ```yaml
@@ -203,7 +223,6 @@ tasks:
     message: "{{ outputs.subflow.outputs.data }}"
 ```
 
-In this example, the parent flow successfully passes an input to the subflow.
 
 #### Nested inputs
 
@@ -233,7 +252,7 @@ tasks:
     transmitFailed: true
 ```
 
-To provide type validation to extracted JSON fields, you can use [nested inputs](../05.inputs/index.md#nested-inputs) in the subflow definition:
+[Nested inputs](../05.inputs/index.md#nested-inputs) in the subflow definition add type validation to extracted JSON fields:
 
 ```yaml
 id: subflow

@@ -1,5 +1,6 @@
 ---
-title: Bitbucket Pipes for Kestra – Build and Deploy from Bitbucket
+title: "Bitbucket Pipes for Kestra: Build and Deploy Flows"
+h1: Streamline Kestra Flow Deployment with Bitbucket Pipes
 sidebarTitle: Bitbucket Pipes
 icon: /src/contents/docs/icons/dev.svg
 description: Use Bitbucket Pipes to streamline the build and deployment process of your Kestra flows from Bitbucket repositories.
@@ -56,4 +57,4 @@ If you're using Kestra Enterprise Edition, you can replace ``--user $KESTRA_USER
 This example uses the Kestra CLI to:
 
 1. Validate flows contained in the `flows/` directory of the repository.
-2. Deploy flows into the `company.team` namespace of your Kestra instance.
+2. Deploy flows into the `dev` namespace of your Kestra instance.

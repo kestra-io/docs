@@ -1,5 +1,6 @@
 ---
-title: Naming Conventions
+title: "Naming Conventions in Kestra: Flows and Namespaces"
+h1: Name Namespaces, Flows, and Tasks for a Scalable Hierarchy
 sidebarTitle: Naming Conventions
 icon: /src/contents/docs/icons/best-practices.svg
 description: Learn the best practices for naming namespaces, flows, tasks, and other identifiers in Kestra for a clean and scalable hierarchy.
@@ -9,16 +10,16 @@ Common naming conventions to keep your flows and tasks well-organized and consis
 
 ## Name namespaces and flows consistently
 
-We recommend following a `company.team` structure for namespaces to maintain a clean, scalable, and consistent hierarchy across your workflows.
+Follow a `company.team` structure for namespaces to maintain a clean, scalable, and consistent hierarchy across your workflows.
 This approach helps with:
 
 1. Centralized governance for credentials and configurations
-2. Easier sharing of variables, plugin defaults, and secrets across teams
+2. Easier sharing of variables and secrets across teams
 3. Simplified Git synchronization
 
 ## Why use the `company.team` structure
 
-By defining a **root namespace named after your company**, you can centralize management of [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md), [variables](../../05.workflow-components/04.variables/index.md), and [secrets](../../06.concepts/04.secret/index.md).
+By defining a **root namespace named after your company**, you can centralize management of [Policies](../../07.enterprise/02.governance/policies/index.md) (Enterprise Edition), [variables](../../05.workflow-components/04.variables/index.md), and [secrets](../../06.concepts/04.secret/index.md).
 These configurations can then be inherited by all namespaces under that root.
 
 This structure also simplifies [Git synchronization](../../version-control-cicd/04.git/index.md).
@@ -42,7 +43,7 @@ mycompany
 
 ## Should you use environment-specific namespaces?
 
-We generally recommend **avoiding environment-specific namespaces** (e.g., `dev`, `staging`, `prod`) because they can introduce several issues:
+Avoid **environment-specific namespaces** (e.g., `dev`, `staging`, `prod`) because they can introduce several issues:
 
 - **Shared risk:** Development workflows can unintentionally impact production.
 - **Configuration drift:** Duplicating configurations across environments can lead to inconsistencies.
@@ -54,11 +55,9 @@ Instead, run **separate Kestra instances** (or tenants in Enterprise Edition) fo
 Using a `company.team` namespace structure creates a clear, maintainable hierarchy that mirrors your organization’s structure and simplifies Git synchronization.
 To separate environments reliably, use distinct Kestra instances or tenants rather than environment-based namespaces.
 
----
-
 ## ID naming convention
 
-We recommend using a consistent naming pattern across all identifiers in Kestra, including:
+Use a consistent naming pattern across all identifiers in Kestra, including:
 
 - Flows
 - Tasks
@@ -77,7 +76,7 @@ This means:
   `{{ outputs.task_id["your-custom-value"].attribute }}`
 
 :::alert{type="info"}
-We recommend using **snake_case** or **camelCase** instead of `kebab-case`, as they avoid the need for subscript notation and improve readability.
+Use **snake_case** or **camelCase** instead of `kebab-case` to avoid the need for subscript notation and improve readability.
 :::
 
 ### Snake case
@@ -91,7 +90,7 @@ namespace: prod.marketing.attribution
 
 inputs:
   - id: api_endpoint
-    type: URL
+    type: URI
     defaults: https://dummyjson.com/products
 
 tasks:
@@ -126,6 +125,7 @@ tasks:
 
 outputs:
   - id: final_result
+    type: FILE
     value: "{{ outputs.sql_query.uri }}"
 
 triggers:
@@ -145,7 +145,7 @@ namespace: prod.marketing.attribution
 
 inputs:
   - id: apiEndpoint
-    type: URL
+    type: URI
     defaults: https://dummyjson.com/products
 
 tasks:
@@ -180,6 +180,7 @@ tasks:
 
 outputs:
   - id: finalResult
+    type: FILE
     value: "{{ outputs.sqlQuery.uri }}"
 
 triggers:

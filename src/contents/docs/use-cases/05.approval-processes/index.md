@@ -1,5 +1,6 @@
 ---
-title: Automate Manual Approval Processes
+title: Automate Manual Approval Processes in Kestra
+h1: Add Human-in-the-Loop Approvals to Automated Workflows
 sidebarTitle: Approval Processes
 description: Integrate Human-in-the-Loop approvals into critical steps of automated workflows
 icon: /src/contents/docs/icons/kestra.svg
@@ -61,7 +62,7 @@ tasks:
     type: io.kestra.plugin.core.flow.Pause
     onResume:
       - id: approved
-        type: BOOLEAN
+        type: BOOL
         description: Approve this request?
       - id: reason
         type: STRING
@@ -98,7 +99,7 @@ Add approval steps with structured inputs to any workflow:
     type: io.kestra.plugin.core.flow.Pause
     onResume:
       - id: approved
-        type: BOOLEAN
+        type: BOOL
         displayName: Approve this request?
       - id: reason
         type: STRING
@@ -119,7 +120,7 @@ Approve multiple paused workflows simultaneously:
 
 ### Audit Trails
 
-Audit Logs capture who approved or rejected each request, and the Pause task's outputs contain the user's decision:
+Audit Logs capture who approved or rejected each request, and the [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task's outputs contain the user's decision:
 ```json
 {
   "approved": true,
@@ -226,7 +227,7 @@ Long approvals can take days or weeks. Kestra persists execution state (includin
 
 ### Keep downstream logic in the same flow (simplest and most common pattern)
 
-The simplest pattern is to keep the entire downstream logic in the same flow after the Pause task:
+The simplest pattern is to keep the entire downstream logic in the same flow after the [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task:
 
 ```yaml
 id: pause_demo
@@ -313,13 +314,10 @@ tasks:
 triggers:
   - id: flow
     type: io.kestra.plugin.core.trigger.Flow
-    preconditions:
-      id: flow1
-      flows:
-        - flowId: pause_demo
-          namespace: demo
-          states:
-            - SUCCESS
+    dependsOn:
+      - flowId: pause_demo
+        namespace: demo
+        states: [SUCCESS]
 ```
 
 Why this is robust:
@@ -328,7 +326,7 @@ Why this is robust:
 - Downstream automation is cleanly decoupled and reacts only after the first flow completes successfully.
 
 :::alert{type="info"}
-Note that the Flow trigger cannot react to a `RESUMED` state as this state is not observable. While you could react to the `RESTARTED` state, this state is used not only for resumed executions after paused but also for executions restarted after a failure, which may not be what you want. Therefore, we recommend that you design your Flow trigger to react directly to the `SUCCESS` state as shown above.
+The Flow trigger cannot react to a `RESUMED` state as this state is not observable. While you could react to the `RESTARTED` state, this state is used not only for resumed executions after paused but also for executions restarted after a failure, which may not be what you want. Design your Flow trigger to react directly to the `SUCCESS` state as shown above.
 :::
 
 ---
@@ -367,7 +365,7 @@ Since Kestra 0.24, there’s [no longer](https://github.com/kestra-io/kestra/pul
      type: io.kestra.plugin.core.flow.Pause
      onResume:
        - id: signoff
-         type: BOOLEAN
+         type: BOOL
          required: true
    ```
 3. **Configure Notifications** – Use Slack, Teams, or Email plugins to notify users about pending approvals:

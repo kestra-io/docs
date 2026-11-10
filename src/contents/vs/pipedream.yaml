@@ -1,0 +1,245 @@
+title: "Kestra vs. Pipedream: Where to Move Before the Workflows Shutdown"
+description: "Pipedream Workflows shuts down on March 31, 2027. Compare Kestra vs Pipedream and see how code steps, triggers, data stores and connected apps move to declarative YAML flows you own."
+competitorName: Pipedream
+guideCta:
+  eyebrow: "Migration guide"
+  title: "Moving off Pipedream Workflows?"
+  description: "Workflows shuts down on March 31, 2027 and every workflow, credential and OAuth token is deleted on April 30. The migration guide covers what the export contains, what you have to re-enter, and a four-stage plan that finishes before the deadline."
+  cta:
+    label: "Read the guide"
+    href: "/resources/migration/pipedream"
+category: Business Automation
+shortDescription: "A serverless integration product being shut down vs. declarative orchestration, fully managed in Kestra Cloud or self-hosted."
+seeHowTitle: "Getting Started After Pipedream"
+seeHowBody: "See how a Pipedream workflow becomes a Kestra flow: same trigger, same code, with loops, retries and Git built in."
+
+brandColor:
+  color: "#34D399"
+  gradient: "linear-gradient(90deg, #34D399, #0EA5E9, #1F2937)"
+
+intro:
+  title: "Kestra vs. Pipedream: Your Workflows Need a New Home"
+  description: "Pipedream was acquired by Workday, and Pipedream Workflows is now in maintenance mode. It shuts down on March 31, 2027, and all Workflows data, including connected-account credentials and OAuth tokens, is deleted by April 30, 2027. Pipedream Connect stays, Workflows does not. Kestra runs the same event-driven automations as declarative YAML flows: webhook and schedule triggers, code in Node.js, Python, Go or Bash, plus loops, retries, approvals, Git and observability that Pipedream left to workarounds. Self-host it under Apache 2.0 or run it on Kestra Cloud."
+
+philosophy:
+  mainTitle: "From a Product Being Retired to a Platform You Control"
+  kestra:
+    title: "Declarative Orchestration You Own"
+    description: "Every workflow is a YAML file you can read, review and keep in Git. Triggers, inputs, retries, timeouts, concurrency and error handling are part of the definition, not settings hidden in a UI. Code runs in any language, in containers or on your own runners. If a vendor changes direction, your flows keep running because the engine is open source."
+    subCardText: '"How do I move 60 workflows off Pipedream before March, without rebuilding them twice?"'
+  competitor:
+    title: "Serverless Integration, Now in Maintenance Mode"
+    description: "Pipedream made API glue fast: a trigger, a few code steps in Node.js or Python, and pre-built actions for SaaS apps. Since the Workday acquisition, Workflows takes no new signups and ships no new features, and the product shuts down on March 31, 2027. The export gives you workflow structure as JSON, but not credentials, environment variables or data store contents."
+    shadowColor: "#C8F2D5"
+    subCardBg: "#edfdf8"
+    subCardText: '"What happens to our webhook URLs, OAuth connections and data stores when Pipedream deletes everything?"'
+
+businessValue:
+  mainTitle: "A Deadline Is a Chance<br />to Fix What Pipedream Never Did"
+  kestra:
+    title: "What You Gain by Moving to Kestra"
+    list:
+      - "Native Loop, Switch, Parallel and subflows instead of workarounds for iteration"
+      - "Large outputs stored once and passed by reference, not copied into every step"
+      - "Retries, timeouts and an errors block per task, plus replay from the failed step"
+      - "Flows in Git with dev and prod promotion, unit tests and CI/CD"
+      - "Kestra Cloud, fully managed like Pipedream, or self-hosted with Kestra Open Source or Enterprise"
+  competitor:
+    title: "What Pipedream Workflows Leaves You With"
+    list:
+      - "Shutdown on March 31, 2027; all Workflows data deleted by April 30, 2027"
+      - "Credentials, OAuth tokens, env vars and secret props are never exported"
+      - "Every *.m.pipedream.net webhook URL stops working at shutdown"
+      - "Credits billed per 30 seconds of compute, scaled up when you raise memory"
+      - "Cloud-only, with no self-hosted option to fall back on"
+    shadowColor: "#C8F2D5"
+    bulletColor: "#3EAA5F"
+  footerText: "Pipedream did the job for many teams: fast webhooks, quick code steps, SaaS actions. The shutdown forces a move either way. Moving to Kestra means the workflows you rebuild once are versioned in Git, observable end to end, and no longer tied to the roadmap of whoever owns your automation vendor. The <a href='/resources/migration/pipedream'>Pipedream migration guide</a> plans that move in four stages."
+
+setupSpeed:
+  title: "Time to Your First Migrated Workflow"
+  subtitle: "Pipedream no longer accepts new signups, so there is no new account to compare against. This shows the path from a Pipedream export to a running Kestra flow."
+  kestra:
+    title:
+      one: "~1"
+      two: Hour
+    description: "Start on Kestra Cloud, which keeps Pipedream's hosted model with nothing to install, or run Kestra Open Source with the Docker Compose command below if you prefer to self-host. Export a Pipedream project from Settings, give one workflow's JSON to the AI Copilot or your own assistant through the Kestra MCP server, review the YAML it proposes, re-create the secrets, and run the flow next to the Pipedream original."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Paste one exported workflow into the AI Copilot,
+      # review the flow, add secrets, run it.
+    lang: sh
+  competitor:
+    title:
+      one: "Before"
+      two: March 31
+    description: "Pipedream's export runs one project at a time from Settings, writes a ZIP to the project's File Store and covers up to 500 workflows or 256 MB per export. You then re-enter every secret, reconnect every app and repoint every webhook on the new platform."
+    shadowColor: "#C8F2D5"
+    command: |
+      # Pipedream: Project > Settings > Export Workflows
+      # Output: project_export-<project_id>.zip
+      #   manifest.json        # status and warnings per workflow
+      #   <workflow>.json      # latest deployed version
+      # Not included: credentials, OAuth tokens,
+      #   env vars, secret props, data store contents,
+      #   File Store files, event history
+    lang: sh
+
+easeOfUse:
+  title: "The Same Workflow, Without the Workarounds"
+  kestra:
+    title: "Kestra: A Loop Is a Task, Not a Hack"
+    description: "A webhook starts the flow, a Loop processes each record, a Go or Python script does the custom work, and an errors block routes failures to the right team. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> drafts the YAML from a description or an exported workflow, and every step is tested and replayable."
+    code: |
+      id: staff_directory_sync
+      namespace: it.integrations
+
+      triggers:
+        - id: on_change
+          type: io.kestra.plugin.core.trigger.Webhook
+          key: "{{ secret('SYNC_WEBHOOK_KEY') }}"
+
+      tasks:
+        - id: fetch_staff
+          type: io.kestra.plugin.core.http.Request
+          uri: "https://hr.example.com/api/staff"
+          headers:
+            Authorization: "Bearer {{ secret('HR_TOKEN') }}"
+
+        - id: each_person
+          type: io.kestra.plugin.core.flow.Loop
+          values: "{{ fromJson(outputs.fetch_staff.body).staff }}"
+          tasks:
+            - id: upsert_account
+              type: io.kestra.plugin.scripts.go.Script
+              script: |
+                package main
+                import "fmt"
+                func main() { fmt.Println("upsert {{ item.value.email }}") }
+
+      errors:
+        - id: alert_owners
+          type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Staff sync failed: {{ execution.id }}"
+    lang: yaml
+  competitor:
+    title: "Pipedream: Iteration and Errors in Your Own Code"
+    description: "Pipedream workflows run steps top to bottom. Iterating over records means writing the loop inside a code step or re-invoking the workflow, and each step's return value is kept for the steps after it. Error routing across workflows has to be assembled by hand."
+    shadowColor: "#C8F2D5"
+    code: |
+      // Pipedream code step (Node.js)
+      export default defineComponent({
+        async run({ steps, $ }) {
+          const staff = steps.fetch_staff.$return_value.staff;
+          // No native loop step: iterate inside the step
+          for (const person of staff) {
+            await upsertAccount(person);   // one failure fails all
+          }
+          // Return value is exported to every later step
+          return { processed: staff.length, staff };
+        },
+      });
+    lang: javascript
+
+visualPreview:
+  mainTitle: "One Orchestrator for Integrations, Data and Operations"
+  kestra:
+    description: "Webhooks, schedules and app events start flows that call APIs, run code in any language, move files, load warehouses and wait for approvals, with logs, outputs and a Gantt view for every execution. Apps give non-technical teams a form to start a flow without seeing YAML."
+  competitor:
+    description: "Pipedream connects SaaS apps with event triggers, code steps and pre-built actions in a hosted builder. Workflows is in maintenance mode and shuts down on March 31, 2027; Pipedream Connect, its API and MCP layer for AI agents, continues."
+    shadowColor: "#C8F2D5"
+
+featureGrid:
+  title: "Kestra vs. Pipedream Workflows at a Glance"
+  tableData:
+    - feature: Product status
+      kestra: "Actively developed, open source (Apache 2.0)"
+      competitor: "Maintenance mode; shuts down March 31, 2027"
+    - feature: Workflow definition
+      kestra: Declarative YAML in Git, plus a no-code editor
+      competitor: Steps built in the browser; JSON export only for migration
+    - feature: Code languages
+      kestra: "Node.js, Python, Go, Bash, PowerShell, R, Ruby and more"
+      competitor: "Node.js, Python, Go, Bash"
+    - feature: Loops and branching
+      kestra: "Loop, LoopUntil, If, Switch, Parallel, subflows"
+      competitor: "If/else and switch; loops written inside code steps"
+    - feature: Passing data between steps
+      kestra: Outputs and files in internal storage, passed by reference
+      competitor: Each step's return value exported to later steps
+    - feature: Testing
+      kestra: "Test runs with inputs, replay from a failed task, flow unit tests (Enterprise)"
+      competitor: Test individual steps in the builder
+    - feature: Environments and Git
+      kestra: "Git sync, CI/CD, Terraform provider; dev and prod tenants in Enterprise and Cloud"
+      competitor: "Version history; GitHub sync for projects on paid plans"
+    - feature: Error handling
+      kestra: "Retries, timeouts, errors block, failure triggers, log exporters"
+      competitor: Per-workflow error notifications
+    - feature: Deployment
+      kestra: "Kestra Cloud (fully managed), or self-hosted Open Source and Enterprise, including air-gapped"
+      competitor: Pipedream cloud only
+    - feature: AI assistance
+      kestra: "AI Copilot, MCP server exposing flows as tools, AI agent tasks"
+      competitor: String (shutting down with Workflows); Connect for AI agents
+
+testimonials:
+  - quote: "With Kestra, orchestration stopped being a fragile point in the architecture and became a stable foundation for the business."
+    author: "Rafael Bartalotti, Engineering and Architecture Manager @ Víssimo Group"
+    kpis:
+      - value: "90%"
+        name: Integration cost reduction
+      - value: "0"
+        name: Incidents on Black Friday
+      - value: "~600"
+        name: Workflows in production
+    storyLink: "/stories/vissimo-group"
+
+platformStrengths:
+  title: "Built So You Never Have to Migrate in a Hurry Again"
+  features:
+    - title: "Managed in the Cloud, Portable by Design"
+      description: "Kestra Cloud runs, scales and upgrades the platform for you, the closest move from Pipedream's hosted model. The engine is open source under Apache 2.0, so the same YAML also runs on Kestra Open Source or Enterprise on your own infrastructure, and no acquisition can switch your automation off."
+    - title: "Code in Any Language, No Rewrite"
+      description: "Pipedream code steps move as code. Node.js, Python, Go and Bash run as script tasks with their dependencies, on Kestra's workers, in containers, or on task runners in your AWS, GCP or Azure account for long or heavy jobs."
+    - title: "Operate It Like Infrastructure"
+      description: "Flows live in Git, promote from dev to prod, and ship through CI/CD. Retries, timeouts, concurrency limits, audit logs and RBAC are part of the platform, and every execution shows inputs, outputs and logs per task."
+
+decisionGuide:
+  mainTitle: "Deciding Where Your Pipedream Workflows Go"
+  kestra:
+    title: "Choose Kestra When"
+    list:
+      - "You need to move off Pipedream Workflows before March 31, 2027 without losing control flow."
+      - "Your workflows loop over records, call slow APIs, or run code that outgrew a single step."
+      - "You want flows in Git with dev and prod environments, tests and CI/CD."
+      - "Failures should route to the right team automatically, with logs you can actually read."
+      - "Finance or HR workflows need SSO, role-based access and audit logs, not a shared workspace."
+      - "You want a managed platform like Pipedream today, with the option to self-host later so the next acquisition can't switch your automation off."
+  competitor:
+    title: "Consider Staying on Pipedream When"
+    list:
+      - "You only use Pipedream Connect for AI agent integrations, which is not affected by the shutdown."
+      - "Your workflows can stay on Pipedream until March 2027 and you plan to retire them before then."
+      - "You need a hosted SaaS-to-SaaS connector for a handful of simple triggers and no orchestration."
+    shadowColor: "#C8F2D5"
+    bulletColor: "#3EAA5F"
+
+commonQuestions:
+  - question: "When does Pipedream Workflows shut down?"
+    answer: "Pipedream Workflows and String shut down on March 31, 2027. Existing workflows keep running until then, but the product takes no new signups or subscriptions and ships no new features. All Workflows data, including connected-account credentials and OAuth tokens, is permanently deleted by April 30, 2027. Pipedream Connect, including its API, MCP servers and API proxy, is not affected."
+  - question: "How do I export my workflows from Pipedream?"
+    answer: "Open each project, go to Settings and click Export Workflows. Pipedream writes a ZIP named project_export-PROJECT_ID.zip to the project's File Store, with a manifest.json and one JSON file per workflow holding its latest deployed version. One export covers up to 500 workflows or 256 MB. Credentials, OAuth tokens, environment variables, secret props, data store contents and File Store files are not included, so list and save those separately before April 30, 2027. The <a href='/resources/migration/pipedream#section-3-3'>export checklist</a> in the migration guide says where each one goes in Kestra."
+  - question: "How do I migrate from Pipedream to Kestra?"
+    answer: "Start on Kestra Cloud, or self-host Kestra Open Source or Enterprise. Export each project, triage the workflows (retire, merge, convert), then convert them one wave at a time. Each Pipedream trigger becomes a Kestra trigger, each code step a script task in the same language, each pre-built action a plugin task or an HTTP request, and each data store a KV Store namespace. The AI Copilot, or your own assistant through the Kestra MCP server, can draft a flow from an exported workflow for an engineer to review. Run old and new side by side, then repoint webhooks and retire the Pipedream version. The <a href='/resources/migration/pipedream'>Pipedream migration guide</a> covers each stage, and <a href='/resources/infrastructure/pipedream-alternatives'>Pipedream alternatives compared</a> sets Kestra against the other options."
+  - question: "Can Kestra run my Pipedream Go and Python code steps?"
+    answer: "Yes. Kestra has script tasks for Node.js, Python, Go, Bash and other languages. The code from a Pipedream step runs with its dependencies, reading inputs from flow variables instead of the steps object and returning outputs instead of exporting them. Long or memory-heavy steps can run on a task runner in your own cloud account, where there is no shared execution time limit. The migration guide walks through a <a href='/resources/migration/pipedream#section-5-1'>full worked conversion</a>."
+  - question: "What happens to my Pipedream webhook URLs?"
+    answer: "Every *.m.pipedream.net endpoint stops working when Workflows shuts down, so each sender, such as Stripe, GitHub or an internal system, has to be pointed at a new URL. In Kestra, a Webhook trigger exposes a URL per flow with a secret key. Plan the cutover per sender: run the Kestra flow in parallel, switch the URL in the sender, confirm executions arrive, then disable the Pipedream workflow. The <a href='/resources/migration/pipedream#section-6'>cutover plan</a> in the migration guide covers testing and promotion."
+  - question: "Does Kestra have as many integrations as Pipedream?"
+    answer: "Kestra has {totalPlugins}+ plugins for databases, warehouses, cloud services, messaging, AI and SaaS apps, and an HTTP task that calls any REST API. Pipedream's catalog of pre-built actions is larger for long-tail SaaS apps, so some actions become an HTTP request or a short script. For systems with no plugin yet, you can write and install a custom plugin in your own instance."

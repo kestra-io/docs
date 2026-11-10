@@ -1,0 +1,122 @@
+---
+title: "Utility Functions in Kestra Expressions"
+h1: "Utility Functions"
+description: Reference for Kestra's utility functions — now(), uuid(), randomInt(), range(), http(), fileSize(), fileExists(), isFileEmpty(), and more — for generating values and inspecting files at runtime.
+sidebarTitle: Utility Functions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+## `now()`
+
+Returns the current datetime. Accepts a `timeZone` argument:
+
+```twig
+{{ now() }}
+{{ now(timeZone="Europe/Paris") }}
+```
+
+## `max()` and `min()`
+
+Returns the largest or smallest of its arguments:
+
+```twig
+{{ max(5, 10, 15) }}
+{# output: 15 #}
+{{ min(5, 10, 15) }}
+{# output: 5 #}
+```
+
+## `range()`
+
+Generates a list of integers up to and including `end`. The step defaults to 1:
+
+```twig
+{{ range(0, 3) }}
+{# output: [0, 1, 2, 3] #}
+{{ range(0, 6, 2) }}
+{# output: [0, 2, 4, 6] #}
+```
+
+## `uuid()`
+
+Generates a UUID in URL-safe base62 encoding:
+
+```twig
+{{ uuid() }}
+```
+
+## `id()`
+
+Generates a short unique ID using Kestra's internal ID utility:
+
+```twig
+{{ id() }}
+```
+
+## `ksuid()`
+
+Generates a K-Sortable Unique Identifier (timestamp-prefixed, base62-encoded). Useful when sort order by creation time matters:
+
+```twig
+{{ ksuid() }}
+```
+
+## `nanoId()`
+
+Generates a NanoID. `length` defaults to 21 and `alphabet` defaults to alphanumeric plus `-_`:
+
+```twig
+{{ nanoId() }}
+{{ nanoId(length=10) }}
+```
+
+## `randomInt()`
+
+Generates a random integer. The upper bound is **excluded**:
+
+```twig
+{{ randomInt(1, 10) }}
+{# generates a random integer from 1 to 9 (10 is excluded) #}
+```
+
+## `randomPort()`
+
+Picks an available local port. Useful in test or dev container flows:
+
+```twig
+{{ randomPort() }}
+```
+
+## `http()`
+
+Fetches a remote payload directly from an expression:
+
+```twig
+{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}
+```
+
+Use it sparingly. It is convenient for dynamic dropdowns and lightweight lookups, but task-level HTTP calls are usually easier to observe and retry.
+
+## `fileSize()`
+
+Returns the size in bytes of a file from internal storage:
+
+```twig
+{{ fileSize(outputs.download.uri) }}
+```
+
+## `fileExists()`
+
+Returns `true` if the file exists:
+
+```twig
+{{ fileExists(outputs.download.uri) }}
+```
+
+## `isFileEmpty()`
+
+Returns `true` if the file has no content:
+
+```twig
+{{ isFileEmpty(outputs.download.uri) }}
+```

@@ -33,11 +33,22 @@ dist
 
 ## Cloudflare
 .wrangler
+worker-configuration.d.ts
 
 ## Astro
 .astro
 .env
 
+## Playwright
+test-results/
+playwright-report/
+blob-report/
+visual-diff-report/
+
 ## mkcert
 localhost.pem
 localhost-key.pem
+
+## Visual regression (captured per run, never committed)
+tests/visual-regression.spec.ts-snapshots/
+visual-baseline/

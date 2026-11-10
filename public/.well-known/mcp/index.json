@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "transport": "http",
+  "url": "https://api.kestra.io/v1/mcp",
+  "servers": [
+    {
+      "name": "public",
+      "url": "https://api.kestra.io/v1/mcp",
+      "transport": "http",
+      "authentication": "none"
+    }
+  ]
+}

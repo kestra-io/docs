@@ -1,9 +1,28 @@
-/* oxlint-disable no-console */
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
-import contentSecurityPolicyConfig from "../content-security-policy.config"
-import cloudflareJwt from "./middlewares/cloudflareJwt.ts"
 import YAML from "yaml"
+import { resolveRedirect } from "~/utils/redirects"
+import { $fetchApiRawCached } from "~/utils/fetch"
+import { API_URL } from "astro:env/client"
+import {
+    apiDocPath,
+    decideVersionedRoute,
+    docLinkBaseDir,
+    isAssetShapedDocPath,
+    missingDocFallbackHref,
+    stripFrontmatter,
+    VERSIONED_DOCS_PATH,
+    versionedDocLinkResolver,
+    versionHomeHref,
+} from "~/utils/versionedDocs"
+import { buildDocMarkdown, parseDocFrontmatter } from "~/utils/docMarkdown"
+import { KESTRA_SITE_ORIGIN } from "~/utils/markdown-actions/resolveMarkdownUrl"
+import {
+    getDocsLatestVersion,
+    getKnownDocVersions,
+    getLatestDocVersion,
+} from "~/utils/docVersionsFetch"
+import { getDocChildren } from "~/utils/docChildrenFetch"
 
 const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
     eager: true,
@@ -13,20 +32,40 @@ const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
 
 const redirectCollection: {
     id: string
-    data: {
-        regexp: string
-        to: string
-    }
-}[] = []
+    data: { regexp: string; to: string }
+}[] = Object.entries(redirectFileCollection).map(([path, raw]) => ({
+    id: path.split("/").slice(-1)[0].split(".")[0],
+    data: YAML.parse(raw as string),
+}))
 
-for (const path in redirectFileCollection) {
-    const id = path.split("/").slice(-1)[0].split(".")[0]
-    const data = redirectFileCollection[path] as string
-
-    redirectCollection.push({
-        id,
-        data: YAML.parse(data),
-    })
+const legacyCustomerStoryIdToSlug: Record<string, string> = {
+    "2": "ntico",
+    "3": "cleverconnect",
+    "4": "quadis",
+    "5": "airpaz",
+    "6": "clever-cloud",
+    "8": "copines-de-voyage",
+    "9": "displayce",
+    "10": "reglo",
+    "11": "htch",
+    "12": "bouygues-immobilier",
+    "13": "gorgias",
+    "14": "leroy-merlin-france",
+    "15": "networklessons",
+    "17": "fila",
+    "18": "sopht",
+    "19": "credit-agricole",
+    "22": "acxiom",
+    "23": "foundation-data",
+    "25": "gravitee",
+    "26": "jpmorgan-chase",
+    "27": "fortune-500-company",
+    "28": "software-provider",
+    "29": "pharmacy-retailer",
+    "30": "dataport",
+    "31": "vissimo-group",
+    "32": "apple",
+    "33": "amdocs",
 }
 
 const sendRedirect = (redirectUrl: string) => {
@@ -81,24 +120,6 @@ const logger = defineMiddleware(async (context, next) => {
     return response
 })
 
-const noIndex = defineMiddleware(async (context, next) => {
-    // disable for tracking
-    if (context.url.pathname.startsWith("/t/")) {
-        return next()
-    }
-
-    // Check if the request is coming from the .workers.dev domain or others
-    if (context.url.host !== "kestra.io") {
-        const response = (await next()).clone()
-
-        response.headers.set("X-Robots-Tag", "noindex, nofollow")
-
-        return response
-    }
-
-    return next()
-})
-
 const incomingRedirect = defineMiddleware(async (context, next) => {
     // disable for tracking
     if (context.url.pathname.startsWith("/t/")) {
@@ -107,13 +128,6 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
 
     const originalUrl = context.url.toString()
 
-    // we don't want trailing slashes (but allow the root path '/')
-    // but we need to remove this rule for now to avoid bug in redirect from Cloudflare
-    // manage with "html_handling": "drop-trailing-slash"
-    // if (context.url.pathname !== "/" && originalUrl.endsWith("/")) {
-    //     return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
-    // }
-
     // we don't want .html extensions (historical reason)
     if (originalUrl.endsWith(".html")) {
         return sendRedirect(
@@ -121,6 +135,13 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
                 .substring(0, originalUrl.length - 5)
                 .toLocaleLowerCase(),
         )
+    }
+
+    // we don't want trailing slashes (but allow the root path '/')
+    // static pages are handled by Cloudflare's asset handler (drop-trailing-slash),
+    // this covers SSR (non-prerendered) pages that reach the worker
+    if (!context.isPrerendered && context.url.pathname !== "/" && originalUrl.endsWith("/")) {
+        return sendRedirect(originalUrl.substring(0, originalUrl.length - 1));
     }
 
     // all urls should be lowercase
@@ -159,65 +180,132 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     return next()
 })
 
-const securityHeaders = defineMiddleware(async (context, next) => {
-    // disable for tracking
-    if (context.url.pathname.startsWith("/t/")) {
+// Serve /docs/{major.minor}/... from api.kestra.io, rendered inline. Latest docs
+// don't match the version regex and fall through to Astro's static handling.
+const versionedDocs = defineMiddleware(async (context, next) => {
+    // Mirrors the latest docs' "append .md to any /docs/* URL" convention
+    // (DocsLayout's llms-directive: "/docs/x" -> "/docs/x.md", the version
+    // itself included, e.g. "/docs/1.2" -> "/docs/1.2.md"), so
+    // MarkdownActionsMenu's "View as Markdown" works unmodified for versioned
+    // pages too. Stripped from the pathname BEFORE matching the version/path
+    // regex, so it doesn't have to account for ".md" landing inside either
+    // capture group.
+    const isMarkdownRequest = context.url.pathname.endsWith(".md")
+    const testPathname = isMarkdownRequest
+        ? context.url.pathname.slice(0, -3)
+        : context.url.pathname
+    const match = VERSIONED_DOCS_PATH.exec(testPathname)
+    if (!match) {
         return next()
     }
 
-    const localhost: string[] = []
-    if (import.meta.env.DEV) {
-        localhost.push(context.url.protocol + "//" + context.url.host)
-    }
+    const version = match[1]
+    const path = (match[2] ?? "").replace(/^\/+|\/+$/g, "")
 
-    const response = (await next()).clone()
-
-    const contentSecurityPolicy: string = Object.entries(
-        contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
-    )
-        .filter(
-            ([key]) =>
-                import.meta.env.DEV && key !== "upgrade-insecure-requests",
-        )
-        .map(([key, value]) => {
-            let line = key
-
-            if (typeof value !== "boolean") {
-                if (value.length === 1 && value[0] === "'none'") {
-                    line += " " + value.join(" ")
-                } else {
-                    line += " " + localhost.concat(value).join(" ")
-                }
-            }
-
-            return line
+    const unavailable = () =>
+        new Response("Documentation temporarily unavailable", {
+            status: 503,
+            headers: {
+                "content-type": "text/plain;charset=utf-8",
+                "cache-control": "no-store",
+                "retry-after": "30",
+            },
         })
-        .join("; ")
 
-    response.headers.set(
-        "x-frame-options",
-        import.meta.env.DEV ? "SAMEORIGIN" : "DENY",
-    )
-    response.headers.set("x-content-type-options", "nosniff")
-    response.headers.set("x-download-options", "nosniff")
-    response.headers.set(
-        "access-control-allow-origin",
-        context.url.protocol + "//" + context.url.host,
-    )
-    response.headers.set("cross-origin-opener-policy", "same-origin")
-    response.headers.set("cross-origin-resource-policy", "same-origin")
-    response.headers.set(
-        "permissions-policy",
-        "camera=(), display-capture=(), fullscreen=(*), geolocation=(), microphone=()",
-    )
-    response.headers.set("referrer-policy", "strict-origin-when-cross-origin")
-    response.headers.set("x-permitted-cross-domain-policies", "none")
-    response.headers.set("content-security-policy", contentSecurityPolicy)
-
-    if (!import.meta.env.DEV) {
-        response.headers.set("strict-transport-security", "max-age=15552000")
+    // Routing policy lives in the pure, tested decideVersionedRoute.
+    const [latest, productLatest, { versions: known, ok: knownOk }] = await Promise.all([
+        getDocsLatestVersion(),
+        getLatestDocVersion(),
+        getKnownDocVersions(),
+    ])
+    const decision = decideVersionedRoute({
+        version,
+        path,
+        isMarkdownRequest,
+        search: context.url.search,
+        latest,
+        known,
+        knownOk,
+        productLatest,
+    })
+    if (decision.kind === "pass") return next()
+    if (decision.kind === "unavailable") return unavailable()
+    if (decision.kind === "redirect") {
+        return new Response("", {
+            status: 302,
+            headers: { Location: decision.location },
+        })
     }
 
+    let markdown: string | null = null
+    // Asset-shaped paths deterministically 500 at the origin (see
+    // isAssetShapedDocPath) — skip the fetch and treat them as missing, so
+    // they don't turn the transient-failure 503 below into a permanent one.
+    if (!isAssetShapedDocPath(path)) {
+        try {
+            const docRes = await $fetchApiRawCached(apiDocPath(version, path))
+            markdown = (await docRes.text()) || null
+        } catch (error) {
+            // A 404 just means this page doesn't exist for this version (the
+            // expected case the fallback below handles). Anything else is a
+            // transient origin failure — surface it instead of letting an API
+            // blip masquerade as the missing-page redirect below.
+            const status = (error as { response?: { status?: number } })?.response?.status
+            if (status !== 404) {
+                console.error(`Failed to fetch versioned doc ${version}/${path}:`, error)
+                return unavailable()
+            }
+            markdown = null
+        }
+    }
+
+    if (markdown === null) {
+        // The version's own home page is missing: a real 404 rather than
+        // silently switching the reader to the latest docs.
+        if (!path) {
+            return next()
+        }
+        return new Response("", {
+            status: 302,
+            headers: {
+                Location: missingDocFallbackHref(version, isMarkdownRequest, context.url.search),
+            },
+        })
+    }
+
+    if (isMarkdownRequest) {
+        // Matches [...docsPath].md.ts's format for the latest docs: frontmatter,
+        // the page's real H1, then the body with its relative links resolved
+        // for this version. The children map tells a directory page from a
+        // leaf, which decides what "./" resolves against.
+        const children = await getDocChildren(version)
+        const home = versionHomeHref(version)
+        const { title, h1, description } = parseDocFrontmatter(markdown)
+        const body = buildDocMarkdown(
+            {
+                title: title ?? "Documentation",
+                h1,
+                description,
+                url: `${KESTRA_SITE_ORIGIN}${path ? `${home}/${path}` : home}`,
+            },
+            stripFrontmatter(markdown),
+            versionedDocLinkResolver(version, docLinkBaseDir(path, children), API_URL),
+        )
+        return new Response(body, {
+            headers: {
+                "content-type": "text/markdown;charset=utf-8",
+                "X-Robots-Tag": "noindex",
+            },
+        })
+    }
+
+    // Children feed the nav sidebar; memoized, not fetched per request. The
+    // latest version is fetched independently by DocsLayout via getDocsLatestVersion().
+    const children = await getDocChildren(version)
+
+    context.locals.versionedDoc = { version, path, markdown, children }
+    const response = await next("/docs-versioned")
+    response.headers.set("X-Robots-Tag", "noindex")
     return response
 })
 
@@ -233,25 +321,32 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         return response
     }
 
+    // A versioned plugin URL (/plugins/<name>/vX.Y.Z/...) only 404s when the version was never
+    // released. Let that 404 surface instead of letting the /plugins/plugin-*.* catch-all rewrite
+    // it to the plugin root (a soft-404). Real-but-unavailable versions render latest, not a 404.
+    if (/^\/plugins\/[^/]+\/v\d+\.\d+\.\d+(\/|$)/.test(context.url.pathname)) {
+        return response
+    }
+
+    const storyIdMatch = context.url.pathname.match(/^\/(?:use-cases\/stories|customers)\/(\d+)(?:-|$)/)
+    if (storyIdMatch) {
+        const slug = legacyCustomerStoryIdToSlug[storyIdMatch[1]]
+        if (slug) {
+            return sendRedirect(`/stories/${slug}`)
+        }
+    }
+
     const originalUrl = new URL(context.url)
     const split = originalUrl.pathname.split("/")
 
-    const allEntries = redirectCollection
+    const rules = redirectCollection
         .filter((item) => item.id === (split.length > 2 ? split[1] : "index"))
         .flatMap((item) => item.data)
-        .map((item) => {
-            const regexp = new RegExp(item.regexp)
-            const match = originalUrl.pathname.match(regexp)
-            if (match) {
-                return originalUrl.pathname.replace(regexp, item.to)
-            }
 
-            return null
-        })
-        .filter((item) => item !== null)
+    const target = resolveRedirect(originalUrl.pathname, rules)
 
-    if (allEntries.length > 0) {
-        return sendRedirect(allEntries[0])
+    if (target !== null) {
+        return sendRedirect(target)
     }
 
     return response
@@ -259,9 +354,7 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 
 export const onRequest = sequence(
     logger,
-    cloudflareJwt,
-    noIndex,
     incomingRedirect,
-    securityHeaders,
+    versionedDocs,
     notFoundRedirect,
 )

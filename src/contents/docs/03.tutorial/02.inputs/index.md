@@ -1,21 +1,18 @@
 ---
-title: Tutorial – Add Inputs to Kestra Workflows
+title: Add Inputs to Kestra Workflows
+h1: Make Flows Dynamic with Inputs
 sidebarTitle: Inputs
 icon: /src/contents/docs/icons/tutorial.svg
 description: Discover how to add dynamic inputs to your Kestra workflows to make them flexible and reusable across different scenarios.
 ---
 
-Inputs make your flows more dynamic and reusable.
-
-Instead of hardcoding values in your flow, use inputs to make your workflows more adaptable to change.
+Instead of hardcoding values in your flow, use inputs to make your workflows more dynamic and reusable.
 
 ## Make Flows dynamic with Inputs
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/7abajF7wmzY?si=7oLTHTmC1QPPSCn7" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/o7biCltS40Y?si=U0IrgWNeHZM8ym4w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## Defining inputs
 
@@ -46,7 +43,7 @@ Hit the `Backspace` or `Delete` key while building your expression? Use the keyb
 
 Try running the above flow with different values for the `user` input. You can do this by clicking on the **Execute** button and then typing a new string value in the prompt for whatever name you'd like.
 
-![Inputs](./inputs.png)
+![Inputs](./inputs-2-0.png)
 
 :::alert{type="info"}
 The plural form `defaults` is used instead of `default` for two reasons. First, `default` is a reserved keyword in Java, so it cannot be used. Second, this property allows you to set default values for a JSON object which can be an array that simultaneously defines multiple default values.
@@ -60,15 +57,13 @@ Here are the most common input types:
 |---------|-------------------------------------------------------------------------------------------------------|
 | STRING  | It can be any string value. Strings are not parsed, they are passed as-is to any task that uses them. |
 | INT     | It can be any valid integer number (without decimals).                                                |
-| BOOLEAN | It must be either `true` or `false`.                                                                  |
+| BOOL    | It must be either `true` or `false`.                                                                  |
 
 This is a very basic list to get started. Check the [Inputs documentation](../../05.workflow-components/05.inputs/index.md) for an extensive list of supported input types and properties.
 
----
-
 ## Parameterize your flow
 
-Now with basic Inputs in our grasp, we can parameterize the flow created earlier in [Fundamentals](../01.fundamentals/index.md#create-and-run-a-flow). In our example below, we provide the URL of the API as an input rather than hardcoded into the Request task's `uri` property. This allows you to change the URL at execution time without modifying the flow itself.
+With basic inputs covered, you can parameterize the flow created earlier in [Fundamentals](../01.fundamentals/index.md#create-and-run-a-flow). In our example below, we provide the URL of the API as an input rather than hardcoded into the Request task's `uri` property. This allows you to change the URL at execution time without modifying the flow itself.
 
 ```yaml
 id: getting_started

@@ -2,7 +2,6 @@
 import { ClientRouter } from "astro:transitions"
 import LoadingIndicator from "astro-loading-indicator/component"
 import { Font } from "astro:assets"
-import "@kestra-io/ui-libs/style.css"
 import "~/assets/styles/vendor.scss"
 import "~/assets/styles/app.scss"
 import "~/assets/styles/theme.scss"
@@ -14,8 +13,10 @@ import Announce from "~/components/layout/Announce.vue"
 import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import BreadcrumbList from "~/components/common/BreadcrumbList.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
+import { getDocsLatestVersion } from "~/utils/docVersionsFetch"
 import annoncesData from "~/contents/annonces/annonces.yml?raw"
 import YAML from "yaml"
+import { DISABLE_USAL, PREVIEW } from "astro:env/server"
 
 const parsedAnnonces = YAML.parse(annoncesData ?? "[]")
 
@@ -27,11 +28,55 @@ interface Props {
      * @param headerTheme Controls the header appearance before scrolling.
      * - `"lightText"` — White nav links/logo; for dark/gradient hero backgrounds.
      * - `"darkText"` — Dark nav links/logo; for white hero backgrounds.
-     * - `"darkHeader"` — Opaque dark header background in both modes (currently only used on homepage for the riv black bg).
+     * - `"darkHeader"` — Opaque dark header background in both modes.
      * @param headerBg Override the dark header background color. Only applies when `headerTheme="darkHeader"`.
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
+    /**
+     * Header states the homepage's scripts set on `<body>`. Rendering them here
+     * puts them in the first paint; the scripts keep them in step afterwards.
+     * - `headerClean` — the quieter menu (`data-header-clean`).
+     * - `headerClear` — no fill at the very top of a dark hero (`data-header-clear`).
+     * - `headerOverDark` — the page opens on a dark section (`data-header-over-dark`).
+     */
+    headerClean?: boolean
+    headerClear?: boolean
+    headerOverDark?: boolean
+    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/all). */
+    canonical?: string
+    /** Breadcrumb JSON-LD name, for pages whose `title` carries a meta title distinct from the visible H1. Defaults to `title`. */
+    breadcrumbTitle?: string
+    /** Extra Breadcrumb JSON-LD crumbs inserted right after Home, for an ancestor the URL alone doesn't carry. */
+    breadcrumbPrependItems?: { name: string; url: string }[]
+    /** Override the analytics content-view-name (window.astroClientConfig.slug); kept separate from `canonical`, which some pages use for syndicated-content URLs. */
+    analyticsSlug?: string
+    /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
+    noindex?: boolean
+    /**
+     * Set to true to render the page without the site chrome — no nav, search
+     * overlay, footer, or floating action buttons. Campaign landing pages under
+     * `/lp/*` use this so they can supply their own minimal header and footer
+     * and keep exit paths off the page.
+     */
+    bareChrome?: boolean
+    /**
+     * Pin the page to one theme whatever the visitor's setting. Campaign pages
+     * pin "light" so components built on the theme-aware --ks-* tokens match
+     * the page's fixed palette.
+     */
+    forceTheme?: "light" | "dark"
+    hideFloatingActions?: boolean
+    lang?: string
+    /** A page-only banner shaped like an annonces.yml entry. Without it, only
+     *  the homepage shows a banner (from annonces.yml). */
+    banner?: {
+        tag?: string
+        linkText?: string
+        text?: string
+        tail?: string
+        href: string
+    }
 }
 
 const props = Astro.props
@@ -42,15 +87,30 @@ currentUrl.pathname = currentUrl.pathname.endsWith("/")
     : currentUrl.pathname
 
 const currentOrigin = currentUrl.origin ?? "https://kestra.io"
-const slug = Astro.routePattern
+const slug = props.analyticsSlug ?? Astro.routePattern
 
-const title = props.title
-    ? props.title + " | Kestra"
+// Strip any existing " | Kestra" suffix before re-appending, so the template
+// is the single owner of the suffix. Guards against double " | Kestra | Kestra"
+// when metaTitle front-matter already includes it.
+const baseTitle = props.title?.replace(/\s*\|\s*Kestra\s*$/i, "").trim()
+const title = baseTitle
+    ? `${baseTitle} | Kestra`
     : "Kestra, Open Source Declarative Orchestration Platform"
 const description =
     props.description ??
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
+// Derive og:image:type from the actual served file. The site default is a
+// .png, so the previous hard-coded "image/svg+xml" was always a mismatch.
+const imageType = /\.png($|\?)/i.test(image)
+    ? "image/png"
+    : /\.webp($|\?)/i.test(image)
+      ? "image/webp"
+      : /\.jpe?g($|\?)/i.test(image)
+        ? "image/jpeg"
+        : /\.svg($|\?)/i.test(image)
+          ? "image/svg+xml"
+          : "image/png"
 
 const query = new URLSearchParams(
     currentUrl.searchParams
@@ -68,16 +128,44 @@ const query = new URLSearchParams(
 const currentUrlNoQS = new URL(
     currentUrl.toString().replace(currentUrl.search, ""),
 )
-const canonicalUrl = new URL(
-    currentUrlNoQS.toString() + (query.size > 0 ? "?" + query.toString() : ""),
-    Astro.site,
-)
+const canonicalUrl = props.canonical
+    ? new URL(props.canonical, Astro.site)
+    : new URL(
+          currentUrlNoQS.toString() +
+              (query.size > 0 ? "?" + query.toString() : ""),
+          Astro.site,
+      )
+
+// Search is scoped to the version /docs serves (see searchScope), which the
+// pinned docs-latest can put ahead of the API's own latest.
+const docsLatest = await getDocsLatestVersion()
 
 const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
-const hasAnnounce = isHomepage && annonces.length > 0
+const announceContent = props.banner
+    ? [props.banner]
+    : isHomepage
+      ? annonces
+      : []
+const hasAnnounce = announceContent.length > 0
+// Same key Announce.vue stores on dismissal; empty for a page-only banner.
+const announceKey = announceContent
+    .map((slide: { id?: number }) => slide.id)
+    .join(",")
+
+const websiteSchema = isHomepage
+    ? {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://kestra.io/#website",
+          "url": "https://kestra.io",
+          "name": "Kestra",
+          "description":
+              "Open-source declarative orchestration platform for data, AI, and infrastructure workflows",
+      }
+    : null
 
 const organizationSchema = {
     "@context": "https://schema.org",
@@ -102,15 +190,22 @@ const organizationSchema = {
 }
 ---
 
-<html lang="en">
+<html
+    lang={props.lang ?? "en"}
+    class:list={{ "no-animation": DISABLE_USAL }}
+    data-force-theme={props.forceTheme}
+>
     <head>
         <script is:inline>
             ;(function () {
+                var forced =
+                    document.documentElement.getAttribute("data-force-theme")
                 var theme = localStorage.getItem("theme") || "system"
-                var dark =
-                    theme === "dark" ||
-                    (theme === "system" &&
-                        matchMedia("(prefers-color-scheme: dark)").matches)
+                var dark = forced
+                    ? forced === "dark"
+                    : theme === "dark" ||
+                      (theme === "system" &&
+                          matchMedia("(prefers-color-scheme: dark)").matches)
                 document.documentElement.classList.add(dark ? "dark" : "light")
             })()
         </script>
@@ -164,10 +259,16 @@ const organizationSchema = {
         />
         <meta
             name="robots"
-            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+            content={props.noindex
+                ? "noindex, follow"
+                : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
         />
         <link rel="canonical" href={canonicalUrl.toString()} />
-        <BreadcrumbList url={currentUrl} pageTitle={props.title} />
+        <BreadcrumbList
+            url={props.canonical ? new URL(props.canonical, Astro.site) : currentUrl}
+            pageTitle={props.breadcrumbTitle ?? props.title}
+            prependItems={props.breadcrumbPrependItems}
+        />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@kestra_io" />
@@ -178,13 +279,7 @@ const organizationSchema = {
 
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        {
-            !props.image ? (
-                <meta property="og:image:type" content="image/svg+xml" />
-            ) : (
-                ""
-            )
-        }
+        <meta property="og:image:type" content={imageType} />
         <meta property="og:image:alt" content={title} />
         <meta property="og:url" content={canonicalUrl.toString()} />
         <meta property="og:image" content={image} />
@@ -205,19 +300,47 @@ const organizationSchema = {
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
-        <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+        {websiteSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
 
         <slot name="head" />
 
-        <ClientRouter />
+        <!-- Inline copy of readInternalFlagFromUrl (scripts/internalVisitor.ts): it must
+             strip ?kestra_internal before ClientRouter and analytics.js read the URL. -->
+        <script is:inline>
+            try {
+                if (location.search) {
+                    var url = new URL(location.href)
+                    var value = url.searchParams.get("kestra_internal")
+                    if (value !== null) {
+                        if (value === "1") localStorage.setItem("ka_internal", "1")
+                        else if (value === "0") localStorage.removeItem("ka_internal")
+                        url.searchParams.delete("kestra_internal")
+                        history.replaceState(history.state, "", url.pathname + url.search + url.hash)
+                    }
+                }
+            } catch (e) {}
+        </script>
+
+       {import.meta.env.PROD && <ClientRouter />}
         <LoadingIndicator color="#a796ff" threshold={0} />
 
-        <script src="../scripts/analytics.js"></script>
-        <script src="../scripts/bootstrap.js"></script>
-        <script src="../scripts/cookieconsent.ts"></script>
+        {
+            import.meta.env.DEV || PREVIEW ? null : (
+                <>
+                    <!-- @prettier-ignore -->
+                    <script src="../scripts/analytics.js"></script>
+                    <script src="../scripts/outbound.js"></script>
+                    <script src="../scripts/cookieconsent.ts"></script>
+                </>
+            )
+        }
+        <script src="../scripts/modal.ts"></script>
+        <script src="../scripts/gclid.ts"></script>
         <script src="../scripts/zoom.js"></script>
         <script src="../scripts/theme.ts"></script>
         <script src="../scripts/ec-collapsible.ts"></script>
+        <script src="../scripts/mermaid.ts"></script>
     </head>
     <body
         data-header-theme={{
@@ -225,30 +348,124 @@ const organizationSchema = {
             lightText: "dark",
             darkText: "light",
         }[props.headerTheme!]}
+        data-header-clean={props.headerClean ? "" : undefined}
+        data-header-clear={props.headerClear ? "" : undefined}
+        data-header-over-dark={props.headerOverDark ? "" : undefined}
         style={props.headerBg
             ? `--header-dark-bg: ${props.headerBg}`
             : undefined}
         class={hasAnnounce ? "has-annonces" : ""}
+        data-announce-key={announceKey || undefined}
     >
-        <Header client:load transition:persist />
-        <Search randomAiQuestions={randomAiQuestions} client:load />
+        <script is:inline>
+            // A dismissed announcement must not paint and then vanish: drop the
+            // space kept for it before first paint, and again for every page
+            // the router brings in (as theme.ts does for the theme).
+            ;(function () {
+                var apply = function (doc) {
+                    var key = doc.body.getAttribute("data-announce-key")
+                    try {
+                        if (!key || localStorage.getItem("announce-dismissed") !== key)
+                            return
+                    } catch (e) {
+                        return
+                    }
+                    doc.body.classList.remove("has-annonces")
+                }
+                apply(document)
+                document.addEventListener("astro:before-swap", function (event) {
+                    apply(event.newDocument)
+                })
+            })()
+        </script>
         {
-            hasAnnounce ? (
-                <Announce client:load transition:persist content={annonces} />
-            ) : (
-                ""
+            !props.bareChrome && (
+                <>
+                    <Header client:load transition:persist />
+                    <script is:inline>
+                        // Until the header island hydrates nothing tracks the
+                        // scroll position, so a page loaded or restored
+                        // mid-scroll would paint the top-of-page header.
+                        ;(function () {
+                            var bar = document.getElementById("top-bar")
+                            var island = bar && bar.closest("astro-island")
+                            if (!island || !island.hasAttribute("ssr")) return
+                            var body = document.body
+                            var darkAtTop = body.hasAttribute("data-header-over-dark")
+                            var sync = function () {
+                                var scrolled = window.scrollY > 0
+                                bar.classList.toggle("scrolled", scrolled)
+                                if (!darkAtTop) return
+                                var line = bar.getBoundingClientRect().bottom - 1
+                                var over = !scrolled
+                                document
+                                    .querySelectorAll("[data-header-dark]")
+                                    .forEach(function (section) {
+                                        var box = section.getBoundingClientRect()
+                                        if (box.top <= line + 4 && box.bottom > line)
+                                            over = true
+                                    })
+                                body.toggleAttribute("data-header-over-dark", over)
+                            }
+                            window.addEventListener("scroll", sync, { passive: true })
+                            island.addEventListener(
+                                "astro:hydrate",
+                                function () {
+                                    window.removeEventListener("scroll", sync)
+                                },
+                                { once: true },
+                            )
+                            sync()
+                        })()
+                    </script>
+                    <Search
+                        randomAiQuestions={randomAiQuestions}
+                        docsLatest={docsLatest}
+                        client:only="vue"
+                    />
+                    {hasAnnounce ? (
+                        // Its own persist name, so client-side navigation
+                        // doesn't carry the homepage banner onto this page.
+                        <Announce
+                            client:load
+                            transition:persist={
+                                props.banner ? "page-banner" : "announce"
+                            }
+                            content={announceContent}
+                        />
+                    ) : (
+                        ""
+                    )}
+                </>
             )
         }
-        <main>
+        <main class:list={{ "bare-chrome": props.bareChrome }}>
             <slot />
         </main>
 
-        <LayoutFooter transition:persist>
-            <ThemeSwitcher slot="theme-switcher" />
-        </LayoutFooter>
-        <LayoutFixed client:load transition:persist />
-        <script define:vars={{ slug }}>
+        {
+            !props.bareChrome && (
+                <>
+                    <LayoutFooter transition:persist>
+                        <ThemeSwitcher slot="theme-switcher" />
+                    </LayoutFooter>
+                    {!props.hideFloatingActions && (
+                        <LayoutFixed client:load transition:persist />
+                    )}
+                </>
+            )
+        }
+        <script is:inline define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>
     </body>
 </html>
+
+<style lang="scss">
+    /* app.scss gives `main` a 67px top offset to clear the fixed site header.
+     * With `bareChrome` there is no fixed header, so that space would render as
+     * a blank band above the page's own content. */
+    main.bare-chrome {
+        padding-top: 0;
+    }
+</style>

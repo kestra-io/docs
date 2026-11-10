@@ -2,8 +2,7 @@
     <nav v-if="pluginWrapper || pluginsWithoutDeprecated.length > 0" class="plugin-sidebar">
         <div
             class="search"
-            data-bs-toggle="modal"
-            data-bs-target="#search-modal"
+            data-modal-target="#search-modal"
             title="Search"
         >
             <div class="input-group">
@@ -17,7 +16,7 @@
         <div class="sidebar-content">
             <h3 v-if="pluginWrapper" class="plugin-title">{{ title }}</h3>
 
-            <div v-if="subGroupWrappers.length > 0" class="subgroups-list">
+            <div v-if="subGroupWrappers.length > 1" class="subgroups-list">
                 <details
                     v-for="sub in subGroupWrappers"
                     :key="sub.subGroup"
@@ -73,11 +72,11 @@
     import { computed } from "vue"
     import {
         subGroupName,
-        slugify,
         isEntryAPluginElementPredicate,
         type PluginElement,
         type Plugin,
-    } from "@kestra-io/ui-libs"
+    } from "~/utils/plugins/plugin"
+    import { slugify } from "~/utils/slugify"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
@@ -102,9 +101,12 @@
         pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined),
     )
 
-    const groupedDirectElements = computed(() =>
-        pluginWrapper ? groupPluginElements(pluginWrapper) : {},
-    )
+    const groupedDirectElements = computed(() => {
+        const source = subGroupWrappers.value.length === 1
+            ? subGroupWrappers.value[0]
+            : pluginWrapper
+        return source ? groupPluginElements(source) : {}
+    })
 
     const groupPluginElements = (plugin: Plugin): Record<string, PluginElement[]> =>
         Object.fromEntries(
@@ -311,10 +313,11 @@
 
                     &:hover {
                         text-decoration: underline;
+                        text-decoration-skip-ink: none;
+                        text-underline-position: under;
                     }
                 }
             }
         }
     }
 </style>
-

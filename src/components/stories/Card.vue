@@ -1,107 +1,563 @@
 <template>
-    <div class="story-card d-flex flex-column">
-        <div class="card-inner">
-            <NuxtImg :src="story.heroImage" :alt="story.title" class="card-image img-fluid" />
-        </div>
-        <p class="card-text">
-            <strong v-if="story.companyName">{{ story.companyName }}: </strong>{{ story.title }}
-        </p>
-        <div class="card-footer">
-            <div class="icon-box" v-for="task in story.tasks.slice(0, 4)" :key="task">
-                <TaskIcon :cls="task" />
+    <article
+        class="story-card"
+        :class="{ 'is-highlighted': highlighted }"
+        @click="onCardClick"
+    >
+        <div class="card-flip">
+            <div class="card-face card-face-stats">
+                <div class="card-industries">
+                    <span class="card-industry">{{ story.industry }}</span>
+                    <span v-if="story.industry2" class="card-industry">{{ story.industry2 }}</span>
+                </div>
+
+                <div class="card-header">
+                    <div class="card-logo">
+                        <img
+                            v-if="story.logoIcon || story.logo"
+                            :src="story.logoIcon ?? story.logo"
+                            :alt="displayName"
+                            loading="lazy"
+                        />
+                        <span v-else class="card-initial">{{ initial }}</span>
+                    </div>
+                    <div class="card-info">
+                        <a
+                            ref="link"
+                            :href="`/stories/${story.slug}`"
+                            class="card-company stretched-link"
+                        >
+                            {{ displayName }}
+                        </a>
+                        <p v-if="shortDesc" class="card-short-desc">{{ shortDesc }}</p>
+                    </div>
+                </div>
+
+                <div class="card-bottom">
+                    <dl v-if="kpis.length" class="card-kpis">
+                        <div v-for="(kpi, i) in kpis" :key="i" class="card-kpi">
+                            <dt class="card-kpi-value" v-html="kpi.value"></dt>
+                            <dd class="card-kpi-label">{{ kpi.label }}</dd>
+                        </div>
+                    </dl>
+
+                    <div v-if="story.tasks?.length" class="card-footer">
+                        <span class="card-plugins-label">Plugins Used :</span>
+                        <div class="card-tasks">
+                            <div
+                                v-for="task in story.tasks.slice(0, MAX_TASKS)"
+                                :key="task"
+                                class="task-icon-wrap"
+                            >
+                                <TaskIcon :cls="task" />
+                            </div>
+                            <div
+                                v-if="story.tasks.length > MAX_TASKS"
+                                class="task-icon-wrap task-more"
+                            >
+                                +{{ story.tasks.length - MAX_TASKS }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="highlighted" class="card-face card-face-quote">
+                <img
+                    class="quote-bg"
+                    :src="story.heroImage"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                />
+                <div class="quote-body">
+                    <div class="quote-top">
+                        <div class="quote-logo">
+                            <img
+                                v-if="story.logo || story.logoIcon"
+                                :src="story.logo ?? story.logoIcon"
+                                :alt="displayName"
+                                loading="lazy"
+                            />
+                            <span v-else class="quote-initial">{{ initial }}</span>
+                        </div>
+                        <div class="card-industries">
+                            <span class="card-industry">{{ story.industry }}</span>
+                            <span v-if="story.industry2" class="card-industry">{{
+                                story.industry2
+                            }}</span>
+                        </div>
+                    </div>
+                    <div class="quote-bottom">
+                        <p class="quote-text">
+                            <span class="quote-mark">“</span>{{ story.quote
+                            }}<span class="quote-mark">”</span>
+                        </p>
+                        <p class="quote-cite">
+                            <strong>{{ story.quotePerson }}</strong>
+                            <span v-if="story.quotePersonTitle"
+                                >, {{ story.quotePersonTitle }}</span
+                            >
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-        <hr class="card-hr" />
-        <div class="bottom">
-            <Link
-                :href="`/use-cases/stories/${story.id}-${slugify(story.title)}`"
-                text="Read the Story"
-            />
-        </div>
-    </div>
+    </article>
 </template>
 
 <script setup lang="ts">
-    import { slugify } from "@kestra-io/ui-libs"
+    import { computed, ref } from "vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
-    import Link from "~/components/common/Link.vue"
 
-    const props = defineProps<{
-        story: Story
-    }>()
+    const MAX_TASKS = 3
+    const MAX_KPIS = 2
+
+    const props = withDefaults(
+        defineProps<{
+            story: Story
+            /** image + quote face at rest, flips to the stats face on hover */
+            highlighted?: boolean
+        }>(),
+        { highlighted: false },
+    )
+
+    const displayName = computed(() => props.story.companyName || props.story.title)
+    const shortDesc = computed(() => props.story.tagline || props.story.excerpt)
+
+    const initial = computed(() => {
+        const name = props.story.companyName || props.story.title
+        return name.charAt(0).toUpperCase()
+    })
+
+    function parseKpi(raw: string | undefined) {
+        if (!raw) return null
+        const lines = raw
+            .trim()
+            .split("\n")
+            .map((l) => l.trim())
+            .filter(Boolean)
+        const value = lines[0]?.replace(/^#{1,6}\s*/, "") ?? ""
+        const label = lines.slice(1).join(" ")
+        return value ? { value, label } : null
+    }
+
+    const kpis = computed(() =>
+        (
+            [props.story.kpi1, props.story.kpi2, props.story.kpi3, props.story.kpi4]
+                .map(parseKpi)
+                .filter(Boolean) as { value: string; label: string }[]
+        ).slice(0, MAX_KPIS),
+    )
+
+    const link = ref<HTMLAnchorElement | null>(null)
+
+    // The company name is the card's only link and its stretched overlay
+    // covers the card, except the plugin icons (kept above it for their
+    // tooltips) and the quote face of a highlighted card (hit-tested even
+    // when flipped away). Forward those clicks to the link, modifiers
+    // included, so the whole card keeps navigating as the old <a> root did.
+    function onCardClick(event: MouseEvent) {
+        const anchor = link.value
+        if (!anchor || event.defaultPrevented) return
+        if (event.target instanceof Node && anchor.contains(event.target)) return
+        anchor.dispatchEvent(
+            new MouseEvent("click", {
+                cancelable: true,
+                button: event.button,
+                ctrlKey: event.ctrlKey,
+                metaKey: event.metaKey,
+                shiftKey: event.shiftKey,
+                altKey: event.altKey,
+            }),
+        )
+    }
 </script>
 
 <style scoped lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    $card-radius: 0.5rem;
+    $card-height: 19.625rem;
+
     .story-card {
-        height: 434px;
-        border-radius: 0.75rem;
-        padding: 1rem;
-        box-shadow: rgba(99, 99, 99, 0.2) 0rem 0.125rem 0.5rem 0rem;
-        background-color: var(--ks-background-secondary);
-        color: var(--ks-content-primary);
-        .card-inner {
-            width: 100%;
-            height: 232px;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            .card-image {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 0.5rem;
-            }
-        }
-        .card-text {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            line-height: 1.25rem;
-            overflow: hidden;
-            display: -webkit-box;
-            line-clamp: 2;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        .card-footer {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8125rem;
-            .icon-box {
-                width: 2.75rem;
-                height: 2.75rem;
-                border-radius: 0.25rem;
-                border: 1px solid var(--ks-border-secondary);
-                padding: 0.375rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                :deep(img),
-                :deep(svg),
-                :deep(.icon) {
-                    max-width: 100%;
-                    max-height: 100%;
-                }
-            }
-        }
-        .card-hr {
-            border: 1px solid var(--ks-border-secondary);
+        display: block;
+        position: relative;
+        height: 100%;
+        border-radius: $card-radius;
+        cursor: pointer;
+
+        &:has(.stretched-link:focus-visible) {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 4px;
         }
     }
 
-    .bottom {
+    .stretched-link:focus-visible {
+        outline: none;
+    }
+
+    .card-flip {
+        position: relative;
         width: 100%;
-        gap: 0.3125rem;
+        height: 100%;
+    }
+
+    .card-face {
+        position: relative;
+        height: 100%;
+        border-radius: $card-radius;
+        overflow: hidden;
+    }
+
+    .story-card:not(.is-highlighted) {
+        transition: transform 0.2s;
+
+        .card-face-stats {
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+        }
+
+        &:hover,
+        &:has(.stretched-link:focus-visible) {
+            transform: translateY(-2px);
+
+            .card-face-stats {
+                border-color: var(--ks-border-active);
+                box-shadow: 0 8px 28px rgba($base-primary-500, 0.12);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+
+    .story-card.is-highlighted {
+        min-height: $card-height;
+        perspective: 1200px;
+
+        .card-flip {
+            transform-style: preserve-3d;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+            }
+        }
+
+        &:hover .card-flip,
+        &:has(.stretched-link:focus-visible) .card-flip {
+            transform: rotateY(180deg);
+        }
+
+        // Touch cannot hover to flip: show the stats face outright.
+        @media (hover: none) {
+            .card-flip {
+                transform: rotateY(180deg);
+            }
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* the stats face sits on the back */
+        .card-face-stats {
+            transform: rotateY(180deg);
+        }
+    }
+
+    .card-industries {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.25rem;
+    }
+
+    .card-industry {
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1rem;
+        border-radius: 2.5rem;
+        padding: 0.125rem 0.5rem;
+        white-space: nowrap;
+    }
+
+    .card-face-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 1.5rem 1.5rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        box-shadow: 2px 3px 16px rgba($base-primary-500, 0.1);
+        color: var(--ks-content-primary);
+
+        .card-industry {
+            color: var(--ks-content-link);
+            background: var(--ks-background-purple-light);
+        }
+    }
+
+    .card-header {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .card-logo {
+        width: 5rem;
+        height: 5rem;
+        border-radius: $card-radius;
+        background: $base-grey-800;
+        border: 1px solid var(--ks-border-secondary);
+        flex-shrink: 0;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        color: var(--ks-content-primary);
-        font-weight: 700;
-        font-size: 1rem;
-        .arrow-icon {
-            transition: transform 0.3s ease;
+        justify-content: center;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 6px;
         }
     }
 
-    .story-card:hover .arrow-icon {
-        transform: translateX(0.125rem);
+    .card-initial {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $base-primary-400;
+        line-height: 1;
+    }
+
+    .card-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .card-company {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.1px;
+        line-height: 1.5rem;
+        color: var(--ks-content-primary);
+        text-decoration: none;
+    }
+
+    .card-short-desc {
+        font-size: 0.75rem;
+        line-height: 1rem;
+        color: var(--ks-content-secondary);
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .card-bottom {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    // A description list, so value and label stay separate lines once the
+    // page is converted to Markdown (adjacent inline spans concatenate).
+    .card-kpis {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+        margin: 0;
+        padding: 1rem 0;
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .card-kpi {
+        min-width: 0;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: var(--ks-content-primary);
+    }
+
+    .card-kpi-value {
+        font-weight: 600;
+    }
+
+    .card-kpi-label {
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .card-plugins-label {
+        font-family: $font-family-monospace;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        color: var(--ks-content-secondary);
+        white-space: nowrap;
+    }
+
+    .card-tasks {
+        display: flex;
+        gap: 0.25rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .task-icon-wrap {
+        width: 2.125rem;
+        height: 2.125rem;
+        border-radius: 0.25rem;
+        border: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.3125rem;
+
+        &.task-more {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--ks-content-tertiary);
+            padding: 0;
+        }
+
+        :deep(.icon-wrapper),
+        :deep(.icon) {
+            width: 100%;
+            height: 100%;
+        }
+
+        :deep(img) {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .card-face-quote {
+        background: $base-grey-Black;
+        color: $base-grey-white;
+
+        .card-industry {
+            color: $base-grey-800;
+            background: $base-grey-white;
+            padding-bottom: 0.1875rem;
+        }
+    }
+
+    .quote-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.3;
+    }
+
+    .quote-body {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        gap: 1rem;
+        padding: 1rem 1.5rem 1.5rem;
+        background: linear-gradient(to top, rgba($base-grey-800, 0.3) 17.6%, rgba($base-grey-800, 0) 100%);
+    }
+
+    .quote-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .card-industries {
+            flex-shrink: 0;
+        }
+    }
+
+    .quote-logo {
+        width: 5rem;
+        height: 5rem;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            display: block;
+            max-width: 100%;
+            max-height: 3.625rem;
+            object-fit: contain;
+        }
+    }
+
+    .quote-initial {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: $card-radius;
+        background: rgba($base-grey-white, 0.12);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $base-grey-white;
+    }
+
+    .quote-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .quote-text {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        color: $base-grey-white;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .quote-mark {
+        color: $base-primary-300;
+    }
+
+    .quote-cite {
+        margin: 0;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: $base-grey-300;
+
+        strong {
+            font-weight: 700;
+        }
     }
 </style>

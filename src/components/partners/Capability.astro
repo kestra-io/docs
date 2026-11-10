@@ -19,7 +19,7 @@ const { title, description, capabilities } = Astro.props
     <div class="container">
         <div class="intro">
             <h2 set:html={title}></h2>
-            <p>{description}</p>
+            <p set:html={description}></p>
         </div>
         <div class="row custom-gap mt-5">
             {
@@ -58,6 +58,10 @@ const { title, description, capabilities } = Astro.props
                 max-width: $container-max-width;
                 margin: $rem-1 auto;
                 text-align: center;
+            }
+
+            p :global(a) {
+                color: var(--ks-content-link);
             }
         }
 
@@ -109,6 +113,10 @@ const { title, description, capabilities } = Astro.props
             .card-right {
                 width: 100%;
                 max-width: 538px;
+
+                p :global(a) {
+                    color: var(--ks-content-link);
+                }
             }
         }
     }

@@ -115,7 +115,7 @@ If you’d still like to use the high availability and scalability provided by K
 *   Stay with the current version of Kestra (0.6.0).
 *   [Contact us](http://hello@kestra.io) to get access to Kestra Enterprise Edition. **We’d happily give you six months of free access to the Enterprise Edition**.
 
-More information on the Kestra Enterprise Edition can be found [here](/features/enterprise).
+More information on the Kestra Enterprise Edition can be found [here](/enterprise).
 
 ## Plugins
 

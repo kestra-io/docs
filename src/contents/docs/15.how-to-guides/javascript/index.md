@@ -1,5 +1,7 @@
 ---
 title: Run JavaScript Inside Your Flows
+h1: Execute JavaScript Scripts in Kestra Workflows
+description: Run JavaScript and Node.js scripts in Kestra. Install npm packages at runtime and pass outputs between tasks using inputs and variables.
 icon: /src/contents/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
@@ -14,14 +16,12 @@ You can execute NodeJS code in a flow by either writing your NodeJS inline or by
   <iframe src="https://www.youtube.com/embed/nACf-2mnonk?si=OzJP7gtN-AbGrkr_" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 In this example, the flow will install the required npm packages, make an API request to fetch data and use the NodeJS Kestra Library to generate outputs and metrics using this data.
 
 
 ## Scripts
 
-If you want to write a short amount of NodeJS code to perform a task, you can use the `io.kestra.plugin.scripts.node.Script` type to write it directly inside your flow. This allows you to keep everything in one place.
+If you want to write a short amount of NodeJS code to perform a task, you can use the [io.kestra.plugin.scripts.node.Script](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script) type to write it directly inside your flow. This allows you to keep everything in one place.
 
 ```yaml
 id: js_scripts
@@ -62,7 +62,7 @@ You can read more about the Scripts type in the [Plugin documentation](/plugins/
 
 ## Commands
 
-If you would prefer to put your NodeJS code in a `.js` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.node.Commands` type:
+If you would prefer to put your NodeJS code in a `.js` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the [io.kestra.plugin.scripts.node.Commands](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands) type:
 
 ```yaml
 id: js_commands
@@ -92,7 +92,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 If you want to get a variable or file from your JavaScript code, you can use an [output](../../05.workflow-components/06.outputs/index.md).
 
-You'll need to install the [`@kestra-io/libs` npm package](https://npm.io/package/@kestra-io/libs) in order to pass your variables to Kestra.
+To pass your variables to Kestra, install the [`@kestra-io/libs` npm package](https://npm.io/package/@kestra-io/libs).
 
 ```bash
 npm install @kestra-io/libs
@@ -153,7 +153,7 @@ tasks:
     message: "Number of downloads: {{ outputs.run_nodejs_commands.vars.pull_count }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
+_This example works for both [io.kestra.plugin.scripts.node.Script](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script) and [io.kestra.plugin.scripts.node.Commands](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands)._
 
 ### File Output
 
@@ -205,11 +205,11 @@ We can also preview our file directly in the Outputs tab as well.
 
 ![outputs](./outputs.png)
 
-_This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kestra.plugin.scripts.node.Commands`._
+_This example works for both [io.kestra.plugin.scripts.node.Script](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.script) and [io.kestra.plugin.scripts.node.Commands](/plugins/plugin-script-node/io.kestra.plugin.scripts.node.commands)._
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. No flow changes are needed.
 
 ```javascript
 const Kestra = require('@kestra-io/libs');
@@ -240,11 +240,63 @@ Kestra.timer('duration', end - start);
 Once this has executed, `duration` will be viewable under **Metrics**.
 ![metrics](./metrics.png)
 
+## Automate JavaScript with triggers
+
+You can also use JavaScript itself as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run Node.js code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline Node.js code:
+
+```yaml
+id: node_script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.node.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    script: |
+      throw new Error("boom");
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run Node.js commands instead:
+
+```yaml
+id: node_commands_trigger
+namespace: company.team
+
+triggers:
+  - id: on_fail
+    type: io.kestra.plugin.scripts.node.CommandsTrigger
+    interval: PT5S
+    exitCondition: "exit 1"
+    edge: true
+    commands:
+      - node -e "throw new Error('boom')"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These trigger types support:
+
+- `interval` to control how often the script or commands run
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only on a transition from not matching to matching
+
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute JavaScript code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.eval)
-- [FileTransform](/plugins/plugin-graalvm/js/io.kestra.plugin.graalvm.js.filetransform)
+- [Eval](/plugins/plugin-graalvm/js-graalvm/io.kestra.plugin.graalvm.js.eval)
+- [FileTransform](/plugins/plugin-graalvm/js-graalvm/io.kestra.plugin.graalvm.js.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. As GraalVM can polyfill from Java, we can use the `int()` function to convert the string into an integer. Additionally, using the `outputs` property simplifies the process of fetching variables from JavaScript and accessing them inside Kestra. It is useful if you want to manipulate data and pass the new format to another task.
 
@@ -258,7 +310,7 @@ tasks:
     uri: http://xkcd.com/info.0.json
 
   - id: graal
-    type: io.kestra.plugin.graalvm.python.Eval
+    type: io.kestra.plugin.graalvm.js.Eval
     outputs:
       - data
     script: |

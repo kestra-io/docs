@@ -2,6 +2,9 @@ import type { Component } from "vue"
 
 import Car from "vue-material-design-icons/Car.vue"
 import DNA from "vue-material-design-icons/Dna.vue"
+import BankOutline from "vue-material-design-icons/BankOutline.vue"
+import CityVariantOutline from "vue-material-design-icons/CityVariantOutline.vue"
+import ApplicationCogOutline from "vue-material-design-icons/ApplicationCogOutline.vue"
 import Looks from "vue-material-design-icons/Looks.vue"
 import ChartLine from "vue-material-design-icons/ChartLine.vue"
 import CartMinus from "vue-material-design-icons/CartMinus.vue"
@@ -21,6 +24,10 @@ import KestraIcon from "~/components/icons/KestraIcon.vue"
 import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
 import EmailOutline from "vue-material-design-icons/EmailOutline.vue"
 import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
+import HubOutline from "vue-material-design-icons/HubOutline.vue"
+import NewspaperVariantOutline from "vue-material-design-icons/NewspaperVariantOutline.vue"
+import School from "vue-material-design-icons/School.vue"
+import PresentationPlay from "vue-material-design-icons/PresentationPlay.vue"
 
 interface MenuItem {
     icon: Component
@@ -28,6 +35,7 @@ interface MenuItem {
     description?: string
     link: string
     tag?: string
+    target?: string
 }
 
 interface MenuItems {
@@ -104,6 +112,11 @@ export const menuItems: MenuItems = {
         ],
         industry: [
             {
+                icon: BankOutline,
+                title: "Finance",
+                link: "/use-cases/financial-services"
+            },
+            {
                 icon: Car,
                 title: "Automotive",
                 link: "/use-cases/automotive"
@@ -118,6 +131,16 @@ export const menuItems: MenuItems = {
                 title: "Healthcare",
                 link: "/use-cases/healthcare"
             },
+            {
+                icon: CityVariantOutline,
+                title: "Public Services",
+                link: "/use-cases/public-services"
+            },
+            {
+                icon: ApplicationCogOutline,
+                title: "Software & Services",
+                link: "/use-cases/software-providers"
+            },
         ],
     },
     resources: {
@@ -126,6 +149,11 @@ export const menuItems: MenuItems = {
                 icon: FileCodeOutline,
                 title: "Docs",
                 link: "/docs"
+            },
+            {
+                icon: HubOutline,
+                title: "Integrations",
+                link: "/orchestration"
             },
             {
                 icon: ShapePlusOutline,
@@ -139,8 +167,20 @@ export const menuItems: MenuItems = {
             },
             {
                 icon: FormatQuoteCloseOutline,
-                title: "Customer Stories",
-                link: "/use-cases/stories"
+                title: "Stories",
+                link: "/stories"
+            },
+            {
+                icon: School,
+                title: "Courses",
+                link: "https://academy.kestra.io",
+                target: "_blank"
+            },
+            {
+                icon: PresentationPlay,
+                title: "Events",
+                link: "https://luma.com/kestra",
+                target: "_blank"
             },
         ],
     },
@@ -150,6 +190,11 @@ export const menuItems: MenuItems = {
                 icon: KestraIcon,
                 title: "About Us",
                 link: "/about-us"
+            },
+            {
+                icon: NewspaperVariantOutline,
+                title: "Newsroom",
+                link: "/newsroom"
             },
             {
                 icon: BriefcaseOutline,

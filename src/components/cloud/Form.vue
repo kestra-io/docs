@@ -1,6 +1,13 @@
 <template>
-    <div class="meeting-container">
+    <div class="meeting-container" :class="{ plain: variant === 'plain' }">
         <div v-if="!valid" class="meeting-form">
+            <div v-if="variant !== 'plain'" class="form-header">
+                <h3>Get in touch to get access</h3>
+                <p>
+                    Tell us what you're building and the team will get you set
+                    up with access.
+                </p>
+            </div>
             <form
                 class="row"
                 ref="cloud-form"
@@ -12,44 +19,107 @@
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="firstname">First name <span class="required">*</span></label>
+                    <label :for="fieldId('firstname')"
+                        >First name <span class="required">*</span></label
+                    >
                     <input
                         name="firstname"
                         type="text"
                         class="form-control"
-                        id="firstname"
+                        :id="fieldId('firstname')"
+                        :placeholder="
+                            variant === 'plain' ? 'First name *' : undefined
+                        "
                         required
                     />
                 </div>
 
                 <div class="col-md-6 mb-2">
-                    <label for="lastname">Last name <span class="required">*</span></label>
+                    <label :for="fieldId('lastname')"
+                        >Last name <span class="required">*</span></label
+                    >
                     <input
                         name="lastname"
                         type="text"
                         class="form-control"
-                        id="lastname"
+                        :id="fieldId('lastname')"
+                        :placeholder="
+                            variant === 'plain' ? 'Last name *' : undefined
+                        "
                         required
                     />
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="email">Company Email <span class="required">*</span></label>
+                    <label :for="fieldId('email')"
+                        >Company Email <span class="required">*</span></label
+                    >
                     <input
                         name="email"
                         type="email"
                         class="form-control"
-                        id="email"
+                        :id="fieldId('email')"
+                        :placeholder="
+                            variant === 'plain' ? 'Company email *' : undefined
+                        "
                         required
                     />
                 </div>
 
                 <div class="col-12 mb-2">
-                    <label for="use_case_context">Tell us more about your Orchestration strategy and how we can help <span class="required">*</span></label>
+                    <label :for="fieldId('jobtitle')"
+                        >Job title <span class="required">*</span></label
+                    >
+                    <input
+                        name="jobtitle"
+                        type="text"
+                        class="form-control"
+                        :id="fieldId('jobtitle')"
+                        :placeholder="
+                            variant === 'plain' ? 'Job title *' : undefined
+                        "
+                        required
+                    />
+                </div>
+
+                <div class="col-12 mb-2">
+                    <label :for="fieldId('employees')"
+                        >Number of employees
+                        <span class="required">*</span></label
+                    >
+                    <select
+                        name="employees"
+                        class="form-control"
+                        :id="fieldId('employees')"
+                        required
+                    >
+                        <option value="" disabled selected>
+                            {{
+                                variant === "plain"
+                                    ? "Number of employees *"
+                                    : "Select a range"
+                            }}
+                        </option>
+                        <option value="<100">below 100</option>
+                        <option value="100-999">between 100 and 999</option>
+                        <option value="1000+">1000+</option>
+                    </select>
+                </div>
+
+                <div class="col-12 mb-2">
+                    <label :for="fieldId('use_case_context')"
+                        >What are you planning to orchestrate?
+                        <span class="required">*</span></label
+                    >
                     <textarea
                         name="use_case_context"
                         class="form-control"
-                        id="use_case_context"
+                        :id="fieldId('use_case_context')"
+                        :placeholder="
+                            variant === 'plain'
+                                ? 'What are you planning to orchestrate? *'
+                                : undefined
+                        "
                         rows="3"
                         required
                     ></textarea>
@@ -58,13 +128,19 @@
                 <div class="col-12 mb-2 text-center">
                     <p class="privacy-text">
                         By submitting this form, you agree to our
-                        <a target="_blank" href="/privacy-policy">Privacy Policy</a>.
+                        <a target="_blank" href="/privacy-policy"
+                            >Privacy Policy</a
+                        >.
                     </p>
                 </div>
 
                 <div class="col-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" :disabled="submitting">
-                        {{ submitting ? 'Sending...' : 'Request access' }}
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        :disabled="submitting"
+                    >
+                        {{ submitting ? "Sending..." : submitLabel }}
                     </button>
                 </div>
             </form>
@@ -82,15 +158,37 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, useTemplateRef, onMounted } from "vue"
-    import axios from "axios"
+    import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
-    import { useGtm } from "@gtm-support/vue-gtm"
-    import { getHubspotTracking } from "~/utils/hubspot"
-    import { getMeetingUrl, ensureMeetingsScriptLoaded } from "~/composables/useMeeting"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
+    import { $fetch } from "~/utils/fetch"
+    import {
+        CONNOR_CLOUD_MEETING_LINK,
+        ensureMeetingsScriptLoaded,
+        getMeetingUrl,
+        tierFromEmployees,
+    } from "~/composables/useMeeting"
+    import type { Routing } from "~/utils/hubspotRouting"
 
-    const gtm = useGtm()
+    const {
+        variant = "default",
+        pageUri = "cloud",
+        submitLabel = "Request access",
+    } = defineProps<{
+        /** `"plain"` drops the header and card chrome for a parent card, as on /lp/*. */
+        variant?: "default" | "plain"
+        /** Passed to HubSpot as the page the lead converted on. */
+        pageUri?: string
+        submitLabel?: string
+    }>()
+
+    // /cloud keeps its plain field ids; the plain variant prefixes them per
+    // instance, so the two forms on an /lp/* page keep their labels apart.
+    const uid = useId()
+    const fieldId = (name: string) =>
+        variant === "plain" ? `${uid}-${name}` : name
+
     const formRef = useTemplateRef<HTMLFormElement>("cloud-form")
 
     const message = ref("")
@@ -98,14 +196,47 @@
     const meetingUrl = ref("")
     const submitting = ref(false)
 
-    const HUBSPOT_URL = "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03"
+    const HUBSPOT_FORM_ID = "d9c2b4db-0b35-409d-a69e-8e4186867b03"
 
-    onMounted(() => {
-        if (getHubspotTracking() === null) {
-            meetingUrl.value = getMeetingUrl()
-            valid.value = true
+    const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
+    const COMPANY_SIZE_PROPERTY = "number_of_employees"
+
+    function cloudMeetingUrl(employees: string, routing?: Routing) {
+        return getMeetingUrl(routing?.tier ?? tierFromEmployees(employees), {
+            fallback: CONNOR_CLOUD_MEETING_LINK,
+            territory: routing?.territory,
+        })
+    }
+
+    function withContactParams(
+        base: string,
+        {
+            firstname,
+            lastname,
+            email,
+        }: {
+            firstname?: string | null
+            lastname?: string | null
+            email?: string | null
+        } = {},
+    ) {
+        try {
+            const url = new URL(base, window.location.origin)
+            if (firstname)
+                url.searchParams.set("firstname", String(firstname).trim())
+            if (lastname)
+                url.searchParams.set("lastname", String(lastname).trim())
+            if (email) url.searchParams.set("email", String(email).trim())
+            return url.toString()
+        } catch {
+            const sep = base.includes("?") ? "&" : "?"
+            const qp = new URLSearchParams()
+            if (firstname) qp.set("firstname", String(firstname).trim())
+            if (lastname) qp.set("lastname", String(lastname).trim())
+            if (email) qp.set("email", String(email).trim())
+            return `${base}${sep}${qp.toString()}`
         }
-    })
+    }
 
     const onSubmit = async () => {
         const form = formRef.value
@@ -123,47 +254,83 @@
             const firstname = formDataObj.get("firstname") as string
             const lastname = formDataObj.get("lastname") as string
             const useCase = formDataObj.get("use_case_context") as string
+            const employees = formDataObj.get("employees") as string
+            const jobtitle = formDataObj.get("jobtitle") as string
             const kuid = localStorage.getItem("KUID") || ""
 
             const hsq = ((window as any)._hsq = (window as any)._hsq || [])
             hsq.push(["identify", { email, firstname, lastname, kuid }])
 
-            const { data: { ip } } = await axios.get("https://api.ipify.org?format=json")
+            const { ip } = await $fetch<{ ip: string }>(
+                "https://api.ipify.org?format=json",
+            )
 
             const payload = {
                 fields: [
                     { name: "firstname", value: firstname },
                     { name: "lastname", value: lastname },
                     { name: "email", value: email },
+                    { name: "jobtitle", value: jobtitle },
                     { name: "use_case_context", value: useCase },
-                    { name: "form_submission_identifier", value: "Contact for Cloud Edition" },
+                    {
+                        objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
+                        name: COMPANY_SIZE_PROPERTY,
+                        value: employees,
+                    },
+                    {
+                        name: "form_submission_identifier",
+                        value: "Contact for Cloud Edition",
+                    },
                     { name: "kuid", value: kuid },
                 ],
                 context: {
                     hutk: getHubspotTracking() || undefined,
                     ipAddress: ip,
-                    pageUri: "cloud",
+                    pageUri,
                     pageName: document.title,
                 },
             }
 
-            await axios.post(HUBSPOT_URL, payload)
-
-            posthog.capture("cloud_form")
-            hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }])
-            gtm?.trackEvent({ event: "cloud_form", noninteraction: false })
-            identify(email)
+            const result = await submitHubspotForm<{ routing?: Routing }>(
+                HUBSPOT_FORM_ID,
+                payload,
+            )
 
             valid.value = true
-            await ensureMeetingsScriptLoaded()
-            hsq.push(["refreshPageHandlers"])
-            hsq.push(["trackPageView"])
-            meetingUrl.value = getMeetingUrl()
+            meetingUrl.value = withContactParams(
+                cloudMeetingUrl(employees, result?.routing),
+                {
+                firstname,
+                lastname,
+                email,
+            })
+
+            try {
+                posthog.capture("cloud_form")
+                hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }])
+                // Straight to the data layer: the vue-gtm plugin is created with
+                // `enabled: false`, so its trackEvent never reaches GTM.
+                ;(window.dataLayer = window.dataLayer || []).push({
+                    event: "cloud_form",
+                    noninteraction: false,
+                })
+                identify(email)
+            } catch (analyticsError) {
+                console.error("Cloud form analytics error", analyticsError)
+            }
+
+            void ensureMeetingsScriptLoaded().then(() => {
+                hsq.push(["refreshPageHandlers"])
+                hsq.push(["trackPageView"])
+            })
         } catch (error: any) {
-            const isBlocked = error?.response?.data?.errors?.some((e: any) => e.errorType === "BLOCKED_EMAIL")
+            const isBlocked = error?.response?.data?.errors?.some(
+                (e: any) => e.errorType === "BLOCKED_EMAIL",
+            )
             message.value = isBlocked
                 ? "Please use a professional email address."
-                : (error?.response?.data?.message || "Something went wrong. Please check your connection and try again.")
+                : error?.response?.data?.message ||
+                  "Something went wrong. Please check your connection and try again."
         } finally {
             submitting.value = false
         }
@@ -171,8 +338,6 @@
 </script>
 
 <style scoped lang="scss">
-
-
     .meeting-container {
         position: relative;
         display: flex;
@@ -200,6 +365,23 @@
             position: relative;
             z-index: 1;
 
+            .form-header {
+                margin-bottom: 1.5rem;
+
+                h3 {
+                    font-size: $font-size-xl;
+                    font-weight: 600;
+                    color: var(--ks-content-primary);
+                    margin-bottom: 0.5rem;
+                }
+
+                p {
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-secondary);
+                    margin: 0;
+                }
+            }
+
             label {
                 display: block;
                 font-size: $font-size-md;
@@ -213,6 +395,11 @@
             .alert-danger {
                 color: var(--ks-content-alert-danger);
                 font-weight: 700;
+            }
+
+            select.form-control {
+                appearance: auto;
+                width: 100%;
             }
 
             .form-control {
@@ -250,6 +437,97 @@
                     opacity: 0.6;
                     cursor: not-allowed;
                 }
+            }
+        }
+
+        /* Same field treatment as Meeting.vue's plain variant on /lp/*:
+         * placeholders instead of visible labels, one 16px rhythm. */
+        &.plain {
+            padding: 0;
+
+            .meeting-form {
+                max-width: none;
+                padding: 0;
+                border: 0;
+                background: transparent;
+            }
+
+            form {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1rem 0.5rem;
+                margin: 0;
+                @include media-breakpoint-up(md) {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                > * {
+                    width: auto;
+                    margin: 0 !important;
+                    padding: 0;
+                }
+
+                > .col-12:not(.col-md-6) {
+                    grid-column: 1 / -1;
+                }
+            }
+
+            // Visually hidden, still read out: the placeholders carry the text.
+            label {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip-path: inset(50%);
+                white-space: nowrap;
+            }
+
+            .form-control {
+                min-height: 48px;
+                margin: 0;
+                padding: 0.75rem 0.875rem;
+                border: 1px solid #e9e9ee;
+                border-radius: 8px;
+                background: #ffffff;
+                color: #08090a;
+
+                &::placeholder {
+                    color: #7e7e9b;
+                }
+            }
+
+            select.form-control {
+                appearance: none;
+                padding-right: 2.25rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237e7e9b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 0.625rem center;
+                background-size: 1.25rem 1.25rem;
+
+                &:invalid {
+                    color: #7e7e9b;
+                }
+            }
+
+            .privacy-text {
+                margin: 0;
+                color: #3b3a41;
+                font-size: $font-size-xs;
+                text-align: left;
+
+                a {
+                    color: #631bff;
+                    text-decoration: underline;
+                }
+            }
+
+            .btn-primary {
+                width: 100%;
+                min-height: 52px;
+                padding: 0.875rem 1.75rem;
+                border-radius: 8px;
+                font-size: 1.25rem;
+                font-weight: 700;
             }
         }
 

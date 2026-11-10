@@ -62,14 +62,6 @@
         width: 100%;
         &.with-shadow {
             text-align: center;
-            background: url("/landing/shadow2.svg") no-repeat bottom center;
-            @include media-breakpoint-down(lg) {
-                background-size: contain;
-                background-position: center center;
-            }
-            @include media-breakpoint-down(md) {
-                background: none;
-            }
         }
         div.subtitle {
             text-align: center;
@@ -117,7 +109,7 @@
             font-size: $font-size-sm;
             text-transform: uppercase;
             color: var(--ks-content-primary);
-            font-family: var(--bs-font-monospace);
+            font-family: var(--ks-font-monospace);
             font-weight: 700;
             &:after {
                 content: "";
@@ -127,7 +119,7 @@
                 display: inline-block;
                 height: 2px;
                 width: 51px;
-                background: var(--bs-pink);
+                background: var(--ks-pink);
             }
         }
     }

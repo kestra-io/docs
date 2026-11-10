@@ -1,5 +1,7 @@
 ---
-title: Helm Chart Updates
+title: Helm Chart Updates in Kestra 1.0.0 for Production
+h1: Major Helm Chart Restructuring for Production Deployments in 1.0.0
+sidebarTitle: Helm Chart Restructure
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.0.0
 editions: ["OSS", "EE"]
@@ -9,14 +11,14 @@ description: Major updates and restructuring of Kestra Helm charts for productio
 
 ## Helm Chart Updates
 
-We have updated our Helm charts to be more comprehensive for production environments while also offering charts for starter use cases. Previously, we offered one chart that deployed one standalone Kestra service with one replica (i.e., all Kestra server components deployed in a single pod). It also came with preinstalled dependencies, such as PostgreSQL and MinIO, which were helpful to get started, but which were typically unnecessary for production installations. The Kestra Operator is also available as a custom Kubernetes Operator, specifically for reading Resource Definitions to conduct various actions in Kestra.
+Kestra's Helm charts have been updated to be more comprehensive for production environments while also offering charts for starter use cases. Previously, a single chart deployed one standalone Kestra service with one replica (all Kestra server components in a single pod) with preinstalled dependencies such as PostgreSQL and MinIO — helpful to get started but typically unnecessary for production. The Kestra Operator is also available as a custom Kubernetes Operator for reading Resource Definitions to conduct various actions in Kestra.
 
 We also restructured configurations and values to be more comprehensive and production grade.
 
 There are now three charts: `kestra` (production chart), `kestra-starter` (starter chart with dependencies), and `kestra-operator` (Enterprise only custom Kubernetes operator).
 
 :::alert{type="info"}
-Breaking changes have been made to the Helm chart in order to support the new features and improvements introduced in Kestra 1.0.0. Please review the following changes carefully before upgrading.
+Breaking changes have been made to the Helm chart to support the new features and improvements in Kestra 1.0.0. Review the following changes carefully before upgrading.
 :::
 
 ## `kestra`
@@ -28,7 +30,7 @@ $ helm repo add kestra https://helm.kestra.io/
 $ helm install my-kestra kestra/kestra --version 1.0.0
 ```
 
-We removed PostgreSQL, MinIO, Kafka and Elasticsearch from the chart dependencies. You can now use your own managed services or deploy them separately. If you want to install Kestra with dependencies, use `kestra-starter` chart. Keep in mind, that you will then have to manage these dependencies yourself.
+PostgreSQL, MinIO, Kafka, and Elasticsearch have been removed from the chart dependencies. You can now use your own managed services or deploy them separately. To install Kestra with dependencies, use the `kestra-starter` chart, but you will then need to manage those dependencies yourself.
 
 ## Deployment configuration
 
@@ -75,7 +77,7 @@ deployments:
 
 ## Custom configuration files
 
-We changed the way to provide custom configuration files to Kestra. It's now all under configurations entry in the `values.yaml` file.
+The method for providing custom configuration files to Kestra has changed. It is now all under the `configurations` entry in the `values.yaml` file.
 
 ### Before
 
@@ -154,6 +156,6 @@ There is no more need to take care of `configurationPath:`; it's automatically m
 
 ## Managing Docker in Docker (dind)
 
-We upgraded the way that `dind` is managed. It's now under the `dind` entry in the `values.yaml`. We added `dind.mode`, to choose between `rootless` and `insecure` ; `rootless` is the default and recommended mode.
+The way `dind` is managed has been updated. It is now under the `dind` entry in the `values.yaml`. A `dind.mode` option is now available to choose between `rootless` and `insecure`; `rootless` is the default and recommended mode.
 
-For a full list of values, refer to the [Values](https://github.com/kestra-io/helm-charts/tree/master/charts/kestra/README.md#values) in the chart's source code.
+For a full list of values, refer to the [Values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/README.md#values) in the chart's source code.

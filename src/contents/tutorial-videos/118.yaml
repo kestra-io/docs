@@ -1,0 +1,7 @@
+title: "One Control Plane, Any Infrastructure"
+description: "Parham and Elliot demo how Kestra handles team isolation, multi-region routing, and enterprise-scale execution from a single control plane using Namespaces, Tenants, and Worker Groups."
+category: "Webinar"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=ARJ2G7B_pao"
+publicationDate: "2026-06-04T00:00:00.000"
+contentType: "Webinar"

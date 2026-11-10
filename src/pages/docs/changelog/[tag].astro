@@ -1,16 +1,31 @@
 ---
 import type { GetStaticPaths } from "astro"
 import Layout from "~/components/layout.astro"
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import MarkdownRenderer from "~/components/MarkdownRenderer.astro"
 import {
     fetchMajorReleases,
     type GitHubRelease,
 } from "~/utils/fetchChangelogVersions"
 import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue"
+import { hashString, layoutDigest } from "~/utils/incrementalCacheKey"
 
 export const getStaticPaths = (async () => {
     const releases = await fetchMajorReleases(150)
+    const layout = await layoutDigest()
+
+    // A page renders only its own release, so no sibling keys it.
     return releases.map((release: GitHubRelease) => ({
+        cacheKey: [
+            hashString(
+                JSON.stringify([
+                    release.tag_name,
+                    release.name ?? "",
+                    release.published_at,
+                    release.body,
+                ]),
+            ),
+            layout,
+        ].join("|"),
         params: { tag: release.tag_name },
         props: { release },
     }))
@@ -68,7 +83,7 @@ const isMajor = version.split(".").pop() === "0"
                     </div>
 
                     <div class="release-content">
-                        <MDCParserAndRenderer content={release.body} />
+                        <MarkdownRenderer content={release.body} />
                     </div>
                 </div>
             </article>

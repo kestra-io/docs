@@ -1,5 +1,7 @@
 ---
-title: Inline Scripts in Docker – Write Code Directly in Tasks
+title: "Inline Scripts in Docker: Write Code Directly in Tasks"
+h1: Write Inline Scripts Inside Docker Tasks
+description: Write scripts directly inside Kestra task definitions and run them in Docker. No file imports needed — inline code executes with full container isolation.
 sidebarTitle: Inline Scripts in Docker
 icon: /src/contents/docs/icons/dev.svg
 ---

@@ -17,18 +17,20 @@ import Govern from "~/components/infrastructure/Govern.astro"
 import Operation from "~/components/infrastructure/Operation.astro"
 
 import infraUi from "~/assets/landing/infrastructure/infra-ui.png"
-import { $fetchApiCached } from "~/utils/fetch.ts"
+import { $fetchApiCachedOptional } from "~/utils/fetch.ts"
 
 const title =
     "Kestra: Orchestrate Your Entire Infrastructure from One Control Plane"
 const description =
     "Kestra unifies provisioning, configuration, patching, remediation, compliance, and operational workflows into a single orchestration engine"
 
-const { results: blueprints } = await $fetchApiCached(
-    `/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
-)
+const { results: blueprints = [] } =
+    (await $fetchApiCachedOptional(
+        `/blueprints/versions/latest?tags=infrastructure&page=1&size=20`,
+    )) ?? {}
 
-const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
+const tags =
+    (await $fetchApiCachedOptional(`/blueprints/versions/latest/tags`)) ?? []
 
 const VERSUS_CONTENT = {
     title: 'Infrastructure Teams Deserve <br class="d-none d-lg-block"> a Better Way to Operate',

@@ -10,6 +10,7 @@ interface Blueprint {
     namespace: string
     name: string
     description: string
+    shortDescription?: string
     metaTitle: string
     metaDescription: string
     flow: string
@@ -22,32 +23,52 @@ interface Blueprint {
 interface Window {
     dataLayer: Array<any>
     astroClientConfig: { slug: string }
-    $bootstrap: { Modal: any; Collapse: any; Tooltip: any }
     __hsUserToken: string
     _hsq: Array<any>
 }
 
+interface Navigator {
+    // Global Privacy Control (not in lib.dom.d.ts) — CPRA opt-out signal.
+    globalPrivacyControl?: boolean
+}
+
 interface Story {
     id: string
+    slug: string
+    rank: number
+    featured?: boolean
     title: string
     excerpt?: string
     description: string
+    metaTitle?: string
+    metaDescription?: string
     heroImage: string
     logo?: string
     logoDark?: string
+    logoIcon?: string
     kpi1: string
     kpi2: string
     kpi3: string
+    kpi4?: string
     quote: string
     quotePerson: string
     quotePersonTitle: string
     industry: string
+    industry2?: string
+    region: string
     headquarter: string
     solution: string
+    tagline?: string
+    companyName: string
+    intro?: string
+    deployment?: string
+    useCase?: string
+    useCaseShort?: string
+    companySize?: string
     tasks: string[]
     content: string
-    companyName: string
     featuredImage: string
+    cta?: string
 }
 interface PluginInformation {
     name?: string
@@ -61,11 +82,11 @@ interface PluginInformation {
     icon?: string
     subGroup?: string
     isEnterprise?: boolean
+    href?: string
 }
 
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace
 type ENV = {
-    ISR_CACHE: KVNamespace
     ICON_CACHE: KVNamespace
 }
 

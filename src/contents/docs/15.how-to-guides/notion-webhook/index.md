@@ -1,5 +1,6 @@
 ---
 title: Integrate Notion Webhooks with Kestra
+h1: Automate Notion Updates and Slack Alerts via Webhooks
 icon: /src/contents/docs/icons/notion.svg
 stage: Getting Started
 topics:

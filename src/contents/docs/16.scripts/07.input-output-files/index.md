@@ -1,6 +1,7 @@
 ---
 title: Input and Output Files in Script Tasks
-description: Learn how to manage input and output files within Kestra script tasks. Pass additional files to scripts using `inputFiles` (including Namespace Files or trigger data) and generate files for downstream tasks with the `outputFiles` property, supporting glob patterns.
+h1: Pass Files Into Scripts and Capture Output with inputFiles & outputFiles
+description: Manage input and output files in Kestra script tasks. Pass extra files using inputFiles (including Namespace Files) and capture task outputs with outputFiles.
 sidebarTitle: Input and Output Files
 icon: /src/contents/docs/icons/dev.svg
 ---
@@ -33,7 +34,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-You can also leverage [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
+You can also use [Namespace Files](../../06.concepts/02.namespace-files/index.md) as follows:
 
 ```yaml
 id: ansible
@@ -103,19 +104,15 @@ triggers:
 
 ```
 
-Note that nothing is hardcoded specifically to Kestra in the Python script from GitHub. That script remains pure Python that you can run anywhere. Kestra's trigger logic is stored along with orchestration and infrastructure configuration in the YAML flow definition.
+Nothing is hardcoded specifically to Kestra in the Python script from GitHub. That script remains pure Python that you can run anywhere. Kestra's trigger logic is stored along with orchestration and infrastructure configuration in the YAML flow definition.
 
 This separation of concerns (*i.e., not mixing orchestration and business logic*) makes your code easier to test and keeps your business logic vendor-agnostic.
 
 ## Output files
 
-If you want to generate files in your script to make them available for download and usable in downstream tasks, you can leverage either the `outputFiles` property.
+To generate files in your script and make them available for download and use in downstream tasks, use the `outputFiles` property.
 
 ### Generating outputs from a script task using `outputFiles`
-
-:::alert{type="info"}
-From 0.17.0, `outputDir` has been deprecated. Use the `outputFiles` property instead.
-:::
 
 The `outputFiles` property allows to specify a list of files to be persisted in Kestra's internal storage. Here is an example:
 
@@ -146,3 +143,31 @@ tasks:
 Note how the `outputFiles` property is used to specify the list of files to be persisted in Kestra's internal storage. The `outputFiles` property supports [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)).
 
 The subsequent task can access the output file by leveraging the syntax `{{outputs.yourTaskId.outputFiles['yourFileName.fileExtension']}}`.
+
+### Referencing output file paths inside the script
+
+For local runners (Process and Docker), writing files by plain name works because Kestra sets the process working directory automatically. For remote task runners (Kubernetes, AWS Batch, Azure Batch, etc.), the working directory is an execution-specific absolute path. Rather than constructing it manually with `{{ workingDir }}/filename`, you can use `{{ outputFiles["filename"] }}` to get the resolved absolute path by name:
+
+```yaml
+id: output_file_remote
+namespace: company.team
+
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      config:
+        masterUrl: https://my-cluster:6443
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+    outputFiles:
+      - out.txt
+    commands:
+      - echo "Hello from Kubernetes" > {{ outputFiles["out.txt"] }}
+```
+
+The `{{ outputFiles["filename"] }}` expression resolves to the absolute path of the named file in the task's working directory — the same value as `{{ workingDir }}/filename`. The same form is used in JDBC tasks (e.g., `COPY ... TO '{{ outputFiles["out.csv"] }}'`), so the pattern is consistent across task types.
+
+:::alert{type="info"}
+Only named files are available as Pebble expressions. Glob patterns such as `*.csv` are collected post-run but cannot be referenced as `{{ outputFiles["*.csv"] }}` inside the script. Declare named files for any output you need to reference by path, and use globs only for bulk collection.
+:::

@@ -1,5 +1,6 @@
 ---
-title: Coordinate Microservices
+title: Orchestrate Microservices in Kestra
+h1: Run Microservices on Events, Handle Failures & Scale with Ease
 sidebarTitle: Microservices
 description: Run microservice tasks in response to events, recover from failures, and scale as needed
 icon: /src/contents/docs/icons/kestra.svg
@@ -20,7 +21,7 @@ Kestra can:
 - Retry failed services, keeping workflows robust and fault-tolerant
 - Send alerts or notifications on success or failure
 - Track logs, metrics, inputs, and outputs of each service execution
-- Roll back to earlier workflow [revisions](../../15.how-to-guides/rollback-and-revision-history/index.md) as needed.
+- Roll back to earlier workflow [revisions](../../09.ui/01.flows/index.md#revisions) as needed.
 
 ## Why Use Kestra for Microservices Orchestration?
 
@@ -52,40 +53,52 @@ inputs:
 tasks:
   - id: checkInventory
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     description: Check inventory for the order items
     uri: https://kestra.io/api/mock
 
   - id: processPayment
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.checkInventory.code == 201 }}"
     description: Process payment for the order
     uri: https://kestra.io/api/mock
 
   - id: orderConfirmation
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.processPayment.code == 201 }}"
     description: Confirm the order and notify the customer
     uri: https://kestra.io/api/mock
 
   - id: arrangeShipping
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.orderConfirmation.code == 201 }}"
     description: Arrange shipping for the order
     uri: https://kestra.io/api/mock
 
   - id: updateDeliveryStatus
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.arrangeShipping.code == 201 }}"
     description: Update the delivery status of the order
     uri: https://kestra.io/api/mock
-
-pluginDefaults:
-  - type: io.kestra.plugin.core.http.Request
-    values:
-      contentType: multipart/form-data
-      method: POST
-      formData:
-        orderId: "{{inputs.orderId}}"
 ```
 
 ## Getting Started with Microservice Orchestration in Kestra
@@ -101,7 +114,7 @@ pluginDefaults:
 - [Explore plugins](https://kestra.io/plugins) for databases, message brokers or custom scripts in any language.
 - [Explore blueprints](/blueprints) for common microservice orchestration patterns.
 - [Explore How-to Guides](../../15.how-to-guides/index.mdx) for detailed examples on using Kestra to orchestrate microservices written in Python, R, Node.js, Rust, Ruby, Go, Shell, Powershell or any other language.
-- [Explore Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) for scaling custom code and containerized services.
+- [Explore Task Runners](../../task-runners/index.mdx) for scaling custom code and containerized services.
 - [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.
 - [Join Slack](https://kestra.io/slack) to share flow examples or ask questions.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your microservices.

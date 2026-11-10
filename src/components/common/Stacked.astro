@@ -124,39 +124,55 @@ const CARDS = [
 </section>
 
 <script>
-    const cards = document.querySelectorAll<HTMLElement>(".stacked-card")
-    const visibilityMap = new Map<HTMLElement, boolean>()
+    let observer: IntersectionObserver | null = null
+    let graceTimer: ReturnType<typeof setTimeout> | undefined
 
     function sendStateToAnim(card: HTMLElement, pauseAnimation?: boolean) {
         card.classList.toggle("animation-paused", pauseAnimation)
     }
 
-    const observer = new IntersectionObserver(
-        (entries) => {
-            for (const entry of entries) {
-                const card = entry.target as HTMLElement
-                visibilityMap.set(card, entry.isIntersecting)
-                sendStateToAnim(card, !visibilityMap.get(card))
-            }
-        },
-        { threshold: 0.1 },
-    )
+    // re-wired on every page load: the ClientRouter swaps the DOM without
+    // re-running this module, leaving the observer on discarded cards
+    function wireStackedCards() {
+        observer?.disconnect()
+        clearTimeout(graceTimer)
 
-    // let the first 3 seconds of the animation play
-    // before pausing
-    setTimeout(() => {
-        cards.forEach((card) => {
-            // if the observer hasn't kicked in yet,
-            // use the pauseAnimation flag to control the animation state
-            // it means we are in the initial 3 seconds grace period where we want the animation to play
-            if (!visibilityMap.has(card)) {
-                sendStateToAnim(card, false)
-            }
-        })
-    }, 3000)
+        const cards = document.querySelectorAll<HTMLElement>(".stacked-card")
+        if (!cards.length) return
 
-    for (const card of cards) {
-        observer.observe(card)
+        const visibilityMap = new Map<HTMLElement, boolean>()
+
+        observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    const card = entry.target as HTMLElement
+                    visibilityMap.set(card, entry.isIntersecting)
+                    sendStateToAnim(card, !visibilityMap.get(card))
+                }
+            },
+            { threshold: 0.1 },
+        )
+
+        // let the first 3 seconds of the animation play before pausing
+        graceTimer = setTimeout(() => {
+            cards.forEach((card) => {
+                // no entry yet means the observer has not kicked in
+                if (!visibilityMap.has(card)) {
+                    sendStateToAnim(card, false)
+                }
+            })
+        }, 3000)
+
+        for (const card of cards) {
+            observer.observe(card)
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireStackedCards)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wireStackedCards)
+    } else {
+        wireStackedCards()
     }
 </script>
 

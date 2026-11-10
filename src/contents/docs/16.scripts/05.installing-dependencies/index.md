@@ -1,5 +1,6 @@
 ---
 title: Install Dependencies at Runtime for Script Tasks
+h1: Use beforeCommands or Docker Images to Install Script Dependencies
 sidebarTitle: Installing Dependencies at Runtime
 icon: /src/contents/docs/icons/dev.svg
 description: Learn how to install dependencies at runtime for your script tasks using `beforeCommands` or prebuilt Docker images.

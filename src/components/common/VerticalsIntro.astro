@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components"
 import Link from "~/components/common/Link.astro"
 import LogoCarousel from "~/components/common/LogoCarousel.astro"
+import ArcadeEmbed from "~/components/common/ArcadeEmbed.astro"
 
 interface Props {
     badge: {
@@ -45,7 +46,7 @@ const badgeVars = Object.entries({
     .join("; ")
 ---
 
-<section>
+<section class="surface-dark">
     <div class="background" style={bgStyle}>
         {bg.glow && <div class="glow" style={`--bg-glow: url(${bg.glow})`} />}
     </div>
@@ -70,12 +71,10 @@ const badgeVars = Object.entries({
         </div>
         <div class="w-100 overflow-hidden gradient-border">
             <div class="iframe-wrapper">
-                <iframe
+                <ArcadeEmbed
                     class="arcade-embed"
                     src={iframeSrc}
                     title={badge.label}
-                    allowfullscreen
-                    allow="clipboard-write"
                 />
             </div>
         </div>

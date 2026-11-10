@@ -1,5 +1,7 @@
 ---
 title: Set Up Webhooks to Trigger Flows
+h1: Configure Webhook Triggers for Your Kestra Flows
+description: Trigger Kestra workflows via webhooks. Configure webhook listeners to start flows in response to GitHub events, Slack commands, or any HTTP POST request.
 icon: /src/contents/docs/icons/webhook.svg
 stage: Getting Started
 topics:
@@ -10,9 +12,11 @@ Execute flows using the Webhooks Trigger.
 
 Webhooks are HTTP requests that are triggered by an event. These are useful for being able to tell another application to do something, such as starting the execution of a Flow in Kestra.
 
+If your provider sends an idempotency key header (e.g., `Idempotency-Key`), map it to `system.correlationId` and add a duplicate guard as shown in [Idempotency with correlation IDs](../idempotency/index.md) to prevent double-processing.
+
 ## Using Webhooks in Kestra
 
-You can use webhooks to trigger an execution of your flow in Kestra. To do this, we can make a [trigger](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) with the type `io.kestra.plugin.core.trigger.Webhook`.
+You can use webhooks to trigger an execution of your flow in Kestra. To do this, we can make a [trigger](../../05.workflow-components/07.triggers/03.webhook-trigger/index.md) with the type [io.kestra.plugin.core.trigger.Webhook](/plugins/core/trigger/io.kestra.plugin.core.trigger.webhook).
 
 Once we've done this, we can add a `key` property, which can be random as this will be used to trigger the webhook. In the example, the `key` is set to `1KERKzRQZSMtLdMdNI7Nkr` which is what we put at the end of our webhook URL to trigger it.
 
@@ -27,8 +31,8 @@ description: |
 
 tasks:
   - id: out
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | json }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.body | toJson }}"
 
 
 triggers:
@@ -50,26 +54,26 @@ where:
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/main/executions/webhook/company.team/webhook_example/1KERKzRQZSMtLdMdNI7Nkr \
+  -H 'Content-Type: application/json' \
+  -d '{"event":"example","message":"Hello from webhook"}'
 ```
 
-You can also copy the formed Webhook URL from the **Triggers** tab.
+You can also copy the formed Webhook URL from the **Triggers** tab. These examples log the request body. Use only non-sensitive payloads, and redact or select fields before logging a body that contains credentials or personal data. Avoid logging the full trigger, which may contain credentials in headers or parameters.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ## Webhooks in Kestra EE
 
-Let us leverage Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on the `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Once you've done that, save the secret.
+Use Kestra Secrets to store the webhook key. From the left navigation menu on the Kestra UI, navigate to `Namespaces`. Click on the namespace under which you want to create the flow with the webhook trigger. We will use `company.team` namespace for this example. On the corresponding namespace page, navigate to the `Secrets` tab. Click on the `New secret` button at the top, and create a new secret with `Key` as `WEBHOOK_KEY` (you may choose any appropriate name) and `Secret` as the webhook key value. Let us use `1KERKzRQZSMtLdMdNI7Nkr` for this example. Once you've done that, save the secret.
 
 ![navigate_to_secrets](./navigate_to_secrets.png)
 
 ![assign_secret_value](./assign_secret_value.png)
 
-Now, we will create the flow in the same namespace under which we have defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, like this:
+Create the flow in the same namespace where you defined the `WEBHOOK_KEY` secret. The flow will use the webhook trigger, like this:
 
 ```yaml
 id: webhook_ee_example
@@ -82,8 +86,8 @@ description: |
 
 tasks:
   - id: out
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | json }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.body | toJson }}"
 
 triggers:
   - id: webhook_trigger
@@ -92,7 +96,7 @@ triggers:
     key: "{{ secret('WEBHOOK_KEY') }}"
 ```
 
-Note that in the `triggers` section of the flow, we have referenced the secret in the `key` as `{{ secret('WEBHOOK_KEY') }}` instead of directly putting in the webhook key.
+In the `triggers` section of the flow, the secret is referenced in the `key` as `{{ secret('WEBHOOK_KEY') }}` rather than hardcoding the webhook key directly.
 
 The format of the Webhook URL follows:
 
@@ -107,5 +111,7 @@ where:
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://my.kestra.clod/api/v1/my_tenant/executions/webhook/company.team/webhook_eE_example/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/my_tenant/executions/webhook/company.team/webhook_ee_example/1KERKzRQZSMtLdMdNI7Nkr \
+  -H 'Content-Type: application/json' \
+  -d '{"event":"example","message":"Hello from webhook"}'
 ```

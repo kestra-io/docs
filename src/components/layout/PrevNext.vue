@@ -30,9 +30,11 @@
     const props = defineProps<{
         navigation: NavItem[]
         currentPath: string
+        /** Fallback "Previous" target when the current page is the tree's first leaf. */
+        rootPath?: string
     }>()
 
-    const { prev, next } = prevNext(props.navigation, props.currentPath)
+    const { prev, next } = prevNext(props.navigation, props.currentPath, props.rootPath)
 
     function directory(link?: string) {
         if (!link) return ""
@@ -41,7 +43,12 @@
         const dir = dirs[Math.max(1, dirs.length - 2)]
         if (!dir) return ""
 
-        const specialCases: Record<string, string> = { ui: "UI", "ai-tools": "AI Tools" }
+        const specialCases: Record<string, string> = {
+            ui: "UI",
+            "ai-tools": "AI Tools",
+            "ai-orchestration": "AI Orchestration",
+            "develop-with-ai": "Develop with AI",
+        }
         return specialCases[dir] || dir.split("-").map(upperFirst).join(" ")
     }
 </script>

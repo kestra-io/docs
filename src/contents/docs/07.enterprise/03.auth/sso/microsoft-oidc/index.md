@@ -1,14 +1,17 @@
 ---
-title: Set Up Microsoft OIDC SSO for Kestra
+title: Set Up Microsoft OIDC SSO in Kestra
+h1: Authenticate with Microsoft Entra ID via OIDC
 description: Configure Microsoft OIDC SSO for Kestra. Enable users to sign in with their Microsoft Entra ID (Azure AD) credentials using OpenID Connect.
 sidebarTitle: Microsoft OIDC SSO
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-## Set up Microsoft OIDC SSO
+Authenticate Kestra users with their Microsoft Entra ID credentials using OIDC.
 
-To configure Microsoft authentication, follow these steps:
+## Configure Microsoft OIDC
+
+To authenticate with Microsoft, add the following to your [Kestra Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md):
 
 ```yaml
 micronaut:
@@ -23,19 +26,19 @@ micronaut:
             issuer: 'https://login.microsoftonline.com/common/v2.0/'
 ```
 
-To get your `client-id` and `client-secret`, refer to the [Microsoft Documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc).
+To get your `client-id` and `client-secret`, refer to the [Microsoft Entra ID OIDC documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc).
 
-## Using Microsoft Entra ID as an OIDC SSO provider
+## Configure Microsoft Entra ID
 
 ### Create an Enterprise Application
 
 1. Visit the [Azure portal](https://portal.azure.com/).
 2. Select **Microsoft Entra ID**.
 3. Navigate to **App registrations**.
-4. Click on **New registration** and provide the necessary details:
-- Enter a name for your application.
-- Set **Supported account types** (e.g., "Default Directory only - Single tenant").
-- Under **Redirect URI**, select *Web* and enter `https://{{ url }}/oauth/callback/microsoft`. Be sure to use `https` and the actual URL of your webserver.
+4. Click **New registration** and provide the necessary details:
+   - Enter a name for your application.
+   - Set **Supported account types** (e.g., "Default Directory only - Single tenant").
+   - Under **Redirect URI**, select *Web* and enter `https://{{ url }}/oauth/callback/microsoft`. Use `https` and your actual webserver URL.
 
 ### Generate client secret
 
@@ -46,11 +49,11 @@ To get your `client-id` and `client-secret`, refer to the [Microsoft Documentati
 ### Kestra configuration
 
 - Copy the **Application (client) ID** from the **Overview** section and use it as your `{{ clientId }}`.
-- In the **Endpoints** section, locate the **OpenID Connect metadata document** URL. Remove the `.well-known/openid-configuration` suffix, and use the remainining base URL as your `{{ issuerUrl }}`.
+- In the **Endpoints** section, locate the **OpenID Connect metadata document** URL. Remove the `.well-known/openid-configuration` suffix, and use the remaining base URL as your `{{ issuerUrl }}`.
 
 The final URL should look like `https://login.microsoftonline.com/{{ directory }}/v2.0/`.
 
-Here's an example Microsoft OIDC configuration:
+Example configuration:
 
 ```yaml
 micronaut:
@@ -65,4 +68,70 @@ micronaut:
             issuer: '{{ issuerUrl }}'
 ```
 
-With these settings, Kestra is now configured to use OIDC for SSO with your chosen providers. Ensure that all placeholders are replaced with the actual values obtained during the provider's setup process.
+Replace all placeholders with the values obtained from Entra ID.
+
+## Configure a default role for SSO users
+
+SSO users need a default role for initial access in Kestra. Add the following to `kestra.security`:
+
+```yaml
+kestra:
+  security:
+    defaultRole:
+      name: default_admin_role
+      description: "Default Admin Role"
+      permissions:
+        FLOW:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - EXECUTE
+          - DISABLE
+          - ENABLE
+          - VALIDATE
+          - EXPORT
+          - IMPORT
+        EXECUTION:
+          - VIEW
+          - LIST
+          - UPDATE
+          - DELETE
+          - RESTART
+          - KILL
+          - REPLAY
+          - PAUSE
+          - RESUME
+          - CHANGE_LABELS
+          - ACCESS_LOGS
+          - ACCESS_OUTPUTS
+          - ACCESS_FILES
+          - EXPORT
+          - UNQUEUE
+          - FORCE_RUN
+          - FOLLOW
+        NAMESPACE:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - MANAGE_FILES
+        SECRET: ["VIEW", "LIST", "UPDATE", "DELETE"]
+        KVSTORE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        BLUEPRINT: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        ROLE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        GROUP: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_MEMBERS"]
+        USER: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_GROUP_MEMBERSHIP"]
+        BINDING: ["VIEW", "LIST", "CREATE", "DELETE"]
+        AUDITLOG: ["VIEW", "LIST", "EXPORT"]
+  ee:
+    tenants:
+      enabled: true
+      defaultTenant: false
+```
+
+:::alert{type="info"}
+Place `defaultRole` under `kestra.security`, not under `micronaut.security`. The example above grants broad access — adjust the action lists to match the permissions your users actually need in production.
+:::

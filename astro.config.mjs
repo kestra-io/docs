@@ -1,39 +1,94 @@
 // @ts-check
-import { defineConfig, envField, fontProviders } from "astro/config"
+import {
+    defineConfig,
+    envField,
+    fontProviders,
+    svgoOptimizer,
+} from "astro/config"
+import { unified } from "@astrojs/markdown-remark"
 
 import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
+import node from "@astrojs/node"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
 import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
+import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
+import { resolveRelativeDocLink } from "./src/markdown/remark/resolve-doc-link.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
+import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
+import remarkSectionIds from "./src/markdown/remark/remark-section-ids/index.mjs"
+import remarkGlossaryLinks from "./src/markdown/remark/remark-glossary-links/index.ts"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
+import rehypeResourceCta from "./src/markdown/rehype/resource-cta.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
 const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
 )
 
+// The Cloudflare adapter runs `astro dev` inside workerd, which breaks image
+// serving: the astro:assets endpoint (CJS picomatch) and /@fs assets both fail
+// (withastro/astro#15437). So use Node for local dev (Vite serves images via
+// sharp) and Cloudflare only for the build.
+const isDev = process.argv.includes("dev")
+
+// Cloudflare's image service only runs on Cloudflare. `NO_IMAGE_OPTIM` serves
+// the originals instead, which is fast but leaves multi-MB images in the page.
+const imageService = () => {
+    // The Lighthouse benchmark measures what images cost, so it pays ~10 min of
+    // sharp at build time rather than benchmarking untransformed originals.
+    if (process.env.IMAGE_OPTIM_AT_BUILD === "true") {
+        return /** @type {const} */ ({
+            build: "compile",
+            runtime: "passthrough",
+        })
+    }
+    return process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare"
+}
+
+// The adapter's setup hook runs first and pins its own Cloudflare service; this
+// swaps in a wrapper that requests `format=auto` (AVIF where the browser accepts it).
+/** @type {import("astro").AstroIntegration} */
+const cloudflareAutoFormat = {
+    name: "cloudflare-auto-format",
+    hooks: {
+        "astro:config:setup": ({ command, updateConfig }) => {
+            if (command === "dev" || imageService() !== "cloudflare") return
+            updateConfig({
+                image: {
+                    service: {
+                        entrypoint: path.resolve(
+                            __dirname,
+                            "src/utils/cloudflareImageService.ts",
+                        ),
+                    },
+                },
+            })
+        },
+    },
+}
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
-    adapter: cloudflare({
-        // only use cloudflare images in production
-        imageService:
-            process.env.NO_IMAGE_OPTIM === "true"
-                ? "passthrough"
-                : "cloudflare",
-    }),
-    trailingSlash: "ignore",
+    adapter: isDev
+        ? node({ mode: "standalone" })
+        : cloudflare({
+              sessionKVBindingName: "docs-session",
+              prerenderEnvironment: "node",
+              imageService: imageService(),
+          }),
+    trailingSlash: "never",
     integrations: [
+        cloudflareAutoFormat,
         vue({
             template: {
                 compilerOptions: {
@@ -41,99 +96,77 @@ export default defineConfig({
                 },
             },
             appEntrypoint: "./src/vue-setup.ts",
-            devtools: { launchEditor: "idea" },
         }),
         expressiveCode(),
         mdx(),
         icon(),
     ],
     markdown: {
-        remarkPlugins: [
-            remarkClassname,
-            remarkDirective,
-            remarkCustomElements,
-            // when internal docs links we point to real files
-            // while in the docs generated we want to point to urls with generated ids
-            // @ts-expect-error bad types in astro
-            [
-                customRemarkLinkRewrite,
-                {
-                    /**
-                     *
-                     * @param {string} url
-                     * @param {{basename?: string, dirname?: string}} file
-                     * @returns
-                     */
-                    replacer(url, file) {
-                        if (url.startsWith(".")) {
-                            // Extract hash fragment before processing relative URLs
-                            let hash = ""
-                            if (url.includes("#")) {
-                                const hashIndex = url.indexOf("#")
-                                hash = url.slice(hashIndex)
-                                url = url.slice(0, hashIndex)
-                            }
-
-                            // if the file basename starts with index.
-                            if (
-                                file.basename &&
-                                file.basename.startsWith("index.")
-                            ) {
-                                // if the url start with ./
-                                if (url.startsWith("./") && file.dirname) {
-                                    // we preprend to the path the last part of the dirname
-                                    url = path.join(
-                                        path.basename(file.dirname),
-                                        url.slice(2),
-                                    )
-                                }
-
-                                // if the url starts with ../
-                                if (url.startsWith("../")) {
-                                    // we replace ../ by ./
-                                    url = "./" + url.slice(3)
-                                }
-                            }
-
-                            return generateId({ entry: url }) + hash
-                        }
-                        return url
+        processor: unified({
+            remarkPlugins: [
+                remarkGfm,
+                remarkMermaid,
+                remarkClassname,
+                remarkDirective,
+                remarkCustomElements,
+                // opt-in `section-…` heading ids (frontmatter `sectionIds: true`)
+                remarkSectionIds,
+                // when internal docs links we point to real files
+                // while in the docs generated we want to point to urls with generated ids
+                // @ts-expect-error bad types in astro
+                [
+                    customRemarkLinkRewrite,
+                    {
+                        /**
+                         *
+                         * @param {string} url
+                         * @param {{basename?: string, dirname?: string}} file
+                         * @returns
+                         */
+                        replacer(url, file) {
+                            return resolveRelativeDocLink(url, file)
+                        },
                     },
-                },
+                ],
+                remarkGlossaryLinks,
             ],
-        ],
-        rehypePlugins: [
-            rehypeHeadingIds,
-            rehypeAutolinkHeadings,
-            rehypeImgPlugin,
-            [
-                rehypeExternalLinks,
-                {
-                    target: "_blank",
-                    rel: ["noopener", "noreferrer"],
-                },
+            rehypePlugins: [
+                rehypeHeadingIds,
+                rehypeAutolinkHeadings,
+                rehypeImgPlugin,
+                rehypeResourceCta,
+                [
+                    rehypeExternalLinks,
+                    {
+                        target: "_blank",
+                        rel: ["noopener", "noreferrer"],
+                    },
+                ],
             ],
-        ],
+        }),
     },
     image: {
         layout: "constrained",
     },
+    fonts: [
+        {
+            provider: fontProviders.google(),
+            name: "Mona Sans",
+            weights: [300, 400, 500, 600, 700],
+            cssVariable: "--font-family-mona-sans",
+        },
+        {
+            provider: fontProviders.google(),
+            name: "JetBrains Mono",
+            weights: [200, 300, 400, 500, 600, 700],
+            cssVariable: "--font-family-jetbrains-mono",
+        },
+    ],
     experimental: {
-        fonts: [
-            {
-                provider: fontProviders.google(),
-                name: "Mona Sans",
-                weights: [300, 400, 500, 600, 700],
-                cssVariable: "--font-family-mona-sans",
-            },
-            {
-                provider: fontProviders.google(),
-                name: "JetBrains Mono",
-                weights: [200, 300, 400, 500, 600, 700],
-                cssVariable: "--font-family-jetbrains-mono",
-            },
-        ],
-        svgo: {
+        // Skips re-rendering static pages whose `cacheKey` and module graph are
+        // unchanged since the last build. See src/utils/incrementalCacheKey.ts.
+        incrementalBuild: true,
+        svgOptimizer: svgoOptimizer({
             plugins: [
                 {
                     name: "preset-default",
@@ -145,7 +178,7 @@ export default defineConfig({
                 },
                 "removeDimensions",
             ],
-        },
+        }),
     },
     env: {
         schema: {
@@ -167,12 +200,18 @@ export default defineConfig({
                 optional: false,
                 default: "GTM-T4F85WRF",
             }),
-            CLOUDFLARE_TEAM_DOMAIN: envField.string({
+            // Google sign-in for *.kestra-io.workers.dev (src/middlewares/previewAuth.ts).
+            GOOGLE_CLIENT_ID: envField.string({
                 context: "server",
                 access: "secret",
                 optional: true,
             }),
-            CLOUDFLARE_POLICY_AUD: envField.string({
+            GOOGLE_CLIENT_SECRET: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
+            PREVIEW_AUTH_SECRET: envField.string({
                 context: "server",
                 access: "secret",
                 optional: true,
@@ -182,6 +221,35 @@ export default defineConfig({
                 access: "secret",
                 optional: true,
             }),
+            HUBSPOT_PRIVATE_APP_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
+            DISABLE_USAL: envField.boolean({
+                context: "server",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
+            // Raises the GitHub rate limit for /api/github and the changelog; works unauthenticated without it.
+            GITHUB_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
+            DISABLE_GITHUB: envField.boolean({
+                context: "server",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
+            NO_RANDOM_ORDER: envField.boolean({
+                context: "client",
+                access: "public",
+                optional: true,
+                default: false,
+            }),
         },
     },
     // require for "/t" url
@@ -190,29 +258,91 @@ export default defineConfig({
     },
     redirects: {
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
+        "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application":
+            "/careers#open-application",
+        "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application/apply":
+            "/careers#open-application",
+        "/partners/consulting": "/partners/services",
         "/trust":
             "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
+        "/docs/migration-guide/v0.24.0/retries-maxAttempts":
+            "/docs/migration-guide/v0.24.0/retries-maxattempts",
+    },
+    server: {
+        host: "::",
+        port: 4321,
     },
     vite: {
+        plugins: [
+            {
+                // debug has no `exports` field in package.json and its source
+                // files use CJS globals (`module`, `exports`) which are not
+                // available in an ESM context (Vite 8 / Cloudflare worker env).
+                // This plugin wraps every debug source file with a local CJS
+                // shim so the globals are defined, then re-exports as ESM.
+                name: "cjs-debug-shim",
+                apply: "serve",
+                enforce: "pre",
+                transform(code, id) {
+                    if (
+                        /node_modules\/debug\/src\//.test(id) ||
+                        /node_modules\/ms\//.test(id)
+                    ) {
+                        // Convert every require('x') call to a named ESM
+                        // import so that `require` itself is never accessed
+                        // at runtime (CJS globals are unavailable in the
+                        // Cloudflare worker environment / Vite 8 ESM context).
+                        const deps = new Map()
+                        let depIndex = 0
+                        const transformed = code.replace(
+                            /\brequire\((['"])([^'"]+)\1\)/g,
+                            (_, _q, dep) => {
+                                if (!deps.has(dep)) {
+                                    deps.set(dep, `__cjs_dep_${depIndex++}`)
+                                }
+                                return deps.get(dep)
+                            },
+                        )
+                        const imports = [...deps.entries()]
+                            .map(
+                                ([dep, name]) =>
+                                    `import ${name} from '${dep}';`,
+                            )
+                            .join("\n")
+                        return {
+                            code: [
+                                imports,
+                                "var module = { exports: {} };",
+                                "var exports = module.exports;",
+                                transformed,
+                                "export default module.exports;",
+                            ].join("\n"),
+                            map: null,
+                        }
+                    }
+                },
+            },
+        ],
         resolve: {
             alias: {
-                "#mdc-imports": path.resolve(
-                    __dirname,
-                    "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
-                ),
-                "#mdc-configs": path.resolve(
-                    __dirname,
-                    "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
-                ),
-                "~": path.resolve("./src"),
+                // Mirror the tsconfig `~/*` paths so the alias also resolves
+                // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
+                "~": path.resolve(__dirname, "src"),
+                // Dev runs on Node, which has no Worker bindings: SSR routes see no KV.
+                ...(isDev && {
+                    "cloudflare:workers": path.resolve(
+                        __dirname,
+                        "src/utils/cloudflareWorkersDevStub.ts",
+                    ),
+                }),
             },
         },
         css: {
             preprocessorOptions: {
                 scss: {
-                    // silence invasive bootstrap warnings
+                    // `@import` and the global built-ins are still used by our own
+                    // stylesheets; `if-function` comes from NavToc's `if()` calls.
                     silenceDeprecations: [
-                        "color-functions",
                         "global-builtin",
                         "import",
                         "if-function",

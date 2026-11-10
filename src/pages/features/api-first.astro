@@ -10,6 +10,9 @@ import SectionCard from "~/components/layout/SectionCard.astro"
 import visualHero from "~/assets/landing/features/api/api-hero.webp"
 import flexibility from "~/assets/landing/features/api/flexibility.webp"
 import integration from "~/assets/landing/features/api/integration.webp"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = "API-First Design"
 const description =
@@ -70,7 +73,7 @@ const FEATURES = [
     <PluginsBlock>
         <Fragment slot="title"> Plugin-Powered Flexibility </Fragment>
         <Fragment slot="description">
-            Choose from over 1200+ plugins that offer direct integration with
+            Choose from over {totalPlugins}+ plugins that offer direct integration with
             third-party services, databases, messaging systems, and more.
         </Fragment>
     </PluginsBlock>

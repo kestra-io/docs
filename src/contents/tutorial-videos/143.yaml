@@ -1,0 +1,7 @@
+title: "Plugin Artifacts: Plugins Can Ship Their Own UI"
+description: "Artifacts let a plugin render a rich, domain specific view inside Kestra before and after a run, with no extra YAML in anyone's flow. Four kinds ship today: data tables, data summaries, dependency graphs and topology sub-nodes."
+category: "What's New"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=cjDOvDzuS2E"
+publicationDate: "2026-09-16T00:00:00.000"
+contentType: "What's New"

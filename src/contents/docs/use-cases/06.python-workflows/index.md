@@ -1,7 +1,8 @@
 ---
-title: Orchestrate Python Workflows
+title: Orchestrate Python Workflows in Kestra
+h1: Automate, Schedule & Scale Python Workflows Declaratively
 sidebarTitle: Python Workflows
-description: Automate, schedule and scale Python workflows in a declarative way
+description: Automate, schedule, and scale Python workflows declaratively with Kestra. Run scripts in Docker containers with full dependency management and observability.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 
@@ -15,7 +16,7 @@ Workflow orchestration platforms like Kestra automate the execution and deployme
 - **Schedule scripts** via cron, external events (e.g., new files in S3), or API calls.
 - **Manage dependencies** with `pip` and `uv`, using custom or pre-built container images.
 - **Pass data** between Python tasks and downstream steps (SQL queries, APIs, etc.).
-- **Scale dynamically** — run scripts in lightweight containers or cloud services like AWS ECS Fargate, Azure Batch, GCP Cloud Run, Modal or Kubernetes.
+- **Scale dynamically** — run scripts in lightweight containers or cloud services like AWS Batch, Azure Batch, GCP Cloud Run, Modal or Kubernetes.
 
 ---
 
@@ -23,7 +24,7 @@ Workflow orchestration platforms like Kestra automate the execution and deployme
 
 1. **Zero Code Changes** – Run existing Python scripts as-is (no decorators needed); specify dependencies via YAML configuration or no-code forms.
 2. **Dependency Management** – Dynamically install latest packages at runtime with `pip`, use custom Docker images, or leverage [pre-built packages](https://github.com/orgs/kestra-io/packages).
-3. **Dynamic Scaling** – [Task runners](../../07.enterprise/04.scalability/task-runners/index.md) provision resources on-demand (AWS ECS Fargate, Google Batch) for heavy workloads.
+3. **Dynamic Scaling** – [Task runners](../../task-runners/index.mdx) provision resources on-demand (AWS Batch, Google Batch) for heavy workloads.
 4. **Observability** – Track logs, outputs, and custom metrics (e.g., row counts, durations) in real time.
 5. **Integration** – Combine Python with SQL, Spark, dbt, or microservices in a single flow.
 6. **Failure Handling** – Retry failed scripts with configurable retry policies and get alerts on errors.
@@ -87,25 +88,24 @@ triggers:
     cron: "0 9 * * *" # Run every day at 9 AM
 ```
 
-Adding the following `pluginDefaults` to that flow (or your namespace) will scale the Python task to run on AWS ECS Fargate:
+Add a `taskRunner` property to the Python task to run it on AWS Batch:
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python
-    values:
-       taskRunner:
-         type: io.kestra.plugin.ee.aws.runner.Batch
-         region: us-east-1
-         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
-         computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
-         jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
-         executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
-         taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
-         bucket: kestra-us
+- id: python_task
+  type: io.kestra.plugin.scripts.python.Script
+  taskRunner:
+    type: io.kestra.plugin.ee.aws.runner.Batch
+    region: us-east-1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+    computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
+    jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
+    executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
+    taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
+    bucket: kestra-us
 ```
 
-You can set plugin defaults at the flow, namespace, or global level to apply to all tasks of that type, ensuring that all Python tasks run on AWS ECS Fargate in a given environment.
+In Enterprise Edition, a namespace or tenant [Policy](../../07.enterprise/02.governance/policies/index.md) can add this `taskRunner` to every Python task, so all Python tasks in that scope run on AWS Batch. In the Open Source Edition, set `taskRunner` on each task.
 
 ---
 

@@ -3,6 +3,8 @@ description: "Compare Kestra vs PagerDuty Process Automation (formerly Rundeck):
 competitorName: "PagerDuty PA"
 category: Infrastructure Automation
 shortDescription: "Click-to-run runbook tools vs. event-driven multi-step orchestration with approvals and audit trails."
+seeHowTitle: "Getting Started with Modern Incident Orchestration"
+seeHowBody: "See how Kestra replaces runbook tools with end-to-end incident automation—from alert to resolution."
 
 brandColor:
   color: "#06ac38"
@@ -80,7 +82,7 @@ easeOfUse:
   title: "Declarative Orchestration vs. UI-First Job Templates"
   kestra:
     title: "Kestra: Readable, reviewable, deployable"
-    description: "YAML workflows read like documentation. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes them for you. Every workflow goes through Git and CI/CD—no hidden state in a UI. Approvals, retries, PagerDuty alert triggers, and ITSM integration are first-class YAML constructs."
+    description: "YAML workflows read like documentation. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes them for you. Every workflow goes through Git and CI/CD—no hidden state in a UI. Approvals, retries, PagerDuty alert triggers, and ITSM integration are first-class YAML constructs."
     code: |
       id: incident_auto_remediate
       namespace: ops.incident
@@ -197,7 +199,7 @@ testimonials:
         name: "Dropped jobs since migration"
       - value: "3x"
         name: "Faster mean time to resolution"
-    storyLink: "/use-cases/stories/26-orchestrating-cybersecurity-for-100+-users-and-billions-of-rows"
+    storyLink: "/stories/jpmorgan-chase"
 
 platformStrengths:
   title: "Kestra Is Built for the Full Incident Lifecycle"

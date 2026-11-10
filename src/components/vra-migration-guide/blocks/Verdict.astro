@@ -1,0 +1,40 @@
+---
+import { VERDICT_LABELS, type VerdictKind } from "./verdict"
+
+interface Props {
+    kind: VerdictKind
+}
+
+const { kind } = Astro.props
+---
+
+<span class={`verdict verdict-${kind}`}
+    ><span class="dot" aria-hidden="true"></span>{VERDICT_LABELS[kind]}</span
+>
+
+<style lang="scss">
+    @use "/src/components/vra-migration-guide/shared" as *;
+    .verdict {
+        @include guide-chip;
+        gap: 0.35rem;
+    }
+
+    .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+
+        $colors: (
+            replace: link,
+            integrate: alert-info,
+            keep: alert-success,
+            retire: tertiary,
+        );
+
+        @each $kind, $color in $colors {
+            .verdict-#{$kind} & {
+                background: var(--ks-content-#{$color});
+            }
+        }
+    }
+</style>

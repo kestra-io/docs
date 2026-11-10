@@ -1,5 +1,7 @@
 ---
 title: Populate Your Instance with Sample Data
+h1: Load Demo Data into Your Kestra Instance
+description: Populate your Kestra instance with demo data. Use sample flows and datasets to explore features, test integrations, and validate your setup.
 icon: /src/contents/docs/icons/admin.svg
 stage: Getting Started
 topics:
@@ -64,7 +66,7 @@ BEGIN;
 -- 1. hello-world (acme)
 INSERT INTO flows (key, value, source_code) VALUES (
   'acme_hello-world_1',
-  '{"id":"hello-world","namespace":"acme","tenantId":"main","revision":1,"deleted":false,"description":"Hello World","tasks":[{"id":"first_task","type":"io.kestra.plugin.core.debug.Return","format":"thrilled"},{"id":"second_task","type":"io.kestra.plugin.scripts.shell.Commands","commands":["sleep 0.42","echo ''::{ \"outputs\":{\"returned_data\":\"mydata\"}}::''"]},{"id":"hello_world","type":"io.kestra.plugin.core.log.Log","message":"Welcome to Acme, {{ inputs.user }}!\nWe are {{ outputs.first_task.value }} to have you here!"}],"inputs":[{"id":"user","type":"STRING","defaults":"Rick Astley"}],"triggers":[{"id":"daily","type":"io.kestra.plugin.core.trigger.Schedule","cron":"0 9 * * *","disabled":true}]}'::jsonb,
+  '{"id":"hello-world","namespace":"acme","tenantId":"main","revision":1,"deleted":false,"description":"Hello World","tasks":[{"id":"first_task","type":"io.kestra.plugin.core.output.OutputValues","values":{"result":"thrilled"}},{"id":"second_task","type":"io.kestra.plugin.scripts.shell.Commands","commands":["sleep 0.42","echo ''::{ \"outputs\":{\"returned_data\":\"mydata\"}}::''"]},{"id":"hello_world","type":"io.kestra.plugin.core.log.Log","message":"Welcome to Acme, {{ inputs.user }}!\nWe are {{ outputs.first_task.values.result }} to have you here!"}],"inputs":[{"id":"user","type":"STRING","defaults":"Rick Astley"}],"triggers":[{"id":"daily","type":"io.kestra.plugin.core.trigger.Schedule","cron":"0 9 * * *","disabled":true}]}'::jsonb,
   'id: hello-world
 namespace: acme
 description: Hello World
@@ -76,8 +78,9 @@ inputs:
 
 tasks:
   - id: first_task
-    type: io.kestra.plugin.core.debug.Return
-    format: thrilled
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: thrilled
 
   - id: second_task
     type: io.kestra.plugin.scripts.shell.Commands
@@ -89,7 +92,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: |
       Welcome to Acme, {{ inputs.user }}!
-      We are {{ outputs.first_task.value }} to have you here!
+      We are {{ outputs.first_task.values.result }} to have you here!
 
 triggers:
   - id: daily
@@ -167,7 +170,7 @@ triggers:
 -- 4. data_pipeline_assets (acme.company.data)
 INSERT INTO flows (key, value, source_code) VALUES (
   'acme.company.data_data_pipeline_assets_1',
-  '{"id":"data_pipeline_assets","namespace":"acme.company.data","tenantId":"main","revision":1,"deleted":false,"tasks":[{"id":"create_staging_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"CREATE TABLE IF NOT EXISTS trips AS select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;"},{"id":"for_each","type":"io.kestra.plugin.core.flow.ForEach","values":["passenger_count","trip_distance"],"tasks":[{"id":"create_mart_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;"}]}]}'::jsonb,
+  '{"id":"data_pipeline_assets","namespace":"acme.company.data","tenantId":"main","revision":1,"deleted":false,"tasks":[{"id":"create_staging_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"CREATE TABLE IF NOT EXISTS trips AS select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;"},{"id":"for_each","type":"io.kestra.plugin.core.flow.Loop","values":["passenger_count","trip_distance"],"tasks":[{"id":"create_mart_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;"}]}]}'::jsonb,
   'id: data_pipeline_assets
 namespace: acme.company.data
 
@@ -179,14 +182,14 @@ tasks:
       select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
 
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values:
       - passenger_count
       - trip_distance
     tasks:
       - id: create_mart_layer_asset
         type: io.kestra.plugin.jdbc.duckdb.Query
-        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;'
+        sql: SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;'
 ) ON CONFLICT (key) DO NOTHING;
 
 -- 5. system_health_check (acme.operations)

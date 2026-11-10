@@ -1,0 +1,14 @@
+---
+import { getMarked } from "~/markdown/marked-shiki"
+
+const props = Astro.props as {
+    content: string
+    class?: string
+}
+
+const { content, class: className, ...rest } = props
+
+const htmlContent = await getMarked().parse(content)
+---
+
+<div class:list={["markdown-renderer", className]} set:html={htmlContent} {...rest} />

@@ -1,5 +1,7 @@
 ---
-title: Tutorial – Build a Hello World Flow in Kestra
+title: Build a Hello World Flow in Kestra
+h1: Create Your First Hello World Flow
+description: Build your first Hello World flow in Kestra. Follow a step-by-step tutorial to learn declarative workflow design and core Kestra concepts from scratch.
 sidebarTitle: Fundamentals
 icon: /src/contents/docs/icons/tutorial.svg
 ---
@@ -12,8 +14,8 @@ If you haven't already, follow the [Quickstart Guide](../../01.quickstart/index.
 
 ## Build your first Hello World Flow
 
-<div class=video-container>
-  <iframe src="https://www.youtube.com/embed/Foq3RZfwV90?si=uO7xdC5TXZxMGShB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/LOb3eF-AR8Y?si=_3vtPeNy5mwlzba3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Flows
@@ -95,8 +97,6 @@ tasks:
 
 Learn more about flows in the [Flows page](../../05.workflow-components/01.flow/index.md).
 
----
-
 ## Tasks
 
 Now that you know how to document and organize your flows, it's time to get to the core of orchestration: tasks.
@@ -151,13 +151,11 @@ Kestra supports [hundreds of tasks](/plugins) integrating with various external 
 If you want to comment or uncomment out part of your code, use `CTRL + /` on Windows/Linux or `⌘ + /` on macOS. All available keyboard shortcuts are listed in the code editor context menu.
 :::
 
----
-
 ## Create and run a flow
 
 To this point, we have shown some flows to run and get familiar with. Now, let's create a flow to use throughout the rest of the tutorial. Open the **Flows** view and click **+ Create**:
 
-![Create flow](./create_button.png)
+![Create flow](./create-button-2-0.png)
 
 Paste the following code into the Flow editor:
 
@@ -171,16 +169,18 @@ tasks:
     uri: https://dummyjson.com/products
 ```
 
-Then, hit the **Save** button.
+Then, hit the **Save** button, or you can also save as a draft in case you'd like to keep editing.
 
-![Create flow](./save_button.png)
+![Create flow](./save-button-2-0.png)
 
-This flow has a single task that fetches data from the [dummyjson](https://dummyjson.com/) API via an [HTTP Request task](/plugins/core/http/io.kestra.plugin.core.http.request). Run it to see the output.
-
-![New execution](./new_execution.png)
+This flow has a single task that fetches data from the [dummyjson](https://dummyjson.com/) API via an [HTTP Request task](/plugins/core/http/io.kestra.plugin.core.http.request). Run it with the **Execute** button to see the output.
 
 After execution, you’ll be directed to the Gantt view to see the stages of your flow’s progress. In this simple example, we see the API request successfully execute.
 
-![gantt view](./gantt-view.png)
+![gantt view](./gantt-view-2-0.png)
 
-While fetching data is a great first step, it is just that, a first step. In the next sections, with a basic understanding of flows and tasks under our belt, we introduce other critical components to Kestra Flows: Inputs, Outputs, Triggers, and more.
+Toggle over to the **Execution Overview** for a visualization of your flow tasks and explore the other post-execution tabs for even more detailed information about your run.
+
+![execution overview](./execution-overview-2-0.png)
+
+While fetching data is a great first step, it is just that, a first step. In the next sections, you'll explore the other critical components of Kestra flows: Inputs, Outputs, Triggers, and more.

@@ -1,5 +1,6 @@
 ---
-title: Basic Authentication Troubleshooting in Kestra
+title: Fix Basic Authentication Issues in Kestra
+h1: Diagnose and fix Basic Authentication configuration issues
 sidebarTitle: Troubleshooting Basic Authentication
 icon: /src/contents/docs/icons/faq.svg
 description: Troubleshoot common issues with Basic Authentication in Kestra, including configuration and login problems.
@@ -7,9 +8,7 @@ description: Troubleshoot common issues with Basic Authentication in Kestra, inc
 
 Troubleshoot issues with Basic Authentication.
 
-## Fix basic authentication issues in Kestra
-
-Starting with version 0.24, every open-source instance of Kestra requires Basic Authentication (`username` and `password`). You can configure credentials via the Setup Page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
+Every open-source instance of Kestra requires Basic Authentication (`username` and `password`). Credentials can be configured via the Setup page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
 
 ```yaml
 kestra:
@@ -19,11 +18,13 @@ kestra:
       password: Admin1234
 ```
 
-Since Basic Authentication is now required, the `enabled` flag is ignored and should no longer be used. Credentials must be configured to access the Kestra UI or API. For new users, simply follow the Setup Page that will show up when you start Kestra UI.
+Since Basic Authentication is now required, the `enabled` flag is ignored and should no longer be used. Credentials must be configured to access the Kestra UI or API. For new users, follow the Setup page that appears when you start the Kestra UI.
 
-For production deployments, we recommend setting a valid email address and a strong password in the configuration file.
+For production deployments, set a valid email address and a strong password in the configuration file.
 
-If you're upgrading to version 0.24, there are three possible scenarios for existing users.
+Whether you use the Setup page or the configuration file, the username must be a valid email address, and the password must be at least 8 characters with at least one uppercase letter, one lowercase letter, and one digit. Neither can exceed 256 characters. In the open-source edition these rules are fixed; the configurable [password policy](../../configuration/05.security-and-secrets/index.md#invitation-expiration-and-password-rules) under `kestra.security.basic-auth` applies only to the Enterprise Edition.
+
+There are four possible scenarios for existing users.
 
 ### Scenario 1: The `enabled` flag is set to `true`
 
@@ -60,6 +61,10 @@ In this case, the following occurs:
 
 If no `basic-auth` configuration is defined:
 - The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
+
+:::alert{type="warning"}
+In this scenario, the Setup page is publicly reachable until credentials are submitted. For production deployments, configure `username` and `password` in the application configuration file **before** starting Kestra to skip the Setup page and ensure the instance is never unprotected.
+:::
 
 :::alert{type="info"}
 If you forget your credentials, update the `username` and `password` in the configuration file. The configuration file always takes precedence over values set from the Setup page.

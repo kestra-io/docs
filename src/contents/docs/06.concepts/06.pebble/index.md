@@ -1,15 +1,12 @@
 ---
-title: Pebble Templating in Kestra – Render Inputs and Outputs
-description: Dynamically render variables, inputs and outputs.
+title: "Pebble Templating in Kestra: Dynamic Variables"
+h1: Dynamically Render Variables, Inputs and Outputs with Pebble
+description: Dynamically render variables, inputs, and outputs in Kestra using Pebble templating. Use expressions to build flexible, data-driven workflows.
 sidebarTitle: Pebble Templating Engine
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
-Dynamically render variables, inputs and outputs.
-
-## Pebble Templating – render Inputs and Outputs
-
-Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to the [Python Jinja Template Engine](https://palletsprojects.com/p/jinja/) syntax. Kestra uses it to dynamically render variables, inputs, and outputs within the execution context.
+Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/) and similar to [Jinja](https://palletsprojects.com/p/jinja/). Kestra uses it to dynamically render variables, inputs, and outputs within the execution context. For the full list of available variables, filters, and functions, see the [Expressions](../../expressions/index.mdx) reference.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/TJ4BFBV8ZvU?si=KO8dnt105CVuvo8D" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -17,7 +14,7 @@ Pebble is a Java templating engine inspired by [Twig](https://twig.symfony.com/)
 
 ## Reading inputs
 
-When using `inputs` property in a Flow, you can access the corresponding values by using `inputs` variable in your tasks.
+Input values are available in tasks via the `inputs` variable:
 
 ```yaml
 id: input_string
@@ -33,11 +30,11 @@ tasks:
     message: "Hello 👋, my name is {{ inputs.name }}"
 ```
 
-## Reading task ouputs
+## Reading task outputs
 
-Most of Kestra's tasks expose output values. You can access those outputs in other tasks by using `outputs.<task_name>.<output_name>`. Every task output can be found in the corresponding task documentation.
+Most tasks expose output values accessible as `outputs.<task_id>.<output_name>`. The available outputs for each task are listed in its plugin documentation.
 
-In the example below, we use the `value` outputs of the `io.kestra.plugin.core.debug.Return` task in the downstream task.
+This example reads the `values.result` output of the `OutputValues` task in a downstream `Log` task:
 
 ```yaml
 id: input_string
@@ -49,20 +46,18 @@ inputs:
 
 tasks:
   - id: say_hello
-    type: io.kestra.plugin.core.debug.Return
-    format: "Hello 👋, my name is {{ inputs.name }}"
-
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Hello 👋, my name is {{ inputs.name }}"
 
   - id: can_you_repeat
     type: io.kestra.plugin.core.log.Log
-    message: '{{ outputs.say_hello.value }}'
+    message: '{{ outputs.say_hello.values.result }}'
 ```
 
 ## Dynamically render a task with `TemplatedTask`
 
-Since Kestra 0.16.0, you can use the `TemplatedTask` task to fully template all task properties using Pebble. This way, all task properties and their values can be dynamically rendered based on your custom inputs, variables, and outputs from other tasks.
-
-Below is an example of how to use the [TemplatedTask](/plugins/tasks/templating/io.kestra.plugin.core.templating.TemplatedTask) to create a Databricks job using dynamic properties:
+`TemplatedTask` supports full templating of all task properties using Pebble — including properties that are not natively dynamic. This example uses [TemplatedTask](/plugins/core/templating/io.kestra.plugin.core.templating.templatedtask) to create a Databricks job with inputs controlling the cluster, task key, and wait time:
 
 ```yaml
 id: templated_databricks_job
@@ -78,7 +73,7 @@ inputs:
   - id: pythonFile
     type: STRING
   - id: sparkPythonTaskSource
-    type: ENUM
+    type: SELECT
     defaults: WORKSPACE
     values:
       - GIT
@@ -104,24 +99,17 @@ tasks:
       waitForCompletion: "{{ inputs.maxWaitTime }}"
 ```
 
-Note how in this example, the `waitForCompletion` property is templated using Pebble even though that property is not dynamic. The same is true for the `sparkPythonTaskSource` property. Without the `TemplatedTask` task, you would not be able to pass those values from inputs.
+`waitForCompletion` and `sparkPythonTaskSource` are not natively dynamic properties — `TemplatedTask` makes it possible to drive them from inputs.
 
 ---
 
 ## Date formatting
 
-Pebble can be very useful for making small transformations on the fly without the need to use Python or another dedicated programming language.
-
-For instance, we can use the `date` filter to format date values: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
+The `date` filter formats date values inline: `'{{ inputs.my_date | date("yyyyMMdd") }}'`
 
 ## Coalesce operator to conditionally use trigger or execution date
 
-Most of the time, a flow will be triggered automatically. Either on schedule or based on external events. It’s common to use the date of the execution to process the corresponding data and make the flow dependent on time.
-
-With Pebble, you can use the `trigger.date` to get the date of the executed trigger.
-Still, sometimes you may want to manually execute a flow. In this case, the `trigger.date` variable won’t be suitable. In this scenario, you can use the `execution.startDate` variable that returns the execution start date.
-
-To support both use cases, use the coalesce operator `??`. The example below shows how to apply it in a flow.
+Scheduled flows can use `trigger.date` to get the trigger’s date, but that variable is not set on manual executions. Use the coalesce operator `??` to fall back to `execution.startDate` when the trigger date is unavailable:
 
 ```yaml
 id: pebble_date_trigger
@@ -129,8 +117,8 @@ namespace: company.team
 
 tasks:
   - id: return_date
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ trigger.date ?? execution.startDate | date("yyyy-MM-dd")}}'
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.date ?? execution.startDate | date('yyyy-MM-dd') }}"
 
 triggers:
   - id: schedule
@@ -138,11 +126,9 @@ triggers:
     cron: "* * * * *"
 ```
 
-## Parsing objects & lists using jq
+## Parsing objects and lists using jq
 
-Sometimes, outputs return nested objects or lists. To parse those elements, you may leverage `jq`. You can use jQuery to slice, filter, map, and transform structured data with the same ease that `sed`, `awk`, `grep`, and similar Linux commands let you manipulate strings.
-
-Consider the following flow:
+The `jq` filter slices, filters, and transforms nested objects or lists returned by task outputs — similar to how `sed`, `awk`, and `grep` work on strings.
 
 ```yaml
 id: object_example
@@ -165,14 +151,14 @@ The expression `{{ inputs.data.value | jq(".[1]") | first }}` returns `2`.
 
 `jq(".[1]")` accesses the second value of the list and returns an array with one element. We then use `first` to access the value itself.
 
-> Note: we could have used `{{ inputs | jq(".data.value[1]") | first }}`, jq allows to parse any object in Kestra context.
+`{{ inputs | jq(".data.value[1]") | first }}` also works — jq can parse any object in the Kestra context.
 
-You can troubleshoot complex Pebble expressions using the **Debug Expression** button in the outputs tab of a Flow execution page in the UI. It's helpful to validate how complex objects will be parsed.
+The **Debug Expression** button in the **Outputs** tab of an execution helps troubleshoot complex expressions and validates how objects will be parsed.
 
 
 ## Using conditions in Pebble
 
-In some tasks, such as the `If` or `Switch` tasks, you need to provide some conditions. You can use the Pebble syntax to use previous task outputs within those conditions:
+Tasks like [If](/plugins/core/flow/io.kestra.plugin.core.flow.if) and [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) accept Pebble expressions as conditions, letting you branch on inputs or previous task outputs:
 
 ```yaml
 id: test-object
@@ -187,7 +173,7 @@ tasks:
 
   - id: if
     type: io.kestra.plugin.core.flow.If
-    condition: '{{ inputs.data.value | jq(".[2]") | first == 3}}'
+    condition: '{{ inputs.data.value | jq(".[2]") | first == 3 }}'
     then:
       - id: when_true
         type: io.kestra.plugin.core.log.Log

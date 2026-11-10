@@ -1,5 +1,5 @@
 ---
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -18,10 +18,10 @@ const title = "Orchestrate your Infrastructure with Kestra"
 const description =
     "Automate, Scale, Provision and Optimize Your Infrastructure with Kestra"
 
-const response = await $fetchApiCached<{ results: Blueprint[] }>(
+const response = await $fetchApiCachedOptional<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?tags=infrastructure&page=1&size=20",
 )
-const blueprints = response.results
+const blueprints = response?.results ?? []
 
 const CAPABILITIES = [
     {

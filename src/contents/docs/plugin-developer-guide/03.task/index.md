@@ -1,5 +1,6 @@
 ---
 title: Develop a Kestra Task Plugin
+h1: "How to Build a Custom Task Plugin: Properties, Logic & Outputs"
 sidebarTitle: Develop a Task
 icon: /src/contents/docs/icons/dev.svg
 description: Step-by-step guide to developing custom Task plugins for Kestra, including properties, run logic, outputs, and validation.
@@ -56,10 +57,10 @@ public class ReverseString extends Task implements RunnableTask<ReverseString.Ou
 :::
 
 :::alert{type="info"}
-Note that all optional properties will be displayed within the "Optional properties" section in the No-Code Editor in the Kestra UI.
+All optional properties are displayed within the "Optional properties" section in the No-Code Editor in the Kestra UI.
 :::
 
-Let's look at this one more deeply.
+Look at this more closely.
 
 ### Class annotations
 ```java
@@ -252,7 +253,7 @@ public Output run(RunContext runContext) throws Exception {
 Kestra uses a special type to carry data in a flexible way: `Data`.
 `Data` can be built via three different types or properties: a URI (which will points to a Kestra internal storage file), a list of map (for defining multiple items), or a map (for a single item). Thanks to this, the task user can pass data to it in a very flexible way, we strongly encourage you to use this type when it fits your needs.
 
-Here is an example that defines a `Data` attibute of type `Message`, at run time you will need to render this property and map the message from a `Map`. It uses Project Reactor `Flux` under the cover to allow processing items one by one in a reactive manner allowing to process an arbitrary number of items. When couple with our internal storage files, it can process files or billions of items if needed:
+Here is an example that defines a `Data` attribute of type `Message`, at run time you will need to render this property and map the message from a `Map`. It uses Project Reactor `Flux` under the cover to allow processing items one by one in a reactive manner allowing to process an arbitrary number of items. When couple with our internal storage files, it can process files or billions of items if needed:
 
 ```java
 // property definition

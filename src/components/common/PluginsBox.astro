@@ -1,13 +1,14 @@
 ---
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import GradientCard from "~/components/card/GradientCard.vue"
-import { $fetchApiCached } from "~/utils/fetch"
-import { type PluginMetadata } from "@kestra-io/ui-libs"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
+import { type PluginMetadata } from "~/utils/plugins/plugin"
 import TaskIcon from "./TaskIcon.astro"
+import { randomSortFunction } from "~/utils/random"
 
 const totalPlugins = await fetchTotalPluginsCount()
 const pluginMetadata =
-    await $fetchApiCached<PluginMetadata[]>("/plugins/metadata")
+    (await $fetchApiCachedOptional<PluginMetadata[]>("/plugins/metadata")) ?? []
 
 const filteredPlugins = pluginMetadata
     .filter(
@@ -20,7 +21,7 @@ const filteredPlugins = pluginMetadata
             !r.artifactId.startsWith("secret-") &&
             !r.artifactId.startsWith("storage-"),
     )
-    .sort(() => 0.5 - Math.random())
+    .sort(randomSortFunction)
     .slice(0, 20)
 
 const plugins = await Promise.all(
@@ -29,11 +30,9 @@ const plugins = await Promise.all(
             title: plugin.title,
             name: plugin.name,
             artifactId: plugin.artifactId,
-            link:
-                `/plugins/${plugin.artifactId}` +
-                (`plugin-${plugin.name}` != plugin.artifactId
-                    ? "/" + plugin.name
-                    : ""),
+            // Link logos to the plugin group page (always 200) to avoid the
+            // 404 -> 301 hop the `/${plugin.name}` subgroup suffix caused for ~82 plugins.
+            link: `/plugins/${plugin.artifactId}`,
             group: plugin.group,
         }
     }),

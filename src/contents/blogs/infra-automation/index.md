@@ -16,7 +16,7 @@ Platform and infrastructure teams are juggling hardware fleets, VM environments,
 
 With our [latest release](https://kestra.io/blogs/release-1-3), we have shipped a lot of new plugins, and a point of view: **orchestration is the missing layer** in your infrastructure landscape. Not another tool to replace your existing systems, but a control plane that turns the handoffs into a governed, debuggable process.
 
-Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery [(Argo CD)](https://kestra.io/plugins/plugin-argocd), edge/DNS [(Cloudflare)](https://kestra.io/plugins/plugin-cloudflare), bare metal [(MAAS)](https://kestra.io/plugins/plugin-ee-canonical/maas/io.kestra.plugin.ee.canonical.maas.commissionmachine), virtualization [(KVM/libvirt)](https://kestra.io/plugins/plugin-kvm/io.kestra.plugin.kvm.createvm), source-of-truth workflows [(NetBox)](https://kestra.io/plugins/plugin-ee-netbox), and hyperconverged day‑2/recovery automation [(Nutanix AHV + snapshots)](https://kestra.io/plugins/plugin-ee-nutanix).
+Kestra 1.3 shipped the building blocks to do that across common infrastructure domains: GitOps delivery [(Argo CD)](https://kestra.io/plugins/plugin-argocd), edge/DNS [(Cloudflare)](https://kestra.io/plugins/plugin-cloudflare), bare metal [(MAAS)](https://kestra.io/plugins/plugin-ee-canonical/io.kestra.plugin.ee.canonical.maas.commissionmachine), virtualization [(KVM/libvirt)](https://kestra.io/plugins/plugin-kvm/io.kestra.plugin.kvm.createvm), source-of-truth workflows [(NetBox)](https://kestra.io/plugins/plugin-ee-netbox), and hyperconverged day‑2/recovery automation [(Nutanix AHV + snapshots)](https://kestra.io/plugins/plugin-ee-nutanix).
 
 ## Your problems are the handoffs between your tools
 
@@ -48,7 +48,7 @@ And it’s why we shipped production-grade controls that matter specifically whe
 
 - [Credentials](https://kestra.io/docs/enterprise/auth/credentials): reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
 
-- [Plugin Defaults UI](https://kestra.io/docs/workflow-components/plugin-defaults): manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
+- [Policies](https://kestra.io/docs/enterprise/governance/policies): enforce configuration rules and shared plugin settings at the namespace or tenant level, with governance controls and an audit trail (Enterprise Edition).
 
 And because infrastructure automation is always part “process” (approvals, self-service, controlled access), Kestra’s Enterprise “Apps” matter deeply here: **Apps let you build a UI in front of flows**, forms for data entry, approval buttons, and controlled output views, while the flow remains the backend.
 

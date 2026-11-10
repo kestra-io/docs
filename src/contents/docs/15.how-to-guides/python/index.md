@@ -1,5 +1,7 @@
 ---
 title: Run Python Inside Your Flows
+h1: Execute Python Scripts in Kestra Workflows
+description: Run Python scripts in Kestra. Install pip packages at runtime, execute code in Docker containers, and pass data between tasks using inputs and outputs.
 icon: /src/contents/docs/icons/python.svg
 stage: Getting Started
 topics:
@@ -14,8 +16,6 @@ You can execute Python code in a flow by either writing your Python inline or by
   <iframe src="https://www.youtube.com/embed/Xv16DUla6hA?si=sKYTpTJPL4p_MA1G" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 In this example, the flow will install the required pip packages, make an API request to fetch data and use the Python Kestra library to generate outputs and metrics using this data.
 
 ## Managing Dependencies
@@ -25,11 +25,11 @@ Managing Python Dependencies can be frustrating. There's 3 ways you can manage y
 - Set Container Image with Docker Task Runner
 - Build Docker Image and set it with Docker Task Runner
 
-For more information, check out the [dedicated guide here](../python-dependencies/index.md).
+For more information, see the [dedicated guide](../python-dependencies/index.md).
 
 ## Script Task
 
-If you want to write a short amount of Python to perform a task, you can use the `io.kestra.plugin.scripts.python.Script` type to write it directly in your flow configuration. This allows you to keep everything in one place.
+If you want to write a short amount of Python to perform a task, you can use the [io.kestra.plugin.scripts.python.Script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) type to write it directly in your flow configuration. This allows you to keep everything in one place.
 
 ```yaml
 id: python_scripts
@@ -98,7 +98,7 @@ tasks:
 
 ## Commands Task
 
-If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.python.Commands` type:
+If you would prefer to put your Python code in a `.py` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands) type:
 
 ```yaml
 id: python_commands
@@ -130,13 +130,11 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
   <iframe src="https://www.youtube.com/embed/6pN5bZ4l1_8?si=QudHhk15z8LeZ8lw" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 If you want to get a variable or file from your Python code, you can use an [output](../../05.workflow-components/06.outputs/index.md).
 
-You'll need to install the [`kestra` python module](https://pypi.org/project/kestra/) in order to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs and executing/polling flows. For example, The Kestra ION extra (`kestra[ion]`) provides a method to read files and convert them to a list of dictionaries, which can be easily converted into a dataframe in Python (using any Python library supporting dataframes, e.g., Pandas or Polars).
+Install the [`kestra` python module](https://pypi.org/project/kestra/) to pass your variables to Kestra. This Kestra Python client provides functionality to interact with the Kestra server for sending metrics, outputs, and logs and executing/polling flows. For example, The Kestra ION extra (`kestra[ion]`) provides a method to read files and convert them to a list of dictionaries, which can be converted into a dataframe in Python (using any Python library supporting dataframes, e.g., Pandas or Polars).
 
-Check out the [README](https://github.com/kestra-io/libs/blob/main/python/README.md) for more details and examples.
+See the [README](https://github.com/kestra-io/libs/blob/main/python/README.md) for more details and examples.
 
 ```bash
 pip install kestra
@@ -195,7 +193,7 @@ tasks:
     message: "Number of downloads: {{ outputs.outputs_metrics.vars.downloads }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both [io.kestra.plugin.scripts.python.Script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) and [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands)._
 
 ### File Output
 
@@ -244,7 +242,7 @@ tasks:
       - cat {{ outputs.outputs_metrics.outputFiles['downloads.txt'] }}
 ```
 
-_This example works for both `io.kestra.plugin.scripts.python.Script` and `io.kestra.plugin.scripts.python.Commands`._
+_This example works for both [io.kestra.plugin.scripts.python.Script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) and [io.kestra.plugin.scripts.python.Commands](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.commands)._
 
 ## Capture Logs
 
@@ -252,9 +250,7 @@ _This example works for both `io.kestra.plugin.scripts.python.Script` and `io.ke
   <iframe src="https://www.youtube.com/embed/0FT3iZKgxYg?si=c162iQbg79R_IEa9" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
-If your Python code needs to log something to the console, we recommend using the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
+If your Python code needs to log something to the console, use the `Kestra.logger()` method from the [Kestra pip package](https://github.com/kestra-io/libs) to instantiate a `logger` object — this logger is configured to correctly capture all Python log levels and send them to the Kestra backend.
 
 ```yaml
 id: python_logs
@@ -326,7 +322,7 @@ Once this has executed, `duration` will be viewable under **Metrics**.
 
 ## Execute Flows in Python
 
-Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor. However, we recommend using [Subflows](../../05.workflow-components/10.subflows/index.md) to execute flows from other flows for a more integrated experience.
+Inside of your Python code, you can execute flows. This is useful if you want to manage your orchestration directly in Python rather than using the Kestra flow editor. However, using [Subflows](../../05.workflow-components/10.subflows/index.md) to execute flows from other flows provides a more integrated experience.
 
 You can trigger a flow execution by calling the `execute()` method. Here is an example for the same `python_scripts` flow in the namespace `example` as above:
 
@@ -341,12 +337,13 @@ flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
 
 Read more about it on the [execution page](../../05.workflow-components/03.execution/index.md).
 
-## Automate Python with Triggers
+## Automate Python with triggers
 
 You can combine your Python code with a trigger to automatically execute your code. There's a few key ways you can automate it:
 - Run on a schedule
 - Run when a webhook is called
 - Run when a file is available in a data lake or storage bucket
+- Run Python code on a polling interval and emit only when a condition matches
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FIOIvNwtKM8?si=l8NCFNKgE4cuY-Hn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -401,7 +398,7 @@ triggers:
 
 ### Run when a file is available in a data lake or storage bucket
 
-You can use a [Polling Trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), such as the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
+You can use a [Polling Trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), such as the [S3 Trigger](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
 
 ```yaml
 id: s3_trigger
@@ -440,12 +437,67 @@ triggers:
     maxKeys: 1
 ```
 
+### Run Python code as a polling trigger
+
+You can also use Python itself as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run Python code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline Python code:
+
+```yaml
+id: python_script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.python.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    script: |
+      raise Exception("boom")
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run Python commands instead:
+
+```yaml
+id: python_commands_trigger
+namespace: company.team
+
+triggers:
+  - id: on_fail
+    type: io.kestra.plugin.scripts.python.CommandsTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: python:3.13-slim
+    commands:
+      - python3 -c "raise Exception('boom')"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These triggers support:
+
+- `interval` to control how often the Python code runs
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only when the condition changes from not matching to matching
+
+Use these trigger types when you want Python itself to decide whether a polling condition has been met, rather than relying on a separate external-system trigger.
+
 
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.eval)
-- [FileTransform](/plugins/plugin-graalvm/python/io.kestra.plugin.graalvm.python.filetransform)
+- [Eval](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.eval)
+- [FileTransform](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 

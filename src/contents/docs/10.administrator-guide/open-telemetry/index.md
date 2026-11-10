@@ -1,8 +1,8 @@
 ---
-title: OpenTelemetry in Kestra – Traces, Metrics, Logs
+title: "OpenTelemetry for Kestra: Traces, Metrics, and Logs"
+h1: Collect traces, metrics, and logs with OpenTelemetry
 sidebarTitle: OpenTelemetry
 icon: /src/contents/docs/icons/admin.svg
-version: ">= 0.21.0"
 editions: ["OSS", "EE"]
 description: Implement observability in Kestra with OpenTelemetry to export traces, metrics, and logs to your preferred monitoring tools.
 ---
@@ -12,22 +12,16 @@ description: Implement observability in Kestra with OpenTelemetry to export trac
 **OpenTelemetry** is a vendor-neutral, tool-agnostic framework and toolkit for creating and managing telemetry data.
 It helps implement observability in software applications.
 
-## Implement OpenTelemetry observability in Kestra
-
 OpenTelemetry defines three different kinds of telemetry data:
 - **Traces** provide a high-level view of what happens when a request is made to an application. A trace can contain multiple [spans](https://opentelemetry.io/docs/concepts/signals/traces/#spans).
 - **Metrics** are measurements of a service captured at runtime.
 - **Logs** are timestamped text records, either structured (recommended) or unstructured, with optional metadata.
 
-Starting with version 0.21, Kestra supports all three kinds of telemetry data thanks to OpenTelemetry-compatible exporters. For more details, check out the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
+Kestra supports all three kinds of telemetry data via OpenTelemetry-compatible exporters. For more details, see the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
 
 ## Traces
 
-:::alert{type="info"}
-Exporting trace data in Kestra is currently a Beta feature.
-:::
-
-The first step is to enable distributed traces inside the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
+Distributed traces are enabled in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
 
 ```yaml
 micronaut:
@@ -52,8 +46,37 @@ When enabled, Kestra instruments:
 ### Trace correlation
 Kestra propagates the trace context so that traces are correlated:
 - The API call trace correlates with the execution it creates.
-- Flow execution traces correlate with parent flows when the `Subflow` or `ForEachItem` task is used.
+- Flow execution traces correlate with parent flows when the `Subflow` or `Loop` task is used.
 - External HTTP calls include the standard propagation header for downstream correlation.
+
+### Propagate trace context to scripts
+
+Scripts run in isolated containers, so OTel spans they generate start a new root trace by default. Pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable to parent those spans under the Kestra task span.
+
+`{{ trace.parent }}` holds the W3C [traceparent](https://www.w3.org/TR/trace-context/) header; it is empty when tracing is disabled.
+
+```yaml
+id: traced_script
+namespace: company.team
+
+tasks:
+  - id: run_python
+    type: io.kestra.plugin.scripts.python.Script
+    env:
+      TRACEPARENT: "{{ trace.parent }}"
+    script: |
+      from opentelemetry.propagate import extract
+      from opentelemetry.sdk.trace import TracerProvider
+      import os
+
+      ctx = extract({"traceparent": os.environ.get("TRACEPARENT", "")})
+      tracer = TracerProvider().get_tracer(__name__)
+
+      with tracer.start_as_current_span("my-span", context=ctx):
+          pass  # spans here appear as children of the Kestra task span
+```
+
+`TRACEPARENT` is recognized by all major OTel SDKs and works the same way for Node.js, Bash, and any other script type. The variable is also usable in HTTP task headers and any other [expression-capable property](../../expressions/01.context/index.mdx#default-execution-context-variables).
 
 ### Example: Jaeger with Docker Compose
 
@@ -95,7 +118,7 @@ The following screenshot shows three correlated traces:
 
 ### Disabling traces
 
-You can disable traces for flows while keeping API traces:
+Traces can be disabled for flows while keeping API traces:
 
 ```yaml
 kestra:
@@ -103,24 +126,45 @@ kestra:
     root: DISABLED
 ```
 
-You can also disable traces per component (experimental). For example, disabling only Executor spans:
+Traces can also be disabled per component (experimental). For example, disabling only Executor spans:
 
 ```yaml
 kestra:
   traces:
     root: DEFAULT
     categories:
-      io.kestra.core.runners.Executor: DISABLED
+      io.kestra.executor.DefaultExecutor: DISABLED
 ```
 
 #### Supported categories
 
 | Category                               | Description                                       |
 |----------------------------------------|---------------------------------------------------|
-| `io.kestra.core.runners.Executor`      | Spans for each message in the execution queue     |
+| `io.kestra.executor.DefaultExecutor`   | Spans for each message in the execution queue     |
 | `io.kestra.core.runners.Worker`        | Spans for each runnable task execution            |
 | `io.kestra.plugin.core.flow.Subflow`   | Spans for each `Subflow` task execution           |
-| `io.kestra.plugin.core.flow.ForEachItem` | Spans for each `ForEachItem` task execution     |
+| `io.kestra.plugin.core.flow.Loop` | Spans for each `Loop` sub-execution     |
+
+### Span attributes
+
+Kestra attaches `kestra.*` attributes to spans. The attributes available depend on the span type.
+
+| Attribute | Worker task spans | Executor spans | Subflow / Loop spans |
+|---|---|---|---|
+| `kestra.source` | ✓ | ✓ | ✓ |
+| `kestra.namespace` | ✓ | ✓ | ✓ |
+| `kestra.flowId` | ✓ | ✓ | ✓ |
+| `kestra.executionId` | ✓ | ✓ | ✓ |
+| `kestra.tenantId` | When set | When set | When set |
+| `kestra.taskId` | ✓ | — | — |
+| `kestra.uid` | ✓ | — | — |
+| `kestra.state` | ✓ | ✓ | — |
+
+- **Worker task spans** are emitted by `io.kestra.core.runners.Worker` for each runnable task execution. `kestra.taskId` is the task's YAML-defined `id` (for example, `send-alert` or `transform-data`), making spans from multiple tasks of the same type distinguishable without additional API lookups. `kestra.uid` is the task run UID. `kestra.state` is the final state of the task run, such as `SUCCESS` or `FAILED`.
+- **Executor spans** are emitted by `io.kestra.executor.DefaultExecutor` for execution-level orchestration messages. No single task is in scope at this level, so `kestra.taskId` and `kestra.uid` are not set. `kestra.state` is the execution state when the Executor received the message, not the state the message produced. The first Executor span of an execution carries `CREATED`, and the terminal state, such as `SUCCESS` or `FAILED`, appears on the last Executor spans.
+- **Subflow / Loop spans** are emitted by `io.kestra.plugin.core.flow.Subflow` and `io.kestra.plugin.core.flow.Loop` for child execution boundaries. These spans carry execution-level attributes only; `kestra.taskId`, `kestra.uid`, and `kestra.state` are not set.
+
+An execution can have more than one Executor span with its terminal state, and a restarted execution reaches a terminal state again under the same `kestra.executionId`. Sampling, exporter queues, and disabled trace categories can also drop spans. Use `kestra.state` to filter and inspect traces, not to count executions.
 
 ## Metrics
 
@@ -135,7 +179,7 @@ micronaut:
         url: http://localhost:4318/v1/metrics # Replace with your collector URL
 ```
 
-For example, you can configure an OpenTelemetry Collector to forward metrics to Prometheus:
+For example, an OpenTelemetry Collector can be configured to forward metrics to Prometheus:
 
 ```yaml
 receivers:

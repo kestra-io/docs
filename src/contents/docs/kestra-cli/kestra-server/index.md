@@ -1,6 +1,7 @@
 ---
-title: Kestra Server CLI – Commands and Options
-sidebarTitle: Kestra Server Commmands
+title: "Server CLI in Kestra: Commands and Options"
+h1: "Kestra Server CLI Reference: All Commands and Options"
+sidebarTitle: Kestra Server Commands
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]
 description: Reference guide for Kestra CLI commands to manage servers, flows, plugins, and configurations.
@@ -18,7 +19,7 @@ The Kestra Server CLI (`kestra`) is not a separate tool to install. It is the sa
 
 - **Docker / Docker Compose / Kubernetes**: the CLI is already included in the `kestra/kestra` image.
 - **Standalone JAR**: the downloaded executable (`./kestra-VERSION`) is the CLI.
-- **Managed environments (e.g. Kestra Cloud)**: host-level server commands are typically not available. Use [`kestractl`](../kestractl/index.md) for API-level operations.
+- **Managed environments (e.g. Kestra Cloud)**: host-level server commands are typically not available. Use [`kestractl`](../kestractl/index.md#installation) for API-level operations.
 
 To install Kestra first, follow one of these guides:
 
@@ -62,8 +63,8 @@ Available for commands that talk to the server API.
 - `--server` — Kestra server URL (default: `http://localhost:8080`).
 - `--headers` — Add custom headers (`<name=value>`).
 - `--user` — Basic auth (`user:password`).
-- `--tenant` — Tenant identifier (**EE only**).
-- `--api-token` — API token (**EE only**).
+- `--tenant` — Tenant identifier (**EE and Cloud only**).
+- `--api-token` — API token (**EE and Cloud only**).
 
 **Examples**
 
@@ -87,16 +88,13 @@ Commands:
   plugins    handle plugins
   server     handle servers
   flow       handle flows
-  template   handle templates
   sys        handle systems maintenance
   configs    handle configs
   namespace  handle namespaces
   auths      handle auths
-  sys-ee     handle kestra ee systems maintenance
   tenants    handle tenants
   migrate    handle migrations
   backups    (EE) handle metadata backups and restore
-  server     start Kestra servers (see `--flow-path` below for preloading flows)
 ```
 
 ### Preload flows at startup
@@ -215,9 +213,50 @@ kestra flow delete my-namespace my-flow-id
 
 ## Migration commands
 
+### `kestra migrate plan`
+
+Lists all pending database migrations without applying them. Read-only: acquires no lock, writes nothing.
+
+**Options**: `--sql` (print the raw SQL for each SQL-based migration)
+
+```bash
+kestra migrate plan
+kestra migrate plan --sql
+```
+
+---
+
+### `kestra migrate run`
+
+Applies all pending migrations in lexicographic order. Acquires a distributed lock so only one process migrates at a time. Makes a single non-blocking lock attempt; if the lock is already held, exits immediately with code `1`.
+
+```bash
+kestra migrate run
+```
+
+:::alert{type="info"}
+Enterprise Edition users must run this command manually before starting Kestra 2.0 for the first time. By default (`kestra.migration.auto=false`), Kestra EE refuses to start if any pending migrations exist. Open-source Kestra runs migrations automatically on startup.
+:::
+
+---
+
+### `kestra migrate unlock`
+
+Force-releases the migration lock. Use only when `kestra migrate run` exited abnormally and left the lock held.
+
+```bash
+kestra migrate unlock
+```
+
+:::alert{type="warning"}
+On **PostgreSQL, MySQL, and H2**, the lock is session-scoped. `kestra migrate unlock` always exits `0` but does nothing on these backends. The lock releases when the holding process terminates. Kill the hung process instead. On **Elasticsearch**, the command works as expected.
+:::
+
+---
+
 ### `kestra migrate default-tenant`
 
-Migrate all resources without tenant to a new tenant (multi-tenant setups).
+Migrate all resources without a tenant to a new tenant (multi-tenant setups).
 
 **Options**: `--tenant-id`, `--tenant-name`, `--dry-run`
 
@@ -264,6 +303,8 @@ Install one or more plugins by Maven coordinates.
 kestra plugins install io.kestra.plugin.jdbc:mysql:1.2.3
 ```
 
+To download plugins outside a Kestra installation, for example before building a custom Docker image, use [`kestractl plugins`](../kestractl/index.md#plugin-management) instead.
+
 ### `kestra plugins uninstall`
 
 Uninstall one or more plugins.
@@ -305,11 +346,23 @@ kestra plugins search jdbc
 
 ## Server commands
 
+Every server command accepts `--port` to set the port to bind.
+
+### `kestra server controller`
+
+Start a Worker Controller, the gRPC endpoint that Workers connect to (port `50051` by default). The webserver and standalone server start an embedded Worker Controller unless you pass `--no-controller`.
+
+**Options**: `--ignore-queue-records` (list)
+
+```bash
+kestra server controller
+```
+
 ### `kestra server executor`
 
 Start the executor.
 
-**Options**: `--ignore-executions` (list)
+**Options**: `-f, --flow-path` and `--tenant` to load flows from a path, and the troubleshooting lists `--ignore-executions`, `--ignore-flows`, `--ignore-namespaces`, `--ignore-tenants`, and `--ignore-queue-records`. Each list is comma-separated.
 
 ```bash
 kestra server executor
@@ -317,7 +370,9 @@ kestra server executor
 
 ### `kestra server indexer`
 
-Start the indexer.
+Start the indexer. The webserver and standalone server start an embedded indexer unless you pass `--no-indexer`.
+
+**Options**: `--ignore-indexer-records` and `--ignore-queue-records` (lists)
 
 ```bash
 kestra server indexer
@@ -327,23 +382,37 @@ kestra server indexer
 
 Start the scheduler.
 
+**Options**: `-t, --max-threads` (maximum threads used to evaluate triggers; defaults to the number of allocated CPU cores, with a minimum of 4)
+
 ```bash
-kestra server scheduler
+kestra server scheduler --max-threads 8
 ```
 
 ### `kestra server standalone`
 
 Start a standalone server (all core services).
 
+**Options**:
+
+- `--worker-thread`: number of worker threads. Defaults to eight times the number of available processors. Set it to `0` to start no worker.
+- `--no-tutorials`, `--no-indexer`, `--no-controller`: don't load tutorial flows, start the embedded indexer, or start the embedded Worker Controller.
+- `-f, --flow-path` and `--tenant`: load flows from a path.
+- `--ignore-executions`, `--ignore-flows`, `--ignore-namespaces`, `--ignore-tenants`, `--ignore-indexer-records`, `--ignore-queue-records`: comma-separated lists to ignore, for troubleshooting only.
+
 ```bash
-kestra server standalone
+kestra server standalone --worker-thread 16
 ```
 
 ### `kestra server webserver`
 
-Start the webserver.
+Start the webserver. By default, it also starts an embedded indexer and an embedded Worker Controller.
 
-**Option**: `--no-tutorials` to disable auto-loading tutorials
+**Options**:
+
+- `--no-tutorials`: don't load tutorial flows.
+- `--no-indexer`: don't start the embedded indexer.
+- `--no-controller`: don't start the embedded Worker Controller.
+- `--ignore-indexer-records`, `--ignore-queue-records`: comma-separated lists to ignore, for troubleshooting only.
 
 ```bash
 kestra server webserver --no-tutorials
@@ -353,7 +422,7 @@ kestra server webserver --no-tutorials
 
 Start a worker.
 
-**Options**: `-t, --thread` (max threads), `-g, --worker-group` (EE only)
+**Options**: `-t, --thread` (maximum worker threads; defaults to eight times the number of available processors)
 
 ```bash
 kestra server worker --thread 16
@@ -369,7 +438,7 @@ kestra server local
 
 ## Kestra with server components in different services
 
-Server components can run independently from each other. Each of them communicate through the database.
+Server components run independently from each other. Most communicate through the queue layer; Workers communicate with the Worker Controller over a bidirectional gRPC stream and never connect to the database directly. In the example below, the webserver runs the embedded Worker Controller, so the workers point to it on port `50051`.
 
 Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
 
@@ -421,7 +490,7 @@ services:
             basic-auth:
               enabled: false
               username: "admin@kestra.io"
-              password: kestra
+              password: Admin1234!
           repository:
             type: postgres
           storage:
@@ -433,6 +502,13 @@ services:
           tasks:
             tmp-dir:
               path: /tmp/kestra-wd/tmp
+          worker:
+            controllers:
+              static:
+                endpoints:
+                  # Workers connect to the Worker Controller embedded in the webserver
+                  - host: kestra-webserver
+                    port: 50051
     ports:
       - "8082-8083:8081"
     depends_on:
@@ -551,10 +627,14 @@ kestra sys state-store migrate
 Create a user.
 
 **Inputs**: `username` (required), `password` (optional)
-**Options**: `--groups`, `--tenant`, `--admin`, `--superadmin`, `--if-not-exists`
+**Options**: `--groups`, `--tenant`, `--admin`, `--instance-owner`, `--if-not-exists`
+
+:::alert{type="info"}
+`--superadmin` is a deprecated alias for `--instance-owner` and still works.
+:::
 
 ```bash
-kestra auths users create --superadmin --tenant=default admin Admin_password@123
+kestra auths users create --instance-owner --tenant=default admin Admin_password@123
 ```
 
 ### `kestra auths users create-basic-auth`
@@ -573,15 +653,19 @@ Refresh users to update their properties.
 kestra auths users refresh
 ```
 
-### `kestra auths users set-superadmin`
+### `kestra auths users set-instance-owner`
 
-Set or remove Superadmin status.
+Set or remove Instance Owner status.
 
-**Inputs**: `user`, `isSuperAdmin` (true|false)
+**Inputs**: `user`, `instanceOwner` (true|false)
 
 ```bash
-kestra auths users set-superadmin alice true
+kestra auths users set-instance-owner alice true
 ```
+
+:::alert{type="info"}
+`set-superadmin` is a deprecated alias for `set-instance-owner` and still works.
+:::
 
 ### `kestra auths users email-replace-username`
 
@@ -608,7 +692,7 @@ kestra auths users sync-access
 Create a metadata backup.
 
 **Inputs**: `type` (`FULL` | `TENANT`)
-**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`
+**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`, `--resources`
 
 ```bash
 kestra backups create FULL --no-encryption
@@ -619,61 +703,10 @@ kestra backups create FULL --no-encryption
 Restore a metadata backup.
 
 **Input**: `uri` (Kestra internal storage URI)
-**Options**: `--encryption-key`, `--to-tenant`
+**Options**: `--encryption-key`, `--to-tenant`, `--resources`
 
 ```bash
 kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
-```
-
----
-
-## Systems (EE)
-
-### kestra sys-ee restore-flow-listeners
-
-Restores the state-store for FlowListeners. Useful after restoring a flow queue.
-
-**Inputs**
-
-- `--timeout` (option): Timeout in seconds before quitting (default: 60).
-
-**Example Usage**
-
-```bash
-kestra-ee sys-ee restore-flow-listeners --timeout 120
-```
-
----
-
-### kestra sys-ee restore-queue
-
-Sends all data from a repository to Kafka. Useful for restoring all resources after a backup.
-
-**Inputs**
-
-- `--no-recreate` (option): Don't drop and recreate the Kafka topic.
-- `--no-flows` (option): Don't send flows.
-- `--no-templates` (option): Don't send templates.
-
-**Example Usage**
-
-```bash
-kestra-ee sys-ee restore-queue --no-flows
-```
-
----
-
-### kestra sys-ee reset-concurrency-limit
-
-Resets the concurrency limit stored on the Kafka runner.
-
-**Inputs**
-None
-
-**Example Usage**
-
-```bash
-kestra-ee sys-ee reset-concurrency-limit
 ```
 
 ## Tenants (EE)

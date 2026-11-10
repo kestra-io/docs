@@ -1,4 +1,4 @@
-import type { Plugin } from "@kestra-io/ui-libs"
+import type { Plugin } from "./plugin"
 
 export interface TocLink {
     id: string
@@ -30,5 +30,6 @@ export interface BlueprintPreview {
     title: string
     tags: string[]
     includedTasks: string[]
+    shortDescription?: string
 }
 

@@ -1,0 +1,143 @@
+// Replaces bootstrap/scss/nav and bootstrap/scss/navbar, trimmed to what the
+// site uses: no tabs, pills, underline, fill, justified, offcanvas, scroll,
+// toggler-icon, and only the xl expand point the header is built on.
+// Header.vue owns the colours; this is structure.
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-link {
+    display: block;
+    padding: var(--ks-nav-link-padding-y, 0.5rem) var(--ks-nav-link-padding-x, 1rem);
+    color: var(--ks-content-link);
+    background: none;
+    border: 0;
+    transition:
+        color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out;
+
+    &:hover,
+    &:focus {
+        color: var(--ks-content-color-highlight);
+    }
+
+    &.disabled,
+    &:disabled {
+        color: var(--ks-content-tertiary);
+        pointer-events: none;
+        cursor: default;
+    }
+}
+
+.tab-content > .tab-pane {
+    display: none;
+}
+
+.tab-content > .active {
+    display: block;
+}
+
+.navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.navbar > .container,
+.navbar > .container-xl,
+.navbar > .container-xxl,
+.navbar > .container-fluid {
+    display: flex;
+    flex-wrap: inherit;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-brand {
+    padding-top: 0.40625rem;
+    padding-bottom: 0.40625rem;
+    margin-right: 1rem;
+    font-size: $font-size-lg;
+    color: inherit;
+    white-space: nowrap;
+}
+
+.navbar-nav {
+    --ks-nav-link-padding-x: 0;
+    --ks-nav-link-padding-y: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+
+    .nav-link {
+        color: var(--ks-content-primary);
+    }
+}
+
+.navbar-collapse {
+    flex-grow: 1;
+    flex-basis: 100%;
+    align-items: center;
+}
+
+.navbar-toggler {
+    padding: 0.25rem 0.75rem;
+    font-size: $font-size-lg;
+    line-height: 1;
+    color: var(--ks-content-primary);
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: $border-radius;
+    transition: box-shadow 0.15s ease-in-out;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        outline: 0;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    .navbar-expand-xl {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        .navbar-nav {
+            flex-direction: row;
+
+            .dropdown-menu {
+                position: absolute;
+            }
+
+            // Longhands, not the shorthand's custom property: a component
+            // that sets only `padding-left` must still win on that side.
+            .nav-link {
+                padding-right: 0.5rem;
+                padding-left: 0.5rem;
+            }
+        }
+
+        .navbar-collapse {
+            display: flex !important; // stylelint-disable-line declaration-no-important
+            flex-basis: auto;
+        }
+
+        .navbar-toggler {
+            display: none;
+        }
+    }
+}
+
+.navbar-nav .dropdown-menu {
+    position: static;
+}

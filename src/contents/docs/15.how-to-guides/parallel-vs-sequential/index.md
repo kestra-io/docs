@@ -1,5 +1,7 @@
 ---
-title: Choose Between Parallel and Sequential Tasks
+title: Parallel vs. Sequential Tasks in Kestra
+h1: When to Use Parallel Tasks vs. Sequential Execution
+description: Choose between parallel and sequential task execution in Kestra. Understand trade-offs and dependency management to design efficient workflow patterns.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -14,9 +16,9 @@ When to use parallel tasks and when to use sequential tasks in Kestra.
 
 ## Parallel Tasks
 
-The following flow has 6 tasks wrapped in the `Parallel` task. Since the `concurrent` property is set to 3, Kestra will run 3 tasks in parallel. As soon as any of the three tasks completes, the next task will start.
+The following flow has 6 tasks wrapped in the [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) task. Since the `concurrent` property is set to 3, Kestra will run 3 tasks in parallel. As soon as any of the three tasks completes, the next task will start.
 
-The addition of the Parallel task with the `concurrent` property set to 3 ensures that Kestra will run up to 3 tasks concurrently. The `last` task will run after all the tasks in the `Parallel` task group have completed.
+The addition of the [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) task with the `concurrent` property set to 3 ensures that Kestra will run up to 3 tasks concurrently. The `last` task will run after all the tasks in the `Parallel` task group have completed.
 
 ```yaml
 id: parallel
@@ -70,8 +72,8 @@ tasks:
           - 'echo "running {{task.id}}"'
           - 'sleep 1'
   - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{task.id}} > {{taskrun.startDate}}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{task.id}} > {{taskrun.startDate}}"
 
 ```
 
@@ -139,6 +141,6 @@ tasks:
               - 'echo "running {{task.id}}"'
               - 'sleep 1'
   - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{task.id}} > {{taskrun.startDate}}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{task.id}} > {{taskrun.startDate}}"
 ```

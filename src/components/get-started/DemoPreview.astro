@@ -1,9 +1,9 @@
 ---
+import ArcadeEmbed from "~/components/common/ArcadeEmbed.astro"
 ---
 
 <section class="demo-preview" id="demo-preview">
     <div class="container">
-        <p class="overline" data-usal="fade-r">See It in Action</p>
         <h2 data-usal="fade-l">
             From Install to <span class="highlight">First Execution</span>
         </h2>
@@ -11,13 +11,10 @@
             Watch the full product tour — create a workflow, run it, and explore the UI in under 2 minutes.
         </p>
         <div class="arcade-wrapper" data-usal="fade-up">
-            <iframe
+            <ArcadeEmbed
                 src="https://demo.arcade.software/Vzkk6nAJSdkaXvGDSdBC?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
                 title="Welcome to Kestra"
-                loading="lazy"
-                allow="clipboard-write"
-                allowfullscreen
-            ></iframe>
+            />
         </div>
     </div>
 </section>
@@ -42,7 +39,7 @@
             font-size: $font-size-sm;
             text-transform: uppercase;
             color: var(--ks-content-tertiary);
-            font-family: var(--bs-font-monospace);
+            font-family: var(--ks-font-monospace);
             font-weight: 600;
             letter-spacing: 0.05em;
             margin-bottom: 0.75rem;

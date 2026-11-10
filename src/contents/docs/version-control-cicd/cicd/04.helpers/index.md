@@ -1,5 +1,6 @@
 ---
-title: CI/CD Helpers for Kestra – Local Dev and Read-Only Flows
+title: "CI/CD Helpers in Kestra: Local Dev and Read-Only Flows"
+h1: Simplify Local Flow Development and Validation with Helpers
 sidebarTitle: Helpers
 icon: /src/contents/docs/icons/dev.svg
 description: Simplify local flow development and validation with Kestra CI/CD helpers for expanding inclusions and managing read-only flows.
@@ -53,8 +54,8 @@ namespace: company.team
 
 tasks:
   - id: t1
-    type: io.kestra.plugin.core.debug.Return
-    format: |
+    type: io.kestra.plugin.core.log.Log
+    message: |
       Lorem Ipsum is simply dummy text of the printing
       .....
       500 lines later
@@ -68,8 +69,8 @@ namespace: company.team
 
 tasks:
   - id: t1
-    type: io.kestra.plugin.core.debug.Return
-    format: "[[> lorem.txt]]"
+    type: io.kestra.plugin.core.log.Log
+    message: "[[> lorem.txt]]"
 ```
 
 Then, create a local file named `lorem.txt` containing your text.

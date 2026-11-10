@@ -54,7 +54,7 @@ tasks:
       - ansible-playbook -i inventory.ini myplaybook.yml
 ```
 
-The [AnsibleCLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli) uses the [Docker Task Runner](../../docs/task-runners/04.types/02.docker-task-runner/index.md), and spins up the `cytopia/ansible:latest-tools` docker image. It also uses the `inputFiles` property to share the `inventory.ini` and `myplaybook.yml` files with the container. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
+The [AnsibleCLI task](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli) uses the [Docker Task Runner](../../docs/task-runners/04.types/02.docker-task-runner/index.md), and spins up the `cytopia/ansible:latest-tools` docker image. It also uses the `inputFiles` property to share the `inventory.ini` and `myplaybook.yml` files with the container. The `myplaybook.yml` file is the Ansible playbook to create a S3 bucket. The task then installs the boto3 dependency, as we need to connect to AWS S3. The `commands` sections of the task runs the `ansible-playbook` CLI command and refers the files created in the former tasks.
 
 ## Using Terraform as IaC
 
@@ -64,7 +64,7 @@ With Terraform, infrastructure provisioning becomes predictable, reproducible, a
 
 ## Orchestrating Terraform using Kestra
 
-Kestra supports [Terraform plugin](/plugins/plugin-terraform) making it seamless to integrate terraform scripts. The following examples shows how a simple Terraform script to create S3 bucket can be orchestrated using Kestra via the [TerraformCLI task](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli):
+Kestra supports [Terraform plugin](/plugins/plugin-terraform) making it seamless to integrate terraform scripts. The following examples shows how a simple Terraform script to create S3 bucket can be orchestrated using Kestra via the [TerraformCLI task](/plugins/plugin-terraform/io.kestra.plugin.terraform.cli.terraformcli):
 
 ```yaml
 id: terraform-cli

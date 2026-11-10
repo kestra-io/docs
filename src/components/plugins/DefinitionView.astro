@@ -1,19 +1,21 @@
 ---
-import PluginsMDCRender from "./PluginsMDCRender.vue"
+import PluginsMarkdownRender from "./PluginsMarkdownRender.vue"
 import PluginDocsFrame from "./PluginDocsFrame.astro"
 
 interface Props {
     schema: any
     pluginType: string
+    pluginArtifactCoordinate?: string
 }
 
-const { schema, pluginType } = Astro.props
+const { schema, pluginType, pluginArtifactCoordinate } = Astro.props
 ---
 
 <PluginDocsFrame>
-    <PluginsMDCRender
+    <PluginsMarkdownRender
         {schema}
         {pluginType}
+        {pluginArtifactCoordinate}
         client:idle
     />
 </PluginDocsFrame>

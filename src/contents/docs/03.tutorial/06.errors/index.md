@@ -1,6 +1,7 @@
 ---
-title: Tutorial – Handle Errors in Kestra – Retries and Alerts
-description: Build resilient workflows in Kestra with robust error handling. Learn to configure retries, set up alerts, and manage failures at the flow and namespace levels.
+title: "Handle Errors in Kestra: Retries and Alerts"
+h1: Build Resilient Workflows with Retries, Alerts & Failure Handling
+description: Build resilient Kestra workflows with robust error handling. Configure retries, set up alerts, and manage failures at the flow and namespace levels.
 sidebarTitle: Error Handling
 icon: /src/contents/docs/icons/tutorial.svg
 ---
@@ -10,7 +11,7 @@ Handle errors with automatic retries and notifications.
 Failure is inevitable. Kestra offers automatic retries and error handling to help you build resilient workflows.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/1XzHGwkSrsI?si=r9NWv4e6Dk-VMXZ0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/zfGI5whJ1UQ?si=mFhXTWYSIT6avPNO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Handle errors with retries and alerts
@@ -24,13 +25,11 @@ You can implement error handling at the flow level or namespace level:
 1. **Flow-level**: Useful to implement custom alerting for a specific flow or task. This can be accomplished by adding the `errors` property.
 2. **Namespace-level**: Useful to send a notification for any failed Execution within a given namespace. This approach allows you to implement centralized error handling for all flows within a given namespace.
 
----
-
 ## Flow-level error handling using `errors`
 
 The `errors` property of a flow accepts a list of tasks to execute when an error occurs. You can add as many tasks as you want, and they will be executed sequentially similar to the `tasks` block.
 
-The following example workflow automatically sends a Slack alert via the [SlackIncomingWebhook](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook) whenever any flow in the `company.team` namespace fails or finishes with warnings.
+The following example workflow automatically sends a Slack alert via the [SlackIncomingWebhook](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook) whenever any flow in the `company.team` namespace fails or finishes with warnings.
 
 ```yaml
 id: unreliable_flow
@@ -72,11 +71,11 @@ tasks:
 
   - id: check_products
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ json(outputs.api.body).products | length > 0 }}"
+    condition: "{{ fromJson(outputs.api.body).products | length > 0 }}"
     then:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
-        message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
+        message: "Found {{ fromJson(outputs.api.body).products | length }} products for category {{ inputs.category }}"
       - id: python
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim
@@ -119,17 +118,15 @@ triggers:
 
 Now if there is an error, say our API endpoint is unreachable, we'll get a Slack alert notifying a team to investigate. For more, check the [error handling](../../05.workflow-components/11.errors/index.md) page.
 
----
-
 ## Namespace-level error handling using a flow trigger
 
-To get notified on a workflow failure, you can leverage Kestra's built-in notification tasks, including among others (_the list keeps growing with new releases_):
+To get notified on a workflow failure, you can leverage Kestra's built-in notification tasks, including:
 
-- [Slack](/plugins/plugin-slack/io.kestra.plugin.slack.slackexecution)
-- [Microsoft Teams](/plugins/plugin-teams/io.kestra.plugin.teams.teamsexecution)
-- [Email](/plugins/plugin-mail/io.kestra.plugin.mail.mailexecution)
+- [Slack](/plugins/plugin-slack)
+- [Microsoft Teams](/plugins/plugin-microsoft365)
+- [Email](/plugins/plugin-email)
 
-For a centralized namespace-level alerting, we recommend adding a dedicated monitoring workflow with one of the above mentioned notification tasks and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in the namespace `company.team` fails or finishes with warnings.
+For centralized namespace-level alerting, add a dedicated monitoring workflow with one of the notification tasks above and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in the namespace `company.team` fails or finishes with warnings.
 
 ```yaml
 id: failure_alert
@@ -144,21 +141,14 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.team
-        prefix: true
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ flow.namespace | startsWith('company.team') }}"
 ```
 
 Adding this flow ensures you receive a Slack alert for any flow failure in the `company.team` namespace.
 
 ![alert notification](./alert-notification.png)
-
----
 
 ## Retries
 
@@ -174,7 +164,7 @@ The following types of retries are currently supported:
 - **Exponential**: The task will also be retried every X seconds/minutes/hours/days but with an exponential backoff (i.e., an exponential time interval in between each retry attempt.)
 - **Random**: The task will be retried every X seconds/minutes/hours/days with a random delay (i.e., a random time interval in between each retry attempt.)
 
-In this example, the task is retried up to 5 times within a total duration of 1 minute, with a constant 2-second interval between attempts.
+In this example, the task runs up to 5 times total (1 initial attempt + up to 4 retries) within a total duration of 1 minute, with a constant 2-second interval between attempts. `maxAttempts` counts the initial run, so `maxAttempts: 1` means no retry and `maxAttempts: 2` means one retry.
 
 ```yaml
 id: retries
@@ -196,13 +186,13 @@ tasks:
 
 errors:
   - id: will_never_run
-    type: io.kestra.plugin.core.debug.Return
-    format: This will never be executed as retries will fix the issue
+    type: io.kestra.plugin.core.log.Log
+    message: "This will never be executed as retries will fix the issue."
 ```
 
 ### Adding a retry configuration to our tutorial workflow
 
-Returning to the first iteration of our flow from the [Fundamentals](../01.fundamentals/index.md) section. We can add a retry configuration to the `api` task. API calls are prone to transient errors, so we will retry that task up to 10 times, for at most 1 hour of total duration, every 10 seconds (i.e., with a constant interval of 10 seconds in between retry attempts).
+Returning to the first iteration of our flow from the [Fundamentals](../01.fundamentals/index.md) section. We can add a retry configuration to the `api` task. API calls are prone to transient errors, so we will run that task up to 10 times total (1 initial attempt + up to 9 retries), for at most 1 hour of total duration, with a constant 20-second interval between attempts.
 
 ```yaml
 id: retry_request
@@ -247,11 +237,11 @@ tasks:
 
   - id: check_products
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ json(outputs.api.body).products | length > 0 }}"
+    condition: "{{ fromJson(outputs.api.body).products | length > 0 }}"
     then:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
-        message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
+        message: "Found {{ fromJson(outputs.api.body).products | length }} products for category {{ inputs.category }}"
       - id: python
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim
@@ -301,6 +291,7 @@ Next, you can dive into:
 - [Architecture](../../08.architecture/index.mdx)
 - [Workflow Components](../../05.workflow-components/index.mdx)
 - [Key concepts](../../06.concepts/index.mdx)
-- [Plugins](/plugins) to integrate with external systems
+- [Plugins](/plugins) to integrate with external systems.
 - [Deployments](../../10.administrator-guide/index.mdx) to deploy Kestra to production.
 - [Scripts](../../16.scripts/index.mdx)
+- [Kestra Academy](https://academy.kestra.io) for guided courses and certifications.

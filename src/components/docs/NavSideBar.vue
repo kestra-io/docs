@@ -2,31 +2,39 @@
     <aside class="bd-sidebar scroller">
         <div>
             <button
-                ref="menuToggleBtn"
                 class="btn d-lg-none mt-2"
                 type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#docs-menu"
-                aria-expanded="false"
-                aria-controls="tocContents"
+                :aria-expanded="menuExpanded"
+                aria-controls="docs-menu"
+                @click="menuExpanded = !menuExpanded"
             >
                 <Menu /> Documentation Menu
             </button>
-            <div class="ai-button-wrapper mb-2">
-                <button
-                    class="ai-button"
-                    title="Ask Kestra AI"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-ai-modal"
+            <div v-if="versionOptions.length > 1" class="version-switcher">
+                <span class="version-label">Version</span>
+                <span class="separator" aria-hidden="true">·</span>
+                <span class="current-version">{{ displayedVersion }}</span>
+                <ChevronDown class="caret" aria-hidden="true" />
+                <!-- The native select is laid over the label, invisible: it
+                     keeps the keyboard and the system menu on every platform. -->
+                <select
+                    id="docs-version"
+                    aria-label="Documentation version"
+                    @change="onVersionChange"
                 >
-                    <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
-                    Ask Kestra AI
-                </button>
+                    <option
+                        v-for="option in versionOptions"
+                        :key="option.label"
+                        :value="option.version"
+                        :selected="option.selected"
+                    >
+                        {{ option.label }}
+                    </option>
+                </select>
             </div>
             <div
                 class="search"
-                data-bs-toggle="modal"
-                data-bs-target="#search-modal"
+                data-modal-target="#search-modal"
                 title="Search"
             >
                 <div class="input-group">
@@ -34,7 +42,7 @@
                         <span class="input-group-text">
                             <Magnify />
                         </span>
-                        <p>Search</p>
+                        <p>{{ currentVersion ? `Search (${currentVersion})` : "Search" }}</p>
                     </div>
                     <div class="align-items-center d-flex input-group-append">
                         <Keyboard />
@@ -42,7 +50,12 @@
                     </div>
                 </div>
             </div>
-            <div class="collapse bd-menu-collapse" id="docs-menu">
+            <div
+                class="bd-menu-collapse"
+                :class="{ open: menuExpanded }"
+                id="docs-menu"
+            >
+                <div class="bd-menu-collapse-inner" :inert="collapsed">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <ul class="list-unstyled mb-0">
                         <RecursiveNavSidebar
@@ -56,22 +69,25 @@
                         />
                     </ul>
                 </nav>
+                </div>
             </div>
         </div>
     </aside>
 </template>
 
 <script lang="ts" setup>
-    import { computed, onMounted, provide, ref, type PropType } from "vue"
+    import { computed, provide, ref, watch, type PropType } from "vue"
+    import { useMediaQuery } from "@vueuse/core"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Keyboard from "vue-material-design-icons/Keyboard.vue"
     import Menu from "vue-material-design-icons/Menu.vue"
+    import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import RecursiveNavSidebar, {
         closeSidebarInjectionKey,
         type NavigationItem,
     } from "~/components/docs/RecursiveNavSidebar.vue"
-    import KSAIImg from "./assets/ks-ai.svg"
     import { activeSlug } from "~/utils/store"
+    import { versionSelectOptions, resolveVersionSwitchHref } from "~/utils/versionedDocs"
 
     const props = defineProps({
         type: {
@@ -84,11 +100,55 @@
         slug: {
             type: String,
         },
+        /** MAJOR.MINOR of the current GA release (e.g. "1.3"), unset if unavailable. */
+        latestVersion: {
+            type: String,
+            default: undefined,
+        },
+        // No `default: () => []` here: combining a factory default with an
+        // array PropType breaks this component's inferred type for TS
+        // consumers (astro check reports the whole module as having "no
+        // default export"). Default to [] at the read site instead.
+        knownVersions: {
+            type: Array as PropType<string[]>,
+        },
+        /** Version label of the page being viewed (e.g. "1.2"), unset on the latest docs. */
+        currentVersion: {
+            type: String,
+            default: undefined,
+        },
     })
 
-    onMounted(() => {
-        activeSlug.value = props.slug || ""
-    })
+    const versionOptions = computed(() =>
+        versionSelectOptions(props.latestVersion, props.knownVersions ?? [], props.currentVersion ?? null),
+    )
+
+    const displayedVersion = computed(() => props.currentVersion ?? props.latestVersion)
+
+    // Though `transition:persist`ed, this island's props DO refresh on
+    // client-side navigations (persist-props defaults to false; verified on a
+    // prod build). The URL read is simply the same value without depending on
+    // prop-update timing mid-transition. Full navigation on purpose: versioned
+    // targets are served by the middleware, outside the prerendered routes.
+    // The probe makes this async: only the most recent selection may navigate,
+    // or a slower earlier probe would win the location assignment.
+    let switchSeq = 0
+    const onVersionChange = async (event: Event) => {
+        const version = (event.target as HTMLSelectElement).value
+        const seq = ++switchSeq
+        const href = await resolveVersionSwitchHref(version, window.location.pathname)
+        if (seq === switchSeq) {
+            window.location.href = href
+        }
+    }
+
+    watch(
+        () => props.slug,
+        (slug) => {
+            activeSlug.value = slug || ""
+        },
+        { immediate: true },
+    )
 
     const disabledPages = [
         "/docs/terraform/data-sources",
@@ -96,16 +156,18 @@
         "/docs/terraform/resources",
     ]
 
-    const menuToggleBtn = ref<HTMLButtonElement | null>(null)
+    const menuExpanded = ref(false)
+
+    // `overflow: hidden` on the 0fr grid clips the panel but leaves its links
+    // focusable, where bootstrap's `.collapse` was `display: none`. Above lg
+    // the panel is always shown and `menuExpanded` stays false, so the
+    // viewport has to be part of the condition or the desktop sidebar goes
+    // inert.
+    const belowLg = useMediaQuery("(max-width: 991.98px)")
+    const collapsed = computed(() => belowLg.value && !menuExpanded.value)
 
     const closeSidebar = () => {
-        if (
-            window.innerWidth < 992 &&
-            menuToggleBtn.value &&
-            menuToggleBtn.value.getAttribute("aria-expanded") === "true"
-        ) {
-            menuToggleBtn.value.click()
-        }
+        if (window.innerWidth < 992) menuExpanded.value = false
     }
 
     provide(closeSidebarInjectionKey, closeSidebar)
@@ -127,7 +189,7 @@
             top: calc(8rem + var(--announce-height));
             display: block !important;
             height: fit-content;
-            max-height: subtract(100vh, 9rem);
+            max-height: calc(100vh - 9rem);
             padding-left: 0.25rem;
             margin-left: -0.25rem;
             overflow-y: auto;
@@ -136,7 +198,7 @@
             min-width: 250px;
         }
         button.btn {
-            border: 1px solid var(--bs-gray-300);
+            border: 1px solid var(--ks-gray-300);
             font-weight: bold;
             width: 100%;
             color: var(--ks-content-primary);
@@ -152,21 +214,43 @@
                 }
             }
         }
+        // Height transition without JS: 0fr to 1fr on a single-row grid.
         .bd-menu-collapse {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.25s ease;
+
+            .bd-menu-collapse-inner {
+                overflow: hidden;
+                min-height: 0;
+            }
+
+            &.open {
+                grid-template-rows: 1fr;
+            }
+
             @include media-breakpoint-down(lg) {
                 nav {
                     padding: calc($spacer / 2) $spacer;
                     border: $block-border;
                     box-shadow: $box-shadow-sm;
-                    @include border-radius(var(--bs-border-radius));
+                    border-radius: $border-radius;
                 }
             }
             @include media-breakpoint-up(lg) {
-                display: block !important; // stylelint-disable-line declaration-no-important
+                // Above the breakpoint the panel is always open and never
+                // animates, so the grid wrapper and its inner div drop out of
+                // the box model entirely. Leaving them as boxes shifts the
+                // sidebar ~8px (grid suppresses the margin collapse main
+                // relied on) and changes where its max-height clips.
+                display: contents;
+
+                .bd-menu-collapse-inner {
+                    display: contents;
+                }
             }
         }
-        .search,
-        .ai-button-wrapper {
+        .search {
             min-width: 209px;
             width: 98%;
             height: 32px;
@@ -175,14 +259,45 @@
                 margin-top: $spacer;
             }
         }
-        .ai-button-wrapper {
-            .ai-button {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                padding-right: 12px;
-                padding-left: 0;
-                min-width: 0;
+        .version-switcher {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: calc($spacer * 0.375);
+            // The sidebar scrolls, so it clips anything drawn outside its
+            // box: the padding makes room for the focus ring inside the
+            // switcher, and the negative margin keeps the text aligned.
+            padding: calc($spacer * 0.25);
+            margin-left: calc($spacer * -0.25);
+            margin-bottom: calc($spacer * 0.5);
+            font-size: $font-size-base;
+            color: var(--ks-content-tertiary);
+            @include media-breakpoint-down(lg) {
+                margin-top: $spacer;
+            }
+            .current-version {
+                color: var(--ks-content-primary);
+                font-weight: 600;
+            }
+            .caret {
+                display: inline-flex;
+                transition: color 0.2s ease;
+            }
+            select {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                opacity: 0;
+                cursor: pointer;
+            }
+            &:hover .caret,
+            &:focus-within .caret {
+                color: var(--ks-content-primary);
+            }
+            &:has(select:focus-visible) {
+                outline: 2px solid var(--ks-border-active);
+                outline-offset: -2px;
+                border-radius: calc($spacer * 0.25);
             }
         }
         .search {

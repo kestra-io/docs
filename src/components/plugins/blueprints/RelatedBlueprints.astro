@@ -1,5 +1,5 @@
 ---
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 import { getBlueprintsHeading } from "~/utils/plugins/pluginUtils"
 import type { BlueprintPreview } from "~/utils/plugins/types"
 import Related from "./RelatedBlueprints.vue"
@@ -11,6 +11,7 @@ const {
     currentSubgroupPlugin,
     subGroupName,
     customId,
+    pluginTitle,
 } = Astro.props
 
 const pluginIdentifier = (() => {
@@ -19,7 +20,7 @@ const pluginIdentifier = (() => {
     return pluginWrapper?.group ?? pluginName
 })()
 
-const rawBlueprints = await $fetchApiCached<any[]>(
+const rawBlueprints = await $fetchApiCachedOptional<any[]>(
     `/blueprints/plugin/${pluginIdentifier}/version/latest`,
 )
 
@@ -35,6 +36,7 @@ const heading = getBlueprintsHeading(
     pluginWrapper,
     subGroupName,
     customId,
+    pluginTitle,
 )
 ---
 

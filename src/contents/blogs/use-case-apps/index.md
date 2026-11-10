@@ -298,8 +298,8 @@ tasks:
           - "discovery"
 
   - id: message_category
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ json(outputs.llm_categorization.body).labels[0] }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ json(outputs.llm_categorization.body).labels[0] }}"
 
   - id: llm_prompting
     type: io.kestra.plugin.core.flow.Switch

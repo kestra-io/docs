@@ -1,5 +1,7 @@
 ---
-title: Migrate from LangChain4j Plugin to Plugin AI
+title: LangChain4j to Plugin AI Migration in Kestra 0.24.0
+h1: Migrate from the LangChain4j Plugin to the New Plugin AI Package
+sidebarTitle: LangChain4j → Plugin AI
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.24.0
 editions: ["OSS", "EE"]
@@ -37,7 +39,7 @@ tasks:
     provider:
       type: io.kestra.plugin.langchain4j.provider.GoogleGemini
       apiKey: "{{secret('GOOGLE_API_KEY')}}"
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
     messages:
       - type: SYSTEM
         content: You are a helpful assistant, answer concisely, avoid overly casual language or unnecessary verbosity.
@@ -61,7 +63,7 @@ tasks:
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
       apiKey: "{{ secret('GOOGLE_API_KEY') }}"
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
     messages:
       - type: SYSTEM
         content: You are a helpful assistant, answer concisely, avoid overly casual language or unnecessary verbosity.

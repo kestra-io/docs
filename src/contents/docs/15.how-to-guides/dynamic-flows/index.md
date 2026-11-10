@@ -1,5 +1,7 @@
 ---
 title: Build Dynamic Flows in Kestra
+h1: Use Inputs and Expressions to Build Flexible Dynamic Flows
+description: Create dynamic Kestra flows at runtime using inputs and Pebble expressions. Generate flow configurations on the fly for data-driven, adaptive orchestration.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -12,7 +14,7 @@ Implement dynamic flows in Kestra.
 
 In this method, we will create a flow as a template, and the dynamic values in the template can then be filled using Kestra inputs to generate the desired flow. Let us see this with the help of an example.
 
-Here, we will create a sample flow that downloads CSV data using the HTTP Download task and then loads the data to a PostgreSQL table. Such a dynamic flow can be helpful when you have new HTTP URLs getting generated on a regular cadence, and you need to pull in the latest data from the new HTTP URL to upload to a table.
+Here, we will create a sample flow that downloads CSV data using the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) task and then loads the data to a PostgreSQL table. Such a dynamic flow can be helpful when you have new HTTP URLs getting generated on a regular cadence, and you need to pull in the latest data from the new HTTP URL to upload to a table.
 
 The flow will take the HTTP URL and the PostgreSQL database connection details as inputs. This leads to a dynamic flow, as the same flow can then be utilized with different HTTP URLs and different PostgreSQL databases and tables.
 
@@ -68,7 +70,7 @@ As can be seen from the above flow, it is dynamic as all its important parameter
 
 We can write code in any language to generate the dynamic flow, and then upload the flow to Kestra. Let us understand this with the help of an example.
 
-We will create a dynamic flow using python which downloads a CSV file using the HTTP Download task and upload the contents into PostgreSQL table. Say, we want to extract the data from multiple HTTP URLs and upload the data to corresponding a PostgreSQL table. We can, in parallel, start the process of downloading the data from HTTP URL and uploading it to PostgreSQL table. For two items, products and orders, this is how our flow should look like:
+We will create a dynamic flow using python which downloads a CSV file using the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) task and upload the contents into PostgreSQL table. Say, we want to extract the data from multiple HTTP URLs and upload the data to corresponding a PostgreSQL table. We can, in parallel, start the process of downloading the data from HTTP URL and uploading it to PostgreSQL table. For two items, products and orders, this is how our flow should look like:
 
 ```yaml
 id: dynamic_flow
@@ -111,7 +113,7 @@ tasks:
             header: true
 ```
 
-In order to generate this flow dynamically for any number of items, we will use the following python code.
+To generate this flow dynamically for any number of items, use the following Python code.
 
 ```python
 import os
@@ -238,7 +240,7 @@ tasks:
   - id: create_flow
     type: io.kestra.plugin.scripts.shell.Commands
     inputFiles:
-      flow.yaml: "{{ outputs.create_kestra_flow.outputFiles['kestra_flow.yaml'] }}"
+      flow.yaml: "{{ outputs.generate_kestra_flow.outputFiles['kestra_flow.yaml'] }}"
     beforeCommands:
       - apt-get update
       - apt-get -y install curl

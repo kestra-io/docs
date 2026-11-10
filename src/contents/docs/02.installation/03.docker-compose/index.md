@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra with Docker Compose – PostgreSQL Backend
+title: Deploy Kestra with Docker Compose – PostgreSQL
+h1: Set Up Kestra Locally with Docker Compose and PostgreSQL
 sidebarTitle: Docker Compose
 icon: /src/contents/docs/icons/docker.svg
 description: Get started with Kestra quickly using Docker Compose with a PostgreSQL backend for a robust local or server deployment.
@@ -10,8 +11,6 @@ Start Kestra with a PostgreSQL database backend by using a Docker Compose file.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/SGL8ywf3OJQ?si=Ww-JsVKvceR_n08j" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
-This guide shows how to start Kestra with Docker Compose and PostgreSQL for a local or server deployment.
 
 ## Prerequisites
 
@@ -91,7 +90,9 @@ Next, update the `kestra` service in the `docker-compose.yml` file to mount this
       - $PWD/application.yaml:/etc/config/application.yaml
     ports:
       - "8080:8080"
-      - "8081:8081"
+      # The management port (8081) is not exposed by default. It is unauthenticated
+      # and intended for internal use only. Only expose it within a trusted network.
+      # - "8081:8081"
     depends_on:
       postgres:
         condition: service_started
@@ -108,7 +109,7 @@ Alternatively, you can use a Docker network. By default, your Kestra container i
 
 A better approach may be to create a new network such as `kestra_net` and add your services to it. Then add that network to the `networks` section of the `kestra` service. With this configuration, you can access your exposed ports through `localhost`.
 
-The example below shows how you can add `iceberg-rest`, `minio`, and `mc` (i.e., MinIO client) to your Kestra Docker Compose file.
+The example below adds an Iceberg REST catalog (`iceberg-rest`) backed by [SeaweedFS](https://github.com/seaweedfs/seaweedfs), a self-hosted S3-compatible object store, to your Kestra Docker Compose file. A one-off `create-bucket` container creates the `warehouse` bucket, which both the catalog and Kestra internal storage use.
 
 :::collapse{title="Example"}
 
@@ -117,6 +118,8 @@ volumes:
   postgres-data:
     driver: local
   kestra-data:
+    driver: local
+  seaweedfs-data:
     driver: local
 
 networks:
@@ -149,44 +152,33 @@ services:
         - AWS_REGION=us-east-1
         - CATALOG_WAREHOUSE=s3://warehouse/
         - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
-        - CATALOG_S3_ENDPOINT=http://minio:9000
+        - CATALOG_S3_ENDPOINT=http://seaweedfs:8333
+        - CATALOG_S3_PATH__STYLE__ACCESS=true
       networks:
         kestra_net:
 
-  minio:
-      image: minio/minio
-      container_name: minio
-      environment:
-        - MINIO_ROOT_USER=admin
-        - MINIO_ROOT_PASSWORD=password
-        - MINIO_DOMAIN=minio
-      networks:
-        kestra_net:
-          aliases:
-            - warehouse.minio
-      ports:
-        - 9001:9001
-        - 9000:9000
-      command: ["server", "/data", "--console-address", ":9001"]
-
-  mc:
-      depends_on:
-        - minio
-      image: minio/mc
-      container_name: mc
-      networks:
-        kestra_net:
+  seaweedfs:
+      image: chrislusf/seaweedfs
+      command: server -dir=/data -s3 -s3.port=8333
       environment:
         - AWS_ACCESS_KEY_ID=admin
         - AWS_SECRET_ACCESS_KEY=password
-        - AWS_REGION=us-east-1
+      volumes:
+        - seaweedfs-data:/data
+      networks:
+        kestra_net:
+      ports:
+        - 8333:8333
+
+  create-bucket:
+      depends_on:
+        - seaweedfs
+      image: chrislusf/seaweedfs
+      networks:
+        kestra_net:
       entrypoint: >
         /bin/sh -c "
-        until (/usr/bin/mc config host add minio http://minio:9000 admin password) do echo '...waiting...' && sleep 1; done;
-        /usr/bin/mc rm -r --force minio/warehouse;
-        /usr/bin/mc mb minio/warehouse;
-        /usr/bin/mc policy set public minio/warehouse;
-        tail -f /dev/null
+        until echo 's3.bucket.list' | weed shell -master=seaweedfs:9333 | grep -qw warehouse || echo 's3.bucket.create -name warehouse' | weed shell -master=seaweedfs:9333 | grep -q 'created bucket'; do echo '...waiting...' && sleep 2; done
         "
 
   kestra:
@@ -213,15 +205,15 @@ services:
           kestra:
             server:
               basic-auth:
-                username: admin
-                password: kestra
+                username: admin@kestra.io
+                password: Admin1234!
             repository:
               type: postgres
             storage:
               type: minio
               minio:
-                endpoint: http://minio
-                port: 9000
+                endpoint: http://seaweedfs
+                port: 8333
                 access-key: admin
                 secret-key: password
                 region: us-east-1
@@ -234,13 +226,17 @@ services:
             url: http://localhost:8080/
       ports:
         - "8080:8080"
-        - "8081:8081"
+        # The management port (8081) is not exposed by default. It is unauthenticated
+        # and intended for internal use only. Only expose it within a trusted network.
+        # - "8081:8081"
       depends_on:
         postgres:
           condition: service_started
       networks:
         kestra_net:
 ```
+
+Kestra connects to SeaweedFS through the `minio` storage type, which is Kestra's generic backend for S3-compatible object storage. See [S3-compatible storage](../../configuration/02.runtime-and-storage/index.md#s3-compatible-storage) for all options.
 :::
 
 Finally, you can use `host` network mode for the `kestra` service. This makes the container use your host network, so it can reach all exposed ports. In that case, change `services.kestra.environment.KESTRA_CONFIGURATION.datasources.postgres.url` to `jdbc:postgresql://localhost:5432/kestra`. This is the easiest way to reach all ports, but it can be a security risk.
@@ -272,8 +268,8 @@ services:
         kestra:
           server:
             basic-auth:
-              username: admin
-              password: kestra
+              username: admin@kestra.io
+              password: Admin1234!
           anonymous-usage-report:
             enabled: true
           repository:
@@ -290,18 +286,16 @@ services:
             scripts:
               docker:
                 volume-enabled: true
-            defaults: # Example demonstrating global pluginDefaults
-              - type: io.kestra.plugin.airbyte.connections.Sync
-                url: http://host.docker.internal:8000/
-                username: airbyte
-                password: password
+            # Global plugin defaults removed in Kestra 2.0.
+            # Use kestra.policies for installation-wide defaults.
+            # See: https://kestra.io/docs/enterprise/governance/policies
           url: http://localhost:8080/
           variables:
             env-vars-prefix: "" # To avoid requiring KESTRA_ prefix on env vars
 ```
 :::
 
-### Postgres 16 not compatible with 17 error
+### PostgreSQL 16 incompatibility error
 
 By default, the Docker Compose template uses the latest image for PostgreSQL. However, if you initialized your Kestra database on an older version of PostgreSQL, you might encounter the following error:
 
@@ -348,7 +342,7 @@ Server components can run independently from each other. Each of them communicat
 
 For more details on Kestra server commands, check out the [Server CLI documentation](../../kestra-cli/kestra-server/index.md).
 
-Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgres database backend.
+Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgres database backend. Each service maps a unique host port range to its internal management port (`8081`) so you can monitor individual replicas. The management port is unauthenticated by default — only expose these mappings within a trusted internal network.
 
 ```yaml
 volumes:
@@ -394,8 +388,8 @@ services:
         kestra:
           server:
             basic-auth:
-              username: "admin@kestra.io"
-              password: kestra
+              username: admin@kestra.io
+              password: Admin1234!
           repository:
             type: postgres
           storage:

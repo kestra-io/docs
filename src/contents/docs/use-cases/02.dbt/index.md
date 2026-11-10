@@ -1,7 +1,8 @@
 ---
-title: Orchestrate dbt Workflows
+title: Orchestrate dbt Workflows in Kestra
+h1: Version-Control, Test & Deploy dbt Models with GitOps
 sidebarTitle: dbt Workflows
-description: Version-control, test, and deploy dbt models with GitOps and on-demand compute
+description: Version-control, test, and deploy dbt models with Kestra and GitOps. Run dbt on demand or on a schedule with on-demand compute for reliable transformations.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 
@@ -14,7 +15,7 @@ Data teams use dbt to transform data in warehouses. While dbt simplifies SQL tra
 Orchestration platforms like Kestra automate the execution of dbt models while managing dependencies, environments, and deployments. With Kestra, you can:
 - **Version control models** – Store dbt projects in Git and sync with Kestra's namespace files
 - **Test changes safely** – Run modified models in isolated containers before production
-- **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using [task runners](../../07.enterprise/04.scalability/task-runners/index.md) (AWS/GCP/Azure Batch)
+- **Scale transformations** – Execute dbt builds on dynamically provisioned containers in the cloud using [task runners](../../task-runners/index.mdx) (AWS/GCP/Azure Batch)
 - **Integrate with your data stack** – Chain dbt runs with ingestion tools, quality checks, and alerts.
 
 ---
@@ -37,7 +38,7 @@ Below are common patterns to orchestrate dbt workflows using Kestra.
 
 ### Fetch dbt Project from Git at Runtime
 
-The example below shows a simple flow that runs `dbt build` for DuckDB in a Docker container. Note that the dbt project is cloned from a Git repository at runtime to ensure the latest version is used.
+The example below runs `dbt build` for DuckDB in a Docker container. The dbt project is cloned from a Git repository at runtime to ensure the latest version is used.
 
 ```yaml
 id: dbt_duckdb
@@ -125,7 +126,7 @@ With the Code Editor built into Kestra, you can easily manage dbt projects by cl
 
 :::collapse{title="Run dbt CLI, iterate on models, and push changes to Git"}
 
-Let's create a flow that runs dbt CLI commands on top of the dbt project synced from Git to our Kestra namespace. We will use the Code Editor to make changes to the dbt models and push the changes back to the Git repository.
+Create a flow that runs dbt CLI commands on top of the dbt project synced from Git to your Kestra namespace. Use the Code Editor to make changes to the dbt models and push them back to the Git repository.
 
 ```yaml
 id: dbt_build
@@ -159,7 +160,7 @@ tasks:
       type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
-Note how by using the `namespaceFiles` property, we can run dbt commands on the files uploaded to the namespace. This allows you to test the dbt models without having to clone the Git repository every time.
+The `namespaceFiles` property lets you run dbt commands on files uploaded to the namespace, so you can test dbt models without cloning the Git repository each time.
 
 Execute the flow using the default value for the `dbt_command` input.
 
@@ -202,7 +203,7 @@ tasks:
     commitMessage: "{{ inputs.commit_message }}"
 ```
 
-Make sure to adjust the `url`, `branch`, and `gitDirectory` properties to match your dbt Git repository structure. If the branch does not exist, it will be created. If you want to test this step more incrementally, you can set the `dryRun` property to `true` to validate the changes before committing them to Git.
+Adjust the `url`, `branch`, and `gitDirectory` properties to match your dbt Git repository structure. If the branch does not exist, it will be created. If you want to test this step more incrementally, you can set the `dryRun` property to `true` to validate the changes before committing them to Git.
 :::
 
 ---
@@ -245,7 +246,7 @@ tasks:
 
 ### Custom Quality Checks
 
-Add quality checks validating dbt models using various plugins such as [Soda](/plugins/plugin-soda):
+Add quality checks validating dbt models using various plugins such as [Soda](/plugins/plugin-soda). The `Scan` task below runs Soda Core 3 (SodaCL) checks and is deprecated — for new flows on Soda Core 4, use the [`VerifyContract`](/plugins/plugin-soda/io.kestra.plugin.soda.verifycontract) task with data contracts instead:
 ```yaml
   - id: scan
     type: io.kestra.plugin.soda.Scan
@@ -263,7 +264,7 @@ Add quality checks validating dbt models using various plugins such as [Soda](/p
             name: Failed rows query test
             fail condition: regionId = 4
     requirements:
-      - soda-core-bigquery
+      - soda-core-bigquery==3.5.6
 ```
 
 ### Multi-Project Coordination
@@ -282,25 +283,25 @@ If needed, you can orchestrate multiple dbt projects from a single flow:
 
 ### Scale dbt Workflows in the Cloud
 
-Adding the following `pluginDefaults` to that flow (or your namespace) will scale the dbt task so that the (_computationally heavy_) dbt parsing process runs on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes job by leveraging [Kestra's task runners](../../07.enterprise/04.scalability/task-runners/index.md):
+Add a `taskRunner` property to the dbt task to run it on AWS Batch, Google Batch, Azure Batch, or Kubernetes, leveraging [Kestra's task runners](../../task-runners/index.mdx):
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.dbt.cli.DbtCLI
-    values:
-       taskRunner:
-         type: io.kestra.plugin.ee.aws.runner.Batch
-         region: us-east-1
-         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
-         computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
-         jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
-         executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
-         taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
-         bucket: kestra-us
+- id: dbt
+  type: io.kestra.plugin.dbt.cli.DbtCLI
+  projectDir: dbt-marts
+  taskRunner:
+    type: io.kestra.plugin.ee.aws.runner.Batch
+    region: us-east-1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+    computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
+    jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
+    executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
+    taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
+    bucket: kestra-us
 ```
 
-You can set plugin defaults at the flow, namespace, or global level to apply to all tasks of that type, ensuring that all dbt tasks run on AWS ECS Fargate in a given environment.
+In Enterprise Edition, use a namespace-scoped [Policy](../../07.enterprise/02.governance/policies/index.md) to apply the task runner to all dbt tasks in a namespace without modifying each flow.
 
 ---
 

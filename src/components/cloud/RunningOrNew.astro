@@ -1,0 +1,202 @@
+---
+import { Icon } from "astro-icon/components"
+
+const CARDS = [
+    {
+        tag: "Already running Kestra",
+        tagType: "category",
+        featured: true,
+        title: "Keep your workflows. Let us run the platform.",
+        desc: "Move your workflows to managed reliability and keep running tasks on your own infrastructure with remote runners. Get SSO, RBAC, secrets and support out of the box, with scaling and upgrades handled for you.",
+        points: [
+            "Migrate a live flow, keep your Git-sync workflow",
+            "Bring your own task runners (AWS / GCP / Azure)",
+            "We run the platform, you keep the workflows",
+        ],
+    },
+    {
+        tag: "New to Kestra",
+        tagType: "success",
+        featured: false,
+        title: "Production-ready orchestration in minutes.",
+        desc: "Spin up an instance and run event-driven, multi-language pipelines with nothing to manage. See what Kestra does firsthand, with your first successful run in minutes.",
+        points: [
+            "One-click starter flow, first success in minutes",
+            "Build data pipelines, automations or AI agents",
+            "No servers, no setup cliffs, no credit card",
+        ],
+    },
+]
+---
+
+<section class="running-or-new" aria-labelledby="running-or-new-title">
+    <div class="container">
+        <h2 id="running-or-new-title" data-usal="fade-u">
+            Already running Kestra, or new to it?
+        </h2>
+
+        <div class="cards">
+            {
+                CARDS.map((card, index) => (
+                    <div
+                        class:list={["card", { featured: card.featured }]}
+                        data-usal={`fade-u delay-${index * 100}`}
+                    >
+                        <div class="top">
+                            <span class:list={["tag", card.tagType]}>
+                                {card.tag}
+                            </span>
+                            <h3>{card.title}</h3>
+                            <p>{card.desc}</p>
+                        </div>
+                        <hr />
+                        <ul>
+                            {card.points.map((point) => (
+                                <li>
+                                    <Icon name="mdi:check-bold" class="check" />
+                                    <span>{point}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))
+            }
+        </div>
+
+        <p class="footnote" data-usal="fade-u">
+            Prefer to self-host? Explore <a
+                href="/enterprise"
+                target="_blank"
+                rel="noopener noreferrer">Kestra Enterprise Edition</a
+            >.
+        </p>
+    </div>
+</section>
+
+<style lang="scss">
+    .running-or-new {
+        background: var(--ks-background-tertiary);
+        border-bottom: 1px solid var(--ks-border-secondary);
+        padding: 7.5rem 1rem 4.375rem;
+        color: var(--ks-content-primary);
+
+        .container {
+            max-width: 1200px;
+            margin-inline: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        .cards {
+            display: flex;
+            gap: 2rem;
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+            }
+        }
+
+        .card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.3125rem;
+            padding: 2rem;
+            color: var(--ks-content-primary);
+            background: var(--ks-background-primary);
+            border: 1px solid var(--ks-border-primary);
+            border-radius: $border-radius-lg;
+            box-shadow: 2px 3px 8px var(--ks-shadows-light);
+
+            &.featured {
+                border-color: var(--ks-border-active);
+            }
+
+            .top {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                padding: 1.0625rem 0;
+            }
+
+            .tag {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 8px;
+                border-radius: 40px;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                line-height: 1.4;
+
+                &.category {
+                    background: var(--ks-background-tag-category);
+                    color: var(--ks-content-tag-category);
+                }
+
+                &.success {
+                    background: var(--ks-background-tag-success);
+                    color: var(--ks-content-tag-success);
+                }
+            }
+
+            h3 {
+                margin: 0;
+                font-size: $font-size-xl;
+            }
+
+            .top p {
+                margin: 0;
+                font-size: $font-size-md;
+                color: var(--ks-content-secondary);
+            }
+
+            hr {
+                margin: 0;
+                border: none;
+                border-top: 1px solid var(--ks-border-primary);
+            }
+
+            ul {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+
+                li {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.625rem;
+                    font-size: $font-size-sm;
+
+                    .check {
+                        flex-shrink: 0;
+                        margin-top: 0.15rem;
+                        font-size: 1rem;
+                        color: var(--ks-content-color-highlight);
+                    }
+                }
+            }
+        }
+
+        .footnote {
+            margin: 0;
+            text-align: center;
+            font-size: $font-size-lg;
+            color: var(--ks-content-secondary);
+
+            a {
+                color: var(--ks-content-color-highlight);
+                text-decoration: underline;
+            }
+        }
+    }
+</style>

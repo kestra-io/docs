@@ -3,6 +3,8 @@ description: "Compare Kestra vs Broadcom Dollar Universe: declarative YAML workf
 competitorName: Broadcom Dollar Universe
 category: Infrastructure Automation
 shortDescription: "Proprietary UPROC-based enterprise workload automation vs. modern declarative YAML orchestration."
+seeHowTitle: "Modernize Beyond Legacy Batch Scheduling"
+seeHowBody: "See how Kestra replaces centralized job schedulers with developer-friendly, event-driven orchestration."
 
 brandColor:
   color: "#cc092f"
@@ -87,7 +89,7 @@ easeOfUse:
   title: Workflows Your Whole Team Can Read
   kestra:
     title: "Kestra: Version-Controlled Workflows Anyone Can Read"
-    description: "YAML is readable on day 1. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows from a prompt, or start from our library of Blueprints. Every change goes through a pull request. No proprietary CLI syntax, no central team dependency."
+    description: "YAML is readable on day 1. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows from a prompt, or start from our library of Blueprints. Every change goes through a pull request. No proprietary CLI syntax, no central team dependency."
     code: |
       id: daily_etl
       namespace: finance
@@ -185,7 +187,7 @@ testimonials:
         name: "Active users"
       - value: "+5,000"
         name: "Workflows created"
-    storyLink: "/use-cases/stories/14-datamesh-at-scale-increased-its-data-production-by-900percent"
+    storyLink: "/stories/leroy-merlin-france"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

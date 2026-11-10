@@ -6,6 +6,7 @@ category: Company News
 author:
   name: Emmanuel Darras
   image: edarras
+  linkedin: https://www.linkedin.com/in/emmanuel-darras/
   role: CEO & Co-founder
 image: ./series-a-header.png
 ---
@@ -33,7 +34,7 @@ When automation becomes part of how a company moves money, operates factories, r
 
 At JPMorgan Chase, Kestra orchestrates critical cybersecurity pipelines across a complex data stack. By giving teams a central, accessible way to coordinate workflows, it reduces dependency on heavily code-driven approaches and standardizes automation across engineering and analyst teams alike — so analysts can define and run workflows themselves, without waiting on engineering for every change.
 
-At BHP, one of the world's largest mining companies, the move away from VMware vRA became an opportunity to modernize infrastructure automation across both IT and OT. With Kestra, the team rebuilt key workflows in a more modular, reusable, and intuitive way, gaining speed and flexibility while cutting dependency on an increasingly expensive legacy stack.
+At a Fortune Global 500 enterprise, the move away from a legacy VMware vRA environment became an opportunity to modernize infrastructure automation across both IT and OT. With Kestra, the team rebuilt key workflows in a more modular, reusable, and intuitive way, gaining speed and flexibility while cutting dependency on an increasingly expensive legacy stack.
 
 Enterprises don't lack automation. **They've accumulated too much of it, in too many places, without a unifying layer above it.**
 
@@ -45,7 +46,7 @@ A production AI workflow is rarely just a model call. It includes data retrieval
 
 At Apple, hundreds of AI engineers use Kestra to orchestrate large-scale pipelines across the App Store, Apple Music, and device diagnostics. What used to consume an entire team's worth of engineering hours now runs on Kestra — and those engineers build models instead of managing glue.
 
-At Toyota, data and AI pipelines ran across multiple platforms with no shared view of what was running, what had failed, or who owned what. Kestra replaced that fragmentation with a single orchestration layer, giving teams across the organization unified monitoring and governance over pipelines that were previously invisible to each other.
+At Amdocs, the Foundation delivery team needed to turn environment provisioning into a repeatable, automated service. Kestra now orchestrates the full delivery chain — provisioning infrastructure, deploying and installing application components, integrating with internal systems, and running automated validation — so developers and testers get fully ready environments on demand, without manual intervention.
 
 The enterprises that will win in the AI era won't be the ones with the most models. They'll be the ones with the strongest coordination layer beneath it all.
 

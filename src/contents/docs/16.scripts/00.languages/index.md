@@ -1,5 +1,6 @@
 ---
 title: Supported Programming Languages in Kestra
+h1: Which Languages Have Dedicated Kestra Script Plugins
 sidebarTitle: Programming Languages
 icon: /src/contents/docs/icons/dev.svg
 description: See which languages have dedicated Kestra script plugins and how to run other languages with Shell tasks and Docker.
@@ -24,6 +25,7 @@ Kestra provides dedicated script plugins for these languages:
 - [Node.js](/plugins/plugin-script-node)
 - [Shell](/plugins/plugin-script-shell)
 - [PowerShell](/plugins/plugin-script-powershell)
+- [.NET (C# and F#)](/plugins/plugin-script-dotnet)
 - [Julia](/plugins/plugin-script-julia)
 - [Ruby](/plugins/plugin-script-ruby)
 - [Go](/plugins/plugin-script-go)
@@ -33,11 +35,15 @@ Kestra provides dedicated script plugins for these languages:
 - [PHP](/plugins/plugin-script-php)
 - [Perl](/plugins/plugin-script-perl)
 - [Groovy](/plugins/plugin-script-groovy)
+- [JBang (Java, Kotlin, and JShell)](/plugins/plugin-script-jbang)
+- [zx (JavaScript shell automation)](/plugins/plugin-script-zx)
 
 Each of these plugins provides two task types:
 
 - `Script` for short inline code in your flow definition.
 - `Commands` for code stored in files or split across multiple commands.
+
+Some plugins also provide `ScriptTrigger` and `CommandsTrigger` variants, which run code on a polling interval and start a flow execution only when an exit condition matches. See [Polling trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md) for the concept, and the language-specific guides below for working examples (Python, Shell, Ruby, Go, and JavaScript).
 
 Here is a minimal example that uses the Python `Script` task:
 
@@ -74,18 +80,14 @@ tasks:
 Use these guides for complete examples, outputs, metrics, and dependency management:
 
 - [Run Python inside your flows](../../15.how-to-guides/python/index.md)
-- [Run R inside your flows](../../15.how-to-guides/r/index.md)
 - [Run JavaScript inside your flows](../../15.how-to-guides/javascript/index.md)
 - [Run Shell scripts inside your flows](../../15.how-to-guides/shell/index.md)
 - [Run PowerShell inside your flows](../../15.how-to-guides/powershell/index.md)
-- [Run Julia inside your flows](../../15.how-to-guides/julia/index.md)
-- [Run Go inside your flows](../../15.how-to-guides/golang/index.md)
-- [Run Perl inside your flows](../../15.how-to-guides/perl/index.md)
-- [Run Rust inside your flows](../../15.how-to-guides/rust/index.md)
+- [Run C# inside your flows](../../15.how-to-guides/dotnet/index.md)
 
 ## Run other languages with the Shell plugin
 
-Use `io.kestra.plugin.scripts.shell.Commands` when your language does not have a dedicated plugin or when you want to compile and run code in a container.
+Use [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands) when your language does not have a dedicated plugin or when you want to compile and run code in a container.
 
 This approach works best when:
 
@@ -124,11 +126,11 @@ fn main() {
 }
 ```
 
-See the full [Rust guide](../../15.how-to-guides/rust/index.md) for outputs and file handling.
+For outputs and file handling from compiled languages, see [Shell outputs and metrics](../06.outputs-metrics/index.md#shell).
 
 ### Java example
 
-If you need to run Java code without building a custom plugin, you can compile and run it from a container:
+For most Java code, use the [JBang plugin](/plugins/plugin-script-jbang), which runs Java source directly and resolves dependencies declared with `//DEPS` comments. Use the Shell plugin when you need full control over the JDK image or the build steps:
 
 ```yaml
 id: java_example
@@ -195,7 +197,7 @@ const justine: User = {
 console.log(isAdult(justine));
 ```
 
-For more background, see the official [Node.js with TypeScript guide](https://nodejs.org/en/learn/getting-started/nodejs-with-typescript).
+For more background, see the official [Node.js with TypeScript guide](https://nodejs.org/en/learn/typescript/introduction).
 
 ## Use a custom Docker image for extra dependencies
 

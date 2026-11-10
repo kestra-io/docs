@@ -1,5 +1,6 @@
 ---
-title: Business Units Separation
+title: Business Unit Separation in Kestra Enterprise
+h1: Isolate Business Units Using Tenants and Namespaces
 sidebarTitle: Business Unit Separation
 icon: /src/contents/docs/icons/best-practices.svg
 editions: ["EE", "Cloud"]
@@ -14,7 +15,7 @@ Choosing between tenants and namespaces for separating business units depends on
 
 ## When to use multiple tenants
 
-A [tenant](../../07.enterprise/02.governance/tenants/index.md) is an **isolated environment** within a Kestra instance. Tenants have their own **fully isolated resources**, including flows, RBAC policies, secrets, variables, plugin defaults, and more. Users exist globally across the instance but can have different roles and permissions per tenant.
+A [tenant](../../07.enterprise/02.governance/tenants/index.md) is an **isolated environment** within a Kestra instance. Tenants have their own **fully isolated resources**, including flows, RBAC policies, secrets, variables, governance [Policies](../../07.enterprise/02.governance/policies/index.md), and more. Users exist globally across the instance but can have different roles and permissions per tenant.
 
 You can configure dedicated resources for each tenant:
 
@@ -50,7 +51,7 @@ You can configure dedicated resources for each namespace:
 - **Team-based organization**: Separate flows and resources by team within the same tenant, maintaining visibility for users with appropriate permissions.
 - **Project-based organization**: Create separate namespaces for projects that need limited isolation while retaining workflow visibility.
 - **Dependency management**: Namespaces support cross-team dependencies (e.g., subflows or triggers), simplifying dependency tracking.
-- **RBAC control**: Namespaces allow granular role-based access. A user might have `READ` access in one namespace and full CRUD permissions in another.
+- **RBAC control**: Namespaces allow granular role-based access. A user might have view-only access in one namespace and full management permissions in another.
 
 ## Summary of when to use tenants vs. namespaces
 

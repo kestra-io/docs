@@ -1,43 +1,100 @@
 ---
-title: High Availability for Kestra – Design and Configuration
+title: "High Availability in Kestra: Scale Workers and Webservers"
+h1: Design and configure a fault-tolerant highly available cluster
 sidebarTitle: High Availability
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE"]
+editions: ["OSS", "EE", "Cloud"]
 description: Design and configure Kestra for High Availability (HA) to ensure fault tolerance and continuous operation in production.
 ---
 
-Kestra is designed for high availability and fault tolerance. This page explains how to configure your deployment to ensure continuous operation.
+High availability in Kestra is achieved by running each server role as its own independently scaled process in a distributed deployment. If one instance fails, the cluster continues operating: other instances pick up the work and the liveness model releases any orphaned jobs back onto the queue.
 
-## Configure Kestra for high availability
+High availability does not require a specific queue backend. Any distributed deployment (database queue, AMQP/Redis, or Kafka) is eligible. The choice of backend affects throughput and latency, not fault tolerance. See [Deployment Architecture](../../08.architecture/03.deployment-architecture/index.md) for guidance on choosing a backend.
 
-First, let's define what we mean by high availability.
+## Distributed deployment
 
-Highly available systems are built to keep running even in the event of component or infrastructure failures. This is achieved by eliminating single points of failure and introducing redundancy across critical services.
+In a distributed deployment, each server role runs as its own process and scales independently:
 
-In Kestra, high availability is achieved by running multiple instances of each core component — including the `webserver` (API), `scheduler`, `executor`, `indexer`, and `workers`. This ensures that if one instance fails, the system can continue to operate without interruption.
+- **Executor**: owns the execution state machine; decides which task runs next and joins results
+- **Scheduler**: watches schedules and event triggers, emits executions onto the queue
+- **Worker Controller**: brokers worker availability, routes jobs to worker pools via gRPC
+- **Worker**: runs task code in an isolated working directory; scales horizontally
+- **Webserver**: the only network-facing surface; hosts the REST API and UI
+- **Indexer**: records execution data (except the execution itself) that is sent asynchronously (logs, metrics, statistics, ...)
+
+Workers connect to the Worker Controller over a single outbound gRPC stream. They never access the queue or the database directly. This means workers can run in an isolated network, a different region, or behind a firewall that allows only outbound connections, and still participate in the cluster.
+
+Each role runs as a dedicated process via its server command:
+
+```bash
+kestra server executor
+kestra server scheduler
+kestra server controller
+kestra server worker
+kestra server webserver
+kestra server indexer
+```
+
+## Scaling components
+
+Each role scales independently by increasing the number of replicas in the Helm chart. See the [Kubernetes deployment guide](../../02.installation/03.kubernetes/index.md) for a full setup walkthrough and the [chart values reference](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for all available options.
+
+Workers are the primary horizontal scaling target. Additional replicas increase task throughput; the Worker Controller routes jobs across all connected workers automatically.
+
+The Executor and Scheduler are coordinating roles; two or three replicas provide redundancy. Both are idempotent: if one fails, queue messages are redelivered and picked up by a healthy instance automatically.
+
+Scheduler replicas share trigger evaluation by splitting flows across virtual nodes (16 by default, set with `kestra.scheduler.vnodes`). The Executor's liveness check assigns those virtual nodes to the running Schedulers and reassigns them when a Scheduler joins or leaves, so schedules only run while at least one Executor is running.
+
+At least two Webserver replicas behind a load balancer keep the API and UI available if one instance fails.
 
 :::alert{type="info"}
-Note that you need to deploy Kestra using the [Kafka and Elasticsearch architecture](../../08.architecture/index.mdx#architecture-with-kafka-and-elasticsearch-backend). This architecture is designed to be highly available and fault-tolerant.
+Ensure the underlying host system is tuned for high availability. For example, adjusting the Linux kernel parameter `net.ipv4.tcp_retries2` can reduce [TCP retransmission times](https://access.redhat.com/solutions/726753).
 :::
 
-## Scaling the components
+## Liveness and fault tolerance
 
-The following components can be scaled horizontally by increasing the number of replicas in your [Helm chart values](https://github.com/kestra-io/helm-charts/blob/57e23342bdc430b16326ad04d55e23d796e71721/charts/kestra/values.yaml#L29):
+Every running server registers itself with the cluster and emits a heartbeat on a fixed interval (default: every 3 seconds). The Executor reviews all registered instances on a scheduled tick (default: every 10 seconds). See [Server lifecycle](../server-lifecycle/index.md) for the full state machine and recovery behavior.
 
-- Webserver
-- Scheduler
-- Executor
-- Worker
-- Indexer
+When a Worker misses its heartbeats beyond the configured timeout (default: 1 minute), the Executor marks it as failed. Whether its in-flight jobs go back onto the queue for a healthy Worker depends on that Worker's [`worker-task-restart-strategy`](../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts): with `NEVER`, they are not re-dispatched. For other server roles (Executor, Scheduler, Webserver), recovery works differently: these components are idempotent, so queue messages are redelivered and reprocessed by a healthy instance without explicit orphan recovery.
 
-Additionally, the Elasticsearch and Kafka clusters can be scaled out as needed to handle large volumes of data.
+To tune the liveness model:
 
-Finally, the internal storage (such as e.g. S3) is highly available and fault-tolerant by design.
+```yaml
+kestra:
+  server:
+    liveness:
+      enabled: true
+      interval: 10s
+      timeout: 1m
+      heartbeat-interval: 3s
+```
 
-:::alert{type="info"}
-Ensure that the underlying host system is also tuned for high availability and fault tolerance. For example, adjusting the Linux kernel parameter `net.ipv4.tcp_retries2` can reduce [TCP retransmission times](https://access.redhat.com/solutions/726753).
-:::
+## Shared internal storage
+
+In a distributed deployment, all server roles must have access to the same internal storage backend. Local filesystem storage is not suitable; all distributed deployments require a shared object store:
+
+- [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md)
+- [AWS S3](../../02.installation/08.aws-ec2/index.md)
+- [Azure Blob Storage](../../02.installation/10.azure-vm/index.md)
+
+Without shared storage, task outputs written by a Worker on one host are not reachable by the Executor or Webserver on another.
+
+For a full list of supported backends (including Cloudflare R2, Huawei OBS, Ceph, and others), see [Internal Storage](../../08.architecture/data-components/index.md).
 
 ## Load balancing
 
-To guarantee high availability, deploy a load balancer to distribute incoming requests across multiple `webserver` instances. This prevents downtime if any single instance fails, allowing the system to continue operating seamlessly.
+Put a load balancer in front of the Webserver replicas: the Webserver is the only role that serves API and UI traffic. Workers connect to the Worker Controller's gRPC port (`50051` by default), so that port must be reachable from wherever Workers run. Webserver and standalone servers start an embedded Worker Controller unless you pass `--no-controller`.
+
+Point load balancer health checks at the Webserver's [`/health` endpoint](../03.monitoring/index.md#kestra-endpoints) on the management port (`8081`), or at the unauthenticated `/ping` endpoint on the application port (`8080`).
+
+## Queue backend and scale
+
+All queue backends support high availability in a distributed deployment. Choose based on throughput and latency requirements:
+
+- **Database** (PostgreSQL or MySQL): simplest option; covers most production use cases. Deploy PostgreSQL in HA mode (PGPool or a managed cloud service) so the database itself does not become a single point of failure.
+- **AMQP / Redis**: lower queue latency than a database queue; also raises the throughput ceiling
+- **Kafka**: highest throughput; each server role scales independently
+
+For Kafka deployments, PostgreSQL is the recommended repository pairing. Elasticsearch can serve as the repository for the highest search and aggregation throughput.
+
+See [Deployment Architecture](../../08.architecture/03.deployment-architecture/index.md) for a full comparison.

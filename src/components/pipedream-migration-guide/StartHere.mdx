@@ -1,0 +1,28 @@
+import GuideCard from "../vra-migration-guide/blocks/GuideCard.astro"
+import GuideCards from "../vra-migration-guide/blocks/GuideCards.astro"
+
+## Start here
+
+**Who this is for:** the person who owns a Pipedream Workflows account and has until March 31, 2027 to move it. You may run a handful of automations or a few hundred; the shape of the work is the same, and the deadline is fixed.
+
+The approach in this guide starts with three ideas:
+
+<GuideCards columns={3}>
+<GuideCard kicker="01" title="Export first, decide second">
+
+The export is the only copy of your workflow logic that survives April 30. If you never connected Pipedream's GitHub Sync, it is also the first copy of your workflows outside Pipedream. Run it today, for every project, before you evaluate anything.
+
+</GuideCard>
+<GuideCard kicker="02" title="What you move to matters more than how fast you move">
+
+Pipedream was chosen for flexibility at a price a small team could justify. Replacing it with a tool that holds your tokens in its own workspace and prices by credits puts you back where you started. The next platform has to run your code, reach your systems, and still be yours if the vendor changes course.
+
+</GuideCard>
+<GuideCard kicker="03" title="This is a method, not a brochure">
+
+It comes from teams doing this migration now, with real export files, finance workflows with month-end deadlines and NetSuite calls that take several minutes. It gives you the mapping, the triage rules and the conversion pattern, and it says where Kestra fits and where it does not.
+
+</GuideCard>
+</GuideCards>
+
+It also sets out why Kestra Cloud is the right destination for code-first Pipedream estates, and walks through the four stages from export to canceling the subscription. Start the [14-day Cloud trial](/cloud) whenever you are ready; the guide works without it.

@@ -1,5 +1,6 @@
 ---
 title: Create a Dynamic Dropdown for Inputs
+h1: Populate Input Dropdowns Dynamically from APIs or Databases
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -15,7 +16,7 @@ In this guide, we show how you can create a dynamic dropdown list for inputs. Th
 
 To get started, we create a flow that fetches the data from the external source and set the value in the KV store. The value will be in the form of a list of strings.
 
-In this example, the flow fetches data from a PostgreSQL table on an hourly schedule. You can change the `cron` property to run at a different frequency depending on how frequently you expect the data at the source to change. If the external source is in a database that supports change data capture, as in this case where we use PostgreSQL table, you can also leverage [debezium trigger](/plugins/debezium%20postgresql/triggers/io.kestra.plugin.debezium.postgres.trigger) and immediately update the KV store.
+In this example, the flow fetches data from a PostgreSQL table on an hourly schedule. You can change the `cron` property to run at a different frequency depending on how frequently you expect the data at the source to change. If the external source is in a database that supports change data capture, as in this case where we use PostgreSQL table, you can also use the [debezium trigger](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.trigger) and immediately update the KV store.
 
 ```yaml
 id: update_kv_store
@@ -111,7 +112,7 @@ inputs:
     expression: >-
       {{
       http(
-        uri = 'http://localhost:8080/api/v1/internal/executions/search?state=PAUSED',
+        uri = 'http://localhost:8080/api/v1/internal/executions/search?filters[state][EQUALS]=PAUSED',
         method = 'GET',
         contentType = 'application/json',
         headers={
@@ -130,3 +131,280 @@ tasks:
 :::alert{type="info"}
 When using `http()` inside an `expression` with secrets in headers (e.g., an authenticated API request), use named arguments and string concatenation ([Pebble Literals](https://pebbletemplates.io/wiki/guide/basic-usage/#literals)). The key to the syntax is to use string interpolation with `~`.
 :::
+
+## Populate a dropdown from a subflow
+
+When `kv()` and `http()` are not enough — for example, when you need to run a script task, call a CLI command (`aws ec2 describe-instances`, `gcloud projects list`), or execute complex multi-step logic — use the `subflow()` Pebble function.
+
+`subflow()` runs a subflow synchronously at form render time and exposes its flow-level outputs as the dropdown values. The main flow does not start until the subflow finishes and the form is submitted.
+
+**Step 1 — Create the data-fetching subflow.** This flow queries your infrastructure and returns a list as a flow-level output:
+
+```yaml
+id: fetch_aws_regions
+namespace: company.ops
+
+tasks:
+  - id: get_regions
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - |
+        regions=$(aws ec2 describe-regions --query 'Regions[].RegionName' --output json)
+        echo "::$(printf '{"outputs":{"regions":%s}}' "$regions")::"
+
+outputs:
+  - id: regions
+    type: JSON
+    value: "{{ outputs.get_regions.vars.regions }}"
+```
+
+The `::{"outputs":{"key":"value"}}::` line is Kestra's [script output format](../../16.scripts/06.outputs-metrics/index.md) — it's how `shell.Commands` tasks publish named values that downstream expressions can reference via `outputs.<task_id>.vars.<key>`.
+
+**Step 2 — Reference it from a SELECT input in your main flow:**
+
+```yaml
+id: deploy_to_region
+namespace: company.ops
+
+inputs:
+  - id: region
+    type: SELECT
+    displayName: AWS Region
+    expression: "{{ subflow(namespace='company.ops', id='fetch_aws_regions').outputs.regions }}"
+
+tasks:
+  - id: deploy
+    type: io.kestra.plugin.core.log.Log
+    message: "Deploying to {{ inputs.region }}"
+```
+
+When a user opens the Execute form, Kestra runs `fetch_aws_regions` synchronously and populates the dropdown from its output.
+
+### Chaining dropdowns with `dependsOn`
+
+You can chain dropdowns so the second list depends on the first selection:
+
+```yaml
+inputs:
+  - id: environment
+    type: SELECT
+    expression: "{{ subflow(namespace='company.ops', id='fetch_environments').outputs.envs }}"
+
+  - id: cluster
+    type: SELECT
+    dependsOn:
+      inputs:
+        - environment
+    expression: "{{ subflow(namespace='company.ops', id='fetch_clusters', inputs={'env': inputs.environment}).outputs.clusters }}"
+```
+
+**Constraints to be aware of:**
+
+- `subflow()` is only valid in an input's `expression:` or `defaults:`. It throws if used in a task or trigger property.
+- `subflow()` only runs when an execution is created from the UI or the API. A flow started by a `Subflow` task or a trigger needs its values passed in, as described in the next section.
+- The subflow must complete within the timeout (default `PT1M`, max `PT5M`). Keep data-fetching subflows fast.
+- Recursion is capped at depth 3.
+- Each subflow referenced in a `SELECT` or `MULTISELECT` expression appears in the parent flow's **Dependencies** graph automatically.
+
+### Start the flow from a Subflow task or a trigger
+
+`subflow()` doesn't run when a `Subflow` task or a trigger creates the execution. To start a flow with a `subflow()` dropdown from another flow, pass a value for each input from the caller, and set `allowCustomValue: true` on each `SELECT` or `MULTISELECT` input that uses `subflow()`:
+
+```yaml
+id: deploy_to_region
+namespace: company.ops
+
+inputs:
+  - id: region
+    type: SELECT
+    displayName: AWS Region
+    allowCustomValue: true
+    expression: "{{ subflow(namespace='company.ops', id='fetch_aws_regions').outputs.regions }}"
+
+tasks:
+  - id: deploy
+    type: io.kestra.plugin.core.log.Log
+    message: "Deploying to {{ inputs.region }}"
+```
+
+When an execution is created with a value for `region`, Kestra accepts the value and doesn't render the `expression`. The Execute form still renders it, so UI users keep the dropdown. The same applies to an execution created from the API with a value for `region`: Kestra doesn't run `fetch_aws_regions`.
+
+If the caller needs the list first, run the data-fetching flow as a `Subflow` task and pass its output:
+
+```yaml
+id: deploy_first_region
+namespace: company.ops
+
+tasks:
+  - id: get_regions
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.ops
+    flowId: fetch_aws_regions
+    wait: true
+    transmitFailed: true
+
+  - id: deploy
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.ops
+    flowId: deploy_to_region
+    wait: true
+    transmitFailed: true
+    inputs:
+      region: "{{ outputs.get_regions.outputs.regions[0] }}"
+```
+
+Keep these rules in mind:
+
+- Kestra checks each input separately. With chained dropdowns, pass a value for every input whose `expression` calls `subflow()`, including the inputs listed in `dependsOn`.
+- With `allowCustomValue: true`, Kestra doesn't check the value against the list, from a caller or from the Execute form. If the value must belong to the list, validate it in the flow's tasks.
+- If an input calls `subflow()` only in `defaults:`, passing a value is enough. Kestra renders `defaults` only when no value is passed.
+- If the caller passes no value, Kestra doesn't create the execution. A calling `Subflow` task fails with an error that asks you to pass the value of the input from the caller.
+
+## Conditional inputs
+
+Use `dependsOn` and `condition` to show an input only when a previous input matches a value. The following flow shows different inputs depending on which resource type the user selects:
+
+```yaml
+id: request_resources
+namespace: company.team
+
+inputs:
+  - id: resource_type
+    displayName: Resource type
+    type: SELECT
+    values:
+      - Access permissions
+      - SaaS application
+      - Cloud VM
+
+  - id: access_permissions
+    displayName: Access permissions
+    type: SELECT
+    expression: "{{ kv('access_permissions') }}"
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type == 'Access permissions' }}"
+
+  - id: saas_applications
+    displayName: SaaS application
+    type: MULTISELECT
+    expression: "{{ kv('saas_applications') }}"
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type == 'SaaS application' }}"
+
+  - id: cloud_provider
+    displayName: Cloud provider
+    type: SELECT
+    values:
+      - AWS
+      - GCP
+      - Azure
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type == 'Cloud VM' }}"
+
+  - id: cloud_vm
+    displayName: Cloud VM
+    type: SELECT
+    expression: "{{ kv('cloud_vms')[inputs.cloud_provider] }}"
+    dependsOn:
+      inputs:
+        - resource_type
+        - cloud_provider
+      condition: "{{ inputs.resource_type == 'Cloud VM' }}"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Resource type: {{ inputs.resource_type }}"
+```
+
+`dependsOn.inputs` lists the inputs that must be provided first. `dependsOn.condition` is a Pebble expression that controls visibility — the dependent input only appears in the Execute modal when the condition is `true`. An input can depend on multiple parents; all listed inputs must be provided before the condition is evaluated.
+
+Populate the KV store keys before running the flow:
+
+:::collapse{title="Flow to add key-value pairs"}
+```yaml
+id: add_kv_pairs
+namespace: company.team
+
+tasks:
+  - id: access_permissions
+    type: io.kestra.plugin.core.kv.Set
+    key: "{{ task.id }}"
+    kvType: JSON
+    value: |
+      ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
+
+  - id: saas_applications
+    type: io.kestra.plugin.core.kv.Set
+    key: "{{ task.id }}"
+    kvType: JSON
+    value: |
+      ["Slack", "Notion", "HubSpot", "GitHub", "Jira"]
+
+  - id: cloud_vms
+    type: io.kestra.plugin.core.kv.Set
+    key: "{{ task.id }}"
+    kvType: JSON
+    value: |
+      {
+        "AWS": ["t2.micro", "t2.small", "t2.medium", "t2.large"],
+        "GCP": ["f1-micro", "g1-small", "n1-standard-1", "n1-standard-2"],
+        "Azure": ["Standard_B1s", "Standard_B1ms", "Standard_B2s", "Standard_B2ms"]
+      }
+```
+:::
+
+### dependsOn inside FORM inputs
+
+To make one child input inside a FORM depend on another, use the full dotted path in `dependsOn.inputs`:
+
+```yaml
+inputs:
+  - id: cloud
+    type: FORM
+    displayName: Cloud configuration
+    inputs:
+      - id: provider
+        type: SELECT
+        values: [AWS, GCP, Azure]
+
+      - id: region
+        type: SELECT
+        dependsOn:
+          inputs:
+            - cloud.provider
+          condition: "{{ inputs.cloud.provider == 'AWS' }}"
+        values:
+          - us-east-1
+          - eu-west-1
+```
+
+## Label/value pairs for decoupled dropdowns
+
+When your API returns structured data, use a `{label, value}` jq projection so the dropdown shows a human-readable label while `{{ inputs.x }}` resolves to the underlying technical identifier:
+
+```yaml
+id: dynamic_account_selector
+namespace: company.team
+
+inputs:
+  - id: aws_account
+    type: SELECT
+    displayName: AWS Account
+    expression: "{{ http(uri = 'https://api.example.com/accounts') | jq('.accounts[] | {label: .name, value: .id}') }}"
+
+tasks:
+  - id: log_account
+    type: io.kestra.plugin.core.log.Log
+    message: "Selected account ID: {{ inputs.aws_account }}"
+```
+
+The dropdown displays account names; `{{ inputs.aws_account }}` resolves to the account ID. The same pattern works with static `values` lists — see [Label/value pairs in SELECT and MULTISELECT inputs](../../05.workflow-components/05.inputs/index.md#labelvalue-pairs-in-select-and-multiselect-inputs).

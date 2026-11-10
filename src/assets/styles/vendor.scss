@@ -1,30 +1,35 @@
 @import "variable";
 
-@import "bootstrap/scss/root";
-@import "bootstrap/scss/reboot";
-@import "bootstrap/scss/type";
-@import "bootstrap/scss/images";
-@import "bootstrap/scss/containers";
-@import "bootstrap/scss/grid";
-@import "bootstrap/scss/forms";
-@import "bootstrap/scss/buttons";
-@import "bootstrap/scss/transitions";
-@import "bootstrap/scss/dropdown";
-@import "bootstrap/scss/nav";
-@import "bootstrap/scss/navbar";
-@import "bootstrap/scss/card";
-@import "bootstrap/scss/breadcrumb";
-@import "bootstrap/scss/pagination";
-@import "bootstrap/scss/badge";
-@import "bootstrap/scss/modal";
-@import "bootstrap/scss/helpers";
-@import "bootstrap/scss/utilities";
-@import "bootstrap/scss/utilities/api";
+@import "components/root";
+@import "modern-normalize/modern-normalize.css";
+@import "components/base";
+@import "components/type";
+@import "components/grid";
+@import "components/form";
+@import "components/button";
+@import "components/dropdown";
+@import "components/nav";
+@import "components/card";
+@import "components/breadcrumb";
+@import "components/pagination";
+@import "components/badge";
+@import "components/modal";
+@import "components/helpers";
+@import "components/utilities";
 
 @import "vue-material-design-icons/styles.css";
-@import "vanilla-cookieconsent/dist/cookieconsent.css";
 @import "medium-zoom/dist/style.css";
-@import "@vue-flow/core/dist/style.css";
-@import "@vue-flow/core/dist/theme-default.css";
-@import "@vue-flow/controls/dist/style.css";
 @import "vue3-carousel/carousel.css";
+@import "@kestra-io/topology/style.css";
+
+.el-popper {
+    border-radius: 8px;
+    padding: 0.25rem 0.5rem;
+    font-size: $font-size-xs;
+    white-space: nowrap;
+    word-wrap: break-word;
+    pointer-events: none;
+    background: var(--ks-background-body);
+    border: 1px solid var(--ks-border-secondary);
+    color: var(--ks-content-primary);
+}

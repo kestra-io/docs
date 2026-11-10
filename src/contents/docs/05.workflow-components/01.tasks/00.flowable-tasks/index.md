@@ -1,21 +1,20 @@
 ---
-title: Flowable Tasks in Kestra – Control Orchestration Logic
+title: "Flowable Tasks in Kestra: Control Flow Logic"
+h1: Control Execution Flow with Sequential, Parallel, and Loop Tasks
 description: Deep dive into Kestra Flowable Tasks. Learn to control execution flow with sequential, parallel, switch, if/else, loops, and error handling constructs.
 sidebarTitle: Flowable Tasks
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Control your orchestration logic.
+Flowable tasks control orchestration logic: branching, looping, and parallelizing work, without performing heavy computation.
 
-## Control orchestration with flowable tasks
-
-Flowable tasks control orchestration logic — running tasks or subflows in parallel, creating loops, and handling conditional branching. They do not run heavy operations; those are handled by workers.
-
-Flowable tasks use [expressions](../../../expressions/index.mdx) from the execution context to determine which tasks run next. For example, you can use the outputs of a previous task in a `Switch` task to decide which task to run next.
+Flowable tasks use [expressions](../../../expressions/index.mdx) from the execution context to determine which tasks run next.
 
 ### Sequential
 
-This task runs tasks sequentially and is typically used to group them.
+`Sequential` runs child tasks one after another, with optional `errors` and `finally` hooks.
+
+Tasks inside a `Sequential` block can reference sibling task outputs using `{{ outputs.sibling_id.value }}`.
 
 ```yaml
 id: sequential
@@ -25,28 +24,27 @@ tasks:
   - id: sequential
     type: io.kestra.plugin.core.flow.Sequential
     tasks:
-      - id: 1st
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
+      - id: first_task
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ task.id }} > {{ taskrun.startDate }}"
 
-      - id: 2nd
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.id }}"
+      - id: second_task
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ outputs.first_task.values.result }}"
 
   - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-:::alert{type="info"}
-You can access the output of a sibling task using the syntax `{{ outputs.sibling.value }}`.
-:::
-
-For more details on capabilities, check out the [Sequential Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential).
+For more details, check out the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
 
 ### Parallel
 
-This task runs tasks in parallel, making it convenient to process many tasks simultaneously.
+`Parallel` starts all child tasks concurrently, reducing total elapsed time when tasks are independent. Because branches run simultaneously, you cannot access the output of a sibling task from within the same `Parallel` block; outputs are only available to tasks that run after the `Parallel` task completes.
+
+The `concurrent` property caps how many branches run at once (`0` = no limit, the default).
 
 ```yaml
 id: parallel
@@ -55,31 +53,73 @@ namespace: company.team
 tasks:
   - id: parallel
     type: io.kestra.plugin.core.flow.Parallel
+    concurrent: 2
     tasks:
-      - id: 1st
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
+      - id: branch_1
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ taskrun.startDate }}"
 
-      - id: 2nd
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.id }}"
+      - id: branch_2
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ taskrun.id }}"
 
   - id: last
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-:::alert{type="warning"}
-You cannot access the output of a sibling task as tasks will be run in parallel.
-:::
+`Sequential` nested inside `Parallel` branches runs multi-step sequences concurrently:
 
-For more task details, refer to the [Parallel Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel).
+```yaml
+  - id: parallel
+    type: io.kestra.plugin.core.flow.Parallel
+    tasks:
+      - id: sequence1
+        type: io.kestra.plugin.core.flow.Sequential
+        tasks:
+          - id: task1
+            type: io.kestra.plugin.core.log.Log
+            message: "step 1a"
+          - id: task2
+            type: io.kestra.plugin.core.log.Log
+            message: "step 1b"
+      - id: sequence2
+        type: io.kestra.plugin.core.flow.Sequential
+        tasks:
+          - id: task3
+            type: io.kestra.plugin.core.log.Log
+            message: "step 2a"
+          - id: task4
+            type: io.kestra.plugin.core.log.Log
+            message: "step 2b"
+```
+
+When a branch fails with no retry left, `Parallel` interrupts the other branches that are still running and sets them to `FAILED`. The `onChildFailure` property controls this behavior:
+
+- `FAIL` (default): interrupt the running branches and set them to `FAILED`.
+- `CANCEL`: interrupt the running branches and set them to `CANCELLED`.
+- `CONTINUE`: let the running branches finish.
+
+With any value, the `Parallel` task ends in `FAILED` and its `errors` and `finally` tasks run. In the following example, `long_running` finishes its full minute even though `fails_fast` fails:
+
+```yaml
+  - id: parallel
+    type: io.kestra.plugin.core.flow.Parallel
+    onChildFailure: CONTINUE
+    tasks:
+      - id: fails_fast
+        type: io.kestra.plugin.core.execution.Fail
+
+      - id: long_running
+        type: io.kestra.plugin.core.flow.Sleep
+        duration: PT1M
+```
+
+For more task details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
 
-This task conditionally runs tasks based on the value of a contextual variable.
-
-In the following example, an input is used to decide which task to run next.
+`Switch` routes execution to a matching case based on the value of an expression. In the following example, an input determines which branch runs.
 
 ```yaml
 id: switch
@@ -87,7 +127,7 @@ namespace: company.team
 
 inputs:
   - id: param
-    type: BOOLEAN
+    type: BOOL
 
 tasks:
   - id: decision
@@ -104,16 +144,11 @@ tasks:
           message: "This is false"
 ```
 
-For more plugin details, refer to the [Switch Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch).
+For more plugin details, refer to the [Switch Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.switch).
 
 ### If
 
-This task processes a set of tasks conditionally depending on a condition.
-
-The condition must evaluate to a boolean. Values such as `0`, `-0`, `null`, and `''` evaluate to `false`; all other values evaluate to `true`.
-The `else` branch is optional.
-
-In the following example, an input is used to decide which task to run next.
+`If` runs one branch of tasks when a condition is true and an optional `else` branch when it is false. The condition must evaluate to a boolean: `0`, `-0`, `null`, and `''` evaluate to `false`; all other values evaluate to `true`.
 
 ```yaml
 id: if_condition
@@ -121,7 +156,7 @@ namespace: company.team
 
 inputs:
   - id: param
-    type: BOOLEAN
+    type: BOOL
 
 tasks:
   - id: if
@@ -137,157 +172,387 @@ tasks:
         message: "This is false"
 ```
 
-For more details, check out the [If Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If).
+For more details, check out the [If Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.if).
 
-### ForEach
+### Loop
 
-This task executes a group of tasks for each value in the list.
+The `Loop` task iterates over a set of values and runs child tasks for each item in an isolated sub-execution with its own context.
 
-In the following example, the variable is static, but it could also be generated from a previous task output, starting any number of subtasks.
+`values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file. When `values` is a list or a JSON array string, Kestra drops duplicate elements, so `["a", "b", "a"]` runs two iterations.
 
 ```yaml
-id: foreach_example
+id: loop-basic
 namespace: company.team
 
 tasks:
-  - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: ["value 1", "value 2", "value 3"]
     tasks:
-      - id: before_if
-        type: io.kestra.plugin.core.debug.Return
-        format: "Before if {{ taskrun.value }}"
-      - id: if
-        type: io.kestra.plugin.core.flow.If
-        condition: '{{ taskrun.value == "value 2" }}'
-        then:
-          - id: after_if
-            type: io.kestra.plugin.core.debug.Return
-            format: "After if {{ parent.taskrun.value }}"
+      - id: log
+        type: io.kestra.plugin.core.log.Log
+        message: "index={{ item.index }} value={{ item.value }}"
 ```
 
-In this execution, you can access:
+Inside each iteration, use the `item` variable to access the iteration context:
 
-- The iteration value i.e., the index of a loop (the loop index starts at 0) using the syntax `{{ taskrun.iteration }}`
-- The output of a sibling task using the syntax `{{ outputs.sibling[taskrun.value].value }}`
+| Expression | Description |
+|---|---|
+| `{{ item.index }}` | Zero-based iteration index |
+| `{{ item.value }}` | Current iteration value |
+| `{{ item.key }}` | Current map key when `values` is a map; not set for list or URI values |
+| `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
+| `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
+| `{{ item.parents[n].value }}` | Value of the nth enclosing loop, counting from the outermost (`[0]` = outermost loop) |
 
----
+For more details on `item`, see [loop iteration context](../../../expressions/01.context/index.mdx#loop-iteration-context) in the expressions reference.
 
-This example shows how to run tasks in parallel for each value in the list. All child tasks of the parallel task run in parallel. However, due to the `concurrencyLimit` property set to 2, only two parallel task groups run at any given time.
+#### Iterating over objects
+
+When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields; `item.value.field` does not work.
 
 ```yaml
 id: parallel_tasks_example
 namespace: company.team
 
 tasks:
-  - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - { id: 101, email: "a@example.com" }
+      - { id: 102, email: "b@example.com" }
+    fetchType: AUTO
+    outputs:
+      - id: user_id
+        type: INT
+        value: "{{ fromJson(item.value).id }}"
+      - id: email
+        type: STRING
+        value: "{{ fromJson(item.value).email }}"
+    tasks:
+      - id: log_user
+        type: io.kestra.plugin.core.log.Log
+        message: "User {{ fromJson(item.value).id }} -> {{ fromJson(item.value).email }}"
+```
+
+#### Concurrent execution
+
+By default (`concurrencyLimit: 0`), all iterations run in parallel and workers regulate actual throughput. Set `concurrencyLimit` to a positive integer to cap how many iterations run at once. Any value set on the task or via a [policy](../../../07.enterprise/02.governance/policies/index.md) takes precedence over the default.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    concurrencyLimit: 2
+    concurrencyLimit: 0
     tasks:
       - id: parallel
         type: io.kestra.plugin.core.flow.Parallel
         tasks:
-        - id: log
-          type: io.kestra.plugin.core.log.Log
-          message: Processing {{ parent.taskrun.value }}
-        - id: shell
-          type: io.kestra.plugin.scripts.shell.Commands
-          commands:
-            - sleep {{ parent.taskrun.value }}
+          - id: log
+            type: io.kestra.plugin.core.log.Log
+            message: "Processing {{ item.value }}"
+          - id: shell
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - "echo done {{ item.value }}"
 ```
 
-For more information on handling outputs generated from `ForEach`, check out this [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md).
+#### Failure propagation
 
-For processing items, or forwarding processing to a subflow, [ForEachItem](#foreachitem) is better suited.
-
-:::alert{type="info"}
-For more details, refer to the [ForEach Task documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach).
-:::
-
-### ForEachItem
-
-This task iterates over a list of items and runs a subflow for each item, or for each batch of items.
+By default (`transmitFailed: true`), a failed iteration causes the Loop task itself to fail. Set `transmitFailed: false` to let the loop continue even when individual iterations fail.
 
 ```yaml
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ inputs.file }}" # could be also an output variable {{ outputs.extract.uri }}
-    inputs:
-      file: "{{ taskrun.items }}" # items of the batch
-    batch:
-      rows: 4
-    namespace: company.team
-    flowId: subflow
-    revision: 1 # optional (default: latest)
-    wait: true # wait for the subflow execution
-    transmitFailed: true # fail the task run if the subflow execution fails
-    labels: # optional labels to pass to the subflow to be executed
-      key: value
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["ok", "fail", "ok"]
+    transmitFailed: false
+    tasks:
+      - id: maybe_fail
+        type: io.kestra.plugin.core.flow.If
+        condition: '{{ item.value == "fail" }}'
+        then:
+          - id: do_fail
+            type: io.kestra.plugin.core.execution.Fail
+        else:
+          - id: success
+            type: io.kestra.plugin.core.log.Log
+            message: "OK: {{ item.value }}"
 ```
 
-This executes the subflow `company.team.subflow` for each batch of items.
-To pass the batch of items to a subflow, you can use inputs. The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
+#### Error handling per iteration
 
-The next example shows you how to access the outputs from each subflow executed. The ForEachItem automatically merges the URIs of the outputs from each subflow into a single file. The URI of this file is available through the `subflowOutputs` output.
+Use `errors:` to run tasks when an iteration fails, and `finally:` to run a block once after all iterations complete regardless of outcome. `errors:` runs within the failing iteration regardless of `transmitFailed`: with `transmitFailed: true` (default), the loop stops after the failing iteration completes; with `transmitFailed: false`, the loop continues to subsequent iterations. `finally:` always runs regardless.
 
 ```yaml
-id: for_each_item
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - ok
+      - boom
+      - ok
+    transmitFailed: false
+    tasks:
+      - id: maybe_fail
+        type: io.kestra.plugin.scripts.shell.Commands
+        commands:
+          - |
+            if [ "{{ item.value }}" = "boom" ]; then
+              echo "failing on {{ item.value }}" >&2
+              exit 1
+            fi
+            echo "ok {{ item.value }}"
+    errors:
+      - id: handle_error
+        type: io.kestra.plugin.core.log.Log
+        message: "Iteration {{ item.index }} ({{ item.value }}) failed"
+    finally:
+      - id: cleanup
+        type: io.kestra.plugin.core.log.Log
+        message: "Loop completed (with or without failures)"
+```
+
+#### Stop early with `breakWhen`
+
+Set `breakWhen` to a Pebble expression that Kestra evaluates after each iteration finishes. When the expression is truthy (`true`, a non-empty string, or a non-zero number), the loop starts no new iterations and counts the remaining ones as `SKIPPED` in `terminatedIterations`.
+
+In addition to `item`, the expression can read the iteration that just finished:
+
+| Variable | Description |
+|---|---|
+| `iteration.executionId` | Execution ID of the iteration |
+| `iteration.state` | Final state of the iteration, such as `SUCCESS` or `FAILED` |
+| `iteration.outputs` | Values declared in the Loop `outputs` block for that iteration |
+
+The following example fetches pages one at a time and stops after the first page that reports no more data:
+
+```yaml
+id: loop-break-when
 namespace: company.team
 
 tasks:
-  - id: generate
-    type: io.kestra.plugin.scripts.shell.Script
-    script: |
-      for i in $(seq 1 10); do echo "$i" >> data; done
-    outputFiles:
-      - data
-
-  - id: for_each_item
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.generate.outputFiles.data }}"
-    batch:
-      rows: 4
-    wait: true
-    flowId: my_subflow
-    namespace: company.team
-    inputs:
-       value: "{{ taskrun.items }}"
-
-  - id: for_each_outputs
-    type: io.kestra.plugin.core.log.Log
-    message: "{{ outputs.forEachItem_merge.subflowOutputs }}" # Log the URI of the file containing the URIs of the outputs from each subflow
+  - id: fetch_pages
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3, 4, 5]
+    concurrencyLimit: 1
+    breakWhen: "{{ iteration.outputs.has_more == false }}"
+    outputs:
+      - id: has_more
+        type: BOOL
+        value: "{{ outputs.fetch.value | number < 3 }}"
+    tasks:
+      - id: fetch
+        type: io.kestra.plugin.core.debug.Return
+        format: "{{ item.value }}"
 ```
 
-:::alert{type="info"}
-For more details, refer to the [ForEachItem Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEachItem).
-:::
+Kestra checks `breakWhen` only while some iterations have not started yet. With the default `concurrencyLimit: 0`, every iteration starts at once, so `breakWhen` has no effect. Set `concurrencyLimit: 1` to check the condition before each new iteration starts.
 
-#### `ForEach` vs `ForEachItem`
+To stop on a failed iteration, set `transmitFailed: false` and check `iteration.state`. With the default `transmitFailed: true`, the first failed iteration fails the loop before Kestra evaluates `breakWhen`.
 
-Both `ForEach` and `ForEachItem` are similar, but there are specific use cases that suit one over the other:
-- `ForEach` generates a lot of [Task Runs](../02.taskruns/index.md) which can impact performance.
-- `ForEachItem` generates separate executions using [Subflows](../../10.subflows/index.md) for the group of tasks. This scales better for larger datasets.
+#### Nested loops
 
-Read more about performance optimization in our [best practices guides](../../../14.best-practices/0.flows/index.md#tasks-in-the-same-execution).
+Loops can be nested to any depth. Because `item` is bound to the loop execution rather than individual task runs, flowable tasks nested inside a loop can access `item` directly without a `parent.` prefix.
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/mkZcdbgxSWA?si=DXGrFU6m6XEOtZSN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+`item.parents` lists the enclosing loops from the outermost inward. `item.parents[0]` is the outermost loop, and the last element is the immediate parent, the same as `item.parent`.
 
----
+```yaml
+tasks:
+  - id: outer
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["bucket1", "bucket2"]
+    tasks:
+      - id: middle
+        type: io.kestra.plugin.core.flow.Loop
+        values: [2025, 2026]
+        tasks:
+          - id: inner
+            type: io.kestra.plugin.core.flow.Loop
+            values: ["Jan", "Feb", "Mar"]
+            tasks:
+              - id: log
+                type: io.kestra.plugin.core.log.Log
+                message: "bucket={{ item.parents[0].value }} year={{ item.parent.value }} month={{ item.value }}"
+```
+
+#### Loop outputs
+
+By default, task outputs produced inside a loop are not accessible to tasks that run after the loop. Use the `outputs` property on the Loop task to explicitly declare which values to expose.
+
+```yaml
+id: loop-outputs
+namespace: company.team
+
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["a", "b", "c"]
+    fetchType: AUTO
+    outputs:
+      - id: result
+        type: STRING
+        value: "{{ outputs.process.values.result }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "processed {{ item.value }}"
+
+  - id: summary
+    type: io.kestra.plugin.core.log.Log
+    message: "Loop ran {{ outputs.loop.iterationCount }} iterations"
+```
+
+The loop also exposes monitoring outputs regardless of whether `outputs` is declared:
+
+| Output | Description |
+|---|---|
+| `iterationCount` | Total number of iterations |
+| `runningIterations` | Iterations still in progress |
+| `terminatedIterations` | Count of finished iterations per final state, for example `{"SUCCESS": 2, "SKIPPED": 2}` |
+
+The `fetchType` property controls how iteration outputs are collected:
+
+- `FETCH` keeps each iteration's declared outputs inline in the execution context. Use it for small iteration counts.
+- `STORE` writes each iteration's declared outputs to an ION file in internal storage. Each entry in `outputs.<loop_id>.outputs` then holds only a `uri` to that file, so `loopOutputs()` returns `null` for your declared output IDs. Use it for large iteration counts.
+- `AUTO` (the default) uses `STORE` when `values` is a URI and `FETCH` otherwise.
+
+#### Processing large files
+
+When `values` is a list of URIs from a [`Split`](/plugins/core/storage/io.kestra.plugin.core.storage.split) task, each iteration receives one chunk URI as `item.value`. The following example splits a large file into chunks, processes each in parallel, and merges the results:
+
+Passing `values: "{{ outputs.split.uris }}"` where `outputs.split.uris` is a **list** is different from passing a single file URI. When `values` is a list, each `item.value` is one element of that list. When `values` is a single URI string, Kestra iterates line-by-line through the file.
+
+```yaml
+id: map-reduce
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: to_ion
+    type: io.kestra.plugin.serdes.csv.CsvToIon
+    from: "{{ outputs.download.uri }}"
+
+  - id: split
+    type: io.kestra.plugin.core.storage.Split
+    from: "{{ outputs.to_ion.uri }}"
+    rows: 25
+
+  - id: per_chunk
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.split.uris }}"
+    concurrencyLimit: 4
+    fetchType: FETCH
+    outputs:
+      - id: data
+        type: STRING
+        value: "{{ outputs.aggregate.uri }}"
+    tasks:
+      - id: aggregate
+        type: io.kestra.plugin.transform.Aggregate
+        from: "{{ item.value }}"
+        outputType: STORE
+        groupBy: [customer_email]
+        aggregates:
+          orders:
+            expr: count()
+            type: INT
+          revenue:
+            expr: sum(todecimal(total))
+            type: DECIMAL
+
+  - id: concat
+    type: io.kestra.plugin.core.storage.Concat
+    files: "{{ loopOutputs(outputs.per_chunk.outputs, 'data') }}"
+    extension: .ion
+
+  - id: reduce
+    type: io.kestra.plugin.transform.Aggregate
+    from: "{{ outputs.concat.uri }}"
+    outputType: STORE
+    groupBy: [customer_email]
+    aggregates:
+      orders:
+        expr: sum(orders)
+        type: INT
+      revenue:
+        expr: sum(revenue)
+        type: DECIMAL
+```
+
+`fetchType: FETCH` collects per-iteration output URIs inline; pass them to `Concat` via `loopOutputs(outputs.per_chunk.outputs, 'data')`.
+
+#### Accessing loop outputs in a script task
+
+The following example runs a Python task inside a loop to compute a value, then reads the collected results in a subsequent Python task using the monitoring output and the Kestra Python SDK.
+
+```yaml
+id: loop-python-outputs
+namespace: company.team
+
+tasks:
+  - id: process_items
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3, 4, 5]
+    outputs:
+      - id: squared
+        type: INT
+        value: "{{ outputs.compute.vars.result }}"
+    tasks:
+      - id: compute
+        type: io.kestra.plugin.scripts.python.Script
+        dependencies:
+          - kestra
+        script: |
+          from kestra import Kestra
+          n = {{ item.value }}
+          Kestra.outputs({"result": n * n})
+
+  - id: analyze
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - kestra
+    script: |
+      from kestra import Kestra
+
+      iteration_count = {{ outputs.process_items.iterationCount }}
+
+      # outputs.process_items.outputs is a list of iteration results:
+      # [{"item": {"value": "1", "iteration": 0}, "outputs": {"squared": 1}}, ...]
+      all_outputs = {{ outputs.process_items.outputs | toJson }}
+
+      squared_values = [iteration["outputs"]["squared"] for iteration in all_outputs]
+
+      print(f"Processed {iteration_count} items")
+      print(f"Squared values: {squared_values}")
+      print(f"Sum of squares: {sum(squared_values)}")
+
+      Kestra.outputs({"total": sum(squared_values)})
+```
+
+`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results: each entry contains an `item` object (`value`, the zero-based `iteration`, and `key` when `values` is a map) and an `outputs` map of the declared output values. The list follows the order in which iterations finished, so `outputs.process_items.outputs[0]` isn't necessarily the first iteration. To read a specific iteration, filter on `item.iteration`: `{{ outputs.process_items.outputs | jq('.[] | select(.item.iteration == 0) | .outputs.squared') | first }}`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`. That list is also in completion order and holds the output values only, so to pair each result with its input, read `item.iteration` from the same entry of `outputs.process_items.outputs`. Use the iteration index rather than `item.value`, because `values` can contain duplicates.
+
+For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
+
 
 ### LoopUntil
 
 `LoopUntil` runs a group of tasks repeatedly until a boolean condition evaluates to `true`. After each iteration, the task evaluates the `condition` expression; if it evaluates to `false`, the block is executed again after the configured interval.
 
-Typical use cases include polling an external API, waiting for a long-running job to transition to a terminal state, or checking for the presence of downstream resources.
 
 Key properties:
 
-- `condition` — expression evaluated after each iteration; has access to the child task outputs from the most recent run (e.g. `{{ outputs.checkStatus.code }}`).
-- `tasks` — the list of child tasks to run before re-evaluating the condition.
-- `checkFrequency` — optional guardrails that define `interval`, `maxIterations`, and/or `maxDuration` between repeats. (See the [LoopUntil migration note](../../../11.migration-guide/v0.23.0/loop-until-defaults/index.md) for default values.)
+- `condition`: expression evaluated after each iteration; has access to the child task outputs from the most recent run (e.g. `{{ outputs.checkStatus.code }}`).
+- `tasks`: the list of child tasks to run before re-evaluating the condition.
+- `checkFrequency`: optional guardrails that define `interval`, `maxIterations`, and/or `maxDuration` between repeats. (See the [LoopUntil migration note](../../../11.migration-guide/v0.23.0/loop-until-defaults/index.md) for default values.)
+- `failOnMaxReached`: if `true`, the task fails when `maxIterations` or `maxDuration` is reached without the condition becoming true. Default: `false` (the task succeeds when limits are reached).
+
+After the loop completes, `outputs.<task_id>.iterationCount` holds the total number of iterations (1-based).
 
 Example: poll an API until it returns HTTP 200, checking every 30 seconds and stopping after 50 attempts if it never succeeds.
 
@@ -309,15 +574,11 @@ tasks:
         uri: https://kestra.io/api/mock
 ```
 
-For more details, refer to the [LoopUntil Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.LoopUntil).
-
----
+For more details, refer to the [LoopUntil Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil).
 
 ### AllowFailure
 
-This task allows child tasks to fail.
-
-If any child task fails:
+`AllowFailure` lets child tasks fail without failing the overall execution. If any child task fails:
 - The `AllowFailure` task is marked with status `WARNING`.
 - All child tasks inside `AllowFailure` stop immediately.
 - The execution continues for all other tasks.
@@ -340,23 +601,19 @@ tasks:
       - id: ko
         type: io.kestra.plugin.core.execution.Fail
       - id: next
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.startDate }}"
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ task.id }} > {{ taskrun.startDate }}"
 
   - id: end
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ taskrun.startDate }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-:::alert{type="info"}
-For more details, refer to the [AllowFailure Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.AllowFailure).
-:::
+For more details, refer to the [AllowFailure Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.allowfailure).
 
 ### Fail
 
-This task fails the flow; it can be used with or without conditions.
-
-Without conditions, it can be used, for example, to fail on some switch value.
+`Fail` explicitly fails the execution, optionally guarded by a `condition` expression. Without a `condition`, `Fail` always fails unconditionally.
 
 ```yaml
 id: fail_on_switch
@@ -389,7 +646,7 @@ tasks:
           message: default
 ```
 
-With conditions, it can be used, for example, to validate inputs.
+With a condition, it can validate inputs before any work begins.
 
 ```yaml
 id: fail_on_condition
@@ -412,41 +669,54 @@ tasks:
     message: "I'm after the fail on condition"
 ```
 
-For more information, refer to the [Fail Task documentation](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Fail).
+For more information, refer to the [Fail Task documentation](/plugins/core/execution/io.kestra.plugin.core.execution.fail).
 
 ### Subflow
 
-This task triggers another flow. This enables you to decouple the first flow from the second and monitor each flow individually.
+`Subflow` starts a child execution of another flow, letting you decompose complex workflows, share reusable logic across namespaces, and monitor each execution independently.
 
-You can pass flow outputs as inputs to the triggered subflow (those must be declared in the subflow).
+Required properties are `namespace` and `flowId`. Pass values to the subflow via `inputs`; those inputs must be declared in the subflow's definition.
+
+By default (`wait: true`), the parent execution waits for the subflow to finish before continuing. Set `wait: false` to fire-and-forget; the parent moves on immediately without tracking the child's result.
+
+When `wait: true`, the parent captures the subflow's final state and outputs:
+
+- `{{ outputs.subflow_task.executionId }}`: the child execution ID
+- `{{ outputs.subflow_task.state }}`: the child's final state (`SUCCESS`, `FAILED`, etc.)
+- `{{ outputs.subflow_task.outputs.some_key }}`: a value from the subflow's declared outputs
+
+`transmitFailed: true` (the default when `wait: true`) causes the parent to fail if the subflow fails. Set it to `false` to continue the parent regardless of the child's outcome.
 
 ```yaml
-id: subflow_example
+id: parent_flow
 namespace: company.team
 
-inputs:
-  - id: my_file
-    type: FILE
-
 tasks:
-  - id: subflow
+  - id: call_subflow
     type: io.kestra.plugin.core.flow.Subflow
     namespace: company.team
     flowId: my_subflow
     inputs:
-      file: "{{ inputs.my_file }}"
-      store: 12
+      user: "{{ inputs.username }}"
+    wait: true
+    transmitFailed: true
+
+  - id: use_output
+    type: io.kestra.plugin.core.log.Log
+    message: "Subflow returned: {{ outputs.call_subflow.outputs.result }}"
 ```
 
-For more details, refer to the [Subflow Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Subflow).
+`revision` pins the subflow to a specific version. `inheritLabels: true` forwards the parent's execution labels to the child. `scheduleDate` defers the child execution to a future time.
+
+For more details, refer to the [Subflow Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.subflow).
 
 ### WorkingDirectory
 
-By default, Kestra launches each task in a new working directory, possibly on different workers if multiple ones exist.
+`WorkingDirectory` runs all nested tasks sequentially in the same directory on the same worker, so downstream tasks can read files written by earlier ones.
 
-The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. In order to share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
-
-This task can be particularly useful for compute-intensive file system operations.
+:::alert{type="warning"}
+Only runnable tasks are accepted as children of a `WorkingDirectory`. Nesting a flowable task such as `Parallel` or `Loop` inside a `WorkingDirectory` is rejected at save time.
+:::
 
 ```yaml
 id: working_dir_flow
@@ -517,110 +787,104 @@ tasks:
           - cat dir1/file1.txt
 ```
 
-:::alert{type="info"}
-[WorkingDirectory Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory)
-:::
+For more details, refer to the [WorkingDirectory Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory).
 
 ### Pause
 
-Kestra flows run until all tasks complete, but sometimes you need to:
-- Add a manual validation before continuing the execution
-- Wait for some duration before continuing the execution
+`Pause` halts the execution until it is manually resumed or a timeout expires. Tasks declared after the `Pause` in the flow run once the execution resumes.
 
-For this, you can use the Pause task.
-
-In the following example, the `validation` task pauses until it is manually resumed, while the `wait` task pauses for 5 minutes.
+A paused execution can be resumed manually from the **Gantt** tab on the execution page, or via the API at `POST /api/v1/executions/{executionId}/resume`.
 
 ```yaml
-id: pause
+id: pause_for_approval
 namespace: company.team
 
 tasks:
-  - id: validation
-    type: io.kestra.plugin.core.flow.Pause
-    tasks:
-      - id: ok
-        type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
-        commands:
-          - 'echo "started after manual validation"'
+  - id: before
+    type: io.kestra.plugin.core.log.Log
+    message: "Waiting for manual approval"
 
-  - id: wait
+  - id: approval
     type: io.kestra.plugin.core.flow.Pause
-    delay: PT5M
-    tasks:
-      - id: waited
-        type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
-        commands:
-          - 'echo "start after 5 minutes"'
+
+  - id: after
+    type: io.kestra.plugin.core.log.Log
+    message: "Approved — continuing execution"
 ```
 
-:::alert{type="info"}
-A Pause task without delay waits indefinitely until the task state is changed to **Running**.
-For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu, and select **Mark as RUNNING** on the form. This makes the task run until its end. For more details, refer to the [Pause Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Pause).
-:::
+`pauseDuration` resumes the execution automatically after a fixed interval (ISO 8601 duration format). The `behavior` property controls what happens when that duration expires without a manual resume: `RESUME` continues (the default), `WARN` continues with a warning, `CANCEL` cancels the execution, or `FAIL` fails the task.
+
+```yaml
+tasks:
+  - id: wait
+    type: io.kestra.plugin.core.flow.Pause
+    pauseDuration: PT5M
+    behavior: WARN
+```
+
+`onResume` accepts structured input from the person approving the pause. Downstream tasks access those values via `{{ outputs.<pause_task_id>.onResume.<input_id> }}`.
+
+```yaml
+tasks:
+  - id: wait_for_approval
+    type: io.kestra.plugin.core.flow.Pause
+    onResume:
+      - id: approved
+        description: Approve or reject
+        type: BOOL
+        defaults: true
+      - id: reason
+        description: Reason for decision
+        type: STRING
+
+  - id: log_decision
+    type: io.kestra.plugin.core.log.Log
+    message: "Decision: {{ outputs.wait_for_approval.onResume.approved }} — {{ outputs.wait_for_approval.onResume.reason }}"
+```
+
+For more details, refer to the [Pause Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.pause).
 
 ### DAG
 
-This task allows defining dependencies between tasks by creating a directed acyclic graph (DAG). Instead of an explicit DAG structure, this task defines dependencies for each task using the `dependsOn` property. This way, you can set dependencies more implicitly for each task, and Kestra figures out the overall flow structure.
+`DAG` lets you declare tasks and their `dependsOn` links; Kestra derives execution order and runs tasks in parallel as their dependencies are satisfied.
+
+Tasks with no `dependsOn` start immediately. The `concurrent` property caps how many tasks run at once (`0` = no limit, the default).
+
+Note: UI no-code forms are not available for DAG tasks; configure them in YAML or the code editor.
 
 ```yaml
-id: dag
+id: dag_flow
 namespace: company.team
+
 tasks:
   - id: dag
-    description: "my task"
     type: io.kestra.plugin.core.flow.Dag
     tasks:
       - task:
           id: task1
           type: io.kestra.plugin.core.log.Log
-          message: I'm the task 1
+          message: task 1
       - task:
           id: task2
           type: io.kestra.plugin.core.log.Log
-          message: I'm the task 2
+          message: task 2 (depends on task1)
         dependsOn:
           - task1
       - task:
           id: task3
           type: io.kestra.plugin.core.log.Log
-          message: I'm the task 3
+          message: task 3 (depends on task1)
         dependsOn:
           - task1
       - task:
           id: task4
           type: io.kestra.plugin.core.log.Log
-          message: I'm the task 4
+          message: task 4 (depends on task2 and task3)
         dependsOn:
           - task2
-      - task:
-          id: task5
-          type: io.kestra.plugin.core.log.Log
-          message: I'm the task 5
-        dependsOn:
-          - task4
           - task3
 ```
 
-For more details, refer to the [Dag Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag).
+In this example, `task2` and `task3` run in parallel after `task1` completes, and `task4` starts once both finish.
 
-### Template (deprecated)
-
-Templates are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
-
-The following example uses the Template task to use a template.
-
-```yaml
-id: template
-namespace: company.team
-
-tasks:
-  - id: template
-    type: io.kestra.plugin.core.flow.Template
-    namespace: company.team
-    templateId: template
-```
+For more details, refer to the [DAG Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.dag).

@@ -1,0 +1,22 @@
+name: "Create release branch for previous version"
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: "New Kestra version"
+        required: false
+        type: string
+
+jobs:
+  branch-previous-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create release branch for previous version
+        uses: kestra-io/actions/composite/after-release/branch-previous-version@main
+        with:
+          gh-app-id: ${{ secrets.GH_BOT_APP_ID }}
+          gh-app-private-key: ${{ secrets.GH_BOT_PRIVATE_KEY }}
+          new_version: ${{ inputs.new_version }}

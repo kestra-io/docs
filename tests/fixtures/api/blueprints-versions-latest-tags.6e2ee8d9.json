@@ -1,0 +1,1 @@
+{"path":"/v1/blueprints/versions/latest/tags","status":200,"contentType":"application/json","body":[{"id":"getting-started","name":"Getting Started"},{"id":"ai","name":"AI"},{"id":"business","name":"Business"},{"id":"cloud","name":"Cloud"},{"id":"core","name":"Core"},{"id":"data","name":"Data"},{"id":"infrastructure","name":"Infrastructure"},{"id":"system","name":"System"}]}

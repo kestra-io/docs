@@ -1,44 +1,32 @@
 ---
-title: Flow Concurrency Limits in Kestra – Control Parallel Runs
+title: "Flow Concurrency in Kestra: Limit Parallel Runs"
+h1: Control How Many Flow Executions Run in Parallel
 description: Manage workflow load with Concurrency Limits in Kestra. Control the number of parallel executions for a flow to protect resources and downstream systems.
 sidebarTitle: Concurrency Limits
 icon: /src/contents/docs/icons/flow.svg
 version: ">= 0.13.0"
+docId: concurrency-limits
 ---
 
-Control how many executions of a flow can run at the same time.
+Concurrency limits control how many executions can run at the same time, at the flow, namespace, or tenant level. When a limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.
 
-## Flow concurrency limits – control parallel runs
+Once an execution occupies a concurrency slot, it keeps that slot until it reaches a terminal state. This includes executions in the `PAUSED` state while they wait for manual approval. For example, with `concurrency.limit` set to 1, a flow paused by a `Pause` task blocks all subsequent executions until the paused execution is resumed, killed, or otherwise reaches a terminal state. Resuming the execution continues to use its existing slot, so it cannot exceed the configured limit.
 
-The flow-level `concurrency` property lets you limit how many executions of a flow can run concurrently by setting the `limit` key.
-
-Think of concurrency as a global execution limit for that specific flow. The concurrency limit and behavior is then applied to all executions of that flow, regardless of whether those executions have been started automatically via a trigger, webhook, an API call, or manually created from the UI.
+Restarted executions and replays of a failed execution go through the concurrency limit like new executions, so they can be queued, cancelled, or failed.
 
 :::alert{type="info"}
-Concurrency limits executions of a flow, not the number of tasks a worker runs. Task processing is still governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions fighting for the same lock) can increase database load and slow scheduling.
+Concurrency limits executions, not the number of tasks a worker runs. Task processing is governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions competing for the same lock) can increase database load and slow scheduling.
 :::
-
-Use concurrency when you need to protect downstream systems (rate limits, database load, external APIs) or enforce “only one execution at a time” semantics. Do **not** rely on concurrency to throttle Kestra worker usage; adjust worker threads, task runners, or queue sizing for that.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/lDGOqqMyQEo?si=01KzCswO3dHdhYdt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
+## Configuring concurrency
 
-For example, if you set the concurrency `limit` to 2, only two executions of that flow will be allowed to run at the same time. If you try to trigger a third execution, it will be queued until one of the two running executions is completed.
+### Flow level
 
-### When to use concurrency
-
-- Protect a shared target system (databases, SaaS APIs, warehouses) from overload.
-- Enforce sequential processing for stateful workloads (one ETL load at a time).
-- Keep a small, fixed number of parallel executions within an external rate limit.
-
-### When **not** to use concurrency
-
-- Throttling worker CPU/RAM usage — tune worker thread pools or task runners instead.
-- Replacing task-level limits — use task runner settings (e.g., container resources) and retry/backoff for per-task control.
-- Broad platform protection — use platform sizing and queue configuration rather than flow-level concurrency locks.
+Set `concurrency.limit` on a flow to cap its parallel executions:
 
 ```yaml
 id: concurrency_example
@@ -50,38 +38,55 @@ concurrency:
 tasks:
   - id: wait
     type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - sleep 10
-
 ```
 
-In the UI, the third execution is queued while the first two finish successfully.
+With `limit: 2`, a third execution waits until one of the two running executions completes.
 
-![concurrency](./concurrency.png)
+### Namespace level
+
+Namespace and tenant limits are available in Enterprise Edition.
+
+Set a concurrency limit on a namespace to cap the total simultaneous executions across all flows within that namespace and its children.
+
+Navigate to **Namespaces**, open the target namespace, click **Edit**, and scroll to the **Concurrency** section. Set the **Limit** and choose a **Behavior** (`Queue`, `Cancel`, or `Fail`). The same configuration is also available via the API.
+
+A namespace concurrency limit applies to every flow whose namespace matches or is a child of the configured namespace. For example, a limit on `company` applies to flows in `company`, `company.team`, and `company.team.project`.
+
+### Tenant level
+
+Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
+
+In the [Instance Owner console](../../07.enterprise/05.instance/00.instance-owner/index.md), open the tenant's **Settings**, then set the **Limit** and **Behavior** in the **Concurrency** section.
+
+:::alert{type="warning"}
+Namespace and tenant limits with `behavior: QUEUE` (the default) can deadlock when flows in that scope start [subflows](../10.subflows/index.md) that run in the same scope, including child namespaces. With `wait: true` (the default), a parent execution keeps its slot while it waits, and the subflow execution needs a slot from the same limit. Once every slot is held by an execution waiting on a queued subflow, no execution in the namespace or tenant can start, including flows that don't use subflows. Kestra reports no error or timeout, and the deadlock does not resolve on its own. To prevent or resolve this, see [Parent executions stuck waiting on queued subflows](#parent-executions-stuck-waiting-on-queued-subflows).
+:::
 
 ## `behavior` property
 
-You can customize the behavior when the concurrency limit is reached by choosing to queue, cancel, or fail the new execution. To do that, set the `behavior` Enum-type property to one of the following values:
+By default, executions that exceed the limit are queued. Set `behavior` to control what happens instead:
 
-- `QUEUE`
-- `CANCEL`
-- `FAIL`
+- `QUEUE`: hold the execution until a slot opens (default).
+- `CANCEL`: immediately mark the execution as `CANCELLED`.
+- `FAIL`: immediately mark the execution as `FAILED`.
 
-For example, with `concurrency.limit` set to 2 and `CANCEL` or `FAIL` behavior, the third execution is immediately marked as `CANCELLED` or `FAILED` without running any tasks.
+With `FAIL`, every execution the limit rejects ends `FAILED`, so alerts on failed executions fire once per rejected execution. A trigger with [`stopAfter: [FAILED]`](../07.triggers/index.mdx#stopafter) is disabled by the first execution the limit rejects. Use `CANCEL` when you expect rejected executions and don't want them to alert or disable triggers.
 
-Below is a full flow example that uses the `concurrency` property to limit the number of concurrent executions to 2. The `bash` task sleeps for 10 seconds, so you can trigger multiple executions of that flow and see how the `concurrency` property behaves.
+Time spent in `QUEUED` counts toward an [SLA](../18.sla/index.md) `MAX_DURATION`, so a queued execution can breach its SLA before it starts running.
 
-:::alert{type="warning"}
-Each execution that waits for a concurrency slot holds a database lock. Large backlogs (many queued executions) can increase lock contention and slow down scheduling. If you expect spikes, combine conservative limits with backoff at the source (e.g., trigger rates) and keep an eye on the Concurrency tab in the UI.
-:::
+If you expect execution spikes, combine a conservative limit with backoff at the source (e.g., slower trigger rates) to avoid large queues that increase database lock contention.
 
 ```yaml
 id: concurrency_limited_flow
 namespace: company.team
 
 concurrency:
-  behavior: FAIL # QUEUE, CANCEL or FAIL
-  limit: 2 # can be any integer >= 1
+  behavior: FAIL # QUEUE, CANCEL, or FAIL
+  limit: 2
 
 tasks:
   - id: wait
@@ -92,50 +97,43 @@ tasks:
       - sleep 10
 ```
 
-As you can see in the UI, the third execution failed as the first two executions were still running.
-
-![concurrency_fail](./concurrency_fail.png)
-
 :::alert{type="warning"}
-When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. This means the `behavior` property will not come into effect and instead no new executions will be started.
+When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. The `behavior` property does not apply in this case; no new executions start while the trigger is locked.
 
 Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) section.
 :::
 
-## Tracking concurrency slots from the UI
+## Evaluation order
 
-The `Concurrency` tab on the `Flow` page lets you track and troubleshoot concurrency issues. It shows a progress bar with the number of active slots compared to the total slots available. Below that progress bar, you can see a table showing currently running and queued Executions, providing a clear overview of the flow's concurrency status.
+Kestra evaluates concurrency limits from the most specific scope to the most general:
 
-![concurrency_page_1](./concurrency_page_1.png)
+1. **Flow-level** concurrency is checked first.
+2. **Namespace-level** concurrency is checked next, starting from the flow's own namespace and moving up through each parent namespace to the root.
+3. **Tenant-level** concurrency is checked last.
 
-To see the concurrency behavior in action, you can configure a flow with a concurrency limit as follows:
+The first limit reached defines the behavior for that execution. When a more specific limit is reached, no slot is consumed at higher levels.
 
-```yaml
-id: concurrent
-namespace: company.team
+For example, if a flow defines `limit: 5` with `QUEUE` and its parent namespace defines `limit: 10` with `FAIL`, a sixth execution of that flow is queued (flow-level limit is reached first). If the flow has no limit of its own but the parent namespace is at its limit of 10, the execution fails.
 
-concurrency:
-  behavior: QUEUE
-  limit: 5
+## Monitoring concurrency
 
-tasks:
-  - id: long_running_task
-    type: io.kestra.plugin.scripts.shell.Commands
-    commands:
-      - sleep 90
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-```
+### Per-flow Concurrency tab
 
-Next, trigger multiple Executions of that flow and watch the `Concurrency` tab showing the active slots and queued Executions.
+The **Concurrency** tab on a Flow page shows current slot usage, the configured behavior, and a list of running and queued executions for that flow.
 
-![concurrency_page_2](./concurrency_page_2.png)
+![Flow Concurrency tab showing 2 of 2 active slots filled with one execution queued](./concurrency-queue-tab.png)
 
-## Concurrent executions for Triggers
+### Concurrency Limits page
 
-Any [Trigger](../../05.workflow-components/07.triggers/index.mdx) type supports concurrent executions, allowing multiple instances of the same workflow to run simultaneously. This enables more flexible and scalable workflow patterns.
+The **Concurrency Limits** page lists every flow, namespace, and tenant concurrency limit configured, along with its live running count. It provides a tenant-wide view of concurrency usage across all scopes.
 
-For example, consider a workflow that takes 60 seconds to complete but is triggered every second. By default, with `allowConcurrent: false`, only one execution can run at a time. If a trigger fires while a previous execution is still running, the new execution will be skipped:
+In the open-source edition, open it from **Tenant > Concurrency Limits** in the sidebar. In Enterprise Edition, only the Instance Owner can open it: in the [Instance Owner console](../../07.enterprise/05.instance/00.instance-owner/index.md), select the tenant and open **Concurrency Limits**.
+
+![Concurrency Limits page listing two flows with their namespaces and running counts](./concurrency-limits-page.png)
+
+## Concurrent trigger executions
+
+Any [Trigger](../07.triggers/index.mdx) type supports concurrent executions through the `allowConcurrent` property. By default, `allowConcurrent: false`: while an execution from the trigger is still running, the trigger stays locked and creates no new execution until that execution ends.
 
 ```yaml
 id: sleep_concurrent
@@ -152,22 +150,49 @@ triggers:
     allowConcurrent: false
 ```
 
-In this example, even though the [Schedule trigger](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) fires every second, only one execution will run at a time. Setting `allowConcurrent: true` would allow multiple executions to run simultaneously.
+Set `allowConcurrent: true` to allow multiple executions to run simultaneously from the same trigger.
 
-## How to troubleshoot Concurrency issues
+## Updating a concurrency limit
 
-Imagine that you encounter a situation where the concurrency limit is reached, and some executions are stuck in the `QUEUED` state. Here are some steps to troubleshoot and resolve the issue.
+Update a concurrency limit when executions are backing up or hitting the limit unexpectedly. Avoid changing limits routinely; a stable limit is a deliberate resource protection decision.
+
+Edit the `concurrency.limit` value directly in the flow editor and save. For a namespace or tenant limit, edit the **Concurrency** section of the namespace or tenant settings.
+
+The new limit applies to new executions without a restart. Executions that are already `QUEUED` stay queued until a running execution of the flow ends, even when the new limit leaves room for them.
+
+If you remove `concurrency` from a flow and add it back later, the running count restarts at 0. Executions that were already running are not counted, so more executions than the limit can run until they finish.
+
+## Troubleshooting concurrency issues
 
 ### Check the Concurrency tab
 
-The `Concurrency` tab on the `Flow` UI page described above allows you to see which executions are `RUNNING` and which are `QUEUED` (i.e., waiting or stuck). This page can help you troubleshoot which Executions are taking concurrency slots and which are waiting to be processed.
+The **Concurrency** tab on the Flow page shows which executions are running, queued, or failed, and which hold slots versus which are waiting.
 
-In the future, this page will also let you run stuck executions while ignoring concurrency limits.
+![Flow Concurrency tab for a FAIL-behavior flow showing 0 of 2 active slots with two failed executions](./concurrency-fail-tab.png)
 
-### Edit the Concurrency property
+### Reset a stuck running counter
 
-You can edit the `concurrency` property within the flow (or remove that property entirely to get rid of any limits) and `Save` the flow code. The modified concurrency limit and behavior will be immediately taken into account for all Executions in progress because the Executor checks this for the latest flow revision rather than for the revision of the Execution.
+If executions were deleted while running, their concurrency slots can remain occupied indefinitely. On the **Concurrency Limits** page, click the edit icon next to the running count of the affected flow, set the new count, and save. The edit icon changes the running count, not the limit. You can also set the count with the API: `PUT /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}`.
+
+Resetting the count doesn't start queued executions. They stay `QUEUED` until a running execution of the flow ends, while new executions can take the freed slots first.
+
+![Concurrency Limits counter reset dialog with a warning that changing the counter may allow executions to exceed the limit](./concurrency-limits-reset.png)
 
 :::alert{type="warning"}
-Do **not** delete executions, as this makes the issue worse — deleted executions still occupy concurrency slots indefinitely. You can select stuck Executions and hit the `Kill` button to cancel them and free up the concurrency slots, but do not delete them.
+Do **not** delete executions to free stuck slots; deleted executions still hold concurrency slots. Instead, select stuck executions and click **Kill** to cancel them and release their slots. Use the counter reset only when slots remain stuck after killing all relevant executions.
 :::
+
+### Parent executions stuck waiting on queued subflows
+
+If parent executions stay `RUNNING` on a Subflow task while their subflow executions stay `QUEUED`, a namespace or tenant limit is deadlocked. Each parent holds a slot that its subflow needs, so no execution in that scope starts until a slot frees up. Executions of unrelated flows in the same scope also stay `QUEUED`, and the deadlock does not clear on its own.
+
+On the **Concurrency Limits** page, the running count for the affected namespace or tenant stays at its configured limit, while the number of `QUEUED` executions in that scope keeps growing on the **Executions** page.
+
+To resolve the deadlock, open a queued subflow execution and click **Force run**. A force-run execution starts without taking a concurrency slot. When the subflow completes, its parent completes and releases its slot, and the remaining queued executions start. If the queue does not clear, open a waiting parent execution and click **Kill current and subflows** to release its slot.
+
+To prevent the deadlock, apply one of these changes:
+
+- Set the limit higher than the number of parent executions that can wait on subflows at the same time.
+- Set `behavior` to `FAIL` or `CANCEL`. A subflow execution that exceeds the limit then ends immediately instead of queuing, so the problem surfaces as a failed or cancelled execution.
+- Set `wait: false` on the Subflow task when the parent does not need the subflow's outputs or final state.
+- For a namespace limit, move the subflows to a namespace that the limit does not cover, such as a sibling namespace. Child namespaces count against the parent namespace's limit, so moving subflows into a child namespace does not help.

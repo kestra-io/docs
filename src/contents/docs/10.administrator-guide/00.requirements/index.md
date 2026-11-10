@@ -1,13 +1,12 @@
 ---
-title: Kestra Requirements – Software and Hardware Checklist
+title: Software and Hardware Requirements to Run Kestra
+h1: "Prerequisites: software and hardware requirements before deploying Kestra"
 description: Check Kestra system requirements. Verify software prerequisites (Java, DB) and hardware recommendations for running Kestra effectively.
 sidebarTitle: Software and Hardware Requirements
 icon: /src/contents/docs/icons/admin.svg
 ---
 
 This page outlines the software and hardware requirements for running Kestra.
-
-## Confirm Kestra software and hardware requirements
 
 ## Software requirements
 
@@ -35,18 +34,44 @@ Kestra Enterprise Edition (EE) provides two options:
 | Enterprise        | **Elasticsearch**        | >=7                       |                |
 | Enterprise        | **Opensearch**           | >=2                       |                |
 
-:::alert{type="warning"}
-MySQL deployments must have the **time zone tables loaded**. If the time zone data is missing, the scheduler can misfire or skip runs. Follow the MySQL guide to install time zone information to avoid deployment issues: [Time Zone Support → Load the Time Zone Tables](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation).
-:::
+#### MySQL settings
+
+MySQL deployments need two settings that MySQL does not apply by default.
+
+**Transaction isolation level.** Kestra requires the `READ COMMITTED` transaction isolation level. MySQL defaults to `REPEATABLE READ`, which can cause deadlocks in Kestra's JDBC queue. When a connection uses a different level, Kestra raises `IllegalStateException: Isolation level must be READ COMMITTED`.
+
+Set the level on the MySQL server in your option file (`my.cnf`), then restart MySQL:
+
+```ini
+[mysqld]
+transaction_isolation=READ-COMMITTED
+```
+
+On a managed service such as Amazon RDS or Cloud SQL, set the `transaction_isolation` parameter in the parameter group or database flags instead.
+
+If you cannot change the server configuration, set the level for Kestra's connections in the datasource configuration:
+
+```yaml
+datasources:
+  mysql:
+    url: jdbc:mysql://localhost:3306/kestra
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: kestra
+    password: k3str4
+    dialect: MYSQL
+    transaction-isolation: TRANSACTION_READ_COMMITTED
+```
+
+**Time zone tables.** Load the MySQL time zone tables. If the time zone data is missing, the scheduler can misfire or skip runs. Follow the MySQL guide to [load the time zone tables](https://dev.mysql.com/doc/refman/8.0/en/time-zone-support.html#time-zone-installation).
 
 ### Internal Storage
 
 | Kestra Edition    | Storage Provider   | Required version          | Note                             |
 |-------------------|--------------------|---------------------------|----------------------------------|
-| OSS/Enterprise    | MinIO              | >=8                       |                                  |
 | OSS/Enterprise    | Google Cloud GCS   | N/A                       |                                  |
 | OSS/Enterprise    | AWS S3             | N/A                       |                                  |
 | OSS/Enterprise    | Azure Blob Storage | N/A                       |                                  |
+| OSS/Enterprise    | S3-compatible      | N/A                       | Use the `minio` storage type     |
 
 
 ## Hardware requirements

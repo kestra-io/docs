@@ -62,12 +62,12 @@
         },
         {
             title: "Total Governance",
-            description: "Give your team secured, isolated environments and control over workflows. With tailored automation and precise access management, you can ensure compliance and efficiency at scale.",
+            description: "Give your team secured, isolated environments and control over workflows. Policies enforce your standards on every flow, Promote moves them from dev to prod with a diff, and Cases keep incidents next to the executions that caused them.",
             img: governanceIcon
         },
         {
             title: "Scale with no limits",
-            description: "Kestra Enterprise scales with no downtime. Its reliable architecture and task runners, support both internal and external execution, minimize risk and provide performance insights—allowing you to optimize without worrying about infrastructure limitations.",
+            description: "Kestra Enterprise scales with no downtime. Worker groups route tasks by tags with reserved capacity, and task runners execute on containers or dedicated VMs, so you optimize without worrying about infrastructure limitations.",
             img: scaleIcon
         }
     ]

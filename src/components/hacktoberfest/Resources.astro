@@ -1,0 +1,121 @@
+---
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
+import type { NoGapGridItem } from "~/components/common/NoGapGrid.vue"
+import SectionTitle from "./SectionTitle.astro"
+import License from "./icons/License.vue"
+import LineStartCircle from "./icons/LineStartCircle.vue"
+import CategorySearch from "./icons/CategorySearch.vue"
+import Chat from "./icons/Chat.vue"
+import Communication from "./icons/Communication.vue"
+import Docs from "./icons/Docs.vue"
+
+interface Props {
+    goodFirstIssuesUrl: string
+    discordUrl: string
+}
+
+const { goodFirstIssuesUrl, discordUrl } = Astro.props
+
+const RESOURCES: NoGapGridItem[] = [
+    {
+        icon: License,
+        title: "Kestra Academy",
+        description:
+            "Free certification. Start with fundamentals, then take the data, AI or infrastructure automation track.",
+        link: {
+            text: "Start a course",
+            href: "https://academy.kestra.io",
+            external: true,
+        },
+    },
+    {
+        icon: LineStartCircle,
+        title: "Good-first-issue backlog",
+        description:
+            "Curated, scoped and labelled across the core and plugin repositories.",
+        link: { text: "View issues", href: goodFirstIssuesUrl, external: true },
+    },
+    {
+        icon: CategorySearch,
+        title: "Blueprints gallery",
+        description:
+            "Browse what already exists so your submission adds something new.",
+        link: { text: "Browse blueprints", href: "/blueprints" },
+    },
+    {
+        icon: Chat,
+        title: "Community Slack",
+        description:
+            "Around 6,000 members, with Kestra engineers on hand through October to unblock you.",
+        link: {
+            text: "Join the workspace",
+            href: "/slack",
+            external: true,
+        },
+    },
+    {
+        icon: Communication,
+        title: "John's Discord",
+        description:
+            "The Coding Challenges community channel for this hackathon — find teammates and compare notes.",
+        link: { text: "Join the channel", href: discordUrl, external: true },
+    },
+    {
+        icon: Docs,
+        title: "Kestra docs",
+        description:
+            "Flows, tasks, plugins, triggers, and how to structure a blueprint that passes the bar.",
+        link: { text: "Open docs", href: "/docs" },
+    },
+]
+---
+
+<section class="hf-resources" aria-labelledby="hf-resources-title">
+    <div class="container">
+        <SectionTitle
+            id="hf-resources-title"
+            align="center"
+            title="Resources"
+            subtitle="Everything you need before your first pull request."
+        />
+        <NoGapGrid items={RESOURCES} surface="primary" headingLevel="h3" />
+    </div>
+</section>
+
+<style lang="scss">
+    .hf-resources {
+        padding: 4rem 1rem 7.5rem;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 3.5rem 1rem;
+        }
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+
+        @include media-breakpoint-down(md) {
+            gap: 2.5rem;
+        }
+    }
+
+    .hf-resources :global(.features-grid .feature-card) {
+        gap: 12px;
+
+        :global(.feature-icon) {
+            width: 2rem;
+            height: 2rem;
+            font-size: 2rem;
+        }
+
+        :global(.feature-title) {
+            font-size: $font-size-lg;
+            font-weight: 600;
+            line-height: 28px;
+        }
+    }
+</style>

@@ -1,5 +1,6 @@
 ---
-title: Namespace Files Metadata Migration – Kestra 1.2.0
+title: Namespace Files Metadata Migration in Kestra 1.2.0
+h1: Migrate Namespace Files Metadata for Better Search in 1.2.0
 sidebarTitle: Namespace Files Migration
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 1.2.0
@@ -15,6 +16,7 @@ If you are upgrading to 1.2.0 from an earlier version, you must run the Namespac
 
 - In flows/tasks that use Namespace Files (e.g., `namespaceFiles` or `read()`).
 - In the Kestra UI (files missing, not browsable, or not selectable where expected).
+- In metadata backups: namespace files in namespaces that contain no flows will be silently excluded from the backup archive and absent after restore.
 
 ## Required command
 

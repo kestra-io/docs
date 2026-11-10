@@ -1,13 +1,12 @@
 ---
 title: Deploy Kestra on Azure VM – Azure Database Backend
+h1: Install Kestra on Azure VM with PostgreSQL and Blob Storage
 sidebarTitle: Azure VM with Azure Database
 icon: /src/contents/docs/icons/azure-compute.svg
 description: Deploy Kestra on an Azure Virtual Machine using Azure Database for PostgreSQL and Azure Blob Storage.
 ---
 
 Install Kestra on an Azure VM with Azure Database for PostgreSQL as the database backend and Azure Blob Storage as the internal storage backend.
-
-This guide provides instructions for deploying Kestra on an Azure VM with Azure Database for PostgreSQL as the database backend and Azure Blob Storage as the internal storage backend.
 
 :::alert{type="info"}
 Prefer an Azure-native option? You can deploy Kestra directly from the [Azure Marketplace listing](https://marketplace.microsoft.com/en-us/product/AzureApplication/kestra_technologies.kestra-open-source-official).
@@ -78,7 +77,7 @@ kestra:
   server:
     basic-auth:
       username: admin@kestra.io # it must be a valid email address
-      password: kestra
+      password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
 ```
 
 Next, use the following command to start the Kestra server:
@@ -194,8 +193,6 @@ For the changes to take effect, restart the Docker services with `sudo docker co
 For more information on Azure Blob storage configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md).
 
 ## Next steps
-
-This guide walked you through installing Kestra on an Azure Virtual Machine with Azure Database for PostgreSQL as the database backend and Azure Blob Storage as the storage backend.
 
 This setup provides a simple starting point for running Kestra in production on a single machine. For a deployment to a distributed Kubernetes cluster, check the [Azure AKS deployment guide](../06.kubernetes-azure-aks/index.md).
 

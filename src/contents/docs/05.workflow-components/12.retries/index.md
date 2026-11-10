@@ -1,30 +1,27 @@
 ---
 title: Task Retries in Kestra – Handle Transient Failures
+h1: Configure Retry Strategies for Transient Task Failures
 description: Configure Retries in Kestra to handle transient failures. Learn about constant, exponential, and random retry strategies for tasks and flows.
 sidebarTitle: Retries
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Retries handle transient failures in your workflows.
-
-## Task retries – handle transient failures
-
-They are defined at the task level and can be configured to retry a task a certain number of times or with a delay between attempts.
+Retries automatically rerun failed tasks. Each retry creates a new task run attempt based on the retry configuration defined in the flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/_MS14PNxtjg?si=-dqo21ljXdAw-C17" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Retries let you automatically rerun failed tasks. Each retry creates a new task run attempt, based on the retry configuration defined in the flow.
+## Task-level retries
 
 ### Example
 
-This task retries up to 5 times with a 15-minute interval between attempts:
+This task runs up to 5 times total (1 initial attempt + up to 4 retries) with a 15-minute interval between attempts:
 
 ```yaml
 - id: retry_sample
   type: io.kestra.plugin.core.log.Log
-  message: my output for task {{task.id}}
+  message: my output for task {{ task.id }}
   timeout: PT10M
   retry:
     type: constant
@@ -32,7 +29,7 @@ This task retries up to 5 times with a 15-minute interval between attempts:
     interval: PT15M
 ```
 
-In this example, the flow retries 4 times every 0.25 seconds. It succeeds on the 5th attempt, using `{{ taskrun.attemptsCount }}` to track retries:
+Constant retry, 4 attempts, 0.25-second interval — uses `{{ taskrun.attemptsCount }}` to conditionally exit:
 
 ```yaml
 id: retry
@@ -45,7 +42,7 @@ tasks:
   taskRunner:
     type: io.kestra.plugin.core.runner.Process
   commands:
-  - 'if [ "{{taskrun.attemptsCount}}" -eq 4 ]; then exit 0; else exit 1; fi'
+  - 'if [ "{{ taskrun.attemptsCount }}" -eq 4 ]; then exit 0; else exit 1; fi'
   retry:
     type: constant
     interval: PT0.25S
@@ -55,8 +52,8 @@ tasks:
 
 errors:
   - id: never_happen
-    type: io.kestra.plugin.core.debug.Return
-    format: Never happened {{task.id}}
+    type: io.kestra.plugin.core.log.Log
+    message: "Never happened {{ task.id }}"
 ```
 
 ### Timeout vs. Max Retry Duration
@@ -68,16 +65,19 @@ errors:
 - Each attempt can last up to 10 minutes.
 - The overall retries stop after 30 minutes in total.
 
-⚠️ Ensure `retry.interval` is smaller than `maxDuration`, or retries may not run.
+:::alert{type="warning"}
+Ensure `retry.interval` is smaller than `maxDuration`, or retries may never run.
+:::
 
 ### Retry options
 
 | Name             | Type       | Description |
 |------------------|------------|-------------|
 | `type`           | string     | Retry strategy: `constant`, `exponential`, or `random`. |
-| `maxAttempts`    | integer    | Number of retry attempts before stopping. |
+| `maxAttempts`    | integer    | Maximum number of attempts, including the initial run. `maxAttempts: 1` means no retry; `maxAttempts: 2` means one retry after the initial attempt. |
 | `maxDuration`    | Duration   | Maximum total time for the task, across all attempts. |
 | `warningOnRetry` | Boolean    | Marks execution as `WARNING` if retries occurred (default: false). |
+| `behavior`       | string     | What to retry when set on a flowable task. `RETRY_FAILED_TASK` (default) retries only the failed child task. `RETRY_FLOWABLE` reruns the entire flowable block from the start. See [Retry on flowable tasks](#retry-on-flowable-tasks). |
 
 ### Duration format
 
@@ -91,7 +91,113 @@ Durations use [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) forma
 | PT3.5H   | 3 hours, 30 minutes |
 | P6DT4H   | 6 days, 4 hours |
 
----
+## Retry on flowable tasks
+
+Flowable tasks such as `Sequential` and `Parallel` accept a `retry` block with a `behavior` property that controls what is retried when a child task fails.
+
+### Default behavior: `RETRY_FAILED_TASK`
+
+By default (`behavior: RETRY_FAILED_TASK`), a retry on a flowable task does not rerun the group. It sets the default retry policy that child tasks inherit when they have no `retry` of their own. Only the failed child is retried; earlier tasks do not run again.
+
+```yaml
+id: token_and_api
+namespace: company.team
+
+tasks:
+  - id: group
+    type: io.kestra.plugin.core.flow.Sequential
+    retry:
+      type: constant
+      maxAttempts: 2
+      interval: PT1S
+    tasks:
+      - id: get_token
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ now() }}"
+      - id: call_api
+        type: io.kestra.plugin.core.execution.Fail
+        errorMessage: "Token expired"
+```
+
+If `call_api` fails, Kestra retries only `call_api`. `get_token` does not run again, and each retry of `call_api` uses the same token from the first run. A token that expires between the two tasks is never refreshed this way.
+
+### Rerun the whole block: `RETRY_FLOWABLE`
+
+Set `behavior: RETRY_FLOWABLE` to rerun the entire flowable block from the start when any child task fails. All child task runs from the previous attempt are discarded and the group begins again.
+
+```yaml
+id: token_and_api
+namespace: company.team
+
+tasks:
+  - id: group
+    type: io.kestra.plugin.core.flow.Sequential
+    retry:
+      type: constant
+      maxAttempts: 3
+      interval: PT1S
+      behavior: RETRY_FLOWABLE
+    tasks:
+      - id: get_token
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ now() }}"
+      - id: call_api
+        type: io.kestra.plugin.core.execution.Fail
+        errorMessage: "Calling API with {{ outputs.get_token.values.result }}"
+```
+
+When `call_api` fails, `get_token` runs again on the next attempt, producing a fresh token.
+
+**Behavior by flowable type:**
+
+- **`Sequential`, `Parallel`, `WorkingDirectory`, `AllowFailure`, `If`, `Switch`, `Dag`** — all child tasks rerun from the start on each attempt. `If` and `Switch` re-evaluate their condition or value, so a retry can take a different branch.
+- **`Loop`** — only the failed iteration restarts from its first child task. Other iterations are not touched.
+- **`AllowFailure`** and tasks with `allowFailure: true` — failure is allowed only after the last attempt has been exhausted.
+
+`RETRY_FLOWABLE` is rejected on runnable (non-flowable) tasks and at flow level.
+
+### Retry a group as a new execution
+
+To retry a set of tasks as a completely new child execution, use a `Subflow` with `retry`. Each retry creates a new execution, so all tasks in the subflow run again from the start with a separate execution ID.
+
+```yaml
+id: parent
+namespace: company.team
+
+tasks:
+  - id: group
+    type: io.kestra.plugin.core.flow.Subflow
+    namespace: company.team
+    flowId: get_token_and_call_api
+    retry:
+      type: constant
+      maxAttempts: 2
+      interval: PT1S
+```
+
+### Token refresh pattern
+
+For the specific case of a short-lived token that may expire between tasks, [Credentials](../../07.enterprise/03.auth/credentials/index.md) (Enterprise Edition and Cloud) is the cleaner solution. Kestra fetches and refreshes the token automatically, so every retry gets a valid one without needing a `get_token` task at all.
+
+```yaml
+id: api_call
+namespace: company.team
+
+tasks:
+  - id: call_api
+    type: io.kestra.plugin.core.http.Request
+    uri: https://api.example.com/v1/data
+    options:
+      auth:
+        type: BEARER
+        token: "{{ credential('my_oauth') }}"
+    retry:
+      type: constant
+      maxAttempts: 3
+      interval: PT1S
+```
 
 ## Retry types
 
@@ -122,8 +228,6 @@ Randomized delays within bounds.
 | `minInterval` | Duration | Minimum delay. |
 | `maxInterval` | Duration | Maximum delay. |
 
----
-
 ## Configuring retries globally
 
 You can configure retries globally for all tasks in Kestra:
@@ -140,13 +244,9 @@ kestra:
             interval: PT30S
 ```
 
-This applies a constant retry policy with up to 3 attempts every 30 seconds.
-
----
-
 ## Flow-level retries
 
-You can retry at the flow level, restarting either the entire execution or just failed tasks. Options:
+Flow-level retries restart either the entire execution or only failed tasks, controlled by the `behavior` property:
 
 1. `CREATE_NEW_EXECUTION`: Start a new execution.
 2. `RETRY_FAILED_TASK`: Retry only the failed task.
@@ -177,37 +277,18 @@ tasks:
 Flow-level retries also restart Subflows as new executions.
 :::
 
----
-
 ## Retry vs. Restart vs. Replay
 
-### Automatic vs. manual
+**Retry** is the only automatic mechanism. **Restart** and **Replay** are both manual, initiated from the UI.
 
-- **Retry**: Automatic rerun of failed tasks within the same execution.
-- **Restart**: Manual rerun of failed tasks within the same execution.
-- **Replay**: Manual rerun from any point, creating a new execution.
+| Concept | Scope | Trigger | New execution? |
+|---|---|---|---|
+| Retry | Task level | Automatic | No |
+| Restart | Flow level | Manual | No |
+| Replay | Flow or task level | Manual | Yes |
 
-![replay_restart.png](./replay_restart.png)
+**Restart** reruns only the failed tasks within the same execution, keeping the same execution ID. Restart is available from the Execution overview page.
 
-### Restart vs. Replay
+**Replay** starts a new execution from any task (successful or failed) and assigns it a new execution ID. Previous task outputs are reused from cache when available. Replay is available from the **Actions** menu on the Execution overview page and from task nodes in the **Topology**, **Gantt**, or **Logs** view. See the [Replay documentation](../../15.how-to-guides/replay/index.md).
 
-- **Restart**: Retries only failed tasks in the same execution.
-- **Replay**: Starts a new execution from a chosen task, with a new execution ID. Outputs of previous tasks are reused from cache if needed. Check out the [Replay documentation](../../06.concepts/10.replay/index.md).
-
-![replay.png](./replay.png)
-
-Replays can start from successful or failed tasks but always create a new execution. Restarts keep the same execution ID.
-
-After a Replay, you can still track which Execution triggered this new run thanks to the `Original Execution` field:
-
-![original_execution.png](./original_execution.png)
-
-### Summary
-
-| Concept | Scope                  | Trigger  | New execution? |
-|---------|------------------------|----------|----------------|
-| Retry   | Task level             | Automatic| No |
-| Restart | Flow level             | Manual   | No |
-| Replay  | Flow or task level     | Manual   | Yes |
-
----
+After a replay, the new execution's Overview tab shows an **Original Execution** field linking back to the source run.

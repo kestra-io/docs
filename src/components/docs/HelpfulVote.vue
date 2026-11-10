@@ -14,17 +14,13 @@
             </div>
         </div>
 
-        <div v-if="showThankYou" class="thank-you text-center mt-3">
-            <p>Thank you for your feedback! 👍</p>
-        </div>
-
-        <div
+        <dialog
             ref="modalRef"
-            class="modal fade"
+            class="modal"
             id="feedbackModal"
-            tabindex="-1"
             aria-labelledby="feedbackModalLabel"
-            aria-hidden="true"
+            @close="onClosed"
+            @click.self="closeModal"
         >
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -74,12 +70,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </dialog>
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted } from "vue"
+    import { ref } from "vue"
     import posthog from "posthog-js"
     import Close from "vue-material-design-icons/Close.vue"
     import ThumbUpOutline from "vue-material-design-icons/ThumbUpOutline.vue"
@@ -89,21 +85,13 @@
     const modalRef = ref(null)
     const feedbackText = ref("")
     const isSubmitted = ref(false)
-    const showThankYou = ref(false)
     const currentRating = ref(null)
 
-    let bootstrapModal = null
-
-    onMounted(() => {
-        if (modalRef.value && window.$bootstrap?.Modal) {
-            bootstrapModal = new window.$bootstrap.Modal(modalRef.value)
-            modalRef.value.addEventListener("hidden.bs.modal", () => {
-                comment.value = ""
-                currentRating.value = null
-                isSubmitted.value = false
-            })
-        }
-    })
+    const onClosed = () => {
+        comment.value = ""
+        currentRating.value = null
+        isSubmitted.value = false
+    }
 
     const openModal = (isHelpful) => {
         currentRating.value = isHelpful
@@ -112,17 +100,12 @@
             : "Sorry to hear that. How can we improve?"
         comment.value = ""
         isSubmitted.value = false
-        showThankYou.value = false
         posthog.capture("helpful", { positive: currentRating.value })
-        bootstrapModal?.show()
+        modalRef.value?.showModal()
     }
 
     const closeModal = () => {
-        bootstrapModal?.hide()
-        showThankYou.value = true
-        setTimeout(() => {
-            showThankYou.value = false
-        }, 2000)
+        modalRef.value?.close()
     }
 
     const submitFeedback = () => {
@@ -169,8 +152,8 @@
     }
 
     .modal-content {
-        background-color: var(--ks-background-box);
-        border: 1px solid var(--ks-dialog-border);
+        background-color: var(--ks-background-body);
+        border: 1px solid var(--ks-border-primary);
         color: var(--ks-content-primary);
         .modal-header {
             padding: 10px 16px;
@@ -204,11 +187,6 @@
             color: #21ce9c;
             font-weight: 600;
         }
-    }
-
-    .thank-you p {
-        color: #21ce9c;
-        font-weight: 600;
     }
 
     .form-control {

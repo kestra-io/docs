@@ -1,0 +1,37 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnersLists from "~/components/partners/PartnersLists.vue"
+import PartnerCta from "~/components/partners/PartnerCta.astro"
+import { listPartners } from "~/components/partners/partners"
+
+const title = "Find a Kestra Partner: Services and Technology Partners"
+const description =
+    "Search every Kestra partner, from solution, managed services and implementation partners to technology platforms, by type, expertise and region."
+
+const partners = listPartners()
+
+const FILTERS: {
+    key: "type" | "region" | "expertise"
+    label: string
+}[] = [
+    { key: "type", label: "Partner type" },
+    { key: "expertise", label: "Expertise" },
+    { key: "region", label: "Region" },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Find a partner">
+    <PartnersLists
+        client:load
+        partners={partners}
+        filters={FILTERS}
+        title="Find a partner"
+        subtitle="Services partners help you implement Kestra. Technology partners make sure it works with the rest of your stack."
+        searchPlaceholder="Search by name, country or service"
+        defaultSelected={{ type: ["Services"] }}
+        helpText="Need help finding a partner?"
+        helpCtaText="Contact us"
+        helpHref="/partners/contact"
+    />
+    <PartnerCta />
+</Layout>

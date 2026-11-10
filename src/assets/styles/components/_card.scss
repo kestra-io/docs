@@ -1,0 +1,71 @@
+// Replaces bootstrap/scss/card, trimmed to the parts the site renders: no
+// card-img*, card-link, card-subtitle, header-tabs/pills or the horizontal
+// card-group (app.scss's `.card-group` is its own flex row).
+//
+// As with the dropdown, the `.card-*` children read variables declared on
+// `.card` with no fallback, so a `.card-title` or `.card-body` used outside a
+// card keeps its initial values, exactly as before.
+//
+// The colours below are bootstrap's light defaults carried over verbatim: no
+// `.card` rule in this repo ever re-pointed them, so every card without its own
+// background still paints white. Retheming them onto `--ks-*` is a visual
+// change, not a refactor, so it is left for a follow-up.
+.card {
+    --ks-card-spacer-y: 1rem;
+    --ks-card-spacer-x: 1rem;
+    --ks-card-title-spacer-y: 0.5rem;
+    --ks-card-cap-padding-y: 0.5rem;
+    --ks-card-cap-padding-x: 1rem;
+    --ks-card-cap-bg: rgba(33, 37, 41, 0.03);
+    --ks-card-inner-border-radius: calc(#{$border-radius} - 1px);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    color: #212529;
+    word-wrap: break-word;
+    background-color: $white;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.175);
+    border-radius: $border-radius;
+
+    > hr {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: var(--ks-card-spacer-y) var(--ks-card-spacer-x);
+}
+
+.card-title {
+    margin-bottom: var(--ks-card-title-spacer-y);
+}
+
+.card-text:last-child {
+    margin-bottom: 0;
+}
+
+.card-header {
+    padding: var(--ks-card-cap-padding-y) var(--ks-card-cap-padding-x);
+    margin-bottom: 0;
+    background-color: var(--ks-card-cap-bg);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.175);
+
+    &:first-child {
+        border-radius: var(--ks-card-inner-border-radius) var(--ks-card-inner-border-radius) 0 0;
+    }
+}
+
+.card-footer {
+    padding: var(--ks-card-cap-padding-y) var(--ks-card-cap-padding-x);
+    background-color: var(--ks-card-cap-bg);
+    border-top: 1px solid rgba(0, 0, 0, 0.175);
+
+    &:last-child {
+        border-radius: 0 0 var(--ks-card-inner-border-radius) var(--ks-card-inner-border-radius);
+    }
+}

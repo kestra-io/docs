@@ -1,0 +1,50 @@
+---
+interface Props {
+    tone?: "purple" | "info" | "warning" | "pending" | "neutral"
+    size?: "sm" | "lg"
+}
+
+const { tone = "purple", size = "sm" } = Astro.props
+---
+
+<span class:list={["pill", tone, size]}><slot /></span>
+
+<style lang="scss">
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        border-radius: 6px;
+        background: color-mix(in srgb, var(--pill-color) 10%, transparent);
+        color: var(--pill-color);
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 20px;
+        white-space: nowrap;
+
+        &.lg {
+            font-size: $font-size-lg;
+            line-height: 26px;
+        }
+
+        &.purple {
+            --pill-color: var(--ks-content-color-highlight);
+        }
+
+        &.info {
+            --pill-color: var(--ks-content-property);
+        }
+
+        &.warning {
+            --pill-color: var(--ks-content-alert-warning);
+        }
+
+        &.pending {
+            --pill-color: var(--ks-content-tag-EE);
+        }
+
+        &.neutral {
+            --pill-color: var(--ks-content-secondary);
+        }
+    }
+</style>

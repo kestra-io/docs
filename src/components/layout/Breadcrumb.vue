@@ -10,10 +10,11 @@
                     v-if="item.href"
                     :href="item.href"
                     class="link"
+                    :title="item.label"
                 >
                     {{ item.label }}
                 </a>
-                <span v-else aria-current="page">{{ item.label }}</span>
+                <span v-else aria-current="page" :title="item.label">{{ item.label }}</span>
             </li>
         </ol>
     </nav>
@@ -33,6 +34,8 @@
         pageList?: string[]
         pageNames?: Record<string, string>
         pageTitle?: string
+        /** Extra crumbs inserted right after the root, for an ancestor the URL/nav tree doesn't carry. */
+        prependItems?: BreadcrumbItem[]
     }>()
 
     const crumbs = computed<BreadcrumbItem[]>(() => {
@@ -42,7 +45,7 @@
             ? [...new Set(props.slug.split("/").filter(Boolean))]
             : ["docs"]
 
-        return (segments.length > 0 ? segments : ["docs"]).map((item, index, arr) => {
+        const base = (segments.length > 0 ? segments : ["docs"]).map((item, index, arr) => {
             const href = "/" + arr.slice(0, index + 1).join("/")
             const isLast = index === arr.length - 1
             const label = isLast && props.pageTitle
@@ -55,12 +58,26 @@
                 href: index === 0 || props.pageList?.includes(href) ? href : "",
             }
         })
+
+        if (!props.prependItems?.length) return base
+
+        // "Debezium > Debezium PostgreSQL" repeats the family name the member's own
+        // title already carries; strip it from the crumb right after the prepended ones.
+        const familyLabel = props.prependItems[props.prependItems.length - 1]!.label
+        const rest = base.slice(1).map((crumb, index) =>
+            index === 0 && crumb.label.startsWith(`${familyLabel} `)
+                ? { ...crumb, label: crumb.label.slice(familyLabel.length + 1) }
+                : crumb,
+        )
+        return [base[0]!, ...props.prependItems, ...rest]
     })
 
     const formatDirectoryName = (item: string) => {
         const specialCases: Record<string, string> = {
             ui: "UI",
             "ai-tools": "AI Tools",
+            "ai-orchestration": "AI Orchestration",
+            "develop-with-ai": "Develop with AI",
         }
         return (
             specialCases[item] ||
@@ -83,8 +100,8 @@
             max-width: 71.25rem;
         }
         .breadcrumb {
-            --bs-breadcrumb-divider: ">";
-            --bs-breadcrumb-margin-bottom: 0.5rem;
+            --ks-breadcrumb-divider: ">";
+            --ks-breadcrumb-margin-bottom: 0.5rem;
         }
         .breadcrumb-item {
             a,
@@ -96,15 +113,21 @@
                     color: var(--ks-content-secondary) !important;
                 }
             }
-            &.active,
-            &.active a {
+            &.active {
                 font-size: $font-size-sm;
                 font-weight: 700;
                 color: var(--ks-content-primary) !important;
+                a,
+                span {
+                    display: inline-block;
+                    max-width: min(50vw, 25rem);
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    vertical-align: bottom;
+                    color: var(--ks-content-primary) !important;
+                }
             }
-        }
-        .link {
-            text-transform: capitalize;
         }
     }
 </style>

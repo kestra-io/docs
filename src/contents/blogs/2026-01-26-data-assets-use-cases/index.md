@@ -3,9 +3,10 @@ title: "How Kestra's Assets Give You Complete Pipeline Lineage"
 description: "Kestra 1.2 introduces Assets, a unified way to track both data artifacts and infrastructure resources across your workflows, giving you lineage that reflects what your pipelines actually touch."
 date: 2026-01-26T13:00:00
 category: Solutions
-author: 
+author:
   name: "Parham Parvizi"
   image: pparvizi
+  linkedin: https://www.linkedin.com/in/xdatanomad/
   role: Solutions Engineer
 image: ./main.png
 ---
@@ -151,7 +152,7 @@ tasks:
                 team: "{{ taskrun.value }}"
 
 ```
-The full code example, including credentials, [can be found here.](../../docs/07.enterprise/02.governance/01.assets/index.md#infrastructure-use-case-team-bucket-provisioning) 
+The full code example, including credentials, [can be found here.](../../docs/15.how-to-guides/asset-platform-sharing/index.md) 
 
 Later, when the data team uploads files to their bucket, they reference it as an input asset:
 

@@ -1,10 +1,12 @@
 ---
-title: Kill Switch – Stop Problematic Executions (Enterprise)
+title: "Kill Switch in Kestra Enterprise: Stop Executions"
+h1: Immediately Kill, Cancel, or Ignore Executions by Scope
 description: Use Kill Switch in Kestra Enterprise to immediately kill, cancel, or ignore executions by scope, with scheduling, audit logs, and in-app banners.
 sidebarTitle: Kill Switch
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "1.3.0"
+docId: kill-switch
 ---
 
 Kill Switch is an operational safety lever that lets administrators stop misbehaving executions directly from the UI.
@@ -13,20 +15,13 @@ Kill Switch is an operational safety lever that lets administrators stop misbeha
 
 A runaway flow, a bad deployment, or a tenant-specific incident can flood workers with problematic executions. The Kill Switch lets administrators halt or quarantine those executions instantly, without pausing the entire platform or touching infrastructure.
 
-Use it when you need to:
-
-- Contain impact quickly while you ship a fix or rollback.
-- Target only the affected tenant/namespace/flow/execution instead of stopping everything.
-- Keep an auditable record of who intervened, when, and why.
-- Surface a visible banner so impacted users know what happened.
+Kill Switch targets individual tenants, namespaces, flows, or executions, stopping or quarantining problematic runs without pausing the entire platform. Creation, enable, disable, and archive events are written to Audit Logs. Affected users see a contextual banner scoped to the affected namespace or tenant.
 
 Kill Switch replaces the CLI-only `--skip-executions` and `--skip-flows` commands with a scoped, auditable administration interface.
 
 ## Configure a Kill Switch
 
-To configure a Kill Switch, navigate to your **Instance → Kill Switch** section in Kestra. From there, name the Kill Switch (e.g., `Kill Switch – Payments Namespace Outage (TEMP)` ) and configure the switch's specifications.
-
-![Create a Kill Switch](./create-kill-switch.png)
+Kill Switches are managed under **Instance Owner → Instance → Kill Switch**. Each switch has a name (e.g., `Kill Switch – Payments Namespace Outage (TEMP)`) and the specifications below.
 
 ### Kill Switch types
 
@@ -63,7 +58,7 @@ Admins can optionally include a free-text reason stored with the Kill Switch and
 
 ## Lifecycle and audit
 
-Creation and updates are written to [**Audit Logs**](../../02.governance/06.audit-logs/index.md), and every state change—create, enable, disable, or archive—is recorded. Deleting a Kill Switch performs a soft delete, so the archived entry remains visible for traceability.
+Creation and updates are written to [**Audit Logs**](../../02.governance/06.audit-logs/index.md), and every state change (create, enable, disable, or archive) is recorded. Deleting a Kill Switch performs a soft delete, so the archived entry remains visible for traceability.
 
 ## Announcement banner
 
@@ -81,6 +76,16 @@ The CLI remains for open-source parity, with renamed flags to match the behavior
 --ignore-executions / --ignore-flows
 ```
 
+The `kestra server executor` and `kestra server standalone` commands accept these troubleshooting flags. Each takes a comma-separated list:
+
+| Flag | Ignores |
+|---|---|
+| `--ignore-executions` | Execution IDs |
+| `--ignore-flows` | Flows, as `namespace.flowId` |
+| `--ignore-namespaces` | Namespaces, as `tenant\|namespace` |
+| `--ignore-tenants` | Tenant IDs |
+| `--ignore-queue-records` | Queue record keys. Also available on the `controller`, `indexer`, and `webserver` commands. |
+
 ## Relationship to maintenance mode
 
-[Maintenance Mode](../maintenance-mode/index.md) pauses the platform broadly (queues new executions, lets running ones finish). Kill Switch keeps services up and targets specific tenants/namespaces/flows/executions to stop or ignore problematic runs—an operational tool rather than a platform pause.
+[Maintenance Mode](../maintenance-mode/index.md) pauses the platform broadly: requests to create executions are held, and running executions don't advance until maintenance ends. Kill Switch keeps services up and targets specific tenants/namespaces/flows/executions to stop or ignore problematic runs: it is an operational tool, not a platform pause.

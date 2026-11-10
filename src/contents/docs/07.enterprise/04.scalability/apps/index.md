@@ -1,5 +1,6 @@
 ---
-title: Apps in Kestra Enterprise – Build Frontends for Flows
+title: "Apps in Kestra Enterprise: Frontends for Flows"
+h1: Build Custom User Interfaces for Workflows with Apps
 description: Build custom Apps with Kestra. Create user-facing interfaces for workflows, enabling forms, approvals, and interactive data applications.
 sidebarTitle: Apps
 icon: /src/contents/docs/icons/admin.svg
@@ -14,45 +15,42 @@ Build custom UIs to interact with Kestra from the outside world.
   <iframe src="https://www.youtube.com/embed/KwBO8mcS3kk?si=VJC5a6YgVECR_bJ3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Apps – build frontends for Flows
+## What are Apps
 
-Apps let you use your Kestra workflows as the backend for custom applications. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks.
+Apps let you wrap any Kestra flow in a custom UI — forms for data entry, output displays, approval buttons, progress indicators, and markdown blocks — without writing any frontend code. Building and serving a frontend, connecting it to Kestra's API, validating user inputs, handling responses, managing workflow outputs, and handling authentication and authorization: Apps take care of all of that.
 
-**Flows** act as the **backend**, processing data and executing tasks, while **Apps** serve as the **frontend**, allowing anyone to interact with your workflows regardless of their technical background.
+Flows act as the backend, processing data and executing tasks. Apps act as the frontend, giving anyone — including business users without Kestra access — a clean interface to trigger executions, submit approvals, and view results.
 
-Business users can trigger new workflow executions, manually approve workflows that are paused, submit data to automated processes using simple forms, and view the execution results.
-
-You can think of Apps as **custom UIs for flows**. They are useful both for external-facing forms and for internal workflows such as approvals, requests, and guided operations.
+Apps work well for external-facing forms and for internal workflows such as approvals, requests, and guided operations.
 
 ---
 
-## Common App use cases
+## Common App patterns
 
-Most Apps fall into one of these two patterns:
-- **Execution forms**: users submit a form that starts a new execution with input parameters. For example, a requester can specify resources that need to be provisioned, and those inputs feed directly into a flow.
-- **Approval or resume interfaces**: users review a paused execution and approve, reject, or resume it. For example, a platform team can validate a provisioning request before the flow continues.
+The following patterns illustrate typical App designs:
 
----
+- **FTP upload portal**: give users a simple upload form while Kestra handles the backend credentials and transfer logic. See the [business user Apps blog example](../../../../blogs/use-case-apps/index.md#requests--review).
+- **Self-serve analytics request**: let users choose a dimension and time range, run a query and chart generation flow, and return the generated output on `SUCCESS`. See the [dynamic self-serve example](../../../../blogs/use-case-apps/index.md#dynamic-self-serve).
+- **AI-assisted intake or user research assistant**: collect free-form context from a sales, product, or support team member, run an LLM-backed flow, and display the suggested answer or categorization back in the App. See the [everyday automation example](../../../../blogs/use-case-apps/index.md#simple-interfaces-for-everyday-automation).
+- **VM or infrastructure request**: collect the requested environment, size, region, and justification on `OPEN`, show validation progress on `RUNNING`, pause for approval on `PAUSE`, then display the created VM details on `SUCCESS`. This pattern also fits the infrastructure workflows described in the [infrastructure automation blog](../../../../blogs/infra-automation/index.md).
+- **Human-in-the-loop review**: display task outputs, logs, or model results, then let an approver accept or reject the execution from the same screen.
 
-## App benefits
+Mapping the user journey determines which blocks to use for each stage:
 
-Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. **With Apps, you can generate a custom UI for any flow in seconds, and let Kestra handle the heavy lifting.**
+1. What should the user submit?
+2. What should they see while the flow is running?
+3. Does the flow need approval or review?
+4. What is the final outcome you want to show back in the App?
 
-Here are some common scenarios where a custom UI is useful:
+Those answers determine which blocks to choose for each stage.
 
-- **Manual Approval**: workflows that need manual approval, such as provisioning resources, granting access to services, deploying apps, validating data results, or reviewing AI-generated outputs.
-- **Report Generation**: workflows where business users request data and receive a downloadable CSV or Excel file.
-- **IT Helpdesk**: workflows that accept bug reports, feature requests, or other tickets, and automatically forward the ticket to the relevant team.
-- **User Feedback & Signups**: workflows that collect feedback or allow users to sign up for events or email lists.
-- **Data Entry**: workflows where business users enter data that is processed and either sent back to them or stored in a database.
-
-In short, Apps make it easy to turn your Kestra workflows into simple applications that anyone can use.
+For more patterns, browse the Apps-focused posts in the [blog section](../../../../blogs/introducing-apps/index.md) and [solutions content](../../../../blogs/use-case-apps/index.md).
 
 ---
 
 ## How App stages map to execution progress
 
-Apps render different blocks based on the current execution state. This is useful when you want the page to guide users through the full lifecycle of a request, from submission to approval to delivery.
+The stage-based model lets a single app guide users through the full request lifecycle — from submission through approval to delivery — by rendering different blocks based on the current execution state.
 
 | App stage | What the user sees | What usually happens in the flow |
 |-----------|--------------------|----------------------------------|
@@ -70,44 +68,25 @@ This stage-based layout is what makes Apps easier for non-technical users: they 
 
 ---
 
-## Common App patterns
-
-The examples below are a good starting point when designing your own App:
-
-- **FTP upload portal**: give users a simple upload form while Kestra handles the backend credentials and transfer logic. See the [business user Apps blog example](../../../../blogs/use-case-apps/index.md#requests--review).
-- **Self-serve analytics request**: let users choose a dimension and time range, run a query and chart generation flow, and return the generated output on `SUCCESS`. See the [dynamic self-serve example](../../../../blogs/use-case-apps/index.md#dynamic-self-serve).
-- **AI-assisted intake or user research assistant**: collect free-form context from a sales, product, or support team member, run an LLM-backed flow, and display the suggested answer or categorization back in the App. See the [everyday automation example](../../../../blogs/use-case-apps/index.md#simple-interfaces-for-everyday-automation).
-- **VM or infrastructure request**: collect the requested environment, size, region, and justification on `OPEN`, show validation progress on `RUNNING`, pause for approval on `PAUSE`, then display the created VM details on `SUCCESS`. This pattern also fits the infrastructure workflows described in the [infrastructure automation blog](../../../../blogs/infra-automation/index.md).
-- **Human-in-the-loop review**: display task outputs, logs, or model results, then let an approver accept or reject the execution from the same screen.
-
-When in doubt, start by mapping the user journey first:
-
-1. What should the user submit?
-2. What should they see while the flow is running?
-3. Does the flow need approval or review?
-4. What is the final outcome you want to show back in the App?
-
-Once you know those answers, it becomes much easier to choose the right blocks for each stage.
-
-If you want inspiration beyond the examples on this page, browse the Apps-focused posts in the [blog section](../../../../blogs/introducing-apps/index.md) and [solutions content](../../../../blogs/use-case-apps/index.md).
-
----
-
 ## Creating Apps in code
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
+If you already have a flow, building an App is a single YAML file: point it at the flow's `namespace` and `flowId`, define what users see at each execution stage with layout blocks, and save. No additional backend code is required — your flow is already the backend.
 
-To create a new app, go to the `Apps` page in the main UI and click the `+ Create` button. Add your app configuration as code and click on `Save`. Like Flows, Apps also have different editor views. You can configure your App while simultaneously viewing documentation, previewing your App layout, or searching the App blueprint repository.
+To create a new app, go to **Apps** and click **+ Create**. Add your app configuration as YAML and click **Save**. Like flows, apps have multiple editor views — you can configure the app while viewing documentation, previewing the layout, or searching the blueprint repository.
+
+Set `disabled: true` to stage an app before release. A disabled app does not appear in the catalog and cannot be opened via its URL until you enable it.
+
+For the full list of available blocks and their properties, see [App layout blocks](#app-layout-blocks) below.
 
 ![App Editor Views](./app-editor-views.png)
 
 ### App to run a Hello World flow
 
-Apps serve as custom UIs for workflows, so you need to first create a flow. Here is a simple configuration for a parameterized flow that logs a message when triggered:
+Every app is backed by a flow. The following flow accepts a name input and logs a message when triggered:
 
 ```yaml
 id: myflow
@@ -157,56 +136,318 @@ layout:
 
 You can find a related example in the [enterprise-edition-examples repository](https://github.com/kestra-io/enterprise-edition-examples/blob/main/apps/06_hello_world_app.yaml).
 
-This app is `PUBLIC`, so anyone with the URL can access it without requiring login. Alternatively, you can set the `access` type to `PRIVATE` to restrict the app only to specific users.
-
-This app is perfect for building **public forms** that anyone in the world can access.
+This app is `PUBLIC`, so anyone with the URL can access it without logging in. Set `access.type` to `PRIVATE` to restrict it to authenticated users.
 
 ### App to request and download data
 
-Let's create a flow that fetches the relevant dataset based on user input: [flow source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/flows/company.team.get_data.yaml).
+A common pattern is to let business users request a filtered dataset and download it as a file — no Kestra access required. The flow fetches data from an external API, filters and sorts it based on user inputs, writes a CSV, and surfaces a summary string and the file as typed flow outputs. The app wraps that flow in a form, shows a loading indicator while it runs, and presents the summary and a download button on success.
 
-Now, from the Apps page, you can create a new app that allows users to select the data they want to download: [app source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/apps/05_request_data_form.yaml).
+**Flow:**
 
-This app is perfect for reporting and analytics use cases where users can request data and download the results.
+```yaml
+id: product-report
+namespace: company.ops
+
+inputs:
+  - id: requested_by
+    type: STRING
+    displayName: Requested By
+
+  - id: category
+    type: SELECT
+    displayName: Product Category
+    values:
+      - smartphones
+      - laptops
+      - fragrances
+      - skincare
+      - groceries
+      - furniture
+
+  - id: min_rating
+    type: FLOAT
+    displayName: Minimum Rating
+    defaults: 4.0
+
+  - id: sort_by
+    type: SELECT
+    displayName: Sort By
+    values:
+      - rating
+      - price
+      - stock
+
+tasks:
+  - id: fetch_products
+    type: io.kestra.plugin.core.http.Download
+    uri: "https://dummyjson.com/products/category/{{ inputs.category }}?limit=100"
+
+  - id: build_report
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: python:3.12-slim
+    inputFiles:
+      data.json: "{{ outputs.fetch_products.uri }}"
+    script: |
+      import csv
+      import json
+
+      with open("data.json") as f:
+          products = json.load(f)["products"]
+
+      filtered = [p for p in products if p["rating"] >= {{ inputs.min_rating }}]
+      filtered.sort(key=lambda p: p["{{ inputs.sort_by }}"], reverse=True)
+
+      fields = ["title", "brand", "category", "price", "rating", "stock", "discountPercentage"]
+      with open("report.csv", "w", newline="") as f:
+          writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
+          writer.writeheader()
+          writer.writerows(filtered)
+
+      avg_price = sum(p["price"] for p in filtered) / len(filtered) if filtered else 0
+      avg_rating = sum(p["rating"] for p in filtered) / len(filtered) if filtered else 0
+
+      summary = (
+          f"Report for {{ inputs.requested_by }}: "
+          f"{len(filtered)} {{'{{ inputs.category }}'}} products rated ≥ {{ inputs.min_rating }}. "
+          f"Avg price ${avg_price:.2f} · Avg rating {avg_rating:.2f}/5 · "
+          f"Sorted by {{ inputs.sort_by }}."
+      )
+
+      print("::" + json.dumps({"outputs": {"summary": summary, "count": len(filtered)}}) + "::")
+    outputFiles:
+      - report.csv
+
+outputs:
+  - id: report_summary
+    type: STRING
+    value: "{{ outputs.build_report.vars.summary }}"
+
+  - id: report_file
+    type: FILE
+    value: "{{ outputs.build_report.outputFiles['report.csv'] }}"
+```
+
+**App:**
+
+```yaml
+id: product_report
+type: io.kestra.plugin.ee.apps.Execution
+namespace: company.ops
+displayName: Product Report
+flowId: product-report
+access:
+  type: PRIVATE
+  catalog: true
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "## Submit a request"
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "## Keep this page open to see the results"
+      - type: io.kestra.plugin.ee.apps.core.blocks.Loading
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
+        text: Cancel request
+        style: WARNING
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
+        style: SUCCESS
+        showIcon: true
+        content: Your request has completed.
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
+        text: Submit a new request
+        url: "{{ app.url }}"
+        style: DEFAULT
+
+  - on: FAILURE
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
+        style: ERROR
+        showIcon: true
+        content: The request failed. The logs below show what went wrong.
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+        filter:
+          logLevel: ERROR
+```
+
+#### Interactive demo
+
+<div style="position: relative; padding-bottom: calc(48.6979% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/JWgKWxXUEKSkDVZcvH1j?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Build and Download a Product Report from a Flow in Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+This pattern works for any reporting or analytics use case where users need to request and download data without accessing Kestra directly.
 
 ### App to request a VM and get it approved
 
-One common enterprise use case is a self-service infrastructure request. A requester fills out a form with the VM size, environment, and justification. Kestra validates the request, pauses for approval, and resumes the flow only after the request is approved.
+Self-service infrastructure requests are one of the most common approval-based App patterns. A requester fills out a form with the VM size, environment, region, and business justification. The flow logs and validates the request, then pauses for review. A platform engineer opens the same app in its `PAUSE` state, sees the original request details, adds reviewer notes, and either approves (resumes the execution) or rejects (cancels it). On approval, the flow continues to provisioning.
 
-Add a flow simulating a request for compute resources that needs manual approval: [flow source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/flows/company.team.request_resources.yaml).
+This example demonstrates two distinct user roles interacting with the same app at different stages.
 
-Then, add your app configuration to create a form that requests the VM and routes it through the approval process: [app source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/apps/03_compute_resources_approval.yaml).
+**Flow:**
 
-In practice, that app often uses the following stages:
+```yaml
+id: vm-request
+namespace: company.ops
 
-- `OPEN`: request form with VM size, environment, owner, and business justification.
-- `RUNNING`: validation of the request, available quotas, tags, or naming conventions.
-- `PAUSE`: approval screen for the platform, security, or operations team.
-- `RESUME` or `SUCCESS`: confirmation that the request was approved and the VM is being created or is ready to use.
+inputs:
+  - id: requested_by
+    type: STRING
+    displayName: Requested By
 
-This pattern also works for adjacent use cases such as database access requests, sandbox environment creation, firewall rule approvals, or SaaS account provisioning.
+  - id: vm_size
+    type: SELECT
+    displayName: VM Size
+    values:
+      - "small (2 vCPU / 4 GB)"
+      - "medium (4 vCPU / 8 GB)"
+      - "large (8 vCPU / 16 GB)"
 
+  - id: environment
+    type: SELECT
+    displayName: Environment
+    values:
+      - dev
+      - staging
+      - production
+
+  - id: region
+    type: SELECT
+    displayName: Region
+    values:
+      - us-east-1
+      - eu-west-1
+      - ap-southeast-1
+
+  - id: justification
+    type: STRING
+    displayName: Business Justification
+
+tasks:
+  - id: validate_request
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      New VM request from {{ inputs.requested_by }}.
+      Size: {{ inputs.vm_size }}, Environment: {{ inputs.environment }}, Region: {{ inputs.region }}.
+      Justification: {{ inputs.justification }}
+
+  - id: await_approval
+    type: io.kestra.plugin.core.flow.Pause
+    onResume:
+      - id: notes
+        type: STRING
+        displayName: Reviewer Notes
+        required: false
+
+  - id: provision_vm
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      Provisioning {{ inputs.vm_size }} in {{ inputs.environment }}/{{ inputs.region }} for {{ inputs.requested_by }}.
+      Reviewer notes: {{ resume.notes }}
+```
+
+The [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task's `onResume` inputs define what the reviewer submits when approving — in this case, optional notes. Those values are available to downstream tasks as `{{ resume.<id> }}`.
+
+**App:**
+
+```yaml
+id: vm_request
+type: io.kestra.plugin.ee.apps.Execution
+displayName: VM Request
+namespace: company.ops
+flowId: vm-request
+access:
+  type: PRIVATE
+  catalog: true
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          ## Request a Virtual Machine
+          Fill in the details below. Your request will be validated and sent for approval before provisioning begins.
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit Request
+        style: SUCCESS
+
+  - on: RUNNING
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "## Validating your request…"
+      - type: io.kestra.plugin.ee.apps.core.blocks.Loading
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+
+  - on: PAUSE
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: |
+          ## Review this VM request
+          Inspect the request details below, then approve or reject.
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Inputs
+      - type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton
+        text: Approve
+        style: SUCCESS
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton
+        text: Reject
+        style: DANGER
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
+        style: SUCCESS
+        showIcon: true
+        content: Your VM has been provisioned.
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+      - type: io.kestra.plugin.ee.apps.core.blocks.Button
+        text: Submit a new request
+        url: "{{ app.url }}"
+        style: DEFAULT
+
+  - on: FAILURE
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
+        style: ERROR
+        showIcon: true
+        content: The request could not be processed. Review the logs for details.
+      - type: io.kestra.plugin.ee.apps.execution.blocks.Logs
+        filter:
+          logLevel: ERROR
+```
+
+The `PAUSE` stage shows the original request inputs (`ExecutionInputs`), the `onResume` form for reviewer notes (`ResumeExecutionForm`), and the approve/reject buttons. Clicking **Approve** resumes the execution; clicking **Reject** cancels it.
+
+This pattern applies directly to database access requests, sandbox environment creation, firewall rule approvals, SaaS account provisioning, and any other workflow that needs a human gate before it continues.
 
 ---
 
-## Creating Apps no code
+## Creating Apps without code
 
-Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
-
-![Apps No Code](./app-no-code.png)
+Apps can also be built using the no-code editor. Every block, property, and configuration option available in YAML is fully supported visually. Changes made in the no-code editor are immediately reflected in the code view, and vice versa — teams can switch between approaches at any time without losing the underlying YAML definition.
 
 ---
 
 ## App catalog
 
-The App Catalog is where users can find available apps. You can filter apps by name, type, namespace, or tags. From this page, you can also create new apps, edit existing ones, and temporarily disable or delete apps.
+The App Catalog lists all available apps in a tenant. Filter by name, type, namespace, or tags. From this page you can also create new apps, edit existing ones, enable or disable individual apps, or delete them.
 
 ![apps_catalog](./apps_catalog.png)
 
-Kestra provides a direct access URL to the Apps Catalog via a dedicated URL in the format `http://your_host/ui/your_tenant/apps/catalog`. This URL can be accessed by any Kestra user who has at least `APP`-Read and `APPEXECUTION`-Read permissions in that Kestra tenant (adding all `APPEXECUTION` permissions is recommended).
+Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with `APP: LIST` permission on at least one namespace in that tenant can reach this URL.
 
-The catalog page requires authentication, so the Apps Catalog is never publicly accessible. It displays all Apps by default. The users only see the Apps they are allowed to see based on their RBAC permissions. For example, you can limit some apps only to specific groups of users by defining the `groups` property in your App as follows:
-
+The catalog page requires authentication, so it is never publicly accessible. Users see only the apps they are permitted to see based on their RBAC permissions. You can limit visibility to specific groups by setting the `groups` property in the `access` block:
 
 ```yaml
 access:
@@ -216,39 +457,187 @@ access:
     - Admins
 ```
 
+### Hiding an app from the catalog
+
+Setting `catalog: false` removes the app from the browseable catalog while keeping its direct URL functional — suited to apps shared with a specific audience via URL.
+
+```yaml
+access:
+  catalog: false
+  type: PRIVATE
+```
+
+### Managing apps in bulk
+
+From the Apps Catalog, you can select multiple apps and enable, disable, or delete them in a single operation. Bulk operations report partial failures individually so you can see which apps were affected and which were not.
+
+You can also export a selection of apps as a ZIP archive (`kestra-{tenant}-apps.zip`) and import that archive — or a multi-document YAML file — into another tenant or environment. The export produces one `{namespace}-{id}.yaml` file per app. On import, each app is validated independently; errors are reported per file so a single bad app does not block the rest.
+
 ### Customize the Apps Catalog
 
-You can customize your Apps Catalog to align with organization branding by navigating to the **Tenant** tab and then **Apps Catalog**.
+Customize the catalog's title, colors, and banner image to match your organization's look and feel. Go to **Instance Owner**, then in the left sidebar under your tenant, click **Apps Catalog**.
 
 ![Apps Catalog Customization](./apps-catalog-customization.png)
 
-Here, you can give your catalog a display title, set a primary banner display color, and upload an image for banner (typically an organization logo).
+The configuration panel lets you set a **Title**, **Title Color**, **Primary Color** (used for buttons), **Background Color**, **Tile Color**, **Button Text Color**, and a **Banner** image displayed at the top of the catalog page.
 
 :::alert{type="info"}
-Currently, the uploaded banner display image must be an `.svg` file.
+The banner image must be an `.svg` file.
 :::
 
-Once saved, navigate to the Apps Catalog, and see your branding:
+Once saved, open the **Apps Catalog** to see your branding:
 
 ![Apps Catalog Branding](./customized-catalog.png)
 
-From the Apps Catalog, you can also access the customization settings directly at any time by clicking on the **gear icon**.
+Access these settings any time from the **gear icon** in the catalog.
+
+### App tags
+
+Add custom tags to organize and filter apps in the catalog. For example: `DevOps`, `data-team`, `project-x`.
 
 ---
 
-## App tags
+## App URL
 
-You can add custom tags to organize and filter apps in the App Catalog. For example, you might tag apps with `DevOps`, `data-team`, `project-x`. You can then filter apps by tags to quickly find the apps you are looking for.
+Each app has a unique URL — share it with team members, customers, or partners, or embed it in internal tools. Anyone with the link (and appropriate access) can open the app directly.
+
+The URL format is: `https://yourHost/ui/tenantId/apps/appUid`, for example `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
+
+Copy the URL from the **Apps Catalog**.
+
+:::alert{type="info"}
+App URL generation relies on the `kestra.url` server configuration property. If this property is not set, generated links may be broken or missing. Set it to the externally reachable base URL of your Kestra instance, for example `kestra.url: https://kestra.example.com`.
+:::
+
+### App expressions
+
+From within flows, you can generate app URLs using the Enterprise-only `appLink` expression. See [Workflow Functions](../../../expressions/04.functions/04.workflow/index.mdx) for parameters and examples.
+
+---
+
+## App access and RBAC permissions
+
+Each app has an `access` block that controls who can open and submit it. App permissions come from the `APP` resource on the app's namespace, not from the flow the app runs.
+
+### How apps, flows, and namespaces relate
+
+An app belongs to one namespace and runs one flow in that same namespace. The app's `namespace` property sets both: Kestra looks up `flowId` in the app's namespace, so an app cannot target a flow in another namespace. To build an app for a flow in `company.team`, create the app in `company.team`.
+
+Kestra checks only `APP` permissions when someone builds or uses an app. It does not check `FLOW` or `EXECUTION` permissions:
+
+- A user with `APP: CREATE` on a namespace can build an app for any flow in that namespace, including flows they cannot view.
+- A user with `APP: EXECUTE` on a namespace can open that namespace's `PRIVATE` apps and start executions of their flows without any `FLOW` or `EXECUTION` permission.
+- Anyone with the URL can open a `PUBLIC` app and start executions of its flow.
+
+This separation lets you give business users or partners an app without giving them access to the flow's code or the rest of the Kestra UI. The app limits what its users can reach: through the app, they see only executions of the app's flow, executions of subflows those executions started, or the single execution set in the app's `executionId` property.
+
+:::alert{type="warning"}
+Granting `APP: CREATE` on a namespace lets a user wrap any flow in that namespace in a `PUBLIC` app, which anyone can then run. Grant it as carefully as you would grant `EXECUTION: CREATE`.
+:::
+
+### Public access
+
+When an app is set to `PUBLIC`, anyone with the URL can open the form and submit requests without logging in. This is suitable for public-facing forms, surveys, or intake pages you share via email or embed on a website.
+
+:::alert{type="info"}
+For `PUBLIC` apps, execution IDs exposed through file download or log links are encrypted so that anonymous users cannot reference executions outside the app.
+:::
+
+### Private access for using apps
+
+When an app is set to `PRIVATE`, only users with `APP: EXECUTE` permission on the app's namespace can open or submit it. `PRIVATE` apps are also only visible in the App Catalog to users with `APP: EXECUTE` — they do not appear for users who only hold `APP: LIST` or `APP: VIEW`. You can further narrow access to specific IAM groups using the `groups` field:
+
+```yaml
+access:
+  type: PRIVATE
+  groups:
+    - DataOps
+    - Finance
+```
+
+Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APP: EXECUTE` permission on the namespace. If `groups` is omitted, any authenticated user with `APP: EXECUTE` permission on the namespace can use the app.
+
+`APP: EXECUTE` is namespace-scoped. A user with `APP: EXECUTE` on `company.team` cannot dispatch an app in `company.other`, even if both apps appear in the same catalog view.
+
+This makes the `PRIVATE` + `groups` combination useful when you want to allow a specific group of business stakeholders or external partners to use an app without giving them access to the broader Kestra UI.
+
+### Private access for building apps
+
+The `APP` resource controls who can create, view, update, or delete apps within a tenant. It can be scoped to specific namespaces. `APP: EXECUTE`, `APP: ACCESS_FILES`, and `APP: ACCESS_LOGS` govern the ability to submit requests through an app and access its artifacts; the remaining `APP` actions govern the ability to build and manage apps.
+
+Previewing an app in the editor requires `APP: CREATE` from a role assigned at the tenant level, not scoped to a namespace. A user whose `APP: CREATE` is scoped to specific namespaces can save apps in those namespaces but cannot preview them.
+
+### Permissions reference
+
+Each action below checks only the listed `APP` permission. No action checks `FLOW` or `EXECUTION` permissions.
+
+| Action | Required permission | Scope |
+|---|---|---|
+| Open the App Catalog | `APP: LIST` | Any namespace in the tenant |
+| See a `PRIVATE` app in the catalog | `APP: EXECUTE`, plus membership in a listed group if `groups` is set | The app's namespace |
+| View an app's source | `APP: VIEW` | The app's namespace |
+| Create or import an app | `APP: CREATE` | The app's namespace |
+| Preview an app in the editor | `APP: CREATE` | Tenant-wide role |
+| Update, enable, or disable an app | `APP: UPDATE` | The app's namespace |
+| Delete an app | `APP: DELETE` | The app's namespace |
+| Open or submit a `PRIVATE` app | `APP: EXECUTE`, plus membership in a listed group if `groups` is set | The app's namespace |
+| Preview or download files from a `PRIVATE` app | `APP: ACCESS_FILES` | The app's namespace |
+| Download logs from a `PRIVATE` app | `APP: ACCESS_LOGS` | The app's namespace |
+| Open or submit a `PUBLIC` app | None | Not applicable |
+
+---
+
+## App executions
+
+Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system.app` and a value of `yourAppId`. For example, to filter all executions created by the `computeResourcesForm` app, you can search for `system.app:computeResourcesForm` in the label filter.
+
+App executions also carry `system.from: app`. When a signed-in user submits the app, the execution carries `system.username` with that user's username. Executions from anonymous users of a `PUBLIC` app have no `system.username` label. Because running an app requires no `FLOW` or `EXECUTION` permission, use these labels to audit who started executions through apps.
+
+For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you observe, troubleshoot, and manage app executions just as you would any other workflow execution.
+
+---
+
+## App expiration
+
+You can limit an app to a specific time window using the `expiration` property. Once the window closes, the app is filtered out of the catalog and blocks new submissions — existing executions are unaffected.
+
+```yaml
+id: survey_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Q2 Survey
+namespace: company.team
+flowId: survey_processor
+access:
+  type: PUBLIC
+expiration:
+  startDate: "2025-06-01T00:00:00Z"
+  endDate:   "2025-06-30T23:59:59Z"
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "## Please complete the survey before the end of June."
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+```
+
+Both fields are optional:
+- Omit `startDate` and the app is available immediately.
+- Omit `endDate` and the app never expires.
+- Omit `expiration` entirely and the app stays active indefinitely.
+
+Expiration is evaluated against the server clock at the moment a user opens or submits the app.
 
 ---
 
 ## App thumbnails
 
-Design Apps with thumbnails to clearly display their intended use case or function to catalog users. To add a thumbnail to your app, upload an image file as a [namespace file](../../../06.concepts/02.namespace-files/index.md) to the same namespace as the App's connected flow. For example, add an `.svg` (it can also be `.jpg`, `.png`, or other image file extension) to the `company.team` namespace. The example below adds `kestra-icon.svg`.
+Add a thumbnail to give catalog users a visual indicator of what the app does. Upload an image file as a [namespace file](../../../06.concepts/02.namespace-files/index.md) to the same namespace as the app's connected flow. Supported formats include `.svg`, `.jpg`, and `.png`. The example below adds `kestra-icon.svg`.
 
 ![Image Namespace File](./app-namespace-file.png)
 
-In your app code, add the `thumbnail` string property and point it towards the correct namespace file using `nsfiles:///<your-file>`. For example:
+In your app code, add the `thumbnail` string property and point it toward the correct namespace file using `nsfiles:///<your-file>`. For example:
 
 ```yaml
 id: request_data_form
@@ -264,74 +653,205 @@ tags:
   - Analytics
 ```
 
-Once added, navigate to the Apps Catalog, and a new thumbnail will display on the connected app to help designate its use case:
+Once added, open the **Apps Catalog** — a new thumbnail displays on the connected app:
 
 ![App with thumbnail](./app-with-icon.png)
 
 ---
 
-## App URL
-
-Each app has a unique URL that you can share with others. When someone opens the URL, they will see the app and can submit requests. You can share the URL with team members, customers, or partners to let them interact with your Kestra workflows.
-
-The base URL of an app URL is: `https://yourHost/ui/tenantId/apps/appId` e.g. `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
-
-You can copy the URL from the Apps catalog page in the Kestra UI.
-
-### App expressions
-
-From within flows, you can generate App URLs using the Enterprise-only `appLink` expression. See the [Function Reference](../../../expressions/04.function-reference/index.md) for parameters and examples.
-
----
-
-## App access and RBAC permissions
-
-For each app, you can set the access level to either `PUBLIC` or `PRIVATE`.
-
-### Public access
-
-When an app is set to `PUBLIC`, anyone with the URL can access the form and submit requests. This is ideal for situations where the app needs to be widely available to collect user feedback or conduct a survey. You can share the app URL on social media, embed it within your website, or send it via email.
-
-
-### Private access for using Apps
-
-When an app is set to `PRIVATE`, only users with the `APPEXECUTION` RBAC permission can submit requests. This setup works well when you want to allow a specific group (such as business stakeholders or external partners) to use the app without giving them direct access to the Kestra UI. You can invite these users to a specific Kestra tenant, where they’ll only see the App Catalog, optionally restricted to apps in a specific namespace. This fine-grained access control ensures that only authorized users can access and use the apps.
-
-### Private access for building Apps
-
-The `APP` RBAC permission controls who can create, read, update, or delete apps within a tenant. This permission can also be restricted to specific namespaces. Unlike the `APPEXECUTION` permission which governs the ability to submit requests using apps, the `APP` permission manages the ability to build, modify, and delete apps.
-
----
-
-## App executions
-
-Each time a user creates an execution by submitting a form in the app, a new execution is generated with the system label `system.app` and a value of `yourAppId`. For example, to filter all executions created by the `computeResourcesForm` app, you can search for `system.app:computeResourcesForm` in the label filter.
-
-For every execution, you can track the user inputs, see the current state, view logs, and check the outputs — all from the Kestra UI. This lets you observe, troubleshoot and manage issues with your apps just as you would with any other workflow execution in Kestra.
-
----
-
 ## App layout blocks
 
-Each app is made up of blocks that define the layout and content of the app. You can add blocks for markdown text, forms, buttons, logs, inputs, outputs, and more. The blocks are displayed in a specific order based on the app’s state (e.g. on `OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`).
+Each app layout is a list of stage-specific blocks. Each block renders when the execution reaches the matching stage (`OPEN`, `RUNNING`, `SUCCESS`, `FAILURE`, `PAUSE`, `RESUME`). Combine blocks to guide users through the full lifecycle of a request — form on `OPEN`, progress indicator on `RUNNING`, download link and logs on `SUCCESS`.
 
-By combining different blocks, you can create a custom UI that guides users through the app’s workflow. For example, you could start with a markdown block that explains the purpose of the app, followed by a form block for users to enter their inputs, and a button block to submit the request. You can also add blocks to display execution logs, outputs, and buttons for approving or rejecting paused workflows.
+If a layout uses a block on a stage that isn't listed for it, saving the app fails with `Invalid layout. Block '<type>' is not supported for layout on '<stage>'.`
 
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `content`                                                                                 | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
-| `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `url`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT60S"`                                                                         |
+| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
+| `Image`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `source`: URL or `data:` URI<br> - `altText`<br> - `title`<br> - `style`: custom CSS      | `- type: io.kestra.plugin.ee.apps.core.blocks.Image`<br> &nbsp;&nbsp;&nbsp;&nbsp;`source: "{{ dataURL('nsfile:///logo.svg') }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`altText: "Company logo"`                                                |
+| `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `url`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.core.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT60S"`                                                                         |
 | `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm`                                                                                                                                                               |
 | `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm`                                                                                                                                                               |
 | `CreateExecutionButton`  | OPEN                                                                     | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Submit"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "MEDIUM"`                    |
-| `CancelExecutionButton`  | CREATED, RUNNING, PAUSE                                                 | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"`                      |
+| `CancelExecutionButton`  | RUNNING, PAUSE                                                           | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.CancelExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Reject"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "DANGER"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "SMALL"`                      |
 | `ResumeExecutionButton`  | PAUSE                                                                    | - `text` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO <br> - `size`: SMALL, MEDIUM, LARGE | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionButton`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "Approve"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "SUCCESS"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`size: "LARGE"`                    |
 | `ExecutionInputs`        | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Inputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`    |
-| `ExecutionOutputs`       | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
-| `ExecutionLogs`          | PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK                                | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
-| `Loading`                | RUNNING                                                                  | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
-| `Alert`                  | FAILURE                                                                  | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
-| `Button`                 | SUCCESS, FAILURE                                                        | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
-| `TaskOutputs`            | RUNNING, PAUSE, RESUME, SUCCESS                                         | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
+| `ExecutionOutputs`       | SUCCESS, FAILURE                                                         | - `filter`: include, exclude                                                                | `- type: io.kestra.plugin.ee.apps.execution.blocks.Outputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`include: []`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []`   |
+| `ExecutionLogs`          | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `filter`: logLevel, taskIds                                                               | `- type: io.kestra.plugin.ee.apps.execution.blocks.Logs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`logLevel: "INFO"`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`taskIds: []` |
+| `ExecutionGantt`         | RUNNING, PAUSE, RESUME, SUCCESS, FAILURE                                 | - `filter`: include, exclude (task IDs)                                                     | `- type: io.kestra.plugin.ee.apps.execution.blocks.Gantt`<br> &nbsp;&nbsp;&nbsp;&nbsp;`filter:`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exclude: []` |
+| `Loading`                | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | None                                                                                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Loading`                                                                                                                                                                                |
+| `Alert`                  | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `style`: SUCCESS, WARNING, ERROR, INFO <br> - `showIcon`: true, false                     | `- type: io.kestra.plugin.ee.apps.core.blocks.Alert`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "WARNING"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`showIcon: true`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "An error occurred!"`                          |
+| `Button`                 | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `text` <br> - `url` <br> - `style`: DEFAULT, SUCCESS, DANGER, INFO                        | `- type: io.kestra.plugin.ee.apps.core.blocks.Button`<br> &nbsp;&nbsp;&nbsp;&nbsp;`text: "More examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://github.com/kestra-io/examples"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`style: "INFO"`      |
+| `TaskOutputs`            | PAUSE, RESUME, SUCCESS, FAILURE                                          | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
-Everything is customizable, from the text and style of buttons to the messages displayed before and after submissions.
+### Pebble expressions in Markdown blocks
+
+The `Markdown` block's `content` property is a Pebble template. `{{ inputs.<id> }}` is available in the render context across all layout stages.
+
+On the `OPEN` stage, when the layout includes a `CreateExecutionForm`, `{{ inputs.<id> }}` updates live as the user interacts with the form, useful for context-sensitive descriptions that react to dropdown changes. Before the user interacts with the form, it resolves to each input's default value.
+
+On all other stages (CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE), `{{ inputs.* }}` references the execution's submitted values.
+
+For example, given a flow with a `product` SELECT input, the app below renders the current selection inline on OPEN and confirms it on SUCCESS:
+
+```yaml
+id: software_request_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Software Request Form
+namespace: company.team
+flowId: software_request
+access:
+  type: PRIVATE
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "You are requesting access to: **{{ inputs.product }}**"
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "Access granted for: **{{ inputs.product }}**"
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
+        style: SUCCESS
+        content: Your request has been submitted.
+```
+
+:::alert{type="info"}
+When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
+:::
+
+### Embedding namespace file images
+
+`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
+
+Starting in 2.0.8, use the [`dataURL()`](../../../expressions/04.functions/02.data-access/index.mdx#dataurl) expression function to convert a namespace file into a `data:` URI the block can render:
+
+```yaml
+# Image block
+- type: io.kestra.plugin.ee.apps.core.blocks.Image
+  source: "{{ dataURL('nsfile:///report.svg') }}"
+  altText: "Report chart"
+
+# Markdown block
+- type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+  content: |
+    ![Report chart]({{ dataURL('nsfile:///report.png') }})
+```
+
+`dataURL()` infers the MIME type from the file extension. For files with unrecognized extensions, pass `mimeType` explicitly:
+
+```twig
+{{ dataURL('nsfile:///report.unknown', mimeType='image/png') }}
+```
+
+To read from a different namespace, pass `namespace`:
+
+```twig
+{{ dataURL('nsfile:///logo.svg', namespace='other.namespace') }}
+```
+
+On versions before 2.0.8, use `"data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }}"` instead. `read()` decodes the file as UTF-8 text, so this only works for SVG images; binary formats such as PNG, JPEG, and GIF are corrupted and will not render.
+
+### Execution outputs
+
+Two blocks display execution outputs as a table with one row per output. They differ in where the values come from:
+
+| Block | Reads from | Use it when |
+|---|---|---|
+| `Outputs` | The flow's [`outputs` property](../../../05.workflow-components/06.outputs/index.md#flow-outputs) | The flow declares outputs, or you can add them |
+| `TaskOutputs` | Task outputs that you select in the block | You want to show task outputs without changing the flow |
+
+#### Flow outputs with the `Outputs` block
+
+The `Outputs` block shows only flow outputs. Task outputs aren't included. If the flow has no `outputs` property, the block renders nothing and no error is raised.
+
+The following flow downloads a CSV file and exposes it as a flow output:
+
+```yaml
+id: fetch_orders
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+outputs:
+  - id: orders_file
+    type: FILE
+    displayName: Orders CSV
+    value: "{{ outputs.download.uri }}"
+```
+
+An app built on this flow can then show the file on `SUCCESS`:
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Outputs
+      filter:
+        include:
+          - orders_file
+```
+
+- Each row is labeled with the output's `displayName`, or with its `id` when no display name is set.
+- `filter` matches the output `id`. `include` keeps only the listed outputs, `exclude` drops them. Without a filter, the block shows every flow output.
+- The block is available on `SUCCESS` and `FAILURE`.
+
+#### Task outputs with the `TaskOutputs` block
+
+The `TaskOutputs` block reads task outputs directly, so the flow doesn't need an `outputs` property. List each value to show in the block's `outputs` property. The following layout shows the same file as the previous example, read from the `download` task:
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs
+      outputs:
+        - displayName: Orders CSV
+          type: FILE
+          value: "{{ outputs.download.uri }}"
+```
+
+- Each entry requires `displayName`, `type`, and `value`. `description` is optional.
+- `value` expressions can reference task outputs only, using `{{ outputs.<task_id>.<property> }}`. Referencing any other variable, such as `inputs`, makes the app fail with an `Application Error` message.
+- The block is available on `PAUSE`, `RESUME`, `SUCCESS`, and `FAILURE`. On `PAUSE`, use it to show intermediate results to an approver before they resume the execution.
+
+### File preview and download
+
+The `Outputs` and `TaskOutputs` blocks can render file download links for outputs stored in Kestra's internal storage. File preview, metadata, and download are only available when:
+
+- The app type is `io.kestra.plugin.ee.apps.Execution`.
+- The layout includes an `Outputs` or `TaskOutputs` block.
+- The storage path belongs to an execution that the app has access to.
+
+By default, file preview shows the first 100 rows. You can change this server-side with `kestra.server.preview.initial-rows` (default `100`) and cap it with `kestra.server.preview.max-rows` (default `5000`).
+
+### Log download
+
+The `ExecutionLogs` block renders an inline log viewer. When a `Logs` block is present in the layout, users can also download the full log file directly from the app. Log download is only available for `Execution`-type apps that include a `Logs` block in their layout.
+
+### Execution progress as a Gantt chart
+
+The `Gantt` block shows a simplified version of the execution Gantt view: one bar per task run, with its state and duration, nested under its parent task. Use it on long-running flows, so app users who cannot log in to Kestra can follow the progress instead of a loading indicator.
+
+```yaml
+- on: RUNNING
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: "Provisioning is in progress, please keep this window open."
+
+    - type: io.kestra.plugin.ee.apps.execution.blocks.Gantt
+      filter:
+        exclude:
+          - technical_step
+```
+
+- On a `RUNNING` layout, the chart updates as the execution progresses, without any extra configuration.
+- The block shows only task IDs, states and durations. It shows no logs, outputs, iteration values or task actions, so a public app can show it to anonymous visitors.
+- `filter` matches the task ID. `include` keeps only the listed tasks, `exclude` drops them, which is useful to hide technical steps the app user does not need to follow.
+- The block is available on `RUNNING`, `PAUSE`, `RESUME`, `SUCCESS` and `FAILURE`. Add it to `SUCCESS` and `FAILURE` too to keep the final timings visible once the execution ends.

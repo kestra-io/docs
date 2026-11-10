@@ -1,0 +1,7 @@
+title: "Moving Flows from Development to Production!"
+description: "A common best practice with Kestra is to keep a development instance where users write flows directly in the UI, acting as a sandbox for testing without risking critical business operations. Moving those flows to production can be tricky, so Will walks through the best way to do it."
+category: "Infrastructure"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=YwYtrElo66c"
+publicationDate: "2026-08-21T00:00:00.000"
+contentType: "Infrastructure"

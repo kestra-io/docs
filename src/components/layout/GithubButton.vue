@@ -1,9 +1,10 @@
 <template>
     <div v-if="!hasError" class="github-button-wrapper mb-1 me-sm-2">
-        <a
+        <component
+            :is="linked ? 'a' : 'div'"
             class="github-button"
-            href="https://github.com/kestra-io/kestra"
-            target="_blank"
+            :href="linked ? 'https://github.com/kestra-io/kestra' : undefined"
+            :target="linked ? '_blank' : undefined"
         >
             <div class="left-part">
                 <Github />
@@ -13,7 +14,7 @@
                 <LayoutGithubStargazer v-if="onClient" @api-error="hasError = true" />
                 <span v-else class="placeholder"></span>
             </div>
-        </a>
+        </component>
     </div>
 </template>
 
@@ -28,7 +29,10 @@
         onClient.value = true
     })
 
-    withDefaults(defineProps<{ small?: boolean }>(), { small: false })
+    withDefaults(defineProps<{ small?: boolean; linked?: boolean }>(), {
+        small: false,
+        linked: true,
+    })
 </script>
 
 <style lang="scss" scoped>

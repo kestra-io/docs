@@ -1,12 +1,15 @@
 ---
 import { getCollection, render } from "astro:content"
+import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
 import Layout from "~/components/layout.astro"
 
 export async function getStaticPaths() {
     const legalEntries = await getCollection("legal")
+    const scope = [await layoutDigest()]
     return legalEntries.map((entry) => ({
         params: { legal: entry.id },
         props: { entry },
+        cacheKey: entryCacheKey(entry, ...scope),
     }))
 }
 

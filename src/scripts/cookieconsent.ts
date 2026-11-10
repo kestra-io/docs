@@ -1,164 +1,241 @@
-import * as CookieConsent from "vanilla-cookieconsent"
 import posthog from "posthog-js"
-import axios from "axios"
 import identify from "~/utils/identify"
-import { API_URL } from "astro:env/client"
+import { $fetchApi } from "~/utils/fetch"
 import { GTM_ID } from "astro:env/client"
+import { CONSENT_REGION_ATTR } from "~/middlewares/consentRegion"
+import { readInternalFlagFromUrl, tagInternalVisitor } from "./internalVisitor"
 
-const isEurope = Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
-const cookieConsent = CookieConsent
+// Set by the Worker on <html> from Cloudflare's edge geo data (not a
+// cookie, so responses stay edge-cacheable); falls back to Intl timezone
+// (always the case in local `astro dev`).
+const regionAttr = document.documentElement.getAttribute(CONSENT_REGION_ATTR)
+const isEurope =
+    regionAttr === "eu" || regionAttr === "row"
+        ? regionAttr === "eu"
+        : Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
 
-window.addEventListener("DOMContentLoaded", () => {
-    const enabledAnalytics = async () => {
-        window.dataLayer = window.dataLayer || []
-        window.dataLayer.push({
-            "gtm.start": new Date().getTime(),
-            event: "gtm.js",
-        })
+// Global Privacy Control: an automatic no-UI opt-out signal (CPRA and
+// similar US state laws) — honored immediately, without showing a banner.
+export const gpcSignaled = navigator.globalPrivacyControl === true
 
-        const s = document.createElement("script")
-        s.async = true
-        s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
-        document.head.appendChild(s)
+// GPC opts out of ad/marketing signals specifically (CPRA's "sale/sharing"
+// scope); Europe additionally denies analytics and shows the opt-in banner.
+const adsDenied = isEurope || gpcSignaled
 
-        const response = await axios.get(`${API_URL}/config`, {
-            withCredentials: true,
-        })
+// Kicked off at module top-level (as early as this script itself runs) so
+// the fetch is already in flight by the time astro:page-load needs it.
+const bannerModule = isEurope ? import("./cookieBanner") : null
 
-        posthog.init(response.data.posthog.token, {
-            api_host: window.location.origin + "/t/",
-            ui_host: "https://eu.posthog.com",
-            capture_pageview: false,
-            capture_pageleave: true,
-            autocapture: false,
-            disable_session_recording: false,
-        })
+// Astro's <ClientRouter /> makes navigation a soft transition, so these
+// guards keep one-time bootstrap idempotent across page loads.
+let analyticsEnabled = false
+// Whether analytics consent currently stands. Separate from analyticsEnabled
+// (PostHog bootstrapped), which stays true after a revoke.
+let analyticsGranted = false
+let marketingEnabled = false
+let consentInitialized = false
+let gtmLoaded = false
 
-        posthog.register_for_session({
-            from: "SITE",
-        })
+// Google's canonical snippet: push the `arguments` object, not an array.
+// gtag commands and ordinary data pushes share the same dataLayer, and GTM
+// tells them apart by the *type* of what was pushed, not just its shape: it
+// treats an entry as a command only when it is an Arguments object. A real
+// Array indexes identically but fails that check, so `consent`/`default`
+// would never register and the ad_* signals would stay unset — which, for a
+// non-consenting EU visitor, blocks the Google Ads tags outright instead of
+// letting them send the cookieless pings this whole module exists to enable.
+//
+// Typed as a variadic signature for call sites, but implemented as a
+// `function` expression so `arguments` exists (an arrow has none).
+export const gtag: (...args: unknown[]) => void = function () {
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push(arguments)
+}
 
-        if (!posthog.get_property("__alias")) {
-            posthog.alias(response.data.id)
+// GTM must load for everyone, signals denied by default in Europe, so
+// Google gets cookieless pings for conversion modeling pre-consent.
+const initConsentModeAndGtm = () => {
+    if (gtmLoaded) {
+        return
+    }
+    gtmLoaded = true
+
+    gtag("consent", "default", {
+        ad_storage: adsDenied ? "denied" : "granted",
+        ad_user_data: adsDenied ? "denied" : "granted",
+        ad_personalization: adsDenied ? "denied" : "granted",
+        analytics_storage: isEurope ? "denied" : "granted",
+        // Give the consent banner time to restore a returning visitor's
+        // choice before tags fire. Europe-only so non-EU tags aren't delayed.
+        ...(isEurope ? { wait_for_update: 500 } : {}),
+    })
+
+    window.dataLayer.push({
+        "gtm.start": new Date().getTime(),
+        event: "gtm.js",
+    })
+
+    const s = document.createElement("script")
+    s.async = true
+    s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
+    document.head.appendChild(s)
+}
+
+// With <ClientRouter />, document.referrer keeps the landing page's external
+// referrer for the whole visit, so GA4 would report it on every soft
+// navigation. Track the previous page ourselves and send it as page_referrer.
+// (Done here rather than in a GTM Custom JavaScript variable: those need
+// 'unsafe-eval', which our CSP doesn't allow, and silently return undefined.)
+let lastPageUrl: string | undefined
+let pageReferrer: string | undefined = document.referrer || undefined
+
+export const pushPageView = () => {
+    const url = window.location.href?.split("#")[0]
+    // Several pushes for the same page (e.g. consent re-granted) keep the
+    // same referrer instead of pointing the page at itself.
+    if (url !== lastPageUrl) {
+        if (lastPageUrl !== undefined) {
+            pageReferrer = lastPageUrl
         }
-
-        posthog.capture("$pageview")
-
-        window.dataLayer.push({
-            event: "identify",
-            category: "sys",
-            noninteraction: true,
-            kuid: response.data.id,
-        })
-
-        window.dataLayer.push({
-            event: "content-view",
-            "content-name": window.location.pathname + window.location.search,
-            "content-view-name": window.astroClientConfig.slug,
-        })
-
-        localStorage.setItem("KUID", response.data.id)
-
-        if (window?.location?.search) {
-            const urlParams = new URLSearchParams(window.location.search)
-            const ke = urlParams.get("ke")
-            if (ke) {
-                identify(ke)
-            }
-        }
+        lastPageUrl = url
     }
 
-    const enabledMarketing = () => {
-        window.dataLayer.push({
-            event: "enable_marketing",
-            category: "sys",
-            noninteraction: true,
-        })
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+        event: "content-view",
+        "content-name": window.location.pathname + window.location.search,
+        "content-view-name": window.astroClientConfig?.slug,
+        page_referrer: pageReferrer,
+    })
+}
+
+export const enabledAnalytics = async () => {
+    analyticsGranted = true
+    // Push a page-view on every navigation (including client-side transitions).
+    if (analyticsEnabled) {
+        // Re-granting after a withdrawal: opt back in explicitly, since
+        // opt_out_capturing() persists and would otherwise outlive consent.
+        if (posthog.has_opted_out_capturing()) {
+            posthog.opt_in_capturing({ captureEventName: false })
+            posthog.startSessionRecording()
+        }
+        tagInternalVisitor()
+        pushPageView()
+        return
     }
+    analyticsEnabled = true
+
+    // Report the landing page-view before awaiting /config: GTM's GA4
+    // page_view fires on content-view, so a slow or failed /config must not
+    // delay or drop it (it only feeds PostHog and the identify event).
+    pushPageView()
+
+    const response = await $fetchApi<{
+        posthog: { token: string }
+        id: string
+    }>("/config", {
+        credentials: "include",
+    })
+
+    posthog.init(response.posthog.token, {
+        api_host: window.location.origin + "/t/",
+        ui_host: "https://eu.posthog.com",
+        capture_pageview: false,
+        capture_pageleave: true,
+        autocapture: false,
+        disable_session_recording: false,
+    })
+
+    posthog.register_for_session({
+        from: "SITE",
+    })
+
+    tagInternalVisitor()
+
+    if (!posthog.get_property("__alias")) {
+        posthog.alias(response.id)
+    }
+
+    posthog.capture("$pageview")
+
+    window.dataLayer.push({
+        event: "identify",
+        category: "sys",
+        noninteraction: true,
+        kuid: response.id,
+    })
+
+    localStorage.setItem("KUID", response.id)
+
+    if (window?.location?.search) {
+        const urlParams = new URLSearchParams(window.location.search)
+        const ke = urlParams.get("ke")
+        if (ke) {
+            identify(ke)
+        }
+    }
+}
+
+export const enabledMarketing = () => {
+    if (marketingEnabled) {
+        return
+    }
+    marketingEnabled = true
+
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+        event: "enable_marketing",
+        category: "sys",
+        noninteraction: true,
+    })
+}
+
+// Withdrawing consent has to stop PostHog too, not just flip the gtag signals:
+// analytics.js captures a $pageview on every astro:page-load independently of
+// this module, and soft navigation means there may never be a hard reload to
+// pick the change up. opt_out_capturing() persists, so it also covers the
+// visitor's later visits until they opt back in.
+export const disableAnalytics = () => {
+    analyticsGranted = false
+    if (!analyticsEnabled) {
+        return
+    }
+    posthog.stopSessionRecording()
+    posthog.opt_out_capturing()
+}
+
+// Fires on initial load and every client-side navigation, so bootstrap runs
+// once and every page after that just reports a page-view.
+document.addEventListener("astro:page-load", async () => {
+    readInternalFlagFromUrl()
+    initConsentModeAndGtm()
 
     if (!isEurope) {
         enabledAnalytics()
-        enabledMarketing()
+        if (!gpcSignaled) {
+            enabledMarketing()
+        }
 
         return
     }
 
-    document.documentElement.classList.add("cc--darkmode")
+    // Consent already handled on an earlier page — just report the page-view.
+    if (consentInitialized) {
+        if (analyticsGranted) {
+            enabledAnalytics()
+        } else {
+            // No analytics consent: GTM stays loaded, so this only produces
+            // a cookieless ping (conversion modeling).
+            pushPageView()
+        }
 
-    cookieConsent.run({
-        mode: isEurope ? "opt-in" : "opt-out",
-        manageScriptTags: true,
-        disablePageInteraction: true,
-        guiOptions: {
-            consentModal: {
-                layout: "box inline",
-                flipButtons: true,
-            },
-        },
-        autoClearCookies: false,
-        onConsent: ({ cookie }) => {
-            let consentCategories = cookie.categories
-            if (consentCategories.includes("analytics")) {
-                enabledAnalytics()
-            }
+        return
+    }
 
-            if (consentCategories.includes("marketing")) {
-                enabledMarketing()
-            }
-        },
-        categories: {
-            analytics: {
-                enabled: true,
-                readOnly: false,
-            },
-            marketing: {
-                enabled: true,
-                readOnly: false,
-            },
-        },
-        language: {
-            default: "en",
-            translations: {
-                en: {
-                    consentModal: {
-                        title: "We use cookies",
-                        description:
-                            'Hi, this website uses analytics & marketing cookies to understand how you interact with it to continuously improve your user experience. <a aria-label="Cookie policy" class="cc-link" href="/cookie-policy">Read our cookie policy</a>',
-                        acceptAllBtn: "Accept",
-                        showPreferencesBtn: "Settings",
-                    },
-                    preferencesModal: {
-                        title: "Cookie preferences",
-                        savePreferencesBtn: "Save settings",
-                        acceptAllBtn: "Accept all",
-                        acceptNecessaryBtn: "Reject all",
-                        sections: [
-                            {
-                                title: "Cookie usage",
-                                description:
-                                    "I use cookies to enhance your online experience. You can choose for each category to opt-in/out whenever you want.",
-                            },
-                            {
-                                title: "Analytics cookies",
-                                description:
-                                    "These cookies collect information about how you use the website, which pages you visited and which links you clicked on. All of the data is anonymized and cannot be used to identify you.",
-                                linkedCategory: "analytics",
-                            },
-                            {
-                                title: "Marketing cookies",
-                                description:
-                                    "These cookies tracks your activities on our site to allow commercials to eventually reach out.",
-                                linkedCategory: "marketing",
-                            },
-                            {
-                                title: "More information",
-                                description:
-                                    'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="mailto:hello@kestra.io">contact us</a>.',
-                            },
-                        ],
-                    },
-                },
-            },
-        },
-    })
+    consentInitialized = true
+
+    // EU-only banner code, split into its own chunk so non-EU visitors
+    // never fetch it. Reuses the promise kicked off above.
+    const { initBanner } = await bannerModule!
+    await initBanner()
 })

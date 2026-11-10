@@ -1,5 +1,7 @@
 ---
 title: Run Shell Scripts Inside Your Flows
+h1: Execute Bash and Shell Commands in Kestra Workflows
+description: Run Bash and shell scripts in Kestra workflows. Execute multi-step commands, chain scripts with pipes, and handle errors in automated shell tasks.
 icon: /src/contents/docs/icons/bash.svg
 stage: Getting Started
 topics:
@@ -12,7 +14,7 @@ You can execute bash script in a flow by either writing your Shell commands inli
 
 ## Scripts
 
-If you want to write a series of commands together to form a small script, and run that script as a task in the flow, you can use the `io.kestra.plugin.scripts.shell.Script`.
+If you want to write a series of commands together to form a small script, and run that script as a task in the flow, you can use the [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script).
 
 ```yaml
 id: shell_script
@@ -60,7 +62,7 @@ sleep 2
 echo "I am back from sleep"
 ```
 
-You can now invoke this script as one of the commands in the `io.kestra.plugin.scripts.shell.Commands` task. Note that we have set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
+You can now invoke this script as one of the commands in the [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands) task. Note that we have set the `enabled` flag for the `namespaceFiles` property to `true` so Kestra can access the file.
 
 ```yaml
 id: shell_invoke_file
@@ -115,12 +117,12 @@ tasks:
     commands:
       - echo '::{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}::'
 
-  - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ outputs.shell_outputs_task.vars.test }}'
+  - id: log_vars
+    type: io.kestra.plugin.core.log.Log
+    message: '{{ outputs.shell_outputs_task.vars.test }}'
 ```
 
-_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) and [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands)._
 
 ### File Output
 
@@ -146,11 +148,11 @@ tasks:
     message: "{{ read(outputs.shell_outputs_task.outputFiles['output.txt']) }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.shell.Script](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) and [io.kestra.plugin.scripts.shell.Commands](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.commands)._
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Shell script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: shell_metrics
@@ -170,3 +172,57 @@ tasks:
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
 ![metrics](./metrics.png)
+
+## Automate Shell with triggers
+
+You can also use shell code as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run shell code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline shell code:
+
+```yaml
+id: script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.shell.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: ubuntu
+    script: |
+      cat /path/that/does/not/exist
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run shell commands instead:
+
+```yaml
+id: commands_trigger
+namespace: company.team
+
+triggers:
+  - id: commands_failure
+    type: io.kestra.plugin.scripts.shell.CommandsTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: ubuntu
+    commands:
+      - cat /path/that/does/not/exist
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These trigger types support:
+
+- `interval` to control how often the script or commands run
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only on a transition from not matching to matching

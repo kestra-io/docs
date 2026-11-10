@@ -1,5 +1,6 @@
 ---
 title: Configure Alerts in Kestra
+h1: Set Up Workflow Failure Alerts via Slack and PagerDuty
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -14,8 +15,6 @@ Configure alerts that fire whenever a workflow fails.
   <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 Alerting is essential to keeping production systems reliable. Kestra makes it easy with multiple ways to attach alerts to workflows so you always know what’s happening.
 
 Kestra’s Notifications plugin group ships tasks for popular platforms such as Slack, Teams, and PagerDuty, making it straightforward to configure alerts directly inside workflows.
@@ -27,7 +26,7 @@ Each platform exposes two task types:
 - **Execution task** – sends execution metadata directly in the notification, including a link to the run, ID, namespace, flow name, start time, duration, and final status.
 - **Send task** – sends a custom message, useful when you want to describe the state of a specific task or output.
 
-For this walkthrough we’ll use the `SlackExecution` task to send a detailed execution summary.
+For this walkthrough we’ll use the [SlackExecution](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackexecution) task to send a detailed execution summary.
 
 ## `errors` property
 
@@ -80,7 +79,7 @@ errors:
 
 ## Flow trigger
 
-Subflows cut down on duplication, but you still need the `errors` block in every flow. For a fully centralized approach, use a **Flow trigger** that reacts to execution status. Trigger conditions let you target specific states, such as `FAILED` or `WARNING`, and you can define separate triggers per status if needed.
+Subflows cut down on duplication, but you still need the `errors` block in every flow. For a fully centralized approach, use a **Flow trigger** that reacts to execution status. The `when` expression lets you target specific states, such as `FAILED` or `WARNING`, and you can define separate triggers per status if needed.
 
 ```yaml
 id: failure_alert_slack
@@ -96,11 +95,8 @@ tasks:
 triggers:
   - id: on_failure
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
+    dependsOn:
+      - states: [FAILED, WARNING]
 
 ```
 

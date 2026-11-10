@@ -15,65 +15,151 @@ concurrency:
 
 permissions:
   pull-requests: write
-  actions: read # download baseline artifact from lighthouse.yml
 
 jobs:
   truncate-url-slug:
     name: Truncate URL
     runs-on: ubuntu-latest
     outputs:
-      slug: ${{ steps.truncate-url.outputs.slug }}
+      slug: ${{ steps.preview-url.outputs.slug }}
+      url: ${{ steps.preview-url.outputs.url }}
     steps:
-      - name: Display branch name
-        run: echo ${GITHUB_HEAD_REF}
+      # Only the composite action is needed here, so skip the full tree.
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          sparse-checkout: .github/actions
 
-      - name: truncate Url
-        id: truncate-url
-        run: echo "slug=ks-$(echo ${GITHUB_HEAD_REF} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')" >> "$GITHUB_OUTPUT"
+      - name: Resolve preview URL
+        id: preview-url
+        uses: ./.github/actions/preview-url
 
   deploy-workers:
     name: Publish to Cloudflare Workers
+    # Fork PRs cannot access the Cloudflare secrets or a write-enabled token.
+    # Their content is still validated by Astro Check and Lighthouse.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     needs: truncate-url-slug
+    permissions:
+      pull-requests: write
+      # The prune step deletes this ref's superseded incremental build caches.
+      actions: write
     env:
       CF_PAGES_BRANCH: ${{ github.ref_name }}
       CF_PAGES_COMMIT_SHA: ${{ github.sha }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      # Preview and production render different image URLs and gated content,
+      # and Astro's own config hash does not cover either, so they cache apart.
+      BUILD_VARIANT: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'preview' || 'production' }}
+      NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
+      PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
-      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
+      url: ${{ needs.truncate-url-slug.outputs.url }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      # Commit history for the sitemaps' lastmod dates, without the blobs of old
+      # revisions: ~9 MB in a few seconds, where fetch-depth 0 took up to 1m50s.
+      # Only this commit's ancestry is read, and a complete clone has nothing to do.
+      - name: Fetch commit history
+        run: |
+          if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+            git fetch --unshallow --filter=blob:none --no-tags origin "$GITHUB_SHA" \
+              || git fetch --unshallow --filter=blob:none --no-tags origin
+          fi
 
       - name: Set up Node via nvm
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version-file: ".nvmrc"
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Lint all files
-        if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
-        run: npm run lint
+        uses: ./.github/actions/node-modules
 
       - name: Check usage of collection in SSR pages
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
         run: node scripts/check-astro-content-imports.mjs
 
+      # Holds the content store plus the incremental build manifest and its copy
+      # of the pages from the last build, which is what lets pages be skipped.
+      # Restore only: the save is an explicit step below, so the prune can follow it.
+      - name: Restore Astro build cache
+        id: astro-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          # A matched directory is archived whole, so the passthrough image cache is
+          # removed by the last step below rather than excluded by pattern.
+          path: node_modules/.astro
+          key: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-${{ github.sha }}
+          # Only the same ref and variant: main builds production, PR builds
+          # preview, so a cross-ref fallback would never match anything.
+          restore-keys: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
+
+      # A restored content store can reference files that a merge to main since
+      # renamed or renumbered (e.g. ImageNotFound for a moved image), failing the
+      # build although the commit itself is fine. The next step retries clean.
       - name: Build
+        id: build
+        continue-on-error: true
         run: npm run build
+
+      # Only a build that ran on a restored cache is retried: without one, the
+      # failure is the commit's own and is reported as is.
+      - name: Rebuild without the restored cache
+        if: steps.build.outcome == 'failure'
         env:
-          NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
-          PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
+          CACHE_MATCHED_KEY: ${{ steps.astro-cache.outputs.cache-matched-key }}
+        run: |
+          if [ -z "$CACHE_MATCHED_KEY" ]; then
+            echo "::error title=Build failed::The build failed without a restored cache (see the Build step)."
+            exit 1
+          fi
+          echo "::warning title=Restored cache discarded::The build failed on the cache restored from $CACHE_MATCHED_KEY. Rebuilt from scratch."
+          if [ "$GITHUB_REF" = "refs/heads/main" ] && [ -n "$SLACK_WEBHOOK_URL" ]; then
+            jq -cn --arg text ":warning: docs deploy <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID|#$GITHUB_RUN_NUMBER> failed to build on the restored Astro cache and is rebuilding from scratch. See the step \"Build\"." '{text: $text}' \
+              | curl -sS -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL" \
+              || echo "::warning::Slack notification failed; continuing"
+          fi
+          rm -rf dist node_modules/.astro
+          npm run build
+
+      # A page restored from a stale incremental cache links CSS/JS hashes this
+      # build no longer emits. Catch it here rather than as a 404 in production.
+      - name: Check for dangling /_astro/ links
+        id: asset-links
+        continue-on-error: true
+        run: node scripts/check-dist-asset-links.mjs dist
+
+      # A silent fallback on main would hide a recurring double build; say so in Slack.
+      - name: Slack - incremental cache discarded
+        if: steps.asset-links.outcome == 'failure' && github.ref == 'refs/heads/main' && env.SLACK_WEBHOOK_URL != ''
+        run: |
+          jq -cn --arg text ":warning: docs deploy <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> restored stale pages from the incremental build cache and is rebuilding from scratch (withastro/astro#17974, #17993). See the step \"Check for dangling /_astro/ links\"." '{text: $text}' \
+            | curl -sS -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL" \
+            || echo "::warning::Slack notification failed; continuing"
+
+      # Known upstream gaps (withastro/astro#17974, #17993) can restore a page whose
+      # assets this build pruned, and the content store keeps markdown rendered against
+      # an Expressive Code stylesheet that an ec.config.mjs change renamed. Rebuild from
+      # scratch and re-check, strictly this time.
+      - name: Rebuild without the incremental cache
+        if: steps.asset-links.outcome == 'failure'
+        run: |
+          echo "::warning title=Incremental cache discarded::Restored pages linked assets missing from dist (see the previous step). Rebuilt from scratch."
+          rm -rf dist node_modules/.astro
+          npm run build
+          node scripts/check-dist-asset-links.mjs dist
 
       - name: Deploy Worker
         id: prod-deploy
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref == 'refs/heads/main' }}
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3 trufflehog:ignore (commit SHA, not a Cloudflare token)
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -82,7 +168,7 @@ jobs:
       - name: Deploy Preview Worker
         id: preview-deploy
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' }}
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3 trufflehog:ignore (commit SHA, not a Cloudflare token)
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -95,97 +181,33 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: "☁️ Cloudflare Worker Preview Deployed!"
           template: |
-            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
+            🔗 [${{ needs.truncate-url-slug.outputs.url }}](${{ needs.truncate-url-slug.outputs.url }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
 
-  lighthouse:
-    name: Lighthouse Benchmark
-    # Runs after the deployment so we only benchmark PRs that build successfully.
-    # We do NOT test the preview URL (it's behind a private network) — instead we
-    # build the site locally and serve it with `wrangler dev`.
-    if: ${{ github.event_name == 'pull_request' && startsWith(github.repository, 'kestra-io/') }}
-    runs-on: ubuntu-latest
+      # ~700 MB of passthrough image copies that regenerate in seconds; drop them
+      # before the post-job cache save so they stay out of the 10 GB quota.
+      - name: Drop the passthrough image cache before it is saved
+        if: always()
+        run: rm -rf node_modules/.astro/assets
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node
-        uses: actions/setup-node@v6
+      # Saved here, on success, so the prune below runs after it: a failed save then
+      # leaves the ref its previous entry instead of none. A re-run's key already exists.
+      - name: Save Astro build cache
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
-          node-version-file: .nvmrc
+          path: node_modules/.astro
+          key: ${{ steps.astro-cache.outputs.cache-primary-key }}
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build site
-        run: npm run build
-        env:
-          NO_IMAGE_OPTIM: "true"
-
-      - name: Install Lighthouse
-        # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
-        run: npm install --no-save lighthouse chrome-launcher
-
-      - name: Start local dev server
-        # wrangler dev serves the built Workers bundle locally via Miniflare —
-        # no Cloudflare credentials required, no network access needed.
-        run: npx wrangler dev --local &
-
-      - name: Wait for dev server to be ready
-        run: |
-          echo "Waiting for http://localhost:8787…"
-          for i in $(seq 1 24); do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8787 || true)
-            if [ "$STATUS" = "200" ]; then
-              echo "Server is ready (HTTP 200)."
-              exit 0
-            fi
-            echo "  Attempt $i/24: HTTP $STATUS — retrying in 5 s…"
-            sleep 5
-          done
-          echo "Warning: server did not return 200 after 2 min; running Lighthouse anyway."
-
-      # Try to download the latest baseline artifact saved after a main-branch deploy.
-      # If none exists yet (first run after setup), this step is skipped silently.
-      - name: Download main branch baseline
-        id: baseline
-        uses: dawidd6/action-download-artifact@v6
+      # This commit's entry is saved above, so every older entry under the same prefix
+      # is superseded: one ~22 MB entry per ref instead of one per push. Fork PR tokens
+      # cannot delete, hence continue-on-error.
+      - name: Prune superseded incremental build caches
         continue-on-error: true
-        with:
-          workflow: lighthouse.yml
-          branch: main
-          name: lighthouse-baseline
-          path: baseline/
-
-      - name: Run Lighthouse benchmark
-        run: node scripts/lighthouse-benchmark.mjs
         env:
-          BASE_URL: http://localhost:8787
-          OUTPUT_FILE: lighthouse-results.json
-          BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
-          MARKDOWN_FILE: lighthouse-report.md
-
-      - name: Read Lighthouse report
-        id: report
+          GH_TOKEN: ${{ github.token }}
+          KEY_PREFIX: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
         run: |
-          {
-            echo "content<<LIGHTHOUSE_REPORT_DELIMITER"
-            cat lighthouse-report.md
-            printf '\n'
-            echo "LIGHTHOUSE_REPORT_DELIMITER"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Comment on PR
-        uses: meysam81/comment-pr@v1
-        with:
-          title: "## 🔦 Lighthouse Benchmark"
-          content: ${{ steps.report.outputs.content }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload results as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-pr-results
-          path: lighthouse-results.json
-          retention-days: 30
+          ids=$(gh cache list --repo "$GITHUB_REPOSITORY" --key "$KEY_PREFIX" --limit 100 --json id,key \
+            --jq ".[] | select(.key != \"$KEY_PREFIX$GITHUB_SHA\") | .id")
+          printf '%s\n' $ids | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          echo "deleted $(printf '%s\n' $ids | grep -c .) superseded entries under $KEY_PREFIX"

@@ -1,4 +1,4 @@
-import { optimize } from "svgo"
+import { optimize } from "svgo/browser"
 
 export function optimizeSvgIcon(svgInput: string, prefix: string) {
     return optimize(svgInput, {
@@ -22,7 +22,10 @@ export function optimizeSvgIcon(svgInput: string, prefix: string) {
                     prefix: `${prefix
                         .toLowerCase()
                         .replace(/\s+/g, "-")
-                        .replace(/[^a-z0-9-]/g, "")}-${Math.random().toString(36).substring(2, 7)}`,
+                        .replace(
+                            /[^a-z0-9-]/g,
+                            "",
+                        )}-${Math.random().toString(36).substring(2, 7)}`,
                 },
             },
             "removeTitle",

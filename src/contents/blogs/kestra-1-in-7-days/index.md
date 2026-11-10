@@ -19,7 +19,7 @@ As the world turns to AI, orchestration faces a new inflection point. The stakes
 
 ## Already trusted worldwide
 
-Kestra already powers **billions of workflows** for some of the world’s largest organizations, from **Apple to Toyota, Bloomberg, JPMorgan Chase, SoftBank, Deutsche Telekom, BHP, and many other Fortune 500 companies**.
+Kestra already powers **billions of workflows** for some of the world’s largest organizations, from **Apple to Amdocs, Bloomberg, JPMorgan Chase, Deutsche Telekom, and many other Fortune 500 companies**.
 
 - **Fila** runs 2.5M workflows every month with just 25 engineers.
 - **Acxiom** orchestrates for more than 50 enterprise clients and hundreds of teams.
@@ -27,7 +27,7 @@ Kestra already powers **billions of workflows** for some of the world’s larges
 
 With more than **20,000 GitHub stars**, Kestra has become the **fastest-growing open-source orchestrator of its generation.**
 
-And with **:PluginCount plugins available out of the box**, Kestra connects across the enterprise stack from data and AI to IT and business automation, allowing engineers to orchestrate everything, everywhere.
+And with **{totalPlugins}+ plugins available out of the box**, Kestra connects across the enterprise stack from data and AI to IT and business automation, allowing engineers to orchestrate everything, everywhere.
 
 We are backed by the founders of **Datadog, Hugging Face, dbt Labs, Talend, Airbyte, Algolia**… and integrated with the platforms that already shape enterprise ecosystems: **Snowflake, Databricks, HashiCorp**, and many more.
 
@@ -51,6 +51,6 @@ We have built the foundation for the next decade of orchestration.
 - **Mature:** proven by the world’s largest enterprises.
 - **Declarative:** simple to define, predictable to run, easy to scale.
 - **AI-powered:** built to orchestrate workflows that are increasingly dynamic and intelligent.
-- **Extensible:**  powered by :PluginCount plugins to integrate with everything that matters.
+- **Extensible:**  powered by {totalPlugins}+ plugins to integrate with everything that matters.
 
 The countdown is on. In 7 days, we’ll reveal what will **permanently redefine orchestration.**

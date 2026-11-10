@@ -1,0 +1,30 @@
+// Shared styles for the markdown renderers. Used from the scoped style
+// blocks of MarkdownRenderer.vue and MarkdownRendererSSR.vue so the
+// two variants can't drift apart visually.
+@mixin markdown-renderer {
+    & :deep(pre) {
+        padding: 1rem;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        & code {
+            border: none;
+            background: transparent;
+            padding: 0;
+            .line {
+                min-height: 1rem;
+                white-space: pre-wrap;
+            }
+        }
+    }
+
+    // Plain fences shown before Shiki's chunk lands. The upgraded markup has
+    // no background of its own (marked-shiki strips Shiki's outer <pre>), so
+    // only the wrapping Shiki puts on its per-line spans needs matching here.
+    & :deep(pre.shiki-fallback) code {
+        white-space: pre-wrap;
+    }
+
+    :deep(h3) {
+        padding: 0;
+    }
+}

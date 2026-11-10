@@ -1,9 +1,14 @@
 ---
-title: Performance Tuning Kestra – Tune Workers, JDBC, Kafka
+title: "Performance Tuning in Kestra: Workers, JDBC, Kafka"
+h1: "How to Tune Kestra Performance: Workers, JDBC, and Kafka"
 sidebarTitle: Performance Tuning
 icon: /src/contents/docs/icons/admin.svg
 description: Tips and best practices for tuning Kestra performance, covering Worker configuration, JDBC backend, and Kafka settings.
 ---
+
+:::alert{type="info"}
+This guide covers Kestra 1.3. Some configuration options reference the JDBC queue and Kafka backend, which were replaced by the gRPC worker-controller in Kestra 2.0. An updated guide for 2.0 will be published after release.
+:::
 
 Not all workloads are the same, so Kestra is configured to balance throughput (the ability to process a lot of executions in parallel) and latency (the ability to process executions quickly) without using too many resources.
 
@@ -17,13 +22,21 @@ Before you read on, please familiarize yourself with the [Kestra architecture](.
 
 The [Worker](../../08.architecture/02.server-components/index.md#worker) executes your tasks, and tuning it depends on the type of workloads you run.
 
-The most useful configuration is the number of Worker threads, which is 8 times the number of available cores by default.
+The most useful configuration is the number of Worker threads, which is 8 times the number of available processors by default. `kestra.allocated-cpu-cores` doesn't change this default.
 
 You can increase it to boost parallel task execution. Depending on how you start Kestra, use one of the following methods:
 
 - If using the standalone, set `--worker-thread` in the standalone command line.
 - If using separate component processes, set `--thread` in the Worker command line.
 - If using our Helm chart, set `deployments.worker.workerThreads` in the values.
+
+A Worker also holds a buffer of jobs it has already fetched while all its threads are busy. Set its size with `kestra.worker.job-buffer-size`. It defaults to the thread count, which is also its maximum. A smaller buffer leaves more of the backlog with the Worker Controller, so newly started Workers can pick it up, at the cost of some dispatch throughput for short tasks. `0` makes a Worker request a job only when a thread is idle.
+
+```yaml
+kestra:
+  worker:
+    job-buffer-size: 0
+```
 
 ## JDBC backend
 
@@ -63,16 +76,38 @@ You can configure the number of threads used by the Executor with the following 
 
 ```yaml
 kestra:
-  jdbc:
-    executor:
-      thread-count: 0
+  executor:
+    thread-count: 0
 ```
 
-By default, it's 0, which means the number of available CPUs. Two thread pools are started, effectively using 2 times the number of available CPUs by default.
+The Executor starts two thread pools of this size: one for execution events and one for worker task results. The default, `0`, sizes each pool to the number of [allocated CPU cores](../../configuration/02.runtime-and-storage/index.md#allocated-cpu-cores), with a minimum of 4.
+
+## MySQL-specific tuning
+
+Before tuning MySQL for throughput, confirm the server meets Kestra's [MySQL settings](../../10.administrator-guide/00.requirements/index.md#mysql-settings), including the required `READ COMMITTED` transaction isolation level.
+
+If you run the JDBC backend on MySQL, you may see meaningfully lower executor throughput than on PostgreSQL on comparable hardware, even after tuning the JDBC queue settings above. This comes from a MySQL server default, not from the JDBC queue itself.
+
+Kestra's JDBC queue is commit-heavy. A busy instance can produce thousands of commits per second. By default, MySQL synchronously flushes the binary log to disk on every commit (`sync_binlog=1`), on top of its own redo log flush. PostgreSQL does not perform this second fsync. That extra flush is what dominates at this commit rate.
+
+`sync_binlog` controls how often the binary log is flushed. Setting it above `1` flushes only every Nth commit, applied server-wide. Values around 25 significantly reduce the throughput gap to PostgreSQL while keeping the binary log exposure window small:
+
+```ini
+[mysqld]
+sync_binlog=25
+```
+
+You can also apply this without a server restart:
+
+```sql
+SET GLOBAL sync_binlog = 25;
+```
+
+This setting does not affect `mysqld` crash safety or data durability — `innodb_flush_log_at_trx_commit` is untouched. Only the binary log is affected: up to N-1 transactions can be lost from the binary log on an OS-level crash, which impacts replication and point-in-time recovery only. The exposure is limited to the binary log and has no impact on data visible to Kestra. Pick N based on your acceptable replication lag.
 
 ## The Kafka backend
 
-First, we set the Kafka partition count to 16 with a replication factor of 1 by default. Because Kafka is not the primary storage, increasing the replication factor is optional; all data can be re-created from Elasticsearch if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, etc.) would not provide any benefits. If you plan to exceed this, increase the partition count.
+First, we set the Kafka partition count to 16 with a replication factor of 1 by default. Because Kafka is not the primary storage, increasing the replication factor is optional; all data can be re-created from the database if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, etc.) would not provide any benefits. If you plan to exceed this, increase the partition count.
 
 This is the default topic configuration:
 
@@ -86,9 +121,9 @@ kestra:
 ```
 
 You can configure any Kafka producer and consumer properties recommended in standard Kafka application tuning to improve performance.
-They are configurable via `kestra.kafka.defaults.consumer.properties` and `kestra.kafka.defaults.producer.properties` for the standard consumer and producer properties, and `kestra.kafka.defaults.stream.properties` for Kafka Streams.
+They are configurable via `kestra.kafka.defaults.consumer.properties` and `kestra.kafka.defaults.producer.properties` for the standard consumer and producer properties.
 
-The most impactful properties are `poll.ms` and `commit.interval.ms`, which are reduced by default from 100 ms to 25 ms. You can decrease them further at the cost of more resources used by the broker.
+The most impactful property is `linger.ms: 0`, which are reduced by default from 5 ms to 0 ms as Kestra send small messages individually, so waiting for a batch of messages would increase latency. You can increase it to reduce resource usage on the Kafka broker at the cost of higher latency.
 
 This is the default properties configuration:
 
@@ -96,22 +131,7 @@ This is the default properties configuration:
 kestra:
   kafka:
     defaults:
-      stream:
+      producer:
         properties:
-          poll.ms: 25 # Kafka default 100
-          commit.interval.ms: 25 # Kafka default 100
-```
-
-You can also set those properties on a topic basis.
-
-You can also configure the number of threads used by Kafka Stream (`num.stream.threads`) which is one by default.
-You can increase it for better resource utilization if you process a high number of small executions.
-However, if you process a lot of big executions, increasing it can incur an increase in memory usage; careful benchmarking should be done before increasing it.
-
-```yaml
-kestra:
-  kafka:
-    stream:
-      properties:
-        num.stream.threads: 4 # Default to 1
+          linger.ms: 0
 ```

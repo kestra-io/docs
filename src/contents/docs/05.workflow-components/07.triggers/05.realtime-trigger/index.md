@@ -1,22 +1,20 @@
 ---
 title: Realtime Trigger in Kestra – Millisecond Eventing
+h1: React Instantly to Kafka, SQS, and MQTT Events
 description: Achieve low-latency automation with Kestra's Realtime Triggers. React instantly to events from Kafka, SQS, MQTT, and other streaming systems.
 sidebarTitle: Realtime Trigger
 icon: /src/contents/docs/icons/flow.svg
-version: ">= 0.17.0"
 ---
 
 Trigger workflows instantly as events occur, with millisecond latency.
 
-## Realtime trigger – millisecond eventing
-
-[Triggers](./index.md) in Kestra can listen to external events and start a workflow execution when the event occurs. Most triggers in Kestra **poll** external systems at regular intervals (e.g., every second) to detect new events. This is effective for batch-style data processing. However, business-critical workflows often demand immediate reactions — within milliseconds. **Realtime Triggers** address this need by listening directly for events and starting workflows as soon as they occur.
+Most Kestra [triggers](../index.mdx) poll external systems at a fixed interval. Realtime Triggers listen directly for events and start a flow the moment one arrives, with millisecond latency. Each Realtime Trigger runs as a dedicated listener thread on a worker; when an event arrives, the listener immediately starts a workflow execution to process it.
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## What are Realtime Triggers
+## Supported event sources
 
 Realtime Triggers continuously listen for events and launch a new workflow execution the moment an event occurs, such as:
 
@@ -24,49 +22,16 @@ Realtime Triggers continuously listen for events and launch a new workflow execu
 - a message is published to a [Pulsar topic](/plugins/plugin-pulsar/io.kestra.plugin.pulsar.realtimetrigger)
 - a message is published to an [AMQP queue](/plugins/plugin-amqp/io.kestra.plugin.amqp.realtimetrigger)
 - a message is published to an [MQTT queue](/plugins/plugin-mqtt/io.kestra.plugin.mqtt.realtimetrigger)
-- a message is published to an [AWS SQS queue](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
-- a message is published to [Google Pub/Sub](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
-- a message is published to [Azure Event Hubs](/plugins/plugin-azure/eventhubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
-- a message is published to a [NATS subject](/plugins/plugin-nats/io.kestra.plugin.nats.realtimetrigger)
-- an item is added to a [Redis list](/plugins/plugin-redis/io.kestra.plugin.redis.realtimetriggerlist)
+- a message is published to an [AWS SQS queue](/plugins/plugin-aws/aws-sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
+- a message is published to [Google Pub/Sub](/plugins/plugin-gcp/google-cloud-pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
+- a message is published to [Azure Event Hubs](/plugins/plugin-azure/azure-event-hubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
+- a message is published to a [NATS subject](/plugins/plugin-nats/nats-core/io.kestra.plugin.nats.core.realtimetrigger)
+- an item is added to a [Redis list](/plugins/plugin-redis)
 - a row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).
 
-## How realtime triggers work
+## Configuring a Realtime Trigger
 
-Once a Realtime Trigger is added to a workflow, Kestra spins up a dedicated listener thread that remains active. As soon as a new event arrives, the listener immediately starts a workflow execution to process it.
-
-## Use cases
-
-Realtime Triggers are ideal for orchestrating **business-critical operations** and **event-driven microservices**. Typical scenarios include:
-
-- Fraud or anomaly detection
-- Order and payment processing
-- Real-time predictions or recommendations
-- Stock price or market event reactions
-- Shipping and delivery updates
-- Any workflow requiring instant reaction to external events
-
-In addition, Realtime Triggers can be used for **data orchestration**, especially for **Change Data Capture** use cases. The [Debezium Postgres RealtimeTrigger](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger) plugin can listen to changes in a database table and start a workflow execution as soon as a new row is inserted, updated, or deleted.
-
-## When to use Triggers vs. Realtime Triggers
-
-The table below compares Triggers with Realtime Triggers to help you choose the right trigger type for your use case:
-
-| Criteria             | Trigger                                                               | Realtime Trigger                                                                                |
-|----------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| **Implementation**   | Micro-batch                                                           | Realtime                                                                                        |
-| **Event Processing** | Batch-process all events received until the poll interval has elapsed | Process each event immediately as it happens                                                    |
-| **Latency**          | Second(s) or minute(s)                                                | Millisecond(s)                                                                                  |
-| **Execution Model**  | Each execution processes one or many events                           | Each execution processes exactly one event                                                      |
-| **Data Handling**    | Store all received events in a file                                   | Store each event in a raw format                                                                |
-| **Output format**    | URI of a file in internal storage                                     | Raw data of the event payload and related metadata                                              |
-| **Application**      | Data applications processing data in batch                            | Business-critical operations reacting to events in real time                                    |
-| **Use cases**        | Data orchestration for analytics and building data products           | Process and microservice orchestration (real time updates, anomaly detection, order processing) |
-
-
-## How to Use Realtime Triggers
-
-To use Realtime Triggers, simply choose the `RealtimeTrigger` as a trigger type of your desired service. Here, we use the `RealtimeTrigger` to [listen to new messages in an AWS SQS queue](https://youtu.be/bLzk4dKc95g):
+A Realtime Trigger is configured by setting `type` to the plugin's `RealtimeTrigger` class. The following example listens for new messages in an AWS SQS queue:
 
 ```yaml
 id: sqs
@@ -86,12 +51,38 @@ triggers:
     queueUrl: https://sqs.eu-north-1.amazonaws.com/123456789/MyQueue
 ```
 
-## Comparison with real-time data processing engines
+## Worker failover for Realtime Triggers
 
-It's important to note that Kestra's Realtime Triggers are not intended to be used as a replacement for real-time data processing engines such as Apache Flink, Apache Beam, or Google Dataflow.
+Each Realtime Trigger runs as a dedicated listener thread on one specific worker. If that worker stops, the listener stops with it. Kestra's [liveness mechanism](../../../10.administrator-guide/server-lifecycle/index.md) detects this and re-emits the trigger so another available worker can pick it up.
 
-Those data processing engines excel at **stateful** streaming applications and complex SQL transformations over real-time data streams.
+The time before failover depends on how the worker stopped:
 
-Unlike streaming engines, Kestra’s Realtime Triggers are **stateless** — each event creates its own independent workflow execution. They are designed for orchestrating business workflows and microservices in response to events, not for continuous stateful stream processing.
+- **Graceful shutdown** (e.g. `docker stop`, rolling deploy): the Executor waits for `kestra.server.terminationGracePeriod` (default `PT5M`) before reassigning the trigger. This prevents duplicate processing when the worker is expected to come back shortly, such as during a rolling deployment.
+- **Abrupt failure** (no heartbeat received): the Executor detects the missing heartbeat within `kestra.server.liveness.timeout` and reassigns the trigger without waiting for the grace period.
+
+The failover time after a graceful shutdown is set by `terminationGracePeriod`:
+
+```yaml
+kestra:
+  server:
+    terminationGracePeriod: PT1M  # default is PT5M
+```
+
+:::alert{type="info"}
+Events are not lost during the failover window. They remain in the source system (Kafka topic, SQS queue, etc.) and will be consumed once the trigger listener is restarted on another worker.
+:::
+
+## Polling triggers vs. Realtime Triggers
+
+| Criteria | Polling trigger | Realtime Trigger |
+|---|---|---|
+| **Implementation** | Micro-batch | Realtime |
+| **Event processing** | Batch-processes all events received within the poll interval | Processes each event immediately as it arrives |
+| **Latency** | Seconds or minutes | Milliseconds |
+| **Execution model** | Each execution processes one or many events | Each execution processes exactly one event |
+| **Data handling** | Stores all received events in a file | Stores each event in its raw format |
+| **Output format** | URI of a file in internal storage | Raw event payload and metadata |
+
+Realtime Triggers are **stateless**: each event creates its own independent workflow execution. They are designed for orchestrating workflows and microservices in response to events, not for continuous stateful stream processing.
 
 To continue with Realtime Triggers, check out their [How-to Guide](../../../15.how-to-guides/realtime-triggers/index.md).

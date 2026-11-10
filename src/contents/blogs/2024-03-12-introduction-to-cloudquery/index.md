@@ -5,7 +5,8 @@ date: 2024-03-13T16:15:00
 category: Solutions
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -160,7 +161,7 @@ CloudQuery doesn't support as many source and destination connectors as data int
 
 ## Moving your CloudQuery syncs to production using Kestra
 
-Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md), a serverless DuckDB service in the cloud.
+Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](../duckdb-vs-motherduck/index.md), a serverless DuckDB service in the cloud.
 
 ```yaml
 id: hackernews_to_motherduck
@@ -206,7 +207,7 @@ triggers:
 
 Orchestrating CloudQuery syncs in Kestra is simple — you configure your source(s) and destination(s) in a list, and the sync will ensure that each source is ingested into the desired destinations.
 
-In this example, we're also using Kestra's [secret management](../../docs/06.concepts/04.secret/index.md) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](../../docs/06.concepts/06.pebble/index.md) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](../../docs/06.concepts/08.backfill/index.md) make it easy to catch up on missed syncs.
+In this example, we're also using Kestra's [secret management](../../docs/06.concepts/04.secret/index.md) to store the MotherDuck token. This way, you don't need to hardcode any credentials in the sync's YAML configuration. You can also use Kestra's [variable templating](../../docs/06.concepts/06.pebble/index.md) to pass the current date to the sync job. This way, you can run the sync daily, and it will collect data incrementally. And if you miss some scheduled intervals due to downtime, [Kestra's backfills](../../docs/05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill) make it easy to catch up on missed syncs.
 
 ## Next steps
 

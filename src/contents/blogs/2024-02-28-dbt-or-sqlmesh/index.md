@@ -83,8 +83,8 @@ SQLMesh introduces key improvements for managing SQL queries:
 
 Comparing SQLMesh's exposed commands, like `sqlmesh plan`, and the way it interacts with the data warehouse, it evokes a strong resemblance to Terraform's approach. Adding UI on top is the realization that different user interfaces (Terraform being one) are important to support any user experiences.
 
-<div>
-  <iframe width="700" height="400" src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/wTLoDq-SW-g?si=6gbmbLJV8j1L9LT0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 Here is a general feature comparison between dbt and SQLMesh:
@@ -153,7 +153,7 @@ The following sections will demonstrate how you can easily orchestrate dbt and S
 
 ### Orchestrating SQL Mesh with Kestra
 
-Using SQLMesh in Kestra is straightforward. The following example shows how you can clone a [SQLMesh project from a Git repository](https://github.com/TobikoData/sqlmesh-examples), run it with the dedicated [SQLMeshCLI task](/plugins/tasks/cli/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and query the results with [DuckDB](https://duckdb.org/).
+Using SQLMesh in Kestra is straightforward. The following example shows how you can clone a [SQLMesh project from a Git repository](https://github.com/TobikoData/sqlmesh-examples), run it with the dedicated [SQLMeshCLI task](/plugins/plugin-sqlmesh/io.kestra.plugin.sqlmesh.cli.sqlmeshcli) and query the results with [DuckDB](https://duckdb.org/).
 
 ```yaml
 id: sqlmesh

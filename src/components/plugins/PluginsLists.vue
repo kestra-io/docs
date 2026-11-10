@@ -6,14 +6,13 @@
     >
         <template #top-bar>
             <h1>Connect anything to everything</h1>
-            <p>
-                Extend Kestra with {{ props.totalPluginCount }} plugins
-            </p>
+            <p>Extend Kestra with {{ props.totalPluginCount }} plugins</p>
             <div class="search-input">
                 <Magnify class="search-icon" />
                 <input
                     v-model="searchQuery"
                     type="text"
+                    autofocus
                     :placeholder="`Search across ${props.totalPluginCount} plugins`"
                 />
                 <Close
@@ -28,8 +27,7 @@
                         <button
                             class="btn btn-sm btn-primary"
                             title="Ask Kestra AI"
-                            data-bs-toggle="modal"
-                            data-bs-target="#search-ai-modal"
+                            data-modal-target="#search-ai-modal"
                         >
                             <img
                                 :src="KSAIImg.src"
@@ -91,7 +89,7 @@
 
 <script setup lang="ts">
     import { computed, ref, watch, onMounted } from "vue"
-    import { useWindowScroll } from "@vueuse/core"
+    import { useWindowScroll, watchDebounced } from "@vueuse/core"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import type { CardPlugin } from "~/utils/plugins/pruneForClient"
 
@@ -111,6 +109,8 @@
     const sortOptions = [
         { value: "A-Z", label: "Name A-Z" },
         { value: "Z-A", label: "Name Z-A" },
+        { value: "newest", label: "Newest" },
+        { value: "most-used", label: "Most used" },
     ]
 
     const props = defineProps<{
@@ -124,26 +124,70 @@
         props.categories.map((c) => ({ id: c, label: formatCategoryName(c) })),
     )
 
-    const SEARCHABLE_FIELDS: (keyof CardPlugin)[] = ["title", "description", "name"]
+    const SEARCHABLE_FIELDS: (keyof CardPlugin)[] = [
+        "title",
+        "description",
+        "name",
+        "classes",
+    ]
 
-    const sortPlugins = (plugins: CardPlugin[], ascending: boolean) =>
-        [...plugins].sort((a, b) => {
-            const aCore = a.group === "io.kestra.plugin.core" && !a.subGroup
-            const bCore = b.group === "io.kestra.plugin.core" && !b.subGroup
-            if (aCore !== bCore) return aCore ? -1 : 1
+    const sortPlugins = (
+        plugins: CardPlugin[],
+        sort: string,
+        query: string,
+    ) => {
+        const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
+        const matchesAll = (value: string | undefined) =>
+            tokens.length > 0 &&
+            tokens.every((t) => value?.toLowerCase().includes(t))
 
-            const comparison = a.title.toLowerCase().localeCompare(b.title.toLowerCase())
-            return ascending ? comparison : -comparison
+        return [...plugins].sort((a, b) => {
+            if (query) {
+                const aStrong = matchesAll(a.name) || matchesAll(a.title)
+                const bStrong = matchesAll(b.name) || matchesAll(b.title)
+                if (aStrong !== bStrong) return aStrong ? -1 : 1
+            }
+
+            if (sort === "newest") {
+                const aDate = a.lastReleasedAt
+                    ? new Date(a.lastReleasedAt).getTime()
+                    : 0
+                const bDate = b.lastReleasedAt
+                    ? new Date(b.lastReleasedAt).getTime()
+                    : 0
+                if (aDate !== bDate) return bDate - aDate
+            } else if (sort === "most-used") {
+                const bCmp = (b.usageCount ?? 0) - (a.usageCount ?? 0)
+                if (bCmp !== 0) return bCmp
+            } else {
+                const aCore = a.group === "io.kestra.plugin.core" && !a.subGroup
+                const bCore = b.group === "io.kestra.plugin.core" && !b.subGroup
+                if (aCore !== bCore) return aCore ? -1 : 1
+            }
+
+            const comparison = a.title
+                .toLowerCase()
+                .localeCompare(b.title.toLowerCase())
+            return sort === "Z-A" ? -comparison : comparison
         })
+    }
 
     const filterBySearch = (plugins: CardPlugin[], query: string) => {
         if (!query) return plugins
         const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
-        return plugins.filter((plugin) =>
-            SEARCHABLE_FIELDS.some((field) =>
-                tokens.every((t) => (plugin[field] as string)?.toLowerCase().includes(t)),
-            ),
-        )
+        const matchesAll = (value: string | undefined) =>
+            tokens.every((t) => value?.toLowerCase().includes(t))
+
+        return plugins
+            .filter((p) =>
+                SEARCHABLE_FIELDS.some((f) => matchesAll(p[f] as string)),
+            )
+            .sort((a, b) => {
+                const aStrong = matchesAll(a.name) || matchesAll(a.title)
+                const bStrong = matchesAll(b.name) || matchesAll(b.title)
+                if (aStrong !== bStrong) return aStrong ? -1 : 1
+                return 0
+            })
     }
 
     const searchFilteredPlugins = computed(() =>
@@ -154,12 +198,16 @@
         activeCategory.value === ""
             ? searchFilteredPlugins.value
             : searchFilteredPlugins.value.filter((item) =>
-                item.categories?.includes(activeCategory.value),
-            ),
+                  item.categories?.includes(activeCategory.value),
+              ),
     )
 
     const pluginsSlice = computed(() =>
-        sortPlugins(categoryFilteredPlugins.value, sortBy.value === "A-Z").slice(
+        sortPlugins(
+            categoryFilteredPlugins.value,
+            sortBy.value,
+            searchQuery.value,
+        ).slice(
             (currentPage.value - 1) * itemsPerPage.value,
             currentPage.value * itemsPerPage.value,
         ),
@@ -184,25 +232,33 @@
         y.value = 0
     }
 
-    watch([searchQuery, activeCategory, sortBy], ([q, cat, sort]) => {
+    watch([searchQuery, activeCategory, sortBy], () => {
         currentPage.value = 1
-        const url = new URL(window.location.href)
-
-        if (cat) url.searchParams.set("category", cat)
-        else url.searchParams.delete("category")
-
-        url.searchParams.set("sort", sort)
-
-        if (q) url.searchParams.set("q", q)
-        else url.searchParams.delete("q")
-
-        window.history.replaceState(null, "", url)
     })
+
+    watchDebounced(
+        [searchQuery, activeCategory, sortBy],
+        ([q, cat, sort]) => {
+            const url = new URL(window.location.href)
+
+            if (cat) url.searchParams.set("category", cat)
+            else url.searchParams.delete("category")
+
+            url.searchParams.set("sort", sort)
+
+            if (q) url.searchParams.set("q", q)
+            else url.searchParams.delete("q")
+
+            window.history.replaceState(window.history.state, "", url)
+        },
+        { debounce: 300 },
+    )
 </script>
 
 <style lang="scss" scoped>
     :deep(.top-bar) {
-        background: url("~/components/plugins/assets/intro-bg.webp") center / cover no-repeat !important;
+        background: url("~/components/plugins/assets/intro-bg.webp") center /
+            cover no-repeat !important;
     }
     .search-input {
         display: flex;
@@ -276,4 +332,3 @@
         padding-inline: 8px;
     }
 </style>
-

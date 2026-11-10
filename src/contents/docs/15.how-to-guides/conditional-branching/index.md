@@ -1,5 +1,6 @@
 ---
 title: Add Conditional Branching in Kestra
+h1: Direct Execution Paths Using the Switch Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -7,11 +8,11 @@ topics:
 description: Master conditional branching in Kestra workflows using the Switch task to direct execution paths based on dynamic input values.
 ---
 
-How to use the Switch task to branch the flow based on a value.
+How to use the [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) task to branch the flow based on a value.
 
 Conditional branching is a process in which the execution of a task is directed along different paths based on specific values. In a flow, it allows for decision-making, where different tasks are executed depending on the value provided.
 
-In this guide, you'll learn how to use Kestra's `Switch` task to control your flow based on a value passed. Depending on the value passed in the `Switch` task, the flow will branch to different task `cases` to execute a specific task. If there is no matching value, Kestra will use the `defaults` branch.
+This guide shows how to use Kestra's [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) task to control your flow based on a value. Depending on the value passed, the flow branches to different task `cases`. If there is no matching value, Kestra uses the `defaults` branch.
 
 ## Prerequisites
 
@@ -39,15 +40,18 @@ tasks:
     cases:
       FIRST:
         - id: first
-          type: io.kestra.plugin.core.debug.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          type: io.kestra.plugin.core.output.OutputValues
+          values:
+            result: "{{task.id}} > {{taskrun.startDate}}"
       SECOND:
         - id: second1
-          type: io.kestra.plugin.core.debug.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          type: io.kestra.plugin.core.output.OutputValues
+          values:
+            result: "{{task.id}} > {{taskrun.startDate}}"
         - id: second2
-          type: io.kestra.plugin.core.debug.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          type: io.kestra.plugin.core.output.OutputValues
+          values:
+            result: "{{task.id}} > {{taskrun.startDate}}"
       THIRD:
         - id: third1
           type: io.kestra.plugin.core.flow.Sequential
@@ -56,17 +60,18 @@ tasks:
               type: io.kestra.plugin.core.execution.Fail
           errors:
             - id: error1
-              type: io.kestra.plugin.core.debug.Return
-              format: "Error Trigger ! {{task.id}}"
+              type: io.kestra.plugin.core.log.Log
+              message: "Error Trigger ! {{task.id}}"
     defaults:
       - id: default
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{task.id}} > {{taskrun.startDate}}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{task.id}} > {{taskrun.startDate}}"
 
 outputs:
   - id: extracted
     type: STRING
-    value: "{{ outputs.first ?? outputs.second1 ?? outputs.third1 ?? outputs.default }}"
+    value: "{{ outputs.first.values.result ?? outputs.second1.values.result ?? outputs.default.values.result ?? 'The THIRD branch failed' }}"
 ```
 
 Save and execute the `switch` flow.
@@ -81,8 +86,8 @@ Within the flow:
         - `FIRST`: Executes task `first`, returning its ID and start time.
         - `SECOND`: Executes two tasks (`second1` and `second2`), both returning their task ID and start time.
         - `THIRD`: Runs a sequence of tasks where the `failed` task triggers an error and executes the `error1` task, which logs an error message.
-    - `defaults`: If the input doesn't match any cases, it runs the `default` task and logs the task ID and start time.
-- `outputs`: Extracts and logs the output from one of the executed tasks (`first`, `second1`, `third1`, or `default`).
+    - `defaults`: If the input doesn't match any cases, it runs the `default` task and emits the task ID and start time.
+- `outputs`: Exposes `values.result` from `first`, `second1`, or `default`, depending on the executed branch. If the `THIRD` branch fails, the expression falls back to `The THIRD branch failed`.
 
 ## Example 2: Conditional branching with Kestra’s website status
 
@@ -147,5 +152,5 @@ Within the flow:
 
 You have implemented conditional branching with the `Switch` task using the `switch` flow to check your input strings and `kestra-http-switch` flow to check Kestra’s website status.  The `Switch` task can further be implemented in various use cases to support your flows. Further resources about the `Switch` task:
 
-- [Kestra’s official Switch task plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.switch)
+- [Kestra’s official Switch task plugin documentation](/plugins/core/flow/io.kestra.plugin.core.flow.switch)
 - [Kestra’s Blueprint Switch task use cases](/blueprints/switch)

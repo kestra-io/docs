@@ -51,6 +51,17 @@ const {
         color: var(--ks-content-primary);
         background-color: var(--ks-background-primary);
 
+        .logo-wrapper {
+            display: inline-flex;
+            align-items: center;
+
+            :global(svg) {
+                width: auto;
+                height: 50px;
+                max-width: 200px;
+            }
+        }
+
         html.light & {
             background-color: $white;
         }

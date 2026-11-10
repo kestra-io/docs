@@ -1,5 +1,6 @@
 ---
-title: Choose Between Namespace Variables and KV Store
+title: Namespace Variables vs. KV Store in Kestra
+h1: "Choose the Right Storage: Namespace Variables or KV Store"
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:

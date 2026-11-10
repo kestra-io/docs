@@ -5,7 +5,8 @@ date: 2024-02-29T13:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -62,7 +63,7 @@ The scheduling system in Kestra has received a major upgrade, improving performa
 ### Backfills from the UI
 You can now trigger backfills directly **from the UI**, specifying the **start and end dates** for the period you want to cover. This **API-first** feature eliminates the need to edit source code to execute backfills, significantly simplifying the process without disrupting your deployment patterns. No more Terraform state conflicts due to backfill changes in the source code!
 
-Moreover, backfills are now more flexible — they can be paused or cancelled at any time. You can also add custom execution labels to your backfills, making it easier to track why a backfill process was started. For more details on this feature, check out the new [Backfill documentation](../../docs/06.concepts/08.backfill/index.md).
+Moreover, backfills are now more flexible — they can be paused or cancelled at any time. You can also add custom execution labels to your backfills, making it easier to track why a backfill process was started. For more details on this feature, check out the new [Backfill documentation](../../docs/05.workflow-components/07.triggers/01.schedule-trigger/index.md#using-backfill).
 
 <div class="video-container">
 <iframe src="https://www.youtube.com/embed/iVTrBdYGbew?si=3GFA0TOZPhOIKc-Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -139,7 +140,7 @@ taskDefaults:
 The `action: NONE` property allows you to _manually_ move or delete the file after it has been processed. The `taskDefaults` property is used to avoid duplicating the AWS credential configuration across multiple tasks and triggers from the AWS plugin.
 
 For more details on the `NONE` action, check out:
-- the plugin documentation e.g. [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.Trigger), [GCS Trigger](/plugins/plugin-gcp/gcs/io.kestra.plugin.gcp.gcs.Trigger), [Azure Blob Storage Trigger](/plugins/plugin-azure/storage.blob/io.kestra.plugin.azure.storage.blob.trigger), and [SFTP Trigger](/plugins/plugin-fs/sftp/io.kestra.plugin.fs.sftp.trigger)
+- the plugin documentation e.g. [S3 Trigger](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger), [GCS Trigger](/plugins/plugin-gcp/google-cloud-storage-gcs/io.kestra.plugin.gcp.gcs.trigger), [Azure Blob Storage Trigger](/plugins/plugin-azure/azure-blob-storage/io.kestra.plugin.azure.storage.blob.trigger), and [SFTP Trigger](/plugins/plugin-fs/sftp-ssh-file-transfer-protocol/io.kestra.plugin.fs.sftp.trigger)
 - the GitHub issues [#1842](https://github.com/kestra-io/kestra/issues/1842) and [#262](https://github.com/kestra-io/plugin-gcp/issues/262).
 
 ### New HTTP Trigger
@@ -280,7 +281,7 @@ Lastly, the `Save` and `Actions` buttons have been moved to a dedicated UI menu 
 
 With this release, we're introducing [Azure EventHubs](/plugins/plugin-azure#eventhubs) and [Solace](/plugins/plugin-solace) plugins, which extend the integration capabilities for event-driven architectures. These plugins open up new possibilities for data processing and event handling within your workflows.
 
-We've also added a new generic Singer plugin that simultaneously integrates with all [taps](/plugins/plugin-singer/taps/io.kestra.plugin.singer.taps.generictap) and [targets](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.generictarget), thereby significantly expanding the range of data sources and destinations that can be declaratively orchestrated in Kestra using the Singer ecosystem.
+We've also added a new generic Singer plugin that simultaneously integrates with all [taps](/plugins) and [targets](/plugins), thereby significantly expanding the range of data sources and destinations that can be declaratively orchestrated in Kestra using the Singer ecosystem.
 
 ---
 
@@ -295,8 +296,6 @@ We've also revamped the RBAC system, with improved handling of Superadmin access
 ![access_page](./access_page.png)
 
 The new **Service Accounts UI page** allows you to create and manage [service accounts](../../docs/07.enterprise/03.auth/service-accounts/index.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
-
-![service_account_create](../../docs/07.enterprise/03.auth/service-accounts/service_account_create.png)
 
 ---
 

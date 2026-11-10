@@ -1,5 +1,7 @@
 ---
 title: Pause and Resume Flows in Kestra
+h1: How to Pause a Workflow and Resume It on Demand
+description: Pause and resume Kestra workflow executions on demand. Use manual triggers, scheduled waits, and approval gates to control flow progression at runtime.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -30,9 +32,9 @@ tasks:
 
 The `Pause` task will pause the execution and the `Log` task will run only once the workflow has been resumed.
 
-## Pausing and resuming a workflow from the UI
+## Pause and resume a workflow from the UI
 
-You can either use the Pause task or manually Pause from the Execution overview page. Once the execution is paused, you can inspect the current logs and outputs. Then, you can resume it from the UI by clicking on the `Resume` button in the `Overview` tab:
+You can either use the [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) task or manually pause from the Execution overview page. Once the execution is paused, inspect the logs and outputs, then resume using the **Resume** button in the **Overview** tab:
 
 ![pause_resume](./pause_resume.png)
 
@@ -45,7 +47,7 @@ You can bulk-resume paused workflows from the `Executions` page by selecting the
 This feature is useful when you have multiple paused workflows and want to resume them all at once.
 
 :::alert{type="warning"}
-Make sure to select only workflows in the `PAUSED` state, as the `Resume` button will not work if you select workflows in other states.
+Select only workflows in the `PAUSED` state, as the `Resume` button will not work if you select workflows in other states.
 :::
 
 
@@ -78,18 +80,14 @@ tasks:
   - id: sendApprovalRequest
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ inputs.slack_webhook_uri }}"
-    payload: |
-      {
-        "channel": "#vacation",
-        "text": "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:28080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
-      }
+    messageText: "Validate holiday request for {{ inputs.request.name }}. To approve the request, click on the `Resume` button here http://localhost:8080/ui/executions/{{flow.namespace}}/{{flow.id}}/{{execution.id}}"
 
   - id: waitForApproval
     type: io.kestra.plugin.core.flow.Pause
     onResume:
       - id: approved
         description: Approve the request?
-        type: BOOLEAN
+        type: BOOL
         defaults: true
       - id: reason
         description: Reason for approval or rejection?
@@ -115,3 +113,15 @@ When you click on the `Resume` button in the UI, you will be prompted to provide
 After the Execution has been resumed, any downstream task can access the `onResume` inputs using the `outputs` of the `Pause` task:
 
 ![pause_resume_2](./pause_resume_2.png)
+
+### Who resumed the execution
+
+The `Pause` task records the identity of whoever resumed the execution in `outputs.<taskId>.resumed.by`. Reference it in downstream tasks to capture the approver:
+
+```yaml
+  - id: log_approver
+    type: io.kestra.plugin.core.log.Log
+    message: "Approved by {{ outputs.wait_for_approval.resumed.by }}"
+```
+
+`resumed.by` is set when the execution is resumed from the Kestra UI, the API, or an App. For service accounts it contains the service account name; for standard users it contains the username.

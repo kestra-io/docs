@@ -1,5 +1,6 @@
 ---
-title: Document Your Plugin
+title: Document Your Kestra Plugin with Annotations
+h1: How to Document a Kestra Plugin for the UI and Website
 icon: /src/contents/docs/icons/dev.svg
 description: Document your Kestra plugins using annotations and schemas to generate documentation for the UI and website.
 ---
@@ -12,7 +13,7 @@ First, let us remember the organization of a plugin project:
 
 - The Gradle project can contain several plugins, we call it a group of plugins.
 - The package in which a plugin is written in is called a sub-group of plugins. Sometimes, there is only one sub-group, in which case the group and the sub-group are the same.
-- Each class is a plugin that provides one task, trigger, condition, etc.
+- Each class is a plugin that provides one task, trigger, etc.
 
 The plugin documentation will be used on the Kestra website and the Kestra UI.
 
@@ -64,11 +65,11 @@ If there is a file `src/main/resources/doc/<plugin-group>`, it will be inlined i
 
 For example, for the GCP group of plugins, the file is `src/main/resources/doc/io.kestra.plugin.gcp`, and it contains authentication information that applies to all tasks.
 
-If there are files inside the `src/main/resources/doc/guides` directory, we will list them in a `Guides` section on the documentation for the group of plugins.
+If there are files inside the `src/main/resources/doc/guides` directory, they are listed in a `Guides` section on the documentation for the group of plugins.
 
 ### Group Icon
 
-It is possible to provide an icon representing the whole plugin group. If there is a [SVG file](https://www.worg/Graphics/SVG/) `src/main/resources/icons/plugin-icon.svg`, it will be used as the group icon.
+It is possible to provide an icon representing the whole plugin group. If there is a [SVG file](https://www.w3.org/Graphics/SVG/) `src/main/resources/icons/plugin-icon.svg`, it will be used as the group icon.
 
 ## Document the plugin sub-groups
 
@@ -99,6 +100,8 @@ import io.kestra.core.models.annotations.PluginSubGroup;
 Each plugin sub-group can define an icon representing plugins contained in the sub-group. If there is a SVG file `src/main/resources/icons/<plugin-sub-group>.svg`, it will be used as the icon for the corresponding plugins.
 
 For example, for the GCP BigQuery sub-group, the `src/main/resources/icons/io.kestra.plugin.gcp.bigquery.svg` file is used.
+
+Individual tasks within sub-group don't need own icon — they use sub-group's icon.
 
 ## Document each plugin
 
@@ -210,12 +213,12 @@ To use the JSON Schema in Visual Studio Code (VSCode), follow these steps:
 ```json
 {
   "yaml.schemas": {
-    "https://your-kestra-instance.com/api/v1/main/schemas/flow.json": "/*.yaml"
+    "https://your-kestra-instance.com/api/v1/plugins/schemas/flow": "/*.yaml"
   }
 }
 ```
 
-Replace `https://your-kestra-instance.com/api/v1/main/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
+Replace `https://your-kestra-instance.com/api/v1/plugins/schemas/flow` with the actual URL of your Kestra JSON Schema.
 
 ### Example of Using JSON Schema in Flow Editor
 
@@ -226,7 +229,7 @@ id: example_flow
 namespace: example_namespace
 tasks:
   - id: example_task
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Hello, World!"
 ```
 
@@ -237,7 +240,7 @@ When you open this flow in the editor, the JSON Schema will validate the structu
 The JSON Schema for Kestra flows is available at the following URL:
 
 ```plaintext
-https://your-kestra-instance.com/api/v1/main/schemas/flow.json
+https://your-kestra-instance.com/api/v1/plugins/schemas/flow
 ```
 
 Replace `https://your-kestra-instance.com` with the actual URL of your Kestra instance.

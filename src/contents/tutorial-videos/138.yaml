@@ -1,0 +1,7 @@
+title: "Turn Any Kestra Flow Into an MCP Tool"
+description: "Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call, Kestra creates an execution with the matched inputs, runs the flow and returns the outputs, with no custom API or polling loop in between."
+category: "What's New"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=hCf3QTpf6o4"
+publicationDate: "2026-09-09T00:00:00.000"
+contentType: "What's New"

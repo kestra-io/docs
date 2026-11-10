@@ -1,5 +1,7 @@
 ---
-title: LoopUntil task changed default values for checkFrequency
+title: LoopUntil checkFrequency Default Values Changed
+h1: "LoopUntil Task: New Default Values for checkFrequency"
+sidebarTitle: LoopUntil checkFrequency Defaults
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]

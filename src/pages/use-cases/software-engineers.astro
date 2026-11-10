@@ -1,5 +1,5 @@
 ---
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 
 import Layout from "~/components/layout.astro"
 import TopHero from "~/components/layout/TopHero.astro"
@@ -13,10 +13,10 @@ import microserviceManagement from "~/assets/use-cases/capabilities/microservice
 import databaseManagement from "~/assets/use-cases/capabilities/database-management.svg"
 import apiOrchestration from "~/assets/use-cases/capabilities/api-orchestration.svg"
 
-const response = await $fetchApiCached<{ results: Blueprint[] }>(
+const response = await $fetchApiCachedOptional<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?tags=core&page=1&size=20",
 )
-const blueprints = response.results
+const blueprints = response?.results ?? []
 
 const title = "Orchestrate Your Software Development with Kestra"
 const description =

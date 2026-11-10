@@ -2,34 +2,38 @@ import type { CollectionEntry } from "astro:content";
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 export type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 
-const navigationTree = {
+export const navigationTree = {
     "Get Started with Kestra": [
         "Quickstart",
+        "Claude Code Quickstart",
         "Installation Guide",
         "Tutorial",
         "Architecture",
         "Contribute to Kestra",
-        "User Interface",
+        "UI & No Code",
         // "Video Tutorials"
     ],
     "Build with Kestra": [
         "Workflow Components",
         "Concepts",
         "Multi-Language Script Tasks",
-        "AI Tools",
-        "No-Code",
+        "AI Orchestration",
         "Version Control & CI/CD",
+        "Develop with AI",
+        // Split into AI Orchestration and Develop with AI; kept so older
+        // versioned docs, which fall back to this map, still group their page.
+        "AI Tools",
         "Plugin Developer Guide",
         "Use Cases",
         "How-to Guides",
     ],
     "Scale with Kestra": [
         "Cloud & Enterprise Edition",
-        "Kestra Task Runners – Offload and Isolate Compute",
+        "Task Runners in Kestra: Offload & Isolate Compute",
         // "Worker Groups",
         "Best Practices",
     ],
-    "Manage Kestra": ["Administrator Guide", "Migration Guide", "Performance"],
+    "Manage Kestra": ["Administrator Guide", "Migration Guide", "Performance", "Security"],
     "Reference Docs": [
         "Releases & LTS Policy",
         "Configuration",
@@ -44,6 +48,14 @@ const navigationTree = {
 export function getNavigationTree(
     docsPages: CollectionEntry<"docs">[],
 ) {
+    // Sort docs by filePath to ensure consistent ordering
+    docsPages.sort((a, b) => {
+        if (a.filePath && b.filePath) {
+            return a.filePath.localeCompare(b.filePath)
+        }
+        return a.id.localeCompare(b.id)
+    })
+
     // build the initial tree structure by finding each title in the navigationTree
     // then build the navigation tree
     const navigationTreeResult: NavigationItem[] = []
@@ -84,8 +96,8 @@ function recursivelyBuildChildren(
     parentId: string,
     docsPages: CollectionEntry<"docs">[],
 ): NavigationItem[] | undefined {
+    const parentPath = parentId.endsWith("/") ? parentId : parentId + "/"
     const children = docsPages.filter((page) => {
-        const parentPath = parentId.endsWith("/") ? parentId : parentId + "/"
         return (
             page.id.startsWith(parentPath) &&
             page.id !== parentId &&
@@ -95,6 +107,10 @@ function recursivelyBuildChildren(
 
     if (children.length === 0) {
         return undefined
+    }
+
+    if (parentId === "migration-guide") {
+        children.reverse()
     }
 
     return children.map((child) => ({

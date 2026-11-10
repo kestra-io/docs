@@ -1,5 +1,7 @@
 ---
-title: Python script tasks now use official python:3-13-slim image
+title: "Python Script Tasks Now Use python:3.13-slim Image"
+h1: Default Docker Image for Python Script Tasks Updated to 3.13-slim
+sidebarTitle: "Python Default Image: 3.13-slim"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["OSS", "EE"]
@@ -9,9 +11,9 @@ description: Information on the change of default Docker image for Python script
 
 ## Python script tasks now use official python:3-13-slim image
 
-To make it easier to get started, we used a custom `ghcr.io/kestra-io/kestrapy:latest` image to contain `kestra` and `amazon-ion` pip packages. The tasks now use the official `python:3-13-slim` image by default.
+Kestra previously used a custom `ghcr.io/kestra-io/kestrapy:latest` image containing `kestra` and `amazon-ion` pip packages. The tasks now use the official `python:3-13-slim` image by default.
 
-If you want to maintain the previous behavior, simply add those packages using the new `dependencies` property and they will be installed at runtime (and cached):
+To maintain the previous behavior, add those packages using the `dependencies` property and they will be installed at runtime (and cached):
 
 ```yaml
 id: python_demo

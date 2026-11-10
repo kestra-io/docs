@@ -1,47 +1,64 @@
 <template>
-    <div>
-        <div class="block" v-for="block in infos" :key="block.title">
-            <p class="title">{{ block.title }}</p>
-            <p class="sub">{{ block.value }}</p>
+    <div class="sidebar">
+        <div class="sidebar-identity">
+            <div class="sidebar-logo">
+                <img
+                    v-if="story.logoIcon || story.logo"
+                    :src="story.logoIcon ?? story.logo"
+                    :alt="displayName"
+                    loading="lazy"
+                />
+                <span v-else class="sidebar-initial">{{ initial }}</span>
+            </div>
+            <div class="sidebar-identity-text">
+                <div class="sidebar-company-name">{{ displayName }}</div>
+                <div v-if="story.tagline" class="sidebar-company-desc">{{ story.tagline }}</div>
+            </div>
         </div>
-        <div class="block">
-            <p class="title mb-2">Stack</p>
-            <div class="d-flex flex-column gap-2 justify-content-start">
-                <div class="card task">
-                    <div class="body">
-                        <div
-                            class="icon-wrapper kestra-icon"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Kestra"
-                        >
+
+        <div class="sidebar-fields">
+            <div class="sidebar-field">
+                <div class="sidebar-field-label">Industry</div>
+                <div class="sidebar-field-value">{{ story.industry }}</div>
+            </div>
+            <div class="sidebar-field">
+                <div class="sidebar-field-label">Region</div>
+                <div class="sidebar-field-value">{{ story.region }}</div>
+            </div>
+            <div v-if="story.deployment" class="sidebar-field">
+                <div class="sidebar-field-label">Deployment</div>
+                <div class="sidebar-field-value">{{ story.deployment }}</div>
+            </div>
+            <div v-if="story.useCaseShort" class="sidebar-field">
+                <div class="sidebar-field-label">Use case</div>
+                <div class="sidebar-field-value">{{ story.useCaseShort }}</div>
+            </div>
+            <div v-if="story.tasks?.length" class="sidebar-field sidebar-field-wide">
+                <div class="sidebar-field-label">Tech stack</div>
+                <div class="tool-list">
+                    <div class="tool-item">
+                        <div class="tool-icon kestra-icon">
                             <img
                                 src="/landing/usecases/stories/monograme-kestra.svg"
                                 alt="Kestra"
                             />
                         </div>
-                        <p class="card-title">Kestra</p>
+                        <span class="tool-name">Kestra</span>
                     </div>
-                </div>
-                <div class="card task" v-for="task in story.tasks" :key="task">
-                    <div class="body">
-                        <TaskIcon :cls="task" />
-                        <p class="card-title">
-                            {{ task.split(".").pop() ?? "" }}
-                        </p>
+                    <div v-for="task in story.tasks" :key="task" class="tool-item">
+                        <div class="tool-icon">
+                            <TaskIcon :cls="task" />
+                        </div>
+                        <span class="tool-name">{{ task.split(".").pop() }}</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="block">
-            <Share
-                :title="story.title"
-                :url="pageUrl"
-                title-text="Share this story"
-            />
-        </div>
-        <div class="block">
-            <Link href="/demo" text="Book a Demo" class="btn btn-primary" />
+
+        <Link href="/demo" text="Book a Demo" class="btn btn-primary sidebar-cta" />
+
+        <div class="sidebar-share">
+            <Share :title="story.title" :url="pageUrl" title-text="Share this story" />
         </div>
     </div>
 </template>
@@ -49,117 +66,207 @@
 <script setup lang="ts">
     import { computed } from "vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
-    import Link from "../common/Link.vue"
+    import Link from "~/components/common/Link.vue"
     import Share from "~/components/common/Share.vue"
 
     const props = defineProps<{
         story: Story
     }>()
 
-    const pageUrl = computed(() =>
-        typeof window !== "undefined" ? window.location.href : "",
-    )
+    const pageUrl = computed(() => (typeof window !== "undefined" ? window.location.href : ""))
 
-    const infos = computed(() => {
-        if (!props.story) return []
-        return [
-            {
-                title: "Industry",
-                value: props.story.industry,
-            },
-            {
-                title: "Headquarter",
-                value: props.story.headquarter,
-            },
-            {
-                title: "Solution",
-                value: props.story.solution,
-            },
-        ]
+    const displayName = computed(() => props.story.companyName || props.story.title)
+
+    const initial = computed(() => {
+        const name = props.story.companyName || props.story.title
+        return name.charAt(0).toUpperCase()
     })
 </script>
 
 <style scoped lang="scss">
-    .block {
+    @use "/src/assets/styles/color-palette" as *;
+
+    .sidebar {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
         width: 100%;
-        @include media-breakpoint-up(lg) {
-            max-width: 300px;
+    }
+
+    .sidebar-identity-text {
+        min-width: 0;
+    }
+
+    .sidebar-logo {
+        width: 6.25rem;
+        height: 6.25rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--ks-border-secondary);
+        background: $black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
         }
-        margin-bottom: 1.3125rem;
-        border-bottom: $block-border;
-        padding-bottom: 1.35rem;
+    }
+
+    .sidebar-initial {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $base-grey-white;
+    }
+
+    .sidebar-company-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: var(--ks-content-primary);
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+    }
+
+    .sidebar-company-desc {
+        font-size: 0.875rem;
+        color: var(--ks-content-secondary);
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+    }
+
+    .sidebar-fields {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
+
+    .sidebar-field {
+        padding: 1rem 0;
+        border-top: 1px solid var(--ks-border-secondary);
+
         &:last-child {
-            margin-bottom: 0;
-            border-bottom: none;
-            padding-bottom: 0;
+            border-bottom: 1px solid var(--ks-border-secondary);
         }
-        .title, :deep(h6) {
-            font-size: $font-size-sm;
-            font-weight: 700;
-            color: var(--ks-content-primary);
-            margin: 0;
-        }
-        .sub {
-            font-size: $font-size-sm;
-            color: var(--ks-content-secondary);
-            margin: 0;
-            line-height: 1.25rem;
-            text-wrap: balance;
+    }
+
+    .sidebar-field-label {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--ks-content-primary);
+        margin-bottom: 0.25rem;
+        line-height: 1.4;
+    }
+
+    .sidebar-field-value {
+        font-size: 0.875rem;
+        color: var(--ks-content-secondary);
+        line-height: 1.5;
+    }
+
+    .tool-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        margin-top: 0.5rem;
+    }
+
+    .tool-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .tool-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-body);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+        padding: 6px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
-        .btn {
-            width: fit-content;
-            
-        }
-        .card {
-            border: none;
-            background-color: transparent;
-            box-shadow: none;
+        :deep(.icon-wrapper),
+        :deep(.icon) {
             width: 100%;
-            padding: 0;
-            .body {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                padding: 0;
-                gap: 1rem;
-            }
-            .card-title {
-                font-size: $font-size-sm;
-                font-weight: 500;
-                margin: 0;
-                color: var(--ks-content-primary);
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 200px;
-            }
-            &.task {
-                background-color: transparent;
-                :deep(.icon-wrapper) {
-                    width: 1.75rem;
-                    height: 1.75rem;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: $white;
-                    border-radius: 0.25rem;
-                    padding: 4px;
-                    border: 1.18px solid var(--ks-border-primary);
-                }
-                .kestra-icon {
-                    background: var(--ks-content-primary);
-                    border-radius: 0.25rem;
-                }
-                img {
-                    width: 1.75rem;
-                    height: 1.75rem;
-                    object-fit: contain;
-                }
-            }
+            height: 100%;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
         }
+
+        &.kestra-icon {
+            background: var(--ks-content-primary);
+        }
+    }
+
+    .tool-name {
+        font-size: 0.875rem;
+        color: var(--ks-content-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+    }
+
+    .sidebar-cta {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    @include media-breakpoint-down(lg) {
+        .sidebar-identity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-logo,
+        .sidebar-company-desc {
+            margin-bottom: 0;
+        }
+
+        .sidebar-fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sidebar-field {
+            padding-right: 1rem;
+        }
+
+        /* The tech stack, and any field left alone in its row, span both
+           columns so each row keeps a full-width separator. */
+        .sidebar-field-wide,
+        .sidebar-field:nth-child(odd):last-child,
+        .sidebar-field:nth-child(odd):has(+ .sidebar-field-wide) {
+            grid-column: 1 / -1;
+        }
+
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .sidebar-share {
+        padding-top: 0.25rem;
     }
 </style>

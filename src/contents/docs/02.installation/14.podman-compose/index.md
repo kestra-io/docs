@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra with Podman Compose – Postgres Backend
+title: "Deploy with Podman Compose in Kestra: Postgres"
+h1: Rootless Container Deployment with Podman Compose
 sidebarTitle: Podman Compose
 icon: /src/contents/docs/icons/podman.svg
 description: Deploy Kestra using Podman Compose with PostgreSQL, offering a rootless container alternative to Docker.
@@ -24,9 +25,35 @@ https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
 
 If you don't have `curl` installed, you can download the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) manually and save it as `docker-compose.yml`.
 
-:::alert{type="info"}
-Podman Compose works using the provided Docker Compose file out of the box.
+:::alert{type="warning"}
+While Podman Compose works with the provided Docker Compose file, **rootless Podman deployments** require a volume override to map the correct user socket. See the rootless configuration below.
 :::
+
+### Rootless Podman Configuration
+
+If you are running Podman in rootless mode, Kestra needs access to your user-specific API socket rather than the default root socket. 
+
+Create a `docker-compose.override.yml` file in the same directory to override the volume mount:
+
+```yaml
+services:
+  kestra:
+    # Required if your system uses SELinux (e.g., Fedora, RHEL)
+    security_opt:
+      - label=disable
+    volumes:
+      - ${XDG_RUNTIME_DIR}/podman/podman.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+```
+
+Finally, export the `DOCKER_HOST` environment variable so your local CLI knows where to find the socket:
+
+```bash
+export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/podman/podman.sock"
+```
+*(Tip: Add this export to your `~/.bashrc` or `~/.zshrc` to make it persistent).*
+
+Once configured, run `podman-compose up` as usual.
 
 ## Launch Kestra in Root Mode
 
@@ -48,7 +75,8 @@ helper_binaries_dir = ["/path/to/bin"]
 Use the following command to create a Podman machine, start it up, and launch Kestra on it:
 
 ```bash
-podman machine init --cpus 2 --rootful -v /tmp:/tmp -v $PWD:$PWD
+mkdir -p /tmp/kestra-wd
+podman machine init --cpus 2 --rootful -v /tmp/kestra-wd:/tmp/kestra-wd -v $PWD:$PWD
 podman machine start
 podman compose up -d
 
@@ -62,14 +90,25 @@ podman compose up -d
 ```
 
 :::alert{type="info"}
-Podman executes containers through a VM on your local machine. In order to access local volumes from your container, you need to ensure you mount these to the podman VM, hence the `-v /tmp:/tmp -v $PWD:$PWD` arguments.
+Podman executes containers through a VM on your local machine. In order to access local volumes from your container, you need to ensure you mount these to the podman VM, hence the `-v /tmp/kestra-wd:/tmp/kestra-wd -v $PWD:$PWD` arguments. Podman forbids mounting `/tmp` directly on Mac (it would replace the VM's own `/tmp`); use a subdirectory instead.
 
 Note: Check if you have an existing podman VM on your local machine by navigating to the 'Resources' tab in podman desktop or running the command `podman machine list` in your terminal. If you have an existing VM, ensure the required volumes are mounted as expected. If that does not work, you can [recreate the podman VM](https://stackoverflow.com/questions/69298356/how-to-mount-a-volume-from-a-local-machine-on-podman) with volumes mounted and then run Kestra.
 :::
 
+:::alert{type="warning"}
+On macOS, Podman's default VM (applehv) runs Fedora CoreOS with SELinux enforcing. This blocks the Kestra container from connecting to the `docker.sock` and from creating subdirectories under bind-mounted volumes such as `/tmp/kestra-wd`, even when running as root. Add `security_opt` to the `kestra` service in your `docker-compose.yml` to run the container unconfined:
+
+```yaml
+kestra:
+  user: "root"
+  security_opt:
+    - label=disable
+```
+:::
+
 Open the URL `http://localhost:8080` in your browser to launch the UI.
 
-### Adjusting the Configuration
+### Adjusting the configuration
 
 The command above starts a *standalone* server (all architecture components in one JVM).
 
@@ -87,7 +126,7 @@ If you want to use a configuration file instead of the `KESTRA_CONFIGURATION` en
 
 First, create a configuration file, for example named `application.yaml`, and populate with the content of the `KESTRA_CONFIGURATION` environment variable defined in the `docker-compose.yml` file.
 
-Next, update `kestra` service in the `docker-compose.yml` file to mount this file into the container and make Kestra using it via the `--config` option:
+Next, update `kestra` service in the `docker-compose.yml` file to mount this file into the container and to use the `--config` option:
 
 ```yaml
 ## [...]

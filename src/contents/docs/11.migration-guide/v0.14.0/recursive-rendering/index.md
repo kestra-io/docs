@@ -1,5 +1,7 @@
 ---
-title: Recursive rendering of Pebble expressions
+title: Non-Recursive Pebble Rendering in Kestra 0.14.0
+h1: Migrate to Non-Recursive Pebble Expression Rendering
+sidebarTitle: Non-Recursive Pebble Rendering
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.14.0
 description: Guide to the new non-recursive Pebble expression rendering and the usage of the render() function.
@@ -46,7 +48,7 @@ triggers:
 
 ## Migrating a 0.13.0 flow to the new rendering behavior in 0.14.0
 
-As you can see in the above example, simply wrapping the Pebble expression in the `render()` function will allow you to easily migrate your existing flows to the kestra version 0.14.0. However, if you have many flows that use the previous recursive rendering behavior, you may perform that migration later. We've added a boolean configuration variable called `recursive-rendering` that allows you to keep the previous recursive rendering behavior and gives you more time to migrate your flows.
+As you can see in the above example, wrapping the Pebble expression in the `render()` function is all that is needed to migrate existing flows to Kestra 0.14.0. However, if you have many flows that use the previous recursive rendering behavior, you may perform that migration later. A boolean configuration variable `recursive-rendering` is available to keep the previous recursive rendering behavior while you migrate your flows.
 
 ## How to keep the previous behavior
 
@@ -58,4 +60,4 @@ kestra:
     recursiveRendering: true # default: false
 ```
 
-This is an instance-level configuration, so you don't need any changes in your code. We recommend that you migrate your flows to the new rendering behavior as soon as you can, as we believe this more explicit rendering behavior will be more intuitive and less error-prone in the long run.
+This is an instance-level configuration, so you don't need any changes in your code. Migrating flows to the new rendering behavior as soon as possible is recommended; the explicit rendering behavior is more intuitive and less error-prone.

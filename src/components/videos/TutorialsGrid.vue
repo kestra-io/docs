@@ -75,35 +75,24 @@
 
     <Modal v-model:show="videoVisible" class="video-modal">
         <div class="modal-header">
-            <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                @click="closeModal"
-            >
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="video-container">
-                <iframe
-                    v-if="videoVisible"
-                    :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
-                    :title="visibleVideoData.title"
-                    frameborder="0"
-                    allow="
-                        accelerometer;
-                        autoplay;
-                        clipboard-write;
-                        encrypted-media;
-                        gyroscope;
-                        picture-in-picture;
-                        web-share;
-                    "
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
-                />
+            <div class="video-wrapper">
+            <iframe
+                v-if="videoVisible"
+                :src="`${visibleVideoData.iframeUrl}?autoplay=1`"
+                :title="visibleVideoData.title"
+                frameborder="0"
+                allow="
+                    accelerometer;
+                    autoplay;
+                    clipboard-write;
+                    encrypted-media;
+                    gyroscope;
+                    picture-in-picture;
+                    web-share;
+                "
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+            />
             </div>
         </div>
     </Modal>
@@ -249,26 +238,26 @@
     }
 
     :deep(.modal-content) {
-        background-color: var(--ks-background-secondary);
+        background: transparent !important;
+        box-shadow: none !important;
+        width: min(92vw, 1280px) !important;
+        overflow: visible !important;
     }
 
-    .modal-header {
-        background-color: var(--ks-background-secondary);
-        border-bottom-color: var(--ks-border-secondary);
-        padding: 1rem 1rem 0;
-        display: flex;
-        justify-content: flex-end;
-        button {
-            background: transparent;
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+        iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             border: none;
-            color: var(--ks-content-primary);
-            outline: var(--ks-border-secondary) dotted 1px;
+            display: block;
         }
-    }
-
-    .modal-body {
-        background-color: var(--ks-background-secondary);
-        padding: 1rem;
     }
 
     .content {

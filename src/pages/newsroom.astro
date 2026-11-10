@@ -1,0 +1,48 @@
+---
+import Layout from "~/components/layout.astro"
+import Squared from "~/components/layout/Squared.vue"
+import NewsGrid from "~/components/company/NewsGrid.astro"
+import Link from "~/components/common/Link.astro"
+
+const title = "Newsroom"
+const description =
+    "The latest news and press coverage about Kestra, the unified orchestration platform"
+---
+
+<Layout {title} {description}>
+    <Squared>
+        <div class="hero-content">
+            <h1>Kestra <span class="highlight">Newsroom</span></h1>
+            <p>
+                Latest news and media coverage about Kestra. For inquiries and
+                insights, contact our press team.
+            </p>
+            <Link href="mailto:press@kestra.io" class="btn btn-primary">
+                Contact Our Press Team
+            </Link>
+        </div>
+    </Squared>
+    <NewsGrid />
+</Layout>
+
+<style lang="scss">
+    .hero-content {
+        text-align: center;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 2rem 0;
+
+        @include media-breakpoint-up(md) {
+            max-width: 590px;
+            padding: 4rem 0;
+        }
+
+        .highlight {
+            color: var(--ks-content-color-highlight);
+        }
+
+        p {
+            margin: 1.5rem 0;
+        }
+    }
+</style>

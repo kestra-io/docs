@@ -1,41 +1,30 @@
 ---
 title: Install Kestra Enterprise from Standalone JAR
-description: Install Kestra on a standalone server with a simple executable file.
+h1: Run Kestra Enterprise Without Docker Using a JAR File
+description: Install Kestra Enterprise on a standalone server using an executable JAR file. Run the platform without Docker where containerization is unavailable.
 sidebarTitle: Standalone Server Installation Guide
 icon: /src/contents/docs/icons/installation.svg
 editions: ["EE"]
 ---
 
-Install Kestra on a standalone server with a simple executable file.
-
-## Run Kestra Enterprise from a standalone JAR
-
-To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+.
-
-## Instructions
-
-The following is a quick start guide to get your Kestra Enterprise Edition up and running in standalone mode.
-
----
+To deploy Kestra without Docker, use the standalone JAR — a single executable that runs in any environment with JVM 21+.
 
 ## Standalone JAR
 
-Download the latest version of the Kestra EE JAR from:
+Download the Kestra EE JAR from `https://registry.kestra.io/exe/` using your license ID and fingerprint as Basic auth credentials. Use `/exe/latest` for the latest release or pin a specific version:
 
-[http://registry.kestra.io/exe/latest](http://registry.kestra.io/exe/latest)
+```bash
+# Latest
+curl -u "$LICENSE_ID:$LICENSE_FINGERPRINT" https://registry.kestra.io/exe/latest | funzip > kestra-ee
 
-**Credentials:**
+# Specific version
+VERSION=2.0.3
+curl -u "$LICENSE_ID:$LICENSE_FINGERPRINT" https://registry.kestra.io/exe/$VERSION | funzip > kestra-ee
+```
 
-- **Username**: `license-id`
-- **Password**: `fingerprint`
+This provides a single executable file. Store it in your execution environment as `kestra`.
 
-:::alert{type="info"}
-Make sure to store your credentials in an `application.yaml` file.
-:::
-
-This provides a single JAR file that can be used to start Kestra. Store the file in your execution environment as `kestra` (make it executable).
-
-To make the file executable, Linux or MacOS users use the following with filename:
+Make the file executable (Linux or macOS):
 
 ```bash
 chmod +x kestra-ee-VERSION # Replace VERSION with your version
@@ -48,7 +37,7 @@ mv kestra-ee-VERSION /usr/local/bin/kestra # Replace with your version and execu
 chmod +x /usr/local/bin/kestra
 ```
 
-The file is then executable with:
+Then run:
 
 ```bash
 ./kestra-ee-VERSION server standalone # Replace VERSION with your version
@@ -57,8 +46,6 @@ The file is then executable with:
 :::alert{type="info"}
 You need to provide a configuration with a connection to a database.
 :::
-
----
 
 For Windows users:
 
@@ -72,48 +59,44 @@ Or with a file path assuming execution from the current directory:
 java -jar kestra-ee-VERSION server standalone -c ./application.yaml -p ./plugins --port=8080 # Replace VERSION with your version
 ```
 
----
-
 ## Plugins
 
 In standalone JAR deployments, all plugins must be downloaded separately.
 
-Kestra EE provides a command to install all available plugins:
+[Install `kestractl`](../../../kestra-cli/kestractl/index.md#installation), then download plugins with [`kestractl plugins download`](../../../kestra-cli/kestractl/index.md#plugin-management). Enterprise plugins are served from the Kestra registry, so pass your license credentials:
 
 ```shell
-## Install all available plugins
-kestra plugins install --all
+kestractl plugins download <version> \
+  --plugins-dir ./plugins \
+  --maven-repository https://registry.kestra.io/maven \
+  --maven-username "$KESTRA_LICENSE_ID" \
+  --maven-password "$KESTRA_LICENSE_FINGERPRINT"
 ```
 
-This installs task plugins in the `plugins` directory. To install them elsewhere, specify a path with the `-p` argument.
+Replace `<version>` with your Kestra version. This downloads every plugin compatible with that version. To download only selected plugins, pass `--compatible-for <version>` with one `--plugins` flag per plugin instead of the version argument. Start Kestra with `-p ./plugins` or set `KESTRA_PLUGINS_PATH` to that directory.
 
-Additional Enterprise Edition plugins that are not task related may also be required -- such as secrets or storage plugins.
+The server CLI can also install plugins directly, for example `kestra plugins install --all`.
 
----
+## Secret and storage plugins
 
-## Secret plugins
-
-Secret plugins must be downloaded from the Kestra registry using the same credentials, and placed in your `plugins` directory.
-
-| Secret Service | Download Link |
-| :------------- | :------------- |
-| Vault | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-vault/0.24.0/secret-vault-0.24.0.jar |
-| AWS | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-aws/0.24.0/secret-aws-0.24.0.jar |
-| GCP | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-gcp/0.24.0/secret-gcp-0.24.0.jar |
-| Azure | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-azure/0.24.0/secret-azure-0.24.0.jar |
-
----
-
-## MinIO Internal Storage
-
-To enable MinIO storage, install the storage plugin:
+Secret managers and storage backends other than local storage also ship as separate plugins. To list the ones your configuration requires, pass your configuration file to `kestractl`:
 
 ```shell
-## Install MinIO internal storage plugin
-kestra plugins install io.kestra.storage:storage-minio:LATEST
+kestractl plugins list <version> --from-config /etc/kestra/application.yaml
 ```
 
----
+Download them into the same `plugins` directory with the same registry credentials:
+
+```shell
+kestractl plugins download <version> \
+  --from-config /etc/kestra/application.yaml \
+  --plugins-dir ./plugins \
+  --maven-repository https://registry.kestra.io/maven \
+  --maven-username "$KESTRA_LICENSE_ID" \
+  --maven-password "$KESTRA_LICENSE_FINGERPRINT"
+```
+
+See [Bootstrap core plugins with `--from-config`](../../../kestra-cli/kestractl/index.md#bootstrap-core-plugins-with---from-config) for the supported backends.
 
 ## Enterprise deployment configuration
 
@@ -127,21 +110,17 @@ To enable Kestra Enterprise features, configure the following parameters:
 | Multi-tenancy | Yes | [Enterprise and Advanced Features](../../../configuration/06.enterprise-and-advanced/index.md)                                     | Enables/disables multi-tenancy (required for SCIM) |
 | Secret Manager | Yes | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure a secret manager in RW or RO mode |
 | Encryption Key | Yes | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Key to encrypt inputs/outputs in flows |
-| Security | No | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure Super Admin (also settable in UI on startup) |
+| Security | No | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure Instance Owner (also settable in UI on startup) |
 | User Invitations | No | [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md), [Observability and Networking](../../../configuration/03.observability-and-networking/index.md) | Required for email invitations (not needed with LDAP/SCIM) |
 | SSO | No | [SSO](../../03.auth/sso/index.md)                                                                                                  | Configure OIDC provider |
 | LDAP | No | [LDAP](../../03.auth/sso/ldap/index.md)                                                                                            | Connect to an existing LDAP provider |
 | SCIM | No | [SCIM](../../03.auth/scim/index.mdx)                                                                                               | Sync user/group membership with SCIM 2.0 |
 
----
-
 ## Starting Kestra
 
 Kestra can be started in **standalone mode** or in a **distributed setup** for production.
 
-Make sure to have a database configured and your Enterprise credentials stored in the `application.yaml` file.
-
----
+Ensure a database is configured and your Enterprise credentials are stored in `application.yaml`.
 
 ## Standalone server
 
@@ -151,11 +130,9 @@ kestra server standalone -c ./application.yaml -p ./plugins --port=8080
 
 This starts Kestra as a standalone service on port `8080`.
 
----
-
 ## Distributed mode
 
-For production usage, Kestra should run in distributed mode for scalability and high availability.
+For production, run Kestra in distributed mode for scalability and high availability.
 
 Each component can run independently across servers, with shared access to the same database (no TCP communication is required between components).
 

@@ -1,0 +1,163 @@
+---
+import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Faq from "~/components/common/Faq.vue"
+import Hero from "~/components/security/Hero.astro"
+import Compliance from "~/components/security/Compliance.astro"
+import Deployments from "~/components/security/Deployments.astro"
+import ControlsTable from "~/components/security/ControlsTable.astro"
+import AirGapped from "~/components/security/AirGapped.astro"
+import BuildProcess from "~/components/security/BuildProcess.astro"
+import ReportVulnerability from "~/components/security/ReportVulnerability.astro"
+import TrustCenter from "~/components/security/TrustCenter.astro"
+import { FAQ_ITEMS } from "~/components/security/securityData"
+
+const title = "Kestra Security: SOC 2 Type 2, GDPR and Self-Hosted Controls"
+const description =
+    "Kestra is SOC 2 Type 2 audited and GDPR compliant. Run self-hosted, air-gapped or in Kestra Cloud, with SSO, RBAC, external secrets managers and audit logs."
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <Fragment slot="head">
+        <SchemaFAQ items={FAQ_ITEMS} />
+    </Fragment>
+    <div class="security">
+        <Hero />
+        <Compliance />
+        <Deployments />
+        <ControlsTable />
+        <AirGapped />
+        <BuildProcess />
+        <ReportVulnerability />
+        <TrustCenter />
+        <Faq title="Frequently Asked Questions" items={FAQ_ITEMS} client:load>
+            <p slot="description" class="faq-intro" data-usal="fade-l delay-10">
+                Find answers to your questions right here, and don't hesitate to{
+                    " "
+                }
+                <a href="/contact-us">contact us</a> if you couldn't find what you're
+                looking for.
+            </p>
+        </Faq>
+    </div>
+</Layout>
+
+<style lang="scss">
+    @use "/src/assets/styles/color-palette" as *;
+
+    .security {
+        overflow-x: clip;
+
+        // Figma lays this page out on a 1320px column, wider than the 1140px
+        // the site caps .container at from xl up.
+        :global(.container) {
+            @include media-breakpoint-up(xxl) {
+                max-width: 1320px;
+            }
+        }
+
+        --security-shadow-element: #{rgba($base-primary-700, 0.04)};
+        --security-shadow-surface: #{rgba($base-primary-700, 0.05)};
+        --security-shadow-elevated: #{rgba($base-primary-700, 0.08)};
+
+        --security-platform-background: var(--ks-background-purple-light);
+        --security-platform-border: #{$base-primary-400};
+        --security-platform-content: #{$base-primary-700};
+        --security-workers-background: #{rgba(#96c5ff, 0.2)};
+        --security-workers-border: #1da9ee;
+        --security-workers-content: var(--blue-400);
+        --security-worker-dot: #cd88ff;
+        --security-link-start: #b9aaf3;
+
+        // Hero artwork. The hero is dark in both themes, so these have no
+        // dark-mode overrides.
+        --security-hero-horizon: #{rgba(#1c6ad6, 0.85)};
+        --security-hero-horizon-deep: #{rgba(#0d3a78, 0.55)};
+        --security-hero-orb-blue: #2a3dff;
+        --security-hero-orb-blue-soft: #{rgba(#1d4bff, 0.6)};
+        --security-hero-orb-cyan: #3dfff4;
+        --security-hero-orb-cyan-soft: #{rgba(#1fd6f0, 0.55)};
+        --security-hero-orb-teal: #{rgba(#29e6f2, 0.8)};
+        --security-hero-halo: #{rgba(#8c4dff, 0.45)};
+        --security-hero-lock-glow: #{rgba(#5e6ed4, 0.35)};
+        --security-hero-cta-glow: #be62ff;
+
+        :global(html.dark) & {
+            --security-shadow-element: transparent;
+            --security-shadow-surface: transparent;
+            --security-shadow-elevated: #{rgba($black, 0.3)};
+            --security-platform-content: #{$base-primary-200};
+            --security-workers-content: var(--blue-200);
+        }
+
+        // Sections tweak these through custom properties rather than competing
+        // declarations, so the result never depends on stylesheet order.
+        :global(.security-section) {
+            padding: var(--section-padding-top, 5.625rem) 1rem
+                var(--section-padding-bottom, 5.625rem);
+            border-bottom: 1px solid var(--ks-border-primary);
+            background: var(--section-background, var(--ks-background-primary));
+
+            @include media-breakpoint-down(md) {
+                padding-block: 3.5rem;
+            }
+        }
+
+        :global(.security-grid-bg) {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            z-index: -1;
+            width: 100%;
+            max-width: 1720px;
+            height: 100%;
+            transform: translateX(-50%);
+            object-fit: cover;
+            object-position: center top;
+            pointer-events: none;
+        }
+
+        // Two-up card grid shared by the build and vulnerability sections.
+        :global(.security-cards) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            :global(.security-card) {
+                padding: 2rem;
+
+                @include media-breakpoint-down(md) {
+                    padding: 1.5rem;
+                }
+            }
+
+            :global(h3) {
+                margin: 0 0 0.5rem;
+                color: var(--ks-content-primary);
+                font-size: $font-size-2xl;
+                line-height: 38px;
+            }
+        }
+
+        :global(.security-card) {
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 8px;
+            background: var(--ks-background-primary);
+            filter: drop-shadow(0 8px 12px var(--security-shadow-elevated));
+        }
+
+        .faq-intro {
+            max-width: 100%;
+            margin: 0 auto;
+            color: var(--ks-content-secondary);
+
+            a {
+                color: var(--ks-content-link);
+            }
+        }
+    }
+</style>

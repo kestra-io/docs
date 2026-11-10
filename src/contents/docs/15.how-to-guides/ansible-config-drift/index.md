@@ -1,5 +1,6 @@
 ---
 title: Detect Ansible Config Drift with Kestra
+h1: Automate Config Drift Detection and Get Slack Alerts
 icon: /src/contents/docs/icons/ansiblecli.svg
 stage: Intermediate
 description: Detect configuration drift across your infrastructure using Ansible and Kestra, and get alerted via Slack on changes.
@@ -47,7 +48,7 @@ server3.example.test ansible_user=admin ansible_ssh_private_key_file=~/.ssh/id_r
 
 ## Flow: run Ansible and alert on drift
 
-This flow runs the playbook with the [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli), inspects each host result in a [`ForEach`](/plugins/core/flow/io.kestra.plugin.core.flow.foreach), and posts a Slack alert only when a host was changed using the [Slack Incoming Webhook task](/plugins/plugin-slack/io.kestra.plugin.slack.slackincomingwebhook). The schedule trigger is disabled by default — enable it to run nightly.
+This flow runs the playbook with the [Ansible CLI task](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli), inspects each host result in a [`Loop`](/plugins/core/flow/io.kestra.plugin.core.flow.loop), and posts a Slack alert only when a host was changed using the [Slack Incoming Webhook task](/plugins/plugin-slack/slack-notifications/io.kestra.plugin.slack.notifications.slackincomingwebhook). The schedule trigger is disabled by default — enable it to run nightly.
 
 ```yaml
 id: ansible_config_drift
@@ -65,21 +66,22 @@ tasks:
       interpreter_python = auto_silent
       log_path={{ workingDir }}/log
       callback_plugins = ./callback_plugins
-      stdout_callback = kestra_logger
+      callbacks_enabled = kestra_logger
+      stdout_callback = ansible.builtin.null
     commands:
       - ansible-playbook -i inventory.ini myplaybook.yml
 
   - id: loop_hosts
-    type: io.kestra.plugin.core.flow.ForEach
-    values: "{{ outputs.set_up_env.vars.outputs }}"
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.set_up_env.playbooks[0].plays[0].tasks[1].hosts }}"
     tasks:
       - id: check_drift
         type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-        runIf: "{{ taskrun.value | jq('.changed') | first == true }}"
+        runIf: "{{ fromJson(item.value).result.changed == true }}"
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {
-              "text": "Configuration updated - {{ taskrun.value | jq('.msg') | first ?? Null }}"
+              "text": "Configuration updated on {{ fromJson(item.value).host }} - {{ fromJson(item.value).result.msg ?? '' }}"
           }
 
 triggers:
@@ -99,6 +101,6 @@ In the execution outputs, you can examine results and debug expressions to use i
 
 ## Why this matters
 
-This pattern enforces a critical env var across a fleet to catch drift quickly, streams Ansible output in structured form via `stdout_callback = kestra_logger`, and alerts only on changed hosts to keep Slack noise low. Keeping the playbook and inventory as Namespace Files means you can version and reuse them across flows without hardcoding paths in each run.
+This pattern enforces a critical env var across a fleet to catch drift quickly, streams Ansible output in structured form via the `kestra_logger` callback, and alerts only on changed hosts to keep Slack noise low. Keeping the playbook and inventory as Namespace Files means you can version and reuse them across flows without hardcoding paths in each run.
 
 You can expand this pattern to check multiple config files, package versions, or CIS controls per host, while letting Kestra handle scheduling, secrets, notifications, and downstream tasks (tickets, S3 archiving, SIEM) so Ansible remediation and orchestration stay tightly linked.

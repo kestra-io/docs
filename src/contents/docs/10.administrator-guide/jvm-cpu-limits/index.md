@@ -1,5 +1,6 @@
 ---
-title: Align JVM CPU Limits on Kubernetes
+title: JVM CPU Limits for Kestra on Kubernetes
+h1: Prevent the JVM from exceeding CPU limits in Kubernetes
 sidebarTitle: JVM CPU Limits
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]

@@ -1,81 +1,51 @@
 ---
-title: API Tokens in Kestra Enterprise – Manage Programmatic Access
+title: "API Tokens in Kestra: Manage Programmatic Access"
+h1: Create and Control API Tokens for Users and Service Accounts
 description: Manage programmatic access with API Tokens in Kestra. Create and control tokens for users and service accounts to securely interact with the Kestra API.
 sidebarTitle: API Tokens
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.15.0"
+docId: apitokens
 ---
 
-How to manage API tokens in Kestra.
+API tokens grant programmatic access to the Kestra API for users and [service accounts](../service-accounts/index.md).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/g-740VZLRdA?si=lHUE7qeI6ehOyfsf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## API tokens – manage programmatic access
-
-API tokens authenticate requests to the Kestra API. You can create an API token for a user or a [service account](../service-accounts/index.md).
-
 ## Where you can use API tokens
 
-API tokens are used anytime you want to grant programmatic access to the Kestra API. To authenticate your custom API calls, you can pass a bearer token to the request header. For example, you can use API tokens to authenticate with the Kestra API from a CI/CD pipeline or from a custom application.
+Pass a token as a `Bearer` header to authenticate any Kestra API call — from a CI/CD pipeline, a custom application, or any of the following:
 
-Currently, we support API tokens as an authentication mechanism for the following services:
-1. [GitHub Actions](https://github.com/kestra-io/deploy-action)
-2. [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
-3. [Kestra Server CLI](../../../kestra-cli/kestra-server/index.md)
-4. [kestractl](../../../kestra-cli/kestractl/index.md)
-5. [Kestra API](../api/index.md)
+- [GitHub Actions](https://github.com/kestra-io/kestra-actions)
+- [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
+- [Kestra Server CLI](../../../kestra-cli/kestra-server/index.md)
+- [kestractl](../../../kestra-cli/kestractl/index.md#installation)
+- [Kestra API](../api/index.md)
 
-## How to create a User API token
+## User API tokens
 
-To create an API token, navigate to your profile in the bottom left corner of the Kestra UI and click on **+ Create API Token**.
+User tokens are created via **Settings → API Tokens** or the user avatar menu. Each token has a name, optional description, and maximum age. Leaving max age blank creates a non-expiring token. Extended mode resets the expiry on each use. The token is shown only at creation.
 
-![user-api-token](./user-api-token.png)
+## Service account API tokens
 
-Once in your profile, click **+ Create API Token** in the **Manage your API Tokens** section.
+Service account tokens are created from **IAM → Service Accounts**: open the service account, select the **API Tokens** tab, and click **Create**. The form fields and expiry options are the same as for user tokens.
 
-![create-api-token](./create-api-token.png)
+## API request authentication
 
-Fill in the form with the required information, including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
-
-![new-token-details](./new-token-details.png)
-
-:::alert{type="info"}
-**Note:** you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that automatically prolongs the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. This toggle is disabled by default.
-:::
-
-Once you confirm the API token creation, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location, as it will not be displayed again.
-
-![copy-and-save](./copy-and-save.png)
-
-## How to create a Service Account API token
-
-To create an API token for a Service Account, navigate to the `Administration` section and click the `Service Accounts` page.
-
-Then, go to the `API Tokens` tab and click the `Create` button:
-
-![api-token](./api-token.png)
-
-Fill in the form with the required information including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
-
-![api-token2](./api-token2.png)
-
-:::alert{type="info"}
-**Note:** same as for a user token, you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
-:::
-
-Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
-
-![api-token3](./api-token3.png)
-
-
-## How to use an API token in an API request
-
-To authenticate your custom API calls, pass a `Bearer` token to the request's `Authorization` header. Here is an example that will trigger a flow execution using the Kestra API:
+To authenticate your custom API calls, pass a `Bearer` token to the request's `Authorization` header. The following example triggers a flow execution via the Kestra API:
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world \
 -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
+
+## How API tokens are secured
+
+An API token is an **opaque bearer credential**: a cryptographically random value that carries no claims and is not signed. Unlike the JWT session cookie used for interactive [UI login](../04.authentication/index.md), it is **not** a [JWT](https://datatracker.ietf.org/doc/html/rfc7519), and service accounts never use the session cookie.
+
+- **At rest**, Kestra does not store the token itself. Only a salted SHA-512 hash of the token's secret is persisted, alongside a short prefix used to identify the token in the UI. The plaintext token is shown only once, at creation, and cannot be retrieved.
+- **On each request**, the presented token is re-hashed and compared against the stored hash in constant time, the owning user or service account must still be active, and the token must not have expired.
+- **In transit**, the token is sent in the `Authorization: Bearer` header, so API traffic should always run over HTTPS. Treat a token like a password: store it in a secret manager, never commit it to source control, and revoke it if it may have been exposed.

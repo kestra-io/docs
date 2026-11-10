@@ -1,7 +1,8 @@
 ---
-title: Orchestrate Data Pipelines
+title: Orchestrate Data Pipelines in Kestra
+h1: Schedule, Backfill & Scale Data Pipelines Declaratively
 sidebarTitle: Data Pipelines
-description: Schedule, backfill, automate, and scale data pipelines declaratively
+description: Schedule, backfill, and scale data pipelines declaratively with Kestra. Orchestrate ETL, ELT, and analytics workflows from ingestion to delivery.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 
@@ -16,7 +17,7 @@ Data orchestration automates the execution of interconnected tasks (ETL, Analyti
 Kestra's data orchestration capabilities include:
 - **Flexible workflow triggers** — run data flows on schedule, external events (e.g., a new file in S3/SFTP), or API calls.
 - **Powerful orchestration engine** — control retries, parallel task runs, timeouts, SLAs, concurrency and error handling.
-- **Dynamic resource allocation** — provision containers on-demand (e.g., AWS Fargate, GCP Batch, Azure Batch, Kubernetes) for compute-heavy tasks.
+- **Dynamic resource allocation** — provision containers on-demand (e.g., AWS Batch, GCP Batch, Azure Batch, Kubernetes) for compute-heavy tasks.
 - **Visibility** — track logs, traces, metrics, inputs, outputs, and lineage across workflows and tasks.
 
 ---
@@ -28,7 +29,7 @@ Kestra's data orchestration capabilities include:
 3. **Execution Control** – Set retries, timeouts, SLAs, and concurrency limits.
 4. **Zero Code Changes** – Run existing Python/R/SQL scripts as-is (no rewrites needed); specify dependencies via YAML configuration.
 5. **State Management** – Pass data of any size between tasks (_files, variables, query results_) or between workflows (_using KV Store_) thanks to [internal storage](../../08.architecture/data-components/index.md#internal-storage).
-6. **Dynamic Scaling** – Scale custom code with [task runners](../../task-runners/index.mdx). Spin up containers on cloud services (AWS ECS Fargate, Google Batch, Kubernetes) dynamically at runtime — no need for dedicated always-on workers (_to scale on-premise deployments, you can use [worker groups](../../07.enterprise/04.scalability/worker-group/index.md)_).
+6. **Dynamic Scaling** – Scale custom code with [task runners](../../task-runners/index.mdx). Spin up containers on cloud services (AWS Batch, Google Batch, Kubernetes) dynamically at runtime — no need for dedicated always-on workers (_to scale on-premise deployments, you can use [worker groups](../../07.enterprise/04.scalability/worker-group/index.md)_).
 7. **Observability** – Monitor flow execution states, durations, logs, inputs, outputs and resource usage in real time.
 
 ---
@@ -123,7 +124,7 @@ tasks:
 - [Explore plugins](https://kestra.io/plugins) for databases, data ingestion and transformation tools or custom scripts in any language.
 - [Explore blueprints](/blueprints) for common data workflows and data orchestration patterns.
 - [Explore How-to Guides](../../15.how-to-guides/index.mdx) for detailed examples on [using Kestra for ETL](../../15.how-to-guides/etl-pipelines/index.md), [ELT](../../15.how-to-guides/dbt/index.md), ML, and more.
-- [Explore Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) for scaling custom scripts and containers.
+- [Explore Task Runners](../../task-runners/index.mdx) for scaling custom scripts and containers.
 - [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.
 - [Join Slack](https://kestra.io/slack) to share flow examples or ask questions.
 - [Book a demo](https://kestra.io/demo) to discuss how Kestra can help orchestrate your data workflows.

@@ -3,6 +3,8 @@ description: "Compare Kestra vs Apache NiFi: Declarative YAML orchestration for 
 competitorName: Apache NiFi
 category: Data Orchestration
 shortDescription: "Visual drag-and-drop data flow routing vs. declarative YAML orchestration for any workload."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond real-time data flow routing."
 
 brandColor:
   color: "#728e9b"
@@ -34,7 +36,7 @@ businessValue:
       - "YAML-first, Git-native, deployed through CI/CD like application code"
       - "Event-driven at core: react to webhooks, S3 uploads, Kafka messages, and database changes"
       - "Language-agnostic: Python, SQL, Bash, Go, R, Node.js in isolated containers"
-      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+      - "Open source with 26k+ GitHub stars and {totalPlugins}+ plugins"
   competitor:
     title: Data Flow and Routing
     list:
@@ -87,7 +89,7 @@ easeOfUse:
   title: "Code You Can Version Control vs. a Visual Canvas"
   kestra:
     title: "Kestra: Readable YAML, Git-native by default"
-    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow lives in a file you can commit, review, and deploy through CI/CD."
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Every workflow lives in a file you can commit, review, and deploy through CI/CD."
     code: |
       id: daily_ingestion
       namespace: data.pipelines
@@ -154,7 +156,7 @@ easeOfUse:
 visualPreview:
   mainTitle: One Platform for Your Entire Technology Stack
   kestra:
-    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
+    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. {totalPlugins}+ plugins."
   competitor:
     description: "Ingest data from any source, route FlowFiles through a directed graph of processors, transform content in motion, and mediate between disparate systems in real time. NiFi's visual canvas connects processors for continuous data flow with built-in back-pressure and provenance tracking."
     shadowColor: "#1A9FB9"
@@ -209,7 +211,7 @@ testimonials:
         name: "Active workflows"
       - value: "25+"
         name: "Engineers using Kestra"
-    storyLink: "/use-cases/stories/17-erp-transformation-smarter-faster-fully-automated"
+    storyLink: "/stories/fila"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

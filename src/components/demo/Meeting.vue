@@ -1,171 +1,233 @@
 <script lang="ts" setup>
-import { onMounted, ref, useTemplateRef } from "vue"
-import axios from "axios"
-import posthog from "posthog-js"
-import { useGtm } from "@gtm-support/vue-gtm"
-import identify from "~/utils/identify"
-import { getHubspotTracking } from "~/utils/hubspot.js"
-import { getMeetingUrl } from "~/composables/useMeeting.js"
+    import { ref, useId, useTemplateRef } from "vue"
+    import posthog from "posthog-js"
+    import identify from "~/utils/identify"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot.js"
+    import { getStoredClickId } from "~/scripts/gclid"
+    import {
+        ensureMeetingsScriptLoaded,
+        getMeetingUrl,
+        tierFromEmployees,
+    } from "~/composables/useMeeting.js"
+    import type { Routing } from "~/utils/hubspotRouting"
+    import { $fetch } from "~/utils/fetch"
 
-const gtm = useGtm()
-const valid = ref(false)
-const message = ref("")
-const meetingUrl = ref<string>()
-const formRef = useTemplateRef("demo-form")
+    /* This form is mounted more than once per page (the landing pages show it
+     * in the hero and again lower down), so the field ids must be unique per
+     * instance or every `label for` resolves to the first form. */
+    const uid = useId()
 
-const props = defineProps<{
-    routePath: string
-    headerBackground: {
-        src: string
-    }
-}>()
+    const valid = ref(false)
+    const message = ref("")
+    const meetingUrl = ref<string>()
+    const submitting = ref(false)
+    const formRef = useTemplateRef("demo-form")
 
-const hubSpotUrl =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2"
+    const props = withDefaults(
+        defineProps<{
+            routePath: string
+            /**
+             * `"demo"` keeps the /demo page's dark, gradient-lit half-column.
+             * `"plain"` strips the wrapper chrome and the form's own border so
+             * the parent owns the card — used by the /lp/* landing pages.
+             */
+            variant?: "demo" | "plain"
+            submitLabel?: string
+        }>(),
+        {
+            variant: "demo",
+            submitLabel: "Let's Talk",
+        },
+    )
 
-const onSubmit = async (e: Event) => {
-    e.preventDefault()
-    e.stopPropagation()
+    const hubSpotFormId = "d8175470-14ee-454d-afc4-ce8065dee9f2"
 
-    const script = document.createElement("script")
-    script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
-    script.defer = true
-    document.body.appendChild(script)
+    const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
+    const COMPANY_SIZE_PROPERTY = "number_of_employees"
 
-    script.addEventListener(
-        "load",
-        async () => {
-            const form = formRef.value
-            const hsq = (window._hsq = window._hsq || [])
+    const onSubmit = async (e: Event) => {
+        e.preventDefault()
+        e.stopPropagation()
 
-            if (!form?.checkValidity()) {
-                valid.value = false
-                message.value = "Please check the form fields and try again."
-                return
-            }
+        const form = formRef.value
+        const hsq = (window._hsq = window._hsq || [])
 
-            const fn = form["first-name"].value
-            const ln = form["last-name"].value
-            const em = form["email"].value
+        if (!form?.checkValidity()) {
+            valid.value = false
+            message.value = "Please check the form fields and try again."
+            return
+        }
+        if (submitting.value) return
+        submitting.value = true
 
-            hsq.push([
-                "identify",
+        const fn = form["first-name"].value
+        const ln = form["last-name"].value
+        const em = form["email"].value
+        const company = form["company"].value
+        const emp = form["employees"].value
+        const jobtitle = form["job-title"].value
+        const clickId = getStoredClickId()
+
+        hsq.push([
+            "identify",
+            {
+                email: em,
+                firstname: fn,
+                lastname: ln,
+                kuid: localStorage.getItem("KUID") || "",
+            },
+        ])
+
+        const ip = await $fetch<{ ip: string }>(
+            "https://api.ipify.org?format=json",
+        )
+        const formData = {
+            fields: [
+                { objectTypeId: "0-1", name: "email", value: em },
+                { objectTypeId: "0-1", name: "company", value: company },
+                { objectTypeId: "0-1", name: "firstname", value: fn },
+                { objectTypeId: "0-1", name: "lastname", value: ln },
+                { objectTypeId: "0-1", name: "jobtitle", value: jobtitle },
                 {
-                    email: em,
-                    firstname: fn,
-                    lastname: ln,
-                    kuid: localStorage.getItem("KUID") || "",
+                    objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
+                    name: COMPANY_SIZE_PROPERTY,
+                    value: emp,
                 },
-            ])
+                {
+                    objectTypeId: "0-1",
+                    name: "kuid",
+                    value: localStorage.getItem("KUID") || "",
+                },
+                // Google Ads click id (gclid/gbraid/wbraid) for offline
+                // conversion import. Written to the standard HubSpot
+                // property `hs_google_click_id`, which HubSpot's Google
+                // Ads offline-conversion sync reads natively, so the
+                // booked demo can be attributed back to the paid click.
+                // Sent only when a click id is present.
+                ...(clickId
+                    ? [
+                          {
+                              objectTypeId: "0-1",
+                              name: "hs_google_click_id",
+                              value: clickId.value,
+                          },
+                      ]
+                    : []),
+            ],
+            context: {
+                hutk: getHubspotTracking() || undefined,
+                ipAddress: ip.ip,
+                pageUri: props.routePath,
+                pageName: document.title,
+            },
+        }
 
-            const ip = await axios.get("https://api.ipify.org?format=json")
-            const formData = {
-                fields: [
-                    { objectTypeId: "0-1", name: "email", value: em },
-                    { objectTypeId: "0-1", name: "firstname", value: fn },
-                    { objectTypeId: "0-1", name: "lastname", value: ln },
-                    {
-                        objectTypeId: "0-1",
-                        name: "kuid",
-                        value: localStorage.getItem("KUID") || "",
-                    },
-                ],
-                context: {
-                    hutk: getHubspotTracking() || undefined,
-                    ipAddress: ip.data.ip,
-                    pageUri: props.routePath,
-                    pageName: document.title,
-                },
+        let routing: Routing | undefined
+        try {
+            const result = await submitHubspotForm<{
+                inlineMessage?: string
+                routing?: Routing
+            }>(hubSpotFormId, formData)
+            routing = result?.routing
+        } catch (error: any) {
+            submitting.value = false
+            valid.value = false
+            console.error("Error submitting form data to HubSpot", error)
+            if (
+                error?.response?.data?.errors?.some?.(
+                    (err: any) => err.errorType === "BLOCKED_EMAIL",
+                )
+            ) {
+                message.value = "Please use a professional email address"
+            } else {
+                message.value =
+                    error?.response?.data?.message ||
+                    "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
             }
+            return
+        }
 
+        submitting.value = false
+        valid.value = true
+        meetingUrl.value = withContactParams(
+            getMeetingUrl(routing?.tier ?? tierFromEmployees(emp), {
+                territory: routing?.territory,
+            }),
+            {
+                firstname: fn,
+                lastname: ln,
+                email: em,
+            },
+        )
+
+        try {
             posthog.capture("bookdemo_form")
             hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }])
-            gtm?.trackEvent({
+            // Push directly to the dataLayer: the vue-gtm plugin is
+            // initialized with `enabled: false` (GTM is loaded manually
+            // after cookie consent in cookieconsent.ts), so
+            // gtm.trackEvent() is a no-op and never reaches the dataLayer.
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({
                 event: "bookdemo_form",
                 noninteraction: false,
             })
             // Guarded in case identify() isn't globally defined
             // eslint-disable-next-line no-undef
             if (typeof identify === "function") identify(em)
+        } catch (analyticsError) {
+            console.error("Demo form analytics error", analyticsError)
+        }
 
-            axios
-                .post(hubSpotUrl, formData, {})
-                .then(async () => {
-                    valid.value = true
-                    hsq.push(["refreshPageHandlers"])
-                    hsq.push(["trackPageView"])
-
-                    meetingUrl.value = withContactParams(getMeetingUrl(), {
-                        firstname: fn,
-                        lastname: ln,
-                        email: em,
-                    })
-                })
-                .catch((error) => {
-                    valid.value = false
-                    console.error("Error submitting form data to HubSpot", error)
-                    if (
-                        error?.response?.data?.errors?.some?.(
-                            (e: any) => e.errorType === "BLOCKED_EMAIL",
-                        )
-                    ) {
-                        message.value = "Please use a professional email address"
-                    } else {
-                        message.value =
-                            error?.response?.data?.message ||
-                            "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
-                    }
-                })
-        },
-        { once: true },
-    )
-}
-
-function withContactParams(
-    base: string,
-    {
-        firstname,
-        lastname,
-        email,
-    }: {
-        firstname?: string | null
-        lastname?: string | null
-        email?: string | null
-    } = {},
-) {
-    try {
-        const url = new URL(base, window.location.origin)
-        if (firstname) url.searchParams.set("firstname", String(firstname).trim())
-        if (lastname) url.searchParams.set("lastname", String(lastname).trim())
-        if (email) url.searchParams.set("email", String(email).trim())
-        return url.toString()
-    } catch {
-        const sep = base.includes("?") ? "&" : "?"
-        const qp = new URLSearchParams()
-        if (firstname) qp.set("firstname", String(firstname).trim())
-        if (lastname) qp.set("lastname", String(lastname).trim())
-        if (email) qp.set("email", String(email).trim())
-        return `${base}${sep}${qp.toString()}`
-    }
-}
-
-onMounted(() => {
-    if (getHubspotTracking() === null) {
-        const base = getMeetingUrl()
-        const current = new URLSearchParams(window.location.search)
-        meetingUrl.value = withContactParams(base, {
-            firstname: current.get("firstname"),
-            lastname: current.get("lastname"),
-            email: current.get("email"),
+        void ensureMeetingsScriptLoaded().then(() => {
+            hsq.push(["refreshPageHandlers"])
+            hsq.push(["trackPageView"])
         })
-        valid.value = true
     }
-})
+
+    function withContactParams(
+        base: string,
+        {
+            firstname,
+            lastname,
+            email,
+        }: {
+            firstname?: string | null
+            lastname?: string | null
+            email?: string | null
+        } = {},
+    ) {
+        try {
+            const url = new URL(base, window.location.origin)
+            if (firstname)
+                url.searchParams.set("firstname", String(firstname).trim())
+            if (lastname)
+                url.searchParams.set("lastname", String(lastname).trim())
+            if (email) url.searchParams.set("email", String(email).trim())
+            return url.toString()
+        } catch {
+            const sep = base.includes("?") ? "&" : "?"
+            const qp = new URLSearchParams()
+            if (firstname) qp.set("firstname", String(firstname).trim())
+            if (lastname) qp.set("lastname", String(lastname).trim())
+            if (email) qp.set("email", String(email).trim())
+            return `${base}${sep}${qp.toString()}`
+        }
+    }
 </script>
 
 <template>
-    <div class="col-12 col-lg-6 align-items-center d-flex meeting-container">
-        <div v-if="valid" class="custom-meetings-iframe-container embed-responsive">
+    <div
+        :class="
+            variant === 'plain'
+                ? 'meeting-plain'
+                : 'col-12 col-lg-6 align-items-center d-flex meeting-container'
+        "
+    >
+        <div
+            v-if="valid"
+            class="custom-meetings-iframe-container embed-responsive"
+        >
             <div class="iframe-wrapper">
                 <iframe
                     v-if="meetingUrl"
@@ -195,59 +257,114 @@ onMounted(() => {
                 </div>
 
                 <div class="col-md-6 col-12">
-                    <label for="demo-first-name" class="form-label mb-0">
+                    <label :for="`${uid}-first-name`" class="form-label mb-0">
                         First name
                     </label>
                     <input
-                        id="demo-first-name"
+                        :id="`${uid}-first-name`"
                         name="first-name"
                         autocomplete="given-name"
                         type="text"
                         class="form-control"
-                        placeholder="First name"
+                        placeholder="First name *"
                         required
                     />
                 </div>
 
                 <div class="col-md-6 col-12">
-                    <label for="demo-last-name" class="form-label mb-0">
+                    <label :for="`${uid}-last-name`" class="form-label mb-0">
                         Last name
                     </label>
                     <input
-                        id="demo-last-name"
+                        :id="`${uid}-last-name`"
                         name="last-name"
                         autocomplete="family-name"
                         type="text"
                         class="form-control"
-                        placeholder="Last name"
+                        placeholder="Last name *"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6 col-12">
+                    <label :for="`${uid}-company`" class="form-label mb-0">
+                        Company name
+                    </label>
+                    <input
+                        :id="`${uid}-company`"
+                        name="company"
+                        autocomplete="organization"
+                        type="text"
+                        class="form-control"
+                        placeholder="Company name *"
+                        required
+                    />
+                </div>
+
+                <div class="col-md-6 col-12">
+                    <label :for="`${uid}-email`" class="form-label mb-0">
+                        Company email
+                    </label>
+                    <input
+                        :id="`${uid}-email`"
+                        name="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="Company email *"
                         required
                     />
                 </div>
 
                 <div class="col-12">
-                    <label for="demo-email" class="form-label mb-0">
-                        Company email
+                    <label :for="`${uid}-job-title`" class="form-label mb-0">
+                        Job title
                     </label>
                     <input
-                        id="demo-email"
-                        name="email"
-                        type="email"
+                        :id="`${uid}-job-title`"
+                        name="job-title"
+                        autocomplete="organization-title"
+                        type="text"
                         class="form-control"
-                        placeholder="Company email"
+                        placeholder="Job title *"
                         required
                     />
+                </div>
+
+                <div class="col-12">
+                    <label :for="`${uid}-employees`" class="form-label mb-0">
+                        Number of employees
+                    </label>
+                    <select
+                        :id="`${uid}-employees`"
+                        name="employees"
+                        class="form-control"
+                        required
+                    >
+                        <option value="" disabled selected>
+                            Number of employees *
+                        </option>
+                        <option value="<100">below 100</option>
+                        <option value="100-999">between 100 and 999</option>
+                        <option value="1000+">1000+</option>
+                    </select>
                 </div>
 
                 <div class="col-12 mt-3">
                     <small class="agree">
                         By submitting this form, you agree to our
-                        <a target="_blank" href="/privacy-policy"> Privacy Policy. </a>
+                        <a target="_blank" href="/privacy-policy">
+                            Privacy Policy.
+                        </a>
                     </small>
                 </div>
 
                 <div class="col-12 mt-4 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary w-100">
-                        Let's Talk
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                        :disabled="submitting"
+                    >
+                        {{ submitting ? "Sending..." : submitLabel }}
                     </button>
                 </div>
             </form>
@@ -256,164 +373,275 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-
-.meeting-container {
-    position: relative;
-    background-color: #151515;
-    --back-blue-color: #2DA4FF;
-    background-image:
-        // top left blue to transparent gradient spanning halfway
-        radial-gradient(circle at -100px -220px, var(--back-blue-color) 0%, transparent 650px),
-        // bottom right blue to transparent gradient spanning halfway
-        radial-gradient(circle at 850px 130%, var(--back-blue-color) 0%, transparent 750px);
-    background-repeat: no-repeat, no-repeat;
-    background-size: contain, contain;
-    .alert.alert-danger{
-        color: var(--ks-content-alert-danger)
-    }
-    @include media-breakpoint-up(md) {
-        padding: 0;
-        &::after,
-        &::before {
-            position: absolute;
-            content: "";
-            z-index: -2;
-            width: 30.6rem;
-            height: 15.6rem;
-
-            filter: blur(95px);
-        }
-        &::after {
-            right: 10rem;
-            bottom: 7.375rem;
-        }
-        &::before {
-            left: 16.3rem;
-            top: 4rem;
-        }
-    }
-    @include media-breakpoint-down(xxl) {
-        &::after,
-        &::before {
-            width: 10rem;
-            height: 10rem;
-        }
-        &::after {
-            right: 21rem;
-            bottom: 12.375rem;
-        }
-        &::before {
-            left: 21rem;
-        }
-    }
-    @include media-breakpoint-down(lg) {
-        &::after {
-            right: 12rem;
-        }
-        &::before {
-            left: 12rem;
-        }
-    }
-    @include media-breakpoint-down(md) {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .custom-meetings-iframe-container {
+    /* The parent supplies the card, so the form itself is chrome-free. */
+    .meeting-plain {
         width: 100%;
+
+        .alert.alert-danger {
+            color: var(--ks-content-alert-danger);
+        }
+
+        /* Bootstrap's grid drives this form on /demo, but the landing-page
+         * design is a plain 2-up-then-stacked grid with one uniform 16px rhythm
+         * — including down to the consent line and the button. Laying it out
+         * here is shorter than reverse-engineering gutters, and the !importants
+         * are the only way past the .mt-3/.mt-4 utilities in the markup. */
+        form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem 0.5rem;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: none;
+            background: transparent;
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            > * {
+                /* Bootstrap's column widths and row-gutter margins are both
+                 * meaningless once the parent is a grid, and would only fight
+                 * the track sizing. */
+                width: auto;
+                margin-top: 0 !important;
+                padding: 0;
+            }
+
+            /* The name fields carry col-12 too, for the stacked breakpoint the
+             * single-column grid already handles — so they must not match here. */
+            > .col-12:not(.col-md-6),
+            > .alert {
+                grid-column: 1 / -1;
+            }
+
+            .form-label {
+                display: none;
+            }
+
+            .form-control {
+                min-height: 48px;
+                padding: 0.75rem 0.875rem;
+                border: 1px solid #e9e9ee;
+                border-radius: 8px;
+                font-size: $font-size-sm;
+                line-height: 1.4286;
+
+                &::placeholder {
+                    color: #7e7e9b;
+                }
+            }
+
+            .agree {
+                color: #3b3a41;
+                font-size: $font-size-xs;
+                line-height: 1.3333;
+
+                a {
+                    color: #631bff;
+                    text-decoration: underline;
+                }
+            }
+
+            .btn-primary {
+                min-height: 52px;
+                padding: 0.875rem 1.75rem;
+                border-radius: 8px;
+                font-size: 1.25rem;
+                font-weight: 700;
+                line-height: 1.2;
+                letter-spacing: -0.00625rem;
+            }
+
+            select.form-control {
+                /* Bootstrap's .form-control drops the native caret on a
+                 * <select>; the landing-page design shows one. */
+                appearance: none;
+                padding-right: 2.25rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237e7e9b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 0.625rem center;
+                background-size: 1.25rem 1.25rem;
+
+                &:invalid {
+                    color: var(--ks-secondary-color);
+                }
+            }
+        }
+
+        .iframe-wrapper {
+            width: 100%;
+        }
+    }
+
+    .meeting-container {
         position: relative;
+        background-color: #151515;
+        --back-blue-color: #2da4ff;
+        background-image:
+        // top left blue to transparent gradient spanning halfway
+            radial-gradient(
+                circle at -100px -220px,
+                var(--back-blue-color) 0%,
+                transparent 650px
+            ),
+            // bottom right blue to transparent gradient spanning halfway
+            radial-gradient(
+                    circle at 850px 130%,
+                    var(--back-blue-color) 0%,
+                    transparent 750px
+                );
+        background-repeat: no-repeat, no-repeat;
+        background-size: contain, contain;
+        .alert.alert-danger {
+            color: var(--ks-content-alert-danger);
+        }
+        @include media-breakpoint-up(md) {
+            padding: 0;
+            &::after,
+            &::before {
+                position: absolute;
+                content: "";
+                z-index: -2;
+                width: 30.6rem;
+                height: 15.6rem;
+
+                filter: blur(95px);
+            }
+            &::after {
+                right: 10rem;
+                bottom: 7.375rem;
+            }
+            &::before {
+                left: 16.3rem;
+                top: 4rem;
+            }
+        }
+        @include media-breakpoint-down(xxl) {
+            &::after,
+            &::before {
+                width: 10rem;
+                height: 10rem;
+            }
+            &::after {
+                right: 21rem;
+                bottom: 12.375rem;
+            }
+            &::before {
+                left: 21rem;
+            }
+        }
+        @include media-breakpoint-down(lg) {
+            &::after {
+                right: 12rem;
+            }
+            &::before {
+                left: 12rem;
+            }
+        }
         @include media-breakpoint-down(md) {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        &::after,
-        &::before {
-            position: absolute;
-            content: "";
-            z-index: -2;
-            width: 15.6rem;
-            height: 24.6rem;
+        .custom-meetings-iframe-container {
+            width: 100%;
+            position: relative;
+            @include media-breakpoint-down(md) {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            &::after,
+            &::before {
+                position: absolute;
+                content: "";
+                z-index: -2;
+                width: 15.6rem;
+                height: 24.6rem;
 
-            filter: blur(50px);
-        }
-        &::after {
-            left: 25.6rem;
-            bottom: 3.87rem;
-        }
-        &::before {
-            right: 22.875rem;
-            top: 1.625rem;
-        }
-        @include media-breakpoint-down(xxl) {
-            &::after {
-                left: 13.6rem;
-                bottom: 8.87rem;
-            }
-            &::before {
-                right: 12.875rem;
-            }
-        }
-        @include media-breakpoint-down(lg) {
-            &::after {
-                left: 7.6rem;
-            }
-            &::before {
-                right: 6.8rem;
-            }
-        }
-        @include media-breakpoint-down(md) {
-            .iframe-wrapper {
-                margin-bottom: -3.5rem;
+                filter: blur(50px);
             }
             &::after {
-                left: 6rem;
+                left: 25.6rem;
+                bottom: 3.87rem;
             }
             &::before {
-                right: 14rem;
+                right: 22.875rem;
+                top: 1.625rem;
             }
-        }
-    }
-
-    .meeting-form {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        max-width: 800px;
-        img.background {
-            width: 644px;
-            max-width: 100%;
-            z-index: 0;
-            position: absolute;
-            z-index: 1;
-            opacity: 0.2;
-        }
-        form {
-            border-radius: 0.25rem;
-            padding: 0 1rem 2rem 1rem;
-            width: 85%;
-            border: 1px solid var(--ks-border-primary);
-            background: white;
-            @include media-breakpoint-up(lg) {
-                width: 75%;
+            @include media-breakpoint-down(xxl) {
+                &::after {
+                    left: 13.6rem;
+                    bottom: 8.87rem;
+                }
+                &::before {
+                    right: 12.875rem;
+                }
+            }
+            @include media-breakpoint-down(lg) {
+                &::after {
+                    left: 7.6rem;
+                }
+                &::before {
+                    right: 6.8rem;
+                }
             }
             @include media-breakpoint-down(md) {
-                position: relative;
-                top: auto;
-                width: 100%;
-                border-radius: 0.5rem;
-            }
-            .form-label {
-                opacity: 0;
+                .iframe-wrapper {
+                    margin-bottom: -3.5rem;
+                }
+                &::after {
+                    left: 6rem;
+                }
+                &::before {
+                    right: 14rem;
+                }
             }
         }
-        @include media-breakpoint-down(md) {
-            margin: 2rem 0;
-            width: 100%;
-            .col-12 {
-                margin-bottom: -12px;
+
+        .meeting-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 800px;
+            img.background {
+                width: 644px;
+                max-width: 100%;
+                z-index: 0;
+                position: absolute;
+                z-index: 1;
+                opacity: 0.2;
+            }
+            form {
+                border-radius: 0.25rem;
+                padding: 0 1rem 2rem 1rem;
+                width: 85%;
+                border: 1px solid var(--ks-border-primary);
+                background: white;
+                @include media-breakpoint-up(lg) {
+                    width: 75%;
+                }
+                @include media-breakpoint-down(md) {
+                    position: relative;
+                    top: auto;
+                    width: 100%;
+                    border-radius: 0.5rem;
+                }
+                .form-label {
+                    opacity: 0;
+                }
+                select.form-control:invalid {
+                    color: var(--ks-secondary-color);
+                }
+            }
+            @include media-breakpoint-down(md) {
+                margin: 2rem 0;
+                width: 100%;
+                .col-12 {
+                    margin-bottom: -12px;
+                }
             }
         }
     }
-}
 </style>

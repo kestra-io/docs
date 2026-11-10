@@ -9,17 +9,16 @@ const disabled = import.meta.env.DEV || envField.PREVIEW
 
 User-agent: *
 Disallow: ${disabled ? "*" : "/slack"}
-${disabled ? "" : `# Block the /blueprints pagination bug (critical - 501 errors)
-Disallow: /blueprints?*clid=*
-Disallow: /blueprints?*size=*
-# Build assets (keep images indexable)
-Allow: /_astro/*.jpg
-Allow: /_astro/*.jpeg
-Allow: /_astro/*.png
-Allow: /_astro/*.webp
-Allow: /_astro/*.svg
-Allow: /_astro/*.gif
-Disallow: /_astro/
+${disabled ? "" : `Disallow: /t/
+Disallow: /flags/
+# Block faceted /blueprints navigation (crawler trap: combinatorial
+# ?tags=/?tools=/?page=/?size=/?sort= permutations, incl. the old ?clid= bug).
+# The clean /blueprints listing and /blueprints/<slug> detail pages have no
+# query string, so they stay crawlable and indexable.
+Disallow: /blueprints?*
+Disallow: /*?tags=
+# Build assets — CSS, JS, fonts accessible for robots rendering
+Allow: /_astro/
 Disallow: /_nuxt/
 Disallow: /__nuxt_content/
 # Cloudflare image optimization (keep indexable)
@@ -30,6 +29,10 @@ Disallow: /*?q=
 Disallow: /*?search=
 Disallow: /*?ref=
 Disallow: /*?utm_
+Disallow: /*?clid=
+Disallow: /*&clid=
+Disallow: /*?__hs
+Disallow: /*&__hs
 `}${disabled ? "" : "Sitemap: https://kestra.io/sitemap/index.xml"}`
 
     return new Response(result, {

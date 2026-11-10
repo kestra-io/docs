@@ -1,5 +1,6 @@
-import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs"
-import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
+import { isEntryAPluginElementPredicate } from "./plugin"
+import type { Plugin, PluginElement } from "./plugin"
+import { canonicalPluginPath, type PluginUrlIndex } from "./canonicalUrl"
 
 export type CardPlugin = {
     name: string
@@ -13,16 +14,38 @@ export type CardPlugin = {
     elementCounts?: number
     blueprints?: number
     isEnterprise?: boolean
+    classes?: string
+    lastReleasedAt?: string
+    usageCount?: number
+    /** Canonical pathname, set when an url index is supplied. */
+    href?: string
 }
 
 export function prunePluginsForCards(
-    plugins: Plugin[], 
-    pluginsData: Record<string, any>
+    plugins: Plugin[],
+    pluginsData: Record<string, any>,
+    urlIndex?: Pick<PluginUrlIndex, "multiSubGroupPlugins">,
+    rootGroups: Set<string> = new Set(),
 ): CardPlugin[] {
     return plugins.map(p => {
         const key = p.subGroup ?? p.group ?? p.name
-        const info = pluginsData[key] ?? {}
+
+        /** A subgroup only collides with another plugin's own info when its value IS that other
+         *  plugin's root group (e.g. plugin-ee-git's subGroup is literally "io.kestra.plugin.git",
+         *  plugin-git's own group) — fall back to this plugin's own group info in that case.
+         *  A subgroup that merely lives in a different package tree from its own group (e.g. core's
+         *  "io.kestra.plugin.ee.assets" subgroup) is not a collision: it owns its pluginsData entry. */
+        const isForeignSubgroup = p.subGroup !== undefined && p.subGroup !== p.group && rootGroups.has(p.subGroup)
+        const info = (isForeignSubgroup ? pluginsData[p.group] : pluginsData[key]) ?? {}
+
         const groupInfo = pluginsData[p.group]
+
+        const classes = Object.entries(p)
+            .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+            .flatMap(([, v]) => (v as PluginElement[]).map((el) => el.cls))
+            .join(" ")
+            .replace(/io\.kestra\.plugin\./g, "")
+
         return {
             name: p.name,
             title: info.title ?? p.title ?? p.name,
@@ -34,7 +57,11 @@ export function prunePluginsForCards(
             className: info.className,
             elementCounts: info.elementCounts,
             blueprints: info.blueprints,
-            isEnterprise: p.group?.includes('.ee.') ?? false,
+            isEnterprise: (p.subGroup ?? p.group)?.includes('.ee.') ?? false,
+            classes,
+            lastReleasedAt: info.lastReleasedAt as string | undefined,
+            usageCount: info.usageCount as number | undefined,
+            href: urlIndex ? canonicalPluginPath(p, urlIndex) : undefined,
         }
     })
 }
@@ -64,17 +91,4 @@ export function prunePluginsForSidebar(plugins: Plugin[]): Plugin[] {
 
         return pruned as Plugin
     })
-}
-
-export function calculateTotalPluginCount(plugins: Plugin[]): string {
-    const classes = new Set<string>()
-    for (const plugin of plugins) {
-        for (const [k, v] of Object.entries(plugin)) {
-            if (isEntryAPluginElementPredicate(k, v)) {
-                v.forEach((el: PluginElement) => classes.add(el.cls))
-            }
-        }
-    }
-    const rounded = Math.floor(classes.size / 100) * 100
-    return `${rounded}+`
 }

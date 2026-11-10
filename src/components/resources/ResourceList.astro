@@ -1,0 +1,23 @@
+---
+import ResourceGrid from "~/components/resources/ResourceGrid.vue"
+
+const { resources, tag } = Astro.props
+---
+
+<section>
+    <div class="container">
+        <ResourceGrid client:idle resources={resources} slug={tag} />
+    </div>
+</section>
+
+<style lang="scss">
+    section {
+        padding: $rem-4 $rem-1;
+        background: var(--ks-background-body);
+
+        .container {
+            max-width: 1180px;
+            padding: 0;
+        }
+    }
+</style>

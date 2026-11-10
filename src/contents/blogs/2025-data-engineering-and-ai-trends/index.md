@@ -5,7 +5,8 @@ date: 2025-01-24T13:00:00
 category: Solutions
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -16,8 +17,6 @@ Many trends that began shaping [data engineering in 2024](../2024-01-24-2024-dat
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/JMfRRP_2Bs8?si=W1SSyqcwRGw-sfZV" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## **1. Generative AI as an Efficiency Driver**
 
@@ -81,7 +80,7 @@ Cost optimization continues to drive renewed interest in data lakes, with teams 
 - Schema evolution to handle changing data models
 - RBAC integration through catalogs like [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/).
 
-This setup allows teams to query data directly in object storage using engines like [DuckDB](../2023-08-11-dataframes) (ad-hoc analysis), [chDB](../embedded-databases/index.md) (lightweight aggregations), or Polars (complex transformations/index.md). While data warehouses remain common for managing mission-critical curated data marts, the trend favors open **hybrid lakehouse architectures** with Iceberg at the core. Notably, major platforms like Databricks and Snowflake now also support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
+This setup allows teams to query data directly in object storage using engines like [DuckDB](../dataframes) (ad-hoc analysis), [chDB](../embedded-databases/index.md) (lightweight aggregations), or Polars (complex transformations/index.md). While data warehouses remain common for managing mission-critical curated data marts, the trend favors open **hybrid lakehouse architectures** with Iceberg at the core. Notably, major platforms like Databricks and Snowflake now also support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
 
 ---
 

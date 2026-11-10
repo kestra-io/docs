@@ -5,7 +5,6 @@
                 <NuxtImg
                     src="/landing/onezero/one.png"
                     alt="1-0"
-                    format="webp"
                     loading="lazy"
                     class="img-fluid"
                     data-usal="zoomin"
@@ -58,14 +57,15 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import { usePluginsCount } from "~/composables/usePluginsCount"
 
-    const { totalPlugins } = usePluginsCount()
+    const props = defineProps<{
+        totalPlugins: string
+    }>()
 
     const HIGHLIGHTS = computed(() => [
         { title: "LTS Release" },
         { title: "Apache 2.0 License" },
-        { title: `${totalPlugins.value} Plugins` },
+        { title: `${props.totalPlugins}+ Plugins` },
         { title: "Deploy anywhere" },
     ])
 
@@ -77,10 +77,10 @@
             height: 39,
         },
         {
-            name: "Toyota",
-            src: "/landing/onezero/toyota.svg",
-            width: 152.78,
-            height: 25.13,
+            name: "Amdocs",
+            src: "/landing/onezero/amdocs.svg",
+            width: 120,
+            height: 26,
         },
         {
             name: "Acxiom",

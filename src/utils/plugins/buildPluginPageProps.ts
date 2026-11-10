@@ -1,19 +1,24 @@
 import {
+    extractPluginElements,
     filterPluginsWithoutDeprecated,
     isEntryAPluginElementPredicate,
-    slugify,
     subGroupName,
     type Plugin,
     type PluginMetadata,
-} from "@kestra-io/ui-libs"
+} from "./plugin"
+import { slugify } from "../slugify"
 
 import {
     formatElementName,
     formatElementType,
+    formatPluginName,
     getBlueprintsHeading,
     getPluginTitle,
+    isElementNameRedundant,
 } from "~/utils/plugins/pluginUtils"
 import { prunePluginsForSidebar } from "./pruneForClient"
+import { getPluginInstallCommand } from "./installCommand"
+import { matchesSubGroup } from "./subgroupMatcher"
 import type { PluginPage, PluginPageWithToc, TocLink } from "./types"
 
 const TOC_DEPTH = 2
@@ -23,16 +28,39 @@ interface BuildPluginPagePropsInput {
     subGroup: string | undefined
     pluginType: string | undefined
     pathname: string
-
     pageNames: Record<string, string>
     allPlugins: Plugin[]
     allPluginMetadata: PluginMetadata[]
-
     blueprintCounts: Record<string, number>
     relatedBlogs: any[]
-
     page: PluginPage | null
     sidebarPluginData: PluginPage | null
+}
+
+/** Drop a lone subgroup that only re-groups a foreign-package subset of the root (e.g. plugin-ee-git's
+ *  io.kestra.plugin.git tasks), so the page shows one flat task list instead of hiding the root's own tasks. */
+function dropRedundantSubgroup(plugins: Plugin[]): Plugin[] {
+    const subgroups = plugins.filter((p) => p.subGroup !== undefined)
+    const root = plugins.find((p) => p.subGroup === undefined)
+
+    if (subgroups.length !== 1 || !root) {
+        return plugins
+    }
+
+    const subgroupClasses = new Set(
+        Object.values(extractPluginElements(subgroups[0])).flat(),
+    )
+
+    const rootHasOwnTasks = (Object.entries(root) as [string, { cls: string; title?: string }[]][])
+        .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+        .flatMap(([, value]) => value)
+        .some((element) => element.title && !subgroupClasses.has(element.cls))
+
+    if (!rootHasOwnTasks) {
+        return plugins
+    }
+
+    return plugins.filter((p) => p.subGroup === undefined)
 }
 
 export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
@@ -52,12 +80,20 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     const subgroups = allPlugins.filter((r) => r.name === pluginName)
 
-    const pluginsWithoutDeprecated: Plugin[] = filterPluginsWithoutDeprecated(
-        pluginType ? (sidebarPluginData?.body?.plugins ?? []) : (page?.body?.plugins ?? []),
+    const pluginsWithoutDeprecated: Plugin[] = dropRedundantSubgroup(
+        filterPluginsWithoutDeprecated(
+            pluginType
+                ? (sidebarPluginData?.body?.plugins ?? [])
+                : (page?.body?.plugins ?? []),
+        ),
     )
 
+    const subGroupPlugins = pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined)
+    const effectiveSubGroup = subGroup
+        ?? (subGroupPlugins.length === 1 ? slugify(subGroupName(subGroupPlugins[0])) : undefined)
+
     const subGroupWrapper = pluginsWithoutDeprecated.find(
-        (p) => slugify(subGroupName(p)) === subGroup,
+        (p) => slugify(subGroupName(p)) === effectiveSubGroup,
     )
 
     const currentPageIcon = `/icons/${pluginType ?? subGroupWrapper?.subGroup ?? page?.body.group}.svg`
@@ -74,17 +110,19 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const rootPlugin = pluginsWithoutDeprecated.find((p) => p.subGroup === undefined)
 
     const currentSubgroupPlugin =
-        !subGroup || pluginType
+        !effectiveSubGroup || pluginType
             ? undefined
-            : pluginsWithoutDeprecated.find((p) => {
-                  const subgroupLastSegment = p.subGroup?.split(".").pop()
-                  const possibleSubgroupMatches = [
-                      slugify(subGroupName(p)),
-                      subgroupLastSegment,
-                      slugify(subgroupLastSegment ?? ""),
-                  ]
-                  return possibleSubgroupMatches.includes(subGroup)
-              })
+            : pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
+
+    // Subgroup owning the task on task pages, used only for the heading title. Root plugins can also
+    // list their subgroups' tasks, so match subgroups only and fall back to the root for root-level tasks.
+    const taskSubgroupPlugin = pluginType
+        ? pluginsWithoutDeprecated.find(
+              (p) =>
+                  p.subGroup !== undefined &&
+                  Object.values(extractPluginElements(p)).flat().includes(pluginType),
+          )
+        : undefined
 
     const currentPluginMetadata = (() => {
         const subgroupId = currentSubgroupPlugin?.subGroup ?? currentSubgroupPlugin?.group
@@ -123,15 +161,47 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         )
     })()
 
-    const headingTitle = pluginType
-        ? formatElementName(pluginType)
-        : ((rootPlugin
-              ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
-              : undefined) ?? pluginName)
+    const pluginArtifactCoordinate = getPluginInstallCommand(
+        pluginType,
+        currentPluginMetadata,
+        currentPageMetadata,
+    )
+
+    // Title of the plugin/subgroup container this page belongs to, e.g.
+    // "AWS S3", "Google Cloud BigQuery", "PostgreSQL".
+    const containerTitle =
+        (rootPlugin
+            ? getPluginTitle(taskSubgroupPlugin ?? currentSubgroupPlugin ?? rootPlugin, metadataMap)
+            : undefined) ?? pluginName
+
+    // Task pages prefix the bare class name with their container title (e.g.
+    // "AWS S3 Trigger") so <title> and <h1> are unique and descriptive. Without
+    // this, every plugin's "Trigger"/"Query"/"Create"/"Delete" task shared the
+    // same short, duplicated title across hundreds of pages.
+    const elementName = pluginType ? formatElementName(pluginType) : undefined
 
     const rootPluginTitle = rootPlugin
         ? getPluginTitle(rootPlugin, metadataMap)
         : pluginName
+
+    const headingTitle = (() => {
+        if (!pluginType || !elementName) return containerTitle
+
+        let title = isElementNameRedundant(containerTitle, elementName)
+            ? containerTitle
+            : `${containerTitle} ${elementName}`
+
+        // If the title collapsed to just the bare task name (e.g. subgroup "Log" + task "Log"),
+        // prefix with the plugin name so the page is indexed descriptively (e.g. "Core Log").
+        if (title.toLowerCase() === elementName.toLowerCase()) {
+            const prefix = formatPluginName(pluginName)
+            if (prefix && !title.toLowerCase().includes(prefix.toLowerCase())) {
+                title = `${prefix} ${title}`
+            }
+        }
+
+        return title
+    })()
 
     let combinedDescription = currentPageMetadata?.description
     const bodyText = (currentPageMetadata as any)?.body
@@ -142,7 +212,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const headingDescription = pluginType
         ? page?.title
         : (combinedDescription ??
-          (subGroup === undefined
+          (effectiveSubGroup === undefined
               ? (rootPlugin?.longDescription ?? combinedDescription)
               : (currentSubgroupPlugin?.longDescription ?? combinedDescription)))
 
@@ -153,6 +223,9 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     }
 
     const tocEntry = (id: string, text: string): TocLink => ({ id, depth: TOC_DEPTH, text })
+
+    const extractFirstHeading = (markdown: string): string | undefined =>
+        markdown.match(/^#{1,6}\s+(.+)$/m)?.[1]?.trim()
 
     const generateTocForPluginElements = (wrapper: Plugin): TocLink[] =>
         Object.entries(wrapper)
@@ -185,12 +258,12 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             .filter(Boolean)
     })()
 
-    const blueprintsSectionHeading = getBlueprintsHeading(pluginName, rootPlugin, subGroup)
+    const blueprintsSectionHeading = getBlueprintsHeading(pluginName, rootPlugin, effectiveSubGroup, undefined, rootPluginTitle)
 
     const currentPluginCategories = (() => {
         const subgroupCats = currentSubgroupPlugin?.categories
         const pluginCats = rootPlugin?.categories
-        return subGroup === undefined
+        return effectiveSubGroup === undefined
             ? (pluginCats ?? [])
             : subgroupCats?.length
               ? subgroupCats
@@ -211,9 +284,9 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const makeTOC = (): TocLink[] => {
         const pluginToc = (() => {
             if (!rootPlugin) return []
-            if (subGroup && currentSubgroupPlugin)
+            if (effectiveSubGroup && currentSubgroupPlugin)
                 return generateTocForPluginElements(currentSubgroupPlugin)
-            if (!subGroup && !pluginType) {
+            if (!effectiveSubGroup && !pluginType) {
                 const subGroups = pluginsWithoutDeprecated.filter((p) => p.subGroup)
                 return subGroups.length
                     ? subGroups.map((sub) =>
@@ -230,18 +303,29 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
               ? []
               : pluginToc
 
+        const tocLinks = [...baseTocLinks]
+        if (pluginArtifactCoordinate) {
+            const propertiesIndex = tocLinks.findIndex((link) => link.id === "properties")
+            tocLinks.splice(
+                propertiesIndex === -1 ? tocLinks.length : propertiesIndex,
+                0,
+                tocEntry("installation", "Installation"),
+            )
+        }
+
         const hasBlueprints = pluginType
             ? blueprintCounts?.[pluginType] > 0
-            : subGroup
-              ? subgroupBlueprintCounts?.[`${rootPlugin?.group ?? pluginName}-${subGroup}`] > 0
+            : effectiveSubGroup
+              ? subgroupBlueprintCounts?.[`${rootPlugin?.group ?? pluginName}-${effectiveSubGroup}`] > 0
               : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
 
         const isRootView = pluginType === undefined
+        const isRootPluginPage = isRootView && subGroup === undefined
 
         return [
-            ...baseTocLinks,
-            ...(isRootView && rootPlugin?.longDescription
-                ? [tocEntry("how-to-use-this-plugin", "How to use this plugin")]
+            ...tocLinks,
+            ...(isRootPluginPage && rootPlugin?.longDescription
+                ? [tocEntry("how-to-use-this-plugin", extractFirstHeading(rootPlugin.longDescription) ?? "How to use this plugin")]
                 : []),
             ...(isRootView && currentPluginVideos?.length > 0
                 ? [tocEntry("see-it-in-action", "See it in action")]
@@ -252,7 +336,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             blueprintsSectionHeading?.text
                 ? [tocEntry(blueprintsSectionHeading.id, blueprintsSectionHeading.text)]
                 : []),
-            ...(isRootView && subGroup === undefined && relatedBlogs.length > 0
+            ...(isRootView && effectiveSubGroup === undefined && relatedBlogs.length > 0
                 ? [tocEntry("latest-blog-posts", "Latest Blog Posts")]
                 : []),
             ...(currentPluginCategories?.length > 0
@@ -275,8 +359,11 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         ),
     )
 
-    const ogImage = subGroup
-        ? `/meta/plugins/group-${subgroups.find((r) => slugify(r.title) === subGroup)?.subGroup}.svg`
+    const matchedSubGroup = effectiveSubGroup
+        ? subgroups.find((r) => slugify(r.title) === effectiveSubGroup)?.subGroup
+        : undefined
+    const ogImage = matchedSubGroup
+        ? `/meta/plugins/group-${matchedSubGroup}.svg`
         : `/meta/plugins/${pluginType ?? pluginName}.svg`
 
     const prunedRootPlugin = rootPlugin ? prunePluginsForSidebar([rootPlugin])[0] : undefined
@@ -294,9 +381,11 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         prunedPluginsWithoutDeprecated,
         pageWithToc,
         currentPluginMetadata,
+        pluginArtifactCoordinate,
         currentPluginCategories,
         sidebarPluginDataResult: sidebarPluginData,
 
+        effectiveSubGroup,
         pluginsWithoutDeprecated,
         rootPlugin,
         rootPluginTitle,

@@ -2,9 +2,16 @@
 import { getCollection } from "astro:content"
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import kestraIcon from "~/components/versus/assets/ks-icon.svg?raw"
 import vsBadgeSvg from "~/components/versus/assets/vs-badge.svg?raw"
+import {
+    fetchTotalPluginsCount,
+    replaceTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const vsEntries = await getCollection("vs")
 
@@ -26,7 +33,10 @@ const entries = vsEntries
         competitorName: entry.data.competitorName,
         category: entry.data.category,
         monogram: monogramMap[entry.id] ?? "",
-        shortDescription: entry.data.shortDescription,
+        shortDescription: replaceTotalPluginsPlaceholder(
+            entry.data.shortDescription,
+            totalPlugins,
+        ),
         color: entry.data.brandColor.color,
         gradient: entry.data.brandColor.gradient ?? "",
     }))
@@ -34,7 +44,7 @@ const entries = vsEntries
 const faqItems = [
     {
         question: "What makes Kestra different from other orchestration tools?",
-        answer: "Kestra is a universal orchestration platform that works with any language, any stack, and any cloud. Unlike tools that lock you into Python, a specific cloud, or a proprietary GUI, Kestra uses declarative YAML workflows that are version-controlled in Git, with 1200+ plugins and a built-in code editor supporting Python, R, Node.js, Shell, and more.",
+        answer: `Kestra is a universal orchestration platform that works with any language, any stack, and any cloud. Unlike tools that lock you into Python, a specific cloud, or a proprietary GUI, Kestra uses declarative YAML workflows that are version-controlled in Git, with ${totalPlugins}+ plugins and a built-in code editor supporting Python, R, Node.js, Shell, and more.`,
     },
     {
         question: "Can Kestra replace my current workflow orchestration tool?",
@@ -136,6 +146,9 @@ const faqItems = [
                 <button class="toggle-btn" data-category="Data Orchestration"
                     >Data Orchestration</button
                 >
+                <button class="toggle-btn" data-category="Business Automation"
+                    >Business Automation</button
+                >
             </div>
             <div class="grid" id="vs-grid">
                 {
@@ -182,6 +195,7 @@ const faqItems = [
         </Fragment>
     </GetStarted>
 
+    <SchemaFAQ items={faqItems} slot="head" />
     <Faq items={faqItems} title="Frequently Asked Questions" client:visible />
 </Layout>
 
@@ -245,13 +259,16 @@ const faqItems = [
                     var gradient = item.getAttribute("data-gradient") || ""
                     if (gradient) {
                         heroName.style.background = gradient
-                        heroName.style.webkitBackgroundClip = "text"
+                        heroName.style.setProperty(
+                            "-webkit-background-clip",
+                            "text",
+                        )
                         heroName.style.webkitTextFillColor = "transparent"
                         heroName.style.backgroundClip = "text"
                         heroName.style.color = ""
                     } else {
                         heroName.style.background = ""
-                        heroName.style.webkitBackgroundClip = ""
+                        heroName.style.setProperty("-webkit-background-clip", "")
                         heroName.style.webkitTextFillColor = ""
                         heroName.style.backgroundClip = ""
                         heroName.style.color = color
@@ -428,6 +445,14 @@ const faqItems = [
         margin-bottom: 1.5rem;
         border-bottom: 1px solid var(--ks-border-secondary);
         width: fit-content;
+        max-width: 100%;
+        overflow-x: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .toggle-btn {

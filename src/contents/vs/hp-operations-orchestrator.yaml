@@ -3,6 +3,8 @@ description: "Compare Kestra vs HP Operations Orchestrator (HP OO / Micro Focus 
 competitorName: "HP Operations Orchestrator"
 category: Infrastructure Automation
 shortDescription: "Legacy Java-based runbook automation vs. cloud-native declarative orchestration in YAML."
+seeHowTitle: "Modernizing Legacy IT Automation with Kestra"
+seeHowBody: "See how enterprises replace HP OO and other legacy runbook tools with Kestra's declarative platform."
 
 brandColor:
   color: "#0096d6"
@@ -30,7 +32,7 @@ businessValue:
     title: "Modern IT Orchestration Platform"
     list:
       - "Declarative YAML workflows—version-controlled, testable, CI/CD deployable"
-      - "1,200+ plugins for cloud, ITSM, Ansible, Terraform, PowerShell, databases"
+      - "{totalPlugins}+ plugins for cloud, ITSM, Ansible, Terraform, PowerShell, databases"
       - "Self-service Apps with dynamic, API-backed forms and inline approvals"
       - "Flat worker-based pricing—no per-execution or per-content-pack fees"
       - "Cloud-native: Kubernetes, Docker, air-gapped—no Java application server required"
@@ -84,7 +86,7 @@ easeOfUse:
   title: "Readable YAML vs. Proprietary Graphical Flow Designer"
   kestra:
     title: "Kestra: YAML Workflows Anyone Can Review"
-    description: "Write orchestration logic in YAML that reads like documentation. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> helps draft workflows. Every flow is a file in Git—reviewable in pull requests, testable in CI/CD, and deployable via Terraform or GitOps. No proprietary designer required."
+    description: "Write orchestration logic in YAML that reads like documentation. The <a href='/docs/develop-with-ai/ai-copilot' target='_blank'>AI Copilot</a> helps draft workflows. Every flow is a file in Git—reviewable in pull requests, testable in CI/CD, and deployable via Terraform or GitOps. No proprietary designer required."
     code: |
       id: incident_remediation
       namespace: ops.itsm
@@ -97,21 +99,27 @@ easeOfUse:
       tasks:
         - id: diagnose
           type: io.kestra.plugin.scripts.python.Script
+          env:
+            INCIDENT: "{{ trigger.body | toJson }}"
           script: |
-            import json
-            incident = json.loads('{{ trigger.body }}')
+            import json, os
+            incident = json.loads(os.environ["INCIDENT"])
             # Run diagnostics based on incident type
 
         - id: auto_remediate
           type: io.kestra.plugin.ansible.cli.AnsibleCLI
+          env:
+            AFFECTED_CI: "{{ trigger.body.affected_ci }}"
           commands:
+            # remediate.yml reads the host with lookup('env', 'AFFECTED_CI')
             - ansible-playbook remediate.yml
-              -e "host={{ trigger.body.affected_ci }}"
 
         - id: validate
           type: io.kestra.plugin.scripts.shell.Commands
+          env:
+            AFFECTED_CI: "{{ trigger.body.affected_ci }}"
           commands:
-            - ./health_check.sh "{{ trigger.body.affected_ci }}"
+            - ./health_check.sh "$AFFECTED_CI"
 
         - id: close_incident
           type: io.kestra.plugin.servicenow.table.Update
@@ -166,7 +174,7 @@ featureGrid:
       kestra: "Cloud-native microservices (Kubernetes, Docker, air-gap ready)"
       competitor: "Java application server + RAS agents (legacy enterprise architecture)"
     - feature: Integrations
-      kestra: 1,200+ open plugins (cloud, ITSM, Ansible, Terraform, databases)
+      kestra: "{totalPlugins}+ plugins (cloud, ITSM, Ansible, Terraform, databases)"
       competitor: Content packs (proprietary, version-locked, licensed separately)
     - feature: Version control
       kestra: "Native Git, CI/CD, Terraform provider"
@@ -206,13 +214,13 @@ testimonials:
         name: "Java app servers to maintain"
       - value: "10x"
         name: "More workflows automated"
-    storyLink: "/use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment"
+    storyLink: "/stories/pharmacy-retailer"
 
 platformStrengths:
   title: "Kestra Is What HP OO Would Be If Built Today"
   features:
     - title: "No Content Packs, No Vendor Lock-In"
-      description: "Kestra's 1,200+ plugins are open-source, versioned with the platform, and integrate with the full modern stack—cloud APIs, Ansible, Terraform, Kubernetes, ITSM, and databases. No separate content pack licenses, no version compatibility matrix to manage."
+      description: "Kestra's {totalPlugins}+ plugins are versioned with the platform and integrate with the full modern stack—cloud APIs, Ansible, Terraform, Kubernetes, ITSM, and databases. No separate content pack licenses, no version compatibility matrix to manage."
     - title: "Git-Native From Day One"
       description: "Every workflow is a YAML file that lives in your Git repository. Deploy through CI/CD pipelines, review in pull requests, roll back to any previous version. No proprietary flow designer required—use VS Code, vim, or any editor you already use."
     - title: "Migrate Legacy Flows Without Starting Over"
@@ -240,7 +248,7 @@ decisionGuide:
 
 commonQuestions:
   - question: "What is HP Operations Orchestrator and how does it compare to Kestra?"
-    answer: "HP Operations Orchestrator (HP OO) is an enterprise IT process automation platform originally developed by HP, acquired by Micro Focus, and now part of OpenText. It uses a proprietary graphical flow designer (HP OO Studio) to build runbook automation flows using operations from content packs. Kestra is a modern, open-source alternative: declarative YAML workflows that live in Git, 1,200+ open plugins, cloud-native architecture, and a built-in UI—without Java application servers, content pack licensing, or proprietary designer tools."
+    answer: "HP Operations Orchestrator (HP OO) is an enterprise IT process automation platform originally developed by HP, acquired by Micro Focus, and now part of OpenText. It uses a proprietary graphical flow designer (HP OO Studio) to build runbook automation flows using operations from content packs. Kestra is a modern, open-source alternative: declarative YAML workflows that live in Git, {totalPlugins}+ plugins, cloud-native architecture, and a built-in UI—without Java application servers, content pack licensing, or proprietary designer tools."
   - question: "How do I migrate from HP OO to Kestra?"
     answer: "Migration follows a systematic mapping process: HP OO operations become Kestra task types (e.g., ServiceNow operations become io.kestra.plugin.servicenow.* tasks, Ansible operations become io.kestra.plugin.ansible.* tasks, script steps become io.kestra.plugin.scripts.* tasks). HP OO flow inputs become Kestra workflow inputs. Flow logic (branches, loops, error handling) maps to Kestra's YAML constructs for conditions, parallel tasks, and error handling. The Kestra team provides migration guidance for teams moving from HP OO."
   - question: "Can Kestra replace HP OO for ServiceNow integration?"

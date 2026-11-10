@@ -1,0 +1,46 @@
+// Replaces bootstrap/scss/badge.
+.badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: $white;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: $border-radius;
+
+    &:empty {
+        display: none;
+    }
+}
+
+.btn .badge {
+    position: relative;
+    top: -1px;
+}
+
+// The only `bg-*` colours still emitted: `badge.mjs` and `renderVersionedDoc`
+// build edition pills as `bg-{color}` from `badgeMaps.mjs`, whose four values
+// are these. Scoped to `.badge` because nothing else uses them, and paired
+// with a content token so both themes stay legible.
+.badge.bg-primary {
+    color: $white;
+    background-color: var(--ks-background-button-primary);
+}
+
+.badge.bg-secondary {
+    color: var(--ks-content-secondary-inverse);
+    background-color: var(--ks-background-secondary-inverse);
+}
+
+.badge.bg-success {
+    color: var(--ks-content-alert-success);
+    background-color: var(--ks-background-alert-success);
+}
+
+.badge.bg-info {
+    color: var(--ks-content-alert-info);
+    background-color: var(--ks-background-alert-info);
+}

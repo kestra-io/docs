@@ -12,7 +12,10 @@ function isDark(theme: Theme): boolean {
 }
 
 function applyTheme(theme: Theme = getStoredTheme(), doc: Document = document) {
-    const dark = isDark(theme)
+    // A page can pin its theme (Layout's forceTheme), e.g. a campaign page
+    // whose palette is fixed.
+    const forced = doc.documentElement.dataset.forceTheme as Theme | undefined
+    const dark = forced ? forced === "dark" : isDark(theme)
 
     doc.documentElement.classList.toggle("dark", dark)
     doc.documentElement.classList.toggle("light", !dark)

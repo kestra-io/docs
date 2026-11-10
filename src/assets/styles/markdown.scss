@@ -10,8 +10,6 @@
 @import "variable";
 
 @mixin markdown-styles {
-    #{--bs-heading-color}: var(--ks-content-primary);
-    #{--bs-badge-color}: var(--ks-content-primary);
     color: var(--ks-content-primary);
 
     p {
@@ -37,6 +35,15 @@
         display: none;
     }
 
+    // Glossary terms are linked on every docs page, so they stay in the text colour to not compete with real links.
+    a.ks-glossary-link {
+        color: inherit;
+        text-decoration: underline dotted;
+        // Without an explicit thickness Firefox draws the dots from the font's metrics, as large round dots.
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.2em;
+    }
+
     h1,
     h2,
     h3,
@@ -46,7 +53,6 @@
         color: var(--ks-content-primary);
         margin-bottom: 1rem;
         position: relative;
-        scroll-margin: 4.5rem;
         text-box: trim-both cap alphabetic;
 
         &:hover [href] {
@@ -114,7 +120,7 @@
     // Code
     code:not(pre code) {
         border: none;
-        border-radius: var(--bs-border-radius);
+        border-radius: var(--ks-border-radius);
         color: var(--ks-content-secondary);
         padding: 0 0.25rem;
         background-color: var(--ks-background-function);
@@ -135,7 +141,7 @@
         background-color: var(--ks-background-secondary);
         border: $block-border;
         padding: 1.25rem 1.5rem;
-        border-radius: var(--bs-border-radius-lg);
+        border-radius: var(--ks-border-radius-lg);
         color: var(--ks-content-primary);
         position: relative;
         margin-bottom: 1em;
@@ -157,9 +163,19 @@
             right: 1.25rem;
         }
 
+        // Hidden until hover, when it replaces the language label — mirrors the
+        // real docs' expressive-code frame's copy button.
         .copy {
-            border: none;
-            background: none;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.2rem;
+            background: var(--ks-background-primary);
+            cursor: pointer;
 
             & .material-design-icon {
                 &,
@@ -167,6 +183,30 @@
                     height: 1.125rem !important;
                     width: 1.125rem !important;
                 }
+            }
+
+            .icon-check {
+                display: none;
+            }
+
+            &.copied {
+                .icon-copy {
+                    display: none;
+                }
+
+                .icon-check {
+                    display: block;
+                }
+            }
+        }
+
+        &:hover {
+            .language {
+                display: none;
+            }
+
+            .copy {
+                display: flex;
             }
         }
 
@@ -208,6 +248,7 @@
         border: 1px solid var(--ks-background-primary);
         background-color: var(--ks-background-secondary);
         overflow: hidden;
+        margin-bottom: $spacer * 1.5;
 
         iframe {
             position: absolute;
@@ -236,6 +277,43 @@
     iframe {
         width: 100%;
         margin-bottom: $spacer;
+    }
+
+    // Arcade demos use a height:0 + padding-bottom aspect-ratio wrapper, so
+    // margin on the iframe itself is ignored. Target the parent div instead.
+    div:has(> iframe[src*="arcade.software"]) {
+        margin-bottom: $spacer * 1.5;
+    }
+
+    .resource-cta {
+        margin: 3rem 0;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        background: var(--ks-background-secondary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: $border-radius-lg;
+
+        @include media-breakpoint-up(md) {
+            padding: 2.5rem;
+        }
+
+        .resource-cta-text {
+            margin: 0 0 1.25rem;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        .resource-cta-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            text-decoration: none;
+        }
     }
 
     // Alerts
@@ -279,6 +357,7 @@
             margin-top: 0.75rem;
             width: 100%;
         }
+
 
         $alert-types: (
             "danger": (
@@ -375,6 +454,98 @@
         }
     }
 
+    // Child-page card grid (versioned docs only — the latest docs' equivalent,
+    // GuidesChildCard.vue's .card-grid/.card, is Vue-scoped so these values are
+    // duplicated here rather than shared). Namespaced `ks-child-card-*` on
+    // purpose: this mixin is global on every docs page, and the latest docs'
+    // ChildCard.astro owns `.ks-card-*` — sharing those names boxed and
+    // misaligned its chevron (kestra-io/docs#5558).
+    .ks-child-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .ks-child-card {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background: var(--ks-background-body);
+        border: $block-border;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        color: var(--ks-content-link);
+    }
+
+    .ks-child-card-icon {
+        width: 48px;
+        height: 48px;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        border: $block-border;
+        margin-bottom: 1rem;
+        object-fit: fill;
+    }
+
+    .ks-child-card-title {
+        font-size: $font-size-base;
+        line-height: calc($font-size-base * 1.5);
+        font-weight: 600;
+        margin: 0 0 1rem;
+        color: var(--ks-content-primary);
+    }
+
+    .ks-child-card-text {
+        font-size: $font-size-base;
+        color: var(--ks-content-primary);
+        margin: 0;
+    }
+
+    // Support links row (versioned docs only — no live equivalent exists to
+    // mirror, so this reuses the card-grid's own visual language)
+    .support-links-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .support-link {
+        display: block;
+        padding: 1rem;
+        background: var(--ks-background-body);
+        border: $block-border;
+        border-radius: 0.5rem;
+        text-decoration: none;
+
+        h3 {
+            font-size: $font-size-base;
+            line-height: calc($font-size-base * 1.5);
+            font-weight: 600;
+            margin: 0 0 0.5rem;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            margin: 0;
+        }
+    }
+
+    // Homepage CTA button row (versioned docs only — HomePageButtons.astro's
+    // own scoped layout rules, duplicated here since they don't ship to
+    // versioned pages; button appearance itself comes from the global .btn
+    // classes and needs no duplication)
+    .docs-button-row {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
     // Expressive code collapse (overrides for expressive-code-collapsible plugin)
     .ec-collapse {
         overflow: hidden;
@@ -452,7 +623,6 @@
 
     // Table Dark
     .table-dark {
-        --bs-table-bg: var(--ks-background-secondary) !important;
         color: transparent !important;
         outline: none;
         width: 100%;
@@ -509,7 +679,7 @@
     border-radius: 0.5rem;
     :root.light main &, :root.dark main &{
          &:not(.light,.dark){
-            #{--ec-frm-tooltipSuccessBg}: var(--ks-button-background-primary);
+            #{--ec-frm-tooltipSuccessBg}: var(--ks-background-button-primary);
             #{--ec-frm-frameBoxShdCssVal}: none !important;
             #{--ec-codeFontFml}: var(--font-family-jetbrains-mono) !important;
             #{--code-background}: var(--ks-background-input);
@@ -533,9 +703,15 @@
             text-transform: lowercase;
             z-index: 1;
         }
-        &:hover:before {
-            display: none;
-        }
+    }
+
+    // The copy button (expressive-code's `.copy`) is a sibling of `pre`, not a
+    // descendant, so it overlaps the frame's top-right corner without ever
+    // triggering `pre:hover` — leaving the language label visible underneath
+    // it. Key the hide off the whole frame instead, matching how
+    // expressive-code's own CSS reveals the copy button (`.frame:hover .copy`).
+    .frame:hover pre[data-language]:before {
+        display: none;
     }
 }
 

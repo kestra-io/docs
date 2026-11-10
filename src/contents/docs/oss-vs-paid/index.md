@@ -1,5 +1,6 @@
 ---
-title: Open-Source vs. Enterprise Edition
+title: Open-Source vs. Enterprise Edition of Kestra
+h1: "Choose the Right Kestra Edition: OSS vs. Enterprise"
 description: Compare Kestra Open-Source and Enterprise editions to choose the right solution for your orchestration, security, and scalability needs.
 ---
 
@@ -7,88 +8,88 @@ Understand the differences between Kestra's Open-Source and Enterprise Editions,
 
 ## Choose the right Kestra edition
 
-Kestra's Open-Source Edition provides a foundation for workflow automation — it's best suited for solo-developers or small teams exploring workflow orchestration.
+Kestra's Open-Source Edition is a fully functional orchestration platform suitable for individuals, teams, and production deployments that don't require enterprise security, multi-tenancy, or compliance controls.
 
-The [Enterprise Edition](../07.enterprise/index.mdx) adds enterprise-grade security, scalability, and governance features required by organizations managing complex workflows across multiple teams or environments. It includes advanced authentication and access controls with SSO, SCIM & RBAC, multi-tenancy, high availability, dedicated secrets manager and storage backends per team, dedicated worker groups or on-demand remote task runners, audit logs, service accounts, apps, revision history for every resource, maintenance mode, log shipper, cluster monitoring, backup and restore, dedicated support with SLAs, plus newer safeguards like assets packaging, versioned plugins, read-only secrets, plugin allow-listing, worker isolation, and built-in flow unit tests. In short, everything you need for production deployments with strict compliance or reliability requirements is available in the Enterprise Edition.
-
----
-
-## Security and Access Control
-
-The Open-Source Edition supports basic authentication, suitable for one-person projects or small teams with shared credentials. In contrast, the Enterprise Edition has an easy way to add collaborators via [invitations](../07.enterprise/03.auth/invitations/index.md) and manage permissions at scale using [SCIM Directory Sync](../07.enterprise/03.auth/scim/index.mdx). It integrates with many identity providers via [Single Sign-On (SSO)](../07.enterprise/03.auth/sso/index.md) and **OpenID Connect (OIDC)**, simplifying user management for large teams.
-
-[Role-Based Access Control (RBAC)](../07.enterprise/03.auth/rbac/index.md) lets you define granular permissions at user, group and namespace level, e.g. restricting developer access to specific namespaces while granting auditors read-only access. [Namespace-level secrets management](../07.enterprise/02.governance/secrets/index.md) ensures that sensitive credentials stay isolated between projects. [Service accounts](../07.enterprise/03.auth/service-accounts/index.md) and [API tokens](../07.enterprise/03.auth/api-tokens/index.md) enable secure automation, such as [CI/CD pipelines](../version-control-cicd/index.mdx) deploying workflows without requiring user credentials.
-
-For organizations using external [secrets managers](../07.enterprise/02.governance/secrets-manager/index.md) such as Azure Key Vault or HashiCorp Vault, Enterprise Edition integrates directly with these systems. [SCIM directory sync](../07.enterprise/03.auth/scim/index.mdx) automates user (de)provisioning at scale, reducing administrative overhead when onboarding or offboarding team members.
-
-Enterprise-only safeguards include [read-only secrets](../07.enterprise/02.governance/read-only-secrets/index.md) for least-privilege access and [allowed plugins](../07.enterprise/02.governance/allowed-plugins/index.md) to centrally control which plugins may run.
+The [Enterprise Edition](../07.enterprise/index.mdx) adds enterprise-grade security, scalability, and governance for organizations managing complex workflows across multiple teams or environments: SSO, SCIM, and RBAC for access control; multi-tenancy and worker isolation for separation; high-throughput queue backends and dedicated worker groups for scale; audit logs, log shipper, and service health monitoring for observability; asset lineage, versioned plugins, read-only secrets, and allowed-plugin lists for governance; apps, custom blueprints, and policies for productivity; and dedicated support with SLAs. Together, these cover production deployments with strict security, compliance, or support requirements.
 
 ---
 
-## Governance and Compliance
+## Security and access control
+
+The Open-Source Edition supports a single Basic Authentication account, so everyone who uses the instance shares one username and password. The Enterprise Edition adds individual user accounts: add collaborators with [invitations](../07.enterprise/03.auth/invitations/index.md), sync users and groups from your identity provider with [SCIM Directory Sync](../07.enterprise/03.auth/scim/index.mdx), and sign in through [Single Sign-On (SSO)](../07.enterprise/03.auth/sso/index.md) with OpenID Connect (OIDC) or LDAP.
+
+[Role-Based Access Control (RBAC)](../07.enterprise/03.auth/rbac/index.md) uses a resource and action model, such as `FLOW: EXECUTE`, `EXECUTION: ACCESS_LOGS`, or `TRIGGER: BACKFILL`, so you can grant exactly what a user needs without over-provisioning. Assign roles to users, groups, or service accounts, and limit each assignment to specific namespaces, for example restricting developers to their team's namespaces while granting auditors read-only access. [Namespace-level secrets](../06.concepts/04.secret/index.md#enterprise-edition) keep sensitive credentials isolated between projects. [Service accounts](../07.enterprise/03.auth/service-accounts/index.md) and [API tokens](../07.enterprise/03.auth/api-tokens/index.md) enable secure automation, such as [CI/CD pipelines](../version-control-cicd/index.mdx) deploying workflows without requiring user credentials.
+
+For organizations using external [secrets managers](../07.enterprise/02.governance/secrets-manager/index.md) such as Azure Key Vault or HashiCorp Vault, Enterprise Edition integrates directly with these systems.
+
+Enterprise-only safeguards include [read-only secrets](../07.enterprise/02.governance/secrets-manager/index.md) for least-privilege access, [allowed plugins](../07.enterprise/02.governance/allowed-plugins/index.md) to centrally control which plugins may run, and [Policies](../07.enterprise/02.governance/policies/index.md) to inject, validate, or enforce flow and plugin configuration across namespaces and tenants.
+
+---
+
+## Governance and compliance
 
 Enterprise Edition provides [audit logs](../07.enterprise/02.governance/06.audit-logs/index.md) that track every user action and resource change, which are critical in highly regulated industries. Logs can be automatically exported to observability platforms such as Datadog or Elasticsearch using the [Log Shipper](../07.enterprise/02.governance/logshipper/index.md).
 
 [Multi-tenancy](../07.enterprise/02.governance/tenants/index.md) allows you to create fully isolated environments, e.g. separate tenants for specific [teams or business units](../14.best-practices/8.business-unit-separation/index.md). Each tenant can use separate secrets managers or dedicated internal storage backends (e.g., AWS S3 for Tenant A, GCS for Tenant B).
 
-[Worker Group](../07.enterprise/04.scalability/worker-group/index.md) ensures tasks from different tenants run on separate infrastructure, reducing the risk of resource contention or cross-tenant breaches. [Worker Isolation](../07.enterprise/02.governance/worker-isolation/index.md) adds hard isolation policies when you need stricter separation. Encryption safeguards data at rest and in transit, meeting regulatory standards.
+[Worker Groups](../07.enterprise/04.scalability/worker-group/index.md) route tasks to dedicated worker pools through Worker Queues. Restrict a queue to specific tenants and reserve capacity for each one, so tenants don't compete for the same workers. [Worker Isolation](../07.enterprise/02.governance/worker-isolation/index.md) restricts file system access and plugin classes on shared workers and isolates script tasks. Enterprise Edition also encrypts traffic between workers and the Worker Controller with [TLS or mutual TLS](../security-hardening/index.md).
 
 ---
 
-## Scalability and Reliability
+## Scalability and reliability
 
-The Open-Source Edition runs by default on a single server, which can become a bottleneck for large workloads. Enterprise Edition can use Kafka and Elasticsearch for distributed event processing, enabling horizontal scaling and high throughput. High Availability (HA) architecture eliminates single points of failure — if a worker node fails, tasks automatically reroute to healthy nodes.
+Both editions run in production, either as a standalone server or as a distributed cluster where each server role scales independently. Enterprise Edition raises the throughput ceiling with additional queue backends: Kafka (optionally paired with Elasticsearch as the repository backend), Redis, and AMQP. To compare deployment modes and backends, see [Deployment Architecture](../08.architecture/03.deployment-architecture/index.md).
 
-[Worker Groups](../07.enterprise/04.scalability/worker-group/index.md) let you assign tasks to specialized infrastructure. For example, GPU-heavy machine learning workflows can target a worker group with NVIDIA GPUs, while ETL jobs run on cost-optimized spot instances. [Task Runners](../07.enterprise/04.scalability/task-runners/index.md) offload compute-intensive scripts on-demand to Kubernetes or cloud batch services such as Azure Batch, Google Cloud Run or AWS ECS Fargate to prevent resource contention and making it easy to scale in a cost-effective way.
+[Worker Groups](../07.enterprise/04.scalability/worker-group/index.md) also route tasks to specialized infrastructure. A task can declare tags such as `gpu`, and any worker group subscribed to the matching Worker Queue picks it up, whether that group runs on NVIDIA GPU machines or cost-optimized spot instances. [Task Runners](../task-runners/index.mdx) offload compute-intensive scripts on demand, preventing resource contention and scaling costs with usage. Process and Docker task runners are available in both editions. With Enterprise Edition, you can also scale compute by sending task runs to [remote task runners](../task-runners/04.types/index.mdx), including Kubernetes and containerized cloud services such as AWS Batch, Azure Batch, Google Batch, and Google Cloud Run.
 
-:::alert{type="info"}
-Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
-:::
+The [External Log Data Store](../10.administrator-guide/log-data-store/index.md) (EE) routes execution logs to a dedicated backend (a JDBC database, Elasticsearch, Splunk, or Datadog), separate from the main backend, keeping the main database lean and reducing schema migration time.
 
-[Maintenance Mode](../07.enterprise/05.instance/maintenance-mode/index.md) allows safe upgrades: new executions queue while in-progress tasks complete gracefully, avoiding abrupt workflow termination. [Cluster monitoring](../07.enterprise/05.instance/index.mdx) provides real-time visibility into resource usage, helping teams proactively address infrastructure bottlenecks. Additionally, using **Custom Dashboards**, you can create custom views to track specific metrics, logs, or executions. The [Backup and Restore](../10.administrator-guide/backup-and-restore/index.md) eliminates the risk of data loss or corruption during upgrades, allowing you to recover from accidental deletions or system failures.
+[Maintenance Mode](../07.enterprise/05.instance/maintenance-mode/index.md) allows safe upgrades: new and restarted executions are held while workers finish their current tasks, and everything resumes when maintenance ends. The [Instance Owner console](../07.enterprise/05.instance/index.mdx) shows the health and state of every Kestra service, with per-service metrics such as CPU usage. [Custom Dashboards](../09.ui/00.dashboard/index.md#custom-dashboards) let you create custom views to track specific metrics, logs, or executions. A built-in [metadata backup and restore](../10.administrator-guide/backup-and-restore/index.md) supports disaster recovery and migration between instances, versions, or backends.
 
-[Versioned Plugins](../07.enterprise/05.instance/versioned-plugins/index.md) let you pin plugin versions per environment for safe rollouts, while the [Kill Switch](../07.enterprise/05.instance/kill-switch/index.md) can pause risky changes instantly. [Announcements](../07.enterprise/05.instance/announcements/index.md) provide in-product notifications for maintenance or policy updates.
+[Versioned Plugins](../07.enterprise/05.instance/versioned-plugins/index.md) let you pin plugin versions per task, flow, namespace, or instance for safe rollouts, while the [Kill Switch](../07.enterprise/05.instance/kill-switch/index.md) lets administrators instantly kill, cancel, or ignore runaway executions across a tenant, namespace, flow, or single execution. [Announcements](../07.enterprise/05.instance/announcements/index.md) display in-app banners for maintenance or policy updates.
 
 ---
 
-## Productivity and Collaboration
+## Productivity and collaboration
 
-[Custom Blueprints](../07.enterprise/02.governance/custom-blueprints/index.md) act as reusable workflow templates, e.g. a **standardized** data ingestion pattern that all teams can consistently adopt. **Full-text search across task runs** speeds up navigation — e.g. engineers can quickly find logs for a failed Python script without manually filtering through thousands of executions.
+[Custom Blueprints](../07.enterprise/02.governance/custom-blueprints/index.md) act as reusable workflow templates, e.g. a standardized data ingestion pattern that all teams can consistently adopt. [Templated Blueprints](../07.enterprise/02.governance/custom-blueprints/index.md#templated-blueprints) extend this further: non-technical users fill in a form and Kestra generates the flow YAML. Blueprint libraries can be [version-controlled with Git](../07.enterprise/02.governance/custom-blueprints/index.md#version-control-for-custom-blueprints) using `PushBlueprints` and `SyncBlueprints`, the same GitOps pattern as flows.
 
-**Centralized** namespace-level [plugin defaults](../07.enterprise/02.governance/07.namespace-management/index.md) simplify configuration. A [namespace-wide setting](../07.enterprise/02.governance/07.namespace-management/index.md) on a root namespace might **define AWS credentials** that will be automatically inherited, and optionally also enforced, by all child namespaces, eliminating redundant code and allowing admins to centrally govern secrets and plugin configurations.
+[Policies](../07.enterprise/02.governance/policies/index.md) let administrators inject, validate, and enforce plugin configuration across namespaces. A policy can automatically add credentials to every task of a given plugin type, block flows that use disallowed plugins, or enforce required properties at the namespace level. Injected values apply without editing each flow, and validation rules reject non-compliant flows when they are saved.
 
-**Impersonation** lets admins validate permissions by temporarily assuming a user’s role, which significantly helps with troubleshooting access management issues.
+[Impersonation](../07.enterprise/03.auth/rbac/index.md#impersonate) lets Instance Owners view Kestra as a specific user to verify that user's effective permissions and troubleshoot access issues.
 
 [Apps](../07.enterprise/04.scalability/apps/index.md) turn workflows into user-friendly interfaces. A finance team can build a self-service tool for expense approvals, where non-technical stakeholders can submit requests via a form. Approved requests automatically trigger downstream tasks to process payments.
 
-[Assets](../07.enterprise/02.governance/01.assets/index.md) package reusable files and artifacts alongside flows, and [Unit Tests](../07.enterprise/02.governance/unit-tests/index.md) let teams validate flows early to prevent regressions.
+[Reusable Inputs](../05.workflow-components/22.reusable-inputs/index.md) let teams define shared input groups once at the namespace level and reference them across flows. Flows that don't pin a `revision` pick up changes on their next execution.
+
+[Asset Lineage](../07.enterprise/02.governance/01.assets/index.md) tracks data dependencies across flows, and [Unit Tests](../07.enterprise/02.governance/unit-tests/index.md) let teams validate flows early to prevent regressions.
 
 ---
 
-## Support and Services
+## Support and services
 
-Enterprise Edition includes **SLAs with guaranteed response times** for support tickets, which is critical for teams running 24/7-operations. Onboarding support helps customize Kestra to your stack and deployment requirements.
+Enterprise Edition includes **SLAs with guaranteed response times** for support tickets, which is critical for teams running 24/7 operations. Onboarding support helps customize Kestra to your stack and deployment requirements.
 
 Customers’ feature requests are prioritized over those from open-source users. They also get early access to beta features and roadmap previews, allowing teams to plan upgrades around upcoming capabilities. The dedicated customer portal provides direct access to Kestra’s engineering team for architecture reviews or best practices.
 
 ---
 
-## When to Choose Enterprise Edition
+## When to choose Enterprise Edition
 
 **Stick with Open-Source if:**
-- You’re a solo developer
-- You’re prototyping or running non-critical workflows
+- You’re an individual or a team that doesn't need SSO, RBAC, or multi-tenant isolation
+- Community support through Slack and GitHub meets your needs
 - Your team has minimal compliance requirements
-- You can manage secrets and access controls manually
+- A shared login and secrets supplied as environment variables meet your security requirements
 
 **Upgrade to Enterprise if:**
 - Multiple users or teams share the same Kestra instance
 - Workflows handle sensitive data (PII, financial records)
-- Downtime would impact business operations
+- You need SLA-backed support for business-critical workflows
 - You need to meet audit or regulatory standards
 
 ---
 
-## How Upgrading Works
+## How upgrading works
 
-Switching to Enterprise involves adding a license key to your configuration and restarting Kestra — no code changes required. All existing workflows and plugins remain compatible. For hybrid setups, you can run Open-Source and Enterprise instances side-by-side during transition periods.
+Moving to Enterprise Edition means deploying the Enterprise image or binary with your license and completing the first-run setup. Flow YAML carries over unchanged: export your flows from the Open-Source UI and import them into Enterprise. Namespace Files, KV Store entries, and secrets are migrated separately. See [Set up Enterprise Edition](../07.enterprise/01.overview/02.setup/index.md) and [Migrate from Open Source](../07.enterprise/01.overview/03.migrate-from-oss/index.md).

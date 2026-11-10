@@ -1,5 +1,5 @@
 ---
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCachedOptional } from "~/utils/fetch"
 
 import Layout from "~/components/layout.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -13,10 +13,10 @@ import dataCapture from "~/assets/use-cases/capabilities/data-capture.svg"
 import dataStack from "~/assets/use-cases/capabilities/data-stack.svg"
 import ciCd from "~/assets/use-cases/capabilities/continuous-integration.svg"
 
-const response = await $fetchApiCached<{ results: Blueprint[] }>(
+const response = await $fetchApiCachedOptional<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?tags=data&page=1&size=20",
 )
-const blueprints = response.results
+const blueprints = response?.results ?? []
 
 const title = "Simplify Your Data Engineering Challenges with Kestra"
 const description =

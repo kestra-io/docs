@@ -1,22 +1,17 @@
 ---
-title: Set Up Kestra Enterprise – License and First Tenant
-description: How to set up Kestra Enterprise Edition.
+title: "Set Up Kestra Enterprise: License and First Tenant"
+h1: Activate Your License and Configure the First Tenant
+description: Configure your Kestra Enterprise instance. Activate your license, create the first tenant, and complete the initial setup to start using Enterprise features.
 sidebarTitle: Enterprise Edition Setup Guide
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-How to set up Kestra Enterprise Edition.
-
-## Set up Kestra Enterprise – license and first tenant
-
-These setup instructions guide you through the initial configuration of your instance.
-
-When you launch Kestra Enterprise Edition for the first time, Kestra will prompt you to configure your instance. This includes setting up your first tenant, creating your first user, and starting the Kestra UI.
+When you launch Kestra Enterprise Edition for the first time, Kestra walks you through configuring your instance: setting up your first tenant, creating your first user, and starting the Kestra UI.
 
 ## Prerequisites
 
-To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kestra.io).
+Kestra Enterprise Edition requires a valid license under `kestra.ee.license`. Contact [sales@kestra.io](mailto:sales@kestra.io) to obtain one.
 
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
@@ -39,11 +34,9 @@ When you launch Kestra Enterprise Edition, it will check the license and display
 ## Step 1: Validate configuration
 
 The first screen shows the main configuration of your instance. It displays:
-- whether `multitenancy` is enabled
-- whether `default tenant` is enabled — if yes, you can skip Step 2 allowing you to create your first tenant
 - which `database` backend is configured (e.g., PostgreSQL or Elasticsearch)
 - which `queue` backend is configured (e.g., PostgreSQL or Kafka)
-- which `internal storage` backend is configured (e.g., S3, GCS, Azure Blob Storage, MinIO, or local storage)
+- which `internal storage` backend is configured (e.g., S3, GCS, Azure Blob Storage, an S3-compatible store, or local storage)
 - which `secret` backend is configured (e.g., Vault, AWS Secrets Manager, Elasticsearch, or not set up yet)
 
 ![Instance configuration validation screen](./setup_page1.png)
@@ -52,22 +45,20 @@ This step asks you to confirm whether your configuration is valid. If not, you c
 
 ## Step 2: Create your first tenant
 
-If `multitenancy` is enabled, Kestra, will prompt you to create your first tenant.
+Enter an ID and a name for your first tenant, for example:
+- tenant id: `dev`
+- tenant name: `Development`
 
-If you choose to create a tenant, you will be asked to input the Tenant ID and Tenant Name, for example:
-- tenant id: `stage`
-- tenant name: `Staging Environment`
-
-If you enabled a default tenant, you can skip this step.
+Kestra skips this step when the `main` tenant already has flows, for example when you switch an instance from the open-source edition to the Enterprise Edition. Setup then continues in the `main` tenant, so your existing flows stay in place.
 
 ![Create first tenant form with ID and name fields](./setup_page2.png)
 
 
 ## Step 3: Create your first user
 
-Now that you have your instance configured, you will create your first user. This user will have a [Superadmin](../../03.auth/rbac/index.md#super-admin) role for the instance and will be able to manage tenants, users, and roles.
+Create the first user. This user receives the [Instance Owner](../../03.auth/rbac/index.md#instance-owner) privilege and can manage tenants, users, and roles across the instance.
 
-![Create first Superadmin user form](./setup_page3.png)
+![Create first Instance Owner user form](./setup_page3.png)
 
 ## Step 4: Start Kestra UI
 

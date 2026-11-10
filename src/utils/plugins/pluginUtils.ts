@@ -1,4 +1,4 @@
-import type { Plugin } from "@kestra-io/ui-libs"
+import type { Plugin } from "./plugin"
 
 // "storageVolumes" -> "Storage Volumes"
 export const formatElementType = (type: string): string =>
@@ -13,24 +13,40 @@ export const formatElementType = (type: string): string =>
 export const formatElementName = (cls: string): string =>
     cls.substring(cls.lastIndexOf(".") + 1)
 
+// "Terraform CLI" + "TerraformCLI", "Kubernetes Runner" + "Kubernetes",
+// "Amazon S3 Log Exporter" + "LogExporter" -> true
+export const isElementNameRedundant = (containerTitle: string, elementName: string): boolean => {
+    const words = (s: string) => s.toLowerCase().split(/\s+/).filter(Boolean)
+    const container = words(containerTitle)
+    const element = words(elementName)
+    const joined = element.join("")
+    return (
+        element.every((w) => container.includes(w)) ||
+        container.some((_, i) => container.slice(i).join("") === joined)
+    )
+}
+
+// Words whose acronym casing should survive title-casing, regardless of length.
+const PRESERVE_CASE = ["AI", "BI", "JDBC"]
+
 // Extract last segment, strip plugin prefix, capitalize words. e.g. "plugin-aws-s3" -> "Aws S3"
 export const formatPluginName = (raw?: string): string => {
     if (!raw) return ""
     const words = (raw.split(".").pop() ?? raw)
         .replace(/^plugins?[-_]/i, "")
         .split(/[-_]/)
-        .filter(Boolean)
+        .filter((w) => w && w.toLowerCase() !== "ee")
     if (words.length === 0) return ""
     if (words.length === 1) {
         const w = words[0]!
+        const upper = w.toUpperCase()
+        if (PRESERVE_CASE.includes(upper)) return upper
         return /^[a-z0-9]{1,3}$/i.test(w) || /\d/.test(w)
             ? w.toUpperCase()
             : w.charAt(0).toUpperCase() + w.slice(1)
     }
     return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
 }
-
-const PRESERVE_CASE = ["AI", "BI"]
 export const formatCategoryName = (category: string): string =>
     PRESERVE_CASE.includes(category) ? category : formatPluginName(category.toLowerCase())
 
@@ -51,13 +67,13 @@ export function getBlueprintsHeading(
     pluginWrapper?: Plugin,
     subGroupName?: string,
     customId?: string | null,
+    pluginTitle?: string,
 ): { text: string; html: string; id: string } {
-    const base = formatPluginName(pluginWrapper?.group ?? pluginName)
-    const dynamic = subGroupName ? `${base} ${formatPluginName(subGroupName)}` : base
-    const suffix = subGroupName ? "" : " Plugins"
+    const base = pluginTitle ?? formatPluginName(pluginWrapper?.group ?? pluginName)
+    const dynamic = subGroupName ? formatPluginName(subGroupName) : base
 
-    const text = `Create automations with ${dynamic}${suffix}`
-    const html = `Create automations with ${highlight(dynamic)}${suffix}`
+    const text = `Create automations with ${dynamic} Plugin`
+    const html = `Create automations with ${highlight(dynamic)} Plugin`
     const id =
         customId ||
         `create-with-${text
@@ -67,4 +83,3 @@ export function getBlueprintsHeading(
 
     return { text, html, id }
 }
-

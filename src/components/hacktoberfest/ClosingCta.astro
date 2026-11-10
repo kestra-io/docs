@@ -1,0 +1,103 @@
+---
+import SectionTitle from "./SectionTitle.astro"
+import PixelSquares from "./PixelSquares.astro"
+
+interface Props {
+    registerUrl: string
+}
+
+const { registerUrl } = Astro.props
+
+const SQUARES = [
+    { x: 495.1, y: 147.9, w: 48.5, h: 48.5, color: "var(--hf-pixel-violet)" },
+    { x: 1328.9, y: 554.4, w: 48.5, h: 48.5, color: "var(--hf-pixel-violet)" },
+    { x: 313.5, y: 634, w: 27.1, h: 93.6, color: "var(--hf-pixel-lilac)" },
+    { x: 1531.9, y: 23.3, w: 27.1, h: 93.6, color: "var(--hf-pixel-lilac)" },
+    { x: 451.5, y: 534, w: 27.1, h: 93.6, color: "var(--hf-pixel-purple)" },
+    { x: 1394, y: 123.3, w: 27.1, h: 93.6, color: "var(--hf-pixel-purple)" },
+    { x: 287, y: 287.1, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 1509, y: 387.3, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 313.8, y: 23.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-pink)" },
+    { x: 1524.3, y: 546.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-pink)" },
+    { x: 403.8, y: 293.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-smoke)" },
+    { x: 1434.3, y: 276.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-smoke)" },
+    { x: 60.4, y: 412.4, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 1777.6, y: 157.3, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 94.9, y: 231.1, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 1743.2, y: 338.5, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 26, y: 231.1, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 1812.1, y: 338.5, w: 34.5, h: 181.3, color: "var(--hf-pixel-violet)" },
+    { x: 133.3, y: 440.6, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+    { x: 1662.7, y: 233.7, w: 76.5, h: 76.5, color: "var(--hf-pixel-purple)" },
+]
+---
+
+<section class="hf-closing" aria-labelledby="hf-closing-title">
+    <PixelSquares squares={SQUARES} />
+    <div class="content">
+        <SectionTitle
+            id="hf-closing-title"
+            align="center"
+            title="Register, then go<br />find your first issue"
+            subtitle="Under a minute. We ask for your name, email and GitHub handle so merged pull requests can be matched to you, plus where you heard about the hackathon so the right community gets the credit."
+        />
+        <a
+            href={registerUrl}
+            class="btn btn-lg btn-primary"
+            target="_blank"
+            rel="noopener"
+            data-usal="zoomin delay-150 duration-500 ease-out">Register now</a
+        >
+    </div>
+</section>
+
+<style lang="scss">
+    .hf-closing {
+        --section-title-color: var(--hf-content-dark);
+        --section-subtitle-color: var(--hf-content-dark-secondary);
+
+        position: relative;
+        padding: 5rem 1rem;
+        background: linear-gradient(
+            180deg,
+            $black 36.8%,
+            var(--hf-background-dark-soft) 100%
+        );
+        color: var(--hf-content-dark);
+        overflow: clip;
+
+        @include media-breakpoint-down(md) {
+            padding-block: 3.5rem;
+        }
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+        max-width: 640px;
+        margin-inline: auto;
+        text-align: center;
+
+        :global(.section-title p) {
+            font-size: 1.25rem;
+            line-height: 28px;
+
+            @include media-breakpoint-down(md) {
+                font-size: $font-size-md;
+                line-height: 24px;
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 160px;
+            min-height: 50px;
+        }
+    }
+</style>

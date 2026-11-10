@@ -1,0 +1,65 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "DigitalOcean & Kestra: Orchestration for the Developer Cloud"
+const description =
+    "Kestra is an official DigitalOcean technology partner. Orchestrate droplets, managed databases, Kubernetes, DNS and more with a dedicated plugin and event-driven flows."
+
+const facts = [
+    { label: "Partnership", value: "Official DigitalOcean technology partner" },
+    {
+        label: "Plugin",
+        value: "Droplets, managed databases, Kubernetes, DNS, firewalls, volumes and load balancers",
+    },
+    {
+        label: "Trigger",
+        value: "Starts a flow for every new droplet on the account",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:puzzle-outline",
+        title: "One plugin for the whole account",
+        text: "Create, resize, attach and delete every DigitalOcean resource from a flow, with no API scripts to maintain.",
+    },
+    {
+        icon: "mdi:bell-ring-outline",
+        title: "React to what happens on the account",
+        text: "A new droplet starts a flow, so tagging, cost checks and policy enforcement run on their own.",
+    },
+    {
+        icon: "mdi:timer-sand",
+        title: "Pay only for what runs",
+        text: "Spin up a droplet for a batch job and destroy it when the job ends, even when the job fails.",
+    },
+    {
+        icon: "mdi:calendar-clock",
+        title: "Scheduled operations",
+        text: "Resize databases outside business hours and snapshot tagged volumes every night.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="DigitalOcean">
+    <PartnerProfile
+        name="DigitalOcean"
+        tagline="DigitalOcean gives developers simple cloud building blocks at a predictable price. Kestra orchestrates them across the whole account: schedules, event triggers and guaranteed teardown."
+        about="The <a href='https://kestra.io/orchestration/digitalocean'>io.kestra.plugin.digitalocean plugin</a> turns every resource on a DigitalOcean account into a declarative task, replacing the scripts and console clicks teams rely on today."
+        expertiseTitle="DigitalOcean + Kestra: the developer cloud, orchestrated"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-digitalocean"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "digitalocean",
+            title: '<span class="highlight">DigitalOcean</span> Blueprints',
+        }}
+        closing={{
+            title: "Orchestrate your DigitalOcean account",
+            text: "Open source and self-hosted. Start from a blueprint below or from the plugin docs.",
+        }}
+        website="https://www.digitalocean.com/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

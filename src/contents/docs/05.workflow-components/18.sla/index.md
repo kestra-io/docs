@@ -1,36 +1,30 @@
 ---
 title: Workflow SLAs in Kestra – Assert Duration Targets
+h1: Enforce SLAs and Alert When Workflows Miss Performance Targets
 description: Enforce Service Level Agreements (SLAs) in Kestra. Monitor workflow duration and assertions, triggering alerts or actions when performance targets are missed.
 sidebarTitle: SLA
 icon: /src/contents/docs/icons/flow.svg
 version: ">= 0.20.0"
 ---
 
-Assert that your workflows meet SLAs.
-
-## Workflow SLAs – assert duration targets
+SLAs define time or assertion-based checks on flow executions and trigger corrective actions when those checks fail.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FlkyPIWPLSk?si=KH3Aa7oqKcBBNuo1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-A Service Level Agreement (SLA) is a core property of a flow that defines a `behavior` to trigger if the flow runs too long or fails to meet the defined assertion.
+The `sla` property at the root of a flow declares one or more SLA checks. Each SLA specifies a `type`, the condition to check, and a `behavior` to trigger when the condition is violated.
 
 ## SLA types
 
-Currently, Kestra supports the following SLA types:
-1. **MAX_DURATION** — the maximum allowed execution duration before the SLA is breached
-2. **EXECUTION_ASSERTION** — an assertion defined by a Pebble expression that must be met during the execution. If the assertion doesn't hold true, the SLA is breached.
+Kestra supports two SLA types:
 
-## How to use SLAs
-
-SLAs are defined using the `sla` property at the root of a flow, and they declare the desired state that must be met during executions of the flow.
+1. **MAX_DURATION**: the maximum allowed execution duration before the SLA is breached
+2. **EXECUTION_ASSERTION**: a Pebble expression that must evaluate to `true` during execution. If it evaluates to `false`, the SLA is breached.
 
 ### MAX_DURATION
 
-If a workflow execution exceeds the expected duration, an SLA can trigger corrective actions, such as cancelling the execution.
-
-The following SLA cancels an execution if it takes more than 8 hours:
+The duration counts from the moment the execution is created, including any time it waits in `QUEUED` because of a [concurrency limit](../14.concurrency/index.md). The following SLA cancels an execution that hasn't finished 8 hours after it was created:
 
 ```yaml
 id: sla_example
@@ -61,9 +55,7 @@ tasks:
 
 ### EXECUTION_ASSERTION
 
-An SLA can also be based on an assertion that must hold true during execution. If the assertion fails, the SLA is breached.
-
-The following SLA fails if the output of `mytask` is not equal to `expected output`:
+`EXECUTION_ASSERTION` evaluates a Pebble expression against the execution at runtime. The following SLA fails the execution if `mytask` does not return `expected output`:
 
 ```yaml
 id: sla_demo
@@ -72,7 +64,7 @@ namespace: company.team
 sla:
   - id: assert_output
     type: EXECUTION_ASSERTION
-    assert: "{{ outputs.mytask.value == 'expected output' }}"
+    assert: "{{ outputs.mytask.values.result == 'expected output' }}"
     behavior: FAIL
     labels:
       sla: miss
@@ -80,22 +72,24 @@ sla:
 
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: expected output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: expected output
 ```
 
 ## SLA behavior
 
-The `behavior` property of an SLA defines the action to take when the SLA is breached. The following behaviors are supported:
-1. **CANCEL** — cancels the execution
-2. **FAIL** — fails the execution
-3. **NONE** — logs a message
+The `behavior` property controls what happens when the SLA is breached:
 
-In addition, each breached SLA can set labels that can be used to filter executions or trigger follow-up actions.
+1. **CANCEL**: cancels the execution
+2. **FAIL**: fails the execution
+3. **NONE**: logs a message without stopping the execution
+
+Each SLA can also set `labels` on the breached execution, making it easy to filter affected executions or trigger follow-up actions.
 
 ## Alerts on SLA breaches
 
-For example, if you want to receive a Slack alert when an SLA is breached, you can use a Flow trigger to react to cancelled or failed executions labeled with `sla: miss`:
+The following example uses a Flow trigger on the `sla: miss` label to send an alert on SLA breaches:
 
 ```yaml
 id: sla_miss_alert
@@ -104,20 +98,14 @@ namespace: system
 tasks:
   - id: send_alert
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-    url: "{{secret('SLACK_WEBHOOK')}}"
-    messageText: "SLA breached for flow `{{trigger.namespace}}.{{trigger.flowId}}` with ID `{{trigger.executionId}}`"
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    messageText: "SLA breached for flow `{{ trigger.namespace }}.{{ trigger.flowId }}` with ID `{{ trigger.executionId }}`"
 
 triggers:
   - id: alert_on_failure
     type: io.kestra.plugin.core.trigger.Flow
-    labels:
-      sla: miss
-    states:
-      - FAILED
-      - WARNING
-      - CANCELLED
+    dependsOn:
+      - labels:
+          sla: miss
+        states: [FAILED, WARNING, CANCELLED]
 ```
-
-:::alert{type="info"}
-Best practice: Use labels with SLAs to track SLA breaches across environments, and pair them with alerting or monitoring flows for proactive response.
-:::

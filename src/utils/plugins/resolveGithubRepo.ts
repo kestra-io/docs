@@ -2,7 +2,7 @@ const EXACT_MAP: Record<string, string> = {
     core: "kestra",
 }
 
-const PREFIX_MAP: Record<string, string> = {
+export const PREFIX_MAP: Record<string, string> = {
     "plugin-jdbc": "plugin-jdbc",
     "plugin-script": "plugin-scripts",
     "plugin-debezium": "plugin-debezium",

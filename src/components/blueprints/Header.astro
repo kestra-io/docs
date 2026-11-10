@@ -18,29 +18,33 @@ const tags = allTags
                     items={[
                         { label: "Home", href: "/" },
                         { label: "Blueprints", href: "/blueprints" },
+                        { label: page.title, href: "" },
                     ]}
                 />
 
                 {
                     page.includedTasks?.length > 0 && (
                         <div class="tasks">
-                            {page.includedTasks.map((icon: string) => (
-                                <div class="task">
-                                    <div class="box">
-                                        <TaskIcon cls={icon} />
+                            {page.includedTasks
+                                .filter(
+                                    (cls: string) =>
+                                        !cls.startsWith(
+                                            "io.kestra.plugin.ee.assets.",
+                                        ),
+                                )
+                                .map((icon: string) => (
+                                    <div class="task">
+                                        <div class="box">
+                                            <TaskIcon cls={icon} />
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
                         </div>
                     )
                 }
 
                 <h1 class="title mb-0">{page.title}</h1>
-                {/* TODO: short description needed */}
-                <!-- <MDCParserAndRenderer
-                    content={page.shortDescription}
-                    class="description bd-markdown mb-0"
-                /> -->
+                <p class="description">{page.metaDescription}</p>
             </div>
 
             <div class="right">
@@ -100,6 +104,13 @@ const tags = allTags
                     border: $block-border;
                     background-color: var(--ks-background-primary);
                 }
+            }
+
+            .description {
+                @include media-breakpoint-up(lg) {
+                    font-size: $font-size-lg;
+                }
+                margin-bottom: 0;
             }
         }
 

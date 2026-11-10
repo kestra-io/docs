@@ -20,13 +20,16 @@
                     />
                 </div>
             </div>
-            <Dashboard />
+            <Dashboard :total-plugins="totalPlugins" />
             <div class="logos-wrap">
                 <div class="logos">
                     <div
                         v-for="(logo, index) in [...LogoList, ...LogoList]"
                         :key="index"
-                        :class="{'d-sm-none': index >= LogoList.length}"
+                        :class="{
+                            'd-sm-none': index >= LogoList.length,
+                            invert: logo.alt === 'Fortune 500',
+                        }"
                         class="logo-item"
                     >
                         <img :src="logo.src" :alt="logo.alt" />
@@ -40,16 +43,21 @@
 <script setup lang="ts">
     import Link from '~/components/common/Link.vue';
     import Dashboard from '~/components/enterprise/Dashboard.vue';
+    import fortune500Logo from '~/components/enterprise/assets/fortune500.svg';
+
+    defineProps<{
+        totalPlugins: string
+    }>();
 
     const logos = import.meta.glob("/src/components/enterprise/assets/logos/*.svg", { eager: true });
 
     const LogoList = [
-        "LM", "BHP", "ACXIOM", "ITZ",
+        "LM", "ACXIOM", "ITZ",
         "T-SYSTEM", "COE", "BATTELLE", "DATAPORT"
     ].map(name => ({
         src: (logos[`/src/components/enterprise/assets/logos/${name}.svg`] as any).default.src,
         alt: name
-    }));
+    })).concat({ src: fortune500Logo.src, alt: "Fortune 500" });
 </script>
 
 <style lang="scss" scoped>
@@ -137,6 +145,10 @@
                 justify-content: center;
                 align-items: center;
                 gap: 0;
+
+                .logo-item.invert img {
+                    filter: invert(1);
+                }
 
                 @include media-breakpoint-down(md) {
                     gap: 2rem;

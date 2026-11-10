@@ -1,6 +1,7 @@
 ---
-title: Kestra Plugins and Execution Configuration
-description: Configure plugin installation, plugin defaults, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
+title: Plugins & Execution Configuration in Kestra
+h1: Configure Plugins, Static Policies, Retries & System Flows
+description: Configure plugin installation, static policies, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
 sidebarTitle: Plugins and Execution
 icon: /src/contents/docs/icons/admin.svg
 ---
@@ -16,18 +17,21 @@ This area includes:
 - installing plugins
 - custom Maven repositories
 - Enterprise plugin repositories
-- plugin defaults
-- forced plugin defaults
+- static policies for installation-wide defaults and enforcement (Enterprise Edition)
 - plugin security and allowed plugins
 - plugin management settings
 
 For many teams, this is the most important section after runtime setup because it centralizes behavior shared across many flows.
 
-Install a plugin from Maven repositories with:
+[Install `kestractl`](../../kestra-cli/kestractl/index.md#installation), then download plugins with [`kestractl plugins`](../../kestra-cli/kestractl/index.md#plugin-management) and copy or mount the JARs into the Kestra plugins directory:
 
 ```bash
-kestra plugins install io.kestra.plugin:plugin-script-python:LATEST
+kestractl plugins get io.kestra.plugin:plugin-script-python --compatible-for <version>
 ```
+
+See [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md) for the full workflow. From inside a Kestra image, the server CLI can also install plugins directly with [`kestra plugins install`](../../kestra-cli/kestra-server/index.md#kestra-plugins-install).
+
+The repositories below are used when the Kestra server downloads plugins itself, for example with `kestra plugins install` or [Versioned Plugins](../../07.enterprise/05.instance/versioned-plugins/index.md). `kestractl` takes its repository and credentials as flags instead.
 
 Add custom repositories:
 
@@ -59,38 +63,63 @@ kestra:
 
 Most teams only need custom repositories if they publish private plugins or mirror public artifacts through an internal registry.
 
-## Global plugin defaults and shared behavior
+## Static policies (global defaults and enforcement)
 
-Use plugin defaults when many flows should inherit the same behavior. This is usually preferable to repeating the same task settings across dozens of flow definitions.
-
-Apply global defaults that flows can still override:
-
-```yaml
-kestra:
-  plugins:
-    defaults:
-      - type: io.kestra.plugin.core.log.Log
-        values:
-          level: ERROR
-```
-
-Use forced defaults when teams must not override the value:
-
-```yaml
-kestra:
-  plugins:
-    defaults:
-      - type: io.kestra.plugin.scripts.shell.Commands
-        forced: true
-        values:
-          containerImage: ubuntu:latest
-          taskRunner:
-            type: io.kestra.plugin.scripts.runner.docker.Docker
-```
+In Kestra 2.0, global plugin defaults are replaced by static policies declared under `kestra.policies` in server configuration. Static policies form the outermost scope, apply across all tenants, and cannot be overridden through the API.
 
 :::alert{type="warning"}
-Plugin defaults are evaluated by the Executor and propagated to other components, so every server should use the same `kestra.plugins.defaults`.
+`kestra.plugins.defaults` is removed in Kestra 2.0. See the [pluginDefaults Removed migration guide](../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md) to convert existing defaults to policies.
 :::
+
+Apply an installation-wide default that flows can still override:
+
+```yaml
+kestra:
+  policies:
+    - id: global-log-level
+      description: "Default log level for all Log tasks."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: PLUGIN
+          where:
+            - field: type
+              operator: EQUAL_TO
+              value: io.kestra.plugin.core.log.Log
+          values:
+            level: ERROR
+```
+
+Enforce a value that tasks cannot override (`override: true`):
+
+```yaml
+kestra:
+  policies:
+    - id: enforce-docker-isolation
+      description: "Force Docker task runner for all shell script tasks."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: PLUGIN
+          override: true
+          where:
+            - field: type
+              operator: STARTS_WITH
+              value: io.kestra.plugin.scripts.shell
+          values:
+            containerImage: ubuntu:latest
+            taskRunner:
+              type: io.kestra.plugin.scripts.runner.docker.Docker
+```
+
+Static policies are evaluated by the Executor and propagated to all components, so every server should have the same `kestra.policies` configuration. A malformed static policy prevents server startup (fail-closed) — validate in a staging environment first.
+
+Precedence works as follows:
+
+- Static policies (`kestra.policies`) form the outermost scope
+- Tenant-level and namespace-level Policies apply inside that
+- Task properties fill any remaining unset values
+- `override: true` on a policy rule always wins over the author's value
+
+Use `override: false` (the default) for convenience defaults and `override: true` when the platform must enforce a value such as a specific task runner.
 
 Enable or preconfigure plugin features globally:
 
@@ -149,11 +178,13 @@ kestra:
       auto-reload-enabled: true
       auto-reload-interval: 60s
       default-version: LATEST
+      worker-access: STORAGE    # EE only: STORAGE (default) or CONTROLLER
 ```
 
 - `remote-storage-enabled`: store managed plugins in internal storage rather than on local disk
 - `auto-reload-enabled` / `auto-reload-interval`: check for updated plugins on a fixed interval
 - `default-version`: controls which plugin version is selected when no explicit version is pinned; accepts `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or a specific version string
+- `worker-access` (EE): controls how workers fetch managed plugin artifacts. Set to `CONTROLLER` when a worker runs with dedicated storage, separate from the internal storage that the webserver and Worker Controller use. See [Dedicated-storage workers](../06.enterprise-and-advanced/index.md#dedicated-storage-workers).
 
 ## Execution behavior
 
@@ -163,6 +194,7 @@ This part of the configuration also includes:
 
 - retries
 - temporary task storage
+- HTTP task URL filtering
 - tutorial flows
 - system flows
 - local flow synchronization
@@ -182,22 +214,25 @@ kestra:
 `max-delay` caps the maximum backoff interval. It is undefined by default, which means the delay grows without bound according to the multiplier.
 
 :::alert{type="warning"}
-These retries do not apply to tasks. For task-level retries across many plugins, use plugin defaults.
+These retries do not apply to tasks. Configure task retries with the `retry` property in the flow.
 :::
 
-Example task-level retry default:
+Example task-level retry:
 
 ```yaml
-- type: io.kestra
-  retry:
-    type: constant
-    interval: PT5M
-    maxDuration: PT1H
-    maxAttempts: 3
-    warningOnRetry: true
+tasks:
+  - id: fetch
+    type: io.kestra.plugin.core.http.Request
+    uri: https://example.com/api
+    retry:
+      type: constant
+      interval: PT5M
+      maxDuration: PT1H
+      maxAttempts: 3
+      warningOnRetry: true
 ```
 
-That distinction matters: `kestra.retries` protects platform integrations such as storage and secret backends, while task retry behavior should be managed through plugin defaults or the flow itself.
+That distinction matters: `kestra.retries` protects platform integrations such as storage and secret backends, while task retry behavior belongs in the flow. See [Retries](../../05.workflow-components/12.retries/index.md) for task-level and flow-level options. In Enterprise Edition, a [Policy](../../07.enterprise/02.governance/policies/index.md) can add a flow-level `retry` to every flow in a namespace or tenant.
 
 Use `kestra.tasks.tmp-dir` when task runners need a predictable working directory on the host or inside a mounted volume:
 
@@ -208,7 +243,7 @@ kestra:
       path: /tmp/kestra-wd/tmp
 ```
 
-Make sure your container or VM volume mounts line up with that path:
+Ensure your container or VM volume mounts align with that path:
 
 ```yaml
 volumes:
@@ -216,6 +251,28 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
+
+### HTTP task URL filtering
+
+Use `kestra.tasks.http` to restrict which URLs HTTP plugin tasks can call. Configure an allow-list, a deny-list, or both:
+
+```yaml
+kestra:
+  tasks:
+    http:
+      allowed-list:
+        - https://api.example.com
+      denied-list:
+        - http://169.254.169.254
+        - http://localhost
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must match at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that matches any entry causes the task to fail. Evaluated after the allowed-list. |
+
+For security guidance and matching behavior, see [HTTP task URL filtering](../../security-hardening/index.md#http-task-url-filtering).
 
 Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
 
@@ -265,9 +322,30 @@ Relevant runtime-wide settings include:
 
 Those settings are documented in more detail on [Runtime and Storage](../02.runtime-and-storage/index.md), since they affect the whole instance and not just plugin behavior.
 
+### Subflow function configuration
+
+The `subflow()` Pebble function, used to populate `SELECT` and `MULTISELECT` input dropdowns at form render time, has three configurable limits. All three accept ISO 8601 duration strings or integers.
+
+```yaml
+kestra:
+  pebble:
+    subflow-function:
+      default-timeout: PT1M   # timeout when the caller omits the timeout argument
+      max-timeout: PT5M       # hard cap — larger values are rejected at runtime
+      max-depth: 3            # maximum nesting depth of subflow() calls on one render thread
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `kestra.pebble.subflow-function.default-timeout` | `PT1M` | Applied when the `timeout` argument is not passed. Keep this short — the call blocks the Execute form render. |
+| `kestra.pebble.subflow-function.max-timeout` | `PT5M` | Hard cap. A `timeout` argument larger than this value is rejected at runtime with an error. |
+| `kestra.pebble.subflow-function.max-depth` | `3` | Guards against runaway recursion. A subflow whose own inputs also call `subflow()` counts against this limit. |
+
+Increase `max-timeout` only if your data-fetching subflows genuinely need longer — long form renders degrade user experience. Increase `max-depth` only if you have intentionally nested multi-level dependent dropdowns.
+
 ## Related docs
 
-- Flow-level plugin defaults: [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md)
+- Installation-wide configuration rules: [Policies](../../07.enterprise/02.governance/policies/index.md) (Enterprise Edition)
 - Universal file access: [File Access](../../06.concepts/file-access/index.md)
 - Storage backends, JVM, and global variables: [Runtime and Storage](../02.runtime-and-storage/index.md)
 - Execution data isolation and enterprise-only runtime features: [Enterprise and Advanced](../06.enterprise-and-advanced/index.md)

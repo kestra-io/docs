@@ -1,6 +1,8 @@
 ---
-title: Subflow outputs behavior
-description: Learn about the deprecated subflow outputs behavior in Kestra 0.15.0 and the new approach for passing data between flows. Understand how flow-level outputs improve decoupling and maintainability of your Kestra workflows.
+title: Subflow Outputs Behavior Change in Kestra 0.15.0
+h1: How Subflow Outputs Changed and Why to Use Flow-Level Outputs
+sidebarTitle: Subflow Output Behavior
+description: Learn how subflow output behavior changed in Kestra 0.15.0 and how to adopt flow-level outputs for better decoupling and maintainability.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.15.0
 ---
@@ -14,7 +16,7 @@ If you are on Kestra 0.14.4 or earlier, passing data between subflows required u
 
 ## Example
 
-Let's say you have a following subflow (aka child flow) with a task `mytask` generating an output called `value`:
+Consider a subflow (also called a child flow) with a task `mytask` generating an output called `value`:
 
 ```yaml
 id: flow_outputs
@@ -50,7 +52,7 @@ You can see that the `outputs` property is used to define the output of the subf
 
 ## How to keep the old subflow outputs behavior
 
-Before looking at how the same is achieved in Kestra 0.15.0, let's look at how you can keep this behavior **if you are not ready to migrate** to the new subflow outputs behavior.
+Before looking at how the same is achieved in Kestra 0.15.0, here is how to keep this behavior **if you are not ready to migrate** to the new subflow outputs behavior.
 
 To keep the old behavior with the `outputs` property, you can set the following configuration in your `application.yml`:
 
@@ -76,13 +78,13 @@ Once the `outputs` configuration is set to `enabled: true`, you can use the old 
 Kestra 0.15.0 introduced a concept of flow-level `outputs` to make it easier to pass data between flows. Until now, the parent flow had to know the internals of the subflow to access its outputs. This introduced a **tight coupling** as the parent flow was **dependent on the subflow's internal logic**, which can change over time, potentially breaking the parent flow. Also, it was **exposing all outputs** from child flows (producers) to all parent flows (consumers), which is not always desirable. Often you don't want to expose all outputs of a subflow to the parent flow.
 
 ### Benefits of the new subflow outputs
-Now, you have **more control** over what subflow outputs do you want to expose to other flows. The parent flow does not need to know the internals of the child flow — it can simply access the subflow outputs by key. This **more decoupled** approach means that the parent flow is less dependent on the subflow, and **the subflow can change its implementation without breaking the parent flow**.
+Now, you have **more control** over what subflow outputs do you want to expose to other flows. The parent flow does not need to know the internals of the child flow — it can access the subflow outputs by key. This **more decoupled** approach means that the parent flow is less dependent on the subflow, and **the subflow can change its implementation without breaking the parent flow**.
 
 You can think of flow outputs as **data contracts** between flows. The subflow defines what data it produces, and the parent flow defines what data it consumes. This makes it easier to understand the dataflow between workflows and improves maintainability of both flows over time.
 
 
 ### How to use the new subflow outputs
-Since 0.15.0, the flow can produce `outputs` simply by defining them in the flow file. Here is an example of a flow that produces an output:
+Since 0.15.0, the flow can produce `outputs` by defining them in the flow file. Here is an example of a flow that produces an output:
 
 ```yaml
 id: flow_outputs
@@ -102,8 +104,6 @@ outputs:
 You can see that outputs are defined as a list of key-value pairs. The `id` is the name of the output attribute (which must be unique within a flow), and the `value` is the value of the output. The `type` lets you define the expected type of the output. You can also add a `description` to the output.
 
 You will see the output of the flow on the **Executions** page in the **Overview** tab.
-
-![subflow_output](../../../05.workflow-components/06.outputs/subflow_output.png)
 
 Here is how you can access the flow output in the parent flow:
 
@@ -131,6 +131,4 @@ Note how the `outputs` are set twice within the `"{{outputs.subflow.outputs.fina
 2. once to access the outputs of the subflow itself — specifically, the `final` output.
 :::
 
-Here is what you will see in the Outputs tab of the **Executions** page in the parent flow:
-
-![subflow_output_parent](../../../05.workflow-components/06.outputs/subflow_output_parent.png)
+The parent flow's **Input/Output** tab shows the child flow's declared `final` output under the `subflow` task entry.

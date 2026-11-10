@@ -1,13 +1,12 @@
 ---
-title: Manage Kestra Upgrades – Rolling and Rollback
+title: "Upgrade Kestra: Rolling Updates, Migrations, and Rollback"
+h1: Upgrade Kestra safely with rolling updates and rollback strategies
 sidebarTitle: Managing Upgrades
 icon: /src/contents/docs/icons/admin.svg
 description: Best practices for upgrading Kestra, performing rolling updates, and rolling back to previous versions safely.
 ---
 
 Kestra evolves quickly. This page explains how to upgrade your installation.
-
-## Plan safe Kestra upgrades and rollbacks
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/S9DlGYIEzE0?si=oujCyp5qeNvKCVb9" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -36,11 +35,11 @@ Check the [Backup and Restore](../backup-and-restore/index.md) section for more 
 We strongly recommend avoiding downgrades. To prevent surprises, test the new version in a non-production environment before upgrading. If you must roll back, closely follow the steps above.
 :::
 
-## Where you can find the release changelog
+## Release changelog
 
-You can find the changelog on the main repository’s [Releases](https://github.com/kestra-io/kestra/releases) page. It lists changes, new features, and bug fixes for each release, as well as any breaking changes. For a high-level overview, see the release [blog posts](/blogs).
+The changelog is on the main repository’s [Releases](https://github.com/kestra-io/kestra/releases) page. It lists changes, new features, and bug fixes for each release, as well as any breaking changes. For a high-level overview, see the release [blog posts](/blogs).
 
-## How to identify breaking changes in a release
+## Breaking changes
 
 In addition to bug fixes and enhancements, the release notes include a `Breaking Changes` section. It lists changes that may require adjustments to your code or Kestra configuration, with links to [migration docs](../../11.migration-guide/index.mdx).
 
@@ -53,9 +52,9 @@ The `Breaking Changes` section appears at the end of the [release notes](https:/
 If you run Kestra as separate components, you should:
 
 - Stop the executors and the scheduler
-- Stop the workers — a graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminateGracePeriod = '5m'`, configurable in your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md).
-- If the job finishes within five minutes, the worker shuts down immediately. Otherwise, the task is killed and restarts when the worker restarts.
-- Stop the webserver (and the indexer if using EE with Kafka).
+- Stop the workers. A graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminationGracePeriod = 'PT5M'`, configurable in [Liveness and worker task restarts](../../configuration/05.security-and-secrets/index.md#liveness-and-worker-task-restarts).
+- If the job finishes within the grace period, the worker shuts down as soon as it does. Otherwise, the worker stops the task, and the Executor resubmits it to an available worker unless `kestra.server.worker-task-restart-strategy` is `NEVER`.
+- Stop the webserver, and the indexer and Worker Controller if you run them as separate components.
 
 All components support graceful shutdown, so no data is lost. Afterward, update and restart everything in the opposite order (or in any order, as components are independent).
 
@@ -67,10 +66,10 @@ The webserver hosts the API, so stop and then start it immediately to avoid down
 
 If you want to stick to a specific Kestra version, you can pin the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to a specific release. Here are some examples:
 
-- `kestra/kestra:v0.21.4-no-plugins` includes the 0.21.4 release with the fourth patch version
-- `kestra/kestra:v0.21.4` includes the 0.21.4 release with all plugins
-- `kestra/kestra:v0.19.0-no-plugins` includes the 0.19 release without any plugins
-- `kestra/kestra:v0.19.0` includes the 0.19 release with all plugins.
+- `kestra/kestra:v2.0.0-slim` — the 2.0.0 release without bundled plugins
+- `kestra/kestra:v2.0.0` — the 2.0.0 release with all plugins
+
+The `-slim` suffix replaces the former `-no-plugins` suffix; releases older than the rename only exist under `-no-plugins` (e.g. `kestra/kestra:v0.21.4-no-plugins`).
 
 You can also create a custom image with your own plugins and dependencies, as explained in the [Docker installation](../../02.installation/02.docker/index.md).
 
@@ -96,7 +95,7 @@ If you use Docker Compose, update your compose file to the desired [Docker image
 
 ## Migration in Kubernetes using Helm
 
-If you use Helm, set the [Helm chart `image.tag` value](https://github.com/kestra-io/helm-charts/blob/3fb8eda4f71bd9128669a550b8cc56a82b3068aa/charts/kestra/values.yaml#L18) to the desired version. For example:
+If you use Helm, set the [Helm chart `image.tag` value](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) to the desired version. For example:
 
 ```bash
 helm upgrade kestra kestra/kestra --set image.tag=v1.0.0
@@ -118,26 +117,26 @@ During rollout, each component creates a new pod (the old one keeps running). Af
 
 Upgrading workers is more involved because they handle data-processing tasks that can run from seconds to hours. Define the desired behavior for in-flight tasks.
 
-By default, Kestra workers wait for all task runs to complete before shutting down during a migration. You can override this behavior if needed. Kestra [Helm charts](https://github.com/kestra-io/helm-charts/blob/3fb8eda4f71bd9128669a550b8cc56a82b3068aa/charts/kestra/values.yaml#L98) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
+By default, Kestra workers wait for all task runs to complete before shutting down during a migration. You can override this behavior if needed. Kestra [Helm charts](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) provide a configuration of a `terminationGracePeriodSeconds` (set to 60 seconds by default) that allows you to define the amount of time you want to wait before force-killing the worker.
 
 If the worker has no running tasks, or finishes them before the grace period, it shuts down immediately. If the pod cannot finish tasks before `terminationGracePeriodSeconds`, Kubernetes kills the pod, and those tasks are resubmitted to another worker.
 
 If a worker exits unexpectedly, the executor detects it and resubmits unfinished task runs to a new worker. The same behavior applies when a pod is terminated at `terminationGracePeriodSeconds`.
 
-## Where can I find migration guides
+## Migration guides
 
 The [Migrations section](../../11.migration-guide/index.mdx) details deprecated features and explains how to migrate to the new behavior.
 
 For all breaking changes, the migration guides are linked in the [release notes](https://github.com/kestra-io/kestra/releases).
 
-## How to stay informed about new releases
+## Release notifications
 
-You can get notified about new releases in the following ways:
-1. Subscribe to notifications in the `#announcements` channel in the [Slack](/slack) community.
-2. Follow us on [X (Twitter)](https://twitter.com/kestra_io)
-3. Follow us on [LinkedIn](https://www.linkedin.com/company/kestra/)
-4. Subscribe to the [Kestra newsletter](/blogs)
-5. Subscribe to Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
+New releases are announced through:
+1. The `#announcements` channel in the [Slack](/slack) community.
+2. [X (Twitter)](https://twitter.com/kestra_io)
+3. [LinkedIn](https://www.linkedin.com/company/kestra/)
+4. The [Kestra newsletter](/blogs)
+5. Release notifications on the [main GitHub repository](https://github.com/kestra-io/kestra), as shown in the image below:
 
 ![release_notification_github](./release_notifications_github.png)
 
@@ -198,4 +197,4 @@ If you have questions about the upgrade process:
 - If you are a [Kestra Enterprise](/enterprise) customer, submit a [support ticket](https://support.kestra.io/).
 - Or reach out [via Slack](/slack).
 
-We understand upgrades can be challenging. If you need more help, [contact us](/contact-us) and we’ll assist with migration based on your environment and use case.
+For further help, [contact us](/contact-us) for assistance with migration based on your environment and use case.

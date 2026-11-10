@@ -1,14 +1,15 @@
 <template>
     <div
         ref="multiSelectRef"
-        :class="`multi-select   ${showDropdown ? 'focused' : ''}`"
-        @click="toggleDropdown"
+        class="multi-select"
+        :class="{ focused: showDropdown }"
+        @click="showDropdown = !showDropdown"
     >
         <div class="selected-items">
-            <span v-if="selectedValue?.length === 0">Filter by {{ name }}</span>
-            <div v-for="(item, index) in selectedValue" :key="index" class="selected-item">
+            <span v-if="!selected.length">Filter by {{ name }}</span>
+            <div v-for="item in selected" :key="item" class="selected-item">
                 <p>{{ item }}</p>
-                <Close @click.stop="removeItem(index)" />
+                <Close @click.stop="toggleItem(item)" />
             </div>
             <ChevronDown />
         </div>
@@ -16,7 +17,12 @@
 
     <div class="custom-select" ref="dropdownRef">
         <ul v-if="showDropdown" class="dropdown-options">
-            <li v-for="option in options" :key="option" @click="selectItem(option)">
+            <li
+                v-for="option in options"
+                :key="option"
+                :class="{ selected: selected.includes(option) }"
+                @click="toggleItem(option)"
+            >
                 {{ option }}
             </li>
         </ul>
@@ -24,48 +30,39 @@
 </template>
 
 <script setup>
-    import { ref, watch, onMounted, onUnmounted } from "vue"
+    import { ref, onMounted, onUnmounted } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import Close from "vue-material-design-icons/Close.vue"
 
-    const props = defineProps({
+    defineProps({
         name: {
             type: String,
             default: "",
         },
-        selectedValue: {
-            type: Array,
-            default: [],
-        },
         options: {
             type: Array,
-            default: [],
-        },
-        removeItem: {
-            type: Function,
-        },
-        selectItem: {
-            type: Function,
-        },
-        toggleDropdown: {
-            type: Function,
-        },
-        showDropdown: {
-            type: Boolean,
-            default: false,
+            default: () => [],
         },
     })
 
+    const selected = defineModel({ type: Array, default: () => [] })
+
+    const showDropdown = ref(false)
     const multiSelectRef = ref(null)
     const dropdownRef = ref(null)
 
+    const toggleItem = (option) => {
+        selected.value = selected.value.includes(option)
+            ? selected.value.filter((item) => item !== option)
+            : [...selected.value, option]
+    }
+
     const handleClickOutside = (event) => {
         if (
-            dropdownRef.value &&
-            !multiSelectRef.value.contains(event.target) &&
-            !dropdownRef.value.contains(event.target)
+            !multiSelectRef.value?.contains(event.target) &&
+            !dropdownRef.value?.contains(event.target)
         ) {
-            props.toggleDropdown(false)
+            showDropdown.value = false
         }
     }
 
@@ -76,78 +73,72 @@
     onUnmounted(() => {
         document.removeEventListener("mousedown", handleClickOutside)
     })
-
-    watch(
-        () => props.showDropdown,
-        (newVal) => {
-            if (newVal) {
-                document.addEventListener("mousedown", handleClickOutside)
-            } else {
-                document.removeEventListener("mousedown", handleClickOutside)
-            }
-        },
-    )
 </script>
 
 <style lang="scss" scoped>
-
-
     .multi-select {
-        display: flex;
-        padding: 4px 40px 4px 6px;
-        border-radius: 5px;
         position: relative;
-        border: $block-border;
-        font-size: $font-size-sm !important;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 50px;
+        padding: 4px 48px 4px 16px;
+        border-radius: 4px;
+        border: 1px solid var(--ks-border-secondary);
+        background-color: var(--ks-background-input);
+        font-size: $font-size-sm;
+        line-height: 20px;
         color: var(--ks-content-primary);
-        max-width: 221px;
-        flex-wrap: wrap;
         cursor: pointer;
-        @include media-breakpoint-down(sm) {
-            max-width: 100%;
-        }
+
         &.focused {
-            box-shadow: 0 0 0 0.25rem rgba(132, 5, 255, 0.25);
+            border-color: var(--ks-border-active);
         }
+
         .selected-items {
             display: flex;
+            flex-wrap: wrap;
+            align-items: center;
             gap: 4px;
-            flex-direction: column;
-            align-items: start;
-            @include media-breakpoint-down(sm) {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
+            min-width: 0;
         }
+
         :deep(.material-design-icon) {
             position: absolute;
-            right: 10px;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
             .material-design-icon__svg {
-                fill: var(--ks-background-body);
+                bottom: 0;
+                fill: var(--ks-content-primary);
             }
         }
+
         .selected-item {
-            background-color: var(--ks-content-tertiary);
-            border-radius: 4px;
-            padding: 0 4px;
             display: flex;
             align-items: center;
             gap: 4px;
-            max-height: 20px;
-            cursor: pointer;
+            max-width: 100%;
+            padding: 2px 8px;
+            border-radius: 40px;
+            background-color: var(--ks-background-tertiary);
             p {
                 margin: 0;
-                font-size: 1rem;
-                font-weight: 500;
+                font-size: $font-size-xs;
+                line-height: 16px;
+                font-weight: 600;
+                overflow: hidden;
                 white-space: nowrap;
-                color: var(--ks-content-primary);
+                text-overflow: ellipsis;
+                color: var(--ks-content-secondary);
             }
             :deep(.material-design-icon) {
                 position: unset;
-                right: 0;
+                flex-shrink: 0;
+                transform: none;
+                color: var(--ks-content-secondary);
                 .material-design-icon__svg {
                     position: unset;
-                    fill: var(--ks-background-body);
                 }
             }
         }
@@ -159,23 +150,30 @@
         top: 2px;
         .dropdown-options {
             list-style-type: none;
-            padding: 0;
+            padding: 4px;
             margin: 0;
-            background-color: #444;
+            background-color: var(--ks-background-input);
+            border: 1px solid var(--ks-border-secondary);
             position: absolute;
             width: max-content;
             min-width: 100%;
             top: 100%;
-            z-index: 1;
-            border-radius: 5px;
-            overflow: hidden;
+            z-index: 2;
+            border-radius: 4px;
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
             li {
-                padding: 2px 4px;
-                color: white;
+                padding: 6px 8px;
+                border-radius: 4px;
+                color: var(--ks-content-primary);
                 cursor: pointer;
-                font-size: $font-size-sm !important;
+                font-size: $font-size-sm;
+                line-height: 20px;
                 &:hover {
-                    background-color: #666;
+                    background-color: var(--ks-background-tertiary);
+                }
+                &.selected {
+                    background-color: var(--ks-background-button-primary);
+                    color: $white;
                 }
             }
         }

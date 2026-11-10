@@ -5,7 +5,8 @@ date: 2024-08-07T11:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
+  medium: https://annageller.medium.com/
   image: ageller
 image: ./main.png
 ---
@@ -24,7 +25,7 @@ The table below summarizes the highlights of this release.
 | **SCIM Directory Sync**          | Enterprise customers can automate the **sync of users and groups** from their Identity Provider to Kestra using the SCIM v2.0 protocol.                                                                                                | Enterprise Edition                  | [Link](../../docs/07.enterprise/03.auth/scim/index.mdx)                              |
 | **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](../../docs/configuration/02.runtime-and-storage/index.md#database-and-datasources)                             |
 | **Audit Logs**                   | Audit Logs have undergone a major overhaul, now including a diff-based display of changes and enabling new use cases such as filtering for executions created by specific users.                                                       | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/06.audit-logs/index.md)                       |
-| **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets/index.md)                          |
+| **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets-manager/index.md)                          |
 
 If you'd like to see a 2-minute overview of the release highlights, check out the video below:
 
@@ -96,8 +97,6 @@ Check the following video demo for a deep dive into the new `Namespaces` UI:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=RiEZ_NKQym3Kh1tt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## SCIM Directory Sync 🗂️
 
@@ -241,8 +240,6 @@ Check the video below for a Task Runners feature showcase:
   <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 :::collapse{title="The main v0.18.0 enhancements to Task Runners"}
 Here are the main enhancements to Task Runners added in this release:
 - The `taskRunner` property has been added to all CLI tasks including `DbtCLI`, `TerraformCLI`, and all other script tasks.
@@ -273,7 +270,7 @@ Read more about Task Runners in our [Documentation](../../docs/task-runners/inde
 
 A new `ForEach` core task has been [introduced](https://github.com/kestra-io/kestra/issues/2137) to unify and simplify parallel and sequential task executions, replacing (_in a non-breaking way_) the `EachParallel` and `EachSequential` tasks. Those old tasks are deprecated but you can still use them — take as much time as you need to migrate.
 
-Check the [core plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) to learn more.
+Check the [core plugin documentation](/plugins/core/v1.3.38/flow/io.kestra.plugin.core.flow.foreach) to learn more.
 
 ### New `SELECT` and `MULTISELECT` input types
 

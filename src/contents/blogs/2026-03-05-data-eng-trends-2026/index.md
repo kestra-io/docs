@@ -32,7 +32,7 @@ The three roles still exist, but their walls are getting porous:
 * Workflow engineers build pipelines and automations using SQL and YAML-based orchestration without deep Python or Java expertise. They live in dbt, [Airbyte](/plugins/plugin-airbyte) configurations, and orchestration UIs.
 * AI engineers coordinate between feature stores (Feast, Tecton), model training infrastructure (PyTorch, TensorFlow), and inference pipelines.
 
-The modern data stack is the forcing function. When your stack includes [Fivetran](/plugins/plugin-fivetran) for extraction, dbt for transformation, [Snowflake](/plugins/plugin-jdbc-snowflake) for warehousing, and [Hightouch](/plugins/plugin-hightouch) for reverse ETL, plus infrastructure provisioning and API coordination, you need orchestration that handles all of it. 
+The modern data stack is the forcing function. When your stack includes [Fivetran](/plugins/plugin-fivetran) for extraction, dbt for transformation, [Snowflake](/plugins/plugin-jdbc-snowflake) for warehousing, and [Hightouch](/plugins/plugin-hightouch) for reverse ETL, plus infrastructure provisioning and API coordination, you need orchestration that handles all of it. That coordination layer is exactly what [data orchestration](/resources/data/data-orchestration) provides. 
 
 The platform engineer, workflow engineer, and AI engineer all touch the same dependency graph. They just enter it from different ends.
 

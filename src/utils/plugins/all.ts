@@ -3,7 +3,7 @@ import {
     type Plugin,
     type PluginElement,
     type PluginMetadata,
-} from "@kestra-io/ui-libs"
+} from "./plugin"
 
 export function toNavTitle(title: string): string {
     const startCase = title.match(/^[a-z]+[A-Z][a-z]/)

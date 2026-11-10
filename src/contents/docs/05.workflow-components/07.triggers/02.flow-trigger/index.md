@@ -1,5 +1,6 @@
 ---
 title: Flow Trigger in Kestra – Chain Flow Executions
+h1: Automate Workflow Dependencies by Chaining Flows
 description: Chain workflows in Kestra using the Flow Trigger. Automate dependencies by triggering flows upon the completion, success, or failure of other flows.
 sidebarTitle: Flow Trigger
 icon: /src/contents/docs/icons/flow.svg
@@ -7,35 +8,25 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger one flow based on the execution of another flow.
 
-## Flow trigger – chain flow executions
-
-A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams.
-
 ```yaml
 type: io.kestra.plugin.core.trigger.Flow
 ```
 
-Kestra can automatically start a flow as soon as another flow ends. This allows you to create dependencies between flows, even when those flows are owned by different teams.
+A Flow trigger runs a flow after another flow completes, enabling event-driven dependencies across teams and namespaces.
 
-Check the [Flow trigger](/plugins/core/triggers/io.kestra.plugin.core.trigger.Flow) documentation for the list of all properties.
+Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
-## Preconditions
+## Upstream flow dependencies
 
-A Flow trigger requires preconditions to filter which upstream executions can trigger the flow, often within a defined time window.
+The `dependsOn` property is a list of upstream flow entries that must all complete in matching states before the trigger fires.
 
-:::alert{type="info"}
-[Pebble expressions](../../../expressions/index.mdx) cannot be used in Flow Trigger (pre)conditions. You must declaratively define any condition variables.
-:::
+### Basic single upstream flow
 
-### Filters
-
-- `flows`: A list of preconditions to meet, in the form of upstream flows
-
-The example below shows a Flow trigger that runs when `flow_a` completes successfully.
+The example below triggers `flow_b` when `flow_a` from the `company.team` namespace completes successfully:
 
 ```yaml
 id: flow_b
-namespace: kestra.sandbox
+namespace: company.team
 
 tasks:
   - id: hello
@@ -43,56 +34,343 @@ tasks:
     message: "Hello World!"
 
 triggers:
-  - id: upstream_dependancy
+  - id: after_extract
     type: io.kestra.plugin.core.trigger.Flow
-    preconditions:
-      id: flow_trigger
-      flows:
-        - namespace: kestra.sandbox
-          flowId: flow_a
-          states: [SUCCESS]
+    dependsOn:
+      - flowId: extract
+        namespace: company.team
+        states: [SUCCESS]
 ```
 
-:::alert{type="info"}
-It is [best practice](../../../14.best-practices/0.flows/index.md#flow-trigger-on-state-change) when using a flow trigger to use `preconditions.flows.states` rather than the `states` task property when defining state conditions for one specific flow.
-:::
+### Multiple upstream flows
 
-- `where`: filter executions based on fields like `FLOW_ID`, `NAMESPACE`, `STATE`, and `EXPRESSION`.
+List multiple entries under `dependsOn`. All entries must be satisfied before the trigger fires:
 
-For example, the following Flow Trigger triggers on execution from flows in FAILED or WARNING states in namespaces starting with "company":
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+      - flowId: stg_marketing
+        namespace: company.team
+```
+
+### Entry properties
+
+| Property    | Type                  | Description                                                                                                          |
+|-------------|-----------------------|----------------------------------------------------------------------------------------------------------------------|
+| `flowId`    | `String`              | The ID of the upstream flow to match. Omit to match any flow (combine with `when` to narrow the scope).             |
+| `namespace` | `String`              | The namespace of the upstream flow. Exact match only; use `when` for prefix or pattern matching.                    |
+| `states`    | `List<State>`         | States that satisfy this entry. Defaults to all terminal states and `PAUSED` when omitted.                           |
+| `labels`    | `Map<String, String>` | Key-value pairs that must all be present on the upstream execution's labels.                                         |
+| `when`      | `String`              | A Pebble expression evaluated against the upstream execution. Available variables: `flow.namespace`, `flow.id`, `labels`, `execution.outputs`, `execution.state`. The entry is satisfied only when this evaluates to true.|
+
+### Satisfaction mode
+
+The `mode` property controls how `dependsOn` entries are combined before the trigger fires:
+
+| Value | Behavior | Extra property |
+|---|---|---|
+| `ALL` (default) | All entries must be satisfied | — |
+| `ANY` | Fires as soon as any one entry is satisfied | — |
+| `AT_LEAST` | Fires when at least N entries are satisfied | `minSatisfied` (integer ≥ 1) |
+
+Use `mode: ANY` to replace multiple separate Flow triggers with one:
+
+```yaml
+triggers:
+  - id: react_to_any_source
+    type: io.kestra.plugin.core.trigger.Flow
+    mode: ANY
+    dependsOn:
+      - flowId: ingest_salesforce
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_hubspot
+        namespace: company.sources
+        states: [SUCCESS]
+```
+
+Use `mode: AT_LEAST` with `minSatisfied` for N-of-M logic: fire when 2 out of 3 upstream flows succeed:
+
+```yaml
+triggers:
+  - id: partial_success
+    type: io.kestra.plugin.core.trigger.Flow
+    mode: AT_LEAST
+    minSatisfied: 2
+    dependsOn:
+      - flowId: ingest_salesforce
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_hubspot
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_zendesk
+        namespace: company.sources
+        states: [SUCCESS]
+    window:
+      deadline: "09:00:00"
+```
+
+### Prefix and pattern matching
+
+When `namespace` is set, Kestra matches it exactly. To match a range of namespaces or flows, omit `namespace` and use `when` with a Pebble expression. In `when`, `flow.namespace` and `flow.id` refer to the upstream flow (the one that just completed):
 
 ```yaml
 triggers:
   - id: alert_on_failure
     type: io.kestra.plugin.core.trigger.Flow
-    states:
-      - FAILED
-      - WARNING
-    preconditions:
-      id: company_namespace
-      where:
-        - id: company
-          filters:
-            - field: NAMESPACE
-              type: STARTS_WITH
-              value: company
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ flow.namespace | startsWith('company') }}"
 ```
 
-### Time Window & SLA
+## Conditional guard with `when`
 
-The `timeWindow` property lets you define how Kestra evaluates upstream flow executions over time. It supports several modes:
+Like all triggers, the Flow trigger supports a top-level `when` Pebble expression. It is evaluated before `dependsOn`: if it returns a falsy value, the trigger does not fire regardless of upstream state:
 
-- `DURATION_WINDOW`: This is the default type. It uses a start time (windowAdvance) and end time (window) that are moving forward to the next interval whenever the evaluation time reaches the end time, based on the defined duration window.
+```yaml
+triggers:
+  - id: after_extract
+    type: io.kestra.plugin.core.trigger.Flow
+    when: "{{ labels.env == 'production' }}"
+    dependsOn:
+      - flowId: extract
+        namespace: company.team
+```
 
-For example, with a 1-day window (`window: PT1D`, the default), SLA conditions are evaluated over a 24-hour period starting at midnight each day. If you set `windowAdvance: PT6H`, the window will start at 6 AM each day. If you set `windowAdvance: PT6H` and you also override `window: PT6H`, the window will start at 6 AM and last for 6 hours — as a result, Kestra will check the SLA conditions during the following time periods: `06:00` to `12:00`, `12:00` to `18:00`, `18:00` to `00:00`, and `00:00` to `06:00`, and so on.
+## Time window
 
-- `SLIDING_WINDOW`: This option also evaluates SLA conditions over a fixed time window, but it always goes backward from the current time. For example, a sliding window of 1 hour (window: PT1H) will evaluate executions for the past hour (so between now and one hour before now). It uses a default window of 1 day.
+The `window` property controls how long Kestra accumulates upstream executions before evaluating whether all `dependsOn` entries are satisfied.
 
-For example, the flow below evaluates every hour if the flow `flow_a` is in SUCCESS state. If so, it triggers the `flow_b` passing corresponding inputs (reading `flow_a` outputs).
+### Deadline
+
+All upstream flows must complete before a fixed time each day. The deadline is a `java.time.LocalTime` value in `HH:mm:ss` format. It is resolved in the server timezone unless a `timezone` is set:
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+      - flowId: stg_marketing
+        namespace: company.team
+    window:
+      deadline: "09:00:00"
+```
+
+### Daily time range
+
+Only executions that completed within a specific time range each day are counted:
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+      - flowId: stg_marketing
+        namespace: company.team
+    window:
+      from: "06:00:00"
+      to: "12:00:00"
+```
+
+### Fixed interval
+
+`every` defines the window size and `offset` shifts its start relative to midnight:
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+    window:
+      every: PT1H
+      offset: PT30M
+```
+
+### Lookback
+
+Count executions that completed within the past duration, relative to the current evaluation time:
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+    window:
+      lookback: PT1H
+```
+
+### Timezone
+
+`deadline`, `from`, `to`, `every` and `offset` are anchored on daily or midnight boundaries, which are resolved in the server timezone by default. A flow therefore behaves differently depending on where it is deployed. Set `timezone` to a time-zone ID so the window follows the intended zone, including across daylight-saving transitions:
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+    window:
+      deadline: "09:00:00"
+      timezone: Europe/Paris
+```
+
+`lookback` is relative to the evaluation time rather than to a daily boundary, so it is not affected by `timezone`.
+
+### Firing more than once in a window
+
+Once every `dependsOn` entry has been satisfied and an execution has been created, the stored results are reset. The trigger can fire again in the same window, though every dependency has to be satisfied again first. To create an execution as soon as any single upstream flow succeeds, use `mode: ANY` instead.
+
+## Trigger outputs
+
+When a Flow trigger fires, `trigger.outputs.<key>` gives access to the upstream execution's outputs:
+
+```yaml
+triggers:
+  - id: after_extract
+    type: io.kestra.plugin.core.trigger.Flow
+    inputs:
+      date: "{{ trigger.outputs.date }}"
+    dependsOn:
+      - flowId: extract
+        namespace: company.team
+```
+
+:::alert{type="info"}
+`trigger.outputs.<key>` holds the outputs of the last upstream execution. For single-flow triggers, this is always the correct execution. For multi-flow triggers (`mode: ALL` or `mode: ANY` with multiple `dependsOn` entries), only the last-completed upstream flow's outputs are available; per-flow output access is not yet supported.
+:::
+
+## Label-based filtering
+
+Use the `labels` map on a `dependsOn` entry to restrict which upstream executions are counted. All specified labels must be present on the upstream execution:
+
+```yaml
+triggers:
+  - id: after_prod
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - namespace: company.team
+        labels:
+          env: production
+        states: [SUCCESS]
+```
+
+## Filtering with `when` expressions
+
+Use `when` on a `dependsOn` entry to apply Pebble conditions against the upstream execution. The available variables are `flow.namespace`, `flow.id`, `labels`, `execution.outputs`, `execution.state` and `execution.attemptNumber` — where `flow` is the upstream flow and `execution` its execution. The bare `namespace`, `flowId`, `state` and `hasRetryAttempt` variables, as well as `execution.namespace` and `execution.flowId`, are not available; use the `states` list on the `dependsOn` entry for declarative state filtering, or `execution.state` for expression-based checks such as `when: "{{ execution.state != 'SUCCESS' }}"`.
+
+Filter on a flow-level output value using `execution.outputs.<key>`:
+
+```yaml
+triggers:
+  - id: after_extract
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: extract
+        namespace: company.team
+        when: "{{ execution.outputs.row_count > 0 }}"
+```
+
+:::alert{type="warning"}
+`execution.outputs.<key>` accesses the upstream flow's declared **flow-level outputs**. `outputs` is also available in `when` but holds **task outputs** — use `execution.outputs` to filter on flow outputs.
+:::
+
+Filter on an upstream execution that was restarted or replayed, using `execution.attemptNumber`, which starts at `1` and is incremented on each restart or replay. Retries of individual tasks are not exposed in the `when` context:
+
+```yaml
+triggers:
+  - id: after_restart
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: flaky_pipeline
+        namespace: company.team
+        states: [SUCCESS]
+        when: "{{ execution.attemptNumber > 1 }}"
+```
+
+A `when` expression that cannot be rendered, for example because it references a variable that does not exist, does not fire the trigger. The error is logged as a `WARN` on the upstream execution and as an `ERROR` on the flow that owns the trigger.
+
+## SLA deadline window
+
+```yaml
+id: silver_layer
+namespace: company.team
+
+tasks:
+  - id: transform_data
+    type: io.kestra.plugin.core.log.Log
+    message: deduplication, cleaning, and minor aggregations
+
+triggers:
+  - id: flow_trigger
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: bronze_layer
+        namespace: company.team
+        states: [SUCCESS]
+    window:
+      deadline: "09:00:00"
+```
+
+## Failure alerting pattern
+
+```yaml
+id: alert
+namespace: system
+
+tasks:
+  - id: send_alert
+    type: io.kestra.plugin.slack.notifications.SlackExecution
+    url: "{{secret('SLACK_WEBHOOK')}}"
+    channel: "#general"
+    executionId: "{{trigger.executionId}}"
+
+triggers:
+  - id: alert_on_failure
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ flow.namespace | startsWith('company') }}"
+```
+
+## Multiple triggers on the same flow
+
+```yaml
+triggers:
+  - id: on_completion
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: flow_a
+        namespace: company.team
+        states: [SUCCESS]
+  - id: on_failure
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: flow_a
+        namespace: company.team
+        states: [FAILED]
+```
+
+## Passing upstream outputs to a child flow
+
+Reference upstream outputs using `trigger.outputs.<key>`:
 
 ```yaml
 id: flow_b
-namespace: kestra.sandbox
+namespace: company.team
 
 inputs:
   - id: value_from_a
@@ -108,126 +386,22 @@ triggers:
     type: io.kestra.plugin.core.trigger.Flow
     inputs:
       value_from_a: "{{ trigger.outputs.return_value }}"
-    preconditions:
-      id: test
-      flows:
-        - namespace: kestra.sandbox
-          flowId: flow_a
-          states: [SUCCESS]
-      timeWindow:
-        type: SLIDING_WINDOW
-        window: PT1H
+    dependsOn:
+      - flowId: flow_a
+        namespace: company.team
+        states: [SUCCESS]
 ```
 
-For reference, below is `flow_a`:
+:::alert{type="info"}
+`dependsOn` condition IDs are derived from a stable hash of each entry's `namespace`, `flowId`, `when`, `states`, and `labels`. Reordering entries in the list does not reset accumulated window state.
+:::
 
-```yaml
-id: flow_a
-namespace: kestra.sandbox
+## Input rendering failures create FAILED executions
 
-tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: Hello World! 🚀
+If an `inputs` expression on a Flow trigger fails to render (for example, because an upstream output key does not exist), Kestra creates a `FAILED` execution instead of silently dropping the event. This makes failures visible in the UI and actionable via alerting.
 
-outputs:
-  - id: return_value
-    type: STRING
-    value: "Flow A run succesfully"
-```
+## Removed: `preconditions` and `conditions`
 
+The `preconditions` and `conditions` properties are removed in Kestra 2.0. Flows that still use them will fail to parse after upgrading. Migrate to `dependsOn`.
 
-- `DAILY_TIME_DEADLINE`: This option enforces SLA conditions that must be met before a specific cutoff time each day. With the string property deadline, you can configure a daily cutoff for checking conditions. For example, deadline: `09:00:00.00Z` means that the defined SLA conditions should be met from midnight until 9 AM each day; otherwise, the flow will not be triggered.
-
-For the example, this trigger definition only triggers the flow if  `flow_a` is in SUCCESS state before `9:00` AM every day.
-
-```yaml
-triggers:
-  - id: upstream_dep
-    type: io.kestra.plugin.core.trigger.Flow
-    preconditions:
-      id: should_be_success_by_nine
-      flows:
-        - namespace: kestra.sandbox
-          flowId: flow_a
-          states: [SUCCESS]
-      timeWindow:
-        type: DAILY_TIME_DEADLINE
-        deadline: "09:00:00.00Z"
-```
-
-- `DAILY_TIME_WINDOW`: This option enforces SLA conditions that must be met within a specific daily time range. For example, a window from `startTime: "06:00:00"` to `endTime: "09:00:00"` evaluates executions within that interval each day. This option is particularly useful for declarative definition of freshness conditions when building data pipelines. For example, if you only need one successful execution within a given time range to guarantee that some data has been successfully refreshed in order for you to proceed with the next steps of your pipeline, this option can be more useful than a strict DAG-based approach. Usually, each failure in your flow would block the entire pipeline, whereas with this option, you can proceed with the next steps of the pipeline as soon as the data is successfully refreshed at least once within the given time range.
-
-```yaml
-triggers:
-  - id: upstream_dep
-    type: io.kestra.plugin.core.trigger.Flow
-    inputs:
-      value_from_a: "{{ trigger.outputs.return_value }}"
-    preconditions:
-      id: test
-      flows:
-        - namespace: kestra.sandbox
-          flowId: flow_a
-          states: [SUCCESS]
-      timeWindow:
-        type: DAILY_TIME_WINDOW
-        startTime: "06:00:00"
-        endTime: "12:00:00"
-```
-
-
-
-## Example
-
-This example triggers the `silver_layer` flow once the `bronze_layer` flow finishes successfully by 9 AM. The deadline time string must include the timezone offset. This ensures that no new executions are triggered past the deadline. Here is the `silver_layer` flow:
-
-```yaml
-id: silver_layer
-namespace: company.team
-tasks:
-  - id: transform_data
-    type: io.kestra.plugin.core.log.Log
-    message: deduplication, cleaning, and minor aggregations
-triggers:
-  - id: flow_trigger
-    type: io.kestra.plugin.core.trigger.Flow
-    preconditions:
-      id: bronze_layer
-      timeWindow:
-        type: DAILY_TIME_DEADLINE
-        deadline: "09:00:00+01:00"
-      flows:
-        - namespace: company.team
-          flowId: bronze_layer
-          states: [SUCCESS]
-```
-
-## Example: Alerting
-
-This example creates a `System Flow` to send a Slack alert on any failure or warning state within the `company` namespace. This example uses the Slack webhook secret to notify the `#general` channel about the failed flow.
-
-```yaml
-id: alert
-namespace: system
-tasks:
-  - id: send_alert
-    type: io.kestra.plugin.slack.notifications.SlackExecution
-    url: "{{secret('SLACK_WEBHOOK')}}" # format: https://hooks.slack.com/services/xzy/xyz/xyz
-    channel: "#general"
-    executionId: "{{trigger.executionId}}"
-triggers:
-  - id: alert_on_failure
-    type: io.kestra.plugin.core.trigger.Flow
-    states:
-      - FAILED
-      - WARNING
-    preconditions:
-      id: company_namespace
-      where:
-        - id: company
-          filters:
-            - field: NAMESPACE
-              type: STARTS_WITH
-              value: company
-```
+See the [trigger conditions migration guide](../../../11.migration-guide/v2.0.0/trigger-conditions-redesign/index.md) for a complete before/after reference.

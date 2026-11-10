@@ -57,13 +57,13 @@ And this is just a glimpse of what the team has delivered during those past year
 
 Alongside these features, the **community became a force multiplier.** Kestra trended on GitHub multiple times, surged past **20,000 stars**. Every contribution, bug report, and edge-case fix helped turn Kestra into the orchestrator that could run anywhere, for anyone.
 
-And trust followed. Today, **Apple, Toyota, Bloomberg, JPMorgan Chase, SoftBank, Deutsche Telekom, BHP, and many others** run Kestra in production, orchestrating billions of workflows across data, AI, infrastructure, and business operations. Trust was earned one execution at a time, under load, with outcomes that mattered.
+And trust followed. Today, **Apple, Amdocs, Bloomberg, JPMorgan Chase, Deutsche Telekom, and many other Fortune 500 companies** run Kestra in production, orchestrating billions of workflows across data, AI, infrastructure, and business operations. Trust was earned one execution at a time, under load, with outcomes that mattered.
 
 ## “Nine hundred plugins? That seems like a lot.”
 
 It is a lot. And yes, they **work**.
 
-Every time we mention that Kestra now spans **:PluginCount plugins**, we get two reactions. The first is excitement because it means you can connect to practically anything: data stores, file stores, messaging systems, observability stacks, back‑office apps, and the long tail of tools that enterprises rely on. The second is skepticism: can that many integrations really be trustworthy?
+Every time we mention that Kestra now spans **{totalPlugins}+ plugins**, we get two reactions. The first is excitement because it means you can connect to practically anything: data stores, file stores, messaging systems, observability stacks, back‑office apps, and the long tail of tools that enterprises rely on. The second is skepticism: can that many integrations really be trustworthy?
 
 They can, and they are, because we treat the plugin ecosystem with the same discipline we apply to the core. Plugins are part of the product. We test them daily. We keep them up to date. We make upgrades safe. In Enterprise Edition, **plugin versioning** lets you pin exactly what your workflows depend on, run multiple versions in parallel, and adopt changes at your own pace. The size of the ecosystem is the result of years of work, so that integration breadth doesn’t come at the cost of quality. This is the level we are reaching, and it’s the same bar for everyone.
 

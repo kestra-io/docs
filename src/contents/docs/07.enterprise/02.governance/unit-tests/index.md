@@ -1,15 +1,15 @@
 ---
-title: Unit Tests in Kestra Enterprise – Validate Flows Safely
+title: "Unit Tests in Kestra Enterprise: Validate Flows"
+h1: Write Flow Unit Tests with Mocks and Assertions
 description: Validate workflows with Unit Tests in Kestra Enterprise. Create test suites, mock tasks, and assert flow behavior to ensure reliability before production.
 sidebarTitle: Unit Tests
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.23.0"
+docId: tests
 ---
 
-Build tests to ensure proper flow behavior.
-
-Tests let you verify that your flow behaves as expected, without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task, rather than executing the entire flow.
+Unit tests verify that flows behave as expected without running every task or producing real side effects — for example, mocking a notification task to confirm the configuration is correct without sending dummy alerts, or isolating a single changed task without re-executing the whole flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/jMZ9Cs3xxpo?si=CieI3nUrE1rY-Oew" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -17,15 +17,13 @@ Tests let you verify that your flow behaves as expected, without cluttering your
 
 ## Flow unit tests
 
-Each test runs a single flow and checks its outcomes against your **assertions**, helping you avoid regressions when you change the flow later. Each **test case** creates a new transient execution, making it easy to run multiple tests in parallel, and each test case will not affect the others. Use **fixtures** to mock specific tasks or inputs by returning predefined outputs and states without executing the tasks.
+Each test runs a single flow and checks its outcomes against your **assertions**, helping you avoid regressions when you change the flow later. Each **test case** creates a new transient execution, making it easy to run multiple tests in parallel, and each test case will not affect the others. **Fixtures** mock specific tasks or inputs by returning predefined outputs and states without executing the tasks.
 
-Unit tests are configured for and connected to their respective flows. To create a new Unit Test, access them either through the **Tests** tab on the left-hand side panel of the Kestra UI or via the **Tests** tab of a flow. When creating tests, you can open the YAML for both the test and its flow side by side.
+Unit tests are configured for and connected to their respective flows. They are accessible through the **Tests** tab on the left-hand side panel of the Kestra UI or via the **Tests** tab of a flow. When creating tests, the YAML for both the test and its flow can be viewed side by side.
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
-
-![Tests Interface](./unit-test-interface.png)
 
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
@@ -33,10 +31,11 @@ The following diagram illustrates the structure of flows and unit tests together
 
 ## Configuration
 
-Unit tests are written in YAML like flows. A test is made up of `testCases`, and each test case is made up of `fixtures` and `assertions`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write unit tests as code, in No Code, or with the [AI Copilot](../../../ai-tools/ai-copilot/index.md).
+Unit tests are written in YAML like flows. A test is made up of `testCases`, and each test case is made up of `fixtures`, `assertions`, and an optional `expectedState`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write unit tests as code, in No Code, or with the [AI Copilot](../../../develop-with-ai/01.ai-copilot/index.md).
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
+- **expectedState** sets the terminal state the flow must reach for the test to pass. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state to test intentional failure paths. Note that `assertions` is required on every test case — a case with only `expectedState` and no `assertions` is rejected.
 
 Common fixture types:
 - **files**: provide inline files or namespace file URIs the flow can read.
@@ -44,9 +43,37 @@ Common fixture types:
 - **tasks**: skip or mock task execution, override outputs, or force a state.
 - **triggers**: simulate an incoming event (e.g., webhook payload) that starts the flow.
 
+Keep the following in mind when you write fixtures:
+
+- A `FILE` input takes a namespace file URI, for example `myfile: "nsfile:///data/in.txt"`, or an [inline file fixture](#inline-file-fixture), for example `myfile: "{{ files['in.txt'] }}"`.
+- Kestra renders expressions in `fixtures.inputs` before it validates the inputs. If an expression fails to render, the test case reports `ERROR` with `Invalid fixture inputs: <reason>`.
+- Nested inputs, such as `FORM` inputs and reusable inputs, take a nested map in `fixtures.inputs`, for example `ad: {username: bob}`. Dotted keys such as `ad.username: bob` don't set the nested input.
+- A task fixture on a task inside a `Loop` applies to every iteration. Leave `value` unset: tasks inside a `Loop` iteration have no value, so a fixture with `value` never matches them.
+- A trigger fixture acts as if the trigger fired, so Kestra doesn't evaluate the trigger's `when` condition.
+- Tasks inside a `WorkingDirectory` task can't be mocked individually. Mock the `WorkingDirectory` task as a whole.
+
+Test suites, test cases, task fixtures, and assertions also accept these optional fields:
+
+| Field | Set on | Description |
+| --- | --- | --- |
+| `disabled` | Test suite | Skips every test case in the suite. |
+| `disabled` | Test case | Skips the test case, which reports `SKIPPED`. |
+| `assets` | Task fixture | Output assets the mocked task reports on its task run. Test executions don't add them to the asset inventory. |
+| `description` | Assertion | Text shown next to the assertion in the test results. |
+| `errorMessage` | Assertion | Replaces the default message when the assertion fails. |
+| `taskId` | Assertion | Labels the assertion with a task in the test results. It doesn't change what the assertion checks. |
+
 :::alert{type="warning"}
-If you don't specify any fixtures, the test will run the entire flow as in production, executing all tasks and producing outputs as usual.
+If you don't specify any fixtures, the test runs the entire flow as in production. Every task you don't mock runs for real, including the flow's `errors`, `finally`, and `afterExecution` tasks, so a flow that sends an alert or opens a Case from them does so on every test run. Mock those tasks with a task fixture, as the following example does for the Slack message.
 :::
+
+Test executions don't start flows that use a Flow trigger on the tested flow. SLAs, concurrency limits, and flow, namespace, and tenant quotas apply as in a normal execution. A suite that runs often, for example in CI, can use up a quota and cause production executions to fail or be cancelled.
+
+Test executions also follow the flow rules that apply to every execution:
+
+- A test runs the latest published revision of the flow, never a [draft revision](../../../06.concepts/03.revision/index.md#draft-revisions). If the flow only has draft revisions, the test run fails with `Flow execution blocked: flow <flow> only has draft revisions`.
+- If the flow is [disabled](../../../05.workflow-components/16.disabled/index.md), no task runs and every test case reports `SKIPPED`.
+- The flow's [checks](../../../05.workflow-components/07.checks/index.md) evaluate against the fixture inputs. A `BLOCK_EXECUTION` check that fails stops the test case before any task runs, and the test case reports `ERROR` with the check message. A failed `FAIL_EXECUTION` check creates the test execution in the `FAILED` state, which you can assert with [`expectedState`](#assert-expected-failure-state).
 
 The following flow:
 
@@ -73,16 +100,18 @@ tasks:
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/json/orders.json
 
   - id: transform_to_products_name
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
 
   - id: transform_to_uppercase
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(outputs.transform_to_products_name.values.result) | upper }}"
 
   - id: load
     type: io.kestra.plugin.gcp.bigquery.Load
-    from: "{{ outputs.transform_to_uppercase.value }}"
+    from: "{{ outputs.transform_to_uppercase.values.result }}"
     destinationTable: "my_project.my_dataset.my_table"
     format: JSON
 ```
@@ -103,8 +132,8 @@ testCases:
         - id: load
           description: "don't load data into BigQuery"
     assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
-        isNotNull: true
+      - value: "{{ outputs.transform_to_uppercase.values.result }}"
+        contains: "BOWLER HAT"
   - id: extract_should_transform_product_names_to_uppercase_mocked
     type: io.kestra.core.tests.flow.UnitTest
     fixtures:
@@ -117,12 +146,13 @@ testCases:
           description: "don't fetch data from API"
         - id: transform_to_products_name
           outputs:
-            value: |
-              [
-                "my-product-1"
-              ]
+            values:
+              result: |
+                [
+                  "my-product-1"
+                ]
     assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
+      - value: "{{outputs.transform_to_uppercase.values.result}}"
         contains: "MY-PRODUCT-1"
 ```
 
@@ -130,27 +160,21 @@ The `id` is unique to the test suite, and the `namespace` and `flowId` must matc
 
 In the first test case, `extract_should_return_data`, the `fixtures` include tasks to replace the Slack alert and BigQuery data load so as to not clutter a Slack channel with test alert messages or a BigQuery table with test data but still test the overall design of the flow.
 
-The `assertions` property defines the conditions for success or failure. In the example, the test aims to ensure that the outputs from the `transform_to_uppercase` task are not null. After running the test, we can see the results for the `extract_should_return_data` test by expanding the results.
+The `assertions` property defines the conditions for success or failure. In the example, the test checks that the output of the `transform_to_uppercase` task contains `BOWLER HAT`, an uppercased product name from the API response.
 
-![Test case 1 results](./test-case-1.png)
+Because we wrote the test suite with two test cases, both execute during the run. For more isolation, you could separate test cases into multiple tests of the flow as needed. While we know from the first test that the uppercase transformation was successful, you may not want to extract actual data during testing, as it could add load to an external service or send unnecessary alerts. To mitigate this, the second test case `extract_should_transform_product_names_to_uppercase_mocked` mocks `extract` to prevent the API call and mocks `transform_to_products_name` to return `my-product-1` in lowercase — then asserts that `transform_to_uppercase` produced `MY-PRODUCT-1`.
 
-The assertion passed as the `extract` task downloading data from the API returned product names and was not null. Additionally, since we did not include a fixture for the `transform_to_uppercase` task, we can see that the returned product names were also transformed successfully to uppercase in the assertion's actual result.
+After running, both assertions pass with their actual and expected values visible in the expanded results:
 
-Because we wrote the test suite with two test cases, both executed during the run. For more isolation, you could separate test cases into multiple tests of the flow as needed. While we know from the previous test that the uppercase transformation was successful, you may not want to extract actual data during testing, as it could add load to an external service or send unnecessary alerts. To mitigate this and solely test the transformation, we added the `extract` and `transform_to_products_name` fixtures in the second test case, `extract_should_transform_product_names_to_uppercase_mocked`. The `extract` fixture prevents the API call, and the `transform_to_products_name` fixture simulates the return of the flow task with a mock output, `my-product-1`, all in lowercase.
+![Both test cases passing with expanded assertion results](./test-cases.png)
 
-After running, we can see that the assertion was successful and the actual result `MY-PRODUCT-1` was successfully transformed and matches the expected result defined in the `assertions` property of the test.
-
-![Test case 2 results](./test-case-2.png)
-
-Execution details are not stored in the Executions page like normally run flows to avoid cluttering that space with unnecessary execution details. To view an execution made from a test, you can open the test case and click on the link for the ExecutionId.
-
-![Test Execution Details](./test-execution.png)
+Execution details are not stored in the Executions page like normally run flows to avoid cluttering that space with unnecessary execution details. To view an execution made from a test, open the test case and click the ExecutionId link.
 
 ## Unit test with a namespace file
 
 You can also simulate flows with namespace files that contain scripts, test data, or any other file content. In the previous example, you can add a namespace file that contains sample data from the production API endpoint so you do not need to make any API calls during testing. This avoids extra cost and unnecessary calls to external services.
 
-Use the following flow:
+The following flow:
 
 ```yaml
 id: etl_download_file
@@ -163,12 +187,14 @@ tasks:
     method: GET
 
   - id: transform_to_products_name
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(read(outputs.extract.uri)) | jq('.Account.Order[].Product[].\"Product Name\"') }}"
 
   - id: transform_to_uppercase
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ fromJson(outputs.transform_to_products_name.value) | upper }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ fromJson(outputs.transform_to_products_name.values.result) | upper }}"
 
   - id: load_result_to_outgoing_api
     type: io.kestra.plugin.core.log.Log
@@ -240,72 +266,75 @@ testCases:
         - id: load_result_to_outgoing_api
           description: "don't send end output"
     assertions:
-      - value: "{{outputs.transform_to_uppercase.value}}"
-        equalsTo: "[BOWLER HAT, TRILBY HAT]"
+      - value: "{{outputs.transform_to_uppercase.values.result}}"
+        equalTo: "[BOWLER HAT, TRILBY HAT]"
 ```
 
 With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
 
 ## Inline file fixture
 
-If you prefer not to use a namespace file for the file fixture in the test, you can also write the file contents inline with the `files` property to achieve the same result:
+If you prefer not to use a namespace file for the file fixture in the test, write the file contents inline with the `files` property and reference the file with `{{ files['<file_name>'] }}`:
 
 ```yaml
-id: etl_mockfile_from_ns
+id: etl_mockfile_inline
 namespace: company.team
 flowId: etl_download_file
 testCases:
-  - id: extract_should_transform_product_names_to_uppercase_with_mocked_file
+  - id: extract_should_transform_product_names_to_uppercase_with_inline_file
     type: io.kestra.core.tests.flow.UnitTest
     fixtures:
       files:
         products.json: |
-          {
-            "Account": {
-              "Account Name": "Firefly",
-              "Order": [
-                {
-                  "OrderID": "order103",
-                  "Product": [
-                    {
-                      "Product Name": "Bowler Hat",
-                      "ProductID": 858383,
-                      "SKU": "0406654608",
-                      "Description": {
-                        "Colour": "Purple",
-                        "Width": 300,
-                        "Height": 200,
-                        "Depth": 210,
-                        "Weight": 0.75
-                      },
-                      "Price": 34.45,
-                      "Quantity": 2
-                    },
-                    {
-                      "Product Name": "Trilby hat",
-                      "ProductID": 858236,
-                      "SKU": "0406634348",
-                      "Description": {
-                        "Colour": "Orange",
-                        "Width": 300,
-                        "Height": 200,
-                        "Depth": 210,
-                        "Weight": 0.6
-                      },
-                      "Price": 21.67,
-                      "Quantity": 1
-                    }
-                  ]
-                }
-              ]
-            }
-          }
+          {"Account": {"Order": [{"Product": [{"Product Name": "Bowler Hat"}, {"Product Name": "Trilby hat"}]}]}}
       tasks:
         - id: extract
           description: "mock extract data file"
           outputs:
-            # this file is a namespace file in the same namespace, the fileURI() function will return its URI.
-            uri: "{{files['products.json']}}"
+            # the inline file declared under fixtures.files
+            uri: "{{ files['products.json'] }}"
+        - id: load_result_to_outgoing_api
+          description: "don't send end output"
+    assertions:
+      - value: "{{ outputs.transform_to_uppercase.values.result }}"
+        equalTo: "[BOWLER HAT, TRILBY HAT]"
+```
+
+An inline file can also feed a `FILE` input. The following flow logs the content of an uploaded file:
+
+```yaml
+id: log_uploaded_file
+namespace: company.team
+
+inputs:
+  - id: orders
+    type: FILE
+
+tasks:
+  - id: log_orders
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(inputs.orders) }}"
+```
+
+The test passes the inline file to the `orders` input, so you don't need a namespace file for each test case:
+
+```yaml
+id: log_uploaded_file_tests
+namespace: company.team
+flowId: log_uploaded_file
+testCases:
+  - id: orders_input_should_come_from_inline_file
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      files:
+        orders.csv: |
+          order_id,quantity
+          103,2
+      inputs:
+        orders: "{{ files['orders.csv'] }}"
+    assertions:
+      - value: "{{ read(inputs.orders) }}"
+        contains: "103,2"
 ```
 
 ## Trigger fixture example
@@ -406,8 +435,8 @@ testCases:
             outputFiles:
               out.txt: "{{files['mocked_output.txt']}}"
     assertions:
-      - value: "{{ outputs.generate_output_file.outputFiles['out.txt'] }}"
-        isNotNull: true
+      - value: "{{ read(outputs.generate_output_file.outputFiles['out.txt']) }}"
+        contains: "Result: SUCCESS"
 ```
 
 In this example:
@@ -415,12 +444,104 @@ In this example:
 2. The task fixture for `generate_output_file` specifies `state: SUCCESS` to mark the task as successful without execution
 3. The `outputs.outputFiles` property maps the expected output file name (`out.txt`) to the mocked file content using the `files` reference
 4. Downstream tasks can read the mocked output file as if the script had actually run
+5. The assertion reads the mocked file and checks that it contains `Result: SUCCESS`
 
 This approach allows you to test the complete flow logic while avoiding the overhead and complexity of executing actual scripts during testing.
 
+## Assert expected failure state
+
+Some flows are designed to fail when conditions are not met — for example, a validation guard that uses [io.kestra.plugin.core.execution.Fail](/plugins/core/execution/io.kestra.plugin.core.execution.fail) to reject invalid inputs. The `expectedState` property on a test case lets you assert that a flow ends in a specific terminal state. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state.
+
+The following flow fails when the supplied quantity is not positive:
+
+```yaml
+id: order_validation
+namespace: company.team
+
+inputs:
+  - id: quantity
+    type: INT
+
+tasks:
+  - id: validate_quantity
+    type: io.kestra.plugin.core.execution.Fail
+    condition: "{{ inputs.quantity <= 0 }}"
+    errorMessage: "Order quantity must be greater than zero"
+```
+
+The test asserts that passing a negative value causes the expected failure:
+
+```yaml
+id: order_validation_tests
+namespace: company.team
+flowId: order_validation
+testCases:
+  - id: invalid_quantity_should_fail
+    type: io.kestra.core.tests.flow.UnitTest
+    expectedState: FAILED
+    fixtures:
+      inputs:
+        quantity: -1
+    assertions:
+      - value: "{{ inputs.quantity }}"
+        lessThan: 1
+```
+
+When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test case reports `ERROR` with both the expected and actual states.
+
+The same assertion works for a flow [check](../../../05.workflow-components/07.checks/index.md) with `behavior: FAIL_EXECUTION`: when the fixture inputs fail the check, Kestra creates the test execution in the `FAILED` state. A failed `BLOCK_EXECUTION` check creates no execution, so the test case reports `ERROR` whatever `expectedState` you set.
+
+## Assert that a task ran
+
+To check whether a task ran, use the [`tasksWithState()`](../../../expressions/04.functions/04.workflow/index.mdx#taskswithstate) function. It lists the tasks that ended in a given state, including tasks without outputs such as a `Log` task. A task that never ran doesn't appear in any list.
+
+The following flow logs a message in `after` and has an `errors` handler, `on_error`:
+
+```yaml
+id: task_ran_demo
+namespace: company.team
+
+tasks:
+  - id: before
+    type: io.kestra.plugin.core.log.Log
+    message: Starting
+
+  - id: after
+    type: io.kestra.plugin.core.log.Log
+    message: Done
+
+errors:
+  - id: on_error
+    type: io.kestra.plugin.core.log.Log
+    message: Something failed
+```
+
+The test asserts that `after` ran, that `on_error` didn't, and that the execution succeeded:
+
+```yaml
+id: task_ran_demo_tests
+namespace: company.team
+flowId: task_ran_demo
+testCases:
+  - id: after_runs_and_errors_handler_does_not
+    type: io.kestra.core.tests.flow.UnitTest
+    assertions:
+      # the task after ended in SUCCESS
+      - value: "{{ tasksWithState('SUCCESS') | jq('[.[] | select(.taskId == \"after\")] | length') | first }}"
+        equalTo: 1
+      # the errors handler did not run
+      - value: "{{ tasksWithState('SUCCESS') | jq('[.[] | select(.taskId == \"on_error\")] | length') | first }}"
+        equalTo: 0
+      # the state of the whole execution
+      - value: "{{ execution.state }}"
+        equalTo: SUCCESS
+```
+
+Use the `jq` filter to match the task ID exactly. A `contains: after` assertion on the list of task IDs also matches a task called `after_load`.
+
 ## Available assertion operators
 
-While the above example uses `isNotNull` and `contains` as assertion operators, there are many more that can be used when designing unit tests for your flows. The complete list is as follows:
+While the above examples use `contains` and `equalTo` as assertion operators, there are many more that can be used when designing unit tests for your flows. The complete list is as follows:
 
 | **Operator**         | **Description of the assertion operator**                                                         |
 | -------------------- | ------------------------------------------------------------------------------------------------- |
@@ -435,8 +556,18 @@ While the above example uses `isNotNull` and `contains` as assertion operators, 
 | greaterThanOrEqualTo | Asserts the value is greater than or equal to the specified value, e.g. `greaterThanOrEqualTo: 5` |
 | lessThan             | Asserts the value is less than the specified value, e.g. `lessThan: 100`                          |
 | lessThanOrEqualTo    | Asserts the value is less than or equal to the specified value, e.g. `lessThanOrEqualTo: 20`      |
-| in                   | Asserts the value is in the specified list of values, e.g. `in: [200, 201, 202]`                  |
-| notIn                | Asserts the value is not in the specified list of values, e.g. `notIn: [404, 500]`                |
+| in                   | Asserts the value is in the specified list of values, e.g. `in: ["200", "201", "202"]`            |
+| notIn                | Asserts the value is not in the specified list of values, e.g. `notIn: ["404", "500"]`            |
+
+The `value` expression always renders as a string, so keep these behaviors in mind:
+
+- The rendered value is never null, so `isNull: true` never passes on an expression. A null value renders as an empty string, and a value that doesn't exist fails the assertion with an evaluation error. To check that a value is missing, use Pebble's `is defined` test with `equalTo`:
+
+```yaml
+assertions:
+  - value: "{{ outputs.my_task.values.optional is defined }}"
+    equalTo: false
+```
 
 ## Assert on execution outputs
 

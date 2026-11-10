@@ -1,0 +1,9 @@
+<svg width="280" height="50" viewBox="0 0 280 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(0, 11)">
+        <path fill="#f35325" d="M0 0h12v12H0z"/>
+        <path fill="#81bc06" d="M14 0h12v12H14z"/>
+        <path fill="#05a6f0" d="M0 14h12v12H0z"/>
+        <path fill="#ffba08" d="M14 14h12v12H14z"/>
+    </g>
+    <text x="36" y="32" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="22" fill="currentColor">Microsoft Fabric</text>
+</svg>

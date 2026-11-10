@@ -1,5 +1,7 @@
 ---
 title: Run PowerShell Inside Your Flows
+h1: Execute PowerShell Scripts in Kestra Workflows
+description: Run PowerShell scripts in Kestra. Automate Windows administration, call Azure APIs, and integrate Microsoft services into your automation pipelines.
 icon: /src/contents/docs/icons/powershell.svg
 stage: Getting Started
 topics:
@@ -16,7 +18,7 @@ You can execute PowerShell code in a flow by either writing your PowerShell code
 
 ## Scripts
 
-If you want to write a short amount of PowerShell code to perform a task, you can use the `io.kestra.plugin.scripts.powershell.Script` type to write it directly inside your flow. This allows you to keep everything in one place.
+If you want to write a short amount of PowerShell code to perform a task, you can use the [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script) type to write it directly inside your flow. This allows you to keep everything in one place.
 
 ```yaml
 id: powershell_script
@@ -42,7 +44,7 @@ You can read more about the Scripts type in the [Plugin documentation](/plugins/
 
 ## Commands
 
-If you would prefer to put your PowerShell code in a `.ps1` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the `io.kestra.plugin.scripts.powershell.Commands` type:
+If you would prefer to put your PowerShell code in a `.ps1` file (e.g. your code is much longer or spread across multiple files), you can run the previous example using the [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands) type:
 
 ```yaml
 id: powershell_commands
@@ -128,11 +130,11 @@ tasks:
       Write-Output '::{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}::'
 
   - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ outputs.powershell_outputs_task.vars.test }}'
+    type: io.kestra.plugin.core.log.Log
+    message: '{{ outputs.powershell_outputs_task.vars.test }}'
 ```
 
-_This example works for both `io.kestra.plugin.scripts.powershell.Script` and `io.kestra.plugin.scripts.powershell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script) and [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands)._
 
 ### File Output
 
@@ -158,11 +160,11 @@ tasks:
     message: "{{ read(outputs.powershell_outputs_task.outputFiles['output.txt']) }}"
 ```
 
-_This example works for both `io.kestra.plugin.scripts.powershell.Script` and `io.kestra.plugin.scripts.powershell.Commands`._
+_This example works for both [io.kestra.plugin.scripts.powershell.Script](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.script) and [io.kestra.plugin.scripts.powershell.Commands](/plugins/plugin-script-powershell/io.kestra.plugin.scripts.powershell.commands)._
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your PowerShell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your PowerShell script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: powershell_metrics

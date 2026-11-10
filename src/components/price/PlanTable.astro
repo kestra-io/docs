@@ -1,12 +1,15 @@
 ---
 import { Icon } from "astro-icon/components"
-import { calculateTotalPlugins } from "~/composables/usePluginsCount"
-import { $fetchApiCached } from "~/utils/fetch"
-import { type Plugin } from "@kestra-io/ui-libs"
-import { PLANS, getSections, SHARED_FEATURES, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import {
+    PLANS,
+    getSections,
+    SHARED_FEATURES,
+    SUPPORT_PLANS,
+    SUPPORT_ROWS,
+} from "./pricingData"
 
-const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
-const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+const totalPlugins = await fetchTotalPluginsCount()
 const SECTIONS = getSections(totalPlugins)
 ---
 
@@ -22,14 +25,16 @@ const SECTIONS = getSections(totalPlugins)
             <table class="plan-table">
                 <thead>
                     <tr>
-                        <th class="col-feature"></th>
+                        <th class="col-feature"><span class="visually-hidden">Feature</span></th>
                         {
                             PLANS.map((plan, index) => (
                                 <th
                                     class="col-plan"
                                     data-usal={`zoomin delay-${index * 10}`}
                                 >
-                                    <span class="version-name">{plan.version}</span>
+                                    <span class="version-name">
+                                        {plan.version}
+                                    </span>
                                     {plan.button && (
                                         <a
                                             href={plan.button.href}
@@ -99,7 +104,13 @@ const SECTIONS = getSections(totalPlugins)
                                                             ? "icon-check"
                                                             : "icon-cross"
                                                     }
+                                                    aria-hidden="true"
                                                 />
+                                                <span class="visually-hidden">
+                                                    {val === "check"
+                                                        ? "Included"
+                                                        : "Not included"}
+                                                </span>
                                             </td>
                                         ))}
                                     </tr>
@@ -122,7 +133,7 @@ const SECTIONS = getSections(totalPlugins)
             <table class="plan-table support-table">
                 <thead>
                     <tr>
-                        <th class="col-feature"></th>
+                        <th class="col-feature"><span class="visually-hidden">Feature</span></th>
                         {
                             SUPPORT_PLANS.map((plan) => (
                                 <th class="col-plan">
@@ -142,10 +153,16 @@ const SECTIONS = getSections(totalPlugins)
                                 {row.values.map((val) => (
                                     <td class="col-plan">
                                         {val === "check" ? (
-                                            <Icon
-                                                name="mdi:check-bold"
-                                                class="icon-check"
-                                            />
+                                            <>
+                                                <Icon
+                                                    name="mdi:check-bold"
+                                                    class="icon-check"
+                                                    aria-hidden="true"
+                                                />
+                                                <span class="visually-hidden">
+                                                    Included
+                                                </span>
+                                            </>
                                         ) : (
                                             val
                                         )}
@@ -193,6 +210,8 @@ const SECTIONS = getSections(totalPlugins)
     }
 
     .table-wrapper {
+        position: relative;
+
         @include media-breakpoint-down(xxl) {
             overflow-x: auto;
             overflow-y: hidden;
@@ -216,9 +235,13 @@ const SECTIONS = getSections(totalPlugins)
             z-index: 200;
             background: var(--ks-background-primary);
 
+            @include media-breakpoint-down(xxl) {
+                position: static;
+            }
+
             th {
-                vertical-align: bottom;
-                padding: 2rem 0.75rem 1.25rem;
+                vertical-align: top;
+                padding: 1rem 0.75rem 1.25rem;
                 text-align: center;
             }
 
@@ -364,6 +387,27 @@ const SECTIONS = getSections(totalPlugins)
             color: var(--ks-content-link);
             &:hover {
                 text-decoration: underline;
+            }
+        }
+    }
+
+    // Below xxl the wrapper scrolls horizontally, which clips vertically too, so
+    // the bottom rows open upward: a 76px tooltip needs two 57px rows of room.
+    @include media-breakpoint-down(xxl) {
+        .plan-table tbody tr:nth-last-child(-n + 2) .tooltip-content {
+            top: auto;
+            bottom: calc(100% + 10px);
+
+            &::before {
+                top: auto;
+                bottom: -15px;
+            }
+
+            &::after {
+                bottom: auto;
+                top: 100%;
+                border-bottom-color: transparent;
+                border-top-color: var(--ks-border-primary);
             }
         }
     }

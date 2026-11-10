@@ -1,5 +1,7 @@
 ---
 title: Handle Null and Undefined Values in Kestra
+h1: Safely Process Null and Undefined Values in Flows
+description: Handle null and missing values in Kestra flows. Check for null inputs, set defaults, and use conditional logic to manage undefined task outputs.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -11,8 +13,6 @@ How to use the null coalescing operator to handle null and undefined values.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/j6H_54CpLuY?si=lU5hZV6jL9MHUQWf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 The null coalescing operator is a binary operator that returns its left-hand value if it's not null; otherwise, it returns its right-hand value. You can think of it as a way to provide a default value when the left-hand value is null.
 
@@ -51,7 +51,7 @@ tasks:
     message: processing data from {{ render(vars.start_date) }} to {{ render(vars.end_date) }}
 ```
 
-Note that you need to use the `render` function to recursively render variables containing Pebble expressions.
+Use the `render` function to recursively render variables containing Pebble expressions.
 
 ## Providing default values for optional and undefined inputs
 

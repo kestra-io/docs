@@ -1,219 +1,995 @@
 ---
-import DeclarativeIcon from "./assets/hero/declarative.svg"
-import AnyLangIcon from "./assets/hero/any-lang.svg"
-import ApiFirstIcon from "./assets/hero/api-first.svg"
-import PluginsIcon from "./assets/hero/plugin.svg"
-import LockInIcon from "./assets/hero/lock-in.svg"
-import SelfHostedIcon from "./assets/hero/self-hosted.svg"
-import CloudIcon from "./assets/hero/cloud.svg"
-import HeroAnimation from "./hero-animation.astro"
-import AnimatedWord from "./AnimatedWord.vue"
-import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-import LogoBar from "./LogoBar.astro"
-import LogoCarousel from "~/components/common/LogoCarousel.astro"
-import JPMorganIcon from "./assets/companies/jpmorgan.svg"
-import TSystemIcon from "./assets/companies/t-system.svg"
-import XiaomiIcon from "./assets/companies/xiaomi.svg"
-import BloombergIcon from "./assets/companies/bloomberg.svg"
-import FilaIcon from "./assets/companies/fila.svg"
-import AppleIcon from "./assets/companies/apple.svg"
-import ToyotaIcon from "./assets/companies/toyota.svg"
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+import { API_URL } from "astro:env/client"
+import sharp from "sharp"
+import kestraMark from "./assets/ai/kestra-logo-mark-on-dark.svg"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import { getCollection } from "astro:content"
+import { toSlug } from "~/utils/stories"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const KEY_FACTS = [
+    "Declarative",
+    "Language-Agnostic",
+    `${totalPlugins}+ Plugins`,
+    "Cloud",
+    "Self-Hosted",
+    "API-First",
+]
+
+const CUSTOMERS = [
+    {
+        file: "jpmorgan",
+        name: "JPMorgan Chase",
+        scale: 1.12,
+        story: "JPMorgan Chase",
+    },
+    { file: "apple", name: "Apple", scale: 1, lift: 0.12, story: "Apple" },
+    { file: "bloomberg", name: "Bloomberg", scale: 0.86 },
+    { file: "amdocs", name: "Amdocs", scale: 0.9, story: "Amdocs" },
+    { file: "t-system", name: "T-Systems", scale: 0.86 },
+    { file: "fila", name: "FILA", scale: 0.72, story: "Fila" },
+    { file: "xiaomi", name: "Xiaomi", scale: 0.95 },
+    { file: "brainlab", name: "Brainlab", scale: 1.1 },
+]
+const stories = await getCollection("customerStories")
+const storyHref = (company?: string) => {
+    const entry = company && stories.find((e) => e.data.companyName === company)
+    return entry ? `/stories/${toSlug(entry)}` : undefined
+}
+const SPARKS = Array.from({ length: 14 }, (_, idx) => ({
+    a: Math.round((idx % 2 ? 180 : 0) + (((idx * 37) % 50) - 25)),
+    r: (3.4 + ((idx * 7) % 5) * 0.55).toFixed(2),
+    s: 2 + (idx % 3),
+    delay: -((idx * 0.83) % 4.2).toFixed(2),
+}))
+const PLUGINS = [
+    "aws.s3.Upload",
+    "jdbc.postgresql.Query",
+    "scripts.python.Script",
+    "azure.storage.blob.Upload",
+    "gcp.bigquery.Query",
+    "notifications.slack.SlackIncomingWebhook",
+    "openai.ChatCompletion",
+    "docker.Run",
+    "dbt.cli.DbtCLI",
+    "kafka.Produce",
+    "jdbc.snowflake.Query",
+    "databricks.job.CreateJob",
+    "kubernetes.core.PodCreate",
+    "terraform.cli.TerraformCLI",
+    "mongodb.Find",
+    "github.issues.Create",
+    "airbyte.connections.Sync",
+    "ansible.cli.AnsibleCLI",
+    "anthropic.ChatCompletion",
+    "servicenow.Post",
+    "elasticsearch.Search",
+    "fivetran.connectors.Sync",
+    "spark.SparkCLI",
+    "redis.list.ListPush",
+    "jdbc.mysql.Query",
+    "huggingface.Inference",
+    "gcp.vertexai.ChatCompletion",
+    "scripts.node.Script",
+    "scripts.shell.Commands",
+    "git.Clone",
+    "jira.issues.Create",
+    "jdbc.duckdb.Query",
+    "jdbc.oracle.Query",
+    "gcp.gcs.Upload",
+    "aws.lambda.Invoke",
+    "notifications.teams.TeamsIncomingWebhook",
+]
+const fetchIcon = async (type: string) => {
+    try {
+        const response = await fetch(
+            `${API_URL}/plugins/icons/io.kestra.plugin.${type}`,
+        )
+        if (!response.ok) return null
+        return Buffer.from(await response.arrayBuffer()).toString("base64")
+    } catch {
+        return null
+    }
+}
+const [generic, ...fetched] = await Promise.all(
+    ["unknown.Plugin", ...PLUGINS].map(fetchIcon),
+)
+const isDark = async (svg: string) => {
+    try {
+        const { data } = await sharp(Buffer.from(svg, "base64"))
+            .resize(24, 24)
+            .ensureAlpha()
+            .raw()
+            .toBuffer({ resolveWithObject: true })
+        let light = 0
+        let ink = 0
+        for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3] / 255
+            light +=
+                alpha *
+                (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2])
+            ink += alpha
+        }
+        return ink > 0 && light / ink < 70
+    } catch {
+        return false
+    }
+}
+const icons = await Promise.all(
+    fetched
+        .filter((svg): svg is string => !!svg && svg !== generic)
+        .map(async (svg) => ({
+            src: `data:image/svg+xml;base64,${svg}`,
+            dark: await isDark(svg),
+        })),
+)
+const GOLDEN = 2.39996
+const flights = [...icons, ...icons]
+const iconVars = icons
+    .map((icon, idx) => `--icon-${idx}: url(${icon.src})`)
+    .join("; ")
+const tiles = flights.map((icon, idx) => {
+    const angle = idx * GOLDEN
+    const reach = 0.5 + ((idx * 7) % 11) / 18
+    return {
+        icon: idx % icons.length,
+        dark: icon.dark,
+        dx: (Math.cos(angle) * reach * 30).toFixed(2),
+        dy: (Math.sin(angle) * reach * 30).toFixed(2),
+        size: (3 + ((idx * 5) % 4) * 0.45).toFixed(2),
+        delay: (-(idx / flights.length) * 22).toFixed(2),
+        lit: idx % 5 === 2,
+    }
+})
+
+const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/components/home/assets/companies/*.svg",
+    { eager: true },
+)
 ---
 
-<section aria-labelledby="hero">
-    <div class="mobile-bg"></div>
-    <div class="hero">
-        <h1 id="hero">
-            One Platform <br class="d-lg-none" /> to <AnimatedWord
-                words={["Run", "Control", "Govern"]}
-                client:load
-            />
-            <br />
-            <span class="gradient">All Your Workflows</span>
-        </h1>
-        <p>
-            Kestra is the open-source orchestration platform for data, AI, and
-            infrastructure workflows. Event-driven, language-agnostic, and built
-            for enterprise scale.
-        </p>
-        <div class="tags">
-            <span><DeclarativeIcon />Declarative</span>
-            <span><AnyLangIcon />Any Language</span>
-            <span><ApiFirstIcon />API-First</span>
-            <span><PluginsIcon />1200+ Plugins</span>
-            <span><LockInIcon />No Lock-in</span>
-            <span><SelfHostedIcon />Self-Hosted</span>
-            <span><CloudIcon />Cloud</span>
+<section class="home-hero" aria-labelledby="hero-title">
+    <PixelEdges left="tall" right="wide" />
+    <div class="frame surface-dark" data-hero-frame data-header-dark>
+        <div class="field" aria-hidden="true" style={iconVars}>
+            <div class="space">
+                <span class="orbit" style="--d: 34rem"></span>
+                <span class="orbit" style="--d: 58rem"></span>
+                <span class="orbit" style="--d: 86rem"></span>
+                <span class="orbit" style="--d: 120rem"></span>
+                {
+                    tiles.map((tile) => (
+                        <span
+                            class:list={[
+                                "tile",
+                                { lit: tile.lit, dark: tile.dark },
+                            ]}
+                            style={`--dx: ${tile.dx}; --dy: ${tile.dy}; --s: ${tile.size}rem; --delay: ${tile.delay}s; --icon: var(--icon-${tile.icon})`}
+                        >
+                            <span class="face" />
+                            <span class="face soft" />
+                        </span>
+                    ))
+                }
+            </div>
         </div>
-        <div class="buttons">
-            <a href="/get-started" class="btn btn-lg btn-primary me-3 mb-2">
-                Get Started with Open Source
-            </a>
-            <a href="/demo" class="btn btn-lg btn-secondary mb-2">
-                Book a Demo
-            </a>
+        <div class="container-xl stage">
+            <div class="intro">
+                <div class="copy">
+                    <h1 id="hero-title">
+                        <span class="beat">Orchestrate everything,</span>
+                        <span class="beat"
+                            >everywhere<span
+                                class="brand-dot"
+                                aria-hidden="true"></span><span
+                                class="visually-hidden">.</span
+                            ></span
+                        >
+                    </h1>
+                    <span class="hero-mark" aria-hidden="true" data-hero-mark>
+                        {
+                            SPARKS.map((spark) => (
+                                <span
+                                    class="spark"
+                                    style={`--a: ${spark.a}deg; --r: ${spark.r}rem; --s: ${spark.s}px; --delay: ${spark.delay}s`}
+                                />
+                            ))
+                        }
+                        <img src={kestraMark.src} alt="" />
+                    </span>
+                    <p class="lead">
+                        Use any language, connect your systems, and run
+                        anywhere. Open source under Apache 2.0.
+                    </p>
+                    <div class="buttons">
+                        <a href="/get-started" class="btn-solid">
+                            Get started <Icon name="mdi:chevron-right" />
+                        </a>
+                        <a href="/demo" class="btn-ghost">Book a demo</a>
+                    </div>
+                </div>
+            </div>
+            <ul class="key" aria-label="Kestra at a glance" data-key-facts>
+                {
+                    KEY_FACTS.map((fact, idx) => (
+                        <li style={`--i: ${idx}`}>{fact}</li>
+                    ))
+                }
+            </ul>
         </div>
     </div>
-    <div class="hero-animation">
-        <HeroAnimation />
-    </div>
-    <LogoBar />
+    <ul class="customers" aria-label="Companies running Kestra in production">
+        {
+            CUSTOMERS.map((company) => {
+                const logo =
+                    companyLogos[
+                        `/src/components/home/assets/companies/${company.file}.svg`
+                    ].default
+                const height = Math.min(
+                    1.75,
+                    1.3 / Math.sqrt(logo.width / logo.height / 4.5),
+                )
+                const href = storyHref(company.story)
+                const image = (
+                    <Image
+                        src={logo}
+                        alt={company.name}
+                        class="brand-logo"
+                        style={`--h: ${(height * (company.scale ?? 1)).toFixed(3)}rem; translate: 0 ${-(company.lift ?? 0)}rem`}
+                    />
+                )
+                return (
+                    <li>
+                        {href ? (
+                            <a class="has-story" href={href}>
+                                {image}
+                                <span class="read">
+                                    Read story <span class="arrow">→</span>
+                                </span>
+                            </a>
+                        ) : (
+                            image
+                        )}
+                    </li>
+                )
+            })
+        }
+    </ul>
 </section>
 
-<style lang="scss">
-    @use "~/assets/styles/variable" as *;
+<script>
+    const REPLAY_MS = 9000
 
-    section {
-        padding-top: 0;
-        padding-bottom: 3rem;
-        padding-inline: 1rem;
-        position: relative;
-        clip-path: inset(0);
-        margin-top: -2px;
-        @include media-breakpoint-up(md) {
-            padding-inline: 0;
-            padding-top: 2rem;
-            background:
-                url("./assets/hero/bg-grid.svg") no-repeat 50% -100px,
-                url("./assets/hero/bg-desktop.svg") no-repeat center center /
-                    cover;
+    function loopKeyFacts() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        for (const strip of document.querySelectorAll<HTMLElement>(
+            "[data-key-facts]:not([data-looping])",
+        )) {
+            strip.dataset.looping = "true"
+            const run = () => {
+                strip.classList.remove("running")
+                void strip.offsetWidth
+                strip.classList.add("running")
+            }
+            let visible = false
+            const observer = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting && !visible) run()
+                visible = entry.isIntersecting
+            })
+            observer.observe(strip)
+            const timer = setInterval(() => {
+                if (!strip.isConnected) {
+                    clearInterval(timer)
+                    observer.disconnect()
+                    return
+                }
+                if (visible && !document.hidden) run()
+            }, REPLAY_MS)
         }
     }
 
-    .hero {
+    document.addEventListener("astro:page-load", loopKeyFacts)
+    loopKeyFacts()
+
+    function leanField() {
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        for (const frame of document.querySelectorAll<HTMLElement>(
+            "[data-hero-frame]:not([data-leaning])",
+        )) {
+            frame.dataset.leaning = "true"
+            let queued = 0
+            const update = () => {
+                queued = 0
+                const box = frame.getBoundingClientRect()
+                if (box.bottom < 0) return
+                const progress = Math.min(1, Math.max(0, -box.top / box.height))
+                frame.style.setProperty("--py", (progress * 0.7).toFixed(3))
+            }
+            const schedule = () => {
+                queued ||= requestAnimationFrame(update)
+            }
+            window.addEventListener("scroll", schedule, { passive: true })
+            document.addEventListener(
+                "astro:before-swap",
+                () => window.removeEventListener("scroll", schedule),
+                { once: true },
+            )
+            update()
+        }
+    }
+
+    document.addEventListener("astro:page-load", leanField)
+    leanField()
+
+    function clearMenu() {
+        if (!document.querySelector("[data-hero-frame]")) return
+        document.body.setAttribute("data-header-clear", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clear"),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", clearMenu)
+    clearMenu()
+
+    function centreOnMark() {
+        for (const frame of document.querySelectorAll<HTMLElement>(
+            "[data-hero-frame]",
+        )) {
+            const mark = frame.querySelector<HTMLElement>("[data-hero-mark]")
+            if (!mark) continue
+            const place = () => {
+                const box = frame.getBoundingClientRect()
+                const at = mark.getBoundingClientRect()
+                const centre = at.top + at.height / 2 - box.top
+                frame.style.setProperty("--oy", `${centre}px`)
+                const rest = frame.querySelector<HTMLElement>(".orbit")
+                if (rest)
+                    frame.style.setProperty(
+                        "--oy-shift",
+                        `${centre - parseFloat(getComputedStyle(rest).top)}px`,
+                    )
+            }
+            place()
+            new ResizeObserver(place).observe(frame)
+        }
+    }
+
+    document.addEventListener("astro:page-load", centreOnMark)
+    centreOnMark()
+</script>
+
+<style lang="scss">
+    .home-hero {
+        position: relative;
+        margin-top: -67px;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    .frame {
+        --inset: clamp(1.5rem, 4vw, 3.5rem);
+
+        position: relative;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        padding: 15rem 2rem 0;
-        margin-inline: auto;
-        max-width: 1400px;
+        --menu: calc(67px - 1rem);
+        padding-top: var(--menu);
+        min-height: calc(min(80vh, 800px) + var(--menu));
+        border-radius: 0;
         overflow: hidden;
-        position: relative;
-        z-index: 2;
-        @include media-breakpoint-up(md) {
-            padding: 3rem 18rem 3rem 5rem;
-            margin-top: 0;
-        }
-        @include media-breakpoint-between(lg, xl) {
-            padding-right: 25rem;
-        }
-    }
+        background:
+            radial-gradient(
+                ellipse 62% 78% at 50% 82%,
+                rgba(80, 56, 255, 0.26),
+                rgba(80, 56, 255, 0.16) 40%,
+                rgba(70, 44, 255, 0.06) 70%,
+                transparent 100%
+            ),
+            radial-gradient(
+                90% 80% at 85% 10%,
+                rgba(150, 130, 255, 0.1),
+                transparent 60%
+            ),
+            #111114;
+        color: #ffffff;
 
-    .mobile-bg {
-        position: absolute;
-        top: 0;
-        @include media-breakpoint-down(sm) {
-            top: -5rem;
+        @include media-breakpoint-down(md) {
+            min-height: 560px;
         }
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url("./assets/hero/bg-mobile.png") no-repeat center center;
-        background-size: cover;
-        z-index: 0;
-        @include media-breakpoint-up(md) {
-            display: none;
-        }
-    }
 
-    .hero-animation {
-        position: absolute;
-        right: 2rem;
-        top: 50px;
-        z-index: 1;
-        display: none;
-
-        @include media-breakpoint-up(md) {
-            display: block;
-            left: 50%;
-            transform: scale(0.5) translateX(18%);
-            width: auto;
-        }
-        @include media-breakpoint-up(xl) {
-            left: 50%;
-            transform: scale(0.8);
-        }
-    }
-
-    .hero h1 {
-        grid-area: 1/1/2/2;
-        font-weight: 500;
-        font-size: 2rem;
-        @include media-breakpoint-up(md) {
-            font-size: 3.5rem;
-            line-height: 3.9375rem;
-            margin-bottom: 1.5rem;
-        }
-    }
-
-    .gradient {
-        background: linear-gradient(90deg, #718bfe, #c6d1ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-        grid-area: 2/1/3/2;
-        color: var(--hp-color-dark-secondary);
-        @include media-breakpoint-up(md) {
-            font-size: $font-size-lg;
-        }
-    }
-
-    .tags {
-        display: none;
-        @include media-breakpoint-up(md) {
-            grid-area: 3/1/4/2;
+        > .stage {
+            position: relative;
+            z-index: 1;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            max-width: 730px;
+            flex: 1;
+            flex-direction: column;
         }
     }
 
-    .tags span {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0.5rem 0.7rem;
-        border-radius: 9999px;
-        color: var(--hp-color-dark-tertiary);
-        font-size: $font-size-xs;
-        svg {
-            color: #718bfe;
-            width: 18px;
-            height: 18px;
+    .copy {
+        min-width: 0;
+        margin-inline: auto;
+        text-align: center;
+    }
+
+    h1 {
+        max-width: none;
+        margin: 0 auto;
+        font-size: clamp(2.5rem, 5.2vw, 4.25rem);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+        color: #ffffff;
+        text-wrap: balance;
+
+        .beat {
+            display: block;
+            animation: beat-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
         }
+
+        .beat + .beat {
+            animation-delay: 0.45s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .beat {
+                animation: none;
+            }
+        }
+
+        .brand-dot {
+            display: inline-block;
+            width: 0.15em;
+            height: 0.15em;
+            margin-left: 0.05em;
+            background: #fe0071;
+        }
+    }
+
+    .hero-mark {
+        display: grid;
+        place-items: center;
+        position: relative;
+        width: 5rem;
+        aspect-ratio: 1;
+        margin: 1.75rem auto 0;
+        border: 1.5px solid transparent;
+        border-radius: 0.875rem;
+        background:
+            radial-gradient(
+                    120% 90% at 30% 0%,
+                    rgba(120, 110, 255, 0.22),
+                    transparent 60%
+                )
+                padding-box,
+            linear-gradient(160deg, #15153a, #0b0b16) padding-box,
+            conic-gradient(
+                    from var(--edge-turn),
+                    #6d8bff,
+                    #a950ff 20%,
+                    #ffffff 30%,
+                    #f62e76 40%,
+                    #a950ff 60%,
+                    #2a2a5a 75%,
+                    #6d8bff
+                )
+                border-box;
+        animation: edge-turn 5s linear infinite;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 0 18px rgba(200, 190, 255, 0.3),
+            0 0 48px rgba(150, 125, 255, 0.4),
+            0 0 110px rgba(95, 77, 255, 0.35),
+            0 22px 50px rgba(0, 0, 0, 0.6);
+
+        img {
+            position: relative;
+            width: 80%;
+            height: auto;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        &::before {
+            inset: -60% -120%;
+            background: radial-gradient(
+                closest-side,
+                rgba(178, 166, 255, 0.24),
+                rgba(95, 77, 255, 0.1) 50%,
+                transparent
+            );
+            animation: breathe 6s ease-in-out infinite;
+        }
+
+        &::after {
+            inset: -160%;
+            background:
+                radial-gradient(
+                    ellipse 34% 26% at 36% 42%,
+                    rgba(169, 80, 255, 0.45),
+                    transparent 100%
+                ),
+                radial-gradient(
+                    ellipse 30% 24% at 64% 60%,
+                    rgba(246, 46, 118, 0.24),
+                    transparent 100%
+                ),
+                radial-gradient(
+                    ellipse 28% 22% at 60% 34%,
+                    rgba(233, 193, 255, 0.2),
+                    transparent 100%
+                );
+            filter: blur(24px);
+            animation: mist 26s ease-in-out infinite;
+        }
+
+        .spark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: var(--s);
+            height: var(--s);
+            margin: calc(var(--s) / -2);
+            border-radius: 50%;
+            background: #fff;
+            box-shadow:
+                0 0 6px rgba(233, 193, 255, 0.9),
+                0 0 14px rgba(169, 80, 255, 0.5);
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(var(--r));
+            animation: twinkle 4.2s ease-in-out var(--delay) infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+
+            &::before,
+            &::after {
+                animation: none;
+            }
+
+            .spark {
+                display: none;
+            }
+        }
+    }
+
+    @keyframes beat-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.35em);
+            filter: blur(6px);
+        }
+    }
+
+    @keyframes breathe {
+        50% {
+            opacity: 0.65;
+            transform: scale(0.92);
+        }
+    }
+
+    @keyframes mist {
+        0%,
+        100% {
+            transform: rotate(0deg) scale(1);
+        }
+
+        50% {
+            transform: rotate(180deg) scale(1.1);
+        }
+    }
+
+    @property --edge-turn {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes edge-turn {
+        to {
+            --edge-turn: 360deg;
+        }
+    }
+
+    @keyframes twinkle {
+        0%,
+        100% {
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(var(--r)) scale(0.4);
+        }
+
+        45% {
+            opacity: 1;
+            transform: rotate(var(--a)) translateX(calc(var(--r) + 0.4rem))
+                scale(1);
+        }
+
+        70% {
+            opacity: 0;
+            transform: rotate(var(--a)) translateX(calc(var(--r) + 0.7rem))
+                scale(0.6);
+        }
+    }
+
+    .lead {
+        max-width: 36rem;
+        margin: 1.25rem auto 2rem;
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.8);
+        text-wrap: balance;
     }
 
     .buttons {
-        grid-area: 4/1/5/2;
-        a {
-            width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .key {
+        --run: 0.25s;
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.625rem 1.5rem;
+        margin: 0;
+        padding: 0 0 clamp(3rem, 5vw, 4.5rem);
+        list-style: none;
+        @include media-breakpoint-up(lg) {
+            gap: 0;
         }
-        @include media-breakpoint-up(md) {
-            margin-top: 3rem;
-            a {
-                width: auto;
+
+        font-size: 0.875rem;
+        letter-spacing: 0.01em;
+
+        li {
+            color: rgba(255, 255, 255, 0.55);
+            white-space: nowrap;
+
+            @include media-breakpoint-up(lg) {
+                & + li::before {
+                    content: "·";
+                    margin-inline: 0.875rem;
+                    color: rgba(255, 255, 255, 0.3);
+                }
+            }
+        }
+
+        &.running li {
+            animation: fact-lit 1.2s ease;
+            animation-delay: calc(0.6s + var(--i) * var(--run));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            &.running li {
+                animation: none;
             }
         }
     }
 
-    .compare {
-        color: #cdc5ff;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        font-weight: 500;
-        :global(svg) {
-            transition: transform 0.2s ease-in-out;
+    @keyframes fact-lit {
+        20% {
+            color: #ffffff;
         }
-        &:hover {
-            :global(svg) {
-                transform: translateX(3px);
+    }
+
+    .field {
+        --spread: 1;
+
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        perspective: 900px;
+        perspective-origin: calc(50% + var(--px, 0) * -260px)
+            calc(var(--oy, 50%) + var(--py, 0) * -180px);
+        transition: perspective-origin 0.5s ease-out;
+        pointer-events: none;
+        mask-image: radial-gradient(
+            ellipse 30% 34% at 50% var(--oy, 46%),
+            transparent 45%,
+            #000 100%
+        );
+    }
+
+    .space {
+        position: absolute;
+        inset: 0;
+        transform: rotateY(calc(var(--px, 0) * 14deg))
+            rotateX(calc(var(--py, 0) * -10deg));
+        transform-origin: 50% var(--oy, 50%);
+        transform-style: preserve-3d;
+        transition: transform 0.2s ease-out;
+    }
+
+    // The rings and tiles rest at 48% and are moved onto the mark with a
+    // translate, which, unlike `top`, does not count as a layout shift.
+    .orbit {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        width: var(--d);
+        aspect-ratio: 1;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 50%;
+        translate: -50% calc(-50% + var(--oy-shift, 0px));
+    }
+
+    .tile {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        translate: 0 var(--oy-shift, 0px);
+        width: var(--s);
+        aspect-ratio: 1;
+        margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+        animation: fly 22s linear infinite;
+        animation-delay: var(--delay);
+        will-change: transform, opacity;
+        opacity: 0;
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+            opacity: 0.6;
+            transform: translate3d(
+                calc(var(--dx) * var(--spread, 1) * 1vw),
+                calc(var(--dy) * 1vh),
+                -300px
+            );
+        }
+    }
+
+    .face {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, #26262c, #18181c);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 0.625rem;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            0 10px 30px rgba(0, 0, 0, 0.5);
+        animation: sharp 22s linear infinite;
+        animation-delay: var(--delay);
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 24%;
+            background: var(--icon) center / contain no-repeat;
+        }
+
+        .dark > &::before {
+            filter: brightness(0) invert(1);
+        }
+
+        .lit > & {
+            border-color: rgba(255, 255, 255, 0.45);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 22px rgba(255, 255, 255, 0.12),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        &.soft {
+            filter: blur(6px);
+            animation-name: soft;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+
+            &.soft {
+                opacity: 0;
             }
+        }
+    }
+
+    @keyframes sharp {
+        0%,
+        86% {
+            opacity: 1;
+        }
+
+        97%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes soft {
+        0%,
+        80% {
+            opacity: 0;
+        }
+
+        93%,
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fly {
+        0% {
+            opacity: 0;
+            transform: translate3d(
+                calc(var(--dx) * var(--spread, 1) * 1vw),
+                calc(var(--dy) * 1vh),
+                -1600px
+            );
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+            transform: translate3d(
+                calc(var(--dx) * var(--spread, 1) * 1vw),
+                calc(var(--dy) * 1vh),
+                350px
+            );
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        .field {
+            --spread: 1.9;
+
+            opacity: 0.6;
+            mask-image: radial-gradient(
+                ellipse 58% 36% at 50% var(--oy, 46%),
+                transparent 50%,
+                #000 100%
+            );
+        }
+
+        .orbit:nth-child(n + 3) {
+            display: none;
+        }
+
+        .tile {
+            scale: 0.7;
+
+            &:not(:nth-child(4n)) {
+                display: none;
+            }
+        }
+    }
+
+    .intro {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        padding-block: clamp(3rem, 6vw, 5rem) clamp(1rem, 2vw, 1.5rem);
+    }
+
+    .customers {
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr));
+        align-items: center;
+        gap: 1.75rem clamp(0.75rem, 3vw, 2.5rem);
+        max-width: 92rem;
+        margin: 0 auto;
+        padding: clamp(2.5rem, 4vw, 3.5rem) var(--bs-gutter-x, 1.5rem);
+        list-style: none;
+
+        > li {
+            display: flex;
+            justify-content: center;
+            grid-column: span 2;
+            min-width: 0;
+        }
+
+        > li:nth-child(6) {
+            grid-column: 3 / span 2;
+        }
+
+        :global(.brand-logo) {
+            max-width: 100%;
+            object-fit: contain;
+
+            @include media-breakpoint-down(xl) {
+                height: calc(var(--h) * 0.85);
+            }
+
+            @include media-breakpoint-down(md) {
+                height: calc(var(--h) * 0.62);
+            }
+        }
+
+        @include media-breakpoint-up(xl) {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 108rem;
+            padding-inline: clamp(2.5rem, 6.4vw, 7rem);
+        }
+    }
+
+    .has-story {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        color: inherit;
+        text-decoration: none;
+
+        .read {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            padding-top: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            color: var(--ks-content-secondary);
+            opacity: 0;
+            translate: -50% -4px;
+            transition:
+                opacity 0.2s ease,
+                translate 0.2s ease;
+        }
+
+        .arrow {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        &:hover .read,
+        &:focus-visible .read {
+            opacity: 1;
+            translate: -50% 0;
+        }
+
+        &:hover .arrow {
+            transform: translateX(0.2em);
+        }
+
+        &:hover .read {
+            color: var(--ks-content-primary);
+        }
+
+        @media (hover: none) {
+            .read {
+                display: none;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            .read {
+                display: none;
+            }
+        }
+    }
+
+    .brand-logo {
+        flex-shrink: 0;
+        width: auto;
+        height: var(--h);
+        filter: brightness(0);
+
+        :global(html.dark) & {
+            filter: brightness(0) invert(1);
         }
     }
 </style>
