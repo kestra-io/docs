@@ -118,7 +118,7 @@ The `kestra tenants create` server command has no signed-in user. It grants the 
 
 ### Tenant settings
 
-An Instance Owner edits a tenant's settings from **Instance Owner → Tenants → All tenants**. Besides the name and the backends described below, the settings include:
+An Instance Owner edits a tenant's settings from **Instance Owner → Tenants → All tenants**: select the settings (cog) icon at the end of the tenant's row. Selecting the row itself opens the tenant's users instead. Besides the name and the backends described below, the settings include:
 
 | Setting | Effect |
 |---|---|
@@ -134,7 +134,7 @@ An Instance Owner edits a tenant's settings from **Instance Owner → Tenants �
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-Configure a dedicated backend from the tenant's **Settings** page (**Instance Owner → Tenants → All tenants**, then select the tenant), under **Dedicated internal storage** and **Dedicated secrets manager**. Turn on a section with its switch to show a type selector and a YAML configuration editor. In the API, the fields are `storageType`, `storageConfiguration`, `secretType`, and `secretConfiguration`. The [Terraform `kestra_tenant` resource](../../../13.terraform/resources/tenant/index.md) exposes them as `storage_type`, `storage_configuration`, `secret_type`, and `secret_configuration`, with the configuration as a flat map of strings.
+Configure a dedicated backend from the tenant's **Settings** page (**Instance Owner → Tenants → All tenants**, then the settings icon in the tenant's row), under **Dedicated internal storage** and **Dedicated secrets manager**. Turn on a section with its switch to show a type selector and a YAML configuration editor. In the API, the fields are `storageType`, `storageConfiguration`, `secretType`, and `secretConfiguration`. The [Terraform `kestra_tenant` resource](../../../13.terraform/resources/tenant/index.md) exposes them as `storage_type`, `storage_configuration`, `secret_type`, and `secret_configuration`, with the configuration as a flat map of strings.
 
 Keep in mind:
 

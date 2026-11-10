@@ -119,7 +119,7 @@ tasks:
     message: Runs on a worker serving the eu queue
 ```
 
-Set a namespace-level default from the namespace **Details** tab, and a tenant-level default from the tenant's settings under **Instance Owner → Tenants → All tenants**. Both use a **Default Worker Selector** form with the same tags, match, and fallback fields. In the API and Terraform, the field is `defaultWorkerSelector`:
+Set a namespace-level default from the namespace **Details** tab, and a tenant-level default from the tenant's settings (**Instance Owner → Tenants → All tenants**, then the settings icon in the tenant's row). Both use a **Default Worker Selector** form with the same tags, match, and fallback fields. In the API and Terraform, the field is `defaultWorkerSelector`:
 
 ```yaml
 defaultWorkerSelector:
@@ -281,7 +281,7 @@ In a distributed deployment, each server role needs a different subset:
 | `kestra.worker.auth.registration-token` | Not used | Required |
 | `kestra.worker.controllers` | Not used | Required, unless the controller runs on the same host as the worker |
 
-A standalone server runs every role in one process, so it needs only `kestra.ee.worker.auth.enabled: true`.
+A standalone server runs every role in one process, so it needs only `kestra.ee.worker.auth.enabled: true`. Its embedded worker needs no registration token. If authentication is enabled and the `default` group has no tokens yet, the standalone server generates one at startup, uses it for the embedded worker, and prints it once in the logs. To register a token of your own instead, set `kestra.worker.auth.registration-token` on the standalone server.
 
 :::alert{type="warning"}
 Set `kestra.ee.worker.auth.enabled: true` on the workers too. Without it, the worker ignores its registration token, and a controller with authentication enabled rejects the connection with `UNAUTHENTICATED: Missing or invalid authorization header`.
