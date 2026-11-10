@@ -1,7 +1,12 @@
 <template>
     <div v-if="!dismissed" class="fixed-top">
         <div class="announce">
-            <div class="alert alert-primary" :class="{ scrolled: scrolled }">
+            <div
+                class="alert alert-primary"
+                :class="{ scrolled: scrolled }"
+                @focusin="focused = true"
+                @focusout="focused = false"
+            >
                 <ul>
                     <li
                         v-for="(slide, index) in content"
@@ -78,6 +83,7 @@
             current: 0,
             previous: -1,
             paused: false,
+            focused: false,
             timer: null,
             dismissed: false,
         }),
@@ -100,7 +106,7 @@
             if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
                 return
             this.timer = setInterval(() => {
-                if (this.paused) return
+                if (this.paused || this.focused) return
                 this.previous = this.current
                 this.current = (this.current + 1) % this.content.length
             }, 5000)

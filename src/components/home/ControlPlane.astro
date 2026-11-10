@@ -431,6 +431,8 @@ const DOMAINS: Domain[] = [
                 auto = false
                 tabs.forEach((tab) => tab.style.removeProperty("--progress"))
             }
+            // Rotating would hide the panel a keyboard user is reading.
+            root.addEventListener("focusin", takeOver)
 
             tabs.forEach((tab, idx) => {
                 tab.addEventListener("click", () => {

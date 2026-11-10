@@ -270,14 +270,20 @@ const {
                 )
             }
 
+            const takeOver = () => {
+                auto = false
+                clearTimeout(timer)
+                tabs.forEach((t) => t.classList.remove("timed"))
+            }
+
             tabs.forEach((tab, idx) =>
                 tab.addEventListener("click", () => {
-                    auto = false
-                    clearTimeout(timer)
-                    tabs.forEach((t) => t.classList.remove("timed"))
+                    takeOver()
                     open(idx)
                 }),
             )
+            // Rotating would hide the story a keyboard user is reading.
+            root.addEventListener("focusin", takeOver)
 
             new IntersectionObserver(
                 ([entry]) => {
