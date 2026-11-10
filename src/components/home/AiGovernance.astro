@@ -691,7 +691,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
 
         &[data-mood="wait"] .ring:not(.outer) {
-            animation: turn 6s linear infinite;
+            animation: mascot-ring-turn 6s linear infinite;
         }
 
         &[data-mood="happy"] {
@@ -710,7 +710,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
 
         &[data-mood="denied"] {
             .disc {
-                animation: shake 0.5s ease;
+                animation: mascot-shake 0.5s ease;
             }
 
             .eye {
@@ -751,7 +751,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    @keyframes shake {
+    @keyframes mascot-shake {
         20%,
         60% {
             transform: translateX(-5px) rotate(-4deg);
@@ -763,7 +763,7 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
         }
     }
 
-    @keyframes turn {
+    @keyframes mascot-ring-turn {
         to {
             transform: rotate(1turn);
         }

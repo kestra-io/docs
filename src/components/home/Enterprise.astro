@@ -1991,7 +1991,7 @@ const WORKERS = [
             stroke-width: 1.25;
             stroke-linecap: round;
             stroke-dasharray: 14 640;
-            animation: flow 3.2s linear infinite;
+            animation: enterprise-line-flow 3.2s linear infinite;
 
             & + path {
                 animation-delay: -1.6s;
@@ -2011,7 +2011,7 @@ const WORKERS = [
         }
     }
 
-    @keyframes flow {
+    @keyframes enterprise-line-flow {
         from {
             stroke-dashoffset: 654;
         }
@@ -2073,7 +2073,7 @@ const WORKERS = [
         }
 
         &:global(.shake) {
-            animation: shake 0.45s ease;
+            animation: enterprise-worker-shake 0.45s ease;
         }
     }
 
@@ -2236,7 +2236,7 @@ const WORKERS = [
         }
     }
 
-    @keyframes shake {
+    @keyframes enterprise-worker-shake {
         0%,
         100% {
             transform: none;
