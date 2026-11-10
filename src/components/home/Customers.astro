@@ -119,9 +119,11 @@ const {
                         <button
                             type="button"
                             role="tab"
+                            id={`story-tab-${idx}`}
                             class:list={["tab", { active: idx === 0 }]}
                             aria-selected={idx === 0 ? "true" : "false"}
                             aria-controls={`story-${idx}`}
+                            tabindex={idx === 0 ? 0 : -1}
                             style={`--logo-height: ${story.height}px`}
                         >
                             <span class="bar" aria-hidden="true" />
@@ -144,6 +146,7 @@ const {
                         <div
                             id={`story-${idx}`}
                             role="tabpanel"
+                            aria-labelledby={`story-tab-${idx}`}
                             class:list={[
                                 "panel",
                                 {
@@ -251,6 +254,7 @@ const {
                     tab.classList.toggle("active", i === idx)
                     tab.classList.remove("timed")
                     tab.setAttribute("aria-selected", String(i === idx))
+                    tab.tabIndex = i === idx ? 0 : -1
                 })
                 panels.forEach((panel, i) =>
                     panel.classList.toggle("active", i === idx),
@@ -276,12 +280,27 @@ const {
                 tabs.forEach((t) => t.classList.remove("timed"))
             }
 
-            tabs.forEach((tab, idx) =>
+            tabs.forEach((tab, idx) => {
                 tab.addEventListener("click", () => {
                     takeOver()
                     open(idx)
-                }),
-            )
+                })
+                tab.addEventListener("keydown", (e) => {
+                    const n = tabs.length
+                    const moves: Record<string, number> = {
+                        ArrowRight: (idx + 1) % n,
+                        ArrowLeft: (idx - 1 + n) % n,
+                        Home: 0,
+                        End: n - 1,
+                    }
+                    const next = moves[e.key]
+                    if (next === undefined) return
+                    e.preventDefault()
+                    takeOver()
+                    tabs[next].focus()
+                    open(next)
+                })
+            })
             // Rotating would hide the story a keyboard user is reading.
             root.addEventListener("focusin", takeOver)
 

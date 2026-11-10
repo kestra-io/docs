@@ -440,16 +440,17 @@ const DOMAINS: Domain[] = [
                     open(idx)
                 })
                 tab.addEventListener("keydown", (e) => {
-                    const step =
-                        e.key === "ArrowRight"
-                            ? 1
-                            : e.key === "ArrowLeft"
-                              ? -1
-                              : 0
-                    if (!step) return
+                    const n = tabs.length
+                    const moves: Record<string, number> = {
+                        ArrowRight: (idx + 1) % n,
+                        ArrowLeft: (idx - 1 + n) % n,
+                        Home: 0,
+                        End: n - 1,
+                    }
+                    const next = moves[e.key]
+                    if (next === undefined) return
                     e.preventDefault()
                     takeOver()
-                    const next = (idx + step + tabs.length) % tabs.length
                     tabs[next].focus()
                     open(next)
                 })
