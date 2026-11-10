@@ -111,6 +111,8 @@ const {
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     .stack {
         padding: 2.5rem 1rem 5rem;
         background-color: #ffffff;
@@ -118,27 +120,16 @@ const {
 
     .head {
         /* Wide enough to keep the heading on one line, as the design has it. */
-        max-width: 1140px;
-        margin: 0 auto 2.5rem;
-        text-align: center;
+        @include lp-section-head(1140px);
 
         h2 {
             margin: 0 0 0.5rem;
-            color: var(--lp-content-primary);
-            font-size: 1.875rem;
-            font-weight: 600;
-            line-height: 1.0417;
-            letter-spacing: -0.045rem;
-            @include media-breakpoint-up(lg) {
-                font-size: 3rem;
-            }
+            @include lp-heading;
         }
 
         p {
             margin: 0;
-            color: var(--lp-content-secondary);
-            font-size: 1.25rem;
-            line-height: 1.4;
+            @include lp-lead;
         }
     }
 

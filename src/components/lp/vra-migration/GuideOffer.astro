@@ -63,9 +63,10 @@ const inside = [
 </section>
 
 <style lang="scss">
+    @use "/src/components/lp/shared/lp" as *;
+
     .guide-offer {
-        padding: 5rem 1rem;
-        background-color: var(--lp-purple-light);
+        @include lp-section(var(--lp-purple-light));
     }
 
     .inner {
@@ -104,14 +105,7 @@ const inside = [
 
     h2 {
         margin: 0;
-        color: var(--lp-content-primary);
-        font-size: 1.875rem;
-        font-weight: 600;
-        line-height: 1.0417;
-        letter-spacing: -0.045rem;
-        @include media-breakpoint-up(lg) {
-            font-size: 3rem;
-        }
+        @include lp-heading;
     }
 
     .lead-copy {
@@ -155,21 +149,7 @@ const inside = [
 
     .cta {
         align-self: flex-start;
-        min-width: 160px;
-        height: 50px;
-        padding: 0.5rem 1.25rem;
-        border: 1px solid #ffffff;
-        border-radius: 8px;
-        background-color: var(--lp-purple);
-        color: #ffffff;
-        font-size: $font-size-lg;
-        font-weight: 700;
-        box-shadow:
-            inset 0 0 14px 0 #be62ff,
-            2px 2px 5.5px rgba(0, 0, 0, 0.1);
         cursor: pointer;
-        &:hover {
-            background-color: #7737fe;
-        }
+        @include lp-cta;
     }
 </style>
