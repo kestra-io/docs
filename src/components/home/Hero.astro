@@ -33,7 +33,6 @@ const CUSTOMERS = [
     { file: "t-system", name: "T-Systems", scale: 0.86 },
     { file: "fila", name: "FILA", scale: 0.72, story: "Fila" },
     { file: "xiaomi", name: "Xiaomi", scale: 0.95 },
-    { file: "toyota", name: "Toyota", scale: 0.92 },
     { file: "brainlab", name: "Brainlab", scale: 1.1 },
 ]
 const stories = await getCollection("customerStories")
@@ -902,7 +901,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         }
 
         > li:nth-child(6) {
-            grid-column: 2 / span 2;
+            grid-column: 3 / span 2;
         }
 
         :global(.brand-logo) {
