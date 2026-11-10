@@ -52,34 +52,11 @@ const beam = (angle: number, r: number) => {
 const WHEEL = CARDS
 const STEP = 360 / WHEEL.length
 const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
-const SPARKS = [
-    [3, 6, 0],
-    [9, 15, 4.2],
-    [14, 4, 7.5],
-    [19, 19, 1.8],
-    [24, 9, 9.1],
-    [29, 21, 5.6],
-    [33, 3, 2.9],
-    [38, 17, 8.3],
-    [42, 8, 6.4],
-    [6, 22, 10.2],
-].map(([col, row, delay]) => ({
-    x: 14 + col * 30,
-    y: 14 + row * 30,
-    delay,
-}))
 ---
 
 <section class="ee-hero" aria-labelledby="ee-hero-title">
     <PixelEdges left="tall" right="wide" />
     <div class="frame surface-dark" data-header-dark data-ee-orbit>
-        <span class="sparks" aria-hidden="true">
-            {SPARKS.map((spark) => (
-                <i
-                    style={`left: ${spark.x}px; top: ${spark.y}px; animation-delay: ${spark.delay}s`}
-                />
-            ))}
-        </span>
         <div class="container-xl">
             <div class="stage">
                 <div class="copy">
@@ -396,22 +373,27 @@ const SPARKS = [
         overflow: hidden;
         background:
             radial-gradient(
-                75% 55% at 50% 118%,
-                rgba(72, 48, 255, 0.46),
-                rgba(58, 38, 255, 0.18) 45%,
-                transparent 72%
-            ),
-            radial-gradient(
-                45% 40% at 100% 0%,
-                rgba(95, 77, 255, 0.14),
+                50% 68% at 74% 50%,
+                rgba(98, 78, 255, 0.55),
+                rgba(58, 60, 235, 0.22) 46%,
                 transparent 70%
             ),
             radial-gradient(
-                40% 35% at 0% 10%,
-                rgba(58, 38, 255, 0.1),
+                65% 85% at 100% 0%,
+                rgba(33, 136, 255, 0.42),
+                transparent 64%
+            ),
+            radial-gradient(
+                60% 80% at 0% 100%,
+                rgba(84, 62, 230, 0.5),
+                transparent 66%
+            ),
+            radial-gradient(
+                55% 60% at 55% 115%,
+                rgba(70, 90, 177, 0.55),
                 transparent 70%
             ),
-            #0b0b13;
+            linear-gradient(160deg, #0a0b28 0%, #131747 55%, #0d0f36 100%);
         color: #ffffff;
 
         &::after {
@@ -430,58 +412,9 @@ const SPARKS = [
             pointer-events: none;
         }
 
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Crect x='14' y='14' width='2' height='2' fill='%23b4a8ff'/%3E%3C/svg%3E");
-            mask: linear-gradient(
-                    115deg,
-                    transparent 35%,
-                    rgba(0, 0, 0, 0.2) 50%,
-                    transparent 65%
-                )
-                0 0 / 300% 100%;
-            animation: drift 22s linear infinite;
-            pointer-events: none;
-        }
-
         > .container-xl {
             position: relative;
             z-index: 1;
-        }
-    }
-
-    .sparks i {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: #cfc6ff;
-        box-shadow: 0 0 6px rgba(180, 168, 255, 0.9);
-        opacity: 0;
-        animation: spark 11s ease-in-out infinite;
-        pointer-events: none;
-    }
-
-    @keyframes spark {
-        0%,
-        18%,
-        100% {
-            opacity: 0;
-        }
-
-        9% {
-            opacity: 0.85;
-        }
-    }
-
-    @keyframes drift {
-        from {
-            mask-position: 100% 0;
-        }
-
-        to {
-            mask-position: 0 0;
         }
     }
 
@@ -705,7 +638,8 @@ const SPARKS = [
             gap: 0.5rem;
             padding: 0.25rem 0.625rem;
             translate: -50% -50%;
-            background: #0e0e15;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(14px);
             font-size: 0.8125rem;
             font-weight: 500;
             white-space: nowrap;
@@ -1122,15 +1056,6 @@ const SPARKS = [
 
         .sheen {
             animation: none !important;
-        }
-
-        .sparks i {
-            animation: none;
-        }
-
-        .frame::before {
-            animation: none;
-            mask-position: 50% 0;
         }
     }
 </style>
