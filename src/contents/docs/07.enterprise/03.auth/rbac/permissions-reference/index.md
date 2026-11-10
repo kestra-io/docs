@@ -33,6 +33,7 @@ This reference maps each RBAC resource and action to the API endpoints that enfo
 - `EXPORT`: export flows as a ZIP archive.
 - `IMPORT`: import flows from an archive.
 - `PROMOTE`: promote a flow to a [promotion target](../../../02.governance/promote/index.md). Promoting also requires `VIEW` on the flow.
+- `UPDATE_CONCURRENCY_LIMIT`: reset the running counter of a flow, namespace, or tenant concurrency limit. Only the managed Admin role includes it.
 
 **Endpoints**
 
@@ -44,6 +45,8 @@ VIEW
 - `GET /api/v1/{tenant}/flows/{namespace}/{id}/dependencies`
 - `GET /api/v1/{tenant}/namespaces/{namespace}/dependencies`
 - `POST /api/v1/{tenant}/flows/expressions`
+- `GET /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}`
+- `GET /api/v1/{tenant}/concurrency-limit/search` (returns only the counters of namespaces where the user has `VIEW`; the tenant counter requires `VIEW` on the whole tenant)
 
 LIST
 - `GET /api/v1/{tenant}/flows/search`
@@ -94,6 +97,9 @@ PROMOTE
 - `POST /api/v1/{tenant}/flows/promote/by-ids`
 - `POST /api/v1/{tenant}/flows/{namespace}/{id}/promotions` (records a promotion the browser performed)
 
+UPDATE_CONCURRENCY_LIMIT
+- `PUT /api/v1/{tenant}/concurrency-limit` (checked on the namespace in the body; the tenant counter, sent without a namespace, requires the action on the whole tenant)
+
 VALIDATE (any `FLOW` action — no dedicated check)
 - `POST /api/v1/{tenant}/flows/validate`
 - `POST /api/v1/{tenant}/flows/validate/task`
@@ -103,6 +109,7 @@ Notes
 - Webhook execution endpoints (`/executions/webhook/{namespace}/{id}/{key}`) are authorized by webhook key, not RBAC.
 - `POST /api/v1/{tenant}/flows/graph` has no action check.
 - Promotion history (`GET /api/v1/{tenant}/flows/{namespace}/{id}/promotions` and `GET /api/v1/{tenant}/flows/{namespace}/{id}/promotions/{auditId}/diff`) requires `VIEW`.
+- Instance Owners can search and reset concurrency counters in any tenant without a role in it.
 :::
 
 ---
@@ -646,6 +653,7 @@ VIEW / LIST
 - `GET /api/v1/{tenant}/assets/usages/search`
 - `GET /api/v1/{tenant}/assets/{id}/relations`
 - `GET /api/v1/{tenant}/assets/{id}/relations/summary`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` (also requires `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace)
 
 CREATE
 - `POST /api/v1/{tenant}/assets`
@@ -739,7 +747,6 @@ Notes
 - `VIEW` / `LIST`: view user details and group membership.
 - `CREATE` / `UPDATE` / `DELETE`: manage users.
 - `MANAGE_GROUP_MEMBERSHIP`: update a user's group assignments.
-- `IMPERSONATE`: impersonate a user to test their access.
 
 Notes
 - `USER` is not included in any of the standard managed roles (Viewer, Launcher, Editor, Developer). Only Admin includes it. Custom roles with `USER` actions are intended for platform administrators.
@@ -1100,4 +1107,4 @@ CREATE
 
 - [RBAC overview](../index.md) — resources, actions, and managed roles explained
 - [RBAC action model migration guide](../../../../11.migration-guide/v2.0.0/rbac-action-model/index.md) — how old CRUD permissions map to the new actions when upgrading from 1.x
-- [kestractl roles](../../../../kestra-cli/kestractl/index.md#roles) — create and manage roles from the CLI
+- [kestractl roles](../../../../kestra-cli/kestractl/index.md#roles) — create and manage roles from the CLI ([install kestractl](../../../../kestra-cli/kestractl/index.md#installation))

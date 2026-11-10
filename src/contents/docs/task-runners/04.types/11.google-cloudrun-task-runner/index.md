@@ -459,21 +459,9 @@ The kotlp binary is staged to the gcsfuse-mounted working directory, which does 
 
 ## Execution details
 
-When you open an execution in the topology view, the topology node for a Google Cloud Run task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.
+In an execution, open the **Artifacts** tab, or the **Artifacts** tab of the task run's popup, and select the task's **Runner details** artifact. It shows the job's configuration and, after the run, the job's details.
 
-**Topology node:**
-
-| Field | Description |
-|---|---|
-| Runner | Task runner type |
-| Region | GCP region where the job runs |
-| Project | GCP project ID |
-| Job name | GCP Cloud Run job resource name |
-| Duration | Elapsed or total execution time |
-
-**Show Details modal:**
-
-*Configuration:*
+**Configuration:**
 - Project ID and region
 - Service account
 - Staging GCS bucket
@@ -481,9 +469,11 @@ When you open an execution in the topology view, the topology node for a Google 
 - Whether an existing job will be resumed on Worker restart (`resume` flag), before an execution only
 - Timeout
 
-Before an execution, the modal shows values from the task definition and marks any value that contains a Pebble expression as a template. After an execution, it shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
+Until the task run finishes, the artifact shows values from the task definition and marks any value that contains a Pebble expression as a template. Once it finishes, the artifact shows the values the run used, read from the task outputs, and `—` for any value the run didn't report.
 
-*Post-execution:*
+**Post-execution:**
 - Job name — GCP resource identifier for the Cloud Run job
 - Resumed or new — whether the job reused an existing run or was freshly created
+- Duration — total execution time of the job
 - Deletion triggered — whether the job was deleted after completion
+- Adopted a completed run — shown only when the runner recovered the results of a run that had already finished, from the staging bucket, instead of running the job again

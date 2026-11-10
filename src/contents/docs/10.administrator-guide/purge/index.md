@@ -22,6 +22,46 @@ The available purge tasks are [`PurgeExecutions`](/plugins/core/execution/io.kes
 The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAuditLogs`](../../07.enterprise/02.governance/06.audit-logs/index.md#purging-audit-logs).
 :::
 
+## Default retention flow
+
+In the Enterprise Edition, Kestra can generate the purge flow for you. The [setup wizard](../../07.enterprise/01.overview/02.setup/index.md#step-3-choose-a-retention-policy) and the [tenant creation wizard](../../07.enterprise/02.governance/tenants/index.md#creating-a-tenant-from-the-ui) ask for a retention policy, and Kestra turns it into a `retention` flow in the tenant's [system flows](../../06.concepts/system-flows/index.md) namespace. The flow is the policy: there is no separate retention setting, so edit the flow in the flow editor or through Git to change it.
+
+<!-- TODO(runtime test): written from kestra-ee#11845 source (merged 2026-11-10). Generate a retention flow on an EE image built after that date and compare it with the example below. -->
+
+With the default 90 days for both executions and logs, the generated flow looks like this:
+
+```yaml
+id: retention
+namespace: system
+description: Purges the executions and logs older than the retention policy of this tenant.
+
+tasks:
+  - id: purge_executions
+    type: io.kestra.plugin.core.execution.PurgeExecutions
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+    states: [SUCCESS, WARNING, FAILED, KILLED, CANCELLED, RETRIED, SKIPPED, RESUBMITTED]
+    purgeLog: false
+
+  - id: purge_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+    purgeExecutionLogs: true
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"
+```
+
+- `purge_executions` deletes finished executions older than the executions window, with their metrics and output files. It lists every finished state, so executions that haven't finished, such as running or paused ones, are never purged.
+- `purge_logs` deletes execution logs and trigger logs older than the logs window.
+- A window set to **Keep forever** has no task.
+- The flow runs every day at 02:00. Each new tenant gets a different minute in that hour, so tenants don't all purge at the same time.
+
+When **Keep failed executions forever** is on, `FAILED` is left out of the states, and the flow gets a `purge_execution_logs` task that deletes the logs of finished executions other than `FAILED`. `purge_logs` then deletes only trigger logs. If the logs window is longer than the executions window, the logs of the other finished executions are deleted with their execution instead.
+
+Kestra doesn't generate the flow when the tenant already has a `retention` flow in its system flows namespace, or when both windows are set to **Keep forever**. If generating the flow fails, Kestra logs a warning and still creates the tenant.
+
 ## Purge executions and logs
 
 The following flow applies a multi-step log purge with progressively shorter retention windows by log level. Verbose logs accumulate far faster than errors or warnings, so keeping them longer than necessary inflates storage without adding much value:
@@ -131,6 +171,9 @@ triggers:
 ```
 
 ## Purge metrics
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
 
 `PurgeMetrics` removes execution metrics from the metrics table in bulk. Use it instead of `PurgeExecutions` when your goal is metric cleanup: `PurgeExecutions` issues a separate `DELETE FROM metrics` query for every batch of executions it processes, even when those executions have no metrics. `PurgeMetrics` deletes all matching rows in a single query filtered by date range.
 
@@ -314,7 +357,7 @@ Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin
 
 ## Purge assets and lineage (retention)
 
-Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task hard-deletes two kinds of records that match the filters: [assets](../../07.enterprise/02.governance/01.assets/index.md) and asset usage records (shown on each asset's **Executions** tab). You can turn off either one. The lineage and history of a purged asset are deleted with it.
+Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task hard-deletes two kinds of records that match the filters: [assets](../../07.enterprise/02.governance/01.assets/index.md) and asset usage records (shown on each asset's **Executions** tab). You can turn off either one. The lineage and history of a purged asset are deleted with it. Purging a parent asset, such as a deployment, detaches its parts instead of deleting them.
 
 **Filters:**
 

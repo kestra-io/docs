@@ -13,13 +13,13 @@ Kestra Enterprise Edition is built for production workloads with high security a
 
 Kestra Enterprise is an additive overlay on the [Open Source Edition](https://github.com/kestra-io/kestra) — it shares one codebase and preserves all open-source behavior while adding enterprise capabilities on top.
 
-**High availability**: Designed to be highly available and fault-tolerant. Supports **Kafka**, **Redis**, **AMQP**, **GCP Pub/Sub**, or **NATS** as the queue backend, and **Elasticsearch** for the search and read model — eliminating single points of failure and enabling horizontal scaling for large workloads.
+**High availability**: Designed to be highly available and fault-tolerant. Supports **Kafka**, **Redis**, **AMQP**, **GCP Pub/Sub**, **NATS**, **Amazon SQS and SNS**, or **Azure Event Hubs** as the queue backend, and **Elasticsearch** for the search and read model — eliminating single points of failure and enabling horizontal scaling for large workloads.
 
 **Multi-tenancy**: Separate environments for different teams or projects. Each tenant is fully isolated, with its own access control policies, and can optionally run with Worker Isolation and dedicated worker groups to prevent cross-tenant contention.
 
 **Security and access control**: SSO and RBAC let you integrate with your existing identity provider and manage user access to workflows and resources. Enforce plugin allow-lists, apply read-only secrets for least privilege, and use audit logs for full traceability.
 
-**Enterprise features**: Audit Logs, Custom Blueprints, namespace-level secrets, variables and plugin defaults, Assets packaging, declarative Unit Tests for flows, Versioned Plugins for safe upgrades, operational safeguards like the Kill Switch and in-product Announcements, and [Promote](../../02.governance/promote/index.md) for moving flows across environments from the UI with a review gate.
+**Enterprise features**: Audit Logs, Custom Blueprints, namespace-level secrets and variables, [Policies](../../02.governance/policies/index.md) that inject and enforce configuration across namespaces and tenants, Assets packaging, declarative Unit Tests for flows, Versioned Plugins for safe upgrades, operational safeguards like the Kill Switch and in-product Announcements, and [Promote](../../02.governance/promote/index.md) for moving flows across environments from the UI with a review gate.
 
 **Secrets management**: Securely stores and manages secrets. Supports read-only secrets for sensitive values and integrates with AWS Secrets Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, HashiCorp Vault, Doppler, 1Password, and more.
 

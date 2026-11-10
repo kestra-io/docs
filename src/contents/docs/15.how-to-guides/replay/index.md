@@ -81,3 +81,27 @@ Kestra compares flow definitions. A passing check does not make a replay on anot
 - secrets, which Kestra reads on every call and which may have been rotated or expired
 - file inputs and non-interactive inputs, which may have changed since the original run
 - [Pebble](../../06.concepts/06.pebble/index.md) expressions that call external systems, which may return different values today
+
+## Replay with modified inputs
+
+When you replay a whole execution of a flow that has inputs, the replay dialog lets you choose the inputs of the new execution:
+
+- **Reuse original inputs** runs the replay with the inputs of the original execution.
+- **Modify inputs** opens the input form, filled in with the original values. Change the values you need, then select **Replay**.
+
+When you replay from a task run, the dialog doesn't offer **Modify inputs**, and the replay reuses the original inputs. If the original execution has no inputs, for example because the flow had none when it ran, the dialog opens the input form for every replay so that you can fill them in.
+
+To script the same replay, open the **cURL command** tab of the input form. It shows the API call for the values in the form. The endpoint is `POST /api/v1/{tenant}/executions/{executionId}/actions/replay-with-inputs`. It takes the inputs as multipart form fields, as when you [execute a flow with inputs](../../05.workflow-components/03.execution/index.md#execute-with-inputs), and the same `taskRunId` and `revision` query parameters as `/actions/replay`:
+
+```bash
+curl -X POST \
+  -F 'region=us-east-1' \
+  -F 'batch_size=500' \
+  'http://localhost:8080/api/v1/main/executions/<executionId>/actions/replay-with-inputs'
+```
+
+The inputs you send replace the original ones. An input you leave out takes its default value, and the request fails if a required input without a default is missing.
+
+`kestractl executions replay-with-inputs` has no option to send inputs. To reuse the original inputs from the command line, use `kestractl executions replay`, which also accepts `--task-run-id` and `--revision`.
+
+<!-- TODO(runtime test): replay with modified inputs (cURL tab fixed by kestra#22320 for kestra#22314, develop 2026-11-06) documented from source only. On a build containing it, check: the Reuse/Modify choice for whole-execution replays only; the form is prefilled; the cURL tab targets /actions/replay-with-inputs and the command creates a replay linked to the original; inputs left out of the request take their default (and a required one without default fails); kestractl replay-with-inputs drops the original inputs. See memory project_replay_with_inputs_live_test. -->

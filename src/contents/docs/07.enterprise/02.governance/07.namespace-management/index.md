@@ -1,14 +1,14 @@
 ---
 title: "Namespace Management in Kestra Enterprise: Isolation"
-h1: Configure Isolated Namespaces with Secrets and Plugin Defaults
-description: Secure your Kestra instance with Namespace Management. Configure isolated environments, manage secrets, and set Namespace-level plugin defaults.
+h1: Configure Isolated Namespaces with Secrets and Policies
+description: Secure your Kestra instance with Namespace Management. Configure isolated environments, manage secrets, and set Namespace-level Policies.
 sidebarTitle: Namespace Management
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: namespace.management
 ---
 
-Namespaces provide an additional layer of isolation for secrets, variables, and plugin defaults within a tenant.
+Namespaces provide an additional layer of isolation for secrets, variables, and Policies within a tenant.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/As4y2oliD_8?si=d-2AsAuqlwaBFuEX" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -26,7 +26,7 @@ Namespaces are particularly useful in environments with many users, teams, proje
 
 ## Namespace-level features
 
-The Namespace page allows you to configure secrets, plugin defaults, and variables that can be used within any flow in that Namespace.
+The Namespace page allows you to configure secrets, Policies, and variables that can be used within any flow in that Namespace.
 
 It allows your organization to centrally manage your secrets, variables, and task configuration while providing fine-grained access-control to those resources.
 
@@ -135,10 +135,7 @@ When building new flows in a Namespace, Namespace variables are accessible from 
 
 ### From the UI
 
-The video below shows how to create a namespace and add:
-- several new secrets
-- a nested Namespace variable that references one of these secrets
-- a list of plugin defaults helping to use those pre-configured secrets and variables in all the tasks from the AWS and Git plugins.
+The video below shows how to create a namespace and add several secrets and a nested Namespace variable that references one of them. It was recorded before Kestra 2.0, so it also adds plugin defaults for the AWS and Git plugins. In Kestra 2.0, a namespace-scoped [Policy](#policies) applies those values instead.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/rHMAAADQQN8?si=V-yUnGzWJfkB-ONt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -162,7 +159,7 @@ terraform {
   required_providers {
     kestra = {
       source  = "kestra-io/kestra"
-      version = "~>0.14"
+      version = "~> 2.3"
     }
   }
 }
@@ -186,9 +183,9 @@ resource "kestra_namespace" "marketing" {
 
 The only required property is the `namespace_id`, which is the name of the Namespace. The `description` and all other properties are optional.
 
-#### Adding variables and plugin defaults to a Namespace Terraform resource
+#### Adding variables and Policies to a Namespace with Terraform
 
-Variables and plugin defaults are added directly to the Namespace resource by pointing to YAML configuration files.
+Variables are set directly on the Namespace resource. Policies are a separate [kestra_policy](../../../13.terraform/resources/policy/index.md) resource attached to the Namespace. Both read their content from YAML files.
 
 Create the `variables_marketing.yml` file:
 
@@ -197,30 +194,51 @@ github:
   token: "{{ secret('GITHUB_TOKEN') }}"
 ```
 
-Then, create another file for `plugin_defaults_marketing.yml`:
+Then, create a `policy_marketing.yml` file. This Policy adds AWS credentials to every AWS task and Git credentials to every Git task in the Namespace:
 
 ```yaml
-- type: io.kestra.plugin.aws
-  values:
-    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-    region: us-east-1
-    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-- type: io.kestra.plugin.git
-  values:
-    password: "{{ render(namespace.github.token) }}"
-    username: your-github-username
+id: marketing-credentials
+description: "Inject AWS and Git credentials for the marketing namespace."
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.aws
+    values:
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      region: us-east-1
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.git
+    values:
+      password: "{{ render(namespace.github.token) }}"
+      username: your-github-username
 ```
 
-Finally, reference those files in your Namespace resource definition:
+Finally, reference the variables file in the Namespace resource and the Policy file in a `kestra_policy` resource:
 
 ```hcl
 resource "kestra_namespace" "marketing" {
-  namespace_id  = "marketing"
-  description   = "Namespace for the marketing team"
-  variables     = file("variables_marketing.yml")
-  plugin_defaults = file("plugin_defaults_marketing.yml")
+  namespace_id = "marketing"
+  description  = "Namespace for the marketing team"
+  variables    = file("variables_marketing.yml")
+}
+
+resource "kestra_policy" "marketing_credentials" {
+  scope     = "NAMESPACE"
+  namespace = kestra_namespace.marketing.namespace_id
+  policy_id = "marketing-credentials"
+  content   = file("policy_marketing.yml")
 }
 ```
+
+The `policy_id` must match the `id` in the Policy file. If you are upgrading from 1.x and used `plugin_defaults` on `kestra_namespace`, see the [Terraform namespace migration guide](../../../13.terraform/guides/namespace-migration/index.md).
 
 #### Adding secrets to a Namespace using Terraform
 
@@ -302,3 +320,16 @@ kestra_password = "your-kestra-password"
 The `allowedNamespaces` setting controls which namespaces can access a namespace's flows and resources. Configure it on the **Edit** tab of any namespace.
 
 By default, all namespaces are allowed. To restrict access, select specific namespaces — access automatically extends to each selected namespace's children.
+
+The setting covers:
+
+- Subflow calls
+- Flow triggers
+- namespace files
+- KV store
+- secrets
+- assets
+
+A Flow trigger in a flow whose namespace isn't allowed doesn't receive the executions of the restricted namespace. When an execution would otherwise have fired the trigger, because it matches its `states`, `dependsOn`, and `when` conditions, Kestra logs a warning on the flow that owns the trigger. The warning names the namespace whose Allowed Namespaces blocks it, which can be a parent of the execution's namespace. Nothing is logged on the restricted namespace's execution.
+
+[System Flows](../../../06.concepts/system-flows/index.md), such as alerts, need the system flows namespace (`system` by default) in the list to react to the executions of this namespace.

@@ -63,35 +63,40 @@ java -jar kestra-ee-VERSION server standalone -c ./application.yaml -p ./plugins
 
 In standalone JAR deployments, all plugins must be downloaded separately.
 
-Kestra EE provides a command to install all available plugins:
+[Install `kestractl`](../../../kestra-cli/kestractl/index.md#installation), then download plugins with [`kestractl plugins download`](../../../kestra-cli/kestractl/index.md#plugin-management). Enterprise plugins are served from the Kestra registry, so pass your license credentials:
 
 ```shell
-## Install all available plugins
-kestra plugins install --all
+kestractl plugins download <version> \
+  --plugins-dir ./plugins \
+  --maven-repository https://registry.kestra.io/maven \
+  --maven-username "$KESTRA_LICENSE_ID" \
+  --maven-password "$KESTRA_LICENSE_FINGERPRINT"
 ```
 
-This installs task plugins in the `plugins` directory. To install them elsewhere, specify a path with the `-p` argument.
+Replace `<version>` with your Kestra version. This downloads every plugin compatible with that version. To download only selected plugins, pass `--compatible-for <version>` with one `--plugins` flag per plugin instead of the version argument. Start Kestra with `-p ./plugins` or set `KESTRA_PLUGINS_PATH` to that directory.
 
-Additional Enterprise Edition plugins that are not task-related may also be required — such as secrets or storage plugins.
+The server CLI can also install plugins directly, for example `kestra plugins install --all`.
 
-## Secret plugins
+## Secret and storage plugins
 
-Secret plugins must be downloaded from the Kestra registry using the same credentials, and placed in your `plugins` directory.
-
-| Secret Service | Download Link |
-| :------------- | :------------- |
-| Vault | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-vault/0.24.0/secret-vault-0.24.0.jar |
-| AWS | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-aws/0.24.0/secret-aws-0.24.0.jar |
-| GCP | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-gcp/0.24.0/secret-gcp-0.24.0.jar |
-| Azure | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-azure/0.24.0/secret-azure-0.24.0.jar |
-
-## S3-compatible internal storage
-
-To use S3-compatible object storage (AWS S3, Ceph, SeaweedFS, Garage), install the storage plugin:
+Secret managers and storage backends other than local storage also ship as separate plugins. To list the ones your configuration requires, pass your configuration file to `kestractl`:
 
 ```shell
-kestra plugins install io.kestra.storage:storage-minio:LATEST
+kestractl plugins list <version> --from-config /etc/kestra/application.yaml
 ```
+
+Download them into the same `plugins` directory with the same registry credentials:
+
+```shell
+kestractl plugins download <version> \
+  --from-config /etc/kestra/application.yaml \
+  --plugins-dir ./plugins \
+  --maven-repository https://registry.kestra.io/maven \
+  --maven-username "$KESTRA_LICENSE_ID" \
+  --maven-password "$KESTRA_LICENSE_FINGERPRINT"
+```
+
+See [Bootstrap core plugins with `--from-config`](../../../kestra-cli/kestractl/index.md#bootstrap-core-plugins-with---from-config) for the supported backends.
 
 ## Enterprise deployment configuration
 

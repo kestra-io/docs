@@ -19,7 +19,7 @@ Every task accepts an `assets` property:
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
 | `inputs` | List of asset references | — | Assets the task reads. Each entry needs an `id`. Add `type` to type an asset that doesn't exist yet. |
-| `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id` and a `type`. |
+| `outputs` | List of assets | — | Assets the task creates or updates. Each entry needs an `id`. Add `type` to create a new asset with a real type. |
 | `enableAuto` | Boolean | `false` | Accept assets emitted by the plugin or by script log lines. See [Automatic emission](#automatic-emission). |
 | `assetFailureBehavior` | `WARN`, `FAIL`, or `IGNORE` | `WARN` | What happens to the task state when an asset can't be written. See [Failure behavior](#failure-behavior). |
 
@@ -99,7 +99,7 @@ An asset in `outputs` has these fields:
 | Field | Required | Description |
 | --- | --- | --- |
 | `id` | Yes | Unique within the tenant. Starts with a letter or digit, then letters, digits, `.`, `_`, `:`, or `-`. Up to 150 characters. |
-| `type` | Yes | A [built-in type](#built-in-asset-types) or any custom string. |
+| `type` | No | A [built-in type](#built-in-asset-types) or any custom string. Without it, an existing asset keeps its stored type, and a new asset is created as an `External` placeholder. |
 | `namespace` | No | Namespace the asset belongs to, used for filtering and access control. Lowercase letters, digits, `.`, `_`, and `-`. See [Namespace and Global assets](#namespace-and-global-assets). |
 | `displayName` | No | Human-readable name shown in the UI |
 | `description` | No | Markdown description |
@@ -140,7 +140,7 @@ When a task writes an asset that already exists, Kestra merges the new declarati
 
 | Field | Rule |
 | --- | --- |
-| `type` | The declared type replaces the stored one. An `External` placeholder never replaces a real type. |
+| `type` | The declared type replaces the stored one. An omitted type keeps the stored one. An `External` placeholder never replaces a real type. |
 | `namespace` | A declared namespace replaces the stored one. An omitted namespace keeps the stored one. |
 | `displayName`, `description` | A declared value replaces the stored one. An omitted value keeps the stored one. |
 | `metadata` | Merged key by key. Declared keys replace stored keys. Keys you don't declare are kept. A flow can't remove a key; to remove one, edit the asset in the UI or through the API. |
@@ -246,7 +246,7 @@ The operators are `EQUAL_TO`, `NOT_EQUAL_TO`, `IN`, `NOT_IN`, `CONTAINS`, `NOT_C
 
 A field the asset doesn't have, or an empty one, counts as unset, so `NOT_EQUAL_TO`, `NOT_IN`, and `NOT_CONTAINS` hold on it. An asset without a `status` counts as `active`. An asset can have up to 100 actions. To add actions or edit their conditions in the UI, see [Manage assets](../03.manage-assets/index.md#asset-detail-page).
 
-Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/types/infrastructure/index.md#day-2-actions) on a deployment's page.
+Running an action starts an execution of its flow with the labels `system.from: asset` and `system.assetId: <asset id>`. The asset ID isn't passed as an input, so read it from the labels or pass inputs when you run the action [through the API](../03.manage-assets/index.md#automate-with-the-api). In an Infrastructure tenant, actions appear as [day-2 actions](../../tenants/infrastructure/index.md#day-2-actions) on a deployment's page.
 
 ## Built-in asset types
 
@@ -256,8 +256,8 @@ Running an action starts an execution of its flow with the labels `system.from: 
 | `io.kestra.plugin.ee.assets.Dataset` | `system`, `location`, `format` |
 | `io.kestra.plugin.ee.assets.File` | `system`, `path` |
 | `io.kestra.plugin.ee.assets.VM` | `provider`, `region`, `state` |
-| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/types/infrastructure/index.md) lists under **Deployments**. |
-| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs. You can't declare it as a type. |
+| `io.kestra.plugin.ee.assets.Deployment` | None. Groups the resources of one provisioned environment, which point to it with `partOf`. The default type for [`TtlTrigger`](../02.tasks-and-triggers/index.md#ttltrigger), and the type the [Infrastructure tenant](../../tenants/infrastructure/index.md) lists under **Deployments**. |
+| `io.kestra.core.models.assets.External` | None. Placeholder only: Kestra assigns it to assets created from untyped inputs and from new outputs declared without a `type`. You can't declare it as a type. |
 
 The metadata keys are conventions. Kestra stores them in `metadata` like any other key, and the [dependencies graph](../03.manage-assets/index.md#explore-the-dependencies-graph) uses `system` and `schema` for grouping.
 
@@ -280,18 +280,20 @@ Emitted assets and declared assets combine. You can turn on `enableAuto` and als
 | Plugin and tasks | Emits | Asset IDs |
 | --- | --- | --- |
 | JDBC `Query` and `Queries` (all databases) | One `Table` output per `CREATE TABLE` statement. `Query` emits at most one. No inputs. | `<database>.<table>`. The schema isn't part of the ID. |
-| dbt `DbtCLI`, dbt Cloud `CheckStatus`, and dbt Cloud `TriggerRun` when `wait` is `true` | One `Table` output per model, seed, and snapshot, with its parents and sources as `Table` inputs. Adds test results as `dbtTestStatus` (`pass`, `fail`, or `warn`), `dbtTestsTotal`, and `dbtTestsFailed` when `parseRunResults` is `true`. | `<database>.<schema>.<name>` |
+| dbt `DbtCLI`, dbt Cloud `CheckStatus`, and dbt Cloud `TriggerRun` when `wait` is `true` | One output per model, seed, and snapshot, typed `io.kestra.plugin.dbt.assets.DbtModel`, `DbtSeed`, or `DbtSnapshot`, with its parents as inputs. Sources are untyped inputs, so a table another plugin emitted keeps its type, and a source no task emitted becomes an `External` asset. When `parseRunResults` is `true`, adds one `DbtTest` output per test that ran, with the tested node as input, and one `DbtExposure` per exposure. Models, seeds, and snapshots carry the rolled-up test results as `dbtTestStatus` (`pass`, `fail`, or `warn`), `dbtTestsTotal`, and `dbtTestsFailed`, and each `DbtTest` carries its own result. | `<database>.<schema>.<name>`. A test uses its own database and schema. An exposure uses its first parent's database and schema, followed by the exposure's dbt unique ID. |
 | Fivetran `connectors.Status`, and `connectors.Sync` when `wait` is `true` | One `Dataset` output per connector, and one `Table` output per enabled table with its source table as input. The input is a `Table` for database sources such as PostgreSQL, SQL Server, Snowflake, or BigQuery, and an `External` asset otherwise. When the destination reports no database name, such as Managed BigQuery, only the connector `Dataset` is emitted. | Connector: `<groupId>.<schema>`. Tables: `<database>.<schema>.<table>`. Source inputs: `<database>.<schema>.<table>`, `<schema>.<table>` for MySQL and MariaDB, or `<connectorId>.<schema>.<table>` for `External` |
+| Airbyte `connections.CheckStatus`, and `connections.Sync` and Airbyte Cloud `jobs.Sync` when `wait` is `true` | One `Table` output per replicated stream that committed records, or that the job reported with 0 records when it succeeded. Each output has its source stream as input: a `Table` for PostgreSQL, Redshift, SQL Server, Snowflake, BigQuery, MySQL, or ClickHouse sources, and an `External` asset otherwise. Nothing is emitted when the job fails or ends in `WARNING` without a successful attempt. Airbyte Cloud `jobs.Sync` emits only when the job succeeds. | Tables: `<database>.<schema>.<table>`, `<project>.<dataset>.<table>` for BigQuery, or `<database>.<table>` for MySQL and ClickHouse, read from the destination's configuration. When Kestra can't read the destination's database, for example for a destination that isn't a database, `<destinationId>.<namespace>.<table>`. Source inputs use the same format, or `<sourceId>.<namespace>.<stream>` for `External` |
 | Google Cloud BigQuery `RunTransferConfig` | One `Table` output for the destination table, or one `Dataset` output when the table isn't fixed. Emitted only after a successful run. | `<project>.<dataset>.<table>` or `<project>.<dataset>` |
 | Hex `projects.Run` | One `Dataset` output for the project, with `system: hex`. No inputs. | The `projectId` |
 | Qlik Cloud `apps.Reload` | One `io.kestra.plugin.qlikcloud.assets.App` output for the reloaded app. Set the task's `emitAssets` to `false` to turn this off. | The app ID |
 | Ansible `AnsibleCLI` | One `VM` input per host in an INI inventory file named exactly `inventory.ini` at the working directory root | The host name |
 | Helm `Upgrade`, `Rollback`, `Status`, and `Uninstall` | One `io.kestra.plugin.ee.assets.HelmRelease` output, with the chart and `valuesFrom` files as inputs, plus one `io.kestra.plugin.ee.assets.KubernetesResource` per managed resource. `Uninstall` deletes these assets. | Built from the cluster, Kubernetes namespace, and release name |
 
-<!-- TODO: the Fivetran row describes plugin-fivetran 2.0.0 (kestra-io/plugin-fivetran#116 and #117, merged
-     2026-10-28, still 2.0.0-SNAPSHOT). Confirm the release has shipped before publishing. -->
+<!-- TODO(verify on merge): Airbyte row written from plugin-airbyte#209 and #213, merged into feat/plugin-endpoints-2.1, which reaches main with the open PR #207 (plugin built on Kestra 2.1). Released v1.7.x still builds `<destinationId>.<namespace>.<table>` IDs and swallows emission errors. Check against the release that ships #207. -->
 
-dbt and Fivetran use the same `<database>.<schema>.<table>` ID format, so a Fivetran table and the dbt source that reads it join into one lineage chain. JDBC IDs leave out the schema, so they don't join with dbt or Fivetran IDs. To connect them, declare the matching IDs yourself.
+<!-- TODO(verify on merge): dbt row written from open PRs plugin-dbt#362 (asset types) and #364 (badge), held for a plugin release after core 2.1. Check type names, test and exposure IDs, and the plugin version once they merge. -->
+
+dbt, Fivetran, and Airbyte use the same `<database>.<schema>.<table>` ID format, so a Fivetran or Airbyte table and the dbt source that reads it join into one lineage chain. Airbyte keeps the case of table names, so a Snowflake table can differ in case from the ID another plugin emits. JDBC IDs leave out the schema, so they don't join with dbt, Fivetran, or Airbyte IDs. To connect them, declare the matching IDs yourself.
 
 Plugins that only emit outputs, such as Hex and Qlik Cloud, can't see their upstream tables. Declare `assets.inputs` on those tasks with the IDs the upstream plugins emit:
 
@@ -384,7 +386,7 @@ assets:
       type: io.kestra.plugin.ee.assets.Table
 ```
 
-An invalid declaration is different. If a rendered asset breaks a [field](#asset-fields) rule, for example an `id` with a space, the task fails regardless of `assetFailureBehavior`.
+An invalid declaration is different. Kestra checks literal values in the `assets` block when you save the flow, so a declaration that breaks a [field](#asset-fields) rule, for example an `id` with a space, is rejected before the flow runs. Values written as expressions are checked only after they render: if a rendered asset breaks a field rule, the task fails regardless of `assetFailureBehavior`.
 
 The value accepts expressions. To set it across many tasks without editing each flow, use a [Policy](../../policies/index.md) `Add` rule with `values: {assets: {assetFailureBehavior: FAIL}}`.
 

@@ -11,6 +11,7 @@ interface Props {
     title: string
     deck?: string
     inside?: string[]
+    /** Each item may contain inline HTML, such as a link. */
     meta?: string[]
     pill?: string
     card?: boolean
@@ -127,7 +128,7 @@ const hasVisual = Astro.slots.has("visual")
             meta.length > 0 && (
                 <ul class="meta list-unstyled">
                     {meta.map((item) => (
-                        <li>{item}</li>
+                        <li set:html={item} />
                     ))}
                 </ul>
             )
@@ -404,6 +405,16 @@ const hasVisual = Astro.slots.has("visual")
 
             &:first-child {
                 border-left: 0;
+            }
+        }
+
+        :global(a) {
+            color: $base-primary-200;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+
+            &:hover {
+                color: $white;
             }
         }
 

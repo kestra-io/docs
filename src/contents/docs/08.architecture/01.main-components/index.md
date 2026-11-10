@@ -66,8 +66,9 @@ The **queue** is the internal communication channel between Kestra’s server co
 - **GCP Pub/Sub queue** — Enterprise Edition.
 - **NATS queue** — Enterprise Edition.
 - **Amazon SQS and SNS queue** — Enterprise Edition.
+- **Azure Event Hubs queue** — Enterprise Edition. Requires a Premium or Dedicated namespace.
 
-For configuration details on the JDBC queue backends, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md). For Kafka, Redis, AMQP, GCP Pub/Sub, NATS, and Amazon SQS and SNS, see [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends).
+For configuration details on the JDBC queue backends, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md). For Kafka, Redis, AMQP, GCP Pub/Sub, NATS, Amazon SQS and SNS, and Azure Event Hubs, see [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends).
 
 The queue surface covers four delivery families:
 

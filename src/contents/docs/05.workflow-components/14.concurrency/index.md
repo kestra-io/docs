@@ -74,7 +74,7 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 - `CANCEL`: immediately mark the execution as `CANCELLED`.
 - `FAIL`: immediately mark the execution as `FAILED`.
 
-When using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
+Starting in 2.1, when using `behavior: QUEUE`, set `queueLimit` to cap how many executions may wait in the queue at once. When the queue is full, incoming executions are immediately `CANCELLED` rather than queued. `queueLimit` is valid only with `behavior: QUEUE` and only applies at the flow level.
 
 A queued execution starts when another execution under the same limit ends and releases its slot.
 
@@ -149,11 +149,11 @@ The **Concurrency** tab on a Flow page shows current slot usage, the configured 
 
 ### Concurrency Limits page
 
-The **Concurrency Limits** page lists every flow, namespace, and tenant concurrency limit configured, along with its live running count. It provides a tenant-wide view of concurrency usage across all scopes.
+The **Concurrency Limits** page, under **Tenant > Concurrency Limits** in the sidebar, lists every flow, namespace, and tenant limit with its running count and **Queued** count. Namespace rows have an empty flow ID, and the tenant row has an empty namespace and flow ID.
 
-In the open-source edition, open it from **Tenant > Concurrency Limits** in the sidebar. In Enterprise Edition, only the Instance Owner can open it: in the [Instance Owner console](../../07.enterprise/05.instance/00.instance-owner/index.md), select the tenant and open **Concurrency Limits**.
-
-![Concurrency Limits page listing two flows with their namespaces and running counts](./concurrency-limits-page.png)
+:::alert{type="info"}
+In Enterprise Edition, the page shows the rows of the namespaces where you have `FLOW` `VIEW`. The tenant row requires `FLOW` `VIEW` on the whole tenant. Instance Owners see every row. To reset a counter, see [Reset a stuck running counter](#reset-a-stuck-running-counter).
+:::
 
 ## Concurrent trigger executions
 
@@ -196,9 +196,23 @@ The **Concurrency** tab on the Flow page shows which executions are running, que
 
 ### Reset a stuck running counter
 
-If executions were deleted while running, their concurrency slots can remain occupied indefinitely. On the **Concurrency Limits** page, click the edit icon next to the running count of the affected flow, set the new count, and save. The edit icon changes the running count, not the limit. You can also set the count with the API: `PUT /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}`.
+If executions were deleted while running, their concurrency slots can remain occupied indefinitely. On the **Concurrency Limits** page, click the edit icon next to the running count of the affected flow, namespace, or tenant, set the new count, and save. The edit icon changes the running count, not the limit. If the update fails, Kestra shows an error and keeps the previous count.
 
-Resetting the count doesn't start queued executions. They stay `QUEUED` until a running execution of the flow ends, while new executions can take the freed slots first.
+In Enterprise Edition, resetting a counter requires the `FLOW` `UPDATE_CONCURRENCY_LIMIT` permission on the row's namespace, or on the whole tenant for the tenant row. Of the managed roles, only Admin includes it. Rows you can't reset show no edit icon. Instance Owners can reset any counter.
+
+You can also set the count with the API. Send `PUT /api/v1/{tenant}/concurrency-limit` with the scope and the new count in the body:
+
+```json
+{
+  "namespace": "company.team",
+  "flowId": "concurrency_example",
+  "running": 0
+}
+```
+
+Omit `flowId` to set a namespace counter, and omit both `namespace` and `flowId` to set the tenant counter. The API returns `404` when no counter exists for that scope.
+
+Resetting the count doesn't start queued executions. They stay `QUEUED` until a running execution under the same limit ends, while new executions can take the freed slots first.
 
 ![Concurrency Limits counter reset dialog with a warning that changing the counter may allow executions to exceed the limit](./concurrency-limits-reset.png)
 
@@ -210,7 +224,7 @@ Do **not** delete executions to free stuck slots; deleted executions still hold 
 
 If parent executions stay `RUNNING` on a Subflow task while their subflow executions stay `QUEUED`, a namespace or tenant limit is deadlocked. Each parent holds a slot that its subflow needs, so no execution in that scope starts until a slot frees up. Executions of unrelated flows in the same scope also stay `QUEUED`, and the deadlock does not clear on its own.
 
-On the **Concurrency Limits** page, the running count for the affected namespace or tenant stays at its configured limit, while the number of `QUEUED` executions in that scope keeps growing on the **Executions** page.
+On the **Concurrency Limits** page, the running count for the affected namespace or tenant stays at its configured limit, while its **Queued** count keeps growing.
 
 To resolve the deadlock, open a queued subflow execution and click **Force run**. A force-run execution starts without taking a concurrency slot. When the subflow completes, its parent completes and releases its slot, and the remaining queued executions start. If the queue does not clear, open a waiting parent execution and click **Kill current and subflows** to release its slot.
 

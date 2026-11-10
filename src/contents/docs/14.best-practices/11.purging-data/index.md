@@ -29,6 +29,8 @@ Use this rule of thumb:
 - purge **assets and lineage** only when you are enforcing a retention policy for asset metadata
 - do not rely on UI deletion when your goal is storage reclamation or permanent deletion
 
+In the Enterprise Edition, the setup wizard and the tenant creation wizard can generate a daily purge flow for executions and logs. See [Default retention flow](../../10.administrator-guide/purge/index.md#default-retention-flow).
+
 ## Comparison table
 
 | If you want to remove... | Prefer | Why |
@@ -119,7 +121,7 @@ Best practice:
 
 ## When to purge assets and lineage
 
-Use [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) when you need retention for asset metadata, asset usage records, or lineage data.
+Use [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) when you need retention for assets and asset usage records. Purging an asset also deletes its lineage.
 
 This is different from purging executions or logs. Asset retention is its own concern and should be managed separately.
 

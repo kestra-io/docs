@@ -503,7 +503,7 @@ In the no-code editor, a `Grid` is added like any other block. Select it to edit
 
 Apps can also be built using the no-code editor. Every block, property, and configuration option available in YAML is fully supported visually. Changes made in the no-code editor are immediately reflected in the code view, and vice versa — teams can switch between approaches at any time without losing the underlying YAML definition.
 
-To create an app together with the flow it runs from a reusable template, see [App templates](../../02.governance/app-templates/index.md).
+To create an app together with the flow it runs from a reusable template, see [App templates](../../02.governance/tenants/infrastructure/app-templates/index.md).
 
 ---
 
@@ -713,45 +713,6 @@ Expiration is evaluated against the server clock at the moment a user opens or s
 
 ---
 
-## App watermark
-
-Deployed apps display a Kestra watermark at the bottom of the page. Use the `watermark` property to remove it or replace it with your own content.
-
-```yaml
-id: survey_form
-type: io.kestra.plugin.ee.apps.Execution
-displayName: Q2 Survey
-namespace: company.team
-flowId: survey_processor
-access:
-  type: PUBLIC
-watermark:
-  content: "Powered by [Acme](https://acme.io)"
-layout:
-  - on: OPEN
-    blocks:
-      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
-        content: "## Please complete the survey."
-```
-
-The `watermark` property has two optional fields:
-
-| Property | Default | Description |
-| --- | --- | --- |
-| `enabled` | `true` | Set to `false` to remove the watermark from the app. |
-| `content` | The Kestra watermark | Markdown displayed instead of the Kestra watermark. Ignored when `enabled` is `false`. |
-
-To remove the watermark entirely:
-
-```yaml
-watermark:
-  enabled: false
-```
-
-Omit `watermark` and the Kestra watermark stays in place.
-
----
-
 ## App thumbnails
 
 Add a thumbnail to give catalog users a visual indicator of what the app does. Upload an image file as a [namespace file](../../../06.concepts/02.namespace-files/index.md) to the same namespace as the app's connected flow. Supported formats include `.svg`, `.jpg`, and `.png`. The example below adds `kestra-icon.svg`.
@@ -777,6 +738,49 @@ tags:
 Once added, open the **Apps Catalog** — a new thumbnail displays on the connected app:
 
 ![App with thumbnail](./app-with-icon.png)
+
+---
+
+## App window width
+
+Use the `window.width` property to choose how wide the app is rendered. Pick a preset that adapts to the screen, or pin the app to a fixed CSS length.
+
+```yaml
+id: survey_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Q2 Survey
+namespace: company.team
+flowId: survey_processor
+access:
+  type: PUBLIC
+window:
+  width: NARROW
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "## Please complete the survey."
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+```
+
+| Value | Best for | Behavior |
+| --- | --- | --- |
+| `AUTO` | Most apps. Same as leaving `window` out. | The app grows with the window up to `1440px`. Text, forms, alerts and buttons stay in a centered `768px` reading column, while data blocks such as `Table`, `Logs`, `Gantt` and `Grid` take the full width of the app. |
+| `NARROW` | Apps that only hold a form. | The app stays at the width of the reading column on large screens, and takes the whole width on small ones. |
+| `WIDE` | Apps that show a lot of data, such as tables, logs, charts or multi-column grids. | The app uses the whole window on large screens, without the `1440px` limit of `AUTO`. Text and forms stay in the reading column. |
+| A CSS length | Apps that need an exact width. | The app is as wide as the value you set, for example `800px`, `60rem` or `75%`. It never gets wider than the window. |
+
+Presets are written in upper case. A CSS length is a number followed by one of `px`, `rem`, `em`, `ch`, `vw` or `%`. Any other value is rejected when you save the app, with the message `must be AUTO, NARROW, WIDE or a CSS length such as 800px, 60rem or 100%`.
+
+The same app and execution on a 2560px wide screen, with `NARROW`, `AUTO` and `WIDE`:
+
+![App with width NARROW](./app-window-narrow.png)
+
+![App with width AUTO](./app-window-auto.png)
+
+![App with width WIDE](./app-window-wide.png)
 
 ---
 

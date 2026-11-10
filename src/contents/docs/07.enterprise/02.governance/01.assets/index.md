@@ -48,7 +48,7 @@ When the task finishes, Kestra does the following:
 
 1. Creates or updates each output asset. If the task fails, Kestra skips this step, so a failed run never overwrites an asset's metadata.
 2. Creates any input asset that doesn't exist yet as a placeholder of type `io.kestra.core.models.assets.External`. A later task that declares the same ID as an output replaces the placeholder type.
-3. Records lineage: each input points to each output of the same task, and the flow points to the assets it reads and writes.
+3. Records lineage: each input points to each output of the same task, each input points to the flow that reads it, and the flow points to the assets it writes.
 4. Records a usage entry for every asset on the execution, so each asset keeps a history of the executions that read or wrote it.
 
 Assets outlive executions. When a second flow declares `analytics.orders_daily` as an input, Kestra connects it to the same asset, and the dependency graph grows across flows:
@@ -73,7 +73,7 @@ You can register assets in several ways, and you can mix them:
 | Turn on `assets.enableAuto` on a plugin that emits assets | The plugin can detect resources itself, for example dbt models or tables created by a SQL query. |
 | Print an asset line from a script task | A Python, Shell, or other script task creates resources that only the script knows about. |
 | Run the `Set` task | You want to register or update an asset as its own step, without tying it to another task. |
-| Use the UI, the API, or `kestractl` | You want to register resources that no flow manages, or automate registration from outside Kestra. |
+| Use the UI, the API, or [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) | You want to register resources that no flow manages, or automate registration from outside Kestra. |
 
 The [asset declaration reference](./01.declare-assets/index.md) covers the first three methods. The [asset tasks and triggers reference](./02.tasks-and-triggers/index.md) covers `Set`. [Manage assets in the UI, API, and CLI](./03.manage-assets/index.md) covers the rest.
 

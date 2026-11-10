@@ -590,11 +590,11 @@ To share one Kafka cluster between several Kestra instances, give each instance 
 
 To reject oversized messages early, use `kestra.queue.message-protection`, described in [Queue prefix and message protection](#queue-prefix-and-message-protection). It applies to every queue backend, including Kafka.
 
-The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset lineage events in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
+The Indexer has no settings of its own. It runs with every queue and repository backend and writes logs, metrics, execution statistics, audit logs, and asset relations in batches. With a JDBC queue, the batch size is `kestra.jdbc.queues.poll-size` (default `100`).
 
 ## Message broker queue backends
 
-Redis, AMQP (RabbitMQ), GCP Pub/Sub, NATS, and Amazon SQS and SNS are Enterprise Edition queue backends, alongside Kafka which is covered above. They use the same internal queue contracts as the JDBC and Kafka backends. Select a backend with `kestra.queue.type` and configure it under `kestra.queue.<type>`; no producer or consumer code changes. Your Enterprise license must include the backend you select. These backends require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
+Redis, AMQP (RabbitMQ), GCP Pub/Sub, NATS, Amazon SQS and SNS, and Azure Event Hubs are Enterprise Edition queue backends, alongside Kafka which is covered above. They use the same internal queue contracts as the JDBC and Kafka backends. Select a backend with `kestra.queue.type` and configure it under `kestra.queue.<type>`; no producer or consumer code changes. Your Enterprise license must include the backend you select. These backends require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
@@ -948,6 +948,140 @@ The queue type is fixed when Kestra creates a queue. If you change `message-orde
 | `kestra.queue.aws.max-connections` | Maximum concurrent connections for SNS calls and SQS calls other than long polls. A call beyond this waits up to 30 seconds for a connection, then fails. | `128` |
 | `kestra.queue.aws.max-poll-connections` | Maximum concurrent connections for SQS long polls, one per poller waiting for a message. | `512` |
 
+### Azure Event Hubs
+
+Set `kestra.queue.type: azure-eventhub` and configure the client under `kestra.queue.azure-eventhub`. Each queue is an event hub, and the subscribers store their progress (checkpoints) in an Azure Blob Storage container.
+
+Minimal configuration, where Kestra creates the event hubs it needs:
+
+```yaml
+kestra:
+  queue:
+    type: azure-eventhub
+    azure-eventhub:
+      namespace: my-namespace.servicebus.windows.net
+      checkpoint-endpoint: https://mystorageaccount.blob.core.windows.net
+      checkpoint-container: kestra
+      subscription-id: 00000000-0000-0000-0000-000000000000
+      resource-group: my-resource-group
+```
+
+The namespace must use the **Premium** or **Dedicated** tier. See [Why a Premium or Dedicated namespace](#why-a-premium-or-dedicated-namespace).
+
+Without a `connection-string` or service principal credentials, Kestra authenticates with Microsoft Entra ID through the [default Azure credential chain](https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#defaultazurecredential-overview), such as environment variables, workload identity on AKS, a managed identity, or the Azure CLI. The same credential reaches the checkpoint container when `checkpoint-endpoint` is set.
+
+With a service principal:
+
+```yaml
+kestra:
+  queue:
+    type: azure-eventhub
+    azure-eventhub:
+      namespace: my-namespace.servicebus.windows.net
+      tenant-id: "${AZURE_TENANT_ID}"
+      client-id: "${AZURE_CLIENT_ID}"
+      client-secret: "${AZURE_CLIENT_SECRET}"
+      checkpoint-endpoint: https://mystorageaccount.blob.core.windows.net
+      checkpoint-container: kestra
+```
+
+Set `tenant-id`, `client-id`, and `client-secret` together. Kestra uses the default credential chain unless all three are set.
+
+With connection strings:
+
+```yaml
+kestra:
+  queue:
+    type: azure-eventhub
+    azure-eventhub:
+      connection-string: "${EVENTHUB_CONNECTION_STRING}"
+      checkpoint-connection-string: "${STORAGE_CONNECTION_STRING}"
+      checkpoint-container: kestra
+```
+
+A `connection-string` takes precedence over the Entra ID credentials and over `namespace`. `checkpoint-connection-string` takes precedence over `checkpoint-endpoint`.
+
+#### Why a Premium or Dedicated namespace
+
+Kestra needs more event hubs, consumer groups, and partitions than the Basic and Standard tiers allow:
+
+- **Event hubs**: Kestra uses about 30 event hubs, plus one per worker group. A Standard namespace allows 10.
+- **Consumer groups**: Every Kestra service reads each broadcast queue through its own consumer group. By default, a broadcast hub has 20 consumer groups in addition to `$Default`, but a Standard event hub allows 20 in total and a Basic one allows only `$Default`.
+- **Message retention**: `message-retention` accepts up to 90 days, but Standard retains events for at most 7 days.
+
+A Premium namespace allows 100 event hubs and 200 partitions per processing unit, and up to 1,000 consumer groups per event hub. For the current limits of each tier, see [Azure Event Hubs quotas and limits](https://learn.microsoft.com/azure/event-hubs/event-hubs-quotas).
+
+Size the processing units based on the partitions Kestra creates:
+
+- 15 dispatch queues, each with `partition-count` partitions
+- 14 broadcast queues, each with 1 partition
+- 1 event hub for the scheduler's virtual nodes, with `kestra.scheduler.vnodes` partitions
+- `partition-count` partitions per worker group, because the keyed dispatch queue has one event hub per routing key
+
+With the default `partition-count` of `4`, that is about 80 partitions, plus the vnodes and 4 per worker group.
+
+#### Roles
+
+Grant these roles to the identity Kestra uses:
+
+| Role | Scope | Needed for |
+|---|---|---|
+| Azure Event Hubs Data Sender | The namespace | Publishing |
+| Azure Event Hubs Data Receiver | The namespace | Consuming |
+| Storage Blob Data Contributor | The checkpoint storage account or container | Checkpoints |
+| Contributor, or a role that can create event hubs and consumer groups | The resource group | Creating event hubs, only when `subscription-id` and `resource-group` are set |
+
+Azure can take a few minutes to propagate a new role assignment.
+
+#### How queues map to event hubs
+
+- Each queue is an event hub named `<kestra.queue.prefix>__<queue>`. A keyed dispatch queue has one event hub per routing key, named `<kestra.queue.prefix>__<queue>__<token>`, where the token encodes the routing key. An empty routing key gives the token `default`.
+- Kestra creates or checks an event hub the first time a queue is used, not at startup, so a missing or misconfigured event hub is reported on first use.
+- When `subscription-id` and `resource-group` are set, Kestra creates the missing event hubs and consumer groups through Azure Resource Manager. Otherwise, create them in advance, for example with Terraform. Each broadcast hub needs as many consumer groups as `broadcast-consumer-groups`, named `kestra-broadcast-00`, `kestra-broadcast-01`, and so on.
+- Kestra rejects an existing event hub with fewer partitions than it needs and names the setting to change. Kestra never changes the partitions of an existing event hub. A Premium or Dedicated namespace allows you to increase them, but that moves keys to other partitions, so drain the queues first.
+- Kestra creates the checkpoint container if it is missing. Kestra never deletes an event hub.
+- Dispatch queues share the `$Default` consumer group of their event hub, and the Kestra services balance its partitions between them.
+- An Event Hubs consumer group accepts 5 readers, so a broadcast hub accepts at most `broadcast-consumer-groups` × 5 services. The default of 20 consumer groups allows 100 services.
+
+With Event Hubs, `kestra.queue.prefix` can contain only letters, digits, `.`, `-`, and `_`, and must start with a letter or a digit.
+
+#### Throughput and latency
+
+Event Hubs confirms a publish only after the event is durably stored. Each publish costs a network round trip to Event Hubs, and Kestra waits for each confirmation before continuing. That latency stays constant as load grows, but it limits how many messages one subscriber processes per second, because a subscriber hands its messages to Kestra one at a time.
+
+- Run Kestra in the same Azure region as the namespace. The round trip from outside the region multiplies the time each message takes.
+- `partition-count` doesn't make one Kestra instance faster. More partitions only help when several instances consume the same queue and split its partitions between them. With the default of `4`, at most 4 Executors share the execution queue. To process more executions, add Executor instances and set `partition-count` to at least their number.
+- Processing units don't lower the latency of a publish. Add processing units only when Event Hubs throttles the namespace.
+
+#### Failures
+
+When a subscriber fails to read, for example because of a network error, a throttled namespace, or a checkpoint that cannot be written, it logs a warning and resumes from its last checkpoint. Kestra stops only when Event Hubs permanently refuses a subscriber: the credential lacks the right to listen, an event hub or a consumer group does not exist, or an event hub is disabled. Because Azure can take a few minutes to propagate a new event hub, consumer group, or role, Kestra stops only after the refusals have lasted for `refusal-tolerance`. Fix the namespace, or lower `broadcast-consumer-groups` if a broadcast consumer group is missing, then restart Kestra.
+
+A service that shuts down gracefully releases its partitions immediately. When a service crashes, the other services take over its partitions after their ownership expires, which takes 6 × `load-balancing-interval`.
+
+The new owner of a partition resumes from the last checkpoint, so it reprocesses any messages the previous owner handled after that checkpoint. Event Hubs delivers at least once.
+
+#### Configuration reference
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.queue.azure-eventhub.namespace` | Fully qualified namespace, such as `my-namespace.servicebus.windows.net`. Required unless `connection-string` is set. | — |
+| `kestra.queue.azure-eventhub.connection-string` | Namespace connection string. Takes precedence over the Entra ID credentials and over `namespace`. | — |
+| `kestra.queue.azure-eventhub.tenant-id` | Tenant of the service principal. Set together with `client-id` and `client-secret`. | Default Azure credential chain |
+| `kestra.queue.azure-eventhub.client-id` | Client ID of the service principal. | — |
+| `kestra.queue.azure-eventhub.client-secret` | Client secret of the service principal. | — |
+| `kestra.queue.azure-eventhub.checkpoint-endpoint` | Blob endpoint of the checkpoint storage account. Required unless `checkpoint-connection-string` is set. | — |
+| `kestra.queue.azure-eventhub.checkpoint-connection-string` | Connection string of the checkpoint storage account. | — |
+| `kestra.queue.azure-eventhub.checkpoint-container` | Blob container that holds the checkpoints. Required. | — |
+| `kestra.queue.azure-eventhub.subscription-id` | Azure subscription of the namespace. Set together with `resource-group` to let Kestra create the missing event hubs and consumer groups. | — |
+| `kestra.queue.azure-eventhub.resource-group` | Resource group of the namespace. | — |
+| `kestra.queue.azure-eventhub.partition-count` | Number of partitions in the event hubs Kestra creates, from `1` to `100`. Caps how many instances can consume a dispatch queue at once. | `4` |
+| `kestra.queue.azure-eventhub.broadcast-consumer-groups` | Number of consumer groups per broadcast hub, from `1` to `100`. | `20` |
+| `kestra.queue.azure-eventhub.batch-size` | Events a subscriber processes together. | `100` |
+| `kestra.queue.azure-eventhub.load-balancing-interval` | How often the services rebalance the partitions of an event hub. A partition's ownership expires after 6 intervals, and a paused subscriber releases its partitions after 1 interval. | `PT5S` |
+| `kestra.queue.azure-eventhub.message-retention` | Message retention of the event hubs Kestra creates, from `P1D` to `P90D`. | `P7D` |
+| `kestra.queue.azure-eventhub.refusal-tolerance` | How long Event Hubs can permanently refuse a subscriber before Kestra stops. | `PT5M` |
+
 ## MCP server cache
 
 Each webserver node caches MCP server configuration in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
@@ -966,6 +1100,34 @@ kestra:
 ```
 
 Tune these only if you have a large number of MCP servers or tight memory constraints. The defaults are sufficient for most deployments.
+
+## Platform MCP server
+
+:::badge{version=">=2.1" editions="OSS,EE"}
+:::
+
+The [platform MCP server](../../ai-orchestration/03.mcp-server/index.md#platform-mcp-server) exposes the AI Copilot's tools at `/api/v1/mcp`. Configure it under `kestra.mcp.platform-server`:
+
+| Property | Description | Default |
+|---|---|---|
+| `kestra.mcp.platform-server.enabled` | Serves the platform MCP server. | `false` |
+| `kestra.mcp.platform-server.tenants` | Tenants the tools can act on. Empty means every tenant the caller can access. | `[]` |
+| `kestra.mcp.platform-server.instructions` | Instructions sent to MCP clients when they connect. | None |
+| `kestra.mcp.platform-server.auth-methods` | Enterprise Edition only. Accepted authentication methods: `BASIC`, `API_TOKEN`, `OAUTH`. Empty accepts all three. | `[]` |
+| `kestra.mcp.platform-server.oauth-provider` | Enterprise Edition only. Name of the OIDC provider whose tokens are accepted. Unset accepts every configured provider. | None |
+
+```yaml
+kestra:
+  mcp:
+    platform-server:
+      enabled: true
+      tenants:
+        - dev
+        - staging
+      auth-methods:
+        - API_TOKEN
+        - OAUTH
+```
 
 ## AI and isolated environments
 
@@ -1070,7 +1232,7 @@ These properties appear inside the `configuration:` block of a provider entry. N
 | Property | Description |
 |---|---|
 | `thinking-enabled` | When `true`, enables the provider's extended reasoning or thinking mode. Supported by OpenAI, Azure OpenAI, Gemini, Anthropic, and Amazon Bedrock. Anthropic requires `temperature: 1` and disables `top-p` and `top-k` when thinking is on — these constraints are applied automatically. |
-| `thinking-effort` | Provider-neutral reasoning effort: `LOW`, `MEDIUM`, or `HIGH`. Supported by OpenAI, Azure OpenAI, and Gemini. Each provider maps this to its own vocabulary (e.g. OpenAI `reasoning_effort`, Gemini `thinkingLevel`). |
+| `thinking-effort` | Provider-neutral reasoning effort: `NONE`, `LOW`, `MEDIUM`, or `HIGH` (case-insensitive). Supported by OpenAI, Azure OpenAI, and Gemini. Each provider maps this to its own vocabulary (e.g. OpenAI `reasoning_effort`, Gemini `thinkingLevel`). `LOW`, `MEDIUM`, and `HIGH` apply only when `thinking-enabled` is `true`. `NONE` is sent to OpenAI and Azure OpenAI even when thinking is disabled: set it for reasoning models that reject tool calls unless the reasoning effort is `none`. Gemini doesn't support `NONE`: the Gemini provider isn't created, and the server logs `Failed to create AI service for provider` with the reason. |
 | `thinking-budget-tokens` | Token budget for the reasoning process. Supported by Gemini, Anthropic, and Amazon Bedrock. Anthropic requires a minimum of `1024`; when `thinking-enabled` is `true` and no budget is set, `1024` is used automatically. |
 
 **Network and connectivity**
@@ -1102,7 +1264,7 @@ Each provider section lists only its required fields and properties unique to th
 | `temperature` | ❌ | `1` |
 | `max-output-tokens` | ❌ | `8000` |
 
-Supports `thinking-enabled` and `thinking-effort`. Supports `base-url` for OpenAI-compatible self-hosted endpoints.
+Supports `thinking-enabled` and `thinking-effort`, including `thinking-effort: none` for reasoning models that reject tool calls unless reasoning is off. Supports `base-url` for OpenAI-compatible self-hosted endpoints.
 
 Does not support `top-k`.
 
@@ -1122,7 +1284,7 @@ Supports two authentication methods: API key or Azure Active Directory (AAD).
 | `temperature` | ❌ | `1` |
 | `max-output-tokens` | ❌ | `8000` |
 
-Supports `thinking-enabled` and `thinking-effort`.
+Supports `thinking-enabled` and `thinking-effort`. Some Azure reasoning deployments reject every Copilot request with `Function tools with reasoning_effort are not supported` unless the reasoning effort is `none`; for those, set `thinking-effort: none`.
 
 Uses `log-requests-and-responses` instead of separate `log-requests` / `log-responses` toggles. Does not support `top-k`, `base-url`, `client-pem`, or `ca-pem`.
 

@@ -58,9 +58,9 @@ kestra:
       region: us-east-1
 ```
 
-**Enable per tenant** — toggle the setting in the **Dedicated secrets manager** configuration under the tenant settings.
+**Enable per tenant** — turn on **Read Only** under **Dedicated secrets manager** in the **Secrets manager** section of the tenant **Settings** page.
 
-**Enable per namespace** — toggle the setting in the **Dedicated secrets manager** section of the namespace **Edit** tab.
+**Enable per namespace** — turn on **Read Only** under **Dedicated secrets manager** in the **Secrets manager** section of the namespace **Edit** tab.
 
 Once enabled, secrets display a lock icon and the **Create New Secret** button is hidden.
 
@@ -71,10 +71,10 @@ Required tags that must be set externally in read-only mode:
 
 ## Configure a secrets manager
 
-Set the backend globally in your Kestra configuration file using `kestra.secret.type`, or scope it to a specific [tenant](../tenants/index.md) or [namespace](../../../05.workflow-components/02.namespace/index.md) via the **Dedicated secrets manager** setting in the UI. Each backend uses its own sub-key matching the type name.
+Set the backend globally in your Kestra configuration file using `kestra.secret.type`, or scope it to a specific [tenant](../tenants/index.md) or [namespace](../../../05.workflow-components/02.namespace/index.md) via the **Dedicated secrets manager** setting in the UI. Each backend uses its own sub-key matching the type name. In the UI, the configuration is a form that lists the selected backend's properties; see [Dedicated storage and secrets backend per tenant](../tenants/index.md#dedicated-storage-and-secrets-backend-per-tenant) for how saved values are kept and replaced.
 
 :::alert{type="warning"}
-**Property naming differs between global config and the UI.** In your `kestra.yml` configuration file, use kebab-case (e.g., `safe-name`, `auth-method`). When configuring a dedicated secrets manager for a namespace or tenant via the UI, use camelCase (e.g., `safeName`, `authMethod`).
+**Property naming differs between global config and the UI.** In your `kestra.yml` configuration file, use kebab-case (e.g., `safe-name`, `auth-method`). For a dedicated secrets manager on a namespace or tenant, the form and its **Code** view use camelCase (e.g., `safeName`, `authMethod`).
 :::
 
 **Supported backends:** [AWS Secrets Manager](#aws-secrets-manager) · [AWS SSM Parameter Store](#aws-ssm-parameter-store) · [Azure Key Vault](#azure-key-vault) · [Google Secret Manager](#google-secret-manager) · [HashiCorp Vault](#hashicorp-vault) · [CyberArk](#cyberark) · [Doppler](#doppler) · [1Password](#1password) · [BeyondTrust](#beyondtrust) · [Delinea Secret Server](#delinea-secret-server) · [Bitwarden](#bitwarden) · [JDBC](#jdbc-postgresql-h2-mysql) · [Elasticsearch](#elasticsearch)

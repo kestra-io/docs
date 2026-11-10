@@ -8,22 +8,19 @@ editions: ["EE"]
 version: ">= 2.1.0"
 ---
 
-<!-- TODO(naming): the UI labels this feature "Templates"; the API uses "app templates"; kestra-ee#9856 calls it "provisioning templates". Confirm the name with PM before publishing. -->
-<!-- TODO(editions): Custom Blueprints is ["EE", "Cloud"]. Confirm whether app templates ship on Cloud. -->
+An app template creates a flow and the [app](../../../../04.scalability/apps/index.md) that runs it, in a namespace chosen when the template is used.
 
-An app template creates a flow and the [app](../../04.scalability/apps/index.md) that runs it, in a namespace chosen when the template is used.
-
-Platform teams write a template once and decide what is fixed: the repository a service is scaffolded from, the database version, or the regions a team may pick. Whoever uses the template answers a short set of arguments, reviews both resources, and Kestra creates them. The app is usually published to the [App Catalog](../../04.scalability/apps/index.md#app-catalog), so other teams can request the resource from a form.
+Platform teams write a template once and decide what is fixed: the repository a service is scaffolded from, the database version, or the regions a team may pick. Whoever uses the template answers a short set of arguments, reviews both resources, and Kestra creates them. The app is usually published to the [App Catalog](../../../../04.scalability/apps/index.md#app-catalog), so other teams can request the resource from a form.
 
 ## App templates and Custom Blueprints
 
-App templates build on [Templated Blueprints](../custom-blueprints/index.md#templated-blueprints) and use the same templating syntax, but they produce more than a flow.
+App templates build on [Templated Blueprints](../../../custom-blueprints/index.md#templated-blueprints) and use the same templating syntax, but they produce more than a flow.
 
 | | Custom Blueprint | App template |
 |---|---|---|
 | Creates | One flow | One flow and the app that runs it |
 | Namespace | Part of the flow source | Chosen when the template is used |
-| Where to find it | **Blueprints** → **Custom Blueprints** | **Templates** in the left sidebar |
+| Where to find it | **Blueprints** → **Custom Blueprints** | **Templates** in an Infrastructure tenant's sidebar |
 | Typical result | A flow you keep editing | A catalog entry other teams can request |
 
 Use a Custom Blueprint when you want a starting point for a single flow. Use an app template when the goal is a self-service form backed by a flow.
@@ -32,11 +29,9 @@ App templates don't appear under **Blueprints** → **App Blueprints**. They're 
 
 ## Find app templates
 
-Open **Templates** in the left sidebar. In an [Infrastructure tenant](../tenants/types/infrastructure/index.md), it is the first entry in the **Automation** group.
+Open **Templates**, the first entry in the **Automation** group of the sidebar. The entry appears only in an [Infrastructure tenant](../index.md), when your license includes Custom Blueprints and you hold at least one `BLUEPRINT` permission. In other tenants, manage templates through the [API](#manage-templates-with-the-api). Each template card shows its title, description, argument count, and tags, with **Edit**, **Use**, and delete actions.
 
-<!-- TODO(verify): the UI code also adds Templates to the Workspace group of DEFAULT tenants (no tenant-type check in useLeftMenu.ts). Confirm on a 2.1 RC whether it appears outside Infrastructure tenants, then update this section. -->
-
-The entry appears when your license includes Custom Blueprints and you hold at least one `BLUEPRINT` permission. Each template card shows its title, description, argument count, and tags, with **Edit** and **Use** actions.
+![The Templates page in an Infrastructure tenant, showing the New application environment card with 5 arguments, a platform tag, and Edit and Use buttons](./app-templates-list.png)
 
 An Infrastructure tenant includes an example template, **New application environment**. Its arguments fix the scaffolding repository, the database engine and version, and the sizes and regions teams may request. Using it creates a demo flow and publishes its request form to the catalog.
 
@@ -49,9 +44,11 @@ A template has four parts, each edited in its own panel:
 - **App**: the source of the app to create
 - **Syntax Helper**: a reference for the templating syntax
 
+![The editor for a new template, with the Details panel showing the title, description, tags, and a name argument, next to the Flow and App source panels](./app-template-editor.png)
+
 ### Arguments
 
-Arguments are the questions answered once, by whoever uses the template. They support every Kestra [input type](../../../05.workflow-components/05.inputs/index.md), its validation rules, and `dependsOn` conditions. Edit them with the **Form** view, or switch to **YAML** and write them as a list:
+Arguments are the questions answered once, by whoever uses the template. They support every Kestra [input type](../../../../../05.workflow-components/05.inputs/index.md), its validation rules, and `dependsOn` conditions. Edit them with the **Form** view, or switch to **YAML** and write them as a list:
 
 ```yaml
 - id: name
@@ -73,7 +70,7 @@ Unlike a Templated Blueprint, a template does not wrap its arguments in `extend.
 
 ### Flow and app sources
 
-The flow and app sources reference arguments with `<< arg.<id> >>`, and support the same [loops and conditions](../custom-blueprints/index.md#loops-and-conditions) as Templated Blueprints. Kestra expressions such as `{{ inputs.size }}` are left untouched and evaluated when the flow runs.
+The flow and app sources reference arguments with `<< arg.<id> >>`, and support the same [loops and conditions](../../../custom-blueprints/index.md#loops-and-conditions) as Templated Blueprints. Kestra expressions such as `{{ inputs.size }}` are left untouched and evaluated when the flow runs.
 
 This flow takes the allowed regions from the template arguments and asks the requester to pick one at execution time:
 
@@ -149,15 +146,17 @@ Using a template creates the flow first, then the app. You need the `BLUEPRINT` 
 4. In the **Review** step, check the rendered **Flow** and **App** tabs. Each tab lists the problems that block creation. Edit a source to fix them; the edited source is validated again when you click **Create**.
 5. Click **Create**.
 
+![The Review step of the Use dialog for New application environment, showing the rendered flow with the chosen namespace added, and the Back, Cancel, and Create buttons](./app-template-use-review.png)
+
 The **Created** step reports each resource with a link to open it. When the app is created, click **Open the catalog** to see the new entry.
 
 If the app fails to be created after the flow succeeds, click **Back to review**, fix the app source, and click **Create** again. The flow that was already created is kept and is not created twice.
 
-Kestra creates each resource through the same endpoints as the flow and app editors, so namespace permissions and [Policies](../policies/index.md) apply as usual.
+Kestra creates each resource through the same endpoints as the flow and app editors, so namespace permissions and [Policies](../../../policies/index.md) apply as usual.
 
 ## Permissions
 
-App templates use the [`BLUEPRINT` permission](../../03.auth/rbac/permissions-reference/index.md), granted globally for the tenant:
+App templates use the [`BLUEPRINT` permission](../../../../03.auth/rbac/permissions-reference/index.md), granted globally for the tenant:
 
 | Action | Requires |
 |---|---|
@@ -168,7 +167,7 @@ App templates use the [`BLUEPRINT` permission](../../03.auth/rbac/permissions-re
 | Delete a template | `BLUEPRINT` `DELETE` |
 | Use a template | `BLUEPRINT` `VIEW`, plus `FLOW` `CREATE` and `APP` `CREATE` on the target namespace |
 
-The created app follows the usual [app access rules](../../04.scalability/apps/index.md#app-access-and-rbac-permissions). For example, a `PRIVATE` app is visible in the catalog only to users with `APP` `EXECUTE` on its namespace.
+The created app follows the usual [app access rules](../../../../04.scalability/apps/index.md#app-access-and-rbac-permissions). For example, a `PRIVATE` app is visible in the catalog only to users with `APP` `EXECUTE` on its namespace.
 
 ## Manage templates with the API
 
@@ -188,5 +187,6 @@ A template body holds `title`, `description`, `tags`, `arguments`, `flow`, and `
 
 The `render` endpoint takes a `namespace` and `argumentValues`, and returns each rendered source with its problems. It does not create anything. To create the resources from a script, render the template, then send the rendered flow to the flow creation endpoint and the rendered app to the app creation endpoint, in that order.
 
-<!-- TODO(verify): Git sync for Custom Blueprints (custom-blueprints page, "Version control for Custom Blueprints") filters repository queries to flow blueprints after this change; app templates are probably not pushed or synced. Test on a 2.1 RC before documenting either way. -->
-<!-- TODO(screenshots, 2.1 RC): Templates list (tour panel closed), template editor with Details/Flow/App panels, Use dialog Review step. -->
+## Version control
+
+The [`PushBlueprints` and `SyncBlueprints`](../../../custom-blueprints/index.md#version-control-for-custom-blueprints) tasks handle Custom Blueprints only. They don't push, sync, or delete app templates. To keep templates in Git, read them with `GET /app-templates` and write them back with `POST` or `PUT /app-templates/{id}`.

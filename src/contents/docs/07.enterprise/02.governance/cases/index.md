@@ -200,6 +200,9 @@ A case action is a flow attached to the case as a one-click button, intended for
 
 ## External tickets
 
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
 A case can be linked to one ticket in an external system, such as a GitHub issue, a Jira issue, or a ServiceNow incident. The ticket is stored on the case as three values:
 
 - System: a free-text display name, such as `GitHub` or `ServiceNow`.
@@ -310,6 +313,9 @@ Like `CreateCase`, `SetTicket` calls the Kestra API and accepts the same `kestra
 
 ## React to case events
 
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
 The `io.kestra.plugin.kestra.ee.cases.CaseEvent` trigger starts one execution for every event recorded on a case, such as a case being created, assigned, commented on, or changing status. Use it to open or close external tickets, start a triage flow when a case is assigned, or send notifications outside of Kestra.
 
 ```yaml
@@ -375,11 +381,11 @@ Template defaults apply when creating cases via the UI or the API; they cannot b
 
 ## Notifications
 
-Case events are wired into the in-app notification system (the bell icon). Seven events send notifications: case created, assigned, status changed, severity changed, commented, acknowledgement SLA breached, and resolution SLA breached. Recipients are the case's assignees and watchers, with groups expanded to their members; assignment notifications go only to the users whose assignment actually changed, with the assignment note included. Each notification contains a link to the case.
+Case events are wired into the [in-app notification system](../../../09.ui/index.mdx#notifications) (the bell icon). Seven events send notifications: case created, assigned, status changed, severity changed, commented, acknowledgement SLA breached, and resolution SLA breached. Recipients are the case's assignees and watchers, with groups expanded to their members; assignment notifications go only to the users whose assignment actually changed, with the assignment note included. Each notification contains a link to the case.
 
 ## Permissions and audit
 
-- RBAC: a new `CASE` permission resource with actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`, optionally scoped to a namespace (_creating a case requires `CREATE` on its namespace, transitions and linking (including linking and unlinking an external ticket) require `UPDATE`, commenting only requires `VIEW`_). Connecting an [external ticket automation](#open-a-ticket-automatically-for-every-new-case) also requires `FLOW` and `SECRET` permissions in the system namespace, and the [CaseEvent trigger](#react-to-case-events) requires `LIST` on `CASE`.
+- RBAC: a new `CASE` permission resource with actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`, optionally scoped to a namespace (_creating a case requires `CREATE` on its namespace, transitions, linking (including linking and unlinking an external ticket), and commenting require `UPDATE`_). Connecting an [external ticket automation](#open-a-ticket-automatically-for-every-new-case) also requires `FLOW` and `SECRET` permissions in the system namespace, and the [CaseEvent trigger](#react-to-case-events) requires `LIST` on `CASE`.
 - Audit: create, update, and delete of cases and case templates are recorded in the [audit log](../06.audit-logs/index.md) (resource types `CASE` and `CASE_TEMPLATE`). Timeline events and comments are not separately audited.
 - Backup: cases, templates, timeline events, and execution links are included in backup and restore.
 

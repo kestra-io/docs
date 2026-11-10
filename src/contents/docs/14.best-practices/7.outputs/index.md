@@ -18,7 +18,7 @@ namespace: company.team
 
 inputs:
   - id: runTask
-    type: BOOLEAN
+    type: BOOL
     defaults: true
 
 tasks:

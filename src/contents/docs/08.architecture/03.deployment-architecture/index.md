@@ -1,14 +1,14 @@
 ---
 title: "Kestra Deployment Architectures: Postgres, AMQP, and Kafka"
 h1: Choose a Deployment Architecture for Kestra
-description: Choose your Kestra deployment architecture. Compare standalone vs distributed deployments and Postgres, AMQP/Redis, and Kafka backends.
+description: Choose your Kestra deployment architecture. Compare standalone vs distributed deployments and Postgres, AMQP/Redis/NATS, cloud-managed, and Kafka queue backends.
 sidebarTitle: Deployment architecture
 icon: /src/contents/docs/icons/architecture.svg
 ---
 
 Choosing a Kestra deployment architecture involves two decisions: how server roles are deployed (standalone vs distributed), and which queue and repository backends they use.
 
-The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, NATS, Kafka, and Elasticsearch.
+The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, NATS, GCP Pub/Sub, Amazon SQS and SNS, Azure Event Hubs, Kafka, and Elasticsearch.
 
 ## Standalone vs distributed
 
@@ -56,6 +56,15 @@ When queue latency matters, replace the database queue with an AMQP broker, Redi
 - Also raises the throughput ceiling; use Kafka for the highest throughput requirements
 - RabbitMQ is recommended for simpler operation and fewer edge cases
 
+### GCP Pub/Sub / Amazon SQS and SNS / Azure Event Hubs (Enterprise)
+
+When your platform already runs on Google Cloud, AWS, or Azure, use the cloud provider's managed messaging service as the queue instead of operating a broker yourself.
+
+- **Dependencies**: GCP Pub/Sub, Amazon SQS and SNS, or an Azure Event Hubs namespace on the Premium or Dedicated tier with an Azure Blob Storage container for checkpoints
+- With Pub/Sub and SQS/SNS, Kestra creates and deletes its own topics, queues, and subscriptions, so the identity it runs as needs the permissions listed in [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#message-broker-queue-backends)
+- With Event Hubs, Kestra creates missing event hubs and consumer groups only when `subscription-id` and `resource-group` are set; otherwise, create them in advance
+- Delivery settings such as message ordering apply only when Kestra creates a subscription (Pub/Sub) or queue (SQS), so choose them before the first start
+
 ### Kafka (Enterprise)
 
 For high throughput and full horizontal scaling, use Kafka as the queue backend. The Executor, Scheduler, Worker Controller, Webserver, and Indexer emit to and subscribe from named Kafka topics.
@@ -85,7 +94,7 @@ Elasticsearch can serve as the repository backend in Kafka deployments, providin
 - **Dependencies**: Elasticsearch + Kafka queue
 - Uses asynchronous indexing, trading insertion atomicity for analytical and search performance
 - Suited for deployments where query capabilities outweigh consistency requirements
-- The Indexer writes logs, metrics, execution statistics, audit logs, and asset lineage events to Elasticsearch in batches. Flows, executions, and triggers are written to Elasticsearch directly by the components that change them.
+- The Indexer writes logs, metrics, execution statistics, audit logs, and asset relations to Elasticsearch in batches. Flows, executions, and triggers are written to Elasticsearch directly by the components that change them.
 - Executions continue processing even if Elasticsearch is temporarily unavailable
 - Available only in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 

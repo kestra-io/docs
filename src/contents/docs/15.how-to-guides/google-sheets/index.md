@@ -48,7 +48,7 @@ The new service account has been created. Add a key to the service account.
 4. This will download the service account JSON file on your local computer.
 5. Provide this JSON file's content as the secret.
   a. With Kestra EE, provide the secret key `GCP_SERVICE_ACCOUNT_JSON` and the file contents as the value.
-  b. For docker-based Kestra instance, convert the JSON file's contents into base64 encoded format using `cat <private_key_file>.json | base64` and then provide the secret value as part of the environment file to the docker instance: `SECRET_GCP_SERVICE_ACCOUNT_JSON=<base64_encoded_value_for_json_file_contents>`.
+  b. For docker-based Kestra instance, convert the JSON file's contents into base64 encoded format using `cat <private_key_file>.json | openssl base64 -A` and then provide the secret value as part of the environment file to the docker instance: `SECRET_GCP_SERVICE_ACCOUNT_JSON=<base64_encoded_value_for_json_file_contents>`.
 
 Detailed instructions on creating service account can also be found in the [Google credentials guide](../google-credentials/index.md).
 

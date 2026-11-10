@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-When you launch Kestra Enterprise Edition for the first time, Kestra walks you through configuring your instance: setting up your first tenant, creating your first user, and starting the Kestra UI.
+When you launch Kestra Enterprise Edition for the first time, Kestra walks you through configuring your instance: setting up your first tenant, choosing a retention policy, creating your first user, and starting the Kestra UI.
 
 ## Prerequisites
 
@@ -56,13 +56,32 @@ If you enabled a default tenant, you can skip this step.
 ![Create first tenant form with ID and name fields](./setup_page2.png)
 
 
-## Step 3: Create your first user
+## Step 3: Choose a retention policy
+
+Executions, logs, metrics, and output files accumulate with every run. This step generates a daily flow that purges them, so the instance doesn't slow down as the database and storage grow.
+
+<!-- TODO(runtime test): retention step written from kestra-ee#11845 source (merged 2026-11-10). Check the screens and the generated flow on an EE image built after that date, and confirm how Cloud tenants get a retention flow. -->
+
+Set how long to keep each kind of data:
+
+- **Keep executions for**: the number of days a finished execution is kept, with its metrics and output files.
+- **Keep logs for**: the number of days execution logs and trigger logs are kept.
+
+Both start at 90 days. Select **Keep forever** to keep one of them indefinitely. Turn on **Keep failed executions forever** to never purge `FAILED` executions and their logs. Executions that haven't finished, such as running or paused ones, are never purged.
+
+Click **Save** to generate the `retention` flow in the [system flows](../../../06.concepts/system-flows/index.md) namespace of your first tenant. The values also become the instance's default policy, which the tenant creation wizard starts from. You can change the flow later in the flow editor or through Git. See [Default retention flow](../../../10.administrator-guide/purge/index.md#default-retention-flow) for what it purges.
+
+Click **Skip** to set up purging yourself, for example from the purge blueprint. No flow and no default policy are created.
+
+Kestra hides this step when a flow in the `main` tenant already uses `PurgeExecutions` or `PurgeLogs`.
+
+## Step 4: Create your first user
 
 Create the first user. This user receives the [Instance Owner](../../03.auth/rbac/index.md#instance-owner) privilege and can manage tenants, users, and roles across the instance.
 
 ![Create first Instance Owner user form](./setup_page3.png)
 
-## Step 4: Start Kestra UI
+## Step 5: Start Kestra UI
 
 Once your tenant and user are configured, Kestra will launch the UI and log you into your new tenant as the first user.
 

@@ -49,6 +49,10 @@ Open-source users do not need to do this manually; migrations run automatically 
 
 See [Database Migrations](./database-migrations) for the full upgrade sequence, Docker Compose and Kubernetes examples, and configuration options.
 
+### Set the MySQL isolation level (MySQL only)
+
+Kestra 2.0 requires the `READ COMMITTED` transaction isolation level on MySQL. MySQL defaults to `REPEATABLE READ`. Before you start Kestra 2.0, set `transaction_isolation=READ-COMMITTED` on the MySQL server or `transaction-isolation: TRANSACTION_READ_COMMITTED` on the Kestra datasource. See [MySQL isolation level](./mysql-read-committed) for both options.
+
 ## What changed in 2.0.0
 
 The changes below are grouped by the area they affect. Work through the categories relevant to your setup; not every change applies to every installation.
@@ -80,6 +84,7 @@ Changes to flow configuration, permissions, and plugin defaults. The SDK auth an
 | [pluginDefaults removed](./plugin-defaults-removed) | OSS, EE | The `pluginDefaults` keyword is removed at all scopes. EE users migrate to Policies; OSS users inline task values manually. |
 | [pluginDefaults.forced removed from flows](./plugin-defaults-forced-removed) | OSS, EE | The `forced` property on flow-level `pluginDefaults` is removed. Use `Add` rules with `override: true` in a Policy (EE) or inline the values (OSS). |
 | [RBAC action model](./rbac-action-model) | EE | The CRUD-based permission model is replaced by a resource and action model. Existing roles are migrated automatically; CLI role definitions require updates. |
+| [Group sync joins existing groups](./idp-groups-existing-only) | EE | From 2.0.9, LDAP and OIDC logins no longer create groups. Users join only the groups created in Kestra with the same name as their identity provider groups, and LDAP creates a user only when a group, a default role, or an invitation gives them access. |
 
 ### Data and storage
 
@@ -98,6 +103,7 @@ Changes to deployment, Helm charts, and server configuration. Relevant primarily
 | Guide | Editions | What changed |
 |---|---|---|
 | [Database migrations](./database-migrations) | OSS, EE | How to run the 2.0 schema migrations, including the upgrade sequence, Docker Compose and Kubernetes examples, and key scripts. |
+| [MySQL isolation level](./mysql-read-committed) | OSS, EE | Kestra now requires the `READ COMMITTED` transaction isolation level on MySQL. Set it on the MySQL server or the Kestra datasource before upgrading, or Kestra raises `Isolation level must be READ COMMITTED`. |
 | [Helm gRPC worker-controller](./helm-grpc-worker-controller) | EE | Port 50051 is now exposed by default on all pods, and a dedicated controller deployment is added to the Helm chart. The `workerGroup.key` property is removed; migrate to `workerSelector.tags`. The `fallback` default changes from `WAIT` to `FAIL`. Review before upgrading. |
 | [Management endpoint hardening](./management-endpoint-hardening) | OSS, EE | Several management endpoints that were open without authentication in 1.x now require explicit opt-in. Review before upgrading in production. |
 
@@ -112,7 +118,7 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 
 ### CLI
 
-Changes to `kestractl` behavior. Relevant for teams using the CLI in CI/CD pipelines.
+Changes to [`kestractl`](../../kestra-cli/kestractl/index.md#installation) behavior. Relevant for teams using the CLI in CI/CD pipelines.
 
 | Guide | Editions | What changed |
 |---|---|---|

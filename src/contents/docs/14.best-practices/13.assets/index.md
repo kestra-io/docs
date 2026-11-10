@@ -14,7 +14,7 @@ Assets only help if the same resource always gets the same record and people can
 ## Quick recommendation
 
 - Give each resource one stable ID that every flow uses, built from its real address, such as `analytics.marts.fct_orders`.
-- Agree on a small set of metadata keys, such as `owner`, `environment`, and `system`, and use them everywhere.
+- Agree on a small set of metadata keys, such as `environment` and `system`, and use them everywhere. Set ownership, lifecycle state, and expiry with the `owner`, `status`, and `ttl` fields.
 - Declare assets on the task that actually reads or writes the resource, not on a separate step.
 - Turn on `enableAuto` for plugins that emit assets, and declare only what the plugin can't see.
 - Put team-owned assets in the team's namespace. Use Global assets only for resources every namespace must reference.
@@ -58,16 +58,19 @@ Pick a short vocabulary and document it for your teams:
 
 | Key | Example values | Used for |
 | --- | --- | --- |
-| `owner` | `data-team`, `platform` | Routing alerts and questions |
 | `environment` | `dev`, `staging`, `prod` | Scoping triggers and fleet operations |
 | `system` | `postgres`, `snowflake`, `s3` | Grouping in the dependencies graph |
 | `model_layer` | `staging`, `mart` | Data layering and event-driven pipelines |
 
 Metadata filters compare top-level keys as strings. Keep values flat: `environment: prod`, not `labels: {environment: prod}`.
 
+For who owns a resource, its lifecycle state, and its expiry, use the [`owner`, `status`, and `ttl` fields](../../07.enterprise/02.governance/01.assets/01.declare-assets/index.md#lifecycle-fields) rather than metadata keys of the same name. Kestra stores them as `system.owner`, `system.status`, and `system.ttl`, notifies the `owner` when the TTL passes, and uses `status` in asset action conditions. A metadata key named `owner` is a different key and drives none of this.
+
 ### Store references to related assets
 
-When one asset belongs to another, such as an IP address attached to a VM, store the parent's ID in metadata, for example `vm: vm-web-prod-01`. Lineage edges show the relationship in the graph, but a metadata key lets a flow find all children with `assets(metadata={"vm": "vm-web-prod-01"})`.
+When one asset belongs to another, such as a VM in a deployment, declare the link with `partOf`. Use `related` for connections without a direction, such as a VM and its load balancer. The parent then lists its parts, and the dependencies graph draws the relation. See [Relate assets](../../07.enterprise/02.governance/01.assets/01.declare-assets/index.md#relate-assets).
+
+The `assets()` function and the `List` task filter on metadata, not on relations. If a flow must find all children of a parent, also store the parent's ID in metadata, for example `vm: vm-web-prod-01`, and query it with `assets(metadata={"vm": "vm-web-prod-01"})`.
 
 ## Pick namespaces deliberately
 
@@ -76,7 +79,7 @@ The namespace controls who can see an asset and which flows can write it.
 - Put assets that one team owns in that team's namespace. Namespace-scoped RBAC then applies to them.
 - Use a Global asset, with no namespace, only for a resource that every namespace must reference, such as a shared reference table. Namespace-level access control doesn't restrict Global assets.
 - A new output without a `namespace` becomes Global. If you mean the asset to belong to a namespace, set `namespace` explicitly, for example `namespace: "{{ flow.namespace }}"`.
-- Plugins such as dbt and JDBC emit assets without a namespace, so their assets start as Global. Leave out the `namespace` filter in triggers and queries that must match them, or move them into a namespace by declaring the same ID as an output with a `namespace`.
+- Plugins such as dbt and JDBC emit output assets without a namespace, so those assets start as Global. Placeholders created from the inputs they emit, such as dbt sources, get the flow's namespace. Leave out the `namespace` filter in triggers and queries that must match them, or move them into a namespace by declaring the same ID as an output with a `namespace`.
 
 When a flow writes an asset in another namespace that restricts its allowed namespaces, that namespace must list the flow's namespace. Configure this with [allowed namespaces](../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces) rather than moving assets to Global to avoid the check.
 
@@ -113,7 +116,7 @@ See [Failure behavior](../../07.enterprise/02.governance/01.assets/01.declare-as
 ## Keep the catalog clean
 
 - Delete assets when you decommission the resource, with the [`Delete` task](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#delete) in your teardown flow.
-- Purge per-run assets and old usage and lineage records on a schedule. See [When to purge assets and lineage](../11.purging-data/index.md#when-to-purge-assets-and-lineage).
+- Purge per-run assets and old usage records on a schedule. Purging an asset deletes its lineage with it. See [When to purge assets and lineage](../11.purging-data/index.md#when-to-purge-assets-and-lineage).
 - Don't register temporary files that exist only inside one execution. Use [outputs](../../05.workflow-components/06.outputs/index.md) for those.
 
 ## Anti-patterns

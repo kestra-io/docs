@@ -31,7 +31,7 @@ The image below shows the relationship between Users, Groups, Service Accounts, 
 
 A role is a collection of permissions that can be assigned to users, service accounts, or groups. Each permission is a combination of a **resource** (e.g., `FLOW`, `EXECUTION`, `SECRET`) and one or more **actions** (e.g., `EXECUTE`, `VIEW`, `DELETE`). A role alone grants nothing — it must be attached to a user, service account, or group via a **binding** on the **IAM** page.
 
-Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). A binding scoped to a namespace only accepts a role whose permissions are all namespace-level, see [Namespace bindings](#namespace-bindings). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). [Impersonate](#impersonate) allows Instance Owners to verify a user's effective permissions after role assignment.
+Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). A binding scoped to a namespace only accepts a role whose permissions are all namespace-level, see [Namespace bindings](#namespace-bindings). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). [Impersonate](#impersonate) allows Instance Owners to verify the effective permissions of a user or service account after role assignment.
 
 ## Namespace bindings
 
@@ -54,9 +54,9 @@ When upgrading to 2.1.0, existing namespace bindings of roles with tenant-level 
 
 ## Impersonate
 
-After assigning permissions to a user, Instance Owners can impersonate them to verify their access is correct. Impersonation switches your view to that user's perspective. A persistent banner confirms who you are impersonating, and you can return to your own session at any time using the **Stop impersonating** button in the top right.
+After assigning permissions to a user or a service account, Instance Owners can impersonate them to verify their access is correct. Impersonation is reserved to Instance Owners: no role permission grants it. Impersonation switches your view to that user's perspective. A persistent banner confirms who you are impersonating, and you can return to your own session at any time using the **Stop impersonating** button in the top right.
 
-**From the UI:** go to **IAM → Users**, find the user row, and select **Impersonate** from the action menu on the right.
+**From the UI:** go to **IAM → Users**, find the user row, and select **Impersonate** from the action menu on the right. To impersonate a service account, go to **Instance IAM → Service Accounts** in the [Instance Owner console](../../05.instance/00.instance-owner/index.md) and select **Impersonate** from the service account's action menu.
 
 ![The Impersonate button appears on each user row in the IAM Users list](./impersonate-user.png)
 
@@ -64,18 +64,20 @@ Once active, a banner at the top of the page confirms the impersonation session.
 
 ![The Stop impersonating button appears in the top right during an active impersonation session](./stop-impersonate-user.png)
 
-**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`. The response contains a short-lived JWT you can use in place of your regular credentials to act as that user.
+**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`, where `{id}` is a user ID or a service account ID. The response contains a short-lived JWT you can use in place of your regular credentials to act as that user.
 
 ```bash
 curl -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
   -H "Authorization: Bearer YOUR_API_TOKEN"
 ```
 
-**From kestractl:** use the `users impersonate` command, which calls the same endpoint and prints the token:
+**From kestractl:** use the [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) `users impersonate` command, which calls the same endpoint and prints the token:
 
 ```bash
 kestractl users impersonate <user_id>
 ```
+
+<!-- TODO(runtime test): ee#7018 (PR ee#12257, merge on develop 2026-11-05) documented from source only. On a build containing it, check: the Impersonate action on Instance IAM → Service Accounts; POST /api/v1/users/{serviceAccountId}/impersonate returns a token; USER IMPERSONATE is gone from the role editor; a role created with it returns 422; a stored role with it reads back without it; a non-Instance-Owner basic-auth request with X-Kestra-Impersonate fails. See memory project_impersonation_2_1_live_test. -->
 
 ### Resources
 
@@ -135,7 +137,7 @@ Each resource defines its own set of allowed actions. Not every action applies t
 
 | Resource | Additional actions |
 |---|---|
-| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT`, `PROMOTE` (promote to another environment) |
+| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT`, `PROMOTE` (promote to another environment), `UPDATE_CONCURRENCY_LIMIT` (reset [concurrency counters](../../../05.workflow-components/14.concurrency/index.md#reset-a-stuck-running-counter)) |
 | `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN`, `REVIEW` (approve or deny an Approval task run) |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
 | `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
@@ -144,7 +146,7 @@ Each resource defines its own set of allowed actions. Not every action applies t
 | `TESTSUITE` | `EXECUTE` |
 | `ASSET` | `LOCK`, `UNLOCK` |
 | `AUDITLOG` | `EXPORT` |
-| `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
+| `USER` | `MANAGE_GROUP_MEMBERSHIP` |
 | `GROUP` | `MANAGE_MEMBERS` |
 | `COPILOT` | `USE` (only action) |
 | `CASE` | `FOLLOW`, `TEMPLATE` (manage case templates) |
@@ -190,7 +192,7 @@ Permissions to manage roles, bindings, groups, and invitations let the holder gr
 
 ### Roles
 
-`ROLE` `CREATE` and `UPDATE` let you put any permission in a role, including permissions you don't hold. Updating a role changes every binding that uses it, including tenant-wide bindings. Only an Instance Owner can add `USER` `IMPERSONATE` to a role, set the default role, or edit a managed role.
+`ROLE` `CREATE` and `UPDATE` let you put any permission in a role, including permissions you don't hold. Updating a role changes every binding that uses it, including tenant-wide bindings. Only an Instance Owner can set the default role or edit a managed role.
 
 ### Bindings
 

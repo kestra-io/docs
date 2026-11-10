@@ -184,6 +184,51 @@ The same applies to other languages: in a Python `Script`, read the value with `
 
 See [Security hardening](../../../security-hardening/index.md#webhook-endpoints) for how to protect the webhook endpoint itself.
 
+## Verify the request signature
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Many providers sign each webhook request with a shared secret and send the HMAC of the request body in a header, such as GitHub's `X-Hub-Signature-256`. Set `signature` on the trigger to check it: Kestra computes the HMAC over the raw request body and rejects a request whose signature is missing or wrong before any execution is created.
+
+```yaml
+id: signed_webhook
+namespace: company.team
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Received a verified webhook"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    signature:
+      header: X-Hub-Signature-256
+      algorithm: HMAC_SHA256
+      secret: "{{ secret('GITHUB_WEBHOOK_SECRET') }}"
+      prefix: "sha256="
+```
+
+| Property | Required | Description |
+|---|---|---|
+| `header` | Yes | The request header that carries the signature. |
+| `algorithm` | No | `HMAC_SHA1`, `HMAC_SHA256`, or `HMAC_SHA512`. Defaults to `HMAC_SHA256`. |
+| `secret` | Yes | The shared signing secret. Store it as a [secret](../../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`. |
+| `prefix` | No | Text the header value must start with before the signature, such as `sha256=` for GitHub. |
+
+Kestra returns `401` with `Invalid webhook signature.` and creates no execution when:
+
+- The header is missing or sent more than once.
+- The header value doesn't start with the configured `prefix`.
+- The signature isn't a hexadecimal string of the length the algorithm produces. Uppercase and lowercase hex are both accepted; base64-encoded signatures are not.
+- The signature doesn't match the HMAC of the request body.
+
+Verification works with `fetchType` set to `FETCH`, `STORE`, or `NONE`. With `STORE`, the body is checked while it's streamed to internal storage and deleted if the signature doesn't match. Signed `multipart/form-data` requests are always rejected, because Kestra no longer has their original bytes once the parts are parsed.
+
+A valid signature proves the payload came from someone who knows the secret and wasn't changed, but it doesn't stop the same signed request from being sent again.
+
 ## Filtering webhook executions with `when`
 
 Use the `when` property to conditionally fire the trigger based on the request body or headers. The `when` value is a [Pebble expression](../../../expressions/index.mdx) evaluated against the incoming request. If the expression evaluates to a falsy value, Kestra ignores the request and no execution is created.
