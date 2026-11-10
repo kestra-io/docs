@@ -1,0 +1,131 @@
+---
+import PixelEdges from "~/components/about/PixelEdges.astro"
+
+const DEPLOYMENTS = [
+    {
+        title: "Self-hosted",
+        text: "Kubernetes or VMs in your data center or your cloud account. The reference deployment for regulated industries.",
+    },
+    {
+        title: "Air-gapped",
+        text: "No outbound connection required. Plugins and updates delivered offline.",
+    },
+    {
+        title: "Hybrid",
+        text: "Control plane in one place; worker groups for the systems: on-prem, in each cloud, at the edge.",
+    },
+    {
+        title: "Kestra Cloud",
+        text: "The same Kestra, run by us. For teams who would rather build flows than operate a platform.",
+    },
+]
+---
+
+<section class="ee-deployments" aria-labelledby="where-kestra-runs">
+    <PixelEdges />
+    <div class="container">
+        <header>
+            <div>
+                <h2 id="where-kestra-runs">Where Kestra Runs</h2>
+                <p>
+                    Run Kestra Enterprise in any environment you choose: your
+                    data center, your cloud accounts, across network zones, or
+                    fully air-gapped.
+                </p>
+            </div>
+            <a
+                href="https://hs.kestra.io/hubfs/kestra-deployment-options-enterprise-edition.pdf"
+                class="btn-ghost"
+                target="_blank"
+                rel="noopener"
+            >
+                Download the PDF
+            </a>
+        </header>
+        <ul>
+            {DEPLOYMENTS.map((deployment) => (
+                <li>
+                    <h3>{deployment.title}</h3>
+                    <p>{deployment.text}</p>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    @use "../about/style/section" as *;
+
+    .ee-deployments {
+        @include section;
+        position: relative;
+        border-bottom: 1px solid var(--ks-border-primary);
+        background: var(--ks-background-body);
+    }
+
+    .container {
+        position: relative;
+    }
+
+    header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1.5rem 3rem;
+
+        h2 {
+            @include title;
+        }
+
+        p {
+            @include lead;
+            max-width: 40rem;
+        }
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 3rem 0 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    li {
+        padding: 1.5rem 1.5rem 2rem;
+        border-radius: 8px;
+        background: var(--ks-background-secondary);
+
+        @include media-breakpoint-down(md) {
+            padding: 1.25rem 1.25rem 1.5rem;
+        }
+
+        h3 {
+            margin: 0 0 1rem;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+
+            @include media-breakpoint-down(md) {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            font-size: $font-size-md;
+            line-height: 1.6;
+            color: var(--ks-content-secondary);
+        }
+    }
+</style>

@@ -1,0 +1,790 @@
+---
+import { Icon } from "astro-icon/components"
+import PixelEdges from "~/components/about/PixelEdges.astro"
+import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg"
+
+const CARDS = [
+    {
+        id: "sso",
+        slot: "l1",
+        label: "SSO",
+        states: [
+            { value: "m.chen", tag: "Signed in", tone: "success" },
+            { value: "s.roy", tag: "Signed in", tone: "success" },
+            { value: "j.kim", tag: "Signed in", tone: "success" },
+        ],
+    },
+    {
+        id: "rbac",
+        slot: "l2",
+        label: "RBAC",
+        states: [
+            { value: "deploy_prod", tag: "Allowed", tone: "success" },
+            { value: "drop_table", tag: "Denied", tone: "danger" },
+            { value: "scale_cluster", tag: "Allowed", tone: "success" },
+        ],
+    },
+    {
+        id: "secrets",
+        slot: "l3",
+        label: "Secrets",
+        states: [
+            { value: "DB_PASSWORD", tag: "Encrypted", tone: "neutral" },
+            { value: "DB_PASSWORD", tag: "Rotated", tone: "running" },
+            { value: "API_TOKEN", tag: "Encrypted", tone: "neutral" },
+        ],
+    },
+    {
+        id: "audit",
+        slot: "r1",
+        label: "Audit logs",
+        states: [
+            { value: "Flow · Updated", tag: "j.kim", tone: "neutral" },
+            { value: "Execution · Resumed", tag: "m.chen", tone: "neutral" },
+            { value: "Role · Created", tag: "admin", tone: "neutral" },
+        ],
+    },
+    {
+        id: "approvals",
+        slot: "r2",
+        label: "Approvals",
+        states: [
+            { value: "deploy_prod", tag: "Waiting", tone: "warning" },
+            { value: "deploy_prod", tag: "Approved", tone: "success" },
+            { value: "sync_crm", tag: "Waiting", tone: "warning" },
+            { value: "sync_crm", tag: "Approved", tone: "success" },
+        ],
+    },
+    {
+        id: "workers",
+        slot: "r3",
+        label: "Worker groups",
+        states: [
+            { value: "onprem-01", tag: "Running", tone: "running" },
+            { value: "onprem-01", tag: "Success", tone: "success" },
+            { value: "euwest-02", tag: "Running", tone: "running" },
+            { value: "euwest-02", tag: "Success", tone: "success" },
+        ],
+    },
+]
+---
+
+<section class="ee-hero" aria-labelledby="ee-hero-title">
+    <PixelEdges left="tall" right="wide" />
+    <div class="frame surface-dark" data-header-dark data-ee-orbit>
+        <span class="rings" aria-hidden="true"></span>
+        <span class="beam" aria-hidden="true" data-beam></span>
+        <div class="container-xl">
+            <div class="stage">
+                <div class="copy">
+                    <p class="eyebrow" data-edition>
+                        <span class="sheen" />
+                        <img
+                            class="kestra"
+                            src={kestraMark.src}
+                            alt=""
+                            width="16"
+                            height="16"
+                        />
+                        <span class="name">Enterprise Edition</span>
+                    </p>
+                    <h1 id="ee-hero-title">
+                        Scale orchestration across teams.
+                    </h1>
+                    <p class="lead">
+                        Kestra Enterprise gives your teams the security,
+                        governance, and operational capabilities to automate
+                        workflows across your organization.
+                    </p>
+                    <div class="buttons">
+                        <a href="/demo" class="btn-solid">
+                            Book a demo <Icon name="mdi:chevron-right" />
+                        </a>
+                        <a href="/pricing#compare" class="btn-ghost">
+                            Compare editions
+                        </a>
+                    </div>
+                </div>
+
+                <ul class="cards" aria-hidden="true">
+                    {CARDS.map((card) => (
+                        <li
+                            class:list={["glimpse", card.slot]}
+                            data-card
+                            data-states={JSON.stringify(card.states)}
+                            data-tone={card.states[0].tone}
+                        >
+                            <span class="dot" data-dot />
+                            <p class="label">{card.label}</p>
+                            <div class="live">
+                                <p class="value" data-value>
+                                    {card.states[0].value}
+                                </p>
+                                <p class="state" data-tag>
+                                    {card.states[0].tag}
+                                </p>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const TURN_MS = 11000
+    const LEAD = 44
+
+    interface State {
+        value: string
+        tag: string
+        tone: string
+    }
+
+    function playOrbit(frame: HTMLElement) {
+        const beam = frame.querySelector<HTMLElement>("[data-beam]")
+        if (!beam) return
+        const cards = [
+            ...frame.querySelectorAll<HTMLElement>("[data-card]"),
+        ].map((el) => ({
+            el,
+            dot: el.querySelector<HTMLElement>("[data-dot]")!,
+            value: el.querySelector<HTMLElement>("[data-value]")!,
+            tag: el.querySelector<HTMLElement>("[data-tag]")!,
+            states: JSON.parse(el.dataset.states!) as State[],
+            step: 0,
+            angle: 0,
+        }))
+
+        const advance = (card: (typeof cards)[number]) => {
+            card.step = (card.step + 1) % card.states.length
+            const state = card.states[card.step]
+            card.el.classList.add("swap", "ping")
+            window.setTimeout(() => {
+                card.value.textContent = state.value
+                card.tag.textContent = state.tag
+                card.el.dataset.tone = state.tone
+                card.el.classList.remove("swap")
+            }, 200)
+            window.setTimeout(() => card.el.classList.remove("ping"), 1600)
+        }
+
+        const edition = frame.querySelector<HTMLElement>("[data-edition]")
+        const shine = () => {
+            if (!edition) return
+            edition.classList.add("ping")
+            window.setTimeout(() => edition.classList.remove("ping"), 1600)
+        }
+
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+        const wide = matchMedia("(min-width: 992px)")
+        let editionAngle = 340
+        const measure = () => {
+            const box = frame.getBoundingClientRect()
+            const cx = box.left + box.width / 2
+            const cy = box.top + box.height / 2
+            for (const card of cards) {
+                const dot = card.dot.getBoundingClientRect()
+                const dx = dot.left + dot.width / 2 - cx
+                const dy = dot.top + dot.height / 2 - cy
+                card.angle = ((Math.atan2(dx, -dy) * 180) / Math.PI + 360) % 360
+            }
+            if (edition) {
+                const tag = edition.getBoundingClientRect()
+                const dx = tag.left - cx
+                const dy = tag.top + tag.height / 2 - cy
+                editionAngle =
+                    ((Math.atan2(dx, -dy) * 180) / Math.PI + 360) % 360
+            }
+        }
+        measure()
+        new ResizeObserver(measure).observe(frame)
+
+        let running = false
+        let last = 0
+        let elapsed = 0
+        let before = 0
+        let turn = 0
+        let stepped = 0
+
+        const tick = (now: number) => {
+            if (!running) return
+            elapsed += now - last
+            last = now
+            if (wide.matches) {
+                const angle = ((elapsed / TURN_MS) * 360) % 360
+                beam.style.transform = `rotate(${angle - LEAD}deg)`
+                for (const card of cards) {
+                    const crossed =
+                        before <= angle
+                            ? before < card.angle && card.angle <= angle
+                            : card.angle > before || card.angle <= angle
+                    if (crossed) advance(card)
+                }
+                if (before < editionAngle && editionAngle <= angle) shine()
+                before = angle
+            } else if (elapsed - stepped > 1300) {
+                stepped = elapsed
+                advance(cards[turn % cards.length])
+                if (turn % cards.length === 0) shine()
+                turn++
+            }
+            requestAnimationFrame(tick)
+        }
+
+        new IntersectionObserver(([entry]) => {
+            const visible = entry.isIntersecting
+            if (visible && !running) {
+                running = true
+                last = performance.now()
+                requestAnimationFrame(tick)
+            }
+            if (!visible) running = false
+        }).observe(frame)
+    }
+
+    function startOrbits() {
+        document
+            .querySelectorAll<HTMLElement>("[data-ee-orbit]:not([data-wired])")
+            .forEach((frame) => {
+                frame.dataset.wired = ""
+                playOrbit(frame)
+            })
+    }
+
+    document.addEventListener("astro:page-load", startOrbits)
+    startOrbits()
+
+    function clearMenu() {
+        if (!document.querySelector("[data-ee-orbit]")) return
+        document.body.setAttribute("data-header-clear", "")
+        document.addEventListener(
+            "astro:before-swap",
+            () => document.body.removeAttribute("data-header-clear"),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", clearMenu)
+    clearMenu()
+</script>
+
+<style lang="scss">
+    .ee-hero {
+        position: relative;
+        margin-top: -67px;
+        background: var(--ks-background-body);
+    }
+
+    .frame {
+        --success: #5ee3ae;
+        --running: #9d78ff;
+        --warning: #f28c5c;
+        --danger: #ff6b6b;
+        --neutral: #b9b9c6;
+
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                75% 55% at 50% 118%,
+                rgba(72, 48, 255, 0.46),
+                rgba(58, 38, 255, 0.18) 45%,
+                transparent 72%
+            ),
+            radial-gradient(
+                45% 40% at 100% 0%,
+                rgba(95, 77, 255, 0.14),
+                transparent 70%
+            ),
+            radial-gradient(
+                40% 35% at 0% 10%,
+                rgba(58, 38, 255, 0.1),
+                transparent 70%
+            ),
+            #0b0b13;
+        color: #ffffff;
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 10%,
+                rgba(118, 100, 255, 0.75) 50%,
+                transparent 90%
+            );
+            pointer-events: none;
+        }
+
+        > .container-xl {
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .rings,
+    .beam {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 150rem;
+        height: 150rem;
+        margin: -75rem 0 0 -75rem;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .rings {
+        background: repeating-radial-gradient(
+            circle at center,
+            transparent 0 5.4rem,
+            rgba(160, 150, 255, 0.22) 5.4rem calc(5.4rem + 1px)
+        );
+        mask: radial-gradient(
+            circle at center,
+            transparent 6rem,
+            rgba(0, 0, 0, 0.35) 16rem,
+            #000 27rem,
+            transparent 46rem
+        );
+    }
+
+    .beam {
+        background: conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            rgba(143, 91, 255, 0.03) 8deg,
+            rgba(143, 91, 255, 0.24) 40deg,
+            rgba(160, 120, 255, 0.3) 43.6deg,
+            rgba(180, 145, 255, 0.45) 44deg,
+            transparent 44.4deg
+        );
+        mask: radial-gradient(circle at center, #000 0, transparent 44rem);
+        transform: rotate(-104deg);
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+
+    .stage {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: min(88vh, 50rem);
+        padding: 10rem 0 6rem;
+
+        @include media-breakpoint-down(lg) {
+            min-height: 0;
+            padding: 7rem 0 4rem;
+        }
+    }
+
+    .copy {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 37rem;
+        text-align: center;
+
+        @include media-breakpoint-between(lg, xl) {
+            max-width: 29rem;
+        }
+    }
+
+    .eyebrow {
+        position: relative;
+        isolation: isolate;
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0 1.5rem;
+        gap: 0.4375rem;
+        padding: 0.3125rem 0.75rem 0.3125rem 0.5625rem;
+        border-radius: 999px;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                120% 140% at 0% 0%,
+                rgba(255, 255, 255, 0.08),
+                transparent 55%
+            ),
+            linear-gradient(
+                160deg,
+                rgba(130, 115, 190, 0.12),
+                rgba(22, 21, 30, 0.5)
+            );
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.14),
+            inset 0 -8px 14px -10px rgba(143, 91, 255, 0.14),
+            0 10px 30px -12px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(14px) saturate(1.5);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        color: #ffffff;
+        transition: box-shadow 0.9s ease;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            padding: 1.5px;
+            border-radius: inherit;
+            mask:
+                linear-gradient(#000 0 0) content-box exclude,
+                linear-gradient(#000 0 0);
+            pointer-events: none;
+        }
+
+        &::before {
+            background: linear-gradient(
+                150deg,
+                rgba(255, 255, 255, 0.45),
+                rgba(190, 170, 255, 0.2) 40%,
+                rgba(255, 255, 255, 0.08) 60%,
+                rgba(180, 150, 255, 0.3)
+            );
+        }
+
+        &::after {
+            background: conic-gradient(
+                from var(--holo),
+                transparent 0deg,
+                rgba(91, 107, 255, 0.5) 70deg,
+                #8f7bff 120deg,
+                #d9ceff 150deg,
+                transparent 170deg,
+                transparent 360deg
+            );
+            opacity: 0;
+            transition: opacity 0.9s ease;
+        }
+
+        .kestra {
+            position: relative;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .name {
+            position: relative;
+        }
+
+        &:global(.ping) {
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.14),
+                inset 0 -8px 14px -10px rgba(143, 91, 255, 0.14),
+                0 0 16px -8px rgba(110, 120, 255, 0.4);
+            transition-duration: 0.25s;
+
+            &::after {
+                opacity: 1;
+                transition-duration: 0.2s;
+                animation: holo 1.6s linear;
+            }
+        }
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 4.6vw, 4rem);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+        color: #ffffff;
+        text-wrap: balance;
+    }
+
+    .lead {
+        max-width: 33rem;
+        margin: 1.5rem 0 0;
+        font-size: 1.1875rem;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.86);
+        text-wrap: pretty;
+    }
+
+    .buttons {
+        display: inline-grid;
+        grid-auto-columns: minmax(0, 1fr);
+        grid-auto-flow: column;
+        gap: 0.75rem;
+        margin-top: 2.25rem;
+
+        @media (max-width: 400px) {
+            grid-auto-flow: row;
+        }
+    }
+
+    .cards {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-down(lg) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+            width: 100%;
+            margin-top: 3rem;
+        }
+    }
+
+    @property --holo {
+        syntax: "<angle>";
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes holo {
+        to {
+            --holo: 360deg;
+        }
+    }
+
+    .sheen {
+        position: absolute;
+        top: -50%;
+        bottom: -50%;
+        left: 0;
+        width: 45%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.22),
+            transparent
+        );
+        opacity: 0;
+        transform: translateX(-140%) rotate(18deg);
+
+        :global(.ping) & {
+            animation: sheen 1.1s ease-out;
+        }
+    }
+
+    @keyframes sheen {
+        0% {
+            opacity: 1;
+            transform: translateX(-140%) rotate(18deg);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateX(320%) rotate(18deg);
+        }
+    }
+
+    .glimpse {
+        --tone: var(--neutral);
+        --rule: rgba(255, 255, 255, 0.16);
+
+        position: absolute;
+        width: 10.5rem;
+        padding: 0.75rem 0.875rem 0.875rem;
+
+        &[data-tone="success"] {
+            --tone: var(--success);
+        }
+
+        &[data-tone="running"] {
+            --tone: var(--running);
+        }
+
+        &[data-tone="warning"] {
+            --tone: var(--warning);
+        }
+
+        &[data-tone="danger"] {
+            --tone: var(--danger);
+        }
+
+        &.l1 {
+            top: 15%;
+            left: 5%;
+        }
+
+        &.l2 {
+            top: 44%;
+            left: 0;
+        }
+
+        &.l3 {
+            top: 73%;
+            left: 5%;
+        }
+
+        &.r1 {
+            top: 15%;
+            right: 5%;
+        }
+
+        &.r2 {
+            top: 44%;
+            right: 0;
+        }
+
+        &.r3 {
+            top: 73%;
+            right: 5%;
+        }
+
+        @include media-breakpoint-between(lg, xl) {
+            width: 9.75rem;
+
+            &.l1,
+            &.l3 {
+                left: 2%;
+            }
+
+            &.r1,
+            &.r3 {
+                right: 2%;
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            position: relative;
+            inset: auto !important;
+            width: auto;
+        }
+    }
+
+    .glimpse {
+        --mark: rgba(255, 255, 255, 0.75);
+
+        background:
+            linear-gradient(var(--mark) 0 0) top left / 0.5rem 1px,
+            linear-gradient(var(--mark) 0 0) top left / 1px 0.5rem,
+            linear-gradient(var(--mark) 0 0) top right / 0.5rem 1px,
+            linear-gradient(var(--mark) 0 0) top right / 1px 0.5rem,
+            linear-gradient(var(--mark) 0 0) bottom left / 0.5rem 1px,
+            linear-gradient(var(--mark) 0 0) bottom left / 1px 0.5rem,
+            linear-gradient(var(--mark) 0 0) bottom right / 0.5rem 1px,
+            linear-gradient(var(--mark) 0 0) bottom right / 1px 0.5rem;
+        background-color: rgba(255, 255, 255, 0.07);
+        background-repeat: no-repeat;
+        transition: background-color 0.9s ease;
+
+        &:global(.ping) {
+            --mark: #ffffff;
+
+            background-color: color-mix(in srgb, var(--tone) 10%, transparent);
+            transition-duration: 0.15s;
+        }
+    }
+
+    .dot {
+        position: absolute;
+        top: -0.125rem;
+        width: 0.3125rem;
+        height: 0.3125rem;
+        background: var(--tone);
+        transition:
+            background-color 0.3s ease,
+            transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 0.6s ease;
+
+        .l1 &,
+        .l2 &,
+        .l3 & {
+            right: -0.125rem;
+        }
+
+        .r1 &,
+        .r2 &,
+        .r3 & {
+            left: -0.125rem;
+        }
+
+        :global(.ping) & {
+            box-shadow: 0 0 12px var(--tone);
+            transform: scale(1.7);
+            transition-duration: 0.15s;
+        }
+
+        @include media-breakpoint-down(lg) {
+            right: auto !important;
+            left: -0.1875rem !important;
+        }
+    }
+
+    .label,
+    .live {
+        position: relative;
+    }
+
+    .label {
+        margin: 0 0 0.5rem;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.72);
+    }
+
+    .live {
+        position: relative;
+    }
+
+    .label {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        margin: 0 0 0.875rem;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.62);
+    }
+
+    .live {
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease;
+
+        :global(.swap) & {
+            opacity: 0;
+            transform: translateY(0.25rem);
+        }
+    }
+
+    .value {
+        margin: 0 0 0.25rem;
+        overflow: hidden;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #ffffff;
+    }
+
+    .state {
+        margin: 0;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        color: var(--tone);
+        transition: color 0.3s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .live,
+        .dot,
+        .glimpse {
+            transition: none;
+            animation: none;
+        }
+
+        .sheen {
+            animation: none !important;
+        }
+    }
+</style>

@@ -1,0 +1,83 @@
+---
+import { Icon } from "astro-icon/components"
+
+const CONTROLS = [
+    {
+        icon: "mdi:key-outline",
+        title: "Permissioned",
+        text: "An agent can only invoke authorized workflows and act within its service account’s permissions.",
+    },
+    {
+        icon: "mdi:account-check-outline",
+        title: "Approved",
+        text: "Consequential actions pause for a human. The approval, the approver and the context are logged.",
+    },
+    {
+        icon: "mdi:clipboard-text-search-outline",
+        title: "Audited",
+        text: "Every agent action is an execution: inputs, outputs, duration, who or what triggered it. Kill switch when needed.",
+    },
+]
+---
+
+<ul class="agent-controls">
+    {CONTROLS.map((control) => (
+        <li>
+            <Icon name={control.icon} />
+            <h3>{control.title}</h3>
+            <p>{control.text}</p>
+        </li>
+    ))}
+</ul>
+
+<style lang="scss">
+    .agent-controls {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 0 0 3rem;
+        padding: 0;
+        list-style: none;
+        border-block: 1px solid var(--line);
+
+        @include media-breakpoint-down(lg) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        li {
+            padding: 2.25rem clamp(1.5rem, 4vw, 3.5rem);
+
+            & + li {
+                border-left: 1px solid var(--line);
+
+                @include media-breakpoint-down(lg) {
+                    border-left: 0;
+                    border-top: 1px solid var(--line);
+                }
+            }
+        }
+
+        :global(svg) {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #7448e8;
+        }
+
+        h3 {
+            margin: 0 0 0.625rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        p {
+            max-width: 24rem;
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+    }
+</style>
