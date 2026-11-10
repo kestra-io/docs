@@ -221,11 +221,13 @@
             const W = plume.width
             const H = plume.height
             const g = pctx.createLinearGradient(0, pad, 0, pad + reach)
-            g.addColorStop(0, "rgba(255, 130, 70, 0.95)")
-            g.addColorStop(0.18, "rgba(255, 60, 200, 0.95)")
-            g.addColorStop(0.5, "rgba(140, 70, 255, 0.75)")
-            g.addColorStop(0.8, "rgba(50, 70, 255, 0.4)")
-            g.addColorStop(1, "rgba(40, 50, 255, 0)")
+            // The rocket's own blues, saturated: a vivid violet at the nozzle,
+            // its hull's violet, then its deep blue fading out.
+            g.addColorStop(0, "rgba(130, 90, 255, 1)")
+            g.addColorStop(0.2, "rgba(92, 70, 255, 1)")
+            g.addColorStop(0.55, "rgba(50, 60, 255, 0.75)")
+            g.addColorStop(0.85, "rgba(33, 66, 255, 0.3)")
+            g.addColorStop(1, "rgba(33, 66, 255, 0)")
             pctx.fillStyle = g
             pctx.fillRect(0, 0, W, H)
             pctx.globalCompositeOperation = "destination-in"
@@ -335,8 +337,8 @@
                     const h = unit * (0.9 - i * 0.12)
                     ctx.fillStyle =
                         i === 0
-                            ? `rgba(255, 28, 226, ${fade})`
-                            : `rgba(255, 54, 120, ${fade * (1 - i * 0.2)})`
+                            ? `rgba(255, 4, 254, ${fade})`
+                            : `rgba(92, 84, 255, ${fade * (1 - i * 0.2)})`
                     ctx.fillRect(x - w, spark.lane * unit - h / 2, w, h)
                 }
             }
