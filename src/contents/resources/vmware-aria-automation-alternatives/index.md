@@ -24,6 +24,8 @@ The landscape of cloud infrastructure automation is in flux, with many organizat
 
 This evolving environment has spurred a significant search for viable alternatives. The leading alternatives to VMware Aria Automation in 2026 include Kestra, Red Hat Ansible Automation Platform, HPE [Morpheus](/resources/infrastructure/morpheus-alternatives) Enterprise Software, Quali Torque, AWS Step Functions, and HashiCorp Terraform Cloud. Each offers distinct approaches to infrastructure automation, ranging from declarative orchestration to comprehensive cloud management and platform engineering. This article will delve into why exploring these alternatives is crucial now, how we evaluated them, and provide a detailed comparison to help you choose the best fit for your organization's unique needs. Teams reassessing Aria frequently reconsider the underlying platform at the same time; our guide to [VMware cloud alternatives](/resources/infrastructure/vmware-cloud-alternatives) covers that broader migration.
 
+Already decided to leave Aria Automation? Our [vRA to Kestra migration guide](/resources/migration/vra) shows how teams move off vRA and vRO in four stages, with vRA running until each wave is verified, and includes a payback calculator for your own numbers.
+
 ## Why explore alternatives to VMware Aria Automation?
 
 The primary catalyst for seeking alternatives is the industry disruption following Broadcom's acquisition of VMware. This event has created significant uncertainty, with users reporting concerns over substantial price increases, shifts in product bundling, and questions about the future quality of support. For many, the predictable, long-term partnership they had with VMware is now in question, making it a prudent time to assess the market for more stable, cost-effective, and flexible solutions.
@@ -46,11 +48,11 @@ To provide a clear comparison, we evaluated each alternative based on a core set
 
 Kestra is an open-source, event-driven orchestration platform that uses a declarative YAML interface to define and manage workflows. Unlike tools focused solely on infrastructure, Kestra acts as a universal control plane, capable of coordinating tasks across infrastructure, data pipelines, AI/ML models, and business processes from a single platform.
 
-Its language-agnostic architecture allows you to orchestrate the tools you already use, whether it's [Terraform](/orchestration/terraform), [Ansible](/orchestration/ansible), Python scripts, or shell commands — and to drive open hypervisor stacks like [Proxmox VE](/orchestration/proxmox) or [Nutanix AHV](/orchestration/nutanix) end to end. This makes it a powerful choice for unifying disparate automation scripts and cron jobs into a governed, auditable system. Workflows are managed as code, aligning perfectly with [GitOps principles for infrastructure automation](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code).
+Its language-agnostic architecture allows you to orchestrate the tools you already use, whether it's [Terraform](/orchestration/terraform), [Ansible](/orchestration/ansible), Python scripts, or shell commands — and to drive open hypervisor stacks like [Proxmox VE](/orchestration/proxmox) or [Nutanix AHV](/orchestration/nutanix) end to end. This makes it a powerful choice for unifying disparate automation scripts and cron jobs into a governed, auditable system. Workflows are managed as code, aligning perfectly with [GitOps principles for infrastructure automation](https://kestra.io/resources/infrastructure/everything-as-code).
 
-At a Fortune 500 mining leader, Kestra replaced VMware vRA, reducing infrastructure provisioning times from six months to just six days. This demonstrates its capacity to handle complex, enterprise-grade automation with greater speed and flexibility. Kestra can be deployed anywhere—on Kubernetes, VMs, or even air-gapped environments—providing true multi-cloud and hybrid flexibility.
+At a [Fortune 500 manufacturer](/stories/fortune-500-company), Kestra replaced VMware vRA, cutting licensing costs by 90% and delivery time from six months to six days. This demonstrates its capacity to handle complex, enterprise-grade automation with greater speed and flexibility. Kestra can be deployed anywhere—on Kubernetes, VMs, or even air-gapped environments—providing true multi-cloud and hybrid flexibility.
 
-**Best for:** Organizations seeking a unified, vendor-agnostic control plane to orchestrate infrastructure, data, and AI workflows with a developer-first, declarative approach. Explore the [Kestra infrastructure automation platform](https://kestra.io/infra-automation) to learn more.
+**Best for:** Organizations seeking a unified, vendor-agnostic control plane to orchestrate infrastructure, data, and AI workflows with a developer-first, declarative approach. Explore the [Kestra infrastructure automation platform](https://kestra.io/infra-automation), or read the [vRA migration guide](/resources/migration/vra).
 
 ## 2. Red Hat Ansible Automation Platform: Enterprise-Grade IT Automation
 
@@ -86,7 +88,7 @@ Its main advantages are its managed nature, state management capabilities, and e
 
 ## 6. HashiCorp Terraform Cloud / Enterprise: IaC Lifecycle Management
 
-Terraform has become the industry standard for defining [infrastructure as code](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code). Terraform Cloud and Enterprise are HashiCorp's managed offerings that provide a collaborative environment for teams using Terraform at scale. They offer features like remote state management, a private module registry, policy-as-code with Sentinel, and collaborative run workflows.
+Terraform has become the industry standard for defining [infrastructure as code](https://kestra.io/resources/infrastructure/everything-as-code). Terraform Cloud and Enterprise are HashiCorp's managed offerings that provide a collaborative environment for teams using Terraform at scale. They offer features like remote state management, a private module registry, policy-as-code with Sentinel, and collaborative run workflows.
 
 These platforms are excellent for what they do: governing the Terraform lifecycle. However, they are not general-purpose orchestrators. Their role ends once the infrastructure is provisioned. They do not manage the application deployment, data pipelines, or operational tasks that run on top of that infrastructure. They are a critical component of a modern automation stack, but not a complete replacement for a workflow automation platform.
 
@@ -113,7 +115,7 @@ Choosing the right platform depends on your team's primary focus and long-term s
 
 *   **For AI and ML platform teams,** the need is for a language-agnostic platform that can orchestrate heterogeneous tasks, from data preparation to GPU-based model training and serving. Kestra's ability to run any code in any container, combined with its new agentic orchestration features, makes it a future-proof choice for the [AI automation stack](https://kestra.io/ai-automation).
 
-*   **For small teams getting started,** ease of deployment and a strong open-source community are key. Kestra's Apache 2.0 open-source edition can be spun up quickly with Docker, offering a fast path to value without initial license costs.
+*   **For small teams getting started,** ease of deployment and a strong open-source community are key. Kestra's Apache 2.0 open-source edition can be spun up quickly with Docker, offering a fast path to value without initial license costs. Our guide to the [open-source options](/resources/infrastructure/open-source-vmware-vra-replacement) for replacing vRA shows what they take over and where they stop.
 
 ## Conclusion
 

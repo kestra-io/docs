@@ -15,7 +15,7 @@ DevOps and engineering teams automate infrastructure to ensure consistency acros
 Infrastructure automation is the process of codifying and orchestrating infrastructure tasks to manage cloud resources, build container images, and deploy applications. Kestra handles dependencies, retries, and scaling so you can:
 - **Provision resources** dynamically (e.g., spin up cloud VM instances via Terraform, OpenTofu, or Terragrunt)
 - **Build and deploy** containers for critical applications
-- **Scale workloads** using task runners (AWS ECS Fargate, Azure Batch, Kubernetes) or dedicated worker groups
+- **Scale workloads** using task runners (AWS Batch, Azure Batch, Kubernetes) or dedicated worker groups
 - **Roll back** code changes to a previous revision if some infrastructure workflows fail.
 
 ---
@@ -23,7 +23,7 @@ Infrastructure automation is the process of codifying and orchestrating infrastr
 ## Why Use Kestra for Infrastructure Automation?
 
 1. **Unified Platform** – Combine Docker, Terraform, OpenTofu, Terragrunt, Ansible, and cloud CLI tools in a declarative YAML flow.
-2. **Dynamic Scaling** – Task runners provision containers on-demand (e.g., AWS Fargate) for heavy containerized workloads
+2. **Dynamic Scaling** – Task runners provision containers on-demand (e.g., AWS Batch) for heavy containerized workloads
 3. **State Management** – Securely pass secrets, variables, and outputs between tasks (e.g., Docker image tag → Terraform config).
 4. **Failure Handling** – Retry failed Terraform plans or Docker builds with custom retry policies, and get alerts on failures.
 5. **GitOps** – Sync infrastructure-as-code (IaC) workflows with Git for version control and auditability.

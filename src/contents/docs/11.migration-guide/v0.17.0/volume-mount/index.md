@@ -47,7 +47,7 @@ Make the following change in the [Docker Compose file](https://github.com/kestra
             basic-auth:
               enabled: false
               username: "admin@kestra.io" # it must be a valid email address
-              password: kestra
+              password: Admin1234! # it must be at least 8 characters long with uppercase letter and a number
           repository:
             type: postgres
           storage:

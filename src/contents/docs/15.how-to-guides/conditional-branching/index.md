@@ -40,15 +40,18 @@ tasks:
     cases:
       FIRST:
         - id: first
-          type: io.kestra.plugin.core.debug.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          type: io.kestra.plugin.core.output.OutputValues
+          values:
+            result: "{{task.id}} > {{taskrun.startDate}}"
       SECOND:
         - id: second1
-          type: io.kestra.plugin.core.debug.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          type: io.kestra.plugin.core.output.OutputValues
+          values:
+            result: "{{task.id}} > {{taskrun.startDate}}"
         - id: second2
-          type: io.kestra.plugin.core.debug.Return
-          format: "{{task.id}} > {{taskrun.startDate}}"
+          type: io.kestra.plugin.core.output.OutputValues
+          values:
+            result: "{{task.id}} > {{taskrun.startDate}}"
       THIRD:
         - id: third1
           type: io.kestra.plugin.core.flow.Sequential
@@ -57,17 +60,18 @@ tasks:
               type: io.kestra.plugin.core.execution.Fail
           errors:
             - id: error1
-              type: io.kestra.plugin.core.debug.Return
-              format: "Error Trigger ! {{task.id}}"
+              type: io.kestra.plugin.core.log.Log
+              message: "Error Trigger ! {{task.id}}"
     defaults:
       - id: default
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{task.id}} > {{taskrun.startDate}}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{task.id}} > {{taskrun.startDate}}"
 
 outputs:
   - id: extracted
     type: STRING
-    value: "{{ outputs.first ?? outputs.second1 ?? outputs.third1 ?? outputs.default }}"
+    value: "{{ outputs.first.values.result ?? outputs.second1.values.result ?? outputs.default.values.result ?? 'The THIRD branch failed' }}"
 ```
 
 Save and execute the `switch` flow.
@@ -82,8 +86,8 @@ Within the flow:
         - `FIRST`: Executes task `first`, returning its ID and start time.
         - `SECOND`: Executes two tasks (`second1` and `second2`), both returning their task ID and start time.
         - `THIRD`: Runs a sequence of tasks where the `failed` task triggers an error and executes the `error1` task, which logs an error message.
-    - `defaults`: If the input doesn't match any cases, it runs the `default` task and logs the task ID and start time.
-- `outputs`: Extracts and logs the output from one of the executed tasks (`first`, `second1`, `third1`, or `default`).
+    - `defaults`: If the input doesn't match any cases, it runs the `default` task and emits the task ID and start time.
+- `outputs`: Exposes `values.result` from `first`, `second1`, or `default`, depending on the executed branch. If the `THIRD` branch fails, the expression falls back to `The THIRD branch failed`.
 
 ## Example 2: Conditional branching with Kestra’s website status
 

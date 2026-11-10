@@ -100,8 +100,9 @@ tasks:
     message: "Running validation for environment: {{ inputs.environment }}"
 
   - id: generate_status
-    type: io.kestra.plugin.core.debug.Return
-    value: "Validation passed for {{ inputs.environment }}"
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "Validation passed for {{ inputs.environment }}"
 
 tests:
   - id: unit_test_validation
@@ -113,11 +114,12 @@ tests:
           status: "SUCCESS"
       - id: generate_status
         outputs:
-          value: "Validation passed for production"
+          values:
+            result: "Validation passed for production"
     assertions:
       - state: SUCCESS
       - task: generate_status
-        condition: "{{ outputs.generate_status.value == 'Validation passed for production' }}"
+        condition: "{{ outputs.generate_status.values.result == 'Validation passed for production' }}"
 ```
 
 ### Worth noticing in this pattern:

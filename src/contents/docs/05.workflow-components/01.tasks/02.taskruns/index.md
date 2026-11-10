@@ -37,16 +37,16 @@ For a detailed overview of how task runs transition through states, see the [Sta
 
 The `{{ taskrun }}` expression provides access to information about the current task run.
 
-The following example outputs task run details using `{{ taskrun }}`:
+The following example logs task run details using `{{ taskrun }}`:
 
 ```yaml
 id: taskrun
 namespace: company.team
 
 tasks:
-  - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ taskrun }}"
+  - id: log_taskrun
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ taskrun }}"
 ```
 
 The logs show the following:
@@ -83,7 +83,7 @@ tasks:
           taskrun.parentId={{ taskrun.parentId }}
 ```
 
-For nested loops, `{{ item.parent.value }}` accesses the immediate enclosing loop's value, and `{{ item.parents[n].value }}` accesses deeper ancestors (`[0]` = immediate parent, `[1]` = grandparent, and so on).
+For nested loops, `{{ item.parent.value }}` accesses the immediate enclosing loop's value, and `{{ item.parents[n].value }}` accesses any enclosing loop, counting from the outermost (`[0]` = outermost loop).
 
 See [Loop iteration context](../../../expressions/01.context/index.mdx#loop-iteration-context) in the expressions reference for the full `item` variable table.
 

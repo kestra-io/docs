@@ -53,11 +53,11 @@ A reliable data center automation strategy relies on several interconnected comp
 
 ### Workload automation and orchestration platforms
 
-Workload automation tools focus on scheduling and managing batch jobs and repetitive tasks. Orchestration platforms take this a step further by coordinating complex, multi-step, and cross-system workflows. Effective [workflow management](/resources/infrastructure/workflow-management) is the central nervous system of an automated data center, ensuring that different tools and systems work together to achieve a desired outcome.
+Workload automation tools focus on scheduling and managing batch jobs and repetitive tasks. Orchestration platforms take this a step further by coordinating complex, multi-step, and cross-system workflows. Effective [workflow management](/resources/infrastructure/workflow-orchestration-tools) is the central nervous system of an automated data center, ensuring that different tools and systems work together to achieve a desired outcome.
 
 ### Automated provisioning and configuration management
 
-Tools like Terraform, Ansible, and Puppet are foundational to modern data center automation. They enable the practice of [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code), where infrastructure is defined and managed through machine-readable definition files. This approach ensures that deployments are repeatable, version-controlled, and consistent across all environments. For teams looking to modernize, exploring [alternatives to Ansible](/resources/infrastructure/alternatives-to-ansible) and other tools can reveal more flexible, declarative solutions.
+Tools like Terraform, Ansible, and Puppet are foundational to modern data center automation. They enable the practice of [Infrastructure as Code (IaC)](/resources/infrastructure/everything-as-code), where infrastructure is defined and managed through machine-readable definition files. This approach ensures that deployments are repeatable, version-controlled, and consistent across all environments. For teams looking to modernize, exploring [alternatives to Ansible](/resources/infrastructure/alternatives-to-ansible) and other tools can reveal more flexible, declarative solutions.
 
 ### Monitoring, alerting, and self-healing systems
 
@@ -73,7 +73,7 @@ Most enterprises operate a heterogeneous environment with a mix of modern cloud 
 
 ### Ensuring security, compliance, and auditability
 
-Automating powerful operations introduces new security considerations. It's essential to implement strict access controls, manage secrets securely, and maintain a complete audit trail of every automated action. Effective [workflow governance](/resources/infrastructure/workflow-governance) and a strong focus on [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security) are non-negotiable for maintaining compliance and preventing unauthorized changes.
+Automating powerful operations introduces new security considerations. It's essential to implement strict access controls, manage secrets securely, and maintain a complete audit trail of every automated action. Effective [workflow governance](/resources/ai/ai-governance-workflows) and a strong focus on [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security) are non-negotiable for maintaining compliance and preventing unauthorized changes.
 
 ### Managing change and skill gaps
 

@@ -6,6 +6,7 @@ sidebarTitle: Service Accounts
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: ">= 0.15.0"
+docId: service-accounts
 ---
 
 Service accounts represent applications or CI/CD systems that access Kestra programmatically, without a password or UI access. Each service account has a name, an optional description, an optional group assignment, and a list of roles that grant it permissions to specific resources.

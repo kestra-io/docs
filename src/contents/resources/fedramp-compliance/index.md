@@ -61,7 +61,7 @@ Each level corresponds to a specific set of security controls from the NIST SP 8
 There are two primary paths a CSP can take to achieve FedRAMP authorization:
 
 1.  **Joint Authorization Board (JAB) Provisional Authority to Operate (P-ATO):** This is a highly sought-after authorization granted by the JAB. It represents a provisional approval that any federal agency can leverage. The JAB selects a limited number of CSPs to work with each year, making this a competitive but highly valuable path for services with broad government applicability.
-2.  **Agency Authority to Operate (ATO):** In this more common path, a CSP works directly with a specific federal agency to obtain an ATO for its cloud service. The agency acts as the sponsor, reviewing the security package and accepting the risk. Once an Agency ATO is granted, other agencies can review the package and grant their own ATOs based on that initial assessment, upholding the program's reuse principle. Robust [workflow governance](/resources/infrastructure/workflow-governance) is key to managing this process effectively.
+2.  **Agency Authority to Operate (ATO):** In this more common path, a CSP works directly with a specific federal agency to obtain an ATO for its cloud service. The agency acts as the sponsor, reviewing the security package and accepting the risk. Once an Agency ATO is granted, other agencies can review the package and grant their own ATOs based on that initial assessment, upholding the program's reuse principle. Robust [workflow governance](/resources/ai/ai-governance-workflows) is key to managing this process effectively.
 
 ## Why Orchestration is Essential for FedRAMP Compliance
 
@@ -151,9 +151,9 @@ The effort to achieve and maintain FedRAMP authorization yields significant retu
 From public sector IT providers like Dataport to the IT production arms of major banks like Crédit Agricole, organizations in regulated environments rely on standardized, auditable automation to meet stringent compliance demands.
 
 ## Related Concepts
-- [What is Infrastructure as Code?](/resources/infrastructure/what-is-infrastructure-as-code)
+- [What is Infrastructure as Code?](/resources/infrastructure/everything-as-code)
 - [Workflow Orchestration Security Best Practices](/resources/infrastructure/workflow-orchestration-security)
 - [Automating Data Retention Policies for Compliance](/resources/data/data-retention-automation)
-- [GitOps for Operations: Beyond CI/CD](/resources/infrastructure/gitops-for-operations)
+- [GitOps for Operations: Beyond CI/CD](/resources/infrastructure/gitops)
 - [Role-Based Access Control (RBAC) in Workflow Orchestration](/resources/infrastructure/rbac-workflow-orchestration)
 - [Enterprise SSO Workflow Orchestration](/resources/infrastructure/enterprise-sso-workflow-orchestration)

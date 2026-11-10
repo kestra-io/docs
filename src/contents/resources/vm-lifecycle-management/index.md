@@ -22,7 +22,7 @@ faq:
 author: "elliot"
 ---
 
-Managing virtual machines (VMs) effectively across their entire lifespan is a core challenge for platform and infrastructure engineers. From initial provisioning to ongoing operations, security, and eventual decommissioning, the VM lifecycle is complex, often fragmented, and prone to manual errors. Traditional tools struggle to provide a unified view or automate across heterogeneous virtualization platforms.
+Managing virtual machines (VMs) effectively across their entire lifespan is a core challenge for platform and infrastructure engineers. From initial provisioning to [ongoing day 2 operations](/resources/infrastructure/day-2-operations), security, and eventual decommissioning, the VM lifecycle is complex, often fragmented, and prone to manual errors. Traditional tools struggle to provide a unified view or automate across heterogeneous virtualization platforms.
 
 This guide delves into VM lifecycle management, outlining its key stages, critical security considerations, and the immense benefits of automation. We'll explore how modern orchestration platforms like Kestra provide a declarative, event-driven control plane to streamline VM operations, integrate with your existing IaC tools, and ensure auditability from cloud to edge.
 
@@ -54,7 +54,7 @@ Security must be integrated into every stage of the VM lifecycle, not treated as
 Security starts before the VM is even created. By embedding security practices into the provisioning and deployment phases, you can build a strong foundation.
 
 - **Hardened Templates and Images**: Use standardized, pre-hardened VM templates and images that have been scanned for vulnerabilities and configured according to security best practices. This ensures that every new VM starts from a known-secure state.
-- **Secure Network Configuration**: Automate the setup of network security rules, firewalls, and virtual private clouds (VPCs) as part of the provisioning process. Adhering to [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) principles makes these configurations auditable and repeatable.
+- **Secure Network Configuration**: Automate the setup of network security rules, firewalls, and virtual private clouds (VPCs) as part of the provisioning process. Adhering to [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) principles makes these configurations auditable and repeatable.
 - **Least Privilege Access**: Ensure that the accounts and services used for provisioning have only the minimum necessary permissions to create and configure VMs. This limits the potential damage if credentials are compromised. Policy-as-code tools like Open Policy Agent can be orchestrated to [enforce these guardrails](https://kestra.io/orchestration/opa).
 
 ### Ongoing security practices for running VMs
@@ -76,7 +76,7 @@ By codifying your VM deployment workflows, you can turn a complex manual process
 
 - **Infrastructure as Code (IaC)**: Use tools like [Terraform](https://kestra.io/orchestration/terraform) and [Ansible](https://kestra.io/orchestration/ansible) to define your VMs and their configurations in code. This allows you to version, test, and review infrastructure changes just like application code.
 - **GitOps for VM Configurations**: Store your IaC definitions in a Git repository. A [GitOps](https://kestra.io/resources/infrastructure/gitops) approach uses the Git repository as the single source of truth, with an orchestration engine automatically applying changes to your environment.
-- **[Self-Service](/resources/infrastructure/self-service-infrastructure) Portals**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
+- **[Self-Service Portals](/resources/infrastructure/self-service-infrastructure)**: Build self-service portals that allow development teams to request and provision VMs based on pre-approved, automated workflows. This empowers teams while maintaining central governance and control.
 
 ### Tools and strategies for efficient VM operations
 

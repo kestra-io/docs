@@ -4,6 +4,7 @@ description: "Drive Proxmox VE from one flow: VMware-to-Proxmox migrations, node
 tool:
   name: "Proxmox"
   pluginClass: "io.kestra.plugin.proxmox.vm.Create"
+  category: "Infrastructure"
   color: "#E57000"
 
 hero:
@@ -16,7 +17,15 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Run Proxmox like vCenter without the Broadcom tax: a workflow engine that listens to cron or VM state changes, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a>. Drop the vRA subscription; prove backups restore monthly."
+nutshell: "Run Proxmox like vCenter without the Broadcom tax: a workflow engine that listens to cron or VM state changes, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a>. Keep your automation independent of the hypervisor, and prove backups restore monthly."
+
+guideCta:
+  eyebrow: "Migration guide"
+  title: "Leaving vRA along with vSphere?"
+  description: "The vRA to Kestra migration guide covers moving your automation while the hypervisor underneath changes."
+  cta:
+    label: "Read the guide"
+    href: "/resources/migration/vra"
 
 pillars:
   title: "Around every VM, every container, every node."
@@ -186,23 +195,19 @@ quotes:
 
 blueprints:
   title: "Blueprints for Proxmox orchestration."
-  lead: "One blueprint per use case above. Copy the YAML, point it at your Proxmox node, ship it."
   items:
     - name: "Safe patching with rollback"
       blueprintId: "proxmox-safe-patching"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on a Proxmox VM or LXC, runs the OS update over SSH, probes the service. The <code>errors</code> branch rolls back the snapshot and notifies Slack on failure."
-      href: "/blueprints?tags=Infrastructure"
     - name: "Node drain via live migration"
       blueprintId: "proxmox-node-drain"
       title: "Drain a Proxmox node for maintenance: live-migrate all guests off, gate, return"
       description: "Lists all VMs and containers on a target node, dispatches each to another node via live migration, polls each UPID to completion, then pauses for the maintenance window before optionally returning guests."
-      href: "/blueprints?tags=Infrastructure"
     - name: "vzdump backup restore drill"
       blueprintId: "proxmox-backup-restore-drill"
       title: "Monthly backup restore drill on a throwaway VMID"
       description: "Lists recent vzdump backups, restores the latest one to a temporary VMID, starts the VM, probes the service, deletes the temp VM. Catches storage corruption and broken backups before the real disaster."
-      href: "/blueprints?tags=Infrastructure"
 comparison:
   title: "Kestra vs Proxmox orchestration alternatives"
   subtitle: "Kestra wraps the Proxmox REST API with native scheduling, snapshot rollback, live migration, vzdump drills, and cross-tool chaining. The competitors below are the platforms infrastructure teams actually use to automate Proxmox today."
@@ -316,6 +321,10 @@ resources:
       title: "Proxmox plugin reference"
       description: "Every Proxmox task (VM, LXC, snapshot, backup, cluster, network, task, template) with copy-ready YAML examples."
       href: "/plugins/plugin-proxmox"
+    - kind: "how-to"
+      title: "Migrating off VMware vRA and vRO"
+      description: "Four stages from assessing your estate to retiring vRA at renewal, with vRA running until each wave is verified."
+      href: "/resources/migration/vra"
 
 seeHow:
   title: "Ready to orchestrate VMware exits and Proxmox day-2 ops?"

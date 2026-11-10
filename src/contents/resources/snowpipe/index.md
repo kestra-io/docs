@@ -170,7 +170,7 @@ Snowpipe is well-suited for a variety of scenarios, including:
 - **Orchestrate Post-Load Tasks**: Use an orchestrator to manage compute-intensive tasks separately from ingestion, ensuring you use the right-sized warehouse for each job and improving overall [data quality](/resources/data/data-quality) and [data observability](/resources/data/data-observability).
 
 ## Related concepts
-- [Data Pipeline: Components, Architecture and Best Practices](/resources/data/data-pipeline)
+- [Data Pipeline: Components, Architecture and Best Practices](/resources/data/create-data-pipeline)
 - [ETL vs. ELT: Key Differences and Use Cases](/resources/data/etl-vs-elt)
 - [Snowflake Tasks Alternatives for Modern Data Orchestration](/resources/data/snowflake-tasks-alternatives)
 - [dbt Integrations: Orchestrating Your Transformations](/resources/data/dbt-integrations)

@@ -122,7 +122,7 @@ If your goal is to establish a unified, declarative control plane for all infras
 
 ### For data engineering teams
 
-If your focus is on building, scheduling, and monitoring complex data pipelines, **Kestra** provides a flexible, polyglot platform. Its ability to natively handle Python, SQL, dbt, and event-driven triggers makes it a strong foundation for a modern data stack. It allows you to orchestrate ingestion, transformation, and delivery workflows in a single, observable platform. Learn more about [data orchestration](/resources/data/data-orchestration) and how to [automate data pipelines](/resources/data/automate-data-pipeline) with Kestra.
+If your focus is on building, scheduling, and monitoring complex data pipelines, **Kestra** provides a flexible, polyglot platform. Its ability to natively handle Python, SQL, dbt, and event-driven triggers makes it a strong foundation for a modern data stack. It allows you to orchestrate ingestion, transformation, and delivery workflows in a single, observable platform. Learn more about [data orchestration](/resources/data/data-orchestration) and how to [automate data pipelines](/resources/data/create-data-pipeline) with Kestra.
 
 ### For small to mid-sized teams
 
@@ -130,6 +130,6 @@ For smaller teams or those just beginning their automation journey, the accessib
 
 ## Conclusion
 
-Moving away from a legacy platform like Broadcom Dollar Universe is an opportunity to modernize your entire automation strategy. The shift from traditional, imperative job schedulers to modern, declarative orchestration platforms enables greater agility, better governance, and a more unified approach to [workflow management](/resources/infrastructure/workflow-management) across your organization.
+Moving away from a legacy platform like Broadcom Dollar Universe is an opportunity to modernize your entire automation strategy. The shift from traditional, imperative job schedulers to modern, declarative orchestration platforms enables greater agility, better governance, and a more unified approach to [workflow management](/resources/infrastructure/workflow-orchestration-tools) across your organization.
 
 The best alternative depends entirely on your specific needs. For enterprises seeking a managed SaaS solution for business processes, Redwood RunMyJobs is a strong contender. For complex hybrid IT environments, Stonebranch provides extensive connectivity. However, for organizations looking to build a future-proof, vendor-neutral control plane that empowers developers and unifies data, AI, and infrastructure workflows, Kestra offers a compelling path forward.

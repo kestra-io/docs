@@ -4,6 +4,7 @@ h1: Find, Choose, and Use Kestra Plugins for Any Integration
 description: Understand how Kestra plugins work, how to choose versions, and where to find or build the right integration.
 sidebarTitle: Plugins
 icon: /src/contents/docs/icons/flow.svg
+docId: plugins
 ---
 
 Plugins are the integrations that let flows connect to databases, APIs, file systems, queues, and runtime environments. Every task and trigger in Kestra is provided by a plugin. Browse the full catalog at [kestra.io/plugins](/plugins).
@@ -17,7 +18,7 @@ Plugins come in three categories:
 - **Conditions** control when triggers fire or which branch of a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) runs.
 
 :::alert{type="info"}
-The [Kestra MCP server](../../ai-tools/02.kestra-mcp-resources/index.md) gives AI coding agents like Claude Code and Cursor live access to plugin task schemas, properties, and version history. Add it to your agent for accurate plugin reference while writing flows.
+The [Kestra Docs MCP server](../../develop-with-ai/02.kestra-mcp-resources/index.md) gives AI coding agents like Claude Code and Cursor live access to plugin task schemas, properties, and version history. Add it to your agent for accurate plugin reference while writing flows.
 :::
 
 ## Choosing versions
@@ -78,7 +79,7 @@ See [Secrets in Open Source](../../15.how-to-guides/secrets/index.md) or [Secret
 - **OSS**: the standard Kestra Docker image ships with plugins pre-installed.
 - **UI (Enterprise Edition)**: install, upgrade, and pin versions under **Instance → Versioned Plugins**.
 
-See [Selected Plugin Installation](../../15.how-to-guides/selected-plugin-installation/index.md) for full setup options including Docker Compose automation.
+See [Install Selected Plugins on a Slim Kestra Image](../../15.how-to-guides/slim-image-plugins/index.md) to download plugins with [`kestractl`](../../kestra-cli/kestractl/index.md#installation) and add them to a custom image or Docker Compose setup.
 
 ## Building or requesting plugins
 

@@ -3,6 +3,7 @@ import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"
 import { GTM_ID } from "astro:env/client"
 import { CONSENT_REGION_ATTR } from "~/middlewares/consentRegion"
+import { readInternalFlagFromUrl, tagInternalVisitor } from "./internalVisitor"
 
 // Set by the Worker on <html> from Cloudflare's edge geo data (not a
 // cookie, so responses stay edge-cacheable); falls back to Intl timezone
@@ -28,6 +29,9 @@ const bannerModule = isEurope ? import("./cookieBanner") : null
 // Astro's <ClientRouter /> makes navigation a soft transition, so these
 // guards keep one-time bootstrap idempotent across page loads.
 let analyticsEnabled = false
+// Whether analytics consent currently stands. Separate from analyticsEnabled
+// (PostHog bootstrapped), which stays true after a revoke.
+let analyticsGranted = false
 let marketingEnabled = false
 let consentInitialized = false
 let gtmLoaded = false
@@ -77,16 +81,36 @@ const initConsentModeAndGtm = () => {
     document.head.appendChild(s)
 }
 
+// With <ClientRouter />, document.referrer keeps the landing page's external
+// referrer for the whole visit, so GA4 would report it on every soft
+// navigation. Track the previous page ourselves and send it as page_referrer.
+// (Done here rather than in a GTM Custom JavaScript variable: those need
+// 'unsafe-eval', which our CSP doesn't allow, and silently return undefined.)
+let lastPageUrl: string | undefined
+let pageReferrer: string | undefined = document.referrer || undefined
+
 export const pushPageView = () => {
+    const url = window.location.href?.split("#")[0]
+    // Several pushes for the same page (e.g. consent re-granted) keep the
+    // same referrer instead of pointing the page at itself.
+    if (url !== lastPageUrl) {
+        if (lastPageUrl !== undefined) {
+            pageReferrer = lastPageUrl
+        }
+        lastPageUrl = url
+    }
+
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({
         event: "content-view",
         "content-name": window.location.pathname + window.location.search,
         "content-view-name": window.astroClientConfig?.slug,
+        page_referrer: pageReferrer,
     })
 }
 
 export const enabledAnalytics = async () => {
+    analyticsGranted = true
     // Push a page-view on every navigation (including client-side transitions).
     if (analyticsEnabled) {
         // Re-granting after a withdrawal: opt back in explicitly, since
@@ -95,10 +119,16 @@ export const enabledAnalytics = async () => {
             posthog.opt_in_capturing({ captureEventName: false })
             posthog.startSessionRecording()
         }
+        tagInternalVisitor()
         pushPageView()
         return
     }
     analyticsEnabled = true
+
+    // Report the landing page-view before awaiting /config: GTM's GA4
+    // page_view fires on content-view, so a slow or failed /config must not
+    // delay or drop it (it only feeds PostHog and the identify event).
+    pushPageView()
 
     const response = await $fetchApi<{
         posthog: { token: string }
@@ -120,6 +150,8 @@ export const enabledAnalytics = async () => {
         from: "SITE",
     })
 
+    tagInternalVisitor()
+
     if (!posthog.get_property("__alias")) {
         posthog.alias(response.id)
     }
@@ -132,8 +164,6 @@ export const enabledAnalytics = async () => {
         noninteraction: true,
         kuid: response.id,
     })
-
-    pushPageView()
 
     localStorage.setItem("KUID", response.id)
 
@@ -166,6 +196,7 @@ export const enabledMarketing = () => {
 // pick the change up. opt_out_capturing() persists, so it also covers the
 // visitor's later visits until they opt back in.
 export const disableAnalytics = () => {
+    analyticsGranted = false
     if (!analyticsEnabled) {
         return
     }
@@ -176,6 +207,7 @@ export const disableAnalytics = () => {
 // Fires on initial load and every client-side navigation, so bootstrap runs
 // once and every page after that just reports a page-view.
 document.addEventListener("astro:page-load", async () => {
+    readInternalFlagFromUrl()
     initConsentModeAndGtm()
 
     if (!isEurope) {
@@ -189,7 +221,7 @@ document.addEventListener("astro:page-load", async () => {
 
     // Consent already handled on an earlier page — just report the page-view.
     if (consentInitialized) {
-        if (analyticsEnabled) {
+        if (analyticsGranted) {
             enabledAnalytics()
         } else {
             // No analytics consent: GTM stays loaded, so this only produces

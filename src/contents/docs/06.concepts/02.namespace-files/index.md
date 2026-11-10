@@ -4,6 +4,7 @@ h1: Manage Namespace Files and Use Them in Your Flows
 description: Manage Namespace Files in Kestra and use them in your flows. Store scripts, configs, and assets at the namespace level for centralized file management.
 sidebarTitle: Namespace Files
 icon: /src/contents/docs/icons/concepts.svg
+docId: files
 ---
 
 Namespace Files are files tied to a namespace — scripts, queries, configs, and other assets you can reference in any flow within that namespace.
@@ -28,8 +29,9 @@ tasks:
     values: "{{ trigger.rows }}"
     tasks:
       - id: return
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ fromJson(item.value) }}"
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          result: "{{ fromJson(item.value) }}"
 
 triggers:
   - id: query_trigger
@@ -192,7 +194,7 @@ resource "kestra_namespace_file" "prod_scripts" {
 
 ### Deploy namespace files via kestractl
 
-[kestractl](../../kestra-cli/kestractl/index.md) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
+[kestractl](../../kestra-cli/kestractl/index.md#installation) uploads namespace files from the command line. The following example synchronizes an entire local directory with the `prod` namespace:
 
 ```bash
 kestractl nsfiles upload prod ./scripts --override
@@ -457,3 +459,19 @@ namespaceFiles:
 :::alert{type="warning"}
 Patterns without a leading `/` are automatically prefixed with `**/`, which makes them recursive. Use a leading `/` or explicit `glob:`/`regex:` to restrict matching to the namespace root. Patterns that already contain `**` (e.g. `my_dir/**`) are still prefixed, producing `**/my_dir/**`; use `/my_dir/**` or `glob:/my_dir/**` to avoid the double prefix.
 :::
+
+## Dedicated-storage workers
+
+:::alert{type="info"}
+This configuration applies to Enterprise Edition deployments where workers use dedicated storage, separate from the internal storage that the webserver and Worker Controller use.
+:::
+
+Workers with dedicated storage read and write namespace file content against their own bucket by default. A file uploaded from the UI is listed on the worker but its content is unreachable, and a file written by a task on the worker cannot be read from anywhere else. Set `kestra.namespace-files.worker-access: CONTROLLER` to route all namespace file operations through the controller instead:
+
+```yaml
+kestra:
+  namespace-files:
+    worker-access: CONTROLLER    # default: STORAGE
+```
+
+See [Dedicated-storage workers](../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation, the equivalent settings for KV Store values and managed plugin artifacts, and the property reference.

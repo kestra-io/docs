@@ -142,7 +142,7 @@ A robust network configuration is vital. Best practice dictates using multiple, 
 - **Public Network:** For client connections to the clustered roles.
 - **Private Network:** For internal cluster communication, such as heartbeats, state synchronization, and CSV traffic. This network should be isolated from client traffic.
 
-Configuring these networks correctly ensures that cluster communication doesn't interfere with client access and that the cluster remains stable even if one network path fails. These configurations are often managed as part of an [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/what-is-infrastructure-as-code) strategy.
+Configuring these networks correctly ensures that cluster communication doesn't interfere with client access and that the cluster remains stable even if one network path fails. These configurations are often managed as part of an [Infrastructure as Code (IaC)](https://kestra.io/resources/infrastructure/everything-as-code) strategy.
 
 ## Orchestrating Windows Clusters with Kestra
 

@@ -46,7 +46,7 @@ Consider these key factors:
 *   **Declarative Workflow Definition:** Does the tool treat workflows as code? Platforms that use declarative YAML or similar formats enable version control, peer reviews, and automated testing, aligning perfectly with GitOps principles.
 *   **Integration Ecosystem:** How well does it connect to your entire stack? A strong alternative should have a rich ecosystem of plugins or integrations for Ansible, Terraform, databases, cloud services, messaging queues, and APIs.
 *   **Scalability and High Availability:** Can the platform grow with your needs? Assess its architecture for horizontal scaling, high availability, and the ability to handle a high volume of concurrent tasks.
-*   **Security and Governance:** Does it meet enterprise requirements? Features like Role-Based Access Control (RBAC), Single Sign-On (SSO), audit logs, and secure secret management are non-negotiable for production environments. Robust [workflow governance](/resources/infrastructure/workflow-governance) ensures that automation is secure and compliant.
+*   **Security and Governance:** Does it meet enterprise requirements? Features like Role-Based Access Control (RBAC), Single Sign-On (SSO), audit logs, and secure secret management are non-negotiable for production environments. Robust [workflow governance](/resources/ai/ai-governance-workflows) ensures that automation is secure and compliant.
 *   **Observability and Debugging:** How easy is it to understand what went wrong? Comprehensive logging, real-time execution tracking, and clear error reporting are critical for troubleshooting complex workflows. Good [workflow observability](/resources/infrastructure/workflow-observability) saves valuable time during incidents.
 
 ## The Leading Semaphore UI Alternatives for Modern Automation
@@ -93,7 +93,7 @@ The typical workflow involves Spacelift running a Terraform plan to create infra
 
 Jenkins is one of the most established and versatile automation servers in the DevOps world. With a massive ecosystem of thousands of plugins, it can be configured to do almost anything, including running Ansible playbooks.
 
-Jenkins offers a high degree of flexibility through its Pipeline-as-Code feature, which uses a Groovy-based DSL to define automation workflows. For teams already using Jenkins for their [CI/CD pipeline](/resources/infrastructure/ci-cd-pipeline), adding Ansible automation can be a natural extension. However, this flexibility comes at a cost. Managing Jenkins, its plugins, and its configuration can become a full-time job, and its UI and user experience are often considered dated compared to more modern tools.
+Jenkins offers a high degree of flexibility through its Pipeline-as-Code feature, which uses a Groovy-based DSL to define automation workflows. For teams already using Jenkins for their [CI/CD pipeline](/resources/infrastructure/ci-cd-orchestration), adding Ansible automation can be a natural extension. However, this flexibility comes at a cost. Managing Jenkins, its plugins, and its configuration can become a full-time job, and its UI and user experience are often considered dated compared to more modern tools.
 
 **Best for:** Organizations with existing Jenkins expertise and a need to integrate Ansible automation into a highly customized and diverse CI/CD environment.
 

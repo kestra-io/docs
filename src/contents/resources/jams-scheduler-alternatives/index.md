@@ -50,7 +50,7 @@ When moving beyond traditional job scheduling, it's crucial to evaluate alternat
 *   **Event-Driven Capabilities:** Modern automation is not just about schedules. The ability to trigger workflows from events like API calls, file uploads, or message queues is essential for building responsive systems. This is a core tenet of [event-driven orchestration](/resources/infrastructure/event-driven-orchestration).
 *   **Comprehensive Plugin Ecosystem:** A rich library of pre-built integrations for databases, cloud services, and applications accelerates development and reduces the need for custom code.
 *   **Scalability and Enterprise Governance:** The orchestrator must scale to handle high volumes of workflows and provide enterprise-grade features like multi-tenancy, Role-Based Access Control (RBAC), and detailed audit logs for robust [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security).
-*   **GitOps and CI/CD Integration:** The platform should integrate seamlessly with tools like Git, GitHub Actions, and Jenkins, treating workflows as a core part of the software development lifecycle. This is what [GitOps for operations](/resources/infrastructure/gitops-for-operations) is all about.
+*   **GitOps and CI/CD Integration:** The platform should integrate seamlessly with tools like Git, GitHub Actions, and Jenkins, treating workflows as a core part of the software development lifecycle. This is what [GitOps for operations](/resources/infrastructure/gitops) is all about.
 *   **Centralized Observability:** A single pane of glass for monitoring all executions, viewing logs, and debugging failures is critical for maintaining reliable operations and achieving true [workflow observability](/resources/infrastructure/workflow-observability).
 *   **Open-Source Core:** An open-source foundation provides flexibility, avoids vendor lock-in, and fosters a strong community, with enterprise editions available for advanced features and support.
 
@@ -111,7 +111,7 @@ The best alternative depends on your team's primary focus and technology stack.
 
 ### For infrastructure and operations teams
 
-These teams should prioritize solutions that embrace [Infrastructure as Code](/resources/infrastructure/what-is-infrastructure-as-code). A declarative, GitOps-friendly platform like Kestra allows you to version, audit, and automate your operational workflows alongside your infrastructure definitions. Look for Kubernetes compatibility, multi-cloud capabilities, and strong security features. Explore how Kestra can serve as your central [infra-automation](/infra-automation) control plane.
+These teams should prioritize solutions that embrace [Infrastructure as Code](/resources/infrastructure/everything-as-code). A declarative, GitOps-friendly platform like Kestra allows you to version, audit, and automate your operational workflows alongside your infrastructure definitions. Look for Kubernetes compatibility, multi-cloud capabilities, and strong security features. Explore how Kestra can serve as your central [infra-automation](/infra-automation) control plane.
 
 ### For data engineering teams
 

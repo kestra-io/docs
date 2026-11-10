@@ -43,6 +43,8 @@ The icon in the **Changes** column opens the full diff for that event, showing t
 
 ![Changes Diff](./changes_diff.png)
 
+To open a diff, you need `VIEW` on the audited resource in its namespace, not only `AUDITLOG` permissions. Some resource types need a tenant-wide grant or an instance owner. See the `AUDITLOG` entry in the [permissions reference](../../03.auth/rbac/permissions-reference/index.md) for the full rules.
+
 ## Filtering audit logs
 
 The **Add filters** button opens the Advanced filter dialog. Multiple conditions can be combined; for example, Interval (Last 7 days) and Resource type (NAMESPACE):

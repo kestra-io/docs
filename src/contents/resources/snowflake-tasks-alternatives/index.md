@@ -79,7 +79,7 @@ We evaluated each alternative based on its ability to address the limitations of
 - **Polyglot Execution:** First-class support for any language or Docker container, breaking free from SQL-only limitations.
 - **Event-Driven by Default:** Native support for real-time triggers from various sources (Kafka, S3, webhooks) alongside scheduled jobs.
 - **Cross-Platform & Hybrid:** Orchestrates across clouds, on-prem, and air-gapped environments, seamlessly integrating with [Snowflake](/orchestration/snowflake) and other tools.
-- **Unified Control Plane:** Coordinates [data pipelines](/resources/data/data-pipeline), ML workflows, infrastructure automation (Terraform, Ansible), and human approvals from one platform.
+- **Unified Control Plane:** Coordinates [data pipelines](/resources/data/create-data-pipeline), ML workflows, infrastructure automation (Terraform, Ansible), and human approvals from one platform.
 - **AI-Native:** Includes [Copilot for YAML generation and AI agents](/blogs/release-1-0) for autonomous orchestration with full auditability.
 
 **Best for:** Organizations seeking a unified, language-agnostic orchestration control plane across data, AI, and infrastructure, especially those with heterogeneous tech stacks, a need for fine-grained control, auditability, and modern GitOps practices. Kestra is ideal for breaking free from vendor lock-in and building future-proof automation.

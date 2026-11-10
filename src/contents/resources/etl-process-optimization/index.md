@@ -97,11 +97,11 @@ Continuously monitor your pipelines to identify bottlenecks. Partitioning large 
 
 ### Ensuring Data Quality and Error Handling
 
-A dependable ETL process must include thorough error handling and data quality checks. Implement mechanisms to catch bad data, log errors, and alert operators. Workflows should be designed to be restartable and capable of handling failures gracefully without causing data corruption. Effective [workflow management](/resources/infrastructure/workflow-management) is key to building these resilient systems.
+A dependable ETL process must include thorough error handling and data quality checks. Implement mechanisms to catch bad data, log errors, and alert operators. Workflows should be designed to be restartable and capable of handling failures gracefully without causing data corruption. Effective [workflow management](/resources/infrastructure/workflow-orchestration-tools) is key to building these resilient systems.
 
 ### Embracing GitOps for ETL Workflows
 
-Treat your ETL pipelines as code. By defining workflows in declarative files (like YAML) and managing them in a Git repository, you enable version control, peer reviews, and automated testing. This GitOps approach brings the same rigor and reliability to data pipelines as it does to application development, forming a critical part of a modern [CI/CD pipeline](/resources/infrastructure/ci-cd-pipeline).
+Treat your ETL pipelines as code. By defining workflows in declarative files (like YAML) and managing them in a Git repository, you enable version control, peer reviews, and automated testing. This GitOps approach brings the same rigor and reliability to data pipelines as it does to application development, forming a critical part of a modern [CI/CD pipeline](/resources/infrastructure/ci-cd-orchestration).
 
 ## Orchestrating Optimized ETL with Kestra
 

@@ -38,7 +38,7 @@ The queue layer is how server roles communicate, apart from the gRPC connection 
 
 - **JDBC** (default) — backed by any supported relational database (PostgreSQL, MySQL). Available in all editions.
 - **Kafka** — Enterprise Edition. Pairs with Elasticsearch for the search and read model.
-- **Redis**, **AMQP**, **GCP Pub/Sub** — Enterprise Edition. Additional broker-backed options for higher throughput.
+- **Redis**, **AMQP** — Enterprise Edition. Additional broker-backed options for higher throughput.
 
 The repository stores all domain entities: flows, executions, logs, triggers, and secrets. In a JDBC deployment, the relational database handles both the queue and repository. With an Elasticsearch repository, components write flows, executions, and triggers to Elasticsearch directly, and the Indexer writes logs, metrics, and other high-volume records in batches.
 

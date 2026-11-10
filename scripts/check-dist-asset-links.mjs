@@ -87,7 +87,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
         console.error(`  ${ref}  <- ${pages.length} page(s): ${sample}${more}`)
     }
     console.error(
-        "Stale pages restored by the incremental build? The deploy job rebuilds without the cache on its own; locally, delete node_modules/.astro/incremental-build.json and rebuild.",
+        "Stale pages restored from the build cache? The deploy job rebuilds from scratch on its own; locally, delete node_modules/.astro and rebuild.",
     )
     process.exit(1)
 }

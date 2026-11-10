@@ -152,7 +152,7 @@ tasks:
                 team: "{{ taskrun.value }}"
 
 ```
-The full code example, including credentials, [can be found here.](../../docs/07.enterprise/02.governance/01.assets/index.md#infrastructure-use-case-team-bucket-provisioning) 
+The full code example, including credentials, [can be found here.](../../docs/15.how-to-guides/asset-platform-sharing/index.md) 
 
 Later, when the data team uploads files to their bucket, they reference it as an input asset:
 

@@ -106,7 +106,7 @@ Matillion is designed to leverage the power of modern cloud data warehouses. Its
 *   **Rich Component Library:** A wide array of pre-built components for data transformation, cleansing, and enrichment.
 *   **Deep Integration:** Tightly integrated with Snowflake, BigQuery, Redshift, and Databricks.
 
-**Honest limitation:** Matillion is tightly coupled to specific cloud data warehouses; it is less flexible for multi-cloud or on-premise scenarios. It excels at [data warehouse ETL](/resources/data/data-warehouse-etl) but is less of a general-purpose orchestrator.
+**Honest limitation:** Matillion is tightly coupled to specific cloud data warehouses; it is less flexible for multi-cloud or on-premise scenarios. It excels at [data warehouse ETL](/resources/data/etl-workflow) but is less of a general-purpose orchestrator.
 
 ### 4. Informatica: Enterprise Data Management Suite
 

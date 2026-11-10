@@ -26,9 +26,16 @@ Perform metadata backup and restore while Kestra is paused to ensure consistency
 
 A metadata backup exports all resource types except execution history. By default, it includes:
 
-apps, banners, bindings, blueprints, credentials, dashboards, flows, groups, invitations, kill switches, KV entries, namespace files, namespaces, roles, secrets (when using a compatible secret backend), security integrations, settings, tenants, tenant accesses, test suites, triggers, users, and worker groups.
+apps, banners, bindings, blueprints, cases (with their templates, linked executions and events), credentials, dashboards, flows, groups, invitations, kill switches, KV entries, namespace files, namespaces, policies, promotion targets, roles, secrets (when using a compatible secret backend), security integrations, settings, tenants, tenant accesses, test suites, triggers, users, worker groups, and worker queues.
 
 Execution data (executions, logs, metrics, audit logs, test runs) is excluded by default due to size. Use `--include-data` to include it.
+
+A metadata backup is not a copy of internal storage. It keeps only the latest value of each KV entry, and `--include-data` adds execution records but not the input and output files stored for those executions. To move internal storage to a different backend, follow [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend) instead.
+
+<!-- TODO: remove this alert once https://github.com/kestra-io/kestra-ee/issues/11801 is fixed. -->
+:::alert{type="warning"}
+Metadata restore does not preserve namespace file revisions. Each stored revision is restored as a separate file (for example, `run.py.v2` and `run.py.v3`), the original path serves the first revision, and empty folders are dropped.
+:::
 
 Each backup run writes a new timestamped archive and never overwrites existing files. Archives are not pruned automatically — removing old archives is your responsibility.
 
@@ -48,7 +55,7 @@ To back up only specific resource types, use `--resources`:
 kestra backups create FULL --resources FLOW,KV_STORE,SECRET
 ```
 
-Available resource names include: `APP`, `BANNER`, `BINDING`, `BLUEPRINT`, `CREDENTIAL`, `DASHBOARD`, `EXECUTION`, `FLOW`, `GROUP`, `INVITATION`, `KILL_SWITCH`, `KV_STORE`, `LOG`, `METRIC`, `NAMESPACE`, `NAMESPACE_FILE`, `ROLE`, `SECRET`, `SECURITY_INTEGRATION`, `SETTING`, `TENANT`, `TENANT_ACCESS`, `TEST_SUITE`, `TRIGGER`, `USER`, `WORKER_GROUP`.
+Available resource names: `APP`, `AUDIT_LOG`, `BANNER`, `BINDING`, `BLUEPRINT`, `CASE`, `CASE_EVENT`, `CASE_EXECUTION`, `CASE_TEMPLATE`, `CREDENTIAL`, `DASHBOARD`, `EXECUTION`, `FLOW`, `GROUP`, `INVITATION`, `KILL_SWITCH`, `KV_STORE`, `LOG`, `METRIC`, `NAMESPACE`, `NAMESPACE_FILE`, `POLICY`, `PROMOTION_TARGET`, `ROLE`, `SECRET`, `SECURITY_INTEGRATION`, `SETTING`, `TENANT`, `TENANT_ACCESS`, `TEST`, `TEST_RUN`, `TRIGGER_STATE`, `USER`, `WORKER_GROUP`, `WORKER_QUEUE`. `TRIGGER` is a deprecated alias of `TRIGGER_STATE`.
 
 **Backup options:**
 
@@ -84,7 +91,7 @@ The restore command checks the archive's Kestra version against the running inst
 **Restore options:**
 
 - `--encryption-key`: decryption key. Falls back to the instance key if omitted; fails if neither is available.
-- `--to-tenant`: restore a tenant backup into a different tenant. Rewrites every record's tenant ID to the target tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive.
+- `--to-tenant`: restore a tenant backup into a different tenant. Rewrites every record's tenant ID to the target tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive. When the source tenant still exists on the instance, the restore also fails if the backup contains executions, test runs or cases; see [Copy a tenant within the same instance](#copy-a-tenant-within-the-same-instance).
 - `--resources`: restore only specific resource types (same names as `create`).
 
 The CLI logs a summary when complete:
@@ -96,6 +103,25 @@ The CLI logs a summary when complete:
 2024-09-17 16:41:07,182 INFO  restore      io.kestra.ee.backup.BackupService Restore summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, USER: 1, TRIGGER: 2]
 Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
 ```
+
+### Copy a tenant within the same instance
+
+To initialize a new tenant from an existing one on the same instance, create the target tenant, back up the source tenant without `--include-data`, and restore with `--to-tenant`:
+
+```bash
+kestra tenants create staging staging
+kestra backups create TENANT --tenant main
+kestra backups restore kestra:///backups/tenants/main/backup-20240917163312.kestra --to-tenant staging \
+  --resources APP,BANNER,BINDING,BLUEPRINT,CREDENTIAL,DASHBOARD,FLOW,GROUP,INVITATION,KV_STORE,NAMESPACE,NAMESPACE_FILE,POLICY,PROMOTION_TARGET,ROLE,SECRET,SECURITY_INTEGRATION,TENANT_ACCESS,TEST,TRIGGER_STATE
+```
+
+While the source tenant exists on the instance, Kestra refuses to restore `EXECUTION`, `TEST_RUN`, `CASE`, `CASE_TEMPLATE`, `CASE_EXECUTION` and `CASE_EVENT` into another tenant. The check runs before anything is written, and the error lists the resources to exclude:
+
+```plaintext
+Cannot restore CASE_TEMPLATE into tenant 'staging' while the source tenant 'main' still exists on this instance. Exclude them from the restored resources, or restore the backup on another instance.
+```
+
+Every tenant has a default case template, so a restore with the default resources is always refused in this situation: pass `--resources` as above. Restoring into another instance, or restoring the backup of a deleted tenant, is not affected.
 
 ### Example: Backup and restore inside Docker
 
@@ -207,4 +233,100 @@ Kestra's internal storage can be a local filesystem or object storage.
 
 - **Local filesystem**: back up and restore the storage directory with your standard filesystem tools.
 - **Managed object storage**: enable cross-region replication (often sufficient for DR) or use the provider's backup tooling.
-- **Self-hosted object storage (e.g., MinIO)**: use a tool like [Restic](https://blog.min.io/back-up-restic-minio/) and/or configure replication.
+- **Self-hosted object storage (e.g., Ceph or SeaweedFS)**: use a tool like [Restic](https://restic.readthedocs.io/en/stable/030_preparing_a_new_repo.html#amazon-s3) and/or configure replication.
+
+Kestra doesn't back up internal storage itself, because it can hold arbitrary amounts of data. Use your storage provider's replication or backup tooling. To move internal storage to a different backend, see [Migrate internal storage to another backend](#migrate-internal-storage-to-another-backend).
+
+## Migrate internal storage to another backend
+
+To move internal storage from one object storage backend to another, for example from MinIO to Amazon S3, copy every object to the new bucket while Kestra is stopped, then point Kestra at the new bucket. The database stores files as `kestra:///` URIs without a bucket name or endpoint, so the database itself doesn't change.
+
+This procedure moves internal storage only. [Metadata backup](#metadata-backup-and-restore-enterprise-edition) can't do it, because it skips execution files and revision history.
+
+### Prerequisites
+
+- A host that can read the source bucket and a host that can write to the new bucket. One host can do both. The examples use the [AWS CLI](https://docs.aws.amazon.com/cli/) with one profile per backend, and `--endpoint-url` for S3-compatible storage such as MinIO.
+- Enough local disk on each host for a full copy of the bucket.
+- An empty bucket on the new backend.
+- The database stays where it is. If you also move the database, dump and restore it in the same downtime window, so database and storage reflect the same point in time.
+
+### Step 1: Stop Kestra
+
+In Enterprise Edition, enable [Maintenance Mode](../../07.enterprise/05.instance/maintenance-mode/index.md) first. Wait for running executions to finish, then scale every Kestra component to zero. Keep Kestra stopped until step 6.
+
+KV entries and namespace files are versioned: the database tracks each revision, and internal storage holds the content. If Kestra writes anything during the copy, the two drift apart and namespaces show missing or wrong content.
+
+### Step 2: Copy the objects
+
+Download the source bucket to a local folder, then upload that folder to the new bucket. Object keys become file paths on download and turn back into the same keys on upload:
+
+```bash
+aws s3 sync s3://<source-bucket> ./kestra-bucket --profile source --endpoint-url https://<minio-endpoint>
+aws s3 sync ./kestra-bucket s3://<new-bucket> --profile target
+```
+
+If no single host can reach both backends, run the download and upload on different hosts and move the folder between them with a tool such as [Restic](https://restic.readthedocs.io/). Copy objects through the S3 API: an object store's on-disk data directory can't be loaded into a different backend.
+
+`aws s3 sync` uploads only missing or changed files, so you can re-run it after an interruption.
+
+### Step 3: Copy the folder markers
+
+Kestra writes an empty object whose key ends with `/` for every folder. Copying through a local folder drops these markers, because a folder on disk isn't an object, and some bucket-to-bucket tools such as `aws s3 sync` skip them too. Kestra runs without them, but [metadata backups](#metadata-backup) silently leave out the namespace files of any namespace whose `_files/` marker is missing.
+
+List the markers in the source bucket, then create them in the new bucket:
+
+```bash
+aws s3api list-objects-v2 --bucket <source-bucket> --profile source --endpoint-url https://<minio-endpoint> \
+  --query "Contents[?ends_with(Key, '/')].Key" --output text | tr '\t' '\n' > markers.txt
+
+while read -r key; do
+  aws s3api put-object --bucket <new-bucket> --key "$key" --profile target > /dev/null
+done < markers.txt
+```
+
+If one host can reach both backends, rclone 1.63 and later copies objects and markers bucket to bucket in one command, replacing steps 2 and 3: `rclone copy -M --create-empty-src-dirs --s3-directory-markers <source-remote>:<source-bucket> <target-remote>:<new-bucket>`.
+
+### Step 4: Compare object counts
+
+Count files and markers on both sides. Each pair of numbers must match:
+
+```bash
+## Files
+aws s3api list-objects-v2 --bucket <source-bucket> --profile source --endpoint-url https://<minio-endpoint> --query "length(Contents[?!ends_with(Key, '/')])"
+aws s3api list-objects-v2 --bucket <new-bucket> --profile target --query "length(Contents[?!ends_with(Key, '/')])"
+
+## Folder markers
+aws s3api list-objects-v2 --bucket <source-bucket> --profile source --endpoint-url https://<minio-endpoint> --query "length(Contents[?ends_with(Key, '/')])"
+aws s3api list-objects-v2 --bucket <new-bucket> --profile target --query "length(Contents[?ends_with(Key, '/')])"
+```
+
+### Step 5: Point Kestra at the new backend
+
+Change `kestra.storage` to the new backend. See [Internal storage](../../configuration/02.runtime-and-storage/index.md#internal-storage) for each backend's options.
+
+Object keys must stay identical. If the source backend sets a key prefix with `path`, set the same `path` on the new backend. MinIO has no prefix option, so leave `path` unset when moving from MinIO:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      bucket: <new-bucket>
+      region: <region>
+```
+
+### Step 6: Start Kestra and verify
+
+Start Kestra, then check that:
+
+- namespace files open and show their full revision history
+- KV entries return their values
+- input and output files of an older execution download
+
+When everything checks out, disable Maintenance Mode.
+
+### Roll back
+
+The procedure doesn't modify the source bucket. To roll back, restore the previous `kestra.storage` configuration and restart Kestra.
+
+Roll back only before any flow runs or file edits on the new backend. Anything written after the switch exists only in the new bucket, and Kestra serves the previous revision of an edited namespace file without reporting an error.

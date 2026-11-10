@@ -25,7 +25,7 @@ faq:
 
 An open source VMware vRA replacement is an automation platform with a publicly licensed core that takes over what VMware Aria Automation (vRA) and its embedded vRealize Orchestrator (vRO) did: run the workflows, start them from schedules, events and catalog requests, and call the systems around them. The hypervisor is not part of the swap. vSphere stays where it is and gets called from the new workflows.
 
-Most of a vRA estate does not move at all. ServiceNow, Terraform, Ansible, the CMDB, IPAM and the secrets vault predate vRA and will outlive it. What moves is the workflow engine and the glue code written for it, plus two decisions: where the catalog lives, and where the inventory of provisioned resources lives. This page covers what that engine has to do, what Kestra Open Source covers without a licence, and the free tools that count the work before anyone commits a budget.
+Most of a vRA estate does not move at all. ServiceNow, Terraform, Ansible, the CMDB, IPAM and the secrets vault predate vRA and will outlive it. What moves is the workflow engine and the glue code written for it, plus two decisions: where the [self-service catalog](/resources/infrastructure/self-service-infrastructure) lives, and where the inventory of provisioned resources lives. This page covers what that engine has to do, what Kestra Open Source covers without a licence, and the free tools that count the work before anyone commits a budget.
 
 > **TL;DR** — Replacing vRA means replacing vRO's workflow engine and deciding where the catalog and resource inventory go; VMware itself can stay. Kestra Open Source (Apache 2.0) runs the flows, triggers and Terraform/Ansible/ServiceNow calls; native vSphere plugins, Apps, Assets and RBAC are Enterprise. Size the work first with an export and the open-source Kestra Migration Assistant.
 
@@ -157,7 +157,7 @@ tasks:
 
 The Terraform configuration (`main.tf` with the vSphere provider and a remote state backend) and the Ansible playbook live as namespace files, so they are versioned with the flow. The three inputs replace the catalog form. A ServiceNow catalog item calls the flow through the API, or a webhook trigger, with the request item's `sys_id`. Size variants that used to be separate blueprints are one `SELECT` input.
 
-That is the open-source version. With the Enterprise plugin, the Terraform step becomes a vCenter clone task; the [VMware provisioning blueprint with Ansible and ServiceNow registration](/blueprints/vmware-provision-configure-register) shows that route end to end. Day 2 patterns have their own templates, such as [event-driven VM cleanup from vCenter removal events](/blueprints/vm-event-based-cleanup) for decommissioning or an [SSL certificate expiry monitor](/blueprints/ssl-certificate-expiry-monitor) for operational checks. Converting by pattern rather than by team is what keeps a migration from turning into hundreds of one-off jobs.
+That is the open-source version. With the Enterprise plugin, the Terraform step becomes a vCenter clone task; the [VMware provisioning blueprint with Ansible and ServiceNow registration](/blueprints/vmware-provision-configure-register) shows that route end to end. [Day 2 operations](/resources/infrastructure/day-2-operations) have their own templates, such as [event-driven VM cleanup from vCenter removal events](/blueprints/vm-event-based-cleanup) for decommissioning or an [SSL certificate expiry monitor](/blueprints/ssl-certificate-expiry-monitor) for operational checks. Converting by pattern rather than by team is what keeps a migration from turning into hundreds of one-off jobs.
 
 ## Size the migration with open source tools first
 
@@ -165,15 +165,15 @@ The first workflow count from a vRA estate is almost always alarming, because it
 
 **Export the estate.** [Build Tools for VMware Aria](https://github.com/vmware/build-tools-for-vmware-aria), VMware's own open-source toolchain, exports vRO workflows, actions, configuration and resource elements, plus vRA blueprints, subscriptions, catalog items and resource actions. The community project [mcp-vcf-orchestrator](https://github.com/mgovedarov/mcp-vcf-orchestrator) wraps the same vRO and VCF Automation APIs as an MCP server, so an AI assistant can query the export directly. Both can also write, so run them with a read-only service account against a non-production instance first. Make sure the export carries last-execution dates.
 
-**Assess it on your machine.** The Kestra Migration Assistant is a free command-line tool under Apache 2.0. It reads the vRO package and, optionally, the vRA export, and writes a migration brief you open in a browser: what each workflow does and what starts it, which systems it touches and whether a Kestra plugin already covers them, a recommendation per workflow (retire, merge into another, treat as a wrapper, convert, or rebuild) and a migration plan in waves ordered by risk and dependency.
+**Assess it on your machine.** The [Kestra Migration Assistant](/resources/migration/vra/assistant) is a free command-line tool under Apache 2.0. It reads the vRO package and, optionally, the vRA export, and writes a migration brief you open in a browser: what each workflow does and what starts it, which systems it touches and whether a Kestra plugin already covers them, a recommendation per workflow (retire, merge into another, treat as a wrapper, convert, or rebuild) and a migration plan in waves ordered by risk and dependency. [Leaving vRA without the big rewrite](/blogs/leaving-vra-without-the-big-rewrite) shows why there is usually less to migrate than the export suggests.
 
 ```bash
-pipx install kestra-migration-assistant
+uv tool install git+https://github.com/kestra-io/migration-assistant@main
 kestra-migrate init
 kestra-migrate vra run ./my-estate
 ```
 
-It runs locally and sends nothing to Kestra. Host names, IP addresses, accounts and credentials are replaced with placeholders before anything reaches a model, you choose the model (including one you host yourself), and it still produces an inventory and call graph with no model at all. When the export cannot answer something, such as how often a workflow runs, it writes the question to a file; you answer it and run the same command again. The tool stops at the plan.
+It runs locally and sends nothing to Kestra. Host names, IP addresses, accounts and credentials are replaced with placeholders before anything reaches a model, you choose the model (including one you host yourself), and it still produces an inventory and call graph with no model at all. When the export cannot answer something, such as how often a workflow runs, it writes the question to a file; you answer it and run the same command again. The assessment stops at the plan. The conversion is the other half, run with Kestra: tests are written from each workflow first, an engineer reviews every converted flow, and each wave runs against a simulated copy of your environment.
 
 **Run the three passes.** Whatever produced the inventory, three passes shrink it to the real work. The figures below are illustrative, not a benchmark; plug in your own export.
 
@@ -200,9 +200,9 @@ A [Fortune 500 industrial company replaced VMware Aria Automation with Kestra](/
 
 Start with real workflows, not a feature checklist.
 
-1. Export the estate and run the Kestra Migration Assistant to get the brief and the three-pass count.
+1. Export the estate and [start with an assessment](/resources/migration/vra/assistant): the Kestra Migration Assistant gives you the brief and the three-pass count.
 2. Install Kestra Open Source with [Docker Compose](/docs/installation/docker-compose) and rebuild two or three workflows from the brief: one provisioning flow, one Day 2 action and one scheduled check, including at least one difficult workflow you would run in production.
-3. Measure the hours each one took. That rate, multiplied across your pattern counts, is the migration estimate.
+3. Measure the hours each one took. Those rates, applied to your pattern counts, give you a first estimate. Treat it as a range, since two or three workflows will not cover every pattern.
 4. When the test needs the catalog, the inventory, native vSphere access or RBAC, run a proof of concept on Enterprise against the same workflows.
 
-The vSphere estate keeps running throughout. Every wave stays reversible until the vRA side of it is switched off, and the [VMware orchestration overview](/orchestration/vmware) shows how flows call vCenter, snapshots and events once the engine underneath has changed.
+The vSphere estate keeps running throughout. Every wave stays reversible until the vRA side of it is switched off, and the [VMware orchestration overview](/orchestration/vmware) shows how flows call vCenter, snapshots and events once the engine underneath has changed. For the full method, from the first assessment to retiring vRA wave by wave, see [how to migrate off vRA](/resources/migration/vra).

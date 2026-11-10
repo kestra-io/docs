@@ -68,11 +68,19 @@ tasks:
 
   - id: human-review
     type: io.kestra.plugin.core.flow.Pause
-    description: "Please review the AI-generated blog post draft. You can edit the content below. Click 'Resume' to approve or 'Kill' to reject."
-    tasks:
-      - id: reviewed-content
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ outputs['generate-draft'].content }}"
+    description: "Please review the AI-generated blog post draft. Edit the reviewed content in the Resume form, then click 'Resume' to approve or 'Kill' to reject."
+    onResume:
+      - id: reviewed_content
+        type: STRING
+        displayName: Reviewed content
+        description: Review and edit the draft before approving it.
+        defaults: "{{ outputs['generate-draft'].content }}"
+        required: true
+
+  - id: reviewed-content
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: "{{ outputs['human-review'].onResume.reviewed_content }}"
 
   - id: log-approved-content
     type: io.kestra.plugin.core.log.Log
@@ -80,14 +88,16 @@ tasks:
       ---
       Approved Content for Publication
       Timestamp: {{ execution.startDate }}
-      Reviewer: {{ execution.userId }}
+      Reviewer: {{ outputs['human-review'].resumed.by ?? 'Not recorded' }}
       ---
-      {{ outputs['human-review']['reviewed-content'] }}
+      {{ outputs['reviewed-content'].values.result }}
 
 triggers:
   - id: api-trigger
     type: io.kestra.plugin.core.trigger.Webhook
 ```
+
+The Resume form is pre-filled with the AI-generated draft. The reviewer can edit `reviewed_content` before approving it; downstream tasks read the submitted value from `outputs['human-review'].onResume.reviewed_content`.
 
 This Kestra flow demonstrates several governance principles in action:
 
@@ -123,6 +133,7 @@ These use cases show that governance is the enabler for moving AI from experimen
 - [Best Workflow Monitoring Tools for 2026](/resources/infrastructure/workflow-monitoring-tools)
 - [Top SimplyAsk Alternatives & Competitors in 2026](/resources/ai/simplyask-alternatives)
 - [Kestra Resources: Guides for Data, AI, Infrastructure & More](/resources)
-- [Kestra AI Tools – Copilot, Agents, Agent Skills, and RAG Workflows](/docs/ai-tools)
+- [Develop with AI in Kestra: Copilot and Agent Skills](/docs/develop-with-ai)
+- [AI Orchestration in Kestra: LLM Tasks, AI Agents, and RAG](/docs/ai-orchestration)
 
 Governing AI-generated workflows is essential for any organization serious about scaling its AI initiatives responsibly. By adopting a declarative, auditable, and human-centric approach, you can build AI systems that are not only powerful but also trustworthy. Ready to implement governed AI workflows? Explore how Kestra can help you [stop writing glue code around your AI pipelines](/ai-automation).

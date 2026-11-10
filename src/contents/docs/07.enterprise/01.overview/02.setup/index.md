@@ -38,7 +38,7 @@ The first screen shows the main configuration of your instance. It displays:
 - whether `default tenant` is enabled — if yes, you can skip Step 2 allowing you to create your first tenant
 - which `database` backend is configured (e.g., PostgreSQL or Elasticsearch)
 - which `queue` backend is configured (e.g., PostgreSQL or Kafka)
-- which `internal storage` backend is configured (e.g., S3, GCS, Azure Blob Storage, MinIO, or local storage)
+- which `internal storage` backend is configured (e.g., S3, GCS, Azure Blob Storage, an S3-compatible store, or local storage)
 - which `secret` backend is configured (e.g., Vault, AWS Secrets Manager, Elasticsearch, or not set up yet)
 
 ![Instance configuration validation screen](./setup_page1.png)

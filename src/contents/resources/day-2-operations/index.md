@@ -1,168 +1,241 @@
 ---
-title: "Day-2 Operations: The Post-Deployment Guide"
-description: "Understand day-2 operations, their critical role in software lifecycle, and practical tips for managing post-deployment complexity. Learn more!"
-metaTitle: "Day-2 Operations: Your Post-Deployment Guide"
-metaDescription: "Day-2 operations are crucial for sustained software success. Explore key activities like monitoring, maintenance, and automation. Get practical tips and tools to master post-deployment complexity."
+title: "Day 2 Operations: Definition, Examples, and How to Automate Them"
+description: "Day 2 operations are everything a team does to infrastructure after it goes live: patching, resizing, rotating certificates, backups, drift, incidents, and decommissioning. This guide covers examples, why day 2 is harder than day 1, the tools, and how to automate it."
+metaTitle: "Day 2 Operations: Definition, Examples & Automation"
+metaDescription: "Day 2 operations cover everything after go-live: patching, resizing, certificate rotation, drift, incidents, and decommissioning. Examples, tools, and how to automate them."
 tag: "infrastructure"
 date: 2026-05-28
+lastUpdated: 2026-11-04
 slug: "day-2-operations"
 faq:
-  - question: "What does day 2 operations mean?"
-    answer: "Day 2 operations refer to the ongoing management, maintenance, and optimization of software systems after their initial deployment. This phase focuses on ensuring sustained performance, reliability, and security, involving activities like monitoring, patching, incident response, and continuous improvement, rather than just initial setup."
-  - question: "What is day 0, day 1, and day 2 operations?"
-    answer: "These terms describe the stages of a software lifecycle: Day 0 covers initial planning and setup, like environment provisioning. Day 1 involves deployment and initial configuration, getting the system live. Day 2 encompasses everything post-deployment, focusing on continuous operation, optimization, and evolution to keep the system running efficiently and securely."
-  - question: "What does day 1 and day 2 mean?"
-    answer: "Day 1 refers to the initial deployment and configuration of a system, making it operational for the first time. Day 2, in contrast, is about the ongoing care, maintenance, and evolution of that system once it's running in production. It includes monitoring, troubleshooting, security, and optimization to ensure long-term stability and performance."
-  - question: "What is a day 2 strategy?"
-    answer: "A Day 2 strategy outlines the approach for continuous management, monitoring, and optimization of IT systems post-deployment. It moves beyond just maintenance, focusing on proactive issue identification, efficiency improvements, and adapting to evolving business needs. This strategy ensures long-term system health, reliability, and security."
-  - question: "What are the 5 stages of deployment?"
-    answer: "The 5 stages of software deployment typically include: 1) Planning and preparation (often part of Day 0/1), 2) Development and testing, 3) Release and initial deployment, 4) Monitoring and validation, and 5) Maintenance and optimization. These stages ensure a structured approach from code to production and ongoing operations."
-  - question: "What is day 2 Jeff Bezos?"
-    answer: "Jeff Bezos uses 'Day 2' to describe a state of stagnation in a company, where innovation ceases, and a decline begins. He advocates for a 'Day 1' mindset, characterized by agility, customer obsession, and a relentless focus on new initiatives and innovation, to avoid organizational inertia and eventual failure."
+  - question: "What are day 2 operations?"
+    answer: "Day 2 operations are the work done on infrastructure and applications after they go live, until they are retired. They include patching, resizing, scaling, certificate and secret rotation, backups and restore tests, drift detection, compliance remediation, incident remediation, access changes, and decommissioning. Day 2 is the longest phase of a resource's life and where most operational effort goes."
+  - question: "What is the difference between day 0, day 1, and day 2 operations?"
+    answer: "Day 0 is design: architecture, standards, and the templates or modules that define what can be built. Day 1 is delivery: provisioning and configuring the resource and putting it into service. Day 2 is everything after go-live: keeping the resource patched, secure, right-sized, compliant, and recoverable, then retiring it. Day 0 and day 1 happen once per resource; day 2 is continuous."
+  - question: "What are examples of day 2 operations?"
+    answer: "Common examples are OS and package patching, rotating TLS certificates and credentials, taking snapshots and testing restores, resizing CPU, memory, or disk, scaling out and in, detecting and correcting configuration drift, remediating compliance findings, responding to alerts with runbooks, granting or revoking access, and decommissioning resources that are no longer needed."
+  - question: "Can Terraform handle day 2 operations?"
+    answer: "Partly. Terraform and OpenTofu handle changes to the declared state of a resource, such as a new instance size, and a scheduled plan can detect drift. Many day 2 operations are procedures rather than state: rotating a certificate, restarting a service in order, running a failover, or testing a restore. Those need a workflow that calls Terraform, Ansible, cloud APIs, and scripts in sequence, with approvals and an audit trail."
+  - question: "What are day 2 operations in Kubernetes?"
+    answer: "Kubernetes automates much of the application's day 2 work, such as restarting pods and scaling replicas. Cluster day 2 remains: control-plane and node upgrades, certificate rotation, etcd or Velero backups and restore tests, add-on upgrades for ingress, CNI, CSI, and operators, drift and admission policies, and capacity clean-up. GitOps covers declared workloads; upgrades, restores, and operations that reach outside the cluster need orchestrated workflows."
+  - question: "How do you automate day 2 operations?"
+    answer: "List the recurring work from tickets, cron jobs, and runbooks. Turn each operation into a versioned, parameterized workflow. Attach the trigger that fits: a schedule, a monitoring alert, a request, or a Git change. Require approval only where the risk justifies it, make failed runs resumable, and keep a record of which operation ran on which resource. Then measure how much of the recurring work no longer needs a person."
+  - question: "What tools are used for day 2 operations?"
+    answer: "Teams combine several categories: configuration management and job runners such as Ansible AWX or Rundeck, IaC platforms such as Spacelift or HCP Terraform, monitoring and incident tools such as Datadog or PagerDuty, ITSM platforms such as ServiceNow, cloud management platforms such as VMware Aria Automation or Morpheus, and orchestration platforms such as Kestra that run operations across all of these tools."
 ---
 
-Deploying new software or infrastructure is a significant achievement, but it's only the first step. The true test of a system's success, and the bulk of the effort, lies in what happens next: Day-2 operations. This critical phase defines how well your systems perform, adapt, and remain secure long after the initial launch.
+Day 2 operations are everything a team does to infrastructure after it goes live: patching it, resizing it, rotating its certificates, backing it up, correcting its drift, fixing it when it breaks, and finally retiring it. Day 1 puts a resource into service once. Day 2 lasts for the rest of its life, and it is where most operational work, risk, and cost sit.
 
-This guide will demystify Day-2 operations, explaining its distinction from Day-0 and Day-1, and highlighting why it's the foundation for sustained success. We'll explore key activities from monitoring to automation, delve into strategic planning, and show how modern orchestration platforms empower your team to master post-deployment complexity.
+> **TL;DR** — Day 0 designs the infrastructure, day 1 delivers it, day 2 runs it until it is retired. Day 2 work is continuous and triggered by things you do not schedule: alerts, CVEs, expiring certificates, requests. Most of it is procedure rather than declared state, so IaC alone does not cover it. Automating day 2 means turning each recurring operation into a versioned workflow with the right trigger, approvals by risk, resumable failures, and a record of what ran where.
 
-## The Software Lifecycle: Day-0, Day-1, and Day-2 Operations
+## What are day 2 operations?
 
-To understand Day-2 operations, it’s essential to place it within the full context of the software and infrastructure lifecycle. This lifecycle is commonly broken down into three distinct phases: Day-0, Day-1, and Day-2. Each stage has a unique focus and set of activities that build upon the last.
+Day 2 operations are the recurring and event-driven work performed on a system between the moment it goes live and the moment it is decommissioned. The term comes from infrastructure and platform engineering, where a resource's life is split into three phases: day 0 (design), day 1 (delivery), and day 2 (operation).
 
-**Day-0: Planning and Provisioning**
-Day-0 is the design and setup phase. It's where all the foundational work happens before any code is deployed. Activities include:
-- **Architecture Design:** Defining the system's structure, components, and interactions.
-- **Environment Provisioning:** Setting up the necessary infrastructure, such as virtual machines, Kubernetes clusters, networks, and storage. This is often managed using [Infrastructure as Code (IaC)](/resources/infrastructure/what-is-infrastructure-as-code) tools like Terraform or OpenTofu.
-- **Tool Selection:** Choosing the technologies, frameworks, and platforms that will be used.
-- **Security and Compliance Planning:** Defining security policies, access controls, and compliance requirements.
+Day 2 is not a single day. For a virtual machine that runs for three years, day 1 lasts an hour and day 2 lasts the other three years. Every patch cycle, certificate renewal, disk extension, access change, and incident during that time is a day 2 operation.
 
-The goal of Day-0 is to create a blueprint for a stable, scalable, and secure environment, ready for deployment.
+The term is also used for applications, Kubernetes clusters, and databases, with the same meaning: what it takes to keep something running correctly once it exists. This guide focuses on infrastructure, where day 2 work is the most fragmented across tools and teams.
 
-**Day-1: Deployment and Configuration**
-Day-1 is the implementation phase. It's the process of bringing the system to life based on the plans laid out in Day-0. Key activities include:
-- **Software Deployment:** Pushing the application code to the provisioned infrastructure.
-- **Initial Configuration:** Applying configurations for the application, databases, and other services.
-- **Integration Testing:** Verifying that all components work together as expected.
-- **Go-Live:** Making the system available to users for the first time.
+## Day 0, day 1, and day 2 operations
 
-Day-1 is about the initial launch. Success is measured by a smooth deployment and a functioning system that meets its initial requirements. This phase often involves significant [infrastructure automation](/resources/infrastructure/automation) to ensure consistency and repeatability.
+| | Day 0: design | Day 1: delivery | Day 2: operation |
+|---|---|---|---|
+| **Question answered** | What should we build, and how? | Is it running? | Is it still running correctly, and should it still exist? |
+| **Typical work** | Architecture, standards, modules and templates, security baselines, naming and tagging rules | Provisioning, initial configuration, integration, go-live | Patching, rotation, backups, resizing, drift, compliance, incidents, access, decommissioning |
+| **How often** | Once per platform or service type | Once per resource | Continuously, for the resource's whole life |
+| **What starts it** | A project | A request or a release | A schedule, an alert, a vulnerability, an expiry, a request, an audit |
+| **Typical tools** | Design docs, IaC modules, policy definitions | Terraform or OpenTofu, Ansible, cloud consoles, CI/CD | Configuration management, job runners, monitoring, ITSM, orchestration |
+| **Main risk** | A bad standard that every resource inherits | A failed or inconsistent deployment | Silent decay: unpatched, drifted, unowned, or forgotten resources |
 
-**Day-2: Ongoing Operations and Optimization**
-Day-2 begins the moment the system is live and serving users. This is the longest and most critical phase, encompassing everything required to keep the system running effectively over its entire lifespan. It's a continuous loop of monitoring, maintaining, and improving. The focus shifts from "getting it running" to "keeping it running well." We'll explore the specific activities of this phase in the sections below.
+Day 0 and day 1 are projects with an end. Day 2 is an operating model. That difference explains why day 1 is usually well automated and day 2 usually is not.
 
-## Why Day-2 Operations Are Critical for Sustained Success
+### What is day 0?
 
-While Day-1 gets the glory of the launch, Day-2 is where value is either sustained or lost. Neglecting this phase is a common pitfall that leads to technical debt, system fragility, and ultimately, business failure. A well-executed Day-2 strategy is critical for several reasons.
+Day 0 is design and preparation, before any resource exists. Platform teams choose the architecture, write the modules and templates, and set the security baselines, naming and tagging rules, and policies that every resource will inherit. Mistakes made on day 0 are the most expensive, because every resource built afterwards copies them.
 
-First, it ensures **reliability and stability**. Production environments are dynamic; user traffic fluctuates, dependencies change, and hardware can fail. Day-2 operations involve constant monitoring and proactive maintenance to prevent outages and performance degradation. Without this focus, a system that worked perfectly on Day-1 can quickly become unstable, eroding user trust and impacting revenue.
+In network engineering, day 0 also means the minimum configuration a device needs to join the network. It is usually delivered by zero-touch provisioning (ZTP): the switch or router boots, fetches its base configuration, and becomes reachable for the rest of the automation. See [network automation](/resources/infrastructure/network-automation).
 
-Second, it addresses **security and compliance**. The threat landscape is constantly evolving. A system that was secure at launch can become vulnerable overnight. Day-2 operations include continuous security patching, vulnerability scanning, and adherence to compliance standards. This active posture is essential for protecting data and maintaining regulatory compliance, avoiding costly breaches and fines. Managing [workflow orchestration security](/resources/infrastructure/workflow-orchestration-security) is a core component of this effort.
+### What is day 1?
 
-Third, it drives **efficiency and cost optimization**. Post-deployment, there are always opportunities to improve. By analyzing performance metrics and user behavior, teams can identify bottlenecks, optimize resource usage, and automate manual tasks. This not only reduces operational overhead but also lowers infrastructure costs and frees up engineering time for innovation.
+Day 1 is delivery: the resource is provisioned, configured, integrated, and put into service. For a virtual machine, that means Terraform creates it, Ansible configures it, monitoring and backups are attached, and the CMDB is updated. Day 1 has a clear finish line, the resource is live and passes its checks, which is why it is the phase most teams automate first, often behind a [self-service catalog](/resources/infrastructure/self-service-infrastructure).
 
-Finally, a strong Day-2 practice enables **adaptability and evolution**. Business needs change, and software must change with them. The feedback loops established during Day-2 provide the insights needed to iterate on the product, add new features, and scale the system effectively. This prevents the system from becoming a legacy burden and ensures it continues to deliver business value long after its initial deployment, helping to [solve orchestration problems and reduce complexity](/resources/infrastructure/orchestration-problems-complexity) over time.
+### What is day 2?
 
-## Key Activities and Components of Day-2 Operations
+Day 2 starts at go-live and ends when the resource is decommissioned. It covers everything needed to keep the resource secure, recoverable, right-sized, correct, and governed in the meantime, triggered by schedules, alerts, vulnerabilities, expiries, and requests. The rest of this guide is about day 2.
 
-Day-2 is not a single task but a collection of continuous activities aimed at maintaining and enhancing a live system. These components work together to form a comprehensive operational framework.
+## Examples of day 2 operations
 
-### Monitoring and Alerting for Continuous Performance
+The list below groups the operations infrastructure teams run most often. The trigger column matters: it decides how each operation should be automated.
 
-You can't manage what you can't see. Monitoring provides the real-time visibility needed to understand system health and performance. This involves collecting metrics, logs, and traces from every part of the application and infrastructure. Key aspects include:
-- **Log Analysis:** Centralizing and analyzing logs to detect errors and understand system behavior.
-- **Metric Tracking:** Monitoring key performance indicators (KPIs) like CPU usage, memory consumption, latency, and error rates.
-- **Alerting:** Setting up automated alerts to notify teams of anomalies or threshold breaches, enabling them to respond before users are impacted.
-- **Dashboards:** Creating visualizations that provide an at-a-glance view of system health for all stakeholders.
-Effective [monitoring and alerting](/docs/administrator-guide/monitoring) are fundamental for proactive problem detection.
+| Goal | Operation | Usual trigger |
+|---|---|---|
+| Keep it secure | OS and package patching | Schedule, or a new CVE |
+| | TLS certificate renewal and rotation | Schedule, or certificate nearing expiry |
+| | Secret and credential rotation | Schedule, or a suspected leak |
+| | Vulnerability remediation | Scanner finding |
+| Keep it recoverable | Snapshots and backups | Schedule |
+| | Restore tests | Schedule |
+| | Failover and disaster recovery drills | Schedule, or an incident |
+| Keep it right-sized | Resize CPU, memory, or disk | Alert, or a request |
+| | Scale out and scale in | Load metric, or a calendar |
+| | Power off idle environments | Schedule, or idle detection |
+| Keep it correct | Configuration drift detection and correction | Schedule |
+| | Compliance scans and remediation | Schedule, or an audit |
+| | Incident remediation with a runbook | Monitoring alert |
+| Keep it governed | Access grants and revocations | Request, or a departure |
+| | Ownership and tagging updates | Request, or a reorganization |
+| | Decommissioning | Request, or the end of a project |
 
-### Maintenance, Updates, and Security Patching
+Each of these is a sequence of steps across several systems. Renewing a certificate, for example, means requesting it from a CA, storing it in a vault, deploying it to the load balancer and the hosts, reloading the services in order, checking the endpoint, and updating the record of what uses it. For worked examples, see [patch management automation](/resources/infrastructure/patch-management-automation), [secrets rotation](/resources/infrastructure/secrets-rotation-automation), and [vulnerability remediation](/resources/infrastructure/vulnerability-remediation).
 
-Systems require regular care to remain healthy and secure. This includes:
-- **Software Updates:** Applying patches and updates to the operating system, libraries, and application dependencies to fix bugs and introduce new features.
-- **Vulnerability Management:** Regularly scanning for security vulnerabilities and applying patches in a timely manner.
-- **Configuration Drift Detection:** Ensuring that the production environment remains consistent with its intended state as defined in code.
-Automating these tasks, such as through [automated patch management](/resources/infrastructure/patch-management-automation), is crucial for maintaining security and stability without creating excessive manual work.
+## Why day 2 is harder than day 1
 
-### Automation and Optimization for Improved Workflows
+Day 1 gets the tooling investment because it is visible and has a clear finish line. Day 2 is harder for five structural reasons.
 
-Manual, repetitive tasks are inefficient, error-prone, and a source of engineer burnout. A core goal of Day-2 is to automate as much as possible.
-- **Routine Task Automation:** Scripting tasks like backups, restarts, and data cleanup.
-- **Self-Healing Systems:** Building workflows that can automatically detect and recover from common failures.
-- **Continuous Optimization:** Analyzing performance data to right-size infrastructure, optimize database queries, and improve code efficiency to manage costs and improve user experience.
-This focus on [automation](/resources/infrastructure/automation) is what separates a high-performing operations team from one that is constantly fighting fires.
+1.  **You do not choose when it happens.** Day 1 is planned. Day 2 is triggered by alerts at 3 a.m., CVEs published on a Friday, certificates expiring, and requests from other teams. Automation has to react to events, not just run on demand.
+2.  **Most of it is procedure, not state.** IaC describes what a resource should look like. Restarting services in the right order, draining a node before patching it, failing over a database, or testing a restore are procedures with ordering, checks, and rollback. They do not fit in a `.tf` file.
+3.  **It crosses tools and teams.** A single operation can touch the hypervisor or cloud, the configuration tool, the vault, the load balancer, the CMDB, the ticketing system, and a chat channel. Each team owns a piece; nobody owns the sequence.
+4.  **It touches production.** Day 1 creates something new. Day 2 changes something people already depend on, so it needs approvals for risky changes, change records, and an audit trail.
+5.  **Ownership decays.** The team that provisioned a resource is rarely the team that runs it a year later. Without an owner and a record of what exists, resources drift, stay unpatched, or keep running long after anyone needs them.
 
-### Incident Response and Troubleshooting
+The result in most organizations is the same: day 2 lives in tickets, cron jobs on a jump host, scripts on someone's laptop, and runbooks in a wiki that may or may not match reality.
 
-Despite the best planning, incidents will happen. A mature Day-2 practice includes a well-defined process for handling them.
-- **Rapid Resolution:** Quickly identifying the scope and impact of an issue and implementing a fix or workaround.
-- **Root Cause Analysis (RCA):** After an incident is resolved, conducting a thorough investigation to understand the underlying cause and prevent recurrence.
-- **Runbook Automation:** Creating automated workflows to handle common incidents, reducing Mean Time to Resolution (MTTR).
-- **Post-Incident Reviews:** Holding blameless post-mortems to learn from failures and improve system resilience.
-Kestra provides robust mechanisms for [handling errors](/docs/tutorial/errors), including automatic retries and custom error-handling flows.
+## Can Terraform handle day 2 operations?
 
-### Gathering Feedback and Iteration
+Partly. [Terraform](/orchestration/terraform) and OpenTofu are good at changes to declared state: a new instance size, an extra disk, a new firewall rule. A scheduled plan is also the standard way to [detect drift](/resources/infrastructure/terraform-drift-detection) between the code and what is actually running.
 
-A system in production is a living entity. Day-2 involves creating tight feedback loops to drive continuous improvement.
-- **User Feedback:** Collecting feedback from end-users to identify pain points and feature requests.
-- **Performance Metrics:** Using monitoring data to guide development priorities.
-- **Continuous Improvement:** Using insights from both users and system performance to iterate on the product, fix bugs, and enhance functionality, ensuring the system evolves to meet changing demands.
+What Terraform does not do on its own:
 
-## Building a Robust Day-2 Operations Strategy
+*   **Run procedures.** Patching, rotations, restarts, failovers, and restore tests are ordered steps inside the resource, usually handled by [Ansible](/orchestration/ansible), scripts, or vendor APIs.
+*   **React to events.** Terraform runs when someone or something calls it. Turning an alert or a CVE into an action needs something that listens and decides.
+*   **Coordinate across tools.** Updating the CMDB, opening and closing a change record, notifying the owner, and verifying the result happen outside Terraform.
+*   **Wait for people.** Approvals, maintenance windows, and owner confirmations need a step that can pause and resume with a recorded decision.
 
-A successful Day-2 requires more than just a checklist of activities; it demands a strategic approach that integrates people, processes, and tools.
+This is why day 2 automation usually sits one level above IaC: a workflow that calls Terraform where state changes, Ansible where configuration changes, and APIs everywhere else.
 
-### Defining a Day-2 Strategy
+## Day 2 operations in Kubernetes
 
-A Day-2 strategy is a plan that shifts the operational mindset from reactive to proactive. Instead of waiting for things to break, the goal is to build resilient, self-healing systems and establish processes that anticipate and prevent issues. This involves:
-- **Setting Clear Goals:** Defining what success looks like in terms of reliability (SLOs/SLAs), performance, and security.
-- **Aligning with Business Objectives:** Ensuring that operational priorities support the broader goals of the business.
-- **Investing in Automation:** Committing to an automation-first approach to reduce manual toil and improve consistency.
-- **Fostering a Culture of Ownership:** Empowering teams to take responsibility for the services they build, from development through to production.
+Kubernetes moved much of the application's day 2 work into the platform: controllers restart failed pods, autoscalers adjust replicas, and rolling updates replace releases. What remains is the cluster's own day 2, and it is substantial:
 
-### Essential Tools and Platforms for Day-2 Activities
+*   **Cluster and node upgrades.** A new minor version every few months, applied to the control plane, node pools, and add-ons in order, with nodes cordoned and drained before they are replaced.
+*   **Certificates and credentials.** Control-plane certificates, service account tokens, and the cloud credentials controllers use, each with its own expiry.
+*   **Backup and restore.** etcd snapshots or Velero backups of resources and persistent volumes, and restore tests to prove they work.
+*   **Add-on lifecycle.** Ingress controllers, CNI and CSI drivers, cert-manager, and operators, each with its own release cycle and compatibility matrix.
+*   **Drift and policy.** Live manifests diverge from Git; GitOps controllers such as Argo CD or Flux reconcile workloads, and admission policies such as OPA Gatekeeper or Kyverno block non-compliant ones.
+*   **Capacity and cost.** Right-sizing requests and limits, and cleaning up unused namespaces, load balancers, and volumes.
 
-The right tools are essential for implementing a Day-2 strategy at scale. The modern operational toolkit includes:
-- **Orchestration Platforms:** Tools like Kestra are central to Day-2, providing a unified control plane to automate and coordinate tasks across different systems. They can manage everything from infrastructure provisioning to data pipelines and incident response.
-- **Monitoring and Observability Tools:** Prometheus, Grafana, Datadog, and OpenTelemetry provide the visibility needed to understand system health.
-- **IaC Tools:** Terraform, OpenTofu, and Ansible are used to manage infrastructure declaratively, preventing configuration drift.
-- **ITSM Platforms:** ServiceNow and Jira help manage incident response, change requests, and operational workflows.
-Choosing the [best IT automation platform](/resources/infrastructure/it-automation-platform) is a key decision that can significantly impact operational efficiency. The goal is a cohesive stack that provides a single source of truth and control, which is the core promise of an [infrastructure automation control plane](/infra-automation). Virtual machines are where most day-2 activity actually lands, from patching to right-sizing to decommissioning — see [VM lifecycle management](/resources/infrastructure/vm-lifecycle-management) for that end-to-end view.
+[GitOps](/resources/infrastructure/gitops) handles declared workloads well. Cluster upgrades, restores, and operations that span the cluster and systems outside it, such as DNS, load balancers, the cloud account, and the CMDB, still need workflows with ordering, approvals, and checks. See how to [orchestrate Kubernetes](/orchestration/kubernetes) operations alongside the rest of the stack.
 
-### Best Practices for Managing Post-Deployment Complexity
+## How to automate day 2 operations
 
-As systems grow, so does their complexity. Adhering to best practices can help manage this:
-- **Embrace GitOps:** Store all configuration—for infrastructure, applications, and orchestration workflows—in Git. This provides a version-controlled, auditable source of truth and enables automated, repeatable deployments. [GitOps](/resources/infrastructure/gitops) transforms operations from a manual art to an engineering discipline.
-- **Prioritize Observability:** Design systems to be observable from the start, not as an afterthought.
-- **Document Everything:** Maintain clear, up-to-date documentation for system architecture, operational procedures, and incident response runbooks.
-- **Plan for Disaster:** Regularly test disaster recovery plans to ensure the business can withstand major outages.
+A practical approach that works for platform and infrastructure teams of any size:
 
-## Kestra for Modern Day-2 Operations
+1.  **Inventory the recurring work.** Export six months of tickets and list the cron jobs and runbooks you already have. Group them by operation and count them. The top ten operations usually cover most of the volume.
+2.  **Write each operation as a versioned workflow.** One workflow per operation, stored in Git, parameterized by resource, environment, and options. The runbook becomes executable, and its history becomes reviewable.
+3.  **Attach the trigger that fits.** Schedules for patching, backups, and drift checks. Alerts and webhooks for remediation. Requests from a form or a [self-service catalog](/resources/infrastructure/self-service-infrastructure) for resizes and access changes. Git changes for configuration updates.
+4.  **Gate by risk, not by habit.** Run low-risk operations automatically: a dev environment resize, a disk extension under a threshold. Require approval for production, destructive, or expensive changes, and record who approved and why. Express the rules as code so they apply the same way every time; see [policy as code](/resources/infrastructure/policy-as-code).
+5.  **Make failures resumable.** Add retries and timeouts to steps that call flaky systems, notify the right channel on failure, and restart a failed run from the failed step instead of starting over.
+6.  **Keep a record of what ran where.** Every operation should leave a trace: which resource, which parameters, who triggered or approved it, what changed, and the logs. That record is what auditors and incident reviews ask for.
+7.  **Measure the toil you removed.** Track the share of recurring operations that run without a person, mean time to remediate for common alerts, patch latency, certificates renewed before expiry, and ticket volume for automated operation types.
 
-Modern orchestration platforms are the backbone of a successful Day-2 strategy, and Kestra is designed to address its core challenges. By providing a unified, declarative control plane, Kestra simplifies the automation of complex post-deployment activities across diverse technology stacks.
+Teams that follow this path usually start with one high-volume, low-risk operation, such as disk extension or certificate renewal, then extend the same pattern to the rest. Over time this becomes [self-healing infrastructure](/resources/infrastructure/self-healing-infrastructure) for the common failures and [automated incident response](/resources/infrastructure/incident-response-automation) for the rest.
 
-Kestra's **declarative YAML interface** allows teams to define Day-2 operational workflows as code. This aligns perfectly with GitOps principles, ensuring that tasks like server patching, database backups, and configuration validation are version-controlled, auditable, and repeatable. Instead of relying on disparate scripts, teams can create standardized, reusable workflows.
+## Day 2 operations tools
 
-The platform's **polyglot nature** means it can orchestrate any tool or script, regardless of language. Whether you need to run an [Ansible playbook](/orchestration/ansible) for configuration management, a Python script for data validation, or a [Terraform plan](/orchestration/terraform) for infrastructure changes, Kestra can coordinate these tasks within a single, cohesive workflow. This breaks down silos between infrastructure, data, and application teams.
+No single tool covers all of day 2. Most teams combine several of the categories below, and the gaps between them are where manual work accumulates.
 
-Kestra's **event-driven architecture** is particularly powerful for Day-2 automation. Workflows can be triggered by alerts from monitoring systems, events from cloud providers, or tickets in an ITSM tool. This enables the creation of self-healing systems and automated incident response runbooks. For example, a Prometheus alert can trigger a Kestra workflow that automatically restarts a service, gathers diagnostic data, and updates a Slack channel.
+| Category | Examples | What it does well | What it leaves out |
+|---|---|---|---|
+| Configuration management and job runners | Ansible AWX and Automation Platform, Rundeck | Runs playbooks and jobs on hosts, with credentials and schedules | Workflows that span many tools, event handling beyond basic webhooks, approvals outside the tool |
+| IaC platforms | Spacelift, HCP Terraform, env zero | State, plans, policies, and drift for IaC stacks; Spacelift added Flows for day 2 workflows in 2026 | Operations that are not IaC, and teams whose estate is not mostly in Terraform |
+| Monitoring and incident management | Datadog, PagerDuty, Grafana | Detection, alerting, on-call, and simple automated actions | Multi-step remediation across infrastructure tools |
+| ITSM | ServiceNow, Jira Service Management | Requests, change approvals, the CMDB, and audit | Execution: the actual work still runs in scripts or other tools |
+| Cloud management platforms | VMware Aria Automation, Morpheus | Day 2 actions on resources they provisioned | Resources created elsewhere, licensing and platform lock-in |
+| Orchestration platforms | Kestra | Any tool as a step, event and schedule triggers, approvals, retries, and one record of every run | You define the workflows; it is not a prebuilt catalog of operations |
 
-Furthermore, Kestra's concept of [Assets for Infra Automation](/blogs/assets-for-infra-automation) transforms fire-and-forget scripts into a governed, live catalog of your infrastructure. This provides a clear line of sight into the state of your systems, making it easier to manage lifecycles, enforce policies, and track changes over time. By unifying these capabilities, Kestra helps organizations move beyond basic automation to true, end-to-end orchestration. You can learn more about [why Kestra is built for this](/docs/why-kestra).
+For comparisons inside each category, see [AWX alternatives](/resources/infrastructure/awx-alternatives), [Rundeck alternatives](/resources/infrastructure/rundeck-alternatives), [Spacelift alternatives](/resources/infrastructure/spacelift-alternatives), and [VMware Aria Automation alternatives](/resources/infrastructure/vmware-aria-automation-alternatives).
 
-## The Evolution of Operations: Day-1 vs. Day-2 in Practice
+## Day 2 operations with Kestra
 
-The distinction between Day-1 and Day-2 becomes clear with practical examples:
-- **Virtual Machine Lifecycle:** Day-1 is provisioning the VM with Terraform. Day-2 is everything that follows: patching its OS, monitoring its CPU and memory usage, creating snapshots for backups, responding to performance alerts, and eventually decommissioning it.
-- **Database Deployment:** Day-1 is deploying a new PostgreSQL instance. Day-2 is managing user permissions, performing regular backups and restores, optimizing slow queries, and applying version upgrades.
-- **Application Release:** Day-1 is the CI/CD pipeline pushing a new version of the application to production. Day-2 is monitoring application performance metrics, analyzing user-facing errors, managing feature flags, and rolling back if a critical bug is discovered.
+Kestra is an open-source orchestration platform with declarative YAML workflows. For day 2, each operation is a workflow, and the triggers, tool calls, approvals, retries, and history live in that workflow.
 
-In each case, Day-1 is a discrete, one-time event, while Day-2 is a continuous, long-term process. As detailed in our guide to [making infrastructure behave like one system](/blogs/infra-automation), the goal is to connect these phases with a consistent automation and orchestration layer.
+*   **Every trigger day 2 needs.** [Schedules](/docs/workflow-components/triggers/schedule-trigger) for patching, backups, and drift checks. [Webhooks](/docs/workflow-components/triggers/webhook-trigger) for alerts from Alertmanager, Datadog, or a scanner. [Flow triggers](/docs/workflow-components/triggers/flow-trigger) to chain operations, for example a verification run after every patch.
+*   **The tools you already use.** Plugins for [Ansible](/orchestration/ansible), [Terraform](/orchestration/terraform), OpenTofu, Kubernetes, VMware, the major clouds, ServiceNow, and any script or API run as steps of the same workflow. Playbooks and modules run as they are.
+*   **Approvals where the risk is.** A [`Pause` task](/docs/how-to-guides/pause-resume) stops the run, waits for a decision, and resumes with the approver's answer and reason, which stay in the execution history.
+*   **Failures you can resume.** [Retries](/docs/workflow-components/retries), timeouts, and [error handlers](/docs/workflow-components/errors) per step, and [replay](/docs/concepts/replay) from the failed task once the cause is fixed.
+*   **Guardrails across teams.** In Kestra Enterprise Edition, [Policies](/docs/enterprise/governance/policies) validate and inject configuration across namespaces, and [assets](/docs/enterprise/governance/assets) keep an [up-to-date record of provisioned infrastructure](/docs/how-to-guides/asset-infrastructure-inventory) linked to the executions that changed it.
 
-## Broader Context: Operational Frameworks and Business Impact
+[Kestra for Infrastructure](/infra-automation) brings this model to platform and infrastructure teams in Kestra Enterprise Edition: self-service without losing control, on the same Kestra that already runs data and AI workflows.
 
-The concept of "Day 2" also exists in a broader business context, famously articulated by Amazon founder Jeff Bezos. In his view, companies operate in one of two modes: Day 1 or Day 2.
-- **Day 1 companies** are agile, innovative, and customer-obsessed. They experiment relentlessly, make high-velocity decisions, and are always looking for new opportunities.
-- **Day 2 companies** are characterized by stasis, bureaucracy, and an inward focus. They become slow to react, risk-averse, and eventually irrelevant. As Bezos puts it, "Day 2 is stasis. Followed by irrelevance. Followed by excruciating, painful decline. Followed by death."
+### Example: alert-driven disk extension with approval in production
 
-There is a direct link between a strong technical Day-2 operations practice and a company's ability to maintain a "Day 1" business mindset. When operational excellence is built into the foundation of a company, it frees up resources and reduces the friction of innovation. A stable, automated, and observable platform allows development teams to ship features faster and with more confidence. It minimizes the time spent fighting fires and maximizes the time spent building value for customers.
+The workflow below handles one of the most common day 2 alerts: a filesystem running out of space. Alertmanager calls the webhook. Outside production, the disk is extended immediately. In production, the on-call engineer approves first, and the decision is recorded. The extension itself is an existing Ansible playbook stored next to the workflow.
 
-In this sense, mastering Day-2 operations isn't just an IT concern; it's a strategic business imperative. It's the engine that enables a company to stay agile and competitive long after its initial launch, a principle that drives our own growth and mission as we build [the orchestration control plane for the AI era](/blogs/kestra-series-a).
+```yaml
+id: extend_disk_on_alert
+namespace: platform.day2
+
+tasks:
+  - id: approval_in_production
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ trigger.body.alerts[0].labels.env == 'prod' }}"
+    then:
+      - id: notify_oncall
+        type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+        url: "{{ secret('SLACK_ONCALL') }}"
+        payload: |
+          {
+            "text": "Disk almost full on {{ trigger.body.alerts[0].labels.instance }} (prod). Approve the extension in execution {{ execution.id }}."
+          }
+
+      - id: wait_for_approval
+        type: io.kestra.plugin.core.flow.Pause
+        onResume:
+          - id: approved
+            type: BOOL
+            defaults: false
+          - id: reason
+            type: STRING
+
+      - id: stop_if_rejected
+        type: io.kestra.plugin.core.execution.Fail
+        condition: "{{ outputs.wait_for_approval.onResume.approved == false }}"
+        errorMessage: "Extension rejected: {{ outputs.wait_for_approval.onResume.reason }}"
+
+  - id: extend_disk
+    type: io.kestra.plugin.ansible.cli.AnsibleCLI
+    namespaceFiles:
+      enabled: true
+      include:
+        - inventory.ini
+        - extend_disk.yml
+    limit: "{{ trigger.body.alerts[0].labels.instance }}"
+    commands:
+      - ansible-playbook -i inventory.ini extend_disk.yml
+
+  - id: notify_done
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+    url: "{{ secret('SLACK_ONCALL') }}"
+    payload: |
+      {
+        "text": "Disk extended on {{ trigger.body.alerts[0].labels.instance }}. Execution {{ execution.id }}."
+      }
+
+triggers:
+  - id: disk_pressure_alert
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: disk-pressure-alert
+```
+
+The same structure covers most alert-driven operations: replace the playbook and the approval condition, and keep the trigger, the notification, and the record. Configure Alertmanager to send only firing alerts to this webhook, so resolved notifications do not start a run.
+
+## Related reading
+
+*   [Day 2 is where infrastructure automation breaks](/blogs/day-2-infrastructure-automation-breaks): why every tool reports success while the change across them fails.
+*   [Self-service infrastructure](/resources/infrastructure/self-service-infrastructure): how engineers request resources through a governed catalog instead of tickets.
+*   [VM lifecycle management](/resources/infrastructure/vm-lifecycle-management): the full life of a virtual machine, from request to decommissioning.
+*   [Patch management automation](/resources/infrastructure/patch-management-automation): scheduled, verified patching across environments.
+*   [Terraform drift detection](/resources/infrastructure/terraform-drift-detection): finding the gap between code and reality.
+*   [Self-healing infrastructure](/resources/infrastructure/self-healing-infrastructure): turning alerts into remediation.
+*   [Runbook automation tools](/resources/infrastructure/runbook-automation-tools-2026): the tools that turn runbooks into workflows.
+*   [Infrastructure orchestration](/resources/infrastructure/infrastructure-orchestration): coordinating Terraform, Ansible, and everything around them.

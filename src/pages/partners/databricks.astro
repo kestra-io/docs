@@ -1,0 +1,73 @@
+---
+import Layout from "~/components/layout.astro"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
+
+const title = "Databricks & Kestra: Orchestrate Jobs, Clusters and SQL Queries"
+const description =
+    "Orchestrate Databricks with Kestra: create and delete clusters, submit job runs, run SQL queries and move DBFS files from declarative, event-driven flows."
+
+const facts = [
+    {
+        label: "Partnership",
+        value: "Databricks Validated Technology Partner",
+    },
+    {
+        label: "Plugin",
+        value: "Clusters, jobs, SQL queries, DBFS files and the Databricks CLI",
+    },
+    {
+        label: "In production",
+        value: "Acxiom orchestrates Databricks job creation across isolated client pipelines",
+    },
+]
+
+const expertise = [
+    {
+        icon: "mdi:server-network",
+        title: "Clusters that live only as long as the job",
+        text: "cluster.CreateCluster waits until the cluster is running and returns its clusterId. cluster.DeleteCluster removes it at the end of the flow, so no compute sits idle.",
+    },
+    {
+        icon: "mdi:play-circle-outline",
+        title: "Jobs and one-off runs",
+        text: "job.CreateJob defines a Databricks job and job.SubmitRun runs a Spark or Python script on an existing cluster, then waits for the run to complete.",
+    },
+    {
+        icon: "mdi:database-search-outline",
+        title: "SQL from any flow",
+        text: "sql.Query runs SQL through a cluster's HTTP path and stores the result in Kestra internal storage with its row count. DatabricksCLI runs Databricks CLI commands.",
+    },
+    {
+        icon: "mdi:folder-upload-outline",
+        title: "Files in and out of DBFS",
+        text: "dbfs.Upload sends a file from Kestra internal storage to DBFS in 1 MB chunks, with no file size limit. A download task moves results back out.",
+    },
+]
+---
+
+<Layout {title} {description} breadcrumbTitle="Databricks">
+    <PartnerProfile
+        name="Databricks"
+        tagline="Databricks runs Spark, Delta Lake and SQL workloads on one data and AI platform. Kestra orchestrates the work around them: clusters, jobs, queries and the systems upstream and downstream."
+        about="The <a href='/blogs/2024-03-12-kestra-databricks'>Databricks plugin</a> covers the Databricks lifecycle from cluster creation to SQL queries, and Acxiom uses it to orchestrate Databricks job creation across isolated pipelines for its enterprise clients."
+        expertiseTitle="Databricks + Kestra: the lakehouse, orchestrated"
+        expertise={expertise}
+        quote={{
+            text: "Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently.",
+            author: "Director of Engineering",
+            role: "Acxiom",
+        }}
+        facts={facts}
+        plugins={["plugin-databricks"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "databricks",
+            title: '<span class="highlight">Databricks</span> Blueprints',
+        }}
+        closing={{
+            title: "Orchestrate your Databricks workspace",
+            text: "Open source and self-hosted. Start from a blueprint below or from the plugin docs.",
+        }}
+        website="https://www.databricks.com/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
+</Layout>

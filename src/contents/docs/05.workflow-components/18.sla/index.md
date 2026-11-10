@@ -24,7 +24,7 @@ Kestra supports two SLA types:
 
 ### MAX_DURATION
 
-The following SLA cancels an execution if it runs for more than 8 hours:
+The duration counts from the moment the execution is created, including any time it waits in `QUEUED` because of a [concurrency limit](../14.concurrency/index.md). The following SLA cancels an execution that hasn't finished 8 hours after it was created:
 
 ```yaml
 id: sla_example
@@ -64,7 +64,7 @@ namespace: company.team
 sla:
   - id: assert_output
     type: EXECUTION_ASSERTION
-    assert: "{{ outputs.mytask.value == 'expected output' }}"
+    assert: "{{ outputs.mytask.values.result == 'expected output' }}"
     behavior: FAIL
     labels:
       sla: miss
@@ -72,8 +72,9 @@ sla:
 
 tasks:
   - id: mytask
-    type: io.kestra.plugin.core.debug.Return
-    format: expected output
+    type: io.kestra.plugin.core.output.OutputValues
+    values:
+      result: expected output
 ```
 
 ## SLA behavior

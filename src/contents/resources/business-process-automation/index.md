@@ -63,7 +63,7 @@ By automating manual, time-consuming tasks, BPA frees up employees to focus on h
 
 ### Enhancing compliance, data accuracy, and auditability
 
-Manual processes are inherently prone to human error, leading to inconsistent data and potential compliance breaches. BPA enforces business rules with perfect consistency, ensuring that every step of a process is executed correctly and in the right order. Automated workflows also create a digital audit trail, logging every action, decision, and data change. This provides complete visibility and makes it easier to demonstrate compliance with regulations like GDPR or SOX. Effective [workflow governance](/resources/infrastructure/workflow-governance) becomes built-in, not bolted on.
+Manual processes are inherently prone to human error, leading to inconsistent data and potential compliance breaches. BPA enforces business rules with perfect consistency, ensuring that every step of a process is executed correctly and in the right order. Automated workflows also create a digital audit trail, logging every action, decision, and data change. This provides complete visibility and makes it easier to demonstrate compliance with regulations like GDPR or SOX. Effective [workflow governance](/resources/ai/ai-governance-workflows) becomes built-in, not bolted on.
 
 ### Empowering teams with self-service and improved decision-making
 

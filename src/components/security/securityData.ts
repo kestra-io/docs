@@ -27,6 +27,7 @@ export const TRUST_CENTER_POLICIES = [
 export interface Deployment {
     name: string
     mode: string
+    link: { href: string; text: string }
     facts: { label: string; value: string }[]
 }
 
@@ -34,6 +35,7 @@ export const DEPLOYMENTS: Deployment[] = [
     {
         name: "Open source",
         mode: "Self-managed",
+        link: { href: "/docs/quickstart", text: "Get started with open source" },
         facts: [
             {
                 label: "Where it runs",
@@ -56,6 +58,7 @@ export const DEPLOYMENTS: Deployment[] = [
     {
         name: "Enterprise Edition",
         mode: "Self-managed · air-gap capable",
+        link: { href: "/enterprise", text: "Explore Kestra Enterprise Edition" },
         facts: [
             {
                 label: "Where it runs",
@@ -78,6 +81,7 @@ export const DEPLOYMENTS: Deployment[] = [
     {
         name: "Kestra Cloud",
         mode: "Fully managed",
+        link: { href: "/cloud", text: "Explore Kestra Cloud" },
         facts: [
             { label: "Where it runs", value: "Managed by Kestra on Google Cloud." },
             { label: "Who operates it", value: "Kestra." },
@@ -283,7 +287,7 @@ export const FAQ_ITEMS = [
     },
     {
         question: "Can Kestra run air-gapped, with no outbound internet access?",
-        answer: "Yes. Enterprise Edition installs offline from a private registry, and an air-gapped configuration mode removes external dependencies from the UI. The Enterprise license is validated locally at startup and does not call out to a license server. Anonymous usage reporting, in-product documentation and hosted blueprints are the only components that reach the internet by default, and air-gapped mode disables them.",
+        answer: `Yes. <a href="/enterprise">Enterprise Edition</a> installs offline from a private registry, and an air-gapped configuration mode removes external dependencies from the UI. The Enterprise license is validated locally at startup and does not call out to a license server. Anonymous usage reporting, in-product documentation and hosted blueprints are the only components that reach the internet by default, and air-gapped mode disables them.`,
     },
     {
         question: "Can I get a copy of your SOC 2 report?",
@@ -295,7 +299,7 @@ export const FAQ_ITEMS = [
     },
     {
         question: "Does Kestra support SSO and SCIM?",
-        answer: "Yes. SSO is available on Enterprise Edition and Kestra Cloud, over OIDC with Google, Microsoft Entra ID, Okta, Keycloak and authentik, and LDAP is also supported. SCIM 2.0 is available on Enterprise Edition and handles provisioning, deprovisioning and group sync from Okta, Entra ID, Keycloak and authentik.",
+        answer: `Yes. SSO is available on Enterprise Edition and <a href="/cloud">Kestra Cloud</a>, over OIDC with Google, Microsoft Entra ID, Okta, Keycloak and authentik, and LDAP is also supported. SCIM 2.0 is available on Enterprise Edition and handles provisioning, deprovisioning and group sync from Okta, Entra ID, Keycloak and authentik.`,
     },
     {
         question: "Which secrets managers does Kestra support?",

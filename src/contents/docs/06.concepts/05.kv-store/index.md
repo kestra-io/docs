@@ -50,7 +50,7 @@ KV pairs can be managed from the UI, in flows via tasks, through the REST API, v
 4. **Terraform**: use the `kestra_kv` resource.
 5. **Pebble function**: use `kv()` to retrieve a value inline in a flow expression.
 6. **GitHub Actions**: manage KV pairs in your CI/CD pipeline.
-7. **kestractl**: use `kestractl kv` to list, set, get, and delete from the command line. See the [kestractl docs](../../kestra-cli/kestractl/index.md) for setup.
+7. **kestractl**: use `kestractl kv` to list, set, get, and delete from the command line. See [kestractl installation](../../kestra-cli/kestractl/index.md#installation) for setup.
 
 ### Create a KV pair from the UI
 
@@ -144,8 +144,8 @@ id: read_non_existing_kv_pair
 namespace: company.team
 tasks:
   - id: log_key_from_another_namespace
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ kv('non_existing_key', errorOnMissing=false) }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ kv('non_existing_key', errorOnMissing=false) }}"
 ```
 
 ### Read KV pairs with the `Get` task
@@ -318,3 +318,19 @@ data "kestra_kv" "new" {
 ```
 
 `terraform apply` creates, updates, or deletes KV pairs from your Terraform state.
+
+## Remote workers with dedicated storage
+
+:::alert{type="info"}
+This configuration applies to Enterprise Edition deployments where workers use dedicated storage, separate from the internal storage that the webserver and Worker Controller use.
+:::
+
+Workers with dedicated storage read and write KV values against their own bucket by default. Keys set on such a worker are visible across the deployment but their values are unreachable from anywhere else. Set `kestra.kv.worker-access: CONTROLLER` to route KV operations through the controller instead:
+
+```yaml
+kestra:
+  kv:
+    worker-access: CONTROLLER    # default: STORAGE
+```
+
+See [Dedicated-storage workers](../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation, the equivalent settings for namespace files and managed plugin artifacts, and the property reference.

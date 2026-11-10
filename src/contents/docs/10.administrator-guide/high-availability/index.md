@@ -79,7 +79,7 @@ In a distributed deployment, all server roles must have access to the same inter
 
 Without shared storage, task outputs written by a Worker on one host are not reachable by the Executor or Webserver on another.
 
-For a full list of supported backends (including Cloudflare R2, Huawei OBS, Ceph, MinIO, and others), see [Internal Storage](../../08.architecture/data-components/index.md).
+For a full list of supported backends (including Cloudflare R2, Huawei OBS, Ceph, and others), see [Internal Storage](../../08.architecture/data-components/index.md).
 
 ## Load balancing
 

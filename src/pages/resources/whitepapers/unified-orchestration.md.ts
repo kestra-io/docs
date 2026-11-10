@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro"
 import { getEntry } from "astro:content"
 import { resolveTotalPluginsPlaceholder } from "~/utils/plugins/pluginCount"
-import { authorMarkdown } from "~/components/unified-orchestration-whitepaper/author"
+import { authorMarkdown } from "~/components/whitepaper/author"
 
 // Markdown variant of the unified orchestration whitepaper page, mirroring the
 // per-topic endpoint in resources/[category]/[topic].md.ts. The entry sets

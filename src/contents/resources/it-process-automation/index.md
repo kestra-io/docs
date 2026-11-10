@@ -70,7 +70,7 @@ Security and compliance are areas where consistency and auditability are paramou
 
 ### CI/CD and DevOps Automation
 
-ITPA is a cornerstone of a healthy DevOps practice. It automates the software delivery lifecycle, creating a seamless [CI/CD pipeline](/resources/infrastructure/ci-cd-pipeline) from code commit to production deployment. This includes compiling code, running tests, provisioning test environments, and deploying applications. By automating these steps, organizations can release software faster and more reliably.
+ITPA is a cornerstone of a healthy DevOps practice. It automates the software delivery lifecycle, creating a seamless [CI/CD pipeline](/resources/infrastructure/ci-cd-orchestration) from code commit to production deployment. This includes compiling code, running tests, provisioning test environments, and deploying applications. By automating these steps, organizations can release software faster and more reliably.
 
 ## Choosing the Right IT Process Automation Platform
 
@@ -159,7 +159,7 @@ Automation often crosses traditional team boundaries. A workflow might be trigge
 
 ### Prioritize Observability and Governance
 
-As you automate more processes, it's crucial to maintain visibility and control. Ensure your automation platform provides detailed logs, metrics, and alerts. Implement strong [workflow governance](/resources/infrastructure/workflow-governance) practices, including version control for workflows and clear ownership. For critical processes, build in [manual approval processes](/docs/use-cases/approval-processes) to ensure human oversight where needed.
+As you automate more processes, it's crucial to maintain visibility and control. Ensure your automation platform provides detailed logs, metrics, and alerts. Implement strong [workflow governance](/resources/ai/ai-governance-workflows) practices, including version control for workflows and clear ownership. For critical processes, build in [manual approval processes](/docs/use-cases/approval-processes) to ensure human oversight where needed.
 
 ## The Future of IT Process Automation: AI and the Control Plane
 

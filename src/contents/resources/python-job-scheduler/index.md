@@ -72,7 +72,7 @@ As you scale, the act of "scheduling" becomes just one piece of a larger puzzle.
 *   **Observability**: Instead of decentralized logs scattered across servers, an orchestrator provides a central UI for logs, metrics, and execution history. This level of [workflow observability](/resources/infrastructure/workflow-observability) is critical for debugging and monitoring.
 *   **Scalability**: Orchestration platforms distribute tasks across workers and queue them when capacity is busy.
 *   **Polyglot Environments**: Python jobs rarely live in isolation. They often interact with databases, shell scripts, APIs, and other services. An orchestration platform runs them as steps of the same workflow.
-*   **GitOps & Versioning**: By defining workflows as code (e.g., in YAML), you can version, review, and deploy them using [GitOps practices](/resources/infrastructure/gitops-for-operations), ensuring consistency and auditability.
+*   **GitOps & Versioning**: By defining workflows as code (e.g., in YAML), you can version, review, and deploy them using [GitOps practices](/resources/infrastructure/gitops), ensuring consistency and auditability.
 
 ## Orchestrate Python Jobs with Kestra: A Scheduled ETL Example
 

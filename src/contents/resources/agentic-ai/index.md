@@ -71,7 +71,7 @@ This approach needs a higher-level orchestration layer to manage communication, 
 
 An agent's ability to act comes from its tools. These are functions or APIs that let it interact with the outside world: searching the web, running code, querying a database, or sending an email. The agent's LLM brain decides which tool to use, and with what parameters, based on its plan.
 
-Memory matters just as much. Short-term memory is usually the context window of the LLM, holding the recent conversation and observations. Long-term memory, often backed by a vector database, lets the agent store and retrieve large amounts of information from past interactions, giving it a persistent knowledge base. [AI agents in Kestra](/docs/ai-tools/ai-agents) are designed around these principles, pairing a strong reasoning engine with a flexible toolset.
+Memory matters just as much. Short-term memory is usually the context window of the LLM, holding the recent conversation and observations. Long-term memory, often backed by a vector database, lets the agent store and retrieve large amounts of information from past interactions, giving it a persistent knowledge base. [AI agents in Kestra](/docs/ai-orchestration/ai-agents) are designed around these principles, pairing a strong reasoning engine with a flexible toolset.
 
 ## Agentic AI in Context: Comparing Paradigms
 

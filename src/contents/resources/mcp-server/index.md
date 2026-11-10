@@ -40,13 +40,13 @@ Messages follow JSON-RPC 2.0. A local server runs as a subprocess and communicat
 
 One point is often misunderstood: the server does not hold the conversation. The host keeps the chat history and decides what goes into the model's context; the server only answers the requests it receives. That separation is what lets one server be reused by many different AI applications.
 
-Kestra works on both sides of the protocol. The [Kestra MCP server](/docs/ai-tools/mcp-server) exposes flows as tools that AI agents can call, and Kestra flows can also act as MCP clients, as shown below. For the broader picture of coordinating many servers and agents, see [MCP orchestration](/resources/ai/mcp-orchestration).
+Kestra works on both sides of the protocol. The [Kestra MCP server](/docs/ai-orchestration/mcp-server) exposes flows as tools that AI agents can call, and Kestra flows can also act as MCP clients, as shown below. For the broader picture of coordinating many servers and agents, see [MCP orchestration](/resources/ai/mcp-orchestration).
 
 ## MCP as the "USB-C for AI"
 
 The most effective analogy for MCP is "USB-C for AI." Before USB-C, connecting devices required a tangled mess of proprietary cables for power, data, and video. USB-C replaced this fragmentation with a single, universal standard.
 
-MCP aims to do the same for software. Instead of writing custom API wrappers and parsers for every database, SaaS application, or internal service an AI needs to access, you expose them through a single, standardized MCP interface. This dramatically simplifies the process of giving AI new capabilities. An AI agent only needs to know how to speak MCP to gain access to a world of tools, just as a laptop only needs a USB-C port to connect to countless peripherals. Anthropic introduced MCP as an open standard in [November 2024](https://www.anthropic.com/news/model-context-protocol), and it has since been adopted by the major model providers and agent frameworks, which is what makes the USB-C comparison hold: the value comes from everyone using the same port. Kestra's [AI tools](/docs/ai-tools) follow the same standard.
+MCP aims to do the same for software. Instead of writing custom API wrappers and parsers for every database, SaaS application, or internal service an AI needs to access, you expose them through a single, standardized MCP interface. This dramatically simplifies the process of giving AI new capabilities. An AI agent only needs to know how to speak MCP to gain access to a world of tools, just as a laptop only needs a USB-C port to connect to countless peripherals. Anthropic introduced MCP as an open standard in [November 2024](https://www.anthropic.com/news/model-context-protocol), and it has since been adopted by the major model providers and agent frameworks, which is what makes the USB-C comparison hold: the value comes from everyone using the same port. Kestra's [AI tools](/docs/ai-orchestration) follow the same standard.
 
 ## Why AI needs a standardized tool interface
 
@@ -100,11 +100,11 @@ tasks:
 
 What's worth noticing in this flow:
 *   **Discovery, then a call:** `ListTools` returns the server's tool catalog with each tool's argument schema, and `CallTool` invokes one tool by name. Both default to the Streamable HTTP transport.
-*   **No model in the loop:** The tool and its arguments are fixed in YAML, so the call is repeatable and testable. When the choice of tool should be left to a model, attach the same server to an [AI agent](/docs/ai-tools/ai-agents) as a `StreamableHttpMcpClient` tool instead.
+*   **No model in the loop:** The tool and its arguments are fixed in YAML, so the call is repeatable and testable. When the choice of tool should be left to a model, attach the same server to an [AI agent](/docs/ai-orchestration/ai-agents) as a `StreamableHttpMcpClient` tool instead.
 *   **Credentials stay in secrets:** The server URL and token come from Kestra's secret management rather than the flow definition.
 *   **Usable downstream:** The tool's text answer is available as the `result` output, so later tasks can store it, post it, or pass it to another step in the same [Kestra flow](/docs/workflow-components/flow).
 
-The reverse direction also works: the [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) exposes a Kestra flow as a tool, so an AI assistant can start a governed workflow instead of calling a production system directly. Kestra's own MCP server also [exposes plugins, blueprints, and documentation](/docs/ai-tools/kestra-mcp-resources) to coding agents.
+The reverse direction also works: the [MCP Tool trigger](/docs/workflow-components/triggers/mcp-tool-trigger) exposes a Kestra flow as a tool, so an AI assistant can start a governed workflow instead of calling a production system directly. Kestra's own MCP server also [exposes plugins, blueprints, and documentation](/docs/develop-with-ai/kestra-mcp-resources) to coding agents.
 
 ### MCP vs. traditional APIs: understanding the distinction
 

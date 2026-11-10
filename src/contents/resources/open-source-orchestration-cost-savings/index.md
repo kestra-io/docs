@@ -135,7 +135,7 @@ Tools like OpenCost and Kubecost provide visibility into Kubernetes spending. An
 
 ### AI model orchestration: open source alternatives
 
-Orchestrating [AI pipelines](https://kestra.io/resources/ai/ai-pipeline) involves complex, multi-stage workflows. While specialized platforms exist, a universal orchestrator can manage the entire end-to-end process. Kestra's native [AI Agents](https://kestra.io/docs/ai-tools/ai-agents) and support for tools like MLflow and Kubeflow allow you to build, train, and deploy models within the same control plane you use for your data and infrastructure, a concept known as [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration).
+Orchestrating [AI pipelines](https://kestra.io/resources/ai/ai-pipeline) involves complex, multi-stage workflows. While specialized platforms exist, a universal orchestrator can manage the entire end-to-end process. Kestra's native [AI Agents](https://kestra.io/docs/ai-orchestration/ai-agents) and support for tools like MLflow and Kubeflow allow you to build, train, and deploy models within the same control plane you use for your data and infrastructure, a concept known as [agentic orchestration](https://kestra.io/resources/ai/agentic-orchestration).
 
 ## Strategies for maximizing open source orchestration cost savings
 

@@ -28,7 +28,6 @@ export async function loadResources(): Promise<{ items: ResourceListItem[] }> {
             const image = entry.data.image
                 ? await getImage({
                       src: entry.data.image,
-                      format: "webp",
                       width: 800,
                   })
                 : null

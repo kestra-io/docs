@@ -61,7 +61,7 @@ Without a dedicated orchestration layer, teams are left managing a brittle colle
 
 Many organizations find that the best approach is not to choose one platform over the other, but to use both for what they do best. A common pattern is to use Databricks for heavy data engineering and ML model preparation, then load the curated, high-value data into Snowflake for enterprise-wide BI and analytics.
 
-Kestra's declarative nature makes it ideal for managing these hybrid workflows. A single YAML file can define a pipeline that coordinates tasks across both platforms, complete with scheduling, error handling, and data passing.
+Kestra's declarative nature makes it ideal for managing these hybrid workflows. A single YAML file can define a pipeline that coordinates tasks across both platforms, complete with scheduling, error handling, and data passing. For each platform on its own, see [Databricks orchestration](/orchestration/databricks) and [Snowflake orchestration](/orchestration/snowflake) with Kestra.
 
 Here is a runnable example of a daily ETL process that extracts user activity data with a Databricks query, runs dbt transformations, and then loads the aggregated results into Snowflake.
 
@@ -172,7 +172,7 @@ The most sophisticated data teams often don't see this as an either/or decision.
 
 ## Related concepts
 - [ETL vs. ELT: Key Differences](/resources/data/etl-vs-elt)
-- [What is a Data Pipeline?](/resources/data/data-pipeline)
+- [What is a Data Pipeline?](/resources/data/create-data-pipeline)
 - [Data Quality: A Practical Guide](/resources/data/data-quality)
 - [Understanding Data Observability](/resources/data/data-observability)
 - [dbt Integrations for Orchestration](/resources/data/dbt-integrations)

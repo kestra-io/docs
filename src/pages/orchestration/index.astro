@@ -5,6 +5,7 @@ import Faq from "~/components/common/Faq.vue"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import kestraIcon from "~/components/versus/assets/ks-icon.svg?raw"
+import { ORCHESTRATION_CATEGORIES } from "~/schemas/orchestration"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import {
     fetchTotalPluginsCount,
@@ -12,46 +13,6 @@ import {
 } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
-
-const CATEGORY_MAP: Record<string, string> = {
-    airbyte: "Data",
-    ansible: "Infrastructure",
-    apify: "Data",
-    argocd: "Infrastructure",
-    aws: "Cloud",
-    azure: "Cloud",
-    bigquery: "Data",
-    cloudflare: "Cloud",
-    dataproc: "Data",
-    digitalocean: "Cloud",
-    docker: "Infrastructure",
-    duckdb: "Data",
-    gcs: "Cloud",
-    git: "Infrastructure",
-    "github-actions": "Infrastructure",
-    gitlab: "Infrastructure",
-    hightouch: "Data",
-    jenkins: "Infrastructure",
-    kafka: "Data",
-    kubernetes: "Infrastructure",
-    "microsoft-fabric": "Data",
-    netbox: "Infrastructure",
-    nutanix: "Infrastructure",
-    opa: "Infrastructure",
-    postgres: "Data",
-    proxmox: "Infrastructure",
-    pubsub: "Data",
-    redis: "Data",
-    servicenow: "Business",
-    slack: "Business",
-    snowflake: "Data",
-    "sql-server": "Data",
-    terraform: "Infrastructure",
-    "vertex-ai": "AI",
-    vmware: "Infrastructure",
-    "dbt-cloud": "Data",
-    "dbt-core": "Data",
-}
 
 const orchestrationEntries = await getCollection("orchestration")
 
@@ -71,7 +32,7 @@ const entries = await Promise.all(
             return {
                 path: `/orchestration/${entry.id}`,
                 toolName: entry.data.tool.name,
-                category: CATEGORY_MAP[entry.id] ?? "Other",
+                category: entry.data.tool.category,
                 icon,
                 shortDescription: replaceTotalPluginsPlaceholder(
                     entry.data.description,
@@ -82,24 +43,10 @@ const entries = await Promise.all(
         }),
 )
 
-const CATEGORY_ORDER = [
-    "Infrastructure",
-    "Cloud",
-    "Data",
-    "Business",
-    "AI",
-    "Alerting",
-    "Core",
-]
-const presentCategories = [...new Set(entries.map((e) => e.category))].sort(
-    (a, b) => {
-        const ai = CATEGORY_ORDER.indexOf(a)
-        const bi = CATEGORY_ORDER.indexOf(b)
-        if (ai === -1 && bi === -1) return a.localeCompare(b)
-        if (ai === -1) return 1
-        if (bi === -1) return -1
-        return ai - bi
-    },
+// The schema enum fixes both the allowed categories and the tab order, so a
+// category can only appear here if some entry declares it.
+const presentCategories = ORCHESTRATION_CATEGORIES.filter((cat) =>
+    entries.some((e) => e.category === cat),
 )
 
 const faqItems = [
@@ -162,8 +109,6 @@ const faqItems = [
                                     { active: i === 0 },
                                 ]}
                                 set:html={entry.icon}
-                                data-name={entry.toolName}
-                                data-color={entry.color}
                             />
                         ))
                     }

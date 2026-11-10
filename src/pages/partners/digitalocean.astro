@@ -1,98 +1,65 @@
 ---
 import Layout from "~/components/layout.astro"
-import SeeHow from "~/components/common/SeeHow.astro"
-
-import PartnerBanner from "~/components/partners/PartnerBanner.astro"
-import Capability from "~/components/partners/Capability.astro"
-import seeHowImg from "~/assets/landing/partners/digitalocean-cta.webp"
-
-import pluginImg from "~/assets/landing/partners/conapi-jms.webp"
-import ephemeralImg from "~/assets/landing/partners/conapi-pragmatic-approach.webp"
-import blueprintsImg from "~/assets/landing/partners/conapi-api.webp"
-import partnershipImg from "~/assets/landing/partners/conapi-modern.webp"
-import BannerImage from "~/assets/landing/partners/digitalocean_logo.svg"
+import PartnerProfile from "~/components/partners/PartnerProfile.astro"
 
 const title = "DigitalOcean & Kestra: Orchestration for the Developer Cloud"
 const description =
-    "Kestra is an official DigitalOcean technology partner. Orchestrate droplets, managed databases, DNS, Kubernetes, firewalls, and volumes with a dedicated plugin, production blueprints, and event-driven flows."
+    "Kestra is an official DigitalOcean technology partner. Orchestrate droplets, managed databases, Kubernetes, DNS and more with a dedicated plugin and event-driven flows."
 
-const banner = {
-    title: "DigitalOcean & Kestra Partnership",
-    description:
-        "DigitalOcean gives developers clean cloud primitives at a predictable price. Kestra gives those primitives an orchestration layer: sequencing, polling, event reactions, and teardown guarantees across the whole account.",
-    cta: { text: "Book a Demo", href: "/demo" },
-    image: BannerImage,
-    features: [
-        {
-            title: "Partnership",
-            text: "Official DigitalOcean technology partner",
-        },
-        {
-            title: "Integration",
-            text: "Dedicated plugin: droplets, managed databases, DNS, Kubernetes, firewalls, volumes, load balancers, plus an account-level trigger",
-        },
-        {
-            title: "Resources",
-            text: "Six production blueprints and a full orchestration guide, tested end to end",
-        },
-    ],
-}
+const facts = [
+    { label: "Partnership", value: "Official DigitalOcean technology partner" },
+    {
+        label: "Plugin",
+        value: "Droplets, managed databases, Kubernetes, DNS, firewalls, volumes and load balancers",
+    },
+    {
+        label: "Trigger",
+        value: "Starts a flow for every new droplet on the account",
+    },
+]
 
-const capabilities = {
-    title: "DigitalOcean + Kestra: the developer cloud, orchestrated",
-    description:
-        "The <a href='https://kestra.io/orchestration/digitalocean'>io.kestra.plugin.digitalocean plugin</a> turns every resource type on a DigitalOcean account into declarative flow tasks. Combined with Kestra's scheduling, event triggers, and failure handling, teams automate the operations DigitalOcean leaves to scripts and console clicks.",
-    items: [
-        {
-            image: pluginImg,
-            alt: "DigitalOcean plugin coverage",
-            title: "One plugin for the whole account",
-            text: "The official <a href='https://kestra.io/orchestration/digitalocean'>DigitalOcean plugin</a> covers droplets, managed databases, block storage volumes, load balancers, Kubernetes clusters, firewalls, domains, and DNS records with create, read, list, resize, attach, and delete tasks. A dedicated droplet trigger polls the account and fires an execution for every new machine, turning the DigitalOcean API into an event source for governance and cost control.",
-        },
-        {
-            image: ephemeralImg,
-            alt: "Ephemeral infrastructure",
-            title: "Ephemeral infrastructure with guaranteed teardown",
-            text: "The flagship pattern provisions a droplet per batch job, waits until DigitalOcean reports it active, runs the workload, and destroys everything in a finally block that executes on success and failure alike. Combined with scheduled database resizing and tag-driven snapshot policies, teams pay for the compute they use instead of the compute they forgot.",
-        },
-        {
-            image: blueprintsImg,
-            alt: "Production blueprints",
-            title: "Production blueprints, tested end to end",
-            text: "Six ready-to-run blueprints ship in the Kestra catalog: an ephemeral droplet runner, business-hours database resizing, tag-filtered nightly snapshots, a governance guard that powers off shadow droplets, a verified blue-green DNS cutover, and a weekly whole-account inventory report. Each one was executed end to end against the DigitalOcean API surface before publication.",
-        },
-        {
-            image: partnershipImg,
-            alt: "Growing partnership",
-            title: "A partnership that keeps shipping",
-            text: "Kestra joined the DigitalOcean partner program in 2026, and the collaboration extends beyond the plugin: orchestration guides, a growing blueprint catalog, and work toward one-click Kestra deployment through the DigitalOcean Marketplace. Teams running on DigitalOcean get a self-hosted, open-source orchestrator that treats their cloud as a first-class citizen.",
-        },
-    ],
-}
+const expertise = [
+    {
+        icon: "mdi:puzzle-outline",
+        title: "One plugin for the whole account",
+        text: "Create, resize, attach and delete every DigitalOcean resource from a flow, with no API scripts to maintain.",
+    },
+    {
+        icon: "mdi:bell-ring-outline",
+        title: "React to what happens on the account",
+        text: "A new droplet starts a flow, so tagging, cost checks and policy enforcement run on their own.",
+    },
+    {
+        icon: "mdi:timer-sand",
+        title: "Pay only for what runs",
+        text: "Spin up a droplet for a batch job and destroy it when the job ends, even when the job fails.",
+    },
+    {
+        icon: "mdi:calendar-clock",
+        title: "Scheduled operations",
+        text: "Resize databases outside business hours and snapshot tagged volumes every night.",
+    },
+]
 ---
 
-<Layout {title} {description}>
-    <PartnerBanner
-        cta={banner.cta}
-        title={banner.title}
-        image={banner.image}
-        features={banner.features}
-        description={banner.description}
-    />
-    <Capability
-        title={capabilities.title}
-        description={capabilities.description}
-        capabilities={capabilities.items}
-    />
-    <SeeHow
-        imgSrc={seeHowImg}
-        cta={{
-            text: "Explore DigitalOcean orchestration",
-            href: "/orchestration/digitalocean",
+<Layout {title} {description} breadcrumbTitle="DigitalOcean">
+    <PartnerProfile
+        name="DigitalOcean"
+        tagline="DigitalOcean gives developers simple cloud building blocks at a predictable price. Kestra orchestrates them across the whole account: schedules, event triggers and guaranteed teardown."
+        about="The <a href='https://kestra.io/orchestration/digitalocean'>io.kestra.plugin.digitalocean plugin</a> turns every resource on a DigitalOcean account into a declarative task, replacing the scripts and console clicks teams rely on today."
+        expertiseTitle="DigitalOcean + Kestra: the developer cloud, orchestrated"
+        expertise={expertise}
+        facts={facts}
+        plugins={["plugin-digitalocean"]}
+        contact={{ text: "Book a Demo", href: "/demo" }}
+        blueprints={{
+            query: "digitalocean",
+            title: '<span class="highlight">DigitalOcean</span> Blueprints',
         }}
-    >
-        <Fragment slot="title">Orchestrate your DigitalOcean account</Fragment>
-        Ephemeral droplets, scheduled database scaling, snapshot policies, governance
-        guards, and DNS cutovers. Open source, self-hosted, ready to run.
-    </SeeHow>
+        closing={{
+            title: "Orchestrate your DigitalOcean account",
+            text: "Open source and self-hosted. Start from a blueprint below or from the plugin docs.",
+        }}
+        website="https://www.digitalocean.com/?utm_source=kestra&utm_medium=referral&utm_campaign=partners"
+    />
 </Layout>

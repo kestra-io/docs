@@ -7,7 +7,11 @@ vi.mock("~/utils/fetch", () => ({ $fetchApiCached: fetchApiCached }))
 const { buildTaskUrls } = await import("~/utils/plugins/taskUrls")
 
 const plugins = [
-    { name: "plugin-gcp", title: "Google Cloud", group: "io.kestra.plugin.gcp" },
+    {
+        name: "plugin-gcp",
+        title: "Google Cloud",
+        group: "io.kestra.plugin.gcp",
+    },
     {
         name: "plugin-gcp",
         title: "Google Cloud Pub/Sub",
@@ -21,6 +25,13 @@ const plugins = [
         group: "io.kestra.plugin.gcp",
         subGroup: "io.kestra.plugin.gcp.gcs",
         tasks: [{ cls: "io.kestra.plugin.gcp.gcs.Upload" }],
+    },
+    {
+        name: "plugin-docker",
+        title: "Docker",
+        group: "io.kestra.plugin.docker",
+        aliases: ["io.kestra.plugin.docker.Build"],
+        tasks: [{ cls: "io.kestra.plugin.docker.cli.Build" }],
     },
     {
         name: "core",
@@ -43,9 +54,19 @@ describe("buildTaskUrls", () => {
         ])
 
         expect(urls).toEqual({
-            "io.kestra.plugin.core.log.Log": "/plugins/core/io.kestra.plugin.core.log.log",
+            "io.kestra.plugin.core.log.Log":
+                "/plugins/core/io.kestra.plugin.core.log.log",
             "io.kestra.plugin.gcp.pubsub.Publish":
                 "/plugins/plugin-gcp/google-cloud-pubsub/io.kestra.plugin.gcp.pubsub.publish",
+        })
+    })
+
+    it("resolves a legacy class kept in a plugin's aliases to its current page", async () => {
+        const urls = await buildTaskUrls(["io.kestra.plugin.docker.Build"])
+
+        expect(urls).toEqual({
+            "io.kestra.plugin.docker.Build":
+                "/plugins/plugin-docker/io.kestra.plugin.docker.cli.build",
         })
     })
 
@@ -61,7 +82,9 @@ describe("buildTaskUrls", () => {
     it("returns an empty map when the plugin API fails instead of throwing", async () => {
         fetchApiCached.mockRejectedValue(new Error("gateway timeout"))
 
-        await expect(buildTaskUrls(["io.kestra.plugin.core.log.Log"])).resolves.toEqual({})
+        await expect(
+            buildTaskUrls(["io.kestra.plugin.core.log.Log"]),
+        ).resolves.toEqual({})
     })
 
     it("does not call the API when there is nothing to resolve", async () => {

@@ -165,7 +165,7 @@ Compliance should not be an afterthought. Integrate automated security and compl
 
 ## Beyond PCI DSS: Unified Compliance Automation
 
-The patterns and workflows you build for PCI DSS are reusable. The same principles of continuous monitoring, automated evidence collection, and declarative policy-as-code can be applied to other regulatory frameworks. This allows you to build a unified compliance automation program that addresses multiple standards from a single control plane.
+The patterns and workflows you build for PCI DSS are reusable. The same principles of continuous monitoring, automated evidence collection, and declarative [policy as code](/resources/infrastructure/policy-as-code) can be applied to other regulatory frameworks. This allows you to build a unified compliance automation program that addresses multiple standards from a single control plane.
 
 ### Extending Workflows to SOC 2, DORA, and ISO Standards
 
@@ -173,7 +173,7 @@ A well-designed orchestration platform allows you to manage compliance for multi
 
 ## Related Concepts
 
-- [Workflow Governance](/resources/infrastructure/workflow-governance) — enterprise-level controls, RBAC and policies for automated workflows.
+- [Workflow Governance](/resources/ai/ai-governance-workflows) — enterprise-level controls, RBAC and policies for automated workflows.
 - [FedRAMP Compliance](/resources/infrastructure/fedramp-compliance) — automating security controls in federal cloud environments.
 - [RBAC](/resources/infrastructure/rbac) — role-based access control, which PCI DSS Requirement 7 turns into an audit obligation.
 - [Workflow Secret Management](/resources/infrastructure/workflow-secret-management) — keeping credentials out of flow definitions and logs.

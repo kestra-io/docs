@@ -36,7 +36,7 @@ Kestra follows a structured release strategy with three release types:
 
 ### Feature releases (x.Y.z)
 
-- Deliver new functionality every ~2 months
+- Deliver new functionality every ~3 months
 - Candidates for future LTS promotion
 
 ### LTS (Long-Term Support) releases

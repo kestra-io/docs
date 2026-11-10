@@ -5,6 +5,7 @@ sidebarTitle: Promote
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 description: Move flows from dev to staging to production directly from the Kestra UI, with a diff review, confirmation gate, and full promotion history.
+docId: promote
 ---
 
 Promote copies a flow from one Kestra instance to another, with a source-to-target diff review and an optional confirmation gate before anything lands in production.

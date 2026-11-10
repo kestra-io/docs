@@ -6,6 +6,7 @@ sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 2.0.0"
+docId: worker-groups
 ---
 
 Worker Groups route tasks to the right machines in your fleet. A Worker Group is a named, token-authenticated pool of workers that subscribes to one or more Worker Queues — tag-based routing lanes that tasks declare requirements against. The result is flexible many-to-many routing: GPU machines and spot instances can serve the same queue, or a single group can cover multiple queues with per-queue capacity guarantees.
@@ -449,6 +450,27 @@ kestra:
 Under `type: DNS` discovery, the authority is derived from the DNS hostname automatically and no override is needed.
 :::
 
+## Dedicated storage isolation
+
+If a worker group uses its own storage bucket rather than the internal storage that the webserver and Worker Controller use, KV Store values, namespace files, and managed plugin artifacts are not consistent across the deployment without additional configuration. Set the following properties on the worker:
+
+```yaml
+kestra:
+  kv:
+    worker-access: CONTROLLER          # default: STORAGE
+
+  namespace-files:
+    worker-access: CONTROLLER          # default: STORAGE
+
+  plugins:
+    management:
+      worker-access: CONTROLLER        # default: STORAGE
+```
+
+See [Dedicated-storage workers](../../../configuration/06.enterprise-and-advanced/index.md#dedicated-storage-workers) for the full explanation and property reference.
+
+Workers in a group that cannot reach the secrets manager, or that must not hold its credentials, can read secrets through the controller instead. See [Worker access to secrets](../../02.governance/secrets-manager/index.md#worker-access-to-secrets).
+
 ## Use cases
 
 ### Hardware affinity
@@ -559,6 +581,7 @@ Published by each worker process — the worker-side view of capacity and throug
 | `worker.job.thread` | gauge | Configured thread count (maximum concurrent jobs) |
 | `worker.max.concurrency` | gauge | Maximum in-flight capacity: threads + buffered jobs (`kestra.worker.job-buffer-size`, which defaults to the thread count) |
 | `worker.running.count` | gauge | Tasks currently executing |
+| `worker.tasks.running.count` | gauge | Tasks currently executing, also tagged by task type, namespace, flow, and tenant |
 | `worker.pending.count` | gauge | Tasks waiting for a free thread slot |
 | `worker.abandoned.count` | gauge | Jobs the worker stopped waiting for, such as a polling trigger past its timeout, that still hold a thread |
 | `worker.queue.size` | gauge | Items currently held in a buffer, identified by the `name` tag (for example `workerjob`) |
