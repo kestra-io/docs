@@ -18,7 +18,7 @@ An asset is a record that a plugin's tasks write about a resource, such as a tab
 | What it is | A UI component bundled in a plugin | A record of a resource, with metadata and lineage |
 | Who creates it | The plugin developer, once for the plugin | Tasks that declare or emit assets when they run, or you, from the UI or API |
 | What it holds | Nothing. It displays the data Kestra passes to it. | Metadata, kept until you delete or purge the asset |
-| Where you see it | Slots in the UI: task nodes and task details in the topology, the **Artifacts** tab of an execution, and asset cards in the dependency graph | The **Assets** page, an asset's **Dependencies** tab, and the **Assets** tab of an execution or namespace |
+| Where you see it | Slots in the UI: the **Artifacts** tab of an execution or of a task run's popup, and asset cards in the dependency graph | The **Assets** page, an asset's **Dependencies** tab, and the **Assets** tab of an execution or namespace |
 | Edition | All editions. A plugin can mark an artifact as Enterprise-only. | Enterprise Edition and Kestra Cloud |
 
 ## Where artifacts appear
@@ -27,13 +27,12 @@ Kestra renders artifacts in slots. A plugin declares which slots its artifacts f
 
 | Slot | Where it appears | What the artifact receives |
 |---|---|---|
-| `topology-details` | Inside a task's node in the topology: the flow editor, the execution **Topology** tab, and blueprints | The task definition and, in an execution, the task run's outputs, metrics, and live progress |
-| `topology-task-modal` | A full-screen dialog opened from a task node | The same data as `topology-details` |
-| `topology-task-drawer` | The task drawer in the flow editor | The same data as `topology-details` |
-| `execution-artifact` | The **Artifacts** tab of an execution, where a task type can list several artifacts | The same data as `topology-details`, without live progress |
+| `execution-artifact` | The **Artifacts** tab of an execution, where a task type can list several artifacts, and the **Artifacts** tab of a task run's popup | The task definition, the task run's outputs, metrics, and live progress, and the results of the plugin's own endpoints |
 | `asset-card-footer` | Below an asset's card in the dependency graph | The asset's ID, type, and metadata, and the current tenant |
 
-For the topology slots, Kestra picks the artifact from the task's type, or from its task runner's type when the runner ships its own artifact.
+For `execution-artifact`, Kestra picks the artifact from the task's type, or from its task runner's type when the runner ships its own artifact.
+
+Kestra 2.0.x renders artifacts in topology slots instead: inside a task's node, in the task drawer, and in a full-screen dialog opened from the node. Kestra 2.1 ignores those slots. See [Kestra 2.0.x: topology slots](../../plugin-developer-guide/10.plugin-ui/index.md#kestra-20x-topology-slots).
 
 For `asset-card-footer`, Kestra picks the artifact from the type of the task that produced the asset, which is the task of the asset's newest successful write. An asset that no task has written, such as an `External` placeholder or an asset created through the API, has no footer.
 
