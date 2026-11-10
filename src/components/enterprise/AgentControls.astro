@@ -3,79 +3,146 @@ import { Icon } from "astro-icon/components"
 
 const CONTROLS = [
     {
-        icon: "mdi:key-outline",
+        guard: "rbac",
+        icon: "mdi:shield-account-outline",
         title: "Permissioned",
         text: "An agent can only invoke authorized workflows and act within its service account’s permissions.",
     },
     {
+        guard: "approvals",
         icon: "mdi:account-check-outline",
         title: "Approved",
         text: "Consequential actions pause for a human. The approval, the approver and the context are logged.",
     },
     {
-        icon: "mdi:clipboard-text-search-outline",
+        guard: "audit",
+        icon: "mdi:text-box-search-outline",
         title: "Audited",
         text: "Every agent action is an execution: inputs, outputs, duration, who or what triggered it. Kill switch when needed.",
     },
 ]
 ---
 
-<ul class="agent-controls">
+<ul class="agent-controls" data-agent-controls>
     {CONTROLS.map((control) => (
-        <li>
-            <Icon name={control.icon} />
-            <h3>{control.title}</h3>
+        <li data-control={control.guard}>
+            <h3>
+                <span class="badge">
+                    <Icon name={control.icon} />
+                </span>
+                {control.title}
+            </h3>
             <p>{control.text}</p>
         </li>
     ))}
 </ul>
 
+<script>
+    function followGuards() {
+        for (const list of document.querySelectorAll<HTMLElement>(
+            "[data-agent-controls]:not([data-wired])",
+        )) {
+            list.dataset.wired = ""
+            const section = list.closest("section")
+            if (!section) continue
+            const sync = () => {
+                for (const item of list.querySelectorAll<HTMLElement>(
+                    "[data-control]",
+                )) {
+                    const guard = [
+                        ...section.querySelectorAll<HTMLElement>(
+                            `[data-guard="${item.dataset.control}"]`,
+                        ),
+                    ].find((el) => el.offsetParent)
+                    const state = guard?.dataset.state ?? ""
+                    if (item.dataset.state !== state) item.dataset.state = state
+                }
+            }
+            sync()
+            new MutationObserver((records) => {
+                if (records.some((record) => !list.contains(record.target)))
+                    sync()
+            }).observe(section, {
+                subtree: true,
+                attributes: true,
+                attributeFilter: ["data-state", "class", "hidden"],
+            })
+        }
+    }
+
+    document.addEventListener("astro:page-load", followGuards)
+    followGuards()
+</script>
+
 <style lang="scss">
     .agent-controls {
+        --tone: rgba(255, 255, 255, 0.16);
+
         position: relative;
         z-index: 1;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin: 0 0 3rem;
-        padding: 0;
+        gap: 2rem clamp(1.5rem, 3vw, 3rem);
+        max-width: 74rem;
+        margin: 2.25rem auto 0;
+        padding: 0 clamp(1rem, 2.5vw, 2.5rem);
         list-style: none;
-        border-block: 1px solid var(--line);
 
         @include media-breakpoint-down(lg) {
             grid-template-columns: minmax(0, 1fr);
         }
 
+        @include media-breakpoint-down(md) {
+            padding-inline: 1.25rem;
+        }
+
         li {
-            padding: 2.25rem clamp(1.5rem, 4vw, 3.5rem);
+            &[data-state="ok"] {
+                --tone: #5ee3ae;
+            }
 
-            & + li {
-                border-left: 1px solid var(--line);
-
-                @include media-breakpoint-down(lg) {
-                    border-left: 0;
-                    border-top: 1px solid var(--line);
-                }
+            &[data-state="wait"] {
+                --tone: #f2b25c;
             }
         }
 
-        :global(svg) {
-            width: 1.5rem;
-            height: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #7448e8;
-        }
-
         h3 {
-            margin: 0 0 0.625rem;
-            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0 0 0.75rem;
+            font-size: 1.125rem;
             font-weight: 600;
             color: var(--text);
         }
 
+        .badge {
+            display: grid;
+            place-items: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--muted);
+            transition:
+                color 0.4s ease,
+                background-color 0.4s ease;
+
+            :global(svg) {
+                width: 1rem;
+                height: 1rem;
+            }
+        }
+
+        li[data-state="ok"] .badge,
+        li[data-state="wait"] .badge {
+            background: color-mix(in srgb, var(--tone) 14%, transparent);
+            color: var(--tone);
+        }
+
         p {
-            max-width: 24rem;
             margin: 0;
-            font-size: 1rem;
+            font-size: 0.9375rem;
             line-height: 1.6;
             color: var(--muted);
         }

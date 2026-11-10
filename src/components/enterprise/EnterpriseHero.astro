@@ -5,62 +5,50 @@ import kestraMark from "~/components/home/assets/ai/kestra-logo-mark-on-dark.svg
 
 const CARDS = [
     {
-        id: "sso",
-        label: "SSO",
+        id: "governance",
+        label: "Governance",
         states: [
-            { value: "m.chen", tag: "Signed in", tone: "success" },
-            { value: "s.roy", tag: "Signed in", tone: "success" },
-            { value: "j.kim", tag: "Signed in", tone: "success" },
+            { value: "Audit logs", tag: "Logged", tone: "success" },
+            { value: "Approvals", tag: "Approved", tone: "success" },
         ],
     },
     {
-        id: "rbac",
-        label: "RBAC",
+        id: "security",
+        label: "Security",
         states: [
-            { value: "deploy_prod", tag: "Allowed", tone: "success" },
-            { value: "drop_table", tag: "Denied", tone: "danger" },
-            { value: "scale_cluster", tag: "Allowed", tone: "success" },
+            { value: "SSO", tag: "Signed in", tone: "success" },
+            { value: "Secrets", tag: "Encrypted", tone: "running" },
         ],
     },
     {
-        id: "secrets",
-        label: "Secrets",
+        id: "control",
+        label: "Control",
         states: [
-            { value: "DB_PASSWORD", tag: "Encrypted", tone: "neutral" },
-            { value: "DB_PASSWORD", tag: "Rotated", tone: "running" },
-            { value: "API_TOKEN", tag: "Encrypted", tone: "neutral" },
+            { value: "RBAC", tag: "Allowed", tone: "success" },
+            { value: "Policies", tag: "Enforced", tone: "success" },
         ],
     },
     {
-        id: "audit",
-        label: "Audit logs",
+        id: "scalability",
+        label: "Scalability",
         states: [
-            { value: "Flow · Updated", tag: "j.kim", tone: "neutral" },
-            { value: "Execution · Resumed", tag: "m.chen", tone: "neutral" },
-            { value: "Role · Created", tag: "admin", tone: "neutral" },
-        ],
-    },
-    {
-        id: "approvals",
-        label: "Approvals",
-        states: [
-            { value: "deploy_prod", tag: "Waiting", tone: "warning" },
-            { value: "deploy_prod", tag: "Approved", tone: "success" },
-            { value: "sync_crm", tag: "Waiting", tone: "warning" },
-            { value: "sync_crm", tag: "Approved", tone: "success" },
-        ],
-    },
-    {
-        id: "workers",
-        label: "Worker groups",
-        states: [
-            { value: "onprem-01", tag: "Running", tone: "running" },
-            { value: "onprem-01", tag: "Success", tone: "success" },
-            { value: "euwest-02", tag: "Running", tone: "running" },
-            { value: "euwest-02", tag: "Success", tone: "success" },
+            { value: "Worker groups", tag: "Running", tone: "running" },
+            { value: "HA queues", tag: "Healthy", tone: "success" },
         ],
     },
 ]
+
+const TARGETS = [
+    { name: "On premise", angle: 45 },
+    { name: "Cloud", angle: 135 },
+    { name: "Hybrid", angle: 225 },
+    { name: "Air-gapped", angle: 315 },
+]
+const beam = (angle: number, r: number) => {
+    const rad = (angle * Math.PI) / 180
+    return [(Math.sin(rad) * r).toFixed(1), (-Math.cos(rad) * r).toFixed(1)]
+}
+
 const WHEEL = CARDS
 const STEP = 360 / WHEEL.length
 const RINGS = [{ r: 590 }, { r: 372, dash: "3 13", k: 1 }]
@@ -138,7 +126,28 @@ const SPARKS = [
                                     }
                                 />
                             ))}
+                            {TARGETS.map((target) => (
+                                <line
+                                    class="beam"
+                                    x1={beam(target.angle, 96)[0]}
+                                    y1={beam(target.angle, 96)[1]}
+                                    x2={beam(target.angle, 520)[0]}
+                                    y2={beam(target.angle, 520)[1]}
+                                    pathLength="1"
+                                />
+                            ))}
                         </svg>
+                        <ul class="targets">
+                            {TARGETS.map((target, idx) => (
+                                <li
+                                    style={`--x: ${Math.sin((target.angle * Math.PI) / 180).toFixed(4)}; --y: ${(-Math.cos((target.angle * Math.PI) / 180)).toFixed(4)}; --i: ${idx}`}
+                                >
+                                    <i />
+                                    {target.name}
+                                </li>
+                            ))}
+                        </ul>
+                        <span class="plane">Control plane</span>
                         <div class="wheel" data-wheel>
                             {WHEEL.map((card, idx) => (
                                 <div
@@ -222,6 +231,7 @@ const SPARKS = [
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
             hub.style.setProperty("--turn", "0deg")
             setLevel(pips.length)
+            hub.classList.add("firing")
             return
         }
 
@@ -263,12 +273,14 @@ const SPARKS = [
                 flash(core, "ping", 500)
                 if (level < pips.length) return
                 holding = true
+                hub.classList.add("firing")
                 if (edition) flash(edition, "ping", 1600)
                 window.setTimeout(() => {
                     level = 0
                     setLevel(0)
+                    hub.classList.remove("firing")
                     holding = false
-                }, 2800)
+                }, 3200)
             }
             card.el.classList.add("spent")
             card.spentAt = index
@@ -570,24 +582,20 @@ const SPARKS = [
             background-color 0.4s ease,
             box-shadow 0.4s ease;
 
-        &:nth-child(-n + 3) {
+        &:nth-child(-n + 2) {
             left: -0.875rem;
         }
 
-        &:nth-child(n + 4) {
+        &:nth-child(n + 3) {
             right: -0.875rem;
         }
 
-        &:nth-child(3n + 1) {
-            top: 22%;
+        &:nth-child(odd) {
+            top: 34%;
         }
 
-        &:nth-child(3n + 2) {
-            top: 50%;
-        }
-
-        &:nth-child(3n) {
-            top: 78%;
+        &:nth-child(even) {
+            top: 66%;
         }
 
         &:global(.on) {
@@ -609,7 +617,7 @@ const SPARKS = [
     }
 
     .orbit {
-        --rc: 15rem;
+        --rc: 13.5rem;
         --drop: var(--rc);
 
         position: relative;
@@ -662,6 +670,83 @@ const SPARKS = [
             stroke: rgba(185, 170, 255, 0.55);
             transform: rotate(calc(var(--spin) * var(--k)));
         }
+
+        .beam {
+            stroke: #b9a6ff;
+            stroke-width: 1.5;
+            stroke-dasharray: 1;
+            stroke-dashoffset: 1;
+            opacity: 0;
+            transition:
+                stroke-dashoffset 0.4s ease,
+                opacity 0.4s ease;
+
+            :global(.firing) & {
+                stroke-dashoffset: 0;
+                opacity: 0.9;
+                transition:
+                    stroke-dashoffset 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+                    opacity 0.2s ease 0.2s;
+            }
+        }
+    }
+
+    .targets {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            position: absolute;
+            top: calc(var(--y) * var(--rc) * 1.235);
+            left: calc(var(--x) * var(--rc) * 1.235);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.625rem;
+            translate: -50% -50%;
+            background: #0e0e15;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.55);
+            transition:
+                color 0.4s ease,
+                scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+            i {
+                width: 0.375rem;
+                height: 0.375rem;
+                background: rgba(255, 255, 255, 0.3);
+                transition:
+                    background-color 0.4s ease,
+                    box-shadow 0.4s ease;
+            }
+
+            :global(.firing) & {
+                color: #ffffff;
+                scale: 1.06;
+                transition-delay: calc(0.75s + var(--i) * 0.08s);
+
+                i {
+                    background: #5ee3ae;
+                    box-shadow: 0 0 10px rgba(94, 227, 174, 0.8);
+                    transition-delay: calc(0.75s + var(--i) * 0.08s);
+                }
+            }
+        }
+    }
+
+    .plane {
+        position: absolute;
+        top: -4.25rem;
+        left: 0;
+        translate: -50% 0;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        color: rgba(255, 255, 255, 0.6);
     }
 
     .wheel {
@@ -678,11 +763,11 @@ const SPARKS = [
         left: 0;
         translate: -50% -50%;
         transform: translate(
-                calc(sin(var(--t)) * var(--rc) * 1.14),
+                calc(sin(var(--t)) * var(--rc)),
                 calc(var(--c) * var(--rc) * -1)
             )
             scale(calc(0.88 + 0.12 * var(--c)));
-        opacity: calc(0.62 + 0.38 * var(--c));
+        opacity: calc(0.7 + 0.3 * var(--c));
 
         &:global(.spent) {
             visibility: hidden;

@@ -117,6 +117,8 @@ const { eyebrow, bridge = true, foot = true } = Astro.props
                 <AiFlow />
             </figure>
 
+            <slot name="after" />
+
             {
                 foot && (
                     <div class="foot">
