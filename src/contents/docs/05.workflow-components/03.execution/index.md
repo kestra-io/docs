@@ -53,6 +53,7 @@ Executions and task runs move through the following states:
 | `CREATED` | Waiting to be processed; queued but not yet started. |
 | `SUBMITTED` | Submitted to the Executor queue but not yet running. |
 | `RUNNING` | Currently being processed. |
+| `PAUSING` | An [`Approval`](../23.approvals/index.md) task is running its `onWait` tasks before it pauses. |
 | `PAUSED` | Paused for manual validation or a configured delay. |
 | `BREAKPOINT` | Paused at a debug breakpoint. Resume with the **Resume** button on the execution, or bulk-resume from the **Executions** page. |
 | `RESTARTED` | Transitional state equivalent to `CREATED` for a restarted failed execution. |

@@ -52,6 +52,7 @@ Use this section when writing, editing, or understanding the structure of a Kest
 - [Retries](https://kestra.io/docs/workflow-components/retries.md): Retry policies — constant, exponential, random — with `maxAttempt` and `maxDuration`
 - [Policies](https://kestra.io/docs/enterprise/governance/policies.md): Inject, validate, and enforce configuration rules across namespaces and tenants — Enterprise Edition replacement for the removed pluginDefaults feature
 - [Concurrency](https://kestra.io/docs/workflow-components/concurrency.md): Limit simultaneous executions of a flow with `concurrency.limit` and `behavior` (queue or cancel)
+- [Approval task](https://kestra.io/docs/workflow-components/approvals.md): Pause an execution until a reviewer approves or denies it — `onWait`/`onApprove`/`onDeny` branches, review `inputs`, `commentRequired`, `autoApprove`, `timeout` expiry, `approveBehavior`/`denyBehavior`/`expireBehavior`, and the `/actions/review` API. Prefer it over `Pause` when a person decides
 
 ## Expressions and templating
 
@@ -138,6 +139,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 - [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management.md): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
 - [Worker isolation](https://kestra.io/docs/enterprise/governance/worker-isolation.md): Restrict which workers can execute tasks from a given namespace
 - [Promote](https://kestra.io/docs/enterprise/governance/promote.md): Copy flows between Kestra instances from the UI — diff review, optional confirmation gate, drift detection, and promotion history without a Git pipeline
+- [Approvals](https://kestra.io/docs/enterprise/governance/approvals.md): Enterprise layer of the Approval task — `assignment` of users and groups, approval cases listed on the Approvals page, multi-step sign-offs with `case.id`, in-app notifications, and the `ApprovalReview` App block
 
 **Scalability**
 - [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-group.md): Route tasks to labeled worker pools using `workerSelector.tags` on any task; fallback behavior when no matching worker is available is configurable per task
@@ -314,6 +316,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Unit Tests in Kestra Enterprise: Validate Flows](https://kestra.io/docs/enterprise/governance/unit-tests.md)
 - [Worker Isolation in Kestra Enterprise: Separation](https://kestra.io/docs/enterprise/governance/worker-isolation.md)
 - [Cases in Kestra: Incident Management for Executions](https://kestra.io/docs/enterprise/governance/cases.md)
+- [Approvals in Kestra Enterprise: Assignees, Approval Cases, and the Approvals Page](https://kestra.io/docs/enterprise/governance/approvals.md)
 - [Promote Flows Across Environments in Kestra](https://kestra.io/docs/enterprise/governance/promote.md)
 - [Instance Management in Kestra Enterprise: Health](https://kestra.io/docs/enterprise/instance.md)
 - [Announcements in Kestra Enterprise: In-App Banners](https://kestra.io/docs/enterprise/instance/announcements.md)
@@ -423,6 +426,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
 - [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
+- [Triage Support Tickets with Jev, Approvals, and Cases](https://kestra.io/docs/how-to-guides/support-triage-jev.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
 - [Install Selected Plugins on a Slim Kestra Image](https://kestra.io/docs/how-to-guides/slim-image-plugins.md)
 - [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
@@ -725,6 +729,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Task Retries in Kestra – Handle Transient Failures](https://kestra.io/docs/workflow-components/retries.md)
 - [Workflow SLAs in Kestra – Assert Duration Targets](https://kestra.io/docs/workflow-components/sla.md)
 - [Execution States in Kestra: Full Lifecycle Guide](https://kestra.io/docs/workflow-components/states.md)
+- [Approval Task in Kestra: Pause a Flow for a Human Decision](https://kestra.io/docs/workflow-components/approvals.md)
 - [Subflows in Kestra – Modularize and Reuse Flows](https://kestra.io/docs/workflow-components/subflows.md)
 - [Tasks in Kestra – Define Steps in a Flow](https://kestra.io/docs/workflow-components/tasks.md)
 - [Flowable Tasks in Kestra: Control Flow Logic](https://kestra.io/docs/workflow-components/tasks/flowable-tasks.md)

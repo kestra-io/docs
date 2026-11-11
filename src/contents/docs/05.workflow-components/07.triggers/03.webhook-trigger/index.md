@@ -213,7 +213,7 @@ triggers:
 
 | Property | Required | Description |
 |---|---|---|
-| `header` | Yes | The request header that carries the signature. |
+| `header` | Yes | The request header that carries the signature. The name is not case-sensitive. |
 | `algorithm` | No | `HMAC_SHA1`, `HMAC_SHA256`, or `HMAC_SHA512`. Defaults to `HMAC_SHA256`. |
 | `secret` | Yes | The shared signing secret. Store it as a [secret](../../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`. |
 | `prefix` | No | Text the header value must start with before the signature, such as `sha256=` for GitHub. |
@@ -332,9 +332,7 @@ All four properties apply whether or not the trigger waits for the execution. `r
 - Without `wait`, they are rendered as soon as the execution is created, and the caller gets the response right away. Expressions can use the trigger variables (`trigger.body`, `trigger.headers`, `trigger.parameters`) and `execution.id`.
 - With `wait: true`, they are rendered after the execution finishes, so expressions can also use task and flow outputs. Set `wait: true` whenever an expression reads `outputs`.
 
-If an expression cannot be rendered, the webhook responds with `500`.
-
-<!-- TODO(runtime): with wait: false, does a responseCode that reads outputs now fail with 500? Before 2.1 it was ignored on immediate responses. If so, add it to the 2.1 migration notes. -->
+If an expression cannot be rendered, the webhook responds with `500`, but the execution is still created and runs. For example, without `wait`, a `responseCode` that reads `outputs` always fails this way. See [Webhook responses without `wait`](../../../11.migration-guide/v2.1.0/webhook-response-without-wait/index.md) for how this differs from 2.0.
 
 ### Answer a verification request
 
@@ -366,9 +364,7 @@ triggers:
 
 Microsoft Graph works the same way with a `validationToken` query parameter. Set `responseContentType: text/plain` and `responseBody: "{{ trigger.parameters.validationToken[0] ?? 'notification processed' }}"`.
 
-Set `Content-Type: text/plain`, through `responseHeaders` or `responseContentType`, whenever `responseBody` is not JSON.
-
-<!-- TODO(runtime): confirm how a responseBody string is sent when no Content-Type is set (raw or as a quoted JSON string). The response falls back to Micronaut's application/json default, and the PR tests only cover text/plain. -->
+Set `Content-Type: text/plain`, through `responseHeaders` or `responseContentType`, whenever `responseBody` is not JSON. Without it, the body is sent unchanged but labeled `application/json`.
 
 ### Return a header to the caller
 
@@ -393,7 +389,7 @@ triggers:
 
 `trigger.headers` maps each header name to a list of values, so the expression reads the first one. Header names keep the casing the sender used; see [Filtering on headers](#filtering-on-headers). Each response header takes a single value.
 
-<!-- TODO(runtime): confirm Asana accepts the handshake with this flow, and that an empty X-Hook-Secret header on event notifications causes no issue. -->
+Event notifications don't carry `X-Hook-Secret`, so their response includes the header with an empty value.
 
 :::alert{type="warning"}
 The response is sent to anyone who calls the webhook URL. Do not put secrets in `responseBody` or `responseHeaders`, either directly or through an expression such as `secret()` or `kv()`: they are rendered with the flow's secrets available, and the result is returned to the caller as is.

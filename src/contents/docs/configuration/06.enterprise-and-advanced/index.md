@@ -832,6 +832,8 @@ kestra:
 
 For mutual TLS, also set `keystore-path` and `keystore-password`.
 
+Keep the default `FILE` stream storage in production. A `MEMORY` stream loses its messages when the NATS server restarts, and the server recreates it empty. When a broadcast subscriber finds the stream behind its own position, which it checks at most every 5 seconds while idle, Kestra stops with an error instead of skipping messages. Restart Kestra after the NATS server is back.
+
 #### Configuration reference
 
 **Connection (`kestra.queue.nats`)**
@@ -1060,6 +1062,8 @@ When a subscriber fails to read, for example because of a network error, a throt
 A service that shuts down gracefully releases its partitions immediately. When a service crashes, the other services take over its partitions after their ownership expires, which takes 6 × `load-balancing-interval`.
 
 The new owner of a partition resumes from the last checkpoint, so it reprocesses any messages the previous owner handled after that checkpoint. Event Hubs delivers at least once.
+
+When an event hub is deleted outside Kestra, the next publish to it fails, and Kestra recreates the event hub on the following publish when `subscription-id` and `resource-group` are set. A recreated event hub starts again from an empty sequence. When a broadcast subscriber finds the event hub behind its own position, which it checks at most every minute while idle, Kestra stops with an error instead of skipping messages.
 
 #### Configuration reference
 

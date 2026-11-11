@@ -186,7 +186,20 @@ Searchable outputs follow these rules:
 - **Replays:** a replayed execution starts with the searchable values of the original execution.
 - **Cleanup:** purging executions, for example with the [PurgeExecutions](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions) task, also removes their searchable values.
 
-<!-- TODO(runtime, 2.1 RC): verify the stored string form of DATE, DATETIME, TIME, DURATION, FLOAT, and BOOL values and document it here, since filters match the exact string. -->
+Filters match the stored string exactly. Kestra normalizes each value before storing it, so `1.50` is stored as `1.5` and a datetime is converted to UTC. Inputs and outputs of the same type can be stored differently:
+
+| Type | Searchable input | Searchable output |
+|---|---|---|
+| `STRING`, `EMAIL`, `SELECT`, `URI` | As entered | As rendered |
+| `INT` | `42` | `42` |
+| `FLOAT` | `1.5` | `1.5` |
+| `BOOL` | `true` or `false` | `true` or `false` |
+| `DATE` | `2026-10-27` | `2026-10-27` |
+| `DATETIME` | UTC, such as `2026-10-27T10:00:00Z` | UTC with microseconds, such as `2026-10-27T10:00:00.000000Z` |
+| `TIME` | `10:15:30`, or `10:15` when the seconds are zero | `10:15:00` |
+| `DURATION` | ISO 8601, such as `PT1H30M` | Seconds with nine decimals, such as `5400.000000000` |
+
+<!-- TODO(eng): DATETIME and DURATION outputs are stored in a different form than inputs (SearchableDataUtils uses value.toString() on the typed input but on the serialized output). Update the table if engineering aligns them. Also: replay-with-inputs indexes the new inputs under the ORIGINAL execution id, overwriting its values, instead of the replay's. See kestra-io/kestra#22542. -->
 
 #### Find executions by searchable value
 

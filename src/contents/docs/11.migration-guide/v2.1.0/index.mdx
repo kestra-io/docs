@@ -28,5 +28,6 @@ Kestra 2.1.0 requires no flow rewrites, except asset triggers and declarations t
 | [POST-only logout](./sso-logout-post-only) (EE) | SSO deployments, configurations with `get-allowed: true`, and direct links to `/logout` | Register `<your Kestra URL>/ui` as the post-logout redirect URI in your identity provider and remove `get-allowed` overrides. `GET /logout` now returns 405. |
 | [Asset relations](./asset-relations) (EE) | Users of the lineage-events API, `kestractl assets lineage-events`, or `PurgeAssets` lineage options | Read lineage from the relations API instead. Flows with an invalid asset `id` are now rejected on save. |
 | [dbt asset types](./dbt-asset-types) (EE) | Asset triggers, `AssetShipper` mappings, and declared inputs that match dbt assets on the `Table` type | Match on `DbtModel`, `DbtSeed`, or `DbtSnapshot` instead. Existing dbt assets are retyped on their next run. |
+| [Webhook responses without `wait`](./webhook-response-without-wait) | Webhook triggers that set `responseCode` without `wait: true` | The immediate response now uses `responseCode`. If it reads `outputs`, set `wait: true` or remove it: otherwise the webhook responds with `500`. |
 
 <ChildCard />

@@ -258,9 +258,6 @@ kestractl executions replay 2TLGqHrXC9k8BczKJe5djX
 kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId>
 kestractl executions replay 2TLGqHrXC9k8BczKJe5djX --task-run-id <taskRunId> --revision 3
 
-# replay-with-inputs has no option to send inputs, so every input takes its default value
-kestractl executions replay-with-inputs 2TLGqHrXC9k8BczKJe5djX
-
 # Bulk operations by IDs (positional execution IDs)
 kestractl executions kill-bulk        id1 id2 id3
 kestractl executions pause-bulk       id1 id2 id3

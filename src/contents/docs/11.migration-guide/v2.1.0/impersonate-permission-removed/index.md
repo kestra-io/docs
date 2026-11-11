@@ -16,7 +16,7 @@ In 2.0, the action didn't let anyone impersonate from the UI or the impersonate 
 
 - **Role editor and managed roles**: `IMPERSONATE` no longer appears in the role editor, and the managed Admin role no longer carries it.
 - **Existing roles**: no migration is needed. A stored role that still holds the action is read without it, and stays editable.
-- **API**: creating or updating a role with `USER` `IMPERSONATE` is rejected with a `422` error.
+- **API**: creating or updating a role with `USER` `IMPERSONATE` is rejected with a `422` error: `Action UNKNOWN is not valid for resource USER`.
 - **`X-Kestra-Impersonate` header**: a basic-auth request that sends the header now fails authentication unless the credentials belong to an Instance Owner.
 - **Service accounts**: Instance Owners can now impersonate a service account, from **Instance IAM → Service Accounts** or with `POST /api/v1/users/{id}/impersonate`.
 

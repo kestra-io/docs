@@ -145,7 +145,8 @@ The server is served at `<kestra-url>/api/v1/mcp`, with no tenant or server ID i
 Every request must be authenticated. The server can't be made public.
 
 - In the open-source edition, use basic authentication.
-- In the Enterprise Edition, `auth-methods` lists the accepted methods. When it's empty, basic authentication, API tokens, and OAuth are all accepted. An unauthenticated request gets a `401` with a `Basic` challenge, a `Bearer` challenge, or both, depending on the accepted methods.
+- In the Enterprise Edition, `auth-methods` lists the accepted methods. When it's empty, basic authentication, API tokens, and OAuth are all accepted. A request that uses a method not in the list gets a `403`.
+- An unauthenticated request gets a `401`. When OAuth is accepted, the response includes a `WWW-Authenticate: Bearer` challenge whose `resource_metadata` parameter points MCP clients to OAuth discovery.
 - With OAuth, MCP clients discover the identity provider from `<kestra-url>/.well-known/oauth-protected-resource/api/v1/mcp`, as described in [Configuring OAuth authentication](#configuring-oauth-authentication). `oauth-provider` restricts tokens to one configured OIDC provider. When it's unset, tokens from any configured provider are accepted.
 
 ### Tools
@@ -166,9 +167,11 @@ MCP clients use the annotations for their approval prompts, typically asking bef
 
 Every tool takes an optional `tenant` argument. When the caller can act on a single tenant, it's used by default. Otherwise, the call fails with a message listing the tenants to choose from. The tenants a caller can act on are those they have access to, limited to the `tenants` list when it's set.
 
-In the Enterprise Edition, each call runs as the caller in the requested tenant, so their [RBAC](../../07.enterprise/03.auth/rbac/index.md) permissions apply to both the tool and the namespace. A caller only sees the tools they can use in at least one of their tenants, and a denied call returns an error result.
+In the Enterprise Edition, each call runs as the caller in the requested tenant, so their [RBAC](../../07.enterprise/03.auth/rbac/index.md) permissions apply to both the tool and the namespace. A caller only sees the tools they can use in at least one of the tenants they can act on. Calling a tool that isn't in their list returns a `Tool not found` error. When a listed tool is denied for a namespace, the call returns an error result instead, for example `Execution not found`.
 
-<!-- TODO(runtime test): platform MCP server (ee#11922, PRs kestra#21942 and ee#11978, merged to develop 2026-11-05) documented from source only. On a build containing them, check: /api/v1/mcp is 404 by default; Claude Code connects with basic auth, an API token, and OAuth; the 401 challenges match auth-methods; the tool list and annotations; the tenant argument default and error messages; a restricted user's tool list and a denied call. See memory project_platform_mcp_server_live_test. -->
+<!-- TODO(eng): the 401 challenge's resource_metadata host is "null" without an X-Forwarded-Host header (kestra-io/kestra-ee#12426). Once fixed, OAuth discovery from the challenge works for direct connections. -->
+<!-- TODO(runtime test): live-verified on 2026-11-11 except OAuth (no identity provider on the test instance) and a real MCP client such as Claude Code (tested with raw JSON-RPC requests). -->
+
 
 ## MCP server cache configuration
 

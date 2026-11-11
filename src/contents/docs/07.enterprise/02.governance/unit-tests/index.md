@@ -376,11 +376,12 @@ testCases:
         equalTo: data
 ```
 
-`labels` takes a map, as above, or a list of `key` and `value` pairs, like [flow labels](../../../05.workflow-components/08.labels/index.md). The test execution gets these labels in addition to the flow's own labels and the `system.test` and `system.from` labels Kestra sets on every test execution.
+`labels` takes a map, as above, or a list of `key` and `value` pairs, like [flow labels](../../../05.workflow-components/08.labels/index.md). The test execution gets these labels in addition to the flow's own labels and the `system.test`, `system.from`, and `system.testSuite` labels Kestra sets on every test execution.
+
+- When a fixture label has the same key as a flow label, the fixture value replaces the flow's value.
+- Label values are used as written. Expressions such as `{{ ... }}` aren't rendered.
 
 A [trigger fixture](#trigger-fixture-example) doesn't apply the trigger's own `labels`. When the flow depends on labels the trigger sets, declare them in `fixtures.labels`.
-
-<!-- TODO(runtime test): fixtures.labels (kestra-ee#11810, kestra-ee#12182, kestra#22174) is documented from source only. Verify on a build containing ee 8fa05f2094: map and list forms both apply; whether expressions in label values are rendered; which value wins when a fixture label has the same key as a flow label; that trigger fixture labels are not applied; how labels appear in the test results. See memory project_fixtures_labels_live_test. -->
 
 ## Trigger fixture example
 
