@@ -171,7 +171,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                             style={`--dx: ${tile.dx}; --dy: ${tile.dy}; --s: ${tile.size}rem; --delay: ${tile.delay}s; --icon: var(--icon-${tile.icon})`}
                         >
                             <span class="face" />
-                            <span class="face soft" />
                         </span>
                     ))
                 }
@@ -333,6 +332,26 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
 
     document.addEventListener("astro:page-load", centreOnMark)
     centreOnMark()
+
+    function pauseHeroFrame() {
+        const frame = document.querySelector<HTMLElement>("[data-hero-frame]")
+        if (!frame) return
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                entry.target.toggleAttribute("data-offscreen", !entry.isIntersecting)
+            },
+            { rootMargin: "-20% 0px 0px 0px" },
+        )
+        observer.observe(frame)
+        document.addEventListener(
+            "astro:before-swap",
+            () => observer.disconnect(),
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", pauseHeroFrame)
+    pauseHeroFrame()
 </script>
 
 <style lang="scss">
@@ -354,6 +373,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         min-height: calc(min(80vh, 800px) + var(--menu));
         border-radius: 0;
         overflow: hidden;
+        contain: layout paint;
         background:
             radial-gradient(
                 ellipse 62% 78% at 50% 82%,
@@ -701,6 +721,7 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
         animation: fly 22s linear infinite;
         animation-delay: var(--delay);
+        will-change: transform, opacity;
         opacity: 0;
 
         @media (prefers-reduced-motion: reduce) {
@@ -745,17 +766,8 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        &.soft {
-            filter: blur(6px);
-            animation-name: soft;
-        }
-
         @media (prefers-reduced-motion: reduce) {
             animation: none;
-
-            &.soft {
-                opacity: 0;
-            }
         }
     }
 
@@ -768,18 +780,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         97%,
         100% {
             opacity: 0;
-        }
-    }
-
-    @keyframes soft {
-        0%,
-        80% {
-            opacity: 0;
-        }
-
-        93%,
-        100% {
-            opacity: 1;
         }
     }
 
