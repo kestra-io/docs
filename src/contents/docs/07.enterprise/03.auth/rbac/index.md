@@ -64,20 +64,17 @@ Once active, a banner at the top of the page confirms the impersonation session.
 
 ![The Stop impersonating button appears in the top right during an active impersonation session](./stop-impersonate-user.png)
 
-**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`, where `{id}` is a user ID or a service account ID. The response contains a short-lived JWT you can use in place of your regular credentials to act as that user.
+**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`, where `{id}` is a user ID or a service account ID. The response is a `303` redirect with an empty body. It sets a short-lived JWT, valid for one hour by default, in the `JWT` cookie:
 
 ```bash
-curl -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
-  -H "Authorization: Bearer YOUR_API_TOKEN"
+curl -s -o /dev/null -D - -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
+  -H "Authorization: Bearer YOUR_API_TOKEN" | grep -i '^set-cookie: JWT='
 ```
 
-**From kestractl:** use the [`kestractl`](../../../kestra-cli/kestractl/index.md#installation) `users impersonate` command, which calls the same endpoint and prints the token:
+Send that token as the `JWT` cookie or as a `Bearer` token to act as the impersonated user or service account. A request from anyone other than an Instance Owner returns `403`.
 
-```bash
-kestractl users impersonate <user_id>
-```
-
-<!-- TODO(runtime test): ee#7018 (PR ee#12257, merge on develop 2026-11-05) documented from source only. On a build containing it, check: the Impersonate action on Instance IAM → Service Accounts; POST /api/v1/users/{serviceAccountId}/impersonate returns a token; USER IMPERSONATE is gone from the role editor; a role created with it returns 422; a stored role with it reads back without it; a non-Instance-Owner basic-auth request with X-Kestra-Impersonate fails. See memory project_impersonation_2_1_live_test. -->
+<!-- TODO(eng): kestractl users impersonate (kestractl v3.7.2) follows the 303 redirect to /ui/ and fails with "received a non-JSON response". The server has returned the 303 + cookie since 2.0, so the command never worked on 2.x. Document it here again once kestractl reads the cookie. -->
+<!-- TODO(runtime test): reading a stored role that still holds USER IMPERSONATE (it should come back without the action) was not tested live: it needs a direct database write. Everything else in ee#7018 was live-verified on 2026-11-11. -->
 
 ### Resources
 
