@@ -65,6 +65,10 @@ echo -n "<SECRET>" | openssl base64 -A
 
 Verify the output by opening `.env_encoded`. Each line should match the format in the example above, with one `SECRET_` variable per line.
 
+:::alert{type="warning"}
+Encode the value without a trailing newline. `echo "<SECRET>"` (without `-n`) or a `.env` file saved with Windows (CRLF) line endings adds `\n` or `\r` to the end of the value, and Kestra decodes it as part of the secret. API calls then fail with authentication or invalid header errors even though the key itself is correct. To check a value, decode it with `echo "<ENCODED>" | openssl base64 -d -A | od -c` and look for `\n` or `\r` at the end. Re-encode it with `echo -n`, or convert the `.env` file to LF line endings first. As a workaround, you can strip the whitespace in the flow with the `trim` filter: `{{ secret('OPENAI_KEY') | trim }}`.
+:::
+
 Alternatively, you can manually write the file using macros to encode secrets dynamically:
 
 ```bash
