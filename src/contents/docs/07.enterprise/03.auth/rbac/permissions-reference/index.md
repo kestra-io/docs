@@ -240,9 +240,8 @@ UPDATE
 Notes
 - Webhook execution endpoints are authorized by webhook key only; RBAC is not checked.
 - Execution creation (`POST /executions/{namespace}/{id}`) checks `FLOW: EXECUTE`, not an `EXECUTION` action.
-- `POST /api/v1/{tenant}/cases/approvals/cancel/by-ids` and `POST /api/v1/{tenant}/cases/approvals/reviewable/by-ids` check `REVIEW` on the namespace of each approval case. Cases the caller cannot review are returned as refused or left out of the result instead of failing the request.
 - The **Approvals** page lists approval cases, so it also requires `CASE: LIST`, and opening an approval requires `CASE: VIEW` on its namespace.
-- The `ApprovalReview` block of [Apps](../../../04.scalability/apps/index.md) checks `REVIEW` the same way.
+- The `ApprovalReview` block of [Apps](../../../04.scalability/apps/index.md) checks `REVIEW` and the `Approval` task's assignees, like the review endpoints.
 :::
 
 ---
@@ -1049,7 +1048,7 @@ TEMPLATE
 - `DELETE /api/v1/{tenant}/case-templates/{id}`
 
 Notes
-- Cancelling an approval case (`POST /api/v1/{tenant}/cases/approvals/cancel/by-ids`) and checking which approvals you can review (`POST /api/v1/{tenant}/cases/approvals/reviewable/by-ids`) check `EXECUTION` `REVIEW` on the linked execution's namespace, not a `CASE` action.
+- Cancelling an approval case (`POST /api/v1/{tenant}/cases/approvals/cancel/by-ids`) and checking which approvals you can review (`POST /api/v1/{tenant}/cases/approvals/reviewable/by-ids`) check `EXECUTION` `REVIEW` on the linked execution's namespace, not a `CASE` action. Cases the caller cannot review are returned as refused or left out of the result instead of failing the request.
 :::
 
 ---
