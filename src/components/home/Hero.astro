@@ -171,7 +171,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                             style={`--dx: ${tile.dx}; --dy: ${tile.dy}; --s: ${tile.size}rem; --delay: ${tile.delay}s; --icon: var(--icon-${tile.icon})`}
                         >
                             <span class="face" />
-                            <span class="face soft" />
                         </span>
                     ))
                 }
@@ -334,29 +333,25 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
     document.addEventListener("astro:page-load", centreOnMark)
     centreOnMark()
 
-    /** Pause hero animations when mostly scrolled past; resume when back in view. */
-    function pauseHeroOnScroll() {
+    function pauseHeroFrame() {
         const frame = document.querySelector<HTMLElement>("[data-hero-frame]")
         if (!frame) return
-        const sync = () => {
-            const { bottom, top } = frame.getBoundingClientRect()
-            const h = window.innerHeight
-            frame.style.setProperty(
-                "--hero-anim",
-                bottom > h * 0.2 && top < h ? "running" : "paused",
-            )
-        }
-        window.addEventListener("scroll", sync, { passive: true })
-        sync()
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                entry.target.toggleAttribute("data-offscreen", !entry.isIntersecting)
+            },
+            { rootMargin: "-20% 0px 0px 0px" },
+        )
+        observer.observe(frame)
         document.addEventListener(
             "astro:before-swap",
-            () => window.removeEventListener("scroll", sync),
+            () => observer.disconnect(),
             { once: true },
         )
     }
 
-    document.addEventListener("astro:page-load", pauseHeroOnScroll)
-    pauseHeroOnScroll()
+    document.addEventListener("astro:page-load", pauseHeroFrame)
+    pauseHeroFrame()
 </script>
 
 <style lang="scss">
@@ -477,7 +472,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 )
                 border-box;
         animation: edge-turn 5s linear infinite;
-        animation-play-state: var(--hero-anim, running);
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.2),
             0 0 18px rgba(200, 190, 255, 0.3),
@@ -508,7 +502,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 transparent
             );
             animation: breathe 6s ease-in-out infinite;
-            animation-play-state: var(--hero-anim, running);
         }
 
         &::after {
@@ -531,7 +524,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 );
             filter: blur(24px);
             animation: mist 26s ease-in-out infinite;
-            animation-play-state: var(--hero-anim, running);
         }
 
         .spark {
@@ -549,7 +541,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             opacity: 0;
             transform: rotate(var(--a)) translateX(var(--r));
             animation: twinkle 4.2s ease-in-out var(--delay) infinite;
-            animation-play-state: var(--hero-anim, running);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -730,7 +721,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
         animation: fly 22s linear infinite;
         animation-delay: var(--delay);
-        animation-play-state: var(--hero-anim, running);
         will-change: transform, opacity;
         opacity: 0;
 
@@ -756,7 +746,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
             0 10px 30px rgba(0, 0, 0, 0.5);
         animation: sharp 22s linear infinite;
         animation-delay: var(--delay);
-        animation-play-state: var(--hero-anim, running);
 
         &::before {
             content: "";
@@ -777,16 +766,8 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
                 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        &.soft {
-            display: none;
-        }
-
         @media (prefers-reduced-motion: reduce) {
             animation: none;
-
-            &.soft {
-                opacity: 0;
-            }
         }
     }
 
@@ -799,18 +780,6 @@ const companyLogos = import.meta.glob<{ default: ImageMetadata }>(
         97%,
         100% {
             opacity: 0;
-        }
-    }
-
-    @keyframes soft {
-        0%,
-        80% {
-            opacity: 0;
-        }
-
-        93%,
-        100% {
-            opacity: 1;
         }
     }
 
