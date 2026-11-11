@@ -184,6 +184,51 @@ The same applies to other languages: in a Python `Script`, read the value with `
 
 See [Security hardening](../../../security-hardening/index.md#webhook-endpoints) for how to protect the webhook endpoint itself.
 
+## Verify the request signature
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Many providers sign each webhook request with a shared secret and send the HMAC of the request body in a header, such as GitHub's `X-Hub-Signature-256`. Set `signature` on the trigger to check it: Kestra computes the HMAC over the raw request body and rejects a request whose signature is missing or wrong before any execution is created.
+
+```yaml
+id: signed_webhook
+namespace: company.team
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Received a verified webhook"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    signature:
+      header: X-Hub-Signature-256
+      algorithm: HMAC_SHA256
+      secret: "{{ secret('GITHUB_WEBHOOK_SECRET') }}"
+      prefix: "sha256="
+```
+
+| Property | Required | Description |
+|---|---|---|
+| `header` | Yes | The request header that carries the signature. The name is not case-sensitive. |
+| `algorithm` | No | `HMAC_SHA1`, `HMAC_SHA256`, or `HMAC_SHA512`. Defaults to `HMAC_SHA256`. |
+| `secret` | Yes | The shared signing secret. Store it as a [secret](../../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`. |
+| `prefix` | No | Text the header value must start with before the signature, such as `sha256=` for GitHub. |
+
+Kestra returns `401` with `Invalid webhook signature.` and creates no execution when:
+
+- The header is missing or sent more than once.
+- The header value doesn't start with the configured `prefix`.
+- The signature isn't a hexadecimal string of the length the algorithm produces. Uppercase and lowercase hex are both accepted; base64-encoded signatures are not.
+- The signature doesn't match the HMAC of the request body.
+
+Verification works with `fetchType` set to `FETCH`, `STORE`, or `NONE`. With `STORE`, the body is checked while it's streamed to internal storage and deleted if the signature doesn't match. Signed `multipart/form-data` requests are always rejected, because Kestra no longer has their original bytes once the parts are parsed.
+
+A valid signature proves the payload came from someone who knows the secret and wasn't changed, but it doesn't stop the same signed request from being sent again.
+
 ## Filtering webhook executions with `when`
 
 Use the `when` property to conditionally fire the trigger based on the request body or headers. The `when` value is a [Pebble expression](../../../expressions/index.mdx) evaluated against the incoming request. If the expression evaluates to a falsy value, Kestra ignores the request and no execution is created.
@@ -266,8 +311,91 @@ triggers:
 
 - Call the webhook URL with a query parameter (for example `?name=Alice`). The execution runs synchronously because `wait: true` is set.
 - The HTTP response body contains the flow outputs as a JSON object. With the example above, the response includes `"greeting": "Hello Alice!"`.
-- `responseContentType` sets the `Content-Type` header on the response. It does not change how the body is serialized — the body is always the JSON-serialized outputs map when `returnOutputs: true` is set.
+- `responseContentType` sets the `Content-Type` header on the response. It does not change how the body is serialized: the body is always the JSON-serialized outputs map when `returnOutputs: true` is set.
 
+## Customize the webhook response
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Some services only accept a webhook URL after it answers a verification request with a specific status code, header, or body. Use these properties to control what the caller receives:
+
+| Property | Effect | Default |
+|---|---|---|
+| `responseCode` | HTTP status code of the response. | `200`, or `500` when `wait: true` is set and the execution fails |
+| `responseHeaders` | Map of header names to values added to the response. | No extra headers |
+| `responseBody` | String sent as the response body. Cannot be combined with `returnOutputs`. | The execution details, or the flow outputs with `returnOutputs: true` |
+| `responseContentType` | `Content-Type` header of the response: `application/json` or `text/plain`. A `Content-Type` set in `responseHeaders` takes precedence. | `application/json` |
+
+All four properties apply whether or not the trigger waits for the execution. `responseCode`, `responseHeaders`, and `responseBody` accept expressions:
+
+- Without `wait`, they are rendered as soon as the execution is created, and the caller gets the response right away. Expressions can use the trigger variables (`trigger.body`, `trigger.headers`, `trigger.parameters`) and `execution.id`.
+- With `wait: true`, they are rendered after the execution finishes, so expressions can also use task and flow outputs. Set `wait: true` whenever an expression reads `outputs`.
+
+If an expression cannot be rendered, the webhook responds with `500`, but the execution is still created and runs. For example, without `wait`, a `responseCode` that reads `outputs` always fails this way. See [Webhook responses without `wait`](../../../11.migration-guide/v2.1.0/webhook-response-without-wait/index.md) for how this differs from 2.0.
+
+### Answer a verification request
+
+Meta (WhatsApp, Instagram, Messenger) verifies a webhook URL with a `GET` request carrying a `hub.challenge` query parameter, and expects the challenge value back as a plain-text body with status `200`. Later event notifications arrive without that parameter:
+
+```yaml
+id: meta_webhook
+namespace: company.team
+
+tasks:
+  - id: process_event
+    type: io.kestra.plugin.core.log.Log
+    message: "Received Meta webhook event"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    responseCode: 200
+    responseHeaders:
+      Content-Type: text/plain
+    responseBody: "{{ trigger.parameters['hub.challenge'][0] ?? 'EVENT_RECEIVED' }}"
+```
+
+- A verification request (`?hub.mode=subscribe&hub.challenge=1158201444`) gets `1158201444` back as the body.
+- An event notification gets `EVENT_RECEIVED` back.
+- The trigger does not wait for the execution, so Meta gets its response immediately, however long the flow takes.
+- Meta also sends the verify token you registered as `hub.verify_token`. This flow does not check it; the webhook `key` is what protects the URL.
+
+Microsoft Graph works the same way with a `validationToken` query parameter. Set `responseContentType: text/plain` and `responseBody: "{{ trigger.parameters.validationToken[0] ?? 'notification processed' }}"`.
+
+Set `Content-Type: text/plain`, through `responseHeaders` or `responseContentType`, whenever `responseBody` is not JSON. Without it, the body is sent unchanged but labeled `application/json`.
+
+### Return a header to the caller
+
+Asana confirms a new webhook by sending an `X-Hook-Secret` header and expects the same header back in the response. Use `responseHeaders` to echo it:
+
+```yaml
+id: asana_webhook
+namespace: company.team
+
+tasks:
+  - id: process_event
+    type: io.kestra.plugin.core.log.Log
+    message: "Received Asana webhook event"
+
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('WEBHOOK_KEY') }}"
+    responseHeaders:
+      X-Hook-Secret: "{{ trigger.headers['X-Hook-Secret'][0] ?? '' }}"
+```
+
+`trigger.headers` maps each header name to a list of values, so the expression reads the first one. Header names keep the casing the sender used; see [Filtering on headers](#filtering-on-headers). Each response header takes a single value.
+
+Event notifications don't carry `X-Hook-Secret`, so their response includes the header with an empty value.
+
+:::alert{type="warning"}
+The response is sent to anyone who calls the webhook URL. Do not put secrets in `responseBody` or `responseHeaders`, either directly or through an expression such as `secret()` or `kv()`: they are rendered with the flow's secrets available, and the result is returned to the caller as is.
+:::
+
+Request values that end up in the response are not evaluated again, so a caller who sends an expression such as `{{ ... }}` in a parameter gets that text back unchanged.
 
 ## Test a webhook trigger
 

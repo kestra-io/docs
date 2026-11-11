@@ -15,6 +15,7 @@ This reference maps each RBAC resource and action to the API endpoints that enfo
 - Each resource section gates all its endpoints: a user must have at least one valid action on the resource to reach any endpoint within it. Endpoints that do not check a specific action beyond this gate are marked "any action".
 - Some endpoints require permissions on more than one resource; notes call these out.
 - Namespace-scoped resources respect namespace bindings: access is evaluated against the namespace of the target item, and child namespaces inherit access.
+- A binding scoped to a namespace can only grant namespace-level permissions. See [Namespace bindings](../index.md#namespace-bindings) for which permissions are namespace-level, and `GET /api/v1/{tenant}/acls/scopes` for the scope of each resource and action.
 
 :::collapse{title="FLOW"}
 **Scope:** Namespace
@@ -31,6 +32,8 @@ This reference maps each RBAC resource and action to the API endpoints that enfo
 - `VALIDATE`: validate flow YAML. (Accessible with any `FLOW` action — no dedicated check.)
 - `EXPORT`: export flows as a ZIP archive.
 - `IMPORT`: import flows from an archive.
+- `PROMOTE`: promote a flow to a [promotion target](../../../02.governance/promote/index.md). Promoting also requires `VIEW` on the flow.
+- `UPDATE_CONCURRENCY_LIMIT`: reset the running counter of a flow, namespace, or tenant concurrency limit. Only the managed Admin role includes it.
 
 **Endpoints**
 
@@ -42,6 +45,8 @@ VIEW
 - `GET /api/v1/{tenant}/flows/{namespace}/{id}/dependencies`
 - `GET /api/v1/{tenant}/namespaces/{namespace}/dependencies`
 - `POST /api/v1/{tenant}/flows/expressions`
+- `GET /api/v1/{tenant}/concurrency-limit/{namespace}/{flowId}`
+- `GET /api/v1/{tenant}/concurrency-limit/search` (returns only the counters of namespaces where the user has `VIEW`; the tenant counter requires `VIEW` on the whole tenant)
 
 LIST
 - `GET /api/v1/{tenant}/flows/search`
@@ -87,6 +92,14 @@ EXPORT
 IMPORT
 - `POST /api/v1/{tenant}/flows/import`
 
+PROMOTE
+- `POST /api/v1/{tenant}/flows/{namespace}/{id}/promote`
+- `POST /api/v1/{tenant}/flows/promote/by-ids`
+- `POST /api/v1/{tenant}/flows/{namespace}/{id}/promotions` (records a promotion the browser performed)
+
+UPDATE_CONCURRENCY_LIMIT
+- `PUT /api/v1/{tenant}/concurrency-limit` (checked on the namespace in the body; the tenant counter, sent without a namespace, requires the action on the whole tenant)
+
 VALIDATE (any `FLOW` action — no dedicated check)
 - `POST /api/v1/{tenant}/flows/validate`
 - `POST /api/v1/{tenant}/flows/validate/task`
@@ -95,6 +108,8 @@ VALIDATE (any `FLOW` action — no dedicated check)
 Notes
 - Webhook execution endpoints (`/executions/webhook/{namespace}/{id}/{key}`) are authorized by webhook key, not RBAC.
 - `POST /api/v1/{tenant}/flows/graph` has no action check.
+- Promotion history (`GET /api/v1/{tenant}/flows/{namespace}/{id}/promotions` and `GET /api/v1/{tenant}/flows/{namespace}/{id}/promotions/{auditId}/diff`) requires `VIEW`.
+- Instance Owners can search and reset concurrency counters in any tenant without a role in it.
 :::
 
 ---
@@ -119,7 +134,8 @@ Notes
 - `EXPORT`: export execution data as CSV.
 - `UNQUEUE`: move a queued execution out of the queue.
 - `FORCE_RUN`: force a paused or queued execution to run immediately.
-- `UPDATE`: change the state of a task run within an execution.
+- `UPDATE`: change the state of an execution or of a task run within it, and reschedule an execution that has not started.
+- `REVIEW`: approve or deny an Approval task run. The Approval task can further restrict who may review it.
 
 **Endpoints**
 
@@ -213,6 +229,12 @@ UPDATE
 - `POST /api/v1/{tenant}/executions/change-status/by-ids`
 - `POST /api/v1/{tenant}/executions/change-status/by-query`
 - `POST /api/v1/{tenant}/executions/{executionId}/actions/state`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/reschedule`
+
+REVIEW
+- `GET /api/v1/{tenant}/executions/{executionId}/actions/review/allowed` (returns whether you may review the task run)
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/review/validate`
+- `POST /api/v1/{tenant}/executions/{executionId}/actions/review`
 
 Notes
 - Webhook execution endpoints are authorized by webhook key only; RBAC is not checked.
@@ -352,7 +374,7 @@ DELETE
 ---
 
 :::collapse{title="DASHBOARD"}
-**Scope:** Tenant
+**Scope:** Tenant. A binding scoped to a namespace can grant `VIEW`, `LIST` and `EXPORT`, but not `CREATE`, `UPDATE` or `DELETE`.
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: read dashboards and their charts.
@@ -412,7 +434,7 @@ Notes
 ---
 
 :::collapse{title="CREDENTIAL"}
-**Scope:** Namespace or tenant (depending on whether the credential is namespace-level or tenant-level)
+**Scope:** Namespace. Tenant-level credentials require the permission from a tenant-wide binding.
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: list and view credentials.
@@ -517,7 +539,7 @@ Notes
 ---
 
 :::collapse{title="APP"}
-**Scope:** Tenant (with namespace checks when the app definition references a namespace)
+**Scope:** Namespace (checked against the app's namespace when its definition references one). Previewing an app requires `CREATE` from a tenant-wide binding.
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view app source, search, and catalog.
@@ -573,7 +595,7 @@ Notes
 ---
 
 :::collapse{title="TESTSUITE"}
-**Scope:** Tenant
+**Scope:** Namespace
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view tests and test results.
@@ -612,13 +634,13 @@ EXECUTE
 ---
 
 :::collapse{title="ASSET"}
-**Scope:** Tenant (with namespace checks when the asset has a namespace)
+**Scope:** Namespace (checked against the asset's namespace when it has one)
 
 **Actions and their meaning**
-- `VIEW` / `LIST`: view assets and their dependency or usage graphs.
-- `CREATE`: create assets.
-- `UPDATE`: edit existing assets.
-- `DELETE`: delete assets and purge their usage and lineage records.
+- `VIEW` / `LIST`: view assets, their relations, and their dependency or usage graphs.
+- `CREATE`: create assets, including through bulk import.
+- `UPDATE`: edit existing assets, manage their parent and relations, and run their asset actions. Running an action also requires `FLOW:EXECUTE` on the action flow's namespace.
+- `DELETE`: delete assets, their relations, and their usage records.
 - `LOCK`: acquire a write lock on an asset (from a flow task or the UI).
 - `UNLOCK`: release a write lock on an asset (from a flow task or the UI). UI unlock is forced regardless of owner.
 
@@ -629,20 +651,28 @@ VIEW / LIST
 - `GET /api/v1/{tenant}/assets/{id}/dependencies`
 - `GET /api/v1/{tenant}/assets/search`
 - `GET /api/v1/{tenant}/assets/usages/search`
-- `GET /api/v1/{tenant}/assets/lineage-events/search`
+- `GET /api/v1/{tenant}/assets/{id}/relations`
+- `GET /api/v1/{tenant}/assets/{id}/relations/summary`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` (also requires `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace)
 
 CREATE
 - `POST /api/v1/{tenant}/assets`
+- `POST /api/v1/{tenant}/assets/bulk` (also requires `UPDATE` to update existing assets)
 
 UPDATE
 - `PUT /api/v1/{tenant}/assets/{id}`
+- `PATCH /api/v1/{tenant}/assets/{id}`
+- `POST /api/v1/{tenant}/assets/{id}/relations`
+- `PUT /api/v1/{tenant}/assets/{id}/parent`
+- `DELETE /api/v1/{tenant}/assets/{id}/parent`
+- `POST /api/v1/{tenant}/assets/{id}/actions/run` (also requires `FLOW:EXECUTE`)
 
 DELETE
 - `DELETE /api/v1/{tenant}/assets/{id}`
 - `DELETE /api/v1/{tenant}/assets/by-ids`
 - `DELETE /api/v1/{tenant}/assets/by-query`
 - `DELETE /api/v1/{tenant}/assets/usages/by-query`
-- `DELETE /api/v1/{tenant}/assets/lineage-events/by-query`
+- `DELETE /api/v1/{tenant}/assets/{id}/relations/{uid}` (`UPDATE` is enough to remove a parent link)
 
 LOCK
 - `POST /api/v1/{tenant}/assets/{id}/lock`
@@ -669,7 +699,7 @@ Notes
 ---
 
 :::collapse{title="COPILOT"}
-**Scope:** Tenant
+**Scope:** Namespace
 
 **Actions and their meaning**
 - `USE`: access AI flow generation and Copilot features.
@@ -703,29 +733,9 @@ Notes
 - `GET /api/v1/{tenant}/auditlogs/history/{detailId}` and `GET /api/v1/{tenant}/auditlogs/{id}/diff` are not controlled by `AUDITLOG`. They check your permission on the audited resource instead:
   - Most entries require `VIEW` on the audited resource type in the entry's namespace. Entries without a namespace, such as App, Asset, Case, Namespace, Test suite, and Dashboard entries, require a tenant-wide `VIEW` grant.
   - Namespace file entries require `NAMESPACE` `MANAGE_FILES`.
-  - Entries for instance-level resources, such as banners, tenants, worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
+  - Entries for instance-level resources, such as banners, tenants, settings (`SYSTEM_SETTINGS`), worker groups, and security integrations, require an instance owner. So do policies with `INSTANCE` or `STATIC` scope.
   - An instance owner with `AUDITLOG` `VIEW` can view entries for `ROLE`, `INVITATION`, `GROUP`, `BINDING`, `USER`, and `SERVICE_ACCOUNT`.
   - The history endpoint returns every entry with the given resource ID, including entries for resources with the same ID in other namespaces. If you lack permission on any of them, the request fails.
-:::
-
----
-
-:::collapse{title="SYSTEM_SETTINGS"}
-**Scope:** Tenant
-
-**Actions and their meaning**
-- `VIEW`: read instance-level settings.
-- `UPDATE`: modify instance-level settings.
-:::
-
----
-
-:::collapse{title="TENANT_SETTINGS"}
-**Scope:** Tenant
-
-**Actions and their meaning**
-- `VIEW`: read tenant-level settings.
-- `UPDATE`: modify tenant-level settings.
 :::
 
 ---
@@ -737,7 +747,6 @@ Notes
 - `VIEW` / `LIST`: view user details and group membership.
 - `CREATE` / `UPDATE` / `DELETE`: manage users.
 - `MANAGE_GROUP_MEMBERSHIP`: update a user's group assignments.
-- `IMPERSONATE`: impersonate a user to test their access.
 
 Notes
 - `USER` is not included in any of the standard managed roles (Viewer, Launcher, Editor, Developer). Only Admin includes it. Custom roles with `USER` actions are intended for platform administrators.
@@ -804,6 +813,7 @@ VIEW / LIST
 - `POST /api/v1/{tenant}/roles/ids`
 - `GET /api/v1/{tenant}/acls/permissions` (any `ROLE` action)
 - `GET /api/v1/{tenant}/acls/templates` (any `ROLE` action)
+- `GET /api/v1/{tenant}/acls/scopes` (any `ROLE` or `BINDING` action)
 
 CREATE
 - `POST /api/v1/{tenant}/roles`
@@ -840,6 +850,8 @@ DELETE
 
 Notes
 - Bindings are immutable. To change a binding's scope or roles, delete it and create a new one.
+- `CREATE` and `DELETE` require the permission on the whole tenant.
+- A binding scoped to a namespace is rejected with a `422` error when its role holds a tenant-level permission. See [Namespace bindings](../index.md#namespace-bindings).
 :::
 
 ---
@@ -899,7 +911,7 @@ DELETE
 :::
 
 :::collapse{title="POLICY"}
-**Scope:** Namespace or Tenant (a policy targets either a namespace or the full tenant, and is authorized accordingly)
+**Scope:** Namespace. A policy that targets the whole tenant requires the permission from a tenant-wide binding.
 
 **Actions and their meaning**
 - `VIEW`: read a single policy.
@@ -954,6 +966,139 @@ VALIDATE (any `POLICY` VIEW action — no dedicated check)
 
 Notes
 - Instance-scope policy endpoints (`/api/v1/instance/policies/...`) manage read-only static policies declared in server configuration and are instance-owner-only; they are not governed by `POLICY` RBAC permissions.
+:::
+
+---
+
+:::collapse{title="CASE"}
+**Scope:** Namespace. Case templates that are not tied to a namespace require `TEMPLATE` from a tenant-wide binding.
+
+**Actions and their meaning**
+- `VIEW`: read a case, its timeline, attachments, linked executions, and linked assets.
+- `LIST`: search cases and timeline events, and read case counts and assignees.
+- `CREATE`: create a case, including from a task or from executions.
+- `UPDATE`: edit, acknowledge, resolve, cancel, or assign a case, comment on it, link or unlink executions, assets, and external tickets, and manage or run case actions. Moving a case to another namespace requires `UPDATE` on both namespaces.
+- `DELETE`: delete cases.
+- `FOLLOW`: follow or unfollow a case.
+- `TEMPLATE`: view and manage case templates.
+
+**Endpoints**
+
+VIEW
+- `GET /api/v1/{tenant}/cases/{id}`
+- `GET /api/v1/{tenant}/cases/{id}/events`
+- `GET /api/v1/{tenant}/cases/{id}/attachments/{attachmentId}`
+- `GET /api/v1/{tenant}/cases/{id}/executions`
+- `GET /api/v1/{tenant}/cases/{id}/assets`
+
+LIST
+- `GET /api/v1/{tenant}/cases/search`
+- `GET /api/v1/{tenant}/cases/counts`
+- `GET /api/v1/{tenant}/cases/assignees`
+- `GET /api/v1/{tenant}/cases/events/search`
+- `POST /api/v1/{tenant}/cases/by-executions`
+- `GET /api/v1/{tenant}/cases/by-asset/{assetId}`
+
+CREATE
+- `POST /api/v1/{tenant}/cases`
+- `POST /api/v1/{tenant}/cases/from-task` (attaching to an existing case requires `UPDATE` on that case instead)
+- `POST /api/v1/{tenant}/cases/from-executions`
+- `POST /api/v1/{tenant}/cases/from-executions/by-query`
+
+UPDATE
+- `PUT /api/v1/{tenant}/cases/{id}`
+- `POST /api/v1/{tenant}/cases/{id}/acknowledge`
+- `POST /api/v1/{tenant}/cases/by-ids/acknowledge`
+- `POST /api/v1/{tenant}/cases/{id}/resolve`
+- `POST /api/v1/{tenant}/cases/{id}/cancel`
+- `POST /api/v1/{tenant}/cases/{id}/status`
+- `POST /api/v1/{tenant}/cases/{id}/assign`
+- `POST /api/v1/{tenant}/cases/{id}/comments`
+- `POST /api/v1/{tenant}/cases/{id}/executions`
+- `POST /api/v1/{tenant}/cases/{id}/executions/by-query`
+- `DELETE /api/v1/{tenant}/cases/{id}/executions/{executionId}`
+- `POST /api/v1/{tenant}/cases/{id}/assets`
+- `DELETE /api/v1/{tenant}/cases/{id}/assets/{assetId}`
+- `PUT /api/v1/{tenant}/cases/{id}/ticket`
+- `DELETE /api/v1/{tenant}/cases/{id}/ticket`
+- `POST /api/v1/{tenant}/cases/{id}/auto-attach` (also requires `FLOW` `EXECUTE` on the flow's namespace)
+- `DELETE /api/v1/{tenant}/cases/{id}/auto-attach`
+- `POST /api/v1/{tenant}/cases/{id}/actions` (also requires `FLOW` `EXECUTE` on the flow's namespace)
+- `PUT /api/v1/{tenant}/cases/{id}/actions/{namespace}/{flowId}` (also requires `FLOW` `EXECUTE` on the flow's namespace)
+- `DELETE /api/v1/{tenant}/cases/{id}/actions/{namespace}/{flowId}`
+- `POST /api/v1/{tenant}/cases/{id}/actions/run` (also requires `FLOW` `EXECUTE` on the flow's namespace)
+
+DELETE
+- `DELETE /api/v1/{tenant}/cases/{id}`
+- `POST /api/v1/{tenant}/cases/by-ids/delete`
+- `DELETE /api/v1/{tenant}/cases/by-query`
+
+FOLLOW
+- `POST /api/v1/{tenant}/cases/{id}/follow`
+- `POST /api/v1/{tenant}/cases/{id}/unfollow`
+
+TEMPLATE
+- `GET /api/v1/{tenant}/case-templates/search`
+- `GET /api/v1/{tenant}/case-templates/{id}`
+- `POST /api/v1/{tenant}/case-templates`
+- `PUT /api/v1/{tenant}/case-templates/{id}`
+- `DELETE /api/v1/{tenant}/case-templates/{id}`
+
+Notes
+- Cancelling an approval case (`POST /api/v1/{tenant}/cases/approvals/cancel/by-ids`) and checking which approvals you can review (`POST /api/v1/{tenant}/cases/approvals/reviewable/by-ids`) check `EXECUTION` `REVIEW` on the linked execution's namespace, not a `CASE` action.
+:::
+
+---
+
+:::collapse{title="PROMOTION_TARGET"}
+**Scope:** Tenant
+
+**Actions and their meaning**
+- `VIEW`: read a promotion target, test its connection, and fetch flow sources from it to compare with local flows.
+- `LIST`: list promotion targets.
+- `CREATE`: create a promotion target, or test the connection of an unsaved one.
+- `UPDATE`: update a promotion target, or test the connection with unsaved edits.
+- `DELETE`: delete a promotion target.
+
+**Endpoints**
+
+VIEW
+- `GET /api/v1/{tenant}/promotion-targets/{id}`
+- `POST /api/v1/{tenant}/promotion-targets/{id}/test`
+- `GET /api/v1/{tenant}/promotion-targets/{id}/flow-source` (also requires `FLOW` `VIEW` on the flow's namespace)
+- `POST /api/v1/{tenant}/promotion-targets/{id}/flow-hashes` (also requires `FLOW` `VIEW` on each flow's namespace)
+
+LIST
+- `GET /api/v1/{tenant}/promotion-targets`
+
+CREATE
+- `POST /api/v1/{tenant}/promotion-targets`
+- `POST /api/v1/{tenant}/promotion-targets/test` (unsaved target)
+
+UPDATE
+- `PUT /api/v1/{tenant}/promotion-targets/{id}`
+- `POST /api/v1/{tenant}/promotion-targets/test` (edits to a saved target)
+
+DELETE
+- `DELETE /api/v1/{tenant}/promotion-targets/{id}`
+
+Notes
+- Promoting a flow checks `FLOW` `PROMOTE`, not a `PROMOTION_TARGET` action. See the `FLOW` section.
+:::
+
+---
+
+:::collapse{title="SUPPORT"}
+**Scope:** Tenant
+
+**Actions and their meaning**
+- `CREATE`: open a support ticket from the UI, including the instance debug information attached to it.
+
+**Endpoints**
+
+CREATE
+- `GET /api/v1/{tenant}/support/debug-info`
+- `POST /api/v1/{tenant}/support/forward`
 :::
 
 ---

@@ -38,7 +38,7 @@ tasks:
     message: "{{ task.id }} > {{ taskrun.startDate }}"
 ```
 
-For more details, check out the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
+For more details, see the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
 
 ### Parallel
 
@@ -115,7 +115,7 @@ With any value, the `Parallel` task ends in `FAILED` and its `errors` and `final
         duration: PT1M
 ```
 
-For more task details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
+For more details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
 
@@ -199,7 +199,7 @@ Inside each iteration, use the `item` variable to access the iteration context:
 | Expression | Description |
 |---|---|
 | `{{ item.index }}` | Zero-based iteration index |
-| `{{ item.value }}` | Current iteration value |
+| `{{ item.value }}` | Current iteration value; a string, or a map when the Loop sets `parseValues: true` |
 | `{{ item.key }}` | Current map key when `values` is a map; not set for list or URI values |
 | `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
 | `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
@@ -209,7 +209,7 @@ For more details on `item`, see [loop iteration context](../../../expressions/01
 
 #### Iterating over objects
 
-When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields; `item.value.field` does not work.
+When `values` contains a list of objects, each `item.value` is a JSON string by default. Use `fromJson(item.value).field` to read fields, or set [`parseValues: true`](#read-object-fields-with-parsevalues) to read them as `item.value.field`.
 
 ```yaml
 id: parallel_tasks_example
@@ -234,6 +234,41 @@ tasks:
         type: io.kestra.plugin.core.log.Log
         message: "User {{ fromJson(item.value).id }} -> {{ fromJson(item.value).email }}"
 ```
+
+#### Read object fields with `parseValues`
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+Set `parseValues: true` to parse each value as a JSON object before the iteration starts. `item.value` is then a map, so `item.value.field` works in every task inside the loop, in the Loop `outputs` block, and in `breakWhen`.
+
+```yaml
+id: loop-parse-values
+namespace: company.team
+
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - { id: 101, email: "a@example.com" }
+      - { id: 102, email: "b@example.com" }
+    parseValues: true
+    outputs:
+      - id: user_id
+        type: INT
+        value: "{{ item.value.id }}"
+    tasks:
+      - id: log_user
+        type: io.kestra.plugin.core.log.Log
+        message: "User {{ item.value.id }} -> {{ item.value.email }}"
+```
+
+Keep the following in mind when you set `parseValues: true`:
+
+- Only JSON objects become maps. If a value is a JSON array, a number, a plain string, or invalid JSON, `item.value` stays a string and Kestra logs a warning. The iteration still runs.
+- Remove `fromJson(item.value)` from the loop. `fromJson()` expects a string, so it fails when `item.value` is a map.
+- In nested loops, `item.parent.value` and `item.parents[n].value` follow the `parseValues` setting of the loop they come from.
+- Kestra still stores each value as a string. The `item.value` recorded in the Loop's `outputs` stays a string.
 
 #### Concurrent execution
 
@@ -886,5 +921,7 @@ tasks:
 ```
 
 In this example, `task2` and `task3` run in parallel after `task1` completes, and `task4` starts once both finish.
+
+`DAG` handles a failed task the same way as [`Parallel`](#parallel). By default, it interrupts the other tasks that are still running and sets them to `FAILED`. Set `onChildFailure` to `CANCEL` to set them to `CANCELLED` instead, or to `CONTINUE` to let them finish.
 
 For more details, refer to the [DAG Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.dag).

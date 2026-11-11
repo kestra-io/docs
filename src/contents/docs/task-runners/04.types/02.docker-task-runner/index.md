@@ -50,6 +50,41 @@ Additionally, when using the Docker task runner, you can configure memory alloca
 The Docker task runner executes the script task as a container in a Docker-compatible engine. This means you can use it to run scripts within a Kubernetes cluster using Docker-In-Docker (DinD) or in a local Docker engine.
 :::
 
+### In-memory mounts (tmpfs)
+
+:::badge{version=">=2.1" editions="OSS,EE"}
+:::
+
+Use `tmpfs` to give the container an in-memory directory, for example a fast scratch space for intermediate files. It maps an absolute container path to its mount options, the same as the `--tmpfs` option of `docker run`:
+
+```yaml
+id: tmpfs_scratch_directory
+namespace: company.team
+
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: ubuntu
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+      memory:
+        memory: "1GB"
+      tmpfs:
+        /scratch: "rw,size=512m"
+    commands:
+      - dd if=/dev/zero of=/scratch/data.bin bs=1M count=100
+```
+
+- The content lives in memory and is discarded when the container stops. It counts toward the container memory limit (`memory.memory`), so always set `size`: without it, the mount can grow up to half of the host memory.
+- Supported options are `size` (bytes with an optional `k`, `m`, or `g` suffix, or a percentage), `mode` (octal), `uid`, `gid`, `nr_inodes`, `nr_blocks`, `mpol`, and standard mount flags such as `ro`, `rw`, `exec`, and `noexec`. `mpol` needs a NUMA-enabled kernel, so the container fails to start with it on Docker Desktop.
+- Docker mounts tmpfs with `noexec`, `nosuid`, and `nodev` by default. Add `exec` to run scripts or binaries from the mount.
+- tmpfs mounts are only available on Linux Docker engines, which include Docker Desktop.
+
+Kestra checks the mounts before pulling the image and fails the task if a path isn't absolute, is `/`, or is declared twice, or if an option or value isn't supported.
+
+A tmpfs mount doesn't keep the task's `inputFiles` and `outputFiles` in memory, because Docker can't copy files into or out of it. With the default `VOLUME` file handling strategy, a mount at, inside, or above the working directory is rejected, because script tasks always copy at least their output directory through it. With `fileHandlingStrategy: MOUNT`, only a mount exactly at the working directory is rejected. To keep task files in memory, use `MOUNT`, bind-mount the worker's `kestra.tasks.tmp-dir.path` from the Docker host at the same path (`/tmp/kestra-wd:/tmp/kestra-wd` in the [Kestra Docker Compose file](../../../02.installation/03.docker-compose/index.md)), and make that host directory a tmpfs.
+
+
 ---
 
 ## Task runner behavior in a failure scenario

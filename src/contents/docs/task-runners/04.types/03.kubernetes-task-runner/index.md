@@ -866,7 +866,9 @@ tasks:
 
 ## Execution details
 
-When you open an execution in the topology view, each Kubernetes task runner task shows a visual step tracker that displays progress through the pod lifecycle in real time. Each step shows its status and elapsed duration as it completes.
+In an execution, open the **Artifacts** tab, or the **Artifacts** tab of the task run's popup, and select the task's **Runner details** artifact. It shows the pod's lifecycle, its configuration, and, after the run, its pod details.
+
+**Lifecycle:** a step tracker that follows the pod in real time while the task runs. Each step shows its status and elapsed duration as it completes.
 
 | Step | Completes when |
 |---|---|
@@ -879,14 +881,16 @@ When you open an execution in the topology view, each Kubernetes task runner tas
 
 All six steps are always shown in the tracker; steps that do not apply (no input or output files configured) remain in a waiting state. A long `files.uploaded` step suggests large or numerous input files; a long `files.retrieved` step suggests large outputs.
 
-**Show Details modal — Configuration:**
+**Configuration:**
 - Namespace
 - Pull policy (when set)
 - Service account name (when set)
 - CPU and memory requests and limits (when set)
 - Node selector labels (when set)
 
-**Show Details modal — Pod details (post-execution):**
+Until the task run finishes, the configuration comes from the task definition, and any value that contains a Pebble expression is marked as a template. Once the task run finishes, the artifact shows the values the pod used, read from the task outputs, and `—` for any value the run didn't report.
+
+**Pod details (post-execution):**
 - Pod name and node it ran on, useful for `kubectl logs` and `kubectl exec` debugging
 - Pod phase badge (Succeeded / Failed)
 - Scheduling wait: time between pod creation and the pod entering `Running` state. A long value indicates cluster pressure, a slow image pull, or insufficient node capacity.

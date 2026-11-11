@@ -25,6 +25,8 @@ Unit tests are configured for and connected to their respective flows. They are 
 
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
 
+To have AI Copilot draft a test for you, open a flow, open the three-dot menu, and select **Generate a unit test**. Copilot reads the flow, proposes a test in the chat, and creates it only when you select **Apply**. See [Generate a unit test](../../../develop-with-ai/01.ai-copilot/index.md#generate-a-unit-test) for details.
+
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
 ![Tests Tree Diagram](./unittest.png)
@@ -42,6 +44,7 @@ Common fixture types:
 - **inputs**: set flow input values without changing the flow definition.
 - **tasks**: skip or mock task execution, override outputs, or force a state.
 - **triggers**: simulate an incoming event (e.g., webhook payload) that starts the flow.
+- **labels**: set [execution labels](#set-execution-labels-in-fixtures) on the test execution.
 
 Keep the following in mind when you write fixtures:
 
@@ -337,6 +340,49 @@ testCases:
         contains: "103,2"
 ```
 
+## Set execution labels in fixtures
+
+:::badge{version=">=2.1" editions="EE,Cloud"}
+:::
+
+A flow that reads `{{ labels.<key> }}`, for example to route work by team, takes a different path when a label is missing. Set `fixtures.labels` to give the test execution the labels it would have in production.
+
+Example flow:
+
+```yaml
+id: route_by_team
+namespace: company.team
+
+tasks:
+  - id: team
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ labels.team ?? 'unassigned' }}"
+```
+
+Example unit test:
+
+```yaml
+id: route_by_team_test
+namespace: company.team
+flowId: route_by_team
+testCases:
+  - id: data_team
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      labels:
+        team: data
+    assertions:
+      - value: "{{ outputs.team.value }}"
+        equalTo: data
+```
+
+`labels` takes a map, as above, or a list of `key` and `value` pairs, like [flow labels](../../../05.workflow-components/08.labels/index.md). The test execution gets these labels in addition to the flow's own labels and the `system.test`, `system.from`, and `system.testSuite` labels Kestra sets on every test execution.
+
+- When a fixture label has the same key as a flow label, the fixture value replaces the flow's value.
+- Label values are used as written. Expressions such as `{{ ... }}` aren't rendered.
+
+A [trigger fixture](#trigger-fixture-example) doesn't apply the trigger's own `labels`. When the flow depends on labels the trigger sets, declare them in `fixtures.labels`.
+
 ## Trigger fixture example
 
 When your flow is kicked off by a trigger, you can mock the trigger payload directly in the test so you don't have to hit the real endpoint. The example below stubs a webhook trigger carrying an order event and asserts the flow formats the message correctly.
@@ -490,6 +536,55 @@ testCases:
 When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test case reports `ERROR` with both the expected and actual states.
 
 The same assertion works for a flow [check](../../../05.workflow-components/07.checks/index.md) with `behavior: FAIL_EXECUTION`: when the fixture inputs fail the check, Kestra creates the test execution in the `FAILED` state. A failed `BLOCK_EXECUTION` check creates no execution, so the test case reports `ERROR` whatever `expectedState` you set.
+
+## Dynamic input defaults in fixtures
+
+When a flow input uses `dependsOn` with a `defaults` expression that references another input, the fixture only needs to supply the upstream input. The downstream default is rendered automatically from the fixture values, the same way as in a live execution.
+
+The following flow derives `category_label` from `category`:
+
+```yaml
+id: order_lookup
+namespace: company.team
+
+inputs:
+  - id: category
+    type: STRING
+
+  - id: category_label
+    type: STRING
+    dependsOn:
+      inputs:
+        - category
+    defaults: "{{ inputs.category | capitalize }} orders"
+
+tasks:
+  - id: log_label
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing: {{ inputs.category_label }}"
+```
+
+The test supplies only `category`. The `category_label` default is rendered from it and can be asserted directly:
+
+```yaml
+id: order_lookup_tests
+namespace: company.team
+flowId: order_lookup
+
+testCases:
+  - id: label_derived_from_category
+    type: io.kestra.core.tests.flow.UnitTest
+    fixtures:
+      inputs:
+        category: electronics
+    assertions:
+      - value: "{{ inputs.category_label }}"
+        equalTo: "Electronics orders"
+```
+
+:::alert{type="info"}
+If a fixture input fails validation (for example, a `FILE`-type input whose value is not a valid URI, or a `SECRET`-type input when no encryption key is configured), the test case reports `ERROR` with `Invalid fixture inputs: <reason>` rather than a server error.
+:::
 
 ## Assert that a task ran
 

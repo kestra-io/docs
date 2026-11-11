@@ -39,9 +39,9 @@ Inside each iteration:
 - `{{ item.value }}` — the current value from the list
 - `{{ item.index }}` — the zero-based position (0, 1, 2, …)
 
-After execution, the Gantt view shows a separate task group for each author.
+After execution, expand the `loop` row in the **Gantt** tab to list one iteration per author, then expand an iteration to see its task runs. See [Loop iterations](../../09.ui/02.executions/index.md#loop-iterations).
 
-When `values` contains objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to access fields — `item.value.field` does not work.
+When `values` contains objects, each `item.value` is a JSON string by default. Use `fromJson(item.value).field` to access fields, or set `parseValues: true` on the Loop task to read them as `item.value.field`. For details, see [Read object fields with `parseValues`](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#read-object-fields-with-parsevalues).
 
 ## Nested loops
 

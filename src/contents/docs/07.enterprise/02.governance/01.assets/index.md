@@ -90,6 +90,10 @@ The [asset declaration reference](./01.declare-assets/index.md) covers the first
 | Stop two executions from changing the same resource at once | `Acquire` and `Release` locks | [Prevent concurrent changes to a resource](../../../15.how-to-guides/asset-locks/index.md) |
 | Let a platform team publish resources that other teams build on | Global assets and allowed namespaces | [Share platform resources across teams](../../../15.how-to-guides/asset-platform-sharing/index.md) |
 | Send lineage to Marquez or another OpenLineage-compatible tool | `AssetShipper` | [Send asset lineage to OpenLineage](../../../15.how-to-guides/asset-openlineage/index.md) |
+| Group resources under a parent, or record related ones | `partOf` and `related` | [Relate assets](./01.declare-assets/index.md#relate-assets) |
+| Let users run flows, such as resize or decommission, from an asset's page | Asset actions | [Asset actions](./01.declare-assets/index.md#asset-actions) |
+| Act before or after a resource's lease runs out | `TtlTrigger` and asset `ttl` | [Asset tasks and triggers reference](./02.tasks-and-triggers/index.md#ttltrigger) |
+| Show plugin data, such as dbt test results, on asset cards | Plugin artifacts | [Plugin artifacts and assets](../../../06.concepts/plugin-artifacts-vs-assets/index.md) |
 | Chart your inventory | Dashboard `Assets` data source | [Dashboards](../../../09.ui/00.dashboard/index.md#assets-ee-and-cloud-only) |
 
 ## Assets compared with other Kestra features
@@ -102,6 +106,8 @@ Assets describe resources that live outside Kestra. Other features store data th
 | [KV Store](../../../06.concepts/05.kv-store/index.md) | Values your flows read and write as state | Until you delete or expire it |
 | [Namespace files](../../../06.concepts/02.namespace-files/index.md) | Code and configuration your flows use | Until you delete it |
 | Assets | Metadata about external resources, plus their lineage and usage history | Until you delete or purge it |
+
+Plugin artifacts are different again: they're UI components that a plugin adds to the Kestra UI, such as a footer on an asset card. See [Plugin artifacts and assets](../../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 An asset never holds the resource's data. A `Table` asset records that a table exists, where it lives, and which flows touch it. The rows stay in your database.
 

@@ -1,0 +1,33 @@
+---
+title: 2.1.0
+h1: What Changed in Kestra 2.1.0 and How to Migrate
+description: Migration guide for upgrading from Kestra 2.0 to 2.1.0, covering the concurrency limit API, removed settings and impersonate permissions, deprecated server CLI commands, queue configuration keys, asset relations, namespace binding scope, and dbt asset types.
+sidebarTitle: 2.1.0
+icon: /src/contents/docs/icons/migration-guide.svg
+release: 2.1.0
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Kestra 2.1.0 requires no flow rewrites, except asset triggers and declarations that match dbt assets on the `Table` type. The changes below affect API clients, CLI scripts, role definitions, and server configuration, so review them before upgrading from 2.0.
+
+:::alert{type="warning"}
+**Back up your database first.** The asset relations migration (Enterprise Edition) moves existing lineage into a new store and drops the old tables. Take a full backup of the repository database before upgrading. If the queue runs in a [dedicated database](../../configuration/02.runtime-and-storage/index.md#dedicated-queue-database), back up both.
+:::
+
+## What changed in 2.1.0
+
+| Change | Who is affected | What to do |
+|---|---|---|
+| [Concurrency limit API](./concurrency-limit-api) | API clients and scripts that read or update concurrency limits | Switch to `PUT /api/v1/{tenant}/concurrency-limit` with the scope in the body, and page through search results. |
+| [`SYSTEM_SETTINGS` and `TENANT_SETTINGS` removed](./settings-permissions-removed) (EE) | Role definitions in the API, `kestractl`, or Terraform | Remove both permissions. Requests that include them fail with a 422. Stored roles need no change. |
+| [`USER: IMPERSONATE` removed](./impersonate-permission-removed) (EE) | Role definitions in the API, `kestractl`, or Terraform, and API clients that impersonate with the `X-Kestra-Impersonate` header | Remove the action from your roles. Requests that include it fail with a 422. Only Instance Owners can impersonate. |
+| [Namespace binding scope](./namespace-binding-scope) (EE) | Roles bound to namespaces, and Terraform or API callers that create namespace bindings | A namespace binding can only grant namespace-level permissions. The upgrade moves existing namespace bindings of roles with tenant-level permissions to a `<Role name> (namespace)` copy, and requests that bind such a role to a namespace fail with a 422. |
+| [Server CLI commands deprecated](./server-cli-commands-deprecated) | Scripts that call `kestra flow`, `kestra namespace kv`, `kestra auths`, `kestra tenants`, or `kestra workers` commands | Move to the `kestractl` equivalents. Deprecated commands now print a deprecation line to stdout. |
+| [Queue configuration keys](./queue-backend-configuration) (EE) | Kafka, Redis, and AMQP deployments | Move settings under `kestra.queue.<type>`. The old keys still work but log a deprecation warning. |
+| [POST-only logout](./sso-logout-post-only) (EE) | SSO deployments, configurations with `get-allowed: true`, and direct links to `/logout` | Register `<your Kestra URL>/ui` as the post-logout redirect URI in your identity provider and remove `get-allowed` overrides. `GET /logout` now returns 405. |
+| [Asset relations](./asset-relations) (EE) | Users of the lineage-events API, `kestractl assets lineage-events`, or `PurgeAssets` lineage options | Read lineage from the relations API instead. Flows with an invalid asset `id` are now rejected on save. |
+| [dbt asset types](./dbt-asset-types) (EE) | Asset triggers, `AssetShipper` mappings, and declared inputs that match dbt assets on the `Table` type | Match on `DbtModel`, `DbtSeed`, or `DbtSnapshot` instead. Existing dbt assets are retyped on their next run. |
+| [Webhook responses without `wait`](./webhook-response-without-wait) | Webhook triggers that set `responseCode` without `wait: true` | The immediate response now uses `responseCode`. If it reads `outputs`, set `wait: true` or remove it: otherwise the webhook responds with `500`. |
+
+<ChildCard />

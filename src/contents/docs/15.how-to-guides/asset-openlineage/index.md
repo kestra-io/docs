@@ -22,7 +22,7 @@ Kestra's dependencies graph shows lineage for the flows Kestra runs. If your org
 
 ## How the export works
 
-Each time a task with assets runs, Kestra stores a lineage event: the flow and task, the execution, the run state, and the input and output assets. `AssetShipper` reads the events created since its last run and passes them to one or more exporters.
+Each time a task with assets runs, Kestra records which assets it read and wrote. `AssetShipper` rebuilds one lineage event per task run from that history: the flow and task, the execution, the run state, and the input and output assets. It reads the history recorded since its last run and passes the events to one or more exporters.
 
 The `OpenLineageAssetExporter` sends one OpenLineage run event per lineage event:
 
@@ -167,6 +167,6 @@ triggers:
 ## Next steps
 
 - See every `AssetShipper` and exporter property in the [asset tasks and triggers reference](../../07.enterprise/02.governance/01.assets/02.tasks-and-triggers/index.md#assetshipper).
-- Keep lineage storage under control with [PurgeAssets](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention).
+- Keep lineage storage under control: set `delete: true` on `AssetShipper` to delete the history it has exported, and [purge assets](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) you no longer need, which deletes their lineage with them.
 - Plan asset IDs and metadata keys that match your catalog with the [asset best practices](../../14.best-practices/13.assets/index.md).
 - Learn how Kestra records lineage in [Assets](../../07.enterprise/02.governance/01.assets/index.md).

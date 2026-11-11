@@ -16,7 +16,19 @@ Most assets come from flows. Use the UI, the API, or `kestractl` to inspect them
 
 Open **Assets** in the left navigation to list every asset you can see in the tenant. The list shows each asset's ID, display name, type, namespace, and metadata, and you can filter it by ID, namespace, type, metadata, and lock status.
 
-To register an asset, select **Create Asset**. Enter an ID, choose a type or type a custom one, and optionally set a namespace, display name, description, and metadata. Kestra rejects an ID that another asset already uses.
+To register an asset, select **Create Asset**. Enter an ID, choose a type or type a custom one, and optionally set a namespace, display name, description, status, TTL, owner, and metadata. Kestra rejects an ID that another asset already uses.
+
+In the same dialog, set a **Parent** to make the asset part of another one, and select **Add relationship** to link it to other assets or flows:
+
+| Relationship | Links the asset to | Stored as |
+| --- | --- | --- |
+| **Upstream of** | An asset this one feeds | `UPSTREAM_OF`, from this asset |
+| **Downstream of** | An asset that feeds this one | `UPSTREAM_OF`, to this asset |
+| **Related to** | Any other asset, with no direction | `RELATED` |
+| **Produced by flow** | The flow that writes this asset | `PRODUCES` |
+| **Consumed by flow** | A flow that reads this asset | `CONSUMED_BY` |
+
+Kestra adds the relationships once the asset is saved. If one can't be added, for example because you can't view its target, the asset is still saved and an error message gives the reason.
 
 Assets also appear in context:
 
@@ -29,15 +41,25 @@ Select an asset to open its detail page. It has three tabs:
 
 | Tab | Shows |
 | --- | --- |
-| **Overview** | Description, metadata (**Asset Values**), **Upstream Assets**, **Downstream Assets**, and the **Flows** that read or write the asset. Shows the lock holder and expiry when the asset is locked. |
+| **Overview** | Description, lifecycle status, TTL and owner, metadata (**Asset Values** and **Custom metadata**), **Actions**, **Part Of** and **Parts**, **Related Assets**, **Upstream Assets**, **Downstream Assets**, and the **Flows** that read or write the asset. Shows the lock holder and expiry when the asset is locked. |
 | **Executions** | Every execution that used the asset as an input or an output, linked to the execution page |
 | **Dependencies** | The dependencies graph centered on the asset |
 
-Use **Edit** to change the display name, description, namespace, type, or metadata. You can't change the ID. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger).
+Use **Edit** to change the display name, description, namespace, type, or metadata, change or clear the **Parent**, or add relationships. You can't change the ID. The dialog doesn't remove existing relationships; remove them through the [relations endpoints](#automate-with-the-api). To change the [owner](../01.declare-assets/index.md#lifecycle-fields), select the pencil icon next to **Owner** on the **Overview** tab and pick a user or group. Kestra stores the choice as `user:<name>` or `group:<name>` and shows it without the prefix. To delete the asset, open the **⋮** menu and select **Delete**. Deleting emits a `DELETED` event to any [`EventTrigger`](../02.tasks-and-triggers/index.md#eventtrigger). Deleting a parent asset detaches its parts by default. See [Relations](#relations).
+
+To run an [asset action](../01.declare-assets/index.md#asset-actions), select **Open actions** in the **Actions** card on the **Overview** tab, pick the action, and fill in its inputs. An action whose `when` conditions don't hold is disabled, and the list shows each unmet condition with the asset's current value, for example *status must equal active (currently decommissioned)*. On a destroyed asset, every action is disabled. Running an action needs `ASSET:UPDATE` on the asset and `FLOW:EXECUTE` on the action flow's namespace.
+
+With `ASSET:UPDATE`, select **Manage actions** in the same dialog to edit or remove actions, or select **Add action** to attach a new one. In the dialog, select the flow the action runs and set its **Display name**. The **Availability** section then appears. Select **Add condition** and pick a field, an operator, and a value for each condition. An action without conditions is always offered. The field list includes the asset's metadata keys, and you can type any other key as `metadata.<key>`.
+
+Kestra doesn't write UI or API changes to actions back to the flow. If a flow declares `assetActions` for the asset, each run of that flow replaces the stored actions, including your edits. Manage an asset's actions either in the flow or in the UI and API, not both.
+
+### Plugin footers on asset cards
+
+A plugin can add a footer below an asset's card, for example to show test results that its tasks stored in the asset's metadata. The footer is a plugin artifact, and it shows the asset's latest metadata. See [Plugin artifacts and assets](../../../../06.concepts/plugin-artifacts-vs-assets/index.md).
 
 ## Explore the dependencies graph
 
-The **Dependencies** tab draws assets and flows as nodes. An edge from an asset to a flow means the flow reads the asset. An edge from a flow to an asset means the flow writes it. An edge between two assets means a task read the first and wrote the second.
+The **Dependencies** tab draws assets and flows as nodes. An edge from an asset to a flow means the flow reads the asset. An edge from a flow to an asset means the flow writes it. An edge between two assets means a task read the first and wrote the second. The graph also shows **Part of** edges from an asset to its parent and **Related** edges between related assets. Edge labels name each relation: **Produces**, **Consumed by**, **Upstream of**, **Part of**, and **Related**. When a parent has many parts, the graph shows the first ones and lets you load more.
 
 ### Layouts
 
@@ -77,12 +99,38 @@ Use **Group by** to cluster asset nodes:
 | **Plugins** | The plugin of the task that produced the asset, for example `jdbc` or `dbt` |
 | **System** | The `system` metadata key |
 | **Namespace** | The asset or flow namespace |
+| **Consumer** | The flow that reads the asset. An asset that several flows read belongs to each of their groups. Assets no flow reads are grouped under **No consumer**, and flows you can't see under **Hidden flow**. |
+
+Each option appears only when it produces at least one group, and **Consumer** only when a flow in the graph reads an asset.
 
 Hover a group to fade the other nodes. Select it to keep it highlighted, and select it again or select an empty area to release it.
 
 ### Node details
 
 Select a node to open a side panel with the asset's name and ID, its freshness state, when it was last written, its type, the task type that produced it (**Plugins**), its `system`, and its recent runs linked to their executions. Double-click a node to open its detail page.
+
+## Relations
+
+Kestra stores how assets connect as relations. Flows create most of them: lineage relations come from task inputs and outputs, and `partOf` and `related` declarations create **Part of** and **Related** relations. See [Relate assets](../01.declare-assets/index.md#relate-assets).
+
+| Relation | API `kind` | Direction | Created by |
+| --- | --- | --- | --- |
+| Produces | `PRODUCES` | Flow to asset | A flow writing the asset |
+| Consumed by | `CONSUMED_BY` | Asset to flow | A flow reading the asset |
+| Upstream of | `UPSTREAM_OF` | Asset to asset | A task reading one asset and writing another |
+| Part of | `PART_OF` | Asset to its parent asset | `partOf`, or the API |
+| Related | `RELATED` | Between two assets, no direction | `related`, or the API |
+
+To set relations without a flow, use the **Parent** and **Relationships** fields of the asset dialog, or include `partOf` and `related` in the YAML body when you create or update an asset through the API, including bulk imports. An update that leaves out `partOf` keeps the stored parent; clear it with the parent endpoint. The same [update rules](../01.declare-assets/index.md#update-rules) apply as for a flow write. You can also add and remove single relations with the relations endpoints. See [Automate with the API](#automate-with-the-api).
+
+To remove a relation that a flow derived, delete it through the API. Kestra remembers the removal, so later runs of the flow don't recreate it. A relation that a flow declares comes back the next time the flow declares it. Adding a removed relation again through the API restores it.
+
+When you delete an asset that has parts, choose what happens to them with the `children` parameter of the delete endpoints:
+
+| `children` | Effect |
+| --- | --- |
+| `DETACH` | The parts stay and lose their parent. This is the default. |
+| `DELETE` | The parts and all their descendants are deleted too. The delete fails without changes if any of them is locked or you can't delete it. |
 
 ## Lock an asset
 
@@ -115,18 +163,26 @@ The Assets API is available at `/api/v1/{tenant}/assets`. Create and update requ
 | --- | --- | --- |
 | `POST /assets` | Create an asset. Returns 409 if the ID exists. | `ASSET:CREATE` |
 | `PUT /assets/{id}` | Update an existing asset with the same [update rules](../01.declare-assets/index.md#update-rules) as a flow write. Returns 404 if it doesn't exist. | `ASSET:UPDATE` |
-| `GET /assets/{id}` | Get one asset | `ASSET:VIEW` |
+| `GET /assets/{id}` | Get one asset. The response's `actionAvailability` lists, for each asset action, whether its conditions hold and the asset's current value for each unmet one. | `ASSET:VIEW` |
 | `GET /assets/search` | Search assets with query filters | `ASSET:LIST` |
-| `GET /assets/{id}/dependencies` | Get the dependencies graph of one asset | `ASSET:VIEW` |
-| `DELETE /assets/{id}` | Delete one asset | `ASSET:DELETE` |
-| `DELETE /assets/by-ids` | Delete several assets by ID | `ASSET:DELETE` |
-| `DELETE /assets/by-query` | Delete assets that match query filters. Add `purge=true` to hard-delete. | `ASSET:DELETE` |
+| `PATCH /assets/{id}` | Update `description`, `displayName`, or `metadata` with a JSON body. Metadata keys are merged into the stored metadata. | `ASSET:UPDATE` |
+| `POST /assets/bulk` | Create or update many assets from YAML documents separated by `---`. Add `dryRun=true` to preview. See [Import through the API](../../tenants/infrastructure/index.md#import-through-the-api). | `ASSET:CREATE`, and `ASSET:UPDATE` to update existing assets |
+| `GET /assets/{id}/dependencies` | Get the dependencies graph of one asset. Filter with `kinds`, and use `expandAll` and `hubCursor` to page through large parents. | `ASSET:VIEW` |
+| `GET /api/v1/{tenant}/flows/{namespace}/{id}/asset-dependencies` | Get the asset relation graph around a flow. Takes the same `kinds`, `expandAll`, and `hubCursor` parameters as `GET /assets/{id}/dependencies`. | `ASSET:VIEW`, and `FLOW:VIEW` or `ASSET:VIEW` on the flow's namespace |
+| `GET /assets/{id}/relations` | List one page of an asset's relations of one kind. `kind` and `direction` are required: `OUTBOUND` or `INBOUND` for directed kinds, `BOTH` for `RELATED`. Page with `size` (default `20`) and `after`, set to the previous page's `nextCursor`. | `ASSET:VIEW` |
+| `GET /assets/{id}/relations/summary` | Summarize an asset's relations by kind | `ASSET:VIEW` |
+| `POST /assets/{id}/relations` | Add a relation with a JSON body of `kind`, `direction`, `targetId`, and optional `targetNamespace` and `role`. `PART_OF` isn't accepted: set a parent with `PUT /assets/{id}/parent`. Posting an existing relation replaces its `role`. | `ASSET:UPDATE`, and `VIEW` on the other end |
+| `DELETE /assets/{id}/relations/{uid}` | Remove a relation | `ASSET:DELETE`, or `ASSET:UPDATE` for a parent link |
+| `PUT /assets/{id}/parent` | Set the parent with a JSON body of `parentId` and optional `namespace` and `role` | `ASSET:UPDATE`, and `VIEW` on the parent |
+| `DELETE /assets/{id}/parent` | Remove the parent | `ASSET:UPDATE` |
+| `POST /assets/{id}/actions/run` | Run an attached [asset action](../01.declare-assets/index.md#asset-actions). The JSON body names the action's `namespace` and `flowId`, and can pass `inputs` and `labels`. Returns 409 if the action's conditions don't hold. | `ASSET:UPDATE`, and `FLOW:EXECUTE` on the action flow |
+| `DELETE /assets/{id}` | Delete one asset. Set `children` to `DETACH` or `DELETE` for its parts. | `ASSET:DELETE` |
+| `DELETE /assets/by-ids` | Delete several assets by ID. Accepts `children`. | `ASSET:DELETE` |
+| `DELETE /assets/by-query` | Delete assets that match query filters. Add `purge=true` to hard-delete. Accepts `children`. | `ASSET:DELETE` |
 | `POST /assets/{id}/lock` | Lock an asset | `ASSET:LOCK` |
 | `DELETE /assets/{id}/lock` | Unlock an asset | `ASSET:UNLOCK` |
 | `GET /assets/usages/search` | Search the usage records that link assets to executions | `ASSET:LIST` |
 | `DELETE /assets/usages/by-query` | Hard-delete usage records | `ASSET:DELETE` |
-| `GET /assets/lineage-events/search` | Search lineage events | `ASSET:LIST` |
-| `DELETE /assets/lineage-events/by-query` | Hard-delete lineage events | `ASSET:DELETE` |
 
 For namespaced assets, the permission must cover the asset's namespace. This request registers a table that no flow manages:
 
@@ -149,7 +205,7 @@ For request and response schemas, see the [Enterprise API reference](../../../..
 
 ## Automate with kestractl
 
-`kestractl assets` wraps the same endpoints:
+`kestractl assets` covers creating, inspecting, and deleting assets. Use the API for relations, actions, `PATCH`, and bulk import.
 
 ```bash
 # Register an asset from a YAML file
@@ -169,4 +225,8 @@ See [kestractl assets commands](../../../../kestra-cli/kestractl/index.md#assets
 
 ## Permissions
 
-Asset access uses the `ASSET` RBAC resource with the actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `LOCK`, and `UNLOCK`. Namespace-scoped grants apply to assets in those namespaces. Global assets aren't restricted by namespace. See the [ASSET permissions reference](../../../03.auth/rbac/permissions-reference/index.md).
+Asset access uses the `ASSET` RBAC resource with the actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `LOCK`, and `UNLOCK`. Namespace-scoped grants apply to assets in those namespaces. Global assets aren't restricted by namespace.
+
+Linking an asset to another one requires `VIEW` on the other asset's namespace. Creating, updating, or bulk-importing an asset whose `partOf` or `related` points to an asset you can't view returns `403`. A parent that hasn't changed, or a related asset that's already linked, isn't checked again, so an asset linked to one you can't see stays editable. Adding relationships from the asset dialog, or through `POST /api/v1/{tenant}/assets/{id}/relations`, requires `UPDATE` on the asset and `VIEW` on the target: `ASSET` `VIEW` for an asset, `FLOW` `VIEW` for a flow.
+
+See the [ASSET permissions reference](../../../03.auth/rbac/permissions-reference/index.md).

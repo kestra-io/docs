@@ -31,13 +31,32 @@ The image below shows the relationship between Users, Groups, Service Accounts, 
 
 A role is a collection of permissions that can be assigned to users, service accounts, or groups. Each permission is a combination of a **resource** (e.g., `FLOW`, `EXECUTION`, `SECRET`) and one or more **actions** (e.g., `EXECUTE`, `VIEW`, `DELETE`). A role alone grants nothing — it must be attached to a user, service account, or group via a **binding** on the **IAM** page.
 
-Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). [Impersonate](#impersonate) allows Instance Owners to verify a user's effective permissions after role assignment.
+Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). A binding scoped to a namespace only accepts a role whose permissions are all namespace-level, see [Namespace bindings](#namespace-bindings). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). [Impersonate](#impersonate) allows Instance Owners to verify the effective permissions of a user or service account after role assignment.
+
+## Namespace bindings
+
+Each permission is either namespace-level or tenant-level:
+
+- **Namespace-level** permissions apply to the namespaces a binding is scoped to: `FLOW`, `EXECUTION`, `TRIGGER`, `NAMESPACE`, `KVSTORE`, `SECRET`, `CREDENTIAL`, `REUSABLE_INPUTS`, `APP`, `TESTSUITE`, `ASSET`, `COPILOT`, `POLICY`, `CASE`, and `DASHBOARD` `VIEW`, `LIST` and `EXPORT`.
+- **Tenant-level** permissions apply to the whole tenant, so only a tenant-wide binding can grant them: all other permissions, including `DASHBOARD` `CREATE`, `UPDATE` and `DELETE`, `BLUEPRINT`, `MCP_SERVER`, `AUDITLOG`, and the IAM resources (`USER`, `GROUP`, `ROLE`, `BINDING`, `SERVICE_ACCOUNT`, `INVITATION`).
+
+A binding scoped to a namespace can only use a role whose permissions are all namespace-level. Kestra rejects with a `422` error, listing the tenant-level permissions involved:
+
+- a namespace binding whose role holds a tenant-level permission;
+- an invitation with such a namespace binding;
+- adding a tenant-level permission to a role that is bound to a namespace, or that a pending invitation binds to a namespace. Remove those namespace bindings and invitations first.
+
+Of the [managed roles](#managed-roles), only Launcher can be bound to a namespace. To give a team access to one namespace, bind Launcher or a custom role that only holds namespace-level permissions to that namespace. `GET /api/v1/{tenant}/acls/scopes` returns the scope of each resource and action.
+
+In the UI, the role editor marks tenant-level permissions with a **Tenant** tag. When you pick a role for a binding restricted to one or more namespaces, roles that hold a tenant-level permission are disabled and list the tenant-level resources they grant. If such a role is already selected when you restrict the binding to a namespace, it is removed and a warning names it.
+
+When upgrading to 2.1.0, existing namespace bindings of roles with tenant-level permissions move to a `<Role name> (namespace)` role that only holds the namespace-level permissions. Keep those roles free of tenant-level permissions. See the [2.1.0 migration guide](../../../11.migration-guide/v2.1.0/namespace-binding-scope/index.md).
 
 ## Impersonate
 
-After assigning permissions to a user, Instance Owners can impersonate them to verify their access is correct. Impersonation switches your view to that user's perspective. A persistent banner confirms who you are impersonating, and you can return to your own session at any time using the **Stop impersonating** button in the top right.
+After assigning permissions to a user or a service account, Instance Owners can impersonate them to verify their access is correct. Impersonation is reserved to Instance Owners: no role permission grants it. Impersonation switches your view to that user's perspective. A persistent banner confirms who you are impersonating, and you can return to your own session at any time using the **Stop impersonating** button in the top right.
 
-**From the UI:** go to **IAM → Users**, find the user row, and select **Impersonate** from the action menu on the right.
+**From the UI:** go to **IAM → Users**, find the user row, and select **Impersonate** from the action menu on the right. To impersonate a service account, go to **Instance IAM → Service Accounts** in the [Instance Owner console](../../05.instance/00.instance-owner/index.md) and select **Impersonate** from the service account's action menu.
 
 ![The Impersonate button appears on each user row in the IAM Users list](./impersonate-user.png)
 
@@ -45,22 +64,23 @@ Once active, a banner at the top of the page confirms the impersonation session.
 
 ![The Stop impersonating button appears in the top right during an active impersonation session](./stop-impersonate-user.png)
 
-**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`. The response is a `303` redirect with an empty body. It sets a short-lived JWT, valid for one hour by default, in the `JWT` cookie:
+**From the API:** send a `POST` request to `/api/v1/users/{id}/impersonate`, where `{id}` is a user ID or a service account ID. The response is a `303` redirect with an empty body. It sets a short-lived JWT, valid for one hour by default, in the `JWT` cookie:
 
 ```bash
 curl -s -o /dev/null -D - -X POST https://your-kestra-instance/api/v1/users/{userId}/impersonate \
   -H "Authorization: Bearer YOUR_API_TOKEN" | grep -i '^set-cookie: JWT='
 ```
 
-Send that token as the `JWT` cookie or as a `Bearer` token to act as the impersonated user. A request from anyone other than an Instance Owner returns `403`.
+Send that token as the `JWT` cookie or as a `Bearer` token to act as the impersonated user or service account. A request from anyone other than an Instance Owner returns `403`.
 
 <!-- TODO(eng): kestractl users impersonate fails because it follows the 303 redirect (kestra-io/kestractl#212). Document it here again once fixed. -->
+<!-- TODO(runtime test): reading a stored role that still holds USER IMPERSONATE (it should come back without the action) was not tested live: it needs a direct database write. Everything else in ee#7018 was live-verified on 2026-11-11. -->
 
 ### Resources
 
 A resource is a category of product entity or capability that can be controlled through RBAC. Each resource has its own set of allowed actions.
 
-**Core resources** (namespace-scoped — bindings can restrict access to specific namespaces):
+**Namespace-level resources** (a binding scoped to a namespace can grant them, see [Namespace bindings](#namespace-bindings)):
 
 | Resource | Description |
 |---|---|
@@ -72,23 +92,20 @@ A resource is a category of product entity or capability that can be controlled 
 | `SECRET` | Secrets stored in the namespace |
 | `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
 | `REUSABLE_INPUTS` | Reusable input sets defined at the namespace level |
-
-**Apps and features** (tenant-scoped):
-
-| Resource | Description |
-|---|---|
-| `DASHBOARD` | Custom dashboards |
-| `BLUEPRINT` | Custom blueprints |
 | `APP` | Apps and their executions |
 | `TESTSUITE` | Unit tests |
 | `ASSET` | Data assets and lineage |
-| `MCP_SERVER` | MCP servers exposing flows as AI tools |
 | `COPILOT` | AI Copilot flow generation |
+| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
+| `CASE` | Cases and case templates |
+| `DASHBOARD` | Custom dashboards. `VIEW`, `LIST` and `EXPORT` are namespace-level, `CREATE`, `UPDATE` and `DELETE` are tenant-level |
 
-**Administration** (tenant-scoped):
+**Tenant-level resources** (only a tenant-wide binding grants them):
 
 | Resource | Description |
 |---|---|
+| `BLUEPRINT` | Custom blueprints |
+| `MCP_SERVER` | MCP servers exposing flows as AI tools |
 | `USER` | Users in the tenant |
 | `GROUP` | Groups and their members |
 | `ROLE` | RBAC roles |
@@ -96,9 +113,8 @@ A resource is a category of product entity or capability that can be controlled 
 | `SERVICE_ACCOUNT` | Service accounts |
 | `INVITATION` | User invitations |
 | `AUDITLOG` | Audit log entries |
-| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
-| `SYSTEM_SETTINGS` | Instance-level settings |
-| `TENANT_SETTINGS` | Tenant-level settings |
+| `PROMOTION_TARGET` | Target environments for [promoting flows](../../02.governance/promote/index.md) |
+| `SUPPORT` | Support tickets sent from the UI, with instance debug information |
 
 ### Actions
 
@@ -118,19 +134,19 @@ Each resource defines its own set of allowed actions. Not every action applies t
 
 | Resource | Additional actions |
 |---|---|
-| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
-| `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
+| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT`, `PROMOTE` (promote to another environment), `UPDATE_CONCURRENCY_LIMIT` (reset [concurrency counters](../../../05.workflow-components/14.concurrency/index.md#reset-a-stuck-running-counter)) |
+| `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN`, `REVIEW` (approve or deny an Approval task run) |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
 | `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
 | `POLICY` | `EXECUTE` (dry-run evaluate a policy against its scope), `EXPORT`, `IMPORT` |
 | `APP` | `EXECUTE`, `ACCESS_FILES`, `ACCESS_LOGS` |
 | `TESTSUITE` | `EXECUTE` |
+| `ASSET` | `LOCK`, `UNLOCK` |
 | `AUDITLOG` | `EXPORT` |
-| `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
+| `USER` | `MANAGE_GROUP_MEMBERSHIP` |
 | `GROUP` | `MANAGE_MEMBERS` |
 | `COPILOT` | `USE` (only action) |
-| `SYSTEM_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
-| `TENANT_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
+| `CASE` | `FOLLOW`, `TEMPLATE` (manage case templates) |
 
 :::alert{type="info"}
 For a complete resource-to-endpoint mapping, see the [Permissions reference](./permissions-reference/index.md).
@@ -161,9 +177,11 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 |---|---|
 | **Admin** | All actions on all resources, including granting any access to anyone. See [Who can grant access](#who-can-grant-access). |
 | **Developer** | Everything Editor has, plus: full namespace management (including file management), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
-| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
+| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, reusable inputs, dashboards, apps, test suites, assets, MCP servers, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
+
+Admin, Developer, Editor and Viewer hold tenant-level permissions, so they can only be bound to the whole tenant. Launcher can be bound to a namespace. See [Namespace bindings](#namespace-bindings).
 
 ## Who can grant access
 
@@ -171,14 +189,11 @@ Permissions to manage roles, bindings, groups, and invitations let the holder gr
 
 ### Roles
 
-`ROLE` `CREATE` and `UPDATE` let you put any permission in a role, including permissions you don't hold. Updating a role changes every binding that uses it, including tenant-wide bindings. Only an Instance Owner can add `USER` `IMPERSONATE` to a role, set the default role, or edit a managed role.
+`ROLE` `CREATE` and `UPDATE` let you put any permission in a role, including permissions you don't hold. Updating a role changes every binding that uses it, including tenant-wide bindings. Only an Instance Owner can set the default role or edit a managed role.
 
 ### Bindings
 
-`BINDING` `CREATE` lets you bind any role to any user, group, or service account, yourself included, at the scope where you hold it:
-
-- On a namespace, you can bind roles on that namespace and its child namespaces. Binding the Admin role to yourself there gives you every permission on those namespaces.
-- On the tenant, you can create tenant-wide bindings, which grant every permission in the role.
+`BINDING` is a tenant-level permission: creating or deleting a binding requires it on the whole tenant. `BINDING` `CREATE` lets you bind any role to any user, group, or service account, yourself included, on the whole tenant or on any namespace. A tenant-wide binding grants every permission in the role. To let someone give access to a team without this right, make them owner of a group bound to that team's namespace, see [Groups](#groups).
 
 If the user you bind has no access to the tenant yet, the binding gives them access.
 
@@ -190,7 +205,7 @@ Each group member is either a member or an owner. A group owner can add users al
 
 ### Invitations
 
-To create an [invitation](../invitations/index.md), you need `INVITATION` `CREATE`. You also need `BINDING` `CREATE` at the scope of each binding in the invitation. For each group in it, you need ownership of the group or `GROUP` `MANAGE_MEMBERS`. Only an Instance Owner can invite an Instance Owner.
+To create an [invitation](../invitations/index.md), you need `INVITATION` `CREATE`. When the invitation carries bindings, you also need `BINDING` `CREATE` on the whole tenant. For each group in it, you need ownership of the group or `GROUP` `MANAGE_MEMBERS`. Only an Instance Owner can invite an Instance Owner.
 
 ### Review changes
 
@@ -237,13 +252,15 @@ If you see an error when creating a new User or Service Account, it might be cau
 
 ## Creating a user with an Admin role
 
-Admin users are created via the [Setup Page](../../01.overview/02.setup/index.md) on first launch, or by assigning the Admin role to a user via IAM or the CLI with `--admin`:
+Admin users are created via the [Setup Page](../../01.overview/02.setup/index.md) on first launch, or by assigning the Admin role to a user in IAM or with [`kestractl`](../../../kestra-cli/kestractl/index.md#iam-management-enterprise-edition):
 
 ```bash
-kestra auths users create prod.admin@kestra.io TopSecret42 --admin
+# Create the user
+kestractl users create --email prod.admin@kestra.io --user-password 'TopSecret42'
 
-## schema:
-kestra auths users create <username> <password> --admin
+# Find the Admin role ID, then bind it to the user in the active tenant
+kestractl roles list
+kestractl bindings create --type USER --external-id <user_id> --role <admin_role_id>
 ```
 
 ## User lockout
@@ -290,6 +307,59 @@ Users can reset their password via the Forgot Password link on the login page. A
 ![Reset Password](./forgot-password.png)
 
 ![Instance Owner Change Password](./create-user-password.png)
+
+## Password expiration and reuse
+
+:::badge{version=">=2.1" editions="EE"}
+:::
+
+Kestra can make Basic Auth passwords expire after a set age, and stop users from setting a password they used recently. Both are off by default.
+
+```yaml
+kestra:
+  security:
+    basic-auth:
+      password-max-age: P90D              # How long a password stays valid. Unset by default: passwords never expire
+      password-expiry-warning: P7D        # How long before expiry users are warned. Default: P7D
+      prevent-reuse-of-last-passwords: 5  # How many passwords, counting the current one, cannot be reused. Default: 0 (no check)
+```
+
+`password-max-age` must be a positive duration, and `prevent-reuse-of-last-passwords` must be zero or more. Kestra refuses to start otherwise.
+
+Password expiry applies to users only. Service account passwords never expire because of `password-max-age`, and API tokens are not affected. The reuse check applies to every password, service accounts included.
+
+### Expired passwords
+
+A password expires `password-max-age` after it was last changed, whoever changed it: the user from their profile or the reset page, or an Instance Owner from the user's detail page.
+
+- **Warning:** during the last `password-expiry-warning` before expiry, a banner at the top of the UI tells the user when their password expires, with a link to their profile to change it.
+- **Login:** a user who signs in with an expired password is not logged in. Kestra sends them to the reset page with a message explaining that their password has expired, where they choose a new one. This link is valid for one hour and does not need the mail service.
+- **API requests:** requests that authenticate with the username and password (HTTP Basic) are rejected once the password has expired.
+- **Open sessions:** a session opened with the password cannot be refreshed once the password has expired, so it ends when its current access token does.
+
+When Kestra issues a link for an expired password, it records the attempt as **Password expired** in the instance-level audit logs. The attempt never counts toward the [user lockout](#user-lockout) threshold.
+
+These links follow the same limits as **Forgot password?**: `password-reset.cooldown` per user and `password-reset.rate-limit` per IP address. When a limit is reached, no new link is issued and nothing is recorded. The user is asked to use **Forgot password?**, which requires the mail service, or to sign in again a few minutes later. Any reset link already sent stays valid.
+
+Expiry only applies to signing in with the password. A user who also signs in through [SSO](../sso/index.md) or a one-time code can keep doing so, and does not see the banner in those sessions.
+
+:::alert{type="info"}
+Passwords set before this feature have no recorded change date. During the upgrade, every existing password is considered changed at the time of the upgrade, so the upgrade itself expires no password, and the first expiry happens `password-max-age` after it.
+:::
+
+### Password reuse
+
+With `prevent-reuse-of-last-passwords` set to `N`, a new password is rejected if it matches the current password or one of the `N - 1` before it. The check applies everywhere a password is set: the user profile, the reset page, and the user detail page used by an Instance Owner. A rejected password does not change anything, and the user can try another one.
+
+The history has these limits:
+
+- Previous passwords are only recorded from the moment the setting is enabled. When you turn it on, only each user's current password is known, so older ones can be reused once.
+- Lowering `prevent-reuse-of-last-passwords` takes effect immediately, and the extra entries are deleted at the user's next password change. Raising it again after that does not bring them back.
+- Each stored password is checked with the same deliberately slow hash as a login, so a large history makes every password change slower. Keep it to a small number, such as 5 to 10.
+
+### Password reset links
+
+A user has at most one pending reset link. Requesting a new one, from **Forgot password?** or by signing in with an expired password, cancels the previous link, and any password change cancels the pending one.
 
 ## RBAC design notes
 

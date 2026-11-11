@@ -6,14 +6,15 @@ sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
 ---
 
-Purge tasks remove old executions, logs, and key-value pairs to reduce storage usage.
+Purge tasks remove old executions, logs, metrics, and key-value pairs to reduce storage usage.
 
-The available purge tasks are [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv), and [`PurgeStorage`](/plugins/core/storage/io.kestra.plugin.core.storage.purgestorage).
+The available purge tasks are [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), [`PurgeMetrics`](/plugins/core/metric/io.kestra.plugin.core.metric.purgemetrics), [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv), and [`PurgeStorage`](/plugins/core/storage/io.kestra.plugin.core.storage.purgestorage).
 
 - `PurgeExecutions`: deletes execution records from the database and their associated storage files
-- `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently. If you have configured an [external log data store](../log-data-store/index.md) that does not support purge, `PurgeLogs` is a no-op for logs — manage retention directly in that backend.
+- `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently. If you have configured an [external log data store](../log-data-store/index.md) that does not support purge, `PurgeLogs` is a no-op for logs; manage retention directly in that backend.
+- `PurgeMetrics`: removes execution metrics in bulk by date range, namespace, flow, or execution
 - `PurgeKV`: deletes expired keys globally for a specific namespace
-- `PurgeStorage`: removes orphaned execution files from internal storage — files that exist on disk but whose execution records are no longer in the database
+- `PurgeStorage`: removes orphaned execution files from internal storage (files that exist on disk but whose execution records are no longer in the database)
 
 `PurgeExecutions`, `PurgeLogs`, and `PurgeKV` replace the legacy `io.kestra.plugin.core.storage.Purge` task. `PurgeStorage` is a new addition that handles orphaned files the other tasks cannot reach.
 
@@ -21,12 +22,50 @@ The available purge tasks are [`PurgeExecutions`](/plugins/core/execution/io.kes
 The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAuditLogs`](../../07.enterprise/02.governance/06.audit-logs/index.md#purging-audit-logs).
 :::
 
+## Default retention flow
+
+In the Enterprise Edition, Kestra can generate the purge flow for you. The [setup wizard](../../07.enterprise/01.overview/02.setup/index.md#step-3-choose-a-retention-policy) and the [tenant creation wizard](../../07.enterprise/02.governance/tenants/index.md#creating-a-tenant-from-the-ui) ask for a retention policy, and Kestra turns it into a `retention` flow in the tenant's [system flows](../../06.concepts/system-flows/index.md) namespace. The flow is the policy: there is no separate retention setting, so edit the flow in the flow editor or through Git to change it.
+
+With the default 90 days for both executions and logs, the generated flow looks like this:
+
+```yaml
+id: retention
+namespace: system
+description: Purges the executions and logs older than the retention policy of this tenant.
+
+tasks:
+  - id: purge_executions
+    type: io.kestra.plugin.core.execution.PurgeExecutions
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+    states: [SUCCESS, WARNING, FAILED, KILLED, CANCELLED, RETRIED, SKIPPED, RESUBMITTED]
+    purgeLog: false
+
+  - id: purge_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-90, 'DAYS') }}"
+    purgeExecutionLogs: true
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 2 * * *"
+```
+
+- `purge_executions` deletes finished executions older than the executions window, with their metrics and output files. It lists every finished state, so executions that haven't finished, such as running or paused ones, are never purged.
+- `purge_logs` deletes execution logs and trigger logs older than the logs window.
+- A window set to **Keep forever** has no task.
+- The flow runs every day at 02:00. Each new tenant gets a different minute in that hour, so tenants don't all purge at the same time.
+
+When **Keep failed executions forever** is on, `FAILED` is left out of the states, and the flow gets a `purge_execution_logs` task that deletes the logs of finished executions other than `FAILED`. `purge_logs` then deletes only trigger logs. If the logs window is longer than the executions window, the logs of the other finished executions are deleted with their execution instead.
+
+Kestra doesn't generate the flow when the tenant already has a `retention` flow in its system flows namespace, or when both windows are set to **Keep forever**. If generating the flow fails, Kestra logs a warning and still creates the tenant.
+
 ## Purge executions and logs
 
 The following flow applies a multi-step log purge with progressively shorter retention windows by log level. Verbose logs accumulate far faster than errors or warnings, so keeping them longer than necessary inflates storage without adding much value:
 
 - All logs: purge anything older than **1 month**
-- DEBUG logs: purge anything older than **1 week** — error stacktraces are often logged at DEBUG level, so this also removes them; extend the window if you need those for post-incident debugging
+- DEBUG logs: purge anything older than **1 week** (error stacktraces are often logged at DEBUG level, so this also removes them; extend the window if you need those for post-incident debugging)
 - TRACE logs: purge anything older than **1 day**
 
 ```yaml
@@ -69,7 +108,7 @@ triggers:
 
 ### Selectively purge execution or trigger logs
 
-Both `purgeExecutionLogs` and `purgeNonExecutionLogs` default to `true`. Set either to `false` to exclude that log type — for example, to retain execution logs for debugging while still clearing trigger logs.
+Both `purgeExecutionLogs` and `purgeNonExecutionLogs` default to `true`. Set either to `false` to exclude that log type; for example, to retain execution logs for debugging while still clearing trigger logs.
 
 Purge only trigger (non-execution) logs:
 
@@ -111,7 +150,7 @@ The task outputs `executionLogsCount` and `nonExecutionLogsCount` alongside the 
 
 ### Control deletion batch size
 
-By default, `PurgeLogs` deletes all matching rows in a single transaction. Use `batchSize` to split the deletion into smaller batches — useful when purging a large volume of logs to limit transaction size:
+By default, `PurgeLogs` deletes all matching rows in a single transaction. Use `batchSize` to split the deletion into smaller batches, which is useful when purging a large volume of logs to limit transaction size:
 
 ```yaml
 id: purge-logs-batched
@@ -129,9 +168,50 @@ triggers:
     cron: "@daily"
 ```
 
+## Purge metrics
+
+:::badge{version=">=2.1" editions="OSS,EE,Cloud"}
+:::
+
+`PurgeMetrics` removes execution metrics from the metrics table in bulk. Use it instead of `PurgeExecutions` when your goal is metric cleanup: `PurgeExecutions` issues a separate `DELETE FROM metrics` query for every batch of executions it processes, even when those executions have no metrics. `PurgeMetrics` deletes all matching rows in a single query filtered by date range.
+
+```yaml
+id: purge_metrics
+namespace: system
+
+tasks:
+  - id: purge
+    type: io.kestra.plugin.core.metric.PurgeMetrics
+    endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+```
+
+`endDate` is required. `startDate` is optional; when set, only metrics with a timestamp at or after `startDate` are included. Omit `startDate` to purge all metrics before `endDate` with no lower bound.
+
+Use `namespace` to scope deletion by namespace prefix. Without `flowId`, `namespace` is a prefix: `company` also matches `company.team` and `company.team.prod`. When `flowId` is set, `namespace` is an exact match and both properties are required together:
+
+```yaml
+tasks:
+  - id: purge
+    type: io.kestra.plugin.core.metric.PurgeMetrics
+    namespace: company.team
+    flowId: my_flow
+    endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
+```
+
+Use `executionId` to purge the metrics of a single execution.
+
+On MySQL, use `batchSize` to split the deletion into smaller transactions and stay within `group_replication_transaction_size_limit`. `batchSize` has no effect on Elasticsearch deployments, where metrics are always deleted in a single request.
+
+The output `count` reports the total number of metric rows deleted.
+
 ## Purge orphaned execution files
 
-`PurgeStorage` removes execution files from internal storage whose last-modified timestamp falls within a date window. Unlike `PurgeExecutions`, which is database-driven (it looks up execution records and deletes their files), `PurgeStorage` is storage-driven — it walks the storage tree directly and deletes files regardless of whether a matching execution record exists. This makes it the right tool for reclaiming storage that `PurgeExecutions` cannot reach.
+`PurgeStorage` removes execution files from internal storage whose last-modified timestamp falls within a date window. Unlike `PurgeExecutions`, which is database-driven (it looks up execution records and deletes their files), `PurgeStorage` is storage-driven: it walks the storage tree directly and deletes files regardless of whether a matching execution record exists. This makes it the right tool for reclaiming storage that `PurgeExecutions` cannot reach.
 
 :::alert{type="warning"}
 `PurgeStorage` permanently deletes files. Always run with `dryRun: true` first and review the output counts before switching to `dryRun: false`. The `dryRun` property defaults to `true`.
@@ -139,11 +219,11 @@ triggers:
 
 ### Isolated worker groups and orphaned files
 
-The most common use case is deployments with remote worker groups using dedicated internal storage that the primary Kestra cluster cannot access. When `PurgeExecutions` runs on the primary cluster, it deletes execution records from the database. Any subsequent `PurgeExecutions` run targeted at the remote worker group finds no execution records to match and never touches the isolated storage — leaving orphaned files behind.
+The most common use case is deployments with remote worker groups using dedicated internal storage that the primary Kestra cluster cannot access. When `PurgeExecutions` runs on the primary cluster, it deletes execution records from the database. Any subsequent `PurgeExecutions` run targeted at the remote worker group finds no execution records to match and never touches the isolated storage, leaving orphaned files behind.
 
 There are two strategies depending on whether orphaned files already exist:
 
-**Prevention — order your purge tasks correctly.** Run a worker-group-scoped `PurgeExecutions` with `purgeExecution: false` before the primary purge. This deletes files from the remote storage while the execution records still exist:
+**Prevention: order your purge tasks correctly.** Run a worker-group-scoped `PurgeExecutions` with `purgeExecution: false` before the primary purge. This deletes files from the remote storage while the execution records still exist:
 
 ```yaml
 id: purge_isolated_storage
@@ -169,7 +249,7 @@ triggers:
     cron: "@daily"
 ```
 
-**Remediation — clean up existing orphans with `PurgeStorage`.** If orphaned files already exist (execution records deleted but files remain), use `PurgeStorage` targeted at the remote worker group:
+**Remediation: clean up existing orphans with `PurgeStorage`.** If orphaned files already exist (execution records deleted but files remain), use `PurgeStorage` targeted at the remote worker group:
 
 ```yaml
 id: purge_orphan_storage
@@ -200,7 +280,7 @@ triggers:
     cron: "@daily"
 ```
 
-Both tasks run sequentially in the same execution. Check the `dry_run` task output in the execution logs — when the counts look correct, set `dryRun: false` on the `real_run` task (or remove `dry_run` entirely for scheduled runs). Outputs are:
+Both tasks run sequentially in the same execution. Check the `dry_run` task output in the execution logs; when the counts look correct, set `dryRun: false` on the `real_run` task (or remove `dry_run` entirely for scheduled runs). Outputs are:
 
 | Output | Description |
 |---|---|
@@ -210,10 +290,10 @@ Both tasks run sequentially in the same execution. Check the `dry_run` task outp
 
 ### Namespace scoping
 
-`namespace` matching is recursive — `namespace: company` also reaches `company.team` and `company.team.prod`. Omitting `namespace` purges across every namespace under the tenant (requires tenant-admin level access). Narrowing with `flowId` is also supported but requires `namespace` to be set.
+`namespace` matching is recursive: `namespace: company` also reaches `company.team` and `company.team.prod`. Omitting `namespace` purges across every namespace under the tenant (requires tenant-admin level access). Narrowing with `flowId` is also supported but requires `namespace` to be set.
 
 :::alert{type="info"}
-In the Enterprise Edition, sub-namespaces configured with their own dedicated storage are **not** reached by recursive namespace scoping — they must be targeted explicitly by setting `namespace` to that sub-namespace. This applies directly to the isolated worker group pattern above.
+In the Enterprise Edition, sub-namespaces configured with their own dedicated storage are **not** reached by recursive namespace scoping; they must be targeted explicitly by setting `namespace` to that sub-namespace. This applies directly to the isolated worker group pattern above.
 :::
 
 ## Purge key-value pairs
@@ -275,13 +355,13 @@ Refer to the [PurgeFiles documentation](/plugins/core/namespace/io.kestra.plugin
 
 ## Purge assets and lineage (retention)
 
-Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task hard-deletes three kinds of records that match the filters: [assets](../../07.enterprise/02.governance/01.assets/index.md), asset usage records (shown on each asset's **Executions** tab), and asset lineage events (read by `AssetShipper`). You can turn off any of the three.
+Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/kestra-assets/io.kestra.plugin.kestra.ee.assets.purgeassets) task to enforce asset retention without touching executions or logs. By default, this task hard-deletes two kinds of records that match the filters: [assets](../../07.enterprise/02.governance/01.assets/index.md) and asset usage records (shown on each asset's **Executions** tab). You can turn off either one. The lineage and history of a purged asset are deleted with it. Purging a parent asset, such as a deployment, detaches its parts instead of deleting them.
 
 **Filters:**
 
 | Property | Description |
 | --- | --- |
-| `endDate` | **(required)** Purge assets last updated before this date, and usage and lineage records created before this date (ISO 8601). |
+| `endDate` | **(required)** Purge assets last updated before this date, and usage records created before this date (ISO 8601). |
 | `namespace` | Filter by namespace. Supports prefix matching (e.g., `company.data` matches `company.data.staging`). |
 | `assetId` | Filter by a specific asset ID. |
 | `assetType` | Filter by a list of full asset types (e.g., `io.kestra.plugin.ee.assets.Table`). |
@@ -293,19 +373,17 @@ Use the [io.kestra.plugin.kestra.ee.assets.PurgeAssets](/plugins/plugin-kestra/k
 | --- | --- | --- |
 | `purgeAssets` | `true` | Whether to purge the asset records themselves. |
 | `purgeAssetUsages` | `true` | Whether to purge asset usage records. |
-| `purgeAssetLineages` | `true` | Whether to purge asset lineage events. |
 
 Not every filter applies to every record type. Turn off the record types that don't support the filters you set, or the task fails:
 
-| Filter | Assets | Usages | Lineage events |
-| --- | --- | --- | --- |
-| `endDate`, `namespace` | Yes | Yes | Yes |
-| `assetId` | Yes | Yes | No |
-| `assetType`, `metadataQuery` | Yes | No | No |
+| Filter | Assets | Usages |
+| --- | --- | --- |
+| `endDate`, `namespace`, `assetId` | Yes | Yes |
+| `assetType`, `metadataQuery` | Yes | No |
 
 Locked assets are skipped. The task purges the rest and leaves the locked assets for a later run.
 
-**Outputs:** `purgedAssetsCount`, `purgedAssetUsagesCount`, `purgedAssetLineagesCount`.
+**Outputs:** `purgedAssetsCount`, `purgedAssetUsagesCount`.
 
 Example: purge VM assets that haven't been updated in 180 days, on a monthly schedule. Because the task filters by `assetType`, it only purges the asset records:
 
@@ -325,14 +403,13 @@ tasks:
       - io.kestra.plugin.ee.assets.VM
     endDate: "{{ now() | dateAdd(-180, 'DAYS') }}"
     purgeAssetUsages: false
-    purgeAssetLineages: false
 ```
 
-To purge old usage and lineage records for a whole namespace, filter by `namespace` and keep the defaults.
+To purge old assets and usage records for a whole namespace, filter by `namespace` and keep the defaults.
 
 ## Purge tasks vs. UI deletion
 
-Purge tasks perform **hard deletion**, permanently removing records and reclaiming storage. In contrast, deleting items in the UI is a **soft deletion** — the data is hidden but retained (e.g., revision history and past executions can reappear if a flow with the same ID is recreated).
+Purge tasks perform **hard deletion**, permanently removing records and reclaiming storage. In contrast, deleting items in the UI is a **soft deletion**: the data is hidden but retained (e.g., revision history and past executions can reappear if a flow with the same ID is recreated).
 
 This distinction matters for compliance and troubleshooting: purge flows are best for cleaning up space, while UI deletions preserve history for auditability.
 
