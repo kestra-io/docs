@@ -26,8 +26,6 @@ The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAud
 
 In the Enterprise Edition, Kestra can generate the purge flow for you. The [setup wizard](../../07.enterprise/01.overview/02.setup/index.md#step-3-choose-a-retention-policy) and the [tenant creation wizard](../../07.enterprise/02.governance/tenants/index.md#creating-a-tenant-from-the-ui) ask for a retention policy, and Kestra turns it into a `retention` flow in the tenant's [system flows](../../06.concepts/system-flows/index.md) namespace. The flow is the policy: there is no separate retention setting, so edit the flow in the flow editor or through Git to change it.
 
-<!-- TODO(runtime test): written from kestra-ee#11845 source (merged 2026-11-10). Generate a retention flow on an EE image built after that date and compare it with the example below. -->
-
 With the default 90 days for both executions and logs, the generated flow looks like this:
 
 ```yaml

@@ -58,7 +58,7 @@ Kestra skips this step when the `main` tenant already has flows, for example whe
 
 Executions, logs, metrics, and output files accumulate with every run. This step generates a daily flow that purges them, so the instance doesn't slow down as the database and storage grow.
 
-<!-- TODO(runtime test): retention step written from kestra-ee#11845 source (merged 2026-11-10). Check the screens and the generated flow on an EE image built after that date, and confirm how Cloud tenants get a retention flow. -->
+<!-- TODO(runtime test): the generated flows were verified through the tenant API on 2026-11-11. Still to check: the wizard's Retention policy screen, and how Cloud tenants get a retention flow. -->
 
 Set how long to keep each kind of data:
 
