@@ -82,9 +82,8 @@ tasks:
 
 Kestra checks the mounts before pulling the image and fails the task if a path isn't absolute, is `/`, or is declared twice, or if an option or value isn't supported.
 
-A tmpfs mount doesn't keep the task's `inputFiles` and `outputFiles` in memory, because Docker can't copy files into or out of it. With the default `VOLUME` file handling strategy, a mount at, inside, or above the working directory is rejected when the task has files to copy. With `fileHandlingStrategy: MOUNT`, only a mount exactly at the working directory is rejected. To keep task files in memory, use `MOUNT`, bind-mount the worker's `kestra.tasks.tmp-dir.path` from the Docker host at the same path (`/tmp/kestra-wd:/tmp/kestra-wd` in the [Kestra Docker Compose file](../../../02.installation/03.docker-compose/index.md)), and make that host directory a tmpfs.
+A tmpfs mount doesn't keep the task's `inputFiles` and `outputFiles` in memory, because Docker can't copy files into or out of it. With the default `VOLUME` file handling strategy, a mount at, inside, or above the working directory is rejected, because script tasks always copy at least their output directory through it. With `fileHandlingStrategy: MOUNT`, only a mount exactly at the working directory is rejected. To keep task files in memory, use `MOUNT`, bind-mount the worker's `kestra.tasks.tmp-dir.path` from the Docker host at the same path (`/tmp/kestra-wd:/tmp/kestra-wd` in the [Kestra Docker Compose file](../../../02.installation/03.docker-compose/index.md)), and make that host directory a tmpfs.
 
-<!-- TODO(runtime test): tmpfs (kestra#19892, PR kestra#21527, merge a65bcad4b6) is documented from source only. Verify on a build containing it: the example mounts /scratch (check /proc/mounts); size limit is enforced; noexec default and exec option; validation errors before the image pull (relative path, "/", duplicate, unsupported option, bad value); VOLUME overlap rejection with input files; MOUNT rejection at the working directory. See memory project_docker_tmpfs_live_test. -->
 
 ---
 
