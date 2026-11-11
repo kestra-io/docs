@@ -262,15 +262,15 @@ On **PostgreSQL, MySQL, and H2**, the lock is session-scoped. `kestra migrate un
 
 ---
 
-### `kestra migrate default-tenant`
+### `kestra migrate repair`
 
-Migrate all resources without a tenant to a new tenant (multi-tenant setups).
-
-**Options**: `--tenant-id`, `--tenant-name`, `--dry-run`
+Updates the stored checksum of an already-applied migration script to match the script shipped with the current version. Use it when Kestra stops with `Checksum mismatch for migration [<script-id>]` after an intentional change to that script. Pass the script ID as the only argument.
 
 ```bash
-kestra migrate default-tenant --tenant-id my-tenant --tenant-name "My Tenant" --dry-run
+kestra migrate repair 2.0.01-schema
 ```
+
+The command exits with code `1` if another process holds the migration lock, the script ID is unknown, or the script hasn't been applied yet.
 
 ---
 
@@ -612,22 +612,6 @@ Submit all queued executions to the executor.
 
 ```bash
 kestra sys submit-queued-execution
-```
-
-### `kestra sys database migrate`
-
-Force database schema migration (Flyway).
-
-```bash
-kestra sys database migrate
-```
-
-### `kestra sys state-store migrate`
-
-Migrate old state store files to the Key-Value (KV) Store.
-
-```bash
-kestra sys state-store migrate
 ```
 
 ---
