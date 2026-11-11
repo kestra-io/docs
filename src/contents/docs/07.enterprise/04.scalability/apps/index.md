@@ -725,11 +725,13 @@ layout:
 When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
 :::
 
-### Embedding namespace file images
+### Embedding images
 
-`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log.
+`Image` and `Markdown` blocks render images from a URL or a `data:` URI. To show an image stored in Kestra, such as a namespace file or a file produced by the flow, use the [`dataURL()`](../../../expressions/04.functions/02.data-access/index.mdx#dataurl) expression function to convert it into a `data:` URI. `dataURL()` is available starting in 2.0.8.
 
-Starting in 2.0.8, use the [`dataURL()`](../../../expressions/04.functions/02.data-access/index.mdx#dataurl) expression function to convert a namespace file into a `data:` URI the block can render:
+#### Namespace files
+
+`nsfile://` URIs resolve in the top-level `thumbnail` field but **not** in block properties such as `Image.source` or image references inside `Markdown` content. Passing `nsfile:///logo.svg` directly to `source` results in a broken image with no error in the server log. Wrap the URI in `dataURL()` instead:
 
 ```yaml
 # Image block
@@ -756,6 +758,39 @@ To read from a different namespace, pass `namespace`:
 ```
 
 On versions before 2.0.8, use `"data:image/svg+xml;base64,{{ read('nsfile:///report.svg') | base64encode }}"` instead. `read()` decodes the file as UTF-8 text, so this only works for SVG images; binary formats such as PNG, JPEG, and GIF are corrupted and will not render.
+
+#### Files produced by the flow
+
+To show an image that the flow generates, such as a chart or a report preview, expose the file as a [flow output](../../../05.workflow-components/06.outputs/index.md#flow-outputs). The following flow writes an SVG file and exposes it as the `chart` output:
+
+```yaml
+id: render_chart
+namespace: company.team
+
+tasks:
+  - id: chart
+    type: io.kestra.plugin.core.storage.Write
+    content: '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40"><rect width="120" height="40" fill="#8405FF"/></svg>'
+    extension: .svg
+
+outputs:
+  - id: chart
+    type: FILE
+    value: "{{ outputs.chart.uri }}"
+```
+
+On the `SUCCESS` stage, pass `execution.outputs.<id>` to `dataURL()`. The function infers the MIME type from the file extension, so the output file needs an image extension such as `.svg` or `.png`:
+
+```yaml
+- on: SUCCESS
+  blocks:
+    - type: io.kestra.plugin.ee.apps.core.blocks.Image
+      source: "{{ dataURL(execution.outputs.chart) }}"
+      altText: "Generated chart"
+    - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+      content: |
+        ![Generated chart]({{ dataURL(execution.outputs.chart) }})
+```
 
 ### Execution outputs
 
