@@ -102,6 +102,6 @@ curl -X POST \
 
 The inputs you send replace the original ones. An input you leave out takes its default value, and the request fails if a required input without a default is missing.
 
-`kestractl executions replay-with-inputs` has no option to send inputs, so it fails with `Required Body [inputs] not specified`. To reuse the original inputs from the command line, use `kestractl executions replay`, which also accepts `--task-run-id` and `--revision`.
+`kestractl executions replay-with-inputs` has no option to send inputs, so it fails with `Required Body [inputs] not specified` ([kestra-io/kestractl#213](https://github.com/kestra-io/kestractl/issues/213)). To reuse the original inputs from the command line, use `kestractl executions replay`, which also accepts `--task-run-id` and `--revision`.
 
 <!-- Verified 2026-11-11: API and kestractl live on EE develop 3eb24d4. The replay dialog (Reuse/Modify, prefilled form, cURL tab) is source-verified in Restart.vue and ReplayWithInputs.vue, not clicked through. -->
