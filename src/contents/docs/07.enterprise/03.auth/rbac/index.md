@@ -73,7 +73,7 @@ curl -s -o /dev/null -D - -X POST https://your-kestra-instance/api/v1/users/{use
 
 Send that token as the `JWT` cookie or as a `Bearer` token to act as the impersonated user or service account. A request from anyone other than an Instance Owner returns `403`.
 
-<!-- TODO(eng): kestractl users impersonate (kestractl v3.7.2) follows the 303 redirect to /ui/ and fails with "received a non-JSON response". The server has returned the 303 + cookie since 2.0, so the command never worked on 2.x. Document it here again once kestractl reads the cookie. -->
+<!-- TODO(eng): kestractl users impersonate fails because it follows the 303 redirect (kestra-io/kestractl#212). Document it here again once fixed. -->
 <!-- TODO(runtime test): reading a stored role that still holds USER IMPERSONATE (it should come back without the action) was not tested live: it needs a direct database write. Everything else in ee#7018 was live-verified on 2026-11-11. -->
 
 ### Resources
