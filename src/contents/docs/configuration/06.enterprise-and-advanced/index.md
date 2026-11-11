@@ -624,7 +624,7 @@ AI Copilot configuration lives under `kestra.ai` and controls which LLM provider
 
 #### Providers
 
-Enterprise Edition lets you configure multiple providers in a single deployment. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
+You can configure multiple providers in a single deployment, in both Kestra Open Source and Enterprise Edition. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
 
 ```yaml
 kestra:
@@ -660,19 +660,6 @@ kestra:
 | `system-prompt.plan` | ❌ | Custom system prompt for Plan mode. |
 | `system-prompt.edit` | ❌ | Custom system prompt for Edit mode. |
 
-
-For OSS users, only Gemini is currently available; you can provide your Gemini API key to use the AI Copilot.
-
-```yaml
-kestra:
-  ai:
-    - id: gemini
-      display-name: Gemini
-      type: gemini
-      configuration:
-        api-key: YOUR_GEMINI_API_KEY
-        model-name: gemini-3.5-flash-lite
-```
 
 #### Configuration property reference
 

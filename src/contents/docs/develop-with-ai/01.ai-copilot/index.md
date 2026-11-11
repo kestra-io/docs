@@ -209,7 +209,7 @@ From the **Logs** and **Gantt** views of an execution, open the three-dot menu o
 
 Copilot needs an LLM provider. Until you configure one, the Copilot panel opens but can't answer prompts. Add providers under `kestra.ai.providers` in your Kestra configuration.
 
-Kestra Open Source supports Google Gemini:
+Both Kestra Open Source and Enterprise Edition support Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and open-source models served by Ollama. You can register several providers and mark one as the default; users pick a provider from the Copilot panel.
 
 ```yaml
 kestra:
@@ -218,12 +218,19 @@ kestra:
       - id: gemini
         display-name: Gemini
         type: gemini
+        is-default: true
         configuration:
           api-key: YOUR_GEMINI_API_KEY
           model-name: gemini-3.5-flash-lite
+      - id: openai
+        display-name: OpenAI
+        type: openai
+        configuration:
+          api-key: YOUR_OPENAI_API_KEY
+          model-name: gpt-5-nano
 ```
 
-Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and open-source models served by Ollama. If you need another provider, [contact us](https://kestra.io/demo).
+If you need another provider, [contact us](https://kestra.io/demo).
 
 For every configuration property, including generation parameters, extended reasoning, request timeouts, mTLS, and custom headers, see the [AI Copilot configuration reference](../../configuration/06.enterprise-and-advanced/index.md#ai-copilot).
 
