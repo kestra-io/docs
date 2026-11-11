@@ -19,7 +19,7 @@
     const props = defineProps({
         cls: { type: String, default: "" },
         theme: { type: String as PropType<"light" | "dark">, default: undefined },
-        onlyIcon: { type: Boolean, default: false },
+        onlyIcon: { type: Boolean, default: undefined },
     })
 
     const isDark = ref(false)
