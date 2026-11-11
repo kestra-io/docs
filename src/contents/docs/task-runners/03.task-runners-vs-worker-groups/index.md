@@ -58,7 +58,7 @@ This has two consequences:
 |---|---|---|
 | Reach systems in another network, region, or on-premises site | Worker Group | The task runs on a worker that can reach those systems. This works for any task type, including database queries and API calls. |
 | Run on a specific long-lived host, such as a Windows server, a GPU server, or a machine with licensed software installed | Worker Group | Tasks route to the workers running on that host. |
-| Keep all work for a namespace or tenant in one region or network | Worker Group set as a [namespace or tenant default](../../07.enterprise/04.scalability/worker-group/index.md#namespace-and-tenant-level-routing-defaults) | Every task and polling trigger below that level inherits the selector. |
+| Keep all work for a namespace or tenant in one region or network | Worker Group set as a [namespace or tenant default](../../07.enterprise/04.scalability/worker-group/index.md#flow-namespace-and-tenant-level-routing-defaults) | Every task and polling trigger below that level inherits the selector. |
 | Give one script its own dependencies or container image | Docker or remote task runner | Each run gets its own container. |
 | Give a script more CPU, memory, or a GPU only while it runs | Remote task runner, such as [AWS Batch](../04.types/04.aws-batch-task-runner/index.md), [Google Batch](../04.types/09.google-batch-task-runner/index.md), or [Kubernetes](../04.types/03.kubernetes-task-runner/index.md) | Compute is provisioned for each run, so you don't size every worker for the peak. |
 | Run a heavy script on compute that is only reachable from a private network | Both | The Worker Group places the task in that network, and the task runner submits the job from there. |
