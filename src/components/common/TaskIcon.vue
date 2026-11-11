@@ -1,5 +1,5 @@
 <template>
-    <div class="icon-wrapper" :data-tooltip="generateTagName()">
+    <div class="icon-wrapper" :data-tooltip="onlyIcon ? undefined : generateTagName()">
         <img
             :src="src"
             :alt="generateTagName() + ' icon'"
@@ -19,6 +19,7 @@
     const props = defineProps({
         cls: { type: String, default: "" },
         theme: { type: String as PropType<"light" | "dark">, default: undefined },
+        onlyIcon: { type: Boolean, default: undefined },
     })
 
     const isDark = ref(false)
